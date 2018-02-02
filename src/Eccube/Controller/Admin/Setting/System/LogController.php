@@ -39,7 +39,7 @@ class LogController extends  AbstractController
 {
 
     /**
-     * @Route("/%admin_route%/setting/system/log", name="admin_setting_system_log")
+     * @Route("/%eccube_admin_route%/setting/system/log", name="admin_setting_system_log")
      * @Template("@admin/Setting/System/log.twig")
      * @return array
      */

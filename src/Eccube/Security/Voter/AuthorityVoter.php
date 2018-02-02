@@ -83,13 +83,13 @@ class AuthorityVoter implements VoterInterface
                 try {
                     // 正規表現でURLチェック
                     $denyUrl = str_replace('/', '\/', $AuthorityRole->getDenyUrl());
-                    if (preg_match("/^(\/{$this->app['config']['admin_route']}$denyUrl)/i", $path)) {
+                    if (preg_match("/^(\/{$this->app['config']['eccube_admin_route']}$denyUrl)/i", $path)) {
                         return  VoterInterface::ACCESS_DENIED;
                     }
                 } catch (\Exception $e) {
                     // 拒否URLの指定に誤りがある場合、エスケープさせてチェック
                     $denyUrl = preg_quote($AuthorityRole->getDenyUrl(), '/');
-                    if (preg_match("/^(\/{$this->app['config']['admin_route']}$denyUrl)/i", $path)) {
+                    if (preg_match("/^(\/{$this->app['config']['eccube_admin_route']}$denyUrl)/i", $path)) {
                         return  VoterInterface::ACCESS_DENIED;
                     }
                 }

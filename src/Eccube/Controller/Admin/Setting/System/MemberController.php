@@ -74,7 +74,7 @@ class MemberController extends AbstractController
     }
 
     /**
-     * @Route("/%admin_route%/setting/system/member", name="admin_setting_system_member")
+     * @Route("/%eccube_admin_route%/setting/system/member", name="admin_setting_system_member")
      * @Template("@admin/Setting/System/member.twig")
      */
     public function index(Request $request)
@@ -101,7 +101,7 @@ class MemberController extends AbstractController
     }
 
     /**
-     * @Route("/%admin_route%/setting/system/member/new", name="admin_setting_system_member_new")
+     * @Route("/%eccube_admin_route%/setting/system/member/new", name="admin_setting_system_member_new")
      * @Template("@admin/Setting/System/member_edit.twig")
      */
     public function create(Request $request)
@@ -156,7 +156,7 @@ class MemberController extends AbstractController
     }
 
     /**
-     * @Route("/%admin_route%/setting/system/member/{id}/edit", requirements={"id" = "\d+"}, name="admin_setting_system_member_edit")
+     * @Route("/%eccube_admin_route%/setting/system/member/{id}/edit", requirements={"id" = "\d+"}, name="admin_setting_system_member_edit")
      * @Template("@admin/Setting/System/member_edit.twig")
      */
     public function edit(Request $request, Member $Member)
@@ -227,7 +227,7 @@ class MemberController extends AbstractController
 
     /**
      * @Method("PUT")
-     * @Route("/%admin_route%/setting/system/member/{id}/up", requirements={"id" = "\d+"}, name="admin_setting_system_member_up")
+     * @Route("/%eccube_admin_route%/setting/system/member/{id}/up", requirements={"id" = "\d+"}, name="admin_setting_system_member_up")
      */
     public function up(Request $request, Member $Member)
     {
@@ -249,7 +249,7 @@ class MemberController extends AbstractController
 
     /**
      * @Method("PUT")
-     * @Route("/%admin_route%/setting/system/member/{id}/down", requirements={"id" = "\d+"}, name="admin_setting_system_member_down")
+     * @Route("/%eccube_admin_route%/setting/system/member/{id}/down", requirements={"id" = "\d+"}, name="admin_setting_system_member_down")
      */
     public function down(Request $request, Member $Member)
     {
@@ -270,7 +270,7 @@ class MemberController extends AbstractController
 
     /**
      * @Method("DELETE")
-     * @Route("/%admin_route%/setting/system/member/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_system_member_delete")
+     * @Route("/%eccube_admin_route%/setting/system/member/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_system_member_delete")
      */
     public function delete(Request $request, Member $Member)
     {

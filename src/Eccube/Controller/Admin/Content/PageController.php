@@ -69,7 +69,7 @@ class PageController extends AbstractController
     }
 
     /**
-     * @Route("/%admin_route%/content/page", name="admin_content_page")
+     * @Route("/%eccube_admin_route%/content/page", name="admin_content_page")
      * @Template("@admin/Content/page.twig")
      */
     public function index(Request $request)
@@ -94,8 +94,8 @@ class PageController extends AbstractController
     }
 
     /**
-     * @Route("/%admin_route%/content/page/new", name="admin_content_page_new")
-     * @Route("/%admin_route%/content/page/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_page_edit")
+     * @Route("/%eccube_admin_route%/content/page/new", name="admin_content_page_new")
+     * @Route("/%eccube_admin_route%/content/page/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_page_edit")
      * @Template("@admin/Content/page_edit.twig")
      */
     public function edit(Request $request, $id = null, Environment $twig, Router $router)
@@ -250,7 +250,7 @@ class PageController extends AbstractController
 
     /**
      * @Method("DELETE")
-     * @Route("/%admin_route%/content/page/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_page_delete")
+     * @Route("/%eccube_admin_route%/content/page/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_page_delete")
      */
     public function delete(Request $request, $id = null)
     {

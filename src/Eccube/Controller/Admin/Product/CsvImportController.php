@@ -174,7 +174,7 @@ class CsvImportController
     /**
      * 商品登録CSVアップロード
      *
-     * @Route("/%admin_route%/product/product_csv_upload", name="admin_product_csv_import")
+     * @Route("/%eccube_admin_route%/product/product_csv_upload", name="admin_product_csv_import")
      * @Template("@admin/Product/csv_product.twig")
      */
     public function csvProduct(Request $request)
@@ -493,7 +493,7 @@ class CsvImportController
     /**
      * カテゴリ登録CSVアップロード
      *
-     * @Route("/%admin_route%/product/category_csv_upload", name="admin_product_category_csv_import")
+     * @Route("/%eccube_admin_route%/product/category_csv_upload", name="admin_product_category_csv_import")
      * @Template("@admin/Product/csv_category.twig")
      */
     public function csvCategory(Request $request)
@@ -609,7 +609,7 @@ class CsvImportController
     /**
      * アップロード用CSV雛形ファイルダウンロード
      *
-     * @Route("/%admin_route%/product/csv_template/{type}", requirements={"type" = "\w+"}, name="admin_product_csv_template")
+     * @Route("/%eccube_admin_route%/product/csv_template/{type}", requirements={"type" = "\w+"}, name="admin_product_csv_template")
      */
     public function csvTemplate(Request $request, $type)
     {

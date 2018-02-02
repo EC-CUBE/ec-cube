@@ -72,9 +72,9 @@ class TaxRuleController extends AbstractController
     /**
      * 税率設定の初期表示・登録
      *
-     * @Route("/%admin_route%/setting/shop/tax", name="admin_setting_shop_tax")
-     * @Route("/%admin_route%/setting/shop/tax/new", name="admin_setting_shop_tax_new")
-     * @Route("/%admin_route%/setting/shop/tax/{id}/edit", requirements={"id" = "\d+"}, name="admin_setting_shop_tax_edit")
+     * @Route("/%eccube_admin_route%/setting/shop/tax", name="admin_setting_shop_tax")
+     * @Route("/%eccube_admin_route%/setting/shop/tax/new", name="admin_setting_shop_tax_new")
+     * @Route("/%eccube_admin_route%/setting/shop/tax/{id}/edit", requirements={"id" = "\d+"}, name="admin_setting_shop_tax_edit")
      * @Template("@admin/Setting/Shop/tax_rule.twig")
      */
     public function index(Request $request, $id = null)
@@ -147,7 +147,7 @@ class TaxRuleController extends AbstractController
      * 税率設定の削除
      *
      * @Method("DELETE")
-     * @Route("/%admin_route%/setting/shop/tax/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_shop_tax_delete")
+     * @Route("/%eccube_admin_route%/setting/shop/tax/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_shop_tax_delete")
      */
     public function delete(Request $request, TaxRule $TaxRule)
     {
@@ -174,7 +174,7 @@ class TaxRuleController extends AbstractController
      * 軽減税率の有効/無効設定
      *
      * @Method("POST")
-     * @Route("/%admin_route%/setting/shop/tax/edit_param", name="admin_setting_shop_tax_edit_param")
+     * @Route("/%eccube_admin_route%/setting/shop/tax/edit_param", name="admin_setting_shop_tax_edit_param")
      */
     public function editParameter(Request $request)
     {

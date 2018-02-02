@@ -58,8 +58,8 @@ class ClassNameController extends AbstractController
 
 
     /**
-     * @Route("/%admin_route%/product/class_name", name="admin_product_class_name")
-     * @Route("/%admin_route%/product/class_name/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_class_name_edit")
+     * @Route("/%eccube_admin_route%/product/class_name", name="admin_product_class_name")
+     * @Route("/%eccube_admin_route%/product/class_name/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_class_name_edit")
      * @Template("@admin/Product/class_name.twig")
      */
     public function index(Request $request, $id = null)
@@ -120,7 +120,7 @@ class ClassNameController extends AbstractController
 
     /**
      * @Method("DELETE")
-     * @Route("/%admin_route%/product/class_name/{id}/delete", requirements={"id" = "\d+"}, name="admin_product_class_name_delete")
+     * @Route("/%eccube_admin_route%/product/class_name/{id}/delete", requirements={"id" = "\d+"}, name="admin_product_class_name_delete")
      */
     public function delete(Request $request, ClassName $ClassName)
     {
@@ -150,7 +150,7 @@ class ClassNameController extends AbstractController
 
     /**
      * @Method("POST")
-     * @Route("/%admin_route%/product/class_name/sort_no/move", name="admin_product_class_name_sort_no_move")
+     * @Route("/%eccube_admin_route%/product/class_name/sort_no/move", name="admin_product_class_name_sort_no_move")
      */
     public function moveSortNo(Request $request)
     {

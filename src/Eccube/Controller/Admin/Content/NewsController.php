@@ -50,7 +50,7 @@ class NewsController extends AbstractController
     /**
      * 新着情報一覧を表示する。
      *
-     * @Route("/%admin_route%/content/news", name="admin_content_news")
+     * @Route("/%eccube_admin_route%/content/news", name="admin_content_news")
      * @Template("@admin/Content/news.twig")
      *
      * @param Request $request
@@ -82,8 +82,8 @@ class NewsController extends AbstractController
     /**
      * 新着情報を登録・編集する。
      *
-     * @Route("/%admin_route%/content/news/new", name="admin_content_news_new")
-     * @Route("/%admin_route%/content/news/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_news_edit")
+     * @Route("/%eccube_admin_route%/content/news/new", name="admin_content_news_new")
+     * @Route("/%eccube_admin_route%/content/news/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_news_edit")
      * @Template("@admin/Content/news_edit.twig")
      *
      * @param Request $request
@@ -146,7 +146,7 @@ class NewsController extends AbstractController
      * 指定した新着情報の表示順を1つ上げる。
      *
      * @Method("PUT")
-     * @Route("/%admin_route%/content/news/{id}/up", requirements={"id" = "\d+"}, name="admin_content_news_up")
+     * @Route("/%eccube_admin_route%/content/news/{id}/up", requirements={"id" = "\d+"}, name="admin_content_news_up")
      *
      * @param News $News
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
@@ -173,7 +173,7 @@ class NewsController extends AbstractController
      * 指定した新着情報の表示順を1つ下げる。
      *
      * @Method("PUT")
-     * @Route("/%admin_route%/content/news/{id}/down", requirements={"id" = "\d+"}, name="admin_content_news_down")
+     * @Route("/%eccube_admin_route%/content/news/{id}/down", requirements={"id" = "\d+"}, name="admin_content_news_down")
      *
      * @param News $News
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
@@ -200,7 +200,7 @@ class NewsController extends AbstractController
      * 指定した新着情報を削除する。
      *
      * @Method("DELETE")
-     * @Route("/%admin_route%/content/news/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_news_delete")
+     * @Route("/%eccube_admin_route%/content/news/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_news_delete")
      *
      * @param Request $request
      * @param News $News

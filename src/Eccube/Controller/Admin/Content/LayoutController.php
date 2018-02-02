@@ -67,7 +67,7 @@ class LayoutController extends AbstractController
     }
 
     /**
-     * @Route("/%admin_route%/content/layout", name="admin_content_layout")
+     * @Route("/%eccube_admin_route%/content/layout", name="admin_content_layout")
      * @Template("@admin/Content/layout_list.twig")
      */
     public function index()
@@ -81,7 +81,7 @@ class LayoutController extends AbstractController
 
     /**
      * @Method("DELETE")
-     * @Route("/%admin_route%/content/layout/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_layout_delete")
+     * @Route("/%eccube_admin_route%/content/layout/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_layout_delete")
      */
     public function delete($id)
     {
@@ -103,8 +103,8 @@ class LayoutController extends AbstractController
     }
 
     /**
-     * @Route("/%admin_route%/content/layout/new", name="admin_content_layout_new")
-     * @Route("/%admin_route%/content/layout/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_layout_edit")
+     * @Route("/%eccube_admin_route%/content/layout/new", name="admin_content_layout_new")
+     * @Route("/%eccube_admin_route%/content/layout/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_layout_edit")
      * @Template("@admin/Content/layout.twig")
      */
     public function edit(Request $request, $id = null)
@@ -224,7 +224,7 @@ class LayoutController extends AbstractController
 
     /**
      * @Method("POST")
-     * @Route("/%admin_route%/content/layout/view_block", name="admin_content_layout_view_block")
+     * @Route("/%eccube_admin_route%/content/layout/view_block", name="admin_content_layout_view_block")
      */
     public function viewBlock(Request $request)
     {

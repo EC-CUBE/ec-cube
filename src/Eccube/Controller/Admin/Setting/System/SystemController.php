@@ -52,7 +52,7 @@ class SystemController
 
 
     /**
-     * @Route("/%admin_route%/setting/system/system", name="admin_setting_system_system")
+     * @Route("/%eccube_admin_route%/setting/system/system", name="admin_setting_system_system")
      * @Template("@admin/Setting/System/system.twig")
      */
     public function index(Request $request)
@@ -73,7 +73,7 @@ class SystemController
     }
 
     /**
-     * @Route("/%admin_route%/setting/system/system/phpinfo", name="admin_setting_system_system_phpinfo")
+     * @Route("/%eccube_admin_route%/setting/system/system/phpinfo", name="admin_setting_system_system_phpinfo")
      */
     public function phpinfo(Request $request)
     {

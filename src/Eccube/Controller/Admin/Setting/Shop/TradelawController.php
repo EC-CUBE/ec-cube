@@ -24,95 +24,85 @@
 
 namespace Eccube\Controller\Admin\Setting\Shop;
 
+use Eccube\Annotation\Inject;
 use Eccube\Controller\AbstractController;
-use Eccube\Entity\BaseInfo;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
-use Eccube\Form\Type\Admin\ShopMasterType;
+use Eccube\Form\Type\Admin\TradelawType;
+use Eccube\Repository\HelpRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
-use Twig_Environment;
 
 /**
- * Class ShopController
+ * Class TradelawController
  *
  * @package Eccube\Controller\Admin\Setting\Shop
  */
-class ShopController extends AbstractController
+class TradelawController extends AbstractController
 {
 
     /**
-     * @var Twig_Environment
+     * @var HelpRepository
      */
-    protected $twig;
+    protected $helpRepository;
 
     /**
-     * @var BaseInfo
-     */
-    protected $BaseInfo;
-
-    /**
-     * ShopController constructor.
+     * TradelawController constructor.
      *
-     * @param BaseInfo $BaseInfo
+     * @param HelpRepository $helpRepository
      */
-    public function __construct(Twig_Environment $twig, BaseInfo $BaseInfo)
+    public function __construct(HelpRepository $helpRepository)
     {
-        $this->BaseInfo = $BaseInfo;
-        $this->twig = $twig;
+        $this->helpRepository = $helpRepository;
     }
 
-
     /**
-     * @Route("/%eccube_admin_route%/setting/shop", name="admin_setting_shop")
-     * @Template("@admin/Setting/Shop/shop_master.twig")
-     *
-     * @param Request $request
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @Route("/%eccube_admin_route%/setting/shop/tradelaw", name="admin_setting_shop_tradelaw")
+     * @Template("@admin/Setting/Shop/tradelaw.twig")
      */
     public function index(Request $request)
     {
-        $builder = $this->formFactory
-            ->createBuilder(ShopMasterType::class, $this->BaseInfo);
+        $Help = $this->helpRepository->get();
 
-        $CloneInfo = clone $this->BaseInfo;
-        $this->entityManager->detach($CloneInfo);
+        $builder = $this->formFactory
+            ->createBuilder(TradelawType::class, $Help);
 
         $event = new EventArgs(
             array(
                 'builder' => $builder,
-                'BaseInfo' => $this->BaseInfo,
+                'Help' => $Help,
             ),
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_SHOP_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_TRADE_LAW_INDEX_INITIALIZE, $event);
 
         $form = $builder->getForm();
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
+
             if ($form->isValid()) {
-                $this->entityManager->persist($this->BaseInfo);
+                $Help = $form->getData();
+                $this->entityManager->persist($Help);
                 $this->entityManager->flush();
 
                 $event = new EventArgs(
                     array(
                         'form' => $form,
-                        'BaseInfo' => $this->BaseInfo,
+                        'Help' => $Help,
                     ),
                     $request
                 );
-                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_SHOP_INDEX_COMPLETE, $event);
+                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_TRADE_LAW_INDEX_COMPLETE, $event);
 
-                $this->addSuccess('admin.shop.save.complete', 'admin');
+                $this->addSuccess('admin.register.complete', 'admin');
 
-                return $this->redirectToRoute('admin_setting_shop');
+                return $this->redirectToRoute('admin_setting_shop_tradelaw');
+            } else {
+                $this->addError('admin.register.failed', 'admin');
             }
-            $this->addError('admin.shop.save.error', 'admin');
         }
-
-        $this->twig->addGlobal('BaseInfo', $CloneInfo);
 
         return [
             'form' => $form->createView(),

@@ -59,8 +59,8 @@ class MailController extends AbstractController
     }
 
     /**
-     * @Route("/%admin_route%/setting/shop/mail", name="admin_setting_shop_mail")
-     * @Route("/%admin_route%/setting/shop/mail/{id}", requirements={"id" = "\d+"}, name="admin_setting_shop_mail_edit")
+     * @Route("/%eccube_admin_route%/setting/shop/mail", name="admin_setting_shop_mail")
+     * @Route("/%eccube_admin_route%/setting/shop/mail/{id}", requirements={"id" = "\d+"}, name="admin_setting_shop_mail_edit")
      * @Template("@admin/Setting/Shop/mail.twig")
      */
     public function index(Request $request, MailTemplate $Mail = null)

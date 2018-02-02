@@ -119,7 +119,7 @@ class ProductClassController extends AbstractController
     /**
      * 商品規格が登録されていなければ新規登録、登録されていれば更新画面を表示する
      *
-     * @Route("/%admin_route%/product/product/class/{id}", requirements={"id" = "\d+"}, name="admin_product_product_class")
+     * @Route("/%eccube_admin_route%/product/product/class/{id}", requirements={"id" = "\d+"}, name="admin_product_product_class")
      * @Template("@admin/Product/product_class.twig")
      */
     public function index(Request $request, $id)
@@ -337,7 +337,7 @@ class ProductClassController extends AbstractController
     /**
      * 商品規格の登録、更新、削除を行う
      *
-     * @Route("/%admin_route%/product/product/class/edit/{id}", requirements={"id" = "\d+"}, name="admin_product_product_class_edit")
+     * @Route("/%eccube_admin_route%/product/product/class/edit/{id}", requirements={"id" = "\d+"}, name="admin_product_product_class_edit")
      * @Template("@admin/Product/product_class.twig")
      *
      * @param Request     $request

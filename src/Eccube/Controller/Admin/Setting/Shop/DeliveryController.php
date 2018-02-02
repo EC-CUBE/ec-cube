@@ -87,7 +87,7 @@ class DeliveryController extends AbstractController
 
 
     /**
-     * @Route("/%admin_route%/setting/shop/delivery", name="admin_setting_shop_delivery")
+     * @Route("/%eccube_admin_route%/setting/shop/delivery", name="admin_setting_shop_delivery")
      * @Template("@admin/Setting/Shop/delivery.twig")
      */
     public function index(Request $request)
@@ -109,8 +109,8 @@ class DeliveryController extends AbstractController
     }
 
     /**
-     * @Route("/%admin_route%/setting/shop/delivery/new", name="admin_setting_shop_delivery_new")
-     * @Route("/%admin_route%/setting/shop/delivery/{id}/edit", requirements={"id" = "\d+"}, name="admin_setting_shop_delivery_edit")
+     * @Route("/%eccube_admin_route%/setting/shop/delivery/new", name="admin_setting_shop_delivery_new")
+     * @Route("/%eccube_admin_route%/setting/shop/delivery/{id}/edit", requirements={"id" = "\d+"}, name="admin_setting_shop_delivery_edit")
      * @Template("@admin/Setting/Shop/delivery_edit.twig")
      */
     public function edit(Request $request, Delivery $Delivery = null)
@@ -252,7 +252,7 @@ class DeliveryController extends AbstractController
 
     /**
      * @Method("DELETE")
-     * @Route("/%admin_route%/setting/shop/delivery/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_shop_delivery_delete")
+     * @Route("/%eccube_admin_route%/setting/shop/delivery/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_shop_delivery_delete")
      */
     public function delete(Request $request, Delivery $Delivery)
     {
@@ -290,7 +290,7 @@ class DeliveryController extends AbstractController
 
     /**
      * @Method("PUT")
-     * @Route("/%admin_route%/setting/shop/delivery/{id}/visibility", requirements={"id" = "\d+"}, name="admin_setting_shop_delivery_visibility")
+     * @Route("/%eccube_admin_route%/setting/shop/delivery/{id}/visibility", requirements={"id" = "\d+"}, name="admin_setting_shop_delivery_visibility")
      */
     public function visibility(Request $request, Delivery $Delivery)
     {
@@ -323,7 +323,7 @@ class DeliveryController extends AbstractController
 
     /**
      * @Method("POST")
-     * @Route("/%admin_route%/setting/shop/delivery/sort_no/move", name="admin_setting_shop_delivery_sort_no_move")
+     * @Route("/%eccube_admin_route%/setting/shop/delivery/sort_no/move", name="admin_setting_shop_delivery_sort_no_move")
      */
     public function moveSortNo(Request $request)
     {

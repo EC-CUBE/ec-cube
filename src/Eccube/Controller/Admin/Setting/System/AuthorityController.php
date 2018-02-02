@@ -55,7 +55,7 @@ class AuthorityController extends AbstractController
 
 
     /**
-     * @Route("/%admin_route%/setting/system/authority", name="admin_setting_system_authority")
+     * @Route("/%eccube_admin_route%/setting/system/authority", name="admin_setting_system_authority")
      * @Template("@admin/Setting/System/authority.twig")
      */
     public function index(Request $request)

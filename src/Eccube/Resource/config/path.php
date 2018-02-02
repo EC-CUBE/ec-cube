@@ -2,7 +2,7 @@
   'root_dir' => '%ROOT_DIR%',
   'root_urlpath' => env('ECCUBE_ROOT_URLPATH', null),
   'template_code' => env('ECCUBE_TEMPLATE_CODE','default'),
-  'admin_route' => env('ECCUBE_ADMIN_ROUTE','admin'),
+  'eccube_admin_route' => env('ECCUBE_ADMIN_ROUTE','admin'),
   'user_data_route' => env('ECCUBE_USER_DATA_ROUTE', 'user_data'),
   'public_path' => env('ECCUBE_ROOT_URLPATH', null).'/html',
   'public_path_realdir' => '%ROOT_DIR%/html',

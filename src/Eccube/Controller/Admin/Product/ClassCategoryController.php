@@ -77,8 +77,8 @@ class ClassCategoryController extends AbstractController
 
 
     /**
-     * @Route("/%admin_route%/product/class_category/{class_name_id}", requirements={"class_name_id" = "\d+"}, name="admin_product_class_category")
-     * @Route("/%admin_route%/product/class_category/{class_name_id}/{id}/edit", requirements={"class_name_id" = "\d+", "id" = "\d+"}, name="admin_product_class_category_edit")
+     * @Route("/%eccube_admin_route%/product/class_category/{class_name_id}", requirements={"class_name_id" = "\d+"}, name="admin_product_class_category")
+     * @Route("/%eccube_admin_route%/product/class_category/{class_name_id}/{id}/edit", requirements={"class_name_id" = "\d+", "id" = "\d+"}, name="admin_product_class_category_edit")
      * @Template("@admin/Product/class_category.twig")
      */
     public function index(Request $request, $class_name_id, $id = null)
@@ -151,7 +151,7 @@ class ClassCategoryController extends AbstractController
 
     /**
      * @Method("DELETE")
-     * @Route("/%admin_route%/product/class_category/{class_name_id}/{id}/delete", requirements={"class_name_id" = "\d+", "id" = "\d+"}, name="admin_product_class_category_delete")
+     * @Route("/%eccube_admin_route%/product/class_category/{class_name_id}/{id}/delete", requirements={"class_name_id" = "\d+", "id" = "\d+"}, name="admin_product_class_category_delete")
      */
     public function delete(Request $request, $class_name_id, $id)
     {
@@ -207,7 +207,7 @@ class ClassCategoryController extends AbstractController
 
     /**
      * @Method("PUT")
-     * @Route("/%admin_route%/product/class_category/{class_name_id}/{id}/visibility", requirements={"class_name_id" = "\d+", "id" = "\d+"}, name="admin_product_class_category_visibility")
+     * @Route("/%eccube_admin_route%/product/class_category/{class_name_id}/{id}/visibility", requirements={"class_name_id" = "\d+", "id" = "\d+"}, name="admin_product_class_category_visibility")
      */
     public function visibility(Request $request, $class_name_id, $id)
     {

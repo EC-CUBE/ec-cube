@@ -147,8 +147,8 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/%admin_route%/product", name="admin_product")
-     * @Route("/%admin_route%/product/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_product_page")
+     * @Route("/%eccube_admin_route%/product", name="admin_product")
+     * @Route("/%eccube_admin_route%/product/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_product_page")
      * @Template("@admin/Product/index.twig")
      */
     public function index(Request $request, $page_no = null, Paginator $paginator)
@@ -295,7 +295,7 @@ class ProductController extends AbstractController
 
     /**
      * @Method("POST")
-     * @Route("/%admin_route%/product/product/image/add", name="admin_product_image_add")
+     * @Route("/%eccube_admin_route%/product/product/image/add", name="admin_product_image_add")
      */
     public function addImage(Request $request)
     {
@@ -337,8 +337,8 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/%admin_route%/product/product/new", name="admin_product_product_new")
-     * @Route("/%admin_route%/product/product/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_product_edit")
+     * @Route("/%eccube_admin_route%/product/product/new", name="admin_product_product_new")
+     * @Route("/%eccube_admin_route%/product/product/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_product_edit")
      * @Template("@admin/Product/product.twig")
      */
     public function edit(Request $request, $id = null)
@@ -622,7 +622,7 @@ class ProductController extends AbstractController
 
     /**
      * @Method("DELETE")
-     * @Route("/%admin_route%/product/product/{id}/delete", requirements={"id" = "\d+"}, name="admin_product_product_delete")
+     * @Route("/%eccube_admin_route%/product/product/{id}/delete", requirements={"id" = "\d+"}, name="admin_product_product_delete")
      */
     public function delete(Request $request, $id = null)
     {
@@ -696,7 +696,7 @@ class ProductController extends AbstractController
 
     /**
      * @Method("POST")
-     * @Route("/%admin_route%/product/product/{id}/copy", requirements={"id" = "\d+"}, name="admin_product_product_copy")
+     * @Route("/%eccube_admin_route%/product/product/{id}/copy", requirements={"id" = "\d+"}, name="admin_product_product_copy")
      */
     public function copy(Request $request, $id = null)
     {
@@ -790,7 +790,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/%admin_route%/product/product/{id}/display", requirements={"id" = "\d+"}, name="admin_product_product_display")
+     * @Route("/%eccube_admin_route%/product/product/{id}/display", requirements={"id" = "\d+"}, name="admin_product_product_display")
      */
     public function display(Request $request, $id = null)
     {

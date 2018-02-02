@@ -38,7 +38,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 class CacheController extends AbstractController
 {
     /**
-     * @Route("/%admin_route%/content/cache", name="admin_content_cache")
+     * @Route("/%eccube_admin_route%/content/cache", name="admin_content_cache")
      * @Template("@admin/Content/cache.twig")
      */
     public function index(Request $request, KernelInterface $kernel)

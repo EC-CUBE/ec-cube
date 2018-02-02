@@ -57,7 +57,7 @@ class SecurityController extends AbstractController
 
 
     /**
-     * @Route("/%admin_route%/setting/system/security", name="admin_setting_system_security")
+     * @Route("/%eccube_admin_route%/setting/system/security", name="admin_setting_system_security")
      * @Template("@admin/Setting/System/security.twig")
      */
     public function index(Request $request)
@@ -74,7 +74,7 @@ class SecurityController extends AbstractController
                 $data = $form->getData();
 
                 // 現在のセキュリティ情報を更新
-                $adminRoot = $this->eccubeConfig['admin_route'];
+                $adminRoot = $this->eccubeConfig['eccube_admin_route'];
 
                 $configFile = $this->getParameter('kernel.project_dir').'/app/config/eccube/packages/eccube.yaml';
                 $config = Yaml::parseFile($configFile);
@@ -114,10 +114,10 @@ class SecurityController extends AbstractController
                 }
 
                 if ($adminRoot != $data['admin_route_dir']) {
-                    // admin_routeが変更されればpath.phpを更新
+                    // eccube_admin_routeが変更されればpath.phpを更新
                     $pathFile = $this->getParameter('kernel.project_dir').'/app/config/eccube/services.yaml';
                     $config = Yaml::parseFile($pathFile);
-                    $config['parameters']['admin_route'] = $data['admin_route_dir'];
+                    $config['parameters']['eccube_admin_route'] = $data['admin_route_dir'];
 
                     file_put_contents($pathFile, Yaml::dump($config, 10, 2, Yaml::DUMP_EMPTY_ARRAY_AS_SEQUENCE));
 
@@ -127,7 +127,7 @@ class SecurityController extends AbstractController
                     $this->tokenStorage->setToken(null);
 
                     // 管理者画面へ再ログイン
-                    return $this->redirect($request->getBaseUrl().'/'.$config['parameters']['admin_route']);
+                    return $this->redirect($request->getBaseUrl().'/'.$config['parameters']['eccube_admin_route']);
                 }
 
                 $this->addSuccess('admin.system.security.save.complete', 'admin');
@@ -135,7 +135,7 @@ class SecurityController extends AbstractController
             }
         } else {
             // セキュリティ情報の取得
-            $form->get('admin_route_dir')->setData($this->eccubeConfig['admin_route']);
+            $form->get('admin_route_dir')->setData($this->eccubeConfig['eccube_admin_route']);
             $allowHost = $this->eccubeConfig['admin_allow_hosts'];
             if (count($allowHost) > 0) {
                 $form->get('admin_allow_hosts')->setData(StringUtil::convertLineFeed(implode("\n", $allowHost)));
