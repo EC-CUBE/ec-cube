@@ -180,7 +180,7 @@ $(function() {
                                         {% if page_status is null %}
                                         <a>すべて</a>
                                         {% else %}
-                                        <a href="{{ path('admin_product_page', {'page_no': page_no} ) }}">すべて</a>
+                                        <a href="{{ path('admin_product_page', {'page_no': 1} ) }}">すべて</a>
                                         {% endif %}
                                     </li>
                                     {% for productStatus in productStatuses %}

@@ -58,17 +58,22 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         };
 
         var proto_img = ''
-            + '<li class="ui-state-default">'
-            + '<img src="__path__" />'
-            + '<a class="delete-image">'
-            + '<svg class="cb cb-close">'
-            + '<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cb-close"></use>'
-            + '</svg>'
-            + '</a>'
-            + '</li>';
-        if ($("#{{ form.payment_image.vars.id }}").val() != "") {
+                      + '<li class="ui-state-default">'
+                      + '<img src="__path__" />'
+                      + '<a class="delete-image">'
+                      + '<svg class="cb cb-close">'
+                      + '<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cb-close"></use>'
+                      + '</svg>'
+                      + '</a>'
+                      + '</li>';
+        var payment_image = $("#{{ form.payment_image.vars.id }}").val();
+        if (payment_image != "") {
             var filename = $("#{{ form.payment_image.vars.id }}").val();
-            var path = '{{ asset('', 'save_image') }}' + filename;
+            if(payment_image == "{{ oldPaymentImage }}") {
+                var path = '{{ asset('', 'save_image') }}' + filename;
+            } else {
+                var path = '{{ asset('', 'temp_image') }}' + filename;
+            }
             var $img = $(proto_img.replace(/__path__/g, path));
             $("#{{ form.payment_image.vars.id }}").val(filename);
 
@@ -80,54 +85,69 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             url: "{{ url('admin_payment_image_add') }}",
             type: "post",
             dataType: 'json',
-            done: function(e, data) {
+            done: function (e, data) {
                 $('#progress').hide();
                 var path = '{{ asset('', 'temp_image') }}/' + data.result.filename;
+
                 var $img = $(proto_img.replace(/__path__/g, path));
-                $("#{{ form.payment_image.vars.id }}").val(data.result.filename);
+                $("#{{ form.payment_image.vars.id }}").val(filename);
 
                 $('#thumb').append($img);
-                hideSvg();
-            },
-            fail: function(e, data) {
-                alert('アップロードに失敗しました。');
-            },
-            always: function(e, data) {
-                $('#progress').hide();
-                $('#progress .progress-bar').width('0%');
-            },
-            start: function(e, data) {
-                $('#progress').show();
-                $("#thumb").find("li").remove();
-                $("#{{ form.payment_image.vars.id }}").val('');
-            },
-            acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-            maxFileSize: 10000000,
-            maxNumberOfFiles: 1,
-            progressall: function(e, data) {
-                var progress = parseInt(data.loaded / data.total * 100, 10);
-                $('#progress .progress-bar').css(
-                    'width',
-                    progress + '%'
-                );
-            },
-            processalways: function(e, data) {
-                if (data.files.error) {
-                    alert("画像ファイルサイズが大きいか画像ファイルではありません。");
-                }
             }
-        });
-
-        $("#thumb").on("click", ".delete-image", function() {
-            $("#{{ form.payment_image.vars.id }}").val('');
-            $(this).parent("li").remove();
             hideSvg();
-        });
 
-        // 画像アップロード
-        $('#file_upload').on('click', function() {
-            $('#{{ form.payment_image_file.vars.id }}').click();
-        });
+            $('#{{ form.payment_image_file.vars.id }}').fileupload({
+                url: "{{ url('admin_payment_image_add') }}",
+                type: "post",
+                dataType: 'json',
+                done: function(e, data) {
+                    $('#progress').hide();
+                    var path = '{{ asset('', 'temp_image') }}/' + data.result.filename;
+                    var $img = $(proto_img.replace(/__path__/g, path));
+                    $("#{{ form.payment_image.vars.id }}").val(data.result.filename);
+
+                    $('#thumb').append($img);
+                    hideSvg();
+                },
+                fail: function(e, data) {
+                    alert('アップロードに失敗しました。');
+                },
+                always: function(e, data) {
+                    $('#progress').hide();
+                    $('#progress .progress-bar').width('0%');
+                },
+                start: function(e, data) {
+                    $('#progress').show();
+                    $("#thumb").find("li").remove();
+                    $("#{{ form.payment_image.vars.id }}").val('');
+                },
+                acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+                maxFileSize: 10000000,
+                maxNumberOfFiles: 1,
+                progressall: function(e, data) {
+                    var progress = parseInt(data.loaded / data.total * 100, 10);
+                    $('#progress .progress-bar').css(
+                        'width',
+                        progress + '%'
+                    );
+                },
+                processalways: function(e, data) {
+                    if (data.files.error) {
+                        alert("画像ファイルサイズが大きいか画像ファイルではありません。");
+                    }
+                }
+            });
+
+            $("#thumb").on("click", ".delete-image", function() {
+                $("#{{ form.payment_image.vars.id }}").val('');
+                $(this).parent("li").remove();
+                hideSvg();
+            });
+
+            // 画像アップロード
+            $('#file_upload').on('click', function() {
+                $('#{{ form.payment_image_file.vars.id }}').click();
+            });
     </script>
 {% endblock %}
 

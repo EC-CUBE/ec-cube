@@ -144,14 +144,8 @@ class PaymentRepository extends AbstractRepository
                         }
                     }
                 }
-
-                $payments = $arr;
-            } else {
-                $payments = $p;
             }
-            $i++;
         }
-
         return $payments;
     }
 }

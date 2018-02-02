@@ -102,15 +102,10 @@ class ContactController extends AbstractController
                     $builder->setAttribute('freeze', true);
                     $form = $builder->getForm();
                     $form->handleRequest($request);
-                    $title = 'お問い合わせ(確認ページ)';
 
-                    return $this->render(
-                        'Contact/confirm.twig',
-                        array(
-                            'form' => $form->createView(),
-                            'title' => $title,
-                        )
-                    );
+                    return $app->render('Contact/confirm.twig', array(
+                        'form' => $form->createView(),
+                    ));
 
                 case 'complete':
 

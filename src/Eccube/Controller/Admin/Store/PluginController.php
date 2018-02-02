@@ -60,49 +60,41 @@ use Symfony\Component\Validator\Constraints as Assert;
 class PluginController extends AbstractController
 {
     /**
-     * @Inject("orm.em")
      * @var EntityManager
      */
     protected $entityManager;
 
     /**
-     * @Inject("monolog")
      * @var Logger
      */
     protected $logger;
 
     /**
-     * @Inject(PluginEventHandlerRepository::class)
      * @var PluginEventHandlerRepository
      */
     protected $pluginEventHandlerRepository;
 
     /**
-     * @Inject(PluginService::class)
      * @var PluginService
      */
     protected $pluginService;
 
     /**
-     * @Inject("config")
      * @var array
      */
     protected $eccubeConfig;
 
     /**
-     * @Inject(BaseInfo::class)
      * @var BaseInfo
      */
     protected $BaseInfo;
 
     /**
-     * @Inject("form.factory")
      * @var FormFactory
      */
     protected $formFactory;
 
     /**
-     * @Inject(PluginRepository::class)
      * @var PluginRepository
      */
     protected $pluginRepository;
@@ -404,7 +396,7 @@ class PluginController extends AbstractController
         $repo = $this->pluginEventHandlerRepository;
         $repo->upPriority($repo->find($Handler->getId()));
 
-        return $app->redirect($app->url('admin_store_plugin_handler'));
+        return $app->redirectToRoute('admin_store_plugin_handler');
     }
 
     /**
@@ -415,7 +407,7 @@ class PluginController extends AbstractController
         $repo = $this->pluginEventHandlerRepository;
         $repo->upPriority($Handler, false);
 
-        return $app->redirect($app->url('admin_store_plugin_handler'));
+        return $app->redirectToRoute('admin_store_plugin_handler');
     }
 
     /**

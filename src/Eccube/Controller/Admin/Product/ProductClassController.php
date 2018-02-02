@@ -262,6 +262,7 @@ class ProductClassController extends AbstractController
             $createProductClasses = $this->createProductClasses($Product, $ClassName1, $ClassName2);
 
             $mergeProductClasses = [];
+            $sortProductClasses = new ArrayCollection();
 
             // 商品税率が設定されている場合、商品税率を項目に設定
             if ($this->BaseInfo->isOptionProductTaxRule())  {
@@ -274,30 +275,56 @@ class ProductClassController extends AbstractController
 
             // 登録済み商品規格と空の商品規格をマージ
             $flag = false;
-            foreach ($createProductClasses as $createProductClass) {
+
+            // 削除されてる商品規格情報を取得のためにフィルターから「ProductClass」を外す
+            /* @var $softDeleteFilter \Eccube\Doctrine\Filter\SoftDeleteFilter */
+            $softDeleteFilter = $app['orm.em']->getFilters()->getFilter('soft_delete');
+            $oldExcludes = $softDeleteFilter->getExcludes();
+            $softDeleteFilter->setExcludes(array(
+                'Eccube\Entity\ProductClass',
+            ));
+            foreach ($createProductClasses as $index => $createProductClass) {
                 // 既に登録済みの商品規格にチェックボックスを設定
                 foreach ($ProductClasses as $productClass) {
                     if ($productClass->getClassCategory1() == $createProductClass->getClassCategory1() &&
-                            $productClass->getClassCategory2() == $createProductClass->getClassCategory2()) {
-                                // チェックボックスを追加
-                                $productClass->setAdd(true);
-                                $flag = true;
-                                break;
+                        $productClass->getClassCategory2() == $createProductClass->getClassCategory2()) {
+                        // チェックボックスを追加
+                        $productClass->setAdd(true);
+                        $flag = true;
+                        $sortProductClasses->add($productClass);
+                        break;
                     }
                 }
 
                 if (!$flag) {
-                    $mergeProductClasses[] = $createProductClass;
+                    // 商品の中に規格ない場合は削除されている規格を取得する
+                    $condition = array();
+                    $condition['Product'] = $Product;
+                    $condition['ClassCategory1'] = $createProductClass->getClassCategory1();
+                    $condition['ClassCategory2'] = $createProductClass->getClassCategory2();
+                    $condition['del_flg'] = Constant::ENABLED;
+
+                    $delProductClass = $app['eccube.repository.product_class']->findOneBy($condition);
+                    if ($delProductClass){
+                        // 削除されている規格あった場合はその規格を使う
+                        $mergeProductClasses[] = $delProductClass;
+                    } else {
+                        // 取得できない場合はデフォルトの規格を使う
+                        $mergeProductClasses[] = $createProductClass;
+                    }
                 }
 
                 $flag = false;
             }
 
+            // 上で変わったフィルター情報を戻す
+            $softDeleteFilter->setExcludes($oldExcludes);
+
             // 登録済み商品規格と空の商品規格をマージ
             foreach ($mergeProductClasses as $mergeProductClass) {
                 // 空の商品規格にデフォルト値を設定
-                $this->setDefaultProductClass($mergeProductClass, $ProductClass);
-                $ProductClasses->add($mergeProductClass);
+                $this->setDefualtProductClass($mergeProductClass, $sortProductClasses[0]);
+                $sortProductClasses->add($mergeProductClass);
             }
 
             $builder = $this->formFactory->createBuilder();
@@ -307,14 +334,14 @@ class ProductClassController extends AbstractController
                     'entry_type' => ProductClassType::class,
                     'allow_add' => true,
                     'allow_delete' => true,
-                    'data' => $ProductClasses,
+                    'data' => $sortProductClasses,
                 ]);
 
             $event = new EventArgs(
                 [
                     'builder' => $builder,
                     'Product' => $Product,
-                    'ProductClasses' => $ProductClasses,
+                    'ProductClasses' => $sortProductClasses,
                 ],
                 $request
             );
@@ -476,6 +503,13 @@ class ProductClassController extends AbstractController
                         return $this->renderError($Product, $tempProductClass, false, $form, $error);
                     }
 
+                    // 削除されてる商品規格情報を取得のためにフィルターから「ProductClass」を外す
+                    /* @var $softDeleteFilter \Eccube\Doctrine\Filter\SoftDeleteFilter */
+                    $softDeleteFilter = $app['orm.em']->getFilters()->getFilter('soft_delete');
+                    $oldExcludes =  $softDeleteFilter->getExcludes();
+                    $softDeleteFilter->setExcludes(array(
+                        'Eccube\Entity\ProductClass',
+                    ));
 
                     // 登録対象と更新対象の行か判断する
                     $addProductClasses = array();
@@ -486,8 +520,8 @@ class ProductClassController extends AbstractController
                         // 既に登録済みの商品規格か確認
                         foreach ($ProductClasses as $productClass) {
                             if ($productClass->getProduct()->getId() == $id &&
-                                    $productClass->getClassCategory1() == $cp->getClassCategory1() &&
-                                    $productClass->getClassCategory2() == $cp->getClassCategory2()) {
+                                $productClass->getClassCategory1() == $cp->getClassCategory1() &&
+                                $productClass->getClassCategory2() == $cp->getClassCategory2()) {
                                 $updateProductClasses[] = $cp;
 
                                 // 商品情報
@@ -504,18 +538,47 @@ class ProductClassController extends AbstractController
                                 break;
                             }
                         }
+
                         if (!$flag) {
-                            $addProductClasses[] = $cp;
+                            // 削除されている規格取得する
+                            $condition = array();
+                            $condition['Product'] = $Product;
+                            $condition['ClassCategory1'] = $cp->getClassCategory1();
+                            $condition['ClassCategory2'] = $cp->getClassCategory2();
+                            $condition['del_flg'] = Constant::ENABLED;
+
+                            $delProductClass = $app['eccube.repository.product_class']->findOneBy($condition);
+                            if ($delProductClass){
+                                // 削除されている商品を見つけた場合は使います
+                                // 商品情報
+                                $cp->setProduct($Product);
+                                // 商品在庫
+                                $productStock = $productClass->getProductStock();
+                                if (!$cp->getStockUnlimited()) {
+                                    $productStock->setStock($cp->getStock());
+                                } else {
+                                    $productStock->setStock(null);
+                                }
+                                $this->setDefualtProductClass($app, $delProductClass, $cp);
+                                // 削除されている規格を復活する（del_flgを更新）
+                                $delProductClass->setDelFlg(Constant::DISABLED);
+                                $ProductClasses[] = $delProductClass;
+                            } else {
+                                $addProductClasses[] = $cp;
+                            }
                         }
                     }
+
+                    // 上で変わったフィルター情報を戻す
+                    $softDeleteFilter->setExcludes($oldExcludes);
 
                     foreach ($removeProductClasses as $rc) {
                         // 登録されている商品規格を非表示
                         /** @var ProductClass $productClass */
                         foreach ($ProductClasses as $productClass) {
                             if ($productClass->getProduct()->getId() == $id &&
-                                    $productClass->getClassCategory1() == $rc->getClassCategory1() &&
-                                    $productClass->getClassCategory2() == $rc->getClassCategory2()) {
+                                $productClass->getClassCategory1() == $rc->getClassCategory1() &&
+                                $productClass->getClassCategory2() == $rc->getClassCategory2()) {
                                 $productClass->setVisible(false);
                                 break;
                             }
@@ -658,12 +721,12 @@ class ProductClassController extends AbstractController
 
         $ClassCategories1 = array();
         if ($ClassName1) {
-            $ClassCategories1 = $this->classCategoryRepository->findBy(array('ClassName' => $ClassName1));
+            $ClassCategories1 = $this->classCategoryRepository->findBy(['ClassName' => $ClassName1], ['sortNo' => 'DESC']);
         }
 
         $ClassCategories2 = array();
         if ($ClassName2) {
-            $ClassCategories2 = $this->classCategoryRepository->findBy(array('ClassName' => $ClassName2));
+            $ClassCategories2 = $this->classCategoryRepository->findBy(['ClassName' => $ClassName2], ['sortNo' => 'DESC']);
         }
 
         $ProductClasses = array();

@@ -1,0 +1,279 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{%- extends 'bootstrap_3_layout.html.twig' -%}
+
+{%- block form_widget_compound -%}
+    {%- if form.vars.freeze_display_text -%}
+        <div class="dl_table" {{ block('widget_container_attributes') }}>
+            {%- if form.parent is empty and errors|length > 0 -%}
+                    {{- form_errors(form) -}}
+            {%- endif -%}
+            {{- block('form_rows') -}}
+            {{- form_rest(form) -}}
+        </div>
+    {%- else -%}
+        {{- block('form_rows') -}}
+        {{- form_rest(form) -}}
+    {%- endif -%}
+{%- endblock form_widget_compound -%}
+
+{% block form_row -%}
+    {%- if form.vars.freeze_display_text -%}
+    {% set attr = attr|merge({class: attr.class|default('')}) %}
+    <dl>
+        <dt>{{ form_label(form) }}</dt>
+        <dd class="form-group{% if not valid %} has-error{% endif %}{% if 'middle' in attr.class %} input_name{% endif %}{% if 'short' in attr.class %} input_tel{% endif %}{% if 'zip' in attr.class %} input_zip{% endif %}">
+            {{ form_widget(form) }}
+            {{ form_errors(form) }}
+        </dd>
+    </dl>
+    {%- else -%}
+        {{- form_errors(form) -}}
+        {{- form_widget(form) -}}
+    {%- endif -%}
+{%- endblock form_row %}
+
+{% block form_errors -%}
+    {% if errors|length > 0 -%}
+        {% if form.parent %}
+            {%- for error in errors -%}
+                {%- if freeze_display_text -%}
+                    <p class="errormsg text-danger">{{ error.message |trans }}</p>
+                {%- endif %}
+            {%- endfor -%}
+        {%- endif %}
+    {%- endif %}
+{%- endblock form_errors %}
+
+{# Widgets #}
+
+{%- block form_widget -%}
+    {{- parent() -}}
+    {%- if freeze == false -%}
+        {%- if help is defined and help is not empty -%}
+            <p class="mini"><span class="attention">{{ help|trans({}, translation_domain) }}</span></p>
+        {%- endif -%}
+    {%- endif -%}
+{%- endblock form_widget -%}
+
+{%- block form_widget_simple -%}
+    {%- if freeze -%}
+        {%- set type = 'hidden' -%}
+        {%- if freeze_display_text -%}
+            {{- value|default('')|nl2br -}}
+        {%- endif -%}
+    {%- endif -%}
+    {{- parent() -}}
+{%- endblock form_widget_simple -%}
+
+{%- block hidden_row -%}
+    {%- if freeze_display_text -%}
+        <div style="display: none">
+            {{- form_widget(form) -}}
+        </div>
+    {%- else -%}
+        {{- form_widget(form) -}}
+    {%- endif -%}
+{%- endblock hidden_row -%}
+
+{%- block textarea_widget -%}
+    {%- if freeze -%}
+        {{- block('form_widget_simple') -}}
+    {%- else -%}
+        {{- parent() -}}
+        {%- if help is defined and help is not empty -%}
+            <p class="mini"><span class="attention">{{ help|trans({}, translation_domain) }}</span></p>
+        {%- endif -%}
+    {%- endif -%}
+{%- endblock textarea_widget -%}
+
+{%- block choice_widget_collapsed -%}
+    {% if freeze %}
+        {% set flag = false %}
+        {% for choice in choices %}
+            {% if choice is selectedchoice(value) %}
+                {%- if freeze_display_text -%}
+                    {{ choice.label|trans({}, translation_domain) }}
+                {% endif %}
+                <input type="hidden" value="{{ choice.value }}" {{ block('widget_attributes') }} />
+                {% set flag = true %}
+            {% endif %}
+        {% endfor %}
+        {% if flag == false %}<input type="hidden" value="" {{ block('widget_attributes') }} />{% endif %}
+    {%- else -%}
+        {{- parent() -}}
+    {%- endif -%}
+{%- endblock choice_widget_collapsed -%}
+
+
+{%- block choice_widget_expanded -%}
+    {% if freeze %}
+        {%- if freeze_display_text -%}
+            {% if is_object(form.vars.data) %}
+                {{ form.vars.data.name|default(form.vars.data) }}
+            {% else %}
+                {% for choice in choices %}
+                    {% if form.vars.data|format is same as (choice.value|format) %}
+                        {{ choice.label }}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {%- endif -%}
+        <input type="hidden" value="{{ form.vars.data.id|default(form.vars.data) }}" {{ block('widget_attributes') }} />
+    {%- else -%}
+        {{- parent() -}}
+    {%- endif -%}
+{%- endblock choice_widget_expanded -%}
+
+
+{%- block checkbox_widget -%}
+    {%- if freeze -%}
+        {%- if checked -%}
+            {%- if freeze_display_text -%}
+                {{ block('form_label') }}
+            {%- endif -%}
+            <input type="hidden" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %} />
+        {%- endif -%}
+    {%- else -%}
+        {{- parent() -}}
+    {%- endif -%}
+{%- endblock checkbox_widget -%}
+
+{%- block radio_widget -%}
+    {%- if freeze -%}
+        {%- if checked -%}
+            {%- if freeze_display_text -%}
+                {{ block('form_label') }}
+            {%- endif -%}
+            <input type="hidden" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %} />
+        {%- endif -%}
+    {%- else -%}
+        {{- parent() -}}
+    {%- endif -%}
+{%- endblock radio_widget -%}
+
+
+{%- block password_widget -%}
+    {%- if freeze -%}
+        <input type="hidden" {{ block('widget_attributes') }} value="{{ form.vars.data }}" />
+        {%- else -%}
+        {{- parent() -}}
+    {%- endif -%}
+{%- endblock password_widget -%}
+
+
+{%- block date_widget -%}
+    {%- if freeze -%}
+    {%- for child in form %}
+            {%- if child.vars.value is not empty -%}
+            {{ form_widget(child) }}
+            {%- if loop.last == false%}/{% endif -%}
+            {%- endif -%}
+    {% endfor -%}
+    {%- else -%}
+        {{- parent() -}}
+    {%- endif -%}
+{%- endblock date_widget -%}
+
+
+{# EC-CUBE Widget #}
+
+
+
+{%- block name_widget -%}
+    {%- for child in form %}
+        {%- if freeze -%}
+            {{ form_widget(child) }}
+        {%- else -%}
+            {{ form_widget(child) -}}
+        {%- endif -%}
+    {% endfor -%}
+    {%- for child in form %}
+        {{- form_errors(child) -}}
+    {% endfor -%}
+{%- endblock name_widget -%}
+
+{%- block tel_widget -%}
+    {%- for child in form %}
+        {{- form_widget(child, {'type': 'tel', 'attr': {'style': 'ime-mode: disabled;'}}) -}}
+        {%- if freeze -%}
+            {%- if freeze_display_text -%}
+                {%- if child.vars.value is not empty -%}
+                    {%- if loop.last == false%}&nbsp;-&nbsp;{% endif -%}
+                {%- endif -%}
+            {%- endif -%}
+        {%- else -%}
+            {%- if loop.last == false%}&nbsp;-&nbsp;{% endif -%}
+        {%- endif -%}
+    {% endfor -%}
+    {%- for child in form %}
+        {{- form_errors(child) -}}
+    {% endfor -%}
+{%- endblock tel_widget -%}
+
+{%- block fax_widget -%}
+    {%- for child in form %}
+        {{- form_widget(child, {'attr': {'style': 'ime-mode: disabled;'}}) -}}
+        {%- if loop.last == false%}&nbsp;-&nbsp;{% endif -%}
+    {% endfor -%}
+    {%- for child in form %}
+        {{- form_errors(child) -}}
+    {% endfor -%}
+{%- endblock fax_widget -%}
+
+{%- block zip_widget -%}
+    {%- if freeze -%}
+        {%- if freeze_display_text -%}〒&nbsp;{%- endif -%}{{ form_widget(form[form.vars.zip01_name]) }}{%- if freeze_display_text -%}&nbsp;-&nbsp;{%- endif -%}{{- form_widget(form[form.vars.zip02_name]) }}
+    {%- else -%}
+        〒{{- form_widget(form[form.vars.zip01_name], {'id': 'zip01', 'attr': {'style': 'ime-mode: disabled;', 'pattern': '\\d*'}}) }}-{{- form_widget(form[form.vars.zip02_name], {'id': 'zip02', 'attr': {'style': 'ime-mode: disabled;', 'pattern': '\\d*'}}) }} <span class="question-circle"><svg class="cb cb-question"><use xlink:href="#cb-question" /></svg></span> <a href="http://www.post.japanpost.jp/zipcode/" target="_blank">郵便番号検索</a>
+        {%- for child in form %}
+            {{- form_errors(child) -}}
+        {% endfor -%}
+    {%- endif -%}
+{%- endblock zip_widget -%}
+
+{%- block address_widget -%}
+    <div class="form-inline form-group input_zip">
+    {{- form_widget(form[form.vars.pref_name], {'id': 'pref'}) -}}
+    </div>
+    {%- if freeze -%}
+        {{- form_widget(form[form.vars.addr01_name]) -}}
+        {{- form_widget(form[form.vars.addr02_name]) -}}
+    {%- else -%}
+        <div class="form-group">
+            {{- form_widget(form[form.vars.addr01_name], {'id': 'addr01', 'attr': {'style': 'ime-mode: active;', 'placeholder': 'form.address1.help' }}) -}}<br />
+        </div>
+        <div class="form-group">
+            {{- form_widget(form[form.vars.addr02_name], {'id': 'addr02', 'attr': {'style': 'ime-mode: active;', 'placeholder': 'form.address2.help'}}) -}}<br />
+        </div>
+        {%- for child in form %}
+            {{- form_errors(child) -}}
+        {% endfor -%}
+    {%- endif -%}
+{%- endblock address_widget -%}
+
+{%- block form_label -%}
+    {{- parent() -}}
+    {%- if not freeze -%}
+        {%- if required -%}<span class="required">必須</span>{%- endif -%}
+    {%- endif -%}
+{%- endblock -%}

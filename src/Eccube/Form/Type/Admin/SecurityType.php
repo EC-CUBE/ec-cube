@@ -78,7 +78,7 @@ class SecurityType extends AbstractType
                 'required' => false,
                 'label' => 'IP制限',
                 'constraints' => array(
-                    new Assert\Length(array('max' => $this->eccubeConfig['stext_len'])),
+                    new Assert\Length(array('max' => $this->eccubeConfig['ltext_len'])),
                 ),
             ))
             ->add('force_ssl', CheckboxType::class, array(

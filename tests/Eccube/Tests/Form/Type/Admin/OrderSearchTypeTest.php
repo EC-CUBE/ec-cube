@@ -46,11 +46,51 @@ class OrderSearchTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
     public function testTel_ValidData()
     {
         $formData = array(
-            'tel' => '12345'
+            'tel' => '012345'
         );
 
         $this->form->submit($formData);
         $this->assertTrue($this->form->isValid());
+    }
+
+    public function testTelWithHyphenMiddle_ValidData()
+    {
+        $formData = array(
+            'tel' => '012-345'
+        );
+
+        $this->form->submit($formData);
+        $this->assertTrue($this->form->isValid());
+    }
+    public function testTelWithHyphenBefore_ValidData()
+    {
+        $formData = array(
+            'tel' => '-345'
+        );
+
+        $this->form->submit($formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testTelWithHyphenAfter_ValidData()
+    {
+        $formData = array(
+            'tel' => '012-'
+        );
+
+        $this->form->submit($formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testTel_NotValidData()
+    {
+        //意味あんだか良くわからんが一応書いとく
+        $formData = array(
+            'tel' => '+〇三=abcふれ'
+        );
+
+        $this->form->submit($formData);
+        $this->assertFalse($this->form->isValid());
     }
 
     public function testKana_NotValidData()

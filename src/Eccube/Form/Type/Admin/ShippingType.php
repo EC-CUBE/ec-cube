@@ -138,7 +138,7 @@ class ShippingType extends AbstractType
                             'max' => $this->eccubeConfig['mtext_len'],
                         )),
                     ),
-                    'attr' => array('class' => 'p-locality')
+                    'attr' => array('class' => 'p-locality p-street-address')
                 ),
                 'addr02_options' => array(
                     'required' => false,
@@ -148,7 +148,7 @@ class ShippingType extends AbstractType
                             'max' => $this->eccubeConfig['mtext_len'],
                         )),
                     ),
-                    'attr' => array('class' => 'p-street-address')
+                    'attr' => array('class' => 'p-extended-address')
                 ),
             ))
             ->add('tel', TelType::class, array(

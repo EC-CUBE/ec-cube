@@ -25,6 +25,8 @@
 namespace Eccube\Tests\Web\Admin\Setting\System;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Faker\Generator;
+use Symfony\Component\DomCrawler\Crawler;
 
 /**
  * Class LogControllerTest
@@ -94,4 +96,60 @@ class LogControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
+    /**
+     * Validate test.
+     *
+     * @param string|int $value
+     * @param string     $expected
+     * @param string     $message
+     * @dataProvider dataProvider
+     */
+    public function testSystemLogValidate($value, $expected, $message)
+    {
+        $this->createTestFile(1);
+
+        $this->formData['line_max'] = $value;
+
+        /** @var $crawler Crawler*/
+        $crawler = $this->client->request(
+            'POST',
+            $this->generateUrl('admin_setting_system_log'),
+            array('admin_system_log' => $this->formData)
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        list($this->actual) = $crawler->filter('#line-max')->extract(array('style'));
+        $this->expected = $expected;
+        $this->verify();
+        if ($message) {
+            $this->assertContains($message, $crawler->filter('#log_conditions_box__body')->html());
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function dataProvider()
+    {
+        return array(
+            array('', 'background-color:#ffe8e8;', '※ 入力されていません。'),
+            array('a', 'background-color:#ffe8e8;', '※ 有効な数字ではありません。'),
+            array(-1, 'background-color:#ffe8e8;', '※ 0以上でなければなりません。'),
+            array(0, '', ''),
+            array(50000, '', ''),
+            array(1.1, '', ''),
+            array(100001, 'background-color:#ffe8e8;', '※ 50000以下でなければなりません。'),
+        );
+    }
+
+    private function createTestFile($number)
+    {
+        /** @var $faker Generator */
+        $faker = $this->getFaker();
+
+        if (!file_exists($this->logTest)) {
+            file_put_contents($this->logTest, $faker->paragraphs($number));
+        }
+    }
 }

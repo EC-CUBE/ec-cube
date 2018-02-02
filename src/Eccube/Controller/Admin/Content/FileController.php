@@ -157,6 +157,8 @@ class FileController extends AbstractController
                     ? $this->normalizePath($request->get('now_dir'))
                     : $topDir;
                 $fs->mkdir($nowDir . '/' . $filename);
+
+                $app->addSuccess('admin.create.complete', 'admin');
             }
         }
     }
@@ -175,6 +177,7 @@ class FileController extends AbstractController
             $fs = new Filesystem();
             if ($fs->exists($this->convertStrToServer($request->get('select_file')))) {
                 $fs->remove($this->convertStrToServer($request->get('select_file')));
+                $app->addSuccess('admin.delete.complete', 'admin');
             }
         }
 
@@ -232,6 +235,8 @@ class FileController extends AbstractController
                 if ($this->checkDir($request->get('now_dir'), $topDir)) {
                     $filename = $this->convertStrToServer($data['file']->getClientOriginalName());
                     $data['file']->move($request->get('now_dir'), $filename);
+
+                    $app->addSuccess('admin.save.complete', 'admin');
                 }
             }
         }

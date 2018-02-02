@@ -33,6 +33,7 @@ use Eccube\Form\Type\Admin\MailType;
 use Eccube\Repository\MailHistoryRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\MailService;
+use Eccube\Util\MailUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -163,7 +164,9 @@ class MailController extends AbstractController
                             $body = $this->createBody($data['mail_header'], $data['mail_footer'], $Order);
 
                             // メール送信
-                            $this->mailService->sendAdminOrderMail($Order, $data);
+                            $message = $this->mailService->sendAdminOrderMail($Order, $data);
+
+                            MailUtil::convertMessage($app, $message);
 
                             // 送信履歴を保存.
                             $MailTemplate = $form->get('template')->getData();
@@ -352,7 +355,9 @@ class MailController extends AbstractController
                                 $body = $this->createBody($data['mail_header'], $data['mail_footer'], $Order);
 
                                 // メール送信
-                                $this->mailService->sendAdminOrderMail($Order, $data);
+                                $message = $this->mailService->sendAdminOrderMail($Order, $data);
+
+                                MailUtil::convertMessage($app, $message);
 
                                 // 送信履歴を保存.
                                 $MailHistory = new MailHistory();

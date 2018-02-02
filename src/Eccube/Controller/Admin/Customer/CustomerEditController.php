@@ -105,70 +105,69 @@ class CustomerEditController extends AbstractController
 
         $form = $builder->getForm();
 
-        if ('POST' === $request->getMethod()) {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                log_info('会員登録開始', array($Customer->getId()));
+        $form->handleRequest($request);
 
-                $encoder = $this->encoderFactory->getEncoder($Customer);
+        if ($form->isSubmitted() && $form->isValid()) {
+            log_info('会員登録開始', array($Customer->getId()));
 
-                if ($Customer->getId() === null) {
-                    $Customer->setSalt($encoder->createSalt());
-                    $Customer->setSecretKey($this->customerRepository->getUniqueSecretKey());
+            $encoder = $this->encoderFactory->getEncoder($Customer);
 
-                    $CustomerAddress->setName01($Customer->getName01())
-                        ->setName02($Customer->getName02())
-                        ->setKana01($Customer->getKana01())
-                        ->setKana02($Customer->getKana02())
-                        ->setCompanyName($Customer->getCompanyName())
-                        ->setZip01($Customer->getZip01())
-                        ->setZip02($Customer->getZip02())
-                        ->setZipcode($Customer->getZip01() . $Customer->getZip02())
-                        ->setPref($Customer->getPref())
-                        ->setAddr01($Customer->getAddr01())
-                        ->setAddr02($Customer->getAddr02())
-                        ->setTel01($Customer->getTel01())
-                        ->setTel02($Customer->getTel02())
-                        ->setTel03($Customer->getTel03())
-                        ->setFax01($Customer->getFax01())
-                        ->setFax02($Customer->getFax02())
-                        ->setFax03($Customer->getFax03())
-                        ->setCustomer($Customer);
+            if ($Customer->getId() === null) {
+                $Customer->setSalt($encoder->createSalt());
+                $Customer->setSecretKey($this->customerRepository->getUniqueSecretKey());
 
-                    $this->entityManager->persist($CustomerAddress);
-                }
+                $CustomerAddress->setName01($Customer->getName01())
+                    ->setName02($Customer->getName02())
+                    ->setKana01($Customer->getKana01())
+                    ->setKana02($Customer->getKana02())
+                    ->setCompanyName($Customer->getCompanyName())
+                    ->setZip01($Customer->getZip01())
+                    ->setZip02($Customer->getZip02())
+                    ->setZipcode($Customer->getZip01().$Customer->getZip02())
+                    ->setPref($Customer->getPref())
+                    ->setAddr01($Customer->getAddr01())
+                    ->setAddr02($Customer->getAddr02())
+                    ->setTel01($Customer->getTel01())
+                    ->setTel02($Customer->getTel02())
+                    ->setTel03($Customer->getTel03())
+                    ->setFax01($Customer->getFax01())
+                    ->setFax02($Customer->getFax02())
+                    ->setFax03($Customer->getFax03())
+                    ->setCustomer($Customer);
 
-                if ($Customer->getPassword() === $this->eccubeConfig['default_password']) {
-                    $Customer->setPassword($previous_password);
-                } else {
-                    if ($Customer->getSalt() === null) {
-                        $Customer->setSalt($encoder->createSalt());
-                    }
-                    $Customer->setPassword($encoder->encodePassword($Customer->getPassword(), $Customer->getSalt()));
-                }
-
-                $this->entityManager->persist($Customer);
-                $this->entityManager->flush();
-
-                log_info('会員登録完了', array($Customer->getId()));
-
-                $event = new EventArgs(
-                    array(
-                        'form' => $form,
-                        'Customer' => $Customer,
-                    ),
-                    $request
-                );
-                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_EDIT_INDEX_COMPLETE, $event);
-
-                $this->addSuccess('admin.customer.save.complete', 'admin');
-
-                return $this->redirectToRoute('admin_customer_edit', array(
-                    'id' => $Customer->getId(),
-                ));
-            } else {
-                $this->addError('admin.customer.save.failed', 'admin');
+                $this->entityManager->persist($CustomerAddress);
             }
+
+            if ($Customer->getPassword() === $this->eccubeConfig['default_password']) {
+                $Customer->setPassword($previous_password);
+            } else {
+                if ($Customer->getSalt() === null) {
+                    $Customer->setSalt($encoder->createSalt());
+                }
+                $Customer->setPassword($encoder->encodePassword($Customer->getPassword(), $Customer->getSalt()));
+            }
+
+            $this->entityManager->persist($Customer);
+            $this->entityManager->flush();
+
+            log_info('会員登録完了', array($Customer->getId()));
+
+            $event = new EventArgs(
+                array(
+                    'form' => $form,
+                    'Customer' => $Customer,
+                ),
+                $request
+            );
+            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_EDIT_INDEX_COMPLETE, $event);
+
+            $this->addSuccess('admin.customer.save.complete', 'admin');
+
+            return $this->redirectToRoute('admin_customer_edit', array(
+                'id' => $Customer->getId(),
+            ));
+        } else {
+            $this->addError('admin.customer.save.failed', 'admin');
         }
 
         return [

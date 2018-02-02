@@ -1,0 +1,82 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'default_frame.twig' %}
+
+{% set menus = ['setting', 'shop', 'customer_agreement'] %}
+
+{% block title %}ショップ設定{% endblock %}
+{% block sub_title %}利用規約管理{% endblock %}
+
+{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block main %}
+    <div class="row" id="aside_wrap">
+        <form role="form" name="form1" id="form1" method="post">
+            {{ form_widget(form._token) }}
+                <div id="detail_wrap" class="col-md-9">
+                    <div id="detail_box" class="box form-horizontal">
+                        <div id="detail_box__header" class="box-header">
+                            <h3 class="box-title">利用規約</h3>
+                        </div><!-- /.box-header -->
+                        <div id="detail_box__body" class="box-body">
+                            <div id="detail_box__customer_agreement" class="form-group">
+                                {{ form_label(form.customer_agreement) }}
+                                <div class="col-sm-9 col-lg-10">
+                                    {{ form_widget(form.customer_agreement, { attr : { 'rows' : 20 } }) }}
+                                    {{ form_errors(form.customer_agreement) }}
+                                </div>
+                            </div>
+                            <div class="extra-form">
+                                {% for f in form.getIterator %}
+                                    {% if f.vars.name matches '[^plg*]' %}
+                                        {{ form_row(f) }}
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div><!-- /.box-body -->
+                    </div><!-- /.box -->
+                </div>
+                <div class="col-md-3" id="aside_column">
+                    <div id="common_box" class="col_inner">
+                        <div id="common_button_box" class="box no-header">
+                            <div id="common_button_box__body" class="box-body">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div id="common_button_box__insert_button" class="form-group">
+                                            <div class="row text-center">
+                                                <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
+                                                    <button class="btn btn-primary btn-block btn-lg" type="submit">規約を登録</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!-- /.box-body -->
+                        </div><!-- /.box -->
+                    </div>
+                </div><!-- /.col -->
+
+            <div class="btn-area">
+            </div>
+        </form>
+    </div>
+{% endblock %}

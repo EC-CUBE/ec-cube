@@ -1038,17 +1038,14 @@ class ShoppingService
 
             $payments = $this->paymentRepository->findAllowedPayments($deliveries);
         } else {
-
             // 配送業者をセット
             $shippings = $Order->getShippings();
             $Shipping = $shippings[0];
             $payments = $this->paymentRepository->findPayments($Shipping->getDelivery(), true);
-
         }
         $payments = $this->getPayments($payments, $Order->getSubTotal());
 
         return $payments;
-
     }
 
     /**
@@ -1286,7 +1283,7 @@ class ShoppingService
     {
 
         // メール送信
-        $message = $this->mailService->sendOrderMail($Order);
+        $this->mailService->sendOrderMail($Order);
 
         // 送信履歴を保存.
         $MailHistory = new MailHistory();
@@ -1300,7 +1297,6 @@ class ShoppingService
         $this->entityManager->flush($MailHistory);
 
         return $MailHistory;
-
     }
 
 

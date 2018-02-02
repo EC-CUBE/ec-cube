@@ -42,6 +42,7 @@ class MainEditTypeTest extends AbstractTypeTestCase
         'description' => '',
         'keyword' => '',
         'meta_robots' => '',
+        'meta_tags' => '',
         'DeviceType' => '10',
     );
 
@@ -252,4 +253,19 @@ class MainEditTypeTest extends AbstractTypeTestCase
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
+    
+    public function testValidMetaTags_Blank()
+    {
+        $this->formData['meta_tags'] = '';
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testInValidMetaTags_FreeLength()
+    {
+        $this->formData['meta_tags'] = '<meta name="meta_tags_test" content="test" />';
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+    
 }

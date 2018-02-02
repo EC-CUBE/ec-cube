@@ -27,7 +27,6 @@ namespace Eccube\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\TaxDisplayType;
-use Eccube\Util\EntityUtil;
 
 /**
  * OrderItem
@@ -633,9 +632,6 @@ class OrderItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
      */
     public function getProduct()
     {
-        if (EntityUtil::isEmpty($this->Product)) {
-            return null;
-        }
         return $this->Product;
     }
 

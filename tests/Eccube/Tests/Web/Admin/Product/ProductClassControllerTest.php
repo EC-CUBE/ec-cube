@@ -76,6 +76,14 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
 
         // Then
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
+
+        // 商品登録画面に移動する確認
+        $crawler = $this->client->followRedirect();
+        $csvExportUrl = $crawler->filter('div#edit_box__footer div p a')->selectLink('商品登録に戻る')->link()->getUri();
+
+        $crawler = $this->client->request('GET', $csvExportUrl);
+        $panelName = $crawler->filter('div#main h1 span')->text();
+        $this->assertContains('商品登録', $panelName);
     }
 
     /**
@@ -499,5 +507,45 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         $this->BaseInfo->setOptionProductTaxRule(true);
         $this->entityManager->persist($this->BaseInfo);
         $this->entityManager->flush();
+    }
+
+    /**
+     * testProductClassSortByRank
+     */
+    public function testProductClassSortByRank()
+    {
+        /* @var $ClassCategory \Eccube\Entity\ClassCategory */
+        //set 金 rank
+        $ClassCategory = $this->classCategoryRepository->findOneBy(array('name' => '金'));
+        $ClassCategory->setSortNo(3);
+        $this->entityManager->persist($ClassCategory);
+        $this->entityManager->flush($ClassCategory);
+        //set 銀 rank
+        $ClassCategory = $this->classCategoryRepository->findOneBy(array('name' => '銀'));
+        $ClassCategory->setSortNo(2);
+        $this->entityManager->persist($ClassCategory);
+        $this->entityManager->flush($ClassCategory);
+        //set プラチナ rank
+        $ClassCategory = $this->classCategoryRepository->findOneBy(array('name' => 'プラチナ'));
+        $ClassCategory->setSortNo(1);
+        $this->entityManager->persist($ClassCategory);
+        $this->entityManager->flush($ClassCategory);
+        $client = $this->client;
+        $crawler = $client->request('GET', $this->generateUrl('admin_product_product_class', array('id' => 1)));
+        $this->assertTrue($client->getResponse()->isSuccessful());
+        $classCategory[] = $crawler->filter('#result_box__class_category1--0')->text();
+        $classCategory[] = $crawler->filter('#result_box__class_category1--3')->text();
+        $classCategory[] = $crawler->filter('#result_box__class_category1--6')->text();
+        $class1  = $classCategory[0].$classCategory[1].$classCategory[2];
+        //金, 銀, プラチナ sort by rank setup above.
+        $this->expected = '金';
+        $this->actual = $classCategory[0];
+        $this->assertContains( $this->expected, $this->actual);
+        $this->expected = '銀';
+        $this->actual = $classCategory[1];
+        $this->assertContains( $this->expected, $this->actual);
+        $this->expected = 'プラチナ';
+        $this->actual = $classCategory[2];
+        $this->assertContains( $this->expected, $this->actual);
     }
 }

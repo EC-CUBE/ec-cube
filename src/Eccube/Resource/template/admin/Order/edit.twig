@@ -142,14 +142,14 @@ $(function() {
 
         onChangeOrderItemCount(order_items_count);
     });
-    
+
     $(".delete_delivery").on("click", function(){
        var data = $(this).data();
        $("#shipping_info_box--" + data.idx ).remove();
        document.form1.modal.value = "calc";
        document.form1.submit();
     });
-    
+
     $(".delete_shipping_product").on("click", function(){
        var data = $(this).data();
        var idKey = "order_Shippings_"+ data.idx.replace("--","_OrderItems_") +"_quantity";
@@ -245,7 +245,8 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                     </div><!-- /.box-body -->
                 </div><!-- /.box -->
             </div>
-            <div id="customer_info_box"  class="box accordion">
+            <div id="customer_info_box"  class="box accordion h-adr">
+                <span class="p-country-name" style="display:none;">Japan</span>
                 <div id="customer_info_box__toggle" class="box-header toggle active">
                     <h3 class="box-title">注文者情報<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
                 </div><!-- /.box-header -->
@@ -423,6 +424,12 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                             </div>
                                             <div class="col-md-4 col-lg-3 form-group form-inline text-right">
                                                 <span id="product_info_list__quantity--{{ loop.index }}" class="item_quantity">
+                                                    {% set detail_id = orderDetailForm.vars.value.id %}
+                                                    {% if arrOldOrder.OrderDetails[detail_id] is defined %}
+                                                        {% set prev_quantity = arrOldOrder.OrderDetails[detail_id].quantity ~ ' ' %}
+                                                    {% else %}
+                                                        {% set prev_quantity = '' %}
+                                                    {% endif %}
                                                     {% if BaseInfo.optionMultipleShipping %}
                                                         数量：{{ form_widget(orderItemForm.quantity, {'read_only': 'readonly'}) }}
                                                     {% else %}
@@ -439,6 +446,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                                     {{ form_errors(orderItemForm.tax_rate) }}
                                                     <span class="input-group-addon">%</span>
                                                     </span>
+                                                    {{ form_errors(orderDetailForm.tax_rate) }}
                                                 </span>
                                             </div>
                                             <div id="product_info_list__total_price--{{ loop.index }}" class="col-md-12 col-lg-3 item_subtotal text-right">
@@ -523,7 +531,6 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                     </dl>
                 </div>
             </div>
-
 
             <div id="shop_info_box" class="box">
                 <div id="shop_info_box__header" class="box-header">

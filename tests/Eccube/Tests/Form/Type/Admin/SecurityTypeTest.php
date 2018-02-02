@@ -78,4 +78,13 @@ class SecurityTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
+    /**
+     * Over ltext_len = 3000
+     */
+    public function testValidAdminAllowHost_MaxLength()
+    {
+        $this->formData['admin_allow_host'] = str_repeat("127.0.0.1\n", 1000);
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
 }

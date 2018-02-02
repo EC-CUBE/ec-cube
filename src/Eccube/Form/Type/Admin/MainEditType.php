@@ -160,8 +160,16 @@ class MainEditType extends AbstractType
                 'constraints' => array(
                     new Assert\Length(array(
                         'max' => $this->eccubeConfig['stext_len'],
-                    )),
-                ),
+                    ))
+                )
+            ))->add('meta_tags', 'textarea', array(
+                'label' => '追加metaタグ',
+                'required' => false,
+                'constraints' => array(
+                    new Assert\Length(array(
+                        'max' => $this->eccubeConfig['lltext_len'],
+                    ))
+                )
             ))
             ->add('DeviceType', EntityType::class, array(
                 'class' => 'Eccube\Entity\Master\DeviceType',

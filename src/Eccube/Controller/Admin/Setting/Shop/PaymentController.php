@@ -113,7 +113,12 @@ class PaymentController extends AbstractController
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_EDIT_INITIALIZE, $event);
 
         $form = $builder->getForm();
+
         $form->handleRequest($request);
+
+        // 既に画像保存されてる場合は取得する
+        $oldPaymentImage = $Payment->getPaymentImage();
+        $form->setData($Payment);
 
         // 登録ボタン押下
         if ($form->isSubmitted() && $form->isValid()) {
@@ -151,6 +156,7 @@ class PaymentController extends AbstractController
             'form' => $form->createView(),
             'payment_id' => $Payment->getId(),
             'Payment' => $Payment,
+            'oldPaymentImage' => $oldPaymentImage,
         ];
     }
 
@@ -245,12 +251,15 @@ class PaymentController extends AbstractController
 
         $target = $this->paymentRepository->findOneBy(array('sort_no' => $targetSortNo));
 
-        $target->setSortNo($currentSortNo);
-        $current->setSortNo($targetSortNo);
+        if($target) {
+            $this->entityManager->persist($target->setSortNo($currentSortNo));
+            $this->entityManager->persist($current->setSortNo($targetSortNo));
+            $this->entityManager->flush();
 
-        $this->entityManager->flush();
-
-        $this->addSuccess('admin.sort_no.move.complete', 'admin');
+            $app->addSuccess('admin.sort_no.move.complete', 'admin');
+        } else {
+            $app->addError('admin.sort_no.up.error', 'admin');
+        }
 
         return $this->redirectToRoute('admin_setting_shop_payment');
     }
@@ -268,12 +277,15 @@ class PaymentController extends AbstractController
 
         $target = $this->paymentRepository->findOneBy(array('sort_no' => $targetSortNo));
 
-        $target->setSortNo($currentSortNo);
-        $current->setSortNo($targetSortNo);
+        if ($target) {
+            $this->entityManager->persist($target->setSortNo($currentSortNo));
+            $this->entityManager->persist($current->setSortNo($targetSortNo));
+            $this->entityManager->flush();
 
-        $this->entityManager->flush();
-
-        $this->addSuccess('admin.sort_no.move.complete', 'admin');
+            $app->addSuccess('admin.sort_no.move.complete', 'admin');
+        } else {
+            $app->addError('admin.sort_no.down.error', 'admin');
+        }
 
         return $this->redirectToRoute('admin_setting_shop_payment');
     }
