@@ -72,7 +72,7 @@ class MasterdataDataType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['int_len'],
+                        'max' => $this->eccubeConfig['eccube_int_len'],
                     )),
                     new Assert\Regex(array(
                         'pattern' => '/^\d+$/u',

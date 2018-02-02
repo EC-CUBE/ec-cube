@@ -74,7 +74,7 @@ class ShippingMultipleItemType extends AbstractType
             ->add('quantity', IntegerType::class, array(
                 'attr' => array(
                     'min' => 1,
-                    'maxlength' => $this->eccubeConfig['int_len'],
+                    'maxlength' => $this->eccubeConfig['eccube_int_len'],
                 ),
                 'constraints' => array(
                     new Assert\NotBlank(),

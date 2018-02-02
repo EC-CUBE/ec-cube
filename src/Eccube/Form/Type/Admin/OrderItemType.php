@@ -115,7 +115,7 @@ class OrderItemType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['int_len'],
+                        'max' => $this->eccubeConfig['eccube_int_len'],
                     )),
                 ),
             ))
@@ -123,7 +123,7 @@ class OrderItemType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['int_len'],
+                        'max' => $this->eccubeConfig['eccube_int_len'],
                     )),
                     new Assert\Regex(array(
                         'pattern' => "/^\d+(\.\d+)?$/u",

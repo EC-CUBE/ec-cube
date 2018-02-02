@@ -146,14 +146,14 @@ class SearchCustomerType extends AbstractType
                 'label' => '購入回数',
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['int_len']]),
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_int_len']]),
                 ],
             ])
             ->add('buy_times_end', IntegerType::class, [
                 'label' => '購入回数',
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['int_len']]),
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_int_len']]),
                 ],
             ])
             ->add('create_date_start', DateType::class, [

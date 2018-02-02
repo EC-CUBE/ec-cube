@@ -107,7 +107,7 @@ class AddCartType extends AbstractType
                     'data' => 1,
                     'attr' => array(
                         'min' => 1,
-                        'maxlength' => $this->config['int_len'],
+                        'maxlength' => $this->config['eccube_int_len'],
                     ),
                     'constraints' => array(
                         new Assert\NotBlank(),
