@@ -66,7 +66,6 @@ parameters:
     eccube_tel_len_min: 1
     eccube_zip01_len: 3
     eccube_zip02_len: 4
-    template_code: 'default'
     eccube_password_min_len: 8
     eccube_password_max_len: 32
     auth_magic: '%env(ECCUBE_AUTH_MAGIC)%'
