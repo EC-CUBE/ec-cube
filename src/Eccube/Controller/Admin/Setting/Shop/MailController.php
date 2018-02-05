@@ -35,6 +35,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Filesystem\Filesystem;
 use Eccube\Util\StringUtil;
+use Twig\Environment;
 
 /**
  * Class MailController
@@ -63,7 +64,7 @@ class MailController extends AbstractController
      * @Route("/%eccube_admin_route%/setting/shop/mail/{id}", requirements={"id" = "\d+"}, name="admin_setting_shop_mail_edit")
      * @Template("@admin/Setting/Shop/mail.twig")
      */
-    public function index(Request $request, MailTemplate $Mail = null)
+    public function index(Request $request, MailTemplate $Mail = null, Environment $twig)
     {
         $builder = $this->formFactory
             ->createBuilder(MailType::class, $Mail);
@@ -83,10 +84,11 @@ class MailController extends AbstractController
         // 更新時
         if (!is_null($Mail)) {
             // テンプレートファイルの取得
-            $templatePath = $this->getParameter('eccube.theme.front_dir');
-            $file = $templatePath.'/'.$Mail->getFileName();
+            $source = $twig->getLoader()
+                ->getSourceContext($Mail->getFileName())
+                ->getCode();
 
-            $form->get('tpl_data')->setData($file['tpl_data']);
+            $form->get('tpl_data')->setData($source);
         }   
         
         if ('POST' === $request->getMethod()) {
