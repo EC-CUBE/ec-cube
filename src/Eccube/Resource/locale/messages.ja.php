@@ -3,7 +3,7 @@ return [
     'Login email' => 'メールアドレス',
     'Login pass' => 'パスワード',
     'Login memory' => '次回から自動的にログインする',
-    'Bad credentials.' => 'ログインできませんでした。<br>入力内容に誤りがないかご確認ください。',
+    'Invalid credentials.' => 'ログインできませんでした。<br>入力内容に誤りがないかご確認ください。',
     'Invalid CSRF token.' => 'もう一度ログイン処理をしてください。',
     'Your session has timed out, or you have disabled cookies.' => 'もう一度ログイン処理をしてください。',
     'The uploaded file was too large. Please try to upload a smaller file.' => 'ファイルサイズが大きすぎます。',
