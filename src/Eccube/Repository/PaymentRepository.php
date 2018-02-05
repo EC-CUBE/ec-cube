@@ -128,21 +128,23 @@ class PaymentRepository extends AbstractRepository
     public function findAllowedPayments($deliveries, $retuenType = false)
     {
         $payments = [];
-        $i = 0;
-
+        $saleTypes = [];
         foreach ($deliveries as $Delivery) {
-            $p = $this->findPayments($Delivery, $retuenType);
+            $p = $this->findPayments($Delivery);
+            if ($p == null) {
+                continue;
+            }
+            foreach ($p as $payment) {
+                $payments[$payment['id']] = $payment;
+                $saleTypes[$Delivery->getSaleType()->getId()][$payment['id']] = true;
+            }
+        }
 
-            if ($i != 0) {
-
-                $arr = [];
-                foreach ($p as $payment) {
-                    foreach ($payments as $pay) {
-                        if ($payment['id'] == $pay['id']) {
-                            $arr[] = $payment;
-                            break;
-                        }
-                    }
+        foreach ($payments as $key => $payment) {
+            foreach ($saleTypes as $row){
+                if (!isset($row[$payment['id']])) {
+                    unset($payments[$key]);
+                    continue;
                 }
             }
         }

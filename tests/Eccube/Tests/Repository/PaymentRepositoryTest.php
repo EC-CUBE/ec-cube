@@ -25,7 +25,7 @@ namespace Eccube\Tests\Repository;
 
 use Eccube\Common\Constant;
 use Eccube\Entity\Delivery;
-use Eccube\Entity\Master\ProductType;
+use Eccube\Entity\Master\SaleType;
 use Eccube\Entity\PaymentOption;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Tests\EccubeTestCase;
@@ -145,12 +145,12 @@ class PaymentRepositoryTest extends EccubeTestCase
      * 同じ商品種別ならどの支払い方法でも選択可能
      * @link https://github.com/EC-CUBE/ec-cube/pull/2325
      */
-    public function testFindAllowedPayment_SameProductType()
+    public function testFindAllowedPayment_SameSaleType()
     {
-        $typeA = $this->createProductType('テスト種別A', 100);
+        $typeA = $this->createSaleType('テスト種別A', 100);
 
         /** @var PaymentRepository $paymentRepository */
-        $paymentRepository = $this->app['eccube.repository.payment'];
+        $paymentRepository = $this->paymentRepository;
 
         $payment1 = $paymentRepository->find(1);
         $payment2 = $paymentRepository->find(2);
@@ -180,13 +180,13 @@ class PaymentRepositoryTest extends EccubeTestCase
      * 異なる商品種別なら共通する支払方法のみ選択可能
      * @link https://github.com/EC-CUBE/ec-cube/pull/2325
      */
-    public function testFindAllowedPayment_DifferentProductType()
+    public function testFindAllowedPayment_DifferentSaleType()
     {
-        $typeA = $this->createProductType('テスト種別A', 100);
-        $typeB = $this->createProductType('テスト種別B', 101);
+        $typeA = $this->createSaleType('テスト種別A', 100);
+        $typeB = $this->createSaleType('テスト種別B', 101);
 
         /** @var PaymentRepository $paymentRepository */
-        $paymentRepository = $this->app['eccube.repository.payment'];
+        $paymentRepository = $this->paymentRepository;
 
         $payment1 = $paymentRepository->find(1);
         $payment2 = $paymentRepository->find(2);
@@ -215,28 +215,27 @@ class PaymentRepositoryTest extends EccubeTestCase
         }
     }
 
-    private function createProductType($name, $id)
+    private function createSaleType($name, $id)
     {
-        $productType = new ProductType();
-        $productType->setName($name);
-        $productType->setId($id);
-        $productType->setRank($id);
-        $this->app['orm.em']->persist($productType);
-        $this->app['orm.em']->flush($productType);
-        return $productType;
+        $SaleType = new SaleType();
+        $SaleType->setName($name);
+        $SaleType->setId($id);
+        $SaleType->setSortNo($id);
+        $this->entityManager->persist($SaleType);
+        $this->entityManager->flush($SaleType);
+        return $SaleType;
     }
 
-    private function createDelivery($name, ProductType $productType, $payments = array())
+    private function createDelivery($name, SaleType $SaleType, $payments = array())
     {
         $newDelivery = new Delivery();
         $newDelivery->setName($name);
         $newDelivery->setServiceName($name);
-        $newDelivery->setProductType($productType);
+        $newDelivery->setSaleType($SaleType);
         $newDelivery->setCreator($this->createMember());
-        $newDelivery->setDelFlg(Constant::DISABLED);
 
-        $this->app['orm.em']->persist($newDelivery);
-        $this->app['orm.em']->flush($newDelivery);
+        $this->entityManager->persist($newDelivery);
+        $this->entityManager->flush($newDelivery);
 
         /** @var Payment $payment */
         foreach ($payments as $payment) {
@@ -245,8 +244,8 @@ class PaymentRepositoryTest extends EccubeTestCase
             $option->setDelivery($newDelivery);
             $option->setPaymentId($payment->getId());
             $option->setPayment($payment);
-            $this->app['orm.em']->persist($option);
-            $this->app['orm.em']->flush($option);
+            $this->entityManager->persist($option);
+            $this->entityManager->flush($option);
         }
 
         return $newDelivery;
