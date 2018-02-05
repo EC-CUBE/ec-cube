@@ -23,15 +23,54 @@
 
 namespace Eccube\Util;
 
-use Eccube\Application;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * キャッシュ関連のユーティリティクラス.
  */
 class CacheUtil
 {
+    /**
+     * @var KernelInterface
+     */
+    protected $kernel;
+
+    /**
+     * CacheUtil constructor.
+     * @param KernelInterface $kernel
+     */
+    public function __construct(KernelInterface $kernel)
+    {
+        $this->kernel = $kernel;
+    }
+
+    public function clearCache()
+    {
+        $console = new Application($this->kernel);
+        $console->setAutoExit(false);
+
+        $input = new ArrayInput(array(
+            'command' => 'cache:clear',
+            '--no-warmup' => null,
+            '--no-ansi' => null,
+        ));
+
+        $output = new BufferedOutput(
+            OutputInterface::VERBOSITY_DEBUG,
+            true
+        );
+
+        $console->run($input, $output);
+
+        return $output->fetch();
+
+    }
 
     /**
      * キャッシュを削除する.
@@ -43,6 +82,7 @@ class CacheUtil
      * @param boolean $isAll .gitkeep を残してすべてのファイル・ディレクトリを削除する場合 true, 各ディレクトリのみを削除する場合 false
      * @param boolean $isTwig Twigキャッシュファイルのみ削除する場合 true
      * @return boolean 削除に成功した場合 true
+     * @deprecated CacheUtil::clearCacheを利用すること
      */
     public static function clear($app, $isAll, $isTwig = false)
     {

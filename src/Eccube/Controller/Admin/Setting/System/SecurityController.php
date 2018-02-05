@@ -26,15 +26,11 @@ namespace Eccube\Controller\Admin\Setting\System;
 
 use Eccube\Controller\AbstractController;
 use Eccube\Form\Type\Admin\SecurityType;
+use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\BufferedOutput;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
@@ -61,7 +57,7 @@ class SecurityController extends AbstractController
      * @Route("/%eccube_admin_route%/setting/system/security", name="admin_setting_system_security")
      * @Template("@admin/Setting/System/security.twig")
      */
-    public function index(Request $request, KernelInterface $kernel)
+    public function index(Request $request, CacheUtil $cacheUtil)
     {
         $builder = $this->formFactory->createBuilder(SecurityType::class);
         $form = $builder->getForm();
@@ -93,12 +89,13 @@ class SecurityController extends AbstractController
 
                 file_put_contents($envFile, $env);
 
+                $this->addSuccess('admin.system.security.route.dir.complete', 'admin');
+
                 // ログアウト
                 $this->tokenStorage->setToken(null);
 
-                $this->addSuccess('admin.system.security.route.dir.complete', 'admin');
-
-                $this->processCacheClearCommand($kernel);
+                // キャッシュの削除
+                $cacheUtil->clearCache();
 
                 // 管理者画面へ再ログイン
                 return $this->redirect($request->getBaseUrl().'/'.$data['admin_route_dir']);
@@ -106,7 +103,8 @@ class SecurityController extends AbstractController
 
             $this->addSuccess('admin.system.security.save.complete', 'admin');
 
-            $this->processCacheClearCommand($kernel);
+            // キャッシュの削除
+            $cacheUtil->clearCache();
 
             return $this->redirectToRoute('admin_setting_system_security');
         }
@@ -128,30 +126,5 @@ class SecurityController extends AbstractController
         }
 
         return $env;
-    }
-
-    /**
-     * @param KernelInterface $kernel
-     * @return string
-     */
-    protected function processCacheClearCommand(KernelInterface $kernel)
-    {
-        $console = new Application($kernel);
-        $console->setAutoExit(false);
-
-        $input = new ArrayInput(array(
-            'command' => 'cache:clear',
-            '--no-warmup' => null,
-            '--no-ansi' => null,
-        ));
-
-        $output = new BufferedOutput(
-            OutputInterface::VERBOSITY_DEBUG,
-            true
-        );
-
-        $console->run($input, $output);
-
-        return $output->fetch();
     }
 }
