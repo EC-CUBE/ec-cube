@@ -142,11 +142,11 @@ class AdminController extends AbstractController
         }
 
         // 受注マスター検索用フォーム
-        $searchOrderBuilder = $this->createFormBuilder(SearchOrderType::class);
+        $searchOrderBuilder =$this->formFactory->createBuilder(SearchOrderType::class);
         // 商品マスター検索用フォーム
-        $searchProductBuilder = $this->createFormBuilder(SearchProductType::class);
+        $searchProductBuilder = $this->formFactory->createBuilder(SearchProductType::class);
         // 会員マスター検索用フォーム
-        $searchCustomerBuilder = $this->createFormBuilder(SearchCustomerType::class);
+        $searchCustomerBuilder = $this->formFactory->createBuilder(SearchCustomerType::class);
 
         $event = new EventArgs(
             array(
