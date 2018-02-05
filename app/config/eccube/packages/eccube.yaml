@@ -3,11 +3,14 @@ parameters:
     env(ECCUBE_ADMIN_ROUTE): 'admin'
     env(ECCUBE_ADMIN_ALLOW_HOSTS): []
     env(ECCUBE_FORCE_SSL): false
+    env(ECCUBE_TEMPLATE_CODE): 'default'
 
     # EC-CUBE parameters
     eccube_admin_route: '%env(ECCUBE_ADMIN_ROUTE)%'
     eccube_admin_allow_hosts: '%env(json:ECCUBE_ADMIN_ALLOW_HOSTS)%'
     eccube_force_ssl: '%env(bool:ECCUBE_FORCE_SSL)%'
+    eccube.theme: '%env(ECCUBE_TEMPLATE_CODE)%'
+    eccube_theme_code: '%eccube.theme%'
     auth_type: HMAC
     eccube_csv_size: 5                 # post_max_size, upload_max_filesize に任せればよい？
     eccube_csv_temp_realdir: '%kernel.cache_dir%/%kernel.environment%/eccube' # upload_tmp_dir に任せればよい？
@@ -33,7 +36,6 @@ parameters:
     eccube_sltext_len: 500
     eccube_smtext_len: 100
     eccube_tax_rule_priority: ['product_id','product_class_id','pref_id','country_id']
-    template_temp_realdir: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/upload/temp_template/ #  upload_tmp_dir に任せればよい？
     eccube_url_len: 1024
     eccube_default_page_count: 10
     eccube_admin_product_stock_status: 3
