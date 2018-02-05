@@ -245,6 +245,7 @@ class LayoutController extends AbstractController
         }
 
         // ブロックのソースコードの取得.
+        // FIXME twig loaderから取得するように修正.
         $file = $this->blockRepository->getReadTemplateFile($Block->getFileName());
         $source = $file['tpl_data'];
 
