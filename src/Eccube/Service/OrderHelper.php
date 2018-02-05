@@ -341,8 +341,10 @@ class OrderHelper
 
         // 初期の支払い方法を設定.
         $Payment = current($Payments);
-        $Order->setPayment($Payment);
-        $Order->setPaymentMethod($Payment->getMethod());
+        if ($Payment) {
+            $Order->setPayment($Payment);
+            $Order->setPaymentMethod($Payment->getMethod());
+        }
         // TODO CalculateChargeStrategy でセットする
         // $Order->setCharge($Payment->getCharge());
     }
