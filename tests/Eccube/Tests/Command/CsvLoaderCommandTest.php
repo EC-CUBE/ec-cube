@@ -11,8 +11,14 @@ class CsvLoaderCommandTest extends AbstractCommandTest
     /** @var $file \SplFileObject */
     protected $file;
 
+    public static function setUpBeforeClass()
+    {
+        self::markTestIncomplete();
+    }
+
     public function setUp()
     {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
         if ($this->app['config']['database']['driver'] == 'pdo_sqlite') {
             $this->markTestSkipped('Can not support for sqlite3');
