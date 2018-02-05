@@ -83,9 +83,9 @@ class MailController extends AbstractController
         // 更新時
         if (!is_null($Mail)) {
             // テンプレートファイルの取得
-            $file = $this->mailTemplateRepository
-                ->getReadTemplateFile($Mail->getFileName());
-        
+            $templatePath = $this->getParameter('eccube.theme.front_dir');
+            $file = $templatePath.'/'.$Mail->getFileName();
+
             $form->get('tpl_data')->setData($file['tpl_data']);
         }   
         
@@ -104,7 +104,7 @@ class MailController extends AbstractController
                 $this->entityManager->flush();
                 
                 // ファイル生成・更新
-                $templatePath = $this->mailTemplateRepository->getWriteTemplatePath();
+                $templatePath = $this->getParameter('eccube.theme.front_dir');
                 $filePath = $templatePath.'/'.$Mail->getFileName();
                 
                 $fs = new Filesystem();
