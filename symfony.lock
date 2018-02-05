@@ -101,7 +101,7 @@
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "2.2",
-            "ref": "9d60c231a92e69c68b89897813ec4931d0697b1f"
+            "ref": "bb31a3bbec00a8fc8aa1c9fbf9b0ef9fc492f93d"
         }
     },
     "fzaninotto/faker": {
@@ -157,9 +157,6 @@
     },
     "php-cs-fixer/diff": {
         "version": "v1.2.0"
-    },
-    "pimple/pimple": {
-        "version": "v3.2.2"
     },
     "psr/cache": {
         "version": "1.0.1"
@@ -222,7 +219,7 @@
         "version": "v3.4.1"
     },
     "symfony/browser-kit": {
-        "version": "v3.4.1"
+        "version": "v3.4.4"
     },
     "symfony/cache": {
         "version": "v3.4.1"
