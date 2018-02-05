@@ -164,9 +164,7 @@ class MailController extends AbstractController
                             $body = $this->createBody($data['mail_header'], $data['mail_footer'], $Order);
 
                             // メール送信
-                            $message = $this->mailService->sendAdminOrderMail($Order, $data);
-
-                            MailUtil::convertMessage($app, $message);
+                            $this->mailService->sendAdminOrderMail($Order, $data);
 
                             // 送信履歴を保存.
                             $MailTemplate = $form->get('template')->getData();
@@ -355,9 +353,7 @@ class MailController extends AbstractController
                                 $body = $this->createBody($data['mail_header'], $data['mail_footer'], $Order);
 
                                 // メール送信
-                                $message = $this->mailService->sendAdminOrderMail($Order, $data);
-
-                                MailUtil::convertMessage($app, $message);
+                                $this->mailService->sendAdminOrderMail($Order, $data);
 
                                 // 送信履歴を保存.
                                 $MailHistory = new MailHistory();
