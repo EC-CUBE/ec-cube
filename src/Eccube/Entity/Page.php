@@ -358,6 +358,13 @@ class Page extends \Eccube\Entity\AbstractEntity
     private $meta_robots;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(name="meta_tags", type="string", length=4000, nullable=true)
+     */
+    private $meta_tags;
+
+    /**
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(targetEntity="Eccube\Entity\BlockPosition", mappedBy="Page", cascade={"persist","remove"})
@@ -382,7 +389,7 @@ class Page extends \Eccube\Entity\AbstractEntity
      * })
      */
     private $DeviceType;
-    
+
     /**
      * @var \Eccube\Entity\Page
      *
@@ -689,6 +696,29 @@ class Page extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * Set meta_tags
+     *
+     * @param string $metaTags
+     * @return Page
+     */
+    public function setMetaTags($metaTags)
+    {
+        $this->meta_tags = $metaTags;
+
+        return $this;
+    }
+
+    /**
+     * Get meta_tags
+     *
+     * @return string
+     */
+    public function getMetaTags()
+    {
+        return $this->meta_tags;
+    }
+
+    /**
      * Add blockPosition.
      *
      * @param \Eccube\Entity\BlockPosition $blockPosition
@@ -781,7 +811,7 @@ class Page extends \Eccube\Entity\AbstractEntity
     {
         return $this->DeviceType;
     }
-    
+
     /**
      * Set MasterPage.
      *
@@ -792,10 +822,10 @@ class Page extends \Eccube\Entity\AbstractEntity
     public function setMasterPage(\Eccube\Entity\Page $page = null)
     {
         $this->MasterPage = $page;
-    
+
         return $this;
     }
-    
+
     /**
      * Get MasterPage.
      *

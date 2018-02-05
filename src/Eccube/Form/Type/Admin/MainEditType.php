@@ -35,6 +35,7 @@ use Eccube\Repository\Master\DeviceTypeRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextAreaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
@@ -162,7 +163,7 @@ class MainEditType extends AbstractType
                         'max' => $this->eccubeConfig['stext_len'],
                     ))
                 )
-            ))->add('meta_tags', 'textarea', array(
+            ))->add('meta_tags', TextAreaType::class, array(
                 'label' => '追加metaタグ',
                 'required' => false,
                 'constraints' => array(

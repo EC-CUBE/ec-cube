@@ -270,7 +270,7 @@ class MainEditTypeTest extends AbstractTypeTestCase
 
     public function testInValidMetaTags_MaxLength()
     {
-        $this->formData['meta_tags'] = str_repeat('1', $this->app['config']['lltext_len'] + 1);
+        $this->formData['meta_tags'] = str_repeat('1', $this->eccubeConfig['lltext_len'] + 1);
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
