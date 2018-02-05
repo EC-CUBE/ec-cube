@@ -80,7 +80,13 @@ class TwigInitializeListener implements EventSubscriberInterface
      */
     public function setFrontVaribales(GetResponseEvent $event)
     {
-        $route = $event->getRequest()->attributes->get('_route');
+        /** @var \Symfony\Component\HttpFoundation\ParameterBag $reqAttributes */
+        $reqAttributes = $event->getRequest()->attributes;
+        $route = $reqAttributes->get('_route');
+        if ($route == 'user_data') {
+            $routeParams = $reqAttributes->get('_route_params', []);
+            $route = isset($routeParams['route']) ? $routeParams['route'] : $reqAttributes->get('route', '');
+        }
 
         // TODO レイアウトの端末判定を実装
         $DeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_PC);
