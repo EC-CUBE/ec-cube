@@ -71,7 +71,7 @@ class SecurityController extends AbstractController
             $adminAllowHosts = \json_encode(
                 \explode("\n", StringUtil::convertLineFeed($data['admin_allow_hosts']))
             );
-            $env = $this->replaceEnv($env, [
+            $env = StringUtil::replaceEnv($env, [
                 'ECCUBE_ADMIN_ALLOW_HOSTS' => "'{$adminAllowHosts}'",
                 'ECCUBE_FORCE_SSL' => $data['force_ssl'] ? 'true' : 'false',
                 'ECCUBE_SCHEME' => $data['force_ssl'] ? 'https' : 'http',
@@ -83,7 +83,7 @@ class SecurityController extends AbstractController
             $adminRoot = $this->eccubeConfig['eccube_admin_route'];
             if ($adminRoot !== $data['admin_route_dir']) {
 
-                $env = $this->replaceEnv($env, [
+                $env = StringUtil::replaceEnv($env, [
                     'ECCUBE_ADMIN_ROUTE' => $data['admin_route_dir'],
                 ]);
 
@@ -112,19 +112,5 @@ class SecurityController extends AbstractController
         return [
             'form' => $form->createView(),
         ];
-    }
-
-    /**
-     * @param string $env
-     * @param array $replacement
-     * @return string
-     */
-    protected function replaceEnv($env, array $replacement)
-    {
-        foreach ($replacement as $key => $value) {
-            $env = preg_replace('/('.$key.')=(.*)/', '$1='.$value, $env);
-        }
-
-        return $env;
     }
 }
