@@ -2,10 +2,12 @@ parameters:
     # EC-CUBE default env parameters
     env(ECCUBE_ADMIN_ROUTE): 'admin'
     env(ECCUBE_ADMIN_ALLOW_HOSTS): []
+    env(ECCUBE_FORCE_SSL): false
 
     # EC-CUBE parameters
     eccube_admin_route: '%env(ECCUBE_ADMIN_ROUTE)%'
     eccube_admin_allow_hosts: '%env(json:ECCUBE_ADMIN_ALLOW_HOSTS)%'
+    eccube_force_ssl: '%env(bool:ECCUBE_FORCE_SSL)%'
     auth_type: HMAC
     eccube_csv_size: 5                 # post_max_size, upload_max_filesize に任せればよい？
     eccube_csv_temp_realdir: '%kernel.cache_dir%/%kernel.environment%/eccube' # upload_tmp_dir に任せればよい？
@@ -67,7 +69,6 @@ parameters:
     eccube_password_max_len: 32
     auth_magic: '%env(ECCUBE_AUTH_MAGIC)%'
     password_hash_algos: SHA256
-    force_ssl: 0
     block_default_realdir: '%kernel.project_dir%/src/Eccube/Resource/template/default/Block'
     block_realdir: '%kernel.project_dir%/app/template/default/Block'
     eccube_composer_memory_limit: 1536
