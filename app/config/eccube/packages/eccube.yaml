@@ -6,6 +6,10 @@ parameters:
     env(ECCUBE_FORCE_SSL): false
     env(ECCUBE_TEMPLATE_CODE): 'default'
     env(ECCUBE_AUTH_MAGIC): 's$cretf0rt3st'
+    env(ECCUBE_COOKIE_NAME): 'eccube'
+    env(ECCUBE_COOKIE_PATH): '/'
+    env(ECCUBE_COOKIE_LIFETIME): 0
+    env(ECCUBE_GC_MAXLIFETIME): 1440
 
     # EC-CUBE parameters
     eccube_admin_route: '%env(ECCUBE_ADMIN_ROUTE)%'
