@@ -31,10 +31,8 @@ use Eccube\Event\EventArgs;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\MailTemplateRepository;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-/**
- * @Service
- */
 class MailService
 {
     /**
@@ -81,7 +79,7 @@ class MailService
         \Swift_Mailer $mailer,
         MailTemplateRepository $mailTemplateRepository,
         BaseInfo $baseInfo,
-        EventDispatcher $eventDispatcher,
+        EventDispatcherInterface $eventDispatcher,
         \Twig_Environment $twig,
         EccubeConfig $eccubeConfig
     ) {
