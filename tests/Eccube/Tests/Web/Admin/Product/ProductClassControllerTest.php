@@ -23,6 +23,7 @@
 namespace Eccube\Tests\Web\Admin\Product;
 
 use Eccube\Entity\BaseInfo;
+use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Symfony\Component\DomCrawler\Crawler;
@@ -38,6 +39,11 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
      * @var BaseInfo
      */
     protected $BaseInfo;
+
+    /**
+     * @var ClassCategoryRepository
+     */
+    protected $classCategoryRepository;
 
     /**
      * @var ProductRepository
@@ -59,6 +65,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         $this->BaseInfo = $this->container->get(BaseInfo::class);
         $this->productRepository = $this->container->get(ProductRepository::class);
         $this->taxRuleRepository = $this->container->get(TaxRuleRepository::class);
+        $this->classCategoryRepository = $this->container->get(ClassCategoryRepository::class);
     }
 
     /**

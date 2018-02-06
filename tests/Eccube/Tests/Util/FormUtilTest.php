@@ -4,10 +4,16 @@ namespace Eccube\Tests\Util;
 
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Util\FormUtil;
+use Symfony\Component\Form\FormFactoryInterface;
 
 class FormUtilTest extends EccubeTestCase
 {
     protected $form;
+
+    /**
+     * @var FormFactoryInterface
+     */
+    protected $formFactory;
 
     protected $formData = array(
         'pref' => '28',
@@ -18,7 +24,7 @@ class FormUtilTest extends EccubeTestCase
     public function setUp()
     {
         parent::setUp();
-
+        $this->formFactory = $this->container->get('form.factory');
         $this->form = $this->formFactory
             ->createBuilder(
                 'form',

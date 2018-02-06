@@ -227,17 +227,17 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
     public function testOrderByNewerSameCreateDate()
     {
         $date = new \DateTime();
-        $Products = $this->app['eccube.repository.product']->findBy(array(), array('id' => 'DESC'));
+        $Products = $this->productRepository->findBy(array(), array('id' => 'DESC'));
         $Products[0]->setName('りんご');
         $Products[0]->setCreateDate($date);
         $Products[1]->setName('アイス');
         $Products[1]->setCreateDate($date);
         $Products[2]->setName('お鍋');
         $Products[2]->setCreateDate($date);
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
         // 新着順
-        $ProductListOrderBy = $this->app['orm.em']->getRepository('\Eccube\Entity\Master\ProductListOrderBy')->find(2);
+        $ProductListOrderBy = $this->entityManager->find(ProductListOrderBy::class, 2);
         $this->searchData = array(
             'orderby' => $ProductListOrderBy
         );
@@ -359,14 +359,14 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
         $productList = array_reverse($productList);
 
         // 商品作成時間同じにする
-        $QueryBuilder = $this->app['orm.em']->createQueryBuilder();
+        $QueryBuilder = $this->entityManager->createQueryBuilder();
         $QueryBuilder->update('Eccube\Entity\Product','p');
         $QueryBuilder->set('p.create_date',':createDate');
         $QueryBuilder->setParameter(':createDate',new \DateTime());
         $QueryBuilder->getQuery()->execute();
 
         // 新着順
-        $ProductListOrderBy = $this->app['orm.em']->getRepository('\Eccube\Entity\Master\ProductListOrderBy')->find(2);
+        $ProductListOrderBy = $this->entityManager->find(ProductListOrderBy::class, 2);
         $this->searchData = array(
             'name' => 'BIG商品-',
             'orderby' => $ProductListOrderBy

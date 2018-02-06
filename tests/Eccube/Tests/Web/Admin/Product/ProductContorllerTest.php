@@ -161,19 +161,19 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->verify();
 
         // 表示件数20件テスト
-        $crawler = $this->client->request('GET', $this->app->url('admin_product_page', array('page_no' => 1)), array('page_count' => 20));
+        $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', array('page_no' => 1)), array('page_count' => 20));
         $this->expected = '20件';
         $this->actual = $crawler->filter('li#result_list__pagemax_menu a')->text();
         $this->verify();
 
         // 表示件数入力値は正しくない場合はデフォルトのの表示件数になるテスト
-        $crawler = $this->client->request('GET', $this->app->url('admin_product_page', array('page_no' => 1)), array('page_count' => 999999));
+        $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', array('page_no' => 1)), array('page_count' => 999999));
         $this->expected = '13 件';
         $this->actual = $crawler->filter('#result_list__header h3 span strong')->text();
         $this->verify();
 
         // 表示件数はSESSIONから取得するテスト
-        $crawler = $this->client->request('GET', $this->app->url('admin_product_page', array('page_no' => 1)), array('status' => 1));
+        $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', array('page_no' => 1)), array('status' => 1));
         $this->expected = '20件';
         $this->actual = $crawler->filter('li#result_list__pagemax_menu a')->text();
         $this->verify();
@@ -210,19 +210,19 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->verify();
 
         // 表示件数20件テスト
-        $crawler = $this->client->request('GET', $this->app->url('admin_product_page', array('page_no' => 1)), array('page_count' => 40));
+        $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', array('page_no' => 1)), array('page_count' => 40));
         $this->expected = '40件';
         $this->actual = $crawler->filter('li#result_list__pagemax_menu a')->text();
         $this->verify();
 
         // 表示件数入力値は正しくない場合はデフォルトのの表示件数になるテスト
-        $crawler = $this->client->request('GET', $this->app->url('admin_product_page', array('page_no' => 1)), array('page_count' => 999999));
+        $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', array('page_no' => 1)), array('page_count' => 999999));
         $this->expected = '1 件';
         $this->actual = $crawler->filter('#result_list__header h3 span strong')->text();
         $this->verify();
 
         // 表示件数はSESSIONから取得するテスト
-        $crawler = $this->client->request('GET', $this->app->url('admin_product_page', array('page_no' => 1)), array('status' => 1));
+        $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', array('page_no' => 1)), array('status' => 1));
         $this->expected = '40件';
         $this->actual = $crawler->filter('li#result_list__pagemax_menu a')->text();
         $this->verify();
@@ -256,19 +256,19 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->verify();
 
         // 表示件数20件テスト
-        $crawler = $this->client->request('GET', $this->app->url('admin_product_page', array('page_no' => 1)), array('page_count' => 30));
+        $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', array('page_no' => 1)), array('page_count' => 30));
         $this->expected = '30件';
         $this->actual = $crawler->filter('li#result_list__pagemax_menu a')->text();
         $this->verify();
 
         // 表示件数入力値は正しくない場合はデフォルトのの表示件数になるテスト
-        $crawler = $this->client->request('GET', $this->app->url('admin_product_page', array('page_no' => 1)), array('page_count' => 999999));
+        $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', array('page_no' => 1)), array('page_count' => 999999));
         $this->expected = '1 件';
         $this->actual = $crawler->filter('#result_list__header h3 span strong')->text();
         $this->verify();
 
         // 表示件数はSESSIONから取得するテスト
-        $crawler = $this->client->request('GET', $this->app->url('admin_product_page', array('page_no' => 1)), array('status' => 1));
+        $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', array('page_no' => 1)), array('status' => 1));
         $this->expected = '30件';
         $this->actual = $crawler->filter('li#result_list__pagemax_menu a')->text();
         $this->verify();
