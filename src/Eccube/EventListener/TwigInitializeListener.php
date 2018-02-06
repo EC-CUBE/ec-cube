@@ -80,9 +80,15 @@ class TwigInitializeListener implements EventSubscriberInterface
      */
     public function setFrontVaribales(GetResponseEvent $event)
     {
-        // TODO:FIXME: if page contains twig syntax, codeception test case will fail
+        // FIXME: if page contains twig syntax, codeception test case will fail
         // @see \EA06ContentsManagementCest::contentsmanagement_ページ管理
-        $route = $event->getRequest()->attributes->get('_route');
+        /** @var \Symfony\Component\HttpFoundation\ParameterBag $attributes */
+        $attributes = $event->getRequest()->attributes;
+        $route = $attributes->get('_route');
+        if ($route == 'user_data') {
+            $routeParams = $attributes->get('_route_params', []);
+            $route = isset($routeParams['route']) ? $routeParams['route'] : $attributes->get('route', '');
+        }
 
         // TODO レイアウトの端末判定を実装
         $DeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_PC);
