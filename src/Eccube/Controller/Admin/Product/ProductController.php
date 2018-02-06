@@ -174,7 +174,22 @@ class ProductController extends AbstractController
 
         $ProductStatuses = $this->productStatusRepository->findAll();
         $pageMaxis = $this->pageMaxRepository->findAll();
-        $page_count = $this->eccubeConfig['default_page_count'];
+
+        // 表示件数は順番で取得する、1.SESSION 2.設定ファイル
+        $page_count = $session->get('eccube.admin.product.search.page_count', $this->eccubeConfig['default_page_count']);
+        // 表示件数
+        $page_count_param = $request->get('page_count');
+        // 表示件数はURLパラメターから取得する
+        if ($page_count_param && is_numeric($page_count_param)) {
+            foreach ($pageMaxis as $pageMax) {
+                if ($page_count_param == $pageMax->getName()) {
+                    $page_count = $pageMax->getName();
+                    // 表示件数入力値正し場合はSESSIONに保存する
+                    $session->set('eccube.admin.product.search.page_count', $page_count);
+                    break;
+                }
+            }
+        }
 
         $page_status = null;
         $active = false;
@@ -232,7 +247,7 @@ class ProductController extends AbstractController
                     $linkStatus = $request->get('status');
                     if (!empty($linkStatus)) {
                         // リンクステータスは在庫なし:3以外
-                        if ($linkStatus != $app['config']['admin_product_stock_status']) {
+                        if ($linkStatus != $this->eccubeConfig['admin_product_stock_status']) {
                             $viewData['link_status'] = $linkStatus;
                             $viewData['stock_status'] = null;
                             $viewData['status'] = null;
@@ -245,12 +260,11 @@ class ProductController extends AbstractController
                         // ページステータスを設定します（リンクステータスAタグ表示のために）
                         $page_status = $linkStatus;
                     } else {
-                        $searchData['link_status'] = $this->productStatusRepository->find($status);
-                        $searchData['stock_status'] = null;
-                        if ($status == $this->eccubeConfig['admin_product_stock_status']) {
-                            // 在庫なし
-                            $searchData['link_status'] = null;
-                            $searchData['stock_status'] = Constant::DISABLED;
+                        // すべてを選択
+                        $viewData['link_status'] = null;
+                        $viewData['stock_status'] = null;
+                        if (!$viewData['status']) {
+                            $viewData['status'] = array();
                         }
                     }
 
@@ -258,7 +272,7 @@ class ProductController extends AbstractController
                     $page_count = $request->get('page_count', $page_count);
                     $searchData = FormUtil::submitAndGetData($searchForm, $viewData);
                     if ($viewData['link_status']) {
-                        $searchData['link_status'] = $app['eccube.repository.master.disp']->find($viewData['link_status']);
+                        $searchData['link_status'] = $this->productStatusRepository->find($viewData['link_status']);
                     }
                     // リンクステータス[在庫なし]設定されている場合は検索パラメター設定する
                     if (isset($viewData['stock_status'])) {
@@ -299,6 +313,7 @@ class ProductController extends AbstractController
                         }
                         $searchData['status'] = $this->productStatusRepository->findBy(['id' => $status_ids]);
                     }
+                    $searchForm = $builder->getForm();
                     $searchForm->setData($searchData);
                 }
             }
@@ -764,7 +779,7 @@ class ProductController extends AbstractController
                         $CopyTaxRule = clone $TaxRule;
                         $CopyTaxRule->setProductClass($Class);
                         $CopyTaxRule->setProduct($CopyProduct);
-                        $app['orm.em']->persist($CopyTaxRule);
+                        $this->entityManager->persist($CopyTaxRule);
                     }
                     $this->entityManager->persist($Class);
                 }

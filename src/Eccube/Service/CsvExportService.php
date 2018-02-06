@@ -446,7 +446,6 @@ class CsvExportService
         } else {
             $searchData = array();
         }
-
         // 商品データのクエリビルダを構築.
         $qb = $this->productRepository
             ->getQueryBuilderBySearchDataForAdmin($searchData);
