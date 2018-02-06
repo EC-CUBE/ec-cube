@@ -19,7 +19,7 @@ class FormUtilTest extends EccubeTestCase
     {
         parent::setUp();
 
-        $this->form = $this->app['form.factory']
+        $this->form = $this->formFactory
             ->createBuilder(
                 'form',
                 null,
@@ -79,7 +79,7 @@ class FormUtilTest extends EccubeTestCase
             )
         );
 
-        $form = $this->app['form.factory']
+        $form = $this->formFactory
             ->createBuilder(
                 'form',
                 null,
@@ -104,7 +104,7 @@ class FormUtilTest extends EccubeTestCase
             'sex' => '1',
         );
 
-        $form = $this->app['form.factory']
+        $form = $this->formFactory
             ->createBuilder(
                 'form',
                 null,
@@ -130,7 +130,7 @@ class FormUtilTest extends EccubeTestCase
             'sex' => array('1', '2')
         );
 
-        $form = $this->app['form.factory']
+        $form = $this->formFactory
             ->createBuilder(
                 'form',
                 null,
