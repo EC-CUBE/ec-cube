@@ -2,8 +2,14 @@
 
 namespace Eccube\Tests\Util;
 
+use Eccube\Form\Type\AddressType;
+use Eccube\Form\Type\Master\PrefType;
+use Eccube\Form\Type\Master\SexType;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Util\FormUtil;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormFactoryInterface;
 
 class FormUtilTest extends EccubeTestCase
@@ -27,21 +33,21 @@ class FormUtilTest extends EccubeTestCase
         $this->formFactory = $this->container->get('form.factory');
         $this->form = $this->formFactory
             ->createBuilder(
-                'form',
+                FormType::class,
                 null,
                 array(
                     'csrf_protection' => false,
                 )
             )
-            ->add('pref', 'pref')
-            ->add('name', 'text')
-            ->add('date', 'date', array(
+            ->add('pref', PrefType::class)
+            ->add('name', TextType::class)
+            ->add('date', DateType::class, array(
                 'label' => '受注日(FROM)',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->getForm();
     }
@@ -87,13 +93,13 @@ class FormUtilTest extends EccubeTestCase
 
         $form = $this->formFactory
             ->createBuilder(
-                'form',
+                FormType::class,
                 null,
                 array(
                     'csrf_protection' => false,
                 )
             )
-            ->add('address', 'address')
+            ->add('address', AddressType::class)
             ->getForm();
 
         $form->submit($formData);
@@ -112,13 +118,13 @@ class FormUtilTest extends EccubeTestCase
 
         $form = $this->formFactory
             ->createBuilder(
-                'form',
+                FormType::class,
                 null,
                 array(
                     'csrf_protection' => false,
                 )
             )
-            ->add('sex', 'sex')
+            ->add('sex', SexType::class)
             ->getForm();
 
         $form->submit($formData);
@@ -138,13 +144,13 @@ class FormUtilTest extends EccubeTestCase
 
         $form = $this->formFactory
             ->createBuilder(
-                'form',
+                FormType::class,
                 null,
                 array(
                     'csrf_protection' => false,
                 )
             )
-            ->add('sex', 'sex', array(
+            ->add('sex', SexType::class, array(
                 'multiple' => true,
             ))
             ->getForm();
