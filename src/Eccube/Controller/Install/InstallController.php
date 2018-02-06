@@ -109,7 +109,6 @@ class InstallController extends AbstractController
         SessionInterface $session,
         FormFactoryInterface $formFactory,
         PasswordEncoder $encoder,
-        $environment,
         EccubeConfig $eccubeConfig
     ) {
         $this->rootDir = realpath(__DIR__.'/../../../..');
@@ -119,7 +118,7 @@ class InstallController extends AbstractController
         $this->session = $session;
         $this->formFactory = $formFactory;
         $this->encoder = $encoder;
-        $this->environment = $environment;
+        $this->environment = $eccubeConfig->get('kernel.environment');
         $this->eccubeConfig = $eccubeConfig;
 
         $sessionData = $this->getSessionData($this->session);

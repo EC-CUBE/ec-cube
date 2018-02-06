@@ -34,7 +34,6 @@ services:
         public: false
 
         bind:
-          $environment: '%kernel.environment%'
           $cartPurchaseFlow: '@eccube.purchase.flow.cart'
           $shoppingPurchaseFlow: '@eccube.purchase.flow.shopping'
           $orderPurchaseFlow: '@eccube.purchase.flow.order'
