@@ -55,7 +55,7 @@ class MobileTemplatePathListener implements EventSubscriberInterface
         }
 
         $paths = [
-            $this->eccubeConfig->get('eccube.theme.front_dir').'/smartphone',
+            $this->eccubeConfig->get('eccube_theme_front_dir').'/smartphone',
         ];
 
         $loader = new \Twig_Loader_Chain(array(

@@ -45,9 +45,9 @@ class PageRepositoryTest extends EccubeTestCase
         parent::setUp();
         $this->pageRepo = $this->container->get(PageRepository::class);
         $this->DeviceType = $this->container->get(DeviceTypeRepository::class)->find(DeviceType::DEVICE_TYPE_PC);
-        $this->userDataRealDir = $this->container->getParameter('eccube.theme.user_data_dir');
-        $this->templateRealDir = $this->container->getParameter('eccube.theme.app_dir');
-        $this->templateDefaultRealDir = $this->container->getParameter('eccube.theme.src_dir');
+        $this->userDataRealDir = $this->container->getParameter('eccube_theme_user_data_dir');
+        $this->templateRealDir = $this->container->getParameter('eccube_theme_app_dir');
+        $this->templateDefaultRealDir = $this->container->getParameter('eccube_theme_src_dir');
     }
 
     public function test_findOrCreate_pageIdNullisCreate()

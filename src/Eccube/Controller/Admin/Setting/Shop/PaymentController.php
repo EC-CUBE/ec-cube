@@ -122,10 +122,10 @@ class PaymentController extends AbstractController
             // ファイルアップロード
             $file = $form['payment_image']->getData();
             $fs = new Filesystem();
-            if ($file && $fs->exists($this->getParameter('eccube.temp_image_dir').'/'.$file)) {
+            if ($file && $fs->exists($this->getParameter('eccube_temp_image_dir').'/'.$file)) {
                 $fs->rename(
-                    $this->getParameter('eccube.temp_image_dir').'/'.$file,
-                    $this->getParameter('eccube.save_image_dir').'/'.$file
+                    $this->getParameter('eccube_temp_image_dir').'/'.$file,
+                    $this->getParameter('eccube_save_image_dir').'/'.$file
                 );
             }
 
@@ -176,7 +176,7 @@ class PaymentController extends AbstractController
 
             $extension = $image->guessExtension();
             $filename = date('mdHis').uniqid('_').'.'.$extension;
-            $image->move($this->getParameter('eccube.temp_image_dir'), $filename);
+            $image->move($this->getParameter('eccube_temp_image_dir'), $filename);
         }
         $event = new EventArgs(
             array(

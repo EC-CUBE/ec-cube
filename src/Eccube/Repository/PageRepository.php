@@ -47,19 +47,19 @@ class PageRepository extends AbstractRepository
 
     /**
      * @var string
-     * @path %eccube.theme.user_data_dir% (app/template/user_data)
+     * @path %eccube_theme_user_data_dir% (app/template/user_data)
      */
     protected $userDataRealDir;
 
     /**
      * @var string
-     * @path %eccube.theme.app_dir% (app/template)
+     * @path %eccube_theme_app_dir% (app/template)
      */
     protected $templateRealDir;
 
     /**
      * @var string
-     * @path %eccube.theme.src_dir% (src/Eccube/Resource/template)
+     * @path %eccube_theme_src_dir% (src/Eccube/Resource/template)
      */
     protected $templateDefaultRealDir;
 
@@ -73,9 +73,9 @@ class PageRepository extends AbstractRepository
     {
         parent::__construct($registry, Page::class);
         $this->eccubeConfig = $eccubeConfig;
-        $this->userDataRealDir = $container->getParameter('eccube.theme.user_data_dir');
-        $this->templateRealDir = $container->getParameter('eccube.theme.app_dir');
-        $this->templateDefaultRealDir = $container->getParameter('eccube.theme.src_dir');
+        $this->userDataRealDir = $container->getParameter('eccube_theme_user_data_dir');
+        $this->templateRealDir = $container->getParameter('eccube_theme_app_dir');
+        $this->templateDefaultRealDir = $container->getParameter('eccube_theme_src_dir');
     }
 
     /**

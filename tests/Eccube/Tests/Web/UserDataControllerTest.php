@@ -19,7 +19,7 @@ class UserDataControllerTest extends AbstractWebTestCase
     {
         parent::setUp();
 
-        $this->userDataDir = $this->eccubeConfig->get('eccube.theme.user_data_dir');
+        $this->userDataDir = $this->eccubeConfig->get('eccube_theme_user_data_dir');
 
         $DeviceType = $this->entityManager
             ->getRepository(DeviceType::class)

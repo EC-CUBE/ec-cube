@@ -161,9 +161,9 @@ class PageController extends AbstractController
 
             // ファイル生成・更新
             if ($isUserDataPage) {
-                $templatePath = $this->getParameter('eccube.theme.user_data_dir');
+                $templatePath = $this->getParameter('eccube_theme_user_data_dir');
             } else {
-                $templatePath = $this->getParameter('eccube.theme.front_dir');
+                $templatePath = $this->getParameter('eccube_theme_front_dir');
             }
             $filePath = $templatePath.'/'.$Page->getFileName().'.twig';
 
@@ -231,10 +231,10 @@ class PageController extends AbstractController
         }
 
         if ($isUserDataPage) {
-            $templatePath = $this->getParameter('eccube.theme.user_data_dir');
+            $templatePath = $this->getParameter('eccube_theme_user_data_dir');
             $url = '';
         } else {
-            $templatePath = $this->getParameter('eccube.theme.front_dir');
+            $templatePath = $this->getParameter('eccube_theme_front_dir');
             $url = $router->getRouteCollection()->get($PrevPage->getUrl())->getPath();
         }
 
@@ -272,7 +272,7 @@ class PageController extends AbstractController
 
         // ユーザーが作ったページのみ削除する
         if ($Page->getEditType() == Page::EDIT_TYPE_USER) {
-            $templatePath = $this->getParameter('eccube.theme.user_data_dir');
+            $templatePath = $this->getParameter('eccube_theme_user_data_dir');
             $file = $templatePath.'/'.$Page->getFileName().'.twig';
             $fs = new Filesystem();
             if ($fs->exists($file)) {

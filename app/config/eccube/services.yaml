@@ -8,20 +8,6 @@ parameters:
     timezone: '%env(ECCUBE_TIMEZONE)%'
     currency: '%env(ECCUBE_CURRENCY)%'
 
-    # This parameter defines the codes of the locales (languages) enabled in the application
-    app_locales: en|fr|de|es|cs|nl|ru|uk|ro|pt_BR|pl|it|ja|id|ca|sl|hr|zh_CN
-    eccube.theme.app_dir: '%kernel.project_dir%/app/template'
-    eccube.theme.src_dir: '%kernel.project_dir%/src/Eccube/Resource/template'
-    eccube.theme.user_data_dir: '%eccube.theme.app_dir%/user_data'
-    eccube.theme.front_dir: '%eccube.theme.app_dir%/%eccube.theme%'
-    eccube.theme.front_default_dir: '%eccube.theme.src_dir%/default'
-    eccube.theme.admin_dir: '%eccube.theme.app_dir%/admin'
-    eccube.theme.admin_default_dir: '%eccube.theme.src_dir%/admin'
-    eccube.twig.block.templates:
-      - render_block.twig
-    eccube.save_image_dir: '%kernel.project_dir%/html/upload/save_image'
-    eccube.temp_image_dir: '%kernel.project_dir%/html/upload/temp_image'
-
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -45,7 +31,7 @@ services:
         resource: '../../../src/Eccube/*'
         # you can exclude directories or files
         # but if a service is unused, it's removed anyway
-        exclude: '../../../src/Eccube/{Annotation,Application,Common,ControllerProvider,DI,Entity,Exception,Log,Plugin,Routing,ServiceProvider,Util,Resource,Doctrine/ORM/tools/}'
+        exclude: '../../../src/Eccube/{Annotation,Common,Entity,Exception,Log,Plugin,ServiceProvider,Resource,Doctrine/ORM/tools/}'
 
     Eccube\Common\EccubeConfig:
         public: true
@@ -71,7 +57,7 @@ services:
     Eccube\Twig\Extension\EccubeBlockExtension:
         tags: ['twig.extension']
         bind:
-          $blockTemplates: '%eccube.twig.block.templates%'
+          $blockTemplates: '%eccube_twig_block_templates%'
 
     Plugin\:
         resource: '../../../app/Plugin/*'

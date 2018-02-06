@@ -106,7 +106,7 @@ class MailController extends AbstractController
                 $this->entityManager->flush();
                 
                 // ファイル生成・更新
-                $templatePath = $this->getParameter('eccube.theme.front_dir');
+                $templatePath = $this->getParameter('eccube_theme_front_dir');
                 $filePath = $templatePath.'/'.$Mail->getFileName();
                 
                 $fs = new Filesystem();
