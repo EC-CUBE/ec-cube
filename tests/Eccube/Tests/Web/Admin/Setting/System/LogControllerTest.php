@@ -116,7 +116,6 @@ class LogControllerTest extends AbstractAdminWebTestCase
             $this->generateUrl('admin_setting_system_log'),
             array('admin_system_log' => $this->formData)
         );
-
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         list($this->actual) = $crawler->filter('#line-max')->extract(array('style'));
@@ -133,13 +132,13 @@ class LogControllerTest extends AbstractAdminWebTestCase
     public function dataProvider()
     {
         return array(
-            array('', 'background-color:#ffe8e8;', '※ 入力されていません。'),
-            array('a', 'background-color:#ffe8e8;', '※ 有効な数字ではありません。'),
-            array(-1, 'background-color:#ffe8e8;', '※ 0以上でなければなりません。'),
+            array('', '', '空であってはなりません。'),
+            array('a', '', '有効な数字ではありません。'),
+            array(-1, '', '0以上でなければなりません。'),
             array(0, '', ''),
             array(50000, '', ''),
             array(1.1, '', ''),
-            array(100001, 'background-color:#ffe8e8;', '※ 50000以下でなければなりません。'),
+            array(100001, '', '50000以下でなければなりません。'),
         );
     }
 

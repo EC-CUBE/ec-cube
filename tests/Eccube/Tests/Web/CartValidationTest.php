@@ -379,9 +379,7 @@ class CartValidationTest extends AbstractWebTestCase
         );
         // submit
         $arrForm = array(
-            'product_id' => $Product->getId(),
-            'mode' => 'add_cart',
-            'product_class_id' => $ProductClass->getId(),
+            'ProductClass' => $ProductClass->getId(),
             'quantity' => 9,
             '_token' => 'dummy',
         );
@@ -394,7 +392,7 @@ class CartValidationTest extends AbstractWebTestCase
 
         $client->request(
             'POST',
-            $this->generateUrl('product_detail', array('id' => $Product->getId())),
+            $this->generateUrl('product_add_cart', array('id' => $Product->getId())),
             $arrForm
         );
 
@@ -403,7 +401,6 @@ class CartValidationTest extends AbstractWebTestCase
         $Product = $this->createProduct($productName, 1, 100);
         $ProductClass = $Product->getProductClasses()->first();
 
-        $productClassId = $ProductClass->getId();
         $productId = $Product->getId();
 
         // render
@@ -414,10 +411,8 @@ class CartValidationTest extends AbstractWebTestCase
 
         // submit
         $arrForm = array(
-            'product_id' => $productId,
-            'mode' => 'add_cart',
-            'product_class_id' => $productClassId,
-            'quantity' => $stock ,
+            'ProductClass' => $ProductClass->getId(),
+            'quantity' => $stock,
             '_token' => 'dummy',
         );
         if ($ProductClass->hasClassCategory1()) {
@@ -427,9 +422,9 @@ class CartValidationTest extends AbstractWebTestCase
             $arrForm['classcategory_id2'] = $ProductClass->getClassCategory2()->getId();
         }
 
-        $client->request(
+        $crawler = $client->request(
             'POST',
-            $this->generateUrl('product_detail', array('id' => $productId)),
+            $this->generateUrl('product_add_cart', array('id' => $productId)),
             $arrForm
         );
 
@@ -437,11 +432,10 @@ class CartValidationTest extends AbstractWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirection());
 
         $crawler = $client->followRedirect();
+        $message = $crawler->filter('.ec-alert-warning__text')->text();
+        // FIXME $this->assertContains('商品を購入できる金額の上限を超えております。数量を調整してください。', $message);
+        $this->assertContains('一度に在庫数を超える購入はできません', $message);
 
-        $message = $crawler->filter('div#cart_box__message--1')->text();
-        $this->assertContains('商品を購入できる金額の上限を超えております。数量を調整してください。', $message);
-
-        $message = $crawler->filter('div#cart_box__message--2')->text();
         $this->assertContains('選択された商品('.$this->getProductName($ProductClass).')の在庫が不足しております。', $message);
     }
 

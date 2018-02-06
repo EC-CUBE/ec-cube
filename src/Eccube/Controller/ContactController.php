@@ -103,7 +103,7 @@ class ContactController extends AbstractController
                     $form = $builder->getForm();
                     $form->handleRequest($request);
 
-                    return $app->render('Contact/confirm.twig', array(
+                    return $this->render('Contact/confirm.twig', array(
                         'form' => $form->createView(),
                     ));
 
