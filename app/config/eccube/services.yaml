@@ -1,13 +1,15 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    locale: 'ja'
-    timezone: 'Asia/Tokyo'
+    env(ECCUBE_LOCALE): 'ja'
+    env(ECCUBE_TIMEZONE): 'Asia/Tokyo'
+    env(ECCUBE_CURRENCY): 'JPY'
+    locale: '%env(ECCUBE_LOCALE)%'
+    timezone: '%env(ECCUBE_TIMEZONE)%'
+    currency: '%env(ECCUBE_CURRENCY)%'
+
     # This parameter defines the codes of the locales (languages) enabled in the application
     app_locales: en|fr|de|es|cs|nl|ru|uk|ro|pt_BR|pl|it|ja|id|ca|sl|hr|zh_CN
-    base_currency_code: 'JPY'
-    currency_code: '%base_currency_code%'
-    app.notifications.email_sender: anonymous@example.com
     eccube.theme.app_dir: '%kernel.project_dir%/app/template'
     eccube.theme.src_dir: '%kernel.project_dir%/src/Eccube/Resource/template'
     eccube.theme.user_data_dir: '%eccube.theme.app_dir%/user_data'
