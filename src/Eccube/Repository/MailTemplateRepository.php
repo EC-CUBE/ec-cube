@@ -39,15 +39,9 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class MailTemplateRepository extends AbstractRepository
 {
-    /**
-     * @var string
-     */
-    protected $projectRoot;
-
-    public function __construct(RegistryInterface $registry, $projectRoot)
+    public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, MailTemplate::class);
-        $this->projectRoot = $projectRoot;
     }
 
     /**

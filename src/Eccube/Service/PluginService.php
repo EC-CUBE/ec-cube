@@ -122,9 +122,7 @@ class PluginService
         PluginRepository $pluginRepository,
         EntityProxyService $entityProxyService,
         SchemaService $schemaService,
-        EccubeConfig $eccubeConfig,
-        $projectRoot,
-        $environment
+        EccubeConfig $eccubeConfig
     ) {
         $this->pluginEventHandlerRepository = $pluginEventHandlerRepository;
         $this->entityManager = $entityManager;
@@ -132,8 +130,8 @@ class PluginService
         $this->entityProxyService = $entityProxyService;
         $this->schemaService = $schemaService;
         $this->eccubeConfig = $eccubeConfig;
-        $this->projectRoot = $projectRoot;
-        $this->environment = $environment;
+        $this->projectRoot = $eccubeConfig->get('kernel.project_dir');
+        $this->environment = $eccubeConfig->get('kernel.environment');
     }
 
 
