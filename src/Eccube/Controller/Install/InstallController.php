@@ -414,7 +414,6 @@ class InstallController extends AbstractController
         $replacement = [
             'APP_ENV' => 'dev', // TODO 本番環境では prod にするが cache:warmup しないと Not found になってしまう
             'APP_DEBUG' => '1',
-            'APP_SECRET' => StringUtil::random(32),
             'DATABASE_URL' => $databaseUrl,
             'MAILER_URL' => $mailerUrl,
             'ECCUBE_AUTH_MAGIC' => $sessionData['authmagic'],

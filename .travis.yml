@@ -23,7 +23,6 @@ env:
     - KERNEL_CLASS=Eccube\Kernel
     - APP_ENV=test
     - APP_DEBUG=1
-    - APP_SECRET=s$cretf0rt3st
     - SHELL_VERBOSITY=-1
     - ECCUBE_AUTH_MAGIC=s$cretVBJmtS0Ls+
     - ECCUBE_ADMIN_ROUTE=admin
