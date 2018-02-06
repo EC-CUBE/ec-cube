@@ -24,7 +24,6 @@
 namespace Eccube\Controller;
 
 
-use Eccube\Application;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Master\OrderStatus;
@@ -181,7 +180,6 @@ class NonMemberShoppingController extends AbstractShoppingController
                 // 受注情報を作成
                 try {
                     // 受注情報を作成
-//                    $Order = $app['eccube.service.shopping']->createOrder($Customer);
                     $Order = $this->orderHelper->createProcessingOrder(
                         $Customer,
                         $Customer->getCustomerAddresses()->current(),
@@ -288,10 +286,10 @@ class NonMemberShoppingController extends AbstractShoppingController
 
             log_info('非会員お届け先追加処理完了');
 
-            return $app->redirect($app->url('shopping_shipping_multiple'));
+            return $this->redirectToRoute('shopping_shipping_multiple');
         }
 
-        return $app->render(
+        return $this->render(
             'Shopping/shipping_multiple_edit.twig',
             array(
                 'form' => $form->createView(),
@@ -306,17 +304,17 @@ class NonMemberShoppingController extends AbstractShoppingController
      */
     public function shippingEditChange(Request $request, $id)
     {
-        $Order = $app['eccube.service.shopping']->getOrder(OrderStatus::PROCESSING);
+        $Order = $this->shoppingService->getOrder(OrderStatus::PROCESSING);
         if (!$Order) {
-            $app->addError('front.shopping.order.error');
-            return $app->redirect($app->url('shopping_error'));
+            $this->addError('front.shopping.order.error');
+            return $this->redirectToRoute('shopping_error');
         }
 
         if ('POST' !== $request->getMethod()) {
-            return $app->redirect($app->url('shopping'));
+            return $this->redirectToRoute('shopping');
         }
 
-        $builder = $app['eccube.service.shopping']->getShippingFormBuilder($Order);
+        $builder = $this->shoppingService->getShippingFormBuilder($Order);
 
         $event = new EventArgs(
             array(
@@ -325,7 +323,7 @@ class NonMemberShoppingController extends AbstractShoppingController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_EDIT_CHANGE_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_EDIT_CHANGE_INITIALIZE, $event);
 
         $form = $builder->getForm();
 
@@ -336,13 +334,13 @@ class NonMemberShoppingController extends AbstractShoppingController
             $message = $data['message'];
             $Order->setMessage($message);
             // 受注情報を更新
-            $app['orm.em']->flush();
+            $this->entityManager->flush();
 
             // お届け先設定一覧へリダイレクト
-            return $app->redirect($app->url('shopping_shipping_edit', array('id' => $id)));
+            return $this->redirectToRoute('shopping_shipping_edit', array('id' => $id));
         }
 
-        return $app->render('Shopping/index.twig', array(
+        return $this->redirectToRoute('Shopping/index.twig', array(
             'form' => $form->createView(),
             'Order' => $Order,
         ));
@@ -363,7 +361,7 @@ class NonMemberShoppingController extends AbstractShoppingController
                 $data = $request->request->all();
 
                 // 入力チェック
-                $errors = $this->customerValidation($app, $data);
+                $errors = $this->customerValidation($data);
 
                 foreach ($errors as $error) {
                     if ($error->count() != 0) {
@@ -387,9 +385,9 @@ class NonMemberShoppingController extends AbstractShoppingController
                 $Order = $this->shoppingService->getOrder(OrderStatus::PROCESSING);
                 if (!$Order) {
                     log_info('カートが存在しません');
-                    $app->addError('front.shopping.order.error');
+                    $this->addError('front.shopping.order.error');
 
-                    return $app->redirect($app->url('shopping_error'));
+                    return $this->redirectToRoute('shopping_error');
                 }
 
                 $Order
@@ -427,7 +425,7 @@ class NonMemberShoppingController extends AbstractShoppingController
                 $response->headers->set('Content-Type', 'application/json');
             } catch (\Exception $e) {
                 log_error('予期しないエラー', array($e->getMessage()));
-                $this->logger->error($e);
+                log_error($e);
 
                 $response = new Response(json_encode('NG'), 500);
                 $response->headers->set('Content-Type', 'application/json');
@@ -440,7 +438,6 @@ class NonMemberShoppingController extends AbstractShoppingController
     /**
      * 非会員でのお客様情報変更時の入力チェック
      *
-     * @param Application $app
      * @param array $data リクエストパラメータ
      * @return array
      */
