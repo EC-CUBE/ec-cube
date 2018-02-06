@@ -24,7 +24,7 @@ class EccubeServiceProviderTest extends EccubeTestCase
     public function testConfig()
     {
         $this->expected = 'HMAC';
-        $this->actual = $this->app['config']['auth_type'];
+        $this->actual = $this->app['config']['eccube_auth_type'];
         $this->verify();
     }
 
