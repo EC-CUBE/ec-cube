@@ -34,9 +34,6 @@ services:
         public: false
 
         bind:
-          $auth_magic: '%env(ECCUBE_AUTH_MAGIC)%'
-          $auth_type: 'HMAC'
-          $password_hash_algos: 'sha256'
           $projectRoot: '%kernel.project_dir%'
           $environment: '%kernel.environment%'
           $cartPurchaseFlow: '@eccube.purchase.flow.cart'
