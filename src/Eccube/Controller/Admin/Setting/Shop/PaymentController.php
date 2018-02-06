@@ -114,11 +114,11 @@ class PaymentController extends AbstractController
 
         $form = $builder->getForm();
 
+        $form->setData($Payment);
         $form->handleRequest($request);
 
         // 既に画像保存されてる場合は取得する
         $oldPaymentImage = $Payment->getPaymentImage();
-        $form->setData($Payment);
 
         // 登録ボタン押下
         if ($form->isSubmitted() && $form->isValid()) {
@@ -256,9 +256,9 @@ class PaymentController extends AbstractController
             $this->entityManager->persist($current->setSortNo($targetSortNo));
             $this->entityManager->flush();
 
-            $app->addSuccess('admin.sort_no.move.complete', 'admin');
+            $this->addSuccess('admin.sort_no.move.complete', 'admin');
         } else {
-            $app->addError('admin.sort_no.up.error', 'admin');
+            $this->addError('admin.sort_no.up.error', 'admin');
         }
 
         return $this->redirectToRoute('admin_setting_shop_payment');
@@ -282,9 +282,9 @@ class PaymentController extends AbstractController
             $this->entityManager->persist($current->setSortNo($targetSortNo));
             $this->entityManager->flush();
 
-            $app->addSuccess('admin.sort_no.move.complete', 'admin');
+            $this->addSuccess('admin.sort_no.move.complete', 'admin');
         } else {
-            $app->addError('admin.sort_no.down.error', 'admin');
+            $this->addError('admin.sort_no.down.error', 'admin');
         }
 
         return $this->redirectToRoute('admin_setting_shop_payment');

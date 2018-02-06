@@ -140,7 +140,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
         $pid = 4;
         $Payment = $this->container->get(PaymentRepository::class)->find($pid);
         $before = $Payment->getSortNo();
-        $crawler = $this->client->request('PUT',
+        $this->client->request('PUT',
             $this->generateUrl('admin_setting_shop_payment_up', array('id' => $pid))
         );
         $this->assertTrue($this->client->getResponse()->isRedirection());
