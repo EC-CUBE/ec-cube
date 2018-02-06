@@ -125,12 +125,12 @@ class PaymentRepository extends AbstractRepository
      * @param $deliveries
      * @return array
      */
-    public function findAllowedPayments($deliveries, $retuenType = false)
+    public function findAllowedPayments($deliveries, $returnType = false)
     {
         $payments = [];
         $saleTypes = [];
         foreach ($deliveries as $Delivery) {
-            $p = $this->findPayments($Delivery);
+            $p = $this->findPayments($Delivery, $returnType);
             if ($p == null) {
                 continue;
             }

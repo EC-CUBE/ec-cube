@@ -1283,7 +1283,7 @@ class ShoppingService
     {
 
         // メール送信
-        $this->mailService->sendOrderMail($Order);
+        $message = $this->mailService->sendOrderMail($Order);
 
         // 送信履歴を保存.
         $MailHistory = new MailHistory();
