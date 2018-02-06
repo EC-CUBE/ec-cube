@@ -418,7 +418,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
 
         $crawler = $this->scenario('admin_product_category_csv_import', 'categories.csv');
 
-        $Categories = $this->app['eccube.repository.category']->findBy(array('name' => '新カテゴリ'));
+        $Categories = $this->categoryRepo->findBy(array('name' => '新カテゴリ'));
 
         $this->expected = 1;
         $this->actual = count($Categories);
@@ -435,7 +435,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->filepath = __DIR__.'/categories.csv';
         copy(__DIR__.'/../../../../../Fixtures/categories.csv', $this->filepath); // 削除されてしまうのでコピーしておく
 
-        $categories = $this->app['eccube.repository.category']->findAll();
+        $categories = $this->categoryRepo->findAll();
         $this->expected = count($categories);
 
         $csv = array(
@@ -446,7 +446,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
 
         $crawler = $this->scenario('admin_product_category_csv_import', 'categories.csv');
 
-        $arrCategory = $this->app['eccube.repository.category']->findAll();
+        $arrCategory = $this->categoryRepo->findAll();
         $this->actual = count($arrCategory);
         $this->verify();
 
@@ -461,7 +461,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->filepath = __DIR__.'/categories.csv';
         copy(__DIR__.'/../../../../../Fixtures/categories.csv', $this->filepath); // 削除されてしまうのでコピーしておく
 
-        $categories = $this->app['eccube.repository.category']->findAll();
+        $categories = $this->categoryRepo->findAll();
         $this->expected = count($categories);
 
         $csv = array(
@@ -472,7 +472,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
 
         $crawler = $this->scenario('admin_product_category_csv_import', 'categories.csv');
 
-        $arrCategory = $this->app['eccube.repository.category']->findAll();
+        $arrCategory = $this->categoryRepo->findAll();
         $this->actual = count($arrCategory);
         $this->verify();
 
@@ -498,7 +498,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
 
         $crawler = $this->scenario('admin_product_category_csv_import', 'categories.csv');
 
-        $arrCategory = $this->app['eccube.repository.category']->findBy(array('name' => $categoryName));
+        $arrCategory = $this->categoryRepo->findBy(array('name' => $categoryName));
         $this->actual = count($arrCategory);
         $this->expected = 1;
         $this->verify();
@@ -536,7 +536,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      */
     public function testImportProductWithColumnIsMissed()
     {
-        $Products = $this->app['eccube.repository.product']->findAll();
+        $Products = $this->productRepo->findAll();
         $this->expected = count($Products) + 1;
         // csv missing id column
         $csv = $this->createCsvAsArray();
@@ -544,7 +544,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         unset($csv[1][0]);
         $this->filepath = $this->createCsvFromArray($csv);
         $crawler = $this->scenario();
-        $Products = $this->app['eccube.repository.product']->findAll();
+        $Products = $this->productRepo->findAll();
         $this->actual = count($Products);
         $this->verify();
         // ProductCategoryTest
@@ -581,16 +581,17 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      */
     public function testImportProductWithColumnIsRequiredOnly()
     {
-        $Products = $this->app['eccube.repository.product']->findAll();
+        $Products = $this->productRepo->findAll();
         $this->expected = count($Products) +1;
         /** @var $faker Generator*/
         $faker = $this->getFaker();
         // 1 product
-        $csv[] = array('公開ステータス(ID)', '商品名', '商品種別(ID)', '在庫数無制限フラグ', '販売価格');
+        $csv[] = array('公開ステータス(ID)', '商品名', '販売種別(ID)', '在庫数無制限フラグ', '販売価格');
         $csv[] = array(1,  "商品名".$faker->word."商品名", 1, 1, $faker->randomNumber(5));
         $this->filepath = $this->createCsvFromArray($csv);
         $crawler = $this->scenario();
-        $Products = $this->app['eccube.repository.product']->findAll();
+
+        $Products = $this->productRepo->findAll();
         $this->actual = count($Products);
         $this->verify();
         $this->assertRegexp('/商品登録CSVファイルをアップロードしました。/u', $crawler->filter('div.alert-success')->text());
@@ -604,14 +605,15 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      */
     public function testImportProductWithIdIsWrong($id, $expectedMessage)
     {
-        $Products = $this->app['eccube.repository.product']->findAll();
+        $Products = $this->productRepo->findAll();
         $this->expected = count($Products);
         // 1 product
         $csv = $this->createCsvAsArray();
         $csv[1][0] = $id;
         $this->filepath = $this->createCsvFromArray($csv);
         $crawler = $this->scenario();
-        $Products = $this->app['eccube.repository.product']->findAll();
+
+        $Products = $this->productRepo->findAll();
         $this->actual = count($Products);
         $this->verify();
         $this->assertRegexp("/$expectedMessage/u", $crawler->filter('div#upload_file_box__body_inner')->text());
@@ -628,10 +630,11 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         /** @var $faker Generator*/
         $faker = $this->getFaker();
         // 1 product
-        $csv[] = array('公開ステータス(ID)', '商品名', '商品種別(ID)', '在庫数無制限フラグ', '販売価格');
+        $csv[] = array('公開ステータス(ID)', '商品名', '販売種別(ID)', '在庫数無制限フラグ', '販売価格');
         $csv[] = array($status,  "商品名".$faker->word."商品名", 1, 1, $faker->randomNumber(5));
         $this->filepath = $this->createCsvFromArray($csv);
         $crawler = $this->scenario();
+
         $this->assertRegexp("/$expectedMessage/u", $crawler->filter('div#upload_file_box__body_inner')->text());
     }
     /**
