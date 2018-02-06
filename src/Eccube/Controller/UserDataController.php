@@ -61,7 +61,7 @@ class UserDataController extends AbstractController
     }
 
     /**
-     * @Route("/%user_data_route%/{route}", name="user_data", requirements={"route": "([0-9a-zA-Z_\-]+\/?)+(?<!\/)"})
+     * @Route("/%eccube_user_data_route%/{route}", name="user_data", requirements={"route": "([0-9a-zA-Z_\-]+\/?)+(?<!\/)"})
      */
     public function index(Request $request, $route)
     {

@@ -8,7 +8,6 @@ parameters:
     base_currency_code: 'JPY'
     currency_code: '%base_currency_code%'
     app.notifications.email_sender: anonymous@example.com
-    user_data_route: 'user_data'
     eccube.theme.app_dir: '%kernel.project_dir%/app/template'
     eccube.theme.src_dir: '%kernel.project_dir%/src/Eccube/Resource/template'
     eccube.theme.user_data_dir: '%eccube.theme.app_dir%/user_data'

@@ -243,7 +243,6 @@ class PageController extends AbstractController
             'page_id' => $Page->getId(),
             'is_user_data_page' => $isUserDataPage,
             'template_path' => $templatePath,
-            'user_data_route' => $this->getParameter('user_data_route'),
             'url' => $url,
         ];
     }
