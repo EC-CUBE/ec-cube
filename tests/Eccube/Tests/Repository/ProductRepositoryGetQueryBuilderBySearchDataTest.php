@@ -350,11 +350,11 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
         );
         $this->deleteAllRows($tables);
         $productList = array();
-        for ($i = 1; $i <= 300; $i++) {
+        for ($i = 0; $i <= 30; $i++) {
             $classNo = mt_rand(1, 3);
-            $productName = 'BIG商品-' . $i;
-            $this->createProduct($productName, $classNo);
-            $productList[] = $productName;
+            $productName = '商品-' . $i;
+            $Product = $this->createProduct($productName, $classNo);
+            $productList[] = $Product->getName();
         }
         $productList = array_reverse($productList);
 
@@ -368,7 +368,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
         // 新着順
         $ProductListOrderBy = $this->entityManager->find(ProductListOrderBy::class, 2);
         $this->searchData = array(
-            'name' => 'BIG商品-',
+            'name' => '商品-',
             'orderby' => $ProductListOrderBy
         );
 
