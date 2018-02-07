@@ -80,8 +80,6 @@ class TwigInitializeListener implements EventSubscriberInterface
      */
     public function setFrontVaribales(GetResponseEvent $event)
     {
-        // FIXME: if page contains twig syntax, codeception test case will fail
-        // @see \EA06ContentsManagementCest::contentsmanagement_ページ管理
         /** @var \Symfony\Component\HttpFoundation\ParameterBag $attributes */
         $attributes = $event->getRequest()->attributes;
         $route = $attributes->get('_route');
