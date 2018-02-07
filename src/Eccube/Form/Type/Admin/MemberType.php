@@ -65,7 +65,7 @@ class MemberType extends AbstractType
             ->add('name', TextType::class, array(
                 'label' => '名前',
                 'constraints' => array(
-                    new Assert\NotBlank(),
+                    new Assert\NotBlank(array('message' => $this->blankMessage)),
                     new Assert\Length(array('max' => $this->eccubeConfig['eccube_stext_len'])),
                 ),
             ))
@@ -73,7 +73,7 @@ class MemberType extends AbstractType
                 'required' => false,
                 'label' => '所属',
                 'constraints' => array(
-                    new Assert\NotBlank(),
+                    new Assert\NotBlank(array('message' => $this->blankMessage)),
                     new Assert\Length(array('max' => $this->eccubeConfig['eccube_stext_len'])),
                 ),
             ))
