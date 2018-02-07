@@ -109,7 +109,8 @@
     "autoload": {
         "files": [
             "src/Eccube/Resource/functions/log.php",
-            "src/Eccube/Resource/functions/env.php"
+            "src/Eccube/Resource/functions/env.php",
+            "src/Eccube/Resource/functions/trans.php"
         ],
         "psr-4": {
             "Eccube\\Entity\\": "app/proxy/entity",

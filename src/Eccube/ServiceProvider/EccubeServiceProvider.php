@@ -75,6 +75,11 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['dispatcher'] = $app->share(function () use ($app) {
             return $app->getParentContainer()->get('event_dispatcher');
         });
+
+        $app['translator'] = $app->share(function () use ($app) {
+            return $app->getParentContainer()->get('translator');
+        });
+
         $app['eccube.event.dispatcher'] = $app->share(function () use ($app) {
             return $app['dispatcher'];
         });
