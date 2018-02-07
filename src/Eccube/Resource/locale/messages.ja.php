@@ -188,6 +188,7 @@ return [
     'admin.delivery.visible.complete' => '表示に変更しました。',
     'admin.delivery.hidden.complete' => '非表示に変更しました。',
     'admin_title' => 'EC-CUBE 管理機能',
+    'admin.system.member.form.not.blank' => '入力されていません。',
     'normal_price_title' => '通常価格',
     'sale_price_title' => '販売価格',
     'form.address1.help' => '市区町村名 (例：千代田区神田神保町)',
