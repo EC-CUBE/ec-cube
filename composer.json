@@ -78,6 +78,7 @@
         "symfony/orm-pack": "^1.0",
         "symfony/process": "^3.4",
         "symfony/property-access": "^3.4",
+        "symfony/proxy-manager-bridge": "^3.4",
         "symfony/routing": "^3.4",
         "symfony/security": "^3.4",
         "symfony/security-bundle": "^3.4",
