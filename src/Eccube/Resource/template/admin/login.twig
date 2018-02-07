@@ -38,7 +38,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 </div>
                 {% if error %}
                 <div class="form-group">
-                    <span class="text-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</span>
+                    <span class="text-danger">{{ error.messageKey|trans(error.messageData)|raw }}</span>
                 </div>
                 {% endif %}
                 <p class="btn_area"><button type="submit" class="btn btn-primary btn-block btn-lg">ログイン</button></p>

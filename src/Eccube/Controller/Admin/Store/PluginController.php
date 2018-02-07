@@ -87,7 +87,7 @@ class PluginController extends AbstractController
      * @Inject("config")
      * @var array
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
      * @Inject(BaseInfo::class)
@@ -111,7 +111,7 @@ class PluginController extends AbstractController
     /**
      * インストール済プラグイン画面
      *
-     * @Route("/%admin_route%/store/plugin", name="admin_store_plugin")
+     * @Route("/%eccube_admin_route%/store/plugin", name="admin_store_plugin")
      * @Template("Store/plugin.twig")
      */
     public function index(Application $app, Request $request)
@@ -167,7 +167,7 @@ class PluginController extends AbstractController
         // オーナーズストアからダウンロード可能プラグイン情報を取得
         $authKey = $this->BaseInfo->getAuthenticationKey();
         // オーナーズストア通信
-        $url = $this->appConfig['package_repo_url'].'/search/packages.json';
+        $url = $this->eccubeConfig['package_repo_url'].'/search/packages.json';
         list($json, $info) = $this->getRequestApi($request, $authKey, $url, $app);
 
         $officialPluginsDetail = [];
@@ -204,7 +204,7 @@ class PluginController extends AbstractController
      * インストール済プラグインからのアップデート
      *
      * @Method("POST")
-     * @Route("/%admin_route%/store/plugin/{id}/update", requirements={"id" = "\d+"}, name="admin_store_plugin_update")
+     * @Route("/%eccube_admin_route%/store/plugin/{id}/update", requirements={"id" = "\d+"}, name="admin_store_plugin_update")
      * @param Application $app
      * @param Request     $request
      * @param Plugin      $Plugin
@@ -270,7 +270,7 @@ class PluginController extends AbstractController
      * 対象のプラグインを有効にします。
      *
      * @Method("PUT")
-     * @Route("/%admin_route%/store/plugin/{id}/enable", requirements={"id" = "\d+"}, name="admin_store_plugin_enable")
+     * @Route("/%eccube_admin_route%/store/plugin/{id}/enable", requirements={"id" = "\d+"}, name="admin_store_plugin_enable")
      * @param Application $app
      * @param Plugin      $Plugin
      * @return RedirectResponse
@@ -305,7 +305,7 @@ class PluginController extends AbstractController
      * 対象のプラグインを無効にします。
      *
      * @Method("PUT")
-     * @Route("/%admin_route%/store/plugin/{id}/disable", requirements={"id" = "\d+"}, name="admin_store_plugin_disable")
+     * @Route("/%eccube_admin_route%/store/plugin/{id}/disable", requirements={"id" = "\d+"}, name="admin_store_plugin_disable")
      * @param Application $app
      * @param Plugin      $Plugin
      * @return RedirectResponse
@@ -341,7 +341,7 @@ class PluginController extends AbstractController
      * 対象のプラグインを削除します。
      *
      * @Method("DELETE")
-     * @Route("/%admin_route%/store/plugin/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_uninstall")
+     * @Route("/%eccube_admin_route%/store/plugin/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_uninstall")
      * @param Application $app
      * @param Plugin      $Plugin
      * @return RedirectResponse
@@ -349,6 +349,13 @@ class PluginController extends AbstractController
     public function uninstall(Application $app, Plugin $Plugin)
     {
         $this->isTokenValid($app);
+
+        if ($Plugin->isEnabled()) {
+            $app->addError('admin.plugin.uninstall.error.not_disable', 'admin');
+
+            return $app->redirect($app->url('admin_store_plugin'));
+        }
+
         // Check other plugin depend on it
         $pluginCode = $Plugin->getCode();
         $otherDepend = $this->pluginService->findDependentPlugin($pluginCode);
@@ -371,7 +378,7 @@ class PluginController extends AbstractController
     }
 
     /**
-     * @Route("/%admin_route%/store/plugin/handler", name="admin_store_plugin_handler")
+     * @Route("/%eccube_admin_route%/store/plugin/handler", name="admin_store_plugin_handler")
      * @Template("Store/plugin_handler.twig")
      */
     public function handler(Application $app)
@@ -390,7 +397,7 @@ class PluginController extends AbstractController
     }
 
     /**
-     * @Route("/%admin_route%/store/plugin/handler_up/{id}", requirements={"id" = "\d+"}, name="admin_store_plugin_handler_up")
+     * @Route("/%eccube_admin_route%/store/plugin/handler_up/{id}", requirements={"id" = "\d+"}, name="admin_store_plugin_handler_up")
      */
     public function handler_up(Application $app, PluginEventHandler $Handler)
     {
@@ -401,7 +408,7 @@ class PluginController extends AbstractController
     }
 
     /**
-     * @Route("/%admin_route%/store/plugin/handler_down/{id}", requirements={"id" = "\d+"}, name="admin_store_plugin_handler_down")
+     * @Route("/%eccube_admin_route%/store/plugin/handler_down/{id}", requirements={"id" = "\d+"}, name="admin_store_plugin_handler_down")
      */
     public function handler_down(Application $app, PluginEventHandler $Handler)
     {
@@ -414,7 +421,7 @@ class PluginController extends AbstractController
     /**
      * プラグインファイルアップロード画面
      *
-     * @Route("/%admin_route%/store/plugin/install", name="admin_store_plugin_install")
+     * @Route("/%eccube_admin_route%/store/plugin/install", name="admin_store_plugin_install")
      * @Template("Store/plugin_install.twig")
      * @param Application $app
      * @param Request     $request
@@ -476,7 +483,7 @@ class PluginController extends AbstractController
     /**
      * 認証キー設定画面
      *
-     * @Route("/%admin_route%/store/plugin/authentication_setting", name="admin_store_authentication_setting")
+     * @Route("/%eccube_admin_route%/store/plugin/authentication_setting", name="admin_store_authentication_setting")
      * @Template("Store/authentication_setting.twig")
      */
     public function authenticationSetting(Application $app, Request $request)
@@ -590,7 +597,7 @@ class PluginController extends AbstractController
             $pluginCodes[] = $plugin->getCode();
         }
         // DB登録済みプラグインコードPluginディレクトリから排他
-        $dirs = $finder->in($this->appConfig['plugin_realdir'])->depth(0)->directories();
+        $dirs = $finder->in($this->eccubeConfig['plugin_realdir'])->depth(0)->directories();
 
         // プラグイン基本チェック
         $unregisteredPlugins = array();

@@ -64,8 +64,8 @@ class CustomerEditController extends AbstractController
     }
 
     /**
-     * @Route("/%admin_route%/customer/new", name="admin_customer_new")
-     * @Route("/%admin_route%/customer/{id}/edit", requirements={"id" = "\d+"}, name="admin_customer_edit")
+     * @Route("/%eccube_admin_route%/customer/new", name="admin_customer_new")
+     * @Route("/%eccube_admin_route%/customer/{id}/edit", requirements={"id" = "\d+"}, name="admin_customer_edit")
      * @Template("@admin/Customer/edit.twig")
      */
     public function index(Request $request, $id = null)
@@ -81,7 +81,7 @@ class CustomerEditController extends AbstractController
             }
             // 編集用にデフォルトパスワードをセット
             $previous_password = $Customer->getPassword();
-            $Customer->setPassword($this->eccubeConfig['default_password']);
+            $Customer->setPassword($this->eccubeConfig['eccube_default_password']);
             // 新規登録
         } else {
             $Customer = $this->customerRepository->newCustomer();
@@ -138,7 +138,7 @@ class CustomerEditController extends AbstractController
                     $this->entityManager->persist($CustomerAddress);
                 }
 
-                if ($Customer->getPassword() === $this->eccubeConfig['default_password']) {
+                if ($Customer->getPassword() === $this->eccubeConfig['eccube_default_password']) {
                     $Customer->setPassword($previous_password);
                 } else {
                     if ($Customer->getSalt() === null) {

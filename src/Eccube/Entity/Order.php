@@ -123,6 +123,13 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
      * @ORM\Column(name="pre_order_id", type="string", length=255, nullable=true)
      */
     private $pre_order_id;
+    
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="code", type="string", length=255, nullable=true)
+     */
+    private $code;
 
     /**
      * @var string|null
@@ -520,6 +527,30 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     public function getPreOrderId()
     {
         return $this->pre_order_id;
+    }
+    
+    /**
+     * Set code
+     * 
+     * @param string|null $code
+     * 
+     * @return Order
+     */
+    public function setCode($code = NULL) 
+    {
+        $this->code = $code;
+        
+        return $this;
+    }
+    
+    /**
+     * Get code
+     * 
+     * @return string|NULL
+     */
+    public function getCode()
+    {
+        return $this->code;
     }
 
     /**

@@ -26,8 +26,10 @@ namespace Eccube\Service;
 
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Application;
 use Eccube\Common\Constant;
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Plugin;
 use Eccube\Entity\PluginEventHandler;
 use Eccube\Exception\PluginException;
@@ -44,6 +46,11 @@ use Symfony\Component\Yaml\Yaml;
 class PluginService
 {
     /**
+     * @var EccubeConfig
+     */
+    protected $eccubeConfig;
+
+    /**
      * @var PluginEventHandlerRepository
      */
     protected $pluginEventHandlerRepository;
@@ -57,11 +64,6 @@ class PluginService
      * @var PluginRepository
      */
     protected $pluginRepository;
-
-    /**
-     * @var array
-     */
-    protected $eccubeConfig;
 
     /**
      * @var Application
@@ -110,27 +112,27 @@ class PluginService
     /**
      * PluginService constructor.
      * @param PluginEventHandlerRepository $pluginEventHandlerRepository
-     * @param EntityManager $entityManager
+     * @param EntityManagerInterface $entityManager
      * @param PluginRepository $pluginRepository
      * @param EntityProxyService $entityProxyService
      * @param SchemaService $schemaService
      */
     public function __construct(
         PluginEventHandlerRepository $pluginEventHandlerRepository,
-        EntityManager $entityManager,
+        EntityManagerInterface $entityManager,
         PluginRepository $pluginRepository,
         EntityProxyService $entityProxyService,
         SchemaService $schemaService,
-        $projectRoot,
-        $environment
+        EccubeConfig $eccubeConfig
     ) {
         $this->pluginEventHandlerRepository = $pluginEventHandlerRepository;
         $this->entityManager = $entityManager;
         $this->pluginRepository = $pluginRepository;
         $this->entityProxyService = $entityProxyService;
         $this->schemaService = $schemaService;
-        $this->projectRoot = $projectRoot;
-        $this->environment = $environment;
+        $this->eccubeConfig = $eccubeConfig;
+        $this->projectRoot = $eccubeConfig->get('kernel.project_dir');
+        $this->environment = $eccubeConfig->get('kernel.environment');
     }
 
 
@@ -214,6 +216,17 @@ class PluginService
         try {
             // dbにプラグイン登録
             $plugin = $this->registerPlugin($config, $event, $source);
+
+            // プラグインmetadata定義を追加
+            $entityDir = $this->eccubeConfig['plugin_realdir'].'/'.$plugin->getCode().'/Entity';
+            if (file_exists($entityDir)) {
+                $ormConfig = $this->entityManager->getConfiguration();
+                $chain = $ormConfig->getMetadataDriverImpl();
+                $driver = $ormConfig->newDefaultAnnotationDriver([$entityDir], false);
+                $namespace = 'Plugin\\'.$config['code'].'\\Entity';
+                $chain->addDriver($driver, $namespace);
+                $ormConfig->addEntityNamespace($plugin->getCode(), $namespace);
+            }
 
             // インストール時には一時的に利用するProxyを生成してからスキーマを更新する
             $generatedFiles = $this->regenerateProxy($plugin, true, $tmpProxyOutputDir);
@@ -434,6 +447,10 @@ class PluginService
 
         // スキーマを更新する
         $this->schemaService->updateSchema([], $this->projectRoot.'/app/proxy/entity');
+
+        // プラグインのネームスペースに含まれるEntityのテーブルを削除する
+        $namespace = 'Plugin\\'.$plugin->getCode().'\\Entity';
+        $this->schemaService->dropTable($namespace);
 
         ConfigManager::writePluginConfigCache();
         return true;
@@ -767,7 +784,7 @@ class PluginService
      */
     public function findRequirePluginNeedEnable($pluginCode)
     {
-        $dir = $this->appConfig['plugin_realdir'].'/'.$pluginCode;
+        $dir = $this->eccubeConfig['plugin_realdir'].'/'.$pluginCode;
         $composerFile = $dir.'/composer.json';
         if (!file_exists($composerFile)) {
             return [];
@@ -831,7 +848,7 @@ class PluginService
         $plugins = $this->pluginRepository->matching($criteria);
         $dependents = [];
         foreach ($plugins as $plugin) {
-            $dir = $this->appConfig['plugin_realdir'].'/'.$plugin->getCode();
+            $dir = $this->eccubeConfig['plugin_realdir'].'/'.$plugin->getCode();
             $fileName = $dir.'/composer.json';
             if (!file_exists($fileName)) {
                 continue;
@@ -929,7 +946,7 @@ class PluginService
         // プラグインにリソースファイルがあれば所定の位置へコピー
         if (file_exists($assetsDir)) {
             $file = new Filesystem();
-            $file->mirror($assetsDir, $this->appConfig['plugin_html_realdir'].$pluginCode.'/assets');
+            $file->mirror($assetsDir, $this->eccubeConfig['plugin_html_realdir'].$pluginCode.'/assets');
         }
     }
 

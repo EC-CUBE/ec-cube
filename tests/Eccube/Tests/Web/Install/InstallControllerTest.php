@@ -25,6 +25,7 @@
 namespace Eccube\Tests\Web\Install;
 
 use Eccube\Common\Constant;
+use Eccube\Common\EccubeConfig;
 use Eccube\Tests\Web\AbstractWebTestCase;
 use Eccube\Controller\Install\InstallController;
 use Eccube\Security\Core\Encoder\PasswordEncoder;
@@ -58,9 +59,9 @@ class InstallControllerTest extends AbstractWebTestCase
         parent::setUp();
         $formFactory = $this->container->get('form.factory');
         $encoder = $this->container->get(PasswordEncoder::class);
-        $config = $this->container->getParameter('eccube.constants');
+        $eccubeConfig = $this->container->get(EccubeConfig::class);
         $this->session = new Session(new MockArraySessionStorage());
-        $this->controller = new InstallController($this->session, $formFactory, $encoder, 'install', $config);
+        $this->controller = new InstallController($this->session, $formFactory, $encoder, $eccubeConfig);
         $reflectionClass = new \ReflectionClass($this->controller);
         $propContainer = $reflectionClass->getProperty('container');
         $propContainer->setAccessible(true);
@@ -107,7 +108,7 @@ class InstallControllerTest extends AbstractWebTestCase
         $this->session->set('eccube.session.install',
                             [
                                 'authmagic' => 'secret',
-                                'admin_allow_hosts' => "'[\"127.0.0.1\",\"192.168.0.1\"]'"
+                                'admin_allow_hosts' => "127.0.0.1\r\n192.168.0.1"
                             ]);
         $this->actual = $this->controller->complete($this->request);
         $this->assertArrayHasKey('admin_url', $this->actual);

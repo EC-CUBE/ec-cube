@@ -146,6 +146,10 @@ class MemberRepositoryTest extends EccubeTestCase
 
     public function testDeleteWithException()
     {
+        if ($this->entityManager->getConnection()->getDatabasePlatform()->getName() == 'sqlite') {
+            $this->markTestSkipped('Can not support for sqlite3');
+        }
+
         $this->expectException(\Exception::class);
         $Member1 = $this->createMember();
         $Member2 = $this->createMember();

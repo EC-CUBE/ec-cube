@@ -25,6 +25,7 @@
 namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Eccube\Common\EccubeConfig;
 use Eccube\Doctrine\Query\Queries;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
@@ -57,9 +58,9 @@ class CustomerRepository extends AbstractRepository
     protected $orderRepository;
 
     /**
-     * @var array
+     * @var EccubeConfig
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
      * @var EncoderFactoryInterface
@@ -73,7 +74,7 @@ class CustomerRepository extends AbstractRepository
      * @param EntityManagerInterface $entityManager
      * @param OrderRepository $orderRepository
      * @param EncoderFactoryInterface $encoderFactory
-     * @param array $eccubeConfig
+     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
         RegistryInterface $registry,
@@ -81,7 +82,7 @@ class CustomerRepository extends AbstractRepository
         EntityManagerInterface $entityManager,
         OrderRepository $orderRepository,
         EncoderFactoryInterface $encoderFactory,
-        array $eccubeConfig
+        EccubeConfig $eccubeConfig
     ) {
         parent::__construct($registry, Customer::class);
 
@@ -89,7 +90,7 @@ class CustomerRepository extends AbstractRepository
         $this->entityManager = $entityManager;
         $this->orderRepository = $orderRepository;
         $this->encoderFactory = $encoderFactory;
-        $this->appConfig = $eccubeConfig;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
 
@@ -113,7 +114,7 @@ class CustomerRepository extends AbstractRepository
         if (isset($searchData['multi']) && StringUtil::isNotBlank($searchData['multi'])) {
             //スペース除去
             $clean_key_multi = preg_replace('/\s+|[　]+/u', '', $searchData['multi']);
-            $id = preg_match('/^\d+$/', $clean_key_multi) ? $clean_key_multi : null;
+            $id = preg_match('/^\d{0,10}$/', $clean_key_multi) ? $clean_key_multi : null;
             $qb
                 ->andWhere('c.id = :customer_id OR CONCAT(c.name01, c.name02) LIKE :name OR CONCAT(c.kana01, c.kana02) LIKE :kana OR c.email LIKE :email')
                 ->setParameter('customer_id', $id)

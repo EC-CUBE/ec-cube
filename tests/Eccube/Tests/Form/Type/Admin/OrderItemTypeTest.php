@@ -69,7 +69,7 @@ class OrderItemTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidPrice_OverMaxLength()
     {
-        $this->formData['price'] = $this->eccubeConfig['price_max'] + 1;
+        $this->formData['price'] = $this->eccubeConfig['eccube_price_max'] + 1;
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());

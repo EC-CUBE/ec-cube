@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Form\Type\Master\CategoryType as MasterCategoryType;
 use Eccube\Form\Type\Master\CustomerStatusType;
@@ -42,7 +43,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class SearchCustomerType extends AbstractType
 {
     /**
-     * @var array
+     * @var EccubeConfig
      */
     protected $eccubeConfig;
 
@@ -54,12 +55,12 @@ class SearchCustomerType extends AbstractType
     /**
      * SearchCustomerType constructor.
      *
-     * @param $eccubeConfig
+     * @param EccubeConfig $eccubeConfig
      * @param CustomerStatusRepository $customerStatusRepository
      */
     public function __construct(
         CustomerStatusRepository $customerStatusRepository,
-        array $eccubeConfig
+        EccubeConfig $eccubeConfig
     ) {
         $this->eccubeConfig = $eccubeConfig;
         $this->customerStatusRepository = $customerStatusRepository;
@@ -77,14 +78,14 @@ class SearchCustomerType extends AbstractType
                 'label' => '会員ID・メールアドレス・名前・名前(フリガナ)',
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['stext_len']]),
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
                 ],
             ])
             ->add('company_name', TextType::class, [
                 'label' => '会社名',
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['stext_len']]),
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
                 ],
             ])
             ->add('pref', PrefType::class, [
@@ -131,28 +132,28 @@ class SearchCustomerType extends AbstractType
                 'label' => '購入金額',
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['price_len']]),
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_price_len']]),
                 ],
             ])
             ->add('buy_total_end', IntegerType::class, [
                 'label' => '購入金額',
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['price_len']]),
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_price_len']]),
                 ],
             ])
             ->add('buy_times_start', IntegerType::class, [
                 'label' => '購入回数',
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['int_len']]),
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_int_len']]),
                 ],
             ])
             ->add('buy_times_end', IntegerType::class, [
                 'label' => '購入回数',
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['int_len']]),
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_int_len']]),
                 ],
             ])
             ->add('create_date_start', DateType::class, [
@@ -207,14 +208,14 @@ class SearchCustomerType extends AbstractType
                 'label' => '購入商品名',
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['stext_len']]),
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
                 ],
             ])
             ->add('buy_product_code', TextType::class, [
                 'label' => '購入商品コード',
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['stext_len']]),
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
                 ],
             ])
             ->add('buy_category', MasterCategoryType::class, [

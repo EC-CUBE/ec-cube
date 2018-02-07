@@ -2,8 +2,6 @@
 
 namespace Eccube\Form\Type\Shopping;
 
-use Eccube\Annotation\FormType;
-use Eccube\Annotation\Inject;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 use Eccube\Repository\DeliveryRepository;
@@ -23,9 +21,6 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
 
-/**
- * @FormType
- */
 class OrderType extends AbstractType
 {
     /**
@@ -49,8 +44,11 @@ class OrderType extends AbstractType
      * @param DeliveryRepository $deliveryRepository
      * @param PaymentRepository $paymentRepository
      */
-    public function __construct(OrderRepository $orderRepository, DeliveryRepository $deliveryRepository, PaymentRepository $paymentRepository)
-    {
+    public function __construct(
+        OrderRepository $orderRepository,
+        DeliveryRepository $deliveryRepository,
+        PaymentRepository $paymentRepository
+    ) {
         $this->orderRepository = $orderRepository;
         $this->deliveryRepository = $deliveryRepository;
         $this->paymentRepository = $paymentRepository;

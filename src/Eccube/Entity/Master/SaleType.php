@@ -38,4 +38,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class SaleType extends \Eccube\Entity\Master\AbstractMasterEntity
 {
+    /**
+     * @var integer
+     */
+    const SALE_TYPE_NORMAL = 1;
 }

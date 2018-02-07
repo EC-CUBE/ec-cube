@@ -97,7 +97,7 @@ class PageControllerTest extends AbstractAdminWebTestCase
 
         $editable = false;
 
-        $templatePath = $this->container->getParameter('eccube.theme.front_dir');
+        $templatePath = $this->container->getParameter('eccube_theme_front_dir');
         $Page = $this->container->get(PageRepository::class)->find(1);
 
         $source = $this->container->get('twig')

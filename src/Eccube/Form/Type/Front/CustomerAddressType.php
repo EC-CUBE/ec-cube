@@ -26,6 +26,7 @@
 namespace Eccube\Form\Type\Front;
 
 
+use Eccube\Common\EccubeConfig;
 use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\KanaType;
 use Eccube\Form\Type\NameType;
@@ -43,14 +44,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 class CustomerAddressType extends AbstractType
 {
     /**
-     * @var array
+     * @var EccubeConfig
      */
     protected $eccubeConfig;
 
     /**
      * @param array $config
      */
-    public function __construct($eccubeConfig)
+    public function __construct(EccubeConfig $eccubeConfig)
     {
         $this->eccubeConfig = $eccubeConfig;
     }
@@ -71,7 +72,7 @@ class CustomerAddressType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['stext_len'],
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
                     )),
                 ),
             ))

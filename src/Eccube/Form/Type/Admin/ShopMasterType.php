@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Common\EccubeConfig;
 use Eccube\Form\EventListener\ConvertKanaListener;
 use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\PriceType;
@@ -48,15 +49,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ShopMasterType extends AbstractType
 {
     /**
-     * @var array
+     * @var EccubeConfig
      */
     protected $eccubeConfig;
 
     /**
      * ShopMasterType constructor.
-     * @param array $eccubeConfig
+     * @param EccubeConfig $eccubeConfig
      */
-    public function __construct(array $eccubeConfig)
+    public function __construct(EccubeConfig $eccubeConfig)
     {
         $this->eccubeConfig = $eccubeConfig;
     }
@@ -72,7 +73,7 @@ class ShopMasterType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([
-                        'max' => $this->eccubeConfig['stext_len'],
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
                     ]),
                 ]
             ])
@@ -82,7 +83,7 @@ class ShopMasterType extends AbstractType
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\Length([
-                        'max' => $this->eccubeConfig['stext_len'],
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
                     ]),
                 ]
             ])
@@ -91,7 +92,7 @@ class ShopMasterType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([
-                        'max' => $this->eccubeConfig['mtext_len'],
+                        'max' => $this->eccubeConfig['eccube_mtext_len'],
                     ]),
                     new Assert\Regex([
                         'pattern' => '/^[[:graph:][:space:]]+$/i'
@@ -115,7 +116,7 @@ class ShopMasterType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([
-                        'max' => $this->eccubeConfig['stext_len'],
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
                     ])
                 ]
             ])
@@ -156,7 +157,7 @@ class ShopMasterType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([
-                        'max' => $this->eccubeConfig['lltext_len'],
+                        'max' => $this->eccubeConfig['eccube_lltext_len'],
                     ]),
                 ],
             ])
@@ -165,7 +166,7 @@ class ShopMasterType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([
-                        'max' => $this->eccubeConfig['lltext_len'],
+                        'max' => $this->eccubeConfig['eccube_lltext_len'],
                     ]),
                 ],
             ])
@@ -302,7 +303,7 @@ class ShopMasterType extends AbstractType
                             'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
                         ]),
                         new Assert\Length([
-                            'max' => $this->eccubeConfig['stext_len'],
+                            'max' => $this->eccubeConfig['eccube_stext_len'],
                         ]),
                     ],
                 ])
@@ -316,7 +317,7 @@ class ShopMasterType extends AbstractType
                     'required' => false,
                     'constraints' => [
                         new Assert\Length([
-                            'max' => $this->eccubeConfig['stext_len'],
+                            'max' => $this->eccubeConfig['eccube_stext_len'],
                         ]),
                         new Assert\Regex([
                             'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",

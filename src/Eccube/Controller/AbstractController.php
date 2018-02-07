@@ -28,6 +28,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\Constant;
 use Eccube\Common\Translatable;
 use Eccube\Common\TranslatableTrait;
+use Eccube\Common\EccubeConfig;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -40,7 +41,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 class AbstractController extends Controller
 {
     /**
-     * @var array
+     * @var EccubeConfig
      */
     protected $eccubeConfig;
 
@@ -70,10 +71,10 @@ class AbstractController extends Controller
     protected $session;
 
     /**
-     * @param array $eccubeConfig
+     * @param EccubeConfig $eccubeConfig
      * @required
      */
-    public function setEccubeConfig(array $eccubeConfig)
+    public function setEccubeConfig(EccubeConfig $eccubeConfig)
     {
         $this->eccubeConfig = $eccubeConfig;
     }

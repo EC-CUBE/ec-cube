@@ -1,16 +1,15 @@
 twig:
     globals:
       BaseInfo: null
-      eccube:
-        config: '%eccube.constants%'
+      eccube_config: '@Eccube\Common\EccubeConfig'
     paths:
-      '%eccube.theme.front_dir%': ~
-      '%eccube.theme.front_default_dir%': ~
+      '%eccube_theme_front_dir%': ~
+      '%eccube_theme_front_default_dir%': ~
       '%kernel.project_dir%/app/Plugin': ~
-      '%eccube.theme.admin_dir%': admin
-      '%eccube.theme.admin_default_dir%': admin
-      '%eccube.theme.user_data_dir%': user_data
-      '%eccube.theme.src_dir%/toolbar': toolbar
+      '%eccube_theme_admin_dir%': admin
+      '%eccube_theme_admin_default_dir%': admin
+      '%eccube_theme_user_data_dir%': user_data
+      '%eccube_theme_src_dir%/toolbar': toolbar
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
     # form_themes:

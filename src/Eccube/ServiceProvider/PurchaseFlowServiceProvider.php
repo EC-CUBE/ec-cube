@@ -76,6 +76,7 @@ class PurchaseFlowServiceProvider implements ServiceProviderInterface
             if ($app[BaseInfo::class]->isOptionPoint()) {
                 $processors[] = new Processor\UsePointToCustomerPurchaseProcessor();
             }
+            $processors[] = new Processor\OrderCodePurchaseProcessor($app['orm.em'], $app['config']['order_code']);
 
             return $processors;
         };
@@ -112,6 +113,7 @@ class PurchaseFlowServiceProvider implements ServiceProviderInterface
         $app['eccube.purchase.flow.order.purchase'] = function (Container $app) {
             $processors = new ArrayCollection();
             $processors[] = new Processor\AdminOrderRegisterPurchaseProcessor($app);
+            $processors[] = new Processor\OrderCodePurchaseProcessor($app['orm.em'], $app['config']['order_code']);
 
             return $processors;
         };

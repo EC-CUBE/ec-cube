@@ -2,6 +2,7 @@
 
 namespace Eccube\EventListener;
 
+use Eccube\Common\EccubeConfig;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -9,11 +10,11 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 class IpAddrListener implements EventSubscriberInterface
 {
     /**
-     * @var array
+     * @var EccubeConfig
      */
     protected $eccubeConfig;
 
-    public function __construct(array $eccubeConfig)
+    public function __construct(EccubeConfig $eccubeConfig)
     {
         $this->eccubeConfig = $eccubeConfig;
     }
@@ -24,7 +25,7 @@ class IpAddrListener implements EventSubscriberInterface
             return;
         }
 
-        $allowHosts = $this->eccubeConfig['admin_allow_hosts'];
+        $allowHosts = $this->eccubeConfig['eccube_admin_allow_hosts'];
 
         if (empty($allowHosts)) {
             return;

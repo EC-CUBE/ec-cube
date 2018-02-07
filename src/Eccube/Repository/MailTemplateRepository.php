@@ -27,6 +27,7 @@ namespace Eccube\Repository;
 use Eccube\Annotation\Repository;
 use Eccube\Entity\MailTemplate;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * MailTemplateRepository
@@ -54,7 +55,6 @@ class MailTemplateRepository extends AbstractRepository
             $MailTemplate = new MailTemplate();
         } else {
             $MailTemplate = $this->find($id);
-
         }
 
         return $MailTemplate;

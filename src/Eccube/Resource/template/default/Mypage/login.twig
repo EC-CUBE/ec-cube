@@ -55,7 +55,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 </label>
                             </div>
                             {% if error %}
-                                <p class="ec-errorMessage">{{ error.messageKey|trans(error.messageData, 'security') }}</p>
+                                <p class="ec-errorMessage">{{ error.messageKey|trans(error.messageData)|raw }}</p>
                             {% endif %}
                         </div>
                         <div class="ec-grid2">

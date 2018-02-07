@@ -1,6 +1,8 @@
 framework:
-    secret: '%env(APP_SECRET)%'
+    secret: '%env(ECCUBE_AUTH_MAGIC)%'
     default_locale: '%locale%'
+    translator:
+      fallback: ['%locale%']
     csrf_protection: { enabled: true }
     http_method_override: true
     trusted_hosts: ~
@@ -9,10 +11,11 @@ framework:
         handler_id: session.handler.native_file
         save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
         name: '%env(ECCUBE_COOKIE_NAME)%'
-        cookie_path: /
+        cookie_path: '%env(ECCUBE_COOKIE_PATH)%'
         # TODO cookieが発行されないため、いったんfalseに変更
         cookie_secure: false
-        gc_maxlifetime: '%env(ECCUBE_COOKIE_LIFETIME)%'
+        cookie_lifetime: '%env(ECCUBE_COOKIE_LIFETIME)%'
+        gc_maxlifetime: '%env(ECCUBE_GC_MAXLIFETIME)%'
         cookie_httponly: true
 
     # When using the HTTP Cache, ESI allows to render page fragments separately
@@ -23,22 +26,24 @@ framework:
     php_errors:
         log: true
     assets:
-      base_path: '/html/template/default'
+      base_path: '/html/template/%eccube.theme%'
       packages:
         admin:
           base_path: '/html/template/admin'
         save_image:
           base_path: '/html/upload/save_image'
-        temp_image:
-          base_path: '/html/upload/temp_image'
+        plugin:
+          base_path: '/html/template/plugin'
         install:
           base_path: '/html/template/install'
+        temp_image:
+          base_path: '/html/upload/temp_image'
         # json_manifest_path: '%kernel.project_dir%/public/build/manifest.json'
     cache:
         # this value is used as part of the "namespace" generated for the cache item keys
         # to avoid collisions when multiple apps share the same cache backend (e.g. a Redis server)
         # See https://symfony.com/doc/current/reference/configuration/framework.html#prefix-seed
-        prefix_seed: symfony-demo
+        prefix_seed: ec-cube
     # The 'ide' option turns all of the file paths in an exception page
     # into clickable links that open the given file using your favorite IDE.
     # When 'ide' is set to null the file is opened in your web browser.

@@ -58,6 +58,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <dt>ご注文番号：</dt>
                         <dd>{{ Order.id }}</dd>
                     </div>
+                    <div class="ec-definitions">
+                        <dt>ご注文コード：</dt>
+                        <dd>{{ Order.code }}</dd>
+                    </div>
                     {% if BaseInfo.option_mypage_order_status_display %}
                         <div class="ec-definitions">
                             <dt>ご注文状況：</dt>

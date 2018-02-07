@@ -83,4 +83,28 @@ class SchemaService
             rmdir($outputDir);
         }
     }
+
+    /**
+     * ネームスペースに含まれるEntityのテーブルを削除する
+     *
+     * @param $targetNamespace string 削除対象のネームスペース
+     */
+    public function dropTable($targetNamespace)
+    {
+        $chain = $this->entityManager->getConfiguration()->getMetadataDriverImpl();
+        $drivers = $chain->getDrivers();
+
+        $dropMetas = [];
+        foreach ($drivers as $namespace => $driver) {
+            if ($targetNamespace === $namespace) {
+                $allClassNames = $driver->getAllClassNames();
+
+                foreach ($allClassNames as $className) {
+                    $dropMetas[] = $this->entityManager->getMetadataFactory()->getMetadataFor($className);
+                }
+            }
+        }
+        $tool = new SchemaTool($this->entityManager);
+        $tool->dropSchema($dropMetas);
+    }
 }

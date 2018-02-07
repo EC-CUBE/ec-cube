@@ -161,7 +161,7 @@ class MypageController extends AbstractController
         $pagination = $paginator->paginate(
             $qb,
             $request->get('pageno', 1),
-            $this->eccubeConfig['search_pmax']
+            $this->eccubeConfig['eccube_search_pmax']
         );
 
         return [
@@ -305,7 +305,7 @@ class MypageController extends AbstractController
         $pagination = $paginator->paginate(
             $qb,
             $request->get('pageno', 1),
-            $this->eccubeConfig['search_pmax'],
+            $this->eccubeConfig['eccube_search_pmax'],
             array('wrap-queries' => true)
         );
 

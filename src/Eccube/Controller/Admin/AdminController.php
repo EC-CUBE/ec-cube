@@ -93,7 +93,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/%admin_route%/login", name="admin_login")
+     * @Route("/%eccube_admin_route%/login", name="admin_login")
      * @Template("@admin/login.twig")
      */
     public function login(Request $request)
@@ -122,7 +122,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/%admin_route%/", name="admin_homepage")
+     * @Route("/%eccube_admin_route%/", name="admin_homepage")
      * @Template("@admin/index.twig")
      */
     public function index(Request $request)
@@ -142,11 +142,11 @@ class AdminController extends AbstractController
         }
 
         // 受注マスター検索用フォーム
-        $searchOrderBuilder = $this->createFormBuilder(SearchOrderType::class);
+        $searchOrderBuilder =$this->formFactory->createBuilder(SearchOrderType::class);
         // 商品マスター検索用フォーム
-        $searchProductBuilder = $this->createFormBuilder(SearchProductType::class);
+        $searchProductBuilder = $this->formFactory->createBuilder(SearchProductType::class);
         // 会員マスター検索用フォーム
-        $searchCustomerBuilder = $this->createFormBuilder(SearchCustomerType::class);
+        $searchCustomerBuilder = $this->formFactory->createBuilder(SearchCustomerType::class);
 
         $event = new EventArgs(
             array(
@@ -253,7 +253,7 @@ class AdminController extends AbstractController
     /**
      * パスワード変更画面
      *
-     * @Route("/%admin_route%/change_password", name="admin_change_password")
+     * @Route("/%eccube_admin_route%/change_password", name="admin_change_password")
      * @Template("@admin/change_password.twig")
      *
      * @param Request $request
@@ -317,7 +317,7 @@ class AdminController extends AbstractController
     /**
      * 在庫なし商品の検索結果を表示する.
      *
-     * @Route("/%admin_route%/nonstock", name="admin_homepage_nonstock")
+     * @Route("/%eccube_admin_route%/nonstock", name="admin_homepage_nonstock")
      *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
@@ -340,7 +340,7 @@ class AdminController extends AbstractController
 
             return $this->redirectToRoute('admin_product_page', array(
                 'page_no' => 1,
-                'status' => $this->eccubeConfig['admin_product_stock_status']));
+                'status' => $this->eccubeConfig['eccube_admin_product_stock_status']));
         }
         return $this->redirectToRoute('admin_homepage');
     }

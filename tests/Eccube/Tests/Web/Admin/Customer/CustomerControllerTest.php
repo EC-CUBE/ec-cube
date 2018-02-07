@@ -39,7 +39,6 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
      */
     public function tearDown()
     {
-        $this->cleanUpMailCatcherMessages();
         parent::tearDown();
     }
 

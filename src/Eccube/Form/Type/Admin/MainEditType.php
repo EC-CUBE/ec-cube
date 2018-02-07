@@ -26,6 +26,7 @@ namespace Eccube\Form\Type\Admin;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Layout;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Page;
@@ -55,7 +56,7 @@ class MainEditType extends AbstractType
     protected $deviceTypeRepository;
 
     /**
-     * @var array
+     * @var EccubeConfig
      */
     protected $eccubeConfig;
 
@@ -63,12 +64,12 @@ class MainEditType extends AbstractType
      * MainEditType constructor.
      * @param EntityManagerInterface $entityManager
      * @param DeviceTypeRepository $deviceTypeRepository
-     * @param array $eccubeConfig
+     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
         EntityManagerInterface $entityManager,
         DeviceTypeRepository $deviceTypeRepository,
-        array $eccubeConfig
+        EccubeConfig $eccubeConfig
     ) {
         $this->entityManager = $entityManager;
         $this->deviceTypeRepository = $deviceTypeRepository;
@@ -87,7 +88,7 @@ class MainEditType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['stext_len'],
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
                     )),
                 ),
             ))
@@ -97,7 +98,7 @@ class MainEditType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['stext_len'],
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
                     )),
                     new Assert\Regex(array(
                         'pattern' => '/^([0-9a-zA-Z_\-]+\/?)+(?<!\/)$/',
@@ -110,7 +111,7 @@ class MainEditType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['stext_len'],
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
                     )),
                     new Assert\Regex(array(
                         'pattern' => '/^([0-9a-zA-Z_\-]+\/?)+$/',
@@ -131,7 +132,7 @@ class MainEditType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['stext_len'],
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
                     )),
                 ),
             ))
@@ -140,7 +141,7 @@ class MainEditType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['stext_len'],
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
                     )),
                 ),
             ))
@@ -149,7 +150,7 @@ class MainEditType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['stext_len'],
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
                     )),
                 ),
             ))
@@ -158,7 +159,7 @@ class MainEditType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['stext_len'],
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
                     )),
                 ),
             ))

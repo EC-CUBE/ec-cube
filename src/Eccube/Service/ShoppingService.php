@@ -24,8 +24,10 @@
 namespace Eccube\Service;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Delivery;
@@ -56,9 +58,12 @@ use Eccube\Repository\PaymentRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Util\StringUtil;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
@@ -132,9 +137,9 @@ class ShoppingService
     protected $entityManager;
 
     /**
-     * @var array
+     * @var EccubeConfig
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
      * @var PrefRepository
@@ -188,7 +193,7 @@ class ShoppingService
      * @param PaymentRepository $paymentRepository
      * @param DeviceTypeRepository $deviceTypeRepository
      * @param EntityManager $entityManager
-     * @param array $eccubeConfig
+     * @param EccubeConfig $eccubeConfig
      * @param PrefRepository $prefRepository
      * @param Session $session
      * @param OrderRepository $orderRepository
@@ -200,8 +205,8 @@ class ShoppingService
     public function __construct(
         MailTemplateRepository $mailTemplateRepository,
         MailService $mailService,
-        EventDispatcher $eventDispatcher,
-        FormFactory $formFactory,
+        EventDispatcherInterface $eventDispatcher,
+        FormFactoryInterface $formFactory,
         DeliveryFeeRepository $deliveryFeeRepository,
         TaxRuleRepository $taxRuleRepository,
         CustomerAddressRepository $customerAddressRepository,
@@ -210,10 +215,10 @@ class ShoppingService
         OrderStatusRepository $orderStatusRepository,
         PaymentRepository $paymentRepository,
         DeviceTypeRepository $deviceTypeRepository,
-        EntityManager $entityManager,
-        array $eccubeConfig,
+        EntityManagerInterface $entityManager,
+        EccubeConfig $eccubeConfig,
         PrefRepository $prefRepository,
-        Session $session,
+        SessionInterface $session,
         OrderRepository $orderRepository,
         CartService $cartService,
         OrderService $orderService,
@@ -233,7 +238,7 @@ class ShoppingService
         $this->paymentRepository = $paymentRepository;
         $this->deviceTypeRepository = $deviceTypeRepository;
         $this->entityManager = $entityManager;
-        $this->appConfig = $eccubeConfig;
+        $this->eccubeConfig = $eccubeConfig;
         $this->prefRepository = $prefRepository;
         $this->session = $session;
         $this->orderRepository = $orderRepository;
@@ -1010,7 +1015,7 @@ class ShoppingService
             $period = new \DatePeriod (
                 new \DateTime($minDate.' day'),
                 new \DateInterval('P1D'),
-                new \DateTime($minDate + $this->appConfig['deliv_date_end_max'].' day')
+                new \DateTime($minDate + $this->eccubeConfig['eccube_deliv_date_end_max'].' day')
             );
 
             foreach ($period as $day) {

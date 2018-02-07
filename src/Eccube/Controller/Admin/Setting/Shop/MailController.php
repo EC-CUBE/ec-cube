@@ -33,6 +33,9 @@ use Eccube\Repository\MailTemplateRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Filesystem\Filesystem;
+use Eccube\Util\StringUtil;
+use Twig\Environment;
 
 /**
  * Class MailController
@@ -57,11 +60,11 @@ class MailController extends AbstractController
     }
 
     /**
-     * @Route("/%admin_route%/setting/shop/mail", name="admin_setting_shop_mail")
-     * @Route("/%admin_route%/setting/shop/mail/{id}", requirements={"id" = "\d+"}, name="admin_setting_shop_mail_edit")
+     * @Route("/%eccube_admin_route%/setting/shop/mail", name="admin_setting_shop_mail")
+     * @Route("/%eccube_admin_route%/setting/shop/mail/{id}", requirements={"id" = "\d+"}, name="admin_setting_shop_mail_edit")
      * @Template("@admin/Setting/Shop/mail.twig")
      */
-    public function index(Request $request, MailTemplate $Mail = null)
+    public function index(Request $request, MailTemplate $Mail = null, Environment $twig)
     {
         $builder = $this->formFactory
             ->createBuilder(MailType::class, $Mail);
@@ -77,7 +80,17 @@ class MailController extends AbstractController
 
         $form = $builder->getForm();
         $form['template']->setData($Mail);
+        
+        // 更新時
+        if (!is_null($Mail)) {
+            // テンプレートファイルの取得
+            $source = $twig->getLoader()
+                ->getSourceContext($Mail->getFileName())
+                ->getCode();
 
+            $form->get('tpl_data')->setData($source);
+        }   
+        
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
 
@@ -91,11 +104,22 @@ class MailController extends AbstractController
             if ($form->isValid()) {
 
                 $this->entityManager->flush();
+                
+                // ファイル生成・更新
+                $templatePath = $this->getParameter('eccube_theme_front_dir');
+                $filePath = $templatePath.'/'.$Mail->getFileName();
+                
+                $fs = new Filesystem();
+                $mailData = $form->get('tpl_data')->getData();
+                $mailData = StringUtil::convertLineFeed($mailData);
+                $fs->dumpFile($filePath, $mailData);
 
                 $event = new EventArgs(
                     array(
                         'form' => $form,
                         'Mail' => $Mail,
+                        'templatePath' => $templatePath,
+                        'filePath' => $filePath,
                     ),
                     $request
                 );

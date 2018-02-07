@@ -26,6 +26,7 @@ namespace Eccube\Form\Type\Admin;
 use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\News;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -39,11 +40,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 class NewsType extends AbstractType
 {
     /**
-     * @var array
+     * @var EccubeConfig
      */
     protected $eccubeConfig;
 
-    public function __construct($eccubeConfig)
+    public function __construct(EccubeConfig $eccubeConfig)
     {
         $this->eccubeConfig = $eccubeConfig;
     }
@@ -70,7 +71,7 @@ class NewsType extends AbstractType
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Length(array('max' => $this->eccubeConfig['mtext_len'])),
+                    new Assert\Length(array('max' => $this->eccubeConfig['eccube_mtext_len'])),
                 ),
             ))
             ->add('url', TextType::class, array(
@@ -78,7 +79,7 @@ class NewsType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Url(),
-                    new Assert\Length(array('max' => $this->eccubeConfig['mtext_len'])),
+                    new Assert\Length(array('max' => $this->eccubeConfig['eccube_mtext_len'])),
                 ),
             ))
             ->add('link_method', CheckboxType::class, array(
@@ -90,7 +91,7 @@ class NewsType extends AbstractType
                 'label' => '本文',
                 'required' => false,
                 'constraints' => array(
-                    new Assert\Length(array('max' => $this->eccubeConfig['ltext_len'])),
+                    new Assert\Length(array('max' => $this->eccubeConfig['eccube_ltext_len'])),
                 ),
             ));
     }

@@ -8,11 +8,10 @@ parameters:
     base_currency_code: 'JPY'
     currency_code: '%base_currency_code%'
     app.notifications.email_sender: anonymous@example.com
-    admin_route: '%env(ECCUBE_ADMIN_ROUTE)%'
     user_data_route: 'user_data'
     eccube.scheme: 'http'
     eccube.theme: 'default'
-    eccube.twig.block.templates:
+    eccube_twig_block_templates:
       - render_block.twig
 
 services:
@@ -26,11 +25,9 @@ services:
         # if you need to do this, you can override this setting on individual services
         public: false
         bind:
-          $admin_route: '%admin_route%'
           $auth_magic: '%env(ECCUBE_AUTH_MAGIC)%'
           $auth_type: 'HMAC'
           $password_hash_algos: 'sha256'
-          $eccubeConfig: '%eccube.constants%'
           $projectRoot: '%kernel.project_dir%'
           $environment: '%kernel.environment%'
 
@@ -41,6 +38,9 @@ services:
         # you can exclude directories or files
         # but if a service is unused, it's removed anyway
         exclude: '../../../src/Eccube/{Annotation,Application,Common,ControllerProvider,Entity,Exception,EventListener,Log,Plugin,Routing,ServiceProvider,Util,Resource,Doctrine/ORM/tools/}'
+
+    Eccube\Common\EccubeConfig:
+        public: true
 
     Eccube\Service\TaxRuleService:
         lazy: true

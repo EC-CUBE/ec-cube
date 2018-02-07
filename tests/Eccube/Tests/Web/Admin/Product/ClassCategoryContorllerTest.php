@@ -24,14 +24,28 @@
 
 namespace Eccube\Tests\Web\Admin\Product;
 
+use Eccube\Repository\ClassCategoryRepository;
+use Eccube\Repository\ClassNameRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class ClassCategoryControllerTest extends AbstractAdminWebTestCase
 {
+    /**
+     * @var ClassNameRepository
+     */
+    protected $classNameRepository;
+
+    /**
+     * @var ClassCategoryRepository
+     */
+    protected $classCategoryRepository;
+
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
+
+        $this->classNameRepository = $this->container->get(ClassNameRepository::class);
+        $this->classCategoryRepository = $this->container->get(ClassCategoryRepository::class);
     }
 
     public function testRoutingAdminProductClassCategory()
@@ -39,9 +53,9 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
         // before
         $TestCreator = $this->createMember();
         $TestClassName = $this->newTestClassName($TestCreator);
-        $this->app['orm.em']->persist($TestClassName);
-        $this->app['orm.em']->flush();
-        $test_class_name_id = $this->app['eccube.repository.class_name']
+        $this->entityManager->persist($TestClassName);
+        $this->entityManager->flush();
+        $test_class_name_id = $this->classNameRepository
             ->findOneBy(array(
                 'name' => $TestClassName->getName()
             ))
@@ -49,13 +63,10 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
 
         // main
         $this->client->request('GET',
-            $this->app->url('admin_product_class_category', array('class_name_id' => $test_class_name_id))
+            $this->generateUrl('admin_product_class_category', array('class_name_id' => $test_class_name_id))
         );
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        // after
-        $this->app['orm.em']->remove($TestClassName);
-        $this->app['orm.em']->flush();
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testRoutingAdminProductClassCategoryEdit()
@@ -63,17 +74,19 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
         // before
         $TestCreator = $this->createMember();
         $TestClassName = $this->newTestClassName($TestCreator);
-        $this->app['orm.em']->persist($TestClassName);
-        $this->app['orm.em']->flush();
-        $test_class_name_id = $this->app['eccube.repository.class_name']
+        $this->entityManager->persist($TestClassName);
+        $this->entityManager->flush();
+
+        $test_class_name_id = $this->classNameRepository
             ->findOneBy(array(
                 'name' => $TestClassName->getName()
             ))
             ->getId();
+
         $TestClassCategory = $this->newTestClassCategory($TestCreator, $TestClassName);
-        $this->app['orm.em']->persist($TestClassCategory);
-        $this->app['orm.em']->flush();
-        $test_class_category_id = $this->app['eccube.repository.class_category']
+        $this->entityManager->persist($TestClassCategory);
+        $this->entityManager->flush();
+        $test_class_category_id = $this->classCategoryRepository
             ->findOneBy(array(
                 'name' => $TestClassCategory->getName()
             ))
@@ -81,16 +94,12 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
 
         // main
         $this->client->request('GET',
-            $this->app->url('admin_product_class_category_edit',
-                array('class_name_id' => $test_class_name_id, 'id' => $test_class_category_id))
+            $this->generateUrl('admin_product_class_category_edit',
+                array('class_name_id' => $test_class_name_id, 'id' => $test_class_category_id)),
+            array('_token' => 'dummy')
         );
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        // after
-        $this->app['orm.em']->remove($TestClassCategory);
-        $this->app['orm.em']->flush();
-        $this->app['orm.em']->remove($TestClassName);
-        $this->app['orm.em']->flush();
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testRoutingAdminProductClassCategoryDelete()
@@ -98,35 +107,32 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
         // before
         $TestCreator = $this->createMember();
         $TestClassName = $this->newTestClassName($TestCreator);
-        $this->app['orm.em']->persist($TestClassName);
-        $this->app['orm.em']->flush();
-        $test_class_name_id = $this->app['eccube.repository.class_name']
+        $this->entityManager->persist($TestClassName);
+        $this->entityManager->flush();
+        $test_class_name_id = $this->classNameRepository
             ->findOneBy(array(
                 'name' => $TestClassName->getName()
             ))
             ->getId();
         $TestClassCategory = $this->newTestClassCategory($TestCreator, $TestClassName);
-        $this->app['orm.em']->persist($TestClassCategory);
-        $this->app['orm.em']->flush();
-        $test_class_category_id = $this->app['eccube.repository.class_category']
+        $this->entityManager->persist($TestClassCategory);
+        $this->entityManager->flush();
+        $test_class_category_id = $this->classCategoryRepository
             ->findOneBy(array(
                 'name' => $TestClassCategory->getName()
             ))
             ->getId();
 
         // main
-        $redirectUrl = $this->app->url('admin_product_class_category', array('class_name_id' => $test_class_name_id));
+        $redirectUrl = $this->generateUrl('admin_product_class_category', array('class_name_id' => $test_class_name_id));
         $this->client->request('DELETE',
-            $this->app->url('admin_product_class_category_delete',
-                array('class_name_id' => $test_class_name_id, 'id' => $test_class_category_id))
+            $this->generateUrl('admin_product_class_category_delete',
+                array('class_name_id' => $test_class_name_id, 'id' => $test_class_category_id, )
+                ),
+            array('_token' => 'dummy')
         );
-        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
-        // after
-        $this->app['orm.em']->remove($TestClassCategory);
-        $this->app['orm.em']->flush();
-        $this->app['orm.em']->remove($TestClassName);
-        $this->app['orm.em']->flush();
+        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
     }
 
     public function testRoutingAdminProductClassCategoryToggle()
@@ -134,40 +140,34 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
         // before
         $TestCreator = $this->createMember();
         $TestClassName = $this->newTestClassName($TestCreator);
-        $this->app['orm.em']->persist($TestClassName);
-        $this->app['orm.em']->flush();
-        $test_class_name_id = $this->app['eccube.repository.class_name']
+        $this->entityManager->persist($TestClassName);
+        $this->entityManager->flush();
+        $test_class_name_id = $this->classNameRepository
             ->findOneBy(array(
                 'name' => $TestClassName->getName()
             ))
             ->getId();
         $TestClassCategory = $this->newTestClassCategory($TestCreator, $TestClassName);
-        $this->app['orm.em']->persist($TestClassCategory);
-        $this->app['orm.em']->flush();
-        $test_class_category_id = $this->app['eccube.repository.class_category']
+        $this->entityManager->persist($TestClassCategory);
+        $this->entityManager->flush();
+        $test_class_category_id = $this->classCategoryRepository
             ->findOneBy(array(
                 'name' => $TestClassCategory->getName()
             ))
             ->getId();
 
         // main
-        $redirectUrl = $this->app->url('admin_product_class_category', array('class_name_id' => $test_class_name_id));
+        $redirectUrl = $this->generateUrl('admin_product_class_category', array('class_name_id' => $test_class_name_id));
         $this->client->request('PUT',
-            $this->app->url('admin_product_class_category_visibility',
-                array('class_name_id' => $test_class_name_id, 'id' => $test_class_category_id))
+            $this->generateUrl('admin_product_class_category_visibility',
+                array('class_name_id' => $test_class_name_id, 'id' => $test_class_category_id)),
+            array('_token' => 'dummy')
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
-
-        // after
-        $this->app['orm.em']->remove($TestClassCategory);
-        $this->app['orm.em']->flush();
-        $this->app['orm.em']->remove($TestClassName);
-        $this->app['orm.em']->flush();
     }
 
     private function newTestClassName($TestCreator)
     {
-        $Creator = $this->createMember();
         $TestClassName = new \Eccube\Entity\ClassName();
         $TestClassName->setName('形状')
             ->setSortNo(100)
@@ -188,3 +188,4 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
         return $TestClassCategory;
     }
 }
+

@@ -88,7 +88,7 @@ class DeliveryFeeTypeTest extends AbstractTypeTestCase
 
     public function testValidData_PriceLen()
     {
-        $this->form->submit(array('fee' => str_repeat('1', $this->eccubeConfig['price_len'])));
+        $this->form->submit(array('fee' => str_repeat('1', $this->eccubeConfig['eccube_price_len'])));
         $this->assertTrue($this->form->isValid());
     }
 
@@ -106,7 +106,7 @@ class DeliveryFeeTypeTest extends AbstractTypeTestCase
 
     public function testInvalidData_PriceLen()
     {
-        $this->form->submit(array('fee' => $this->eccubeConfig['price_max'] + 1));
+        $this->form->submit(array('fee' => $this->eccubeConfig['eccube_price_max'] + 1));
         $this->assertFalse($this->form->isValid());
     }
 }

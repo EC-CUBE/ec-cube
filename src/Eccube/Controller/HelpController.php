@@ -24,10 +24,8 @@
 
 namespace Eccube\Controller;
 
-use Eccube\Repository\HelpRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
 
 /**
  * @Route(service=HelpController::class)
@@ -35,19 +33,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class HelpController extends AbstractController
 {
     /**
-     * @var HelpRepository
-     */
-    protected $helpRepository;
-
-    /**
      * HelpController constructor.
-     * @param HelpRepository $helpRepository
      */
-    public function __construct(HelpRepository $helpRepository)
+    public function __construct()
     {
-        $this->helpRepository = $helpRepository;
     }
-
 
     /**
      * 特定商取引法.
@@ -57,11 +47,7 @@ class HelpController extends AbstractController
      */
     public function tradelaw()
     {
-        $Help = $this->helpRepository->get();
-
-        return [
-            'help' => $Help,
-        ];
+        return [];
     }
 
     /**
@@ -105,10 +91,6 @@ class HelpController extends AbstractController
      */
     public function agreement()
     {
-        $Help = $this->helpRepository->get();
-
-        return [
-            'help' => $Help,
-        ];
+        return [];
     }
 }

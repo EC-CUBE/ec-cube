@@ -24,6 +24,7 @@
 
 namespace Eccube\Repository;
 
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Block;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -39,22 +40,22 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 class BlockRepository extends AbstractRepository
 {
     /**
-     * @var array
+     * @var EccubeConfig
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
      * BlockRepository constructor.
      *
      * @param RegistryInterface $registry
-     * @param array $eccubeConfig
+     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
         RegistryInterface $registry,
-        array $eccubeConfig
+        EccubeConfig $eccubeConfig
     ) {
         parent::__construct($registry, Block::class);
-        $this->appConfig = $eccubeConfig;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
@@ -172,51 +173,5 @@ class BlockRepository extends AbstractRepository
             ->getResult();
 
         return $Pages;
-    }
-
-    /**
-     * 書き込みパスの取得
-     * User定義の場合： /html/user_data
-     * そうでない場合： /app/template/{template_code}
-     *
-     * @param  boolean $isUser
-     * @return string
-     *
-     * @deprecated since 3.0.0, to be removed in 3.1
-     */
-    public function getWriteTemplatePath($isUser = false)
-    {
-        return $this->appConfig['block_realdir'];
-    }
-
-    /**
-     * 読み込みファイルの取得
-     *
-     * 1. block_realdir
-     *      app/template/{template_code}/block
-     * 2. block_default_readldir
-     *      src/Eccube/Resource/template/default/block
-     *
-     * @param string $fileName
-     * @param  boolean $isUser
-     *
-     * @return array
-     */
-    public function getReadTemplateFile($fileName, $isUser = false)
-    {
-        $readPaths = array(
-            $this->appConfig['block_realdir'],
-            $this->appConfig['block_default_realdir'],
-        );
-        foreach ($readPaths as $readPath) {
-            $filePath = $readPath . '/' . $fileName . '.twig';
-            $fs = new Filesystem();
-            if ($fs->exists($filePath)) {
-                return array(
-                    'file_name' => $fileName,
-                    'tpl_data' => file_get_contents($filePath),
-                );
-            }
-        }
     }
 }

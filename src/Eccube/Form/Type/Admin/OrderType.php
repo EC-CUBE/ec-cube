@@ -25,6 +25,7 @@
 namespace Eccube\Form\Type\Admin;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
 use Eccube\Form\DataTransformer;
 use Eccube\Form\Type\AddressType;
@@ -55,7 +56,7 @@ class OrderType extends AbstractType
     protected $entityManager;
 
     /**
-     * @var array
+     * @var EccubeConfig
      */
     protected $eccubeConfig;
 
@@ -67,10 +68,10 @@ class OrderType extends AbstractType
     /**
      * OrderType constructor.
      * @param EntityManagerInterface $entityManager
-     * @param array $eccubeConfig
+     * @param EccubeConfig $eccubeConfig
      * @param BaseInfo $BaseInfo
      */
-    public function __construct(EntityManagerInterface $entityManager, array $eccubeConfig, BaseInfo $BaseInfo)
+    public function __construct(EntityManagerInterface $entityManager, EccubeConfig $eccubeConfig, BaseInfo $BaseInfo)
     {
         $this->entityManager = $entityManager;
         $this->eccubeConfig = $eccubeConfig;
@@ -105,7 +106,7 @@ class OrderType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['stext_len'],
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
                     )),
                 ),
             ))
@@ -130,7 +131,7 @@ class OrderType extends AbstractType
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(array(
-                            'max' => $this->eccubeConfig['mtext_len'],
+                            'max' => $this->eccubeConfig['eccube_mtext_len'],
                         )),
                     ),
                     'attr' => array('class' => 'p-locality'),
@@ -140,7 +141,7 @@ class OrderType extends AbstractType
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(array(
-                            'max' => $this->eccubeConfig['mtext_len'],
+                            'max' => $this->eccubeConfig['eccube_mtext_len'],
                         )),
                     ),
                     'attr' => array('class' => 'p-street-address'),
@@ -171,7 +172,7 @@ class OrderType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['stext_len'],
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
                     )),
                 ),
             ))
@@ -180,7 +181,7 @@ class OrderType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['ltext_len'],
+                        'max' => $this->eccubeConfig['eccube_ltext_len'],
                     )),
                 ),
             ))
@@ -222,7 +223,7 @@ class OrderType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['ltext_len'],
+                        'max' => $this->eccubeConfig['eccube_ltext_len'],
                     )),
                 ),
             ))

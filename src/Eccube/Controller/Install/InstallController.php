@@ -33,6 +33,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\Setup;
 use Eccube\Common\Constant;
+use Eccube\Common\EccubeConfig;
 use Eccube\Controller\AbstractController;
 use Eccube\Form\Type\Install\Step1Type;
 use Eccube\Form\Type\Install\Step3Type;
@@ -108,8 +109,7 @@ class InstallController extends AbstractController
         SessionInterface $session,
         FormFactoryInterface $formFactory,
         PasswordEncoder $encoder,
-        $environment,
-        $eccubeConfig
+        EccubeConfig $eccubeConfig
     ) {
         $this->rootDir = realpath(__DIR__.'/../../../..');
         $this->configDir = realpath($this->rootDir.'/app/config/eccube');
@@ -118,7 +118,7 @@ class InstallController extends AbstractController
         $this->session = $session;
         $this->formFactory = $formFactory;
         $this->encoder = $encoder;
-        $this->environment = $environment;
+        $this->environment = $eccubeConfig->get('kernel.environment');
         $this->eccubeConfig = $eccubeConfig;
 
         $sessionData = $this->getSessionData($this->session);
@@ -414,7 +414,6 @@ class InstallController extends AbstractController
         $replacement = [
             'APP_ENV' => 'dev', // TODO 本番環境では prod にするが cache:warmup しないと Not found になってしまう
             'APP_DEBUG' => '1',
-            'APP_SECRET' => StringUtil::random(32),
             'DATABASE_URL' => $databaseUrl,
             'MAILER_URL' => $mailerUrl,
             'ECCUBE_AUTH_MAGIC' => $sessionData['authmagic'],

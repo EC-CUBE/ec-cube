@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Common\EccubeConfig;
 use Eccube\Form\Type\Master\OrderStatusType;
 use Eccube\Form\Type\Master\ShippingStatusType;
 use Symfony\Component\Form\AbstractType;
@@ -36,11 +37,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 class SearchShippingType extends AbstractType
 {
     /**
-     * @var array
+     * @var EccubeConfig
      */
     protected $eccubeConfig;
 
-    public function __construct($eccubeConfig)
+    public function __construct(EccubeConfig $eccubeConfig)
     {
         $this->eccubeConfig = $eccubeConfig;
     }
@@ -56,7 +57,7 @@ class SearchShippingType extends AbstractType
                 'label' => '配送番号・お届け先名・お届け先（フリガナ）・お届け先会社名',
                 'required' => false,
                 'constraints' => array(
-                    new Assert\Length(array('max' => $this->eccubeConfig['stext_len'])),
+                    new Assert\Length(array('max' => $this->eccubeConfig['eccube_stext_len'])),
                 ),
             ))
             ->add('order_status', OrderStatusType::class, array(
@@ -165,6 +166,13 @@ class SearchShippingType extends AbstractType
             ))
             ->add('order_id', TextType::class, array(
                 'label' => '注文番号',
+                'required' => false,
+                'constraints' => array(
+                    new Assert\Length(array('max' => 10)),
+                ),
+            ))
+            ->add('order_code', TextType::class, array(
+                'label' => '注文コード',
                 'required' => false,
             ))
         ;

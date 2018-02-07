@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type\Install;
 
+use Eccube\Common\EccubeConfig;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -41,7 +42,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class Step3Type extends AbstractType
 {
     /**
-     * @var array
+     * @var EccubeConfig
      */
     protected $eccubeConfig;
 
@@ -50,7 +51,7 @@ class Step3Type extends AbstractType
      */
     protected $validator;
 
-    public function __construct(ValidatorInterface $validator, $eccubeConfig)
+    public function __construct(ValidatorInterface $validator, EccubeConfig $eccubeConfig)
     {
         $this->validator = $validator;
         $this->eccubeConfig = $eccubeConfig;
@@ -67,7 +68,7 @@ class Step3Type extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['stext_len'],
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
                     )),
                 ),
             ))
@@ -79,12 +80,12 @@ class Step3Type extends AbstractType
                 ),
             ))
             ->add('login_id', TextType::class, array(
-                'label' => '管理画面ログインID（半角英数字'.$this->eccubeConfig['id_min_len'].'～'.$this->eccubeConfig['id_max_len'].'文字）',
+                'label' => '管理画面ログインID（半角英数字'.$this->eccubeConfig['eccube_id_min_len'].'～'.$this->eccubeConfig['eccube_id_max_len'].'文字）',
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'min' => $this->eccubeConfig['id_min_len'],
-                        'max' => $this->eccubeConfig['id_max_len'],
+                        'min' => $this->eccubeConfig['eccube_id_min_len'],
+                        'max' => $this->eccubeConfig['eccube_id_max_len'],
                     )),
                     new Assert\Regex(array(
                         'pattern' => '/^[[:graph:][:space:]]+$/i',
@@ -93,12 +94,12 @@ class Step3Type extends AbstractType
                 ),
             ))
             ->add('login_pass', PasswordType::class, array(
-                'label' => '管理画面パスワード（半角英数字'.$this->eccubeConfig['password_min_len'].'～'.$this->eccubeConfig['password_max_len'].'文字）',
+                'label' => '管理画面パスワード（半角英数字'.$this->eccubeConfig['eccube_password_min_len'].'～'.$this->eccubeConfig['eccube_password_max_len'].'文字）',
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'min' => $this->eccubeConfig['password_min_len'],
-                        'max' => $this->eccubeConfig['password_max_len'],
+                        'min' => $this->eccubeConfig['eccube_password_min_len'],
+                        'max' => $this->eccubeConfig['eccube_password_max_len'],
                     )),
                     new Assert\Regex(array(
                         'pattern' => '/^[[:graph:][:space:]]+$/i',
@@ -107,12 +108,12 @@ class Step3Type extends AbstractType
                 ),
             ))
             ->add('admin_dir', TextType::class, array(
-                'label' => '管理画面のディレクトリ名（半角英数字'.$this->eccubeConfig['id_min_len'].'～'.$this->eccubeConfig['id_max_len'].'文字）',
+                'label' => '管理画面のディレクトリ名（半角英数字'.$this->eccubeConfig['eccube_id_min_len'].'～'.$this->eccubeConfig['eccube_id_max_len'].'文字）',
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'min' => $this->eccubeConfig['id_min_len'],
-                        'max' => $this->eccubeConfig['id_max_len'],
+                        'min' => $this->eccubeConfig['eccube_id_min_len'],
+                        'max' => $this->eccubeConfig['eccube_id_max_len'],
                     )),
                     new Assert\Regex(array('pattern' => '/\A\w+\z/')),
                 ),

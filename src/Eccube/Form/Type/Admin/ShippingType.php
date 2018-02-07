@@ -25,6 +25,7 @@
 namespace Eccube\Form\Type\Admin;
 
 use Doctrine\ORM\EntityRepository;
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
 use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\KanaType;
@@ -50,7 +51,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ShippingType extends AbstractType
 {
     /**
-     * @var array
+     * @var EccubeConfig
      */
     protected $eccubeConfig;
 
@@ -70,7 +71,7 @@ class ShippingType extends AbstractType
     protected $BaseInfo;
 
     public function __construct(
-        $eccubeConfig,
+        EccubeConfig $eccubeConfig,
         DeliveryRepository $deliveryRepository,
         DeliveryTimeRepository $deliveryTimeRepository,
         BaseInfo $BaseInfo
@@ -109,7 +110,7 @@ class ShippingType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['stext_len'],
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
                     ))
                 ),
             ))
@@ -134,7 +135,7 @@ class ShippingType extends AbstractType
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(array(
-                            'max' => $this->eccubeConfig['mtext_len'],
+                            'max' => $this->eccubeConfig['eccube_mtext_len'],
                         )),
                     ),
                     'attr' => array('class' => 'p-locality')
@@ -144,7 +145,7 @@ class ShippingType extends AbstractType
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(array(
-                            'max' => $this->eccubeConfig['mtext_len'],
+                            'max' => $this->eccubeConfig['eccube_mtext_len'],
                         )),
                     ),
                     'attr' => array('class' => 'p-street-address')
@@ -183,7 +184,7 @@ class ShippingType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['mtext_len'],
+                        'max' => $this->eccubeConfig['eccube_mtext_len'],
                     )),
                 ),
             ))
@@ -192,7 +193,7 @@ class ShippingType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['ltext_len'],
+                        'max' => $this->eccubeConfig['eccube_ltext_len'],
                     )),
                 ),
             ))
