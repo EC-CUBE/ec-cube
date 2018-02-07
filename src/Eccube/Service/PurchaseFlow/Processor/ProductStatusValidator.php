@@ -42,9 +42,11 @@ class ProductStatusValidator extends ValidatableItemProcessor
      */
     protected function validate(ItemInterface $item, PurchaseContext $context)
     {
-        $Product = $item->getProductClass()->getProduct();
-        if ($Product->getStatus()->getId() != ProductStatus::DISPLAY_SHOW) {
-            $this->throwInvalidItemException('cart.product.not.status');
+        if ($item->isProduct()) {
+            $Product = $item->getProductClass()->getProduct();
+            if ($Product->getStatus()->getId() != ProductStatus::DISPLAY_SHOW) {
+                $this->throwInvalidItemException('cart.product.not.status');
+            }
         }
     }
 
