@@ -1566,7 +1566,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         );
 
         // Testcase from https://github.com/EC-CUBE/ec-cube/pull/1745#issuecomment-245550676
-        $this->expected = 'サンプル業者';
+        $this->expected = 'サンプル宅配';
         $this->actual = $deliver;
         $this->assertTrue(in_array($this->expected, $this->actual));
 
@@ -1577,13 +1577,13 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
             array(
                 // 配送先1
                 array(
-                    'delivery' => 1,
-                    'deliveryTime' => 1,
+                    'delivery' => 2,
                 ),
                 // 配送先2
                 array(
-                    'delivery' => 2,
-                )
+                    'delivery' => 1,
+                    'deliveryTime' => 1,
+                ),
             )
         );
 
@@ -1794,11 +1794,11 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
      *
      * Then:
      * - Number of Shipping: 4
-     *  + Shipping 1: Product type A x2 - address 1
-     *  + Shipping 2: Product type A x1 - address 2
-     *  + Shipping 3: Product type B x2 - address 1
-     *  + Shipping 4: Product type B x1 - address 2
-     * - Delivery 3: サンプル宅配
+     *  + Shipping 1: Product type B x2 - address 1
+     *  + Shipping 2: Product type A x2 - address 1
+     *  + Shipping 3: Product type B x1 - address 2
+     *  + Shipping 4: Product type A x1 - address 2
+     * - Delivery 3: サンプル業者
      * - Mail content: ◎お届け先4
      */
     public function testAddMultiShippingThreeItemsOfTwoProductHasTwoTypeWithTwoAddress()
@@ -1851,7 +1851,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $multiForm = array(
             '_token' => 'dummy',
             'shipping_multiple' => array(
-                // product type 1
+                // product type 2
                 array(
                     'shipping' => array(
                         array(
@@ -1868,7 +1868,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                         ),
                     ),
                 ),
-                // product type 2
+                // product type 1
                 array(
                     'shipping' => array(
                         array(
@@ -1922,7 +1922,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                 return $node->text();
             }
         );
-        $this->expected = 'サンプル宅配';
+        $this->expected = 'サンプル業者';
         $this->actual = $deliver;
         $this->assertTrue(in_array($this->expected, $this->actual));
 
@@ -1931,16 +1931,11 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
             $client,
             $this->app->url('shopping_confirm'),
             array(
-                // Product type 1 with address 1 (two item)
-                array(
-                    'delivery' => 1,
-                    'deliveryTime' => 1,
-                ),
                 // Product type 2 with address 1 (two item)
                 array(
                     'delivery' => 2,
                 ),
-                // Product type 1 with address 2 (one item)
+                // Product type 1 with address 1 (two item)
                 array(
                     'delivery' => 1,
                     'deliveryTime' => 1,
@@ -1948,6 +1943,11 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                 // Product type 2 with address 2 (one item)
                 array(
                     'delivery' => 2,
+                ),
+                // Product type 1 with address 2 (one item)
+                array(
+                    'delivery' => 1,
+                    'deliveryTime' => 1,
                 ),
             )
         );

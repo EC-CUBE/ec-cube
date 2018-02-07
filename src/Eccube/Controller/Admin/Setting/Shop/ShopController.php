@@ -91,24 +91,23 @@ class ShopController extends AbstractController
         $form = $builder->getForm();
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-                $this->entityManager->persist($this->BaseInfo);
-                $this->entityManager->flush();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->entityManager->persist($this->BaseInfo);
+            $this->entityManager->flush();
 
-                $event = new EventArgs(
-                    array(
-                        'form' => $form,
-                        'BaseInfo' => $this->BaseInfo,
-                    ),
-                    $request
-                );
-                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_SHOP_INDEX_COMPLETE, $event);
+            $event = new EventArgs(
+                array(
+                    'form' => $form,
+                    'BaseInfo' => $this->BaseInfo,
+                ),
+                $request
+            );
+            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_SHOP_INDEX_COMPLETE, $event);
 
-                $this->addSuccess('admin.shop.save.complete', 'admin');
+            $this->addSuccess('admin.shop.save.complete', 'admin');
 
-                return $this->redirectToRoute('admin_setting_shop');
-            }
+            return $this->redirectToRoute('admin_setting_shop');
+        } else {
             $this->addError('admin.shop.save.error', 'admin');
         }
 

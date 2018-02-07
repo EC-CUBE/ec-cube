@@ -5,8 +5,8 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/EC-CUBE/ec-cube/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/EC-CUBE/ec-cube/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/EC-CUBE/ec-cube/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/EC-CUBE/ec-cube/?branch=master)
 [![Coverage Status](https://coveralls.io/repos/github/EC-CUBE/ec-cube/badge.svg?branch=master)](https://coveralls.io/github/EC-CUBE/ec-cube?branch=master)
-  
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/EC-CUBE/ec-cube?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+
+[![Slack](http://img.shields.io/badge/slack-join%5fchat-brightgreen.svg?style=flat)](https://ec-cube.slack.com/messages)
 
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
@@ -46,7 +46,7 @@ EC-CUBE 3.xの不具合の修正、機能のブラッシュアップを目的と
 Pull Requestの送信前に、Issueにて提議いただく事も可能です。  
 Issuesの利用方法については、[こちら](https://github.com/EC-CUBE/ec-cube/wiki/Issues%E3%81%AE%E5%88%A9%E7%94%A8%E6%96%B9%E6%B3%95)をご確認ください。  
 
-[Gitter](https://gitter.im/EC-CUBE/ec-cube)でも本体の開発に関する意見交換などを行っております。
+[Slack](https://ec-cube.slack.com/messages)でも本体の開発に関する意見交換などを行っております。
 
 
 
@@ -55,4 +55,3 @@ Issuesの利用方法については、[こちら](https://github.com/EC-CUBE/ec
 コードの提供・追加、修正・変更その他「EC-CUBE」への開発の御協力（Issue投稿、PullRequest投稿など、GitHub上での活動）を行っていただく場合には、
 [EC-CUBEのコピーライトポリシー](https://github.com/EC-CUBE/ec-cube/blob/50de4ac511ab5a5577c046b61754d98be96aa328/LICENSE.txt)をご理解いただき、ご了承いただく必要がございます。
 Issueの投稿やPullRequestを送信する際は、EC-CUBEのコピーライトポリシーに同意したものとみなします。
-

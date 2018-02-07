@@ -409,10 +409,9 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set work.
+     * Set Work
      *
-     * @param \Eccube\Entity\Master\Work|null $work
-     *
+     * @param \Eccube\Entity\Master\Work
      * @return Member
      */
     public function setWork(\Eccube\Entity\Master\Work $work = null)

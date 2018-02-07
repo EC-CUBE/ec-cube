@@ -350,6 +350,7 @@ class CustomerRepository extends AbstractRepository
      * @param $app
      * @param  Customer $Customer
      * @param  $orderStatusId
+     * @param  $isNewOrder
      */
     public function updateBuyData(Customer $Customer, $orderStatusId)
     {

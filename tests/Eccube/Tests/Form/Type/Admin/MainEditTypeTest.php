@@ -42,6 +42,7 @@ class MainEditTypeTest extends AbstractTypeTestCase
         'description' => '',
         'keyword' => '',
         'meta_robots' => '',
+        'meta_tags' => '',
         'DeviceType' => '10',
     );
 
@@ -249,6 +250,27 @@ class MainEditTypeTest extends AbstractTypeTestCase
     public function testInValidMetaRobots_MaxLength()
     {
         $this->formData['meta_robots'] = str_repeat('1', $this->eccubeConfig['eccube_stext_len'] + 1);
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testValidMetaTags_Blank()
+    {
+        $this->formData['meta_tags'] = '';
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testValidMetaTags_FreeLength()
+    {
+        $this->formData['meta_tags'] = '<meta name="meta_tags_test" content="test" />';
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testInValidMetaTags_MaxLength()
+    {
+        $this->formData['meta_tags'] = str_repeat('1', $this->eccubeConfig['eccube_lltext_len'] + 1);
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }

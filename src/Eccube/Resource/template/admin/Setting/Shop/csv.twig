@@ -82,9 +82,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% endblock javascript %}
 
 {% block main %}
+<div class="row" id="aside_wrap">
     <form id="csv-form" method="post" action="{{ url('admin_setting_shop_csv', {'id': id}) }}">
         {{ form_widget(form._token) }}
-        <div class="row" id="aside_wrap">
             <div id="csv_edit_box" class="col-md-9">
                 <div id="csv_edit_box__body" class="box">
                     <div id="csv_edit_box__header" class="box-header">

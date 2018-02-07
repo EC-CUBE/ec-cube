@@ -72,7 +72,7 @@ class TelType extends AbstractType
         if (!isset($options['options']['error_bubbling'])) {
             $options['options']['error_bubbling'] = $options['error_bubbling'];
         }
-        // nameは呼び出しもので定義したものを使う
+        // nameは呼び出しもとで定義したものを使う
         if (empty($options['tel01_name'])) {
             $options['tel01_name'] = $builder->getName().'01';
         }
@@ -93,21 +93,21 @@ class TelType extends AbstractType
         $builder->setAttribute('tel02_name', $options['tel02_name']);
         $builder->setAttribute('tel03_name', $options['tel03_name']);
         // todo 変
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function ($event) use ($builder) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function ($event) use ($builder, $options) {
             $form = $event->getForm();
             $count = 0;
-            if ($form[$builder->getName().'01']->getData() != '') {
+            if ($form[$options['tel01_name']]->getData() != '') {
                 $count++;
             }
-            if ($form[$builder->getName().'02']->getData() != '') {
+            if ($form[$options['tel02_name']]->getData() != '') {
                 $count++;
             }
-            if ($form[$builder->getName().'03']->getData() != '') {
+            if ($form[$options['tel03_name']]->getData() != '') {
                 $count++;
             }
             if ($count != 0 && $count != 3) {
                 // todo メッセージをymlに入れる
-                $form[$builder->getName().'01']->addError(new FormError('全て入力してください。'));
+                $form[$options['tel01_name']]->addError(new FormError('全て入力してください。'));
             }
         });
     }

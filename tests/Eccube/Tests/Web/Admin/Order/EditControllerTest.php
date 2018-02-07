@@ -24,6 +24,8 @@
 namespace Eccube\Tests\Web\Admin\Order;
 
 use Eccube\Entity\BaseInfo;
+use Eccube\Repository\CustomerRepository;
+use Eccube\Repository\OrderRepository;
 
 class EditControllerTest extends AbstractEditControllerTestCase
 {
@@ -36,6 +38,8 @@ class EditControllerTest extends AbstractEditControllerTestCase
         parent::setUp();
         $this->Customer = $this->createCustomer();
         $this->Product = $this->createProduct();
+        $this->customerRepository = $this->container->get(CustomerRepository::class);
+        $this->orderRepository = $this->container->get(OrderRepository::class);
         $BaseInfo = $this->container->get(BaseInfo::class);
         // 複数配送を無効に
         $BaseInfo->setOptionMultipleShipping(0);
@@ -46,7 +50,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
     {
         $this->markTestSkipped('新しい配送管理の実装が完了するまでスキップ');
 
-        $this->client->request('GET', $this->app->url('admin_order_new'));
+        $this->client->request('GET', $this->generateUrl('admin_order_new'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -56,7 +60,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
         $crawler = $this->client->request(
             'POST',
-            $this->app->url('admin_order_new'),
+            $this->generateUrl('admin_order_new'),
             array(
                 'order' => $this->createFormData($this->Customer, $this->Product),
                 'mode' => 'register'
@@ -73,7 +77,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
-        $crawler = $this->client->request('GET', $this->app->url('admin_order_edit', array('id' => $Order->getId())));
+        $crawler = $this->client->request('GET', $this->generateUrl('admin_order_edit', array('id' => $Order->getId())));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -86,17 +90,46 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $formData = $this->createFormData($Customer, $this->Product);
         $this->client->request(
             'POST',
-            $this->app->url('admin_order_edit', array('id' => $Order->getId())),
+            $this->generateUrl('admin_order_edit', array('id' => $Order->getId())),
             array(
                 'order' => $formData,
                 'mode' => 'register'
             )
         );
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_order_edit', array('id' => $Order->getId()))));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_edit', array('id' => $Order->getId()))));
 
-        $EditedOrder = $this->app['eccube.repository.order']->find($Order->getId());
+        $EditedOrder = $this->orderRepository->find($Order->getId());
         $this->expected = $formData['name']['name01'];
         $this->actual = $EditedOrder->getName01();
+        $this->verify();
+
+        // 顧客の購入回数と購入金額確認
+        $this->expected =  $EditedOrder->getTotalPrice();
+        $this->actual = $EditedOrder->getCustomer()->getBuyTotal();
+        $this->verify();
+        $this->expected = 1;
+        $this->actual = $EditedOrder->getCustomer()->getBuyTimes();
+        $this->verify();
+    }
+
+    public function testNotUpdateLastBuyDate()
+    {
+        $this->markTestIncomplete('EditController is not implemented.');
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrder($Customer);
+        $formData = $this->createFormData($Customer, $this->Product);
+        $crawler = $this->client->request(
+            'POST',
+            $this->generateUrl('admin_order_edit', array('id' => $Order->getId())),
+            array(
+                'order' => $formData,
+                'mode' => 'register'
+            )
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_edit', array('id' => $Order->getId()))));
+        $EditedCustomer = $this->customerRepository->find($Customer->getId());
+        $this->expected = $Customer->getLastBuyDate();
+        $this->actual = $EditedCustomer->getLastBuyDate();
         $this->verify();
     }
 
@@ -118,6 +151,57 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
         $this->expected = $this->Customer->getName01().$this->Customer->getName02().'('.$this->Customer->getKana01().$this->Customer->getKana02().')';
         $this->actual = $Result[0]['name'];
+        $this->verify();
+    }
+
+    public function testOrderCustomerInfo()
+    {
+        $this->markTestIncomplete('EditController is not implemented.');
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrder($Customer);
+
+        $formData = $this->createFormData($Customer, $this->Product);
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_order_edit', array('id' => $Order->getId())),
+            array(
+                'order' => $formData,
+                'mode' => 'register'
+            )
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_edit', array('id' => $Order->getId()))));
+
+        $EditedOrder = $this->orderRepository->find($Order->getId());
+
+        // 顧客の購入回数と購入金額確認
+        $totalPrice = $EditedOrder->getTotalPrice();
+        $this->expected = $totalPrice ;
+        $this->actual = $EditedOrder->getCustomer()->getBuyTotal();
+        $this->verify();
+        $this->expected = 1;
+        $this->actual = $EditedOrder->getCustomer()->getBuyTimes();
+        $this->verify();
+
+        $Order = $this->createOrder($Customer);
+        $formData = $this->createFormData($Customer, $this->Product);
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_order_edit', array('id' => $Order->getId())),
+            array(
+                'order' => $formData,
+                'mode' => 'register'
+            )
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_edit', array('id' => $Order->getId()))));
+
+        $EditedOrder = $this->orderRepository->find($Order->getId());
+
+        // 顧客の購入回数と購入金額確認
+        $this->expected =  $totalPrice + $EditedOrder->getTotalPrice();
+        $this->actual = $EditedOrder->getCustomer()->getBuyTotal();
+        $this->verify();
+        $this->expected = 2;
+        $this->actual = $EditedOrder->getCustomer()->getBuyTimes();
         $this->verify();
     }
 
@@ -194,15 +278,15 @@ class EditControllerTest extends AbstractEditControllerTestCase
         // 管理画面から受注登録
         $this->client->request(
             'POST',
-            $this->app->url('admin_order_edit', array('id' => $Order->getId())),
+            $this->generateUrl('admin_order_edit', array('id' => $Order->getId())),
             array(
                 'order' => $formData,
                 'mode' => 'register'
             )
         );
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_order_edit', array('id' => $Order->getId()))));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_edit', array('id' => $Order->getId()))));
 
-        $EditedOrder = $this->app['eccube.repository.order']->find($Order->getId());
+        $EditedOrder = $this->orderRepository->find($Order->getId());
         $this->expected = $formData['OrderStatus'];
         $this->actual = $EditedOrder->getOrderStatus()->getId();
         $this->verify();
@@ -289,15 +373,14 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $formData = $this->createFormData($Customer, $this->Product);
         // 管理画面から受注登録
         $this->client->request(
-            'POST', $this->app->url('admin_order_edit', array('id' => $Order->getId())), array(
+            'POST', $this->generateUrl('admin_order_edit', array('id' => $Order->getId())), array(
             'order' => $formData,
             'mode' => 'register'
             )
         );
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_order_edit', array('id' => $Order->getId()))));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_edit', array('id' => $Order->getId()))));
 
-        $EditedOrder = $this->app['eccube.repository.order']->find($Order->getId());
-
+        $EditedOrder = $this->orderRepository->find($Order->getId());
         $formDataForEdit = $this->createFormDataForEdit($EditedOrder);
 
         //税金計算
@@ -309,14 +392,23 @@ class EditControllerTest extends AbstractEditControllerTestCase
             $totalTax += $tax * $formDataForEdit['OrderItems'][$indx]['quantity'];
         }
 
+        // Multi用項目を削除
+        foreach($formDataForEdit['Shippings'] as $key => $node){
+            if(isset($node['ShipmentItems'])){
+                unset($formDataForEdit['Shippings'][$key]['ShipmentItems']);
+            }
+        }
+
         // 管理画面で受注編集する
         $this->client->request(
-            'POST', $this->app->url('admin_order_edit', array('id' => $Order->getId())), array(
+            'POST', $this->generateUrl('admin_order_edit', array('id' => $Order->getId())), array(
             'order' => $formDataForEdit,
             'mode' => 'register'
             )
         );
-        $EditedOrderafterEdit = $this->app['eccube.repository.order']->find($Order->getId());
+
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_edit', array('id' => $Order->getId()))));
+        $EditedOrderafterEdit = $this->orderRepository->find($Order->getId());
 
         //確認する「トータル税金」
         $this->expected = $totalTax;
@@ -334,7 +426,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
         $crawler = $this->client->request(
             'POST',
-            $this->app->url('admin_order_new'),
+            $this->generateUrl('admin_order_new'),
             array(
                 'order' => $this->createFormData($this->Customer, $this->Product),
                 'mode' => 'register'
@@ -342,9 +434,10 @@ class EditControllerTest extends AbstractEditControllerTestCase
         );
 
         $url = $crawler->filter('a')->text();
+        $this->assertTrue($this->client->getResponse()->isRedirect($url));
 
         $savedOderId = preg_replace('/.*\/admin\/order\/(\d+)\/edit/', '$1', $url);
-        $SavedOrder = $this->app['eccube.repository.order']->find($savedOderId);
+        $SavedOrder = $this->orderRepository->find($savedOderId);
 
         $this->assertNotNull($SavedOrder);
         $this->expected = $this->Customer->getSex();

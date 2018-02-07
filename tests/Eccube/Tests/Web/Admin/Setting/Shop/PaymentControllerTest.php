@@ -54,12 +54,13 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
             $formData['method'] = '';
         }
 
-        $this->client->request('POST',
+        $crawler = $this->client->request('POST',
             $this->generateUrl('admin_setting_shop_payment_new'),
             array(
                 'payment_register' => $formData
             )
         );
+
         $this->expected = $expected;
         $this->actual = $this->client->getResponse()->isRedirection();
         $this->verify();
@@ -142,7 +143,6 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
         $this->client->request('PUT',
             $this->generateUrl('admin_setting_shop_payment_up', array('id' => $pid))
         );
-
         $this->assertTrue($this->client->getResponse()->isRedirection());
 
         $after = $Payment->getSortNo();

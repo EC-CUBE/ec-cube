@@ -89,7 +89,7 @@ class SecurityType extends AbstractType
                 'required' => false,
                 'label' => 'IP制限',
                 'constraints' => array(
-                    new Assert\Length(array('max' => $this->eccubeConfig['eccube_stext_len'])),
+                    new Assert\Length(array('max' => $this->eccubeConfig['eccube_ltext_len'])),
                 ),
                 'data' => $allowHosts,
             ))

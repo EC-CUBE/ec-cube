@@ -223,7 +223,6 @@ class EntryControllerTest extends AbstractWebTestCase
         $this->expected = 404;
         $this->actual = $this->client->getResponse()->getStatusCode();
         $this->verify();
-
     }
 
     public function testActivateWithAbort()
