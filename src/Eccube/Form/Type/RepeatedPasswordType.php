@@ -65,8 +65,8 @@ class RepeatedPasswordType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'min' => $this->eccubeConfig['password_min_len'],
-                        'max' => $this->eccubeConfig['password_max_len'],
+                        'min' => $this->eccubeConfig['eccube_password_min_len'],
+                        'max' => $this->eccubeConfig['eccube_password_max_len'],
                     )),
                     new Assert\Regex(array(
                         'pattern' => '/^[[:graph:][:space:]]+$/i',
@@ -76,7 +76,7 @@ class RepeatedPasswordType extends AbstractType
             ),
             'first_options' => array(
                 'attr' => array(
-                    'placeholder' => '半角英数字記号'.$this->eccubeConfig['password_min_len'].'～'.$this->eccubeConfig['password_max_len'].'文字',
+                    'placeholder' => '半角英数字記号'.$this->eccubeConfig['eccube_password_min_len'].'～'.$this->eccubeConfig['eccube_password_max_len'].'文字',
                 ),
             ),
             'second_options' => array(

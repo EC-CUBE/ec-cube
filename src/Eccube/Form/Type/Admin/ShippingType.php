@@ -110,7 +110,7 @@ class ShippingType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['stext_len'],
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
                     ))
                 ),
             ))
@@ -135,20 +135,20 @@ class ShippingType extends AbstractType
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(array(
-                            'max' => $this->eccubeConfig['mtext_len'],
+                            'max' => $this->eccubeConfig['eccube_mtext_len'],
                         )),
                     ),
-                    'attr' => array('class' => 'p-locality')
+                    'attr' => array('class' => 'p-locality p-street-address')
                 ),
                 'addr02_options' => array(
                     'required' => false,
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(array(
-                            'max' => $this->eccubeConfig['mtext_len'],
+                            'max' => $this->eccubeConfig['eccube_mtext_len'],
                         )),
                     ),
-                    'attr' => array('class' => 'p-street-address')
+                    'attr' => array('class' => 'p-extended-address')
                 ),
             ))
             ->add('tel', TelType::class, array(
@@ -184,7 +184,7 @@ class ShippingType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['mtext_len'],
+                        'max' => $this->eccubeConfig['eccube_mtext_len'],
                     )),
                 ),
             ))
@@ -193,7 +193,7 @@ class ShippingType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['ltext_len'],
+                        'max' => $this->eccubeConfig['eccube_ltext_len'],
                     )),
                 ),
             ))

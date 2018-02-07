@@ -1,5 +1,5 @@
 parameters:
-  eccube.nav:
+  eccube_nav:
     - id: product
       name: 商品管理
       has_child: true

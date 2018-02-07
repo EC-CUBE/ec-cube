@@ -24,6 +24,7 @@
 
 namespace Eccube\Security\Core\Encoder;
 
+use Eccube\Common\EccubeConfig;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 
 class PasswordEncoder implements PasswordEncoderInterface
@@ -43,11 +44,11 @@ class PasswordEncoder implements PasswordEncoderInterface
      */
     public $password_hash_algos;
 
-    public function __construct($auth_magic, $auth_type, $password_hash_algos)
+    public function __construct(EccubeConfig $eccubeConfig)
     {
-        $this->auth_magic = $auth_magic;
-        $this->auth_type = $auth_type;
-        $this->password_hash_algos = $password_hash_algos;
+        $this->auth_magic = $eccubeConfig->get('eccube_auth_magic');
+        $this->auth_type = $eccubeConfig->get('eccube_auth_type');
+        $this->password_hash_algos = $eccubeConfig->get('eccube_password_hash_algos');
     }
 
     /**

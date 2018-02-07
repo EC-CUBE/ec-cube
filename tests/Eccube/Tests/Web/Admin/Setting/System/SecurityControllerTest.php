@@ -136,7 +136,7 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
 
         /*$path = require $this->pathFile;
         $this->expected = $formData['admin_route_dir'];
-        $this->actual = $path['admin_route'];
+        $this->actual = $path['eccube_admin_route'];
         $this->verify();*/
     }
 
@@ -152,7 +152,7 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
         $pathFile = $this->container->getParameter('kernel.project_dir').'/app/config/eccube/services.yaml';
         $config = Yaml::parseFile($pathFile);
 
-        $formData['admin_route_dir'] = $config['parameters']['admin_route'];
+        $formData['admin_route_dir'] = $config['parameters']['eccube_admin_route'];
 
 
         $this->client->request(

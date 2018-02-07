@@ -52,8 +52,8 @@ class ShippingController extends AbstractController
 
 
     /**
-     * @Route("/%admin_route%/shipping", name="admin_shipping")
-     * @Route("/%admin_route%/shipping/page/{page_no}", name="admin_shipping_page")
+     * @Route("/%eccube_admin_route%/shipping", name="admin_shipping")
+     * @Route("/%eccube_admin_route%/shipping/page/{page_no}", name="admin_shipping_page")
      * @Template("@admin/Shipping/index.twig")
      */
     public function index(Request $request, $page_no = null, Paginator $paginator)
@@ -77,7 +77,7 @@ class ShippingController extends AbstractController
 
         $ProductStatuses = $this->productStatusRepository->findAll();
         $pageMaxis = $this->pageMaxRepository->findAll();
-        $page_count = $this->eccubeConfig['default_page_count'];
+        $page_count = $this->eccubeConfig['eccube_default_page_count'];
         $page_status = null;
         $active = false;
 
@@ -130,7 +130,7 @@ class ShippingController extends AbstractController
                     // 公開ステータス
                     $status = $request->get('status');
                     if (!empty($status)) {
-                        if ($status != $this->eccubeConfig['admin_product_stock_status']) {
+                        if ($status != $this->eccubeConfig['eccube_admin_product_stock_status']) {
                             $searchData['status']->clear();
                             $searchData['status']->add($status);
                         } else {

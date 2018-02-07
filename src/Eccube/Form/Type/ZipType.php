@@ -108,13 +108,13 @@ class ZipType extends AbstractType
             'zip01_options' => array(
                 'constraints' => array(
                     new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
-                    new Assert\Length(array('min' => $this->eccubeConfig['zip01_len'], 'max' => $this->eccubeConfig['zip01_len'])),
+                    new Assert\Length(array('min' => $this->eccubeConfig['eccube_zip01_len'], 'max' => $this->eccubeConfig['eccube_zip01_len'])),
                 ),
             ),
             'zip02_options' => array(
                 'constraints' => array(
                     new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
-                    new Assert\Length(array('min' => $this->eccubeConfig['zip02_len'], 'max' => $this->eccubeConfig['zip02_len'])),
+                    new Assert\Length(array('min' => $this->eccubeConfig['eccube_zip02_len'], 'max' => $this->eccubeConfig['eccube_zip02_len'])),
                 ),
             ),
             'zip01_name' => '',

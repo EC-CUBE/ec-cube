@@ -53,7 +53,7 @@ class FileController extends AbstractController
     }
 
     /**
-     * @Route("/%admin_route%/content/file_manager", name="admin_content_file")
+     * @Route("/%eccube_admin_route%/content/file_manager", name="admin_content_file")
      * @Template("@admin/Content/file.twig")
      */
     public function index(Request $request)
@@ -113,7 +113,7 @@ class FileController extends AbstractController
     }
 
     /**
-     * @Route("/%admin_route%/content/file_view", name="admin_content_file_view")
+     * @Route("/%eccube_admin_route%/content/file_view", name="admin_content_file_view")
      */
     public function view(Request $request)
     {
@@ -157,13 +157,15 @@ class FileController extends AbstractController
                     ? $this->normalizePath($request->get('now_dir'))
                     : $topDir;
                 $fs->mkdir($nowDir . '/' . $filename);
+
+                $this->addSuccess('admin.create.complete', 'admin');
             }
         }
     }
 
     /**
      * @Method("DELETE")
-     * @Route("/%admin_route%/content/file_delete", name="admin_content_file_delete")
+     * @Route("/%eccube_admin_route%/content/file_delete", name="admin_content_file_delete")
      */
     public function delete(Request $request)
     {
@@ -175,6 +177,7 @@ class FileController extends AbstractController
             $fs = new Filesystem();
             if ($fs->exists($this->convertStrToServer($request->get('select_file')))) {
                 $fs->remove($this->convertStrToServer($request->get('select_file')));
+                $this->addSuccess('admin.delete.complete', 'admin');
             }
         }
 
@@ -182,7 +185,7 @@ class FileController extends AbstractController
     }
 
     /**
-     * @Route("/%admin_route%/content/file_download", name="admin_content_file_download")
+     * @Route("/%eccube_admin_route%/content/file_download", name="admin_content_file_download")
      */
     public function download(Request $request)
     {
@@ -232,6 +235,8 @@ class FileController extends AbstractController
                 if ($this->checkDir($request->get('now_dir'), $topDir)) {
                     $filename = $this->convertStrToServer($data['file']->getClientOriginalName());
                     $data['file']->move($request->get('now_dir'), $filename);
+
+                    $this->addSuccess('admin.save.complete', 'admin');
                 }
             }
         }

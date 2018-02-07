@@ -67,7 +67,7 @@ class CsvController extends AbstractController
     }
 
     /**
-     * @Route("/%admin_route%/setting/shop/csv/{id}",
+     * @Route("/%eccube_admin_route%/setting/shop/csv/{id}",
      *     requirements={"id" = "\d+"},
      *     defaults={"id" = CsvType::CSV_TYPE_ORDER},
      *     name="admin_setting_shop_csv"

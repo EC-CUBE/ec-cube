@@ -36,7 +36,10 @@ class Loader
         // import順序の定義ファイルを取得.
         $file = $dir.'/definition.yml';
         if (!file_exists($file)) {
-            throw new \InvalidArgumentException(sprintf('"%s" does not exist', $file));
+            // 定義ファイルが存在しなければ取得した順序で処理
+            $finder = Finder::create()
+                ->in($dir)
+                ->name('*.csv');
         }
         $definition = Yaml::parse(file_get_contents($file));
         $definition = array_flip($definition);

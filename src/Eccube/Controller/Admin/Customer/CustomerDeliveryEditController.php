@@ -56,18 +56,18 @@ class CustomerDeliveryEditController extends AbstractController
     /**
      * お届け先編集画面.
      *
-     * @Route("/%admin_route%/customer/{id}/delivery/new", name="admin_customer_delivery_new", requirements={"id" = "\d+"})
-     * @Route("/%admin_route%/customer/{id}/delivery/{did}/edit", name="admin_customer_delivery_edit", requirements={"id" = "\d+", "did" = "\d+"})
+     * @Route("/%eccube_admin_route%/customer/{id}/delivery/new", name="admin_customer_delivery_new", requirements={"id" = "\d+"})
+     * @Route("/%eccube_admin_route%/customer/{id}/delivery/{did}/edit", name="admin_customer_delivery_edit", requirements={"id" = "\d+", "did" = "\d+"})
      * @Template("@admin/Customer/delivery_edit.twig")
      */
     public function edit(Request $request, Customer $Customer, $did = null)
     {
         // 配送先住所最大値判定
         // $idが存在する際は、追加処理ではなく、編集の処理ため本ロジックスキップ
-        $addressMax = $this->eccubeConfig['deliv_addr_max'];
+        $addressMax = $this->eccubeConfig['eccube_deliv_addr_max'];
         if (is_null($did)) {
             $addressCurrNum = count($Customer->getCustomerAddresses());
-            $addressMax = $this->eccubeConfig['deliv_addr_max'];
+            $addressMax = $this->eccubeConfig['eccube_deliv_addr_max'];
             if ($addressCurrNum >= $addressMax) {
                 throw new NotFoundHttpException('お届け先の登録数の上限を超えています');
             }
@@ -137,7 +137,7 @@ class CustomerDeliveryEditController extends AbstractController
 
     /**
      * @Method("DELETE")
-     * @Route("/%admin_route%/customer/{id}/delivery/{did}/delete", requirements={"id" = "\d+", "did" = "\d+"}, name="admin_customer_delivery_delete")
+     * @Route("/%eccube_admin_route%/customer/{id}/delivery/{did}/delete", requirements={"id" = "\d+", "did" = "\d+"}, name="admin_customer_delivery_delete")
      */
     public function delete(Request $request, Customer $Customer, $did)
     {

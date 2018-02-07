@@ -2,6 +2,7 @@
 
 namespace Eccube\EventListener;
 
+use Eccube\Common\EccubeConfig;
 use Eccube\Request\Context;
 use SunCat\MobileDetectBundle\DeviceDetector\MobileDetector;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -26,16 +27,16 @@ class MobileTemplatePathListener implements EventSubscriberInterface
     protected $detector;
 
     /**
-     * @var string
+     * @var EccubeConfig
      */
-    protected $projectRoot;
+    protected $eccubeConfig;
 
-    public function __construct(Context $context, Environment $twig, MobileDetector $detector, $projectRoot)
+    public function __construct(Context $context, Environment $twig, MobileDetector $detector, EccubeConfig $eccubeConfig)
     {
         $this->context = $context;
         $this->twig = $twig;
         $this->detector = $detector;
-        $this->projectRoot = $projectRoot;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     public function onKernelRequest(GetResponseEvent $event)
@@ -53,9 +54,8 @@ class MobileTemplatePathListener implements EventSubscriberInterface
             return;
         }
 
-        // TODO テンプレートパスの設定箇所を調整.
         $paths = [
-            $this->projectRoot.'/src/Eccube/Resource/template/smartphone',
+            $this->eccubeConfig->get('eccube_theme_front_dir').'/smartphone',
         ];
 
         $loader = new \Twig_Loader_Chain(array(

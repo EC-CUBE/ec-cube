@@ -62,9 +62,9 @@ class PriceType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $currency = $this->container->getParameter('currency_code');
+        $currency = $this->container->getParameter('currency');
         $scale = Intl::getCurrencyBundle()->getFractionDigits($currency);
-        $max = $this->eccubeConfig['price_max'];
+        $max = $this->eccubeConfig['eccube_price_max'];
         $min = -$max;
 
         $constraints = function (Options $options) use ($max, $min) {

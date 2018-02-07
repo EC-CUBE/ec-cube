@@ -26,6 +26,7 @@ namespace Eccube\Service;
 
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Common\EccubeConfig;
@@ -111,20 +112,18 @@ class PluginService
     /**
      * PluginService constructor.
      * @param PluginEventHandlerRepository $pluginEventHandlerRepository
-     * @param EntityManager $entityManager
+     * @param EntityManagerInterface $entityManager
      * @param PluginRepository $pluginRepository
      * @param EntityProxyService $entityProxyService
      * @param SchemaService $schemaService
      */
     public function __construct(
         PluginEventHandlerRepository $pluginEventHandlerRepository,
-        EntityManager $entityManager,
+        EntityManagerInterface $entityManager,
         PluginRepository $pluginRepository,
         EntityProxyService $entityProxyService,
         SchemaService $schemaService,
-        EccubeConfig $eccubeConfig,
-        $projectRoot,
-        $environment
+        EccubeConfig $eccubeConfig
     ) {
         $this->pluginEventHandlerRepository = $pluginEventHandlerRepository;
         $this->entityManager = $entityManager;
@@ -132,8 +131,8 @@ class PluginService
         $this->entityProxyService = $entityProxyService;
         $this->schemaService = $schemaService;
         $this->eccubeConfig = $eccubeConfig;
-        $this->projectRoot = $projectRoot;
-        $this->environment = $environment;
+        $this->projectRoot = $eccubeConfig->get('kernel.project_dir');
+        $this->environment = $eccubeConfig->get('kernel.environment');
     }
 
 

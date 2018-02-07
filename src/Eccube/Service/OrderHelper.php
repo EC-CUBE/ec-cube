@@ -4,6 +4,7 @@ namespace Eccube\Service;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
 use Eccube\Common\EccubeConfig;
@@ -110,8 +111,18 @@ class OrderHelper
      * @param EntityManager $entityManager
      * @param EccubeConfig $eccubeConfig
      */
-    public function __construct(OrderItemTypeRepository $orderItemTypeRepository, OrderStatusRepository $orderStatusRepository, TaxRuleRepository $taxRuleRepository, DeliveryFeeRepository $deliveryFeeRepository, DeliveryRepository $deliveryRepository, PaymentRepository $paymentRepository, OrderRepository $orderRepository, ShippingStatusRepository $shippingStatusRepository, EntityManager $entityManager, EccubeConfig $eccubeConfig)
-    {
+    public function __construct(
+        OrderItemTypeRepository $orderItemTypeRepository,
+        OrderStatusRepository $orderStatusRepository,
+        TaxRuleRepository $taxRuleRepository,
+        DeliveryFeeRepository $deliveryFeeRepository,
+        DeliveryRepository $deliveryRepository,
+        PaymentRepository $paymentRepository,
+        OrderRepository $orderRepository,
+        ShippingStatusRepository $shippingStatusRepository,
+        EntityManagerInterface $entityManager,
+        EccubeConfig $eccubeConfig
+    ) {
         $this->orderItemTypeRepository = $orderItemTypeRepository;
         $this->orderStatusRepository = $orderStatusRepository;
         $this->taxRuleRepository = $taxRuleRepository;
@@ -341,8 +352,10 @@ class OrderHelper
 
         // 初期の支払い方法を設定.
         $Payment = current($Payments);
-        $Order->setPayment($Payment);
-        $Order->setPaymentMethod($Payment->getMethod());
+        if ($Payment) {
+            $Order->setPayment($Payment);
+            $Order->setPaymentMethod($Payment->getMethod());
+        }
         // TODO CalculateChargeStrategy でセットする
         // $Order->setCharge($Payment->getCharge());
     }

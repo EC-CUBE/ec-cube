@@ -129,6 +129,7 @@ $(function() {
     $('#{{ form.product_image.vars.id }}').fileupload({
         url: "{{ url('admin_product_image_add') }}",
         type: "post",
+        sequentialUploads: true,
         dataType: 'json',
         done: function (e, data) {
             $('#progress').hide();

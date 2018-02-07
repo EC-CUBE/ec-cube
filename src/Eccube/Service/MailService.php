@@ -31,10 +31,8 @@ use Eccube\Event\EventArgs;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\MailTemplateRepository;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-/**
- * @Service
- */
 class MailService
 {
     /**
@@ -81,7 +79,7 @@ class MailService
         \Swift_Mailer $mailer,
         MailTemplateRepository $mailTemplateRepository,
         BaseInfo $baseInfo,
-        EventDispatcher $eventDispatcher,
+        EventDispatcherInterface $eventDispatcher,
         \Twig_Environment $twig,
         EccubeConfig $eccubeConfig
     ) {
@@ -104,7 +102,7 @@ class MailService
 
         log_info('仮会員登録メール送信開始');
 
-        $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['entry_confirm_mail_template_id']);
+        $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['eccube_entry_confirm_mail_template_id']);
 
         $body = $this->twig->render($MailTemplate->getFileName(), array(
             'header' => $MailTemplate->getMailHeader(),
@@ -150,7 +148,7 @@ class MailService
     {
         log_info('会員登録完了メール送信開始');
 
-        $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['entry_complete_mail_template_id']);
+        $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['eccube_entry_complete_mail_template_id']);
 
         $body = $this->twig->render($MailTemplate->getFileName(), array(
             'header' => $MailTemplate->getMailHeader(),
@@ -196,7 +194,7 @@ class MailService
     {
         log_info('退会手続き完了メール送信開始');
 
-        $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['customer_withdraw_mail_template_id']);
+        $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['eccube_customer_withdraw_mail_template_id']);
 
         $body = $this->twig->render($MailTemplate->getFileName(), array(
             'header' => $MailTemplate->getMailHeader(),
@@ -242,7 +240,7 @@ class MailService
     {
         log_info('お問い合わせ受付メール送信開始');
 
-        $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['contact_mail_template_id']);
+        $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['eccube_contact_mail_template_id']);
 
         $body = $this->twig->render($MailTemplate->getFileName(), array(
             'header' => $MailTemplate->getMailHeader(),
@@ -301,7 +299,7 @@ class MailService
     {
         log_info('受注メール送信開始');
 
-        $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['order_mail_template_id']);
+        $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['eccube_order_mail_template_id']);
 
         $body = $this->twig->render($MailTemplate->getFileName(), array(
             'header' => $MailTemplate->getMailHeader(),
@@ -349,7 +347,7 @@ class MailService
         log_info('仮会員登録再送メール送信開始');
 
         /* @var $MailTemplate \Eccube\Entity\MailTemplate */
-        $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['entry_confirm_mail_template_id']);
+        $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['eccube_entry_confirm_mail_template_id']);
 
         $body = $this->twig->render($MailTemplate->getFileName(), array(
             'header' => $MailTemplate->getMailHeader(),
@@ -439,13 +437,13 @@ class MailService
     {
         log_info('パスワード再発行メール送信開始');
 
-        $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['forgot_mail_template_id']);
+        $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['eccube_forgot_mail_template_id']);
         $body = $this->twig->render($MailTemplate->getFileName(), array(
             'BaseInfo' => $this->BaseInfo,
             'header' => $MailTemplate->getMailHeader(),
             'footer' => $MailTemplate->getMailFooter(),
             'Customer' => $Customer,
-            'expire' => $this->eccubeConfig['customer_reset_expire'],
+            'expire' => $this->eccubeConfig['eccube_customer_reset_expire'],
             'reset_url' => $reset_url
         ));
 
@@ -485,7 +483,7 @@ class MailService
     {
         log_info('パスワード変更完了メール送信開始');
 
-        $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['reset_complete_mail_template_id']);
+        $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['eccube_reset_complete_mail_template_id']);
 
         $body = $this->twig->render($MailTemplate->getFileName(), array(
             'BaseInfo' => $this->BaseInfo,

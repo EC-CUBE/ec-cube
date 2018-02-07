@@ -35,6 +35,7 @@ use Eccube\Repository\Master\DeviceTypeRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextAreaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
@@ -88,7 +89,7 @@ class MainEditType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['stext_len'],
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
                     )),
                 ),
             ))
@@ -98,7 +99,7 @@ class MainEditType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['stext_len'],
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
                     )),
                     new Assert\Regex(array(
                         'pattern' => '/^([0-9a-zA-Z_\-]+\/?)+(?<!\/)$/',
@@ -111,7 +112,7 @@ class MainEditType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['stext_len'],
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
                     )),
                     new Assert\Regex(array(
                         'pattern' => '/^([0-9a-zA-Z_\-]+\/?)+$/',
@@ -132,7 +133,7 @@ class MainEditType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['stext_len'],
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
                     )),
                 ),
             ))
@@ -141,7 +142,7 @@ class MainEditType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['stext_len'],
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
                     )),
                 ),
             ))
@@ -150,7 +151,7 @@ class MainEditType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['stext_len'],
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
                     )),
                 ),
             ))
@@ -159,9 +160,17 @@ class MainEditType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['stext_len'],
-                    )),
-                ),
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
+                    ))
+                )
+            ))->add('meta_tags', TextAreaType::class, array(
+                'label' => '追加metaタグ',
+                'required' => false,
+                'constraints' => array(
+                    new Assert\Length(array(
+                        'max' => $this->eccubeConfig['eccube_lltext_len'],
+                    ))
+                )
             ))
             ->add('DeviceType', EntityType::class, array(
                 'class' => 'Eccube\Entity\Master\DeviceType',

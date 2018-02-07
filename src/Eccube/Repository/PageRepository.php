@@ -47,19 +47,19 @@ class PageRepository extends AbstractRepository
 
     /**
      * @var string
-     * @path %eccube.theme.user_data_dir% (app/template/user_data)
+     * @path %eccube_theme_user_data_dir% (app/template/user_data)
      */
     protected $userDataRealDir;
 
     /**
      * @var string
-     * @path %eccube.theme.app_dir% (app/template)
+     * @path %eccube_theme_app_dir% (app/template)
      */
     protected $templateRealDir;
 
     /**
      * @var string
-     * @path %eccube.theme.src_dir% (src/Eccube/Resource/template)
+     * @path %eccube_theme_src_dir% (src/Eccube/Resource/template)
      */
     protected $templateDefaultRealDir;
 
@@ -73,9 +73,9 @@ class PageRepository extends AbstractRepository
     {
         parent::__construct($registry, Page::class);
         $this->eccubeConfig = $eccubeConfig;
-        $this->userDataRealDir = $container->getParameter('eccube.theme.user_data_dir');
-        $this->templateRealDir = $container->getParameter('eccube.theme.app_dir');
-        $this->templateDefaultRealDir = $container->getParameter('eccube.theme.src_dir');
+        $this->userDataRealDir = $container->getParameter('eccube_theme_user_data_dir');
+        $this->templateRealDir = $container->getParameter('eccube_theme_app_dir');
+        $this->templateDefaultRealDir = $container->getParameter('eccube_theme_src_dir');
     }
 
     /**
@@ -207,11 +207,17 @@ class PageRepository extends AbstractRepository
             ->getResult();
 
         $OwnBlockPosition = $ownResult->getBlockPositions();
+        $OwnBlockPositionIds = array();
+        foreach ($OwnBlockPosition as $BlockPosition) {
+            $OwnBlockPositionIds[] =  $BlockPosition->getBlockId();
+        }
+
         foreach ($anyResults as $anyResult) {
             $BlockPositions = $anyResult->getBlockPositions();
             foreach ($BlockPositions as $BlockPosition) {
-                if (!$OwnBlockPosition->contains($BlockPosition)) {
+                if (!in_array($BlockPosition->getBlockId(), $OwnBlockPositionIds)) {
                     $ownResult->addBlockPosition($BlockPosition);
+                    $OwnBlockPositionIds[] = $BlockPosition->getBlockId();
                 }
             }
         }
@@ -282,58 +288,5 @@ class PageRepository extends AbstractRepository
             ->getResult();
 
         return $Pages;
-    }
-
-    /**
-     * 書き込みパスの取得
-     * User定義の場合： /app/template/user_data
-     * そうでない場合： /app/template/{template_code}
-     *
-     * @param  boolean $isUser
-     * @return string
-     */
-    public function getWriteTemplatePath($isUser = false)
-    {
-        return ($isUser) ? $this->userDataRealDir : $this->templateRealDir;
-    }
-
-    /**
-     * 読み込みファイルの取得
-     *
-     * 1. template_realdir
-     *      app/template/{template_code}
-     * 2. template_default_readldir
-     *      src/Eccube/Resource/template/default
-     *
-     * @param string $fileName
-     * @param  boolean $isUser
-     *
-     * @return array
-     */
-    public function getReadTemplateFile($fileName, $isUser = false)
-    {
-        if ($isUser) {
-            $readPaths = array(
-                $this->userDataRealDir,
-            );
-        } else {
-            $readPaths = array(
-                $this->templateRealDir,
-                $this->templateDefaultRealDir,
-            );
-        }
-
-        foreach ($readPaths as $readPath) {
-            $filePath = $readPath . '/' . $fileName . '.twig';
-            $fs = new Filesystem();
-            if ($fs->exists($filePath)) {
-                return array(
-                    'file_name' => $fileName,
-                    'tpl_data' => file_get_contents($filePath),
-                );
-            }
-        }
-
-        return [];
     }
 }
