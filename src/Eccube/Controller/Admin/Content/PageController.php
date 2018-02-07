@@ -69,7 +69,7 @@ class PageController extends AbstractController
     }
 
     /**
-     * @Route("/%admin_route%/content/page", name="admin_content_page")
+     * @Route("/%eccube_admin_route%/content/page", name="admin_content_page")
      * @Template("@admin/Content/page.twig")
      */
     public function index(Request $request)
@@ -94,8 +94,8 @@ class PageController extends AbstractController
     }
 
     /**
-     * @Route("/%admin_route%/content/page/new", name="admin_content_page_new")
-     * @Route("/%admin_route%/content/page/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_page_edit")
+     * @Route("/%eccube_admin_route%/content/page/new", name="admin_content_page_new")
+     * @Route("/%eccube_admin_route%/content/page/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_page_edit")
      * @Template("@admin/Content/page_edit.twig")
      */
     public function edit(Request $request, $id = null, Environment $twig, Router $router)
@@ -161,9 +161,9 @@ class PageController extends AbstractController
 
             // ファイル生成・更新
             if ($isUserDataPage) {
-                $templatePath = $this->getParameter('eccube.theme.user_data_dir');
+                $templatePath = $this->getParameter('eccube_theme_user_data_dir');
             } else {
-                $templatePath = $this->getParameter('eccube.theme.front_dir');
+                $templatePath = $this->getParameter('eccube_theme_front_dir');
             }
             $filePath = $templatePath.'/'.$Page->getFileName().'.twig';
 
@@ -231,10 +231,10 @@ class PageController extends AbstractController
         }
 
         if ($isUserDataPage) {
-            $templatePath = $this->getParameter('eccube.theme.user_data_dir');
+            $templatePath = $this->getParameter('eccube_theme_user_data_dir');
             $url = '';
         } else {
-            $templatePath = $this->getParameter('eccube.theme.front_dir');
+            $templatePath = $this->getParameter('eccube_theme_front_dir');
             $url = $router->getRouteCollection()->get($PrevPage->getUrl())->getPath();
         }
 
@@ -243,14 +243,13 @@ class PageController extends AbstractController
             'page_id' => $Page->getId(),
             'is_user_data_page' => $isUserDataPage,
             'template_path' => $templatePath,
-            'user_data_route' => $this->getParameter('user_data_route'),
             'url' => $url,
         ];
     }
 
     /**
      * @Method("DELETE")
-     * @Route("/%admin_route%/content/page/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_page_delete")
+     * @Route("/%eccube_admin_route%/content/page/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_page_delete")
      */
     public function delete(Request $request, $id = null)
     {
@@ -273,7 +272,7 @@ class PageController extends AbstractController
 
         // ユーザーが作ったページのみ削除する
         if ($Page->getEditType() == Page::EDIT_TYPE_USER) {
-            $templatePath = $this->getParameter('eccube.theme.user_data_dir');
+            $templatePath = $this->getParameter('eccube_theme_user_data_dir');
             $file = $templatePath.'/'.$Page->getFileName().'.twig';
             $fs = new Filesystem();
             if ($fs->exists($file)) {

@@ -62,7 +62,7 @@ class BlockController extends AbstractController
     }
 
     /**
-     * @Route("/%admin_route%/content/block", name="admin_content_block")
+     * @Route("/%eccube_admin_route%/content/block", name="admin_content_block")
      * @Template("@admin/Content/block.twig")
      */
     public function index(Request $request)
@@ -88,8 +88,8 @@ class BlockController extends AbstractController
     }
 
     /**
-     * @Route("/%admin_route%/content/block/new", name="admin_content_block_new")
-     * @Route("/%admin_route%/content/block/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_block_edit")
+     * @Route("/%eccube_admin_route%/content/block/new", name="admin_content_block_new")
+     * @Route("/%eccube_admin_route%/content/block/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_block_edit")
      * @Template("@admin/Content/block_edit.twig")
      */
     public function edit(Request $request, $id = null, Environment $twig, FileSystem $fs)
@@ -184,7 +184,7 @@ class BlockController extends AbstractController
 
     /**
      * @Method("DELETE")
-     * @Route("/%admin_route%/content/block/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_block_delete")
+     * @Route("/%eccube_admin_route%/content/block/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_block_delete")
      */
     public function delete(Request $request, Block $Block, Filesystem $fs)
     {

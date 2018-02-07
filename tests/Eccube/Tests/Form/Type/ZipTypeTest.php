@@ -55,33 +55,33 @@ class ZipTypeTest extends AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInvalidZip01_LengthMin()
+    public function testInvalideccube_zip01_lengthMin()
     {
-        $this->formData['zip']['zip01'] = str_repeat('1', $this->eccubeConfig['zip01_len']-1);
+        $this->formData['zip']['zip01'] = str_repeat('1', $this->eccubeConfig['eccube_zip01_len']-1);
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidZip01_LengthMax()
+    public function testInvalideccube_zip01_lengthMax()
     {
-        $this->formData['zip']['zip01'] = str_repeat('1', $this->eccubeConfig['zip01_len']+1);
+        $this->formData['zip']['zip01'] = str_repeat('1', $this->eccubeConfig['eccube_zip01_len']+1);
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidZip02_LengthMin()
+    public function testInvalideccube_zip02_lengthMin()
     {
-        $this->formData['zip']['zip02'] = str_repeat('1', $this->eccubeConfig['zip02_len']-1);
+        $this->formData['zip']['zip02'] = str_repeat('1', $this->eccubeConfig['eccube_zip02_len']-1);
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidZip02_LengthMax()
+    public function testInvalideccube_zip02_lengthMax()
     {
-        $this->formData['zip']['zip02'] = str_repeat('1', $this->eccubeConfig['zip02_len']+1);
+        $this->formData['zip']['zip02'] = str_repeat('1', $this->eccubeConfig['eccube_zip02_len']+1);
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());

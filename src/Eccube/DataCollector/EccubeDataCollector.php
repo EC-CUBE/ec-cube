@@ -104,8 +104,8 @@ class EccubeDataCollector extends DataCollector
      */
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
-        $this->data['base_currency_code'] = $this->container->getParameter('currency_code');
-        $this->data['currency_code'] = $this->container->getParameter('currency_code');
+        $this->data['base_currency_code'] = $this->container->getParameter('currency');
+        $this->data['currency_code'] = $this->container->getParameter('currency');
 
         try {
             $this->data['locale_code'] = $this->container->getParameter('locale');

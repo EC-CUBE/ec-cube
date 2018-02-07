@@ -3,6 +3,7 @@
 namespace Eccube\Command;
 
 use Doctrine\Bundle\DoctrineBundle\Command\DoctrineCommand;
+use Eccube\Common\EccubeConfig;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -40,7 +41,8 @@ EOF
         $login_id = env('ECCUBE_ADMIN_USER', 'admin');
         $login_password = env('ECCUBE_ADMIN_PASS', 'password');
 
-        $encoder = new \Eccube\Security\Core\Encoder\PasswordEncoder(env('ECCUBE_AUTH_MAGIC'), '', 'sha256');
+        $eccubeConfig = $this->getContainer()->get(EccubeConfig::class);
+        $encoder = new \Eccube\Security\Core\Encoder\PasswordEncoder($eccubeConfig);
 
         $salt = \Eccube\Util\StringUtil::random(32);
         $password = $encoder->encodePassword($login_password, $salt);

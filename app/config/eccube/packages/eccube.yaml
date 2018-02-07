@@ -1,82 +1,98 @@
 parameters:
-    admin_route: '%admin_route%'
-    nav: '%eccube.nav%'
-    admin_allow_hosts: {}
-    auth_type: HMAC
-    csv_size: 5                 # post_max_size, upload_max_filesize に任せればよい？
-    csv_temp_realdir: %kernel.project_dir%/html/upload/csv/ # upload_tmp_dir に任せればよい？
-    default_country_id: 392
-    default_password: '**********'
-    deliv_addr_max: 20
-    deliv_date_end_max: 21
-    eccube_payment: EC-CUBE     # 決済プラグインで利用あり？
-    id_max_len: 50
-    id_min_len: 4
-    image_save_realdir: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/upload/save_image/
-    image_save_urlpath: /upload/save_image/ # asset 使う
-    image_temp_realdir: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/upload/temp_image/ # upload_tmp_dir に任せればよい？
-    image_temp_urlpath: /upload/temp_image/ # asset つかう
-    int_len: 9                              # 最大値で制御したい
-    category_nest_level: 5
-    lltext_len: 99999
-    ltext_len: 3000
-    max_total_fee: 9999999999
-    mltext_len: 1000
-    mtext_len: 200
+    # EC-CUBE default env parameters
+    env(ECCUBE_ADMIN_ROUTE): 'admin'
+    env(ECCUBE_USER_DATA_ROUTE): 'user_data'
+    env(ECCUBE_ADMIN_ALLOW_HOSTS): '[]'
+    env(ECCUBE_FORCE_SSL): false
+    env(ECCUBE_TEMPLATE_CODE): 'default'
+    env(ECCUBE_AUTH_MAGIC): 's$cretf0rt3st'
+    env(ECCUBE_COOKIE_NAME): 'eccube'
+    env(ECCUBE_COOKIE_PATH): '/'
+    env(ECCUBE_COOKIE_LIFETIME): 0
+    env(ECCUBE_GC_MAXLIFETIME): 1440
+
+    # EC-CUBE parameters
+    eccube_admin_route: '%env(ECCUBE_ADMIN_ROUTE)%'
+    eccube_user_data_route: '%env(ECCUBE_USER_DATA_ROUTE)%'
+    eccube_admin_allow_hosts: '%env(json:ECCUBE_ADMIN_ALLOW_HOSTS)%'
+    eccube_force_ssl: '%env(bool:ECCUBE_FORCE_SSL)%'
+    eccube.theme: '%env(ECCUBE_TEMPLATE_CODE)%'
+    eccube_theme_code: '%eccube.theme%'
+    eccube_auth_magic: '%env(ECCUBE_AUTH_MAGIC)%'
+    eccube_auth_type: HMAC
+    eccube_password_hash_algos: SHA256
+    eccube_theme_app_dir: '%kernel.project_dir%/app/template'
+    eccube_theme_src_dir: '%kernel.project_dir%/src/Eccube/Resource/template'
+    eccube_theme_user_data_dir: '%eccube_theme_app_dir%/user_data'
+    eccube_theme_front_dir: '%eccube_theme_app_dir%/%eccube.theme%'
+    eccube_theme_front_default_dir: '%eccube_theme_src_dir%/default'
+    eccube_theme_admin_dir: '%eccube_theme_app_dir%/admin'
+    eccube_theme_admin_default_dir: '%eccube_theme_src_dir%/admin'
+    eccube_twig_block_templates:
+      - 'render_block.twig'
+    eccube_save_image_dir: '%kernel.project_dir%/html/upload/save_image'
+    eccube_temp_image_dir: '%kernel.project_dir%/html/upload/temp_image'
+    eccube_csv_size: 5                 # post_max_size, upload_max_filesize に任せればよい？
+    eccube_csv_temp_realdir: '%kernel.cache_dir%/%kernel.environment%/eccube' # upload_tmp_dir に任せればよい？
+    eccube_default_password: '**********'
+    eccube_deliv_addr_max: 20
+    eccube_deliv_date_end_max: 21
+    eccube_id_max_len: 50
+    eccube_id_min_len: 4
+    eccube_int_len: 9                              # 最大値で制御したい
+    eccube_category_nest_level: 5
+    eccube_lltext_len: 99999
+    eccube_ltext_len: 3000
+    eccube_max_total_fee: 9999999999
+    eccube_mltext_len: 1000
+    eccube_mtext_len: 200
     plugin_html_realdir: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/plugin/
     plugin_html_urlpath: /plugin/ # asset 使う
     plugin_realdir: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/user_data/plugins/
     plugin_temp_realdir: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/upload/temp_plugin/ # upload_tmp_dir に任せればよい？
-    price_len: 8                                                    # 最大値で制御したい
-    search_pmax: 10
-    stext_len: 255
-    sltext_len: 500
-    smtext_len: 100
-    tax_rule_priority: 'product_id,product_class_id,pref_id,country_id' # 配列にする
-    template_temp_realdir: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/upload/temp_template/ #  upload_tmp_dir に任せればよい？
-    url_len: 1024
-    default_page_count: 10
-    admin_product_stock_status: 3
+    eccube_price_len: 8                                                    # 最大値で制御したい
+    eccube_search_pmax: 10
+    eccube_stext_len: 255
+    eccube_sltext_len: 500
+    eccube_smtext_len: 100
+    eccube_tax_rule_priority: ['product_id','product_class_id','pref_id','country_id']
+    eccube_url_len: 1024
+    eccube_default_page_count: 10
+    eccube_admin_product_stock_status: 3
     eccube_info_url: 'https://www.ec-cube.net/info/3/'
-    customer_reset_expire: 10
+    eccube_customer_reset_expire: 10
     # CSVの区切り文字(タブ区切りにしたい場合は'\t'ではなく'    'で設定する
-    csv_export_separator: ,
+    eccube_csv_export_separator: ,
     # 出力エンコーディング
-    csv_export_encoding: SJIS-win
+    eccube_csv_export_encoding: SJIS-win
     # 日付のフォーマット
-    csv_export_date_format: 'Y-m-d H:i:s'
+    eccube_csv_export_date_format: 'Y-m-d H:i:s'
     # 複数データの区切り文字
-    csv_export_multidata_separator: ,
-    csv_import_delimiter: ,
-    csv_import_enclosure: '"'
-    csv_import_escape: \
-    owners_store_url: https://www.ec-cube.net/upgrade/api/index.php
-    name_len: 16
-    kana_len: 25
-    address1_len: 32
-    address2_len: 32
-    birth_max: 110
-    product_order_price_lower: 1
-    product_order_newer: 2
-    product_order_price_higher: 3
-    price_max: 2147483647
-    tel_len: 5
-    tel_len_min: 1
-    zip01_len: 3
-    zip02_len: 4
-    template_code: 'default'
-    password_min_len: 8
-    password_max_len: 32
-    auth_magic: '%env(ECCUBE_AUTH_MAGIC)%'
-    password_hash_algos: SHA256
-    force_ssl: 0
-    block_default_realdir: '%kernel.project_dir%/src/Eccube/Resource/template/default/Block'
-    block_realdir: '%kernel.project_dir%/app/template/default/Block'
-    composer_memory_limit: 1536
-    order_mail_template_id: 1 #注文受付メール
-    entry_confirm_mail_template_id: 2 #会員仮登録メール
-    entry_complete_mail_template_id: 3 #会員本登録メール
-    customer_withdraw_mail_template_id: 4 #会員退会メール
-    contact_mail_template_id: 5 #問合受付メール
-    forgot_mail_template_id: 6 #パスワードリセット
-    reset_complete_mail_template_id: 7 #パスワードリマインダー
+    eccube_csv_export_multidata_separator: ,
+    eccube_csv_import_delimiter: ,
+    eccube_csv_import_enclosure: '"'
+    eccube_csv_import_escape: \
+    eccube_owners_store_url: https://www.ec-cube.net/upgrade/api/index.php
+    eccube_name_len: 16
+    eccube_kana_len: 25
+    eccube_address1_len: 32
+    eccube_address2_len: 32
+    eccube_birth_max: 110
+    eccube_product_order_price_lower: 1
+    eccube_product_order_newer: 2
+    eccube_product_order_price_higher: 3
+    eccube_price_max: 2147483647
+    eccube_tel_len: 5
+    eccube_tel_len_min: 1
+    eccube_zip01_len: 3
+    eccube_zip02_len: 4
+    eccube_password_min_len: 8
+    eccube_password_max_len: 32
+    eccube_composer_memory_limit: 1536
+    eccube_order_mail_template_id: 1 #注文受付メール
+    eccube_entry_confirm_mail_template_id: 2 #会員仮登録メール
+    eccube_entry_complete_mail_template_id: 3 #会員本登録メール
+    eccube_customer_withdraw_mail_template_id: 4 #会員退会メール
+    eccube_contact_mail_template_id: 5 #問合受付メール
+    eccube_forgot_mail_template_id: 6 #パスワードリセット
+    eccube_reset_complete_mail_template_id: 7 #パスワードリマインダー

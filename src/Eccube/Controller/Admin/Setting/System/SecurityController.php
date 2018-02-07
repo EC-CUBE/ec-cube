@@ -24,17 +24,14 @@
 
 namespace Eccube\Controller\Admin\Setting\System;
 
-use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Form\Type\Admin\SecurityType;
+use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * @Route(service=SecurityController::class)
@@ -57,90 +54,59 @@ class SecurityController extends AbstractController
 
 
     /**
-     * @Route("/%admin_route%/setting/system/security", name="admin_setting_system_security")
+     * @Route("/%eccube_admin_route%/setting/system/security", name="admin_setting_system_security")
      * @Template("@admin/Setting/System/security.twig")
      */
-    public function index(Request $request)
+    public function index(Request $request, CacheUtil $cacheUtil)
     {
-
         $builder = $this->formFactory->createBuilder(SecurityType::class);
         $form = $builder->getForm();
+        $form->handleRequest($request);
 
-        if ('POST' === $request->getMethod()) {
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $envFile = $this->getParameter('kernel.project_dir').'/.env';
+            $env = file_get_contents($envFile);
 
-            $form->handleRequest($request);
+            $adminAllowHosts = \json_encode(
+                \explode("\n", StringUtil::convertLineFeed($data['admin_allow_hosts']))
+            );
+            $env = StringUtil::replaceEnv($env, [
+                'ECCUBE_ADMIN_ALLOW_HOSTS' => "'{$adminAllowHosts}'",
+                'ECCUBE_FORCE_SSL' => $data['force_ssl'] ? 'true' : 'false',
+                'ECCUBE_SCHEME' => $data['force_ssl'] ? 'https' : 'http',
+            ]);
 
-            if ($form->isValid()) {
-                $data = $form->getData();
+            file_put_contents($envFile, $env);
 
-                // 現在のセキュリティ情報を更新
-                $adminRoot = $this->eccubeConfig['admin_route'];
+            // 管理画面URLの更新. 変更されている場合はログアウトし再ログインさせる.
+            $adminRoot = $this->eccubeConfig['eccube_admin_route'];
+            if ($adminRoot !== $data['admin_route_dir']) {
 
-                $configFile = $this->getParameter('kernel.project_dir').'/app/config/eccube/packages/eccube.yaml';
-                $config = Yaml::parseFile($configFile);
+                $env = StringUtil::replaceEnv($env, [
+                    'ECCUBE_ADMIN_ROUTE' => $data['admin_route_dir'],
+                ]);
 
-                // trim処理
-                $allowHost = StringUtil::convertLineFeed($data['admin_allow_hosts']);
-                if (empty($allowHost)) {
-                    $config['parameters']['eccube.constants']['admin_allow_hosts'] = null;
-                } else {
-                    $config['parameters']['eccube.constants']['admin_allow_hosts'] = explode("\n", $allowHost);
-                }
+                file_put_contents($envFile, $env);
 
-                if ($data['force_ssl']) {
-                    // SSL制限にチェックをいれた場合、https経由で接続されたか確認
-                    if ($request->isSecure()) {
-                        // httpsでアクセスされたらSSL制限をチェック
-                        $config['parameters']['eccube.constants']['force_ssl'] = Constant::ENABLED;
-                    } else {
-                        // httpから変更されたらfalseのまま
-                        $config['parameters']['eccube.constants']['force_ssl'] = Constant::DISABLED;
-                        $data['force_ssl'] = (bool)Constant::DISABLED;
-                    }
-                } else {
-                    $config['parameters']['eccube.constants']['force_ssl'] = Constant::DISABLED;
-                }
-                $form = $builder->getForm();
-                $form->setData($data);
+                $this->addSuccess('admin.system.security.route.dir.complete', 'admin');
 
-                file_put_contents($configFile, Yaml::dump($config, 10, 2));
+                // ログアウト
+                $this->tokenStorage->setToken(null);
 
-                // ルーティングのキャッシュを削除
-                $cacheDir = $this->getParameter('kernel.project_dir').'/app/cache/routing';
-                if (file_exists($cacheDir)) {
-                    $finder = Finder::create()->in($cacheDir);
-                    $filesystem = new Filesystem();
-                    $filesystem->remove($finder);
-                }
+                // キャッシュの削除
+                $cacheUtil->clearCache();
 
-                if ($adminRoot != $data['admin_route_dir']) {
-                    // admin_routeが変更されればpath.phpを更新
-                    $pathFile = $this->getParameter('kernel.project_dir').'/app/config/eccube/services.yaml';
-                    $config = Yaml::parseFile($pathFile);
-                    $config['parameters']['admin_route'] = $data['admin_route_dir'];
-
-                    file_put_contents($pathFile, Yaml::dump($config, 10, 2, Yaml::DUMP_EMPTY_ARRAY_AS_SEQUENCE));
-
-                    $this->addSuccess('admin.system.security.route.dir.complete', 'admin');
-
-                    // ログアウト
-                    $this->tokenStorage->setToken(null);
-
-                    // 管理者画面へ再ログイン
-                    return $this->redirect($request->getBaseUrl().'/'.$config['parameters']['admin_route']);
-                }
-
-                $this->addSuccess('admin.system.security.save.complete', 'admin');
-
+                // 管理者画面へ再ログイン
+                return $this->redirect($request->getBaseUrl().'/'.$data['admin_route_dir']);
             }
-        } else {
-            // セキュリティ情報の取得
-            $form->get('admin_route_dir')->setData($this->eccubeConfig['admin_route']);
-            $allowHost = $this->eccubeConfig['admin_allow_hosts'];
-            if (count($allowHost) > 0) {
-                $form->get('admin_allow_hosts')->setData(StringUtil::convertLineFeed(implode("\n", $allowHost)));
-            }
-            $form->get('force_ssl')->setData((bool)$this->eccubeConfig['force_ssl']);
+
+            $this->addSuccess('admin.system.security.save.complete', 'admin');
+
+            // キャッシュの削除
+            $cacheUtil->clearCache();
+
+            return $this->redirectToRoute('admin_setting_system_security');
         }
 
         return [

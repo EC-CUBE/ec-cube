@@ -311,4 +311,21 @@ class StringUtil
         }
         return preg_replace('/(^\s+)|(\s+$)/u', '', $value);
     }
+
+    /**
+     * envファイルのコンテンツを更新する.
+     *
+     * @param string $env
+     * @param array $replacement
+     * @return string
+     */
+    public static function replaceEnv($env, array $replacement)
+    {
+        foreach ($replacement as $key => $value) {
+            $env = preg_replace('/('.$key.')=(.*)/', '$1='.$value, $env);
+        }
+
+        return $env;
+    }
+
 }

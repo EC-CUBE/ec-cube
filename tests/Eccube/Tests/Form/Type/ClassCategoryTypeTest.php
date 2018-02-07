@@ -73,7 +73,7 @@ class ClassCategoryTypeTest extends AbstractTypeTestCase
 
     public function testInvalidName_MaxLengthInvalid()
     {
-        $name = str_repeat('S', $this->eccubeConfig['stext_len']) . 'S';
+        $name = str_repeat('S', $this->eccubeConfig['eccube_stext_len']) . 'S';
 
         $this->formData['name'] = $name;
         $this->form->submit($this->formData);
@@ -83,7 +83,7 @@ class ClassCategoryTypeTest extends AbstractTypeTestCase
 
     public function testInvalidName_MaxLengthValid()
     {
-        $name = str_repeat('S', $this->eccubeConfig['stext_len']);
+        $name = str_repeat('S', $this->eccubeConfig['eccube_stext_len']);
 
         $this->formData['name'] = $name;
         $this->form->submit($this->formData);

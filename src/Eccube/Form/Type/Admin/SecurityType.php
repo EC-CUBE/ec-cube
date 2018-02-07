@@ -25,6 +25,7 @@
 namespace Eccube\Form\Type\Admin;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Util\StringUtil;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -32,6 +33,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -48,14 +50,20 @@ class SecurityType extends AbstractType
     protected $validator;
 
     /**
+     * @var RequestStack
+     */
+    protected $requestStack;
+
+    /**
      * SecurityType constructor.
      * @param EccubeConfig $eccubeConfig
      * @param ValidatorInterface $validator
      */
-    public function __construct(EccubeConfig $eccubeConfig, ValidatorInterface $validator)
+    public function __construct(EccubeConfig $eccubeConfig, ValidatorInterface $validator, RequestStack $requestStack)
     {
         $this->eccubeConfig = $eccubeConfig;
         $this->validator = $validator;
+        $this->requestStack = $requestStack;
     }
 
     /**
@@ -63,27 +71,32 @@ class SecurityType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $allowHosts = $this->eccubeConfig->get('eccube_admin_allow_hosts');
+        $allowHosts = implode("\n", $allowHosts);
         $builder
             ->add('admin_route_dir', TextType::class, array(
                 'label' => 'ディレクトリ名',
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Length(array('max' => $this->eccubeConfig['stext_len'])),
+                    new Assert\Length(array('max' => $this->eccubeConfig['eccube_stext_len'])),
                     new Assert\Regex(array(
                        'pattern' => "/^[0-9a-zA-Z]+$/",
                    )),
                 ),
+                'data' => $this->eccubeConfig->get('eccube_admin_route'),
             ))
             ->add('admin_allow_hosts', TextareaType::class, array(
                 'required' => false,
                 'label' => 'IP制限',
                 'constraints' => array(
-                    new Assert\Length(array('max' => $this->eccubeConfig['ltext_len'])),
+                    new Assert\Length(array('max' => $this->eccubeConfig['eccube_ltext_len'])),
                 ),
+                'data' => $allowHosts,
             ))
             ->add('force_ssl', CheckboxType::class, array(
                 'label' => 'SSLを強制',
                 'required' => false,
+                'data' => $this->eccubeConfig->get('eccube_force_ssl'),
             ))
             ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
                 $form = $event->getForm();
@@ -99,6 +112,11 @@ class SecurityType extends AbstractType
                     if ($errors->count() != 0) {
                         $form['admin_allow_hosts']->addError(new FormError($ip . 'はIPv4アドレスではありません。'));
                     }
+                }
+
+                $request = $this->requestStack->getCurrentRequest();
+                if ($data['force_ssl'] && !$request->isSecure()) {
+                    $form['force_ssl']->addError(new FormError('httpの場合には設定できません。'));
                 }
             })
         ;

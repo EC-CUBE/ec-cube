@@ -25,23 +25,19 @@
 namespace Eccube\Controller\Admin\Content;
 
 use Eccube\Controller\AbstractController;
+use Eccube\Util\CacheUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\BufferedOutput;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 class CacheController extends AbstractController
 {
     /**
-     * @Route("/%admin_route%/content/cache", name="admin_content_cache")
+     * @Route("/%eccube_admin_route%/content/cache", name="admin_content_cache")
      * @Template("@admin/Content/cache.twig")
      */
-    public function index(Request $request, KernelInterface $kernel)
+    public function index(Request $request, CacheUtil $cacheUtil)
     {
         $result = '';
 
@@ -51,7 +47,7 @@ class CacheController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $result = $this->processCacheClearCommand($kernel);
+            $result = $cacheUtil->clearCache();
 
             $this->addSuccess('admin.content.cache.save.complete', 'admin');
         }
@@ -60,30 +56,5 @@ class CacheController extends AbstractController
             'form' => $form->createView(),
             'result' => $result,
         ];
-    }
-
-    /**
-     * @param KernelInterface $kernel
-     * @return mixed|string
-     */
-    protected function processCacheClearCommand(KernelInterface $kernel)
-    {
-        $console = new Application($kernel);
-        $console->setAutoExit(false);
-
-        $input = new ArrayInput(array(
-            'command' => 'cache:clear',
-            '--no-warmup' => null,
-            '--no-ansi' => null,
-        ));
-
-        $output = new BufferedOutput(
-            OutputInterface::VERBOSITY_DEBUG,
-            true
-        );
-
-        $console->run($input, $output);
-
-        return $output->fetch();
     }
 }

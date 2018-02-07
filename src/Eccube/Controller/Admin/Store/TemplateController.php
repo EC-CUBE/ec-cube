@@ -28,6 +28,7 @@ use Eccube\Entity\Master\DeviceType;
 use Eccube\Form\Type\Admin\TemplateType;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\TemplateRepository;
+use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -35,14 +36,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
-/**
- * @Route(service=TemplateController::class)
- */
 class TemplateController extends AbstractController
 {
     /**
@@ -72,13 +70,13 @@ class TemplateController extends AbstractController
     /**
      * テンプレート一覧画面
      *
-     * @Route("/%admin_route%/store/template", name="admin_store_template")
+     * @Route("/%eccube_admin_route%/store/template", name="admin_store_template")
      * @Template("@admin/Store/template.twig")
      *
      * @param Request $request
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function index(Request $request)
+    public function index(Request $request, CacheUtil $cacheUtil)
     {
         $DeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_PC);
 
@@ -93,20 +91,18 @@ class TemplateController extends AbstractController
             //TODO:FIXME Need unit test this case & implement how to store/get config which updated from application, should not store eccube.constants parameter
             $Template = $this->templateRepository->find($form['selected']->getData());
 
-            // path.(yml|php)の再構築
-            $file = $this->container->getParameter('kernel.project_dir') . '/app/config/eccube/path.php';
-            $config = require $file;
+            $envFile = $this->getParameter('kernel.project_dir').'/.env';
+            $env = file_get_contents($envFile);
 
-            $templateCode = $Template->getCode();
-            $config['template_code'] = $templateCode;
-            $config['template_realdir'] = $config['root_dir'].'/app/template/'.$templateCode;
-            $config['template_html_realdir'] = $config['public_path_realdir'].'/template/'.$templateCode;
-            $config['front_urlpath'] = $config['root_urlpath'].RELATIVE_PUBLIC_DIR_PATH.'/template/'.$templateCode;
-            $config['block_realdir'] = $config['template_realdir'].'/Block';
+            $env = StringUtil::replaceEnv($env, [
+                'ECCUBE_TEMPLATE_CODE' => $Template->getCode(),
+            ]);
 
-            file_put_contents($file, sprintf('<?php return %s', var_export($config, true)).';');
+            file_put_contents($envFile, $env);
 
             $this->addSuccess('admin.content.template.save.complete', 'admin');
+
+            $cacheUtil->clearCache();
 
             return $this->redirectToRoute('admin_store_template');
         }
@@ -120,7 +116,7 @@ class TemplateController extends AbstractController
     /**
      * テンプレート一覧からのダウンロード
      *
-     * @Route("/%admin_route%/store/template/{id}/download", name="admin_store_template_download", requirements={"id" = "\d+"})
+     * @Route("/%eccube_admin_route%/store/template/{id}/download", name="admin_store_template_download", requirements={"id" = "\d+"})
      *
      * @param Request $request
      * @param \Eccube\Entity\Template $Template
@@ -131,19 +127,18 @@ class TemplateController extends AbstractController
     {
         //TODO:FIXME Need unit test this case & implement how to store/get config which updated from application, should not store eccube.constants parameter
         // 該当テンプレートのディレクトリ
-        $config = $this->eccubeConfig;
         $templateCode = $Template->getCode();
-        $targetRealDir = $this->container->getParameter('kernel.project_dir') . '/app/template/' . $templateCode;
-        $targetHtmlRealDir = $this->container->getParameter('kernel.project_dir') . '/html/template/' . $templateCode;
+        $targetRealDir = $this->getParameter('kernel.project_dir').'/app/template/'.$templateCode;
+        $targetHtmlRealDir = $this->getParameter('kernel.project_dir').'/html/template/'.$templateCode;
 
         // 一時ディレクトリ
         $uniqId = sha1(StringUtil::random(32));
-        $tmpDir = $config['template_temp_realdir'].'/'.$uniqId;
+        $tmpDir = \sys_get_temp_dir().'/'.$uniqId;
         $appDir = $tmpDir.'/app';
         $htmlDir = $tmpDir.'/html';
 
         // ファイル名
-        $tarFile = $config['template_temp_realdir'].'/'.$uniqId.'.tar';
+        $tarFile = $tmpDir.'.tar';
         $tarGzFile = $tarFile.'.gz';
         $downloadFileName = $Template->getCode().'.tar.gz';
 
@@ -165,7 +160,7 @@ class TemplateController extends AbstractController
 
         // ダウンロード完了後にファイルを削除する.
         // http://stackoverflow.com/questions/15238897/removing-file-after-delivering-response-with-silex-symfony
-        $this->eventDispatcher->addListener(KernelEvents::TERMINATE, function() use (
+        $this->eventDispatcher->addListener(KernelEvents::TERMINATE, function () use (
             $tmpDir,
             $tarFile,
             $tarGzFile
@@ -186,7 +181,7 @@ class TemplateController extends AbstractController
     }
 
     /**
-     * @Route("/%admin_route%/store/template/{id}/delete", name="admin_store_template_delete", requirements={"id" = "\d+"})
+     * @Route("/%eccube_admin_route%/store/template/{id}/delete", name="admin_store_template_delete", requirements={"id" = "\d+"})
      * @Method("DELETE")
      */
     public function delete(Request $request, \Eccube\Entity\Template $Template)
@@ -202,7 +197,7 @@ class TemplateController extends AbstractController
         }
 
         // 設定中のテンプレート
-        if ($this->eccubeConfig['template_code'] === $Template->getCode()) {
+        if ($this->eccubeConfig['eccube.theme'] === $Template->getCode()) {
             $this->addError('admin.content.template.delete.current.error', 'admin');
 
             return $this->redirectToRoute('admin_store_template');
@@ -210,8 +205,8 @@ class TemplateController extends AbstractController
 
         // テンプレートディレクトリの削除
         $templateCode = $Template->getCode();
-        $targetRealDir = $this->container->getParameter('kernel.project_dir') . '/app/template/' . $templateCode;
-        $targetHtmlRealDir = $this->container->getParameter('kernel.project_dir') . '/html/template/' . $templateCode;
+        $targetRealDir = $this->container->getParameter('kernel.project_dir').'/app/template/'.$templateCode;
+        $targetHtmlRealDir = $this->container->getParameter('kernel.project_dir').'/html/template/'.$templateCode;
 
         $fs = new Filesystem();
         $fs->remove($targetRealDir);
@@ -229,7 +224,7 @@ class TemplateController extends AbstractController
     /**
      * テンプレートの追加画面.
      *
-     * @Route("/%admin_route%/store/template/install", name="admin_store_template_install")
+     * @Route("/%eccube_admin_route%/store/template/install", name="admin_store_template_install")
      * @Template("@admin/Store/template_add.twig")
      *
      * @param Request $request
@@ -260,12 +255,12 @@ class TemplateController extends AbstractController
 
             // 該当テンプレートのディレクトリ
             $templateCode = $Template->getCode();
-            $targetRealDir = $this->container->getParameter('kernel.project_dir') . '/app/template/' . $templateCode;
-            $targetHtmlRealDir = $this->container->getParameter('kernel.project_dir') . '/html/template/' . $templateCode;
+            $targetRealDir = $this->getParameter('kernel.project_dir').'/app/template/'.$templateCode;
+            $targetHtmlRealDir = $this->getParameter('kernel.project_dir').'/html/template/'.$templateCode;
 
             // 一時ディレクトリ
             $uniqId = sha1(StringUtil::random(32));
-            $tmpDir = $this->eccubeConfig['template_temp_realdir'] . '/' . $uniqId;
+            $tmpDir = \sys_get_temp_dir().'/'.$uniqId;
             $appDir = $tmpDir.'/app';
             $htmlDir = $tmpDir.'/html';
 

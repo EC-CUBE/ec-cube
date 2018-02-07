@@ -90,7 +90,7 @@ class DeliveryController extends AbstractController
         // $idが存在する際は、追加処理ではなく、編集の処理ため本ロジックスキップ
         if (is_null($id)) {
             $addressCurrNum = count($Customer->getCustomerAddresses());
-            $addressMax = $this->eccubeConfig['deliv_addr_max'];
+            $addressMax = $this->eccubeConfig['eccube_deliv_addr_max'];
             if ($addressCurrNum >= $addressMax) {
                 throw new NotFoundHttpException('お届け先の登録数の上限を超えています');
             }

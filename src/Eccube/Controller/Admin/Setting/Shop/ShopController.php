@@ -65,7 +65,7 @@ class ShopController extends AbstractController
 
 
     /**
-     * @Route("/%admin_route%/setting/shop", name="admin_setting_shop")
+     * @Route("/%eccube_admin_route%/setting/shop", name="admin_setting_shop")
      * @Template("@admin/Setting/Shop/shop_master.twig")
      *
      * @param Request $request

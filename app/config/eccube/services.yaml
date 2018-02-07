@@ -1,28 +1,12 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    locale: 'ja'
-    timezone: 'Asia/Tokyo'
-    # This parameter defines the codes of the locales (languages) enabled in the application
-    app_locales: en|fr|de|es|cs|nl|ru|uk|ro|pt_BR|pl|it|ja|id|ca|sl|hr|zh_CN
-    base_currency_code: 'JPY'
-    currency_code: '%base_currency_code%'
-    app.notifications.email_sender: anonymous@example.com
-    admin_route: '%env(ECCUBE_ADMIN_ROUTE)%'
-    user_data_route: 'user_data'
-    eccube.scheme: 'http'
-    eccube.theme: 'default'
-    eccube.theme.app_dir: '%kernel.project_dir%/app/template'
-    eccube.theme.src_dir: '%kernel.project_dir%/src/Eccube/Resource/template'
-    eccube.theme.user_data_dir: '%eccube.theme.app_dir%/user_data'
-    eccube.theme.front_dir: '%eccube.theme.app_dir%/%eccube.theme%'
-    eccube.theme.front_default_dir: '%eccube.theme.src_dir%/default'
-    eccube.theme.admin_dir: '%eccube.theme.app_dir%/admin'
-    eccube.theme.admin_default_dir: '%eccube.theme.src_dir%/admin'
-    eccube.twig.block.templates:
-      - render_block.twig
-    eccube.save_image_dir: '%kernel.project_dir%/html/upload/save_image'
-    eccube.temp_image_dir: '%kernel.project_dir%/html/upload/temp_image'
+    env(ECCUBE_LOCALE): 'ja'
+    env(ECCUBE_TIMEZONE): 'Asia/Tokyo'
+    env(ECCUBE_CURRENCY): 'JPY'
+    locale: '%env(ECCUBE_LOCALE)%'
+    timezone: '%env(ECCUBE_TIMEZONE)%'
+    currency: '%env(ECCUBE_CURRENCY)%'
 
 services:
     # default configuration for services in *this* file
@@ -36,12 +20,6 @@ services:
         public: false
 
         bind:
-          $admin_route: '%admin_route%'
-          $auth_magic: '%env(ECCUBE_AUTH_MAGIC)%'
-          $auth_type: 'HMAC'
-          $password_hash_algos: 'sha256'
-          $projectRoot: '%kernel.project_dir%'
-          $environment: '%kernel.environment%'
           $cartPurchaseFlow: '@eccube.purchase.flow.cart'
           $shoppingPurchaseFlow: '@eccube.purchase.flow.shopping'
           $orderPurchaseFlow: '@eccube.purchase.flow.order'
@@ -53,7 +31,7 @@ services:
         resource: '../../../src/Eccube/*'
         # you can exclude directories or files
         # but if a service is unused, it's removed anyway
-        exclude: '../../../src/Eccube/{Annotation,Application,Common,ControllerProvider,DI,Entity,Exception,Log,Plugin,Routing,ServiceProvider,Util,Resource,Doctrine/ORM/tools/}'
+        exclude: '../../../src/Eccube/{Annotation,Common,Entity,Exception,Log,Plugin,ServiceProvider,Resource,Doctrine/ORM/tools/}'
 
     Eccube\Common\EccubeConfig:
         public: true
@@ -79,7 +57,7 @@ services:
     Eccube\Twig\Extension\EccubeBlockExtension:
         tags: ['twig.extension']
         bind:
-          $blockTemplates: '%eccube.twig.block.templates%'
+          $blockTemplates: '%eccube_twig_block_templates%'
 
     Plugin\:
         resource: '../../../app/Plugin/*'

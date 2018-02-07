@@ -72,8 +72,8 @@ class ChangePasswordType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'min' => $this->eccubeConfig['password_min_len'],
-                        'max' => $this->eccubeConfig['password_max_len'],
+                        'min' => $this->eccubeConfig['eccube_password_min_len'],
+                        'max' => $this->eccubeConfig['eccube_password_max_len'],
                     )),
                     new Assert\Regex(array(
                         'pattern' => '/^[[:graph:][:space:]]+$/i',

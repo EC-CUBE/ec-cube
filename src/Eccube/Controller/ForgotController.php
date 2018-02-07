@@ -113,7 +113,7 @@ class ForgotController extends AbstractController
                 // リセットキーの発行・有効期限の設定
                 $Customer
                     ->setResetKey($this->customerRepository->getUniqueResetKey())
-                    ->setResetExpire(new \DateTime('+'.$this->eccubeConfig['customer_reset_expire'].' min'));
+                    ->setResetExpire(new \DateTime('+'.$this->eccubeConfig['eccube_customer_reset_expire'].' min'));
 
                 // リセットキーを更新
                 $this->entityManager->persist($Customer);

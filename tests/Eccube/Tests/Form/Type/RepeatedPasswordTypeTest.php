@@ -79,7 +79,7 @@ class RepeatedPasswordTypeTest extends AbstractTypeTestCase
 
     public function testInvalid_LengthMin()
     {
-        $password = str_repeat('1', $this->eccubeConfig['password_min_len']-1);
+        $password = str_repeat('1', $this->eccubeConfig['eccube_password_min_len']-1);
 
         $this->formData['password']['first'] = $password;
         $this->formData['password']['second'] = $password;
@@ -90,7 +90,7 @@ class RepeatedPasswordTypeTest extends AbstractTypeTestCase
 
     public function testInvalid_LengthMax()
     {
-        $password = str_repeat('1', $this->eccubeConfig['password_max_len']+1);
+        $password = str_repeat('1', $this->eccubeConfig['eccube_password_max_len']+1);
 
         $this->formData['password']['first'] = $password;
         $this->formData['password']['second'] = $password;
@@ -101,7 +101,7 @@ class RepeatedPasswordTypeTest extends AbstractTypeTestCase
 
     public function testInvalid_Hiragana()
     {
-        $password = str_repeat('あ', $this->eccubeConfig['password_max_len']);
+        $password = str_repeat('あ', $this->eccubeConfig['eccube_password_max_len']);
 
         $this->formData['password']['first'] = $password;
         $this->formData['password']['second'] = $password;
@@ -114,7 +114,7 @@ class RepeatedPasswordTypeTest extends AbstractTypeTestCase
     public function testValid_ZenkakuAlpha()
     {
         // これ通っていいのかな?
-        $password = str_repeat('Ａ', $this->eccubeConfig['password_max_len']);
+        $password = str_repeat('Ａ', $this->eccubeConfig['eccube_password_max_len']);
 
         $this->formData['password']['first'] = $password;
         $this->formData['password']['second'] = $password;
@@ -126,7 +126,7 @@ class RepeatedPasswordTypeTest extends AbstractTypeTestCase
 
     public function testInvalid_SpaceOnly()
     {
-        $password = str_repeat(' ', $this->eccubeConfig['password_max_len']);
+        $password = str_repeat(' ', $this->eccubeConfig['eccube_password_max_len']);
 
         $this->formData['password']['first'] = $password;
         $this->formData['password']['second'] = $password;

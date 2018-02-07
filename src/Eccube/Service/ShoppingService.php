@@ -24,6 +24,7 @@
 namespace Eccube\Service;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
 use Eccube\Common\EccubeConfig;
@@ -57,9 +58,12 @@ use Eccube\Repository\PaymentRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Util\StringUtil;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
@@ -201,8 +205,8 @@ class ShoppingService
     public function __construct(
         MailTemplateRepository $mailTemplateRepository,
         MailService $mailService,
-        EventDispatcher $eventDispatcher,
-        FormFactory $formFactory,
+        EventDispatcherInterface $eventDispatcher,
+        FormFactoryInterface $formFactory,
         DeliveryFeeRepository $deliveryFeeRepository,
         TaxRuleRepository $taxRuleRepository,
         CustomerAddressRepository $customerAddressRepository,
@@ -211,10 +215,10 @@ class ShoppingService
         OrderStatusRepository $orderStatusRepository,
         PaymentRepository $paymentRepository,
         DeviceTypeRepository $deviceTypeRepository,
-        EntityManager $entityManager,
+        EntityManagerInterface $entityManager,
         EccubeConfig $eccubeConfig,
         PrefRepository $prefRepository,
-        Session $session,
+        SessionInterface $session,
         OrderRepository $orderRepository,
         CartService $cartService,
         OrderService $orderService,
@@ -1011,7 +1015,7 @@ class ShoppingService
             $period = new \DatePeriod (
                 new \DateTime($minDate.' day'),
                 new \DateInterval('P1D'),
-                new \DateTime($minDate + $this->eccubeConfig['deliv_date_end_max'].' day')
+                new \DateTime($minDate + $this->eccubeConfig['eccube_deliv_date_end_max'].' day')
             );
 
             foreach ($period as $day) {
