@@ -134,8 +134,8 @@ class ChangeControllerTest extends AbstractWebTestCase
 
         $form = $this->createFormData();
         $form['password'] = array(
-            'first' => $this->eccubeConfig['default_password'],
-            'second' => $this->eccubeConfig['default_password']
+            'first' => $this->eccubeConfig['eccube_default_password'],
+            'second' => $this->eccubeConfig['eccube_default_password']
         );
         $crawler = $this->client->request(
             'POST',

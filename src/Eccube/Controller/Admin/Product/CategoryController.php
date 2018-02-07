@@ -71,9 +71,9 @@ class CategoryController extends AbstractController
 
 
     /**
-     * @Route("/%admin_route%/product/category", name="admin_product_category")
-     * @Route("/%admin_route%/product/category/{parent_id}", requirements={"parent_id" = "\d+"}, name="admin_product_category_show")
-     * @Route("/%admin_route%/product/category/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_category_edit")
+     * @Route("/%eccube_admin_route%/product/category", name="admin_product_category")
+     * @Route("/%eccube_admin_route%/product/category/{parent_id}", requirements={"parent_id" = "\d+"}, name="admin_product_category_show")
+     * @Route("/%eccube_admin_route%/product/category/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_category_edit")
      * @Template("@admin/Product/category.twig")
      */
     public function index(Request $request, $parent_id = null, $id = null)
@@ -122,7 +122,7 @@ class CategoryController extends AbstractController
         if ($request->getMethod() === 'POST') {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                if ($this->eccubeConfig['category_nest_level'] < $TargetCategory->getHierarchy()) {
+                if ($this->eccubeConfig['eccube_category_nest_level'] < $TargetCategory->getHierarchy()) {
                     throw new BadRequestHttpException('リクエストが不正です');
                 }
                 log_info('カテゴリ登録開始', array($id));
@@ -166,7 +166,7 @@ class CategoryController extends AbstractController
 
     /**
      * @Method("DELETE")
-     * @Route("/%admin_route%/product/category/{id}/delete", requirements={"id" = "\d+"}, name="admin_product_category_delete")
+     * @Route("/%eccube_admin_route%/product/category/{id}/delete", requirements={"id" = "\d+"}, name="admin_product_category_delete")
      */
     public function delete(Request $request, $id)
     {
@@ -212,7 +212,7 @@ class CategoryController extends AbstractController
 
     /**
      * @Method("POST")
-     * @Route("/%admin_route%/product/category/sort_no/move", name="admin_product_category_sort_no_move")
+     * @Route("/%eccube_admin_route%/product/category/sort_no/move", name="admin_product_category_sort_no_move")
      */
     public function moveSortNo(Request $request)
     {
@@ -234,7 +234,7 @@ class CategoryController extends AbstractController
     /**
      * カテゴリCSVの出力.
      *
-     * @Route("/%admin_route%/product/category/export", name="admin_product_category_export")
+     * @Route("/%eccube_admin_route%/product/category/export", name="admin_product_category_export")
      *
      * @param Request $request
      * @return StreamedResponse

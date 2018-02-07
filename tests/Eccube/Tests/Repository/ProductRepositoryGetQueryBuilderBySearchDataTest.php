@@ -181,7 +181,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
         $this->entityManager->flush();
 
         $ProductListOrderBy = $this->productListOrderByRepository
-            ->find($this->eccubeConfig['product_order_price_higher']);
+            ->find($this->eccubeConfig['eccube_product_order_price_higher']);
         $this->searchData = [
             'orderby' => $ProductListOrderBy
         ];

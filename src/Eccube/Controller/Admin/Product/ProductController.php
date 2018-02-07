@@ -147,8 +147,8 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/%admin_route%/product", name="admin_product")
-     * @Route("/%admin_route%/product/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_product_page")
+     * @Route("/%eccube_admin_route%/product", name="admin_product")
+     * @Route("/%eccube_admin_route%/product/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_product_page")
      * @Template("@admin/Product/index.twig")
      */
     public function index(Request $request, $page_no = null, Paginator $paginator)
@@ -173,7 +173,7 @@ class ProductController extends AbstractController
 
         $ProductStatuses = $this->productStatusRepository->findAll();
         $pageMaxis = $this->pageMaxRepository->findAll();
-        $page_count = $this->eccubeConfig['default_page_count'];
+        $page_count = $this->eccubeConfig['eccube_default_page_count'];
         $page_status = null;
         $active = false;
 
@@ -232,7 +232,7 @@ class ProductController extends AbstractController
                     } else {
                         $searchData['link_status'] = $this->productStatusRepository->find($status);
                         $searchData['stock_status'] = null;
-                        if ($status == $this->eccubeConfig['admin_product_stock_status']) {
+                        if ($status == $this->eccubeConfig['eccube_admin_product_stock_status']) {
                             // 在庫なし
                             $searchData['link_status'] = null;
                             $searchData['stock_status'] = Constant::DISABLED;
@@ -295,7 +295,7 @@ class ProductController extends AbstractController
 
     /**
      * @Method("POST")
-     * @Route("/%admin_route%/product/product/image/add", name="admin_product_image_add")
+     * @Route("/%eccube_admin_route%/product/product/image/add", name="admin_product_image_add")
      */
     public function addImage(Request $request)
     {
@@ -317,7 +317,7 @@ class ProductController extends AbstractController
 
                     $extension = $image->getClientOriginalExtension();
                     $filename = date('mdHis') . uniqid('_') . '.' . $extension;
-                    $image->move($this->eccubeConfig['image_temp_realdir'], $filename);
+                    $image->move($this->eccubeConfig['eccube_temp_image_dir'], $filename);
                     $files[] = $filename;
                 }
             }
@@ -337,8 +337,8 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/%admin_route%/product/product/new", name="admin_product_product_new")
-     * @Route("/%admin_route%/product/product/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_product_edit")
+     * @Route("/%eccube_admin_route%/product/product/new", name="admin_product_product_new")
+     * @Route("/%eccube_admin_route%/product/product/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_product_edit")
      * @Template("@admin/Product/product.twig")
      */
     public function edit(Request $request, $id = null)
@@ -509,8 +509,8 @@ class ProductController extends AbstractController
                     $this->entityManager->persist($ProductImage);
 
                     // 移動
-                    $file = new File($this->eccubeConfig['image_temp_realdir'] . '/' . $add_image);
-                    $file->move($this->eccubeConfig['image_save_realdir']);
+                    $file = new File($this->eccubeConfig['eccube_temp_image_dir'] . '/' . $add_image);
+                    $file->move($this->eccubeConfig['eccube_save_image_dir']);
                 }
 
                 // 画像の削除
@@ -529,7 +529,7 @@ class ProductController extends AbstractController
 
                     // 削除
                     $fs = new Filesystem();
-                    $fs->remove($this->eccubeConfig['image_save_realdir'] . '/' . $delete_image);
+                    $fs->remove($this->eccubeConfig['eccube_save_image_dir'] . '/' . $delete_image);
                 }
                 $this->entityManager->persist($Product);
                 $this->entityManager->flush();
@@ -622,7 +622,7 @@ class ProductController extends AbstractController
 
     /**
      * @Method("DELETE")
-     * @Route("/%admin_route%/product/product/{id}/delete", requirements={"id" = "\d+"}, name="admin_product_product_delete")
+     * @Route("/%eccube_admin_route%/product/product/{id}/delete", requirements={"id" = "\d+"}, name="admin_product_product_delete")
      */
     public function delete(Request $request, $id = null)
     {
@@ -665,7 +665,7 @@ class ProductController extends AbstractController
                     foreach ($deleteImages as $deleteImage) {
                         try {
                             $fs = new Filesystem();
-                            $fs->remove($this->eccubeConfig['image_save_realdir'] . '/' . $deleteImage);
+                            $fs->remove($this->eccubeConfig['eccube_save_image_dir'] . '/' . $deleteImage);
                         } catch (\Exception $e) {
                             // エラーが発生しても無視する
                         }
@@ -696,7 +696,7 @@ class ProductController extends AbstractController
 
     /**
      * @Method("POST")
-     * @Route("/%admin_route%/product/product/{id}/copy", requirements={"id" = "\d+"}, name="admin_product_product_copy")
+     * @Route("/%eccube_admin_route%/product/product/{id}/copy", requirements={"id" = "\d+"}, name="admin_product_product_copy")
      */
     public function copy(Request $request, $id = null)
     {
@@ -745,7 +745,7 @@ class ProductController extends AbstractController
                     $filename = date('mdHis') . uniqid('_') . '.' . $extension;
                     try {
                         $fs = new Filesystem();
-                        $fs->copy($this->eccubeConfig['image_save_realdir'] . '/' . $Image->getFileName(), $this->eccubeConfig['image_save_realdir'] . '/' . $filename);
+                        $fs->copy($this->eccubeConfig['eccube_save_image_dir'] . '/' . $Image->getFileName(), $this->eccubeConfig['eccube_save_image_dir'] . '/' . $filename);
                     } catch (\Exception $e) {
                         // エラーが発生しても無視する
                     }
@@ -790,7 +790,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/%admin_route%/product/product/{id}/display", requirements={"id" = "\d+"}, name="admin_product_product_display")
+     * @Route("/%eccube_admin_route%/product/product/{id}/display", requirements={"id" = "\d+"}, name="admin_product_product_display")
      */
     public function display(Request $request, $id = null)
     {

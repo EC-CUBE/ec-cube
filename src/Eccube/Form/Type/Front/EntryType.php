@@ -75,7 +75,7 @@ class EntryType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['stext_len'],
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
                     )),
                 ),
             ))
@@ -92,7 +92,7 @@ class EntryType extends AbstractType
             ->add('birth', BirthdayType::class, array(
                 'required' => false,
                 'input' => 'datetime',
-                'years' => range(date('Y'), date('Y') - $this->eccubeConfig['birth_max']),
+                'years' => range(date('Y'), date('Y') - $this->eccubeConfig['eccube_birth_max']),
                 'widget' => 'choice',
                 'format' => 'yyyy/MM/dd',
                 'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),

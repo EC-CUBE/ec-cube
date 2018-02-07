@@ -29,7 +29,7 @@ class FunctionsTest extends EccubeTestCase
         // Rewrite to parameters using reflection
         $container = $client->getContainer();
         $parameters = $container->getParameterBag()->all();
-        $parameters['eccube.twig.block.templates'] = $this->blockTwigs;
+        $parameters['eccube_twig_block_templates'] = $this->blockTwigs;
 
         $refClass = new \ReflectionClass($container);
         $refProp = $refClass->getProperty('parameters');

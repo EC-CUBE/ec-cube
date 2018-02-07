@@ -106,7 +106,7 @@ class OrderType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['stext_len'],
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
                     )),
                 ),
             ))
@@ -131,7 +131,7 @@ class OrderType extends AbstractType
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(array(
-                            'max' => $this->eccubeConfig['mtext_len'],
+                            'max' => $this->eccubeConfig['eccube_mtext_len'],
                         )),
                     ),
                     'attr' => array('class' => 'p-locality'),
@@ -141,7 +141,7 @@ class OrderType extends AbstractType
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(array(
-                            'max' => $this->eccubeConfig['mtext_len'],
+                            'max' => $this->eccubeConfig['eccube_mtext_len'],
                         )),
                     ),
                     'attr' => array('class' => 'p-street-address'),
@@ -172,7 +172,7 @@ class OrderType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['stext_len'],
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
                     )),
                 ),
             ))
@@ -181,7 +181,7 @@ class OrderType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['ltext_len'],
+                        'max' => $this->eccubeConfig['eccube_ltext_len'],
                     )),
                 ),
             ))
@@ -223,7 +223,7 @@ class OrderType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['ltext_len'],
+                        'max' => $this->eccubeConfig['eccube_ltext_len'],
                     )),
                 ),
             ))

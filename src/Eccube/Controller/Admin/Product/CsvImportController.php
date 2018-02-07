@@ -174,7 +174,7 @@ class CsvImportController
     /**
      * 商品登録CSVアップロード
      *
-     * @Route("/%admin_route%/product/product_csv_upload", name="admin_product_csv_import")
+     * @Route("/%eccube_admin_route%/product/product_csv_upload", name="admin_product_csv_import")
      * @Template("@admin/Product/csv_product.twig")
      */
     public function csvProduct(Request $request)
@@ -493,7 +493,7 @@ class CsvImportController
     /**
      * カテゴリ登録CSVアップロード
      *
-     * @Route("/%admin_route%/product/category_csv_upload", name="admin_product_category_csv_import")
+     * @Route("/%eccube_admin_route%/product/category_csv_upload", name="admin_product_category_csv_import")
      * @Template("@admin/Product/csv_category.twig")
      */
     public function csvCategory(Request $request)
@@ -580,7 +580,7 @@ class CsvImportController
                         } else {
                             $Category->setHierarchy(1);
                         }
-                        if ($this->eccubeConfig['category_nest_level'] < $Category->getHierarchy()) {
+                        if ($this->eccubeConfig['eccube_category_nest_level'] < $Category->getHierarchy()) {
                             $this->addErrors(($data->key() + 1) . '行目のカテゴリが最大レベルを超えているため設定できません。');
                             return $this->render($form, $headers);
                         }
@@ -609,7 +609,7 @@ class CsvImportController
     /**
      * アップロード用CSV雛形ファイルダウンロード
      *
-     * @Route("/%admin_route%/product/csv_template/{type}", requirements={"type" = "\w+"}, name="admin_product_csv_template")
+     * @Route("/%eccube_admin_route%/product/csv_template/{type}", requirements={"type" = "\w+"}, name="admin_product_csv_template")
      */
     public function csvTemplate(Request $request, $type)
     {
@@ -631,11 +631,11 @@ class CsvImportController
             // ヘッダ行の出力
             $row = array();
             foreach ($headers as $key => $value) {
-                $row[] = mb_convert_encoding($key, $this->eccubeConfig['csv_export_encoding'], 'UTF-8');
+                $row[] = mb_convert_encoding($key, $this->eccubeConfig['eccube_csv_export_encoding'], 'UTF-8');
             }
 
             $fp = fopen('php://output', 'w');
-            fputcsv($fp, $row, $this->eccubeConfig['csv_export_separator']);
+            fputcsv($fp, $row, $this->eccubeConfig['eccube_csv_export_separator']);
             fclose($fp);
         });
 
@@ -666,7 +666,7 @@ class CsvImportController
         if (!empty($this->fileName)) {
             try {
                 $fs = new Filesystem();
-                $fs->remove($this->eccubeConfig['csv_temp_realdir'] . '/' . $this->fileName);
+                $fs->remove($this->eccubeConfig['eccube_csv_temp_realdir'] . '/' . $this->fileName);
             } catch (\Exception $e) {
                 // エラーが発生しても無視する
             }
@@ -690,9 +690,9 @@ class CsvImportController
     {
         // アップロードされたCSVファイルを一時ディレクトリに保存
         $this->fileName = 'upload_' . StringUtil::random() . '.' . $formFile->getClientOriginalExtension();
-        $formFile->move($this->eccubeConfig['csv_temp_realdir'], $this->fileName);
+        $formFile->move($this->eccubeConfig['eccube_csv_temp_realdir'], $this->fileName);
 
-        $file = file_get_contents($this->eccubeConfig['csv_temp_realdir'] . '/' . $this->fileName);
+        $file = file_get_contents($this->eccubeConfig['eccube_csv_temp_realdir'] . '/' . $this->fileName);
 
         if ('\\' === DIRECTORY_SEPARATOR && PHP_VERSION_ID >= 70000) {
             // Windows 環境の PHP7 の場合はファイルエンコーディングを CP932 に合わせる
@@ -719,7 +719,7 @@ class CsvImportController
         set_time_limit(0);
 
         // アップロードされたCSVファイルを行ごとに取得
-        $data = new CsvImportService($file, $this->eccubeConfig['csv_import_delimiter'], $this->eccubeConfig['csv_import_enclosure']);
+        $data = new CsvImportService($file, $this->eccubeConfig['eccube_csv_import_delimiter'], $this->eccubeConfig['eccube_csv_import_enclosure']);
 
         $ret = $data->setHeaderRowNumber(0);
 

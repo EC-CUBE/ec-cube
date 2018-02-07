@@ -88,7 +88,7 @@ class MainEditType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['stext_len'],
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
                     )),
                 ),
             ))
@@ -98,7 +98,7 @@ class MainEditType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['stext_len'],
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
                     )),
                     new Assert\Regex(array(
                         'pattern' => '/^([0-9a-zA-Z_\-]+\/?)+(?<!\/)$/',
@@ -111,7 +111,7 @@ class MainEditType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['stext_len'],
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
                     )),
                     new Assert\Regex(array(
                         'pattern' => '/^([0-9a-zA-Z_\-]+\/?)+$/',
@@ -132,7 +132,7 @@ class MainEditType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['stext_len'],
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
                     )),
                 ),
             ))
@@ -141,7 +141,7 @@ class MainEditType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['stext_len'],
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
                     )),
                 ),
             ))
@@ -150,7 +150,7 @@ class MainEditType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['stext_len'],
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
                     )),
                 ),
             ))
@@ -159,7 +159,7 @@ class MainEditType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['stext_len'],
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
                     )),
                 ),
             ))
