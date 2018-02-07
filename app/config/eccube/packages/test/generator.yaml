@@ -17,3 +17,4 @@ services:
       - '@Eccube\Repository\TaxRuleRepository'
       - '@session'
       - 'ja_JP'
+    public: true

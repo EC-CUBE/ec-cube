@@ -134,7 +134,7 @@ jQuery(document).ready(function ($) {
 /////////// 検索条件をクリア
     $('.search-clear').click(function (event) {
         event.preventDefault(event);
-        $('.search-box-inner input, .search-box-inner select').each(function () {
+        $('#search_form .input_search, .search-box-inner input, .search-box-inner select').each(function () {
             if (this.type == "checkbox" || this.type == "radio") {
                 this.checked = false;
             } else {
@@ -221,27 +221,31 @@ $(function () {
     });
 });
 
-// Scroll to error message if have
+// 入力チェックエラー発生時にエラー発生箇所までスクロールさせる
 $(window).load(function() {
-    var el = $(".errormsg");
+    var el = $('.errormsg');
     if (el.length) {
         // Open panel when has error
-        openPanel(el.first());
+        openPanel(el);
         var errorOffset = el.first().offset().top;
         var screenHeight = $(window).height();
-        var errorMargin = parseInt(screenHeight/10) + $('header').outerHeight();
+        var errorMargin = parseInt(screenHeight / 10) + $('header').outerHeight();
 
-        $('html, body').scrollTop(errorOffset - errorMargin);
+        $('html, body').animate({
+            scrollTop: (errorOffset - errorMargin)
+        }, 500);
     }
 
     function openPanel(el) {
         var accordion = el.parents('div.accordion');
-        if (accordion) {
-            var toggle = accordion.find('div.toggle');
-            if (!toggle.hasClass('active')) {
-                toggle.addClass('active');
-                accordion.find('div.accpanel').toggle('fast');
-            }
+        var $ac = $('.accpanel', accordion);
+        if (!$ac) {
+            return false;
+        }
+
+        if ($ac.css('display') == 'none') {
+            $ac.siblings('.toggle').addClass('active');
+            $ac.slideDown(0);
         }
     }
 });

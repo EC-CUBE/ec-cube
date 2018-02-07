@@ -23,6 +23,7 @@
 
 namespace Eccube\Tests\Security\Voter;
 
+use Eccube\Common\EccubeConfig;
 use Eccube\Security\Voter\AuthorityVoter;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Repository\AuthorityRoleRepository;
@@ -34,8 +35,9 @@ class AuthorityVoterTest extends EccubeTestCase
         $client = self::createClient();
         $authorityRoleRepository = $client->getContainer()->get(AuthorityRoleRepository::class);
         $requestStack = $client->getContainer()->get('request_stack');
+        $eccubeConfig = $client->getContainer()->get(EccubeConfig::class);
 
-        $voter = new AuthorityVoter($authorityRoleRepository, $requestStack);
+        $voter = new AuthorityVoter($authorityRoleRepository, $requestStack, $eccubeConfig);
 
         $this->assertTrue($voter->supportsClass('Foo'));
     }

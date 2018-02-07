@@ -396,7 +396,6 @@ class ProductController extends AbstractController
     {
         // エラーメッセージの配列
         $errorMessages = array();
-
         if (!$this->checkVisibility($Product)) {
             throw new NotFoundHttpException();
         }

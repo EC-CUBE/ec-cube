@@ -26,6 +26,7 @@ namespace Eccube\Tests\Web;
 
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\BaseInfoRepository;
+use Eccube\Repository\ClassCategoryRepository;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpKernel\Client;
 
@@ -37,10 +38,16 @@ class ProductControllerTest extends AbstractWebTestCase
      */
     private $baseInfoRepository;
 
+    /**
+     * @var ClassCategoryRepository
+     */
+    private $classCategoryRepository;
+
     public function setUp()
     {
         parent::setUp();
         $this->baseInfoRepository = $this->container->get(BaseInfoRepository::class);
+        $this->classCategoryRepository = $this->container->get(ClassCategoryRepository::class);
     }
 
 
@@ -91,6 +98,38 @@ class ProductControllerTest extends AbstractWebTestCase
         $message = '商品が見つかりました';
         $crawler = $client->request('GET', $this->generateUrl('product_list', array('category_id' => '6')));
         $this->assertContains($message, $crawler->html());
+    }
+
+    /**
+     * testProductClassSortByRank
+     */
+    public function testProductClassSortByRank()
+    {
+        $this->markTestIncomplete('FIXME Order by ProductClass');
+        /* @var $ClassCategory \Eccube\Entity\ClassCategory */
+        //set 金 rank
+        $ClassCategory = $this->classCategoryRepository->findOneBy(array('name' => '金'));
+        $ClassCategory->setSortNo(3);
+        $this->entityManager->persist($ClassCategory);
+        $this->entityManager->flush($ClassCategory);
+        //set 銀 rank
+        $ClassCategory = $this->classCategoryRepository->findOneBy(array('name' => '銀'));
+        $ClassCategory->setSortNo(2);
+        $this->entityManager->persist($ClassCategory);
+        $this->entityManager->flush($ClassCategory);
+        //set プラチナ rank
+        $ClassCategory = $this->classCategoryRepository->findOneBy(array('name' => 'プラチナ'));
+        $ClassCategory->setSortNo(1);
+        $this->entityManager->persist($ClassCategory);
+        $this->entityManager->flush($ClassCategory);
+        $client = $this->client;
+        $crawler = $client->request('GET', $this->generateUrl('product_detail', array('id' => '1')));
+        $this->assertTrue($client->getResponse()->isSuccessful());
+        $classCategory = $crawler->filter('#classcategory_id1')->text();
+        //選択してください, 金, 銀, プラチナ sort by rank setup above.
+        $this->expected = '選択してください金銀プラチナ';
+        $this->actual = $classCategory;
+        $this->verify();
     }
 
     /**

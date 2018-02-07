@@ -135,7 +135,7 @@ class StringUtil
     public static function characterEncoding($value, $encoding = array('UTF-8', 'SJIS', 'EUC-JP', 'ASCII', 'JIS', 'sjis-win'))
     {
         foreach ($encoding as $encode) {
-            if (mb_convert_encoding($value, $encode, $encode) == $value) {
+            if (mb_check_encoding($value, $encode)) {
                 return $encode;
             }
         }
@@ -311,4 +311,21 @@ class StringUtil
         }
         return preg_replace('/(^\s+)|(\s+$)/u', '', $value);
     }
+
+    /**
+     * envファイルのコンテンツを更新する.
+     *
+     * @param string $env
+     * @param array $replacement
+     * @return string
+     */
+    public static function replaceEnv($env, array $replacement)
+    {
+        foreach ($replacement as $key => $value) {
+            $env = preg_replace('/('.$key.')=(.*)/', '$1='.$value, $env);
+        }
+
+        return $env;
+    }
+
 }

@@ -78,22 +78,22 @@ class CustomerType extends AbstractType
             ->add('name', NameType::class, array(
                 'options' => array(
                     'attr' => array(
-                        'maxlength' => $this->eccubeConfig['stext_len'],
+                        'maxlength' => $this->eccubeConfig['eccube_stext_len'],
                     ),
                     'constraints' => array(
                         new Assert\NotBlank(),
-                        new Assert\Length(array('max' => $this->eccubeConfig['stext_len'])),
+                        new Assert\Length(array('max' => $this->eccubeConfig['eccube_stext_len'])),
                     ),
                 ),
             ))
             ->add('kana', NameType::class, array(
                 'options' => array(
                     'attr' => array(
-                        'maxlength' => $this->eccubeConfig['stext_len'],
+                        'maxlength' => $this->eccubeConfig['eccube_stext_len'],
                     ),
                     'constraints' => array(
                         new Assert\NotBlank(),
-                        new Assert\Length(array('max' => $this->eccubeConfig['stext_len'])),
+                        new Assert\Length(array('max' => $this->eccubeConfig['eccube_stext_len'])),
                         new Assert\Regex(array(
                             'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
                         )),
@@ -104,7 +104,7 @@ class CustomerType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['stext_len'],
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
                     ))
                 ),
             ))
@@ -136,7 +136,7 @@ class CustomerType extends AbstractType
             ->add('birth', BirthdayType::class, array(
                 'required' => false,
                 'input' => 'datetime',
-                'years' => range(date('Y'), date('Y') - $this->eccubeConfig['birth_max']),
+                'years' => range(date('Y'), date('Y') - $this->eccubeConfig['eccube_birth_max']),
                 'widget' => 'choice',
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),

@@ -78,7 +78,7 @@
                             {{ form_label(form.url) }}
                             <div class="col-sm-9 col-lg-10 form-inline">
                                 {% if is_user_data_page %}
-                                    {{ url('homepage') }}{{ user_data_route }}/{{ form_widget(form.url) }}
+                                    {{ url('homepage') }}{{ eccube_config.eccube_user_data_route }}/{{ form_widget(form.url) }}
                                 {% else %}
                                     {{ app.request.schemeAndHttpHost }}{{ app.request.basePath }}{{ url }}
                                     {{ form_widget(form.url, { type : 'hidden' } ) }}
@@ -145,6 +145,7 @@
                         {{ form_row(form.description) }}
                         {{ form_row(form.keyword) }}
                         {{ form_row(form.meta_robots) }}
+                        {{ form_row(form.meta_tags, { attr : { placeholder : '複数のmetaタグを入力可能'}}) }}
                     </div>
                 </div>
 

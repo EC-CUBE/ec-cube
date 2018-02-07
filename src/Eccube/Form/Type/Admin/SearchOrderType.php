@@ -58,7 +58,7 @@ class SearchOrderType extends AbstractType
                 'label' => '受注ID・注文者名・注文者（フリガナ）・注文者会社名',
                 'required' => false,
                 'constraints' => array(
-                    new Assert\Length(array('max' => $this->eccubeConfig['stext_len'])),
+                    new Assert\Length(array('max' => $this->eccubeConfig['eccube_stext_len'])),
                 ),
             ))
             ->add('status', OrderStatusType::class, array(

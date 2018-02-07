@@ -78,14 +78,14 @@ class SearchCustomerType extends AbstractType
                 'label' => '会員ID・メールアドレス・名前・名前(フリガナ)',
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['stext_len']]),
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
                 ],
             ])
             ->add('company_name', TextType::class, [
                 'label' => '会社名',
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['stext_len']]),
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
                 ],
             ])
             ->add('pref', PrefType::class, [
@@ -132,28 +132,28 @@ class SearchCustomerType extends AbstractType
                 'label' => '購入金額',
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['price_len']]),
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_price_len']]),
                 ],
             ])
             ->add('buy_total_end', IntegerType::class, [
                 'label' => '購入金額',
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['price_len']]),
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_price_len']]),
                 ],
             ])
             ->add('buy_times_start', IntegerType::class, [
                 'label' => '購入回数',
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['int_len']]),
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_int_len']]),
                 ],
             ])
             ->add('buy_times_end', IntegerType::class, [
                 'label' => '購入回数',
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['int_len']]),
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_int_len']]),
                 ],
             ])
             ->add('create_date_start', DateType::class, [
@@ -208,14 +208,14 @@ class SearchCustomerType extends AbstractType
                 'label' => '購入商品名',
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['stext_len']]),
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
                 ],
             ])
             ->add('buy_product_code', TextType::class, [
                 'label' => '購入商品コード',
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['stext_len']]),
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
                 ],
             ])
             ->add('buy_category', MasterCategoryType::class, [

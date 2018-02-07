@@ -70,7 +70,7 @@ class KanaType extends AbstractType
                         'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
                     )),
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['kana_len'],
+                        'max' => $this->eccubeConfig['eccube_kana_len'],
                     )),
                 ),
             ),
@@ -83,7 +83,7 @@ class KanaType extends AbstractType
                         'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
                     )),
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['kana_len'],
+                        'max' => $this->eccubeConfig['eccube_kana_len'],
                     )),
                 ),
             ),

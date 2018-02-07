@@ -63,7 +63,7 @@ class PaymentController extends AbstractController
 
 
     /**
-     * @Route("/%admin_route%/setting/shop/payment", name="admin_setting_shop_payment")
+     * @Route("/%eccube_admin_route%/setting/shop/payment", name="admin_setting_shop_payment")
      * @Template("@admin/Setting/Shop/payment.twig")
      */
     public function index(Request $request)
@@ -88,8 +88,8 @@ class PaymentController extends AbstractController
     }
 
     /**
-     * @Route("/%admin_route%/setting/shop/payment/new", name="admin_setting_shop_payment_new")
-     * @Route("/%admin_route%/setting/shop/payment/{id}/edit", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_edit")
+     * @Route("/%eccube_admin_route%/setting/shop/payment/new", name="admin_setting_shop_payment_new")
+     * @Route("/%eccube_admin_route%/setting/shop/payment/{id}/edit", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_edit")
      * @Template("@admin/Setting/Shop/payment_edit.twig")
      */
     public function edit(Request $request, Payment $Payment = null)
@@ -113,7 +113,12 @@ class PaymentController extends AbstractController
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_EDIT_INITIALIZE, $event);
 
         $form = $builder->getForm();
+
+        $form->setData($Payment);
         $form->handleRequest($request);
+
+        // 既に画像保存されてる場合は取得する
+        $oldPaymentImage = $Payment->getPaymentImage();
 
         // 登録ボタン押下
         if ($form->isSubmitted() && $form->isValid()) {
@@ -122,10 +127,10 @@ class PaymentController extends AbstractController
             // ファイルアップロード
             $file = $form['payment_image']->getData();
             $fs = new Filesystem();
-            if ($file && $fs->exists($this->getParameter('eccube.temp_image_dir').'/'.$file)) {
+            if ($file && $fs->exists($this->getParameter('eccube_temp_image_dir').'/'.$file)) {
                 $fs->rename(
-                    $this->getParameter('eccube.temp_image_dir').'/'.$file,
-                    $this->getParameter('eccube.save_image_dir').'/'.$file
+                    $this->getParameter('eccube_temp_image_dir').'/'.$file,
+                    $this->getParameter('eccube_save_image_dir').'/'.$file
                 );
             }
 
@@ -151,11 +156,12 @@ class PaymentController extends AbstractController
             'form' => $form->createView(),
             'payment_id' => $Payment->getId(),
             'Payment' => $Payment,
+            'oldPaymentImage' => $oldPaymentImage,
         ];
     }
 
     /**
-     * @Route("/%admin_route%/setting/shop/payment/image/add", name="admin_payment_image_add")
+     * @Route("/%eccube_admin_route%/setting/shop/payment/image/add", name="admin_payment_image_add")
      */
     public function imageAdd(Request $request)
     {
@@ -176,7 +182,7 @@ class PaymentController extends AbstractController
 
             $extension = $image->guessExtension();
             $filename = date('mdHis').uniqid('_').'.'.$extension;
-            $image->move($this->getParameter('eccube.temp_image_dir'), $filename);
+            $image->move($this->getParameter('eccube_temp_image_dir'), $filename);
         }
         $event = new EventArgs(
             array(
@@ -193,7 +199,7 @@ class PaymentController extends AbstractController
 
     /**
      * @Method("DELETE")
-     * @Route("/%admin_route%/setting/shop/payment/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_delete")
+     * @Route("/%eccube_admin_route%/setting/shop/payment/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_delete")
      *
      * @param Request $request
      * @param Payment $TargetPayment
@@ -234,7 +240,7 @@ class PaymentController extends AbstractController
 
     /**
      * @Method("PUT")
-     * @Route("/%admin_route%/setting/shop/payment/{id}/up", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_up")
+     * @Route("/%eccube_admin_route%/setting/shop/payment/{id}/up", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_up")
      */
     public function up(Payment $current)
     {
@@ -245,19 +251,22 @@ class PaymentController extends AbstractController
 
         $target = $this->paymentRepository->findOneBy(array('sort_no' => $targetSortNo));
 
-        $target->setSortNo($currentSortNo);
-        $current->setSortNo($targetSortNo);
+        if($target) {
+            $this->entityManager->persist($target->setSortNo($currentSortNo));
+            $this->entityManager->persist($current->setSortNo($targetSortNo));
+            $this->entityManager->flush();
 
-        $this->entityManager->flush();
-
-        $this->addSuccess('admin.sort_no.move.complete', 'admin');
+            $this->addSuccess('admin.sort_no.move.complete', 'admin');
+        } else {
+            $this->addError('admin.sort_no.up.error', 'admin');
+        }
 
         return $this->redirectToRoute('admin_setting_shop_payment');
     }
 
     /**
      * @Method("PUT")
-     * @Route("/%admin_route%/setting/shop/payment/{id}/down", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_down")
+     * @Route("/%eccube_admin_route%/setting/shop/payment/{id}/down", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_down")
      */
     public function down(Payment $current)
     {
@@ -268,19 +277,22 @@ class PaymentController extends AbstractController
 
         $target = $this->paymentRepository->findOneBy(array('sort_no' => $targetSortNo));
 
-        $target->setSortNo($currentSortNo);
-        $current->setSortNo($targetSortNo);
+        if ($target) {
+            $this->entityManager->persist($target->setSortNo($currentSortNo));
+            $this->entityManager->persist($current->setSortNo($targetSortNo));
+            $this->entityManager->flush();
 
-        $this->entityManager->flush();
-
-        $this->addSuccess('admin.sort_no.move.complete', 'admin');
+            $this->addSuccess('admin.sort_no.move.complete', 'admin');
+        } else {
+            $this->addError('admin.sort_no.down.error', 'admin');
+        }
 
         return $this->redirectToRoute('admin_setting_shop_payment');
     }
 
     /**
      * @Method("PUT")
-     * @Route("/%admin_route%/setting/shop/payment/{id}/visible", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_visible")
+     * @Route("/%eccube_admin_route%/setting/shop/payment/{id}/visible", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_visible")
      */
     public function visible(Payment $Payment)
     {

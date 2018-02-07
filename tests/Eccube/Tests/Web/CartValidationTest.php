@@ -359,6 +359,87 @@ class CartValidationTest extends AbstractWebTestCase
     }
 
     /**
+     * 金額の上限と販売制限確認
+     */
+    public function testProductInCartIsNotEnoughAndLimit()
+    {
+        $productName = $this->getFaker()->word;
+        /** @var Product $Product */
+        $Product = parent::createProduct($productName, 1);
+        $ProductClass = $Product->getProductClasses()->first();
+        $ProductClass->setPrice02(999999911);
+        $this->changeStock($ProductClass, 10);
+        /** @var Client $client */
+        $client = $this->client;
+
+        // render
+        $client->request(
+            'GET',
+            $this->generateUrl('product_detail', array('id' => $Product->getId()))
+        );
+        // submit
+        $arrForm = array(
+            'ProductClass' => $ProductClass->getId(),
+            'quantity' => 9,
+            '_token' => 'dummy',
+        );
+        if ($ProductClass->hasClassCategory1()) {
+            $arrForm['classcategory_id1'] = $ProductClass->getClassCategory1()->getId();
+        }
+        if ($ProductClass->hasClassCategory2()) {
+            $arrForm['classcategory_id2'] = $ProductClass->getClassCategory2()->getId();
+        }
+
+        $client->request(
+            'POST',
+            $this->generateUrl('product_add_cart', array('id' => $Product->getId())),
+            $arrForm
+        );
+
+        $stock = 2000000;
+        $productName = $this->getFaker()->word;
+        $Product = $this->createProduct($productName, 1, 100);
+        $ProductClass = $Product->getProductClasses()->first();
+
+        $productId = $Product->getId();
+
+        // render
+        $client->request(
+            'GET',
+            $this->generateUrl('product_detail', array('id' => $productId))
+        );
+
+        // submit
+        $arrForm = array(
+            'ProductClass' => $ProductClass->getId(),
+            'quantity' => $stock,
+            '_token' => 'dummy',
+        );
+        if ($ProductClass->hasClassCategory1()) {
+            $arrForm['classcategory_id1'] = $ProductClass->getClassCategory1()->getId();
+        }
+        if ($ProductClass->hasClassCategory2()) {
+            $arrForm['classcategory_id2'] = $ProductClass->getClassCategory2()->getId();
+        }
+
+        $crawler = $client->request(
+            'POST',
+            $this->generateUrl('product_add_cart', array('id' => $productId)),
+            $arrForm
+        );
+
+        // check error message
+        $this->assertTrue($this->client->getResponse()->isRedirection());
+
+        $crawler = $client->followRedirect();
+        $message = $crawler->filter('.ec-alert-warning__text')->text();
+        // FIXME $this->assertContains('商品を購入できる金額の上限を超えております。数量を調整してください。', $message);
+        $this->assertContains('一度に在庫数を超える購入はできません', $message);
+
+        $this->assertContains('選択された商品('.$this->getProductName($ProductClass).')の在庫が不足しております。', $message);
+    }
+
+    /**
      * Test product in cart when product has other type
      */
     public function testProductInCartSaleType()
@@ -443,9 +524,8 @@ class CartValidationTest extends AbstractWebTestCase
     {
         $this->markTestIncomplete('複数配送が実装されるまでスキップ');
         // enable multi shipping
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(true);
-        $this->entityManager->persist($BaseInfo);
+        $this->BaseInfo->setOptionMultipleShipping(true);
+        $this->entityManager->persist($this->BaseInfo);
         $this->entityManager->flush();
 
         // Stock
@@ -453,7 +533,7 @@ class CartValidationTest extends AbstractWebTestCase
         $productName = $this->getFaker()->word;
         /** @var Product $Product */
         $Product = $this->createProduct($productName, 1, $stock);
-        $SaleType = $this->app['eccube.repository.master.sale_type']->find(2);
+        $SaleType = $this->entityManager->find(SaleType::class, 2);
         $ProductClass = $Product->getProductClasses()->first();
         $ProductClass->setSaleType($SaleType);
         $productClassId = $ProductClass->getId();
@@ -781,11 +861,8 @@ class CartValidationTest extends AbstractWebTestCase
         $this->scenarioCartIn($client, $productClassId);
 
         // Delete related delivery type
-        $Delivery = $this->app['eccube.repository.delivery']->find(1);
-        $Delivery
-            ->setDelFlg(Constant::ENABLED)
-            ->setSortNo(0);
-        $this->entityManager->persist($Delivery);
+        $Delivery = $this->entityManager->find(Delivery::class, 1);
+        $this->entityManager->remove($Delivery);
         $this->entityManager->flush($Delivery);
 
         // shopping
@@ -1098,7 +1175,7 @@ class CartValidationTest extends AbstractWebTestCase
         $this->scenarioCartIn($client, $productClassId2, $stockInCart);
 
         // Change product type
-        $SaleType = $this->app['eccube.repository.master.sale_type']->find(2);
+        $SaleType = $this->entityManager->find(SaleType::class, 2);
         $ProductClass->setSaleType($SaleType);
         $this->entityManager->persist($ProductClass);
         $this->entityManager->flush();
@@ -1339,7 +1416,7 @@ class CartValidationTest extends AbstractWebTestCase
         $this->scenarioCartIn($client, $productClassId2, $stockInCart);
 
         // Change product type
-        $SaleType = $this->app['eccube.repository.master.sale_type']->find(2);
+        $SaleType = $this->entityManager->find(SaleType::class, 2);
         $ProductClass->setSaleType($SaleType);
         $this->entityManager->persist($ProductClass);
         $this->entityManager->flush();
@@ -1396,7 +1473,7 @@ class CartValidationTest extends AbstractWebTestCase
         $this->scenarioCartIn($client, $productClassId2, $stockInCart);
 
         // Change product type
-        $SaleType = $this->app['eccube.repository.master.sale_type']->find(2);
+        $SaleType = $this->entityManager->find(SaleType::class, 2);
         $ProductClass->setSaleType($SaleType);
         $this->entityManager->persist($ProductClass);
         $this->entityManager->flush();
@@ -2431,7 +2508,7 @@ class CartValidationTest extends AbstractWebTestCase
         $this->assertContains($productName2, $product);
 
         // change type
-        $SaleType = $this->app['eccube.repository.master.sale_type']->find(2);
+        $SaleType = $this->entityManager->find(SaleType::class, 2);
         $ProductClass2->setSaleType($SaleType);
         $this->entityManager->persist($ProductClass2);
         $this->entityManager->flush();
@@ -2457,9 +2534,8 @@ class CartValidationTest extends AbstractWebTestCase
         $this->markTestIncomplete('マイページ対応するまでスキップ');
         // GIVE
         // enable multi shipping
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(true);
-        $this->entityManager->persist($BaseInfo);
+        $this->BaseInfo->setOptionMultipleShipping(true);
+        $this->entityManager->persist($this->BaseInfo);
         $this->entityManager->flush();
         $this->logIn();
         $productStock = 10;
@@ -2509,7 +2585,7 @@ class CartValidationTest extends AbstractWebTestCase
         $this->assertContains($productName2, $product);
 
         // change type
-        $SaleType = $this->app['eccube.repository.master.sale_type']->find(2);
+        $SaleType = $this->entityManager->find(SaleType::class, 2);
         $ProductClass2->setSaleType($SaleType);
         $this->entityManager->persist($ProductClass2);
         $this->entityManager->flush();

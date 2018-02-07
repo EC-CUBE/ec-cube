@@ -119,7 +119,7 @@ class ProductClassController extends AbstractController
     /**
      * 商品規格が登録されていなければ新規登録、登録されていれば更新画面を表示する
      *
-     * @Route("/%admin_route%/product/product/class/{id}", requirements={"id" = "\d+"}, name="admin_product_product_class")
+     * @Route("/%eccube_admin_route%/product/product/class/{id}", requirements={"id" = "\d+"}, name="admin_product_product_class")
      * @Template("@admin/Product/product_class.twig")
      */
     public function index(Request $request, $id)
@@ -262,6 +262,7 @@ class ProductClassController extends AbstractController
             $createProductClasses = $this->createProductClasses($Product, $ClassName1, $ClassName2);
 
             $mergeProductClasses = [];
+            $sortProductClasses = new ArrayCollection();
 
             // 商品税率が設定されている場合、商品税率を項目に設定
             if ($this->BaseInfo->isOptionProductTaxRule())  {
@@ -274,20 +275,36 @@ class ProductClassController extends AbstractController
 
             // 登録済み商品規格と空の商品規格をマージ
             $flag = false;
-            foreach ($createProductClasses as $createProductClass) {
+
+            foreach ($createProductClasses as $index => $createProductClass) {
                 // 既に登録済みの商品規格にチェックボックスを設定
                 foreach ($ProductClasses as $productClass) {
                     if ($productClass->getClassCategory1() == $createProductClass->getClassCategory1() &&
-                            $productClass->getClassCategory2() == $createProductClass->getClassCategory2()) {
-                                // チェックボックスを追加
-                                $productClass->setAdd(true);
-                                $flag = true;
-                                break;
+                        $productClass->getClassCategory2() == $createProductClass->getClassCategory2()) {
+                        // チェックボックスを追加
+                        $productClass->setAdd(true);
+                        $flag = true;
+                        $sortProductClasses->add($productClass);
+                        break;
                     }
                 }
 
                 if (!$flag) {
-                    $mergeProductClasses[] = $createProductClass;
+                    // 商品の中に規格ない場合は削除されている規格を取得する
+                    $condition = array();
+                    $condition['Product'] = $Product;
+                    $condition['ClassCategory1'] = $createProductClass->getClassCategory1();
+                    $condition['ClassCategory2'] = $createProductClass->getClassCategory2();
+                    $condition['visible'] = false;
+
+                    $delProductClass = $this->productClassRepository->findOneBy($condition);
+                    if ($delProductClass){
+                        // 削除されている規格あった場合はその規格を使う
+                        $mergeProductClasses[] = $delProductClass;
+                    } else {
+                        // 取得できない場合はデフォルトの規格を使う
+                        $mergeProductClasses[] = $createProductClass;
+                    }
                 }
 
                 $flag = false;
@@ -296,8 +313,8 @@ class ProductClassController extends AbstractController
             // 登録済み商品規格と空の商品規格をマージ
             foreach ($mergeProductClasses as $mergeProductClass) {
                 // 空の商品規格にデフォルト値を設定
-                $this->setDefaultProductClass($mergeProductClass, $ProductClass);
-                $ProductClasses->add($mergeProductClass);
+                $this->setDefaultProductClass($mergeProductClass, $sortProductClasses[0]);
+                $sortProductClasses->add($mergeProductClass);
             }
 
             $builder = $this->formFactory->createBuilder();
@@ -307,14 +324,14 @@ class ProductClassController extends AbstractController
                     'entry_type' => ProductClassType::class,
                     'allow_add' => true,
                     'allow_delete' => true,
-                    'data' => $ProductClasses,
+                    'data' => $sortProductClasses,
                 ]);
 
             $event = new EventArgs(
                 [
                     'builder' => $builder,
                     'Product' => $Product,
-                    'ProductClasses' => $ProductClasses,
+                    'ProductClasses' => $sortProductClasses,
                 ],
                 $request
             );
@@ -337,7 +354,7 @@ class ProductClassController extends AbstractController
     /**
      * 商品規格の登録、更新、削除を行う
      *
-     * @Route("/%admin_route%/product/product/class/edit/{id}", requirements={"id" = "\d+"}, name="admin_product_product_class_edit")
+     * @Route("/%eccube_admin_route%/product/product/class/edit/{id}", requirements={"id" = "\d+"}, name="admin_product_product_class_edit")
      * @Template("@admin/Product/product_class.twig")
      *
      * @param Request     $request
@@ -476,7 +493,6 @@ class ProductClassController extends AbstractController
                         return $this->renderError($Product, $tempProductClass, false, $form, $error);
                     }
 
-
                     // 登録対象と更新対象の行か判断する
                     $addProductClasses = array();
                     $updateProductClasses = array();
@@ -486,8 +502,8 @@ class ProductClassController extends AbstractController
                         // 既に登録済みの商品規格か確認
                         foreach ($ProductClasses as $productClass) {
                             if ($productClass->getProduct()->getId() == $id &&
-                                    $productClass->getClassCategory1() == $cp->getClassCategory1() &&
-                                    $productClass->getClassCategory2() == $cp->getClassCategory2()) {
+                                $productClass->getClassCategory1() == $cp->getClassCategory1() &&
+                                $productClass->getClassCategory2() == $cp->getClassCategory2()) {
                                 $updateProductClasses[] = $cp;
 
                                 // 商品情報
@@ -504,8 +520,34 @@ class ProductClassController extends AbstractController
                                 break;
                             }
                         }
+
                         if (!$flag) {
-                            $addProductClasses[] = $cp;
+                            // 削除されている規格取得する
+                            $condition = array();
+                            $condition['Product'] = $Product;
+                            $condition['ClassCategory1'] = $cp->getClassCategory1();
+                            $condition['ClassCategory2'] = $cp->getClassCategory2();
+                            $condition['visible'] = false;
+
+                            $delProductClass = $this->productClassRepository->findOneBy($condition);
+                            if ($delProductClass){
+                                // 削除されている商品を見つけた場合は使います
+                                // 商品情報
+                                $cp->setProduct($Product);
+                                // 商品在庫
+                                $productStock = $productClass->getProductStock();
+                                if (!$cp->getStockUnlimited()) {
+                                    $productStock->setStock($cp->getStock());
+                                } else {
+                                    $productStock->setStock(null);
+                                }
+                                $this->setDefaultProductClass($delProductClass, $cp);
+                                // 削除されている規格を復活する（visibleを更新）
+                                $delProductClass->setVisible(false);
+                                $ProductClasses[] = $delProductClass;
+                            } else {
+                                $addProductClasses[] = $cp;
+                            }
                         }
                     }
 
@@ -514,8 +556,8 @@ class ProductClassController extends AbstractController
                         /** @var ProductClass $productClass */
                         foreach ($ProductClasses as $productClass) {
                             if ($productClass->getProduct()->getId() == $id &&
-                                    $productClass->getClassCategory1() == $rc->getClassCategory1() &&
-                                    $productClass->getClassCategory2() == $rc->getClassCategory2()) {
+                                $productClass->getClassCategory1() == $rc->getClassCategory1() &&
+                                $productClass->getClassCategory2() == $rc->getClassCategory2()) {
                                 $productClass->setVisible(false);
                                 break;
                             }
@@ -658,12 +700,12 @@ class ProductClassController extends AbstractController
 
         $ClassCategories1 = array();
         if ($ClassName1) {
-            $ClassCategories1 = $this->classCategoryRepository->findBy(array('ClassName' => $ClassName1));
+            $ClassCategories1 = $this->classCategoryRepository->findBy(['ClassName' => $ClassName1], ['sort_no' => 'DESC']);
         }
 
         $ClassCategories2 = array();
         if ($ClassName2) {
-            $ClassCategories2 = $this->classCategoryRepository->findBy(array('ClassName' => $ClassName2));
+            $ClassCategories2 = $this->classCategoryRepository->findBy(['ClassName' => $ClassName2], ['sort_no' => 'DESC']);
         }
 
         $ProductClasses = array();

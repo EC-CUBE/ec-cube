@@ -26,6 +26,7 @@ namespace Eccube\Tests\Web;
 
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Repository\BaseInfoRepository;
+use Eccube\Repository\PaymentRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\CartService;
@@ -38,10 +39,16 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
      */
     private $baseInfoRepository;
 
+    /**
+     * @var PaymentRepository
+     */
+    private $paymentRepository;
+
     public function setUp()
     {
         parent::setUp();
         $this->baseInfoRepository = $this->container->get(BaseInfoRepository::class);
+        $this->paymentRepository = $this->container->get(PaymentRepository::class);
     }
 
     public function testRoutingShoppingLogin()
@@ -251,6 +258,56 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
     }
 
     /**
+     * 購入確認画面→支払い方法失敗する、レイアウトヘッダーとフッター確認
+     */
+    public function testOrtderConfirmLayout()
+    {
+        $this->markTestIncomplete('ShoppingController is not implemented.');
+        $faker = $this->getFaker();
+        $Customer = $this->logIn();
+        $client = $this->client;
+
+        // カート画面
+        $this->scenarioCartIn($Customer);
+
+        // 確認画面
+        $crawler = $this->scenarioConfirm($Customer);
+
+        // 支払い方法選択
+        $crawler = $client->request(
+            'POST',
+            $this->generateUrl('shopping_payment'),
+            array(
+                'shopping' => array(
+                    'shippings' => array(
+                        0 => array(
+                            'delivery' => 1,
+                            'deliveryTime' => 1
+                        ),
+                    ),
+                    'payment' => 0,
+                    'message' => $faker->text(),
+                    '_token' => 'dummy'
+                )
+            )
+        );
+        // レイアウトヘッダーの部分確認
+        $this->expected = 'header';
+        $this->actual = $crawler->filter('header')->attr('id');
+        $this->verify();
+
+        // レイアウトフッターの部分確認
+        $this->expected = 'footer';
+        $this->actual = $crawler->filter('footer')->attr('id');
+        $this->verify();
+
+        // 確認画面で支払方法エラー表示する確認
+        $this->expected = '有効な値ではありません。';
+        $this->actual = $crawler->filter('P.errormsg')->text();
+        $this->verify();
+    }
+
+    /**
      * 購入確認画面→支払い方法選択(エラー)
      */
     public function testPaymentWithError()
@@ -284,6 +341,36 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
         $this->expected = '有効な値ではありません。';
         $this->actual = $crawler->filter('p.ec-errorMessage')->text();
+        $this->verify();
+    }
+
+    /**
+     * 購入確認画面
+     */
+    public function testPaymentEmpty()
+    {
+        $this->markTestIncomplete('ShoppingController is not implemented.');
+        $faker = $this->getFaker();
+        $Customer = $this->logIn();
+        $client = $this->client;
+
+        // カート画面
+        $this->scenarioCartIn($Customer);
+
+        // 支払い方法のMINとMAXルール変更
+        $PaymentColl = $this->paymentRepository->findAll();
+        foreach($PaymentColl as $Payment){
+                $Payment->setRuleMin(0);
+                $Payment->setRuleMax(0);
+        }
+        // 確認画面
+        $crawler = $this->scenarioConfirm($Customer);
+
+        $BaseInfo = $this->baseInfoRepository->get();
+        $email02 = $BaseInfo->getEmail02();
+        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->expected = '合計金額に対して可能な支払い方法がありません。' . $email02 . 'にお問い合わせ下さい。';
+        $this->actual = $crawler->filter('p.errormsg')->text();
         $this->verify();
     }
 
@@ -405,12 +492,12 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
             array('shopping_shipping' => $formData)
         );
 
-        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping')));
+        $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('shopping')));
 
         // ご注文完了
-        $this->scenarioComplete($client, $this->app->path('shopping_confirm'));
+        $this->scenarioComplete($client, $this->generateUrl('shopping_confirm'));
 
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $BaseInfo = $this->baseInfoRepository->get();
         $Messages = $this->getMailCatcherMessages();
         $Message = $this->getMailCatcherMessage($Messages[0]->id);
 

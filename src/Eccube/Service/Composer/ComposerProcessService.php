@@ -146,7 +146,7 @@ class ComposerProcessService implements ComposerServiceInterface
             throw new PluginException("Php cli not found.");
         }
 
-        $composerMemory = $this->eccubeConfig['composer_memory_limit'];
+        $composerMemory = $this->eccubeConfig['eccube_composer_memory_limit'];
         if (!$this->isSetCliMemoryLimit()) {
             $cliMemoryLimit = $this->getCliMemoryLimit();
             if ($cliMemoryLimit < $composerMemory && $cliMemoryLimit != -1) {

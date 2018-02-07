@@ -821,6 +821,7 @@ class Generator
             ->setDescription($faker->word)
             ->setKeyword($faker->word)
             ->setMetaRobots($faker->word)
+            ->setMetaTags('<meta name="meta_tags_test" content="' . str_replace('\'', '', $faker->word) . '" />')
         ;
         $this->entityManager->persist($Page);
         $this->entityManager->flush($Page);
