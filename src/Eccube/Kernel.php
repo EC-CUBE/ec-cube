@@ -152,11 +152,6 @@ class Kernel extends BaseKernel
         // DocumentRootをルーティディレクトリに設定する.
         $container->addCompilerPass(new WebServerDocumentRootPass('%kernel.project_dir%/'));
 
-        // テスト時はコンテナからコンポーネントを直接取得できるようにしておく
-        if ($this->environment === 'test') {
-            $container->addCompilerPass(new LazyComponentPass());
-        }
-
         if ($this->environment !== 'install') {
             // テンプレートフックポイントを動作させるように.
             $container->addCompilerPass(new TemplateListenerPass());
