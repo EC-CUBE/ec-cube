@@ -89,7 +89,7 @@ class OrderType extends AbstractType
                 'required' => false,
                 'options' => array(
                     'constraints' => array(
-                        new Assert\NotBlank(),
+                        new Assert\NotBlank(['message' => 'form.type.input.blank']),
                     ),
                 ),
             ))
@@ -97,7 +97,7 @@ class OrderType extends AbstractType
                 'required' => false,
                 'options' => array(
                     'constraints' => array(
-                        new Assert\NotBlank(),
+                        new Assert\NotBlank(['message' => 'form.type.input.blank']),
                     ),
                 ),
             ))
@@ -114,7 +114,7 @@ class OrderType extends AbstractType
                 'required' => false,
                 'options' => array(
                     'constraints' => array(
-                        new Assert\NotBlank(),
+                        new Assert\NotBlank(['message' => 'form.type.input.blank']),
                     ),
                     'attr' => array('class' => 'p-postal-code'),
                 ),
@@ -123,13 +123,13 @@ class OrderType extends AbstractType
                 'required' => false,
                 'pref_options' => array(
                     'constraints' => array(
-                        new Assert\NotBlank(),
+                        new Assert\NotBlank(['message' => 'form.type.input.blank']),
                     ),
                     'attr' => array('class' => 'p-region-id'),
                 ),
                 'addr01_options' => array(
                     'constraints' => array(
-                        new Assert\NotBlank(),
+                        new Assert\NotBlank(['message' => 'form.type.input.blank']),
                         new Assert\Length(array(
                             'max' => $this->eccubeConfig['eccube_mtext_len'],
                         )),
@@ -139,7 +139,7 @@ class OrderType extends AbstractType
                 'addr02_options' => array(
                     'required' => false,
                     'constraints' => array(
-                        new Assert\NotBlank(),
+                        new Assert\NotBlank(['message' => 'form.type.input.blank']),
                         new Assert\Length(array(
                             'max' => $this->eccubeConfig['eccube_mtext_len'],
                         )),
@@ -151,7 +151,7 @@ class OrderType extends AbstractType
                 'required' => false,
                 'label' => 'メールアドレス',
                 'constraints' => array(
-                    new Assert\NotBlank(),
+                    new Assert\NotBlank(['message' => 'form.type.input.blank']),
                     new Assert\Email(array('strict' => true)),
                 ),
             ))
@@ -159,7 +159,7 @@ class OrderType extends AbstractType
                 'required' => false,
                 'options' => array(
                     'constraints' => array(
-                        new Assert\NotBlank(),
+                        new Assert\NotBlank(['message' => 'form.type.input.blank']),
                     ),
                 ),
             ))
@@ -236,7 +236,7 @@ class OrderType extends AbstractType
                         ->orderBy('o.sort_no', 'ASC');
                 },
                 'constraints' => array(
-                    new Assert\NotBlank(),
+                    new Assert\NotBlank(['message' => 'form.type.select.notselect']),
                 ),
             ))
             ->add('Payment', EntityType::class, array(
@@ -245,7 +245,7 @@ class OrderType extends AbstractType
                 'choice_label' => 'method',
                 'placeholder' => '選択してください',
                 'constraints' => array(
-                    new Assert\NotBlank(),
+                    new Assert\NotBlank(['message' => 'form.type.select.notselect']),
                 ),
             ))
             ->add('OrderItems', CollectionType::class, array(
