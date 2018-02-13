@@ -210,7 +210,7 @@ class ProductRepository extends AbstractRepository
         }
 
         // link_status
-        if (isset($searchData['link_status'])) {
+        if (isset($searchData['link_status']) && !empty($searchData['link_status'])) {
             $qb
                 ->andWhere($qb->expr()->in('p.Status', ':Status'))
                 ->setParameter('Status', $searchData['link_status']);
