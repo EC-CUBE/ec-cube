@@ -132,7 +132,7 @@ class LogControllerTest extends AbstractAdminWebTestCase
     public function dataProvider()
     {
         return array(
-            array('', '', '空であってはなりません。'),
+            array('', '', '入力されていません。'),
             array('a', '', '有効な数字ではありません。'),
             array(-1, '', '0以上でなければなりません。'),
             array(0, '', ''),

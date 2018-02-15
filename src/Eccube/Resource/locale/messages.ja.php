@@ -188,12 +188,8 @@ return [
     'admin.delivery.visible.complete' => '表示に変更しました。',
     'admin.delivery.hidden.complete' => '非表示に変更しました。',
     'admin_title' => 'EC-CUBE 管理機能',
-    'admin.system.member.form.not.blank' => '入力されていません。',
     'normal_price_title' => '通常価格',
     'sale_price_title' => '販売価格',
     'form.address1.help' => '市区町村名 (例：千代田区神田神保町)',
     'form.address2.help' => '番地・ビル名 (例：1-3-5)',
-    'This value should not be blank.' => '入力されていません。',
-    'This value should be the user\'s current password.' => '現在のパスワードが正しくありません。',
-    'Invalid twig format. {{ error }}' => 'Twigのフォーマットが正しくありません。{{ error }}',
 ];
