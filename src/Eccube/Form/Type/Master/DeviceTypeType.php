@@ -45,7 +45,7 @@ class DeviceTypeType extends AbstractType
     {
         $resolver->setDefaults(array(
             'class' => DeviceType::class,
-            'label' => '端末種別',
+            'label' => 'device.label.type',
             'placeholder' => false,
         ));
     }

@@ -154,7 +154,7 @@ class OwnerStoreController extends AbstractController
                     $i++;
                 }
             } else {
-                $message = $app->trans('admin.plugin.authentication.fail');
+                $message = $app->trans('ownerstore.text.error.ec_cube_error');
             }
         }
 
@@ -492,7 +492,7 @@ class OwnerStoreController extends AbstractController
 
             $message = $statusCode.' : '.$message;
         } else {
-            $message = "タイムアウトエラーまたはURLの指定に誤りがあります。";
+            $message = $app->trans('ownerstore.text.error.timeout');
         }
 
         return $message;

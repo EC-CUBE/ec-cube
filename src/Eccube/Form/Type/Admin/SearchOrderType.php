@@ -55,17 +55,17 @@ class SearchOrderType extends AbstractType
         $builder
             // 受注ID・注文者名・注文者（フリガナ）・注文者会社名
             ->add('multi', TextType::class, array(
-                'label' => '受注ID・注文者名・注文者（フリガナ）・注文者会社名',
+                'label' => 'searchorder.label.customer_id',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array('max' => $this->eccubeConfig['eccube_stext_len'])),
                 ),
             ))
             ->add('status', OrderStatusType::class, array(
-                'label' => '対応状況',
+                'label' => 'searchorder.label.status',
             ))
             ->add('multi_status', OrderStatusType::class, array(
-                'label' => '対応状況',
+                'label' => 'searchorder.label.status',
                 'expanded' => true,
                 'multiple' => true,
             ))
@@ -85,19 +85,19 @@ class SearchOrderType extends AbstractType
                 ),
             ))
             ->add('sex', SexType::class, array(
-                'label' => '性別',
+                'label' => 'searchorder.label.sex',
                 'required' => false,
                 'expanded' => true,
                 'multiple' => true,
             ))
             ->add('payment', PaymentType::class, array(
-                'label' => '支払方法',
+                'label' => 'searchorder.label.payment_method',
                 'required' => false,
                 'expanded' => true,
                 'multiple' => true,
             ))
             ->add('order_date_start', DateType::class, array(
-                'label' => '受注日(FROM)',
+                'label' => 'searchorder.label.order_date_from',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -105,7 +105,7 @@ class SearchOrderType extends AbstractType
                 'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('order_date_end', DateType::class, array(
-                'label' => '受注日(TO)',
+                'label' => 'searchorder.label.order_date_to',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -113,7 +113,7 @@ class SearchOrderType extends AbstractType
                 'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('payment_date_start', DateType::class, array(
-                'label' => '入金日(FROM)',
+                'label' => 'searchorder.label.payment_date_from',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -121,7 +121,7 @@ class SearchOrderType extends AbstractType
                 'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('payment_date_end', DateType::class, array(
-                'label' => '入金日(TO)',
+                'label' => 'searchorder.label.payment_date_to',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -129,7 +129,7 @@ class SearchOrderType extends AbstractType
                 'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('shipping_date_start', DateType::class, array(
-                'label' => '発送日(FROM)',
+                'label' => 'searchorder.label.shipping_date_from',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -137,7 +137,7 @@ class SearchOrderType extends AbstractType
                 'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('shipping_date_end', DateType::class, array(
-                'label' => '発送日(TO)',
+                'label' => 'searchorder.label.shipping_date_to',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -145,7 +145,7 @@ class SearchOrderType extends AbstractType
                 'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('update_date_start', DateType::class, array(
-                'label' => '更新日(FROM)',
+                'label' => 'searchorder.label.updated_date_from',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -153,7 +153,7 @@ class SearchOrderType extends AbstractType
                 'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('update_date_end', DateType::class, array(
-                'label' => '更新日(TO)',
+                'label' => 'searchorder.label.updated_date_to',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -161,15 +161,15 @@ class SearchOrderType extends AbstractType
                 'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('payment_total_start', IntegerType::class, array(
-                'label' => '購入金額(下限)',
+                'label' => 'searchorder.label.purchased_amount_min',
                 'required' => false,
             ))
             ->add('payment_total_end', IntegerType::class, array(
-                'label' => '購入金額(上限)',
+                'label' => 'searchorder.label.purchased_amount_max',
                 'required' => false,
             ))
             ->add('buy_product_name', TextType::class, array(
-                'label' => '購入商品名',
+                'label' => 'searchorder.label.purchased_products',
                 'required' => false,
             ));
 

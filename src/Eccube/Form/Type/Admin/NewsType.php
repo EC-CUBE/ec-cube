@@ -56,7 +56,7 @@ class NewsType extends AbstractType
     {
         $builder
             ->add('publish_date', DateType::class, array(
-                'label' => '日付',
+                'label' => 'news.label.date',
                 'required' => true,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -67,7 +67,7 @@ class NewsType extends AbstractType
                 ),
             ))
             ->add('title', TextType::class, array(
-                'label' => 'タイトル',
+                'label' => 'news.label.title',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
@@ -84,11 +84,11 @@ class NewsType extends AbstractType
             ))
             ->add('link_method', CheckboxType::class, array(
                 'required' => false,
-                'label' => '別ウィンドウを開く',
+                'label' => 'news.label.new_window',
                 'value' => '1',
             ))
             ->add('description', TextareaType::class, array(
-                'label' => '本文',
+                'label' => 'news.label.text_body',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array('max' => $this->eccubeConfig['eccube_ltext_len'])),

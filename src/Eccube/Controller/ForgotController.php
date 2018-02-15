@@ -189,7 +189,7 @@ class ForgotController extends AbstractController
             $Customer = $this->customerRepository
                 ->getRegularCustomerByResetKey($reset_key);
             if (is_null($Customer)) {
-                throw new HttpException\NotFoundHttpException('有効期限が切れているか、無効なURLです。');
+                throw new HttpException\NotFoundHttpException($app->trans('forgotcontroller.text.error.url'));
             }
 
             // パスワードの発行・更新
@@ -223,7 +223,7 @@ class ForgotController extends AbstractController
             // ログ出力
             log_info('reset password complete:'."{$Customer->getId()} {$Customer->getEmail()} {$request->getClientIp()}");
         } else {
-            throw new HttpException\AccessDeniedHttpException('不正なアクセスです。');
+            throw new HttpException\AccessDeniedHttpException($app->trans('forgotcontroller.text.error.authorization'));
         }
 
         return [];

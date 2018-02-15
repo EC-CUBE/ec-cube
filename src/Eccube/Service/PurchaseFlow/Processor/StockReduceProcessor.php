@@ -60,9 +60,9 @@ class StockReduceProcessor implements ItemProcessor
             );
             // 購入数量と在庫数をチェックして在庫がなければエラー
             if ($productStock->getStock() < 1) {
-                return ProcessResult::fail('在庫エラー');
+                return ProcessResult::fail($app->trans('stockreduceprocessor.text.error.stock'));
             } elseif ($item->getQuantity() > $productStock->getStock()) {
-                return ProcessResult::fail('在庫エラー');
+                return ProcessResult::fail($app->trans('stockreduceprocessor.text.error.stock'));
             }
         }
 

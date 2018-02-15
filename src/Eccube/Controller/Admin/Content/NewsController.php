@@ -224,7 +224,7 @@ class NewsController extends AbstractController
 
         } catch (\Exception $e) {
 
-            $message = $this->translator->trans('admin.delete.failed.foreign_key', ['%name%' => '新着情報']);
+            $message = $this->translator->trans('admin.delete.failed.foreign_key', ['%name%' => 'New Arrivals']);
             $this->addError($message, 'admin');
 
             log_error('新着情報削除エラー', [$News->getId(), $e]);

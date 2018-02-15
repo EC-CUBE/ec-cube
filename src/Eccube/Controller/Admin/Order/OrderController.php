@@ -295,7 +295,7 @@ class OrderController extends AbstractController
         });
         if ($hasShipping) {
             log_info('受注削除失敗', [$Order->getId()]);
-            $message = $this->translator->trans('admin.delete.failed.foreign_key', ['%name%' => '受注']);
+            $message = $this->translator->trans('admin.delete.failed.foreign_key', ['%name%' => 'Orders']);
             $this->addError($message, 'admin');
 
             return $this->redirect($this->generateUrl('admin_order_page',

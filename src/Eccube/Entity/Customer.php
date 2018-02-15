@@ -389,7 +389,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     {
         $metadata->addConstraint(new UniqueEntity(array(
             'fields'  => 'email',
-            'message' => '既に利用されているメールアドレスです',
+            'message' => 'customer.text.error.email_registered',
             'repositoryMethod' => 'getNonWithdrawingCustomers'
         )));
     }
