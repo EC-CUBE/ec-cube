@@ -471,7 +471,7 @@ class InstallController extends AbstractController
                     //http://php.net/manual/en/migration71.deprecated.php
                     continue;
                 }
-                $app->addInfo($app->trans('install.text.error.recommended_module_not_enable', array($module)), 'install');
+                $app->addInfo(trans('install.text.error.recommended_module_not_enable', array($module)), 'install');
             }
         }
         if ('\\' === DIRECTORY_SEPARATOR) { // for Windows
@@ -781,7 +781,7 @@ class InstallController extends AbstractController
                 'sort_no' => 1,
                 'update_date' => new \DateTime(),
                 'create_date' => new \DateTime(),
-                'name' => $app->trans('install.label'),
+                'name' => trans('install.label'),
                 'department' => 'EC-CUBE SHOP',
                 'discriminator_type' => 'member'
             ], [

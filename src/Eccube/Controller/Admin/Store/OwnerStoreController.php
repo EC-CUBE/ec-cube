@@ -154,7 +154,7 @@ class OwnerStoreController extends AbstractController
                     $i++;
                 }
             } else {
-                $message = $app->trans('ownerstore.text.error.ec_cube_error');
+                $message = trans('ownerstore.text.error.ec_cube_error');
             }
         }
 
@@ -318,7 +318,7 @@ class OwnerStoreController extends AbstractController
             if ($DependPlugin) {
                 $dependName = $DependPlugin->getName();
             }
-            $message = $app->trans('admin.plugin.uninstall.depend', ['%name%' => $Plugin->getName(), '%depend_name%' => $dependName]);
+            $message = trans('admin.plugin.uninstall.depend', ['%name%' => $Plugin->getName(), '%depend_name%' => $dependName]);
             $app->addError($message, 'admin');
 
             return $app->redirect($app->url('admin_store_plugin'));
@@ -492,7 +492,7 @@ class OwnerStoreController extends AbstractController
 
             $message = $statusCode.' : '.$message;
         } else {
-            $message = $app->trans('ownerstore.text.error.timeout');
+            $message = trans('ownerstore.text.error.timeout');
         }
 
         return $message;

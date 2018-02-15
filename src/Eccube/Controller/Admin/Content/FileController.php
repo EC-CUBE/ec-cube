@@ -146,11 +146,11 @@ class FileController extends AbstractController
             $pattern = "/[^[:alnum:]_.\\-]/";
             $pattern2 = "/^\.(.*)$/";
             if (empty($filename)) {
-                $this->error = array('message' => $app->trans('file.text.error.folder_name'));
+                $this->error = array('message' => trans('file.text.error.folder_name'));
             } elseif (strlen($filename) > 0 && preg_match($pattern, $filename)) {
-                $this->error = array('message' => $app->trans('file.text.error.folder_symbol'));
+                $this->error = array('message' => trans('file.text.error.folder_symbol'));
             } elseif (strlen($filename) > 0 && preg_match($pattern2, $filename)) {
-                $this->error = array('message' => $app->trans('file.text.error.folder_period'));
+                $this->error = array('message' => trans('file.text.error.folder_period'));
             } else {
                 $topDir = $this->getUserDataDir();
                 $nowDir = $this->checkDir($request->get('now_dir'), $topDir)
@@ -229,7 +229,7 @@ class FileController extends AbstractController
         if ($form->isValid()) {
             $data = $form->getData();
             if (empty($data['file'])) {
-                $this->error = array('message' => $app->trans('file.text.error.file_not_selectedd.'));
+                $this->error = array('message' => trans('file.text.error.file_not_selectedd.'));
             } else {
                 $topDir = $this->getUserDataDir();
                 if ($this->checkDir($request->get('now_dir'), $topDir)) {

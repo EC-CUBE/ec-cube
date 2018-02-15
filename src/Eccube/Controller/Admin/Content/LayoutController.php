@@ -153,7 +153,7 @@ class LayoutController extends AbstractController
                         new NotBlank(),
                     ],
                     'required' => false,
-                    'label' => $app->trans('layout.label'),
+                    'label' => trans('layout.label'),
                 ]
             )->add(
                 'DeviceType',

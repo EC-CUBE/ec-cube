@@ -278,7 +278,7 @@ class PluginService
                 $phar->extractTo($dir, null, true);
             }
         } catch (\Exception $e) {
-            throw new PluginException($app->trans('pluginservice.text.error.upload_failure'));
+            throw new PluginException(trans('pluginservice.text.error.upload_failure'));
         }
     }
 

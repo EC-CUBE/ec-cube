@@ -129,7 +129,7 @@ class ProductClassController extends AbstractController
         $hasClassCategoryFlg = false;
 
         if (!$Product) {
-            throw new NotFoundHttpException($app->trans('product.text.error.product_not_found'));
+            throw new NotFoundHttpException(trans('product.text.error.product_not_found'));
         }
 
         // 商品規格情報が存在しなければ新規登録させる
@@ -152,7 +152,7 @@ class ProductClassController extends AbstractController
                 ->add('class_name2', EntityType::class, array(
                     'class' => 'Eccube\Entity\ClassName',
                     'choice_label' => 'name',
-                    'placeholder' => $app->trans('product.placeholder.select_category02'),
+                    'placeholder' => trans('product.placeholder.select_category02'),
                     'required' => false,
                 ));
 
@@ -193,7 +193,7 @@ class ProductClassController extends AbstractController
 
                     if (!is_null($ClassName2) && $ClassName1->getId() == $ClassName2->getId()) {
                         // 規格1と規格2が同じ値はエラー
-                        $form['class_name2']->addError(new FormError($app->trans('product.text.error.same_value')));
+                        $form['class_name2']->addError(new FormError(trans('product.text.error.same_value')));
                     } else {
                         // 規格分類が設定されていない商品規格を取得
                         $orgProductClasses = $Product->getProductClasses();
@@ -367,7 +367,7 @@ class ProductClassController extends AbstractController
         $Product = $this->productRepository->find($id);
 
         if (!$Product) {
-            throw new NotFoundHttpException($app->trans('product.text.error.product_not_found'));
+            throw new NotFoundHttpException(trans('product.text.error.product_not_found'));
         }
 
         /* @var FormBuilder $builder */
@@ -665,13 +665,13 @@ class ProductClassController extends AbstractController
             ->add('class_name1', EntityType::class, array(
                 'class' => 'Eccube\Entity\ClassName',
                 'choice_label' => 'name',
-                'placeholder' => $app->trans('product.placeholder.select_category01'),
+                'placeholder' => trans('product.placeholder.select_category01'),
                 'data' => $ClassName1,
             ))
             ->add('class_name2', EntityType::class, array(
                 'class' => 'Eccube\Entity\ClassName',
                 'choice_label' => 'name',
-                'placeholder' => $app->trans('product.placeholder.select_category02'),
+                'placeholder' => trans('product.placeholder.select_category02'),
                 'data' => $ClassName2,
             ))
             ->getForm();
