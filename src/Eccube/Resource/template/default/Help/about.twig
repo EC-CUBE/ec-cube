@@ -57,27 +57,27 @@ $(function() {
 
 <div class="ec-role">
     <div class="ec-pageHeader">
-        <h1>当サイトについて</h1>
+        <h1>{{'common.label.about_us'|trans}}</h1>
     </div>
     <div class="ec-off1Grid">
         <div class="ec-off1Grid__cell">
             <div class="ec-borderedDefs">
                 {% if BaseInfo.shop_name is defined %}
                     <dl id="help_about_box__shop_name">
-                        <dt>店名</dt>
+                        <dt>{{'common.label.shop_name'|trans}}</dt>
                         <dd>{{ BaseInfo.shop_name }}</dd>
                     </dl>
                 {% endif %}
                 {% if BaseInfo.company_name is defined %}
                     <dl id="help_about_box__company_name">
-                        <dt>会社名</dt>
+                        <dt>{{'common.label.company_name'|trans}}</dt>
                         <dd>{{ BaseInfo.company_name }}</dd>
                     </dl>
                 {% endif %}
 
                 {% if BaseInfo.zip01 is defined %}
                     <dl id="help_about_box__zip">
-                        <dt>所在地</dt>
+                        <dt>{{'common.label.address'|trans}}</dt>
                         <dd>〒{{ BaseInfo.zip01 }}-{{ BaseInfo.zip02 }}<br />
                             {{ BaseInfo.pref }}{{ BaseInfo.addr01 }}{{ BaseInfo.addr02 }}
                         </dd>
@@ -86,35 +86,35 @@ $(function() {
 
                 {% if BaseInfo.tel01 is defined %}
                     <dl id="help_about_box__tel">
-                        <dt>電話番号</dt>
+                        <dt>{{'common.label.phone_number'|trans}}</dt>
                         <dd>{{ BaseInfo.tel01 }}-{{ BaseInfo.tel02 }}-{{ BaseInfo.tel03 }}</dd>
                     </dl>
                 {% endif %}
 
                 {% if BaseInfo.fax01 is defined %}
                     <dl id="help_about_box__fax">
-                        <dt>FAX番号</dt>
+                        <dt>{{'common.label.fax_number'|trans}}</dt>
                         <dd>{{ BaseInfo.fax01 }}-{{ BaseInfo.fax02 }}-{{ BaseInfo.fax03 }}</dd>
                     </dl>
                 {% endif %}
 
                 {% if BaseInfo.business_hour is defined %}
                     <dl id="help_about_box__business_hour">
-                        <dt>営業時間</dt>
+                        <dt>{{'common.label.business_hour'|trans}}</dt>
                         <dd>{{ BaseInfo.business_hour }}</dd>
                     </dl>
                 {% endif %}
 
                 {% if BaseInfo.good_traded is defined %}
                     <dl id="help_about_box__good_traded">
-                        <dt>取扱商品</dt>
+                        <dt>{{'common.label.good_traded'|trans}}</dt>
                         <dd>{{ BaseInfo.good_traded|nl2br }}</dd>
                     </dl>
                 {% endif %}
 
                 {% if BaseInfo.message is defined %}
                     <dl id="help_about_box__message">
-                        <dt>メッセージ</dt>
+                        <dt>{{'admin.mail.order.203'|trans}}</dt>
                         <dd>{{ BaseInfo.message|nl2br }}</dd>
                     </dl>
                 {% endif %}

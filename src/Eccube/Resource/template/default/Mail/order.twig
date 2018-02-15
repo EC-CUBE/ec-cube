@@ -59,50 +59,50 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ************************************************
 　ご注文者情報
 ************************************************
-お名前　：{{ Order.name01 }} {{ Order.name02 }} 様
-フリガナ：{{ Order.kana01 }} {{ Order.kana02 }} 様
+{{'signup.label.name_required'|trans}}　：{{ Order.name01 }} {{ Order.name02 }} 様
+{{'signup.label.name_kana_required'|trans}}：{{ Order.kana01 }} {{ Order.kana02 }} 様
 {% if Order.company_name %}
-会社名　：{{ Order.company_name }}
+{{'signup.label.company_name'|trans}}　：{{ Order.company_name }}
 {% endif %}
 {% if app.config.form_country_enable %}
 国　　　：{{ Order.Country }}
 ZIPCODE ：{{ Order.zip_code }}
 {% endif %}
-郵便番号：〒{{ Order.zip01 }}-{{ Order.zip02 }}
-住所　　：{{ Order.Pref.name }}{{ Order.addr01 }}{{ Order.addr02 }}
-電話番号：{{ Order.tel01 }}-{{ Order.tel02 }}-{{ Order.tel03 }}
-FAX番号 ：{{ Order.fax01 }}-{{ Order.fax02 }}-{{ Order.fax03 }}
+{{'signup.label.postal_code'|trans}}：〒{{ Order.zip01 }}-{{ Order.zip02 }}
+{{'signup.label.address'|trans}}　　：{{ Order.Pref.name }}{{ Order.addr01 }}{{ Order.addr02 }}
+{{'signup.label.tel_number'|trans}}：{{ Order.tel01 }}-{{ Order.tel02 }}-{{ Order.tel03 }}
+{{'signup.label.fax'|trans}} ：{{ Order.fax01 }}-{{ Order.fax02 }}-{{ Order.fax03 }}
 
-メールアドレス：{{ Order.email }}
+{{'signup.label.email'|trans}}：{{ Order.email }}
 
 ************************************************
-　配送情報
+　{{'shopping.label.delivery_info'|trans}}
 ************************************************
 
 {%  for Shipping in Order.Shippings %}
-◎お届け先{% if Order.multiple %}{{ loop.index }}{% endif %}
+◎{{'shopping.label.deliver_to'|trans}}{% if Order.multiple %}{{ loop.index }}{% endif %}
 
-お名前　：{{ Shipping.name01 }} {{ Shipping.name02 }} 様
-フリガナ：{{ Shipping.kana01 }} {{ Shipping.kana02 }} 様
+{{'signup.label.name_required'|trans}}　：{{ Shipping.name01 }} {{ Shipping.name02 }} 様
+{{'signup.label.name_kana_required'|trans}}：{{ Shipping.kana01 }} {{ Shipping.kana02 }} 様
 {% if Shipping.company_name %}
-会社名　：{{ Shipping.company_name }}
+{{'shipping.label.shipping_company'|trans}}　：{{ Shipping.company_name }}
 {% endif %}
 {% if app.config.form_country_enable %}
     　国　　　：{{ Shipping.Country.name }}
     　ZIPCODE ：{{ Shipping.zip_code }}
 {% endif %}
-郵便番号：〒{{ Shipping.zip01 }}-{{ Shipping.zip02 }}
-住所　　：{{ Shipping.Pref.name }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}
-電話番号：{{ Shipping.tel01 }}-{{ Shipping.tel02 }}-{{ Shipping.tel03 }}
-FAX番号 ：{{ Shipping.fax01 }}-{{ Shipping.fax02 }}-{{ Shipping.fax03 }}
+{{'signup.label.postal_code'|trans}}：〒{{ Shipping.zip01 }}-{{ Shipping.zip02 }}
+{{'signup.label.address'|trans}}　　：{{ Shipping.Pref.name }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}
+{{'signup.label.tel_number'|trans}}：{{ Shipping.tel01 }}-{{ Shipping.tel02 }}-{{ Shipping.tel03 }}
+{{'signup.label.fax'|trans}} ：{{ Shipping.fax01 }}-{{ Shipping.fax02 }}-{{ Shipping.fax03 }}
 
-お届け日：{{ Shipping.shipping_delivery_date is empty ? '指定なし' : Shipping.shipping_delivery_date|date_format }}
-お届け時間：{{ Shipping.shipping_delivery_time|default('指定なし') }}
+{{'shopping.label.delivery_date'|trans}}：{{ Shipping.shipping_delivery_date is empty ? 'shopping.label.anytime' : Shipping.shipping_delivery_date|date_format }}
+{{'shopping.label.delivery_hours'|trans}}：{{ Shipping.shipping_delivery_time|default('shopping.label.anytime') }}
 
 {%  for OrderItem in Shipping.OrderItems %}
-商品コード: {{ OrderItem.product_code }}
-商品名: {{ OrderItem.product_name }}  {{ OrderItem.classcategory_name1 }}  {{ OrderItem.classcategory_name2 }}
-数量：{{ OrderItem.quantity|number_format }}
+{{'product_description.label.product_code'|trans}}: {{ OrderItem.product_code }}
+{{'product.label.product_name'|trans}}: {{ OrderItem.product_name }}  {{ OrderItem.classcategory_name1 }}  {{ OrderItem.classcategory_name2 }}
+{{'common.label.qty'|trans}}：{{ OrderItem.quantity|number_format }}
 
 {% endfor %}
 {% endfor %}

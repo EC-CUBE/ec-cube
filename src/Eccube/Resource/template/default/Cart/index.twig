@@ -27,7 +27,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
     <div class="ec-role">
         <div class="ec-pageHeader">
-            <h1>ショッピングカート</h1>
+            <h1>{{'shopping.label.cart'|trans}}</h1>
         </div>
     </div>
 
@@ -38,27 +38,27 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <li class="ec-progress__item is-complete">
                     <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
                     </div>
-                    <div class="ec-progress__label">カートの商品
+                    <div class="ec-progress__label">{{'shopping.label.your_cart'|trans}}
                     </div>
                 </li>
                 {% if is_granted('ROLE_USER') == false %}
                     <li class="ec-progress__item">
                         <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
                         </div>
-                        <div class="ec-progress__label">お客様情報
+                        <div class="ec-progress__label">{{'shopping.label.customer_info'|trans}}
                         </div>
                     </li>
                 {% endif %}
                 <li class="ec-progress__item">
                     <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
                     </div>
-                    <div class="ec-progress__label">ご注文内容確認
+                    <div class="ec-progress__label">{{'shopping.label.confirm_order'|trans}}
                     </div>
                 </li>
                 <li class="ec-progress__item">
                     <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
                     </div>
-                    <div class="ec-progress__label">完了
+                    <div class="ec-progress__label">{{'shopping.label.order_completed'|trans}}
                     </div>
                 </li>
             </ul>
@@ -122,10 +122,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <div class="ec-cartRole__cart">
                     <div class="ec-cartTable">
                         <ol class="ec-cartHeader">
-                            <li class="ec-cartHeader__label">削除</li>
-                            <li class="ec-cartHeader__label">商品内容</li>
-                            <li class="ec-cartHeader__label">数量</li>
-                            <li class="ec-cartHeader__label">小計</li>
+                            <li class="ec-cartHeader__label">{{'shopping.label.del'|trans}}</li>
+                            <li class="ec-cartHeader__label">{{'shopping.label.products'|trans}}</li>
+                            <li class="ec-cartHeader__label">{{'shopping.label.qty'|trans}}</li>
+                            <li class="ec-cartHeader__label">{{'shopping.label.subtotal'|trans}}</li>
                         </ol>
 
                         {% for CartItem in Cart.CartItems %}
@@ -183,10 +183,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     </div>
                 </div>
                 <div class="ec-cartRole__actions">
-                    <div class="ec-cartRole__total">合計：<span class="ec-cartRole__totalAmount">{{ Cart.total_price|price }}</span>
+                    <div class="ec-cartRole__total">{{'shopping.label.total'|trans}}：<span class="ec-cartRole__totalAmount">{{ Cart.total_price|price }}</span>
                     </div>
-                    <a class="ec-blockBtn--action" href="{{ path('cart_buystep') }}">レジに進む</a>
-                    <a class="ec-blockBtn--cancel" href="{{ path('homepage') }}">お買い物を続ける</a>
+                    <a class="ec-blockBtn--action" href="{{ path('cart_buystep') }}">{{'shopping.label.btn.checkout'|trans}}</a>
+                    <a class="ec-blockBtn--cancel" href="{{ path('homepage') }}">{{'shopping.label.btn.continue'|trans}}</a>
                 </div>
             </form>
         {% else %}
@@ -195,7 +195,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div class="ec-off3Grid__cell">
                         <div class="ec-alert-warning">
                             <div class="ec-alert-warning__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"></div>
-                            <div class="ec-alert-warning__text">現在カート内に商品はございません。</div>
+                            <div class="ec-alert-warning__text">{{'shopping.text.error.no_item_in_cart'|trans}}</div>
                         </div>
                     </div>
                 </div>

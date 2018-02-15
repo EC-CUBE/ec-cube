@@ -48,11 +48,11 @@ class CustomerAgreementType extends AbstractType
         $builder
             ->add('customer_agreement', TextareaType::class, array(
                 'required' => true,
-                'label' => '利用規約',
+                'label' => 'customeragreement.label.terms_condition',
                 'constraints' => array(
                     new Assert\NotBlank()),
             ))
-            ->add('save', SubmitType::class, array('label' => 'この内容で登録する'));
+            ->add('save', SubmitType::class, array('label' => 'customeragreement.text.submit'));
     }
 
     /**

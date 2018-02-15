@@ -150,7 +150,7 @@ $(function() {
 
 <div class="ec-role">
     <div class="ec-pageHeader">
-        <h1>ご注文内容のご確認</h1>
+        <h1>{{'shopping.label.btn.confirm_order'|trans}}</h1>
     </div>
 </div>
 
@@ -161,27 +161,27 @@ $(function() {
             <li class="ec-progress__item">
                 <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
                 </div>
-                <div class="ec-progress__label">カートの商品
+                <div class="ec-progress__label">{{'shopping.label.your_cart'|trans}}
                 </div>
             </li>
             {% if is_granted('ROLE_USER') == false %}
             <li class="ec-progress__item">
                 <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
                 </div>
-                <div class="ec-progress__label">お客様情報
+                <div class="ec-progress__label">{{'shopping.label.customer_info'|trans}}
                 </div>
             </li>
             {% endif %}
             <li class="ec-progress__item is-complete">
                 <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
                 </div>
-                <div class="ec-progress__label">ご注文内容確認
+                <div class="ec-progress__label">{{'shopping.label.btn.confirm_order'|trans}}
                 </div>
             </li>
             <li class="ec-progress__item">
                 <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
                 </div>
-                <div class="ec-progress__label">完了
+                <div class="ec-progress__label">{{'shopping.label.order_completed'|trans}}
                 </div>
             </li>
         </ul>
@@ -248,11 +248,11 @@ $(function() {
                     </li>
                     {% endfor %}
                 </ul>
-                <a href="{{ url('cart') }}" class="ec-inlineBtn">数量を変更または削除する</a>
+                <a href="{{ url('cart') }}" class="ec-inlineBtn">{{'shopping.label.btn.change_qty'|trans}}</a>
             </div>
             <div class="ec-orderAccount">
                 <div class="ec-rectHeading">
-                    <h2>お客様情報</h2>
+                    <h2>{{'shopping.label.customer_info'|trans}}</h2>
                 </div>
                 {% if is_granted('ROLE_USER') == false %}
                 <div class="ec-orderAccount__change">
@@ -271,7 +271,7 @@ $(function() {
                 </div>
                 <div class="mod-button" style="display:none;">
                     <span id="customer-ok"><button type="button" class="btn btn-default btn-sm">OK</button></span>
-                    <span id="customer-cancel"><button type="button" class="btn btn-default btn-sm">キャンセル</button></span>
+                    <span id="customer-cancel"><button type="button" class="btn btn-default btn-sm">{{'shopping.label.btn.cancel'|trans}}</button></span>
                 </div>
                 <input type="hidden" id="customer-name01" class="customer-in" name="customer_name01" value="{{ Order.name01 }}">
                 <input type="hidden" id="customer-name02" class="customer-in" name="customer_name02" value="{{ Order.name02 }}">
@@ -289,16 +289,16 @@ $(function() {
             </div>
             <div class="ec-orderDelivery">
                 <div class="ec-rectHeading">
-                    <h2>配送情報</h2>
+                    <h2>{{'shopping.label.delivery_info'|trans}}</h2>
                 </div>
                 {% for shipping in Order.shippings %}
                     {% set idx = loop.index0 %}
-                    <div class="ec-orderDelivery__title">お届け先{% if Order.multiple %}({{ loop.index }}){% endif %}
+                    <div class="ec-orderDelivery__title">{{'shopping.label.deliver_to'|trans}}{% if Order.multiple %}({{ loop.index }}){% endif %}
                         <div class="ec-orderDelivery__change">
                             {% if is_granted('ROLE_USER') %}
-                                <a href="{{ url('shopping_shipping', {'id': shipping.id}) }}" class="ec-inlineBtn btn-shipping" data-id="{{ shipping.id }}">変更</a>
+                                <a href="{{ url('shopping_shipping', {'id': shipping.id}) }}" class="ec-inlineBtn btn-shipping" data-id="{{ shipping.id }}">{{'shopping.label.edit'|trans}}</a>
                             {% else %}
-                                <a href="{{ url('shopping_shipping_edit_change', {'id': shipping.id}) }}" class="ec-inlineBtn btn-shipping-edit" data-id="{{ shipping.id }}">変更</a>
+                                <a href="{{ url('shopping_shipping_edit_change', {'id': shipping.id}) }}" class="ec-inlineBtn btn-shipping-edit" data-id="{{ shipping.id }}">{{'shopping.label.edit'|trans}}</a>
                             {% endif %}
                         </div>
                     </div>
@@ -316,7 +316,7 @@ $(function() {
                                         {% if orderItem.productClass is not null and orderItem.productClass.classCategory2 %}
                                             <p>{{ orderItem.productClass.classCategory2.className }}：{{ orderItem.productClass.classCategory2 }}</p>
                                         {% endif %}
-                                        <p>{{ orderItem.priceIncTax|price }} × {{ orderItem.quantity|number_format }}<span>小計：{{ orderItem.totalPrice|price }}</span></p>
+                                        <p>{{ orderItem.priceIncTax|price }} × {{ orderItem.quantity|number_format }}<span>{{'shopping.label.subtotal'|trans}}：{{ orderItem.totalPrice|price }}</span></p>
                                     </div>
                                 </div>
                             </li>
@@ -331,28 +331,28 @@ $(function() {
                     <div class="ec-orderDelivery__actions">
                         <div class="ec-selects">
                             <div class="ec-select">
-                                <label>配送方法</label>
+                                <label>{{'shopping.label.delivery_method'|trans}}</label>
                                 {{ form_widget(form.Shippings[idx].Delivery, {'attr': {'class': 'delivery form-control'}}) }}
                                 {{ form_errors(form.Shippings[idx].Delivery) }}
                             </div>
                             <div class="ec-select ec-select__delivery">
-                                <label>お届け日</label>
+                                <label>{{'shopping.label.delivery_date'|trans}}</label>
                                 {{ form_widget(form.Shippings[idx].shipping_delivery_date, {'attr': {'class': 'form-control'}}) }}
                             </div>
                             <div class="ec-select ec-select__time">
-                                <label>お届け時間</label>
+                                <label>{{'shopping.label.delivery_hours'|trans}}</label>
                                 {{ form_widget(form.Shippings[idx].DeliveryTime, {'attr': {'class': 'form-control'}}) }}
                             </div>
                         </div>
                     </div>
                 {% endfor %}
                 {% if BaseInfo.optionMultipleShipping %}
-                <div class="ec-orderDelivery__edit"><a class="ec-inlineBtn" href="{{ url('shopping_shipping_multiple_change') }}">お届け先を追加する</a></div>
+                <div class="ec-orderDelivery__edit"><a class="ec-inlineBtn" href="{{ url('shopping_shipping_multiple_change') }}">{{'shopping.label.btn.delivery_address'|trans}}</a></div>
                 {% endif %}
             </div>
             <div class="ec-orderPayment">
                 <div class="ec-rectHeading">
-                    <h2>お支払方法</h2>
+                    <h2>{{'shopping.label.payment_method'|trans}}</h2>
                 </div>
                 <div class="ec-blockRadio">
                     {% for key, child in form.Payment %}
@@ -369,7 +369,7 @@ $(function() {
             </div>
             <div class="ec-orderConfirm">
                 <div class="ec-rectHeading">
-                    <h2>お問い合わせ</h2>
+                    <h2>{{'common.label.inquiry'|trans}}</h2>
                 </div>
                 <div class="ec-input">
                     {{ form_widget(form.message, {'attr': {'class': 'form-control', 'placeholder': 'お問い合わせ事項がございましたら、こちらにご入力ください。(3000文字まで)', 'rows': '6'}}) }}
@@ -387,15 +387,15 @@ $(function() {
         <div class="ec-orderRole__summary">
             <div class="ec-totalBox">
                 <dl class="ec-totalBox__spec">
-                    <dt>小計</dt>
+                    <dt>{{'shopping.label.subtotal'|trans}}</dt>
                     <dd class="ec-totalBox__specTotal">{{ Order.subtotal|price }}</dd>
                 </dl>
                 <dl class="ec-totalBox__spec">
-                    <dt>手数料</dt>
+                    <dt>{{'shopping.label.charges'|trans}}</dt>
                     <dd>{{ Order.charge|price }}</dd>
                 </dl>
                 <dl class="ec-totalBox__spec">
-                    <dt>送料</dt>
+                    <dt>{{'shopping.label.shipping_charge'|trans}}</dt>
                     <dd>{{ Order.deliveryFeeTotal|price }}</dd>
                 </dl>
                 {% if Order.discount > 0 %}
@@ -404,9 +404,9 @@ $(function() {
                     <dd>{{ (0 - Order.discount)|price}}</dd>
                 </dl>
                 {% endif %}
-                <div class="ec-totalBox__total">合計<span class="ec-totalBox__price">{{ Order.total|price }}</span><span class="ec-totalBox__taxLabel">税込</span></div>
+                <div class="ec-totalBox__total">{{'common.label.cart_total'|trans}}<span class="ec-totalBox__price">{{ Order.total|price }}</span><span class="ec-totalBox__taxLabel">{{'shopping.label.tax_incl'|trans}}</span></div>
                 <div class="ec-totalBox__btn">
-                    <button type="submit" class="ec-blockBtn--action">注文する</button>
+                    <button type="submit" class="ec-blockBtn--action">{{'shopping.label.btn.place_order'|trans}}</button>
                 </div>
             </div>
         </div>

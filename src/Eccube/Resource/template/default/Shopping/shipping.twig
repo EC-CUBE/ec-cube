@@ -33,7 +33,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <div class="ec-off1Grid__cell">
                 <div class="ec-addressRole">
                     {% if Customer.CustomerAddresses|length < app.config.deliv_addr_max %}
-                        <div class="ec-addressRole__actions"><a class="ec-inlineBtn" href="{{ url('shopping_shipping_edit', {'id': shippingId}) }}">新規お届け先を追加する</a></div>
+                        <div class="ec-addressRole__actions"><a class="ec-inlineBtn" href="{{ url('shopping_shipping_edit', {'id': shippingId}) }}">{{'mypage.label.add_address'|trans}}</a></div>
                     {% else %}
                         <div class="ec-alert-warning">
                             <div class="ec-alert-warning__text">
@@ -74,7 +74,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="ec-off4Grid">
                             <div class="ec-off4Grid__cell">
                                 <button type="submit" class="ec-blockBtn--action">選択したお届け先に送る</button>
-                                <a class="ec-blockBtn--cancel" href="{{ url('shopping') }}">戻る</a>
+                                <a class="ec-blockBtn--cancel" href="{{ url('shopping') }}">{{'common.label.btn.go_back'|trans}}</a>
                             </div>
                         </div>
                     </div>

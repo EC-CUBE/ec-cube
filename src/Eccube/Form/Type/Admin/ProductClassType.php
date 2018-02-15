@@ -71,11 +71,11 @@ class ProductClassType extends AbstractType
     {
         $builder
             ->add('code', TextType::class, array(
-                'label' => '商品コード',
+                'label' => 'productclass.label.product_code',
                 'required' => false,
             ))
             ->add('stock', NumberType::class, array(
-                'label' => '在庫数',
+                'label' => 'productclass.label.stock',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Regex(array(
@@ -85,12 +85,12 @@ class ProductClassType extends AbstractType
                 ),
             ))
             ->add('stock_unlimited', CheckboxType::class, array(
-                'label' => '無制限',
+                'label' => 'productclass.label.unlimited',
                 'value' => '1',
                 'required' => false,
             ))
             ->add('sale_limit', NumberType::class, array(
-                'label' => '販売制限数',
+                'label' => 'productclass.label.max_order',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
@@ -106,14 +106,14 @@ class ProductClassType extends AbstractType
                 ),
             ))
             ->add('price01', PriceType::class, array(
-                'label' => '通常価格',
+                'label' => 'productclass.label.regular_price',
                 'required' => false,
             ))
             ->add('price02', PriceType::class, array(
-                'label' => '販売価格',
+                'label' => 'productclass.label.sales_price',
             ))
             ->add('tax_rate', TextType::class, array(
-                'label' => '消費税率',
+                'label' => 'productclass.label.tax',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Range(array('min' => 0, 'max' => 100)),
@@ -124,11 +124,11 @@ class ProductClassType extends AbstractType
                 ),
             ))
             ->add('delivery_fee', PriceType::class, array(
-                'label' => '商品送料',
+                'label' => 'productclass.label.shipping_charge',
                 'required' => false,
             ))
             ->add('sale_type', SaleTypeType::class, array(
-                'label' => '販売種別',
+                'label' => 'productclass.label.sales_type',
                 'multiple' => false,
                 'expanded' => false,
                 'constraints' => array(
@@ -136,9 +136,9 @@ class ProductClassType extends AbstractType
                 ),
             ))
             ->add('delivery_date', DeliveryDateType::class, array(
-                'label' => 'お届け可能日',
+                'label' => 'productclass.label.delivery_date',
                 'required' => false,
-                'placeholder' => '指定なし',
+                'placeholder' => 'productclass.placeholder.not_specified',
             ))
             ->add('add', CheckboxType::class, array(
                 'label' => false,
@@ -150,7 +150,7 @@ class ProductClassType extends AbstractType
                 $data = $form->getData();
 
                 if (empty($data['stock_unlimited']) && is_null($data['stock'])) {
-                    $form['stock_unlimited']->addError(new FormError('在庫数を入力、もしくは在庫無制限を設定してください。'));
+                    $form['stock_unlimited']->addError(new FormError('productclass.text.error.set_stock_quantitiy'));
                 }
             });
 

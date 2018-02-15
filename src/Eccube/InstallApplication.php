@@ -36,6 +36,7 @@ class InstallApplication extends \Silex\Application
     use \Eccube\Application\ApplicationTrait;
     use \Eccube\Application\SecurityTrait;
     use \Eccube\Application\TwigTrait;
+    use \Silex\Application\TranslationTrait;
 
     public function __construct(array $values = array())
     {
@@ -48,7 +49,7 @@ class InstallApplication extends \Silex\Application
 
         if (is_writable($logDir)) {
             if (file_exists($installLog) && !is_writable($installLog)) {
-                die($installLog . ' の書込権限を変更して下さい。');
+                die($app->trans('install.text.error.permission',$installLog));
             }
             // install step2 でログディレクトリに書き込み権限が付与されればログ出力を開始する.
             $app->register(new \Silex\Provider\MonologServiceProvider(), array(
@@ -93,7 +94,7 @@ class InstallApplication extends \Silex\Application
         $this->register(new \Silex\Provider\ValidatorServiceProvider());
 
         $this->register(new \Silex\Provider\TranslationServiceProvider(), array(
-            'locale' => 'ja',
+            'locale' => 'en',
         ));
         $app->extend('translator', function($translator, \Silex\Application $app) {
             $translator->addLoader('yaml', new \Symfony\Component\Translation\Loader\YamlFileLoader());
@@ -126,7 +127,7 @@ class InstallApplication extends \Silex\Application
             }
 
             return $app['twig']->render('error.twig', array(
-                'error' => 'エラーが発生しました.',
+                'error' => $app->trans('install.text.error.error'),
             ));
         });
 

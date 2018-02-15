@@ -21,23 +21,23 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-namespace Eccube\Form\Type\Admin;
+namespace Eccube\Form\Type;
 
 use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @FormType
  */
-class LogType extends AbstractType
+class ZipCodeType extends AbstractType
 {
     /**
      * @Inject("config")
@@ -45,12 +45,16 @@ class LogType extends AbstractType
      */
     protected $appConfig;
 
+
     /**
      * @var \Eccube\Application $app
      * @Inject(Application::class)
      */
     protected $app;
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct()
     {
     }
@@ -60,33 +64,46 @@ class LogType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $files = array();
-        $finder = new Finder();
-        $finder->name('*.log')->depth('== 0');
 
-        foreach ($finder->in($this->appConfig['root_dir'].'/app/log/') as $file) {
-            $files[$file->getFilename()] = $file->getFilename();
+        // required の場合は NotBlank も追加する
+        if ($options['required']) {
+            $options['constraints'] = array_merge(array(
+                new Assert\NotBlank(array()),
+            ), $options['constraints']);
         }
 
-        $builder
-            ->add('files', ChoiceType::class, array(
-                'label' => 'logtype.label.log_file',
-                'choices' => array_flip($files),
-                'data' => 'site_'.date('Y-m-d').'.log',
-                'expanded' => false,
-                'multiple' => false,
-                'constraints' => array(
-                    new Assert\NotBlank(),
-                ),
-            ))
-            ->add('line_max', TextType::class, array(
-                'label' => 'logtype.label.number_of_rows',
-                'data' => '50',
-                'constraints' => array(
-                    new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
-                    new Assert\NotBlank(),
-                ),
-            ));
+        if (!isset($options['error_bubbling'])) {
+            $options['error_bubbling'] = $options['error_bubbling'];
+        }
+
+        $builder->add('zip_code', TextType::class, $options);
+        $builder->setAttribute('zip_cdoe', $options);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        $builder = $form->getConfig();
+        $view->vars['zip_code'] = $builder->getAttribute('zip_code');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(array(
+            'constraints' => array(
+                new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
+                new Assert\Length(array('min' => 3, 'max' => 7)
+            ),
+            'attr' => array('class' => 'p-postal-code')),
+            'error_bubbling' => false,
+            'inherit_data' => true,
+            'trim' => true,
+        ));
     }
 
     /**
@@ -94,6 +111,6 @@ class LogType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'admin_system_log';
+        return 'zip';
     }
 }

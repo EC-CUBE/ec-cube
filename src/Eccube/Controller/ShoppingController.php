@@ -327,7 +327,7 @@ class ShoppingController extends AbstractShoppingController
                 )
             );
             if (is_null($CustomerAddress)) {
-                throw new NotFoundHttpException('選択されたお届け先住所が存在しない');
+                throw new NotFoundHttpException($app->trans('shoppingcontroller.text.error.selected_address'));
             }
 
             /** @var Order $Order */
@@ -341,7 +341,7 @@ class ShoppingController extends AbstractShoppingController
 
             $Shipping = $Order->findShipping($id);
             if (!$Shipping) {
-                throw new NotFoundHttpException('お届け先情報が存在しない');
+                throw new NotFoundHttpException($app->trans('shoppingcontroller.text.error.address'));
             }
 
             log_info('お届先情報更新開始', array($Shipping->getId()));
@@ -397,7 +397,7 @@ class ShoppingController extends AbstractShoppingController
             $addressCurrNum = count($app->user()->getCustomerAddresses());
             $addressMax = $this->appConfig['deliv_addr_max'];
             if ($addressCurrNum >= $addressMax) {
-                throw new NotFoundHttpException('配送先住所最大数エラー');
+                throw new NotFoundHttpException($app->trans('shoppingcontroller.text.error.number_of_address'));
             }
         }
 
@@ -418,7 +418,7 @@ class ShoppingController extends AbstractShoppingController
 
         $Shipping = $Order->findShipping($id);
         if (!$Shipping) {
-            throw new NotFoundHttpException('設定されている配送先が存在しない');
+            throw new NotFoundHttpException($app->trans('shoppingcontroller.text.error.set_address'));
         }
         if ($app->isGranted('IS_AUTHENTICATED_FULLY')) {
             $Shipping->clearCustomerAddress();

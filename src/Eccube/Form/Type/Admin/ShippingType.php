@@ -110,7 +110,7 @@ class ShippingType extends AbstractType
                 ),
             ))
             ->add('company_name', TextType::class, array(
-                'label' => '会社名',
+                'label' => 'shipping.label.company_name',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
@@ -164,27 +164,27 @@ class ShippingType extends AbstractType
                 ),
             ))
             ->add('fax', TelType::class, array(
-                'label' => 'FAX番号',
+                'label' => 'shipping.label.fax',
                 'required' => false,
             ))
             ->add('Delivery', EntityType::class, array(
                 'required' => false,
-                'label' => '配送業者',
+                'label' => 'shipping.label.shipping_company',
                 'class' => 'Eccube\Entity\Delivery',
                 'choice_label' => 'serviceNameForAdmin',
-                'placeholder' => '選択してください',
+                'placeholder' => 'shipping.placeholder.please_select',
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
             ))
             ->add('shipping_delivery_date', DateType::class, array(
-                'label' => 'お届け日',
+                'label' => 'shipping.label.delivery_date',
                 'placeholder' => '',
                 'format' => 'yyyy-MM-dd',
                 'required' => false,
             ))
             ->add('tracking_number', TextType::class, array(
-                'label' => '配送伝票番号',
+                'label' => 'shipping.label.tracking_num',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
@@ -193,7 +193,7 @@ class ShippingType extends AbstractType
                 ),
             ))
             ->add('note', TextareaType::class, array(
-                'label' => '配送用メモ欄',
+                'label' => 'shipping.label.memo',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
@@ -222,10 +222,10 @@ class ShippingType extends AbstractType
 
                 // お届け時間を配送業者で絞り込み
                 $form->add('DeliveryTime', EntityType::class, array(
-                    'label' => 'お届け時間',
+                    'label' => 'shipping.label.delivery_hour',
                     'class' => 'Eccube\Entity\DeliveryTime',
                     'choice_label' => 'delivery_time',
-                    'placeholder' => '指定なし',
+                    'placeholder' => 'shipping.placeholder.not_specified',
                     'required' => false,
                     'data' => $DeliveryTime,
                     'query_builder' => function (EntityRepository $er) use ($Delivery) {
@@ -256,10 +256,10 @@ class ShippingType extends AbstractType
                 // お届け時間を配送業者で絞り込み
                 $form->remove('DeliveryTime');
                 $form->add('DeliveryTime', EntityType::class, array(
-                    'label' => 'お届け時間',
+                    'label' => 'shipping.label.delivery_hour',
                     'class' => 'Eccube\Entity\DeliveryTime',
                     'choice_label' => 'delivery_time',
-                    'placeholder' => '指定なし',
+                    'placeholder' => 'shipping.placeholder.not_specified',
                     'required' => false,
                     'query_builder' => function (EntityRepository $er) use ($Delivery) {
                         $qb = $er->createQueryBuilder('dt');
@@ -279,7 +279,7 @@ class ShippingType extends AbstractType
 
                 if (empty($OrderItems) || count($OrderItems) < 1) {
                     // 画面下部にエラーメッセージを表示させる
-                    $form['shipping_delivery_date']->addError(new FormError('商品が追加されていません。'));
+                    $form['shipping_delivery_date']->addError(new FormError('shipping.text.error.product_not_added'));
                 }
             })
             ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {

@@ -59,7 +59,7 @@
                         <div id="detail_box__address" class="form-group {% if form.zip.zip01.vars.errors is not empty or form.zip.zip02.vars.errors is not empty %}has-error{% endif %}">
                             {{ form_label(form.address) }}
                             <div id="detail_box__zip" class="col-sm-9 col-lg-10 input_zip form-inline">
-                                〒{{ form_widget(form.zip.zip01) }}-{{ form_widget(form.zip.zip02) }}
+                                {{'admin.setting.shop.shop_master.629'|trans}}{{ form_widget(form.zip.zip01) }}-{{ form_widget(form.zip.zip02) }}
                                 {{ form_errors(form.zip.zip01) }}
                                 {{ form_errors(form.zip.zip02) }}
                             </div>
@@ -127,7 +127,7 @@
 
                 <div id="delivery_fee_box" class="box">
                     <div id="delivery_fee_box__header" class="box-header">
-                        <h3 class="box-title">送料設定</h3>
+                        <h3 class="box-title">{{'admin.setting.shop.shop_master.632'|trans}}</h3>
                     </div><!-- /.box-header -->
                     <div id="delivery_fee_box__body" class="box-body">
 
@@ -141,7 +141,7 @@
 
                 <div id="customer_box" class="box">
                     <div id="customer_box__header" class="box-header">
-                        <h3 class="box-title">会員設定</h3>
+                        <h3 class="box-title">{{'admin.setting.shop.shop_master.633'|trans}}</h3>
                     </div><!-- /.box-header -->
                     <div id="customer_box__body" class="box-body">
 
@@ -155,7 +155,7 @@
 
                 <div id="product_box" class="box">
                     <div id="product_box__header" class="box-header">
-                        <h3 class="box-title">商品設定</h3>
+                        <h3 class="box-title">{{'admin.setting.shop.shop_master.634'|trans}}</h3>
                     </div><!-- /.box-header -->
                     <div id="product_box__body" class="box-body">
 
@@ -166,7 +166,7 @@
 
                 <div id="map_box" class="box">
                     <div id="map_box__header" class="box-header">
-                        <h3 class="box-title">地図設定</h3>
+                        <h3 class="box-title">{{'admin.setting.shop.shop_master.635'|trans}}</h3>
                     </div><!-- /.box-header -->
                     <div id="map_box__body" class="box-body">
 
@@ -183,7 +183,7 @@
                         <div id="common_button_box__body" class="box-body">
                             <div id="common_button_box__insert_button_area" class="row text-center">
                                 <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
-                                    <button class="btn btn-primary btn-block btn-lg" type="submit">登録</button>
+                                    <button class="btn btn-primary btn-block btn-lg" type="submit">{{'admin.setting.shop.shop_master.636'|trans}}</button>
                                 </div>
                             </div>
                         </div><!-- /.box-body -->

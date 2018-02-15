@@ -258,7 +258,7 @@ class TemplateController extends AbstractController
 
             // テンプレートコードの重複チェック.
             if ($TemplateExists) {
-                $form['code']->addError(new FormError('すでに登録されているテンプレートコードです。'));
+                $form['code']->addError(new FormError($app->trans('template.text.error.code_not_available')));
 
                 return [
                     'form' => $form->createView(),
@@ -296,7 +296,7 @@ class TemplateController extends AbstractController
                     $phar->extractTo($tmpDir, null, true);
                 }
             } catch (\Exception $e) {
-                $form['file']->addError(new FormError('アップロードに失敗しました。圧縮ファイルを確認してください。'));
+                $form['file']->addError(new FormError($app->trans('template.text.error.upload_failuer')));
 
                 return [
                     'form' => $form->createView(),

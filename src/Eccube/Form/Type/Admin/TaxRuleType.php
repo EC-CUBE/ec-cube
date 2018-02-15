@@ -47,17 +47,17 @@ class TaxRuleType extends AbstractType
     {
         $builder
             ->add('option_product_tax_rule', ChoiceType::class, array(
-                'label' => '商品別税率機能',
+                'label' => 'taxrule.text.radio.enabled',
                 'choices' => array_flip(array(
-                    '1' => '有効',
-                    '0' => '無効',
+                    '1' => 'taxrule.text.radio.enabled',
+                    '0' => 'taxrule.text.radio.disabled',
                 )),
                 'expanded' => true,
                 'multiple' => false,
                 'mapped' => false,
             ))
             ->add('tax_rate', IntegerType::class, array(
-                'label' => '消費税率',
+                'label' => 'taxrule.label.tax_rate',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
@@ -69,11 +69,11 @@ class TaxRuleType extends AbstractType
                 ),
             ))
             ->add('rounding_type', RoundingTypeType::class, array(
-                'label' => '課税規則',
+                'label' => 'taxrule.label.tax_rules',
                 'required' => true,
             ))
             ->add('apply_date', DateType::class, array(
-                'label' => '適用日時',
+                'label' => 'taxrule.label.tax_date',
                 'required' => 'false',
                 'input' => 'datetime',
                 'widget' => 'single_text',

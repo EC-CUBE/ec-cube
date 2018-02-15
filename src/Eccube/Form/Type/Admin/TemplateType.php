@@ -63,7 +63,7 @@ class TemplateType extends AbstractType
     {
         $builder
             ->add('code', TextType::class, array(
-                'label' => 'テンプレートコード',
+                'label' => 'template.label.tempalte_code',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
@@ -76,7 +76,7 @@ class TemplateType extends AbstractType
                 ),
             ))
             ->add('name', TextType::class, array(
-                'label' => 'テンプレート名',
+                'label' => 'template.label.template_name',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
@@ -86,14 +86,14 @@ class TemplateType extends AbstractType
                 ),
             ))
             ->add('file', FileType::class, array(
-                'label' => 'テンプレートファイル',
+                'label' => 'template.label.template_file',
                 'mapped' => false,
                 'required' => true,
                 'constraints' => array(
-                    new Assert\NotBlank(array('message' => 'ファイルを選択してください。')),
+                    new Assert\NotBlank(array('message' => 'template.text.message.select_file')),
                     new Assert\File(array(
                         'mimeTypes' => array('application/zip', 'application/x-tar', 'application/x-gzip'),
-                        'mimeTypesMessage' => 'zipファイル、tarファイル、tar.gzファイルのいずれかをアップロードしてください。',
+                        'mimeTypesMessage' => 'template.text.message.upload_files',
                     )),
                 ),
             ));

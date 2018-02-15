@@ -155,7 +155,7 @@ class LayoutController extends AbstractController
                         new NotBlank(),
                     ],
                     'required' => false,
-                    'label' => 'レイアウト名',
+                    'label' => $app->trans('layout.label'),
                 ]
             )->add(
                 'DeviceType',
@@ -243,7 +243,7 @@ class LayoutController extends AbstractController
         $Block = $this->blockRepository->find($id);
 
         if (is_null($Block)) {
-            return $app->json('みつかりませんでした');
+            return $app->json($app->trans('layout.text.error.not_found'));
         }
 
         // ブロックのソースコードの取得.

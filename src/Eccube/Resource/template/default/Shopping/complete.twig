@@ -37,27 +37,27 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <li class="ec-progress__item">
                 <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
                 </div>
-                <div class="ec-progress__label">カートの商品
+                <div class="ec-progress__label">{{'shopping.label.your_cart'|trans}}
                 </div>
             </li>
             {% if is_granted('ROLE_USER') == false %}
             <li class="ec-progress__item">
                 <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
                 </div>
-                <div class="ec-progress__label">お客様情報
+                <div class="ec-progress__label">{{'shopping.label.customer_info'|trans}}
                 </div>
             </li>
             {% endif %}
             <li class="ec-progress__item">
                 <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
                 </div>
-                <div class="ec-progress__label">ご注文内容確認
+                <div class="ec-progress__label">{{'shopping.label.confirm_order'|trans}}
                 </div>
             </li>
             <li class="ec-progress__item is-complete">
                 <div class="ec-progress__number">{{ step }}
                 </div>
-                <div class="ec-progress__label">完了
+                <div class="ec-progress__label">{{'shopping.label.order_completed'|trans}}
                 </div>
             </li>
         </ul>
@@ -68,11 +68,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <div class="ec-off3Grid ec-text-ac">
         <div class="ec-off3Grid__cell">
             <div class="ec-reportHeading">
-                <h2>ご注文ありがとうございました</h2>
+                <h2>{{'shopping.text.message.thank_you_order'|trans}}</h2>
             </div>
-            <p class="ec-reportDescription">ただいま、ご注文の確認メールをお送りさせていただきました。<br>万一、ご確認メールが届かない場合は、トラブルの可能性もありますので大変お手数ではございますがもう一度お問い合わせいただくか、お電話にてお問い合わせくださいませ。<br>今後ともご愛顧賜りますようよろしくお願い申し上げます。</p>
+            <p class="ec-reportDescription">{{'shopping.text.message.sent_email'|trans}}<br>{{'shopping.text.message.in_case'|trans}}<br>{{'shopping.text.message.thank_you_with_us'|trans}}</p>
             <div class="ec-off4Grid">
-                <div class="ec-off4Grid__cell"><a class="ec-blockBtn--cancel" href="{{ url('homepage') }}">トップページへ</a></div>
+                <div class="ec-off4Grid__cell"><a class="ec-blockBtn--cancel" href="{{ url('homepage') }}">{{'common.label.back_to_top'|trans}}</a></div>
             </div>
         </div>
     </div>

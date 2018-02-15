@@ -16,7 +16,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
+ * You should have received a copy of the GNU General Public License'csvimport.text.error.format'
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
@@ -160,20 +160,20 @@ class CsvImportController
 
                     $data = $this->getImportData($app, $formFile);
                     if ($data === false) {
-                        $this->addErrors('CSVのフォーマットが一致しません。');
+                        $this->addErrors($app->trans('csvimport.text.error.format_invalid'));
                         return $this->render($app, $form, $headers);
                     }
 
                     $keys = array_keys($headers);
                     $columnHeaders = $data->getColumnHeaders();
                     if ($keys !== $columnHeaders) {
-                        $this->addErrors('CSVのフォーマットが一致しません。');
+                        $this->addErrors($app->trans('csvimport.text.error.format_invalid'));
                         return $this->render($app, $form, $headers);
                     }
 
                     $size = count($data);
                     if ($size < 1) {
-                        $this->addErrors('CSVデータが存在しません。');
+                        $this->addErrors($app->trans('csvimport.text.error.data_not_found'));
                         return $this->render($app, $form, $headers);
                     }
 
@@ -503,20 +503,20 @@ class CsvImportController
 
                     $data = $this->getImportData($app, $formFile);
                     if ($data === false) {
-                        $this->addErrors('CSVのフォーマットが一致しません。');
+                        $this->addErrors($app->trans('csvimport.text.error.format_invalid'));
                         return $this->render($app, $form, $headers);
                     }
 
                     $keys = array_keys($headers);
                     $columnHeaders = $data->getColumnHeaders();
                     if ($keys !== $columnHeaders) {
-                        $this->addErrors('CSVのフォーマットが一致しません。');
+                        $this->addErrors($app->trans('csvimport.text.error.format_invalid'));
                         return $this->render($app, $form, $headers);
                     }
 
                     $size = count($data);
                     if ($size < 1) {
-                        $this->addErrors('CSVデータが存在しません。');
+                        $this->addErrors($app->trans('csvimport.text.error.data_not_found'));
                         return $this->render($app, $form, $headers);
                     }
 

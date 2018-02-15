@@ -65,7 +65,7 @@ class ChangePasswordType extends AbstractType
         $app = $this->app;
         $builder
             ->add('current_password', PasswordType::class, array(
-                'label' => '現在のパスワード',
+                'label' => 'changepassword.label.current_pass',
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new UserPassword(),
@@ -73,10 +73,10 @@ class ChangePasswordType extends AbstractType
             ))
             ->add('change_password', RepeatedType::class, array(
                 'first_options'  => array(
-                    'label' => '新しいパスワード',
+                    'label' => 'changepassword.label.new_pass',
                 ),
                 'second_options' => array(
-                    'label' => '新しいパスワード(確認)',
+                    'label' => 'changepassword.label.varify_pass',
                 ),
                 'constraints' => array(
                     new Assert\NotBlank(),

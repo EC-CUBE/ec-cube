@@ -23,8 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['store', 'plugin', 'plugin_owners_install'] %}
 
-{% block title %}オーナーズストア{% endblock %}
-{% block sub_title %}購入済プラグイン{% endblock %}
+{% block title %}{{'admin.store.plugin_owners_install.853'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.store.plugin_owners_install.854'|trans}}{% endblock %}
 
 {% block javascript %}
 <script src="{{ asset('assets/js/vendor/masonry.pkgd.min.js', 'admin') }}"></script>
@@ -43,7 +43,7 @@ $(function() {
     <div class="col-md-12">
         <div class="box">
             <div class="box-header">
-                <h3 class="box-title">プラグイン一覧</h3>
+                <h3 class="box-title">{{'admin.store.plugin_owners_install.855'|trans}}</h3>
             </div><!-- /.box-header -->
             <div class="box-body">
                 {% if authResult  %}
@@ -73,10 +73,10 @@ $(function() {
                     </div><!-- .row -->
                 {% else %}
                     <p>
-                        認証キーを設定してください。
+                        {{'admin.store.plugin_owners_install.856'|trans}}。
                     </p>
                     <p>
-                        <a href="{{ url('admin_store_authentication_setting') }}">認証キー設定画面へ</a>
+                        <a href="{{ url('admin_store_authentication_setting') }}">{{'admin.store.plugin_owners_install.857'|trans}}</a>
                     </p>
                 {% endif %}
             </div><!-- /.box-body -->

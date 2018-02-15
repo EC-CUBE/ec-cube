@@ -30,7 +30,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 $(this).find('li:gt(4)').each(function() {
                     $(this).hide();
                 });
-                $(this).append('<a id="news_readmore">» もっと見る</a>');
+                $(this).append('<a id="news_readmore">» {{'common.label.readmore'|trans}}</a>');
                 var dispNum = 5;
                 $(this).find('#news_readmore').click(function() {
                     dispNum += 5;
@@ -46,7 +46,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% endblock %}
 
 <div class="ec-news">
-    <div class="ec-news__title">新着情報</div>
+    <div class="ec-news__title">{{'front_home.label.whats_new'|trans}}</div>
     <ul class="ec-news__items">
         {% for News in NewsList %}
         <li class="ec-news__item">
@@ -65,7 +65,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <div class="ec-newsline__description">
                     {{ News.comment|raw|nl2br }}
                     {% if News.url %}<br>
-                    <a href="{{ News.url }}" {% if News.link_method == '1' %}target="_blank"{% endif %}>詳しくはこちら</a>
+                    <a href="{{ News.url }}" {% if News.link_method == '1' %}target="_blank"{% endif %}>{{'common.label.see_details'|trans}}</a>
                     {% endif %}
                 </div>
                 {% endif %}

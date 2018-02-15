@@ -23,8 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['product', 'product_csv_import'] %}
 
-{% block title %}商品管理{% endblock %}
-{% block sub_title %}商品登録CSVアップロード{% endblock %}
+{% block title %}{{'admin.product.csv_product.446'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.product.csv_product.447'|trans}}{% endblock %}
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
@@ -70,11 +70,11 @@ $(function() {
             {{ form_widget(form._token) }}
             <div id="upload_file_box__body" class="box">
                 <div id="upload_file_box__header" class="box-header">
-                    <h3 class="box-title">商品登録CSV</h3>
+                    <h3 class="box-title">{{'admin.product.csv_product.448'|trans}}</h3>
                 </div><!-- /.box-header -->
                 <div id="upload_file_box__body_inner" class="box-body">
                     <div id="upload_file_box__upload_box" class="form-group">
-                        <label class="col-sm-5 control-label">CSVファイル選択</label>
+                        <label class="col-sm-5 control-label">{{'admin.product.csv_product.449'|trans}}</label>
                         <div id="upload_file_box__import_file" class="col-sm-7">
                             {{ form_widget(form.import_file, {'attr': {'accept': 'text/csv,text/tsv'}}) }}
                             {{ form_errors(form.import_file) }}
@@ -86,7 +86,7 @@ $(function() {
                     <div id="spinner"></div>
                 </div><!-- /.box-body -->
                 <div id="button_box__upload_button" class="box-footer text-center">
-                    <button id="upload-button" type="submit" class="btn btn-primary btn-sm">CSVファイルのアップロード</button>
+                    <button id="upload-button" type="submit" class="btn btn-primary btn-sm">{{'admin.product.csv_product.450'|trans}}</button>
                 </div><!-- /.box-footer -->
             </div><!-- /.box -->
         </form>
@@ -97,8 +97,8 @@ $(function() {
     <div id="file_format_box" class="col-md-12">
         <div id="file_format_box__body" class="box">
             <div id="file_format_box__head" class="box-header">
-                <a href="{{ url('admin_product_csv_template', {'type': 'product'}) }}" id="download-button" class="btn btn-default pull-right btn-xs">雛形ファイルダウンロード</a>
-                <h3 class="box-title">商品登録CSVファイルフォーマット</h3>
+                <a href="{{ url('admin_product_csv_template', {'type': 'product'}) }}" id="download-button" class="btn btn-default pull-right btn-xs">{{'admin.product.csv_product.451'|trans}}</a>
+                <h3 class="box-title">{{'admin.product.csv_product.452'|trans}}</h3>
             </div><!-- /.box-header -->
             <div id="file_format_box__body_inner" class="box-body no-padding">
                 <div id="file_format_box__list_box" class="table_list">
@@ -113,30 +113,30 @@ $(function() {
                             </thead>
                             <tbody>
                                 <tr id="file_format_box__list" class="text-nowrap">
-                                    <td id="file_format_box__id">新規登録時は未設定<br>既存商品の更新は商品IDを設定</td>
-                                    <td id="file_format_box__status">必須</td>
-                                    <td id="file_format_box__name">必須</td>
+                                    <td id="file_format_box__id">{{'admin.product.csv_product.453'|trans}}</td>
+                                    <td id="file_format_box__status">{{'admin.product.csv_product.454'|trans}}</td>
+                                    <td id="file_format_box__name">{{'admin.product.csv_product.455'|trans}}</td>
                                     <td id="file_format_box__shop_memo"></td>
                                     <td id="file_format_box__info"></td>
                                     <td id="file_format_box__detail"></td>
                                     <td id="file_format_box__search_word"></td>
                                     <td id="file_format_box__free"></td>
-                                    <td id="file_format_box__delete_flg">設定されていない場合<br>0を登録</td>
-                                    <td id="file_format_box__image">複数画像の場合<br>画像ファイル名をカンマ区切りで<br>「"」で囲んで設定</td>
-                                    <td id="file_format_box__category">複数カテゴリの場合<br>商品カテゴリIDをカンマ区切りで<br>「"」で囲んで設定</td>
-                                    <td id="file_format_box__tag">複数タグの場合<br>タグIDをカンマ区切りで<br>「"」で囲んで設定</td>
-                                    <td id="file_format_box__type_id">必須</td>
+                                    <td id="file_format_box__delete_flg">{{'admin.product.csv_product.456'|trans}}</td>
+                                    <td id="file_format_box__image">{{'admin.product.csv_product.457'|trans}}</td>
+                                    <td id="file_format_box__category">{{'admin.product.csv_product.458'|trans}}</td>
+                                    <td id="file_format_box__tag">{{'admin.product.csv_product.459'|trans}}</td>
+                                    <td id="file_format_box__type_id">{{'admin.product.csv_product.460'|trans}}</td>
                                     <td id="file_format_box__class_1"></td>
                                     <td id="file_format_box__class_2"></td>
                                     <td id="file_format_box__date"></td>
                                     <td id="file_format_box__code"></td>
-                                    <td id="file_format_box__stock">在庫数無制限フラグが0の場合<br>0以上の数値を設定</td>
-                                    <td id="file_format_box__stock_nolimit_flg">必須</td>
-                                    <td id="file_format_box__limit">0以上の数値を設定</td>
-                                    <td id="file_format_box__price_2">0以上の数値を設定</td>
-                                    <td id="file_format_box__price_1">必須<br>0以上の数値を設定</td>
-                                    <td id="file_format_box__delivery_fee">商品ごとの送料設定が有効の場合<br>0以上の数値を設定</td>
-                                    <td id="file_format_box__category_delete_flg">設定されていない場合<br>0を登録</td>
+                                    <td id="file_format_box__stock">{{'admin.product.csv_product.461'|trans}}</td>
+                                    <td id="file_format_box__stock_nolimit_flg">{{'admin.product.csv_product.462'|trans}}</td>
+                                    <td id="file_format_box__limit">{{'admin.product.csv_product.463'|trans}}</td>
+                                    <td id="file_format_box__price_2">{{'admin.product.csv_product.464'|trans}}</td>
+                                    <td id="file_format_box__price_1">{{'admin.product.csv_product.465'|trans}}</td>
+                                    <td id="file_format_box__delivery_fee">{{'admin.product.csv_product.466'|trans}}</td>
+                                    <td id="file_format_box__category_delete_flg">{{'admin.product.csv_product.467'|trans}}</td>
                                 </tr>
                             </tbody>
                         </table>

@@ -254,7 +254,7 @@ class TaxRuleController extends AbstractController
             ->getSingleScalarResult();
         // 同じ適用日時の登録データがあればエラーとする.
         if ($count > 0) {
-            $form['apply_date']->addError(new FormError('既に同じ適用日時で登録されています。'));
+            $form['apply_date']->addError(new FormError($app->trans('taxrule.text.error.date_not_available')));
 
             return false;
         }

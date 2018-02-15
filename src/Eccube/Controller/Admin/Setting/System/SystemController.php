@@ -51,13 +51,13 @@ class SystemController
     {
         $info = [];
         $info[] = ['title' => 'EC-CUBE', 'value' => Constant::VERSION];
-        $info[] = ['title' => 'サーバーOS', 'value' => php_uname()];
-        $info[] = ['title' => 'DBサーバー', 'value' => $this->systemService->getDbversion()];
-        $info[] = ['title' => 'WEBサーバー', 'value' => $request->server->get("SERVER_SOFTWARE")];
+        $info[] = ['title' => $app->trans('system.label.server_os'), 'value' => php_uname()];
+        $info[] = ['title' => $app->trans('system.label.db_server'), 'value' => $this->systemService->getDbversion()];
+        $info[] = ['title' => $app->trans('system.label.web_server'), 'value' => $request->server->get("SERVER_SOFTWARE")];
 
         $value = phpversion().' ('.implode(', ', get_loaded_extensions()).')';
         $info[] = ['title' => 'PHP', 'value' => $value];
-        $info[] = ['title' => 'HTTPユーザーエージェント', 'value' => $request->headers->get('User-Agent')];
+        $info[] = ['title' => $app->trans('system.label.user_agent'), 'value' => $request->headers->get('User-Agent')];
 
         return [
             'info' => $info,

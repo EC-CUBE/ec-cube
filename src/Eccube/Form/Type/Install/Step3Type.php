@@ -64,7 +64,7 @@ class Step3Type extends AbstractType
     {
         $builder
             ->add('shop_name', TextType::class, array(
-                'label' => 'あなたの店名',
+                'label' => 'step3.label.store_name',
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
@@ -73,7 +73,7 @@ class Step3Type extends AbstractType
                 ),
             ))
             ->add('email', EmailType::class, array(
-                'label' => 'メールアドレス（受注メールなどの宛先になります）',
+                'label' => 'step3.label.email',
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Email(array('strict' => true)),
@@ -119,25 +119,25 @@ class Step3Type extends AbstractType
                 ),
             ))
             ->add('admin_force_ssl', CheckboxType::class, array(
-                'label' => 'サイトへのアクセスを、SSL（https）経由に制限します',
+                'label' => 'step3.label.ssl',
                 'required' => false,
             ))
             ->add('admin_allow_hosts', TextareaType::class, array(
-                'label' => '管理画面へのアクセスを、以下のIPに制限します',
-                'help' => '複数入力する場合は、IPとIPの間に改行をいれてください',
+                'label' => 'step3.label.ips',
+                'help' => 'step3.text.help.insert_break',
                 'required' => false,
             ))
             ->add('trusted_proxies_connection_only', CheckboxType::class, array(
-                'label' => 'サイトが信頼されたロードバランサー、プロキシサーバからのみアクセスされる',
+                'label' => 'step3.label.only_load_balancers_or_proxy',
                 'required' => false,
             ))
             ->add('trusted_proxies', TextareaType::class, array(
-                'label' => 'ロードバランサー、プロキシサーバのIP',
-                'help' => '複数入力する場合は、IPとIPの間に改行をいれてください（X-Forwarded-Proto、X-Forwarded-Host、X-Forwarded-Portヘッダーに対応してる必要があります）',
+                'label' => 'step3.label.load_balancers_or_proxy_ips',
+                'help' => 'step3.text.help.insert_break_x_forwarded',
                 'required' => false,
             ))
             ->add('mail_backend', ChoiceType::class, array(
-                'label' => 'メーラーバックエンド',
+                'label' => 'step3.label.mailer_backend',
                 'choices' => array(
                     'mail（PHPの組み込み関数 mail() を使用してメールを送信）' => 'mail',
                     'SMTP（SMTPサーバに直接接続してメールを送信）' => 'smtp',
@@ -147,23 +147,23 @@ class Step3Type extends AbstractType
                 'multiple' => false,
             ))
             ->add('smtp_host', TextType::class, array(
-                'label' => 'SMTPホスト',
-                'help' => 'メーラーバックエンドがSMTPの場合のみ指定',
+                'label' => 'step3.label.smtp_host',
+                'help' => 'step3.text.help.mailer_backend_smtp',
                 'required' => false,
             ))
             ->add('smtp_port', TextType::class, array(
-                'label' => 'SMTPポート',
-                'help' => 'メーラーバックエンドがSMTPの場合のみ指定',
+                'label' => 'step3.label.smtp_port',
+                'help' => 'step3.text.help.mailer_backend_smtp',
                 'required' => false,
             ))
             ->add('smtp_username', TextType::class, array(
-                'label' => 'SMTPユーザー',
-                'help' => 'メーラーバックエンドがSMTPかつSMTP-AUTH使用時のみ指定',
+                'label' => 'step3.label.smtp_user',
+                'help' => 'step3.text.help.mailer_backend_smtp_smtpauth',
                 'required' => false,
             ))
             ->add('smtp_password', PasswordType::class, array(
-                'label' => 'SMTPパスワード',
-                'help' => 'メーラーバックエンドがSMTPかつSMTP-AUTH使用時のみ指定',
+                'label' => 'step3.label.smtp_pass',
+                'help' => 'step3.text.help.mailer_backend_smtp_smtpauth',
                 'required' => false,
             ))
             ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {

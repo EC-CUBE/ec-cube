@@ -19,7 +19,6 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-
 {% for level1 in app.config.nav if app.request_stack.currentrequest.baseUrl ~ '/' ~ app.config.admin_route ~ '/' ~ level1.id not in AuthorityRoles %}
     <li class="{% if active_menus(menus)[0] == level1.id %}active{% endif %}">
         {% if level1.has_child is defined and level1.has_child == true %}

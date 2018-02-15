@@ -85,28 +85,28 @@ class ProductType extends AbstractType
             ))
             // 基本情報
             ->add('name', TextType::class, array(
-                'label' => '商品名',
+                'label' => 'product.label.product_name',
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
             ))
             ->add('product_image', FileType::class, array(
-                'label' => '商品画像',
+                'label' => 'product.label.product_image',
                 'multiple' => true,
                 'required' => false,
                 'mapped' => false,
             ))
             ->add('description_detail', TextareaType::class, array(
-                'label' => '商品説明',
+                'label' => 'product.label.product_description',
             ))
             ->add('description_list', TextareaType::class, array(
-                'label' => '商品説明(一覧)',
+                'label' => 'product.label.product_description_list',
                 'required' => false,
             ))
             ->add('Category', EntityType::class, array(
                 'class' => 'Eccube\Entity\Category',
                 'choice_label' => 'NameWithLevel',
-                'label' => '商品カテゴリ',
+                'label' => 'product.label.product_category',
                 'multiple' => true,
                 'mapped' => false,
                 // Choices list (overdrive mapped)
@@ -121,12 +121,12 @@ class ProductType extends AbstractType
                 'mapped' => false,
             ))
             ->add('search_word', TextareaType::class, array(
-                'label' => "検索ワード",
+                'label' => "product.label.search_word",
                 'required' => false,
             ))
             // サブ情報
             ->add('free_area', TextareaType::class, array(
-                'label' => 'サブ情報',
+                'label' => 'product.label.product_sub',
                 'required' => false,
                 'constraints' => [
                     new TwigLint()
@@ -140,7 +140,7 @@ class ProductType extends AbstractType
                 ),
             ))
             ->add('note', TextareaType::class, array(
-                'label' => 'ショップ用メモ帳',
+                'label' => 'product.label.owner_memo',
                 'required' => false,
             ))
 

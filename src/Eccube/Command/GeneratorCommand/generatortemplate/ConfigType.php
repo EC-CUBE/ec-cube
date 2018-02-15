@@ -24,7 +24,7 @@ class [code]ConfigType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, array(
-                'label' => '項目A',
+                'label' => $app->trans('configtype.label'),
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),

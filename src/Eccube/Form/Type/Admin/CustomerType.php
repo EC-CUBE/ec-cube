@@ -134,10 +134,10 @@ class CustomerType extends AbstractType
             ->add('password', RepeatedPasswordType::class, array(
                 // 'type' => 'password',
                 'first_options'  => array(
-                    'label' => 'パスワード',
+                    'label' => 'member.label.pass',
                 ),
                 'second_options' => array(
-                    'label' => 'パスワード(確認)',
+                    'label' => 'member.label.varify_pass',
                 ),
             ))
             ->add('status', CustomerStatusType::class, array(

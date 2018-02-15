@@ -9,7 +9,7 @@
     'cookie_name' => env('ECCUBE_COOKIE_NAME', 'eccube'),
     'locale' => env('ECCUBE_LOCALE', 'ja'),
     'timezone' => env('ECCUBE_TIMEZONE', 'Asia/Tokyo'),
-    'currency' => env('ECCUBE_CURRENCY', 'JPY'),
+    'currency' => env('ECCUBE_CURRENCY', 'MYR'),
     'trusted_proxies_connection_only' => env('ECCUBE_TRUSTED_PROXIES_CONNECTION_ONLY', false),
     'trusted_proxies' => env('ECCUBE_TRUSTED_PROXIES', []),
     'vendor_name' => 'Acme',

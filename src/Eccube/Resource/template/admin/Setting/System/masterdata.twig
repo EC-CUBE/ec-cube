@@ -24,8 +24,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['setting', 'system', 'masterdata'] %}
 
-{% block title %}システム設定{% endblock %}
-{% block sub_title %}マスターデータ管理{% endblock %}
+{% block title %}{{'admin.setting.system.masterdata.675'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.setting.system.masterdata.676'|trans}}{% endblock %}
 
 {% block main %}
 <form id="form1" name="form1" method="post" action="{{ url('admin_setting_system_masterdata') }}">
@@ -34,7 +34,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <div id="master_edit" class="col-md-12">
             <div id="master_edit_box" class="box">
                 <div id="master_edit_box__header" class="box-header">
-                    <h3 class="box-title">マスターデータ管理</h3>
+                    <h3 class="box-title">{{'admin.setting.system.masterdata.677'|trans}}</h3>
                 </div><!-- /.box-header -->
                 <div id="master_edit_box__body" class="box-body">
                     <div id="master_edit_box__body_inner" class="form-inline form-group">
@@ -43,7 +43,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             {{ form_errors(form.masterdata) }}
                         </div>
                         <div id="master_edit_box__confirm_button" class="form-group">
-                            <button class="btn btn-primary btn-block" type="submit">選択</button>
+                            <button class="btn btn-primary btn-block" type="submit">{{'admin.setting.system.masterdata.678'|trans}}</button>
                         </div>
                     </div>
                     <div class="extra-form clearfix">
@@ -72,10 +72,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <div id="result_list_box__body" class="box">
                 <div id="result_list_box__header" class="box-header">
                     <div class="read">
-                        マスターデータの値を設定できます。<br />
-                        重複したIDを登録することはできません。<br />
-                        空のIDを登録すると、値は削除されます。<br />
-                        設定値によってはサイトが機能しなくなる場合もありますので、十分ご注意下さい。
+                        {{'admin.setting.system.masterdata.679'|trans}}<br />
+                        {{'admin.setting.system.masterdata.680'|trans}}<br />
+                        {{'admin.setting.system.masterdata.681'|trans}}<br />
+                        {{'admin.setting.system.masterdata.682'|trans}}
                     </div>
                 </div>
 
@@ -118,7 +118,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div id="common_button_box__body" class="box-body">
                         <div id="common_button_box__insert_button"  class="row text-center">
                             <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
-                                <button class="btn btn-primary btn-block btn-lg" type="submit">登録</button>
+                                <button class="btn btn-primary btn-block btn-lg" type="submit">{{'admin.setting.system.masterdata.683'|trans}}</button>
                             </div>
                         </div>
                     </div><!-- /.box-body -->

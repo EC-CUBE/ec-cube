@@ -23,8 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['order', 'order_master'] %}
 
-{% block title %}受注管理{% endblock %}
-{% block sub_title %}メール通知{% endblock %}
+{% block title %}{{'admin.order.mail_confirm.366'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.order.mail_confirm.367'|trans}}{% endblock %}
 
 {% block main %}
 <div id="confirm_wrap" class="row">
@@ -33,18 +33,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         {{ form_widget(form._token) }}
         <div id="confirm_box__body" class="box">
             <div id="confirm_box__header" class="box-header">
-                <h3 class="box-title">メール配信</h3>
+                <h3 class="box-title">{{'admin.order.mail_confirm.368'|trans}}</h3>
             </div><!-- /.box-header -->
             <div id="confirm_box__body_inner" class="box-body">
                 <div id="confirm_box__subject" class="form-group">
-                    <label class="col-sm-2 control-label">タイトル</label>
+                    <label class="col-sm-2 control-label">{{'admin.order.mail_confirm.369'|trans}}</label>
                     <div class="col-sm-9 col-lg-10">
                         {{ form_widget(form.subject) }}
                         {{ form_errors(form.subject) }}
                     </div>
                 </div>
                 <div id="confirm_box__item_body" class="form-group">
-                    <label class="col-sm-2 control-label">本文</label>
+                    <label class="col-sm-2 control-label">{{'admin.order.mail_confirm.370'|trans}}</label>
                     <div class="col-sm-9 col-lg-10">
                         {{ body|raw|nl2br }}
                     </div>
@@ -65,8 +65,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         </div>
         <div id="box_main__footer" class="row">
             <div id="confirm_box__button_menu" class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
-                <p><button type="submit" class="btn btn-info btn-lg" name="mode" value="back">戻る</button></p>
-                <p><button type="submit" class="btn btn-primary btn-lg" name="mode" value="complete">メール送信</button></p>
+                <p><button type="submit" class="btn btn-info btn-lg" name="mode" value="back">{{'admin.order.mail_confirm.371'|trans}}</button></p>
+                <p><button type="submit" class="btn btn-primary btn-lg" name="mode" value="complete">{{'admin.order.mail_confirm.372'|trans}}</button></p>
             </div>
         </div>
         </form>

@@ -23,8 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['setting', 'shop', 'shop_delivery'] %}
 
-{% block title %}ショップ設定{% endblock %}
-{% block sub_title %}配送先管理{% endblock %}
+{% block title %}{{'admin.setting.shop.delivery_edit.578'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.setting.shop.delivery_edit.579'|trans}}{% endblock %}
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
@@ -46,7 +46,7 @@ $(function(){
             <div id="detail_wrap" class="col-md-9">
                 <div id="delivery_info_box" class="box">
                     <div id="delivery_info_box__header" class="box-header">
-                        <h3 class="box-title">基本情報</h3>
+                        <h3 class="box-title">{{'admin.setting.shop.delivery_edit.580'|trans}}</h3>
                     </div><!-- /.box-header -->
                     <div id="delivery_info_box__body" class="box-body">
 
@@ -68,7 +68,7 @@ $(function(){
 
                 <div id="payments_box" class="box">
                     <div id="payments_box__header" class="box-header">
-                        <h3 class="box-title">支払方法設定</h3>
+                        <h3 class="box-title">{{'admin.setting.shop.delivery_edit.581'|trans}}</h3>
                     </div><!-- /.box-header -->
                     <div id="payments_box__body" class="box-body">
                         {{ form_widget(form.payments) }}
@@ -78,7 +78,7 @@ $(function(){
 
                 <div id="delivery_times_box" class="box accordion clearfix">
                     <div id="delivery_times_box__toggle" class="box-header toggle">
-                        <h3 class="box-title">お届け時間設定<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
+                        <h3 class="box-title">{{'admin.setting.shop.delivery_edit.582'|trans}}<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
                     </div><!-- /.box-header -->
                     <div id="delivery_times_box__body" class="box-body accpanel">
                         {% for child in form.delivery_times %}
@@ -87,7 +87,7 @@ $(function(){
                             {% endif %}
 
                             <label class="col-sm-2 control-label">
-                                お届け時間{{ loop.index }}
+                                {{'admin.setting.shop.delivery_edit.583'|trans}}{{ loop.index }}
                             </label>
                             <div id="delivery_times_box__delivery_times--{{ loop.index0 }}" class="col-sm-4">
                                 {{ form_widget(child) }}
@@ -102,16 +102,16 @@ $(function(){
 
                 <div id="delivery_pref_box" class="box accordion">
                     <div id="delivery_pref_box__header" class="box-header">
-                        <h3 class="box-title">都道府県別送料設定</h3>
+                        <h3 class="box-title">{{'admin.setting.shop.delivery_edit.584'|trans}}</h3>
                     </div>
                     <div id="delivery_pref_box__body" class="box-body">
                         <div id="delivery_pref_box__free_all" class="form-inline fees_area">
-                            全国一律送料&nbsp; {{ form_widget(form.free_all) }}
-                            <a class="btn btn-normal btn-default btn-sm" href="javascript:;" id="set_fee_all">各都道府県に反映</a>
+                            {{'admin.setting.shop.delivery_edit.585'|trans}}&nbsp; {{ form_widget(form.free_all) }}
+                            <a class="btn btn-normal btn-default btn-sm" href="javascript:;" id="set_fee_all">{{'admin.setting.shop.delivery_edit.586'|trans}}</a>
                         </div>
                     </div><!-- /.box-header -->
                     <div id="delivery_pref_box__body_toggle" class="box-body toggle active" style="position:relative;">
-                        <h3 class="box-title">都道府県ごとに設定する<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
+                        <h3 class="box-title">{{'admin.setting.shop.delivery_edit.587'|trans}}<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
                     </div>
                     <div id="delivery_pref_box__body_inner" class="box-body accpanel" style="display: block;">
                         {% for child in form.delivery_fees %}
@@ -135,7 +135,7 @@ $(function(){
 
                 <div id="detail__back_button" class="row hidden-xs hidden-sm">
                     <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
-                        <p><a href="{{ url('admin_setting_shop_delivery') }}">一覧に戻る</a></p>
+                        <p><a href="{{ url('admin_setting_shop_delivery') }}">{{'admin.setting.shop.delivery_edit.588'|trans}}</a></p>
                     </div>
                 </div>
 
@@ -146,14 +146,14 @@ $(function(){
                         <div id="common_button_box__body" class="box-body">
                             <div id="common_button_box__insert_button" class="row text-center">
                                 <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
-                                    <button class="btn btn-primary btn-block btn-lg" type="submit">登録</button>
+                                    <button class="btn btn-primary btn-block btn-lg" type="submit">{{'admin.setting.shop.delivery_edit.589'|trans}}</button>
                                 </div>
                             </div>
                         </div><!-- /.box-body -->
                     </div><!-- /.box -->
                     <div id="common_shop_note_box" class="box">
                         <div id="common_shop_note_box__header" class="box-header">
-                            <h3 class="box-title">ショップ用メモ欄</h3>
+                            <h3 class="box-title">{{'admin.setting.shop.delivery_edit.590'|trans}}</h3>
                         </div><!-- /.box-header -->
                         <div id="common_shop_note_box__body" class="box-body">
                             {{ form_widget(form.description) }}

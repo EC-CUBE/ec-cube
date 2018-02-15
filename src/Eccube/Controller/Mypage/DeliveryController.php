@@ -116,7 +116,7 @@ class DeliveryController extends AbstractController
             $addressCurrNum = count($Customer->getCustomerAddresses());
             $addressMax = $this->appConfig['deliv_addr_max'];
             if ($addressCurrNum >= $addressMax) {
-                throw new NotFoundHttpException('お届け先の登録数の上限を超えています');
+                throw new NotFoundHttpException($app->trans('delivery.text.error.max_delivery_address'));
             }
         }
 

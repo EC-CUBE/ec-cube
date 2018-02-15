@@ -109,7 +109,7 @@ class OrderType extends AbstractType
                 ),
             ))
             ->add('company_name', TextType::class, array(
-                'label' => '会社名',
+                'label' => 'order.label.company_name',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
@@ -156,7 +156,7 @@ class OrderType extends AbstractType
             ))
             ->add('email', EmailType::class, array(
                 'required' => false,
-                'label' => 'メールアドレス',
+                'label' => 'order.label.email',
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Email(array('strict' => true)),
@@ -171,11 +171,11 @@ class OrderType extends AbstractType
                 ),
             ))
             ->add('fax', TelType::class, array(
-                'label' => 'FAX番号',
+                'label' => 'order.label.fax_number',
                 'required' => false,
             ))
             ->add('company_name', TextType::class, array(
-                'label' => '会社名',
+                'label' => 'order.label.company_name',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
@@ -184,7 +184,7 @@ class OrderType extends AbstractType
                 ),
             ))
             ->add('message', TextareaType::class, array(
-                'label' => 'お問い合わせ',
+                'label' => 'order.label.inquiry',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
@@ -194,21 +194,21 @@ class OrderType extends AbstractType
             ))
             ->add('discount', PriceType::class, array(
                 'required' => false,
-                'label' => '値引き',
+                'label' => 'order.label.discount',
                 'required' => false,
             ))
             ->add('delivery_fee_total', PriceType::class, array(
                 'required' => false,
-                'label' => '送料',
+                'label' => 'order.label.shipping_charge',
                 'required' => false,
             ))
             ->add('charge', PriceType::class, array(
                 'required' => false,
-                'label' => '手数料',
+                'label' => 'order.label.commision',
                 'required' => false,
             ))
             ->add('note', TextareaType::class, array(
-                'label' => 'SHOP用メモ欄',
+                'label' => 'order.label.owner_note',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
@@ -219,7 +219,7 @@ class OrderType extends AbstractType
             ->add('OrderStatus', EntityType::class, array(
                 'class' => 'Eccube\Entity\Master\OrderStatus',
                 'choice_label' => 'name',
-                'placeholder' => '選択してください',
+                'placeholder' => 'order.placeholder.select',
                 'query_builder' => function($er) {
                     return $er->createQueryBuilder('o')
                         ->orderBy('o.rank', 'ASC');
@@ -232,7 +232,7 @@ class OrderType extends AbstractType
                 'required' => false,
                 'class' => 'Eccube\Entity\Payment',
                 'choice_label' => 'method',
-                'placeholder' => '選択してください',
+                'placeholder' => 'order.placeholder.select',
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),

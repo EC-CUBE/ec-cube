@@ -237,7 +237,7 @@ class PluginService
                 $phar->extractTo($dir, null, true);
             }
         } catch (\Exception $e) {
-            throw new PluginException('アップロードに失敗しました。圧縮ファイルを確認してください。');
+            throw new PluginException($app->trans('pluginservice.text.error.upload_failure'));
         }
     }
 

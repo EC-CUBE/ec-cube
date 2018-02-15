@@ -61,7 +61,7 @@ class ClassNameType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, array(
-                'label' => '規格名',
+                'label' => 'classname.label.group_name',
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
