@@ -42,6 +42,7 @@ return [
     'form.type.admin.nottelstyle' => '電話番号は半角数字かハイフンのみを入力してください。。',
     'form.type.admin.notkanastyle' => 'お名前(フリガナ)はカタカナで入力してください。',
     'form.type.select.notselect' => '入力されていません。',
+    'form.type.input.blank' => '入力されていません。',
     'form.type.select.selectisfuturedate' => '未来の日付は選択出来ません。',
     'cart.over.stock' => '選択された商品(%product%)の在庫が不足しております。
 一度に在庫数を超える購入はできません。',
