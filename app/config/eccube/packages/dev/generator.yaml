@@ -15,5 +15,6 @@ services:
       - '@Eccube\Repository\PageRepository'
       - '@Eccube\Repository\Master\PrefRepository'
       - '@Eccube\Repository\TaxRuleRepository'
+      - '@eccube.purchase.flow.order'
       - '@session'
       - 'ja_JP'
