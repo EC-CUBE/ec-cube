@@ -198,7 +198,7 @@ class ClassCategoryController extends AbstractController
             } catch (\Exception $e) {
                 log_error('規格分類削除エラー', array($id, $e));
 
-                $message = $this->translator->trans('admin.delete.failed.foreign_key', ['%name%' => '規格分類']);
+                $message = trans('admin.delete.failed.foreign_key', ['%name%' => '規格分類']);
                 $this->addError($message, 'admin');            }
         }
 

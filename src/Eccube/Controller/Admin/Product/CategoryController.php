@@ -199,7 +199,7 @@ class CategoryController extends AbstractController
         } catch (\Exception $e) {
             log_info('カテゴリ削除エラー', [$id, $e]);
 
-            $message = $this->translator->trans('admin.delete.failed.foreign_key', ['%name%' => 'カテゴリ']);
+            $message = trans('admin.delete.failed.foreign_key', ['%name%' => 'カテゴリ']);
             $this->addError($message, 'admin');
         }
 

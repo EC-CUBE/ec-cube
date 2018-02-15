@@ -524,7 +524,7 @@ class ProductController extends AbstractController
         } elseif (isset($searchData['category_id']) && $searchData['category_id']) {
             return $searchData['category_id']->getName();
         } else {
-            return Application::getInstance()->trans('productcontroller.text.return.all_products');
+            return trans('productcontroller.text.return.all_products');
         }
     }
 

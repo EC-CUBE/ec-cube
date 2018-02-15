@@ -84,7 +84,7 @@ class PaymentProcessor extends ValidatableItemHolderProcessor
 
         // 共通項がなければエラー
         if (empty($paymentIds)) {
-            throw new InvalidItemException(Application::getInstance()->trans('paymentprocessor.label.different_payment_method'));
+            throw new InvalidItemException(trans('paymentprocessor.label.different_payment_method'));
         }
     }
 

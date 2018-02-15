@@ -139,7 +139,7 @@ class ClassNameController extends AbstractController
             log_info('商品規格削除完了', array($ClassName->getId()));
 
         } catch (\Exception $e) {
-            $message = $this->translator->trans('admin.delete.failed.foreign_key', ['%name%' => '商品規格']);
+            $message = trans('admin.delete.failed.foreign_key', ['%name%' => '商品規格']);
             $this->addError($message, 'admin');
 
             log_error('商品企画削除エラー', [$ClassName->getId(), $e]);

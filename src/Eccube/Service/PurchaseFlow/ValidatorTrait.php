@@ -31,20 +31,6 @@ use Symfony\Component\Translation\TranslatorInterface;
 trait ValidatorTrait
 {
     /**
-     * @var Translator
-     */
-    protected $translator;
-
-    /**
-     * @param TranslatorInterface $translator
-     * @required
-     */
-    public function setTranslator(TranslatorInterface $translator)
-    {
-        $this->translator = $translator;
-    }
-
-    /**
      * @param ProductClass $ProductClass
      * @param $errorCode
      * @throws InvalidItemException
@@ -60,8 +46,8 @@ trait ValidatorTrait
                 $productName .= " - ".$ProductClass->getClassCategory2()->getName();
             }
 
-            throw new InvalidItemException($this->translator->trans($errorCode, ['%product%' => $productName]));
+            throw new InvalidItemException(trans($errorCode, ['%product%' => $productName]));
         }
-        throw new InvalidItemException($this->translator->trans($errorCode));
+        throw new InvalidItemException(trans($errorCode));
     }
 }

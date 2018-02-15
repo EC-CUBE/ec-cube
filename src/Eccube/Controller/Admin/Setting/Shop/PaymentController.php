@@ -231,7 +231,7 @@ class PaymentController extends AbstractController
         } catch (ForeignKeyConstraintViolationException $e) {
             $this->entityManager->rollback();
 
-            $message = $this->translator->trans('admin.delete.failed.foreign_key', ['%name%' => '支払方法']);
+            $message = trans('admin.delete.failed.foreign_key', ['%name%' => '支払方法']);
             $this->addError($message, 'admin');
         }
 
