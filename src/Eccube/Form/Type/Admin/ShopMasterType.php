@@ -69,7 +69,7 @@ class ShopMasterType extends AbstractType
     {
         $builder
             ->add('company_name', TextType::class, [
-                'label' => '会社名',
+                'label' => 'common.label.company_name',
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([
@@ -78,7 +78,7 @@ class ShopMasterType extends AbstractType
                 ]
             ])
             ->add('shop_name', TextType::class, [
-                'label' => '店名',
+                'label' => 'common.label.shop_name',
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -88,7 +88,7 @@ class ShopMasterType extends AbstractType
                 ]
             ])
             ->add('shop_name_eng', TextType::class, [
-                'label' => '店名(英語表記)',
+                'label' => 'common.label.shop_name_en',
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([
@@ -103,16 +103,19 @@ class ShopMasterType extends AbstractType
                 'required' => false,
             ])
             ->add('address', AddressType::class, [
+                'label' => 'common.label.address',
                 'required' => false,
             ])
             ->add('tel', TelType::class, [
+                'label' => 'common.label.phone_number',
                 'required' => false,
             ])
             ->add('fax', TelType::class, [
+                'label' => 'common.label.fax_number',
                 'required' => false,
             ])
             ->add('business_hour', TextType::class, [
-                'label' => '店舗営業時間',
+                'label' => 'common.label.business_hour',
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([
@@ -121,7 +124,7 @@ class ShopMasterType extends AbstractType
                 ]
             ])
             ->add('email01', EmailType::class, [
-                'label' => '送信元メールアドレス(From)',
+                'label' => 'common.label.email_from',
                 'required' => false,
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -129,7 +132,7 @@ class ShopMasterType extends AbstractType
                 ],
             ])
             ->add('email02', EmailType::class, [
-                'label' => '問い合わせ受付メールアドレス(From, ReplyTo)',
+                'label' => 'common.label.email_for_inquiries',
                 'required' => false,
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -137,7 +140,7 @@ class ShopMasterType extends AbstractType
                 ],
             ])
             ->add('email03', EmailType::class, [
-                'label' => '返信受付メールアドレス(ReplyTo)',
+                'label' => 'common.label.email_reply_to',
                 'required' => false,
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -145,7 +148,7 @@ class ShopMasterType extends AbstractType
                 ],
             ])
             ->add('email04', EmailType::class, [
-                'label' => '送信エラー受付メールアドレス(ReturnPath)',
+                'label' => 'common.label.email_return_path',
                 'required' => false,
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -153,7 +156,7 @@ class ShopMasterType extends AbstractType
                 ],
             ])
             ->add('good_traded', TextareaType::class, [
-                'label' => '取り扱い商品',
+                'label' => 'common.label.good_traded',
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([
@@ -162,7 +165,7 @@ class ShopMasterType extends AbstractType
                 ],
             ])
             ->add('message', TextareaType::class, [
-                'label' => 'メッセージ',
+                'label' => 'shopmaster.label.message', // 削除予定
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([
@@ -173,11 +176,11 @@ class ShopMasterType extends AbstractType
 
             // 送料設定
             ->add('delivery_free_amount', PriceType::class, [
-                'label' => '送料無料条件(金額)',
+                'label' => 'common.label.option_delivery_fee_free_amount',
                 'required' => false,
             ])
             ->add('delivery_free_quantity', IntegerType::class, [
-                'label' => '送料無料条件(数量)',
+                'label' => 'common.label.option_delivery_free_quantity',
                 'required' => false,
                 'constraints' => [
                     new Assert\Regex([
@@ -187,19 +190,19 @@ class ShopMasterType extends AbstractType
                 ],
             ])
             ->add('option_product_delivery_fee', ChoiceType::class, [
-                'label' => '商品ごとの送料設定を有効にする',
+                'label' => 'common.label.option_product_delivery_fee',
                 'choices' => array_flip([
-                    '0' => '無効',
-                    '1' => '有効',
+                    '0' => 'common.label.disabled',
+                    '1' => 'common.label.enabled',
                 ]),
                 'expanded' => true,
                 'multiple' => false,
             ])
             ->add('option_multiple_shipping', ChoiceType::class, [
-                'label' => '複数配送を有効にする',
+                'label' => 'common.label.option_multiple_shipping',
                 'choices' => array_flip([
-                    '0' => '無効',
-                    '1' => '有効',
+                    '0' => 'common.label.disabled',
+                    '1' => 'common.label.enabled',
                 ]),
                 'expanded' => true,
                 'multiple' => false,
@@ -207,37 +210,38 @@ class ShopMasterType extends AbstractType
 
             // 会員設定
             ->add('option_customer_activate', ChoiceType::class, [
-                'label' => '仮会員を有効にする',
+                'label' => 'common.label.option_customer_activate',
                 'choices' => array_flip([
-                    '0' => '無効',
-                    '1' => '有効',
+                    '0' => 'common.label.disabled',
+                    '1' => 'common.label.enabled',
                 ]),
                 'expanded' => true,
                 'multiple' => false,
             ])
             ->add('option_mypage_order_status_display', ChoiceType::class, [
-                'label' => 'マイページに注文状況を表示する',
+                'label' => 'common.label.option_mypage_order_status_display',
                 'choices' => array_flip([
-                    '0' => '無効',
-                    '1' => '有効',
+                    '0' => 'common.label.disabled',
+                    '1' => 'common.label.enabled',
+
                 ]),
                 'expanded' => true,
                 'multiple' => false,
             ])
             ->add('option_remember_me', ChoiceType::class, [
-                'label' => '自動ログイン機能を有効にする',
+                'label' => 'common.label.option_remember_me',
                 'choices' => array_flip([
-                    '0' => '無効',
-                    '1' => '有効',
+                    '0' => 'common.label.disabled',
+                    '1' => 'common.label.enabled',
                 ]),
                 'expanded' => true,
                 'multiple' => false,
             ])
             ->add('option_favorite_product', ChoiceType::class, [
-                'label' => 'お気に入り商品機能を利用する',
+                'label' => 'common.label.option_favorite_product',
                 'choices' => array_flip([
-                    '0' => '無効',
-                    '1' => '有効',
+                    '0' => 'common.label.disabled',
+                    '1' => 'common.label.enabled',
                 ]),
                 'expanded' => true,
                 'multiple' => false,
@@ -245,27 +249,28 @@ class ShopMasterType extends AbstractType
 
             // 商品設定
             ->add('option_nostock_hidden', ChoiceType::class, [
-                'label' => '在庫切れ商品を非表示にする',
+                'label' => 'common.label.nostock_hidden',
                 'choices' => array_flip([
-                    '0' => '無効',
-                    '1' => '有効',
+                    '0' => 'common.label.disabled',
+                    '1' => 'common.label.enabled',
+
                 ]),
                 'expanded' => true,
                 'multiple' => false,
             ])
             // ポイント設定
             ->add('option_point', ChoiceType::class, [
-                'label' => 'ポイント機能を利用する',
+                'label' => 'common.label.option_point', // TODO 未翻訳
                 'choices' => array_flip([
-                    '0' => '無効',
-                    '1' => '有効',
+                    '0' => 'common.label.disabled',
+                    '1' => 'common.label.enabled',
                 ]),
                 'expanded' => true,
                 'multiple' => false,
             ])
             ->add('basic_point_rate', NumberType::class, [
                 'required' => false,
-                'label' => 'ポイント付与率',
+                'label' => 'common.label.basic_point_rate', // TODO 未翻訳
                 'constraints' => [
                     new Assert\Regex([
                         'pattern' => "/^\d+$/u",
@@ -279,7 +284,7 @@ class ShopMasterType extends AbstractType
             ])
             ->add('point_conversion_rate', NumberType::class, [
                 'required' => false,
-                'label' => 'ポイント換算レート',
+                'label' => 'common.label.point_conversion_rate', // TODO 未翻訳
                 'constraints' => [
                     new Assert\Regex([
                         'pattern' => "/^\d+$/u",
@@ -296,7 +301,7 @@ class ShopMasterType extends AbstractType
         $builder->add(
             $builder
                 ->create('company_kana', TextType::class, [
-                    'label' => '会社名(フリガナ)',
+                    'label' => 'common.label.company_name_kana',
                     'required' => false,
                     'constraints' => [
                         new Assert\Regex([
@@ -313,7 +318,7 @@ class ShopMasterType extends AbstractType
         $builder->add(
             $builder
                 ->create('shop_kana', TextType::class, [
-                    'label' => '店名(フリガナ)',
+                    'label' => 'common.label.shop_name_kana',
                     'required' => false,
                     'constraints' => [
                         new Assert\Length([

@@ -161,7 +161,7 @@ class CustomerDeliveryEditController extends AbstractController
         } catch (ForeignKeyConstraintViolationException $e) {
             log_error('お届け先削除失敗', [$e], 'admin');
 
-            $message = $this->trans('admin.delete.failed.foreign_key', ['%name%' => 'お届け先']);
+            $message = trans('admin.delete.failed.foreign_key', ['%name%' => 'お届け先']);
             $this->addError($message, 'admin');
         }
 

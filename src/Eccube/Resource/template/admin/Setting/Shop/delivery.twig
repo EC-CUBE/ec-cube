@@ -23,8 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['setting', 'shop', 'shop_delivery'] %}
 
-{% block title %}基本情報設定{% endblock %}
-{% block sub_title %}配送方法設定{% endblock %}
+{% block title %}{{'admin.setting.shop.delivery.569'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.setting.shop.delivery.570'|trans}}{% endblock %}
 
 {% block javascript %}
     <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.core.min.js', 'admin') }}"></script>
@@ -81,7 +81,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <div id="delivery_list_box" class="col-md-12">
                 <div id="delivery_list__body" class="box">
                     <div id="delivery_list__header" class="box-header">
-                        <h3 class="box-title">配送方法一覧</h3>
+                        <h3 class="box-title">{{'admin.setting.shop.delivery.571'|trans}}</h3>
                     </div>
                     {% if Deliveries|length > 0 %}
                         <div id="delivery_list__body_inner" class="box-body no-padding no-border">
@@ -131,7 +131,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <svg class="cb cb-inbox">
                                     <use xlink:href="#cb-inbox"/>
                                 </svg>
-                                <p>データはありません</p></div>
+                                <p>{{'admin.setting.shop.delivery.576'|trans}}</p></div>
                         </div><!-- /.box-body -->
                     {% endif %}
                     <!-- ▲ データがある時 ▲ -->
@@ -142,7 +142,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
     <div id="delivery_list_footer" class="row">
         <div id="delivery_list_footer__button_area" class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center btn_area">
-            <a href="{{ url('admin_setting_shop_delivery_new') }}" class="btn btn-primary btn-block btn-lg">配送方法を新規入力</a>
+            <a href="{{ url('admin_setting_shop_delivery_new') }}" class="btn btn-primary btn-block btn-lg">{{'admin.setting.shop.delivery.577'|trans}}</a>
         </div>
     </div>
 

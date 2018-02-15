@@ -32,14 +32,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             {# 最初へリンクを表示 #}
             <li class="ec-pager__item">
                 <a href="{{ path(app.request_stack.currentrequest.attributes.get('_route'), app.request_stack.currentrequest.query.all|merge({'pageno': pages.first})) }}"
-                   aria-label="First"><span aria-hidden="true">最初へ</span></a>
+                   aria-label="First"><span aria-hidden="true">{{'common.label.pager.first'|trans}}</span></a>
             </li>
         {% endif %}
 
         {% if pages.previous is defined %}
             <li class="ec-pager__item">
                 <a href="{{ path(app.request_stack.currentrequest.attributes.get('_route'), app.request_stack.currentrequest.query.all|merge({'pageno': pages.previous})) }}"
-                   aria-label="Previous"><span aria-hidden="true">前へ</span></a>
+                   aria-label="Previous"><span aria-hidden="true">{{'common.label.pager.prev'|trans}}</span></a>
             </li>
         {% endif %}
 
@@ -64,7 +64,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         {% if pages.next is defined %}
             <li class="ec-pager__item">
                 <a href="{{ path(app.request_stack.currentrequest.attributes.get('_route'), app.request_stack.currentrequest.query.all|merge({'pageno': pages.next})) }}"
-                   aria-label="Next"><span aria-hidden="true">次へ</span></a>
+                   aria-label="Next"><span aria-hidden="true">{{'common.label.pager.next'|trans}}</span></a>
             </li>
         {% endif %}
 
@@ -72,7 +72,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             {# 最後へリンクを表示 #}
             <li class="ec-pager__item">
                 <a href="{{ path(app.request_stack.currentrequest.attributes.get('_route'), app.request_stack.currentrequest.query.all|merge({'pageno': pages.last})) }}"
-                   aria-label="Last"><span aria-hidden="true">最後へ</span></a>
+                   aria-label="Last"><span aria-hidden="true">{{'common.label.pager.last'|trans}}</span></a>
             </li>
         {% endif %}
     </ul>

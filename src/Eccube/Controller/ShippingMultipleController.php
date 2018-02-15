@@ -203,7 +203,7 @@ class ShippingMultipleController extends AbstractShoppingController
             foreach ($ItemQuantitiesByClassId as $key => $value) {
                 if (array_key_exists($key, $itemQuantities)) {
                     if ($itemQuantities[$key] != $value) {
-                        $errors[] = array('message' => $app->trans('shopping.multiple.quantity.diff'));
+                        $errors[] = array('message' => trans('shopping.multiple.quantity.diff'));
 
                         // 対象がなければエラー
                         log_info('複数配送設定入力チェックエラー', array($Order->getId()));

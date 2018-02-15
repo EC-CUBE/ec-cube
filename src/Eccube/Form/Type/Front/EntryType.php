@@ -68,9 +68,6 @@ class EntryType extends AbstractType
             ->add('name', NameType::class, array(
                 'required' => true,
             ))
-            ->add('kana', KanaType::class, array(
-                'required' => true,
-            ))
             ->add('company_name', TextType::class, array(
                 'required' => false,
                 'constraints' => array(
@@ -114,7 +111,7 @@ class EntryType extends AbstractType
                 NumberType::class,
                 [
                     'required' => false,
-                    'label' => 'ポイント',
+                    'label' => 'ポイント', // TODO 未翻訳
                     'constraints' => array(
                         new Assert\Regex(array(
                             'pattern' => "/^\d+$/u",
@@ -124,6 +121,15 @@ class EntryType extends AbstractType
                     'mapped' => false
                 ]
             );
+        if ($this->eccubeConfig["locale"] == "ja") {
+            $builder->add('kana', KanaType::class, array(
+                'required' => true,
+            ));
+        } else {
+            $builder->add('kana', KanaType::class, array(
+                'required' => false,
+            ));
+        }
     }
 
     /**
