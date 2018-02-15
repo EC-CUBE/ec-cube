@@ -42,7 +42,7 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
 {
     public static function loadValidatorMetadata(ClassMetadata $metadata)
     {
-        $message = $this->trans('member.text.error.login_id_registered');
+        $message = trans('member.text.error.login_id_registered');
         $metadata->addConstraint(new UniqueEntity(array(
             'fields'  => 'login_id',
             'message' => $message

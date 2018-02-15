@@ -34,7 +34,6 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Eccube\Application;
 
 /** @MappedSuperclass */
 abstract class AbstractEntity implements \ArrayAccess
@@ -265,10 +264,5 @@ abstract class AbstractEntity implements \ArrayAccess
         }
 
         return $Result;
-    }
-    
-    public function trans( $message_id, array $param = [])
-    {
-        return Application::getInstance()->trans($message_id, $param);
     }
 }
