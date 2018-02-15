@@ -65,7 +65,8 @@ class LogType extends AbstractType
         $files = array();
         $finder = new Finder();
         $finder->name('*.log')->depth('== 0');
-        foreach ($finder->in($this->kernel->getLogDir()) as $file) {
+        $dirs = $this->kernel->getLogDir().DIRECTORY_SEPARATOR.$this->kernel->getEnvironment();
+        foreach ($finder->in($dirs) as $file) {
             $files[$file->getFilename()] = $file->getFilename();
         }
 
