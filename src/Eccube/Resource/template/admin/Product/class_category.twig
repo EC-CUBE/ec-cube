@@ -122,7 +122,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         </div>
                                         <div id="sortable_list_box__name--{{ ClassCategory.id }}" class="item_pattern td">
                                             <a href="{{ url('admin_product_class_category_edit', {class_name_id: ClassName.id, id: ClassCategory.id}) }}">
-                                                {{ ClassCategory.nameForAdmin }}
+                                                {{ ClassCategory.name }}{{ ClassCategory.visible == false ? 'class.text.hidden'|trans }}
                                             </a>
                                         </div>
                                         <div id="sortable_list_box__menu_box--{{ ClassCategory.id }}" class="icon_edit td">
