@@ -94,7 +94,7 @@ class TemplateController extends AbstractController
             $envFile = $this->getParameter('kernel.project_dir').'/.env';
             $env = file_get_contents($envFile);
 
-            $env = StringUtil::replaceEnv($env, [
+            $env = StringUtil::replaceOrAddEnv($env, [
                 'ECCUBE_TEMPLATE_CODE' => $Template->getCode(),
             ]);
 
