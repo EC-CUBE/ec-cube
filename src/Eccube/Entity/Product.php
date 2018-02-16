@@ -397,9 +397,11 @@ class Product extends \Eccube\Entity\AbstractEntity
      * Get ClassCategories
      *
      * @return array
+     * @deprecated Use ProductController::createClassCategoriesAsArray() instead.
      */
     public function getClassCategories()
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated, Use ProductController::createClassCategoriesAsArray() instead.', E_USER_DEPRECATED);
         $this->_calc();
         $class_categories = array(
             '__unselected' => array(
@@ -418,7 +420,6 @@ class Product extends \Eccube\Entity\AbstractEntity
             }
             $class_category_id1 = $ClassCategory1 ? (string) $ClassCategory1->getId() : '__unselected2';
             $class_category_id2 = $ClassCategory2 ? (string) $ClassCategory2->getId() : '';
-            $class_category_name1 = $ClassCategory1 ? $ClassCategory1->getName() . ($ProductClass->getStockFind() ? '' : trans('product.text.out_of_stock')) : '';
             $class_category_name2 = $ClassCategory2 ? $ClassCategory2->getName() . ($ProductClass->getStockFind() ? '' : trans('product.text.out_of_stock')) : '';
 
             $class_categories[$class_category_id1]['#'] = array(
@@ -441,7 +442,8 @@ class Product extends \Eccube\Entity\AbstractEntity
         return $class_categories;
     }
 
-    public function getMainListImage() {
+    public function getMainListImage()
+    {
         $ProductImages = $this->getProductImage();
         return empty($ProductImages) ? null : $ProductImages[0];
     }

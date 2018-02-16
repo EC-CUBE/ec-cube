@@ -105,7 +105,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% block javascript %}
     <script>
-        eccube.classCategories = {{ Product.class_categories|json_encode|raw }};
+        eccube.classCategories = {{ ClassCategories|raw }};
 
         // 規格2に選択肢を割り当てる。
         function fnSetClassCategories(form, classcat_id2_selected) {
