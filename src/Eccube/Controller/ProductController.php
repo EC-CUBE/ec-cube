@@ -41,6 +41,7 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -293,6 +294,7 @@ class ProductController extends AbstractController
      * @Method("GET")
      * @Route("/products/detail/{id}", name="product_detail", requirements={"id" = "\d+"})
      * @Template("Product/detail.twig")
+     * @ParamConverter("Product", options={"repository_method" = "getSortedByClassCategories"})
      * @param Request $request
      * @param Product $Product
      * @return array

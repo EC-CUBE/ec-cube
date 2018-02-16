@@ -105,7 +105,6 @@ class ProductControllerTest extends AbstractWebTestCase
      */
     public function testProductClassSortByRank()
     {
-        $this->markTestIncomplete('FIXME Order by ProductClass');
         /* @var $ClassCategory \Eccube\Entity\ClassCategory */
         //set 金 rank
         $ClassCategory = $this->classCategoryRepository->findOneBy(array('name' => '金'));

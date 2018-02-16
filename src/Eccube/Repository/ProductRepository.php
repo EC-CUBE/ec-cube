@@ -67,6 +67,33 @@ class ProductRepository extends AbstractRepository
         $this->eccubeConfig = $eccubeConfig;
     }
 
+    /**
+     * Get the Product as sorted by ClassCategories.
+     *
+     * @param integer $productId
+     * @return Product
+     */
+    public function getSortedByClassCategories($productId)
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb->addSelect(array('pc', 'cc1', 'cc2', 'pi', 'ps'))
+            ->innerJoin('p.ProductClasses', 'pc')
+            ->leftJoin('pc.ClassCategory1', 'cc1')
+            ->leftJoin('pc.ClassCategory2', 'cc2')
+            ->leftJoin('p.ProductImage', 'pi')
+            ->innerJoin('pc.ProductStock', 'ps')
+            ->where('p.id = :id')
+            ->orderBy('cc1.sort_no', 'DESC')
+            ->addOrderBy('cc2.sort_no', 'DESC');
+        $product = $qb
+            ->setParameters(array(
+                'id' => $productId,
+            ))
+            ->getQuery()
+            ->getSingleResult();
+        return $product;
+    }
+
    /**
      * get query builder.
      *
