@@ -390,7 +390,7 @@ class InstallController extends AbstractController
             'ECCUBE_ADMIN_ROUTE' => isset($sessionData['admin_dir']) ? $sessionData['admin_dir'] : 'admin',
         ];
 
-        $env = $this->replaceEnv($env, $replacement);
+        $env = StringUtil::replaceOrAddEnv($env, $replacement);
 
         if ($this->getParameter('kernel.environment') === 'install') {
             file_put_contents(__DIR__.'/../../../../.env', $env);
@@ -870,20 +870,6 @@ class InstallController extends AbstractController
         file_get_contents('http://www.ec-cube.net/mall/use_site.php', false, $context);
 
         return $this;
-    }
-
-    /**
-     * @param string $env
-     * @param array $replacement
-     * @return string
-     */
-    public function replaceEnv($env, array $replacement)
-    {
-        foreach ($replacement as $key => $value) {
-            $env = preg_replace('/('.$key.')=(.*)/', '$1='.$value, $env);
-        }
-
-        return $env;
     }
 
     /**
