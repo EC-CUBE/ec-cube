@@ -69,7 +69,9 @@ class SecurityController extends AbstractController
             $env = file_get_contents($envFile);
 
             $adminAllowHosts = \json_encode(
-                \explode("\n", StringUtil::convertLineFeed($data['admin_allow_hosts']))
+                array_filter(\explode("\n", StringUtil::convertLineFeed($data['admin_allow_hosts'])), function($str) {
+                    return StringUtil::isNotBlank($str);
+                })
             );
             $env = StringUtil::replaceOrAddEnv($env, [
                 'ECCUBE_ADMIN_ALLOW_HOSTS' => "'{$adminAllowHosts}'",
