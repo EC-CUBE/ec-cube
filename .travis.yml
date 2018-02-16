@@ -20,17 +20,15 @@ php:
 
 env:
   global:
-    - KERNEL_CLASS=Eccube\Kernel
-    - APP_ENV=test
+    # bin/console実行時の環境変数を定義.
+    - APP_ENV=dev
     - APP_DEBUG=1
-    - SHELL_VERBOSITY=-1
-    - ECCUBE_AUTH_MAGIC=s$cretVBJmtS0Ls+
-    - ECCUBE_ADMIN_ROUTE=admin
+    - ECCUBE_AUTH_MAGIC='s$cretf0rt3st'
 
   matrix:
     - DB=mysql DATABASE_URL=mysql://root:@localhost/cube4_dev DATABASE_SERVER_VERSION=5
     - DB=pgsql DATABASE_URL=postgres://postgres:password@localhost/cube4_dev DATABASE_SERVER_VERSION=9
-    - DB=sqlite DATABASE_URL=sqlite:///%kernel.project_dir%/app/config/eccube/eccube.db DATABASE_SERVER_VERSION=3
+    - DB=sqlite DATABASE_URL=sqlite:///%kernel.project_dir%/var/eccube.db DATABASE_SERVER_VERSION=3
     # カバレッジレポート用
     - DB=pgsql DATABASE_URL=postgres://postgres:password@localhost/cube4_dev DATABASE_SERVER_VERSION=9 COVERAGE=true
 
@@ -60,8 +58,7 @@ before_install:
 
 install:
   - composer install --dev --no-interaction -o --apcu-autoloader
-  - composer run-script installer-scripts
-  - ./vendor/bin/simple-phpunit install
+  - composer run installer-scripts
 
 script:
   - if [ $COVERAGE ]  ; then phpdbg -qrr ./bin/phpunit --exclude-group cache-clear --coverage-clover=coverage.clover ; fi

@@ -59,6 +59,12 @@ class InstallControllerTest extends AbstractWebTestCase
     public function setUp()
     {
         parent::setUp();
+
+        $envFile = $this->container->getParameter('kernel.project_dir').'/.env';
+        if (file_exists($envFile)) {
+            unlink($envFile);
+        }
+
         $formFactory = $this->container->get('form.factory');
         $encoder = $this->container->get(PasswordEncoder::class);
         $cacheUtil = $this->container->get(CacheUtil::class);

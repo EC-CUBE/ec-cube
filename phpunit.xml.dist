@@ -12,6 +12,7 @@
         <env name="KERNEL_CLASS" value="Eccube\Kernel" />
         <env name="APP_ENV" value="test" />
         <env name="APP_DEBUG" value="1" />
+        <env name="ECCUBE_AUTH_MAGIC" value="s$cretf0rt3st" />
         <env name="SHELL_VERBOSITY" value="-1" />
         <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak" />
         <!-- define your env variables for the test env here -->
