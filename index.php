@@ -2,7 +2,7 @@
 
 use Eccube\Kernel;
 use Symfony\Component\Debug\Debug;
-use Symfony\Component\Dotenv\Dotenv;
+use Dotenv\Dotenv;
 use Symfony\Component\HttpFoundation\Request;
 
 // システム要件チェック
@@ -24,9 +24,9 @@ if (!isset($_SERVER['APP_ENV'])) {
     }
 
     if (file_exists(__DIR__.'/.env')) {
-        (new Dotenv())->load(__DIR__.'/.env');
+        (new Dotenv(__DIR__))->overload();
     } else {
-        (new Dotenv())->load(__DIR__.'/.env.install');
+        (new Dotenv(__DIR__, '.env.install'))->overload();
     }
 }
 
