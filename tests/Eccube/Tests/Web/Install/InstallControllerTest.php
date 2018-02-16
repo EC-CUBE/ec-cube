@@ -25,18 +25,19 @@
 namespace Eccube\Tests\Web\Install;
 
 use Eccube\Common\Constant;
-use Eccube\Common\EccubeConfig;
 use Eccube\Tests\Web\AbstractWebTestCase;
 use Eccube\Controller\Install\InstallController;
 use Eccube\Security\Core\Encoder\PasswordEncoder;
 use Eccube\Util\CacheUtil;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
+/**
+ * @group cache-clear
+ */
 class InstallControllerTest extends AbstractWebTestCase
 {
 
