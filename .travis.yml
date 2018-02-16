@@ -62,7 +62,8 @@ before_script:
 
 script:
   - if [ $COVERAGE ]  ; then phpdbg -qrr ./bin/phpunit --coverage-clover=coverage.clover ; fi
-  - if [ ! $COVERAGE ]; then ./bin/phpunit; fi
+  - if [ ! $COVERAGE ]; then ./bin/phpunit --exclude-group cache-clear; fi
+  - if [ ! $COVERAGE ]; then ./bin/phpunit --group cache-clear; fi
 
 after_script:
   - if [ $COVERAGE ]; then wget https://scrutinizer-ci.com/ocular.phar ; fi
