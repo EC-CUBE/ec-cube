@@ -29,6 +29,7 @@ use Eccube\Common\EccubeConfig;
 use Eccube\Tests\Web\AbstractWebTestCase;
 use Eccube\Controller\Install\InstallController;
 use Eccube\Security\Core\Encoder\PasswordEncoder;
+use Eccube\Util\CacheUtil;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -59,9 +60,13 @@ class InstallControllerTest extends AbstractWebTestCase
         parent::setUp();
         $formFactory = $this->container->get('form.factory');
         $encoder = $this->container->get(PasswordEncoder::class);
-        $eccubeConfig = $this->container->get(EccubeConfig::class);
+        $cacheUtil = $this->container->get(CacheUtil::class);
+
         $this->session = new Session(new MockArraySessionStorage());
-        $this->controller = new InstallController($this->session, $formFactory, $encoder, $eccubeConfig);
+        $this->controller = new InstallController($encoder, $cacheUtil);
+        $this->controller->setFormFactory($formFactory);
+        $this->controller->setSession($this->session);
+
         $reflectionClass = new \ReflectionClass($this->controller);
         $propContainer = $reflectionClass->getProperty('container');
         $propContainer->setAccessible(true);
