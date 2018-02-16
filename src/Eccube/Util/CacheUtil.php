@@ -50,16 +50,22 @@ class CacheUtil
         $this->kernel = $kernel;
     }
 
-    public function clearCache()
+    public function clearCache($env = null)
     {
         $console = new Application($this->kernel);
         $console->setAutoExit(false);
 
-        $input = new ArrayInput(array(
+        $command = [
             'command' => 'cache:clear',
-            '--no-warmup' => null,
-            '--no-ansi' => null,
-        ));
+            '--no-warmup' => true,
+            '--no-ansi' => true,
+        ];
+
+        if ($env !== null) {
+            $command['--env'] = $env;
+        }
+
+        $input = new ArrayInput($command);
 
         $output = new BufferedOutput(
             OutputInterface::VERBOSITY_DEBUG,

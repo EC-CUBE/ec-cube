@@ -107,24 +107,24 @@ class Step4Type extends AbstractType
             ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
                 $form = $event->getForm();
                 $data = $form->getData();
+
+                if ($data['database'] === 'pdo_sqlite') {
+                    // sqliteはdbが作成されてしまうため, 接続チェックは行わない
+                    return;
+                }
                 try {
                     $config = new \Doctrine\DBAL\Configuration();
-                    if ($data['database'] == 'pdo_sqlite') {
-                        $connectionParams = array(
-                            'driver' => $data['database'],
-                            'path' => __DIR__.'/../../../../../app/config/eccube/eccube.db'
-                        );
+                    $connectionParams = array(
+                        'dbname' => $data['database_name'],
+                        'user' => $data['database_user'],
+                        'password' => $data['database_password'],
+                        'host' => $data['database_host'],
+                        'driver' => $data['database'],
+                        'port' => $data['database_port'],
+                    );
+                    $conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
+                    $conn->connect();
 
-                    } else {
-                        $connectionParams = array(
-                            'dbname' => $data['database_name'],
-                            'user' => $data['database_user'],
-                            'password' => $data['database_password'],
-                            'host' => $data['database_host'],
-                            'driver' => $data['database'],
-                            'port' => $data['database_port'],
-                        );
-                    }
                     // todo MySQL, PostgreSQLのバージョンチェックも欲しい.DBALで接続すればエラーになる？
                     $conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
                     $conn->connect();
