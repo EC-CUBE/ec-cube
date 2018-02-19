@@ -137,6 +137,7 @@ $(function() {
                                                         </div>
                                                     {% endif %}
                                                 {% endfor %}
+                                            </div>
                                             <div class="col-sm-6">
                                                 {{ form_rest(searchForm) }}
                                             </div>
@@ -155,7 +156,10 @@ $(function() {
                     <div id="search_box__footer" class="row btn_area">
                         <div id="search_box__search_button" class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center">
                             <button type="submit" class="btn btn-primary btn-block btn-lg">
-                                {{'admin.product.index.478'|trans}} <svg class="cb cb-angle-right"><use xlink:href="#cb-angle-right"></svg>
+                                {{ 'admin.product.index.478'|trans }}
+                                <svg class="cb cb-angle-right">
+                                    <use xlink:href="#cb-angle-right"></use>
+                                </svg>
                             </button>
                         </div>
                         <!-- /.col -->
@@ -206,7 +210,12 @@ $(function() {
                                     <ul class="sort-dd">
                                     <li id="result_list__pagemax_menu" class="dropdown">
                                         {% for pageMax in pageMaxis if pageMax.name == page_count %}
-                                            <a class="dropdown-toggle" data-toggle="dropdown">{{ pageMax.name|e }}<svg class="cb cb-angle-down icon_down"><use xlink:href="#cb-angle-down"></svg></a>
+                                        <a class="dropdown-toggle"
+                                           data-toggle="dropdown">{{ 'admin.product.index.482'|trans({"%count%":pageMax.name|e })|raw }}
+                                            <svg class="cb cb-angle-down icon_down">
+                                                <use xlink:href="#cb-angle-down"></use>
+                                            </svg>
+                                        </a>
                                             <ul class="dropdown-menu">
                                         {% endfor %}
                                         {% for pageMax in pageMaxis if pageMax.name != page_count %}
@@ -215,10 +224,17 @@ $(function() {
                                             </ul>
                                     </li>
                                     <li id="result_list__csv_menu" class="dropdown">
-                                        <a class="dropdown-toggle" data-toggle="dropdown">{{'admin.product.index.484'|trans}}<svg class="cb cb-angle-down icon_down"><use xlink:href="#cb-angle-down"></svg></a>
+                                        <a class="dropdown-toggle"
+                                           data-toggle="dropdown">{{ 'admin.product.index.484'|trans }}
+                                            <svg class="cb cb-angle-down icon_down">
+                                                <use xlink:href="#cb-angle-down"></use>
+                                            </svg>
+                                        </a>
                                         <ul class="dropdown-menu">
                                             <li><a href="{{ url('admin_product_export') }}">{{'admin.product.index.485'|trans}}</a></li>
-                                            <li><a href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_PRODUCT') }) }}">{{'admin.product.index.486'|trans}}<a></li>
+                                            <li>
+                                                <a href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_PRODUCT') }) }}">{{ 'admin.product.index.486'|trans }}</a>
+                                            </li>
                                         </ul>
                                     </li>
                                     </ul>
@@ -249,7 +265,11 @@ $(function() {
                                             </div>
                                             <div id="result_list__item_menu_box--{{ Product.id }}"class="icon_edit td">
                                                 <div id="result_list__item_menu_toggle--{{ Product.id }}" class="dropdown">
-                                                    <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"><use xlink:href="#cb-ellipsis-h"></svg></a>
+                                                    <a class="dropdown-toggle" data-toggle="dropdown">
+                                                        <svg class="cb cb-ellipsis-h">
+                                                            <use xlink:href="#cb-ellipsis-h"></use>
+                                                        </svg>
+                                                    </a>
                                                     <ul id="result_list__item_menu--{{ Product.id }}" class="dropdown-menu dropdown-menu-right">
                                                     <li><a href="{{ url('admin_product_product_class', { id : Product.id }) }}">{{'admin.product.index.488'|trans}}</a></li>
                                                     <li><a href="{{ url('admin_product_product_display', {'id' : Product.id}) }}" target="_blank">{{'admin.product.index.489'|trans}}</a></li>

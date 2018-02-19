@@ -1035,7 +1035,7 @@ return [
     'admin.product.index.476' => ' 〜 ',
     'admin.product.index.477' => '検索条件をクリア',
     'admin.product.index.478' => '検索する',
-    'admin.product.index.479' => '検索結果<br><strong>%count% 件</strong> が該当しました',
+    'admin.product.index.479' => '検索結果 <strong>%count% 件</strong> が該当しました</span>',
     'admin.product.index.480' => 'すべて',
     'admin.product.index.481' => 'すべて',
     'admin.product.index.482' => '%count%件',
