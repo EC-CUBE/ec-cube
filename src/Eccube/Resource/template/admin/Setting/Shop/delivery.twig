@@ -98,7 +98,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             </div>
                                             <div id="delivery_list__name--{{ Delivery.id }}" class="item_pattern td">
                                                 <a href="{{ url('admin_setting_shop_delivery_edit', {id: Delivery.id} ) }}">
-                                                    {{ Delivery.name }} / {{ Delivery.serviceNameForAdmin }}
+                                                    {{ Delivery.name }} / {{ Delivery.service_name }}{{ Delivery.visible == false ? 'delivery.text.hidden'|trans }}
                                                 </a>
                                             </div>
                                             <div id="delivery_list__menu_box--{{ Delivery.id }}" class="icon_edit td">
