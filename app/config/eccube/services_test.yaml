@@ -8,3 +8,10 @@ services:
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - false
+    # セッションの保存先をvar/sessions/testに変更する
+    session.storage.mock_file:
+        class: 'Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage'
+        arguments:
+            - '%session.save_path%'
+            - 'MOCKSESSID'
+            - '@session.storage.metadata_bag'
