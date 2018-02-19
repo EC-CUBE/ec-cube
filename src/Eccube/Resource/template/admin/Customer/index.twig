@@ -43,42 +43,42 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     inputDate.setAttribute('type', 'date');
     if (inputDate.type !== 'date') {
       $('input[id$=_date_start]').datetimepicker({
-        locale: '{{app.config.locale}}',
+        locale: '{{eccube_config.locale}}',
         format: 'YYYY-MM-DD',
         useCurrent: false,
         showTodayButton: true
       });
 
       $('input[id$=_date_end]').datetimepicker({
-        locale: '{{app.config.locale}}',
+        locale: '{{eccube_config.locale}}',
         format: 'YYYY-MM-DD',
         useCurrent: false,
         showTodayButton: true
       });
 
       $('#admin_search_customer_birth_start').datetimepicker({
-        locale: '{{app.config.locale}}',
+        locale: '{{eccube_config.locale}}',
         format: 'YYYY-MM-DD',
         useCurrent: false,
         showTodayButton: true
       });
 
       $('#admin_search_customer_birth_end').datetimepicker({
-        locale: '{{app.config.locale}}',
+        locale: '{{eccube_config.locale}}',
         format: 'YYYY-MM-DD',
         useCurrent: false,
         showTodayButton: true
       });
 
       $('#admin_search_customer_last_buy_start').datetimepicker({
-        locale: '{{app.config.locale}}',
+        locale: '{{eccube_config.locale}}',
         format: 'YYYY-MM-DD',
         useCurrent: false,
         showTodayButton: true
       });
 
       $('#admin_search_customer_last_buy_end').datetimepicker({
-        locale: '{{app.config.locale}}',
+        locale: '{{eccube_config.locale}}',
         format: 'YYYY-MM-DD',
         useCurrent: false,
         showTodayButton: true
