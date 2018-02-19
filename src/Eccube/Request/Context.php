@@ -3,7 +3,10 @@
 namespace Eccube\Request;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\Customer;
+use Eccube\Entity\Member;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
 class Context
 {
@@ -17,10 +20,16 @@ class Context
      */
     protected $eccubeConfig;
 
-    public function __construct(RequestStack $requestStack, EccubeConfig $eccubeConfig)
+    /**
+     * @var TokenStorage
+     */
+    private $tokenStorage;
+
+    public function __construct(RequestStack $requestStack, EccubeConfig $eccubeConfig, TokenStorage $tokenStorage)
     {
         $this->requestStack = $requestStack;
         $this->eccubeConfig = $eccubeConfig;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -57,5 +66,19 @@ class Context
         }
 
         return false === $this->isAdmin();
+    }
+
+    /**
+     * @return Member|Customer|null
+     */
+    public function getCurrentUser()
+    {
+        $request = $this->requestStack->getMasterRequest();
+
+        if (null === $request) {
+            return null;
+        }
+
+        return $this->tokenStorage->getToken()->getUser();
     }
 }

@@ -34,7 +34,7 @@ class LoginControllerTest extends AbstractWebTestCase
 
         // ログイン
         $this->assertEquals(
-            401, // forwardでログイン画面が表示される
+            200,
             $this->client->getResponse()->getStatusCode()
         );
 
