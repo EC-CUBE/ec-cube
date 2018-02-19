@@ -38,6 +38,8 @@ use Eccube\Repository\PageRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Security\Core\Encoder\PasswordEncoder;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
+use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Faker\Factory as Faker;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -115,6 +117,11 @@ class Generator
      */
     protected $session;
 
+    /**
+     * @var PurchaseFlow
+     */
+    protected $orderPurchaseFlow;
+
     public function __construct(
         EntityManagerInterface $entityManager,
         PasswordEncoder $passwordEncoder,
@@ -129,6 +136,7 @@ class Generator
         PageRepository $pageRepository,
         PrefRepository $prefRepository,
         TaxRuleRepository $taxRuleRepository,
+        PurchaseFlow $orderPurchaseFlow,
         SessionInterface $session,
         $locale = 'ja_JP'
     ) {
@@ -146,6 +154,7 @@ class Generator
         $this->pageRepository = $pageRepository;
         $this->prefRepository = $prefRepository;
         $this->taxRuleRepository = $taxRuleRepository;
+        $this->orderPurchaseFlow = $orderPurchaseFlow;
         $this->session = $session;
     }
 
@@ -631,12 +640,6 @@ class Generator
             $this->entityManager->flush($OrderItem);
         }
 
-        // TODO PurchaseFlow でやった方がよい
-        $subTotal = array_reduce($Order->getProductOrderItems(), function ($total, $OrderItem) {
-            return $total + $OrderItem->getPriceIncTax() * $OrderItem->getQuantity();
-        }, 0);
-
-        // TODO 送料無料条件は考慮していない. 必要であれば Order から再集計すること.
         $shipment_delivery_fee = $Shipping->getShippingDeliveryFee();
         $OrderItemDeliveryFee = new OrderItem();
         $OrderItemDeliveryFee->setShipping($Shipping)
@@ -687,20 +690,7 @@ class Generator
         $this->entityManager->persist($OrderItemDiscount);
         $this->entityManager->flush($OrderItemDiscount);
 
-        $Order->setDeliveryFeeTotal($shipment_delivery_fee);
-        $Order->setSubTotal($subTotal);
-        $Order->setCharge($charge);
-        $Order->setDiscount($discount);
-
-        $total = $Order->getTotalPrice();
-        $Order->setTotal($total);
-        $Order->setPaymentTotal($total);
-
-        // TODO PurchaseFlow でやった方がよい
-        $tax = array_reduce($Order->getItems()->toArray(), function ($sum, $item) {
-            return $sum += ($item->getPriceIncTax() - $item->getPrice()) * $item->getQuantity();
-        }, 0);
-        $Order->setTax($tax);
+        $this->orderPurchaseFlow->calculate($Order, new PurchaseContext());
 
         $this->entityManager->flush($Shipping);
         $this->entityManager->flush($Order);
