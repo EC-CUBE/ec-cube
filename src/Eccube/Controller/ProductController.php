@@ -294,7 +294,7 @@ class ProductController extends AbstractController
      * @Method("GET")
      * @Route("/products/detail/{id}", name="product_detail", requirements={"id" = "\d+"})
      * @Template("Product/detail.twig")
-     * @ParamConverter("Product", options={"repository_method" = "getSortedByClassCategories"})
+     * @ParamConverter("Product", options={"repository_method" = "findWithSortedClassCategories"})
      * @param Request $request
      * @param Product $Product
      * @return array

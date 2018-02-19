@@ -68,12 +68,12 @@ class ProductRepository extends AbstractRepository
     }
 
     /**
-     * Get the Product as sorted by ClassCategories.
+     * Find the Product with sorted ClassCategories.
      *
      * @param integer $productId
      * @return Product
      */
-    public function getSortedByClassCategories($productId)
+    public function findWithSortedClassCategories($productId)
     {
         $qb = $this->createQueryBuilder('p');
         $qb->addSelect(array('pc', 'cc1', 'cc2', 'pi', 'ps'))
