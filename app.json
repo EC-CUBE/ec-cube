@@ -5,9 +5,11 @@
     "repository": "https://github.com/EC-CUBE/ec-cube",
     "keywords": ["php", "ec", "e-commerce", "ec-cube"],
     "addons": [
-        "plan": "heroku-postgresql",
-        "options": {
-            "version": "9.6"
+        {
+            "plan": "heroku-postgresql",
+            "options": {
+              "version": "9.6"
+            }
         }
     ],
     "buildpacks": [
