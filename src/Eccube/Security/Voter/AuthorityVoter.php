@@ -58,16 +58,6 @@ class AuthorityVoter implements VoterInterface
         $this->eccubeConfig = $eccubeConfig;
     }
 
-    public function supportsAttribute($attribute)
-    {
-        return true;
-    }
-
-    public function supportsClass($class)
-    {
-        return true;
-    }
-
     public function vote(TokenInterface $token, $object, array $attributes)
     {
         $request = null;
@@ -76,8 +66,8 @@ class AuthorityVoter implements VoterInterface
         try {
             $request = $this->requestStack->getMasterRequest();
         } catch (\RuntimeException $e) {
-            // requestが取得できない場合、無視する(テストプログラムで不要なため)
-            return;
+            // requestが取得できない場合、棄権する(テストプログラムで不要なため)
+            return VoterInterface::ACCESS_ABSTAIN;
         }
 
         if (is_object($request)) {
@@ -106,8 +96,6 @@ class AuthorityVoter implements VoterInterface
                     }
                 }
             }
-        } else {
-            return VoterInterface::ACCESS_DENIED;
         }
 
         return VoterInterface::ACCESS_GRANTED;

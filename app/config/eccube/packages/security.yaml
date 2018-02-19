@@ -65,3 +65,7 @@ security:
         - { path: ^/mypage/withdraw_complete, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: "@=container.getParameter('eccube_force_ssl') ? 'https' : 'http'" }
         - { path: ^/mypage/change, roles: IS_AUTHENTICATED_FULLY, requires_channel: "@=container.getParameter('eccube_force_ssl') ? 'https' : 'http'" }
         - { path: ^/mypage/, roles: ROLE_USER, requires_channel: "@=container.getParameter('eccube_force_ssl') ? 'https' : 'http'" }
+
+    access_decision_manager:
+        strategy: unanimous
+        allow_if_all_abstain: false

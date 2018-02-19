@@ -3,7 +3,11 @@
 namespace Eccube\EventListener;
 
 use Doctrine\ORM\NoResultException;
+use Eccube\Common\EccubeConfig;
+use Eccube\Entity\AuthorityRole;
 use Eccube\Entity\Master\DeviceType;
+use Eccube\Entity\Member;
+use Eccube\Repository\AuthorityRoleRepository;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\PageRepository;
@@ -40,17 +44,31 @@ class TwigInitializeListener implements EventSubscriberInterface
      */
     protected $requestContext;
 
+    /**
+     * @var AuthorityRoleRepository
+     */
+    private $authorityRoleRepository;
+
+    /**
+     * @var EccubeConfig
+     */
+    private $eccubeConfig;
+
     public function __construct(
         Environment $twig,
         BaseInfoRepository $baseInfoRepository,
         PageRepository $pageRepository,
         DeviceTypeRepository $deviceTypeRepository,
+        AuthorityRoleRepository $authorityRoleRepository,
+        EccubeConfig $eccubeConfig,
         Context $context
     ) {
         $this->twig = $twig;
         $this->baseInfoRepository = $baseInfoRepository;
         $this->pageRepository = $pageRepository;
         $this->deviceTypeRepository = $deviceTypeRepository;
+        $this->authorityRoleRepository = $authorityRoleRepository;
+        $this->eccubeConfig = $eccubeConfig;
         $this->requestContext = $context;
     }
 
@@ -123,8 +141,15 @@ class TwigInitializeListener implements EventSubscriberInterface
         $this->twig->addGlobal('menus', $menus);
 
         // メニューの権限制御.
-        // TODO 要実装
-        $this->twig->addGlobal('AuthorityRoles', []);
+        $Member = $this->requestContext->getCurrentUser();
+        $AuthorityRoles = [];
+        if ($Member instanceof Member) {
+            $AuthorityRoles = $this->authorityRoleRepository->findBy(['Authority' => $this->requestContext->getCurrentUser()->getAuthority()]);
+        }
+        $roles = array_map(function(AuthorityRole $AuthorityRole) use ($event) {
+            return $event->getRequest()->getBaseUrl().'/'.$this->eccubeConfig['eccube_admin_route'].$AuthorityRole->getDenyUrl();
+        }, $AuthorityRoles);
+        $this->twig->addGlobal('AuthorityRoles', $roles);
     }
 
     /**
