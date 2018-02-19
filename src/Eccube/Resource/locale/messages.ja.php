@@ -69,17 +69,21 @@ return [
     'common.label.add_favorite' => 'お気に入りに追加',
     'common.text.note.please_select' => '',
     'common.label.back_to_top' => 'トップページへ',
+
     'common.label.pager.first' => '最初へ',
     'common.label.pager.Last' => '',
     'common.label.pager.prev' => '前へ',
     'common.label.pager.next' => '次へ',
+
     'common.label.readmore' => 'もっと見る',
     'common.label.see_details' => '詳しくはこちら',
     'common.label.btn.go_back' => '戻る',
     'common.label.btn.send' => '送信をする',
     'common.label.goto_next_page' => '次のページへ',
+
     'common.label.user_guide' => 'ご利用ガイド',
     'common.label.login' => '',
+
     'common.text.message.required' => '必須',
 
     //home
@@ -294,6 +298,7 @@ return [
     'shopping.text.message.in_case' => '万一、ご確認メールが届かない場合は、トラブルの可能性もありますので大変お手数ではございますがもう一度お問い合わせいただくか、お電話にてお問い合わせくださいませ。',
     'shopping.text.message.thank_you_with_us' => '今後ともご愛顧賜りますようよろしくお願い申し上げます。',
     'shopping.label.order_id' => '',
+
     'shopping.text.error.no_item_in_cart' => '現在カート内に商品はございません。',
     'shopping.label.enter_customer_info' => 'お客様情報の入力',
     'shopping.label.btn.back_to_cart' => 'カートに戻る',
@@ -356,21 +361,19 @@ return [
     'admin_setting_shop_shop_master.label.shippment_setting' => '送料設定',
     'admin_setting_shop_shop_master.label.customer_setting' => '会員設定',
     'admin_setting_shop_shop_master.label.product_setting' => '商品設定',
-
-
     'Login email' => 'メールアドレス',
     'Login pass' => 'パスワード',
     'Login memory' => '次回から自動的にログインする',
-    'Invalid credentials.' => 'ログインできませんでした。<br>入力内容に誤りがないかご確認ください。',
+    'Invalid credentials.' => 'ログインできませんでした。<br>入力内容に誤りがないかご確認ください。',// TODO: enとIDが違う
     'Invalid CSRF token.' => 'もう一度ログイン処理をしてください。',
     'Your session has timed out, or you have disabled cookies.' => 'もう一度ログイン処理をしてください。',
-    'The uploaded file was too large. Please try to upload a smaller file.' => 'ファイルサイズが大きすぎます。',
+    'The uploaded file was too large. Please try to upload a smaller file.' => 'ファイルサイズが大きすぎます。',// TODO: enとIDが違う
     'Name' => 'お名前',
-    'Name01' => '姓',
-    'Name02' => '名',
+    'Name01' => '姓',// TODO: enとIDが違う
+    'Name02' => '名',// TODO: enとIDが違う
     'Kana' => 'お名前(フリガナ)',
-    'Kana01' => 'セイ',
-    'Kana02' => 'メイ',
+    'Kana01' => 'セイ',// TODO: enとIDが違う
+    'Kana02' => 'メイ',// TODO: enとIDが違う
     'Zip' => '郵便番号',
     'Address' => '住所',
     'Tel' => '電話番号',
@@ -553,7 +556,7 @@ return [
     'form.address2.help' => '番地・ビル名 (例：1-3-5)',
     'This value should not be blank.' => '入力されていません。',
     'This value should be the user\'s current password.' => '現在のパスワードが正しくありません。',
-    'Invalid twig format. {{ error }}' => 'Twigのフォーマットが正しくありません。{{ error }}',
+    'Invalid twig format. {{ error }}' => 'Twigのフォーマットが正しくありません。{{ error }}',// TODO: enとIDが違う
     'admin.change_password.2' => 'パスワード変更',
     'admin.change_password.3' => 'パスワード変更',
     'admin.change_password.4' => '変更',
@@ -627,7 +630,7 @@ return [
     'admin.content.page.71' => 'ページ一覧',
     'admin.content.page.72' => 'ページ名',
     'admin.content.page.73' => 'レイアウト名',
-    'admin.content.page.74' => '翻訳不要',
+    'admin.content.page.74' => '',
     'admin.content.page.75' => 'ページ編集',
     'admin.content.page.76' => 'ページ編集',
     'admin.content.page.77' => 'このページを削除してもよろしいですか？',
@@ -820,8 +823,8 @@ return [
     'admin.order.edit.265' => '受注商品情報',
     'admin.order.edit.266' => '明細の追加',
     'admin.order.edit.267' => '計算結果の更新',
-    'admin.order.edit.268' => '翻訳不要',
-    'admin.order.edit.269' => '翻訳不要',
+    'admin.order.edit.268' => '',
+    'admin.order.edit.269' => '',
     'admin.order.edit.270' => '数量',
     'admin.order.edit.271' => '数量',
     'admin.order.edit.272' => '税率',
@@ -940,11 +943,11 @@ return [
     'admin.order.search_product.385' => '値引きを追加',
     'admin.order.search_product.386' => '決定',
     'admin.order.search_product.387' => '空白の明細を追加',
-    'admin.order.search_product.388' => '翻訳不要',
+    'admin.order.search_product.388' => '',
     'admin.order.search_product.389' => '決定',
     'admin.order.search_product.390' => '%min% 〜 %max',
-    'admin.order.search_product.391' => '翻訳不要',
-    'admin.order.search_product.392' => '翻訳不要',
+    'admin.order.search_product.391' => '',
+    'admin.order.search_product.392' => '',
     'admin.order.search_product.393' => '決定',
     'admin.order.subnavi.394' => '受注管理',
     'admin.order.subnavi.395' => '受注マスター',
@@ -1294,8 +1297,8 @@ return [
     'admin.shipping.edit.739' => '注文から商品の追加',
     'admin.shipping.edit.740' => '送料の更新',
     'admin.shipping.edit.741' => '注文番号',
-    'admin.shipping.edit.742' => '翻訳不要',
-    'admin.shipping.edit.743' => '翻訳不要',
+    'admin.shipping.edit.742' => '',
+    'admin.shipping.edit.743' => '',
     'admin.shipping.edit.744' => '単価',
     'admin.shipping.edit.745' => '数量',
     'admin.shipping.edit.746' => '税率',
