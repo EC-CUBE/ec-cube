@@ -31,6 +31,7 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\TaxRuleType;
 use Eccube\Repository\TaxRuleRepository;
+use Eccube\Util\CacheUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -176,7 +177,7 @@ class TaxRuleController extends AbstractController
      * @Method("POST")
      * @Route("/%eccube_admin_route%/setting/shop/tax/edit_param", name="admin_setting_shop_tax_edit_param")
      */
-    public function editParameter(Request $request)
+    public function editParameter(Request $request, CacheUtil $cacheUtil)
     {
         $builder = $this->formFactory
             ->createBuilder(TaxRuleType::class);
@@ -196,7 +197,10 @@ class TaxRuleController extends AbstractController
         if ($form->isSubmitted() && $form['option_product_tax_rule']->isValid()) {
 
             $this->BaseInfo->setOptionProductTaxRule($form['option_product_tax_rule']->getData());
+            $this->entityManager->persist($this->BaseInfo);
             $this->entityManager->flush();
+
+            $cacheUtil->clearCache();
 
             $event = new EventArgs(
                 array(
