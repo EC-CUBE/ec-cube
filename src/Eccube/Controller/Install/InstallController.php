@@ -169,8 +169,8 @@ class InstallController extends AbstractController
         }
 
         $this->checkModules();
-        $authmagic = env('ECCUBE_AUTH_MAGIC', 'secret'); // 'secret' is defaut value of .env.dist file.
-        if ($authmagic == 'secret') {
+        $authmagic = env('ECCUBE_AUTH_MAGIC', '<change.me>'); // '<change.me>' is defaut value of .env.dist file.
+        if ($authmagic == '<change.me>') {
             $authmagic =  StringUtil::random(32);
         }
         $this->setSessionData($this->session, ['authmagic' => $authmagic]);
