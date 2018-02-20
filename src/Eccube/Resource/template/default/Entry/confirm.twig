@@ -47,7 +47,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 {{ form_widget(form.name.name02, { type : 'hidden' }) }}
                             </dd>
                         </dl>
-                        {% if app.config.locale == "ja" %}
+                        {% if eccube_config.locale == "ja" %}
                         <dl>
                             <dt>
                                 {{ form_label(form.kana, 'signup.label.name_kana', {'label_attr': {'class': 'ec-label'}}) }}
