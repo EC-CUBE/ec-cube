@@ -68,9 +68,7 @@ class EntryType extends AbstractType
             ->add('name', NameType::class, array(
                 'required' => true,
             ))
-            ->add('kana', KanaType::class, array(
-                'required' => false,
-            ))
+            ->add('kana', KanaType::class, array())
             ->add('company_name', TextType::class, array(
                 'required' => false,
                 'constraints' => array(
