@@ -60,8 +60,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ************************************************
 　ご注文者情報
 ************************************************
-{{'signup.label.name_required'|trans}}　：{{ Order.name01 }} {{ Order.name02 }} 様
-{{'signup.label.name_kana_required'|trans}}：{{ Order.kana01 }} {{ Order.kana02 }} 様
+{{'signup.label.name'|trans}}　：{{ Order.name01 }} {{ Order.name02 }} 様
+{{'signup.label.name_kana'|trans}}：{{ Order.kana01 }} {{ Order.kana02 }} 様
 {% if Order.company_name %}
 {{'signup.label.company_name'|trans}}　：{{ Order.company_name }}
 {% endif %}
@@ -79,8 +79,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {%  for Shipping in Order.Shippings %}
 ◎{{'shopping.label.deliver_to'|trans}}{% if Order.multiple %}{{ loop.index }}{% endif %}
 
-{{'signup.label.name_required'|trans}}　：{{ Shipping.name01 }} {{ Shipping.name02 }} 様
-{{'signup.label.name_kana_required'|trans}}：{{ Shipping.kana01 }} {{ Shipping.kana02 }} 様
+{{'signup.label.name'|trans}}　：{{ Shipping.name01 }} {{ Shipping.name02 }} 様
+{{'signup.label.name_kana'|trans}}：{{ Shipping.kana01 }} {{ Shipping.kana02 }} 様
 {% if Shipping.company_name %}
 {{'shipping.label.shipping_company'|trans}}　：{{ Shipping.company_name }}
 {% endif %}

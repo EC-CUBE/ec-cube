@@ -52,7 +52,7 @@ $(function() {
         }).done(function(data, textStatus, jqXHR){
             modal.find('.modal-body').html(data);
         }).fail(function(data, textStatus, errorThrown){
-            modal.find('.modal-body').text('admin.order.mail.341'|trans}}。');
+            modal.find('.modal-body').text('{{ 'admin.order.mail.341'|trans }}');
         });
     });
 
