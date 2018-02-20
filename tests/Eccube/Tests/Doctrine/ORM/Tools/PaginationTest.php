@@ -94,7 +94,7 @@ class PaginationTest extends EccubeTestCase
 
         // 初期データより大きい値を指定
         $price02 = $this->getFaker()->randomNumber(9);
-        for ($i = 0; $i < 30; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             $Product = $this->createProduct(null, 3);
             $this->expectedIds[] = $Product->getId();
 
@@ -147,7 +147,7 @@ class PaginationTest extends EccubeTestCase
         // product_class.price02 でソートするようカスタマイズ
         $qb->orderBy('pc.price02', 'DESC');
 
-        $pageMax = 10;
+        $pageMax = 3;
         $pagination = $this->paginator->paginate(
             $qb,
             1,
@@ -201,7 +201,7 @@ class PaginationTest extends EccubeTestCase
             $expectedIds[] = $Product->getId();
         }
 
-        $pageMax = 10;
+        $pageMax = 3;
         try {
             $pagination = $this->paginator->paginate(
                 $qb,
@@ -263,7 +263,7 @@ class PaginationTest extends EccubeTestCase
         $pagination = $this->paginator->paginate(
             $qb,
             1,
-            30,
+            3,
             ['wrap-queries' => true]
         );
 
@@ -315,7 +315,7 @@ class PaginationTest extends EccubeTestCase
         $pagination = $this->paginator->paginate(
             $qb,
             1,
-            30,
+            3,
             ['wrap-queries' => true]
         );
 

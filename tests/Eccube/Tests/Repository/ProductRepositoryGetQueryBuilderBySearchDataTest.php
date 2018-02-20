@@ -350,7 +350,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
         );
         $this->deleteAllRows($tables);
         $productList = array();
-        for ($i = 0; $i <= 30; $i++) {
+        for ($i = 0; $i <= 5; $i++) {
             $classNo = mt_rand(1, 3);
             $productName = '商品-' . $i;
             $Product = $this->createProduct($productName, $classNo);
