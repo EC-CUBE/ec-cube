@@ -80,6 +80,9 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
         $this->assertSame(true, $actual);
     }
 
+    /**
+     * @group cache-clear
+     */
     public function testRoutingEditParam()
     {
         $this->client->request(
@@ -90,6 +93,9 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
     }
 
+    /**
+     * @group cache-clear
+     */
     public function testEditParam()
     {
         $BaseInfo = $this->container->get(BaseInfoRepository::class)->get();
@@ -115,6 +121,9 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
         $this->verify();
     }
 
+    /**
+     * @group cache-clear
+     */
     public function testEditParamFail()
     {
         $BaseInfo = $this->container->get(BaseInfoRepository::class)->get();
