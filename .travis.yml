@@ -64,7 +64,7 @@ install:
   - ./vendor/bin/simple-phpunit install
 
 script:
-  - if [ $COVERAGE ]  ; then phpdbg -qrr ./bin/phpunit --coverage-clover=coverage.clover ; fi
+  - if [ $COVERAGE ]  ; then phpdbg -qrr ./bin/phpunit --exclude-group cache-clear --coverage-clover=coverage.clover ; fi
   - if [ ! $COVERAGE ]; then ./bin/phpunit --exclude-group cache-clear; fi
   - if [ ! $COVERAGE ]; then ./bin/phpunit --group cache-clear; fi
 
