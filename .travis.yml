@@ -51,17 +51,20 @@ matrix:
     # php7.2
     - php: 7.2
 
+before_install:
+  ## see https://github.com/symfony/symfony/blob/e0bdc0c35e9afdb3bee8af172f90e9648c4012fc/.travis.yml#L92-L97
+  - phpenv config-rm xdebug.ini || true
+  - echo "opcache.enable_cli=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  - echo "apc.enable_cli=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  - echo "memory_limit=-1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+
 install:
-  - composer install --dev --no-interaction -o
+  - composer install --dev --no-interaction -o --apcu-autoloader
   - composer run-script installer-scripts
   - ./vendor/bin/simple-phpunit install
 
-before_script:
-  - phpenv config-rm xdebug.ini || true
-  - echo "memory_limit=-1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
-
 script:
-  - if [ $COVERAGE ]  ; then phpdbg -qrr ./bin/phpunit --coverage-clover=coverage.clover ; fi
+  - if [ $COVERAGE ]  ; then phpdbg -qrr ./bin/phpunit --exclude-group cache-clear --coverage-clover=coverage.clover ; fi
   - if [ ! $COVERAGE ]; then ./bin/phpunit --exclude-group cache-clear; fi
   - if [ ! $COVERAGE ]; then ./bin/phpunit --group cache-clear; fi
 
