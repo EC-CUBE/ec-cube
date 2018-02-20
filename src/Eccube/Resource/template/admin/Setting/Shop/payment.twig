@@ -55,10 +55,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
                                         <td id="payment_list__method--{{ Payment.id }}" class="member_name">{{ Payment.methodForAdmin }}</td>
                                         <td id="payment_list__charge--{{ Payment.id }}" class="member_name">
-                                            {{app.config.currency}} {{ Payment.charge }}
+                                            {{eccube_config.currency}} {{ Payment.charge }}
                                         </td>
                                         <td id="payment_list__rule--{{ Payment.id }}" class="member_name">
-                                            {{app.config.currency}}
+                                            {{eccube_config.currency}}
                                             {% if Payment.rule_min > 0 %}
                                                 {{ Payment.rule_min }}
                                             {% else %}
@@ -66,7 +66,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             {% endif %}
 
                                             {% if Payment.rule_max > 0 %}
-                                                ～{{app.config.currency}}{{ Payment.rule_max }}
+                                                ～{{eccube_config.currency}}{{ Payment.rule_max }}
                                             {% elseif Payment.rule_max is null %}
                                                 ～{{'admin.setting.shop.payment.603'|trans}}
                                             {% endif %}
