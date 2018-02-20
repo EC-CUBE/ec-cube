@@ -46,11 +46,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             </dt>
                             <dd>
                                 <div class="ec-halfInput{{ has_errors(form.name.name01, form.name.name02) ? ' error'}}">
-                                    {% if app.config.locale == "ja" %}
+                                    {% if eccube_config.locale == "ja" %}
                                         {{ form_widget(form.name.name01, {'attr': {'placeholder': 'signup.label.family_name'}}) }}                                    
                                     {% endif %}
                                     {{ form_widget(form.name.name02, {'attr': {'placeholder': 'signup.label.first_name'}}) }}
-                                    {% if app.config.locale != "ja" %}
+                                    {% if eccube_config.locale != "ja" %}
                                         {{ form_widget(form.name.name01, {'attr': {'placeholder': 'signup.label.family_name'}}) }}                                    
                                     {% endif %}
                                     {{ form_errors(form.name.name01) }}
@@ -58,7 +58,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 </div>
                             </dd>
                         </dl>
-                        {% if app.config.locale == "ja" %}
+                        {% if eccube_config.locale == "ja" %}
                         <dl>
                             <dt>
 
@@ -96,7 +96,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {{ form_errors(form.zip.zip01) }}
                                     {{ form_errors(form.zip.zip02) }}
                                 </div>
-                                {% if app.config.locale == "ja" %}
+                                {% if eccube_config.locale == "ja" %}
                                 <div class="ec-zipInputHelp">
                                     <a href="http://www.post.japanpost.jp/zipcode/"
                                                                 target="_blank">
