@@ -52,7 +52,7 @@ class InstallController extends AbstractController
     /**
      * default value of auth magic
      */
-    const DEFAULT_AUTH_MAGIC = 's$cretf0rt3st';
+    const DEFAULT_AUTH_MAGIC = 'eccube_secret';
 
     protected $requiredModules = [
         'pdo',

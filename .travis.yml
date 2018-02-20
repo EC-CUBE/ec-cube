@@ -23,7 +23,7 @@ env:
     # bin/console実行時の環境変数を定義.
     - APP_ENV=dev
     - APP_DEBUG=1
-    - ECCUBE_AUTH_MAGIC='s$cretf0rt3st'
+    - ECCUBE_AUTH_MAGIC=eccube_secret
 
   matrix:
     - DB=mysql DATABASE_URL=mysql://root:@localhost/cube4_dev DATABASE_SERVER_VERSION=5
