@@ -313,16 +313,21 @@ class StringUtil
     }
 
     /**
-     * envファイルのコンテンツを更新する.
+     * envファイルのコンテンツを更新または追加する.
      *
      * @param string $env
      * @param array $replacement
      * @return string
      */
-    public static function replaceEnv($env, array $replacement)
+    public static function replaceOrAddEnv($env, array $replacement)
     {
         foreach ($replacement as $key => $value) {
-            $env = preg_replace('/('.$key.')=(.*)/', '$1='.$value, $env);
+            $pattern = '/^('.$key.')=(.*)/m';
+            if (preg_match($pattern, $env)) {
+                $env = preg_replace($pattern, '$1='.$value, $env);
+            } else {
+                $env .= PHP_EOL."${key}=${value}";
+            }
         }
 
         return $env;

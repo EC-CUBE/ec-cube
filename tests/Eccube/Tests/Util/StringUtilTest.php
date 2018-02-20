@@ -488,4 +488,25 @@ class StringUtilTest extends TestCase
         $this->actual = StringUtil::trimAll($text);
         $this->assertTrue($this->expected === $this->actual);
     }
+
+    /**
+     * @dataProvider replaceOrAddEnvProvider
+     */
+    public function testReplaceOrAddEnv($env, $replacement, $expected)
+    {
+        self::assertEquals($expected, StringUtil::replaceOrAddEnv($env, $replacement));
+    }
+
+    public function replaceOrAddEnvProvider()
+    {
+        return [
+            ['HOGE=HOGE', ['HOGE' => 'BAR'], 'HOGE=BAR'],
+            ['HOGE=HOGE', ['FOO' => 'BAR'], 'HOGE=HOGE'.PHP_EOL.'FOO=BAR'],
+            ['HOGE_HOGE=HOGE', ['HOGE' => 'BAR'], 'HOGE_HOGE=HOGE'.PHP_EOL.'HOGE=BAR'],
+            ['#HOGE=HOGE', ['HOGE' => 'BAR'], '#HOGE=HOGE'.PHP_EOL.'HOGE=BAR'],
+            ['HOGE=HOGE'.PHP_EOL.'FOO=FOO', ['HOGE' => 'BAR'], 'HOGE=BAR'.PHP_EOL.'FOO=FOO'],
+            ['HOGE=HOGE'.PHP_EOL.'FOO=FOO', ['FOO' => 'BAR'], 'HOGE=HOGE'.PHP_EOL.'FOO=BAR'],
+            ['HOGE=HOGE'.PHP_EOL.'FOO=FOO', ['HOGE' => 'hoge', 'FOO' => 'foo'], 'HOGE=hoge'.PHP_EOL.'FOO=foo'],
+        ];
+    }
 }

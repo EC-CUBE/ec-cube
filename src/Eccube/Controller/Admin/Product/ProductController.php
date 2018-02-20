@@ -715,7 +715,7 @@ class ProductController extends AbstractController
 
                 } catch (ForeignKeyConstraintViolationException $e) {
                     log_info('商品削除エラー', [$id]);
-                    $message = trans('admin.delete.failed.foreign_key', ['%name%' => '商品']);
+                    $message = trans('admin.delete.failed.foreign_key', ['%name%' => trans('product.text.name')]);
                     $this->addError($message, 'admin');
                 }
             } else {

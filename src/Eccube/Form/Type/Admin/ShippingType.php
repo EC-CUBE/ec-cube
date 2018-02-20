@@ -27,6 +27,7 @@ namespace Eccube\Form\Type\Admin;
 use Doctrine\ORM\EntityRepository;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\Delivery;
 use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\KanaType;
 use Eccube\Form\Type\NameType;
@@ -167,7 +168,11 @@ class ShippingType extends AbstractType
                 'required' => false,
                 'label' => 'shipping.label.shipping_company',
                 'class' => 'Eccube\Entity\Delivery',
-                'choice_label' => 'serviceNameForAdmin',
+                'choice_label' => function(Delivery $Delivery) {
+                    return $Delivery->isVisible()
+                        ? $Delivery->getServiceName()
+                        : $Delivery->getServiceName().trans('delivery.text.hidden');
+                },
                 'placeholder' => 'shipping.placeholder.please_select',
                 'constraints' => array(
                     new Assert\NotBlank(),

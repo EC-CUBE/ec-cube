@@ -361,6 +361,8 @@ return [
     'admin_setting_shop_shop_master.label.shippment_setting' => '送料設定',
     'admin_setting_shop_shop_master.label.customer_setting' => '会員設定',
     'admin_setting_shop_shop_master.label.product_setting' => '商品設定',
+
+
     'Login email' => 'メールアドレス',
     'Login pass' => 'パスワード',
     'Login memory' => '次回から自動的にログインする',
