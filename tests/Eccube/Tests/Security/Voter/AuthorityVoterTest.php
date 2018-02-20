@@ -24,21 +24,73 @@
 namespace Eccube\Tests\Security\Voter;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\AuthorityRole;
+use Eccube\Repository\AuthorityRoleRepository;
 use Eccube\Security\Voter\AuthorityVoter;
 use Eccube\Tests\EccubeTestCase;
-use Eccube\Repository\AuthorityRoleRepository;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class AuthorityVoterTest extends EccubeTestCase
 {
-    public function testSupportsClass()
+
+    /**
+     * @var AuthorityRoleRepository
+     */
+    protected $authorityRoleRepository;
+
+    /**
+     * @var EccubeConfig
+     */
+    protected $eccubeConfig;
+
+    public function setUp()
     {
-        $client = self::createClient();
-        $authorityRoleRepository = $client->getContainer()->get(AuthorityRoleRepository::class);
-        $requestStack = $client->getContainer()->get('request_stack');
-        $eccubeConfig = $client->getContainer()->get(EccubeConfig::class);
+        parent::setUp();
+        $this->authorityRoleRepository = $this->container->get(AuthorityRoleRepository::class);
+        $this->eccubeConfig = $this->container->get(EccubeConfig::class);
+    }
 
-        $voter = new AuthorityVoter($authorityRoleRepository, $requestStack, $eccubeConfig);
+    /**
+     * @dataProvider voteProvider
+     */
+    public function testVote(array $deniedUrls, $accessUrl, $expected)
+    {
+        $request = $this->createMock(Request::class);
+        $request->method('getPathInfo')->willReturn($accessUrl);
 
-        $this->assertTrue($voter->supportsClass('Foo'));
+        $requestStack = $this->createMock(RequestStack::class);
+        $requestStack->method('getMasterRequest')->willReturn($request);
+
+        $voter = new AuthorityVoter($this->authorityRoleRepository, $requestStack, $this->eccubeConfig);
+
+        $Member = $this->createMember();
+
+        foreach ($deniedUrls as $denyUrl) {
+            $AuthorityRole = new AuthorityRole();
+            $AuthorityRole->setDenyUrl($denyUrl);
+            $AuthorityRole->setAuthority($Member->getAuthority());
+            $this->entityManager->persist($AuthorityRole);
+            $this->entityManager->flush();
+        }
+
+        $token = $this->createMock(TokenInterface::class);
+        $token->method('getUser')->willReturn($Member);
+
+        self::assertEquals($expected, $voter->vote($token, null, []));
+    }
+
+    public function voteProvider()
+    {
+        return [
+            [[], '/admin/content', VoterInterface::ACCESS_GRANTED],
+            [['/content'], '/admin/content', VoterInterface::ACCESS_DENIED],
+            [['/content'], '/admin/content/page', VoterInterface::ACCESS_DENIED],
+            [['/content'], '/content', VoterInterface::ACCESS_GRANTED],
+            [['/content'], '/admin', VoterInterface::ACCESS_GRANTED],
+            [['/content'], '/admin/product', VoterInterface::ACCESS_GRANTED],
+        ];
     }
 }

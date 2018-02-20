@@ -41,11 +41,6 @@ class MemberType extends AbstractType
     protected $eccubeConfig;
 
     /**
-     * @var string
-     */
-    protected $blankMessage = 'admin.system.member.form.not.blank';
-
-    /**
      * MemberType constructor.
      *
      * @param EccubeConfig $eccubeConfig
@@ -65,7 +60,7 @@ class MemberType extends AbstractType
             ->add('name', TextType::class, array(
                 'label' => 'member.label.name',
                 'constraints' => array(
-                    new Assert\NotBlank(array('message' => $this->blankMessage)),
+                    new Assert\NotBlank(),
                     new Assert\Length(array('max' => $this->eccubeConfig['eccube_stext_len'])),
                 ),
             ))
@@ -73,14 +68,14 @@ class MemberType extends AbstractType
                 'required' => false,
                 'label' => 'member.label.organization',
                 'constraints' => array(
-                    new Assert\NotBlank(array('message' => $this->blankMessage)),
+                    new Assert\NotBlank(),
                     new Assert\Length(array('max' => $this->eccubeConfig['eccube_stext_len'])),
                 ),
             ))
             ->add('login_id', TextType::class, array(
                 'label' => 'member.label.login_id',
                 'constraints' => array(
-                    new Assert\NotBlank(array('message' => $this->blankMessage)),
+                    new Assert\NotBlank(),
                     new Assert\Length(array(
                         'min' => $this->eccubeConfig['eccube_id_min_len'],
                         'max' => $this->eccubeConfig['eccube_id_max_len'],
@@ -97,7 +92,7 @@ class MemberType extends AbstractType
                     'label' => 'member.label.varify_pass',
                 ),
                 'constraints' => array(
-                    new Assert\NotBlank(array('message' => $this->blankMessage)),
+                    new Assert\NotBlank(),
                     new Assert\Length(array(
                         'min' => $this->eccubeConfig['eccube_id_min_len'],
                         'max' => $this->eccubeConfig['eccube_id_max_len'],
@@ -112,7 +107,7 @@ class MemberType extends AbstractType
                 'multiple' => false,
                 'placeholder' => 'form.empty_value',
                 'constraints' => array(
-                    new Assert\NotBlank(array('message' => $this->blankMessage)),
+                    new Assert\NotBlank(),
                 ),
             ))
             ->add('Work', EntityType::class, array(
@@ -121,7 +116,7 @@ class MemberType extends AbstractType
                 'expanded' => true,
                 'multiple' => false,
                 'constraints' => array(
-                    new Assert\NotBlank(array('message' => $this->blankMessage)),
+                    new Assert\NotBlank(),
                 ),
             ))
         ;

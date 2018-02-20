@@ -26,6 +26,9 @@ namespace Eccube\Tests\Web\Admin\Content;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
+/**
+ * @group cache-clear
+ */
 class CacheControllerTest extends AbstractAdminWebTestCase
 {
     public function testRoutingAdminContentCache()
@@ -39,9 +42,6 @@ class CacheControllerTest extends AbstractAdminWebTestCase
 
     public function testRoutingAdminContentCachePost()
     {
-        // FIXME
-        $this->markTestIncomplete('テスト時のセッションがvar/cache/test/sessionsに生成されるため,処理を継続できない');
-
         $client = $this->client;
 
         $url = $this->generateUrl('admin_content_cache');

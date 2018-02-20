@@ -69,9 +69,11 @@ class SecurityController extends AbstractController
             $env = file_get_contents($envFile);
 
             $adminAllowHosts = \json_encode(
-                \explode("\n", StringUtil::convertLineFeed($data['admin_allow_hosts']))
+                array_filter(\explode("\n", StringUtil::convertLineFeed($data['admin_allow_hosts'])), function($str) {
+                    return StringUtil::isNotBlank($str);
+                })
             );
-            $env = StringUtil::replaceEnv($env, [
+            $env = StringUtil::replaceOrAddEnv($env, [
                 'ECCUBE_ADMIN_ALLOW_HOSTS' => "'{$adminAllowHosts}'",
                 'ECCUBE_FORCE_SSL' => $data['force_ssl'] ? 'true' : 'false',
                 'ECCUBE_SCHEME' => $data['force_ssl'] ? 'https' : 'http',
@@ -83,7 +85,7 @@ class SecurityController extends AbstractController
             $adminRoot = $this->eccubeConfig['eccube_admin_route'];
             if ($adminRoot !== $data['admin_route_dir']) {
 
-                $env = StringUtil::replaceEnv($env, [
+                $env = StringUtil::replaceOrAddEnv($env, [
                     'ECCUBE_ADMIN_ROUTE' => $data['admin_route_dir'],
                 ]);
 

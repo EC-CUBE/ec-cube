@@ -470,6 +470,9 @@
     "twig/twig": {
         "version": "v2.4.4"
     },
+    "vlucas/phpdotenv": {
+        "version": "v2.4.0"
+    },
     "zendframework/zend-code": {
         "version": "3.3.0"
     },
