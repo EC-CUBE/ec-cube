@@ -7,6 +7,4 @@ services:
 
     # 開発時はエラーページを表示しない
     Eccube\EventListener\ExceptionListener:
-        arguments:
-            - '@twig'
-            - false
+        autoconfigure: false

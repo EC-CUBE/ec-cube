@@ -38,25 +38,15 @@ class ExceptionListener implements EventSubscriberInterface
     private $twig;
 
     /**
-     * @var bool
-     */
-    private $isEnabled;
-
-    /**
      * ExceptionListener constructor.
      */
-    public function __construct(\Twig_Environment $twig, $enabled = true)
+    public function __construct(\Twig_Environment $twig)
     {
         $this->twig = $twig;
-        $this->isEnabled = $enabled;
     }
 
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
-        if (!$this->isEnabled) {
-            return;
-        }
-
         $title = 'システムエラーが発生しました。';
         $message = '大変お手数ですが、サイト管理者までご連絡ください。';
         $statusCode = Response::HTTP_INTERNAL_SERVER_ERROR;
