@@ -19,18 +19,10 @@ php:
   - 7.0
 
 env:
-  global:
-    - KERNEL_CLASS=Eccube\Kernel
-    - APP_ENV=test
-    - APP_DEBUG=1
-    - SHELL_VERBOSITY=-1
-    - ECCUBE_AUTH_MAGIC=s$cretVBJmtS0Ls+
-    - ECCUBE_ADMIN_ROUTE=admin
-
   matrix:
     - DB=mysql DATABASE_URL=mysql://root:@localhost/cube4_dev DATABASE_SERVER_VERSION=5
     - DB=pgsql DATABASE_URL=postgres://postgres:password@localhost/cube4_dev DATABASE_SERVER_VERSION=9
-    - DB=sqlite DATABASE_URL=sqlite:///%kernel.project_dir%/app/config/eccube/eccube.db DATABASE_SERVER_VERSION=3
+    - DB=sqlite DATABASE_URL=sqlite:///%kernel.project_dir%/var/eccube.db DATABASE_SERVER_VERSION=3
     # カバレッジレポート用
     - DB=pgsql DATABASE_URL=postgres://postgres:password@localhost/cube4_dev DATABASE_SERVER_VERSION=9 COVERAGE=true
 
@@ -44,7 +36,7 @@ matrix:
       env: DB=pgsql DATABASE_URL=postgres://postgres:password@localhost/cube4_dev DATABASE_SERVER_VERSION=9 COVERAGE=true
   allow_failures:
     # sqlite
-    - env: DB=sqlite DATABASE_URL=sqlite:///%kernel.project_dir%/app/config/eccube/eccube.db DATABASE_SERVER_VERSION=3
+    - env: DB=sqlite DATABASE_URL=sqlite:///%kernel.project_dir%/var/eccube.db DATABASE_SERVER_VERSION=3
     # カバレッジレポートはphp7.1のmatrixで実行
     - php: 7.1
       env: DB=pgsql DATABASE_URL=postgres://postgres:password@localhost/cube4_dev DATABASE_SERVER_VERSION=9 COVERAGE=true
@@ -60,8 +52,9 @@ before_install:
 
 install:
   - composer install --dev --no-interaction -o --apcu-autoloader
-  - composer run-script installer-scripts
-  - ./vendor/bin/simple-phpunit install
+  - bin/console doctrine:database:create --env=dev
+  - bin/console doctrine:schema:create --env=dev
+  - bin/console eccube:fixtures:load --env=dev
 
 script:
   - if [ $COVERAGE ]  ; then phpdbg -qrr ./bin/phpunit --exclude-group cache-clear --coverage-clover=coverage.clover ; fi

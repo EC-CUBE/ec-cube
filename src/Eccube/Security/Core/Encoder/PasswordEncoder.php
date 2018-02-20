@@ -52,6 +52,16 @@ class PasswordEncoder implements PasswordEncoderInterface
     }
 
     /**
+     * Set Auth Magic.
+     *
+     * @param $authMagic
+     */
+    public function setAuthMagic($authMagic)
+    {
+        $this->auth_magic = $authMagic;
+    }
+
+    /**
      * Checks a raw password against an encoded password.
      *
      * @param string $encoded An encoded password

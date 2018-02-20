@@ -1,6 +1,5 @@
 services:
   Eccube\Tests\Fixture\Generator:
-    tags: ['eccube.fixture.generator']
     arguments:
       - '@doctrine.orm.default_entity_manager'
       - '@Eccube\Security\Core\Encoder\PasswordEncoder'
@@ -18,3 +17,4 @@ services:
       - '@eccube.purchase.flow.order'
       - '@session'
       - 'ja_JP'
+    lazy: true
