@@ -2,7 +2,7 @@
     // 商品規格情報. 規格2のプルダウンリストの設定に利用する,
     var productsClassCategories = {
         {% for Product in pagination %}
-        "{{ Product.id|escape('js') }}": {{ Product.class_categories|json_encode|raw }}{% if loop.last == false %}, {% endif %}
+        "{{ Product.id|escape('js') }}": {{ class_categories_as_json(Product)|raw }}{% if loop.last == false %}, {% endif %}
         {% endfor %}
     };
     // 規格1が選択された際に, 規格2のプルダウンリストを設定する,

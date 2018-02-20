@@ -335,7 +335,6 @@ class ProductController extends AbstractController
             'subtitle' => $Product->getName(),
             'form' => $builder->getForm()->createView(),
             'Product' => $Product,
-            'ClassCategories' => json_encode($this->createClassCategoriesAsArray($Product)),
             'is_favorite' => $is_favorite,
         ];
     }
@@ -554,51 +553,5 @@ class ProductController extends AbstractController
             }
         }
         return true;
-    }
-
-    /**
-     * @param Product $Product
-     * @return array
-     */
-    private function createClassCategoriesAsArray(Product $Product)
-    {
-        $Product->_calc();
-        $class_categories = [
-            '__unselected' => [
-                '__unselected' => [
-                    'name'              => trans('product.text.please_select'),
-                    'product_class_id'  => '',
-                ],
-            ],
-        ];
-        foreach ($Product->getProductClasses() as $ProductClass) {
-            /* @var $ProductClass \Eccube\Entity\ProductClass */
-            $ClassCategory1 = $ProductClass->getClassCategory1();
-            $ClassCategory2 = $ProductClass->getClassCategory2();
-            if ($ClassCategory2 && !$ClassCategory2->isVisible()) {
-                continue;
-            }
-            $class_category_id1 = $ClassCategory1 ? (string) $ClassCategory1->getId() : '__unselected2';
-            $class_category_id2 = $ClassCategory2 ? (string) $ClassCategory2->getId() : '';
-            $class_category_name2 = $ClassCategory2 ? $ClassCategory2->getName().($ProductClass->getStockFind() ? '' : trans('product.text.out_of_stock')) : '';
-
-            $class_categories[$class_category_id1]['#'] = array(
-                'classcategory_id2' => '',
-                'name'              => trans('product.text.please_select'),
-                'product_class_id'  => '',
-            );
-            $class_categories[$class_category_id1]['#'.$class_category_id2] = array(
-                'classcategory_id2' => $class_category_id2,
-                'name'              => $class_category_name2,
-                'stock_find'        => $ProductClass->getStockFind(),
-                'price01'           => $ProductClass->getPrice01() === null ? '' : number_format($ProductClass->getPrice01IncTax()),
-                'price02'           => number_format($ProductClass->getPrice02IncTax()),
-                'product_class_id'  => (string) $ProductClass->getId(),
-                'product_code'      => $ProductClass->getCode() === null ? '' : $ProductClass->getCode(),
-                'sale_type'      => (string) $ProductClass->getSaleType()->getId(),
-            );
-        }
-
-        return $class_categories;
     }
 }
