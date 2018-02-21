@@ -39,11 +39,6 @@ class InstallerCommand extends Command
      */
     protected $databaseUrl;
 
-    /**
-     * @var bool
-     */
-    protected $cancelInstalation = false;
-
     public function __construct(ContainerInterface $container, CacheUtil $cacheUtil)
     {
         parent::__construct();
@@ -62,15 +57,16 @@ class InstallerCommand extends Command
     {
         $this->io->title('EC-CUBE Installer Interactive Wizard');
         $this->io->text([
-            'If you prefer to not use this interactive wizard, provide the',
-            'environments required by this command as follows:',
+            'If you prefer to not use this interactive wizard, define the environment valiables as follows:',
             '',
-            '', // TODO 非対話形式でも動作するようにする.
+            ' $ export APP_ENV=dev',
+            ' $ export APP_DEBUG=1',
             ' $ export DATABASE_URL=database_url',
+            ' $ export MAILER_URL=mailer_url',
             ' $ export ECCUBE_AUTH_MAGIC=auth_magic',
-            ' $ php bin/console eccube:install -n',
+            ' ... and more',
+            ' $ php bin/console eccube:install --no-interaction',
             '',
-            'Now we\'ll ask you for the value of all the missing command arguments.',
         ]);
 
         // DATABASE_URL
@@ -79,9 +75,6 @@ class InstallerCommand extends Command
             $databaseUrl = 'sqlite:///%kernel.project_dir%/var/eccube.db';
         }
         $databaseUrl = $this->io->ask('Database Url', $databaseUrl);
-
-        // execute()でDB種別の判定に使用するので, プロパティに保持しておく.
-        $this->databaseUrl = $databaseUrl;
 
         // MAILER_URL
         $mailerUrl = $this->container->getParameter('eccube_mailer_url');
@@ -102,7 +95,7 @@ class InstallerCommand extends Command
         if (!$this->io->askQuestion($question)) {
             // `no`の場合はキャンセルメッセージを出力して終了する
             $this->setCode(function () {
-                $this->io->success('EC-CUBE installation process stopped.');
+                $this->io->success('EC-CUBE installation stopped.');
             });
 
             return;
@@ -137,22 +130,28 @@ class InstallerCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->cacheUtil->clearCache('dev');
+        // Process実行時に, APP_ENV/APP_DEBUGが子プロセスに引き継がれてしまうため,
+        // 生成された.envをロードして上書きする.
+        if ($input->isInteractive()) {
+            $envDir = $this->container->getParameter('kernel.project_dir');
+            if (file_exists($envDir.'/.env')) {
+                (new Dotenv($envDir))->overload();
+            }
+        }
 
-        $databaseName = $this->getDatabaseName($this->databaseUrl);
+        // 対話モード実行時, container->getParameter('eccube_database_url')では
+        // 更新後の値が取得できないため, getenv()を使用する.
+        $databaseUrl = getenv('DATABASE_URL');
+        $databaseName = $this->getDatabaseName($databaseUrl);
         $ifNotExists = $databaseName === 'sqlite' ? '' : ' --if-not-exists';
 
-        // データベース作成, スキーマ作成, EC-CUBEデータのロードを実行する
+        // データベース作成, スキーマ作成, 初期データの投入を行う.
         $commands = [
             'doctrine:database:create'.$ifNotExists,
             'doctrine:schema:drop --force',
             'doctrine:schema:create',
             'eccube:fixtures:load',
         ];
-
-        // 実行プロセスの環境変数(APP_ENV,APP_DEBUG)が子プロセスに引き継がれるので, .envの環境変数をロードしなおして上書きする.
-        $envDir = $this->container->getParameter('kernel.project_dir');
-        (new Dotenv($envDir))->overload();
 
         // コンテナを再ロードするため別プロセスで実行する.
         foreach ($commands as $command) {
@@ -168,7 +167,7 @@ class InstallerCommand extends Command
             }
         }
 
-        $this->io->success('EC-CUBE Install Successfull.');
+        $this->io->success('EC-CUBE installation successful.');
     }
 
     protected function getDatabaseName($databaseUrl)
@@ -191,7 +190,7 @@ class InstallerCommand extends Command
         $versions = [
             'sqlite' => 3,
             'postgres' => 9,
-            'mysql' => 5
+            'mysql' => 5,
         ];
 
         if (!isset($versions[$databaseName])) {
