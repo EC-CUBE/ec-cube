@@ -190,8 +190,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <div>
                                 <select class="custom-select">
                                     {# TODO リンクからセレクトボックスに変更されているので実装必要 #}
-                                    {% for pageMax in pageMaxis  %}
-                                    <option {% if pageMax.name == page_count %}selected=""{% endif %}>{{ pageMax.name|e }}件</option>
+                                    {% for pageMax in pageMaxis %}
+                                        <option {% if pageMax.name == page_count %}selected=""{% endif %}>{{ pageMax.name|e }}
+                                            件
+                                        </option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -199,11 +201,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="d-inline-block">
                             <div class="btn-group" role="group">
                                 {# TODO onclickは適切ではないのでaタグで実装できるようにする #}
-                                <button class="btn btn-ec-regular" type="button" onclick='location.href="{{ url('admin_product_export') }}"'><i
+                                <button class="btn btn-ec-regular" type="button"
+                                        onclick='location.href="{{ url('admin_product_export') }}"'><i
                                             class="fa fa-cloud-download mr-1 text-secondary"></i><span>CSVダウンロード</span>
                                 </button>
                                 {# TODO onclickは適切ではないのでaタグで実装できるようにする #}
-                                <button class="btn btn-ec-regular" type="button" onclick='location.href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_PRODUCT') }) }}"'><i
+                                <button class="btn btn-ec-regular" type="button"
+                                        onclick='location.href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_PRODUCT') }) }}"'>
+                                    <i
                                             class="fa fa-cog mr-1 text-secondary"></i><span>CSV出力設定</span></button>
                             </div>
                         </div>
@@ -230,620 +235,78 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td class="align-middle pl-3">
-                                    <input type="checkbox" name="filter" value="open">
-                                </td>
-                                <td class="align-middle">34</td>
-                                <td class="align-middle"><a href="/product/register"><img
-                                                src="http://via.placeholder.com/50x50"></a></td>
-                                <td class="align-middle"><a href="/product/register">ディナーフォーク</a></td>
-                                <td class="align-middle">fork-01 ～ fork-09</td>
-                                <td class="align-middle">12,000</td>
-                                <td class="align-middle">2</td>
-                                <td class="align-middle">公開</td>
-                                <td class="align-middle">2017/01/12</td>
-                                <td class="align-middle">2017/07/12</td>
-                                <td class="align-middle pr-3" colspan="3">
-                                    <div class="row">
-                                        <div class="col text-center" data-toggle="tooltip" data-placement="top"
-                                             title="表示"><a class="btn btn-ec-actionIcon"
-                                                           href="https://demo3.ec-cube.net/products/detail/3"
-                                                           target="_blank"><i class="fa fa-eye fa-lg text-secondary"
-                                                                              aria-hidden="true"></i></a></div>
-                                        <div class="col text-center" data-toggle="tooltip" data-placement="top"
-                                             title="複製"><a class="btn btn-ec-actionIcon"><i
-                                                        class="fa fa-files-o fa-lg text-secondary"
-                                                        aria-hidden="true"></i></a></div>
-                                        <div class="col text-center" data-toggle="tooltip" data-placement="top"
-                                             title="廃止"><a class="btn btn-ec-actionIcon" data-toggle="modal"
-                                                           data-target="#discontinuance"><i
-                                                        class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a>
-                                            <div class="modal fade" id="discontinuance" tabindex="-1" role="dialog"
-                                                 aria-labelledby="discontinuance" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title font-weight-bold">商品の取扱を停止します</h5>
-                                                            <button class="close" type="button" data-dismiss="modal"
-                                                                    aria-label="Close"><span aria-hidden="true">×</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body text-left">
-                                                            <p class="text-left">
-                                                                商品は一覧（マスター）から削除されますが、これまでの取引等のデータから消えることはありません。この操作はあとから取り消すことができません。この商品を廃止しますか？</p>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button class="btn btn-ec-sub" type="button"
-                                                                    data-dismiss="modal">キャンセル
-                                                            </button>
-                                                            <button class="btn btn-ec-delete" type="button">取扱を停止
-                                                            </button>
+                            {% for Product in pagination %}
+                                <tr>
+                                    <td class="align-middle pl-3">
+                                        <input type="checkbox" name="filter" value="open">
+                                    </td>
+                                    <td class="align-middle">{{ Product.id }}</td>
+                                    {# TODO: 画像のサイズをベタ指定しているので、styleguide側を直す #}
+                                    <td class="align-middle">
+                                        <a href="{{ url('admin_product_product_edit', { id : Product.id }) }}">
+                                            <img src="{{ asset(Product.mainFileName|no_image_product, 'save_image') }}"
+                                                    style="max-width: 50px">
+                                        </a>
+                                    </td>
+                                    <td class="align-middle"><a href="{{ url('admin_product_product_edit', { id : Product.id }) }}">{{ Product.name }}</a></td>
+                                    <td class="align-middle">
+                                        {{ Product.code_min }}
+                                        {% if Product.code_min != Product.code_max %} ～ {{ Product.code_max }}
+                                        {% endif %}
+                                    </td>
+                                    <td class="align-middle">12,000</td>
+                                    <td class="align-middle">2</td>
+                                    <td class="align-middle">公開</td>
+                                    <td class="align-middle">2017/01/12</td>
+                                    <td class="align-middle">2017/07/12</td>
+                                    <td class="align-middle pr-3" colspan="3">
+                                        <div class="row">
+                                            <div class="col text-center" data-toggle="tooltip" data-placement="top"
+                                                 title="表示"><a class="btn btn-ec-actionIcon"
+                                                               href="https://demo3.ec-cube.net/products/detail/3"
+                                                               target="_blank"><i class="fa fa-eye fa-lg text-secondary"
+                                                                                  aria-hidden="true"></i></a></div>
+                                            <div class="col text-center" data-toggle="tooltip" data-placement="top"
+                                                 title="複製"><a class="btn btn-ec-actionIcon"><i
+                                                            class="fa fa-files-o fa-lg text-secondary"
+                                                            aria-hidden="true"></i></a></div>
+                                            <div class="col text-center" data-toggle="tooltip" data-placement="top"
+                                                 title="廃止"><a class="btn btn-ec-actionIcon" data-toggle="modal"
+                                                               data-target="#discontinuance"><i
+                                                            class="fa fa-close fa-lg text-secondary"
+                                                            aria-hidden="true"></i></a>
+                                                <div class="modal fade" id="discontinuance" tabindex="-1" role="dialog"
+                                                     aria-labelledby="discontinuance" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title font-weight-bold">
+                                                                    商品の取扱を停止します</h5>
+                                                                <button class="close" type="button" data-dismiss="modal"
+                                                                        aria-label="Close"><span
+                                                                            aria-hidden="true">×</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body text-left">
+                                                                <p class="text-left">
+                                                                    商品は一覧（マスター）から削除されますが、これまでの取引等のデータから消えることはありません。この操作はあとから取り消すことができません。この商品を廃止しますか？</p>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button class="btn btn-ec-sub" type="button"
+                                                                        data-dismiss="modal">キャンセル
+                                                                </button>
+                                                                <button class="btn btn-ec-delete" type="button">取扱を停止
+                                                                </button>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="table-ec-lightGray">
-                                <td class="align-middle pl-3">
-                                    <input type="checkbox" name="filter" value="open">
-                                </td>
-                                <td class="align-middle">33</td>
-                                <td class="align-middle"><a href="/product/register"><img
-                                                src="http://via.placeholder.com/50x50"></a></td>
-                                <td class="align-middle"><a href="/product/register">ディナースプーン</a></td>
-                                <td class="align-middle">sp-01 ～ sp-02</td>
-                                <td class="align-middle">12,000</td>
-                                <td class="align-middle">2</td>
-                                <td class="align-middle">非公開</td>
-                                <td class="align-middle">2017/01/12</td>
-                                <td class="align-middle">2017/07/12</td>
-                                <td class="align-middle pr-3" colspan="3">
-                                    <div class="row">
-                                        <div class="col text-center" data-toggle="tooltip" data-placement="top"
-                                             title="表示"><a class="btn btn-ec-actionIcon"
-                                                           href="https://demo3.ec-cube.net/products/detail/3"
-                                                           target="_blank"><i class="fa fa-eye fa-lg text-secondary"
-                                                                              aria-hidden="true"></i></a></div>
-                                        <div class="col text-center" data-toggle="tooltip" data-placement="top"
-                                             title="複製"><a class="btn btn-ec-actionIcon"><i
-                                                        class="fa fa-files-o fa-lg text-secondary"
-                                                        aria-hidden="true"></i></a></div>
-                                        <div class="col text-center" data-toggle="tooltip" data-placement="top"
-                                             title="廃止"><a class="btn btn-ec-actionIcon" data-toggle="modal"
-                                                           data-target="#discontinuance"><i
-                                                        class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="align-middle pl-3">
-                                    <input type="checkbox" name="filter" value="open">
-                                </td>
-                                <td class="align-middle">1</td>
-                                <td class="align-middle"><a href="/product/register"><img
-                                                src="http://via.placeholder.com/50x50"></a></td>
-                                <td class="align-middle"><a href="/product/register">フライパン</a></td>
-                                <td class="align-middle">fork01 他</td>
-                                <td class="align-middle">10,000〜</td>
-                                <td class="align-middle">
-                                    <button class="btn page-link text-dark d-inline-block" type="button"
-                                            data-toggle="modal" data-target="#standardConfirm">規格確認
-                                    </button>
-                                    <div class="modal fade" id="standardConfirm" tabindex="-1" role="dialog"
-                                         aria-labelledby="standardConfirm" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title">パーコレーターの規格</h5>
-                                                    <button class="close" type="button" data-dismiss="modal"
-                                                            aria-label="Close"><span aria-hidden="true">×</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <table class="table table-striped">
-                                                        <thead class="table-active">
-                                                        <th class="pt-2 pb-2 pl-2">規格１</th>
-                                                        <th class="pt-2 pb-2">規格２</th>
-                                                        <th class="pt-2 pb-2">商品コード</th>
-                                                        <th class="pt-2 pb-2">在庫数</th>
-                                                        <th class="pt-2 pb-2 pr-2">販売価格（円）</th>
-                                                        </thead>
-                                                        <tbody>
-                                                        <tr>
-                                                            <td class="pl-2">プラチナ</td>
-                                                            <td>100cm</td>
-                                                            <td>aa-001</td>
-                                                            <td>4</td>
-                                                            <td class="pr-2">10,000</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="pl-2">プラチナ</td>
-                                                            <td>130cm</td>
-                                                            <td>aa-002</td>
-                                                            <td>8</td>
-                                                            <td class="pr-2">10,000</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="pl-2">シルバー</td>
-                                                            <td>100cm</td>
-                                                            <td>aa-003</td>
-                                                            <td>4</td>
-                                                            <td class="pr-2">8,000</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="pl-2">シルバー</td>
-                                                            <td>130cm</td>
-                                                            <td>aa-004</td>
-                                                            <td>6</td>
-                                                            <td class="pr-2">8,000</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="pl-2">プラチナ</td>
-                                                            <td>100cm</td>
-                                                            <td>aa-001</td>
-                                                            <td>4</td>
-                                                            <td class="pr-2">10,000</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="pl-2">プラチナ</td>
-                                                            <td>130cm</td>
-                                                            <td>aa-002</td>
-                                                            <td>8</td>
-                                                            <td class="pr-2">10,000</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="pl-2">シルバー</td>
-                                                            <td>100cm</td>
-                                                            <td>aa-003</td>
-                                                            <td>4</td>
-                                                            <td class="pr-2">8,000</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="pl-2">シルバー</td>
-                                                            <td>130cm</td>
-                                                            <td>aa-004</td>
-                                                            <td>6</td>
-                                                            <td class="pr-2">8,000</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="pl-2">プラチナ</td>
-                                                            <td>100cm</td>
-                                                            <td>aa-001</td>
-                                                            <td>4</td>
-                                                            <td class="pr-2">10,000</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="pl-2">プラチナ</td>
-                                                            <td>130cm</td>
-                                                            <td>aa-002</td>
-                                                            <td>8</td>
-                                                            <td class="pr-2">10,000</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="pl-2">シルバー</td>
-                                                            <td>100cm</td>
-                                                            <td>aa-003</td>
-                                                            <td>4</td>
-                                                            <td class="pr-2">8,000</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="pl-2">シルバー</td>
-                                                            <td>130cm</td>
-                                                            <td>aa-004</td>
-                                                            <td>6</td>
-                                                            <td class="pr-2">8,000</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="pl-2">プラチナ</td>
-                                                            <td>100cm</td>
-                                                            <td>aa-001</td>
-                                                            <td>4</td>
-                                                            <td class="pr-2">10,000</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="pl-2">プラチナ</td>
-                                                            <td>130cm</td>
-                                                            <td>aa-002</td>
-                                                            <td>8</td>
-                                                            <td class="pr-2">10,000</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="pl-2">シルバー</td>
-                                                            <td>100cm</td>
-                                                            <td>aa-003</td>
-                                                            <td>4</td>
-                                                            <td class="pr-2">8,000</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="pl-2">シルバー</td>
-                                                            <td>130cm</td>
-                                                            <td>aa-004</td>
-                                                            <td>6</td>
-                                                            <td class="pr-2">8,000</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="pl-2">プラチナ</td>
-                                                            <td>100cm</td>
-                                                            <td>aa-001</td>
-                                                            <td>4</td>
-                                                            <td class="pr-2">10,000</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="pl-2">プラチナ</td>
-                                                            <td>130cm</td>
-                                                            <td>aa-002</td>
-                                                            <td>8</td>
-                                                            <td class="pr-2">10,000</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="pl-2">シルバー</td>
-                                                            <td>100cm</td>
-                                                            <td>aa-003</td>
-                                                            <td>4</td>
-                                                            <td class="pr-2">8,000</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="pl-2">シルバー</td>
-                                                            <td>130cm</td>
-                                                            <td>aa-004</td>
-                                                            <td>6</td>
-                                                            <td class="pr-2">8,000</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="pl-2">プラチナ</td>
-                                                            <td>100cm</td>
-                                                            <td>aa-001</td>
-                                                            <td>4</td>
-                                                            <td class="pr-2">10,000</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="pl-2">プラチナ</td>
-                                                            <td>130cm</td>
-                                                            <td>aa-002</td>
-                                                            <td>8</td>
-                                                            <td class="pr-2">10,000</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="pl-2">シルバー</td>
-                                                            <td>100cm</td>
-                                                            <td>aa-003</td>
-                                                            <td>4</td>
-                                                            <td class="pr-2">8,000</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="pl-2">シルバー</td>
-                                                            <td>130cm</td>
-                                                            <td>aa-004</td>
-                                                            <td>6</td>
-                                                            <td class="pr-2">8,000</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="pl-2">プラチナ</td>
-                                                            <td>100cm</td>
-                                                            <td>aa-001</td>
-                                                            <td>4</td>
-                                                            <td class="pr-2">10,000</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="pl-2">プラチナ</td>
-                                                            <td>130cm</td>
-                                                            <td>aa-002</td>
-                                                            <td>8</td>
-                                                            <td class="pr-2">10,000</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="pl-2">シルバー</td>
-                                                            <td>100cm</td>
-                                                            <td>aa-003</td>
-                                                            <td>4</td>
-                                                            <td class="pr-2">8,000</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="pl-2">シルバー</td>
-                                                            <td>130cm</td>
-                                                            <td>aa-004</td>
-                                                            <td>6</td>
-                                                            <td class="pr-2">8,000</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="pl-2">プラチナ</td>
-                                                            <td>100cm</td>
-                                                            <td>aa-001</td>
-                                                            <td>4</td>
-                                                            <td class="pr-2">10,000</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="pl-2">プラチナ</td>
-                                                            <td>130cm</td>
-                                                            <td>aa-002</td>
-                                                            <td>8</td>
-                                                            <td class="pr-2">10,000</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="pl-2">シルバー</td>
-                                                            <td>100cm</td>
-                                                            <td>aa-003</td>
-                                                            <td>4</td>
-                                                            <td class="pr-2">8,000</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="pl-2">シルバー</td>
-                                                            <td>130cm</td>
-                                                            <td>aa-004</td>
-                                                            <td>6</td>
-                                                            <td class="pr-2">8,000</td>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button class="btn btn-ec-sub" type="button" data-dismiss="modal">
-                                                        戻る
-                                                    </button>
-                                                    <a class="btn btn-ec-conversion" href="/product/register/standard">規格の編集</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="align-middle">公開</td>
-                                <td class="align-middle">2017/01/12</td>
-                                <td class="align-middle">2017/07/12</td>
-                                <td class="align-middle pr-3" colspan="3">
-                                    <div class="row">
-                                        <div class="col text-center" data-toggle="tooltip" data-placement="top"
-                                             title="表示"><a class="btn btn-ec-actionIcon"
-                                                           href="https://demo3.ec-cube.net/products/detail/3"
-                                                           target="_blank"><i class="fa fa-eye fa-lg text-secondary"
-                                                                              aria-hidden="true"></i></a></div>
-                                        <div class="col text-center" data-toggle="tooltip" data-placement="top"
-                                             title="複製"><a class="btn btn-ec-actionIcon"><i
-                                                        class="fa fa-files-o fa-lg text-secondary"
-                                                        aria-hidden="true"></i></a></div>
-                                        <div class="col text-center" data-toggle="tooltip" data-placement="top"
-                                             title="廃止"><a class="btn btn-ec-actionIcon" data-toggle="modal"
-                                                           data-target="#discontinuance"><i
-                                                        class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="align-middle pl-3">
-                                    <input type="checkbox" name="filter" value="open">
-                                </td>
-                                <td class="align-middle">31</td>
-                                <td class="align-middle"><a href="/product/register"><img
-                                                src="http://via.placeholder.com/50x50"></a></td>
-                                <td class="align-middle"><a href="/product/register">泡立て器</a></td>
-                                <td class="align-middle">awa01</td>
-                                <td class="align-middle">12,000</td>
-                                <td class="align-middle">12</td>
-                                <td class="align-middle">公開</td>
-                                <td class="align-middle">2017/01/12</td>
-                                <td class="align-middle">2017/07/12</td>
-                                <td class="align-middle pr-3" colspan="3">
-                                    <div class="row">
-                                        <div class="col text-center" data-toggle="tooltip" data-placement="top"
-                                             title="表示"><a class="btn btn-ec-actionIcon"
-                                                           href="https://demo3.ec-cube.net/products/detail/3"
-                                                           target="_blank"><i class="fa fa-eye fa-lg text-secondary"
-                                                                              aria-hidden="true"></i></a></div>
-                                        <div class="col text-center" data-toggle="tooltip" data-placement="top"
-                                             title="複製"><a class="btn btn-ec-actionIcon"><i
-                                                        class="fa fa-files-o fa-lg text-secondary"
-                                                        aria-hidden="true"></i></a></div>
-                                        <div class="col text-center" data-toggle="tooltip" data-placement="top"
-                                             title="廃止"><a class="btn btn-ec-actionIcon" data-toggle="modal"
-                                                           data-target="#discontinuance"><i
-                                                        class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="table-ec-lightGray">
-                                <td class="align-middle pl-3">
-                                    <input type="checkbox" name="filter" value="open">
-                                </td>
-                                <td class="align-middle">30</td>
-                                <td class="align-middle"><a href="/product/register"><img
-                                                src="http://via.placeholder.com/50x50"></a></td>
-                                <td class="align-middle"><a href="/product/register">ステンレス鍋100mm</a></td>
-                                <td class="align-middle">nabe100</td>
-                                <td class="align-middle">12,000</td>
-                                <td class="align-middle">4</td>
-                                <td class="align-middle">非公開</td>
-                                <td class="align-middle">2017/01/12</td>
-                                <td class="align-middle">2017/07/12</td>
-                                <td class="align-middle pr-3" colspan="3">
-                                    <div class="row">
-                                        <div class="col text-center" data-toggle="tooltip" data-placement="top"
-                                             title="表示"><a class="btn btn-ec-actionIcon"
-                                                           href="https://demo3.ec-cube.net/products/detail/3"
-                                                           target="_blank"><i class="fa fa-eye fa-lg text-secondary"
-                                                                              aria-hidden="true"></i></a></div>
-                                        <div class="col text-center" data-toggle="tooltip" data-placement="top"
-                                             title="複製"><a class="btn btn-ec-actionIcon"><i
-                                                        class="fa fa-files-o fa-lg text-secondary"
-                                                        aria-hidden="true"></i></a></div>
-                                        <div class="col text-center" data-toggle="tooltip" data-placement="top"
-                                             title="廃止"><a class="btn btn-ec-actionIcon" data-toggle="modal"
-                                                           data-target="#discontinuance"><i
-                                                        class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="table-danger">
-                                <td class="align-middle pl-3">
-                                    <input type="checkbox" name="filter" value="open">
-                                </td>
-                                <td class="align-middle">29</td>
-                                <td class="align-middle"><a href="/product/register"><img
-                                                src="http://via.placeholder.com/50x50"></a></td>
-                                <td class="align-middle"><a href="/product/register">セラミック包丁</a></td>
-                                <td class="align-middle">sera12</td>
-                                <td class="align-middle">12,000</td>
-                                <td class="align-middle">0</td>
-                                <td class="align-middle">公開</td>
-                                <td class="align-middle">2017/01/12</td>
-                                <td class="align-middle">2017/07/12</td>
-                                <td class="align-middle pr-3" colspan="3">
-                                    <div class="row">
-                                        <div class="col text-center" data-toggle="tooltip" data-placement="top"
-                                             title="表示"><a class="btn btn-ec-actionIcon"
-                                                           href="https://demo3.ec-cube.net/products/detail/3"
-                                                           target="_blank"><i class="fa fa-eye fa-lg text-secondary"
-                                                                              aria-hidden="true"></i></a></div>
-                                        <div class="col text-center" data-toggle="tooltip" data-placement="top"
-                                             title="複製"><a class="btn btn-ec-actionIcon"><i
-                                                        class="fa fa-files-o fa-lg text-secondary"
-                                                        aria-hidden="true"></i></a></div>
-                                        <div class="col text-center" data-toggle="tooltip" data-placement="top"
-                                             title="廃止"><a class="btn btn-ec-actionIcon" data-toggle="modal"
-                                                           data-target="#discontinuance"><i
-                                                        class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="align-middle pl-3">
-                                    <input type="checkbox" name="filter" value="open">
-                                </td>
-                                <td class="align-middle">28</td>
-                                <td class="align-middle"><a href="/product/register"><img
-                                                src="http://via.placeholder.com/50x50"></a></td>
-                                <td class="align-middle"><a href="/product/register">たわし</a></td>
-                                <td class="align-middle">tawa01</td>
-                                <td class="align-middle">12,000</td>
-                                <td class="align-middle">34</td>
-                                <td class="align-middle">公開</td>
-                                <td class="align-middle">2017/01/12</td>
-                                <td class="align-middle">2017/07/12</td>
-                                <td class="align-middle pr-3" colspan="3">
-                                    <div class="row">
-                                        <div class="col text-center" data-toggle="tooltip" data-placement="top"
-                                             title="表示"><a class="btn btn-ec-actionIcon"
-                                                           href="https://demo3.ec-cube.net/products/detail/3"
-                                                           target="_blank"><i class="fa fa-eye fa-lg text-secondary"
-                                                                              aria-hidden="true"></i></a></div>
-                                        <div class="col text-center" data-toggle="tooltip" data-placement="top"
-                                             title="複製"><a class="btn btn-ec-actionIcon"><i
-                                                        class="fa fa-files-o fa-lg text-secondary"
-                                                        aria-hidden="true"></i></a></div>
-                                        <div class="col text-center" data-toggle="tooltip" data-placement="top"
-                                             title="廃止"><a class="btn btn-ec-actionIcon" data-toggle="modal"
-                                                           data-target="#discontinuance"><i
-                                                        class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="align-middle pl-3">
-                                    <input type="checkbox" name="filter" value="open">
-                                </td>
-                                <td class="align-middle">27</td>
-                                <td class="align-middle"><a href="/product/register"><img
-                                                src="http://via.placeholder.com/50x50"></a></td>
-                                <td class="align-middle"><a href="/product/register">おろしがね特級</a></td>
-                                <td class="align-middle">oroshi15</td>
-                                <td class="align-middle">12,000</td>
-                                <td class="align-middle">4</td>
-                                <td class="align-middle">公開</td>
-                                <td class="align-middle">2017/01/12</td>
-                                <td class="align-middle">2017/07/12</td>
-                                <td class="align-middle pr-3" colspan="3">
-                                    <div class="row">
-                                        <div class="col text-center" data-toggle="tooltip" data-placement="top"
-                                             title="表示"><a class="btn btn-ec-actionIcon"
-                                                           href="https://demo3.ec-cube.net/products/detail/3"
-                                                           target="_blank"><i class="fa fa-eye fa-lg text-secondary"
-                                                                              aria-hidden="true"></i></a></div>
-                                        <div class="col text-center" data-toggle="tooltip" data-placement="top"
-                                             title="複製"><a class="btn btn-ec-actionIcon"><i
-                                                        class="fa fa-files-o fa-lg text-secondary"
-                                                        aria-hidden="true"></i></a></div>
-                                        <div class="col text-center" data-toggle="tooltip" data-placement="top"
-                                             title="廃止"><a class="btn btn-ec-actionIcon" data-toggle="modal"
-                                                           data-target="#discontinuance"><i
-                                                        class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="align-middle pl-3">
-                                    <input type="checkbox" name="filter" value="open">
-                                </td>
-                                <td class="align-middle">26</td>
-                                <td class="align-middle"><a href="/product/register"><img
-                                                src="http://via.placeholder.com/50x50"></a></td>
-                                <td class="align-middle"><a href="/product/register">ステンレス水筒</a></td>
-                                <td class="align-middle">suito-01 ～ suito-09</td>
-                                <td class="align-middle"> 12,000</td>
-                                <td class="align-middle">2</td>
-                                <td class="align-middle">公開</td>
-                                <td class="align-middle">2017/01/12</td>
-                                <td class="align-middle">2017/07/12</td>
-                                <td class="align-middle pr-3" colspan="3">
-                                    <div class="row">
-                                        <div class="col text-center" data-toggle="tooltip" data-placement="top"
-                                             title="表示"><a class="btn btn-ec-actionIcon"
-                                                           href="https://demo3.ec-cube.net/products/detail/3"
-                                                           target="_blank"><i class="fa fa-eye fa-lg text-secondary"
-                                                                              aria-hidden="true"></i></a></div>
-                                        <div class="col text-center" data-toggle="tooltip" data-placement="top"
-                                             title="複製"><a class="btn btn-ec-actionIcon"><i
-                                                        class="fa fa-files-o fa-lg text-secondary"
-                                                        aria-hidden="true"></i></a></div>
-                                        <div class="col text-center" data-toggle="tooltip" data-placement="top"
-                                             title="廃止"><a class="btn btn-ec-actionIcon" data-toggle="modal"
-                                                           data-target="#discontinuance"><i
-                                                        class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="align-middle pl-3">
-                                    <input type="checkbox" name="filter" value="open">
-                                </td>
-                                <td class="align-middle">25</td>
-                                <td class="align-middle"><a href="/product/register"><img
-                                                src="http://via.placeholder.com/50x50"></a></td>
-                                <td class="align-middle"><a href="/product/register">ウォーターサーバ</a></td>
-                                <td class="align-middle">ws1</td>
-                                <td class="align-middle">12,000</td>
-                                <td class="align-middle">5</td>
-                                <td class="align-middle">公開</td>
-                                <td class="align-middle">2017/01/12</td>
-                                <td class="align-middle">2017/07/12</td>
-                                <td class="align-middle pr-3" colspan="3">
-                                    <div class="row">
-                                        <div class="col text-center" data-toggle="tooltip" data-placement="top"
-                                             title="表示"><a class="btn btn-ec-actionIcon"
-                                                           href="https://demo3.ec-cube.net/products/detail/3"
-                                                           target="_blank"><i class="fa fa-eye fa-lg text-secondary"
-                                                                              aria-hidden="true"></i></a></div>
-                                        <div class="col text-center" data-toggle="tooltip" data-placement="top"
-                                             title="複製"><a class="btn btn-ec-actionIcon"><i
-                                                        class="fa fa-files-o fa-lg text-secondary"
-                                                        aria-hidden="true"></i></a></div>
-                                        <div class="col text-center" data-toggle="tooltip" data-placement="top"
-                                             title="廃止"><a class="btn btn-ec-actionIcon" data-toggle="modal"
-                                                           data-target="#discontinuance"><i
-                                                        class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+
                             </tbody>
                         </table>
                     </div>
