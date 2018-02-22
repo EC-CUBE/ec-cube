@@ -67,12 +67,12 @@ class Step4Type extends AbstractType
             $database['pdo_mysql'] = 'MySQL';
         }
         if (extension_loaded('pdo_sqlite')) {
-            $database['pdo_sqlite'] = 'SQLite(開発者用)';
+            $database['pdo_sqlite'] = 'step4.label.sqllite';
         }
 
         $builder
             ->add('database', ChoiceType::class, [
-                'label' => 'データベースの種類',
+                'label' => 'step4.label.database',
                 'choices' => array_flip($database),
                 'expanded' => false,
                 'multiple' => false,
@@ -81,27 +81,27 @@ class Step4Type extends AbstractType
                 ],
             ])
             ->add('database_host', TextType::class, [
-                'label' => 'データベースのホスト名',
+                'label' => 'step4.label.database_host_name',
                 'required' => false,
             ])
             ->add('database_port', TextType::class, [
-                'label' => 'ポート番号',
+                'label' => 'step4.label.port_num',
                 'required' => false,
             ])
             ->add('database_name', TextType::class, [
-                'label' => 'データベース名',
+                'label' => 'step4.label.db_name',
                 'constraints' => [
                     new Assert\Callback([$this, 'validate']),
                 ],
             ])
             ->add('database_user', TextType::class, [
-                'label' => 'ユーザ名',
+                'label' => 'step4.label.user_name',
                 'constraints' => [
                     new Assert\Callback([$this, 'validate']),
                 ],
             ])
             ->add('database_password', PasswordType::class, array(
-                'label' => 'パスワード',
+                'label' => 'step4.label.pass',
                 'required' => false,
             ))
             ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {

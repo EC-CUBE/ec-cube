@@ -250,7 +250,7 @@ class MypageController extends AbstractController
                         $OrderItem->getQuantity()
                     )->save();
                 } else {
-                    log_info($this->translator->trans('cart.product.delete'), array($id));
+                    log_info(trans('cart.product.delete'), array($id));
                     $this->addRequestError('cart.product.delete');
                 }
             } catch (CartException $e) {

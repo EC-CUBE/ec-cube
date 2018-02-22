@@ -43,7 +43,7 @@ class MailType extends AbstractType
     {
         $builder
             ->add('template', MailTemplateType::class, array(
-                'label' => 'テンプレート',
+                'label' => 'mailtype.label.tmpl',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
@@ -51,21 +51,21 @@ class MailType extends AbstractType
                 'mapped' => false,
             ))
             ->add('mail_subject', TextType::class, array(
-                'label' => '件名',
+                'label' => 'mailtype.label.titles',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
             ))
             ->add('mail_header', TextareaType::class, array(
-                'label' => 'ヘッダー',
+                'label' => 'mailtype.label.headers',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
             ))
             ->add('mail_footer', TextareaType::class, array(
-                'label' => 'フッター',
+                'label' => 'mailtype.label.footers',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),

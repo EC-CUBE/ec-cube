@@ -41,6 +41,11 @@ class MemberType extends AbstractType
     protected $eccubeConfig;
 
     /**
+     * @var string
+     */
+    protected $blankMessage = 'admin.system.member.form.not.blank';
+
+    /**
      * MemberType constructor.
      *
      * @param EccubeConfig $eccubeConfig
@@ -58,24 +63,24 @@ class MemberType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, array(
-                'label' => '名前',
+                'label' => 'member.label.name',
                 'constraints' => array(
-                    new Assert\NotBlank(),
+                    new Assert\NotBlank(array('message' => $this->blankMessage)),
                     new Assert\Length(array('max' => $this->eccubeConfig['eccube_stext_len'])),
                 ),
             ))
             ->add('department', TextType::class, array(
                 'required' => false,
-                'label' => '所属',
+                'label' => 'member.label.organization',
                 'constraints' => array(
-                    new Assert\NotBlank(),
+                    new Assert\NotBlank(array('message' => $this->blankMessage)),
                     new Assert\Length(array('max' => $this->eccubeConfig['eccube_stext_len'])),
                 ),
             ))
             ->add('login_id', TextType::class, array(
-                'label' => 'ログインID',
+                'label' => 'member.label.login_id',
                 'constraints' => array(
-                    new Assert\NotBlank(),
+                    new Assert\NotBlank(array('message' => $this->blankMessage)),
                     new Assert\Length(array(
                         'min' => $this->eccubeConfig['eccube_id_min_len'],
                         'max' => $this->eccubeConfig['eccube_id_max_len'],
@@ -86,13 +91,13 @@ class MemberType extends AbstractType
             ->add('password', RepeatedType::class, array(
                 // 'type' => 'password',
                 'first_options'  => array(
-                    'label' => 'パスワード',
+                    'label' => 'member.label.pass',
                 ),
                 'second_options' => array(
-                    'label' => 'パスワード(確認)',
+                    'label' => 'member.label.varify_pass',
                 ),
                 'constraints' => array(
-                    new Assert\NotBlank(),
+                    new Assert\NotBlank(array('message' => $this->blankMessage)),
                     new Assert\Length(array(
                         'min' => $this->eccubeConfig['eccube_id_min_len'],
                         'max' => $this->eccubeConfig['eccube_id_max_len'],
@@ -101,22 +106,22 @@ class MemberType extends AbstractType
                 ),
             ))
             ->add('Authority', EntityType::class, array(
-                'label' => '権限',
+                'label' => 'admin.setting.system.member.689',
                 'class' => 'Eccube\Entity\Master\Authority',
                 'expanded' => false,
                 'multiple' => false,
                 'placeholder' => 'form.empty_value',
                 'constraints' => array(
-                    new Assert\NotBlank(),
+                    new Assert\NotBlank(array('message' => $this->blankMessage)),
                 ),
             ))
             ->add('Work', EntityType::class, array(
-                'label' => '稼働/非稼働',
+                'label' => 'admin.setting.system.member.690',
                 'class' => 'Eccube\Entity\Master\Work',
                 'expanded' => true,
                 'multiple' => false,
                 'constraints' => array(
-                    new Assert\NotBlank(),
+                    new Assert\NotBlank(array('message' => $this->blankMessage)),
                 ),
             ))
         ;

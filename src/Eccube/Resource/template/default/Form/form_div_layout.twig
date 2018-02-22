@@ -15,7 +15,7 @@
 {%- block form_label -%}
     {{ parent() }}
     {%- if required -%}
-        <span class="ec-required">必須</span>
+        <span class="ec-required">{{'common.text.message.required'|trans}}</span>
     {%- endif -%}
 {%- endblock form_label -%}
 

@@ -84,7 +84,7 @@ class MainEditType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, array(
-                'label' => '名称',
+                'label' => 'mainedit.label.name',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
@@ -107,7 +107,7 @@ class MainEditType extends AbstractType
                 ),
             ))
             ->add('file_name', TextType::class, array(
-                'label' => 'ファイル名',
+                'label' => 'mainedit.label.file_name',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
@@ -196,7 +196,7 @@ class MainEditType extends AbstractType
                 'mapped' => false,
                 'placeholder' => '---',
                 'required' => false,
-                'label' => 'スマホ',
+                'label' => 'mainedit.label.smartphone',
                 'class' => Layout::class,
                 'query_builder' => function (EntityRepository $er) {
                     $DeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_SP);
@@ -249,7 +249,7 @@ class MainEditType extends AbstractType
                     ->getQuery()
                     ->getResult();
                 if (count($Page) > 0) {
-                    $form['url']->addError(new FormError('※ 同じURLのデータが存在しています。別のURLを入力してください。'));
+                    $form['url']->addError(new FormError('mainedit.text.error.url_exists'));
                 }
             });
     }

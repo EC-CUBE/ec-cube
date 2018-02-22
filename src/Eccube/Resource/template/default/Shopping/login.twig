@@ -27,7 +27,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
     <div class="ec-role">
         <div class="ec-pageHeader">
-            <h1>ログイン</h1>
+            <h1>{{'mypage.label.login'|trans}}</h1>
         </div>
     </div>
 
@@ -79,14 +79,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="ec-grid2">
                             <div class="ec-grid2__cell">
                                 <div class="ec-login__actions">
-                                    <button type="submit" class="ec-blockBtn--cancel">ログイン</button>
+                                    <button type="submit" class="ec-blockBtn--cancel">{{'mypage.label.log_in'|trans}}</button>
                                     {#<a class="ec-blockBtn--cancel" href="/moc/guest/login/error">ログイン</a>#}
                                 </div>
                             </div>
                             <div class="ec-grid2__cell">
-                                <div class="ec-login__link"><a class="ec-link" href="{{ url('forgot') }}">ログイン情報をお忘れですか?</a>
+                                <div class="ec-login__link"><a class="ec-link" href="{{ url('forgot') }}">{{'mypage.text.message.forgot_login'|trans}}</a>
                                 </div>
-                                <div class="ec-login__link"><a class="ec-link" href="{{ url('entry') }}">新規会員登録</a>
+                                <div class="ec-login__link"><a class="ec-link" href="{{ url('entry') }}">{{'mypage.label.register'|trans}}</a>
                                 </div>
                             </div>
                         </div>
@@ -98,8 +98,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <div class="ec-grid3__cell">
                     <div class="ec-guest">
                         <div class="ec-guest__inner">
-                            <p>会員登録をせずに購入手続きをされたい方は、下記よりお進みください。</p>
-                            <div class="ec-guest__actions"><a class="ec-blockBtn--cancel" href="{{ url('shopping_nonmember') }}">ゲスト購入</a>
+                            <p>{{'shopping.message.proceed'|trans}}</p>
+                            <div class="ec-guest__actions"><a class="ec-blockBtn--cancel" href="{{ url('shopping_nonmember') }}">{{'shopping.label.continue_guest'|trans}}</a>
                             </div>
                         </div>
                     </div>

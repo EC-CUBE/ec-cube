@@ -86,12 +86,12 @@ class ClassCategoryController extends AbstractController
         //
         $ClassName = $this->classNameRepository->find($class_name_id);
         if (!$ClassName) {
-            throw new NotFoundHttpException('商品規格が存在しません');
+            throw new NotFoundHttpException(trans('classcategory.text.error.no_option'));
         }
         if ($id) {
             $TargetClassCategory = $this->classCategoryRepository->find($id);
             if (!$TargetClassCategory || $TargetClassCategory->getClassName() != $ClassName) {
-                throw new NotFoundHttpException('商品規格が存在しません');
+                throw new NotFoundHttpException(trans('classcategory.text.error.no_option'));
             }
         } else {
             $TargetClassCategory = new \Eccube\Entity\ClassCategory();
@@ -159,7 +159,7 @@ class ClassCategoryController extends AbstractController
 
         $ClassName = $this->classNameRepository->find($class_name_id);
         if (!$ClassName) {
-            throw new NotFoundHttpException('商品規格が存在しません');
+            throw new NotFoundHttpException(trans('classcategory.text.error.no_option'));
         }
 
         log_info('規格分類削除開始', array($id));
@@ -198,7 +198,7 @@ class ClassCategoryController extends AbstractController
             } catch (\Exception $e) {
                 log_error('規格分類削除エラー', array($id, $e));
 
-                $message = $this->translator->trans('admin.delete.failed.foreign_key', ['%name%' => '規格分類']);
+                $message = trans('admin.delete.failed.foreign_key', ['%name%' => trans('classcategory.text.name')]);
                 $this->addError($message, 'admin');            }
         }
 
@@ -215,7 +215,7 @@ class ClassCategoryController extends AbstractController
 
         $ClassName = $this->classNameRepository->find($class_name_id);
         if (!$ClassName) {
-            throw new NotFoundHttpException('商品規格が存在しません');
+            throw new NotFoundHttpException(trans('classcategory.text.error.no_option'));
         }
 
         log_info('規格分類表示変更開始', array($id));
