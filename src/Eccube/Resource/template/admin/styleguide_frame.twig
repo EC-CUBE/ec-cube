@@ -34,18 +34,8 @@
                 </h2>
             </div>
         </div>
-        <div class="alert alert-primary alert-dismissible fade show m-3" role="alert"><i class="fa fa-comment fa-lg mr-2"></i><span class="font-weight-bold">アラート：通常</span>
-            <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-        </div>
-        <div class="alert alert-success alert-dismissible fade show m-3" role="alert"><i class="fa fa-check fa-lg mr-2"></i><span class="font-weight-bold">アラート：成功</span>
-            <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-        </div>
-        <div class="alert alert-danger alert-dismissible fade show m-3" role="alert"><i class="fa fa-warning fa-lg mr-2"></i><span class="font-weight-bold">アラート：失敗</span>
-            <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-        </div>
-        <div class="alert alert-warning alert-dismissible fade show m-3" role="alert"><i class="fa fa-warning fa-lg mr-2"></i><span class="font-weight-bold">アラート：警告</span>
-            <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-        </div>
+
+        {{ include('@admin/styleguide_alert.twig') }}
 
         {% block main %}{% endblock %}
 
