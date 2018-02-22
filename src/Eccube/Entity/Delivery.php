@@ -220,19 +220,6 @@ class Delivery extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get serviceName for Admin.
-     * @return string
-     */
-    public function getServiceNameForAdmin()
-    {
-        if ($this->isVisible()) {
-            return $this->getServiceName();
-        } else {
-            return $this->getServiceName().'(非表示)';
-        }
-    }
-
-    /**
      * Set description.
      *
      * @param string|null $description

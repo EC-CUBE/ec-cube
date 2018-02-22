@@ -45,26 +45,26 @@ class OrderMailType extends AbstractType
     {
         $builder
             ->add('template', MailTemplateType::class, array(
-                'label' => 'テンプレート',
+                'label' => 'ordermail.label.templates',
                 'required' => true,
                 'mapped' => false,
             ))
             ->add('mail_subject', TextType::class, array(
-                'label' => 'タイトル',
+                'label' => 'ordermail.label.titles',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
             ))
             ->add('mail_header', TextareaType::class, array(
-                'label' => 'ヘッダー',
+                'label' => 'ordermail.label.headers',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
             ))
             ->add('mail_footer', TextareaType::class, array(
-                'label' => 'フッター',
+                'label' => 'ordermail.label.footers',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),

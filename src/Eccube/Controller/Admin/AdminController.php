@@ -131,12 +131,12 @@ class AdminController extends AbstractController
         if (isset($this->eccubeConfig['eccube_install']) && $this->eccubeConfig['eccube_install'] == 1) {
             $file = $this->eccubeConfig['root_dir'] . '/html/install.php';
             if (file_exists($file)) {
-                $message = $this->translator->trans('admin.install.warning', array('installphpPath' => 'html/install.php'));
+                $message = trans('admin.install.warning', array('installphpPath' => 'html/install.php'));
                 $this->addWarning($message, 'admin');
             }
             $fileOnRoot = $this->eccubeConfig['root_dir'] . '/install.php';
             if (file_exists($fileOnRoot)) {
-                $message = $this->translator->trans('admin.install.warning', array('installphpPath' => 'install.php'));
+                $message = trans('admin.install.warning', array('installphpPath' => 'install.php'));
                 $this->addWarning($message, 'admin');
             }
         }

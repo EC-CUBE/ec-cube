@@ -41,6 +41,7 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -227,7 +228,7 @@ class ProductController extends AbstractController
             null,
             array(
                 'required' => false,
-                'label' => '表示件数',
+                'label' => trans('productcontroller.label.result'),
                 'allow_extra_fields' => true,
             )
         );
@@ -254,7 +255,7 @@ class ProductController extends AbstractController
             null,
             array(
                 'required' => false,
-                'label' => '表示順',
+                'label' => trans('productcontroller.label.sort'),
                 'allow_extra_fields' => true,
             )
         );
@@ -293,6 +294,7 @@ class ProductController extends AbstractController
      * @Method("GET")
      * @Route("/products/detail/{id}", name="product_detail", requirements={"id" = "\d+"})
      * @Template("Product/detail.twig")
+     * @ParamConverter("Product", options={"repository_method" = "findWithSortedClassCategories"})
      * @param Request $request
      * @param Product $Product
      * @return array
@@ -520,11 +522,11 @@ class ProductController extends AbstractController
     private function getPageTitle($searchData)
     {
         if (isset($searchData['name']) && !empty($searchData['name'])) {
-            return '検索結果';
+            return trans('productcontroller.text.return.search');
         } elseif (isset($searchData['category_id']) && $searchData['category_id']) {
             return $searchData['category_id']->getName();
         } else {
-            return '全商品';
+            return trans('productcontroller.text.return.all_products');
         }
     }
 

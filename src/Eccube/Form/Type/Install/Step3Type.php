@@ -64,7 +64,7 @@ class Step3Type extends AbstractType
     {
         $builder
             ->add('shop_name', TextType::class, array(
-                'label' => 'あなたの店名',
+                'label' => 'step3.label.store_name',
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
@@ -73,7 +73,7 @@ class Step3Type extends AbstractType
                 ),
             ))
             ->add('email', EmailType::class, array(
-                'label' => 'メールアドレス（受注メールなどの宛先になります）',
+                'label' => 'step3.label.email',
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Email(array('strict' => true)),
@@ -119,27 +119,27 @@ class Step3Type extends AbstractType
                 ),
             ))
             ->add('admin_force_ssl', CheckboxType::class, array(
-                'label' => 'サイトへのアクセスを、SSL（https）経由に制限します',
+                'label' => 'step3.label.ssl',
                 'required' => false,
             ))
             ->add('admin_allow_hosts', TextareaType::class, array(
-                'label' => '管理画面へのアクセスを、以下のIPに制限します',
+                'label' => 'step3.label.ips',
                 'required' => false,
             ))
             ->add('smtp_host', TextType::class, array(
-                'label' => 'SMTPホスト',
+                'label' => 'step3.label.smtp_host',
                 'required' => false,
             ))
             ->add('smtp_port', TextType::class, array(
-                'label' => 'SMTPポート',
+                'label' => 'step3.label.smtp_port',
                 'required' => false,
             ))
             ->add('smtp_username', TextType::class, array(
-                'label' => 'SMTPユーザー',
+                'label' => 'step3.label.smtp_user',
                 'required' => false,
             ))
             ->add('smtp_password', PasswordType::class, array(
-                'label' => 'SMTPパスワード',
+                'label' => 'step3.label.smtp_pass',
                 'required' => false,
             ))
             ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {

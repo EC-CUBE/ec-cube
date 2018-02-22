@@ -25,13 +25,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <table class="table table-hover table-condensed">
                 <thead>
                 <tr>
-                    <th>プラグイン名</th>
-                    <th>プラグインアイコン画像</th>
-                    <th>プラグインバージョン</th>
-                    <th>プラグインコード</th>
-                    <th>アップデート</th>
-                    <th>設定</th>
-                    <th>制作者</th>
+                    <th>{{'admin.store.plugin_table_official.901'|trans}}</th>
+                    <th>{{'admin.store.plugin_table_official.902'|trans}}</th>
+                    <th>{{'admin.store.plugin_table_official.903'|trans}}</th>
+                    <th>{{'admin.store.plugin_table_official.904'|trans}}</th>
+                    <th>{{'admin.store.plugin_table_official.905'|trans}}</th>
+                    <th>{{'admin.store.plugin_table_official.906'|trans}}</th>
+                    <th>{{'admin.store.plugin_table_official.907'|trans}}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -40,22 +40,22 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     {% set pluginDetail = officialPluginsDetail[key] %}
                         <tr class="{% if Plugin.enabled == false %}active{% endif %}">
                             <td class="tp">
-                                <strong>{{ Plugin.name }}</strong>{% if Plugin.enabled == 0 %}<span class="text-danger"> (停止中)</span>{% endif %}<br>
+                                <strong>{{ Plugin.name }}</strong>{% if Plugin.enabled == 0 %}<span class="text-danger"> {{'admin.store.plugin_table_official.908'|trans}}</span>{% endif %}<br>
                                 {% if Plugin.enabled %}
                                     <a href="{{ url('admin_store_plugin_disable', { id : Plugin.id }) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">
-                                        無効にする
+                                        {{'admin.store.plugin_table_official.909'|trans}}
                                     </a>
                                 {% else %}
                                     <a href="{{ url('admin_store_plugin_enable', { id : Plugin.id }) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">
-                                        有効にする
+                                        {{'admin.store.plugin_table_official.910'|trans}}
                                     </a>
                                 {% endif %}
                                 /
                                 {% if Plugin.enabled %}
-                                    <span class="disabled">削除</span>
+                                    <span class="disabled">{{'admin.store.plugin_table_official.911'|trans}}</span>
                                 {% else %}
                                     <a href="{{ url('admin_store_plugin_delete_confirm', { id : Plugin.id }) }}">
-                                        削除
+                                        {{'admin.store.plugin_table_official.911'|trans}}
                                     </a>
                                 {% endif %}
                             </td>
@@ -72,21 +72,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             </td>
                             <td class="tu">
                                 {% if pluginDetail.update_status == 1 %}
-                                    新バージョンのプラグインが利用可能です。
-                                    <a class="btn btn-default btn-xs" href="{{ url('admin_store_plugin_update_confirm', {'id': Plugin.id}) }}">アップデート</a>
+                                    {{'admin.store.plugin_table_official.913'|trans}}
+                                    <a class="btn btn-default btn-xs" href="{{ url('admin_store_plugin_update_confirm', {'id': Plugin.id}) }}">{{'admin.store.plugin_table_official.916'|trans}}</a>
                                     <ul class="plugin-meta dl-horizontal">
                                         <li class="plugin-version">プラグインバージョン : {{ pluginDetail.version }}</li>
                                         <li class="plugin-version">EC-CUBE対応バージョン : {% for version in pluginDetail.eccube_version %}{{ version }} {%- if loop.last == false%}, {% endif -%}{% endfor %}</li>
                                         <li class="plugin-update">更新日 : {{ pluginDetail.last_update_date|time_ago }}</li>
                                     </ul>
                                 {% else %}
-                                    <p>アップデート対象プラグインはありません。</p>
+                                    <p>{{'admin.store.plugin_table_official.920'|trans}}。</p>
                                 {% endif %}
-                                <p><a href="{{ pluginDetail.product_url }}" target="_blank">詳細情報</a></p>
+                                <p><a href="{{ pluginDetail.product_url }}" target="_blank">{{'admin.store.plugin_table_official.921'|trans}}</a></p>
                             </td>
                             <td class="ta text-center">
                                 {% if configPages[Plugin.code] is defined %}
-                                   <a href='{{configPages[Plugin.code]}}'>設定</a>
+                                   <a href='{{configPages[Plugin.code]}}'>{{'admin.store.plugin_table_official.922'|trans}}</a>
                                 {% endif %}
                             </td>
                             <td class="tv">
@@ -100,6 +100,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     </div>
 {% else %}
     <div class="text-danger">
-        インストールされているプラグインはありません。
+        {{'admin.store.plugin_table_official.923'|trans}}
     </div>
 {% endif %}

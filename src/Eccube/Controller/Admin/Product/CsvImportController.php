@@ -16,7 +16,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
+ * You should have received a copy of the GNU General Public License'csvimport.text.error.format'
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
@@ -189,21 +189,21 @@ class CsvImportController
                     log_info('商品CSV登録開始');
                     $data = $this->getImportData($formFile);
                     if ($data === false) {
-                        $this->addErrors('CSVのフォーマットが一致しません。');
+                        $this->addErrors(trans('csvimport.text.error.format_invalid'));
                         return $this->render($form, $headers);
                     }
                     $arrRequireHeader = array('公開ステータス(ID)', '商品名', '販売種別(ID)', '在庫数無制限フラグ', '販売価格');
                     $columnHeaders = $data->getColumnHeaders();
 
                     if (count(array_diff($arrRequireHeader, $columnHeaders)) > 0) {
-                        $this->addErrors('CSVのフォーマットが一致しません。');
+                        $this->addErrors(trans('csvimport.text.error.format_invalid'));
                         return $this->render($form, $headers);
                     }
 
                     $size = count($data);
 
                     if ($size < 1) {
-                        $this->addErrors('CSVデータが存在しません。');
+                        $this->addErrors(trans('csvimport.text.error.data_not_found'));
                         return $this->render($form, $headers);
                     }
 
@@ -513,7 +513,7 @@ class CsvImportController
                     log_info('カテゴリCSV登録開始');
                     $data = $this->getImportData($formFile);
                     if ($data === false) {
-                        $this->addErrors('CSVのフォーマットが一致しません。');
+                        $this->addErrors(trans('csvimport.text.error.format_invalid'));
 
                         return $this->render($form, $headers);
                     }
@@ -525,14 +525,14 @@ class CsvImportController
 
                     $columnHeaders = $data->getColumnHeaders();
                     if (count(array_diff($requireHeader, $columnHeaders)) > 0) {
-                        $this->addErrors('CSVのフォーマットが一致しません。');
+                        $this->addErrors(trans('csvimport.text.error.format_invalid'));
 
                         return $this->render($form, $headers);
                     }
 
                     $size = count($data);
                     if ($size < 1) {
-                        $this->addErrors('CSVデータが存在しません。');
+                        $this->addErrors(trans('csvimport.text.error.data_not_found'));
 
                         return $this->render($form, $headers);
                     }

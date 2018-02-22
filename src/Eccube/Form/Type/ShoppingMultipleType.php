@@ -57,14 +57,14 @@ class ShoppingMultipleType extends AbstractType
             ->add('deliveryDuration', ChoiceType::class, array(
                 'choices' => array_flip($deliveryDurations),
                 'required' => false,
-                'placeholder' => '指定なし',
+                'placeholder' => 'shoppingmultiple.placeholder.not_selected',
             ))
             ->add('deliveryTime', EntityType::class, array(
                 'class' => 'Eccube\Entity\DeliveryTime',
                 'choice_label' => 'deliveryTime',
                 'choices' => $delivery->getDeliveryTimes(),
                 'required' => false,
-                'placeholder' => '指定なし',
+                'placeholder' => 'shoppingmultiple.placeholder.not_selected',
             ));
 
     }

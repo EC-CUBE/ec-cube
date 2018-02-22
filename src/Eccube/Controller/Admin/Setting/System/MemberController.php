@@ -296,7 +296,7 @@ class MemberController extends AbstractController
         } catch (\Exception $e) {
             log_info('メンバー削除エラー', [$Member->getId(), $e]);
 
-            $message = $this->translator->trans('admin.delete.failed.foreign_key', ['%name%' => 'メンバー']);
+            $message = trans('admin.delete.failed.foreign_key', ['%name%' => trans('member.text.name')]);
             $this->addError($message, 'admin');
         }
 

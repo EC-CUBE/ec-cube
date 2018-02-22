@@ -59,11 +59,11 @@
     <table class="table">
         <thead >
             <tr id="search_customer_modal_box__body_inner_header">
-                <th>会員ID</th>
-                <th>お名前(カナ)</th>
-                <th>電話番号</th>
-                <th>メールアドレス</th>
-                <th>決定</th>
+                <th>{{'admin.order.search_customer.373'|trans}}</th>
+                <th>{{'admin.order.search_customer.374'|trans}}</th>
+                <th>{{'admin.order.search_customer.375'|trans}}</th>
+                <th>{{'admin.order.search_customer.376'|trans}}</th>
+                <th>{{'admin.order.search_customer.377'|trans}}</th>
             </tr>
         </thead>
         <tbody>
@@ -82,7 +82,7 @@
                         {{ Customer.email }}
                     </td>
                     <td>
-                        <button type="button" class="btn btn-default btn-sm set-customer" data-customer="{{ Customer.id }}">決定</button>
+                        <button type="button" class="btn btn-default btn-sm set-customer" data-customer="{{ Customer.id }}">{{'admin.order.search_customer.378'|trans}}</button>
                     </td>
                 </tr>
             {% endfor %}

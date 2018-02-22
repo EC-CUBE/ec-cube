@@ -25,7 +25,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         {% if level1.has_child is defined and level1.has_child == true %}
             <a class="toggle">
                 <svg class="cb {{ level1.icon }}"> <use xlink:href="#{{ level1.icon }}" /></svg>
-                {{ level1.name }}
+                {{ level1.name|trans }}
                 <svg class="cb cb-angle-down"> <use xlink:href="#cb-angle-down" /></svg>
             </a>
             <ul {% if active_menus(menus)[0] == level1.id %}class="active" style="display: block;"{% endif %}>
@@ -35,7 +35,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <li class="{% if active_menus(menus)[1] == level2.id %}active{% endif %}">
                         {% if level2.has_child is defined and level2.has_child == true %}
                             <a class="toggle">
-                                {{ level2.name }}
+                                {{ level2.name|trans }}
                                 <svg class="cb cb-angle-down"> <use xlink:href="#cb-angle-down" /></svg>
                             </a>
                             <ul {% if active_menus(menus)[1] == level2.id %}class="active" style="display: block;"{% endif %}>
@@ -44,7 +44,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {% else %}
                                     <li class="{% if active_menus(menus)[2] == level3.id %}active{% endif %}">
                                         <a href="{{ url(level3.url) }}">
-                                            {{ level3.name }}
+                                            {{ level3.name|trans }}
                                         </a>
                                     </li>
                                     {% endif %}
@@ -52,7 +52,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             </ul>
                         {% else %}
                             <a href="{{ url(level2.url) }}">
-                                {{ level2.name }}
+                                {{ level2.name|trans }}
                             </a>
                         {% endif %}
                     </li>
@@ -62,10 +62,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         {% else %}
             {% if level1.url is defined %}
                 <a href="{{ url(level1.url) }}">
-                    {{ level1.name }}
+                    {{ level1.name|trans }}
                 </a>
             {% else %}
-                {{ level1.name }}
+                {{ level1.name|trans }}
             {% endif %}
         {% endif %}
     </li>

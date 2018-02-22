@@ -393,56 +393,8 @@ class Product extends \Eccube\Entity\AbstractEntity
         return count($codes) ? max($codes) : null;
     }
 
-    /**
-     * Get ClassCategories
-     *
-     * @return array
-     */
-    public function getClassCategories()
+    public function getMainListImage()
     {
-        $this->_calc();
-
-        $class_categories = array(
-            '__unselected' => array(
-                '__unselected' => array(
-                    'name'              => '選択してください',
-                    'product_class_id'  => '',
-                ),
-            ),
-        );
-        foreach ($this->getProductClasses() as $ProductClass) {
-            /* @var $ProductClass \Eccube\Entity\ProductClass */
-            $ClassCategory1 = $ProductClass->getClassCategory1();
-            $ClassCategory2 = $ProductClass->getClassCategory2();
-            if ($ClassCategory2 && !$ClassCategory2->isVisible()) {
-                continue;
-            }
-            $class_category_id1 = $ClassCategory1 ? (string) $ClassCategory1->getId() : '__unselected2';
-            $class_category_id2 = $ClassCategory2 ? (string) $ClassCategory2->getId() : '';
-            $class_category_name1 = $ClassCategory1 ? $ClassCategory1->getName() . ($ProductClass->getStockFind() ? '' : ' (品切れ中)') : '';
-            $class_category_name2 = $ClassCategory2 ? $ClassCategory2->getName() . ($ProductClass->getStockFind() ? '' : ' (品切れ中)') : '';
-
-            $class_categories[$class_category_id1]['#'] = array(
-                'classcategory_id2' => '',
-                'name'              => '選択してください',
-                'product_class_id'  => '',
-            );
-            $class_categories[$class_category_id1]['#'.$class_category_id2] = array(
-                'classcategory_id2' => $class_category_id2,
-                'name'              => $class_category_name2,
-                'stock_find'        => $ProductClass->getStockFind(),
-                'price01'           => $ProductClass->getPrice01() === null ? '' : number_format($ProductClass->getPrice01IncTax()),
-                'price02'           => number_format($ProductClass->getPrice02IncTax()),
-                'product_class_id'  => (string) $ProductClass->getId(),
-                'product_code'      => $ProductClass->getCode() === null ? '' : $ProductClass->getCode(),
-                'sale_type'      => (string) $ProductClass->getSaleType()->getId(),
-            );
-        }
-
-        return $class_categories;
-    }
-
-    public function getMainListImage() {
         $ProductImages = $this->getProductImage();
         return empty($ProductImages) ? null : $ProductImages[0];
     }

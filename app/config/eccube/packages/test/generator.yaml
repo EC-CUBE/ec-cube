@@ -18,3 +18,4 @@ services:
       - '@session'
       - 'ja_JP'
     lazy: true
+    public: true # Codeception対応

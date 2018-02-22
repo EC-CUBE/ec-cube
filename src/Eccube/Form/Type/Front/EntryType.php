@@ -68,9 +68,7 @@ class EntryType extends AbstractType
             ->add('name', NameType::class, array(
                 'required' => true,
             ))
-            ->add('kana', KanaType::class, array(
-                'required' => true,
-            ))
+            ->add('kana', KanaType::class, array())
             ->add('company_name', TextType::class, array(
                 'required' => false,
                 'constraints' => array(
@@ -114,7 +112,7 @@ class EntryType extends AbstractType
                 NumberType::class,
                 [
                     'required' => false,
-                    'label' => 'ポイント',
+                    'label' => 'ポイント', // TODO 未翻訳
                     'constraints' => array(
                         new Assert\Regex(array(
                             'pattern' => "/^\d+$/u",
