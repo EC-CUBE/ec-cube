@@ -177,6 +177,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <div class="row justify-content-between mb-2">
                     <div class="col-6">
                         <label class="mr-2">一括操作</label>
+                        {# TODO ここのボタンは新機能なので実装が必要 #}
                         <div class="btn-group mr-2" role="group">
                             <button class="btn btn-ec-regular" type="button"><span>公開</span></button>
                             <button class="btn btn-ec-regular" type="button"><span>非公開</span></button>
@@ -197,10 +198,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </div>
                         <div class="d-inline-block">
                             <div class="btn-group" role="group">
-                                <button class="btn btn-ec-regular" type="button"><i
+                                {# TODO onclickは適切ではないのでaタグで実装できるようにする #}
+                                <button class="btn btn-ec-regular" type="button" onclick='location.href="{{ url('admin_product_export') }}"'><i
                                             class="fa fa-cloud-download mr-1 text-secondary"></i><span>CSVダウンロード</span>
                                 </button>
-                                <button class="btn btn-ec-regular" type="button"><i
+                                {# TODO onclickは適切ではないのでaタグで実装できるようにする #}
+                                <button class="btn btn-ec-regular" type="button" onclick='location.href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_PRODUCT') }) }}"'><i
                                             class="fa fa-cog mr-1 text-secondary"></i><span>CSV出力設定</span></button>
                             </div>
                         </div>
