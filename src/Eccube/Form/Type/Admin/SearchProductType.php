@@ -45,6 +45,8 @@ class SearchProductType extends AbstractType
     {
         $app = $this->app;
 
+        $Categories = $this->app['eccube.repository.category']->getList(null, true);
+
         $builder
             ->add('id', 'text', array(
                 'label' => '商品ID',
@@ -60,10 +62,13 @@ class SearchProductType extends AbstractType
                 'required' => false,
             ))
              */
-            ->add('category_id', 'category', array(
+            ->add('category_id', 'entity', array(
                 'label' => 'カテゴリ',
                 'empty_value' => '選択してください',
                 'required' => false,
+                'class' => 'Eccube\Entity\Category',
+                'property' => 'NameWithLevel',
+                'choices' => $Categories,
             ))
             ->add('status', 'disp', array(
                 'label' => '種別',
