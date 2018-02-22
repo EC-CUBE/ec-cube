@@ -245,10 +245,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <td class="align-middle">
                                         <a href="{{ url('admin_product_product_edit', { id : Product.id }) }}">
                                             <img src="{{ asset(Product.mainFileName|no_image_product, 'save_image') }}"
-                                                    style="max-width: 50px">
+                                                 style="max-width: 50px">
                                         </a>
                                     </td>
-                                    <td class="align-middle"><a href="{{ url('admin_product_product_edit', { id : Product.id }) }}">{{ Product.name }}</a></td>
+                                    <td class="align-middle"><a
+                                                href="{{ url('admin_product_product_edit', { id : Product.id }) }}">{{ Product.name }}</a>
+                                    </td>
                                     <td class="align-middle">
                                         {{ Product.code_min }}
                                         {% if Product.code_min != Product.code_max %} ～ {{ Product.code_max }}
@@ -262,23 +264,31 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <td class="align-middle">
                                         {% if (Product.hasProductClass) %}
                                             {# TODO 規格のモーダル表示を実装 #}
-                                            <button class="btn page-link text-dark d-inline-block" type="button" data-toggle="modal" data-target="#standardConfirm">規格確認</button>
-                                            <div class="modal fade" id="standardConfirm" tabindex="-1" role="dialog" aria-labelledby="standardConfirm" aria-hidden="true" style="display: none;">
+                                            <button class="btn page-link text-dark d-inline-block" type="button"
+                                                    data-toggle="modal" data-target="#standardConfirm">規格確認
+                                            </button>
+                                            <div class="modal fade" id="standardConfirm" tabindex="-1" role="dialog"
+                                                 aria-labelledby="standardConfirm" aria-hidden="true"
+                                                 style="display: none;">
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
                                                             <h5 class="modal-title">パーコレーターの規格</h5>
-                                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                            <button class="close" type="button" data-dismiss="modal"
+                                                                    aria-label="Close"><span aria-hidden="true">×</span>
+                                                            </button>
                                                         </div>
                                                         <div class="modal-body">
                                                             <table class="table table-striped">
                                                                 <thead class="table-active">
-                                                                <tr><th class="pt-2 pb-2 pl-2">規格１</th>
+                                                                <tr>
+                                                                    <th class="pt-2 pb-2 pl-2">規格１</th>
                                                                     <th class="pt-2 pb-2">規格２</th>
                                                                     <th class="pt-2 pb-2">商品コード</th>
                                                                     <th class="pt-2 pb-2">在庫数</th>
                                                                     <th class="pt-2 pb-2 pr-2">販売価格（円）</th>
-                                                                </tr></thead>
+                                                                </tr>
+                                                                </thead>
                                                                 <tbody>
                                                                 <tr>
                                                                     <td class="pl-2">プラチナ</td>
@@ -298,7 +308,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                             </table>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button class="btn btn-ec-sub" type="button" data-dismiss="modal">戻る</button><a class="btn btn-ec-conversion" href="/product/register/standard">規格の編集</a>
+                                                            <button class="btn btn-ec-sub" type="button"
+                                                                    data-dismiss="modal">戻る
+                                                            </button>
+                                                            <a class="btn btn-ec-conversion"
+                                                               href="/product/register/standard">規格の編集</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -325,11 +339,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <div class="row">
                                             <div class="col text-center" data-toggle="tooltip" data-placement="top"
                                                  title="表示"><a class="btn btn-ec-actionIcon"
-                                                               href="https://demo3.ec-cube.net/products/detail/3"
+                                                               href="{{ url('product_detail', {id:Product.id}) }}"
                                                                target="_blank"><i class="fa fa-eye fa-lg text-secondary"
                                                                                   aria-hidden="true"></i></a></div>
                                             <div class="col text-center" data-toggle="tooltip" data-placement="top"
-                                                 title="複製"><a class="btn btn-ec-actionIcon"><i
+                                                 title="複製"><a class="btn btn-ec-actionIcon"
+                                                               href="{{ url('admin_product_product_copy', {'id' : Product.id}) }}" {{ csrf_token_for_anchor() }}
+                                                               data-method="post" data-message="商品情報を複製してもよろしいですか？"><i
                                                             class="fa fa-files-o fa-lg text-secondary"
                                                             aria-hidden="true"></i></a></div>
                                             <div class="col text-center" data-toggle="tooltip" data-placement="top"
@@ -357,6 +373,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                                 <button class="btn btn-ec-sub" type="button"
                                                                         data-dismiss="modal">キャンセル
                                                                 </button>
+                                                                {# TODO: 削除のアラートを出さないようにする #}
+                                                                <a href="{{ url('admin_product_product_delete', {'id' : Product.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="商品情報を削除してもよろしいですか？">削除</a>
                                                                 <button class="btn btn-ec-delete" type="button">取扱を停止
                                                                 </button>
                                                             </div>
