@@ -1,8 +1,8 @@
 @import "./variables";
-@import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/forms";
-@import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/tab-focus";
-@import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/vendor-prefixes";
-@import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/tab-focus";
+@import "../../../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/forms";
+@import "../../../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/tab-focus";
+@import "../../../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/vendor-prefixes";
+@import "../../../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/tab-focus";
 
 @mixin forms-reset{
   input[type="search"] {
