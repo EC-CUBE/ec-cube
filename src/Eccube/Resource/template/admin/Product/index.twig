@@ -26,7 +26,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block title %}商品管理{% endblock %}
 {% block sub_title %}商品マスター{% endblock %}
 
-{% form_theme searchForm 'bootstrap_4_layout.html.twig' %}
+{% form_theme searchForm '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block stylesheet %}
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datetimepicker.min.css', 'admin') }}">
@@ -84,16 +84,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% block main %}
     <div class="c-outsideBlock">
-        <form method="post" action="{{ url('admin_product') }}">
+        <form id='search_form' method="post" action="{{ url('admin_product') }}">
             {{ form_widget(searchForm._token) }}
             <div class="c-outsideBlock__contents">
                 <div class="row justify-content-start">
-                    {{ form_widget(searchForm.id, { attr: { placeholder: '商品名・ID・コード', class : 'input_search' } } ) }}
 
                     <div class="col-6">
                         <div class="mb-2">
                             <label class="col-form-label">商品名・商品ID・商品コード</label>
-                            <input class="form-control" type="text">
+                            {{ form_widget(searchForm.id) }}
                         </div>
                         <div class="d-inline-block mb-3" data-toggle="collapse" href="#searchDetail"
                              aria-expanded="false" aria-controls="searchDetail"><a><i
@@ -108,15 +107,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="form-row mb-2">
                             <div class="col-6">
                                 <label class="col-form-label">カテゴリ</label>
-                                <select class="form-control">
-                                    <option>選んでください</option>
-                                    <option>...</option>
-                                </select>
+                                {{ form_widget(searchForm.category_id) }}
                             </div>
                         </div>
                         <div class="form-row mb-2">
                             <div class="col-12">
                                 <p class="col-form-label">フィルタ</p>
+                                {# TODO: 未実装（フィルターが検索後の絞込から検索条件に併合された） #}
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" id="check_public" type="checkbox" value="">
                                     <label class="form-check-label" for="check_public">公開</label>
@@ -134,15 +131,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     </div>
                     <div class="col-6">
                         <div class="mb-2">
-                            <label class="col-form-label" data-toggle="tooltip" data-placement="top" title="Tooltip">登録日<i
-                                        class="fa fa-question-circle fa-lg ml-1"></i></label>
+                            <label class="col-form-label" data-toggle="tooltip" data-placement="top" title="Tooltip">
+                                登録日
+                                <i class="fa fa-question-circle fa-lg ml-1"></i>
+                            </label>
                             <div class="form-row align-items-center">
                                 <div class="col">
-                                    <input class="form-control" type="date" value="2000-01-01">
+                                    {# TODO: カレンダー表示の調整 #}
+                                    {{ form_widget(searchForm.create_date_start) }}
                                 </div>
                                 <div class="col-auto text-center"><span>〜</span></div>
                                 <div class="col">
-                                    <input class="form-control" type="date" value="2000-01-01">
+                                    {{ form_widget(searchForm.create_date_end) }}
                                 </div>
                             </div>
                         </div>
@@ -150,22 +150,23 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <label class="col-form-label">更新日</label>
                             <div class="form-row align-items-center">
                                 <div class="col">
-                                    <input class="form-control" type="date" value="2000-01-01">
+                                    {# TODO: カレンダー表示の調整 #}
+                                    {{ form_widget(searchForm.update_date_start) }}
                                 </div>
                                 <div class="col-auto"><span>〜</span></div>
                                 <div class="col">
-                                    <input class="form-control" type="date" value="2000-01-01">
+                                    {{ form_widget(searchForm.update_date_end) }}
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="d-block text-center">
-                    <button class="btn btn-ec-regular" type="button">検索条件クリア</button>
+                    <button class="btn btn-ec-regular search-clear" type="button">検索条件クリア</button>
                 </div>
             </div>
-            <div class="c-outsideBlock__contents mb-5"><a class="btn btn-ec-conversion px-5"
-                                                          href="/product/master/match">検索</a>
+            <div class="c-outsideBlock__contents mb-5">
+                <button class="btn btn-ec-conversion px-5" type="submit">検索</button>
             </div>
         </form>
 
@@ -187,8 +188,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="d-inline-block mr-2">
                             <div>
                                 <select class="custom-select">
-                                    <option selected="">10件</option>
-                                    <option>...</option>
+                                    {# TODO リンクからセレクトボックスに変更されているので実装必要 #}
+                                    {% for pageMax in pageMaxis  %}
+                                    <option {% if pageMax.name == page_count %}selected=""{% endif %}>{{ pageMax.name|e }}件</option>
+                                    {% endfor %}
                                 </select>
                             </div>
                         </div>
