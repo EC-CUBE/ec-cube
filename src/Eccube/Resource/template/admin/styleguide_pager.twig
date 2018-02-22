@@ -1,0 +1,42 @@
+{% if pages.pageCount > 1 %}
+    <ul class="pagination">
+        {# 前へ #}
+        {% if pages.previous is defined %}
+            <li class="page-item">
+                <a class="page-link"
+                   href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pageno': pages.previous})) }}">
+                    Previous
+                </a>
+            </li>
+        {% endif %}
+
+        {# 1ページリンクが表示されない場合、「...」を表示 #}
+        {% if pages.firstPageInRange != 1 %}
+            <li class="page-item">...</li>
+        {% endif %}
+
+        {% for page in pages.pagesInRange %}
+            <li class="page-item{% if page == pages.current %} active{% endif %}">
+                <a class="page-link"
+                   href="{{ path(app.request.attributes.get('_route'),app.request.query.all|merge({'pageno': page})) }}">
+                    {{ page }}
+                </a>
+            </li>
+        {% endfor %}
+
+        {# 最終ページリンクが表示されない場合、「...」を表示 #}
+        {% if pages.last != pages.lastPageInRange %}
+            <li class="page-item">...</li>
+        {% endif %}
+
+        {# 次へ #}
+        {% if pages.next is defined %}
+            <li class="page-item">
+                <a class="page-link"
+                   href="{{ path(app.request.attributes.get('_route'),app.request.query.all|merge({'pageno': pages.next})) }}">
+                    Next
+                </a>
+            </li>
+        {% endif %}
+    </ul>
+{% endif %}
