@@ -254,8 +254,60 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         {% if Product.code_min != Product.code_max %} ～ {{ Product.code_max }}
                                         {% endif %}
                                     </td>
-                                    <td class="align-middle">12,000</td>
-                                    <td class="align-middle">2</td>
+                                    <td class="align-middle">
+                                        {{ Product.price02_min|price }}
+                                        {% if Product.price02_min != Product.price02_max %} ～ {{ Product.price02_max|price }}
+                                        {% endif %}
+                                    </td>
+                                    <td class="align-middle">
+                                        {% if (Product.hasProductClass) %}
+                                            {# TODO 規格のモーダル表示を実装 #}
+                                            <button class="btn page-link text-dark d-inline-block" type="button" data-toggle="modal" data-target="#standardConfirm">規格確認</button>
+                                            <div class="modal fade" id="standardConfirm" tabindex="-1" role="dialog" aria-labelledby="standardConfirm" aria-hidden="true" style="display: none;">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">パーコレーターの規格</h5>
+                                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <table class="table table-striped">
+                                                                <thead class="table-active">
+                                                                <tr><th class="pt-2 pb-2 pl-2">規格１</th>
+                                                                    <th class="pt-2 pb-2">規格２</th>
+                                                                    <th class="pt-2 pb-2">商品コード</th>
+                                                                    <th class="pt-2 pb-2">在庫数</th>
+                                                                    <th class="pt-2 pb-2 pr-2">販売価格（円）</th>
+                                                                </tr></thead>
+                                                                <tbody>
+                                                                <tr>
+                                                                    <td class="pl-2">プラチナ</td>
+                                                                    <td>100cm</td>
+                                                                    <td>aa-001</td>
+                                                                    <td>4</td>
+                                                                    <td class="pr-2">10,000</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="pl-2">プラチナ</td>
+                                                                    <td>130cm</td>
+                                                                    <td>aa-002</td>
+                                                                    <td>8</td>
+                                                                    <td class="pr-2">10,000</td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button class="btn btn-ec-sub" type="button" data-dismiss="modal">戻る</button><a class="btn btn-ec-conversion" href="/product/register/standard">規格の編集</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% else %}
+                                            {# 規格なし商品 は在庫数を表示 #}
+                                            {{ Product.stock_min }}
+                                        {% endif %}
+                                    </td>
                                     <td class="align-middle">公開</td>
                                     <td class="align-middle">2017/01/12</td>
                                     <td class="align-middle">2017/07/12</td>
