@@ -12,6 +12,7 @@ twig:
       '%eccube_theme_src_dir%/toolbar': toolbar
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
-    # form_themes:
+    form_themes: ['bootstrap_4_layout.html.twig']
+
     #     - 'default_frame.twig'
     #     - 'Form/form_div_layout.twig'
