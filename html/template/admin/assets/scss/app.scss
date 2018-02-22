@@ -1,0 +1,37 @@
+@import "library/variable";
+
+html,body {
+  font-size: 14px;
+  background: $paleBlue;
+  background-color: $paleBlue !important;
+}
+ul {
+  -webkit-margin-before: 0;
+  -webkit-margin-after: 0;
+  -webkit-margin-start: 0;
+  -webkit-margin-end: 0;
+  -webkit-padding-start: 0;
+}
+li {
+  list-style: none;
+}
+dl, ol, ul {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+a,button {
+  cursor: pointer;
+}
+
+
+@import "component/_container";
+@import "component/_headerBar";
+@import "component/_mainNavArea";
+@import "component/_contentsArea";
+@import "component/_conversionArea";
+@import "component/_form";
+@import "component/_pageTitle";
+@import "component/_directory";
+@import "component/_graph";
+@import "component/_toggleSwitch";
+@import "component/_icon";

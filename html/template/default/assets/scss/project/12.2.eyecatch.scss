@@ -1,0 +1,83 @@
+@import "../mixins/media";
+
+/*
+アイキャッチ
+
+トップページ アイキャッチ部に関する Project コンポーネントを定義します。
+
+ex [トップページスライダー直下 アイキャッチ部](http://demo3.ec-cube.net/)
+
+Markup:
+include /assets/tmpl/elements/12.2.eyecatch.pug
++ec-eyecatchRole
+
+Styleguide 12.2
+*/
+.ec-eyecatchRole {
+  @include container;
+  margin-bottom: 30px;
+  text-align: center;
+  & &__intro {
+    box-sizing: border-box;
+    padding: 0 3%;
+  }
+  & &__introTitle {
+    margin-top: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    @include media_desktop {
+      font-size: 32px;
+    }
+  }
+  p {
+    font-size: 16px;
+    margin-bottom: 20px;
+    @include media_desktop {
+      font-size: 20px;
+    }
+  }
+
+}
+
+/*
+トップページ
+
+アイキャッチで使用する 分割画像レイアウトです。
+
+ex [トップページ](http://demo3.ec-cube.net/)
+
+Markup:
+include /assets/tmpl/elements/12.2.eyecatch.pug
++ec-eyecatchTop
+
+sg-wrapper:
+<div class="ec-eyecatchRole">
+  <sg-wrapper-content/>
+</div>
+
+
+
+Styleguide 12.2.1
+*/
+.ec-splitImg {
+  display: flex;
+  & &__item {
+    width: 50%;
+    img {
+      width: 100%;
+    }
+  }
+  & &__item:nth-of-type(1) {
+    padding-right: 8px;
+    @include media_desktop() {
+      padding-right: 3%;
+    }
+  }
+  & &__item:nth-of-type(2) {
+    padding-left: 8px;
+    @include media_desktop() {
+      padding-left: 3%;
+    }
+  }
+
+}

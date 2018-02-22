@@ -1,0 +1,40 @@
+@import "./variables";
+@import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/forms";
+@import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/tab-focus";
+@import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/vendor-prefixes";
+@import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/tab-focus";
+
+
+@keyframes fadeIn{
+  0%{
+    opacity: 0;
+    visibility: hidden;
+  }
+  100%{
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+@keyframes fadeOut{
+  0%{
+    opacity: 1;
+    visibility: visible;
+  }
+  100%{
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@mixin fadeIn($display:block,$time:150ms) {
+  display: $display;
+  opacity: 1;
+  visibility: visible;
+  animation: fadeIn $time linear 0s;
+}
+@mixin fadeOut($time:150ms) {
+  opacity: 0;
+  visibility:hidden;
+  animation: fadeOut $time linear 0s;
+}

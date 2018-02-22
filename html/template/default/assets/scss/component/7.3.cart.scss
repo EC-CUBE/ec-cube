@@ -1,0 +1,444 @@
+@import "../mixins/variables";
+@import "../mixins/media";
+@import "../mixins/animation";
+@import "../mixins/projects";
+/*
+カート
+
+ショッピングカートに関するスタイルです。
+
+sg-wrapper:
+<div class="ec-role">
+  <sg-wrapper-content/>
+
+
+Styleguide 7.3
+*/
+
+/*
+カートヘッダ
+
+購入完了までの手順や、現在の状態を表示します。
+
+ul 要素を用いたリスト要素としてマークアップします。
+
+ex [カートページ　ヘッダ部分](http://demo3.ec-cube.net/cart)
+
+Markup:
+include /assets/tmpl/elements/7.3.cart.pug
++ec-progress
+
+sg-wrapper:
+<div class="ec-role">
+  <sg-wrapper-content/>
+</div>
+
+Styleguide 7.3.1
+*/
+.ec-progress{
+  margin: 0 auto;
+  padding: 8px 0 16px;
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+  max-width: 600px;
+  list-style: none;
+  @include media_desktop {
+    margin-bottom: 30px;
+    padding: 0;
+  }
+
+  & &__item{
+    display:table-cell;
+    position: relative;
+    font-size: 14px;
+    text-align: center;
+    font-weight: bold;
+    z-index: 10;
+
+    &:after {
+      content: '';
+      position: absolute;
+      display: block;
+      background: #525263;
+      width: 100%;
+      height: 0.25em;
+      top: 1.25em;
+      left: 50%;
+      margin-left: 1.5em\9;
+      z-index: -1;
+    }
+    &:last-child:after {
+      display: none;
+    }
+  }
+  & &__number{
+    line-height: 30px;
+    width: 30px;
+    height: 30px;
+    margin-bottom: 5px;
+    font-size: 12px;
+    background: #525263;
+    color: #fff;
+    top: 0;
+    left: 18px;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 50%;
+    @include media_desktop(){
+      line-height: 42px;
+      width: 42px;
+      height: 42px;
+      font-size: 20px;
+    }
+  }
+  & &__label {
+    font-size: 12px;
+  }
+  .is-complete {
+    .ec-progress__number {
+      background: #5CB1B1;
+    }
+    .ec-progress__label {
+      color: #5CB1B1;
+    }
+  }
+}
+
+
+
+/*
+カートナビゲーション
+
+カートナビゲーションを表示します。　カートに追加された商品の個数も表示します。
+
+ex [カートページ　ナビゲーション部分](http://demo3.ec-cube.net/cart)
+
+Markup:
+include /assets/tmpl/elements/11.2.header.pug
++ec-headerCart
+
+sg-wrapper:
+<div class="ec-role">
+  <sg-wrapper-content/>
+</div>
+
+
+Styleguide 7.3.5
+*/
+.ec-cartNavi{
+  border: 1px solid #D9D9D9;
+  width: 256px;
+  position: relative;
+  display: block;
+  height: 44px;
+  overflow: hidden;
+  white-space: nowrap;
+  z-index: 3;
+  cursor: pointer;
+  & &__icon {
+    width: 30px;
+    height: 30px;
+    position: relative;
+    top: 8px;
+    left: 8px;
+    @include fadeIn(inline-block,200ms);
+  }
+  & &__iconClose {
+    width: 25px;
+    height: 25px;
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    @include fadeOut(200ms);
+  }
+  & &__badge{
+    position: absolute;
+    left: 45px;
+    top: 13px;
+    display: inline-block;
+    min-width: 10px;
+    padding: 3px 7px;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    background-color: #DE5D50;
+    border-radius: 10px;
+    @include fadeIn(inline-block);
+  }
+  & &__label{
+    font-size: 12px;
+    position: absolute;
+    right:0;
+    top:0;
+    height: 44px;
+    line-height: 44px;
+    vertical-align: middle;
+    margin-right: 16px;
+  }
+  & &__price{
+    display: inline-block;
+    font-size: 16px;
+  }
+}
+.is_active {
+  .ec-cartNavi__icon{
+    @include fadeOut;
+  }
+  .ec-cartNavi__badge{
+    display: none;
+  }
+  .ec-cartNavi__iconClose {
+
+    @include fadeIn(inline-block,200ms);
+  }
+}
+
+.ec-cartNaviNull {
+  display: none;
+  min-width: 256px;
+  text-align: center;
+  background: #f3f3f3;
+  box-sizing: border-box;
+  padding: 16px;
+  z-index: 3;
+  position: absolute;
+  @include fadeOut;
+  & &__message {
+    border: 1px solid #D9D9D9;
+    padding: 16px 0;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #F99;
+    p {
+      margin: 0;
+    }
+  }
+}
+
+.is_active {
+  .ec-cartNaviNull {
+    @include fadeIn;
+    display: block;
+  }
+  .ec-cartNaviIsset {
+    @include fadeIn;
+    display: block;
+  }
+}
+
+/*
+カートナビゲーションのポップアップ(商品詳細)
+
+カートナビゲーションのポップアップを表示します。カートに追加された商品の詳細が表示されます。
+
+ex [カートページ　ナビゲーション部分](http://demo3.ec-cube.net/cart)
+
+Markup:
+div(style="height:350px;")
+  // 上記のdivはスタイルガイド都合上、高さをもたせるため設置(mocでは不要)
+  .is_active
+    .ec-cartNavi
+      .ec-cartNavi__icon
+        img(src='/moc/icon/cart-dark.svg', alt='close')
+      .ec-cartNavi__iconClose
+        img(src='/moc/icon/cross-dark.svg', alt='close')
+      .ec-cartNavi__badge 1
+      .ec-cartNavi__label
+        | 合計
+        .ec-cartNavi__price ¥1920
+    +b.ec-cartNaviIsset
+      +e.cart
+        +e.cartImage
+          img(src='http://demo3.ec-cube.net/upload/save_image/0701104933_5593472d8d179.jpeg')
+        +e.cartContent
+          +e.cartContentTitle ミニテーブル
+          +e.cartContentPrice ¥ 12,960
+            +e.cartContentTax 税込
+          +e.cartContentNumber 数量：1
+      +e.action
+        a.ec-blockBtn--action(href="/moc/guest/cart1") カートへ進む
+        a.ec-blockBtn.ec-cartNavi--cancel キャンセル
+
+Styleguide 7.3.6
+*/
+.ec-cartNaviIsset {
+  display: none;
+  min-width: 256px;
+  max-width:256px;
+  text-align: center;
+  background: #f3f3f3;
+  box-sizing: border-box;
+  padding: 16px;
+  z-index: 3;
+  position: absolute;
+  @include fadeOut;
+  & &__cart {
+    @include clearfix;
+    border-bottom: 1px solid #E8E8E8;
+    margin-bottom: 16px;
+    padding-bottom: 32px;
+  }
+  & &__cartImage {
+    float: left;
+    width: 45%;
+    img {
+      width: 100%;
+    }
+  }
+  & &__cartContent {
+    float: right;
+    width: 55%;
+    padding-left: 16px;
+    text-align:left;
+    box-sizing:border-box;
+  }
+  & &__action {
+    .ec-blockBtn--action {
+      color:#fff;
+      margin-bottom: 8px;
+    }
+  }
+  & &__cartContentTitle {
+    margin-bottom: 8px;
+  }
+  & &__cartContentPrice {
+    font-weight: bold;
+  }
+  & &__cartContentTax {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: normal;
+    margin-left: 2px;
+  }
+  & &__cartContentNumber {
+    font-size: 14px;
+  }
+}
+
+
+
+/*
+カートナビゲーションのポップアップ(商品なし)
+
+カートナビゲーションのポップアップを表示します。商品が登録されていない場合の表示です。
+
+ex [カートページ　ナビゲーション部分](http://demo3.ec-cube.net/cart)
+
+Markup:
+div(style="height:170px;")
+  // 上記のdivはスタイルガイド都合上、高さをもたせるため設置(mocでは不要)
+  .is_active
+    .ec-cartNavi
+      .ec-cartNavi__icon
+        img(src='/moc/icon/cart-dark.svg', alt='cart')
+      .ec-cartNavi__iconClose
+        img(src='/moc/icon/cross-dark.svg', alt='close')
+      .ec-cartNavi__badge 1
+      .ec-cartNavi__label
+        | 合計
+        .ec-cartNavi__price ¥1920
+    .ec-cartNaviNull
+      .ec-cartNaviNull__message
+        p 現在カート内に
+          br
+          | 商品がございません。
+    //+b.ec-cartNaviIsset
+    //  +e.cart
+    //    +e.cartImage
+    //      img(src='http://demo3.ec-cube.net/upload/save_image/0701104933_5593472d8d179.jpeg')
+    //    +e.cartContent
+    //      +e.cartContentTitle ミニテーブル
+    //      +e.cartContentPrice ¥ 12,960
+    //        +e.cartContentTax 税込
+    //      +e.cartContentNumber 数量：1
+    //  +e.action
+    //    a.ec-blockBtn--action(href="/moc/guest/cart1") カートへ進む
+    //    a.ec-blockBtn キャンセル
+
+sg-wrapper:
+<div class="ec-role">
+  <sg-wrapper-content/>
+</div>
+
+
+Styleguide 7.3.7
+*/
+
+/*
+総計
+
+会計時の合計金額、総計を表示します。
+
+ex [カートページ　統計部分](http://demo3.ec-cube.net/cart)
+
+Markup:
+include /assets/tmpl/elements/7.3.cart.pug
++ec-totalBox
+
+Styleguide 7.3.8
+*/
+.ec-totalBox{
+  background:#F3F3F3;
+  padding: 16px;
+  margin-bottom: 16px;
+  & &__spec{
+    position: relative;
+    margin-bottom:8px;
+    dt{
+      font-weight: normal;
+      position: relative;
+      top:0;
+      left: 0;
+      text-align: left;
+    }
+    dd{
+      position: absolute;
+      top:0;
+      right: 0;
+      text-align: right;
+
+    }
+    & &__specTotal {
+      color: $clrRed;
+    }
+  }
+  & &__total{
+    border-top: 1px dotted #ccc;
+    padding: 8px 0;
+    text-align: right;
+    font-size: 14px;
+    font-weight:bold;
+  }
+  & &__price{
+    margin-left: 16px;
+    font-size: 16px;
+    font-weight:bold;
+    color: $clrRed;
+    @include media_desktop {
+      font-size: 24px;
+    }
+  }
+  & &__taxLabel {
+    margin-left: 8px;
+    color: $clrRed;
+    font-size: 12px;
+    @include media_desktop {
+      font-size: 14px;
+    }
+  }
+  & &__btn {
+    @include reset_link();
+    color: #fff;
+    .ec-blockBtn--action {
+      font-size: 16px;
+      font-weight: bold;
+    }
+  }
+}
