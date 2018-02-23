@@ -30,7 +30,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -45,19 +44,12 @@ class MasterdataDataType extends AbstractType
     protected $eccubeConfig;
 
     /**
-     * @var TranslatorInterface
-     */
-    protected $translator;
-
-    /**
      * MasterdataDataType constructor.
      * @param EccubeConfig $eccubeConfig
-     * @param TranslatorInterface $translator
      */
-    public function __construct(EccubeConfig $eccubeConfig, TranslatorInterface $translator)
+    public function __construct(EccubeConfig $eccubeConfig)
     {
         $this->eccubeConfig = $eccubeConfig;
-        $this->translator = $translator;
     }
 
 
@@ -66,7 +58,6 @@ class MasterdataDataType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $trans = $this->translator;
         $builder
             ->add('id', TextType::class, array(
                 'required' => false,
@@ -76,22 +67,22 @@ class MasterdataDataType extends AbstractType
                     )),
                     new Assert\Regex(array(
                         'pattern' => '/^\d+$/u',
-                        'message' => $trans->trans('form.type.numeric.invalid'),
+                        'message' => trans('form.type.numeric.invalid'),
                     )),
                 ),
             ))
             ->add('name', TextType::class, array(
                 'required' => false,
             ))
-        ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($trans) {
+        ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
             $form = $event->getForm();
             $data = $form->getData();
             if (strlen($data['id']) && strlen($data['name']) == 0) {
-                $form['name']->addError(new FormError($trans->trans('This value should not be blank.', [], 'validators')));
+                $form['name']->addError(new FormError(trans('This value should not be blank.')));
             }
 
             if (strlen($data['name']) && strlen($data['id']) == 0) {
-                $form['id']->addError(new FormError($trans->trans('This value should not be blank.', [], 'validators')));
+                $form['id']->addError(new FormError(trans('This value should not be blank.')));
             }
         });
     }

@@ -428,11 +428,11 @@ class InstallController extends AbstractController
     {
         foreach ($this->requiredModules as $module) {
             if (!extension_loaded($module)) {
-                $this->addDanger('[必須] '.$module.' 拡張モジュールが有効になっていません。', 'install');
+                $this->addDanger(trans('install.text.error.required_module_not_enable', array($module)), 'install');
             }
         }
         if (!extension_loaded('pdo_mysql') && !extension_loaded('pdo_pgsql')) {
-            $this->addDanger('[必須] '.'pdo_pgsql又はpdo_mysql 拡張モジュールを有効にしてください。', 'install');
+            $this->addDanger(trans('install.text.error.required_enable_sql'), 'install');
         }
         foreach ($this->recommendedModules as $module) {
             if (!extension_loaded($module)) {
@@ -441,23 +441,23 @@ class InstallController extends AbstractController
                     //http://php.net/manual/en/migration71.deprecated.php
                     continue;
                 }
-                $this->addInfo('[推奨] '.$module.' 拡張モジュールが有効になっていません。', 'install');
+                $this->addInfo(trans('install.text.error.recommended_module_not_enable', array($module)), 'install');
             }
         }
         if ('\\' === DIRECTORY_SEPARATOR) { // for Windows
             if (!extension_loaded('wincache')) {
-                $this->addInfo('[推奨] WinCache 拡張モジュールが有効になっていません。', 'install');
+                $this->addInfo(trans('install.text.error.recommended_WinCache_not_enable'), 'install');
             }
         } else {
             if (!extension_loaded('apc')) {
-                $this->addInfo('[推奨] APC 拡張モジュールが有効になっていません。', 'install');
+                $this->addInfo(trans('install.text.error.recommended_APC_not_enable'), 'install');
             }
         }
         if (isset($_SERVER['SERVER_SOFTWARE']) && strpos('Apache', $_SERVER['SERVER_SOFTWARE']) !== false) {
             if (!function_exists('apache_get_modules')) {
-                $this->addWarning('mod_rewrite が有効になっているか不明です。', 'install');
+                $this->addWarning(trans('install.text.error.mod_rewrite'), 'install');
             } elseif (!in_array('mod_rewrite', apache_get_modules())) {
-                $this->addDanger('[必須] '.'mod_rewriteを有効にしてください。', 'install');
+                $this->addDanger(trans('install.text.error.enable_mod_rewrite'), 'install');
             }
         } elseif (isset($_SERVER['SERVER_SOFTWARE']) && strpos('Microsoft-IIS',
                 $_SERVER['SERVER_SOFTWARE']) !== false
@@ -756,7 +756,7 @@ class InstallController extends AbstractController
                 'sort_no' => 1,
                 'update_date' => new \DateTime(),
                 'create_date' => new \DateTime(),
-                'name' => '管理者',
+                'name' => trans('install.label'),
                 'department' => 'EC-CUBE SHOP',
                 'discriminator_type' => 'member',
             ], [

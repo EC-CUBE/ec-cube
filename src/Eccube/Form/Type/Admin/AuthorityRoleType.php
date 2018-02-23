@@ -46,7 +46,7 @@ class AuthorityRoleType extends AbstractType
     {
         $builder
             ->add('Authority', EntityType::class, array(
-                'label' => '権限',
+                'label' => 'authorityrole.label.auth',
                 'class' => 'Eccube\Entity\Master\Authority',
                 'expanded' => false,
                 'multiple' => false,
@@ -54,7 +54,7 @@ class AuthorityRoleType extends AbstractType
                 'placeholder' => 'form.empty_value',
             ))
             ->add('deny_url', TextType::class, array(
-                'label' => '拒否URL',
+                'label' => 'authorityrole.label.denied_url',
                 'required' => false,
             ))
             ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {

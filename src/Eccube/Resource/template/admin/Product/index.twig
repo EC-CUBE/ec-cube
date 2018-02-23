@@ -23,8 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['product', 'product_master'] %}
 
-{% block title %}商品管理{% endblock %}
-{% block sub_title %}商品マスター{% endblock %}
+{% block title %}{{'admin.product.index.468'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.product.index.469'|trans}}{% endblock %}
 
 {% form_theme searchForm '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
@@ -172,7 +172,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 {% endif %}
             </div>
         </form>
-
     </div>
     <div class="c-contentsArea__cols">
         <div class="c-contentsArea__primaryCol">
@@ -437,6 +436,4 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             </div>
         </div>
     </div>
-
-
 {% endblock %}

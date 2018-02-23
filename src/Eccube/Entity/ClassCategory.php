@@ -145,20 +145,6 @@ class ClassCategory extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get name for Admin.
-     *
-     * @return string
-     */
-    public function getNameForAdmin()
-    {
-        if ($this->isVisible()) {
-            return $this->getName();
-        } else {
-            return $this->getName().'(非表示)';
-        }
-    }
-
-    /**
      * Set sortNo.
      *
      * @param int $sortNo

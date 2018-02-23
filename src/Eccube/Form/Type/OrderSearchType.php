@@ -61,7 +61,7 @@ class OrderSearchType extends AbstractType
 
         $builder
             ->add('order_id_start', IntegerType::class, array(
-                'label' => '注文番号',
+                'label' => 'ordersearch.label.order_id',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Type(array(
@@ -71,7 +71,7 @@ class OrderSearchType extends AbstractType
                 ),
             ))
             ->add('order_id_end', IntegerType::class, array(
-                'label' => '注文番号',
+                'label' => 'ordersearch.label.order_id',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Type(array(
@@ -81,7 +81,7 @@ class OrderSearchType extends AbstractType
                 ),
             ))
             ->add('status', OrderStatusType::class, array(
-                'label' => '対応状況',
+                'label' => 'ordersearch.label.status',
             ))
             ->add('name', TextType::class, array(
                 'required' => false,
@@ -96,7 +96,7 @@ class OrderSearchType extends AbstractType
                 'required' => false,
             ))
             ->add('birth_start', BirthdayType::class, array(
-                'label' => '誕生日',
+                'label' => 'ordersearch.label.dob',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'choice',
@@ -104,7 +104,7 @@ class OrderSearchType extends AbstractType
                 'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('birth_end', BirthdayType::class, array(
-                'label' => '誕生日',
+                'label' => 'ordersearch.label.dob',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'choice',
@@ -112,19 +112,19 @@ class OrderSearchType extends AbstractType
                 'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('sex', SexType::class, array(
-                'label' => '性別',
+                'label' => 'ordersearch.label.gender',
                 'required' => false,
                 'expanded' => true,
                 'multiple' => true,
             ))
             ->add('payment', PaymentType::class, array(
-                'label' => '支払方法',
+                'label' => 'ordersearch.label.payment',
                 'required' => false,
                 'expanded' => true,
                 'multiple' => true,
             ))
             ->add('order_date_start', DateType::class, array(
-                'label' => '注文日',
+                'label' => 'ordersearch.label.order_date',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'choice',
@@ -132,7 +132,7 @@ class OrderSearchType extends AbstractType
                 'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('order_date_end', DateType::class, array(
-                'label' => '注文日',
+                'label' => 'ordersearch.label.order_date',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'choice',
@@ -140,7 +140,7 @@ class OrderSearchType extends AbstractType
                 'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('update_date_start', DateType::class, array(
-                'label' => '更新日',
+                'label' => 'ordersearch.label.last_update',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'choice',
@@ -148,7 +148,7 @@ class OrderSearchType extends AbstractType
                 'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('update_date_end', DateType::class, array(
-                'label' => '更新日',
+                'label' => 'ordersearch.label.last_update',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'choice',
@@ -156,15 +156,15 @@ class OrderSearchType extends AbstractType
                 'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('payment_total_start', IntegerType::class, array(
-                'label' => '購入金額',
+                'label' => 'ordersearch.label.purchased_amount',
                 'required' => false,
             ))
             ->add('payment_total_end', IntegerType::class, array(
-                'label' => '購入金額',
+                'label' => 'ordersearch.label.purchased_amount',
                 'required' => false,
             ))
             ->add('buy_product_name', TextType::class, array(
-                'label' => '購入商品名',
+                'label' => 'ordersearch.label.purchased_products',
                 'required' => false,
             ))
         ;

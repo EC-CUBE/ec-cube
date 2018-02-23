@@ -281,7 +281,7 @@ class PluginController extends AbstractController
                 if ($DependPlugin) {
                     $dependName = $DependPlugin->getName();
                 }
-                $message = $app->trans('admin.plugin.enable.depend', ['%name%' => $Plugin->getName(), '%depend_name%' => $dependName]);
+                $message = trans('admin.plugin.enable.depend', ['%name%' => $Plugin->getName(), '%depend_name%' => $dependName]);
                 $app->addError($message, 'admin');
 
                 return $app->redirect($app->url('admin_store_plugin'));
@@ -314,7 +314,7 @@ class PluginController extends AbstractController
                 if ($DependPlugin) {
                     $dependName = $DependPlugin->getName();
                 }
-                $message = $app->trans('admin.plugin.disable.depend', ['%name%' => $Plugin->getName(), '%depend_name%' => $dependName]);
+                $message = trans('admin.plugin.disable.depend', ['%name%' => $Plugin->getName(), '%depend_name%' => $dependName]);
                 $app->addError($message, 'admin');
 
                 return $app->redirect($app->url('admin_store_plugin'));
@@ -357,7 +357,7 @@ class PluginController extends AbstractController
             if ($DependPlugin) {
                 $dependName = $DependPlugin->getName();
             }
-            $message = $app->trans('admin.plugin.uninstall.depend', ['%name%' => $Plugin->getName(), '%depend_name%' => $dependName]);
+            $message = trans('admin.plugin.uninstall.depend', ['%name%' => $Plugin->getName(), '%depend_name%' => $dependName]);
             $app->addError($message, 'admin');
 
             return $app->redirect($app->url('admin_store_plugin'));
@@ -486,7 +486,7 @@ class PluginController extends AbstractController
             'authentication_key',
             TextType::class,
             [
-                'label' => '認証キー',
+                'label' => trans('plugin.label.auth_key'),
                 'constraints' => [
                     new Assert\Regex(['pattern' => "/^[0-9a-zA-Z]+$/",]),
                 ],
@@ -565,7 +565,7 @@ class PluginController extends AbstractController
             $message = $statusCode.' : '.$message;
 
         } else {
-            $message = "タイムアウトエラーまたはURLの指定に誤りがあります。";
+            $message = trans('plugin.text.error.timeout_or_invalid_url');
         }
 
         return $message;

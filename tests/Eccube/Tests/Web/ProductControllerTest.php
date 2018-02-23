@@ -24,11 +24,19 @@
 
 namespace Eccube\Tests\Web;
 
+use Eccube\Controller\ProductController;
+use Eccube\Entity\BaseInfo;
+use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\ClassCategoryRepository;
+use Eccube\Repository\CustomerFavoriteProductRepository;
+use Eccube\Repository\ProductRepository;
+use Eccube\Service\CartService;
+use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpKernel\Client;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class ProductControllerTest extends AbstractWebTestCase
 {
@@ -105,7 +113,6 @@ class ProductControllerTest extends AbstractWebTestCase
      */
     public function testProductClassSortByRank()
     {
-        $this->markTestIncomplete('FIXME Order by ProductClass');
         /* @var $ClassCategory \Eccube\Entity\ClassCategory */
         //set 金 rank
         $ClassCategory = $this->classCategoryRepository->findOneBy(array('name' => '金'));
