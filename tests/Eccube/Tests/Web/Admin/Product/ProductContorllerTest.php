@@ -152,7 +152,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         $crawler = $this->client->request('POST', $this->generateUrl('admin_product'), $post);
         $this->expected = '検索結果 ' . $cnt . ' 件 が該当しました';
-        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->actual = $crawler->filter('#search_form > div.c-outsideBlock__contents.mb-5 > span')->text();
         $this->verify();
 
         // デフォルトの表示件数確認テスト
@@ -201,7 +201,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         $crawler = $this->client->request('POST', $this->generateUrl('admin_product'), $post);
         $this->expected = '検索結果 1 件 が該当しました';
-        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->actual = $crawler->filter('#search_form > div.c-outsideBlock__contents.mb-5 > span')->text();
         $this->verify();
 
         // デフォルトの表示件数確認テスト
@@ -247,7 +247,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         $crawler = $this->client->request('POST', $this->generateUrl('admin_product'), $post);
         $this->expected = '検索結果 1 件 が該当しました';
-        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->actual = $crawler->filter('#search_form > div.c-outsideBlock__contents.mb-5 > span')->text();
         $this->verify();
 
         // デフォルトのの表示件数確認テスト
@@ -294,7 +294,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         $crawler = $this->client->request('POST', $this->generateUrl('admin_product'), $post);
         $this->expected = '検索条件に該当するデータがありませんでした。';
-        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->actual = $crawler->filter('#search_form > div.c-outsideBlock__contents.mb-5 > span')->text();
         $this->verify();
     }
 
@@ -317,7 +317,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         $crawler = $this->client->request('POST', $this->generateUrl('admin_product'), $post);
         $this->expected = '検索条件に該当するデータがありませんでした。';
-        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->actual = $crawler->filter('#search_form > div.c-outsideBlock__contents.mb-5 > span')->text();
         $this->verify();
     }
 
@@ -449,14 +449,14 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         );
 
         $this->expected = '検索結果 2 件 が該当しました';
-        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->actual = $crawler->filter('#search_form > div.c-outsideBlock__contents.mb-5 > span')->text();
         $this->verify();
 
         // No stock click button
         $noStockUrl = $crawler->selectLink('在庫なし')->link()->getUri();
         $crawler = $this->client->request('GET', $noStockUrl);
         $this->expected = '検索結果 1 件 が該当しました';
-        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->actual = $crawler->filter('#search_form > div.c-outsideBlock__contents.mb-5 > span')->text();
         $this->verify();
 
         $csvExportUrl = $crawler->filter('ul.dropdown-menu')->selectLink('CSVダウンロード')->link()->getUri();
@@ -485,14 +485,14 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             ['admin_search_product' => $searchForm]
         );
         $this->expected = '検索結果 2 件 が該当しました';
-        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->actual = $crawler->filter('#search_form > div.c-outsideBlock__contents.mb-5 > span')->text();
         $this->verify();
 
         // private click button
         $privateUrl = $crawler->selectLink('非公開')->link()->getUri();
         $crawler = $this->client->request('GET', $privateUrl);
         $this->expected = '検索結果 1 件 が該当しました';
-        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->actual = $crawler->filter('#search_form > div.c-outsideBlock__contents.mb-5 > span')->text();
         $this->verify();
 
         $csvExportUrl = $crawler->filter('ul.dropdown-menu')->selectLink('CSVダウンロード')->link()->getUri();
@@ -521,14 +521,14 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             ['admin_search_product' => $searchForm]
         );
         $this->expected = '検索結果 2 件 が該当しました';
-        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->actual = $crawler->filter('#search_form > div.c-outsideBlock__contents.mb-5 > span')->text();
         $this->verify();
 
         // public click button
         $privateUrl = $crawler->selectLink('公開')->link()->getUri();
         $crawler = $this->client->request('GET', $privateUrl);
         $this->expected = '検索結果 1 件 が該当しました';
-        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->actual = $crawler->filter('#search_form > div.c-outsideBlock__contents.mb-5 > span')->text();
         $this->verify();
 
         $csvExportUrl = $crawler->filter('ul.dropdown-menu')->selectLink('CSVダウンロード')->link()->getUri();
@@ -558,14 +558,14 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             ['admin_search_product' => $searchForm]
         );
         $this->expected = '検索結果 2 件 が該当しました';
-        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->actual = $crawler->filter('#search_form > div.c-outsideBlock__contents.mb-5 > span')->text();
         $this->verify();
 
         // private click button
         $privateUrl = $crawler->selectLink('非公開')->link()->getUri();
         $crawler = $this->client->request('GET', $privateUrl);
         $this->expected = '検索結果 1 件 が該当しました';
-        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->actual = $crawler->filter('#search_form > div.c-outsideBlock__contents.mb-5 > span')->text();
         $this->verify();
 
         $csvExportUrl = $crawler->filter('ul.dropdown-menu')->selectLink('CSVダウンロード')->link()->getUri();
