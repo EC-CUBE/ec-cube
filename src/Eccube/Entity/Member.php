@@ -463,6 +463,8 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface, \Se
      */
     public function serialize()
     {
+        // see https://symfony.com/doc/2.7/security/entity_provider.html#create-your-user-entity
+        // MemberRepository::loadUserByUsername() で Work をチェックしているため、ここでは不要
         return serialize(array(
             $this->id,
             $this->login_id,
