@@ -167,6 +167,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             </div>
             <div class="c-outsideBlock__contents mb-5">
                 <button class="btn btn-ec-conversion px-5" type="submit">検索</button>
+                {% if pagination %}
+                    <span class="font-weight-bold ml-2">検索結果：{{ pagination.totalItemCount }}件が該当しました</span>
+                {% endif %}
             </div>
         </form>
 
@@ -177,7 +180,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 {# TODO 「商品が全く登録されていない場合の条件に変更 #}
                 {% if pagination %}
                     {% if pagination|length > 0 %}
-
                         <div class="row justify-content-between mb-2">
                             <div class="col-6">
                                 <label class="mr-2">一括操作</label>
