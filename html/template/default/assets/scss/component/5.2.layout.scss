@@ -1,0 +1,85 @@
+@import "../mixins/variables";
+@import "../mixins/projects";
+@import "../mixins/clearfix";
+@import "../mixins/media";
+
+@mixin row{
+  margin-left:  ceil((30px / -2));
+  margin-right: floor((30px / -2));
+  @include clearfix
+}
+
+@mixin makeSmColumn($columns){
+  position: relative;
+  min-height: 1px;
+  padding-left:  (30px / 2);
+  padding-right: (30px / 2);
+
+  @media (min-width: $desktop) {
+    float: left;
+    width: percentage(($columns/ 12));
+  }
+}
+
+/*
+レイアウト
+
+様々なレイアウトを変更する為のスタイル群です。
+
+Styleguide 5.2
+*/
+
+/*
+画像レイアウト
+
+画像とテキストを水平に並べるレイアウトです。
+
+画像は20%で表示されます。
+
+ex [注文履歴 ログイン後→注文履歴ボタンを押下](http://demo3.ec-cube.net/mypage)
+
+Markup:
+.ec-imageGrid
+  .ec-imageGrid__img: img(src="http://demo3.ec-cube.net/upload/save_image/0701113537_559351f959620.jpeg")
+  .ec-imageGrid__content
+    p.ec-font-bold ホーローマグ
+    p ¥ 1,728 x 1
+
+sg-wrapper:
+<div class="ec-role">
+  <sg-wrapper-content/>
+
+
+Styleguide 5.2.1
+*/
+.ec-imageGrid{
+  display: table;
+  @include borderTop;
+  width: 100%;
+
+  & &__img{
+    display: table-cell;
+    padding: 10px;
+    width: 100px;
+
+    @include media_desktop {
+      padding: 10px;
+      width: 130px;
+    }
+
+    img{
+      width: 100%;
+    }
+  }
+  & &__content{
+    vertical-align: middle;
+    display: table-cell;
+    span {
+      margin-left: 10px;
+    }
+    p {
+      margin-bottom: 0;
+    }
+  }
+}
+

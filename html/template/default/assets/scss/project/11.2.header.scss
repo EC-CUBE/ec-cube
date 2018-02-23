@@ -1,0 +1,637 @@
+@import "../mixins/media";
+@import "../mixins/projects";
+@import "../mixins/clearfix";
+@import "../mixins/animation";
+/*
+ヘッダー
+
+ヘッダー用のプロジェクトコンポーネントを提供します。
+
+ex [トップページ　ヘッダー](http://demo3.ec-cube.net/)
+
+Markup:
+include /assets/tmpl/elements/11.2.header.pug
+include /assets/tmpl/elements/11.3.headerNavi.pug
+include /assets/tmpl/elements/11.4.categoryNavi.pug
++b.ec-layoutRole
+  +e.header
+    +ec-headerRole
+    +ec-headerNaviRole
+    +ec-cateoryNaviRole
+
+Styleguide 11.2
+*/
+.ec-layoutRole{
+  width: 100%;
+  transition: transform 0.3s;
+  background: #fff;
+  & &__contentTop {
+    padding: 0;
+  }
+
+  & &__contents{
+    margin-right: auto;
+    margin-left: auto;
+    width: 100%;
+    max-width: 1150px;
+    display: flex;
+    flex-wrap: nowrap;
+
+  }
+  & &__main{
+    width: 100%;
+  }
+  & &__mainWithColumn{
+    width: 100%;
+    @include media_desktop(){
+      width: 75%;
+    }
+  }
+  & &__mainBetweenColumn{
+    width: 100%;
+    @include media_desktop(){
+      width: 50%;
+    }
+  }
+  & &__left,
+  & &__right{
+    display: none;
+    @include media_desktop(){
+      display: block;
+      width: 25%;
+    }
+  }
+}
+
+.ec-layoutRole.is_active{
+  transform: translateX(-260px);
+  transition: transform 0.3s;
+  z-index: 10;
+  @include media_desktop(){
+    transform: translateX(0px);
+  }
+}
+.ec-headerRole{
+  @include container;
+  padding-top: 15px;
+  position: relative;
+  &:after {
+    display: none;
+  }
+  @include media_desktop {
+    @include clearfix;
+  }
+  &::before{
+    display: none;
+  }
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: auto;
+  @include media_desktop {
+    width: 100%;
+    @include clearfix;
+  }
+  & &__title{
+    width: 73%;
+    @include media_desktop() {
+      width: 100%;
+    }
+  }
+  & &__cart{
+    display: none;
+    position: absolute;
+    top:15px;
+    right: 0;
+    @include media_desktop(){
+      display: block;
+      @include reset_link;
+    }
+  }
+  & &__navSP{
+    display: block;
+    position: absolute;
+    top:15px;
+    width: 27%;
+    right: 0px;
+    text-align: right;
+    @include media_desktop {
+      display: none;
+    }
+  }
+}
+.ec-headerNaviRole{
+  @include container;
+  @include clearfix;
+  & &__search{
+    display: none;
+    @include media_desktop(){
+      display: block;
+      float: left;
+      width: 370px;
+      @include reset_link;
+    }
+  }
+  & &__nav{
+    display: none;
+    @include media_desktop(){
+      display: block;
+      float: right;
+      width: 50%;
+      @include reset_link;
+    }
+  }
+
+}
+.ec-headerNavSP {
+  margin-right: 10px;
+  width: 100%;
+  height: auto;
+  vertical-align: top;
+  text-align: right;
+  & &__item{
+    display: inline-block;
+    margin-right: 10px;
+    width: auto;
+    text-align: center;
+  }
+  & &__item:nth-of-type(2){
+    margin-left: 5px;
+  }
+  .ec-cartNaviSP{
+    display: inline-block;
+    font-size: 30px;
+    cursor: pointer;
+    position: relative;
+    .ec-cartNaviSP__icon{
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      color: $clrDarkGray;
+    }
+    .ec-cartNaviSP__badge{
+      display: inline-block;
+      padding: 3px 7px;
+      min-width: 10px;
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 1;
+      color: #fff;
+      text-align: center;
+      white-space: nowrap;
+      vertical-align: baseline;
+      background: #DE5D50;
+      border-radius: 10px;
+      position: absolute;
+      top: 0;
+      right: -10px;
+    }
+  }
+  & &__itemMenu {
+    display: block;
+    position: relative;
+    width: 25px;
+    height: 15px;
+    cursor: pointer;
+    span {
+      display: inline-block;
+      transition: all .4s;
+      box-sizing: border-box;
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: #525263;
+    }
+    span:nth-of-type(1) {
+      top: 0;
+      transform: translateY(0) rotate(0);
+      transition: all .3s;
+    }
+    span:nth-of-type(2) {
+      top: 6px;
+      opacity: 1;
+      transition: all .3s;
+    }
+    span:nth-of-type(3) {
+      bottom: 0;
+      transform: translateY(0) rotate(0);
+      transition: all .3s;
+    }
+  }
+}
+.have_curtain .ec-headerNavSP__itemMenu {
+  span:nth-of-type(1) {
+    transform: translateY(2px) rotate(-45deg);
+    transition: all .3s;
+  }
+  span:nth-of-type(2) {
+    opacity: 0;
+    transition: all .3s;
+  }
+  span:nth-of-type(3) {
+    transform: translateY(-10px) rotate(45deg);
+    transition: all .3s;
+  }
+}
+
+/*
+ヘッダー：タイトル
+
+ヘッダー内で使用されるタイトルコンポーネントです。
+
+Markup:
+include /assets/tmpl/elements/11.2.header.pug
++ec-headerTitle
+
+Styleguide 11.2.1
+*/
+.ec-headerTitle{
+  @include commonStyle();
+  & &__title {
+    h1 {
+      margin: 0;
+      padding: 0;
+    }
+    a{
+      display: inline-block;
+      margin-bottom: 15px;
+      text-decoration: none;
+      font-size: 20px;
+      @include media_desktop(){
+        margin-bottom: 30px;
+        font-size: 40px;
+      }
+      font-weight: bold;
+      color: #000;
+
+      &:hover {
+        color: #666;
+      }
+    }
+  }
+  & &__subtitle {
+    font-size: 10px;
+    @include media_desktop(){
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+    a {
+      display: inline-block;
+      color: #0092C4;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  }
+}
+
+/*
+ヘッダー：ユーザナビゲーション
+
+ヘッダー内でユーザに関与するナビゲーションコンポーネントです。
+<br><br>
+`.ec-headerNaviRole`>`.ec-headerNaviRole__nav`内に記述すると２カラム上の右側に配置することができます。
+
+Markup:
+include /assets/tmpl/elements/11.3.headerNavi.pug
++ec-headerNav
+
+sg-wrapper:
+<div class="ec-headerNaviRole">
+  <div class="ec-headerNaviRole__nav">
+    <sg-wrapper-content/>
+  </div>
+</div>
+
+Styleguide 11.2.3
+*/
+.ec-headerNav{
+  text-align: right;
+  & &__item{
+    margin-left: 0;
+    display: inline-block;
+    font-size: 28px;
+    line-height: 50px;
+    @include media_desktop {
+      margin-left: 10px;
+    }
+    @include reset_link;
+    span{
+      font-size: 14px;
+    }
+    .ec-icon {
+      img {
+        width: 30px;
+        height: 30px;
+        vertical-align: middle;
+        margin-right: 5px;
+      }
+    }
+  }
+}
+
+
+/*
+ヘッダー：検索ボックス
+
+ヘッダー内で使用される商品検索コンポーネントです。
+<br><br>
+`.ec-headerNaviRole`>`.ec-headerNaviRole__search`内に記述すると２カラム上の右側に配置することができます。
+
+Markup:
+include /assets/tmpl/elements/11.3.headerNavi.pug
++ec-headerSearch
+
+sg-wrapper:
+<div class="ec-headerNaviRole">
+  <div class="ec-headerNaviRole__search">
+    <sg-wrapper-content/>
+  </div>
+</div>
+
+Styleguide 11.2.4
+*/
+.ec-headerSearch{
+  @include clearfix;
+  & &__category {
+    float: none;
+    @include media_desktop {
+      float: left;
+      width: 43%;
+    }
+    .ec-select {
+      margin-bottom: 6px;
+    }
+    select{
+      width: auto;
+      max-width: 100%;
+      height: 50px;
+      border: 1px solid #ccc;
+      font-size: 1.6rem;
+      padding: 0.5em 1em;
+      border-radius: 5px;
+      box-shadow: none;
+      box-sizing: border-box;
+      -webkit-appearance: menulist;
+      appearance: menulist;
+      @include media_desktop {
+        max-width: 180px;
+      }
+    }
+  }
+  & &__keyword{
+    float: none;
+    height: 50px;
+    padding: 0 40px 0 10px;
+    border-bottom: 1px solid #ccc;
+    position: relative;
+    color: $clrDarkGray;
+    @include media_desktop {
+      float: right;
+      width: 57%;
+    }
+    input[type="search"]{
+      height: 50px;
+      width: 100%;
+      font-size: 1.6rem;
+      border: 0 none;
+      padding: 0.5em 0;
+      box-shadow: none;
+      background: none;
+      box-sizing: border-box;
+    }
+    .ec-icon {
+      width: 25px;
+      height: 25px;
+    }
+  }
+  & &__keywordBtn{
+    border: 0;
+    background: none;
+    position: absolute;
+    right: 0;
+    top: 6px;
+    display: block;
+    font-size: 25px;
+    overflow: hidden;
+    white-space: nowrap;
+    z-index: 1;
+  }
+}
+
+
+/*
+ヘッダー：カテゴリナビ
+
+ヘッダー内で使用されている商品のカテゴリ一覧として使用します。
+
+Markup:
+include /assets/tmpl/elements/11.4.categoryNavi.pug
++ec-itemNav
+
+sg-wrapper:
+<div class="ec-cateoryNaviRole">
+  <sg-wrapper-content/>
+</div>
+
+Styleguide 11.2.5
+*/
+.ec-cateoryNaviRole{
+  @include container;
+  display: none;
+  @include media_desktop(){
+    display: block;
+    width: 100%;
+    @include reset_link;
+  }
+}
+.ec-itemNav {
+  display: block;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  text-align: center;
+  list-style: none;
+  position: relative;
+  @include media_desktop {
+    margin: 20px 0 30px;
+    border-bottom: 1px solid #D9D9D9;
+    border-top: 1px solid #D9D9D9;
+  }
+  & &__item {
+    display: inline-block;
+    font-weight: bold;
+    @include reset_link;
+    &:hover {
+      background: #fafafa;
+    }
+    a {
+      display: inline-block;
+      margin-top: 0;
+      padding: 16px;
+      height: 55px;
+    }
+    &:hover > .ec-itemNavAccordion {
+      overflow: visible;
+      height: 50px;
+      transition:all .2s ease-out;
+      .ec-itemNavAccordion__item {
+        height: 50px;
+        transition:all .2s ease-out;
+      }
+    }
+  }
+  .ec-itemNavAccordion {
+    z-index: 1000;
+    position: absolute;
+    padding: 0;
+    height: 0;
+    overflow: hidden;
+    transition:all .2s ease-out;
+    .ec-itemNavAccordion__item {
+      border-bottom: 1px solid #ccc;
+      list-style: none;
+      height: 0;
+      transition:all .2s ease-out;
+      a {
+        list-style: none;
+        border-top: 1px solid #E8E8E8;
+        border-bottom: 1px solid #E8E8E8;
+        margin-top: 0;
+        padding: 15px 10px;
+        min-width: 200px;
+        width: 100%;
+        text-align: left;
+        background: #fff;
+        transition:all .5s ease-out;
+        &:hover {
+          background: #fafafa;
+        }
+      }
+    }
+  }
+}
+/*
+ヘッダー：SPヘッダー
+
+SP時のみ出現するヘッダーに関係するコンポーネントです。<br>
+ex [トップページ](http://demo3.ec-cube.net/)画面サイズが768px以下に該当。<br>
+<br>
+`.ec-drawerRole`：SPのドロワー内の要素をwrapするコンポーネントです。<br>
+`.ec-headerSearch`、`.ec-headerNav`、`.ec-itemNav`は`.ec-drawerRole`の子要素にある場合、ドロワーに適したスタイルに変化します。<br><br>
+`.ec-overlayRole`：SPのドロワー出現時にz-indexがドロワー以下の要素に半透明の黒背景をかぶせるコンポーネントです。<br>
+
+Styleguide 11.2.6
+*/
+
+.ec-drawerRole{
+  overflow-y:scroll;
+  display: block;
+  background: #F6F6F6;
+  position: fixed;
+  top:0;
+  width: 260px;
+  height:100vh;
+  right:0;
+  z-index: -1;
+  transition: z-index 0ms 1ms;
+  @include media_desktop(){
+    display: none;
+  }
+}
+
+.ec-drawerRole.is_active{
+  z-index: 1;
+  transition: z-index 0ms 300ms;
+  @include media_desktop(){
+    display: none;
+  }
+}
+
+.ec-drawerRole{
+   .ec-headerSearch{
+    padding: 16px 8px 26px;
+    background: #EBEBEB;
+    color: #636378;
+    select{
+      width: 100% !important;
+    }
+  }
+   .ec-headerNav{
+    .ec-headerNav__item{
+      text-align: left;
+      display: block;
+      padding-left: 10px;
+      height: 60px;
+      border-bottom: 1px solid #e8e8e8;
+      line-height: 50px;
+      font-size: 30px;
+      @include media_desktop {
+        padding:0 10px;
+        height: 50px;
+      }
+    }
+
+  }
+  .ec-itemNav{
+    .ec-itemNav__item{
+      display: block;
+      text-align: left;
+      border-bottom: 1px solid #e8e8e8;
+      line-height: 50px;
+      font-weight: bold;
+      a {
+        padding:0 10px;
+        height: 50px;
+      }
+    }
+    .ec-itemNavAccordion {
+      display: none;
+    }
+  }
+}
+.ec-overlayRole{
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  top: 0px;
+  left: 0;
+  opacity: 0;
+  background: transparent;
+  transform: translateX(0);
+  transition: all .3s;
+  visibility:hidden;
+}
+.have_curtain .ec-overlayRole {
+  display: block;
+  opacity: 1;
+  background: rgba(0,0,0, 0.5);
+  transform: translateX(-260px);
+  transition: all .3s;
+  visibility: visible;
+}
+
+/*
+ヘッダー：test
+
+test
+
+Markup:
+span.ec-itemAccordionParent test1
+ul.ec-itemNavAccordion
+  li.ec-itemNavAccordion__item
+    a(href='') test2
+    ul.ec-itemNavAccordion
+      li.ec-itemNavAccordion__item
+        a(href='') test3
+        ul.ec-itemNavAccordion
+          li.ec-itemNavAccordion__item
+            a(href='') test4
+
+Styleguide 11.2.7
+*/
+
+.ec-itemNavAccordion {
+  display: none;
+}

@@ -1,0 +1,39 @@
+@import "../library/_variable";
+@import "../mixin/_media";
+
+/*
+ページタイトル
+
+コンテンツの内容を示すタイトルです。メインカラム上部に表示されます。
+
+Markup:
+// `dev(style="display:block; background:#eff0f4; padding: 4px 4px 20px;")` はスタイルガイドにおけるサンプル表示の都合上付与しています。
+dev(style="display:block; background:#eff0f4; padding: 4px 4px 20px;")
+  include /assets/tmpl/components/pageTitle.pug
+  +c-pageTitle("ページタイトル","親カテゴリ名")
+
+Styleguide 6.0
+*/
+
+.c-pageTitle {
+  display: table;
+  margin-bottom: 20px;
+  padding: 15px;
+  width: 100%;
+  background: #fff;
+  &__titles {
+    display: table-cell;
+  }
+  &__title {
+    display: inline-block;
+    margin-right: 10px;
+    margin-bottom: 0;
+    font-size: 20px;
+    vertical-align: middle;
+  }
+  &__subTitle {
+    display: inline-block;
+    font-size: 16px;
+    vertical-align: middle;
+  }
+}

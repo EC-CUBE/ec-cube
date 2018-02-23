@@ -1,0 +1,110 @@
+@import "../library/_variable";
+@import "../mixin/_media";
+@import "../mixin/_utility";
+
+/*
+コンバージョンエリア
+
+補助的なコンテンツ・入力フォームなどを表示します。
+画面によっては存在しない場合があります。レイアウトの一部ではBootstrapのgridシステムを利用しています。
+
+Markup:
+// `style="position: static;` はスタイルガイドにおけるサンプル表示の都合上付与しています。
++b.c-conversionArea(style="position: static;")
+  +e.container
+    .row.justify-content-between.align-items-center
+      .col-6
+        +e.leftBlockItem
+          a(href="").c-beseLink
+            i.fa.fa-backward(aria-hidden="true")
+            span 商品マスター
+      .col-6
+          .row.align-items-center.justify-content-end
+            .col-auto
+              form
+                select.form-control
+                  option(value='') 公開
+                  option(value='') 非公開
+                  option(value='') 廃止
+            .col-auto
+              button(type="submit").btn.btn-ec-conversion.px-5 更新
+
+Styleguide 5.0
+*/
+.c-conversionArea {
+  width: calc(100% - 220px);
+  height: 60px;
+  background: rgba(47,63,78,0.8);
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  text-align: right;
+  z-index: 100;
+
+  @include media_mainNav {
+    width: 100%;
+  }
+
+  &__container {
+    display: table;
+    padding:  0 25px;
+    width: 100%;
+    box-sizing: border-box;
+    @include clearfix;
+  }
+  &__leftBlock {
+    display: table;
+    float: left;
+    height: 60px;
+  }
+  &__leftBlockItem {
+    display: table-cell;
+    vertical-align: middle;
+    height: 60px;
+    .c-conversionArea__leftBlockItem:not(:last-of-type) {
+      padding-right: 30px;
+    }
+  }
+  &__rightBlock {
+    display: table;
+    float: right;
+    height: 60px;
+    .c-conversionArea__rightBlockItem:not(:last-of-type) {
+      padding-right: 30px;
+    }
+  }
+  &__rightBlockItem {
+    display: table-cell;
+    height: 60px;
+    vertical-align: middle;
+  }
+}
+
+/*
+ベースリンク
+
+コンバージョンエリアに存在するリンクです。親カテゴリへのページのリンクを設置する際に使用するコンポーネントです。
+
+Markup:
+div(style="background:#333; padding:20px;")
+  a(href="").c-beseLink
+    i.fa.fa-backward
+    span 商品マスター
+
+
+Styleguide 5.1
+*/
+.c-beseLink {
+  display: inline-block;
+  font-size: 16px;
+  color: $white;
+  &:hover {
+    color: $white;
+    opacity: .5;
+    text-decoration: none;
+  }
+  i {
+    display: inline-block;
+    margin-right: 10px;
+  }
+}

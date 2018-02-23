@@ -21,6 +21,18 @@
 
 ### [EC-CUBE 3.xのインストール方法](http://ec-cube.github.io/quickstart_install)
 
+### CSS の編集方法
+
+[Sass](http://sass-lang.com) を使用して記述されています。
+Sass のソースコードは `html/template/{admin,default}/assets/scss` にあります。
+前提として [https://nodejs.org/ja/] より、 Node.js をインストールしておいてください。
+
+以下のコマンドでビルドすることで、 `html/template/{admin,default}/assets/css` に CSS ファイルが出力されます。
+
+```shell
+npm install # 初回のみ
+npm run build # Sass のビルド
+```
 
 ### 動作確認環境
 

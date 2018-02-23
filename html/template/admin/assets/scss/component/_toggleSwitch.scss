@@ -1,0 +1,72 @@
+@import "../library/_variable";
+@import "../mixin/_media";
+@import "../mixin/_utility";
+
+/*
+トグルスイッチ
+
+２要素の選択を行うコンポーネントです。クリックすることで切り替えを行うことが出来ます。
+
+Markup:
+div(style="padding:20px; background:#eee;")
+  // `(style="padding:20px;, background:#eee;")` はスタイルガイドにおけるサンプル表示の都合上付与しています。
+  +b.c-toggleSwitch
+    +e.btn
+      input(type="checkbox" id="switch")
+      label(for="switch")
+    +e.label
+      span 公開
+
+Styleguide 8.0
+*/
+.c-toggleSwitch {
+  display: inline-block;
+  &__btn {
+    display: inline-block;
+    height: 30px;
+
+    input[type=checkbox]+ label{
+      margin-bottom: 0;
+      width: 50px;
+      height: 30px;
+      background: #D3D3D3;
+      display: inline-block;
+      border-radius: 25px;
+      position: relative;
+      cursor: pointer;
+      &:after{
+        content: "";
+        display: inline-block;
+        width: 27px;
+        height: 26px;
+        background: #FFF;
+        border-radius: 50%;
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        transition: all .3s;
+      }
+    }
+    input[type=checkbox]{
+      margin-bottom: 0;
+      display: none;
+      &:checked + label{
+        background-color: #25B877;
+        &:after{
+          left: 21.5px;
+        }
+      }
+    }
+  }
+  &__label {
+    margin-left: 5px;
+    display: inline-block;
+    vertical-align: top;
+    height: 30px;
+    color: #fff;
+    span {
+      vertical-align: middle;
+      line-height: 2;
+    }
+  }
+}

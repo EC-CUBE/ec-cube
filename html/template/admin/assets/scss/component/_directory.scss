@@ -1,0 +1,292 @@
+@import "../library/_variable";
+@import "../mixin/_media";
+/*
+ディレクトリツリー
+
+ディレクトリ構造をツリー形式で表示します。
+
+Markup:
+include /assets/tmpl/components/directory.pug
++c-directoryTree
+
+Styleguide 7.0
+*/
+.c-directoryTree {
+  //1層目
+  label {
+    &::before {
+      content: "\f147";
+      display: inline-block;
+      margin-right: .5em;
+      font-family: FontAwesome;
+      font-size: 16px;
+    }
+  }
+  label[data-toggle="collapse"] {
+    &::before {
+      content: "\f147";
+      display: inline-block;
+      margin-right: .5em;
+      font-family: FontAwesome;
+      font-size: 16px;
+    }
+  }
+
+  label.collapsed {
+    &::before {
+      content: "\f196";
+      display: inline-block;
+      margin-right: .5em;
+      font-family: FontAwesome;
+      font-size: 16px;
+    }
+  }
+  //2層目以降
+  ul >li > ul {
+    li > label {
+      margin-left: 10px;
+      position: relative;
+      span {
+        display: inline-block;
+        margin-left: 16px;
+      }
+
+    }
+    li:not(:last-of-type) > label::before {
+      margin-left: 2px;
+      margin-right: .5em;
+      content: "├";
+      display: inline-block;
+      width: 1em;
+      height: 1em;
+    }
+
+    li:last-of-type > label::before  {
+      margin-right: .6em;
+      content: "└";
+      display: inline-block;
+      width: 1em;
+      height: 1em;
+    }
+    label {
+      &::after {
+        content: "\f147";
+        display: inline-block;
+        margin-right: .5em;
+        font-family: FontAwesome;
+        font-size: 16px;
+        position: absolute;
+        left: 20px;
+      }
+    }
+    label[data-toggle="collapse"] {
+      &::after {
+        content: "\f147";
+        display: inline-block;
+        margin-right: .5em;
+        font-family: FontAwesome;
+        font-size: 16px;
+        position: absolute;
+        left: 20px;
+      }
+    }
+    label.collapsed {
+      &::after {
+        content: "\f196";
+        display: inline-block;
+        margin-right: .5em;
+        font-family: FontAwesome;
+        font-size: 16px;
+        position: absolute;
+        left: 20px;
+      }
+    }
+  }
+  //3層目
+  ul >li ul >li ul  {
+    li > label {
+      margin-left: 20px;
+    }
+  }
+  //4層目
+  ul >li ul >li ul > li ul  {
+    li > label {
+      margin-left: 30px;
+    }
+  }
+}
+
+
+/*
+ディレクトリツリー（カテゴリ登録）
+
+カテゴリ登録ページに使用されるディレクトリツリーのコンポーネントです。
+
+sg-wrapper:
+  <script>
+    directoryTreeRegister();
+  </script>
+<sg-wrapper-content/>
+
+Markup:
+include /assets/tmpl/components/directory.pug
++c-directoryTreeRegister
+
+Styleguide 7.1
+*/
+.c-directoryTree--register {
+  max-height: 300px;
+  overflow: scroll;
+
+  //2層目以降
+  ul >li > ul {
+    li > label {
+      margin-left: 10px;
+    }
+    li:not(:last-of-type) > label::before {
+      margin-left: 2px;
+      margin-right: .5em;
+      content: "├";
+      display: inline-block;
+      width: 1em;
+      height: 1em;
+    }
+
+    li:last-of-type > label::before  {
+      margin-right: .6em;
+      content: "└";
+      display: inline-block;
+      width: 1em;
+      height: 1em;
+    }
+  }
+  //3層目
+  ul >li ul >li ul  {
+    li > label {
+      margin-left: 20px;
+    }
+  }
+  //4層目
+  ul >li ul >li ul > li ul  {
+    li > label {
+      margin-left: 30px;
+    }
+  }
+}
+
+/*
+ディレクトリツリー（フォルダー）
+
+ファイル管理ページに使用されるディレクトリツリーのコンポーネントです。
+フォルダ名、もしくはフォルダアイコンをクリックすることで下層の要素を表示することが出来ます。
+
+Markup:
+include /assets/tmpl/components/directory.pug
++c-directoryTreeFolder
+
+Styleguide 7.2
+*/
+
+.c-directoryTree--folder {
+  //1層目
+  label {
+    &::before {
+      content: "\f114";
+      display: inline-block;
+      margin-right: .5em;
+      font-family: FontAwesome;
+      font-size: 16px;
+    }
+  }
+  label[data-toggle="collapse"] {
+    &::before {
+      content: "\f115";
+      display: inline-block;
+      margin-right: .5em;
+      font-family: FontAwesome;
+      font-size: 16px;
+
+    }
+  }
+  label.collapsed {
+    &::before {
+      content: "\f114";
+      display: inline-block;
+      margin-right: .5em;
+      font-family: FontAwesome;
+      font-size: 16px;
+    }
+  }
+  //2層目以降
+  ul >li > ul {
+    li > label {
+      margin-left: 10px;
+      position: relative;
+      span,a {
+        display: inline-block;
+        margin-left: 1.5rem;
+      }
+    }
+    li:not(:last-of-type) > label::before {
+      margin-left: 2px;
+      margin-right: .5em;
+      content: "├";
+      display: inline-block;
+      width: 1em;
+      height: 1em;
+    }
+
+    li:last-of-type > label::before  {
+      margin-right: .6em;
+      content: "└";
+      display: inline-block;
+      width: 1em;
+      height: 1em;
+    }
+    label {
+      &::after {
+        content: "\f114";
+        display: inline-block;
+        margin-right: .5em;
+        font-family: FontAwesome;
+        font-size: 16px;
+        position: absolute;
+        left: 20px;
+      }
+    }
+    label[data-toggle="collapse"] {
+      &::after {
+        content: "\f115";
+        display: inline-block;
+        margin-right: .5em;
+        font-family: FontAwesome;
+        font-size: 16px;
+        position: absolute;
+        left: 20px;
+      }
+    }
+    label.collapsed {
+      &::after {
+        content: "\f114";
+        display: inline-block;
+        margin-right: .5em;
+        font-family: FontAwesome;
+        font-size: 16px;
+        position: absolute;
+        left: 20px;
+      }
+    }
+  }
+  //3層目
+  ul >li ul >li ul  {
+    li > label {
+      margin-left: 20px;
+    }
+  }
+  //4層目
+  ul >li ul >li ul > li ul  {
+    li > label {
+      margin-left: 30px;
+    }
+  }
+}

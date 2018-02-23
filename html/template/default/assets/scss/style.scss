@@ -1,0 +1,64 @@
+@import "/node_modules/normalize.css/normalize.css";
+
+body {
+  font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
+  color:#525263;
+  transition: z-index 0ms 5.28455ms;
+  background: #f6f6f6;
+  margin: 0;
+}
+a {
+  text-decoration: none;
+}
+
+pre {
+  background-color: transparent;
+  border: none;
+  padding: 16px 0;
+}
+p {
+  -webkit-margin-before: 0;
+  -webkit-margin-after: 0;
+}
+@import "component/1.1.heading";
+@import "component/1.2.typo";
+@import "component/1.3.list";
+@import "component/2.1.buttonsize";
+@import "component/2.2.closebutton.scss";
+@import "component/2.3.otherbutton";
+@import "component/3.1.inputText";
+@import "component/3.2.inputMisc";
+@import "component/3.3.form";
+@import "component/4.1.icon";
+@import "component/5.1.grid";
+@import "component/5.2.layout";
+@import "component/6.1.login";
+@import "component/7.1.itembanner";
+@import "component/7.2.search";
+@import "component/7.3.cart";
+@import "component/8.1.info";
+@import "component/8.2.banner";
+@import "component/9.1.mypage";
+@import "project/11.1.role";
+@import "project/11.2.header";
+@import "project/11.3.footer";
+@import "project/12.1.slider";
+@import "project/12.2.eyecatch";
+@import "project/13.1.searchnav";
+@import "project/13.2.shelf";
+@import "project/13.3.pager";
+@import "project/14.1.product";
+@import "project/15.1.cart";
+@import "project/15.2.order";
+@import "project/16.1.history";
+@import "project/16.2.historyDetail";
+@import "project/17.1.address";
+@import "project/18.1.password";
+@import "project/19.1.register";
+@import "project/19.2.contact";
+@import "project/19.3.customer";
+@import "project/20.1.404";
+@import "project/21.1.withdraw";
+@import "project/22.1.editComplete";
+
+

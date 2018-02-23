@@ -1,0 +1,152 @@
+@import "../library/_variable";
+@import "../mixin/_media";
+
+/*
+ヘッダーバー
+
+画面上部に固定表示されます。ロゴ・店舗名（および店舗ページへのリンク）・ユーザメニューが含まれます。<br>
+<br>
+デバイスサイズが1280px以下になると、メインナビを出現させるためのバーガーメニューが出現します。<br>
+デバイスサイズが1024px以下になると、表示領域の確保のためロゴが非表示となります。<br>
+<br>
+ユーザメニューのフキダシはBootstrapにて実装しております。詳細はBootstrapの<a href="https://getbootstrap.com/docs/4.0/components/popovers/" target="_blank">popvers</a>ページをご確認下さい。
+
+sg-wrapper:
+  <script>
+    popoverHeader();
+  </script>
+<sg-wrapper-content/>
+
+Markup:
+<div style="padding-bottom: 200px; >
+  <!--親要素の`div`および`style="position: static;"` はスタイルガイドにおけるサンプル表示の都合上付与しています。-->
+  <header class="c-headerBar" style="position: static;">
+    <div class="c-headerBar__container">
+      <div class="c-headerBar__logo">
+        <h1><img src="/img/logo@2x.png"></h1>
+      </div>
+      <a class="c-headerBar__toggleBtn">
+        <i class="fa fa-bars" aria-hidden="true"></i>
+      </a>
+      <a class="c-headerBar__shopTitle" href="">
+        <span>EC-CUBE SHOP</span>
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+      </a>
+      <a class="c-headerBar__userMenu" data-container="body" data-toggle="popover" data-placement="bottom" title="" data-content="<p>2017/12/18 12:18</p><a href='/admin/passwordChange' class='btn btn-ec-regular btn-block'>パスワード変更</a><a href='/admin/login' class='btn btn-ec-sub btn-block'>ログアウト</a>" data-html="true" data-original-title="最終ログイン">
+        <i class="fa fa-user-circle" aria-hidden="true"></i>
+        <span>管理者 様</span>
+        <i class="fa fa-angle-down" aria-hidden="true"></i>
+      </a>
+    </div>
+  </header>
+</div>
+
+Styleguide 2.0
+*/
+
+.c-headerBar {
+  width: 100%;
+  height: 65px;
+  color: #fff;
+  background: $ecCube_navy;
+  position: fixed;
+  top: 0;
+  box-sizing: border-box;
+  z-index: 1000;
+  a {
+    color: #fff;
+    &:hover {
+      color: #fff;
+      text-decoration: none;
+    }
+  }
+
+  &__container {
+    display: table;
+    width: 100%;
+    max-width: 2500px;
+  }
+
+  &__logo {
+    display: table-cell;
+    padding: 0 20px;
+    width: 200px;
+    height: 65px;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    img {
+      width: 172px;
+      height: 25px;
+    }
+    @include media_sp {
+      display: none;
+    }
+  }
+  &__toggleBtn {
+    display: none;
+    padding: 0 20px;
+    width: 65px;
+    height: 65px;
+    font-size: 30px;
+    color: #fff;
+    vertical-align: middle;
+    text-decoration: none;
+    cursor: pointer;
+    @include media_mainNav {
+      display: table-cell;
+    }
+
+    &:hover {
+      background: $white15;
+    }
+  }
+  &__shopTitle {
+    display: table-cell;
+    padding: 0 20px;
+    height: 65px;
+    font-size: 16px;
+    color: #fff;
+    font-weight: bold;
+    vertical-align: middle;
+
+    &:hover {
+      background: $white15;
+    }
+
+    .fa-angle-right {
+      padding-left: 15px;
+      font-size: 21px;
+    }
+  }
+  &__userMenu {
+    display: table-cell;
+    padding: 0 20px;
+    width: 170px;
+    height: 65px;
+    color: #fff;
+    vertical-align: middle;
+    white-space: nowrap;
+
+    &:hover {
+      background: $white15;
+    }
+
+    span {
+      font-weight: bold;
+      vertical-align: middle;
+    }
+    .fa-angle-down {
+      padding-left: 10px;
+      font-size: 24px;
+      vertical-align: middle;
+    }
+    .fa-user-circle {
+      padding-right: 10px;
+      font-size: 34px;
+      vertical-align: middle;
+    }
+  }
+
+}

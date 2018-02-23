@@ -1,0 +1,146 @@
+@import "../mixins/variables";
+@import "../../../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/buttons";
+@import "../../../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/tab-focus";
+@import "../../../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/opacity";
+@import "../../../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/vendor-prefixes";
+
+$padding-base-vertical:     6px !default;
+
+
+$btn-primary-bg: #5CB1B1;
+$btn-primary-color: #fff;
+$btn-action-bg: #DE5D50;
+$btn-action-color: #fff;
+$btn-cancel-bg: #525263;
+$btn-cancel-color: #fff;
+$btn-default-bg: #F5F7F8;
+$btn-default-color: #525263;
+
+$btn-border-radius-base: 0px;
+
+
+@mixin _btn($color, $background, $border){
+  display: inline-block;
+  margin-bottom: 0; // For input.btn
+  font-weight: bold;
+  text-align: center;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
+  border: 1px solid transparent;
+  white-space: nowrap;
+  @include button-size($padding-base-vertical, $padding-base-horizontal, $font-size-base, $line-height-base, $btn-border-radius-base);
+  @include user-select(none);
+  padding: 10px 16px;
+  text-decoration: none;
+
+  &,
+  &:active,
+  &.active {
+    &:focus,
+    &.focus {
+      @include tab-focus;
+    }
+  }
+
+  &:hover,
+  &:focus,
+  &.focus {
+    color: $btn-default-color;
+    text-decoration: none;
+  }
+
+  &:active,
+  &.active {
+    outline: 0;
+    background-image: none;
+    @include box-shadow(inset 0 3px 5px rgba(0,0,0,.125));
+  }
+
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    cursor: $cursor-disabled;
+    @include opacity(.65);
+    @include box-shadow(none);
+  }
+
+  @include button-variant($color, $background, $border);
+  // [converter] extracted a& to a.btn
+
+  .ec-icon img {
+    width: 1em;
+    vertical-align: text-bottom;
+  }
+}
+
+@mixin btn-default(){
+  @include _btn($btn-default-color, $btn-default-bg, $btn-default-border)
+}
+@mixin btn-action(){
+  @include _btn($btn-action-color, $btn-action-bg, $btn-action-bg)
+}
+@mixin btn-cancel(){
+  @include _btn($btn-cancel-color, $btn-cancel-bg, $btn-cancel-bg)
+}
+@mixin btn-primary(){
+  @include _btn($btn-primary-color, $btn-primary-bg, $btn-primary-bg)
+}
+
+@mixin blockBtn-default(){
+  @include _btn($btn-default-color, $btn-default-bg, $btn-default-border);
+  display: block;
+  width: 100%;
+  height:56px;
+  line-height:56px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+@mixin blockBtn-action(){
+  @include _btn($btn-action-color, $btn-action-bg, $btn-action-bg);
+  display: block;
+  width: 100%;
+  height:56px;
+  line-height:56px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+@mixin blockBtn-cancel(){
+  @include _btn($btn-cancel-color, $btn-cancel-bg, $btn-cancel-bg);
+  display: block;
+  width: 100%;
+  height:56px;
+  line-height:56px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+@mixin blockBtn-primary(){
+  @include _btn($btn-primary-color, $btn-primary-bg, $btn-primary-bg);
+  display: block;
+  width: 100%;
+  height:56px;
+  line-height:56px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+// User select
+// For selecting text on the page
+
+@mixin user-select($select) {
+  -webkit-user-select: $select;
+  -moz-user-select: $select;
+  -ms-user-select: $select; // IE10+
+  user-select: $select;
+}
+
+
+
+
+@mixin linkBtn{
+  &.disabled,
+  fieldset[disabled] & {
+    pointer-events: none; // Future-proof disabling of clicks on `<a>` elements
+  }
+}

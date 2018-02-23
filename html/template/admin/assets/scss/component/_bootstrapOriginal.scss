@@ -1,0 +1,300 @@
+@import "../library/_variable";
+@import "../mixin/_media";
+
+//Theme color
+$primary:       #437ec4 !default;
+$secondary:     #54687A !default;
+$success:       #25b877 !default;
+//$info:          $cyan !default;
+$warning:       #eeb128 !default;
+$danger:        #c04949 !default;
+$light:         #eff0f4 !default;
+$dark:          #595959 !default;
+
+//card
+$card-cap-bg: white;
+
+//table
+$table-border-color: #ccc;
+$table-accent-bg: #f9f9f9;
+$table-active-bg: #f2f2f2;
+.table-ec-lightGray{
+  background-color: #f2f2f2;
+}
+
+//breadcrumb
+$breadcrumb-bg: #eff0f4;
+
+@import "../../../../../node_modules/bootstrap/scss/bootstrap";
+
+/*
+Bootstrap
+
+スタイルガイドで使用される一部クラスは [Bootstrap](https://getbootstrap.com/) を使用しています。
+Bootstrap で利用可能なクラス群については、 [Bootstrap 公式サイト](https://getbootstrap.com/) をご利用ください。
+
+Bootstrapを用いて変更を加えたEC-CUBE管理画面専用のオリジナルクラスを以下にまとめています。
+
+Styleguide 12.0
+*/
+
+/*
+テーブル
+
+ `table-ec-lightGray`：背景色を#f2f2f2に指定します。thに使用しています。
+
+Markup:
+<table class="table table-striped table-bordered">
+  <tbody>
+    <tr>
+      <th class="w-25 align-middle table-ec-lightGray">カテゴリID</th>
+      <td class="align-middle">新規登録時は未設定<br/>既存商品の更新は商品IDを設定</td>
+    </tr>
+    <tr>
+      <th class="w-25 align-middle table-ec-lightGray">カテゴリ名<span class="badge badge-primary ml-1">必須</span></th>
+      <td class="align-middle"></td>
+    </tr>
+    <tr>
+      <th class="w-25 align-middle table-ec-lightGray">親カテゴリID</th>
+      <td class="align-middle"></td>
+    </tr>
+  </tbody>
+</table>
+
+Styleguide 12.1
+*/
+.table-ec-lightGray{
+  background-color: #f2f2f2;
+}
+
+/*
+ボタン
+
+EC-CUBE管理画面専用のオリジナルbuttonクラスを定義しています。`.btn`とセットでの使用を前提としています。<br>
+<br>
+<br>
+【コンバージョン】 `.btn-ec-conversion`<br>
+テキスト…#FFFFFF<br>
+背景…#437EC4 → #2963AB (hover)<br>
+<br>
+【デリート】 `.btn-ec-delete`<br>
+テキスト…#FFFFFF<br>
+背景…#C04949 → #A62E2E (hover)<br>
+<br>
+【レギュラー】 `.btn-ec-regular`<br>
+テキスト…#595959 → #262626 (hover)<br>
+背景…#FFFFFF → #F2F2F2 (hover)<br>
+ボーダー…#595959 → #262626 (hover)<br>
+<br>
+【サブ】 `.btn-ec-sub`<br>
+テキスト…#FFFFFF<br>
+背景…#F5F6F8 → #D6D9E0(hover)<br>
+<br>
+【アイコン】 `.btn-ec-actionIcon`<br>
+テキスト…#54687A<br>
+背景…#FFFFFF → #54687A (hover)<br>
+
+
+Markup:
+<!-- `style="margin-right: 5px;"` はスタイルガイドにおけるサンプル表示の都合上付与しています。-->
+<a href="" style="margin-right: 5px;" class="btn btn-ec-conversion">コンバージョン</a>
+<a href="" style="margin-right: 5px;" class="btn btn-ec-delete">デリート</a>
+<a href="" style="margin-right: 5px;" class="btn btn-ec-regular">レギュラー</a>
+<a href="" style="margin-right: 5px;" class="btn btn-ec-sub">サブ</a>
+<a class="btn btn-ec-actionIcon"><i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a>
+
+Styleguide 12.2
+*/
+.btn-ec-conversion{
+  @include button-variant(#437EC4, transparent, #2963AB, transparent, #2963AB, transparent );
+  cursor:pointer;
+}
+
+.btn-ec-delete{
+  @include button-variant(#C04949, transparent, #A62E2E, transparent, #A62E2E, transparent );
+  cursor:pointer;
+}
+
+.btn-ec-regular{
+  @include button-variant(#FFFFFF, #595959, #F2F2F2, #262626, #F2F2F2, #262626 );
+  color: #595959;
+  cursor:pointer;
+}
+
+.btn-ec-regular:hover {
+  color: #262626;
+}
+
+.btn-ec-sub{
+  @include button-variant(#F5F6F8, transparent, #D6D9E0, transparent, #D6D9E0, transparent );
+  color: #262626;
+  cursor:pointer;
+}
+
+.btn-ec-sub:hover {
+  color: #262626;
+}
+
+.btn-ec-actionIcon{
+  @include button-variant(transparent, transparent, #EFF0F4, transparent, #EFF0F4, transparent );
+  padding: 6px 12px;
+  cursor:pointer;
+}
+
+.btn-ec-actionIcon:hover {
+  color: #54687A;
+}
+
+/*
+ボタングループ（タブ）
+
+EC-CUBE管理画面専用のオリジナルbutton-groupクラスを定義しています。ページの切り替えに用います。<br>
+<br>
+【タブ】 `.btn-ec-tab`<br>
+テキスト…#595959 → #262626 (hover) → #FFFFFF(active)<br>
+背景…#FFFFFF → #F2F2F2 (hover) → #595959(active)<br>
+ボーダー…#595959 → #262626 (hover)<br>
+<br>
+
+Markup:
+<div class="btn-group nav d-inline-flex" id="pills-tab" role="tablist">
+  <a class="nav-link active btn btn-ec-tab py-2 pl-4 pr-4" id="pills-pc-tab" data-toggle="pill" href="#pills-pc" role="tab" aria-controls="pills-pc" aria-selected="true">PC</a>
+  <a class="nav-link btn btn-ec-tab py-2 pl-4 pr-4" id="pills-mobile-tab" data-toggle="pill" href="#pills-mobile" role="tab" aria-controls="pills-mobile" aria-selected="false">モバイル</a></div>
+
+Styleguide 12.3
+*/
+.btn-ec-tab {
+  @include button-variant(#FFFFFF, #595959, #F2F2F2, #262626, #F2F2F2, #262626 );
+  color: #595959;
+  cursor:pointer;
+}
+
+.btn-ec-tab:hover {
+  color: #262626;
+}
+
+.btn-ec-tab.active{
+  background-color: #595959 !important;
+  color: #fff !important;
+  box-shadow: none !important;
+}
+
+/*
+バッジ
+
+EC-CUBE管理画面専用のオリジナルbadgeクラスを定義しています。`.badge`とセットでの使用を前提としています。
+<br>
+ `badge-ec-blue`   :#437EC4;<br>
+ `badge-ec-green`  :#25B877;<br>
+ `badge-ec-red`    :#C04949;<br>
+ `badge-ec-yellow` :#EEB128;<br>
+<br>
+
+Markup:
+<!-- `style="margin-right: 5px;"` はスタイルガイドにおけるサンプル表示の都合上付与しています。-->
+<span style="margin-right: 5px;" class="badge badge-ec-blue">新規受付</span>
+<span style="margin-right: 5px;" class="badge badge-ec-green">入金済み</span>
+<span style="margin-right: 5px;" class="badge badge-ec-red">入金待ち</span>
+<span style="margin-right: 5px;" class="badge badge-ec-yellow">処理中</span>
+<span class="badge badge-ec-glay">キャンセル</span>
+
+Styleguide 12.4
+*/
+.badge-ec-blue{
+  @include badge-variant(#fff);
+  display: inline-block;
+  border: 1px solid #437EC4;
+  color: #437EC4;
+  padding: .5rem 0.75rem;
+  font-size: 14px;
+  font-weight: normal;
+}
+.badge-ec-green{
+  @include badge-variant(#fff);
+  display: inline-block;
+  border: 1px solid #25B877;
+  color: #25B877;
+  padding: .5rem 0.75rem;
+  font-size: 14px;
+  font-weight: normal;
+}
+.badge-ec-red{
+  @include badge-variant(#fff);
+  display: inline-block;
+  border: 1px solid #C04949;
+  color: #C04949;
+  padding: .5rem 0.75rem;
+  font-size: 14px;
+  font-weight: normal;
+}
+.badge-ec-yellow{
+  @include badge-variant(#fff);
+  display: inline-block;
+  border: 1px solid #EEB128;
+  color: #EEB128;
+  padding: .5rem 0.75rem;
+  font-size: 14px;
+  font-weight: normal;
+}
+.badge-ec-glay{
+  @include badge-variant(#fff);
+  display: inline-block;
+  border: 1px solid #A3A3A3;
+  color: #A3A3A3;
+  padding: .5rem 0.75rem;
+  font-size: 14px;
+  font-weight: normal;
+}
+
+/*
+ボーダー
+
+EC-CUBE管理画面専用のオリジナルborderクラスを定義しています。`.border`とセットでの使用を前提としています。<br>
+ボーダー色は#cccを設定しています。
+
+Markup:
+<!-- `style="padding: 20px; margin-bottom: 10px;"` はスタイルガイドにおけるサンプル表示の都合上付与しています。-->
+.d-block.border.border-ec-gray(style="padding: 20px; margin-bottom: 10px;") ボーダーsolid　 .border-ec-gray 　
+.d-block.border-ec-dashed(style="padding: 20px; margin-bottom: 10px;") ボーダーdashed　 .border-ec-dashed
+
+Styleguide 12.5
+*/
+.border-ec-gray {
+  border-color: #ccc !important;
+}
+.border-ec-dashed{
+  border: $border-width dashed #ccc !important;
+}
+
+/*
+背景色
+
+EC-CUBE管理画面専用のオリジナルbackground-colorクラスを定義しています。
+
+Markup:
+<!-- `style="padding: 20px; margin-bottom: 10px;"` はスタイルガイドにおけるサンプル表示の都合上付与しています。-->
+.d-block.bg-ec-lightGray(style="padding: 20px; margin-bottom: 10px;") 背景色 .bg-ec-lightGray #f9f9f9
+.d-block.bg-ec-formGray(style="padding: 20px; margin-bottom: 10px;") 背景色 .bg-ec-formGray #F8F9FA
+
+Styleguide 12.6
+*/
+.bg-ec-lightGray{
+  background-color: #f9f9f9 !important;
+}
+.bg-ec-formGray{
+  background-color: #F8F9FA !important;
+}
+
+/*
+カラー
+
+EC-CUBE管理画面専用のオリジナルcolorクラスを定義しています。
+
+Markup:
+.text-ec-gray テキスト .text-ec-gray　#999
+.text-ec-lightGray テキスト .text-ec-lightGray　#ccc
+
+Styleguide 12.7
+*/
+.text-ec-gray { color: #999 !important; }
+.text-ec-lightGray { color: #ccc !important; }

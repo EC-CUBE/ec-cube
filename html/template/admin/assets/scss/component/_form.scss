@@ -1,0 +1,88 @@
+@import "../library/_variable";
+@import "../mixin/_media";
+@import "../bootstrap.scss";
+
+/*
+ファイルアップロード
+
+画像のアップロードを行うフォームコンポーネントです。
+画像がアップロードされた際に表示されるサムネイルのみオリジナルコンポーネントで、
+アップロード部分に関してはFontAwesomeとBootstrapで構成されています。
+
+Markup:
+form.text-center.w-100.py-5.border-ec-dashed.mb-2.rounded
+  i.fa.fa-cloud-upload.fa-4x.text-ec-lightGray(aria-hidden="true")
+  p.font-weight-bold.text-ec-gray 画像をドラッグ＆ドロップ
+    br
+    | または
+  input#fileForm.d-none(type="file")
+  a(onclick="$('#fileForm').click()").btn.btn-ec-regular.mr-2 ファイルを選択
+.c-form__fileUploadThumbnails
+  .c-form__fileUploadThumbnail(style="background-image:url('http://via.placeholder.com/150x150')")
+  .c-form__fileUploadThumbnail(style="background-image:url('http://via.placeholder.com/350x150')")
+  .c-form__fileUploadThumbnail(style="background-image:url('http://via.placeholder.com/350x600')")
+  .c-form__fileUploadThumbnail(style="background-image:url('http://via.placeholder.com/600x600')")
+  .c-form__fileUploadThumbnail(style="background-image:url('http://via.placeholder.com/350x150')")
+  .c-form__fileUploadThumbnail(style="background-image:url('http://via.placeholder.com/350x600')")
+p 項目の内容はドラッグ＆ドロップで変更可能です。
+
+  Styleguide 9.0
+*/
+.c-form__fileUpload {
+  &Thumbnails {
+    margin-bottom: 10px;
+  }
+  &Thumbnail {
+    display: inline-block;
+    width: 70px;
+    height: 70px;
+    background-color: #f5f6f8;
+    background-image: url('../../img/moc.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    cursor:pointer;
+    position: relative;
+    &::before{
+      display: block;
+      content: "";
+      width: 100%;
+      height:100%;
+      background: transparent;
+    }
+    &::after{
+      display: none;
+      content: "\f00d";
+      font-family: FontAwesome;
+      font-size: 18px;
+      line-height: 1;
+      color: #54687A;
+      padding: 5px;
+      background: #fff;
+      border-radius: 3px;
+      position: absolute;
+      top:2px;
+      right: 2px;
+    }
+  }
+  &Thumbnail:hover {
+    &::before{
+      background: rgba(0,0,0,0.5);
+    }
+
+    &::after{
+      display: inline-block;
+      content: "\f00d";
+      font-family: FontAwesome;
+      font-size: 18px;
+      line-height: 1;
+      color: #54687A;
+      padding: 5px;
+      background: #fff;
+      border-radius: 3px;
+      position: absolute;
+      top:2px;
+      right: 2px;
+    }
+  }
+}

@@ -1,0 +1,41 @@
+@import "../mixins/media";
+/*
+お客様情報の入力
+
+ログインせずゲストとして商品を購入する際の、お客様情報の入力 に関する Project コンポーネントを定義します。
+
+ex [カートSTEP2 お客様情報の入力(ゲスト購入)](http://demo3.ec-cube.net/shopping/nonmember)
+
+Markup:
+include /assets/tmpl/elements/19.3.customer.pug
++ec-customerRole
+hoge
+
+Styleguide 19.3
+
+*/
+.ec-customerRole{
+  @include container;
+  & &__actions {
+    padding-top:20px;
+  }
+  .ec-blockBtn--action {
+    margin-bottom: 10px;
+    @include media_desktop {
+      margin-bottom: 16px;
+    }
+  }
+}
+
+.ec-contactConfirmRole {
+  @include container;
+  & &__actions {
+    padding-top:20px;
+  }
+  .ec-blockBtn--action {
+    margin-bottom: 16px;
+  }
+}
+.ec-contactCompleteRole {
+  @include container;
+}

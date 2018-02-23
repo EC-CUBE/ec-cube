@@ -1,0 +1,92 @@
+@import "../mixins/variables";
+/*
+アイコンボタン
+
+SVGアイコンを用いたアイコンボタンです。
+
+sg-wrapper:
+<div class="ec-role">
+  <sg-wrapper-content/>
+
+Styleguide 2.2
+*/
+
+/*
+アイコンボタン
+
+閉じるなどSVGアイコンを用いたボタン装飾で利用します。
+
+ex [ログイン画面　☓ボタン部分](http://demo3.ec-cube.net/mypage/login)
+
+Markup:
+a.ec-closeBtn
+  .ec-icon
+    img(src='/moc/icon/cross.svg', alt='close')
+
+Styleguide 2.2.1
+*/
+.ec-closeBtn{
+  cursor: pointer;
+  .ec-icon {
+    img {
+      //overflow: hidden;
+      display: inline-block;
+      margin-right: 5px;
+      width: 1em;
+      height: 1em;
+      position: relative;
+      top: -1px;
+      vertical-align: middle;
+    }
+  }
+}
+
+/*
+アイコンボタン(○)
+
+閉じるなどSVGアイコンを用いたボタン装飾で利用します。
+
+ex [ログイン画面　☓ボタン部分](http://demo3.ec-cube.net/mypage/login)
+
+
+
+ex [お届け先編集画面　☓ボタン部分](http://demo3.ec-cube.net/mypage/delivery)
+
+Markup:
+a.ec-closeBtn--circle
+  .ec-icon
+    img(src='/moc/icon/cross-white.svg', alt='close')
+
+Styleguide 2.2.2
+*/
+
+.ec-closeBtn--circle{
+  display: block;
+  border: 0 none;
+  padding: 0;
+  margin: 0;
+  text-shadow: none;
+  box-shadow: none;
+  border-radius: 50%;
+  background: #B8BEC4;
+  cursor: pointer;
+  width: 40px;
+  min-width: 40px;
+  max-width: 40px;
+  height: 40px;
+  line-height: 40px;
+  vertical-align: middle;
+  position: relative;
+  text-align: center;
+
+  .ec-icon img{
+    display: block;
+    margin-top: -.5em;
+    margin-left: -.5em;
+    width: 1em;
+    height: 1em;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+  }
+}

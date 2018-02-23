@@ -1,0 +1,68 @@
+@import "../mixins/media";
+/*
+退会手続き
+
+退会手続きで使用するページコンポーネントです。
+
+ex [退会手続き](http://demo3.ec-cube.net/mypage/withdraw)
+
+Markup:
+include /assets/tmpl/elements/21.1.withdraw.pug
++ec-withdrawRole
+
+Styleguide 21.1
+
+*/
+.ec-withdrawRole{
+  @include container;
+  text-align: center;
+  padding: 0 16px;
+  & &__title{
+    margin-bottom: 16px;
+    font-weight: bold;
+    font-size: 24px;
+  }
+  & &__description{
+    margin-bottom: 32px;
+    font-size: 16px;
+  }
+  .ec-icon {
+    img {
+      width: 100px;
+      height: 100px;
+    }
+  }
+}/*
+退会手続き実行確認
+
+退会手続き実行確認で使用するページコンポーネントです。
+
+ex [退会手続き　退会手続きへボタン→押下](http://demo3.ec-cube.net/mypage/withdraw)
+
+Markup:
+include /assets/tmpl/elements/21.1.withdraw.pug
++ec-withdrawConfirm
+
+Styleguide 21.1.2
+
+*/
+.ec-withdrawConfirmRole {
+  & &__cancel {
+    margin-bottom: 20px;
+  }
+  & &__title{
+    margin-bottom: 16px;
+    font-weight: bold;
+    font-size: 24px;
+  }
+  & &__description{
+    margin-bottom: 32px;
+    font-size: 16px;
+  }
+  .ec-icon {
+    img {
+      width: 100px;
+      height: 100px;
+    }
+  }
+}

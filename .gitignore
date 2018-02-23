@@ -2,6 +2,7 @@
 !.gitmodule
 composer.phar
 /vendor/
+/node_modules/
 /var/*
 !/var/.gitkeep
 /app/cache/*
