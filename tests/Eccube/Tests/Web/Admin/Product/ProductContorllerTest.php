@@ -469,7 +469,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $noStockUrl = $crawler->selectLink('在庫なし')->link()->getUri();
         $crawler = $this->client->request('GET', $noStockUrl);
         $this->expected = '検索結果 1 件 が該当しました';
-        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
         $this->verify();
 
         $csvExportUrl = $crawler->filter('ul.dropdown-menu')->selectLink('CSVダウンロード')->link()->getUri();
@@ -508,7 +508,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $privateUrl = $crawler->selectLink('非公開')->link()->getUri();
         $crawler = $this->client->request('GET', $privateUrl);
         $this->expected = '検索結果 1 件 が該当しました';
-        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
         $this->verify();
 
         $csvExportUrl = $crawler->filter('ul.dropdown-menu')->selectLink('CSVダウンロード')->link()->getUri();
@@ -547,7 +547,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $privateUrl = $crawler->selectLink('公開')->link()->getUri();
         $crawler = $this->client->request('GET', $privateUrl);
         $this->expected = '検索結果 1 件 が該当しました';
-        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
         $this->verify();
 
         $csvExportUrl = $crawler->filter('ul.dropdown-menu')->selectLink('CSVダウンロード')->link()->getUri();
@@ -587,7 +587,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $privateUrl = $crawler->selectLink('非公開')->link()->getUri();
         $crawler = $this->client->request('GET', $privateUrl);
         $this->expected = '検索結果 1 件 が該当しました';
-        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
         $this->verify();
 
         $csvExportUrl = $crawler->filter('ul.dropdown-menu')->selectLink('CSVダウンロード')->link()->getUri();
