@@ -202,9 +202,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <select class="custom-select">
                                             {# TODO リンクからセレクトボックスに変更されているので実装必要 #}
                                             {% for pageMax in pageMaxis %}
-                                                <option {% if pageMax.name == page_count %}selected=""{% endif %}>
-                                                    {{ pageMax.name|e }}{{ 'admin.product.index.num'|trans }}
-                                                </option>
+                                                <option {% if pageMax.name == page_count %}selected=""{% endif %}>{{ pageMax.name|e }}{{ 'admin.product.index.num'|trans }}</option>
                                             {% endfor %}
                                         </select>
                                     </div>
