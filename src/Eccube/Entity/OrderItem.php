@@ -81,7 +81,11 @@ class OrderItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
                     // 税別価格の場合は税額を加算する
                 case TaxDisplayType::EXCLUDED:
                     // TODO 課税規則を考慮する
-                    $this->setPriceIncTax($this->getPrice() + $this->getPrice() * $this->getTaxRate() / 100);
+                    if ($this->isProduct()) {
+                        $this->setPriceIncTax($this->getPrice() + $this->getPrice() * $this->getTaxRate() / 100);
+                    } else {
+                        $this->setPriceIncTax($this->getPrice());
+                    }
                     break;
             }
         }

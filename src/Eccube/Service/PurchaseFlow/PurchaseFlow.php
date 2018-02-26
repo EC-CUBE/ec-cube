@@ -104,7 +104,11 @@ class PurchaseFlow
     protected function calculateTotal(ItemHolderInterface $itemHolder)
     {
         $total = $itemHolder->getItems()->reduce(function ($sum, ItemInterface $item) {
-            $sum += $item->getPriceIncTax() * $item->getQuantity();
+            if ($item->isProduct()) {
+                $sum += $item->getPriceIncTax() * $item->getQuantity();
+            } else {
+                $sum += $item->getPrice() * $item->getQuantity();
+            }
 
             return $sum;
         }, 0);
@@ -140,7 +144,7 @@ class PurchaseFlow
         $total = $itemHolder->getItems()
             ->getDeliveryFees()
             ->reduce(function ($sum, ItemInterface $item) {
-                $sum += $item->getPriceIncTax() * $item->getQuantity();
+                $sum += $item->getPrice() * $item->getQuantity();
 
                 return $sum;
             }, 0);
