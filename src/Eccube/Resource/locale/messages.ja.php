@@ -1110,7 +1110,7 @@ return [
     'admin.product.index.text05' => '検索条件に合致するデータが見つかりませんでした',
     'admin.product.index.text06' => '検索条件を変えて、再度検索をお試しください。',
     'admin.product.index.text07' => '[詳細検索]も試してみましょう。',
-    'admin.product.index.text08' => '在データが登録されていません。登録してみましょう！',
+    'admin.product.index.text08' => '現在データが登録されていません。登録してみましょう！',
     'admin.product.index.text09' => '新規登録',
     'admin.product.index.text10' => 'データが消えてしまいましたか？バックアップをしているならリストアを試してみましょう。',
     'admin.product.product.495' => '商品管理',
