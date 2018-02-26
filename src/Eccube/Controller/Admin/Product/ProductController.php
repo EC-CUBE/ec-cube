@@ -572,7 +572,7 @@ class ProductController extends AbstractController
 
                 // 削除
                 $fs = new Filesystem();
-                $fs->remove($this->eccubeConfig['eccube_image_save_realdir'].'/'.$delete_image);
+                $fs->remove($this->eccubeConfig['eccube_save_image_dir'].'/'.$delete_image);
             }
             $this->entityManager->persist($Product);
             $this->entityManager->flush();
@@ -790,7 +790,7 @@ class ProductController extends AbstractController
                     $filename = date('mdHis').uniqid('_').'.'.$extension;
                     try {
                         $fs = new Filesystem();
-                        $fs->copy($this->eccubeConfig['eccube_image_save_realdir'].'/'.$Image->getFileName(), $this->eccubeConfig['eccube_image_save_realdir'].'/'.$filename);
+                        $fs->copy($this->eccubeConfig['eccube_save_image_dir'].'/'.$Image->getFileName(), $this->eccubeConfig['eccube_save_image_dir'].'/'.$filename);
                     } catch (\Exception $e) {
                         // エラーが発生しても無視する
                     }
