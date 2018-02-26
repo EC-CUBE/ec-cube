@@ -83,8 +83,27 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
 
         // mapping情報の構築
         $pluginDir = $container->getParameter('kernel.project_dir').'/app/Plugin';
-
+        $this->configureTwigPaths($container, $enabled, $pluginDir);
         $this->configureTranslations($container, $enabled, $pluginDir);
+    }
+
+    protected function configureTwigPaths(ContainerBuilder $container, $enabled, $pluginDir)
+    {
+        $paths = [];
+
+        foreach ($enabled as $plugin) {
+            $code = $plugin['code'];
+            $dir = $pluginDir.'/'.$code.'/Resource/template';
+            if (file_exists($dir)) {
+                $paths[$dir] = $code;
+            }
+        }
+
+        if (!empty($paths)) {
+            $container->prependExtensionConfig('twig', [
+                'paths' => $paths
+            ]);
+        }
     }
 
     protected function configureTranslations(ContainerBuilder $container, $enabled, $pluginDir)
@@ -93,7 +112,7 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
 
         foreach ($enabled as $plugin) {
             $code = $plugin['code'];
-            $dir = $pluginDir . '/' . $code . '/Resource/locale/';
+            $dir = $pluginDir . '/' . $code . '/Resource/locale';
             if (file_exists($dir)) {
                 $paths[] = $dir;
             }
