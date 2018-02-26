@@ -221,7 +221,7 @@ class CartService
 
         $newItem = new CartItem();
         $newItem->setQuantity($quantity);
-        $newItem->setPrice($ProductClass->getPrice01IncTax());
+        $newItem->setPrice($ProductClass->getPrice02IncTax());
         $newItem->setProductClass($ProductClass);
 
         $allCartItems = $this->mergeAllCartItems([$newItem]);
