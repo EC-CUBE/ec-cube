@@ -84,45 +84,7 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
         // mapping情報の構築
         $pluginDir = $container->getParameter('kernel.project_dir').'/app/Plugin';
 
-        $this->configureDoctrineMappings($container, $enabled, $pluginDir);
         $this->configureTranslations($container, $enabled, $pluginDir);
-    }
-
-    /**
-     * @param ContainerBuilder $container
-     * @param $enabled
-     * @param $pluginDir
-     */
-    protected function configureDoctrineMappings(ContainerBuilder $container, $enabled, $pluginDir)
-    {
-        $mappings = [];
-        foreach ($enabled as $plugin) {
-            $code = $plugin['code'];
-            $namespace = sprintf('Plugin\%s\Entity', $code);
-
-            $dir = $pluginDir . '/' . $code . '/Entity';
-
-            if (false === file_exists($dir)) {
-                continue;
-            }
-
-            $mappings[$code] = [
-                'is_bundle' => false,
-                'type' => 'annotation',
-                'dir' => '%kernel.project_dir%/app/Plugin/' . $code . '/Entity',
-                'prefix' => $namespace,
-                'alias' => $code,
-            ];
-        }
-
-        // mapping情報の追加
-        if (!empty($mappings)) {
-            $container->prependExtensionConfig('doctrine', [
-                'orm' => [
-                    'mappings' => $mappings,
-                ],
-            ]);
-        }
     }
 
     protected function configureTranslations(ContainerBuilder $container, $enabled, $pluginDir)
