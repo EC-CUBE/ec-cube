@@ -263,8 +263,10 @@ class ShoppingController extends AbstractShoppingController
 
         $form = $this->parameterBag->get(OrderType::class);
         $Order = $this->parameterBag->get('Order');
+        $usePoint = $Order->getUsePoint();
 
         $form->handleRequest($request);
+        $Order->setUsePoint($usePoint);
 
         // 受注処理
         $response = $this->forwardToRoute('shopping_complete_order');
@@ -812,6 +814,7 @@ class ShoppingController extends AbstractShoppingController
     public function existsOrder(Request $request)
     {
         $Order = $this->shoppingService->getOrder(OrderStatus::PROCESSING);
+        dump($Order);
         if (!$Order) {
             log_info('購入処理中の受注情報がないため購入エラー');
             $this->addError('front.shopping.order.error');
