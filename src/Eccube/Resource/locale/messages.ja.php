@@ -683,6 +683,7 @@ return [
     'admin.customer.edit.sex' => '性別',
     'admin.customer.edit.job' => '職業',
     'admin.customer.edit.birth' => '生年月日',
+    'admin.customer.edit.point' => '所有ポイント',
     'admin.customer.index.110' => '会員管理',
     'admin.customer.index.111' => '会員マスター',
     'admin.customer.index.112' => '会員ID・メールアドレス・お名前',
