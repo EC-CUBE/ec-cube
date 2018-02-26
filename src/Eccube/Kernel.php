@@ -12,8 +12,10 @@
 namespace Eccube;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
+use Eccube\Common\EccubeNav;
 use Eccube\DependencyInjection\Compiler\AutoConfigurationTagPass;
 use Eccube\DependencyInjection\Compiler\LazyComponentPass;
+use Eccube\DependencyInjection\Compiler\NavCompilerPass;
 use Eccube\DependencyInjection\Compiler\PluginPass;
 use Eccube\DependencyInjection\Compiler\QueryCustomizerPass;
 use Eccube\DependencyInjection\Compiler\TemplateListenerPass;
@@ -167,6 +169,11 @@ class Kernel extends BaseKernel
         $container->registerForAutoconfiguration(QueryCustomizer::class)
             ->addTag(QueryCustomizerPass::QUERY_CUSTOMIZER_TAG);
         $container->addCompilerPass(new QueryCustomizerPass());
+
+        // 管理画面ナビの拡張
+        $container->registerForAutoconfiguration(EccubeNav::class)
+            ->addTag(NavCompilerPass::NAV_TAG);
+        $container->addCompilerPass(new NavCompilerPass());
     }
 
     protected function addEntityExtensionPass(ContainerBuilder $container)
