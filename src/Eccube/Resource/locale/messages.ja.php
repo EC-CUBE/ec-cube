@@ -693,6 +693,7 @@ return [
     'admin.customer.edit.sipping_edit' => '編集',
     'admin.customer.edit.sipping_add' => 'お届け先追加',
     'admin.customer.edit.sipping_text01' => 'お届け先登録の上限の%eccube_deliv_addr_max%件に達しています。お届け先を入力したい場合は、削除か変更を行ってください',
+    'admin.customer.edit.customer_index' => '会員マスター',
     'admin.customer.index.110' => '会員管理',
     'admin.customer.index.111' => '会員マスター',
     'admin.customer.index.112' => '会員ID・メールアドレス・お名前',
