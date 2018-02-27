@@ -32,6 +32,7 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
         if (!array_key_exists('APP_ENV', $_ENV) || $_ENV['APP_ENV'] == 'test') {
             return;
         }
+
         // doctrine.yml, または他のprependで差し込まれたdoctrineの設定値を取得する.
         $configs = $container->getExtensionConfig('doctrine');
 
@@ -55,19 +56,18 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
         $stmt = $conn->query('select * from dtb_plugin');
         $plugins = $stmt->fetchAll();
 
-        $enabled = array_filter($plugins, function($plugin) {
-            return true === (bool) $plugin['enabled'];
+        $enabled = array_filter($plugins, function ($plugin) {
+            return true === (bool)$plugin['enabled'];
         });
 
-        $disabled = array_filter($plugins, function($plugin) {
-            return false === (bool) $plugin['enabled'];
+        $disabled = array_filter($plugins, function ($plugin) {
+            return false === (bool)$plugin['enabled'];
         });
 
         // 他で使いまわすため, パラメータで保持しておく.
         $container->setParameter('eccube.plugins.enabled', $enabled);
         $container->setParameter('eccube.plugins.disabled', $disabled);
 
-        // mapping情報の構築
         $pluginDir = $container->getParameter('kernel.project_dir').'/app/Plugin';
         $this->configureTwigPaths($container, $enabled, $pluginDir);
         $this->configureTranslations($container, $enabled, $pluginDir);
@@ -87,7 +87,7 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
 
         if (!empty($paths)) {
             $container->prependExtensionConfig('twig', [
-                'paths' => $paths
+                'paths' => $paths,
             ]);
         }
     }
@@ -98,7 +98,7 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
 
         foreach ($enabled as $plugin) {
             $code = $plugin['code'];
-            $dir = $pluginDir . '/' . $code . '/Resource/locale';
+            $dir = $pluginDir.'/'.$code.'/Resource/locale';
             if (file_exists($dir)) {
                 $paths[] = $dir;
             }
@@ -107,8 +107,8 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
         if (!empty($paths)) {
             $container->prependExtensionConfig('framework', [
                 'translator' => [
-                    'paths' => $paths
-                ]
+                    'paths' => $paths,
+                ],
             ]);
         }
     }
