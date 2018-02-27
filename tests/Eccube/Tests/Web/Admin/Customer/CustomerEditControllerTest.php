@@ -48,11 +48,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
             'fax' => array('fax01' => $tel[0], 'fax02' => $tel[1], 'fax03' => $tel[2]),
             'email' => $email,
             'password' => array('first' => $password, 'second' => $password),
-            'birth' => array(
-                'year' => $birth->format('Y'),
-                'month' => $birth->format('n'),
-                'day' => $birth->format('j')
-            ),
+            'birth' => $birth->format('Y') . '-' . $birth->format('n') . '-' . $birth->format('j'),
             'sex' => 1,
             'job' => 1,
             'status' => 1,

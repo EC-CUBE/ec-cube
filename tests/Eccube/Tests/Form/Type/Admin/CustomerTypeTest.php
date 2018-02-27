@@ -64,11 +64,7 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         'email' => 'default@example.com',
         'sex' => 1,
         'job' => 1,
-        'birth' => array(
-            'year' => '1983',
-            'month' => '2',
-            'day' => '14',
-        ),
+        'birth' => '1983-2-14',
         'password' => array(
             'first' => 'password',
             'second' => 'password',
