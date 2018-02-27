@@ -321,14 +321,14 @@
                                         </div>
                                     </div>
                                     <div class="col-4 text-right">
-                                        <a data-toggle="collapse" href="#standardConfig" aria-expanded="false"
-                                           aria-controls="standardConfig">
+                                        <a data-toggle="collapse" href="#delivery" aria-expanded="false"
+                                           aria-controls="delivery">
                                             <i class="fa fa-angle-up fa-lg"></i>
                                         </a>
                                     </div>
                                 </div>
                             </div>
-                            <div class="collapse show ec-cardCollapse" id="standardConfig">
+                            <div class="collapse show ec-cardCollapse" id="delivery">
                                 {% if Customer.CustomerAddresses|length > 0 %}
                                     <div class="card-body">
                                         <table class="table table-striped table-sm">
@@ -360,7 +360,7 @@
                                                              class="dropdown">
                                                             <a class="dropdown-toggle" data-toggle="dropdown">
                                                                 {#<svg class="cb cb-ellipsis-h">#}
-                                                                    {#<use xlink:href="#cb-ellipsis-h"/>#}
+                                                                {#<use xlink:href="#cb-ellipsis-h"/>#}
                                                                 {#</svg>#}
                                                             </a>
                                                             <ul id="address_box__menu--{{ CustomerAddress.id }}"
@@ -386,7 +386,7 @@
                                            class="btn btn-default">{{ 'admin.customer.edit.sipping_add'|trans }}</a>
                                     {% else %}
                                         <span class="ec-errorMessage">
-                                            {{'admin.customer.edit.sipping_text01'|trans({"%eccube_deliv_addr_max%":eccube_config.eccube_deliv_addr_max})}}
+                                            {{ 'admin.customer.edit.sipping_text01'|trans({"%eccube_deliv_addr_max%":eccube_config.eccube_deliv_addr_max}) }}
                                         </span>
                                     {% endif %}
                                 {% else %}
@@ -416,14 +416,14 @@
                                         </div>
                                     </div>
                                     <div class="col-4 text-right">
-                                        <a data-toggle="collapse" href="#standardConfig" aria-expanded="false"
-                                           aria-controls="standardConfig">
+                                        <a data-toggle="collapse" href="#orderHistory" aria-expanded="false"
+                                           aria-controls="orderHistory">
                                             <i class="fa fa-angle-up fa-lg"></i>
                                         </a>
                                     </div>
                                 </div>
                             </div>
-                            <div class="collapse show ec-cardCollapse" id="standardConfig">
+                            <div class="collapse show ec-cardCollapse" id="orderHistory">
                                 {% if Customer.Orders|length > 0 %}
                                     <div class="card-body">
                                         <table class="table table-striped table-sm">
@@ -434,22 +434,22 @@
                                             <th class="align-middle pt-2 pb-2 pr-3">{{ 'admin.customer.edit.order_status'|trans }}</th>
                                             </thead>
                                             <tbody>
-                                                {% for Order in Customer.Orders %}
-                                                    <tr>
-                                                        <td class="align-middle pl-3">{{ Order.order_date|date_format }}</td>
-                                                        <td class="align-middle">
-                                                            <a href="{{ url('admin_order_edit', { 'id' : Order.id }) }}">
-                                                                {{ Order.id }}
-                                                            </a>
-                                                        </td>
-                                                        <td class="align-middle">
-                                                            <span class="h5 font-weight-normal">{{ Order.total|price }}</span>
-                                                        </td>
-                                                        <td class="align-middle pr-3">
-                                                            <span class="badge badge-ec-glay">{{ Order.OrderStatus }}</span>
-                                                        </td>
-                                                    </tr>
-                                                {% endfor %}
+                                            {% for Order in Customer.Orders %}
+                                                <tr>
+                                                    <td class="align-middle pl-3">{{ Order.order_date|date_format }}</td>
+                                                    <td class="align-middle">
+                                                        <a href="{{ url('admin_order_edit', { 'id' : Order.id }) }}">
+                                                            {{ Order.id }}
+                                                        </a>
+                                                    </td>
+                                                    <td class="align-middle">
+                                                        <span class="h5 font-weight-normal">{{ Order.total|price }}</span>
+                                                    </td>
+                                                    <td class="align-middle pr-3">
+                                                        <span class="badge badge-ec-glay">{{ Order.OrderStatus }}</span>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
                                             </tbody>
                                         </table>
                                     </div>
@@ -470,13 +470,15 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip">
+                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
+                                         title="Tooltip">
                                         <span class="card-title">{{ 'admin.customer.edit.109'|trans }}</span>
                                         <i class="fa fa-question-circle fa-lg ml-1"></i>
                                     </div>
                                 </div>
                                 <div class="col-4 text-right">
-                                    <a data-toggle="collapse" href="#shopMemo" aria-expanded="false" aria-controls="shopMemo">
+                                    <a data-toggle="collapse" href="#shopMemo" aria-expanded="false"
+                                       aria-controls="shopMemo">
                                         <i class="fa fa-angle-up fa-lg"></i>
                                     </a>
                                 </div>
@@ -499,7 +501,8 @@
                 <div class="row justify-content-between align-items-center">
                     <div class="col-6">
                         <div class="c-conversionArea__leftBlockItem">
-                            <a class="c-beseLink" href="{{ url('admin_customer_page', { page_no : app.session.get('eccube.admin.customer.search.page_no')|default('1') } ) }}?resume=1">
+                            <a class="c-beseLink"
+                               href="{{ url('admin_customer_page', { page_no : app.session.get('eccube.admin.customer.search.page_no')|default('1') } ) }}?resume=1">
                                 <i class="fa fa-backward" aria-hidden="true"></i>
                                 <span>{{ 'admin.customer.edit.customer_index'|trans }}</span>
                             </a>
@@ -512,7 +515,8 @@
                                 {{ form_errors(form.status) }}
                             </div>
                             <div class="col-auto">
-                                <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.customer.edit.108'|trans }}</button>
+                                <button class="btn btn-ec-conversion px-5"
+                                        type="submit">{{ 'admin.customer.edit.108'|trans }}</button>
                             </div>
                         </div>
                     </div>
