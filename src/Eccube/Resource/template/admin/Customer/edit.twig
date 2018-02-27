@@ -29,7 +29,7 @@
 {% block title %}{{ 'admin.customer.edit.92'|trans }}{% endblock %}
 {% block sub_title %}{{ 'admin.customer.edit.93'|trans }}{% endblock %}
 
-{% form_theme form '@admin/Form/bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block javascript %}
     <script src="//yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
@@ -39,8 +39,6 @@
     <form name="customer_form" role="form" id="customer_form" method="post"
           action="{%- if Customer.id %}{{ url('admin_customer_edit', { id : Customer.id }) }}{% else %}{{ url('admin_customer_new') }}{% endif -%}"
           novalidate>
-        {# TODO: 以下は残す必要があるか？ #}
-        <span class="p-country-name" style="display:none;">Japan</span>
         {{ form_widget(form._token) }}
         <div class="c-contentsArea__cols">
             <div class="c-contentsArea__primaryCol">
@@ -125,9 +123,8 @@
                                     </div>
                                     <div class="col mb-3">
                                         <div class="mb-3">
-                                            {# TODO: 住所の書式のmessagesへの切り出し #}
                                             <div class="row justify-content-start">
-                                                <div class="col-auto pr-0 align-self-center"><span>〒</span></div>
+                                                <div class="col-auto pr-0 align-self-center"><span>{{ 'admin.customer.edit.post'|trans }}</span></div>
                                                 <div class="col-2">
                                                     {{ form_widget(form.zip.zip01, { attr : { placeholder : 'admin.customer.edit.zip_placeholder1'|trans}}) }}
                                                 </div>
@@ -246,14 +243,15 @@
                                         {{ form_widget(form.sex) }}
                                         {{ form_errors(form.sex) }}
                                         {#<div class="form-check form-check-inline">#}
-                                        {#<label class="form-check-label" for="male">#}
-                                        {#<input class="form-check-input" id="male" type="radio" name="gender"> 男性#}
-                                        {#</label>#}
+                                            {#<label class="form-check-label" for="male">#}
+                                                {#<input class="form-check-input" id="male" type="radio" name="gender"> 男性#}
+                                            {#</label>#}
                                         {#</div>#}
                                         {#<div class="form-check form-check-inline">#}
-                                        {#<label class="form-check-label" for="female">#}
-                                        {#<input class="form-check-input" id="female" type="radio" name="gender"> 女性#}
-                                        {#</label>#}
+                                            {#<label class="form-check-label" for="female">#}
+                                                {#<input class="form-check-input" id="female" type="radio" name="gender">#}
+                                                {#女性#}
+                                            {#</label>#}
                                         {#</div>#}
                                     </div>
                                 </div>
@@ -275,7 +273,6 @@
                                         {{ form_errors(form.birth) }}
                                     </div>
                                 </div>
-                                {# TODO: モックに所有ポイント表示を追加 #}
                                 <div class="row mb-2">
                                     <div class="col-3">
                                         <span>{{ 'admin.customer.edit.point'|trans }}</span>
