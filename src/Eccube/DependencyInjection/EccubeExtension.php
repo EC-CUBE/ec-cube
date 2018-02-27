@@ -23,10 +23,6 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
      */
     public function prepend(ContainerBuilder $container)
     {
-        // TODO EC-CUBEのインストール状態のチェックを行う
-        if (!$container->hasParameter('eccube.install')) {
-            //return;
-        }
         // FIXME WebTestCase で DATABASE_URL が取得できず落ちる
         if (!array_key_exists('APP_ENV', $_ENV) || $_ENV['APP_ENV'] == 'test') {
             return;
