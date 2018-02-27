@@ -3,6 +3,8 @@
 namespace Eccube\DependencyInjection;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Configuration as DoctrineBundleConfiguration;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\DriverManager;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -44,24 +46,9 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
         // prependのタイミングではコンテナのインスタンスは利用できない.
         // 直接dbalのconnectionを生成し, dbアクセスを行う.
         $params = $config['dbal']['connections'][$config['dbal']['default_connection']];
-        $conn = \Doctrine\DBAL\DriverManager::getConnection($params);
+        $conn = DriverManager::getConnection($params);
 
-        try {
-            if (!$conn->ping()) {
-                return;
-            }
-        } catch (\Exception $e) {
-            return;
-        }
-
-        $sm = $conn->getSchemaManager();
-        $tables = array_filter(
-            $sm->listTables(),
-            function ($table) {
-                return $table->getName() === 'dtb_plugin';
-            }
-        );
-        if (empty($tables)) {
+        if (!$this->isConnected($conn)) {
             return;
         }
 
@@ -124,5 +111,26 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
                 ]
             ]);
         }
+    }
+
+    protected function isConnected(Connection $conn)
+    {
+        try {
+            if (!$conn->ping()) {
+                return false;
+            }
+        } catch (\Exception $e) {
+            return false;
+        }
+
+        $sm = $conn->getSchemaManager();
+        $tables = array_filter(
+            $sm->listTables(),
+            function ($table) {
+                return $table->getName() === 'dtb_plugin';
+            }
+        );
+
+        return empty($tables) ? false : true;
     }
 }
