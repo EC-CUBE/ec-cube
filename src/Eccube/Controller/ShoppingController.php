@@ -814,7 +814,6 @@ class ShoppingController extends AbstractShoppingController
     public function existsOrder(Request $request)
     {
         $Order = $this->shoppingService->getOrder(OrderStatus::PROCESSING);
-        dump($Order);
         if (!$Order) {
             log_info('購入処理中の受注情報がないため購入エラー');
             $this->addError('front.shopping.order.error');
