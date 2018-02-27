@@ -673,6 +673,7 @@ return [
     'admin.customer.edit.kana' => 'フリガナ',
     'admin.customer.edit.company_name' => '会社名',
     'admin.customer.edit.address' => '住所',
+    'admin.customer.edit.post' => '〒',
     'admin.customer.edit.zip_placeholder1' => '郵便番号1',
     'admin.customer.edit.zip_placeholder2' => '郵便番号2',
     'admin.customer.edit.email' => 'メールアドレス',
