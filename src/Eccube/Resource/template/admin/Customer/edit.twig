@@ -22,355 +22,506 @@
 */
 #}
 
-{% extends '@admin/default_frame.twig' %}
+{% extends '@admin/styleguide_frame.twig' %}
 
 {% set menus = ['customer', 'customer_edit'] %}
 
-{% block title %}{{'admin.customer.edit.92'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.customer.edit.93'|trans}}{% endblock %}
+{% block title %}{{ 'admin.customer.edit.92'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.customer.edit.93'|trans }}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block javascript %}
-<script src="//yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
+    <script src="//yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
 {% endblock javascript %}
 
 {% block main %}
-<div class="row" id="aside_wrap">
-    <form name="customer_form" role="form" id="customer_form" method="post" action="{%- if Customer.id %}{{ url('admin_customer_edit', { id : Customer.id }) }}{% else %}{{ url('admin_customer_new') }}{% endif -%}" novalidate class="h-adr">
+    <form name="customer_form" role="form" id="customer_form" method="post"
+          action="{%- if Customer.id %}{{ url('admin_customer_edit', { id : Customer.id }) }}{% else %}{{ url('admin_customer_new') }}{% endif -%}"
+          novalidate>
+        {# TODO: 以下は残す必要があるか？ #}
         <span class="p-country-name" style="display:none;">Japan</span>
         {{ form_widget(form._token) }}
-        <div id="detail_wrap" class="col-md-9">
-            <div id="detail_box" class="box accordion">
-                <div id="detail_box__header" class="box-header toggle active">
-                    <h3 class="box-title">{{'admin.customer.edit.94'|trans}}<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
-                </div><!-- /.box-header -->
-                <div id="detail_box__body" class="box-body accpanel" style="display: block;">
-                    <div class="form-horizontal">
-                        {# 会員ID #}
-                        {% if Customer.id %}
-                        <div id="detail_box__id" class="form-group">
-                            <label class="col-sm-3 col-lg-2 control-label">{{'admin.customer.edit.95'|trans}}</label>
-                            <div class="col-sm-9 col-lg-10">{{ Customer.id }}</div>
-                        </div>
-                        {% endif %}
-                        {# 名前 #}
-                        <div id="detail_box__name" class="form-group">
-                            {{ form_label(form.name) }}
-                            <div class="col-sm-9 col-lg-10 input_name form-inline">
-                                {{ form_widget(form.name.name01) }}
-                                {{ form_widget(form.name.name02) }}
-                                {{ form_errors(form.name.name01) }}
-                                {{ form_errors(form.name.name02) }}
-                            </div>
-                        </div>
-                        {# 名前(カナ) #}
-                        <div id="detail_box__kana" class="form-group">
-                            {{ form_label(form.kana) }}
-                            <div class="col-sm-9 col-lg-10 input_name form-inline">
-                                {{ form_widget(form.kana.kana01) }}
-                                {{ form_widget(form.kana.kana02) }}
-                                {{ form_errors(form.kana.kana01) }}
-                                {{ form_errors(form.kana.kana02) }}
-                            </div>
-                        </div>
-                        {# 会社名 #}
-                        <div id="detail_box__company_name" class="form-group">
-                            {{ form_label(form.company_name) }}
-                            <div class="col-sm-9 col-lg-10">
-                                {{ form_widget(form.company_name) }}
-                                {{ form_errors(form.company_name) }}
-                            </div>
-                        </div>
-                        {# 住所：郵便番号 #}
-                        <div id="detail_box__address" class="form-group">
-                            {{ form_label(form.address) }}
-                            <div id="detail_box__zip" class="col-sm-9 col-lg-10 input_zip form-inline">
-                                〒{{ form_widget(form.zip.zip01) }}-{{ form_widget(form.zip.zip02) }}
-                                {{ form_errors(form.zip) }}
-                                {{ form_errors(form.zip.zip01) }}
-                                {{ form_errors(form.zip.zip02) }}
-                            </div>
-                        </div>
-                        {# 住所：都道府県 #}
-                        <div class="form-group">
-                            <div id="detail_box__pref" class="col-sm-offset-2 col-sm-9 col-lg-10 form-inline">
-                                {{ form_widget(form.address.pref) }}
-                                {{ form_errors(form.address.pref) }}
-                            </div>
-                        </div>
-                        {# 住所：住所1 #}
-                        <div class="form-group">
-                            <div id="detail_box__addr01" class="col-sm-offset-2 col-sm-9 col-lg-10">
-                                {{ form_widget(form.address.addr01, { attr : { placeholder : 'admin.customer.edit.97'|trans}} ) }}
-                                {{ form_errors(form.address.addr01) }}
-                            </div>
-                        </div>
-                        {# 住所：住所2 #}
-                        <div class="form-group">
-                            <div id="detail_box__addr02" class="col-sm-offset-2 col-sm-9 col-lg-10">
-                                {{ form_widget(form.address.addr02, { attr : { placeholder : 'admin.customer.edit.98'|trans }}) }}
-                                {{ form_errors(form.address.addr02) }}
-                            </div>
-                        </div>
-                        {# メールアドレス #}
-                        <div id="detail_box__email" class="form-group">
-                            {{ form_label(form.email) }}
-                            <div class="col-sm-9 col-lg-10">
-                                {{ form_widget(form.email) }}
-                                {{ form_errors(form.email) }}
-                            </div>
-                        </div>
-                        {# 電話番号 #}
-                        <div id="detail_box__tel" class="form-group">
-                            {{ form_label(form.tel) }}
-                            <div class="col-sm-9 col-lg-10 input_tel form-inline">
-                                {{ form_widget(form.tel.tel01) }}-{{ form_widget(form.tel.tel02) }}-{{ form_widget(form.tel.tel03) }}
-                                {{ form_errors(form.tel.tel01) }}
-                                {{ form_errors(form.tel.tel02) }}
-                                {{ form_errors(form.tel.tel03) }}
-                            </div>
-                        </div>
-                        {# FAX番号 #}
-                        <div id="detail_box__fax" class="form-group">
-                            {{ form_label(form.fax) }}
-                            <div class="col-sm-9 col-lg-10 input_tel form-inline">
-                                {{ form_widget(form.fax.fax01) }}-{{ form_widget(form.fax.fax02) }}-{{ form_widget(form.fax.fax03) }}
-                                {{ form_errors(form.fax.fax01) }}
-                                {{ form_errors(form.fax.fax02) }}
-                                {{ form_errors(form.fax.fax03) }}
-                            </div>
-                        </div>
-                        {# パスワード #}
-                        <div id="detail_box__password_first" class="form-group">
-                            {{ form_label(form.password.first) }}
-                            <div class="col-sm-9 col-lg-10">
-                                {{ form_widget(form.password.first, { type : 'password'}) }}
-                                {{ form_errors(form.password.first) }}
-                            </div>
-                        </div>
-                        <div id="detail_box__password_second" class="form-group">
-                            {{ form_label(form.password.second) }}
-                            <div class="col-sm-9 col-lg-10">
-                                {{ form_widget(form.password.second, { type : 'password'}) }}
-                                {{ form_errors(form.password.second) }}
-                            </div>
-                        </div>
-                        {# 性別 #}
-                        <div id="detail_box__sex" class="form-group">
-                            {{ form_label(form.sex) }}
-                            <div class="col-sm-9 col-lg-10">
-                                {{ form_widget(form.sex) }}
-                                {{ form_errors(form.sex) }}
-                            </div>
-                        </div>
-                        {# 職業 #}
-                        <div id="detail_box__job" class="form-group">
-                            {{ form_label(form.job) }}
-                            <div class="col-sm-9 col-lg-10">
-                                {{ form_widget(form.job) }}
-                                {{ form_errors(form.job) }}
-                            </div>
-                        </div>
-                        {# 生年月日 #}
-                        <div id="detail_box__birth" class="form-group">
-                            {{ form_label(form.birth) }}
-                            <div class="col-sm-9 col-lg-10">
-                                <div class="form-inline">
-                                    {{ form_widget(form.birth) }}
-                                    {{ form_errors(form.birth) }}
+        <div class="c-contentsArea__cols">
+            <div class="c-contentsArea__primaryCol">
+                <div class="c-primaryCol">
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-8"><span class="card-title">{{ 'admin.customer.edit.94'|trans }}</span>
+                                </div>
+                                <div class="col-4 text-right">
+                                    <a data-toggle="collapse" href="#ordererInfo"
+                                       aria-expanded="false" aria-controls="ordererInfo">
+                                        <i class="fa fa-angle-up fa-lg"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
-                        {# 所有ポイント #}
-                        <div id="detail_box__point" class="form-group">
-                            {{ form_label(form.point) }}
-                            <div class="col-sm-9 col-lg-10">
-                                <div class="form-inline">
-                                    {{ form_widget(form.point) }}
-                                    {{ form_errors(form.point) }}
-                                </div>
-                            </div>
-                        </div>
-                        {# エンティティ拡張の自動出力 #}
-                        {% for f in form %}
-                            {# auto_render有効時に出力 #}
-                            {% if f.vars.eccube_form_options.auto_render %}
-                                {# form_themeが設定されている場合にthemeを適用 #}
-                                {% if f.vars.eccube_form_options.form_theme %}
-                                    {% form_theme f f.vars.eccube_form_options.form_theme %}
-                                {% endif %}
-                                {{ form_row(f) }}
-                            {% endif %}
-                        {% endfor %}
-                        <div class="extra-form">
-                            {% for f in form.getIterator %}
-                                {% if f.vars.name matches '[^plg*]' %}
-                                    {{ form_row(f) }}
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div><!-- /.box-body -->
-            </div><!-- /.box -->
-
-            {% if Customer.id %}
-            <div id="address_box" class="box accordion">
-                <div id="address_box__toggle" class="box-header toggle">
-                    <h3 class="box-title">お届け先<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
-                </div>
-                <div id="address_box__body" class="box-body accpanel">
-                    {% if Customer.CustomerAddresses|length > 0 %}
-                    <div id="address_box__list" class="table_list">
-                        <div class="table-responsive with-border">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr id="address_box__list_header">
-                                        <th id="address_box__header_address_id">お届け先ID</th>
-                                        <th id="address_box__header_address_name">お名前</th>
-                                        <th id="address_box__header_address_addr">住所</th>
-                                        <th id="address_box__header_address_tel">電話番号</th>
-                                        <th id="address_box__header_menu_box">&nbsp;</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for CustomerAddress in Customer.CustomerAddresses %}
-                                    <tr id="address_box__item--{{ CustomerAddress.id }}">
-                                        <td id="address_box__address_id--{{ CustomerAddress.id }}" class="address_id">
-                                            {{ CustomerAddress.id }}
-                                        </td>
-                                        <td id="address_box__address_name--{{ CustomerAddress.id }}" class="address_name">
-                                            {{ CustomerAddress.name01 }}&nbsp;{{ CustomerAddress.name02 }}
-                                        </td>
-                                        <td id="address_box_address_addr--{{ CustomerAddress.id }}" class="address_addr">
-                                            〒{{ CustomerAddress.zip01 }}-{{ CustomerAddress.zip02 }}　{{ CustomerAddress.Pref }}{{ CustomerAddress.addr01 }}{{ CustomerAddress.addr02 }}
-                                        </td>
-                                        <td id="address_box_address_tel--{{ CustomerAddress.id }}" class="address_tel">
-                                            {{ CustomerAddress.tel01 }}-{{ CustomerAddress.tel02 }}-{{ CustomerAddress.tel03 }}
-                                        </td>
-                                        <td id="address_box__menu_box--{{ CustomerAddress.id }}" class="icon_edit">
-                                            <div id="address_box__menu_box_toggle--{{ CustomerAddress.id }}" class="dropdown">
-                                                <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
-                                                <ul id="address_box__menu--{{ CustomerAddress.id }}" class="dropdown-menu dropdown-menu-right">
-                                                    <li><a href="{{ url('admin_customer_delivery_edit', { 'id': Customer.id, 'did': CustomerAddress.id}) }}">編集</a></li>
-                                                    <!--
-                                                        {#<li><a href="{{ url('admin_customer_delivery_delete', { 'id': Customer.id, 'did': CustomerAddress.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="このお届け先情報を削除してもよろしいですか？">削除</a></li>#}
-                                                    -->
-                                                </ul>
+                        <div class="collapse show ec-cardCollapse" id="ordererInfo">
+                            <div class="card-body">
+                                {% if Customer.id %}
+                                    <div class="row mb-2">
+                                        <div class="col-3">
+                                            <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
+                                                 title="Tooltip">
+                                                <span>{{ 'admin.customer.edit.95'|trans }}</span>
+                                                <i class="fa fa-question-circle fa-lg ml-1"></i>
                                             </div>
-                                        </td>
-                                    </tr>
+                                        </div>
+                                        <div class="col">
+                                            <p>{{ Customer.id }}</p>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                <div class="row mb-2">
+                                    <div class="col-3">
+                                        <span>{{ 'admin.customer.edit.name'|trans }}</span>
+                                        <span class="badge badge-primary ml-1">{{ 'admin.customer.edit.required'|trans }}</span>
+                                    </div>
+                                    <div class="col">
+                                        <div class="row">
+                                            <div class="col">
+                                                {{ form_widget(form.name.name01) }}
+                                            </div>
+                                            <div class="col">
+                                                {{ form_widget(form.name.name02) }}
+                                            </div>
+                                            {{ form_errors(form.name.name01) }}
+                                            {{ form_errors(form.name.name02) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-3">
+                                        <span>{{ 'admin.customer.edit.kana'|trans }}</span>
+                                        <span class="badge badge-primary ml-1">{{ 'admin.customer.edit.required'|trans }}</span>
+                                    </div>
+                                    <div class="col">
+                                        <div class="row">
+                                            <div class="col">
+                                                {{ form_widget(form.kana.kana01) }}
+                                            </div>
+                                            <div class="col">
+                                                {{ form_widget(form.kana.kana02) }}
+                                            </div>
+                                            {{ form_errors(form.kana.kana01) }}
+                                            {{ form_errors(form.kana.kana02) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-3">
+                                        <span>{{ 'admin.customer.edit.company_name'|trans }}</span>
+                                    </div>
+                                    <div class="col">
+                                        {{ form_widget(form.company_name) }}
+                                        {{ form_errors(form.company_name) }}
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-3"><span>{{ 'admin.customer.edit.address'|trans }}</span><span
+                                                class="badge badge-primary ml-1">{{ 'admin.customer.edit.required'|trans }}</span>
+                                    </div>
+                                    <div class="col mb-3">
+                                        <div class="mb-3">
+                                            {# TODO: 住所の書式のmessagesへの切り出し #}
+                                            <div class="row justify-content-start">
+                                                <div class="col-auto pr-0 align-self-center"><span>〒</span></div>
+                                                <div class="col-2">
+                                                    {{ form_widget(form.zip.zip01, { attr : { placeholder : 'admin.customer.edit.zip_placeholder1'|trans}}) }}
+                                                </div>
+                                                <div class="col-auto p-0 align-self-center"><span>-</span></div>
+                                                <div class="col-2">
+                                                    {{ form_widget(form.zip.zip02, { attr : { placeholder : 'admin.customer.edit.zip_placeholder2'|trans}}) }}
+                                                </div>
+                                                {{ form_errors(form.zip) }}
+                                                {{ form_errors(form.zip.zip01) }}
+                                                {{ form_errors(form.zip.zip02) }}
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <div class="row justify-content-start">
+                                                <div class="col-auto">
+                                                    {{ form_widget(form.address.pref) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            {{ form_widget(form.address.addr01, { attr : { placeholder : 'admin.customer.edit.97'|trans, 'class': 'mb-3'}} ) }}
+                                            {{ form_errors(form.address.addr01) }}
+                                            {{ form_widget(form.address.addr02, { attr : { placeholder : 'admin.customer.edit.98'|trans }}) }}
+                                            {{ form_errors(form.address.addr02) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-3">
+                                        <span>{{ 'admin.customer.edit.email'|trans }}</span>
+                                        <span class="badge badge-primary ml-1">{{ 'admin.customer.edit.required'|trans }}</span>
+                                    </div>
+                                    <div class="col">
+                                        {{ form_widget(form.email) }}
+                                        {{ form_errors(form.email) }}
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-3">
+                                        <span>{{ 'admin.customer.edit.tel'|trans }}</span>
+                                        <span class="badge badge-primary ml-1">{{ 'admin.customer.edit.required'|trans }}</span>
+                                    </div>
+                                    <div class="col">
+
+                                        <div class="row justify-content-start">
+                                            <div class="col-2">
+                                                {{ form_widget(form.tel.tel01) }}
+                                            </div>
+                                            <div class="col-auto text-center p-0">
+                                                <span class="align-middle">-</span>
+                                            </div>
+                                            <div class="col-2">
+                                                {{ form_widget(form.tel.tel02) }}
+                                            </div>
+                                            <div class="col-auto text-center p-0">
+                                                <span class="align-middle">-</span>
+                                            </div>
+                                            <div class="col-2">
+                                                {{ form_widget(form.tel.tel03) }}
+                                            </div>
+                                        </div>
+                                        {{ form_errors(form.tel.tel01) }}
+                                        {{ form_errors(form.tel.tel02) }}
+                                        {{ form_errors(form.tel.tel03) }}
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-3"><span>FAX番号</span></div>
+                                    <div class="col">
+                                        <div class="row justify-content-start">
+                                            <div class="col-2">
+                                                {{ form_widget(form.fax.fax01) }}
+                                            </div>
+                                            <div class="col-auto text-center p-0">
+                                                <span class="align-middle">-</span>
+                                            </div>
+                                            <div class="col-2">
+                                                {{ form_widget(form.fax.fax02) }}
+                                            </div>
+                                            <div class="col-auto text-center p-0">
+                                                <span class="align-middle">-</span>
+                                            </div>
+                                            <div class="col-2">
+                                                {{ form_widget(form.fax.fax03) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-3">
+                                        <span>{{ 'admin.customer.edit.password'|trans }}</span>
+                                        <span class="badge badge-primary ml-1">{{ 'admin.customer.edit.required'|trans }}</span>
+                                    </div>
+                                    <div class="col">
+                                        {{ form_widget(form.password.first, { type : 'password'}) }}
+                                        {{ form_errors(form.password.first) }}
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-3">
+                                        <span>{{ 'admin.customer.edit.password2'|trans }}</span>
+                                        <span class="badge badge-primary ml-1">{{ 'admin.customer.edit.required'|trans }}</span>
+                                    </div>
+                                    <div class="col">
+                                        {{ form_widget(form.password.second, { type : 'password'}) }}
+                                        {{ form_errors(form.password.second) }}
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-3">
+                                        <span>{{ 'admin.customer.edit.sex'|trans }}</span>
+                                    </div>
+                                    <div class="col">
+                                        {# TODO: classを整える。ラジオボタンが横に並ぶよう表示する。 #}
+                                        {{ form_widget(form.sex) }}
+                                        {{ form_errors(form.sex) }}
+                                        {#<div class="form-check form-check-inline">#}
+                                        {#<label class="form-check-label" for="male">#}
+                                        {#<input class="form-check-input" id="male" type="radio" name="gender"> 男性#}
+                                        {#</label>#}
+                                        {#</div>#}
+                                        {#<div class="form-check form-check-inline">#}
+                                        {#<label class="form-check-label" for="female">#}
+                                        {#<input class="form-check-input" id="female" type="radio" name="gender"> 女性#}
+                                        {#</label>#}
+                                        {#</div>#}
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-3">
+                                        <span>{{ 'admin.customer.edit.job'|trans }}</span>
+                                    </div>
+                                    <div class="col">
+                                        {{ form_widget(form.job) }}
+                                        {{ form_errors(form.job) }}
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-3">
+                                        <span>{{ 'admin.customer.edit.birth'|trans }}</span>
+                                    </div>
+                                    <div class="col">
+                                        {{ form_widget(form.birth) }}
+                                        {{ form_errors(form.birth) }}
+                                    </div>
+                                </div>
+                                {# TODO: モックに所有ポイント表示を追加 #}
+                                <div class="row mb-2">
+                                    <div class="col-3">
+                                        <span>{{ 'admin.customer.edit.point'|trans }}</span>
+                                    </div>
+                                    <div class="col">
+                                        {{ form_widget(form.point) }}
+                                        {{ form_errors(form.point) }}
+                                    </div>
+                                </div>
+                                {# エンティティ拡張の自動出力 #}
+                                {% for f in form %}
+                                    {# auto_render有効時に出力 #}
+                                    {% if f.vars.eccube_form_options.auto_render %}
+                                        {# form_themeが設定されている場合にthemeを適用 #}
+                                        {% if f.vars.eccube_form_options.form_theme %}
+                                            {% form_theme f f.vars.eccube_form_options.form_theme %}
+                                        {% endif %}
+                                        {{ form_row(f) }}
+                                    {% endif %}
+                                {% endfor %}
+                                <div class="extra-form">
+                                    {% for f in form.getIterator %}
+                                        {% if f.vars.name matches '[^plg*]' %}
+                                            {{ form_row(f) }}
+                                        {% endif %}
                                     {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                        {% if Customer.CustomerAddresses|length < eccube_config.eccube_deliv_addr_max %}
-                            <a href="{{ url('admin_customer_delivery_new', { id: Customer.id }) }}" class="btn btn-default">お届け先追加</a>
-                        {% else %}
-                            <span class="ec-errorMessage">お届け先登録の上限の{{ eccube_config.eccube_deliv_addr_max }}件に達しています。お届け先を入力したい場合は、削除か変更を行ってください</span>
-                        {% endif %}
-                    </div>
-                    {% else %}
-                    <div id="address_box__header" class="data-empty"><svg class="cb cb-inbox"> <use xlink:href="#cb-inbox" /></svg><p>データはありません</p>
-                    </div>
-                    <a href="{{ url('admin_customer_delivery_new', { id: Customer.id }) }}" class="btn btn-default">お届け先追加</a>
-                    {% endif %}
-                </div>
-            </div>
-            <div id="history_box" class="box accordion">
-                <div id="history_box__toggle" class="box-header toggle">
-                    <h3 class="box-title">{{'admin.customer.edit.99'|trans}}<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
-                </div><!-- /.box-header -->
-                <div id="history_box__body" class="box-body accpanel">
-                    {% if Customer.Orders|length > 0 %}
-                    <div id="history_box__list" class="table_list">
-                        <div class="table-responsive with-border">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr id="history_box__list_header">
-                                        <th id="history_box__header_order_date">{{'admin.customer.edit.100'|trans}}</th>
-                                        <th id="history_box__header_order_id">{{'admin.customer.edit.101'|trans}}</th>
-                                        <th id="history_box__header_order_code">受注コード</th> {# TODO 未翻訳 #}
-                                        <th id="history_box__header_order_total">{{'admin.customer.edit.102'|trans}}</th>
-                                        <th id="history_box__header_commit_date">{{'admin.customer.edit.103'|trans}}</th>
-                                        <th id="history_box__header_payment_method">{{'admin.customer.edit.104'|trans}}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for Order in Customer.Orders %}
-                                    <tr id="history_box__item--{{ Order.id }}">
-                                        <td id="history_box__order_date--{{ Order.id }}" class="member_id">
-                                            {{ Order.order_date|date_format }}
-                                        </td>
-                                        <td id="history_box__order_id--{{ Order.id }}" class="member_name">
-                                            <a href="{{ url('admin_order_edit', { 'id' : Order.id }) }}">{{ Order.id }}</a>
-                                        </td>
-                                        <td id="history_box__order_code--{{ Order.id }}" class="member_name">
-                                            {{ Order.code }}
-                                        </td>
-                                        <td id="history_box__order_total--{{ Order.id }}" class="member_tel">
-                                            {{ Order.total|price }}
-                                        </td>
-                                        <td id="history_box__commit_date--{{ Order.id }}" class="member_mail">
-                                            {{ Order.shipping_date|date_format|default('admin.customer.edit.105'|trans) }}
-                                        </td>
-                                        <td id="history_box__payment_method--{{ Order.id }}" class="member_mail">
-                                            {{ Order.payment_method }}
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    {% else %}
-                    <div id="history_box__header" class="data-empty"><svg class="cb cb-inbox"> <use xlink:href="#cb-inbox" /></svg><p>{{'admin.customer.edit.106'|trans}}</p>
-                    </div>
-                    {% endif %}
-                </div>
-            </div>
-            {% endif %}
-
-            <div id="detail_box__footer" class="row hidden-xs hidden-sm">
-                <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
-                    <p><a href="{{ url('admin_customer_page', { page_no : app.session.get('eccube.admin.customer.search.page_no')|default('1') } ) }}?resume=1">{{'admin.customer.edit.107'|trans}}</a></p>
-                </div>
-            </div>
-
-        </div><!-- /.col -->
-
-        <div id="aside_column" class="col-md-3">
-            <div id="common_box" class="col_inner">
-                <div id="button_box" class="box no-header">
-                    <div id="button_box__body" class="box-body">
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <div id="button_box__status" class="form-group">
-                                    {{ form_widget(form.status) }}
-                                    {{ form_errors(form.status) }}
                                 </div>
                             </div>
                         </div>
-                        <div id="button_box__insert_button" class="row text-center">
-                            <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
-                                <button class="btn btn-primary btn-block btn-lg" type="submit">{{'admin.customer.edit.108'|trans}}</button>
+                    </div>
+
+                    {% if Customer.id %}
+                        <div class="card rounded border-0 mb-4">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
+                                             title="Tooltip">
+                                        <span class="card-title">
+                                            {{ 'admin.customer.edit.sipping'|trans }}
+                                            <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                        </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 text-right">
+                                        <a data-toggle="collapse" href="#delivery" aria-expanded="false"
+                                           aria-controls="delivery">
+                                            <i class="fa fa-angle-up fa-lg"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="collapse show ec-cardCollapse" id="delivery">
+                                {% if Customer.CustomerAddresses|length > 0 %}
+                                    <div class="card-body">
+                                        <table class="table table-striped table-sm">
+                                            <thead class="table-active">
+                                            <th class="align-middle pt-2 pb-2 pl-3">{{ 'admin.customer.edit.sipping_id'|trans }}</th>
+                                            <th class="align-middle pt-2 pb-2">{{ 'admin.customer.edit.sipping_name'|trans }}</th>
+                                            <th class="align-middle pt-2 pb-2">{{ 'admin.customer.edit.sipping_addresses'|trans }}</th>
+                                            <th class="align-middle pt-2 pb-2 pr-3">{{ 'admin.customer.edit.sipping_tel'|trans }}</th>
+                                            <th class="align-middle pt-2 pb-2 pr-3"></th>
+                                            </thead>
+                                            <tbody>
+                                            {% for CustomerAddress in Customer.CustomerAddresses %}
+                                                <tr>
+                                                    <td class="align-middle pl-3">{{ CustomerAddress.id }}</td>
+                                                    <td class="align-middle">
+                                                        {{ CustomerAddress.name01 }}&nbsp;{{ CustomerAddress.name02 }}
+                                                    </td>
+                                                    <td class="align-middle">
+                                                        〒{{ CustomerAddress.zip01 }}-{{ CustomerAddress.zip02 }}
+                                                        　{{ CustomerAddress.Pref }}{{ CustomerAddress.addr01 }}{{ CustomerAddress.addr02 }}
+                                                    </td>
+                                                    <td class="align-middle">
+                                                        {{ CustomerAddress.tel01 }}-{{ CustomerAddress.tel02 }}
+                                                        -{{ CustomerAddress.tel03 }}
+                                                    </td>
+                                                    {# TODO: メニューのデザインを整える #}
+                                                    <td class="align-middle pr-3">
+                                                        <div id="address_box__menu_box_toggle--{{ CustomerAddress.id }}"
+                                                             class="dropdown">
+                                                            <a class="dropdown-toggle" data-toggle="dropdown">
+                                                                {#<svg class="cb cb-ellipsis-h">#}
+                                                                {#<use xlink:href="#cb-ellipsis-h"/>#}
+                                                                {#</svg>#}
+                                                            </a>
+                                                            <ul id="address_box__menu--{{ CustomerAddress.id }}"
+                                                                class="dropdown-menu dropdown-menu-right">
+                                                                <li>
+                                                                    <a href="{{ url('admin_customer_delivery_edit', { 'id': Customer.id, 'did': CustomerAddress.id}) }}">{{ 'admin.customer.edit.sipping_edit'|trans }}</a>
+                                                                </li>
+                                                                <!--
+                                                                {#<li><a href="{{ url('admin_customer_delivery_delete', { 'id': Customer.id, 'did': CustomerAddress.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="このお届け先情報を削除してもよろしいですか？">削除</a></li>#}
+                                                                -->
+                                                            </ul>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    {# TODO: 新規追加ボタンと文言のデザインを整える #}
+                                    {% if Customer.CustomerAddresses|length < eccube_config.eccube_deliv_addr_max %}
+                                        <a href="{{ url('admin_customer_delivery_new', { id: Customer.id }) }}"
+                                           class="btn btn-default">{{ 'admin.customer.edit.sipping_add'|trans }}</a>
+                                    {% else %}
+                                        <span class="ec-errorMessage">
+                                            {{ 'admin.customer.edit.sipping_text01'|trans({"%eccube_deliv_addr_max%":eccube_config.eccube_deliv_addr_max}) }}
+                                        </span>
+                                    {% endif %}
+                                {% else %}
+                                    {# TODO: 受注が１軒もない場合の表示を整える #}
+                                    <div id="history_box__header" class="data-empty">
+                                        <svg class="cb cb-inbox">
+                                            <use xlink:href="#cb-inbox"/>
+                                        </svg>
+                                        <p>{{ 'admin.customer.edit.106'|trans }}</p>
+                                    </div>
+                                {% endif %}
                             </div>
                         </div>
-                    </div><!-- /.box-body -->
-                </div><!-- /.box -->
+                    {% endif %}
 
-                <div id="shop_note_box" class="box">
-                    <div id="shop_note_box__header" class="box-header">
-                        <h3 class="box-title">{{'admin.customer.edit.109'|trans}}</h3>
-                    </div><!-- /.box-header -->
-                    <div id="shop_note_box__note" class="box-body">
-                        {{ form_widget(form.note) }}
-                        {{ form_errors(form.note) }}
+                    {% if Customer.id %}
+                        <div class="card rounded border-0 mb-4">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
+                                             title="Tooltip">
+                                        <span class="card-title">
+                                            {{ 'admin.customer.edit.99'|trans }}
+                                            <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                        </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 text-right">
+                                        <a data-toggle="collapse" href="#orderHistory" aria-expanded="false"
+                                           aria-controls="orderHistory">
+                                            <i class="fa fa-angle-up fa-lg"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="collapse show ec-cardCollapse" id="orderHistory">
+                                {% if Customer.Orders|length > 0 %}
+                                    <div class="card-body">
+                                        <table class="table table-striped table-sm">
+                                            <thead class="table-active">
+                                            <th class="align-middle pt-2 pb-2 pl-3">{{ 'admin.customer.edit.100'|trans }}</th>
+                                            <th class="align-middle pt-2 pb-2">{{ 'admin.customer.edit.101'|trans }}</th>
+                                            <th class="align-middle pt-2 pb-2">{{ 'admin.customer.edit.102'|trans }}</th>
+                                            <th class="align-middle pt-2 pb-2 pr-3">{{ 'admin.customer.edit.order_status'|trans }}</th>
+                                            </thead>
+                                            <tbody>
+                                            {% for Order in Customer.Orders %}
+                                                <tr>
+                                                    <td class="align-middle pl-3">{{ Order.order_date|date_format }}</td>
+                                                    <td class="align-middle">
+                                                        <a href="{{ url('admin_order_edit', { 'id' : Order.id }) }}">
+                                                            {{ Order.id }}
+                                                        </a>
+                                                    </td>
+                                                    <td class="align-middle">
+                                                        <span class="h5 font-weight-normal">{{ Order.total|price }}</span>
+                                                    </td>
+                                                    <td class="align-middle pr-3">
+                                                        <span class="badge badge-ec-glay">{{ Order.OrderStatus }}</span>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                {% else %}
+                                    {# TODO: 受注が１軒もない場合の表示を整える #}
+                                    <div id="history_box__header" class="data-empty">
+                                        <svg class="cb cb-inbox">
+                                            <use xlink:href="#cb-inbox"/>
+                                        </svg>
+                                        <p>{{ 'admin.customer.edit.106'|trans }}</p>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-8">
+                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
+                                         title="Tooltip">
+                                        <span class="card-title">{{ 'admin.customer.edit.109'|trans }}</span>
+                                        <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                    </div>
+                                </div>
+                                <div class="col-4 text-right">
+                                    <a data-toggle="collapse" href="#shopMemo" aria-expanded="false"
+                                       aria-controls="shopMemo">
+                                        <i class="fa fa-angle-up fa-lg"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="collapse show ec-cardCollapse" id="shopMemo">
+                            <div class="card-body">
+                                {{ form_widget(form.note) }}
+                                {{ form_errors(form.note) }}
+                            </div>
+                        </div>
                     </div>
-                </div><!-- /.box -->
-
+                </div>
             </div>
-        </div><!-- /.col -->
+        </div>
+
+        {# TODO: conversionAreaがmockではbody直下にあるが、formの関係でcontentsArea内に移動させる #}
+        <div class="c-conversionArea">
+            <div class="c-conversionArea__container">
+                <div class="row justify-content-between align-items-center">
+                    <div class="col-6">
+                        <div class="c-conversionArea__leftBlockItem">
+                            <a class="c-beseLink"
+                               href="{{ url('admin_customer_page', { page_no : app.session.get('eccube.admin.customer.search.page_no')|default('1') } ) }}?resume=1">
+                                <i class="fa fa-backward" aria-hidden="true"></i>
+                                <span>{{ 'admin.customer.edit.customer_index'|trans }}</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="row align-items-center justify-content-end">
+                            <div class="col-auto">
+                                {{ form_widget(form.status) }}
+                                {{ form_errors(form.status) }}
+                            </div>
+                            <div class="col-auto">
+                                <button class="btn btn-ec-conversion px-5"
+                                        type="submit">{{ 'admin.customer.edit.108'|trans }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </form>
-</div>
 {% endblock %}
