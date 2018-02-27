@@ -42,49 +42,49 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <div class="c-contentsArea__primaryCol">
                 <div class="c-primaryCol">
                     <div class="card rounded border-0 mb-4">
-                        <div class="card-header"><span>基本情報</span></div>
+                        <div class="card-header"><span>{{ 'admin_setting_shop_shop_master.label.setting'|trans }}</span></div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-3"><span>会社名</span></div>
+                                <div class="col-3"><span>{{ 'common.label.company_name'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.company_name) }}
                                     {{ form_errors(form.company_name) }}
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-3"><span>会社名（フリガナ）</span></div>
+                                <div class="col-3"><span>{{ 'common.label.company_name_kana'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.company_kana) }}
                                     {{ form_errors(form.company_kana) }}
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-3"><span>店名</span></div>
+                                <div class="col-3"><span>{{ 'common.label.shop_name'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.shop_name) }}
                                     {{ form_errors(form.shop_name) }}
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-3"><span>店名（フリガナ）</span></div>
+                                <div class="col-3"><span>{{ 'common.label.shop_name_kana'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.shop_kana) }}
                                     {{ form_errors(form.shop_kana) }}
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-3"><span>店名（英語表記）</span></div>
+                                <div class="col-3"><span>{{ 'common.label.shop_name_en'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.shop_name_eng) }}
                                     {{ form_errors(form.shop_name_eng) }}
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-3"><span>住所</span><span class="badge badge-primary ml-1">必須</span></div>
+                                <div class="col-3"><span>{{ 'common.label.address'|trans }}</span><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></div>
                                 <div class="col mb-2">
                                     <div class="mb-2">
                                         <div class="row justify-content-start">
-                                            <div class="col-auto text-center pr-0"><span class="align-middle">〒</span></div>
+                                            <div class="col-auto text-center pr-0"><span class="align-middle">{{ 'admin.setting.shop.shop_master.629'|trans }}</span></div>
                                             <div class="col-2">
                                                 {{ form_widget(form.zip.zip01) }}
                                             </div>
@@ -115,7 +115,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 </div>
                             </div>
                             <div class="row mb-2">
-                                <div class="col-3"><span>電話番号</span><span class="badge badge-primary ml-1">必須</span></div>
+                                <div class="col-3"><span>{{ 'common.label.phone_number'|trans }}</span><span class="badge badge-primary ml-1">必須</span></div>
                                 <div class="col">
                                     <div class="row justify-content-start">
                                         <div class="col-2">
@@ -136,7 +136,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 </div>
                             </div>
                             <div class="row mb-2">
-                                <div class="col-3"><span>FAX番号</span></div>
+                                <div class="col-3"><span>{{ 'common.label.fax_number'|trans }}</span></div>
                                 <div class="col">
                                     <div class="row justify-content-start">
                                         <div class="col-2">
@@ -157,49 +157,49 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <div class="col-3"><span>店舗営業時間</span></div>
+                                <div class="col-3"><span>{{ 'common.label.business_hour'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.business_hour) }}
                                     {{ form_errors(form.business_hour) }}
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <div class="col-3"><span>送信元メールアドレス(From)</span></div>
+                                <div class="col-3"><span>{{ 'common.label.email_from'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.email01) }}
                                     {{ form_errors(form.email01) }}
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <div class="col-3"><span>問い合わせ受付メールアドレス(From, ReplyTo)</span></div>
+                                <div class="col-3"><span>{{ 'common.label.email_for_inquiries'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.email02) }}
                                     {{ form_errors(form.email02) }}
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <div class="col-3"><span>返信受付メールアドレス(ReplyTo)</span></div>
+                                <div class="col-3"><span>{{ 'common.label.email_reply_to'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.email03) }}
                                     {{ form_errors(form.email03) }}
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <div class="col-3"><span>送信エラー受付メールアドレス(ReturnPath)</span></div>
+                                <div class="col-3"><span>{{ 'common.label.email_return_path'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.email04) }}
                                     {{ form_errors(form.email04) }}
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-3"><span>取り扱い商品説明文</span></div>
+                                <div class="col-3"><span>{{ 'common.label.good_traded'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.good_traded) }}
                                     {{ form_errors(form.good_traded) }}
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-3"><span>店舗からのメッセージ</span></div>
+                                <div class="col-3"><span>{{ 'shopmaster.label.message'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.message) }}
                                     {{ form_errors(form.message) }}
@@ -208,11 +208,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </div>
                     </div>
                     <div class="card rounded border-0 mb-4">
-                        <div class="card-header"><span>送料設定</span></div>
+                        <div class="card-header"><span>{{ 'common.label.option_delivery_fee_free_amount'|trans }}</span></div>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-3">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>送料無料条件（金額）</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>{{ 'common.label.option_delivery_fee_free_amount'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                 </div>
                                 <div class="col mb-2">
                                     <div class="input-group col-4 pl-0">
@@ -228,7 +228,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             </div>
                             <div class="row">
                                 <div class="col-3">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>送料無料条件（数量）</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>{{ 'common.label.option_delivery_free_quantity'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                 </div>
                                 <div class="col mb-2">
                                     <div class="input-group col-4 pl-0">
@@ -241,7 +241,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-3"><span>商品ごとの送料設定</span></div>
+                                <div class="col-3"><span>{{ 'common.label.option_product_delivery_fee'|trans }}</span></div>
                                 <div class="col mb-2">
                                     <div class="c-toggleSwitch">
                                         <div class="c-toggleSwitch__btn">
@@ -257,7 +257,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             </div>
                             <div class="row">
                                 <div class="col-3">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>複数配送</span></div>
+                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>{{ 'common.label.option_multiple_shipping'|trans }}</span></div>
                                 </div>
                                 <div class="col mb-2">
                                     <div class="c-toggleSwitch">
@@ -275,10 +275,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </div>
                     </div>
                     <div class="card rounded border-0 mb-4">
-                        <div class="card-header"><span>会員設定</span></div>
+                        <div class="card-header"><span>{{ 'admin.setting.shop.shop_master.633'|trans }}</span></div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-3"><span>仮会員機能</span></div>
+                                <div class="col-3"><span>{{ 'common.label.option_customer_activate'|trans }}</span></div>
                                 <div class="col mb-2">
                                     <div class="c-toggleSwitch">
                                         <div class="c-toggleSwitch__btn">
@@ -293,7 +293,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-3"><span>マイページに注文状況を表示</span></div>
+                                <div class="col-3"><span>{{ 'common.label.option_mypage_order_status_display'|trans }}</span></div>
                                 <div class="col mb-2">
                                     <div class="c-toggleSwitch">
                                         <div class="c-toggleSwitch__btn">
@@ -308,7 +308,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-3"><span>お気に入り商品機能</span></div>
+                                <div class="col-3"><span>{{ 'common.label.option_favorite_product'|trans }}</span></div>
                                 <div class="col mb-2">
                                     <div class="c-toggleSwitch">
                                         <div class="c-toggleSwitch__btn">
@@ -323,7 +323,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-3"><span>自動ログイン機能</span></div>
+                                <div class="col-3"><span>{{ 'common.label.option_remember_me'|trans }}</span></div>
                                 <div class="col mb-2">
                                     <div class="c-toggleSwitch">
                                         <div class="c-toggleSwitch__btn">
@@ -340,10 +340,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </div>
                     </div>
                     <div class="card rounded border-0 mb-4">
-                        <div class="card-header"><span>商品設定</span></div>
+                        <div class="card-header"><span>{{ 'admin.setting.shop.shop_master.634'|trans }}</span></div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-3"><span>在庫切れ商品の表示</span></div>
+                                <div class="col-3"><span>{{ 'common.label.nostock_hidden'|trans }}</span></div>
                                 <div class="col mb-2">
                                     <div class="c-toggleSwitch">
                                         <div class="c-toggleSwitch__btn">
@@ -360,11 +360,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </div>
                     </div>
                     <div class="card rounded border-0 mb-4">
-                        <div class="card-header"><span>個別税率設定</span></div>
+                        <div class="card-header"><span>{{ 'admin.setting.shop.tax_rule.639'|trans }}</span></div>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-3">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>商品別税率機能</span></div>
+                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>{{ 'shopmaster.label.option_product_tax_rule'|trans }}</span></div>
                                 </div>
                                 <div class="col mb-2">
                                     <div class="c-toggleSwitch">
@@ -381,10 +381,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </div>
                     </div>
                     <div class="card rounded border-0 mb-4">
-                        <div class="card-header"><span>ポイント設定</span></div>
+                        <div class="card-header"><span>{{ 'shopmaster.title.option_point'|trans }}</span></div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-3"><span>{{ 'common.label.option_point'|trans }}</span></div>
+                                <div class="col-3"><span>{{ 'shopmaster.label.option_point'|trans }}</span></div>
                                 <div class="col mb-2">
                                     <div class="c-toggleSwitch">
                                         <div class="c-toggleSwitch__btn">
@@ -400,7 +400,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             </div>
                             <div class="row">
                                 <div class="col-3">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>{{ 'common.label.basic_point_rate'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>{{ 'shopmaster.label.basic_point_rate'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                 </div>
                                 <div class="col mb-2">
                                     <div class="input-group col-4 pl-0">
@@ -414,7 +414,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             </div>
                             <div class="row">
                                 <div class="col-3">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>{{ 'common.label.point_conversion_rate'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>{{ 'shopmaster.label.point_conversion_rate'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                 </div>
                                 <div class="col mb-2">
                                     <div class="input-group col-4 pl-0">
@@ -441,7 +441,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div class="col-6">
                         <div class="row align-items-center justify-content-end">
                             <div class="col-auto">
-                                <button class="btn btn-ec-conversion px-5" type="submit">登録</button>
+                                <button class="btn btn-ec-conversion px-5" type="submit">{{ 'common.label.save'|trans }}</button>
                             </div>
                         </div>
                     </div>
