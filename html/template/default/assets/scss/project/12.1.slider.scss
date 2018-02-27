@@ -30,7 +30,7 @@ Styleguide 12.1
   .item_nav {
     display: none;
     @include media_desktop {
-      display: flex;
+      display: block;
       justify-content: space-between;
       margin-bottom: 0;
     }
