@@ -244,7 +244,7 @@ class CartService
         }
 
         $removeItem = new CartItem();
-        $removeItem->setPrice($ProductClass->getPrice01IncTax());
+        $removeItem->setPrice($ProductClass->getPrice02IncTax());
         $removeItem->setProductClass($ProductClass);
 
         $allCartItems = $this->mergeAllCartItems();
