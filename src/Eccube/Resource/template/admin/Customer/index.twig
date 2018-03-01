@@ -289,12 +289,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             {% endif %}
         </div>
 
-        </div>
-        {% if pagination %}
-            {% if pagination|length > 0 %}
-                <div class="c-contentsArea__cols">
-                    <div class="c-contentsArea__primaryCol">
-                        <div class="c-primaryCol">
+        <div class="c-contentsArea__cols">
+            <div class="c-contentsArea__primaryCol">
+                <div class="c-primaryCol">
+                    {% if pagination %}
+                        {% if pagination|length > 0 %}
                             <div class="row justify-content-between mb-2">
                                 <div class="col-6"></div>
                                 <div class="col-5 text-right">
@@ -354,28 +353,28 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     </div>
                                 </div>
                             </div>
+                        {% else %}
+                            <div class="card rounded border-0">
+                                <div class="card-body p-4">
+                                    <div class="text-center text-muted mb-4 h5">{{ 'admin.customer.index.147'|trans }}</div>
+                                    <div class="text-center text-muted">{{ 'admin.customer.index.text06'|trans }}</div>
+                                    <div class="text-center text-muted">{{ 'admin.customer.index.text07'|trans }}</div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <div class="card rounded border-0">
+                            <div class="card-body p-4">
+                                <div class="text-center text-muted mb-2 h5">{{ 'admin.customer.index.text08'|trans }}</div>
+                                <div class="text-center mb-4"><a class="btn btn-ec-regular pl-4 pr-4"
+                                                                 href="{{ url('admin_customer_new') }}">{{ 'admin.customer.index.text09'|trans }}</a>
+                                </div>
+                                <div class="text-center text-muted">{{ 'admin.customer.index.text10'|trans }}</div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            {% else %}
-                <div class="card rounded border-0">
-                    <div class="card-body p-4">
-                        <div class="text-center text-muted mb-4 h5">{{ 'admin.customer.index.147'|trans }}</div>
-                        <div class="text-center text-muted">{{ 'admin.customer.index.text06'|trans }}</div>
-                        <div class="text-center text-muted">{{ 'admin.customer.index.text07'|trans }}</div>
-                    </div>
-                </div>
-            {% endif %}
-        {% else %}
-            <div class="card rounded border-0">
-                <div class="card-body p-4">
-                    <div class="text-center text-muted mb-2 h5">{{ 'admin.customer.index.text08'|trans }}</div>
-                    <div class="text-center mb-4"><a class="btn btn-ec-regular pl-4 pr-4"
-                                                     href="{{ url('admin_customer_new') }}">{{ 'admin.customer.index.text09'|trans }}</a>
-                    </div>
-                    <div class="text-center text-muted">{{ 'admin.customer.index.text10'|trans }}</div>
+                    {% endif %}
                 </div>
             </div>
-        {% endif %}
+        </div>
     </form>
 {% endblock %}
