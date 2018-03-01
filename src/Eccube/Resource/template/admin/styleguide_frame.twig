@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=no">
-    <title>{{ BaseInfo.shop_name }} - EC-CUBE管理画面</title>
+    <title>{{ BaseInfo.shop_name }} - 管理画面</title>
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.css', 'admin') }}">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('assets/css/app.css', 'admin') }}">
@@ -11,7 +11,7 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="{{ asset('js/script.js', 'admin') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/script.js', 'admin') }}"></script>
     <script src="{{ asset('assets/js/function.js', 'admin') }}"></script>
 </head>
 <body id="page_{{ app.request.get('_route') }}">
@@ -19,7 +19,10 @@
     <div class="c-headerBar__container">
         <div class="c-headerBar__logo">
             <h1><img src="{{ asset('assets/img/logo@2x.png', 'admin') }}"></h1>
-        </div><a class="c-headerBar__toggleBtn"><i class="fa fa-bars" aria-hidden="true"></i></a><a class="c-headerBar__shopTitle" href=""><span>EC-CUBE SHOP</span><i class="fa fa-angle-right" aria-hidden="true"></i></a><a class="c-headerBar__userMenu" data-container="body" data-toggle="popover" data-placement="bottom" title="最終ログイン" data-content="&lt;p&gt;2017/12/18 12:18&lt;/p&gt;&lt;a href='/admin/passwordChange' class='btn btn-ec-regular btn-block'&gt;パスワード変更&lt;/a&gt;&lt;a href='/admin/login' class='btn btn-ec-sub btn-block'&gt;ログアウト&lt;/a&gt;" data-html="true"><i class="fa fa-user-circle" aria-hidden="true"></i><span>管理者 様</span><i class="fa fa-angle-down" aria-hidden="true"></i></a>
+        </div>
+        <a class="c-headerBar__toggleBtn"><i class="fa fa-bars" aria-hidden="true"></i></a>
+        <a class="c-headerBar__shopTitle" href="{{ url("homepage") }}"><span>{{ BaseInfo.shop_name }}</span><i class="fa fa-angle-right" aria-hidden="true"></i></a>
+        <a class="c-headerBar__userMenu" data-container="body" data-toggle="popover" data-placement="bottom" title="最終ログイン" data-content="&lt;p&gt;{{ app.user.login_date|date_format }}&lt;/p&gt;&lt;a href='{{ url("admin_change_password") }}' class='btn btn-ec-regular btn-block'&gt;パスワード変更&lt;/a&gt;&lt;a href='{{ url("admin_logout") }}' class='btn btn-ec-sub btn-block'&gt;ログアウト&lt;/a&gt;" data-html="true"><i class="fa fa-user-circle" aria-hidden="true"></i><span>{{ app.user.name }} 様</span><i class="fa fa-angle-down" aria-hidden="true"></i></a>
     </div>
 </header>
 <div class="c-container">
@@ -30,9 +33,7 @@
     <div class="c-contentsArea">
         <div class="c-pageTitle">
             <div class="c-pageTitle__titles">
-                <h2 class="c-pageTitle__title">
-                    {{ block('title') }}<span>{{ block('sub_title') }}</span>
-                </h2>
+                <h2 class="c-pageTitle__title">{{ block('title') }}</h2><span>{{ block('sub_title') }}</span>
             </div>
         </div>
 
@@ -40,9 +41,10 @@
 
         {% block main %}{% endblock %}
 
-        {% block modal %}{% endblock %}
-
     </div>
 </div>
+
+{% block javascript %}{% endblock %}
+
 </body>
 </html>
