@@ -552,79 +552,79 @@ class ProductController extends AbstractController
                     $file = new File($this->eccubeConfig['eccube_temp_image_dir'] . '/' . $add_image);
                     $file->move($this->eccubeConfig['eccube_save_image_dir']);
                 }
-            }
 
-            // 画像の削除
-            $delete_images = $form->get('delete_images')->getData();
-            foreach ($delete_images as $delete_image) {
-                $ProductImage = $this->productImageRepository
-                    ->findOneBy(['file_name' => $delete_image]);
+                // 画像の削除
+                $delete_images = $form->get('delete_images')->getData();
+                foreach ($delete_images as $delete_image) {
+                    $ProductImage = $this->productImageRepository
+                        ->findOneBy(['file_name' => $delete_image]);
 
-                // 追加してすぐに削除した画像は、Entityに追加されない
-                if ($ProductImage instanceof ProductImage) {
-                    $Product->removeProductImage($ProductImage);
-                    $this->entityManager->remove($ProductImage);
+                    // 追加してすぐに削除した画像は、Entityに追加されない
+                    if ($ProductImage instanceof ProductImage) {
+                        $Product->removeProductImage($ProductImage);
+                        $this->entityManager->remove($ProductImage);
+                    }
+                    $this->entityManager->persist($Product);
+
+                    // 削除
+                    $fs = new Filesystem();
+                    $fs->remove($this->eccubeConfig['eccube_save_image_dir'].'/'.$delete_image);
                 }
                 $this->entityManager->persist($Product);
+                $this->entityManager->flush();
 
-                // 削除
-                $fs = new Filesystem();
-                $fs->remove($this->eccubeConfig['eccube_save_image_dir'].'/'.$delete_image);
-            }
-            $this->entityManager->persist($Product);
-            $this->entityManager->flush();
-
-            $sortNos = $request->get('sort_no_images');
-            if ($sortNos) {
-                foreach ($sortNos as $sortNo) {
-                    list($filename, $sortNo_val) = explode('//', $sortNo);
-                    $ProductImage = $this->productImageRepository
-                        ->findOneBy([
-                            'file_name' => $filename,
-                            'Product' => $Product,
-                        ]);
-                    $ProductImage->setSortNo($sortNo_val);
-                    $this->entityManager->persist($ProductImage);
+                $sortNos = $request->get('sort_no_images');
+                if ($sortNos) {
+                    foreach ($sortNos as $sortNo) {
+                        list($filename, $sortNo_val) = explode('//', $sortNo);
+                        $ProductImage = $this->productImageRepository
+                            ->findOneBy([
+                                'file_name' => $filename,
+                                'Product' => $Product,
+                            ]);
+                        $ProductImage->setSortNo($sortNo_val);
+                        $this->entityManager->persist($ProductImage);
+                    }
                 }
+                $this->entityManager->flush();
+
+                // 商品タグの登録
+                // 商品タグを一度クリア
+                $ProductTags = $Product->getProductTag();
+                foreach ($ProductTags as $ProductTag) {
+                    $Product->removeProductTag($ProductTag);
+                    $this->entityManager->remove($ProductTag);
+                }
+
+                // 商品タグの登録
+                $Tags = $form->get('Tag')->getData();
+                foreach ($Tags as $Tag) {
+                    $ProductTag = new ProductTag();
+                    $ProductTag
+                        ->setProduct($Product)
+                        ->setTag($Tag);
+                    $Product->addProductTag($ProductTag);
+                    $this->entityManager->persist($ProductTag);
+                }
+
+                $Product->setUpdateDate(new \DateTime());
+                $this->entityManager->flush();
+
+                log_info('商品登録完了', [$id]);
+
+                $event = new EventArgs(
+                    [
+                        'form' => $form,
+                        'Product' => $Product,
+                    ],
+                    $request
+                );
+                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_EDIT_COMPLETE, $event);
+
+                $this->addSuccess('admin.register.complete', 'admin');
+
+                return $this->redirectToRoute('admin_product_product_edit', ['id' => $Product->getId()]);
             }
-            $this->entityManager->flush();
-
-            // 商品タグの登録
-            // 商品タグを一度クリア
-            $ProductTags = $Product->getProductTag();
-            foreach ($ProductTags as $ProductTag) {
-                $Product->removeProductTag($ProductTag);
-                $this->entityManager->remove($ProductTag);
-            }
-
-            // 商品タグの登録
-            $Tags = $form->get('Tag')->getData();
-            foreach ($Tags as $Tag) {
-                $ProductTag = new ProductTag();
-                $ProductTag
-                    ->setProduct($Product)
-                    ->setTag($Tag);
-                $Product->addProductTag($ProductTag);
-                $this->entityManager->persist($ProductTag);
-            }
-
-            $Product->setUpdateDate(new \DateTime());
-            $this->entityManager->flush();
-
-            log_info('商品登録完了', [$id]);
-
-            $event = new EventArgs(
-                [
-                    'form' => $form,
-                    'Product' => $Product,
-                ],
-                $request
-            );
-            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_EDIT_COMPLETE, $event);
-
-            $this->addSuccess('admin.register.complete', 'admin');
-
-            return $this->redirectToRoute('admin_product_product_edit', ['id' => $Product->getId()]);
         }
 
         // 検索結果の保持
