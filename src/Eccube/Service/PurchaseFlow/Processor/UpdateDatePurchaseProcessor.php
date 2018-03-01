@@ -37,8 +37,10 @@ class UpdateDatePurchaseProcessor implements PurchaseProcessor
         $dateTime = new \DateTime();
         $OriginOrder = $context->getOriginHolder();
 
-        if(!$TargetOrder->getOrderStatus())
+        if (!$TargetOrder->getOrderStatus()) {
             return ProcessResult::success();
+        }
+
         // 編集
         if ($TargetOrder->getId()) {
             // 発送済
