@@ -72,7 +72,7 @@ class UpdateDatePurchaseProcessor implements PurchaseProcessor
                     $Shipping->setShippingDate($dateTime);
                 }
                 // 入金済
-            } elseif ($TargetOrder->getOrderStatus()->getId() == OrderStatus::DELIVERED) {
+            } elseif ($TargetOrder->getOrderStatus()->getId() == OrderStatus::PAID) {
                 $TargetOrder->setPaymentDate($dateTime);
             }
             // 受注日時
