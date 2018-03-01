@@ -284,76 +284,96 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         </div>
         <div class="c-outsideBlock__contents mb-5">
             <button type="submit" class="btn btn-ec-conversion px-5">{{ 'admin.customer.index.133'|trans }}</button>
-            {% if pagination and pagination.totalItemCount > 0 %}
+            {% if pagination %}
                 <span class="font-weight-bold ml-2">{{ 'admin.customer.index.134'|trans({'%count%':pagination.totalItemCount}) }}</span>
             {% endif %}
         </div>
 
         </div>
         {% if pagination %}
-            <div class="c-contentsArea__cols">
-                <div class="c-contentsArea__primaryCol">
-                    <div class="c-primaryCol">
-                        <div class="row justify-content-between mb-2">
-                            <div class="col-6"></div>
-                            <div class="col-5 text-right">
-                                <div class="d-inline-block mr-2">
-                                    <div>
-                                        {# TODO: 未実装 表示件数 #}
-                                        {% for pageMax in pageMaxis if pageMax.name == page_count %}
-                                            <a class="dropdown-toggle" data-toggle="dropdown">{{'admin.customer.index.135'|trans({'%count%':pageMax.name})|e}}<svg class="cb cb-angle-down icon_down"><use xlink:href="#cb-angle-down"></svg></a>
-                                                <ul class="dropdown-menu">
-                                        {% endfor %}
-                                        {% for pageMax in pageMaxis if pageMax.name != page_count %}
-                                            <li><a href="{{ path('admin_customer_page', {'page_no': 1, 'page_count': pageMax.name}) }}">{{pageMax.name|e}}</a></li>
-                                        {% endfor %}
-                                                </ul>
+            {% if pagination|length > 0 %}
+                <div class="c-contentsArea__cols">
+                    <div class="c-contentsArea__primaryCol">
+                        <div class="c-primaryCol">
+                            <div class="row justify-content-between mb-2">
+                                <div class="col-6"></div>
+                                <div class="col-5 text-right">
+                                    <div class="d-inline-block mr-2">
+                                        <div>
+                                            {# TODO: 未実装 表示件数 #}
+                                            {% for pageMax in pageMaxis if pageMax.name == page_count %}
+                                                <a class="dropdown-toggle" data-toggle="dropdown">{{'admin.customer.index.135'|trans({'%count%':pageMax.name})|e}}<svg class="cb cb-angle-down icon_down"><use xlink:href="#cb-angle-down"></svg></a>
+                                                    <ul class="dropdown-menu">
+                                            {% endfor %}
+                                            {% for pageMax in pageMaxis if pageMax.name != page_count %}
+                                                <li><a href="{{ path('admin_customer_page', {'page_no': 1, 'page_count': pageMax.name}) }}">{{pageMax.name|e}}</a></li>
+                                            {% endfor %}
+                                                    </ul>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="d-inline-block">
-                                    <div class="btn-group" role="group">
-                                        {# TODO CSVダウンロード・項目設定 #}
-                                        <button class="btn btn-ec-regular" type="button"><i class="fa fa-cloud-download mr-1 text-secondary"></i><span>{{ 'admin.customer.index.137'|trans }}</span></button>
-                                        <button class="btn btn-ec-regular" type="button"><i class="fa fa-cog mr-1 text-secondary"></i><span>{{ 'admin.customer.index.139'|trans }}</span></button>
+                                    <div class="d-inline-block">
+                                        <div class="btn-group" role="group">
+                                            {# TODO CSVダウンロード・項目設定 #}
+                                            <button class="btn btn-ec-regular" type="button"><i class="fa fa-cloud-download mr-1 text-secondary"></i><span>{{ 'admin.customer.index.137'|trans }}</span></button>
+                                            <button class="btn btn-ec-regular" type="button"><i class="fa fa-cog mr-1 text-secondary"></i><span>{{ 'admin.customer.index.139'|trans }}</span></button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="card rounded border-0 mb-4">
-                            <div class="card-body p-0">
-                                <table class="table">
-                                    <thead>
-                                        <tr><th class="border-top-0 pt-2 pb-3 pl-3">{{ 'admin.customer.index.140'|trans }}</th>
-                                            <th class="border-top-0 pt-2 pb-3">{{ 'admin.customer.index.141'|trans }}</th>
-                                            <th class="border-top-0 pt-2 pb-3">{{ 'admin.customer.index.142'|trans }}</th>
-                                            <th class="border-top-0 pt-2 pb-3">{{ 'admin.customer.index.143'|trans  }}</th>
-                                            <th class="border-top-0 pt-2 pb-3">&nbsp;</th>
-                                            <th class="border-top-0 pt-2 pb-3 pr-3">&nbsp;</th>
-                                        </tr></thead>
-                                    <tbody>
-                                        {% for Customer in pagination %}
-                                            <tr>
-                                                <td class="align-middle pl-3">{{ Customer.id }}</td>
-                                                <td class="align-middle"><a href="{{ url('admin_customer_edit', { 'id': Customer.id}) }}">{{ Customer.name01 }}&nbsp;{{ Customer.name02 }}</a></td>
-                                                <td class="align-middle">{{ Customer.tel01 }}-{{ Customer.tel02 }}-{{ Customer.tel03 }}</td>
-                                                <td class="align-middle">{{ Customer.email }}</td>
-                                                <td class="align-middle"></td>
-                                                <td class="align-middle pr-3">
-                                                    <div class="row justify-content-end">
-                                                        <div class="col-auto text-center"><a "{{ url('admin_customer_delete', { 'id': Customer.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" class="btn btn-ec-actionIcon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ 'admin.customer.index.delete'|trans }}"><i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a></div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        {% endfor %}
-                                    </tbody></table>
-                                <div class="row justify-content-md-center mb-4">
-                                    {% if pagination.totalItemCount > 0 %}
-                                        {% include "@admin/styleguide_pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_customer_page' } %}
-                                    {% endif %}
+                            <div class="card rounded border-0 mb-4">
+                                <div class="card-body p-0">
+                                    <table class="table">
+                                        <thead>
+                                            <tr><th class="border-top-0 pt-2 pb-3 pl-3">{{ 'admin.customer.index.140'|trans }}</th>
+                                                <th class="border-top-0 pt-2 pb-3">{{ 'admin.customer.index.141'|trans }}</th>
+                                                <th class="border-top-0 pt-2 pb-3">{{ 'admin.customer.index.142'|trans }}</th>
+                                                <th class="border-top-0 pt-2 pb-3">{{ 'admin.customer.index.143'|trans  }}</th>
+                                                <th class="border-top-0 pt-2 pb-3">&nbsp;</th>
+                                                <th class="border-top-0 pt-2 pb-3 pr-3">&nbsp;</th>
+                                            </tr></thead>
+                                        <tbody>
+                                            {% for Customer in pagination %}
+                                                <tr>
+                                                    <td class="align-middle pl-3">{{ Customer.id }}</td>
+                                                    <td class="align-middle"><a href="{{ url('admin_customer_edit', { 'id': Customer.id}) }}">{{ Customer.name01 }}&nbsp;{{ Customer.name02 }}</a></td>
+                                                    <td class="align-middle">{{ Customer.tel01 }}-{{ Customer.tel02 }}-{{ Customer.tel03 }}</td>
+                                                    <td class="align-middle">{{ Customer.email }}</td>
+                                                    <td class="align-middle"></td>
+                                                    <td class="align-middle pr-3">
+                                                        <div class="row justify-content-end">
+                                                            <div class="col-auto text-center"><a "{{ url('admin_customer_delete', { 'id': Customer.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" class="btn btn-ec-actionIcon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ 'admin.customer.index.delete'|trans }}"><i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a></div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody></table>
+                                    <div class="row justify-content-md-center mb-4">
+                                        {% if pagination.totalItemCount > 0 %}
+                                            {% include "@admin/styleguide_pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_customer_page' } %}
+                                        {% endif %}
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
+            {% else %}
+                <div class="card rounded border-0">
+                    <div class="card-body p-4">
+                        <div class="text-center text-muted mb-4 h5">{{ 'admin.customer.index.147'|trans }}</div>
+                        <div class="text-center text-muted">{{ 'admin.customer.index.text06'|trans }}</div>
+                        <div class="text-center text-muted">{{ 'admin.customer.index.text07'|trans }}</div>
+                    </div>
+                </div>
+            {% endif %}
+        {% else %}
+            <div class="card rounded border-0">
+                <div class="card-body p-4">
+                    <div class="text-center text-muted mb-2 h5">{{ 'admin.customer.index.text08'|trans }}</div>
+                    <div class="text-center mb-4"><a class="btn btn-ec-regular pl-4 pr-4"
+                                                     href="{{ url('admin_customer_new') }}">{{ 'admin.customer.index.text09'|trans }}</a>
+                    </div>
+                    <div class="text-center text-muted">{{ 'admin.customer.index.text10'|trans }}</div>
                 </div>
             </div>
         {% endif %}
