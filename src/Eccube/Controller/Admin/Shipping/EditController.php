@@ -267,7 +267,7 @@ class EditController extends AbstractController
 
     /**
      * @Route("/%eccube_admin_route%/shipping/search/product", name="admin_shipping_search_product")
-     * @Template("@admin/shipping/search_product.twig")
+     * @Template("@admin/Shipping/search_product.twig")
      */
     public function searchProduct(Request $request, $page_no = null, Paginator $paginator)
     {

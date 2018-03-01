@@ -49,7 +49,7 @@ class CustomerStatusType extends AbstractType
     {
         $resolver->setDefaults(array(
             'class' => 'Eccube\Entity\Master\CustomerStatus',
-            'expanded' => true,
+            'expanded' => false,
         ));
     }
 

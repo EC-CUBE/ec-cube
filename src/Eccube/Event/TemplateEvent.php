@@ -103,6 +103,33 @@ class TemplateEvent extends Event
     }
 
     /**
+     * @param $key
+     * @return mixed
+     */
+    public function getParameter($key)
+    {
+        return $this->parameters[$key];
+    }
+
+    /**
+     * @param $key
+     * @param $value
+     */
+    public function setParameter($key, $value)
+    {
+        $this->parameters[$key] = $value;
+    }
+
+    /**
+     * @param $key
+     * @return bool
+     */
+    public function hasParameter($key)
+    {
+        return isset($this->parameters[$key]);
+    }
+
+    /**
      * @return array
      */
     public function getParameters()

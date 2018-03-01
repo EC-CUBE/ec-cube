@@ -40,6 +40,7 @@ use Eccube\Repository\PluginRepository;
 use Eccube\Service\Composer\ComposerServiceInterface;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 
@@ -110,6 +111,11 @@ class PluginService
     private $environment;
 
     /**
+     * @var \Symfony\Component\DependencyInjection\ContainerInterface
+     */
+    protected $container;
+
+    /**
      * PluginService constructor.
      * @param PluginEventHandlerRepository $pluginEventHandlerRepository
      * @param EntityManagerInterface $entityManager
@@ -123,7 +129,8 @@ class PluginService
         PluginRepository $pluginRepository,
         EntityProxyService $entityProxyService,
         SchemaService $schemaService,
-        EccubeConfig $eccubeConfig
+        EccubeConfig $eccubeConfig,
+        ContainerInterface $container
     ) {
         $this->pluginEventHandlerRepository = $pluginEventHandlerRepository;
         $this->entityManager = $entityManager;
@@ -133,6 +140,7 @@ class PluginService
         $this->eccubeConfig = $eccubeConfig;
         $this->projectRoot = $eccubeConfig->get('kernel.project_dir');
         $this->environment = $eccubeConfig->get('kernel.environment');
+        $this->container = $container;
     }
 
 
@@ -425,7 +433,8 @@ class PluginService
         if (class_exists($class)) {
             $installer = new $class(); // マネージャクラスに所定のメソッドがある場合だけ実行する
             if (method_exists($installer, $method)) {
-                $installer->$method($meta, $this->app);
+                // FIXME appを削除.
+                $installer->$method($meta, $this->app, $this->container);
             }
         }
     }

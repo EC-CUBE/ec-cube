@@ -48,11 +48,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
             'fax' => array('fax01' => $tel[0], 'fax02' => $tel[1], 'fax03' => $tel[2]),
             'email' => $email,
             'password' => array('first' => $password, 'second' => $password),
-            'birth' => array(
-                'year' => $birth->format('Y'),
-                'month' => $birth->format('n'),
-                'day' => $birth->format('j')
-            ),
+            'birth' => $birth->format('Y') . '-' . $birth->format('n') . '-' . $birth->format('j'),
             'sex' => 1,
             'job' => 1,
             'status' => 1,
@@ -86,8 +82,8 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
             $this->generateUrl('admin_customer_edit', array('id' => $this->Customer->getId()))
         );
 
-        $this->expected = '検索画面に戻る';
-        $this->actual = $crawler->filter('#detail_box__footer')->text();
+        $this->expected = '会員マスター';
+        $this->actual = $crawler->filter('#customer_form > div.c-conversionArea > div > div > div:nth-child(1) > div')->text();
         $this->assertContains($this->expected, $this->actual);
     }
 
@@ -165,7 +161,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
             $this->generateUrl('admin_customer_edit', array('id' => $id))
         );
 
-        $orderListing = $crawler->filter('#history_box__body')->text();
+        $orderListing = $crawler->filter('#orderHistory > div')->text();
         $this->assertRegexp('/' . $Order->getId() . '/', $orderListing);
     }
 

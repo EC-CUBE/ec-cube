@@ -496,12 +496,9 @@ class ProductController extends AbstractController
                     // 在庫情報を作成
                     if (!$ProductClass->isStockUnlimited()) {
                         $ProductStock->setStock($ProductClass->getStock());
-                        $taxrule = $this->taxRuleRepository->newTaxRule();
-                        $taxrule->setTaxRate($ProductClass->getTaxRate());
-                        $taxrule->setApplyDate(new \DateTime());
-                        $taxrule->setProduct($Product);
-                        $taxrule->setProductClass($ProductClass);
-                        $ProductClass->setTaxRule($taxrule);
+                    } else {
+                        // 在庫無制限時はnullを設定
+                        $ProductStock->setStock(null);
                     }
                     $this->entityManager->persist($ProductStock);
                 }
@@ -790,7 +787,7 @@ class ProductController extends AbstractController
                     $filename = date('mdHis').uniqid('_').'.'.$extension;
                     try {
                         $fs = new Filesystem();
-                        $fs->copy($this->eccubeConfig['eccube_image_save_realdir'].'/'.$Image->getFileName(), $this->eccubeConfig['eccube_image_save_realdir'].'/'.$filename);
+                        $fs->copy($this->eccubeConfig['eccube_save_image_dir'].'/'.$Image->getFileName(), $this->eccubeConfig['eccube_save_image_dir'].'/'.$filename);
                     } catch (\Exception $e) {
                         // エラーが発生しても無視する
                     }
