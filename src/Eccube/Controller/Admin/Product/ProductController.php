@@ -496,12 +496,9 @@ class ProductController extends AbstractController
                     // 在庫情報を作成
                     if (!$ProductClass->isStockUnlimited()) {
                         $ProductStock->setStock($ProductClass->getStock());
-                        $taxrule = $this->taxRuleRepository->newTaxRule();
-                        $taxrule->setTaxRate($ProductClass->getTaxRate());
-                        $taxrule->setApplyDate(new \DateTime());
-                        $taxrule->setProduct($Product);
-                        $taxrule->setProductClass($ProductClass);
-                        $ProductClass->setTaxRule($taxrule);
+                    } else {
+                        // 在庫無制限時はnullを設定
+                        $ProductStock->setStock(null);
                     }
                     $this->entityManager->persist($ProductStock);
                 }
