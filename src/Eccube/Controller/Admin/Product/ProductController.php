@@ -568,7 +568,7 @@ class ProductController extends AbstractController
 
                     // 削除
                     $fs = new Filesystem();
-                    $fs->remove($this->eccubeConfig['eccube_image_save_realdir'].'/'.$delete_image);
+                    $fs->remove($this->eccubeConfig['eccube_save_image_dir'].'/'.$delete_image);
                 }
                 $this->entityManager->persist($Product);
                 $this->entityManager->flush();
