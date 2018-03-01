@@ -720,7 +720,7 @@ return [
     'admin.customer.index.131' => ' 〜 ',
     'admin.customer.index.132' => '検索条件クリア',
     'admin.customer.index.133' => '検索',
-    'admin.customer.index.134' => '検索結果 %count% 件 が該当しました',
+    'admin.customer.index.134' => '検索結果：%count%件が該当しました',
     'admin.customer.index.135' => '%count%件',
     'admin.customer.index.136' => '%count%件',
     'admin.customer.index.137' => 'CSVダウンロード',
