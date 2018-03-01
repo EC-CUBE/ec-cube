@@ -263,8 +263,10 @@ class ShoppingController extends AbstractShoppingController
 
         $form = $this->parameterBag->get(OrderType::class);
         $Order = $this->parameterBag->get('Order');
+        $usePoint = $Order->getUsePoint();
 
         $form->handleRequest($request);
+        $Order->setUsePoint($usePoint);
 
         // 受注処理
         $response = $this->forwardToRoute('shopping_complete_order');
