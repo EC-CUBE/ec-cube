@@ -222,7 +222,7 @@ $(function () {
 });
 
 // 入力チェックエラー発生時にエラー発生箇所までスクロールさせる
-$(window).load(function() {
+$(window).on('load', function() {
     var el = $('.errormsg');
     if (el.length) {
         // Open panel when has error
