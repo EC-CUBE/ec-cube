@@ -10,6 +10,7 @@ use Eccube\Form\Type\Admin\SearchShippingType;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\Master\PageMaxRepository;
 use Eccube\Repository\Master\ProductStatusRepository;
+use Eccube\Repository\Master\ShippingStatusRepository;
 use Eccube\Repository\ShippingRepository;
 use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -22,6 +23,11 @@ class ShippingController extends AbstractController
      * @var OrderStatusRepository
      */
     protected $orderStatusRepository;
+
+    /**
+     * @var ShippingStatusRepository
+     */
+    protected $shippingStatusRepository;
 
     /**
      * @var ShippingRepository
@@ -42,12 +48,14 @@ class ShippingController extends AbstractController
         OrderStatusRepository $orderStatusRepository,
         ShippingRepository $shippingRepository,
         PageMaxRepository $pageMaxRepository,
-        ProductStatusRepository $productStatusRepository
+        ProductStatusRepository $productStatusRepository,
+        ShippingStatusRepository $shippingStatusRepository
     ) {
         $this->orderStatusRepository = $orderStatusRepository;
         $this->shippingRepository = $shippingRepository;
         $this->pageMaxRepository = $pageMaxRepository;
         $this->productStatusRepository = $productStatusRepository;
+        $this->shippingStatusRepository = $shippingStatusRepository;
     }
 
 
@@ -160,17 +168,21 @@ class ShippingController extends AbstractController
                         $page_count
                     );
 
-                    // セッションから検索条件を復元
-                    if (!empty($searchData['status'])) {
-                        $searchData['status'] = $this->orderStatusRepository->find($searchData['status']);
-                    }
-                    if (count($searchData['multi_status']) > 0) {
+                    if (isset($searchData['order_status']) && count($searchData['order_status']) > 0) {
                         $statusIds = array();
-                        foreach ($searchData['multi_status'] as $Status) {
+                        foreach ($searchData['order_status'] as $Status) {
                             $statusIds[] = $Status->getId();
                         }
-                        $searchData['multi_status'] = $this->orderStatusRepository->findBy(array('id' => $statusIds));
+                        $searchData['order_status'] = $this->orderStatusRepository->findBy(array('id' => $statusIds));
                     }
+                    if (isset($searchData['shipping_status']) && count($searchData['shipping_status']) > 0) {
+                        $statusIds = array();
+                        foreach ($searchData['shipping_status'] as $Status) {
+                            $statusIds[] = $Status->getId();
+                        }
+                        $searchData['shipping_status'] = $this->shippingStatusRepository->findBy(array('id' => $statusIds));
+                    }
+
                     $searchForm->setData($searchData);
                 }
             }
