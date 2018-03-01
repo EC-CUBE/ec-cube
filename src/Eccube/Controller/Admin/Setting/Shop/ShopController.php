@@ -91,24 +91,29 @@ class ShopController extends AbstractController
         $form = $builder->getForm();
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->entityManager->persist($this->BaseInfo);
-            $this->entityManager->flush();
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $this->entityManager->persist($this->BaseInfo);
+                $this->entityManager->flush();
 
-            $event = new EventArgs(
-                array(
+                $event = new EventArgs(
+                  array(
                     'form' => $form,
                     'BaseInfo' => $this->BaseInfo,
-                ),
-                $request
-            );
-            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_SHOP_INDEX_COMPLETE, $event);
+                  ),
+                  $request
+                );
+                $this->eventDispatcher->dispatch(
+                  EccubeEvents::ADMIN_SETTING_SHOP_SHOP_INDEX_COMPLETE,
+                  $event
+                );
 
-            $this->addSuccess('admin.flash.register_completed', 'admin');
+                $this->addSuccess('admin.flash.register_completed', 'admin');
 
-            return $this->redirectToRoute('admin_setting_shop');
-        } else {
-            $this->addError('admin.flash.register_failed', 'admin');
+                return $this->redirectToRoute('admin_setting_shop');
+            } else {
+                $this->addError('admin.flash.register_failed', 'admin');
+            }
         }
 
         $this->twig->addGlobal('BaseInfo', $CloneInfo);
