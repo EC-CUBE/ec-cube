@@ -822,27 +822,44 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header">
                             <div class="row">
-                                <div class="col-8"><span class="card-title">登録日・更新日</span></div>
-                                <div class="col-4 text-right"><a data-toggle="collapse" href="#update"
-                                                                 aria-expanded="false"
-                                                                 aria-controls="update"><i
-                                                class="fa fa-angle-up fa-lg"></i></a>
+                                <div class="col-8">
+                                    <span class="card-title">登録日・更新日</span>
+                                </div>
+                                <div class="col-4 text-right">
+                                    <a data-toggle="collapse" href="#update" aria-expanded="false" aria-controls="update">
+                                        <i class="fa fa-angle-up fa-lg"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
                         <div class="collapse show ec-cardCollapse" id="update">
                             <div class="card-body">
                                 <div class="row mb-2">
-                                    <div class="col"><i class="fa fa-flag mr-1"></i><span>登録日</span></div>
-                                    <div class="col"><span>：2017/11/09</span></div>
+                                    <div class="col">
+                                        <i class="fa fa-flag mr-1"></i>
+                                        <span>{{'admin.product.product.521'|trans}}</span>
+                                    </div>
+                                    <div class="col">
+                                        <span>：{{ Product.create_date|date_format }}</span>
+                                    </div>
                                 </div>
                                 <div class="row mb-2">
-                                    <div class="col"><i class="fa fa-refresh mr-1"></i><span>最終更新日</span></div>
-                                    <div class="col"><span>：2017/11/12</span></div>
+                                    <div class="col">
+                                        <i class="fa fa-refresh mr-1"></i>
+                                        <span>{{'admin.product.product.522'|trans}}</span>
+                                    </div>
+                                    <div class="col">
+                                        <span>：{{ Product.update_date|date_format }}</span>
+                                    </div>
                                 </div>
                                 <div class="row mb-2">
-                                    <div class="col"><i class="fa fa-user mr-1"></i><span>最終更新者</span></div>
-                                    <div class="col"><span>：user_name</span></div>
+                                    <div class="col">
+                                        <i class="fa fa-user mr-1"></i>
+                                        <span>{{'admin.product.product.update_member'|trans}}</span>
+                                    </div>
+                                    <div class="col">
+                                        <span>：{{ Product.Creator }}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
