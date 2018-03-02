@@ -37,6 +37,10 @@ class UpdateDatePurchaseProcessor implements PurchaseProcessor
         $dateTime = new \DateTime();
         $OriginOrder = $context->getOriginHolder();
 
+        if (!$TargetOrder->getOrderStatus()) {
+            return ProcessResult::success();
+        }
+
         // 編集
         if ($TargetOrder->getId()) {
             // 発送済
@@ -68,7 +72,7 @@ class UpdateDatePurchaseProcessor implements PurchaseProcessor
                     $Shipping->setShippingDate($dateTime);
                 }
                 // 入金済
-            } elseif ($TargetOrder->getOrderStatus()->getId() == OrderStatus::DELIVERED) {
+            } elseif ($TargetOrder->getOrderStatus()->getId() == OrderStatus::PAID) {
                 $TargetOrder->setPaymentDate($dateTime);
             }
             // 受注日時
