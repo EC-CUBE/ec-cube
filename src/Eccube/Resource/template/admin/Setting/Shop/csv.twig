@@ -23,14 +23,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['setting', 'shop', 'shop_csv'] %}
 
-{% block title %}{{'admin.setting.shop.csv.555'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.setting.shop.csv.556'|trans}}{% endblock %}
+{% block title %}{{ 'admin.setting.shop.csv.555'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.setting.shop.csv.556'|trans }}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block javascript %}
     <script>
-        $(function() {
+        $(function () {
 
             function add(event) {
                 $('#' + event.data.from + ' option:selected')
@@ -39,7 +39,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             }
 
             function addAll(event) {
-                $('#' + event.data.from + ' option').each(function() {
+                $('#' + event.data.from + ' option').each(function () {
                     $(this).appendTo($('#' + event.data.to));
                     $(this).prop('selected', false);// 選択状態の解除
                 });
@@ -50,30 +50,30 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             $('#remove').on('click', {from: 'csv-output', to: 'csv-not-output'}, add);
             $('#remove-all').on('click', {from: 'csv-output', to: 'csv-not-output'}, addAll);
 
-            $('.move').click(function() {
+            $('.move').click(function () {
                 var $op = $('#csv-output option:selected');
-                var val = $(this).val();
+                var val = $(this).attr('value');
                 if ($op.length) {
                     val == 'up' ? $op.first().prev().before($op) : $op.last().next().after($op);
                 }
             });
 
-            $('.move-most').click(function() {
+            $('.move-most').click(function () {
                 var $op = $('#csv-output option:selected');
-                var val = $(this).val();
+                var val = $(this).attr('value');
                 if ($op.length) {
                     val == 'top' ? $op.prependTo('#csv-output') : $op.appendTo('#csv-output');
                 }
             });
 
-            $('#csv-type').on('change', function() {
+            $('#csv-type').on('change', function () {
                 var id = $(this).val();
                 var href = '{{ url('admin_setting_shop_csv') }}' + '/' + id;
                 location.href = href;
                 return false;
             });
 
-            $('#csv-form').submit(function() {
+            $('#csv-form').submit(function () {
                 $('#csv-not-output').children().prop('selected', true);
                 $('#csv-output').children().prop('selected', true);
             })
@@ -84,106 +84,117 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block main %}
     <form id="csv-form" method="post" action="{{ url('admin_setting_shop_csv', {'id': id}) }}">
         {{ form_widget(form._token) }}
-    <div class="c-contentsArea__cols">
-        <div class="c-contentsArea__primaryCol">
-            <div class="c-primaryCol">
-                <div class="card rounded border-0 mb-4">
-                    <div class="card-header"><span>CSV出力項目</span></div>
-                    <div class="card-body">
-                        <div class="row mb-4 justify-content-between">
-                            <div class="col-2"><span>CSV出力種別</span></div>
-                            <div class="col-6">
-                                {{ form_widget(form.csv_type, {'id': 'csv-type'}) }}
+        <div class="c-contentsArea__cols">
+            <div class="c-contentsArea__primaryCol">
+                <div class="c-primaryCol">
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header"><span>CSV出力項目</span></div>
+                        <div class="card-body">
+                            <div class="row mb-4 justify-content-between">
+                                <div class="col-2"><span>CSV出力種別</span></div>
+                                <div class="col-6">
+                                    {{ form_widget(form.csv_type, {'id': 'csv-type'}) }}
+                                </div>
+                                <div class="col"></div>
                             </div>
-                            <div class="col"></div>
+                            <div class="row mb-2">
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label for="FormControlSelect1">CSV出力しない項目</label>
+                                        {{ form_widget(form.csv_not_output, {'id': 'csv-not-output', 'attr': {'size': '30'}}) }}
+                                    </div>
+                                </div>
+                                <div class="col-2 align-self-center">
+                                    <div class="row mb-2">
+                                        <div class="col text-center"><span>操作項目</span></div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col text-center">
+                                            <div class="btn btn-ec-regular btn-block" id="add"><i class="fa fa-arrow-right"
+                                                                                         aria-hidden="true"></i><span>&nbsp;出力</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col text-center">
+                                            <div class="btn btn-ec-regular btn-block" id="remove"><i class="fa fa-arrow-left"
+                                                                                         aria-hidden="true"><span>&nbsp;解除</span></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col text-center">
+                                            <div class="btn btn-ec-regular btn-block" id="add-all"><i
+                                                        class="fa fa-arrow-circle-right" aria-hidden="true"><span>&nbsp;すべて出力</span></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col text-center">
+                                            <div class="btn btn-ec-regular btn-block" id="remove-all"><i class="fa fa-arrow-circle-left"
+                                                                                         aria-hidden="true"><span>&nbsp;すべて解除</span></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label for="FormControlSelect2">CSV出力する項目</label>
+                                        {{ form_widget(form.csv_output, {'id': 'csv-output', 'attr': {'size': '30'}}) }}
+                                    </div>
+                                </div>
+                                <div class="col-2 align-self-center">
+                                    <div class="row mb-2">
+                                        <div class="col text-center"><span>項目順序</span></div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col text-center">
+                                            <div class="btn btn-ec-regular btn-block move" value="up"><i class="fa fa-arrow-up"
+                                                                                         aria-hidden="true"><span>&nbsp;ひとつ上へ</span></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col text-center">
+                                            <div class="btn btn-ec-regular btn-block move" value="down"><i class="fa fa-arrow-down"
+                                                                                         aria-hidden="true"><span>&nbsp;ひとつ下へ</span></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col text-center">
+                                            <div class="btn btn-ec-regular btn-block move-most" value="top"><i class="fa fa-arrow-circle-up"
+                                                                                         aria-hidden="true"><span>&nbsp;一番上へ</span></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col text-center">
+                                            <div class="btn btn-ec-regular btn-block move-most" value="bottom"><i class="fa fa-arrow-circle-down"
+                                                                                         aria-hidden="true"><span>&nbsp;一番下へ</span></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-4 extra-form row">
+                                <div class="col-12">
+                                    {% for f in form.getIterator %}
+                                        {% if f.vars.name matches '[^plg*]' %}
+                                            <div class="col-md-12 form-group">
+                                                {{ form_row(f) }}
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <p></p>
+                            任意の項目を押して選択してから［項目操作］ボタンで移動し、CSV出力する項目を設定してください。<br>出力する項目の順序は［項目順序］ボタンで変更することができます。<br>複数の項目を選択する場合はctrlキー（Macの場合はcommandキー）を押しながら項目を押します。shiftキーを押しながら選択すると範囲選択ができます。
                         </div>
-                        <div class="row mb-2">
-                            <div class="col-4">
-                                <div class="form-group">
-                                    <label for="FormControlSelect1">CSV出力しない項目</label>
-                                    {{ form_widget(form.csv_not_output, {'id': 'csv-not-output', 'attr': {'size': '30'}}) }}
-                                </div>
-                            </div>
-                            <div class="col-2 align-self-center">
-                                <div class="row mb-2">
-                                    <div class="col text-center"><span>操作項目</span></div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col text-center">
-                                        <div class="btn btn-ec-regular btn-block"><i class="fa fa-arrow-right"
-                                                                                     aria-hidden="true"></i><span>&nbsp;出力</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col text-center">
-                                        <div class="btn btn-ec-regular btn-block"><i class="fa fa-arrow-left"
-                                                                                     aria-hidden="true"><span>&nbsp;解除</span></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col text-center">
-                                        <div class="btn btn-ec-regular btn-block"><i
-                                                    class="fa fa-arrow-circle-right" aria-hidden="true"><span>&nbsp;すべて出力</span></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col text-center">
-                                        <div class="btn btn-ec-regular btn-block"><i class="fa fa-arrow-circle-left"
-                                                                                     aria-hidden="true"><span>&nbsp;すべて解除</span></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="form-group">
-                                    <label for="FormControlSelect2">CSV出力する項目</label>
-                                    {{ form_widget(form.csv_output, {'id': 'csv-output', 'attr': {'size': '30'}}) }}
-                                </div>
-                            </div>
-                            <div class="col-2 align-self-center">
-                                <div class="row mb-2">
-                                    <div class="col text-center"><span>項目順序</span></div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col text-center">
-                                        <div class="btn btn-ec-regular btn-block"><i class="fa fa-arrow-up"
-                                                                                     aria-hidden="true"><span>&nbsp;ひとつ上へ</span></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col text-center">
-                                        <div class="btn btn-ec-regular btn-block"><i class="fa fa-arrow-down"
-                                                                                     aria-hidden="true"><span>&nbsp;ひとつ下へ</span></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col text-center">
-                                        <div class="btn btn-ec-regular btn-block"><i class="fa fa-arrow-circle-up"
-                                                                                     aria-hidden="true"><span>&nbsp;一番上へ</span></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col text-center">
-                                        <div class="btn btn-ec-regular btn-block"><i class="fa fa-arrow-circle-down"
-                                                                                     aria-hidden="true"><span>&nbsp;一番下へ</span></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <p></p>
-                        任意の項目を押して選択してから［項目操作］ボタンで移動し、CSV出力する項目を設定してください。<br>出力する項目の順序は［項目順序］ボタンで変更することができます。<br>複数の項目を選択する場合はctrlキー（Macの場合はcommandキー）を押しながら項目を押します。shiftキーを押しながら選択すると範囲選択ができます。
                     </div>
                 </div>
             </div>
         </div>
-    </div>
         <div class="c-conversionArea">
             <div class="c-conversionArea__container">
                 <div class="row justify-content-between align-items-center">
