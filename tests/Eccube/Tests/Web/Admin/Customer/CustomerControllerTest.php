@@ -82,8 +82,8 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $this->expected = '検索結果 10 件 が該当しました';
-        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->expected = '検索結果：10件が該当しました';
+        $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
         $this->verify();
     }
 
@@ -98,7 +98,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
             array('admin_search_customer' => array('_token' => 'dummy', 'sex' => 2))
         );
         $this->expected = '検索';
-        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
         $this->assertContains($this->expected, $this->actual);
     }
 
@@ -113,8 +113,8 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $this->expected = '検索結果 1 件 が該当しました';
-        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->expected = '検索結果：1件が該当しました';
+        $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
         $this->verify();
     }
 
@@ -131,8 +131,8 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $this->expected = '検索結果 1 件 が該当しました';
-        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->expected = '検索結果：1件が該当しました';
+        $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
         $this->verify();
     }
 
