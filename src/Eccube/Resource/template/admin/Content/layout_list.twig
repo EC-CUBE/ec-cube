@@ -33,7 +33,10 @@
         <div class="c-outsideBlock__contents">
             <div class="row">
                 <div class="col text-center">
-                    <div class="btn-group nav d-inline-flex" id="pills-tab" role="tablist"><a class="nav-link active btn btn-ec-tab py-2 pl-4 pr-4" id="pills-pc-tab" data-toggle="pill" href="#pills-pc" role="tab" aria-controls="pills-pc" aria-selected="true">PC</a><a class="nav-link btn btn-ec-tab py-2 pl-4 pr-4" id="pills-mobile-tab" data-toggle="pill" href="#pills-mobile" role="tab" aria-controls="pills-mobile" aria-selected="false">モバイル</a></div>
+                    <div class="btn-group nav d-inline-flex" id="pills-tab" role="tablist">
+                        <a class="nav-link active btn btn-ec-tab py-2 pl-4 pr-4" id="pills-pc-tab" data-toggle="pill" href="#pills-pc" role="tab" aria-controls="pills-pc" aria-selected="true">{{ 'admin.content.layout_list.device_pc'|trans }}</a>
+                        <a class="nav-link btn btn-ec-tab py-2 pl-4 pr-4" id="pills-mobile-tab" data-toggle="pill" href="#pills-mobile" role="tab" aria-controls="pills-mobile" aria-selected="false">{{ 'admin.content.layout_list.device_mobile'|trans }}</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -45,13 +48,13 @@
                     <div class="tab-pane fade show active" id="pills-pc" role="tabpanel" aria-labelledby="pills-pc-tab">
                         {# TODO レイアウト追加画面(PC)に移動する #}
                         <div class="d-block mb-3">
-                            <a class="btn btn-ec-regular" href="{{ url('admin_content_layout_new')}}">PC用レイアウトを新規追加</a>
+                            <a class="btn btn-ec-regular" href="{{ url('admin_content_layout_new')}}">{{ 'admin.content.layout_list.add_pc_layout'|trans }}</a>
                         </div>
                         <div class="card rounded border-0 mb-4">
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-8">
-                                        <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">デフォルトのレイアウト</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                        <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.content.layout_list.default_layout'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                     </div>
                                     <div class="col-4 text-right"><a data-toggle="collapse" href="#defaultLayout-pc" aria-expanded="false" aria-controls="defaultLayout-pc"><i class="fa fa-angle-up fa-lg"></i></a></div>
                                 </div>
@@ -84,8 +87,8 @@
                                     <div class="card-header">
                                         <div class="row">
                                             <div class="col-8"><a class="card-title align-middle" href="/content/layout/detail">{{ Layout.name }}</a>
-                                                <button class="btn btn-ec-regular" type="button" data-toggle="modal" data-target="#addPage">ページ追加</button>
-                                                <button class="btn btn-ec-sub" type="button" data-toggle="modal" data-target="#layoutDelete">レイアウト削除</button>
+                                                <button class="btn btn-ec-regular" type="button" data-toggle="modal" data-target="#addPage">{{ 'admin.content.layout_list.add_page'|trans }}</button>
+                                                <button class="btn btn-ec-sub" type="button" data-toggle="modal" data-target="#layoutDelete">{{ 'admin.content.layout_list.delete_layout'|trans }}</button>
                                             </div>
                                             <div class="col-4 text-right"><a data-toggle="collapse" href="#topPageLayout-pc" aria-expanded="false" aria-controls="topPageLayout-pc"><i class="fa fa-angle-up fa-lg"></i></a></div>
                                         </div>
@@ -108,7 +111,7 @@
                                     {% else %}
                                         <div class="collapse show ec-cardCollapse" id="lpLayout-pc">
                                             <div class="card-body p-0">
-                                                <div class="d-block p-3"><span class="text-muted">ページの登録がありません</span></div>
+                                                <div class="d-block p-3"><span class="text-muted">{{ 'admin.content.layout_list.no_pages_message'|trans }}</span></div>
                                             </div>
                                         </div>
                                     {% endif %}
@@ -119,13 +122,13 @@
                     <div class="tab-pane fade" id="pills-mobile" role="tabpanel" aria-labelledby="pills-mobile-tab">
                         {# TODO レイアウト追加画面(スマホ)に移動する #}
                         <div class="d-block mb-3">
-                            <a class="btn btn-ec-regular" href="{{ url('admin_content_layout_new')}}">モバイル用レイアウトを新規追加</a>
+                            <a class="btn btn-ec-regular" href="{{ url('admin_content_layout_new')}}">{{ 'admin.content.layout_list.add_mobile_layout'|trans }}</a>
                         </div>
                         <div class="card rounded border-0 mb-4">
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-8">
-                                        <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">デフォルトのレイアウト</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                        <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.content.layout_list.default_layout'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                     </div>
                                     <div class="col-4 text-right"><a data-toggle="collapse" href="#defaultLayout-mobile" aria-expanded="false" aria-controls="defaultLayout-mobile"><i class="fa fa-angle-up fa-lg"></i></a></div>
                                 </div>
@@ -157,8 +160,8 @@
                                     <div class="card-header">
                                         <div class="row">
                                             <div class="col-8"><a class="card-title align-middle" href="/content/layout/detail">{{ Layout.name }}</a>
-                                                <button class="btn btn-ec-regular" type="button" data-toggle="modal" data-target="#addPage">ページ追加</button>
-                                                <button class="btn btn-ec-sub" type="button" data-toggle="modal" data-target="#layoutDelete">レイアウト削除</button>
+                                                <button class="btn btn-ec-regular" type="button" data-toggle="modal" data-target="#addPage">{{ 'admin.content.layout_list.add_page'|trans }}</button>
+                                                <button class="btn btn-ec-sub" type="button" data-toggle="modal" data-target="#layoutDelete">{{ 'admin.content.layout_list.delete_layout'|trans }}</button>
                                             </div>
                                             <div class="col-4 text-right"><a data-toggle="collapse" href="#topPageLayout-mobile" aria-expanded="false" aria-controls="topPageLayout-mobile"><i class="fa fa-angle-up fa-lg"></i></a></div>
                                         </div>
@@ -181,7 +184,7 @@
                                     {% else %}
                                         <div class="collapse show ec-cardCollapse" id="lpLayout-mobile">
                                             <div class="card-body p-0">
-                                                <div class="d-block p-3"><span class="text-muted">ページの登録がありません</span></div>
+                                                <div class="d-block p-3"><span class="text-muted">{{ 'admin.content.layout_list.no_pages_message'|trans }}</span></div>
                                             </div>
                                         </div>
                                     {% endif %}
@@ -195,11 +198,11 @@
                         {# TODO レイアウトにページを追加できるようにする #}
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">ページを追加</h5>
+                                <h5 class="modal-title">{{ 'admin.content.layout_list.add_page.title'|trans }}</h5>
                                 <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                             </div>
                             <div class="modal-body">
-                                <p>このレイアウトに割り当てるページを選択してください。すでに他のレイアウトを割り当てられているページは設定が上書きされます</p>
+                                <p>{{ 'admin.content.layout_list.add_page.confirm_message'|trans }}</p>
                                 <form>
                                     <select class="form-control">
 
@@ -209,8 +212,8 @@
                                 </form>
                             </div>
                             <div class="modal-footer">
-                                <button class="btn btn-ec-sub w-25" type="button" data-dismiss="modal">キャンセル</button>
-                                <button class="btn btn-ec-conversion w-25" type="button" data-dismiss="modal">ページを追加</button>
+                                <button class="btn btn-ec-sub w-25" type="button" data-dismiss="modal">{{ 'admin.content.layout_list.add_page.cancel'|trans }}</button>
+                                <button class="btn btn-ec-conversion w-25" type="button" data-dismiss="modal">{{ 'admin.content.layout_list.add_page.add'|trans }}</button>
                             </div>
                         </div>
                     </div>
@@ -220,15 +223,15 @@
                         {# TODO レイアウトを削除できるようにする #}
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">レイアウトを削除</h5>
+                                <h5 class="modal-title">{{ 'admin.content.layout_list.delete_layout.title'|trans }}</h5>
                                 <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                             </div>
                             <div class="modal-body">
-                                <p>レイアウトを削除しますか？ この操作は取り消せません。</p>
+                                <p>{{ 'admin.content.layout_list.delete_layout.confirm_message'|trans }}</p>
                             </div>
                             <div class="modal-footer">
-                                <button class="btn btn-ec-sub w-25" type="button" data-dismiss="modal">キャンセル</button>
-                                <button class="btn btn-ec-delete" type="button" data-dismiss="modal">レイアウトを削除</button>
+                                <button class="btn btn-ec-sub w-25" type="button" data-dismiss="modal">{{ 'admin.content.layout_list.delete_layout.cancel'|trans }}</button>
+                                <button class="btn btn-ec-delete" type="button" data-dismiss="modal">{{ 'admin.content.layout_list.delete_layout.delete'|trans }}</button>
                             </div>
                         </div>
                     </div>
