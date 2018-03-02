@@ -23,8 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['setting', 'shop', 'shop_csv'] %}
 
-{% block title %}{{ 'admin.setting.shop.csv.555'|trans }}{% endblock %}
-{% block sub_title %}{{ 'admin.setting.shop.csv.556'|trans }}{% endblock %}
+{% block title %}{{ 'admin.setting.shop.csv.556'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.setting.shop.csv.555'|trans }}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_3_horizontal_layout.html.twig' %}
 
@@ -52,7 +52,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
             $('.move').click(function () {
                 var $op = $('#csv-output option:selected');
-                var val = $(this).attr('value');
+                var val = $(this).data('value');
                 if ($op.length) {
                     val == 'up' ? $op.first().prev().before($op) : $op.last().next().after($op);
                 }
@@ -60,7 +60,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
             $('.move-most').click(function () {
                 var $op = $('#csv-output option:selected');
-                var val = $(this).attr('value');
+                var val = $(this).data('value');
                 if ($op.length) {
                     val == 'top' ? $op.prependTo('#csv-output') : $op.appendTo('#csv-output');
                 }
@@ -88,10 +88,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <div class="c-contentsArea__primaryCol">
                 <div class="c-primaryCol">
                     <div class="card rounded border-0 mb-4">
-                        <div class="card-header"><span>CSV出力項目</span></div>
+                        <div class="card-header"><span>{{ 'admin.setting.shop.csv.565'|trans }}</span></div>
                         <div class="card-body">
                             <div class="row mb-4 justify-content-between">
-                                <div class="col-2"><span>CSV出力種別</span></div>
+                                <div class="col-2"><span>{{ 'admin.setting.shop.csv.566'|trans }}</span></div>
                                 <div class="col-6">
                                     {{ form_widget(form.csv_type, {'id': 'csv-type'}) }}
                                 </div>
@@ -100,78 +100,78 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <div class="row mb-2">
                                 <div class="col-4">
                                     <div class="form-group">
-                                        <label for="FormControlSelect1">CSV出力しない項目</label>
+                                        <label for="FormControlSelect1">{{ 'admin.setting.shop.csv.557'|trans }}</label>
                                         {{ form_widget(form.csv_not_output, {'id': 'csv-not-output', 'attr': {'size': '30'}}) }}
                                     </div>
                                 </div>
                                 <div class="col-2 align-self-center">
                                     <div class="row mb-2">
-                                        <div class="col text-center"><span>操作項目</span></div>
+                                        <div class="col text-center"><span>{{ 'admin.setting.shop.csv.567'|trans }}</span></div>
                                     </div>
                                     <div class="row mb-2">
                                         <div class="col text-center">
                                             <div class="btn btn-ec-regular btn-block" id="add"><i class="fa fa-arrow-right"
-                                                                                         aria-hidden="true"></i><span>&nbsp;出力</span>
+                                                                                         aria-hidden="true"></i><span>&nbsp;{{ 'admin.setting.shop.csv.568'|trans }}</span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row mb-2">
                                         <div class="col text-center">
                                             <div class="btn btn-ec-regular btn-block" id="remove"><i class="fa fa-arrow-left"
-                                                                                         aria-hidden="true"><span>&nbsp;解除</span></i>
+                                                                                         aria-hidden="true"><span>&nbsp;{{ 'admin.setting.shop.csv.569'|trans }}</span></i>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row mb-2">
                                         <div class="col text-center">
                                             <div class="btn btn-ec-regular btn-block" id="add-all"><i
-                                                        class="fa fa-arrow-circle-right" aria-hidden="true"><span>&nbsp;すべて出力</span></i>
+                                                        class="fa fa-arrow-circle-right" aria-hidden="true"><span>&nbsp;{{ 'admin.setting.shop.csv.570'|trans }}</span></i>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row mb-2">
                                         <div class="col text-center">
                                             <div class="btn btn-ec-regular btn-block" id="remove-all"><i class="fa fa-arrow-circle-left"
-                                                                                         aria-hidden="true"><span>&nbsp;すべて解除</span></i>
+                                                                                         aria-hidden="true"><span>&nbsp;{{ 'admin.setting.shop.csv.571'|trans }}</span></i>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-4">
                                     <div class="form-group">
-                                        <label for="FormControlSelect2">CSV出力する項目</label>
+                                        <label for="FormControlSelect2">{{ 'admin.setting.shop.csv.558'|trans }}</label>
                                         {{ form_widget(form.csv_output, {'id': 'csv-output', 'attr': {'size': '30'}}) }}
                                     </div>
                                 </div>
                                 <div class="col-2 align-self-center">
                                     <div class="row mb-2">
-                                        <div class="col text-center"><span>項目順序</span></div>
+                                        <div class="col text-center"><span>{{ 'admin.setting.shop.csv.559'|trans }}</span></div>
                                     </div>
                                     <div class="row mb-2">
                                         <div class="col text-center">
-                                            <div class="btn btn-ec-regular btn-block move" value="up"><i class="fa fa-arrow-up"
-                                                                                         aria-hidden="true"><span>&nbsp;ひとつ上へ</span></i>
+                                            <div class="btn btn-ec-regular btn-block move" data-value="up"><i class="fa fa-arrow-up"
+                                                                                         aria-hidden="true"><span>&nbsp;{{ 'admin.setting.shop.csv.572'|trans }}</span></i>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row mb-2">
                                         <div class="col text-center">
-                                            <div class="btn btn-ec-regular btn-block move" value="down"><i class="fa fa-arrow-down"
-                                                                                         aria-hidden="true"><span>&nbsp;ひとつ下へ</span></i>
+                                            <div class="btn btn-ec-regular btn-block move" data-value="down"><i class="fa fa-arrow-down"
+                                                                                         aria-hidden="true"><span>&nbsp;{{ 'admin.setting.shop.csv.573'|trans }}</span></i>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row mb-2">
                                         <div class="col text-center">
-                                            <div class="btn btn-ec-regular btn-block move-most" value="top"><i class="fa fa-arrow-circle-up"
-                                                                                         aria-hidden="true"><span>&nbsp;一番上へ</span></i>
+                                            <div class="btn btn-ec-regular btn-block move-most" data-value="top"><i class="fa fa-arrow-circle-up"
+                                                                                         aria-hidden="true"><span>&nbsp;{{ 'admin.setting.shop.csv.574'|trans }}</span></i>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row mb-2">
                                         <div class="col text-center">
-                                            <div class="btn btn-ec-regular btn-block move-most" value="bottom"><i class="fa fa-arrow-circle-down"
-                                                                                         aria-hidden="true"><span>&nbsp;一番下へ</span></i>
+                                            <div class="btn btn-ec-regular btn-block move-most" data-value="bottom"><i class="fa fa-arrow-circle-down"
+                                                                                         aria-hidden="true"><span>&nbsp;{{ 'admin.setting.shop.csv.574'|trans }}</span></i>
                                             </div>
                                         </div>
                                     </div>
@@ -189,7 +189,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 </div>
                             </div>
                             <p></p>
-                            任意の項目を押して選択してから［項目操作］ボタンで移動し、CSV出力する項目を設定してください。<br>出力する項目の順序は［項目順序］ボタンで変更することができます。<br>複数の項目を選択する場合はctrlキー（Macの場合はcommandキー）を押しながら項目を押します。shiftキーを押しながら選択すると範囲選択ができます。
+                            {{ 'admin.setting.shop.csv.576'|trans }}
                         </div>
                     </div>
                 </div>
@@ -205,7 +205,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div class="col-6">
                         <div class="row align-items-center justify-content-end">
                             <div class="col-auto">
-                                <button class="btn btn-ec-conversion px-5" type="submit">登録</button>
+                                <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.setting.shop.csv.564'|trans }}</button>
                             </div>
                         </div>
                     </div>
@@ -213,5 +213,4 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             </div>
         </div>
     </form>
-
 {% endblock %}
