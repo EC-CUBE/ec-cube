@@ -189,6 +189,8 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     private $shipping_delivery_time;
 
     /**
+     * お届け予定日/お届け希望日
+     *
      * @var \DateTime|null
      *
      * @ORM\Column(name="delivery_date", type="datetimetz", nullable=true)
@@ -203,6 +205,8 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     private $shipping_delivery_fee = 0;
 
     /**
+     * 出荷日
+     *
      * @var \DateTime|null
      *
      * @ORM\Column(name="shipping_date", type="datetimetz", nullable=true)
@@ -300,6 +304,16 @@ class Shipping extends \Eccube\Entity\AbstractEntity
      * })
      */
     private $ShippingStatus;
+
+    /**
+     * @var \Eccube\Entity\Member
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
+     * })
+     */
+    private $Creator;
 
     /**
      * Constructor
@@ -1233,5 +1247,30 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     public function getFeeId()
     {
         return $this->fee_id;
+    }
+
+
+    /**
+     * Set creator.
+     *
+     * @param \Eccube\Entity\Member|null $creator
+     *
+     * @return Member
+     */
+    public function setCreator(\Eccube\Entity\Member $creator = null)
+    {
+        $this->Creator = $creator;
+
+        return $this;
+    }
+
+    /**
+     * Get creator.
+     *
+     * @return \Eccube\Entity\Member|null
+     */
+    public function getCreator()
+    {
+        return $this->Creator;
     }
 }
