@@ -1181,6 +1181,8 @@ return [
     'admin.product.product.category' => 'カテゴリ',
     'admin.product.product.text12' => 'カテゴリ検索',
     'admin.product.product.text13' => 'カテゴリの追加・編集',
+    'admin.product.product.tag' => 'タグ',
+    'admin.product.product.text14' => 'タグの追加・編集',
     'admin.product.product_class.524' => '商品管理',
     'admin.product.product_class.525' => '商品登録(商品規格)',
     'admin.product.product_class.526' => '一度削除したデータは、元に戻せません。\n削除しても宜しいですか？',

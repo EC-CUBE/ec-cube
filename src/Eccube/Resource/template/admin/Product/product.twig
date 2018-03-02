@@ -776,82 +776,48 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <div class="col-8">
                                     <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
                                          title="Tooltip">
-                                        <span class="card-title">タグ<i
-                                                    class="fa fa-question-circle fa-lg ml-1"></i></span>
+                                        <span class="card-title">
+                                            {{ 'admin.product.product.tag'|trans }}
+                                            <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                        </span>
                                     </div>
                                 </div>
-                                <div class="col-4 text-right"><a data-toggle="collapse" href="#tag"
-                                                                 aria-expanded="false"
-                                                                 aria-controls="tag"><i
-                                                class="fa fa-angle-up fa-lg"></i></a></div>
+                                <div class="col-4 text-right">
+                                    <a data-toggle="collapse" href="#tag" aria-expanded="false" aria-controls="tag">
+                                        <i class="fa fa-angle-up fa-lg"></i>
+                                    </a>
+                                </div>
                             </div>
                         </div>
+
                         <div class="collapse show ec-cardCollapse" id="tag">
                             <div class="card-body">
+                                {# TODO: タグ選択方法の変更 #}
+                                {{ form_widget(form.Tag) }}
+                                {{ form_errors(form.Tag) }}
+                                {#
                                 <div class="d-inline-block mb-2 mr-2">
                                     <button class="btn btn-outline-primary" type="button">オススメ</button>
-                                </div>
-                                <div class="d-inline-block mb-2 mr-2">
-                                    <button class="btn btn-outline-secondary" type="button">限定品</button>
-                                </div>
-                                <div class="d-inline-block mb-2 mr-2">
-                                    <button class="btn btn-outline-primary" type="button">新入荷</button>
-                                </div>
-                                <div class="d-inline-block mb-2 mr-2">
-                                    <button class="btn btn-outline-secondary" type="button">値下げしました</button>
-                                </div>
-                                <div class="d-inline-block mb-2 mr-2">
-                                    <button class="btn btn-outline-primary" type="button">オススメ</button>
-                                </div>
-                                <div class="d-inline-block mb-2 mr-2">
-                                    <button class="btn btn-outline-secondary" type="button">限定品</button>
-                                </div>
-                                <div class="d-inline-block mb-2 mr-2">
-                                    <button class="btn btn-outline-primary" type="button">新入荷</button>
-                                </div>
-                                <div class="d-inline-block mb-2 mr-2">
-                                    <button class="btn btn-outline-secondary" type="button">値下げしました</button>
-                                </div>
-                                <div class="d-inline-block mb-2 mr-2">
-                                    <button class="btn btn-outline-secondary" type="button">送料無料</button>
                                 </div>
                                 <div class="d-block mb-3" data-toggle="collapse" href="#allTags" role="button"
-                                     aria-expanded="false" aria-controls="allTags"><a><i
-                                                class="fa fa-plus-square-o font-weight-bold mr-1"></i><span
-                                                class="font-weight-bold">全てのタグを表示</span></a></div>
+                                     aria-expanded="false" aria-controls="allTags">
+                                    <a>
+                                        <i class="fa fa-plus-square-o font-weight-bold mr-1"></i>
+                                        <span class="font-weight-bold">全てのタグを表示</span>
+                                    </a>
+                                </div>
                                 <div class="collapse p-3 bg-ec-lightGray mb-3 ec-collapse" id="allTags">
                                     <div class="d-inline-block mb-2 mr-2">
                                         <button class="btn btn-outline-primary" type="button">オススメ</button>
                                     </div>
-                                    <div class="d-inline-block mb-2 mr-2">
-                                        <button class="btn btn-outline-secondary" type="button">限定品</button>
-                                    </div>
-                                    <div class="d-inline-block mb-2 mr-2">
-                                        <button class="btn btn-outline-primary" type="button">新入荷</button>
-                                    </div>
-                                    <div class="d-inline-block mb-2 mr-2">
-                                        <button class="btn btn-outline-secondary" type="button">値下げしました</button>
-                                    </div>
-                                    <div class="d-inline-block mb-2 mr-2">
-                                        <button class="btn btn-outline-primary" type="button">オススメ</button>
-                                    </div>
-                                    <div class="d-inline-block mb-2 mr-2">
-                                        <button class="btn btn-outline-secondary" type="button">限定品</button>
-                                    </div>
-                                    <div class="d-inline-block mb-2 mr-2">
-                                        <button class="btn btn-outline-primary" type="button">新入荷</button>
-                                    </div>
-                                    <div class="d-inline-block mb-2 mr-2">
-                                        <button class="btn btn-outline-secondary" type="button">値下げしました</button>
-                                    </div>
-                                    <div class="d-inline-block mb-2 mr-2">
-                                        <button class="btn btn-outline-secondary" type="button">送料無料</button>
-                                    </div>
                                     <div class="d-block mb-3" data-toggle="collapse" href="#allTags" role="button"
                                          aria-expanded="false" aria-controls="allTags"></div>
                                 </div>
+                                #}
                                 <div class="d-block text-center">
-                                    <button class="btn btn-block btn-ec-regular" type="button">タグの追加・編集</button>
+                                    <button class="btn btn-block btn-ec-regular" type="button">
+                                        {{ 'admin.product.product.text14'|trans }}
+                                    </button>
                                 </div>
                             </div>
                         </div>
