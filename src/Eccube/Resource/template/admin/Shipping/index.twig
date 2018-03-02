@@ -361,7 +361,7 @@
                             </form>
                         </div><!-- /.box-body -->
                         {% if pagination.totalItemCount > 0 %}
-                            {% include "pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_shipping_page' } %}
+                            {% include "@admin/pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_shipping_page' } %}
                         {% endif %}
                     {% else %}
                         <div class="box-header with-arrow">
