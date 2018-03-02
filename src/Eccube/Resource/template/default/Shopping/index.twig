@@ -405,7 +405,7 @@ $(function() {
                 {% endif %}
                 <div class="ec-totalBox__total">{{'common.label.cart_total'|trans}}<span class="ec-totalBox__price">{{ Order.total|price }}</span><span class="ec-totalBox__taxLabel">{{'shopping.label.tax_incl'|trans}}</span></div>
                 <div class="ec-totalBox__btn">
-                    <button type="submit" class="ec-blockBtn--action">{{'shopping.label.btn.place_order'|trans}}</button>
+                    <button type="submit" class="ec-blockBtn--action">{{'shopping.label.btn.place_order_confirm'|trans}}</button>
                     <a href="{{ url("cart") }}" class="ec-blockBtn--cancel">カートに戻る</a> {# TODO 未翻訳 #}
                 </div>
             </div>
