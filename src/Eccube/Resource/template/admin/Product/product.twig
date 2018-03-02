@@ -67,15 +67,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 }
             });
             {% endif %}
-            var proto_img = ''
-                + '<li class="ui-state-default">'
-                + '<img src="__path__" />'
-                + '<a class="delete-image">'
-                + '<svg class="cb cb-close">'
-                + '<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cb-close"></use>'
-                + '</svg>'
-                + '</a>'
-                + '</li>';
+            {# TODO: 画像の削除ができるように #}
+            var proto_img = '<div class="c-form__fileUploadThumbnail" style="background-image:url(\'__path__\');"></div>';
             var proto_add = '{{ form_widget(form.add_images.vars.prototype) }}';
             var proto_del = '{{ form_widget(form.delete_images.vars.prototype) }}';
             {% for image in form.images %}
@@ -234,7 +227,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                              title="Tooltip">
                                             <span>{{ 'admin.product.product.name'|trans }}</span>
                                             <i class="fa fa-question-circle fa-lg ml-1"></i>
-                                            <span class="badge badge-primary ml-1">{{ 'admin.product.product.require'|trans }}</span>
+                                            <span class="badge badge-primary ml-1">
+                                                {{ 'admin.product.product.require'|trans }}
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="col mb-2">
@@ -248,7 +243,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                  title="Tooltip">
                                                 <span>{{ 'admin.product.product.sale_type'|trans }}</span>
                                                 <i class="fa fa-question-circle fa-lg ml-1"></i>
-                                                <span class="badge badge-primary ml-1">{{ 'admin.product.product.require'|trans }}</span>
+                                                <span class="badge badge-primary ml-1">
+                                                    {{ 'admin.product.product.require'|trans }}
+                                                </span>
                                             </div>
                                         </div>
                                         <div class="col mb-2">
@@ -264,7 +261,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             <i class="fa fa-question-circle fa-lg ml-1"></i>
                                         </div>
                                     </div>
-                                    {# TODO: 画像を操作できるようにJSの修正 #}
                                     <div class="col mb-2">
                                         <div class="text-center w-100 py-5 border-ec-dashed mb-2 rounded">
                                             <i class="fa fa-cloud-upload fa-4x text-ec-lightGray"
@@ -273,25 +269,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 {{ 'admin.product.product.text01'|trans }}<br>
                                                 {{ 'admin.product.product.or'|trans }}
                                             </p>
-                                            <input class="d-none" id="fileForm" type="file">
+                                            {{ form_widget(form.product_image, { attr : { accept : 'image/*', style : 'display:none;' } }) }}
+                                            {{ form_errors(form.product_image) }}
                                             <a class="btn btn-ec-regular mr-2"
-                                               onclick="$('#fileForm').click()">{{ 'admin.product.product.select_file'|trans }}</a>
+                                               onclick="$('#admin_product_product_image').click()">
+                                                {{ 'admin.product.product.select_file'|trans }}
+                                            </a>
                                         </div>
-                                        {{ form_widget(form.product_image, { attr : { accept : 'image/*', style : 'display:none;' } }) }}
-                                        {{ form_errors(form.product_image) }}
-                                        <div class="c-form__fileUploadThumbnails">
-                                            <div class="c-form__fileUploadThumbnail"
-                                                 style="background-image:url('http://via.placeholder.com/150x150');"></div>
-                                            <div class="c-form__fileUploadThumbnail"
-                                                 style="background-image:url('http://via.placeholder.com/350x150');"></div>
-                                            <div class="c-form__fileUploadThumbnail"
-                                                 style="background-image:url('http://via.placeholder.com/350x600');"></div>
-                                            <div class="c-form__fileUploadThumbnail"
-                                                 style="background-image:url('http://via.placeholder.com/600x600');"></div>
-                                            <div class="c-form__fileUploadThumbnail"
-                                                 style="background-image:url('http://via.placeholder.com/350x150');"></div>
-                                            <div class="c-form__fileUploadThumbnail"
-                                                 style="background-image:url('http://via.placeholder.com/350x600');"></div>
+                                        <div id="thumb" class="c-form__fileUploadThumbnails">
                                         </div>
                                         <p>{{ 'admin.product.product.test02'|trans }}</p>
                                     </div>
@@ -311,7 +296,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                              role="button" aria-expanded="false" aria-controls="addComment">
                                             <a>
                                                 <i class="fa fa-plus-square-o font-weight-bold mr-1"></i>
-                                                <span class="font-weight-bold text-ec-black">{{ 'admin.product.product.503'|trans }}</span>
+                                                <span class="font-weight-bold text-ec-black">
+                                                    {{ 'admin.product.product.503'|trans }}
+                                                </span>
                                             </a>
                                         </div>
                                     </div>
@@ -340,7 +327,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                  title="Tooltip">
                                                 <span>{{ 'admin.product.product.price02'|trans }}</span>
                                                 <i class="fa fa-question-circle fa-lg ml-1"></i>
-                                                <span class="badge badge-primary ml-1">{{ 'admin.product.product.require'|trans }}</span>
+                                                <span class="badge badge-primary ml-1">
+                                                    {{ 'admin.product.product.require'|trans }}
+                                                </span>
                                             </div>
                                         </div>
                                         <div class="col">
@@ -350,7 +339,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                  role="button" aria-expanded="false" aria-controls="addPrice">
                                                 <a>
                                                     <i class="fa fa-plus-square-o font-weight-bold mr-1"></i>
-                                                    <span class="font-weight-bold text-ec-black">{{ 'admin.product.product.add_price01'|trans }}</span>
+                                                    <span class="font-weight-bold text-ec-black">
+                                                        {{ 'admin.product.product.add_price01'|trans }}
+                                                    </span>
                                                 </a>
                                             </div>
                                         </div>
@@ -362,7 +353,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                      title="Tooltip">
                                                     <span>{{ 'admin.product.product.price01'|trans }}</span>
                                                     <i class="fa fa-question-circle fa-lg ml-1"></i>
-                                                    <span class="badge badge-primary ml-1">{{ 'admin.product.product.require'|trans }}</span>
+                                                    <span class="badge badge-primary ml-1">
+                                                        {{ 'admin.product.product.require'|trans }}
+                                                    </span>
                                                 </div>
                                             </div>
                                             <div class="col mb-4">
@@ -377,7 +370,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                  title="Tooltip">
                                                 <span>{{ 'admin.product.product.stock'|trans }}</span>
                                                 <i class="fa fa-question-circle fa-lg ml-1"></i>
-                                                <span class="badge badge-primary ml-1">{{ 'admin.product.product.require'|trans }}</span>
+                                                <span class="badge badge-primary ml-1">
+                                                    {{ 'admin.product.product.require'|trans }}
+                                                </span>
                                             </div>
                                         </div>
                                         <div class="col">
@@ -392,7 +387,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                            type="checkbox"
                                                            value="{{ form.class.stock_unlimited.vars.value }}">
                                                     <label class="form-check-label"
-                                                           for="{{ form.class.stock_unlimited.vars.id }}">{{ 'admin.product.product.stock_unlimited'|trans }}</label>
+                                                           for="{{ form.class.stock_unlimited.vars.id }}">
+                                                        {{ 'admin.product.product.stock_unlimited'|trans }}
+                                                    </label>
                                                 </div>
                                                 {{ form_errors(form.class.stock_unlimited) }}
                                             </div>
