@@ -44,7 +44,8 @@ abstract class AbstractEntity implements \ArrayAccess
     {
         $method = Inflector::classify($offset);
 
-        return method_exists($this, "get$method")
+        return method_exists($this, $method)
+            || method_exists($this, "get$method")
             || method_exists($this, "is$method")
             || method_exists($this, "has$method");
     }
@@ -57,7 +58,9 @@ abstract class AbstractEntity implements \ArrayAccess
     {
         $method = Inflector::classify($offset);
 
-        if (method_exists($this, "get$method")) {
+        if (method_exists($this, $method)) {
+            return $this->$method();
+        } elseif (method_exists($this, "get$method")) {
             return $this->{"get$method"}();
         } elseif (method_exists($this, "is$method")) {
             return $this->{"is$method"}();

@@ -5,12 +5,8 @@ namespace Eccube\Controller\Admin\Shipping;
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\ShippingStatus;
+use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
-use Eccube\Event\EccubeEvents;
-use Eccube\Event\EventArgs;
-use Eccube\Form\Type\Admin\OrderItemType;
-use Eccube\Form\Type\Admin\SearchCustomerType;
-use Eccube\Form\Type\Admin\SearchProductType;
 use Eccube\Form\Type\Admin\ShippingType;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\DeliveryRepository;
@@ -18,10 +14,11 @@ use Eccube\Repository\Master\ShippingStatusRepository;
 use Eccube\Repository\OrderItemRepository;
 use Eccube\Repository\ShippingRepository;
 use Eccube\Service\TaxRuleService;
-use Knp\Component\Pager\Paginator;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -57,11 +54,6 @@ class EditController extends AbstractController
      */
     protected $shippingStatusReposisotry;
 
-    /**
-     * @var SerializerInterface
-     */
-    protected $serializer;
-
     public function __construct(
         OrderItemRepository $orderItemRepository,
         CategoryRepository $categoryRepository,
@@ -87,20 +79,18 @@ class EditController extends AbstractController
      * @Route("/%eccube_admin_route%/shipping/new", name="admin_shipping_new")
      * @Route("/%eccube_admin_route%/shipping/{id}/edit", requirements={"id" = "\d+"}, name="admin_shipping_edit")
      * @Template("@admin/Shipping/edit.twig")
-     *
-     * TODO templateアノテーションを利用するかどうか検討.http://symfony.com/doc/current/best_practices/controllers.html
      */
     public function edit(Request $request, $id = null)
     {
         $TargetShipping = null;
         $OriginShipping = null;
 
-        if (is_null($id)) {
+        if (null === $id) {
             // 空のエンティティを作成.
             $TargetShipping = new Shipping();
         } else {
             $TargetShipping = $this->shippingRepository->find($id);
-            if (is_null($TargetShipping)) {
+            if (null === $TargetShipping) {
                 throw new NotFoundHttpException();
             }
         }
@@ -117,31 +107,10 @@ class EditController extends AbstractController
         $builder = $this->formFactory
             ->createBuilder(ShippingType::class, $TargetShipping);
 
-        $event = new EventArgs(
-            array(
-                'builder' => $builder,
-                'OriginShipping' => $OriginShipping,
-                'TargetShipping' => $TargetShipping,
-                'OriginalOrderItems' => $OriginalOrderItems,
-            ),
-            $request
-        );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_INDEX_INITIALIZE, $event);
-
         $form = $builder->getForm();
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
-            $event = new EventArgs(
-                array(
-                    'builder' => $builder,
-                    'OriginShipping' => $OriginShipping,
-                    'TargetShipping' => $TargetShipping,
-                    'OriginalOrderItems' => $OriginalOrderItems,
-                ),
-                $request
-            );
-            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_INDEX_PROGRESS, $event);
 
             // FIXME 税額計算は CalculateService で処理する. ここはテストを通すための暫定処理
             // see EditControllerTest::testOrderProcessingWithTax
@@ -184,19 +153,7 @@ class EditController extends AbstractController
                         $this->entityManager->persist($TargetShipping);
                         $this->entityManager->flush();
 
-                        $event = new EventArgs(
-                            array(
-                                'form' => $form,
-                                'OriginShipping' => $OriginShipping,
-                                'TargetShipping' => $TargetShipping,
-                                'OriginalOrderItems' => $OriginalOrderItems,
-                                //'Customer' => $Customer,
-                            ),
-                            $request
-                        );
-                        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_INDEX_COMPLETE, $event);
-
-                        $this->addSuccess('admin.order.save.complete', 'admin');
+                        $this->addSuccess('admin.shipping.save.complete', 'admin');
 
                         log_info('出荷登録完了', array($TargetShipping->getId()));
 
@@ -210,40 +167,6 @@ class EditController extends AbstractController
             }
         }
 
-        // 会員検索フォーム
-        $builder = $this->formFactory
-            ->createBuilder(SearchCustomerType::class);
-
-        $event = new EventArgs(
-            array(
-                'builder' => $builder,
-                'OriginShipping' => $OriginShipping,
-                'TargetShipping' => $TargetShipping,
-                'OriginalOrderItems' => $OriginalOrderItems,
-            ),
-            $request
-        );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_INITIALIZE, $event);
-
-        $searchCustomerModalForm = $builder->getForm();
-
-        // 商品検索フォーム
-        $builder = $this->formFactory
-            ->createBuilder(SearchProductType::class);
-
-        $event = new EventArgs(
-            array(
-                'builder' => $builder,
-                'OriginShipping' => $OriginShipping,
-                'TargetShipping' => $TargetShipping,
-                'OriginalOrderItems' => $OriginalOrderItems,
-            ),
-            $request
-        );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_PRODUCT_INITIALIZE, $event);
-
-        $searchProductModalForm = $builder->getForm();
-
         // 配送業者のお届け時間
         $times = array();
         $deliveries = $this->deliveryRepository->findAll();
@@ -256,11 +179,7 @@ class EditController extends AbstractController
 
         return [
             'form' => $form->createView(),
-            'shippingForm' => $form->createView(),
-            'searchCustomerModalForm' => $searchCustomerModalForm->createView(),
-            'searchProductModalForm' => $searchProductModalForm->createView(),
             'Shipping' => $TargetShipping,
-            'id' => $id,
             'shippingDeliveryTimes' => $this->serializer->serialize($times, 'json'),
         ];
     }
@@ -269,87 +188,54 @@ class EditController extends AbstractController
      * @Route("/%eccube_admin_route%/shipping/search/product", name="admin_shipping_search_product")
      * @Template("@admin/Shipping/search_product.twig")
      */
-    public function searchProduct(Request $request, $page_no = null, Paginator $paginator)
+    public function searchProduct(Request $request, PaginatorInterface $paginator)
     {
-        if ($request->isXmlHttpRequest()) {
-            log_debug('search product start.');
-            $page_count = $this->eccubeConfig['eccube_default_page_count'];
-            $session = $this->session;
-
-            if ('POST' === $request->getMethod()) {
-
-                $page_no = 1;
-
-                $searchData = array(
-                    'id' => $request->get('id'),
-                );
-
-                if ($categoryId = $request->get('category_id')) {
-                    $Category = $this->categoryRepository->find($categoryId);
-                    $searchData['category_id'] = $Category;
-                }
-
-                $session->set('eccube.admin.order.product.search', $searchData);
-                $session->set('eccube.admin.order.product.search.page_no', $page_no);
-            } else {
-                $searchData = (array)$session->get('eccube.admin.order.product.search');
-                if (is_null($page_no)) {
-                    $page_no = intval($session->get('eccube.admin.order.product.search.page_no'));
-                } else {
-                    $session->set('eccube.admin.order.product.search.page_no', $page_no);
-                }
-            }
-            // TODO OrderItemRepository に移動
-            $qb = $this->orderItemRepository->createQueryBuilder('s')
-                ->where('s.Shipping is null AND s.Order is not null')
-                ->andWhere('s.OrderItemType in (1, 2)');
-
-            $event = new EventArgs(
-                array(
-                    'qb' => $qb,
-                    'searchData' => $searchData,
-                ),
-                $request
-            );
-            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_PRODUCT_SEARCH, $event);
-
-            /** @var \Knp\Component\Pager\Pagination\SlidingPagination $pagination */
-            $pagination = $paginator->paginate(
-                $qb,
-                $page_no,
-                $page_count,
-                array('wrap-queries' => true)
-            );
-
-            $OrderItems = $pagination->getItems();
-
-            if (empty($OrderItems)) {
-                log_debug('search product not found.');
-            }
-
-            $forms = array();
-            foreach ($OrderItems as $OrderItem) {
-                /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
-                $builder = $this->formFactory->createNamedBuilder('', OrderItemType::class, $OrderItem);
-                $addCartForm = $builder->getForm();
-                $forms[$OrderItem->getId()] = $addCartForm->createView();
-            }
-
-            $event = new EventArgs(
-                array(
-                    'forms' => $forms,
-                    'OrderItems' => $OrderItems,
-                    'pagination' => $pagination,
-                ),
-                $request
-            );
-            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_PRODUCT_COMPLETE, $event);
-
-            return [
-                'forms' => $forms,
-                'OrderItems' => $OrderItems,
-                'pagination' => $pagination,
-            ];
+        if (!$request->isXmlHttpRequest()) {
+            throw new BadRequestHttpException();
         }
+
+        $page_no = (int)$request->get('pageno', 1);
+        $page_count = $this->eccubeConfig['eccube_default_page_count'];
+
+        // TODO OrderItemRepository に移動
+        $qb = $this->orderItemRepository->createQueryBuilder('s')
+            ->where('s.Shipping is null AND s.Order is not null')
+            ->andWhere('s.OrderItemType in (1, 2)');
+
+        /** @var \Knp\Component\Pager\Pagination\SlidingPagination $pagination */
+        $pagination = $paginator->paginate(
+            $qb,
+            $page_no,
+            $page_count,
+            array('wrap-queries' => true)
+        );
+
+        return [
+            'pagination' => $pagination,
+        ];
     }
+
+    /**
+     * @Route("/%eccube_admin_route%/shipping/search/item", name="admin_shipping_search_item")
+     * @Template("@admin/Shipping/order_item_prototype.twig")
+     */
+    public function searchItem(Request $request)
+    {
+        if (!$request->isXmlHttpRequest()) {
+            throw new BadRequestHttpException();
+        }
+
+        $id = (int)$request->get('order-item-id');
+        /** @var OrderItem $OrderItem */
+        $OrderItem = $this->orderItemRepository->find($id);
+        if (null === $OrderItem) {
+            // not found.
+            return $this->json([], 404);
+        }
+
+        return [
+            'OrderItem' => $OrderItem,
+        ];
+    }
+
 }

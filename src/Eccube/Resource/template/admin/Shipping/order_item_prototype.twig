@@ -1,12 +1,34 @@
-<div style="display: none">
-    {{ form_widget(orderItemForm.new) }}
-    {{ form_widget(orderItemForm.Order) }}
-    {{ form_widget(orderItemForm.Product) }}
-    {{ form_widget(orderItemForm.ProductClass) }}
-    {{ form_widget(orderItemForm.price, {'type': 'hidden'}) }}
-    {{ form_widget(orderItemForm.quantity, {'type': 'hidden'}) }}
-    {{ form_widget(orderItemForm.id, {'type': 'hidden'}) }}
-    {{ form_widget(orderItemForm.order_item_type, {'type': 'hidden'}) }}
-    {{ form_widget(orderItemForm.tax_type, {'type': 'hidden'}) }}
-    {{ form_widget(orderItemForm.tax_display_type, {'type': 'hidden'}) }}
-</div>
+<tr>
+    <input type="hidden" name="shipping[OrderItems][{{ OrderItem.id }}][id]" value="{{ OrderItem.id }}">
+    <td class="align-middle w-25 pl-3">
+        <p class="font-weight-bold mb-0">{{ OrderItem.product.name }}</p>
+        <span>{{ OrderItem.product_code }}
+            {% if OrderItem.product.has_product_class %}
+                / ( {{ OrderItem.class_name1 }}： {{ OrderItem.class_category_name1 }}
+                {% if OrderItem.class_name2 %}
+                    / {{ OrderItem.class_name2 }}: {{ OrderItem.class_category_name2 }}
+                {% endif %}
+                )
+            {% endif %}
+        </span>
+    </td>
+    <td class="align-middle">
+        <a href="{{ url('admin_order_edit', {'id': OrderItem.order_id}) }}">{{ OrderItem.order_id }}</a>
+    </td>
+    <td class="align-middle"><span>{{ OrderItem.price|price }}</span></td>
+    <td class="align-middle"><span>{{ OrderItem.quantity }}</span></td>
+    <td class="align-middle"><span>{{ OrderItem.tax_rate }}%</span></td>
+    <td class="align-middle">
+        <span>{{ OrderItem.total_price|price }}</span>
+        <small>（税込）</small>
+    </td>
+    <td class="align-middle text-right pr-3">
+        <div class="row justify-content-end">
+            <div class="col-auto text-center"><a class="btn btn-ec-actionIcon remove-order-item"
+                                                 data-toggle="tooltip"
+                                                 data-placement="top" title="削除"><i
+                            class="fa fa-close fa-lg text-secondary"
+                            aria-hidden="true"></i></a></div>
+        </div>
+    </td>
+</tr>

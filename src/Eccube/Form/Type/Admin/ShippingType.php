@@ -30,6 +30,7 @@ use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Delivery;
 use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\KanaType;
+use Eccube\Form\Type\Master\ShippingStatusType;
 use Eccube\Form\Type\NameType;
 use Eccube\Form\Type\TelType;
 use Eccube\Form\Type\ZipType;
@@ -40,6 +41,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -178,9 +180,15 @@ class ShippingType extends AbstractType
                     new Assert\NotBlank(),
                 ),
             ))
+            ->add('shipping_date', DateType::class, array(
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd',
+                'required' => false,
+            ))
             ->add('shipping_delivery_date', DateType::class, array(
                 'label' => 'shipping.label.delivery_date',
                 'placeholder' => '',
+                'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'required' => false,
             ))
@@ -203,11 +211,16 @@ class ShippingType extends AbstractType
                 ),
             ))
             ->add('OrderItems', CollectionType::class, array(
-                'entry_type' => OrderItemType::class,
+                'entry_type' => OrderItemForShippingRegistrationType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
             ))
+            // 明細業のエラー表示用
+            ->add('OrderItemsError', TextType::class, [
+                'mapped' => false,
+            ])
+            ->add('ShippingStatus', ShippingStatusType::class)
             ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
                 /** @var \Eccube\Entity\Shipping $data */
                 $data = $event->getData();
@@ -280,7 +293,7 @@ class ShippingType extends AbstractType
 
                 if (empty($OrderItems) || count($OrderItems) < 1) {
                     // 画面下部にエラーメッセージを表示させる
-                    $form['shipping_delivery_date']->addError(new FormError('shipping.text.error.product_not_added'));
+                    $form['OrderItemsError']->addError(new FormError('shipping.text.error.product_not_added'));
                 }
             })
             ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
