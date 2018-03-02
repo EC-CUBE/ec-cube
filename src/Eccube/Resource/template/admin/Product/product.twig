@@ -413,89 +413,209 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         </div>
                                     </div>
                                 </div>
+
+
+                                {# TODO: 書品コード、販売制限数、お届け日、送料、税率のコードがモックにないので暫定的に以下に配置 #}
+                                {% if has_class == false %}
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
+                                                 title="Tooltip">
+                                                <span>{{ 'admin.product.product.code'|trans }}</span>
+                                                <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col mb-2">
+                                            <div>
+                                                {{ form_widget(form.class.code) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
+                                                 title="Tooltip">
+                                                <span>{{ 'admin.product.product.sale_limit'|trans }}</span>
+                                                <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col mb-2">
+                                            <div>
+                                                {{ form_widget(form.class.sale_limit) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
+                                                 title="Tooltip">
+                                                <span>{{ 'admin.product.product.delivery_duration'|trans }}</span>
+                                                <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col mb-2">
+                                            <div>
+                                                {{ form_widget(form.class.delivery_duration) }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {% if BaseInfo.option_product_delivery_fee %}
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
+                                                     title="Tooltip">
+                                                    <span>{{ 'admin.product.product.delivery_fee'|trans }}</span>
+                                                    <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col mb-2">
+                                                <div>
+                                                    {{ form_widget(form.class.delivery_fee) }}
+                                                    {{ form_errors(form.class.delivery_fee) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                    {% if BaseInfo.option_product_tax_rule %}
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
+                                                     title="Tooltip">
+                                                    <span>{{ 'admin.product.product.tax_rate'|trans }}</span>
+                                                    <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col mb-2">
+                                                <div>
+                                                    {{ form_widget(form.class.tax_rate) }}
+                                                    {{ form_errors(form.class.tax_rate) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+
+                                <div class="extra-form">
+                                    {% for f in form.getIterator %}
+                                        {% if f.vars.name matches '[^plg*]' %}
+                                            {{ form_row(f) }}
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+
+                                {# エンティティ拡張の自動出力 #}
+                                {% for f in form %}
+                                    {# auto_render有効時に出力 #}
+                                    {% if f.vars.eccube_form_options.auto_render %}
+                                        {# form_themeが設定されている場合にthemeを適用 #}
+                                        {% if f.vars.eccube_form_options.form_theme %}
+                                            {% form_theme f f.vars.eccube_form_options.form_theme %}
+                                        {% endif %}
+                                        {{ form_row(f) }}
+                                    {% endif %}
+                                {% endfor %}
                             </div>
                         </div>
                     </div>
-                    <div class="card rounded border-0 mb-4">
-                        <div class="card-header">
-                            <div class="row">
-                                <div class="col-8">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
-                                         title="Tooltip">
-                                        <span class="card-title">規格設定<i
-                                                    class="fa fa-question-circle fa-lg ml-1"></i></span>
+                    {% if id is not null %}
+                        <div class="card rounded border-0 mb-4">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
+                                             title="Tooltip">
+                                        <span class="card-title">
+                                            {{ 'admin.product.product.511'|trans }}
+                                            <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                        </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 text-right">
+                                        <a data-toggle="collapse" href="#standardConfig" aria-expanded="false"
+                                           aria-controls="standardConfig">
+                                            <i class="fa fa-angle-up fa-lg"></i>
+                                        </a>
                                     </div>
                                 </div>
-                                <div class="col-4 text-right"><a data-toggle="collapse" href="#standardConfig"
-                                                                 aria-expanded="false" aria-controls="standardConfig"><i
-                                                class="fa fa-angle-up fa-lg"></i></a></div>
                             </div>
-                        </div>
-                        <div class="collapse show ec-cardCollapse" id="standardConfig">
-                            <div class="card-body">
-                                <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip">
-                                    <span>この商品の規格</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
-                                <table class="table table-striped">
-                                    <thead class="table-active">
-                                    <th class="pl-3 pt-2 pb-2">規格１</th>
-                                    <th class="pt-2 pb-2">規格２</th>
-                                    <th class="pt-2 pb-2">商品コード</th>
-                                    <th class="pt-2 pb-2">在庫数</th>
-                                    <th class="pr-3 pt-2 pb-2">販売価格（円）</th>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td class="pl-3">プラチナ</td>
-                                        <td>100cm</td>
-                                        <td>aa-001</td>
-                                        <td>4</td>
-                                        <td class="pr-3">10,000</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="pl-3">プラチナ</td>
-                                        <td>130cm</td>
-                                        <td>aa-002</td>
-                                        <td>8</td>
-                                        <td class="pr-3">10,000</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="pl-3">シルバー</td>
-                                        <td>100cm</td>
-                                        <td>aa-003</td>
-                                        <td>4</td>
-                                        <td class="pr-3">8,000</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="pl-3">シルバー</td>
-                                        <td>130cm</td>
-                                        <td>aa-004</td>
-                                        <td>6</td>
-                                        <td class="pr-3"> 8,000</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                                <div class="d-block text-center text-center">
-                                    <button class="btn btn-ec-regular" type="button" data-toggle="modal"
-                                            data-target="#confirmModal">この商品の規格管理
-                                    </button>
-                                    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog"
-                                         aria-labelledby="confirmModal" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title">ページを移動します。</h5>
-                                                    <button class="close" type="button" data-dismiss="modal"
-                                                            aria-label="Close"><span aria-hidden="true">×</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <p>規格の管理画面に移動します。商品情報を保存してから移動しますか？</p>
-                                                </div>
-                                                <div class="modal-footer"><a class="btn btn-ec-conversion"
-                                                                             href="/product/register/standard">変更を保存</a>
-                                                    <button class="btn btn-ec-sub" type="button" data-dismiss="modal">
-                                                        キャンセル
-                                                    </button>
+                            <div class="collapse show ec-cardCollapse" id="standardConfig">
+                                <div class="card-body">
+                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
+                                         title="Tooltip">
+                                        <span>{{ 'admin.product.product.text03'|trans }}</span>
+                                        <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                    </div>
+                                    <table class="table table-striped">
+                                        <thead class="table-active">
+                                        <th class="pl-3 pt-2 pb-2">{{ 'admin.product.product.text04'|trans }}</th>
+                                        <th class="pt-2 pb-2">{{ 'admin.product.product.text05'|trans }}</th>
+                                        <th class="pt-2 pb-2">{{ 'admin.product.product.text06'|trans }}</th>
+                                        <th class="pt-2 pb-2">{{ 'admin.product.product.text07'|trans }}</th>
+                                        <th class="pr-3 pt-2 pb-2">{{ 'admin.product.product.text08'|trans }}</th>
+                                        </thead>
+                                        {# TODO: 規格表の表示 #}
+                                        <tbody>
+                                        <tr>
+                                            <td class="pl-3">プラチナ</td>
+                                            <td>100cm</td>
+                                            <td>aa-001</td>
+                                            <td>4</td>
+                                            <td class="pr-3">10,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="pl-3">プラチナ</td>
+                                            <td>130cm</td>
+                                            <td>aa-002</td>
+                                            <td>8</td>
+                                            <td class="pr-3">10,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="pl-3">シルバー</td>
+                                            <td>100cm</td>
+                                            <td>aa-003</td>
+                                            <td>4</td>
+                                            <td class="pr-3">8,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="pl-3">シルバー</td>
+                                            <td>130cm</td>
+                                            <td>aa-004</td>
+                                            <td>6</td>
+                                            <td class="pr-3"> 8,000</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="d-block text-center text-center">
+                                        <button class="btn btn-ec-regular" type="button" data-toggle="modal"
+                                                data-target="#confirmModal">
+                                            {{ 'admin.product.product.text09'|trans }}
+                                        </button>
+                                        <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog"
+                                             aria-labelledby="confirmModal" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">{{ 'admin.product.product.text10'|trans }}</h5>
+                                                        <button class="close" type="button" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                            <span aria-hidden="true">×</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>{{ 'admin.product.product.text11'|trans }}</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        {# TODO: 変更を保存する機能の実装　#}
+                                                        <a class="btn btn-ec-conversion"
+                                                           href="{{ url('admin_product_product_class', { 'id' : id }) }}">
+                                                            {{ 'admin.product.product.save'|trans }}
+                                                        </a>
+                                                        <button class="btn btn-ec-sub" type="button"
+                                                                data-dismiss="modal">
+                                                            {{ 'admin.product.product.cancel'|trans }}
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -503,7 +623,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    {% endif %}
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header">
                             <div class="row">
