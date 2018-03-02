@@ -45,6 +45,9 @@ parameters:
           - id: shipping_edit
             name: 出荷登録
             url: admin_shipping_new
+          - id: shipping_csv_import
+            name: 出荷CSV登録 #TODO: nav need use translate key
+            url: admin_shipping_csv_import
     - id: customer
       name: 会員管理
       has_child: true
