@@ -290,7 +290,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         </div>
                                     </div>
                                     <div class="col">
-                                        {{ form_widget(form.description_detail) }}
+                                        {{ form_widget(form.description_detail, { attr : { rows : "8"} }) }}
                                         {{ form_errors(form.description_detail) }}
                                         <div class="d-inline-block mb-2" data-toggle="collapse" href="#addComment"
                                              role="button" aria-expanded="false" aria-controls="addComment">
@@ -314,7 +314,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         </div>
                                         <div class="col mb-4">
                                             <div>
-                                                {{ form_widget(form.description_list) }}
+                                                {{ form_widget(form.description_list, { attr : { rows : "4"} }) }}
                                                 {{ form_errors(form.description_list) }}
                                             </div>
                                         </div>
@@ -647,7 +647,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     </div>
                                     <div class="col-9">
                                         <div>
-                                            {{ form_widget(form.free_area, {id: 'wysiwyg-area'}) }}
+                                            {{ form_widget(form.free_area, {id: 'wysiwyg-area', attr : { rows : "8"} }) }}
                                             {{ form_errors(form.free_area) }}
                                         </div>
                                     </div>
@@ -826,7 +826,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <span class="card-title">登録日・更新日</span>
                                 </div>
                                 <div class="col-4 text-right">
-                                    <a data-toggle="collapse" href="#update" aria-expanded="false" aria-controls="update">
+                                    <a data-toggle="collapse" href="#update" aria-expanded="false"
+                                       aria-controls="update">
                                         <i class="fa fa-angle-up fa-lg"></i>
                                     </a>
                                 </div>
@@ -837,7 +838,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <div class="row mb-2">
                                     <div class="col">
                                         <i class="fa fa-flag mr-1"></i>
-                                        <span>{{'admin.product.product.521'|trans}}</span>
+                                        <span>{{ 'admin.product.product.521'|trans }}</span>
                                     </div>
                                     <div class="col">
                                         <span>：{{ Product.create_date|date_format }}</span>
@@ -846,7 +847,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <div class="row mb-2">
                                     <div class="col">
                                         <i class="fa fa-refresh mr-1"></i>
-                                        <span>{{'admin.product.product.522'|trans}}</span>
+                                        <span>{{ 'admin.product.product.522'|trans }}</span>
                                     </div>
                                     <div class="col">
                                         <span>：{{ Product.update_date|date_format }}</span>
@@ -855,7 +856,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <div class="row mb-2">
                                     <div class="col">
                                         <i class="fa fa-user mr-1"></i>
-                                        <span>{{'admin.product.product.update_member'|trans}}</span>
+                                        <span>{{ 'admin.product.product.update_member'|trans }}</span>
                                     </div>
                                     <div class="col">
                                         <span>：{{ Product.Creator }}</span>
@@ -870,19 +871,24 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <div class="col-8">
                                     <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
                                          title="Tooltip">
-                                    <span class="card-title">ショップ用メモ<i
-                                                class="fa fa-question-circle fa-lg ml-1"></i></span></div>
+                                        <span class="card-title">
+                                            {{ 'admin.product.product.523'|trans }}
+                                            <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                        </span>
+                                    </div>
                                 </div>
-                                <div class="col-4 text-right"><a data-toggle="collapse" href="#shopMemo"
-                                                                 aria-expanded="false" aria-controls="shopMemo"><i
-                                                class="fa fa-angle-up fa-lg"></i></a></div>
+                                <div class="col-4 text-right">
+                                    <a data-toggle="collapse" href="#shopMemo" aria-expanded="false"
+                                       aria-controls="shopMemo">
+                                        <i class="fa fa-angle-up fa-lg"></i>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                         <div class="collapse show ec-cardCollapse" id="shopMemo">
                             <div class="card-body">
-                                <div>
-                                    <textarea class="form-control" rows="8"></textarea>
-                                </div>
+                                {{ form_widget(form.note, { attr : { rows : "8"} }) }}
+                                {{ form_errors(form.note) }}
                             </div>
                         </div>
                     </div>
