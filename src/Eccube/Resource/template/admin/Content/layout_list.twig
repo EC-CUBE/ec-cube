@@ -86,7 +86,7 @@
                                 <div class="card rounded border-0 mb-4">
                                     <div class="card-header">
                                         <div class="row">
-                                            <div class="col-8"><a class="card-title align-middle" href="/content/layout/detail">{{ Layout.name }}</a>
+                                            <div class="col-8"><a class="card-title align-middle" href="{{ url('admin_content_layout_edit', { id : Layout.id } ) }}">{{ Layout.name }}</a>
                                                 <button class="btn btn-ec-regular" type="button" data-toggle="modal" data-target="#addPage">{{ 'admin.content.layout_list.add_page'|trans }}</button>
                                                 <button class="btn btn-ec-sub" type="button" data-toggle="modal" data-target="#layoutDelete">{{ 'admin.content.layout_list.delete_layout'|trans }}</button>
                                             </div>
@@ -159,7 +159,7 @@
                                 <div class="card rounded border-0 mb-4">
                                     <div class="card-header">
                                         <div class="row">
-                                            <div class="col-8"><a class="card-title align-middle" href="/content/layout/detail">{{ Layout.name }}</a>
+                                            <div class="col-8"><a class="card-title align-middle" href="{{ url('admin_content_layout_edit', { id : Layout.id } ) }}">{{ Layout.name }}</a>
                                                 <button class="btn btn-ec-regular" type="button" data-toggle="modal" data-target="#addPage">{{ 'admin.content.layout_list.add_page'|trans }}</button>
                                                 <button class="btn btn-ec-sub" type="button" data-toggle="modal" data-target="#layoutDelete">{{ 'admin.content.layout_list.delete_layout'|trans }}</button>
                                             </div>
