@@ -1428,7 +1428,7 @@ return [
     'admin.shipping.csv_shipping.title_csv_upload' => 'CSVファイルをアップロード',
     'admin.shipping.csv_shipping.label_csv_select' => 'CSVファイル選択',
     'admin.shipping.csv_shipping.btn_csv_select' => 'ファイルを選択',
-    'admin.shipping.csv_shipping.desc_csv_select' => '選択されていません',
+    'admin.shipping.csv_shipping.desc_csv_file_name' => '選択されていません',
     'admin.shipping.csv_shipping.btn_csv_upload' => '一括登録を実行',
     'admin.shipping.csv_shipping.title_csv_format' => '出荷登録CSVファイルフォーマット',
     'admin.shipping.csv_shipping.btn_csv_download' => '雛形ファイルダウンロード',

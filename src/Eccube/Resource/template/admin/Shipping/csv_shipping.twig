@@ -58,6 +58,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 $('#download-button').attr('disabled', 'disabled');
                 ImageSpinner.spin(document.getElementById('spinner'));
             });
+
+            $('#admin_csv_import_import_file').on('change', function () {
+                var files = $(this).prop('files');
+                if (files.length) {
+                    $('#admin_csv_import_import_file_name').text(files[0].name);
+                }
+
+            });
         });
     </script>
 {% endblock javascript %}
@@ -91,7 +99,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 {{ form_widget(form._token) }}
                                 <div class="mb-2">
                                     <a class="btn btn-ec-regular mr-2" onclick="$('#admin_csv_import_import_file').click()">{{ 'admin.shipping.csv_shipping.btn_csv_select'|trans }}</a>
-                                    <span>{{ 'admin.shipping.csv_shipping.desc_csv_select'|trans }}</span>
+                                    <span id="admin_csv_import_import_file_name">{{ 'admin.shipping.csv_shipping.desc_csv_file_name'|trans }}</span>
                                     {{ form_widget(form.import_file, {'attr': {'accept': 'text/csv,text/tsv', 'class': 'd-none'}}) }}
                                     {{ form_errors(form.import_file) }}
                                 </div>
