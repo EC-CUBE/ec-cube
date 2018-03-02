@@ -859,6 +859,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <span>{{ 'admin.product.product.update_member'|trans }}</span>
                                     </div>
                                     <div class="col">
+                                        {# TODO: 最終更新者の表示 #}
                                         <span>：{{ Product.Creator }}</span>
                                     </div>
                                 </div>
@@ -899,30 +900,25 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <div class="c-conversionArea__container">
                 <div class="row justify-content-between align-items-center">
                     <div class="col-6">
-                        <div class="c-conversionArea__leftBlockItem"><a class="c-beseLink" href=""><i
-                                        class="fa fa-backward"
-                                        aria-hidden="true"></i><span>商品マスター</span></a>
+                        <div class="c-conversionArea__leftBlockItem">
+                            <a class="c-beseLink" href="">
+                                <i class="fa fa-backward" aria-hidden="true"></i>
+                                <span>{{ 'admin.product.product.509'|trans }}</span></a>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="row align-items-center justify-content-end">
                             <div class="col-auto">
-                                <div>
-                                    <select class="form-control">
-                                        <option value="">公開</option>
-                                        <option value="">非公開</option>
-                                        <option value="">廃止</option>
-                                    </select>
-                                </div>
+                                {{ form_widget(form.Status) }}
+                                {{ form_errors(form.Status) }}
                             </div>
                             <div class="col-auto">
-                                <button class="btn btn-ec-conversion px-5" type="submit">更新</button>
+                                <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.product.product.510'|trans }}</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
     </form>
 {% endblock %}
