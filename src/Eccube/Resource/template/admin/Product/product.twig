@@ -630,21 +630,28 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <div class="col-8">
                                     <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
                                          title="Tooltip">
-                                        <span class="card-title">フリーエリア</span><i
-                                                class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                        <span class="card-title">{{ 'admin.product.product.508'|trans }}</span>
+                                        <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                    </div>
                                 </div>
-                                <div class="col-4 text-right"><a data-toggle="collapse" href="#freeArea"
-                                                                 aria-expanded="false" aria-controls="freeArea"><i
-                                                class="fa fa-angle-up fa-lg"></i></a></div>
+                                <div class="col-4 text-right">
+                                    <a data-toggle="collapse" href="#freeArea" aria-expanded="false"
+                                       aria-controls="freeArea">
+                                        <i class="fa fa-angle-up fa-lg"></i>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                         <div class="collapse show ec-cardCollapse" id="freeArea">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-3"><span>フリーエリア</span></div>
+                                    <div class="col-3">
+                                        <span>{{ 'admin.product.product.508'|trans }}</span>
+                                    </div>
                                     <div class="col-9">
                                         <div>
-                                            <textarea class="form-control" rows="8"></textarea>
+                                            {{ form_widget(form.free_area, {id: 'wysiwyg-area'}) }}
+                                            {{ form_errors(form.free_area) }}
                                         </div>
                                     </div>
                                 </div>
