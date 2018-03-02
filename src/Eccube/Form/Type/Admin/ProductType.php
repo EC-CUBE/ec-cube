@@ -117,7 +117,7 @@ class ProductType extends AbstractType
                 'expanded' => true,
                 'mapped' => false,
             ))
-            ->add('search_word', TextareaType::class, array(
+            ->add('search_word', TextType::class, array(
                 'label' => "product.label.search_word",
                 'required' => false,
             ))
