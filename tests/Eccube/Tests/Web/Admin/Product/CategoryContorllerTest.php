@@ -327,8 +327,7 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
         );
 
         $CategoryLast = $this->categoryRepository->findOneBy(array('name' => '子2-2'));
-        $categoryNameLastElement = $crawler->filter('#detail_wrap select#admin_product_Category option')->last()->text();
-
+        $categoryNameLastElement = $crawler->filter('#admin_product_Category option')->last()->text();
         $this->expected = $CategoryLast->getNameWithLevel();
         $this->actual = $categoryNameLastElement;
         $this->verify();
