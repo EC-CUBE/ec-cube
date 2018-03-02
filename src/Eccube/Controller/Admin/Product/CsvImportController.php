@@ -139,6 +139,11 @@ class CsvImportController
     private $em;
 
     /**
+     * @var array
+     */
+    private $headerByKey;
+
+    /**
      * CsvImportController constructor.
      * @param DeliveryDurationRepository $deliveryDurationRepository
      * @param SaleTypeRepository $saleTypeRepository
@@ -181,6 +186,8 @@ class CsvImportController
     {
         $form = $this->formFactory->createBuilder(CsvImportType::class)->getForm();
         $headers = $this->getProductCsvHeader();
+        $headerByKey = array_flip($headers);
+        $this->headerByKey = $headerByKey;
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
             if ($form->isValid()) {
@@ -192,7 +199,12 @@ class CsvImportController
                         $this->addErrors(trans('csvimport.text.error.format_invalid'));
                         return $this->render($form, $headers);
                     }
-                    $arrRequireHeader = array('公開ステータス(ID)', '商品名', '販売種別(ID)', '在庫数無制限フラグ', '販売価格');
+                    $arrRequireHeader = array($headerByKey['status'],
+                        $headerByKey['name'],
+                        $headerByKey['sale_type'],
+                        $headerByKey['stock_unlimited'],
+                        $headerByKey['price02']
+                    );
                     $columnHeaders = $data->getColumnHeaders();
 
                     if (count(array_diff($arrRequireHeader, $columnHeaders)) > 0) {
@@ -213,78 +225,84 @@ class CsvImportController
                     $this->em->getConfiguration()->setSQLLogger(null);
 
                     $this->em->getConnection()->beginTransaction();
-
                     // CSVファイルの登録処理
                     foreach ($data as $row) {
                         if ($headerSize != count($row)) {
-                            $this->addErrors(($data->key() + 1) . '行目のCSVフォーマットが一致しません。');
+                            $message = trans('csvimportcontroller.format.line', array('%line%' => $data->key() + 1));
+                            $this->addErrors($message);
                             return $this->render($form, $headers);
                         }
 
-                        if (!isset($row['商品ID']) || StringUtil::isBlank($row['商品ID'] )) {
+                        if (!isset($row[$headerByKey['id']]) || StringUtil::isBlank($row[$headerByKey['id']] )) {
                             $Product = new Product();
                             $this->em->persist($Product);
                         } else {
-                            if (preg_match('/^\d+$/', $row['商品ID'])) {
-                                $Product = $this->productRepository->find($row['商品ID']);
+                            if (preg_match('/^\d+$/', $row[$headerByKey['id']])) {
+                                $Product = $this->productRepository->find($row[$headerByKey['id']]);
                                 if (!$Product) {
-                                    $this->addErrors(($data->key() + 1) . '行目の商品IDが存在しません。');
+                                    $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $headerByKey['id']));
+                                    $this->addErrors($message);
                                     return $this->render($form, $headers);
                                 }
                             } else {
-                                $this->addErrors(($data->key() + 1) . '行目の商品IDが存在しません。');
+                                $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $headerByKey['id']));
+                                $this->addErrors($message);
                                 return $this->render($form, $headers);
                             }
                         }
 
-                        if (StringUtil::isBlank($row['公開ステータス(ID)'])) {
-                            $this->addErrors(($data->key() + 1).'行目の公開ステータス(ID)が設定されていません。');
+                        if (StringUtil::isBlank($row[$headerByKey['status']])) {
+                            $message = trans('csvimportcontroller.require', array('%line%' => $data->key() + 1, '%name%' => $headerByKey['status']));
+                            $this->addErrors($message);
                         } else {
-                            if (preg_match('/^\d+$/', $row['公開ステータス(ID)'])) {
-                                $ProductStatus = $this->productStatusRepository->find($row['公開ステータス(ID)']);
+                            if (preg_match('/^\d+$/', $row[$headerByKey['status']])) {
+                                $ProductStatus = $this->productStatusRepository->find($row[$headerByKey['status']]);
                                 if (!$ProductStatus) {
-                                    $this->addErrors(($data->key() + 1) . '行目の公開ステータス(ID)が存在しません。');
+                                    $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $headerByKey['status']));
+                                    $this->addErrors($message);
                                 } else {
                                     $Product->setStatus($ProductStatus);
                                 }
                             } else {
-                                $this->addErrors(($data->key() + 1).'行目の公開ステータス(ID)が存在しません。');
+                                $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $headerByKey['status']));
+                                $this->addErrors($message);
                             }
                         }
 
-                        if (StringUtil::isBlank($row['商品名'])) {
-                            $this->addErrors(($data->key() + 1) . '行目の商品名が設定されていません。');
+                        if (StringUtil::isBlank($row[$headerByKey['name']])) {
+                            $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $headerByKey['name']));
+                            $this->addErrors($message);
                             return $this->render($form, $headers);
                         } else {
-                            $Product->setName(StringUtil::trimAll($row['商品名']));
+                            $Product->setName(StringUtil::trimAll($row[$headerByKey['name']]));
                         }
 
-                        if (isset($row['ショップ用メモ欄']) && StringUtil::isNotBlank($row['ショップ用メモ欄'])) {
-                            $Product->setNote(StringUtil::trimAll($row['ショップ用メモ欄']));
+                        if (isset($row[$headerByKey['note']]) && StringUtil::isNotBlank($row[$headerByKey['note']])) {
+                            $Product->setNote(StringUtil::trimAll($row[$headerByKey['note']]));
                         } else {
                             $Product->setNote(null);
                         }
 
-                        if (isset($row['商品説明(一覧)']) && StringUtil::isNotBlank($row['商品説明(一覧)'])) {
-                            $Product->setDescriptionList(StringUtil::trimAll($row['商品説明(一覧)']));
+                        if (isset($row[$headerByKey['description_list']]) && StringUtil::isNotBlank($row[$headerByKey['description_list']])) {
+                            $Product->setDescriptionList(StringUtil::trimAll($row[$headerByKey['description_list']]));
                         } else {
                             $Product->setDescriptionList(null);
                         }
 
-                        if (isset($row['商品説明(詳細)']) && StringUtil::isNotBlank($row['商品説明(詳細)'])) {
-                            $Product->setDescriptionDetail(StringUtil::trimAll($row['商品説明(詳細)']));
+                        if (isset($row[$headerByKey['description_detail']]) && StringUtil::isNotBlank($row[$headerByKey['description_detail']])) {
+                            $Product->setDescriptionDetail(StringUtil::trimAll($row[$headerByKey['description_detail']]));
                         } else {
                             $Product->setDescriptionDetail(null);
                         }
 
-                        if (isset($row['検索ワード']) && StringUtil::isNotBlank($row['検索ワード'])) {
-                            $Product->setSearchWord(StringUtil::trimAll($row['検索ワード']));
+                        if (isset($row[$headerByKey['search_word']]) && StringUtil::isNotBlank($row[$headerByKey['search_word']])) {
+                            $Product->setSearchWord(StringUtil::trimAll($row[$headerByKey['search_word']]));
                         } else {
                             $Product->setSearchWord(null);
                         }
 
-                        if (isset($row['フリーエリア']) && StringUtil::isNotBlank($row['フリーエリア'])) {
-                            $Product->setFreeArea(StringUtil::trimAll($row['フリーエリア']));
+                        if (isset($row[$headerByKey['free_area']]) && StringUtil::isNotBlank($row[$headerByKey['free_area']])) {
+                            $Product->setFreeArea(StringUtil::trimAll($row[$headerByKey['free_area']]));
                         } else {
                             $Product->setFreeArea(null);
                         }
@@ -307,21 +325,25 @@ class CsvImportController
                             // 規格分類1(ID)がセットされていると規格なし商品、規格あり商品を作成
                             $ProductClassOrg = $this->createProductClass($row, $Product, $data);
                             if ($this->BaseInfo->isOptionProductDeliveryFee()) {
-                                if (isset($row['送料']) && StringUtil::isBlank($row['送料'])) {
-
-                                    $deliveryFee = str_replace(',', '', $row['送料']);
+                                if (isset($row[$headerByKey['delivery_fee']]) && StringUtil::isBlank($row[$headerByKey['delivery_fee']])) {
+                                    $deliveryFee = str_replace(',', '', $row[$headerByKey['delivery_fee']]);
                                     if (preg_match('/^\d+$/', $deliveryFee) && $deliveryFee >= 0) {
                                         $ProductClassOrg->setDeliveryFee($deliveryFee);
                                     } else {
-                                        $this->addErrors(($data->key() + 1).'行目の送料は0以上の数値を設定してください。');
+                                        $message = trans('csvimportcontroller.great_than_zero', array('%line%' => $data->key() + 1, '%name%' => $headerByKey['delivery_fee']));
+                                        $this->addErrors($message);
                                     }
                                 }
                             }
 
-                            if (isset($row['規格分類1(ID)']) && StringUtil::isNotBlank($row['規格分類1(ID)'])) {
-
-                                if (isset($row['規格分類2(ID)']) && $row['規格分類1(ID)'] == $row['規格分類2(ID)']) {
-                                    $this->addErrors(($data->key() + 1).'行目の規格分類1(ID)と規格分類2(ID)には同じ値を使用できません。');
+                            if (isset($row[$headerByKey['class_category1']]) && StringUtil::isNotBlank($row[$headerByKey['class_category1']])) {
+                                if (isset($row[$headerByKey['class_category2']]) && $row[$headerByKey['class_category1']] == $row[$headerByKey['class_category2']]) {
+                                    $message = trans('csvimportcontroller.notsame', array(
+                                        '%line%' => $data->key() + 1,
+                                        '%name1%' => $headerByKey['class_category1'],
+                                        '%name2%' => $headerByKey['class_category2']
+                                    ));
+                                    $this->addErrors($message);
                                 } else {
                                     // 商品規格あり
                                     // 規格分類あり商品を作成
@@ -333,33 +355,38 @@ class CsvImportController
 
                                     // 規格分類1、2をそれぞれセットし作成
                                     $ClassCategory1 = null;
-                                    if (preg_match('/^\d+$/', $row['規格分類1(ID)'])) {
-                                        $ClassCategory1 = $this->classCategoryRepository->find($row['規格分類1(ID)']);
+                                    if (preg_match('/^\d+$/', $row[$headerByKey['class_category1']])) {
+                                        $ClassCategory1 = $this->classCategoryRepository->find($row[$headerByKey['class_category1']]);
                                         if (!$ClassCategory1) {
-                                            $this->addErrors(($data->key() + 1).'行目の規格分類1(ID)が存在しません。');
+                                            $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $headerByKey['class_category1']));
+                                            $this->addErrors($message);
                                         } else {
                                             $ProductClass->setClassCategory1($ClassCategory1);
                                         }
                                     } else {
-                                        $this->addErrors(($data->key() + 1).'行目の規格分類1(ID)が存在しません。');
+                                        $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $headerByKey['class_category1']));
+                                        $this->addErrors($message);
                                     }
 
-                                    if (isset($row['規格分類2(ID)']) && StringUtil::isNotBlank($row['規格分類2(ID)'])) {
-                                        if (preg_match('/^\d+$/', $row['規格分類2(ID)'])) {
-                                            $ClassCategory2 = $this->classCategoryRepository->find($row['規格分類2(ID)']);
+                                    if (isset($row[$headerByKey['class_category2']]) && StringUtil::isNotBlank($row[$headerByKey['class_category2']])) {
+                                        if (preg_match('/^\d+$/', $row[$headerByKey['class_category2']])) {
+                                            $ClassCategory2 = $this->classCategoryRepository->find($row[$headerByKey['class_category2']]);
                                             if (!$ClassCategory2) {
-                                                $this->addErrors(($data->key() + 1).'行目の規格分類2(ID)が存在しません。');
+                                                $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $headerByKey['class_category2']));
+                                                $this->addErrors($message);
                                             } else {
                                                 if ($ClassCategory1 &&
                                                     ($ClassCategory1->getClassName()->getId() == $ClassCategory2->getClassName()->getId())
                                                 ) {
-                                                    $this->addErrors(($data->key() + 1).'行目の規格分類1(ID)と規格分類2(ID)の規格名が同じです。');
+                                                    $message = trans('csvimportcontroller.notsame', array('%line%' => $data->key() + 1, '%name1%' => $headerByKey['class_category1'], '%name2%' => $headerByKey['class_category2']));
+                                                    $this->addErrors($message);
                                                 } else {
                                                     $ProductClass->setClassCategory2($ClassCategory2);
                                                 }
                                             }
                                         } else {
-                                            $this->addErrors(($data->key() + 1).'行目の規格分類2(ID)が存在しません。');
+                                            $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $headerByKey['class_category2']));
+                                            $this->addErrors($message);
                                         }
                                     }
                                     $ProductClass->setProductStock($ProductStock);
@@ -369,20 +396,18 @@ class CsvImportController
                                     $this->em->persist($ProductStock);
                                 }
                             } else {
-                                if (isset($row['規格分類2(ID)']) && StringUtil::isNotBlank($row['規格分類2(ID)'])) {
-                                    $this->addErrors(($data->key() + 1).'行目の規格分類1(ID)が存在しません。');
+                                if (isset($row[$headerByKey['class_category2']]) && StringUtil::isNotBlank($row[$headerByKey['class_category2']])) {
+                                    $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $headerByKey['class_category2']));
+                                    $this->addErrors($message);
                                 }
                             }
-
                         } else {
                             // 商品規格の更新
-
                             $flag = false;
-                            $classCategoryId1 = StringUtil::isBlank($row['規格分類1(ID)']) ? null : $row['規格分類1(ID)'];
-                            $classCategoryId2 = StringUtil::isBlank($row['規格分類2(ID)']) ? null : $row['規格分類2(ID)'];
+                            $classCategoryId1 = StringUtil::isBlank($row[$headerByKey['class_category1']]) ? null : $row[$headerByKey['class_category1']];
+                            $classCategoryId2 = StringUtil::isBlank($row[$headerByKey['class_category2']]) ? null : $row[$headerByKey['class_category2']];
 
                             foreach ($ProductClasses as $pc) {
-
                                 $classCategory1 = is_null($pc->getClassCategory1()) ? null : $pc->getClassCategory1()->getId();
                                 $classCategory2 = is_null($pc->getClassCategory2()) ? null : $pc->getClassCategory2()->getId();
 
@@ -393,16 +418,17 @@ class CsvImportController
                                     $this->updateProductClass($row, $Product, $pc, $data);
 
                                     if ($this->BaseInfo->isOptionProductDeliveryFee()) {
-                                        if (isset($row['送料']) && StringUtil::isNotBlank($row['送料'])) {
-                                            $deliveryFee = str_replace(',', '', $row['送料']);
+                                        $headerByKey['delivery_fee'] = trans('csvimport.label.delivery_fee');
+                                        if (isset($row[$headerByKey['delivery_fee']]) && StringUtil::isNotBlank($row[$headerByKey['delivery_fee']])) {
+                                            $deliveryFee = str_replace(',', '', $row[$headerByKey['delivery_fee']]);
                                             if (preg_match('/^\d+$/', $deliveryFee) && $deliveryFee >= 0) {
                                                 $pc->setDeliveryFee($deliveryFee);
                                             } else {
-                                                $this->addErrors(($data->key() + 1).'行目の送料は0以上の数値を設定してください。');
+                                                $message = trans('csvimportcontroller.great_than_zero', array('%line%' => $data->key() + 1, '%name%' => $headerByKey['delivery_fee']));
+                                                $this->addErrors($message);
                                             }
                                         }
                                     }
-
                                     $flag = true;
                                     break;
                                 }
@@ -418,8 +444,14 @@ class CsvImportController
                                     $pc->setVisible(false);
                                 }
 
-                                if (isset($row['規格分類1(ID)']) && isset($row['規格分類2(ID)']) && $row['規格分類1(ID)'] == $row['規格分類2(ID)']) {
-                                    $this->addErrors(($data->key() + 1).'行目の規格分類1(ID)と規格分類2(ID)には同じ値を使用できません。');
+                                if (isset($row[$headerByKey['class_category1']]) && isset($row[$headerByKey['class_category2']])
+                                    && $row[$headerByKey['class_category1']] == $row[$headerByKey['class_category2']]) {
+                                    $message = trans('csvimportcontroller.notsame', array(
+                                        '%line%' => $data->key() + 1,
+                                        '%name1%' => $headerByKey['class_category1'],
+                                        '%name2%' => $headerByKey['class_category2']
+                                    ));
+                                    $this->addErrors($message);
                                 } else {
 
                                     // 必ず規格分類1がセットされている
@@ -428,47 +460,59 @@ class CsvImportController
                                     if (preg_match('/^\d+$/', $classCategoryId1)) {
                                         $ClassCategory1 = $this->classCategoryRepository->find($classCategoryId1);
                                         if (!$ClassCategory1) {
-                                            $this->addErrors(($data->key() + 1).'行目の規格分類1(ID)が存在しません。');
+                                            $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $headerByKey['class_category1']));
+                                            $this->addErrors($message);
                                         }
                                     } else {
-                                        $this->addErrors(($data->key() + 1).'行目の規格分類1(ID)が存在しません。');
+                                        $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $headerByKey['class_category1']));
+                                        $this->addErrors($message);
                                     }
 
                                     $ClassCategory2 = null;
-                                    if (isset($row['規格分類2(ID)']) && StringUtil::isNotBlank($row['規格分類2(ID)'])) {
+                                    if (isset($row[$headerByKey['class_category2']]) && StringUtil::isNotBlank($row[$headerByKey['class_category2']])) {
                                         if ($pc->getClassCategory1() != null && $pc->getClassCategory2() == null) {
-                                            $this->addErrors(($data->key() + 1).'行目の規格分類2(ID)は設定できません。');
+                                            $message = trans('csvimportcontroller.cannot', array('%line%' => $data->key() + 1, '%name%' => $headerByKey['class_category2']));
+                                            $this->addErrors($message);
                                         } else {
                                             if (preg_match('/^\d+$/', $classCategoryId2)) {
                                                 $ClassCategory2 = $this->classCategoryRepository->find($classCategoryId2);
                                                 if (!$ClassCategory2) {
-                                                    $this->addErrors(($data->key() + 1).'行目の規格分類2(ID)が存在しません。');
+                                                    $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $headerByKey['class_category2']));
+                                                    $this->addErrors($message);
                                                 } else {
                                                     if ($ClassCategory1 &&
                                                         ($ClassCategory1->getClassName()->getId() == $ClassCategory2->getClassName()->getId())
                                                     ) {
-                                                        $this->addErrors(($data->key() + 1).'行目の規格分類1(ID)と規格分類2(ID)の規格名が同じです。');
+                                                        $message = trans('csvimportcontroller.notsame', array(
+                                                            '%line%' => $data->key() + 1,
+                                                            '%name1%' => $headerByKey['class_category1'],
+                                                            '%name2%' => $headerByKey['class_category2']
+                                                        ));
+                                                        $this->addErrors($message);
                                                     }
                                                 }
                                             } else {
-                                                $this->addErrors(($data->key() + 1).'行目の規格分類2(ID)が存在しません。');
+                                                $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $headerByKey['class_category2']));
+                                                $this->addErrors($message);
                                             }
 
                                         }
                                     } else {
                                         if ($pc->getClassCategory1() != null && $pc->getClassCategory2() != null) {
-                                            $this->addErrors(($data->key() + 1).'行目の規格分類2(ID)に値を設定してください。');
+                                            $message = trans('csvimportcontroller.require', array('%line%' => $data->key() + 1, '%name%' => $headerByKey['class_category2']));
+                                            $this->addErrors($message);
                                         }
                                     }
                                     $ProductClass = $this->createProductClass($row, $Product, $data, $ClassCategory1, $ClassCategory2);
 
                                     if ($this->BaseInfo->isOptionProductDeliveryFee()) {
-                                        if (isset($row['送料']) && StringUtil::isNotBlank($row['送料'])) {
-                                            $deliveryFee = str_replace(',', '', $row['送料']);
+                                        if (isset($row[$headerByKey['delivery_fee']]) && StringUtil::isNotBlank($row[$headerByKey['delivery_fee']])) {
+                                            $deliveryFee = str_replace(',', '', $row[$headerByKey['delivery_fee']]);
                                             if (preg_match('/^\d+$/', $deliveryFee) && $deliveryFee >= 0) {
                                                 $ProductClass->setDeliveryFee($deliveryFee);
                                             } else {
-                                                $this->addErrors(($data->key() + 1).'行目の送料は0以上の数値を設定してください。');
+                                                $message = trans('csvimportcontroller.great_than_zero', array('%line%' => $data->key() + 1, '%name%' => $headerByKey['delivery_fee']));
+                                                $this->addErrors($message);
                                             }
                                         }
                                     }
@@ -756,7 +800,7 @@ class CsvImportController
      */
     protected function createProductImage($row, Product $Product, $data)
     {
-        if (isset($row['商品画像']) && StringUtil::isNotBlank($row['商品画像'])) {
+        if (isset($row[$this->headerByKey['product_image']]) && StringUtil::isNotBlank($row[$this->headerByKey['product_image']])) {
 
             // 画像の削除
             $ProductImages = $Product->getProductImage();
@@ -766,7 +810,7 @@ class CsvImportController
             }
 
             // 画像の登録
-            $images = explode(',', $row['商品画像']);
+            $images = explode(',', $row[$this->headerByKey['product_image']]);
 
             $sortNo = 1;
 
@@ -777,7 +821,8 @@ class CsvImportController
 
                 // 商品画像名のフォーマットチェック
                 if (strlen($fileName) > 0 && preg_match($pattern, $fileName)) {
-                    $this->addErrors(($data->key() + 1).'行目の商品画像には末尾に"/"や"../"を使用できません。');
+                    $message = trans('csvimportcontroller.format.image', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['product_image']));
+                    $this->addErrors($message);
                 } else {
                     // 空文字は登録対象外
                     if (!empty($fileName)) {
@@ -813,17 +858,21 @@ class CsvImportController
             $this->em->flush();
         }
 
-        if (isset($row['商品カテゴリ(ID)']) && StringUtil::isNotBlank($row['商品カテゴリ(ID)'])) {
+        if (isset($row[$this->headerByKey['product_category']]) && StringUtil::isNotBlank($row[$this->headerByKey['product_category']])) {
             // カテゴリの登録
-            $categories = explode(',', $row['商品カテゴリ(ID)']);
+            $categories = explode(',', $row[$this->headerByKey['product_category']]);
             $sortNo = 1;
             $categoriesIdList = array();
             foreach ($categories as $category) {
-
                 if (preg_match('/^\d+$/', $category)) {
                     $Category = $this->categoryRepository->find($category);
                     if (!$Category) {
-                        $this->addErrors(($data->key() + 1).'行目の商品カテゴリ(ID)「'.$category.'」が存在しません。');
+                        $message = trans('csvimportcontroller.notfound.target', array(
+                            '%line%' => $data->key() + 1,
+                            '%name%' => $this->headerByKey['product_category'],
+                            '%target_name%' => $category,
+                        ));
+                        $this->addErrors($message);
                     } else {
                         foreach ($Category->getPath() as $ParentCategory) {
                             if (!isset($categoriesIdList[$ParentCategory->getId()])) {
@@ -836,8 +885,8 @@ class CsvImportController
                             }
                         }
                         if (!isset($categoriesIdList[$Category->getId()])) {
-                            $ProductCategory = $this->makeProductCategory($Product, $Category, $rank);
-                            $rank++;
+                            $ProductCategory = $this->makeProductCategory($Product, $Category, $sortNo);
+                            $sortNo++;
                             $this->entityManager->persist($ProductCategory);
                             $Product->addProductCategory($ProductCategory);
                             $categoriesIdList[$Category->getId()] = true;
@@ -852,7 +901,12 @@ class CsvImportController
                         $categoriesIdList[$Category->getId()] = true;
                     }
                 } else {
-                    $this->addErrors(($data->key() + 1).'行目の商品カテゴリ(ID)「'.$category.'」が存在しません。');
+                    $message = trans('csvimportcontroller.notfound.target', array(
+                        '%line%' => $data->key() + 1,
+                        '%name%' => $this->headerByKey['product_category'],
+                        '%target_name%' => $category,
+                    ));
+                    $this->addErrors($message);
                 }
             }
         }
@@ -875,9 +929,9 @@ class CsvImportController
             $this->em->remove($ProductTag);
         }
 
-        if (isset($row['タグ(ID)']) && StringUtil::isNotBlank($row['タグ(ID)'])) {
+        if (isset($row[$this->headerByKey['product_tag']]) && StringUtil::isNotBlank($row[$this->headerByKey['product_tag']])) {
             // タグの登録
-            $tags = explode(',', $row['タグ(ID)']);
+            $tags = explode(',', $row[$this->headerByKey['product_tag']]);
             foreach ($tags as $tag_id) {
                 $Tag = null;
                 if (preg_match('/^\d+$/', $tag_id)) {
@@ -895,7 +949,12 @@ class CsvImportController
                     }
                 }
                 if (!$Tag) {
-                    $this->addErrors(($data->key() + 1).'行目のタグ(ID)「'.$tag_id.'」が存在しません。');
+                    $message = trans('csvimportcontroller.notfound.target', array(
+                        '%line%' => $data->key() + 1,
+                        '%name%' => $this->headerByKey['product_tag'],
+                        '%target_name%' => $tag_id,
+                    ));
+                    $this->addErrors($message);
                 }
             }
         }
@@ -919,103 +978,117 @@ class CsvImportController
         $ProductClass->setProduct($Product);
         $ProductClass->setVisible(true);
 
-        if (isset($row['販売種別(ID)']) && StringUtil::isNotBlank($row['販売種別(ID)'])) {
-            if (preg_match('/^\d+$/', $row['販売種別(ID)'])) {
-                $SaleType = $this->saleTypeRepository->find($row['販売種別(ID)']);
+        if (isset($row[$this->headerByKey['sale_type']]) && StringUtil::isNotBlank($row[$this->headerByKey['sale_type']])) {
+            if (preg_match('/^\d+$/', $row[$this->headerByKey['sale_type']])) {
+                $SaleType = $this->saleTypeRepository->find($row[$this->headerByKey['sale_type']]);
                 if (!$SaleType) {
-                    $this->addErrors(($data->key() + 1).'行目の販売種別(ID)が存在しません。');
+                    $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['sale_type']));
+                    $this->addErrors($message);
                 } else {
                     $ProductClass->setSaleType($SaleType);
                 }
             } else {
-                $this->addErrors(($data->key() + 1).'行目の販売種別(ID)が存在しません。');
+                $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['sale_type']));
+                $this->addErrors($message);
             }
         } else {
-            $this->addErrors(($data->key() + 1).'行目の販売種別(ID)が設定されていません。');
+            $message = trans('csvimportcontroller.require', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['sale_type']));
+            $this->addErrors($message);
         }
 
         $ProductClass->setClassCategory1($ClassCategory1);
         $ProductClass->setClassCategory2($ClassCategory2);
 
-        if (isset($row['発送日目安(ID)']) && StringUtil::isNotBlank($row['発送日目安(ID)'])) {
-            if (preg_match('/^\d+$/', $row['発送日目安(ID)'])) {
-                $DeliveryDuration = $this->deliveryDurationRepository->find($row['発送日目安(ID)']);
+        if (isset($row[$this->headerByKey['delivery_date']]) && StringUtil::isNotBlank($row[$this->headerByKey['delivery_date']])) {
+            if (preg_match('/^\d+$/', $row[$this->headerByKey['delivery_date']])) {
+                $DeliveryDuration = $this->deliveryDurationRepository->find($row[$this->headerByKey['delivery_date']]);
                 if (!$DeliveryDuration) {
-                    $this->addErrors(($data->key() + 1) . '行目の発送日目安(ID)が存在しません。');
+                    $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['delivery_date']));
+                    $this->addErrors($message);
                 } else {
                     $ProductClass->setDeliveryDuration($DeliveryDuration);
                 }
             } else {
-                $this->addErrors(($data->key() + 1).'行目の発送日目安(ID)が存在しません。');
+                $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['delivery_date']));
+                $this->addErrors($message);
             }
         }
 
-        if (isset($row['商品コード']) && StringUtil::isNotBlank($row['商品コード'])) {
-            $ProductClass->setCode(StringUtil::trimAll($row['商品コード']));
+        if (isset($row[$this->headerByKey['product_code']]) && StringUtil::isNotBlank($row[$this->headerByKey['product_code']])) {
+            $ProductClass->setCode(StringUtil::trimAll($row[$this->headerByKey['product_code']]));
         } else {
             $ProductClass->setCode(null);
         }
 
-        if (StringUtil::isBlank($row['在庫数無制限フラグ'])) {
-            $this->addErrors(($data->key() + 1).'行目の在庫数無制限フラグが設定されていません。');
+        if (StringUtil::isBlank($row[$this->headerByKey['stock_unlimited']])) {
+            $message = trans('csvimportcontroller.require', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['stock_unlimited']));
+            $this->addErrors($message);
         } else {
-            if ($row['在庫数無制限フラグ'] == (string) Constant::DISABLED) {
+            if ($row[$this->headerByKey['stock_unlimited']] == (string) Constant::DISABLED) {
                 $ProductClass->setStockUnlimited(false);
                 // 在庫数が設定されていなければエラー
-                if (isset($row['在庫数']) && StringUtil::isNotBlank($row['在庫数'])) {
-                    $stock = str_replace(',', '', $row['在庫数']);
+                if (isset($row[$this->headerByKey['stock']]) && StringUtil::isNotBlank($row[$this->headerByKey['stock']])) {
+                    $stock = str_replace(',', '', $row[$this->headerByKey['stock']]);
                     if (preg_match('/^\d+$/', $stock) && $stock >= 0) {
                         $ProductClass->setStock($stock);
                     } else {
-                        $this->addErrors(($data->key() + 1).'行目の在庫数は0以上の数値を設定してください。');
+                        $message = trans('csvimportcontroller.great_than_zero', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['stock']));
+                        $this->addErrors($message);
                     }
                 } else {
-                    $this->addErrors(($data->key() + 1).'行目の在庫数が設定されていません。');
+                    $message = trans('csvimportcontroller.require', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['stock']));
+                    $this->addErrors($message);
                 }
-            } else if ($row['在庫数無制限フラグ'] == (string) Constant::ENABLED) {
+            } else if ($row[$this->headerByKey['stock_unlimited']] == (string) Constant::ENABLED) {
                 $ProductClass->setStockUnlimited(true);
                 $ProductClass->setStock(null);
             } else {
-                $this->addErrors(($data->key() + 1).'行目の在庫数無制限フラグが設定されていません。');
+                $message = trans('csvimportcontroller.require', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['stock_unlimited']));
+                $this->addErrors($message);
             }
         }
 
-        if (isset($row['販売制限数']) && StringUtil::isNotBlank($row['販売制限数'])) {
-            $saleLimit = str_replace(',', '', $row['販売制限数']);
+        if (isset($row[$this->headerByKey['sale_limit']]) && StringUtil::isNotBlank($row[$this->headerByKey['sale_limit']])) {
+            $saleLimit = str_replace(',', '', $row[$this->headerByKey['sale_limit']]);
             if (preg_match('/^\d+$/', $saleLimit) && $saleLimit >= 0) {
                 $ProductClass->setSaleLimit($saleLimit);
             } else {
-                $this->addErrors(($data->key() + 1).'行目の販売制限数は0以上の数値を設定してください。');
+                $message = trans('csvimportcontroller.great_than_zero', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['sale_limit']));
+                $this->addErrors($message);
             }
         }
 
-        if (isset($row['通常価格']) && StringUtil::isNotBlank($row['通常価格'])) {
-            $price01 = str_replace(',', '', $row['通常価格']);
+        if (isset($row[$this->headerByKey['price01']]) && StringUtil::isNotBlank($row[$this->headerByKey['price01']])) {
+            $price01 = str_replace(',', '', $row[$this->headerByKey['price01']]);
             if (preg_match('/^\d+$/', $price01) && $price01 >= 0) {
                 $ProductClass->setPrice01($price01);
             } else {
-                $this->addErrors(($data->key() + 1).'行目の通常価格は0以上の数値を設定してください。');
+                $message = trans('csvimportcontroller.great_than_zero', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['price01']));
+                $this->addErrors($message);
             }
         }
 
-        if (isset($row['販売価格']) && StringUtil::isNotBlank($row['販売価格'])) {
-            $price02 = str_replace(',', '', $row['販売価格']);
+        if (isset($row[$this->headerByKey['price02']]) && StringUtil::isNotBlank($row[$this->headerByKey['price02']])) {
+            $price02 = str_replace(',', '', $row[$this->headerByKey['price02']]);
             if (preg_match('/^\d+$/', $price02) && $price02 >= 0) {
                 $ProductClass->setPrice02($price02);
             } else {
-                $this->addErrors(($data->key() + 1).'行目の販売価格は0以上の数値を設定してください。');
+                $message = trans('csvimportcontroller.great_than_zero', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['price02']));
+                $this->addErrors($message);
             }
         } else {
-            $this->addErrors(($data->key() + 1).'行目の販売価格が設定されていません。');
+            $message = trans('csvimportcontroller.require', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['price02']));
+            $this->addErrors($message);
         }
 
 
-        if (isset($row['送料']) && StringUtil::isNotBlank($row['送料'])) {
-            $delivery_fee = str_replace(',', '', $row['送料']);
+        if (isset($row[$this->headerByKey['delivery_fee']]) && StringUtil::isNotBlank($row[$this->headerByKey['delivery_fee']])) {
+            $delivery_fee = str_replace(',', '', $row[$this->headerByKey['delivery_fee']]);
             if (preg_match('/^\d+$/', $delivery_fee) && $delivery_fee >= 0) {
                 $ProductClass->setDeliveryFee($delivery_fee);
             } else {
-                $this->addErrors(($data->key() + 1).'行目の送料は0以上の数値を設定してください。');
+                $message = trans('csvimportcontroller.great_than_zero', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['delivery_fee']));
+                $this->addErrors($message);
             }
         }
 
@@ -1050,118 +1123,135 @@ class CsvImportController
     {
         $ProductClass->setProduct($Product);
 
-        if ($row['販売種別(ID)'] == '') {
-            $this->addErrors(($data->key() + 1).'行目の販売種別(ID)が設定されていません。');
+        if ($row[$this->headerByKey['sale_type']] == '') {
+            $message = trans('csvimportcontroller.require', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['sale_type']));
+            $this->addErrors($message);
         } else {
-            if (preg_match('/^\d+$/', $row['販売種別(ID)'])) {
-                $SaleType = $this->saleTypeRepository->find($row['販売種別(ID)']);
+            if (preg_match('/^\d+$/', $row[$this->headerByKey['sale_type']])) {
+                $SaleType = $this->saleTypeRepository->find($row[$this->headerByKey['sale_type']]);
                 if (!$SaleType) {
-                    $this->addErrors(($data->key() + 1).'行目の販売種別(ID)が存在しません。');
+                    $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['sale_type']));
+                    $this->addErrors($message);
                 } else {
                     $ProductClass->setSaleType($SaleType);
                 }
             } else {
-                $this->addErrors(($data->key() + 1).'行目の販売種別(ID)が存在しません。');
+                $message = trans('csvimportcontroller.require', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['sale_type']));
+                $this->addErrors($message);
             }
         }
 
         // 規格分類1、2をそれぞれセットし作成
-        if ($row['規格分類1(ID)'] != '') {
-            if (preg_match('/^\d+$/', $row['規格分類1(ID)'])) {
-                $ClassCategory = $this->classCategoryRepository->find($row['規格分類1(ID)']);
+        if ($row[$this->headerByKey['class_category1']] != '') {
+            if (preg_match('/^\d+$/', $row[$this->headerByKey['class_category1']])) {
+                $ClassCategory = $this->classCategoryRepository->find($row[$this->headerByKey['class_category1']]);
                 if (!$ClassCategory) {
-                    $this->addErrors(($data->key() + 1).'行目の規格分類1(ID)が存在しません。');
+                    $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['class_category1']));
+                    $this->addErrors($message);
                 } else {
                     $ProductClass->setClassCategory1($ClassCategory);
                 }
             } else {
-                $this->addErrors(($data->key() + 1).'行目の規格分類1(ID)が存在しません。');
+                $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['class_category1']));
+                $this->addErrors($message);
             }
         }
 
-        if ($row['規格分類2(ID)'] != '') {
-            if (preg_match('/^\d+$/', $row['規格分類2(ID)'])) {
-                $ClassCategory = $this->classCategoryRepository->find($row['規格分類2(ID)']);
+        if ($row[$this->headerByKey['class_category2']] != '') {
+            if (preg_match('/^\d+$/', $row[$this->headerByKey['class_category2']])) {
+                $ClassCategory = $this->classCategoryRepository->find($row[$this->headerByKey['class_category2']]);
                 if (!$ClassCategory) {
-                    $this->addErrors(($data->key() + 1).'行目の規格分類2(ID)が存在しません。');
+                    $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['class_category2']));
+                    $this->addErrors($message);
                 } else {
                     $ProductClass->setClassCategory2($ClassCategory);
                 }
             } else {
-                $this->addErrors(($data->key() + 1).'行目の規格分類2(ID)が存在しません。');
+                $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['class_category2']));
+                $this->addErrors($message);
             }
         }
 
-        if ($row['発送日目安(ID)'] != '') {
-            if (preg_match('/^\d+$/', $row['発送日目安(ID)'])) {
-                $DeliveryDuration = $this->deliveryDurationRepository->find($row['発送日目安(ID)']);
+        if ($row[$this->headerByKey['delivery_date']] != '') {
+            if (preg_match('/^\d+$/', $row[$this->headerByKey['delivery_date']])) {
+                $DeliveryDuration = $this->deliveryDurationRepository->find($row[$this->headerByKey['delivery_date']]);
                 if (!$DeliveryDuration) {
-                    $this->addErrors(($data->key() + 1) . '行目の発送日目安(ID)が存在しません。');
+                    $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['delivery_date']));
+                    $this->addErrors($message);
                 } else {
                     $ProductClass->setDeliveryDuration($DeliveryDuration);
                 }
             } else {
-                $this->addErrors(($data->key() + 1).'行目の発送日目安(ID)が存在しません。');
+                $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['delivery_date']));
+                $this->addErrors($message);
             }
         }
 
-        if (StringUtil::isNotBlank($row['商品コード'])) {
-            $ProductClass->setCode(StringUtil::trimAll($row['商品コード']));
+        if (StringUtil::isNotBlank($row[$this->headerByKey['product_code']])) {
+            $ProductClass->setCode(StringUtil::trimAll($row[$this->headerByKey['product_code']]));
         } else {
             $ProductClass->setCode(null);
         }
 
-        if ($row['在庫数無制限フラグ'] == '') {
-            $this->addErrors(($data->key() + 1).'行目の在庫数無制限フラグが設定されていません。');
+        if ($row[$this->headerByKey['stock_unlimited']] == '') {
+            $message = trans('csvimportcontroller.require', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['stock_unlimited']));
+            $this->addErrors($message);
         } else {
-            if ($row['在庫数無制限フラグ'] == (string) Constant::DISABLED) {
+            if ($row[$this->headerByKey['stock_unlimited']] == (string) Constant::DISABLED) {
                 $ProductClass->setStockUnlimited(false);
                 // 在庫数が設定されていなければエラー
-                if ($row['在庫数'] == '') {
-                    $this->addErrors(($data->key() + 1).'行目の在庫数が設定されていません。');
+                if ($row[$this->headerByKey['stock']] == '') {
+                    $message = trans('csvimportcontroller.require', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['stock']));
+                    $this->addErrors($message);
                 } else {
-                    $stock = str_replace(',', '', $row['在庫数']);
+                    $stock = str_replace(',', '', $row[$this->headerByKey['stock']]);
                     if (preg_match('/^\d+$/', $stock) && $stock >= 0) {
-                        $ProductClass->setStock($row['在庫数']);
+                        $ProductClass->setStock($row[$this->headerByKey['stock']]);
                     } else {
-                        $this->addErrors(($data->key() + 1).'行目の在庫数は0以上の数値を設定してください。');
+                        $message = trans('csvimportcontroller.great_than_zero', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['stock']));
+                        $this->addErrors($message);
                     }
                 }
 
-            } else if ($row['在庫数無制限フラグ'] == (string) Constant::ENABLED) {
+            } else if ($row[$this->headerByKey['stock_unlimited']] == (string) Constant::ENABLED) {
                 $ProductClass->setStockUnlimited(true);
                 $ProductClass->setStock(null);
             } else {
-                $this->addErrors(($data->key() + 1).'行目の在庫数無制限フラグが設定されていません。');
+                $message = trans('csvimportcontroller.require', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['stock_unlimited']));
+                $this->addErrors($message);
             }
         }
 
-        if ($row['販売制限数'] != '') {
-            $saleLimit = str_replace(',', '', $row['販売制限数']);
+        if ($row[$this->headerByKey['sale_limit']] != '') {
+            $saleLimit = str_replace(',', '', $row[$this->headerByKey['sale_limit']]);
             if (preg_match('/^\d+$/', $saleLimit) && $saleLimit >= 0) {
                 $ProductClass->setSaleLimit($saleLimit);
             } else {
-                $this->addErrors(($data->key() + 1).'行目の販売制限数は0以上の数値を設定してください。');
+                $message = trans('csvimportcontroller.great_than_zero', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['sale_limit']));
+                $this->addErrors($message);
             }
         }
 
-        if ($row['通常価格'] != '') {
-            $price01 = str_replace(',', '', $row['通常価格']);
+        if ($row[$this->headerByKey['price01']] != '') {
+            $price01 = str_replace(',', '', $row[$this->headerByKey['price01']]);
             if (preg_match('/^\d+$/', $price01) && $price01 >= 0) {
                 $ProductClass->setPrice01($price01);
             } else {
-                $this->addErrors(($data->key() + 1).'行目の通常価格は0以上の数値を設定してください。');
+                $message = trans('csvimportcontroller.great_than_zero', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['price01']));
+                $this->addErrors($message);
             }
         }
 
-        if ($row['販売価格'] == '') {
-            $this->addErrors(($data->key() + 1).'行目の販売価格が設定されていません。');
+        if ($row[$this->headerByKey['price02']] == '') {
+            $message = trans('csvimportcontroller.require', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['price02']));
+            $this->addErrors($message);
         } else {
-            $price02 = str_replace(',', '', $row['販売価格']);
+            $price02 = str_replace(',', '', $row[$this->headerByKey['price02']]);
             if (preg_match('/^\d+$/', $price02) && $price02 >= 0) {
                 $ProductClass->setPrice02($price02);
             } else {
-                $this->addErrors(($data->key() + 1).'行目の販売価格は0以上の数値を設定してください。');
+                $message = trans('csvimportcontroller.great_than_zero', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['price02']));
+                $this->addErrors($message);
             }
         }
 
@@ -1212,29 +1302,29 @@ class CsvImportController
     private function getProductCsvHeader()
     {
         return array(
-            '商品ID' => 'id',
-            '公開ステータス(ID)' => 'status',
-            '商品名' => 'name',
-            'ショップ用メモ欄' => 'note',
-            '商品説明(一覧)' => 'description_list',
-            '商品説明(詳細)' => 'description_detail',
-            '検索ワード' => 'search_word',
-            'フリーエリア' => 'free_area',
-            '商品削除フラグ' => 'product_del_flg',
-            '商品画像' => 'product_image',
-            '商品カテゴリ(ID)' => 'product_category',
-            'タグ(ID)' => 'product_tag',
-            '販売種別(ID)' => 'sale_type',
-            '規格分類1(ID)' => 'class_category1',
-            '規格分類2(ID)' => 'class_category2',
-            '発送日目安(ID)' => 'deliveryFee',
-            '商品コード' => 'product_code',
-            '在庫数' => 'stock',
-            '在庫数無制限フラグ' => 'stock_unlimited',
-            '販売制限数' => 'sale_limit',
-            '通常価格' => 'price01',
-            '販売価格' => 'price02',
-            '送料' => 'delivery_fee',
+            trans('csvimport.label.product_id') => 'id',
+            trans('csvimport.label.public_status_id') => 'status',
+            trans('csvimport.label.product_name') => 'name',
+            trans('csvimport.label.note') => 'note',
+            trans('csvimport.label.description_list') => 'description_list',
+            trans('csvimport.label.description_detail') => 'description_detail',
+            trans('csvimport.label.search_word') => 'search_word',
+            trans('csvimport.label.free_area') => 'free_area',
+            trans('csvimport.label.product_del_flg') => 'product_del_flg',
+            trans('csvimport.label.product_image') => 'product_image',
+            trans('csvimport.label.product_category') => 'product_category',
+            trans('csvimport.label.product_tag') => 'product_tag',
+            trans('csvimport.label.product_type') => 'sale_type',
+            trans('csvimport.label.class_category1') => 'class_category1',
+            trans('csvimport.label.class_category2') => 'class_category2',
+            trans('csvimport.label.delivery_date') => 'delivery_date',
+            trans('csvimport.label.product_code') => 'product_code',
+            trans('csvimport.label.stock') => 'stock',
+            trans('csvimport.label.stock_unlimited') => 'stock_unlimited',
+            trans('csvimport.label.sale_limit') => 'sale_limit',
+            trans('csvimport.label.price01') => 'price01',
+            trans('csvimport.label.price02') => 'price02',
+            trans('csvimport.label.delivery_fee') => 'delivery_fee',
         );
     }
 
