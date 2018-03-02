@@ -227,8 +227,9 @@ class CsvImportController
                     $this->em->getConnection()->beginTransaction();
                     // CSVファイルの登録処理
                     foreach ($data as $row) {
+                        $line = $data->key() + 1;
                         if ($headerSize != count($row)) {
-                            $message = trans('csvimportcontroller.format.line', array('%line%' => $data->key() + 1));
+                            $message = trans('csvimportcontroller.format.line', array('%line%' => $line));
                             $this->addErrors($message);
                             return $this->render($form, $headers);
                         }
@@ -240,37 +241,37 @@ class CsvImportController
                             if (preg_match('/^\d+$/', $row[$headerByKey['id']])) {
                                 $Product = $this->productRepository->find($row[$headerByKey['id']]);
                                 if (!$Product) {
-                                    $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $headerByKey['id']));
+                                    $message = trans('csvimportcontroller.notfound', array('%line%' => $line, '%name%' => $headerByKey['id']));
                                     $this->addErrors($message);
                                     return $this->render($form, $headers);
                                 }
                             } else {
-                                $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $headerByKey['id']));
+                                $message = trans('csvimportcontroller.notfound', array('%line%' => $line, '%name%' => $headerByKey['id']));
                                 $this->addErrors($message);
                                 return $this->render($form, $headers);
                             }
                         }
 
                         if (StringUtil::isBlank($row[$headerByKey['status']])) {
-                            $message = trans('csvimportcontroller.require', array('%line%' => $data->key() + 1, '%name%' => $headerByKey['status']));
+                            $message = trans('csvimportcontroller.require', array('%line%' => $line, '%name%' => $headerByKey['status']));
                             $this->addErrors($message);
                         } else {
                             if (preg_match('/^\d+$/', $row[$headerByKey['status']])) {
                                 $ProductStatus = $this->productStatusRepository->find($row[$headerByKey['status']]);
                                 if (!$ProductStatus) {
-                                    $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $headerByKey['status']));
+                                    $message = trans('csvimportcontroller.notfound', array('%line%' => $line, '%name%' => $headerByKey['status']));
                                     $this->addErrors($message);
                                 } else {
                                     $Product->setStatus($ProductStatus);
                                 }
                             } else {
-                                $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $headerByKey['status']));
+                                $message = trans('csvimportcontroller.notfound', array('%line%' => $line, '%name%' => $headerByKey['status']));
                                 $this->addErrors($message);
                             }
                         }
 
                         if (StringUtil::isBlank($row[$headerByKey['name']])) {
-                            $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $headerByKey['name']));
+                            $message = trans('csvimportcontroller.notfound', array('%line%' => $line, '%name%' => $headerByKey['name']));
                             $this->addErrors($message);
                             return $this->render($form, $headers);
                         } else {
@@ -330,7 +331,7 @@ class CsvImportController
                                     if (preg_match('/^\d+$/', $deliveryFee) && $deliveryFee >= 0) {
                                         $ProductClassOrg->setDeliveryFee($deliveryFee);
                                     } else {
-                                        $message = trans('csvimportcontroller.great_than_zero', array('%line%' => $data->key() + 1, '%name%' => $headerByKey['delivery_fee']));
+                                        $message = trans('csvimportcontroller.great_than_zero', array('%line%' => $line, '%name%' => $headerByKey['delivery_fee']));
                                         $this->addErrors($message);
                                     }
                                 }
@@ -339,7 +340,7 @@ class CsvImportController
                             if (isset($row[$headerByKey['class_category1']]) && StringUtil::isNotBlank($row[$headerByKey['class_category1']])) {
                                 if (isset($row[$headerByKey['class_category2']]) && $row[$headerByKey['class_category1']] == $row[$headerByKey['class_category2']]) {
                                     $message = trans('csvimportcontroller.notsame', array(
-                                        '%line%' => $data->key() + 1,
+                                        '%line%' => $line,
                                         '%name1%' => $headerByKey['class_category1'],
                                         '%name2%' => $headerByKey['class_category2']
                                     ));
@@ -358,13 +359,13 @@ class CsvImportController
                                     if (preg_match('/^\d+$/', $row[$headerByKey['class_category1']])) {
                                         $ClassCategory1 = $this->classCategoryRepository->find($row[$headerByKey['class_category1']]);
                                         if (!$ClassCategory1) {
-                                            $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $headerByKey['class_category1']));
+                                            $message = trans('csvimportcontroller.notfound', array('%line%' => $line, '%name%' => $headerByKey['class_category1']));
                                             $this->addErrors($message);
                                         } else {
                                             $ProductClass->setClassCategory1($ClassCategory1);
                                         }
                                     } else {
-                                        $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $headerByKey['class_category1']));
+                                        $message = trans('csvimportcontroller.notfound', array('%line%' => $line, '%name%' => $headerByKey['class_category1']));
                                         $this->addErrors($message);
                                     }
 
@@ -372,20 +373,20 @@ class CsvImportController
                                         if (preg_match('/^\d+$/', $row[$headerByKey['class_category2']])) {
                                             $ClassCategory2 = $this->classCategoryRepository->find($row[$headerByKey['class_category2']]);
                                             if (!$ClassCategory2) {
-                                                $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $headerByKey['class_category2']));
+                                                $message = trans('csvimportcontroller.notfound', array('%line%' => $line, '%name%' => $headerByKey['class_category2']));
                                                 $this->addErrors($message);
                                             } else {
                                                 if ($ClassCategory1 &&
                                                     ($ClassCategory1->getClassName()->getId() == $ClassCategory2->getClassName()->getId())
                                                 ) {
-                                                    $message = trans('csvimportcontroller.notsame', array('%line%' => $data->key() + 1, '%name1%' => $headerByKey['class_category1'], '%name2%' => $headerByKey['class_category2']));
+                                                    $message = trans('csvimportcontroller.notsame', array('%line%' => $line, '%name1%' => $headerByKey['class_category1'], '%name2%' => $headerByKey['class_category2']));
                                                     $this->addErrors($message);
                                                 } else {
                                                     $ProductClass->setClassCategory2($ClassCategory2);
                                                 }
                                             }
                                         } else {
-                                            $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $headerByKey['class_category2']));
+                                            $message = trans('csvimportcontroller.notfound', array('%line%' => $line, '%name%' => $headerByKey['class_category2']));
                                             $this->addErrors($message);
                                         }
                                     }
@@ -397,7 +398,7 @@ class CsvImportController
                                 }
                             } else {
                                 if (isset($row[$headerByKey['class_category2']]) && StringUtil::isNotBlank($row[$headerByKey['class_category2']])) {
-                                    $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $headerByKey['class_category2']));
+                                    $message = trans('csvimportcontroller.notfound', array('%line%' => $line, '%name%' => $headerByKey['class_category2']));
                                     $this->addErrors($message);
                                 }
                             }
@@ -424,7 +425,7 @@ class CsvImportController
                                             if (preg_match('/^\d+$/', $deliveryFee) && $deliveryFee >= 0) {
                                                 $pc->setDeliveryFee($deliveryFee);
                                             } else {
-                                                $message = trans('csvimportcontroller.great_than_zero', array('%line%' => $data->key() + 1, '%name%' => $headerByKey['delivery_fee']));
+                                                $message = trans('csvimportcontroller.great_than_zero', array('%line%' => $line, '%name%' => $headerByKey['delivery_fee']));
                                                 $this->addErrors($message);
                                             }
                                         }
@@ -447,7 +448,7 @@ class CsvImportController
                                 if (isset($row[$headerByKey['class_category1']]) && isset($row[$headerByKey['class_category2']])
                                     && $row[$headerByKey['class_category1']] == $row[$headerByKey['class_category2']]) {
                                     $message = trans('csvimportcontroller.notsame', array(
-                                        '%line%' => $data->key() + 1,
+                                        '%line%' => $line,
                                         '%name1%' => $headerByKey['class_category1'],
                                         '%name2%' => $headerByKey['class_category2']
                                     ));
@@ -460,31 +461,31 @@ class CsvImportController
                                     if (preg_match('/^\d+$/', $classCategoryId1)) {
                                         $ClassCategory1 = $this->classCategoryRepository->find($classCategoryId1);
                                         if (!$ClassCategory1) {
-                                            $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $headerByKey['class_category1']));
+                                            $message = trans('csvimportcontroller.notfound', array('%line%' => $line, '%name%' => $headerByKey['class_category1']));
                                             $this->addErrors($message);
                                         }
                                     } else {
-                                        $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $headerByKey['class_category1']));
+                                        $message = trans('csvimportcontroller.notfound', array('%line%' => $line, '%name%' => $headerByKey['class_category1']));
                                         $this->addErrors($message);
                                     }
 
                                     $ClassCategory2 = null;
                                     if (isset($row[$headerByKey['class_category2']]) && StringUtil::isNotBlank($row[$headerByKey['class_category2']])) {
                                         if ($pc->getClassCategory1() != null && $pc->getClassCategory2() == null) {
-                                            $message = trans('csvimportcontroller.cannot', array('%line%' => $data->key() + 1, '%name%' => $headerByKey['class_category2']));
+                                            $message = trans('csvimportcontroller.cannot', array('%line%' => $line, '%name%' => $headerByKey['class_category2']));
                                             $this->addErrors($message);
                                         } else {
                                             if (preg_match('/^\d+$/', $classCategoryId2)) {
                                                 $ClassCategory2 = $this->classCategoryRepository->find($classCategoryId2);
                                                 if (!$ClassCategory2) {
-                                                    $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $headerByKey['class_category2']));
+                                                    $message = trans('csvimportcontroller.notfound', array('%line%' => $line, '%name%' => $headerByKey['class_category2']));
                                                     $this->addErrors($message);
                                                 } else {
                                                     if ($ClassCategory1 &&
                                                         ($ClassCategory1->getClassName()->getId() == $ClassCategory2->getClassName()->getId())
                                                     ) {
                                                         $message = trans('csvimportcontroller.notsame', array(
-                                                            '%line%' => $data->key() + 1,
+                                                            '%line%' => $line,
                                                             '%name1%' => $headerByKey['class_category1'],
                                                             '%name2%' => $headerByKey['class_category2']
                                                         ));
@@ -492,14 +493,14 @@ class CsvImportController
                                                     }
                                                 }
                                             } else {
-                                                $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $headerByKey['class_category2']));
+                                                $message = trans('csvimportcontroller.notfound', array('%line%' => $line, '%name%' => $headerByKey['class_category2']));
                                                 $this->addErrors($message);
                                             }
 
                                         }
                                     } else {
                                         if ($pc->getClassCategory1() != null && $pc->getClassCategory2() != null) {
-                                            $message = trans('csvimportcontroller.require', array('%line%' => $data->key() + 1, '%name%' => $headerByKey['class_category2']));
+                                            $message = trans('csvimportcontroller.require', array('%line%' => $line, '%name%' => $headerByKey['class_category2']));
                                             $this->addErrors($message);
                                         }
                                     }
@@ -511,7 +512,7 @@ class CsvImportController
                                             if (preg_match('/^\d+$/', $deliveryFee) && $deliveryFee >= 0) {
                                                 $ProductClass->setDeliveryFee($deliveryFee);
                                             } else {
-                                                $message = trans('csvimportcontroller.great_than_zero', array('%line%' => $data->key() + 1, '%name%' => $headerByKey['delivery_fee']));
+                                                $message = trans('csvimportcontroller.great_than_zero', array('%line%' => $line, '%name%' => $headerByKey['delivery_fee']));
                                                 $this->addErrors($message);
                                             }
                                         }
@@ -864,11 +865,12 @@ class CsvImportController
             $sortNo = 1;
             $categoriesIdList = array();
             foreach ($categories as $category) {
+                $line = $data->key() + 1;
                 if (preg_match('/^\d+$/', $category)) {
                     $Category = $this->categoryRepository->find($category);
                     if (!$Category) {
                         $message = trans('csvimportcontroller.notfound.target', array(
-                            '%line%' => $data->key() + 1,
+                            '%line%' => $line,
                             '%name%' => $this->headerByKey['product_category'],
                             '%target_name%' => $category,
                         ));
@@ -902,7 +904,7 @@ class CsvImportController
                     }
                 } else {
                     $message = trans('csvimportcontroller.notfound.target', array(
-                        '%line%' => $data->key() + 1,
+                        '%line%' => $line,
                         '%name%' => $this->headerByKey['product_category'],
                         '%target_name%' => $category,
                     ));
@@ -978,21 +980,22 @@ class CsvImportController
         $ProductClass->setProduct($Product);
         $ProductClass->setVisible(true);
 
+        $line = $data->key() + 1;
         if (isset($row[$this->headerByKey['sale_type']]) && StringUtil::isNotBlank($row[$this->headerByKey['sale_type']])) {
             if (preg_match('/^\d+$/', $row[$this->headerByKey['sale_type']])) {
                 $SaleType = $this->saleTypeRepository->find($row[$this->headerByKey['sale_type']]);
                 if (!$SaleType) {
-                    $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['sale_type']));
+                    $message = trans('csvimportcontroller.notfound', array('%line%' => $line, '%name%' => $this->headerByKey['sale_type']));
                     $this->addErrors($message);
                 } else {
                     $ProductClass->setSaleType($SaleType);
                 }
             } else {
-                $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['sale_type']));
+                $message = trans('csvimportcontroller.notfound', array('%line%' => $line, '%name%' => $this->headerByKey['sale_type']));
                 $this->addErrors($message);
             }
         } else {
-            $message = trans('csvimportcontroller.require', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['sale_type']));
+            $message = trans('csvimportcontroller.require', array('%line%' => $line, '%name%' => $this->headerByKey['sale_type']));
             $this->addErrors($message);
         }
 
@@ -1003,13 +1006,13 @@ class CsvImportController
             if (preg_match('/^\d+$/', $row[$this->headerByKey['delivery_date']])) {
                 $DeliveryDuration = $this->deliveryDurationRepository->find($row[$this->headerByKey['delivery_date']]);
                 if (!$DeliveryDuration) {
-                    $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['delivery_date']));
+                    $message = trans('csvimportcontroller.notfound', array('%line%' => $line, '%name%' => $this->headerByKey['delivery_date']));
                     $this->addErrors($message);
                 } else {
                     $ProductClass->setDeliveryDuration($DeliveryDuration);
                 }
             } else {
-                $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['delivery_date']));
+                $message = trans('csvimportcontroller.notfound', array('%line%' => $line, '%name%' => $this->headerByKey['delivery_date']));
                 $this->addErrors($message);
             }
         }
@@ -1021,7 +1024,7 @@ class CsvImportController
         }
 
         if (StringUtil::isBlank($row[$this->headerByKey['stock_unlimited']])) {
-            $message = trans('csvimportcontroller.require', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['stock_unlimited']));
+            $message = trans('csvimportcontroller.require', array('%line%' => $line, '%name%' => $this->headerByKey['stock_unlimited']));
             $this->addErrors($message);
         } else {
             if ($row[$this->headerByKey['stock_unlimited']] == (string) Constant::DISABLED) {
@@ -1032,18 +1035,18 @@ class CsvImportController
                     if (preg_match('/^\d+$/', $stock) && $stock >= 0) {
                         $ProductClass->setStock($stock);
                     } else {
-                        $message = trans('csvimportcontroller.great_than_zero', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['stock']));
+                        $message = trans('csvimportcontroller.great_than_zero', array('%line%' => $line, '%name%' => $this->headerByKey['stock']));
                         $this->addErrors($message);
                     }
                 } else {
-                    $message = trans('csvimportcontroller.require', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['stock']));
+                    $message = trans('csvimportcontroller.require', array('%line%' => $line, '%name%' => $this->headerByKey['stock']));
                     $this->addErrors($message);
                 }
             } else if ($row[$this->headerByKey['stock_unlimited']] == (string) Constant::ENABLED) {
                 $ProductClass->setStockUnlimited(true);
                 $ProductClass->setStock(null);
             } else {
-                $message = trans('csvimportcontroller.require', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['stock_unlimited']));
+                $message = trans('csvimportcontroller.require', array('%line%' => $line, '%name%' => $this->headerByKey['stock_unlimited']));
                 $this->addErrors($message);
             }
         }
@@ -1053,7 +1056,7 @@ class CsvImportController
             if (preg_match('/^\d+$/', $saleLimit) && $saleLimit >= 0) {
                 $ProductClass->setSaleLimit($saleLimit);
             } else {
-                $message = trans('csvimportcontroller.great_than_zero', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['sale_limit']));
+                $message = trans('csvimportcontroller.great_than_zero', array('%line%' => $line, '%name%' => $this->headerByKey['sale_limit']));
                 $this->addErrors($message);
             }
         }
@@ -1063,7 +1066,7 @@ class CsvImportController
             if (preg_match('/^\d+$/', $price01) && $price01 >= 0) {
                 $ProductClass->setPrice01($price01);
             } else {
-                $message = trans('csvimportcontroller.great_than_zero', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['price01']));
+                $message = trans('csvimportcontroller.great_than_zero', array('%line%' => $line, '%name%' => $this->headerByKey['price01']));
                 $this->addErrors($message);
             }
         }
@@ -1073,11 +1076,11 @@ class CsvImportController
             if (preg_match('/^\d+$/', $price02) && $price02 >= 0) {
                 $ProductClass->setPrice02($price02);
             } else {
-                $message = trans('csvimportcontroller.great_than_zero', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['price02']));
+                $message = trans('csvimportcontroller.great_than_zero', array('%line%' => $line, '%name%' => $this->headerByKey['price02']));
                 $this->addErrors($message);
             }
         } else {
-            $message = trans('csvimportcontroller.require', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['price02']));
+            $message = trans('csvimportcontroller.require', array('%line%' => $line, '%name%' => $this->headerByKey['price02']));
             $this->addErrors($message);
         }
 
@@ -1087,7 +1090,7 @@ class CsvImportController
             if (preg_match('/^\d+$/', $delivery_fee) && $delivery_fee >= 0) {
                 $ProductClass->setDeliveryFee($delivery_fee);
             } else {
-                $message = trans('csvimportcontroller.great_than_zero', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['delivery_fee']));
+                $message = trans('csvimportcontroller.great_than_zero', array('%line%' => $line, '%name%' => $this->headerByKey['delivery_fee']));
                 $this->addErrors($message);
             }
         }
@@ -1123,20 +1126,21 @@ class CsvImportController
     {
         $ProductClass->setProduct($Product);
 
+        $line = $data->key() + 1;
         if ($row[$this->headerByKey['sale_type']] == '') {
-            $message = trans('csvimportcontroller.require', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['sale_type']));
+            $message = trans('csvimportcontroller.require', array('%line%' => $line, '%name%' => $this->headerByKey['sale_type']));
             $this->addErrors($message);
         } else {
             if (preg_match('/^\d+$/', $row[$this->headerByKey['sale_type']])) {
                 $SaleType = $this->saleTypeRepository->find($row[$this->headerByKey['sale_type']]);
                 if (!$SaleType) {
-                    $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['sale_type']));
+                    $message = trans('csvimportcontroller.notfound', array('%line%' => $line, '%name%' => $this->headerByKey['sale_type']));
                     $this->addErrors($message);
                 } else {
                     $ProductClass->setSaleType($SaleType);
                 }
             } else {
-                $message = trans('csvimportcontroller.require', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['sale_type']));
+                $message = trans('csvimportcontroller.require', array('%line%' => $line, '%name%' => $this->headerByKey['sale_type']));
                 $this->addErrors($message);
             }
         }
@@ -1146,13 +1150,13 @@ class CsvImportController
             if (preg_match('/^\d+$/', $row[$this->headerByKey['class_category1']])) {
                 $ClassCategory = $this->classCategoryRepository->find($row[$this->headerByKey['class_category1']]);
                 if (!$ClassCategory) {
-                    $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['class_category1']));
+                    $message = trans('csvimportcontroller.notfound', array('%line%' => $line, '%name%' => $this->headerByKey['class_category1']));
                     $this->addErrors($message);
                 } else {
                     $ProductClass->setClassCategory1($ClassCategory);
                 }
             } else {
-                $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['class_category1']));
+                $message = trans('csvimportcontroller.notfound', array('%line%' => $line, '%name%' => $this->headerByKey['class_category1']));
                 $this->addErrors($message);
             }
         }
@@ -1161,13 +1165,13 @@ class CsvImportController
             if (preg_match('/^\d+$/', $row[$this->headerByKey['class_category2']])) {
                 $ClassCategory = $this->classCategoryRepository->find($row[$this->headerByKey['class_category2']]);
                 if (!$ClassCategory) {
-                    $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['class_category2']));
+                    $message = trans('csvimportcontroller.notfound', array('%line%' => $line, '%name%' => $this->headerByKey['class_category2']));
                     $this->addErrors($message);
                 } else {
                     $ProductClass->setClassCategory2($ClassCategory);
                 }
             } else {
-                $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['class_category2']));
+                $message = trans('csvimportcontroller.notfound', array('%line%' => $line, '%name%' => $this->headerByKey['class_category2']));
                 $this->addErrors($message);
             }
         }
@@ -1176,13 +1180,13 @@ class CsvImportController
             if (preg_match('/^\d+$/', $row[$this->headerByKey['delivery_date']])) {
                 $DeliveryDuration = $this->deliveryDurationRepository->find($row[$this->headerByKey['delivery_date']]);
                 if (!$DeliveryDuration) {
-                    $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['delivery_date']));
+                    $message = trans('csvimportcontroller.notfound', array('%line%' => $line, '%name%' => $this->headerByKey['delivery_date']));
                     $this->addErrors($message);
                 } else {
                     $ProductClass->setDeliveryDuration($DeliveryDuration);
                 }
             } else {
-                $message = trans('csvimportcontroller.notfound', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['delivery_date']));
+                $message = trans('csvimportcontroller.notfound', array('%line%' => $line, '%name%' => $this->headerByKey['delivery_date']));
                 $this->addErrors($message);
             }
         }
@@ -1194,21 +1198,21 @@ class CsvImportController
         }
 
         if ($row[$this->headerByKey['stock_unlimited']] == '') {
-            $message = trans('csvimportcontroller.require', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['stock_unlimited']));
+            $message = trans('csvimportcontroller.require', array('%line%' => $line, '%name%' => $this->headerByKey['stock_unlimited']));
             $this->addErrors($message);
         } else {
             if ($row[$this->headerByKey['stock_unlimited']] == (string) Constant::DISABLED) {
                 $ProductClass->setStockUnlimited(false);
                 // 在庫数が設定されていなければエラー
                 if ($row[$this->headerByKey['stock']] == '') {
-                    $message = trans('csvimportcontroller.require', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['stock']));
+                    $message = trans('csvimportcontroller.require', array('%line%' => $line, '%name%' => $this->headerByKey['stock']));
                     $this->addErrors($message);
                 } else {
                     $stock = str_replace(',', '', $row[$this->headerByKey['stock']]);
                     if (preg_match('/^\d+$/', $stock) && $stock >= 0) {
                         $ProductClass->setStock($row[$this->headerByKey['stock']]);
                     } else {
-                        $message = trans('csvimportcontroller.great_than_zero', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['stock']));
+                        $message = trans('csvimportcontroller.great_than_zero', array('%line%' => $line, '%name%' => $this->headerByKey['stock']));
                         $this->addErrors($message);
                     }
                 }
@@ -1217,7 +1221,7 @@ class CsvImportController
                 $ProductClass->setStockUnlimited(true);
                 $ProductClass->setStock(null);
             } else {
-                $message = trans('csvimportcontroller.require', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['stock_unlimited']));
+                $message = trans('csvimportcontroller.require', array('%line%' => $line, '%name%' => $this->headerByKey['stock_unlimited']));
                 $this->addErrors($message);
             }
         }
@@ -1227,7 +1231,7 @@ class CsvImportController
             if (preg_match('/^\d+$/', $saleLimit) && $saleLimit >= 0) {
                 $ProductClass->setSaleLimit($saleLimit);
             } else {
-                $message = trans('csvimportcontroller.great_than_zero', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['sale_limit']));
+                $message = trans('csvimportcontroller.great_than_zero', array('%line%' => $line, '%name%' => $this->headerByKey['sale_limit']));
                 $this->addErrors($message);
             }
         }
@@ -1237,20 +1241,20 @@ class CsvImportController
             if (preg_match('/^\d+$/', $price01) && $price01 >= 0) {
                 $ProductClass->setPrice01($price01);
             } else {
-                $message = trans('csvimportcontroller.great_than_zero', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['price01']));
+                $message = trans('csvimportcontroller.great_than_zero', array('%line%' => $line, '%name%' => $this->headerByKey['price01']));
                 $this->addErrors($message);
             }
         }
 
         if ($row[$this->headerByKey['price02']] == '') {
-            $message = trans('csvimportcontroller.require', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['price02']));
+            $message = trans('csvimportcontroller.require', array('%line%' => $line, '%name%' => $this->headerByKey['price02']));
             $this->addErrors($message);
         } else {
             $price02 = str_replace(',', '', $row[$this->headerByKey['price02']]);
             if (preg_match('/^\d+$/', $price02) && $price02 >= 0) {
                 $ProductClass->setPrice02($price02);
             } else {
-                $message = trans('csvimportcontroller.great_than_zero', array('%line%' => $data->key() + 1, '%name%' => $this->headerByKey['price02']));
+                $message = trans('csvimportcontroller.great_than_zero', array('%line%' => $line, '%name%' => $this->headerByKey['price02']));
                 $this->addErrors($message);
             }
         }
