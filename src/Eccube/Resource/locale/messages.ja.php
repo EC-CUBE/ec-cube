@@ -1144,7 +1144,7 @@ return [
     'admin.product.product.520' => '削除',
     'admin.product.product.521' => '登録日',
     'admin.product.product.522' => '最終更新日',
-    'admin.product.product.523' => 'ショップ用メモ欄',
+    'admin.product.product.523' => 'ショップ用メモ',
     'admin.product.product.basic_configuration' => '基本設定',
     'admin.product.product.name' => '商品名',
     'admin.product.product.require' => '必須',
