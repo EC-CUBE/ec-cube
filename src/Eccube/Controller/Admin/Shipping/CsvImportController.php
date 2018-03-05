@@ -25,34 +25,13 @@ namespace Eccube\Controller\Admin\Shipping;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Form\FormFactoryInterface;
 use Eccube\Form\Type\Admin\CsvImportType;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Eccube\Common\EccubeConfig;
 use Eccube\Exception\CsvImportException;
 
-/**
- * @Route(service=CsvImportController::class)
- */
-class CsvImportController
+class CsvImportController extends \Eccube\Controller\AbstractController
 {
-    /**
-     * @var FormFactoryInterface
-     */
-    protected $formFactory;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
     /**
      * @var array
      */
@@ -79,24 +58,6 @@ class CsvImportController
         'id'
     ];
 
-
-    /**
-     * CsvImportController constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
-     * @param EntityManagerInterface $entityManager
-     * @param FormFactoryInterface $formFactory
-     */
-    public function __construct(
-        EccubeConfig $eccubeConfig,
-        EntityManagerInterface $entityManager,
-        FormFactoryInterface $formFactory
-    ) {
-        $this->eccubeConfig = $eccubeConfig;
-        $this->entityManager = $entityManager;
-        $this->formFactory = $formFactory;
-    }
-
     /**
      * 商品登録CSVアップロード
      *
@@ -108,34 +69,23 @@ class CsvImportController
     public function csvShipping()
     {
         $form = $this->formFactory->createBuilder(CsvImportType::class)->getForm();
+        $headers = [];
 
-        return $this->render($form, $this->getMappedDescriptionHeaders());
-    }
+        try {
+            $headers = $this->getMappedDescriptionHeaders();
 
-    /**
-     * TODO: this function is not implement yet
-     *
-     * @param FormInterface $form
-     * @param array $headers
-     * @return array
-     *
-     * @throws \Doctrine\DBAL\ConnectionException
-     */
-    protected function render($form, $headers)
-    {
+            if (!empty($this->fileName)) {
+                $fs = new Filesystem();
+                $fs->remove($this->eccubeConfig['eccube_csv_temp_realdir'] . '/' . $this->fileName);
+            }
+        } catch (\Exception $e) {
+            // エラーが発生しても無視する
+        }
+
 
         if ($this->hasErrors()) {
             if ($this->entityManager) {
                 $this->entityManager->getConnection()->rollback();
-            }
-        }
-
-        if (!empty($this->fileName)) {
-            try {
-                $fs = new Filesystem();
-                $fs->remove($this->eccubeConfig['eccube_csv_temp_realdir'] . '/' . $this->fileName);
-            } catch (\Exception $e) {
-                // エラーが発生しても無視する
             }
         }
 

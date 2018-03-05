@@ -103,6 +103,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {{ form_widget(form.import_file, {'attr': {'accept': 'text/csv,text/tsv', 'class': 'd-none'}}) }}
                                     {{ form_errors(form.import_file) }}
                                 </div>
+                                {# TODO: Required validation is not implemented yet #}
                                 <button class="btn btn-ec-conversion" id="upload-button" type="submit">{{ 'admin.shipping.csv_shipping.btn_csv_upload'|trans }}</button>
                             </form>
                         </div>
