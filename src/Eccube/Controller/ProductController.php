@@ -441,8 +441,9 @@ class ProductController extends AbstractController
         );
 
         // カートへ追加
-        $isSuccess = $this->cartService->addProduct($addCartData['product_class_id'], $addCartData['quantity']);
-        if (!$isSuccess) {
+        try {
+            $this->cartService->addProduct($addCartData['product_class_id'], $addCartData['quantity']);
+        } catch (CartException $e) {
             array_push($errorMessages, 'カートの追加に失敗しました。');
         }
 

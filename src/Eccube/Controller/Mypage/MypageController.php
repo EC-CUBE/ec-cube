@@ -258,13 +258,10 @@ class MypageController extends AbstractController
                 if ($OrderItem->getProduct() &&
                     $OrderItem->getProductClass()
                 ) {
-                    $isSuccess = $this->cartService->addProduct(
+                    $this->cartService->addProduct(
                         $OrderItem->getProductClass()->getId(),
                         $OrderItem->getQuantity()
                     );
-                    if (!$isSuccess) {
-                        throw new CartException('cart.product.not.status');
-                    }
                     $this->cartService->save();
                 } else {
                     log_info(trans('cart.product.delete'), array($id));

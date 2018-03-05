@@ -28,6 +28,7 @@ use Eccube\Entity\Cart;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\ProductClass;
+use Eccube\Exception\CartException;
 use Eccube\Repository\ProductClassRepository;
 use Eccube\Service\Cart\CartItemAllocator;
 use Eccube\Service\Cart\CartItemComparator;
@@ -193,10 +194,9 @@ class CartService
     }
 
     /**
-     * カートに商品を追加します.
      * @param $ProductClass ProductClass 商品規格
-     * @param $quantity int 数量
-     * @return bool 商品を追加できた場合はtrue
+     * @param int $quantity 数量
+     * @throws CartException 例外
      */
     public function addProduct($ProductClass, $quantity = 1)
     {
@@ -206,17 +206,17 @@ class CartService
                 ->getRepository(ProductClass::class)
                 ->find($ProductClassId);
             if (is_null($ProductClass)) {
-                return false;
+                throw new CartException('cart.product.delete');
             }
         }
 
         $ClassCategory1 = $ProductClass->getClassCategory1();
         if ($ClassCategory1 && !$ClassCategory1->isVisible()) {
-            return false;
+            throw new CartException('cart.product.not.status');
         }
         $ClassCategory2 = $ProductClass->getClassCategory2();
         if ($ClassCategory2 && !$ClassCategory2->isVisible()) {
-            return false;
+            throw new CartException('cart.product.not.status');
         }
 
         $newItem = new CartItem();
@@ -226,9 +226,6 @@ class CartService
 
         $allCartItems = $this->mergeAllCartItems([$newItem]);
         $this->restoreCarts($allCartItems);
-
-
-        return true;
     }
 
     public function removeProduct($ProductClass)
