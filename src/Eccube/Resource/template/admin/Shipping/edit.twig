@@ -23,8 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['shipping', 'shipping_edit'] %}
 
-{% block title %}{{ 'admin.shipping.edit.718'|trans }}{% endblock %}
-{% block sub_title %}{{ 'admin.shipping.edit.717'|trans }}{% endblock %}
+{% block title %}{{ 'admin.shipping.edit.title'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.shipping.edit.sub_title'|trans }}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
@@ -113,7 +113,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <div class="col-8">
                                     <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
                                          title="Tooltip">
-                                        <span class="card-title">出荷概要</span>
+                                        <span class="card-title">{{ 'admin.shipping.edit.description_title'|trans }}</span>
                                         <i class="fa fa-question-circle fa-lg ml-1" aria-hidden="true"></i>
                                     </div>
                                 </div>
@@ -127,11 +127,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="row mb-2 align-items-center">
-                                            <div class="col-3"><span>出荷番号</span></div>
+                                            <div class="col-3"><span>{{ 'admin.shipping.edit.shipping_id'|trans }}</span></div>
                                             <div class="col">{{ Shipping.id ? Shipping.id }}</div>
                                         </div>
                                         <div class="row mb-2">
-                                            <div class="col-3"><span>お届け先</span></div>
+                                            <div class="col-3"><span>{{ 'admin.shipping.edit.shipping_address'|trans }}</span></div>
                                             <div class="col">
                                                 <div id="shipping-addr-area" style="{{ Shipping.id ? 'display:none' }}">
                                                     {{ form_widget(form.name.name01) }}
@@ -142,7 +142,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     {{ form_errors(form.kana.kana01) }}
                                                     {{ form_widget(form.kana.kana02) }}
                                                     {{ form_errors(form.kana.kana02) }}
-                                                    {{ form_widget(form.company_name, {'attr':{'placeholder':'会社名'}}) }}
+                                                    {{ form_widget(form.company_name, {'attr':{'placeholder':'company_name'}}) }}
                                                     {{ form_errors(form.company_name) }}
                                                     {{ form_widget(form.zip.zip01, {'attr':{'placeholder':'zip01'}}) }}-{{ form_widget(form.zip.zip02, {'attr':{'placeholder':'zip02'}}) }}
                                                     {{ form_errors(form.zip.zip01) }}{{ form_errors(form.zip.zip02) }}
@@ -156,7 +156,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     {{ form_errors(form.tel.tel01) }}
                                                     {{ form_widget(form.tel.tel02, {'attr':{'placeholder':'tel02'}}) }}
                                                     {{ form_errors(form.tel.tel02) }}
-                                                    {{ form_widget(form.tel.tel03, {'attr':{'placeholder':'zip03'}}) }}
+                                                    {{ form_widget(form.tel.tel03, {'attr':{'placeholder':'tel03'}}) }}
                                                     {{ form_errors(form.tel.tel03) }}
                                                     {{ form_widget(form.fax.fax01, {'attr':{'placeholder':'fax01'}}) }}
                                                     {{ form_errors(form.fax.fax01) }}
@@ -166,12 +166,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     {{ form_errors(form.fax.fax03) }}
                                                 </div>
                                                 {% if Shipping.id %}
-                                                    <label>{{ Shipping.name01 }} {{ Shipping.name02 }}（Shipping.kana01 Shipping.kana02）<br>
-                                                        〒{{ Shipping.zip01 }}-{{ Shipping.zip02 }}<br>
+                                                    <label>{{ Shipping.name01 }} {{ Shipping.name02 }}（{{ Shipping.kana01 }} {{ Shipping.kana02 }}）<br>
+                                                        {{ 'admin.shipping.edit.zip'|trans({
+                                                            '%zip01%': Shipping.zip01,
+                                                            '%zip02%': Shipping.zip02
+                                                        }) }}<br>
                                                         {{ Shipping.pref ~ Shipping.addr01 ~ Shipping.addr02 }}<br><a
                                                                 href="#" id="edit-shipping-addr"><i
                                                                     class="fa fa-pencil"
-                                                                    aria-hidden="true">お届け先の編集</i></a></label>
+                                                                    aria-hidden="true">{{ 'admin.shipping.edit.edit_shipping_address'|trans }}</i></a></label>
                                                 {% else %}
 
                                                     {# TODO お届け先入力のデザインを検討 #}
@@ -179,13 +182,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             </div>
                                         </div>
                                         <div class="row mb-2">
-                                            <div class="col-3"><span>注文者</span></div>
+                                            <div class="col-3"><span>{{ 'admin.shipping.edit.orderer'|trans }}</span></div>
                                             <div class="col">
                                                 {% if Shipping.id %}
                                                     {% for Order in Shipping.Orders %}
                                                         <label>{{ Order.name01 }} {{ Order.name02 }}
                                                             ({{ Order.kana01 }} {{ Order.kana02 }})
-                                                            <br>〒{{ Order.zip01 }}-{{ Order.zip02 }}
+                                                            <br>{{ 'admin.shipping.edit.zip'|trans({
+                                                                '%zip01%': Order.zip01,
+                                                                '%zip02%': Order.zip02
+                                                            }) }}
                                                             <br>{{ Order.pref.name ~ Order.addr01 ~ Order.addr02 }}
                                                         </label>
                                                     {% endfor %}
@@ -195,7 +201,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             </div>
                                         </div>
                                         <div class="row mb-2 align-items-center">
-                                            <div class="col-3"><span>出荷伝票番号</span></div>
+                                            <div class="col-3"><span>{{ 'admin.shipping.edit.slip_number'|trans }}</span></div>
                                             <div class="col">
                                                 {{ form_widget(form.tracking_number, {'attr': {'placeholder': "1234-567890"}}) }}
                                                 {{ form_errors(form.tracking_number) }}
@@ -203,15 +209,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         </div>
                                         <div class="row mb-2 align-items-center">
                                             {# TODO 出荷状況はコンバージョンエリアで登録するので不要？ #}
-                                            {#<div class="col-3"><span>出荷状況</span></div>#}
-                                            {#<div class="col">#}
+                                            <div class="col-3"><span>出荷状況</span></div>
+                                            <div class="col">
                                             {#{{ form_widget(form.ShippingStatus) }}#}
                                             {#{{ form_errors(form.ShippingStatus) }}#}
-                                            {#</div>#}
-                                            {#<div class="col-6"></div>#}
+                                            </div>
+                                            <div class="col-6"></div>
                                         </div>
                                         <div class="row mb-2 align-items-center">
-                                            <div class="col-3"><span>配送業者</span></div>
+                                            <div class="col-3"><span>{{ 'admin.shipping.edit.delivery_provider'|trans }}</span></div>
                                             <div class="col">
                                                 {{ form_widget(form.Delivery) }}
                                                 {{ form_errors(form.Delivery) }}
@@ -222,7 +228,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <div class="col-6">
                                         <div class="row mb-2 align-items-center">
                                             <div class="col-3"><i class="fa fa-calendar-check-o mr-1"
-                                                                  aria-hidden="true"></i><span>お届け希望日</span></div>
+                                                                  aria-hidden="true"></i><span>{{ 'admin.shipping.edit.date_to_deliver'|trans }}</span></div>
                                             <div class="col">
                                                 {{ form_widget(form.shipping_delivery_date) }}
                                                 {{ form_errors(form.shipping_delivery_date) }}
@@ -230,7 +236,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         </div>
                                         <div class="row mb-2 align-items-center">
                                             <div class="col-3"><i class="fa fa-clock-o mr-1"
-                                                                  aria-hidden="true"></i><span>時間帯指定</span>
+                                                                  aria-hidden="true"></i><span>{{ 'admin.shipping.edit.specified_time_zone'|trans }}</span>
                                             </div>
                                             <div class="col">
                                                 {{ form_widget(form.DeliveryTime) }}
@@ -239,7 +245,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         </div>
                                         <div class="row mb-2 align-items-center">
                                             <div class="col-3"><i class="fa fa-truck mr-1"
-                                                                  aria-hidden="true"></i><span>出荷日</span></div>
+                                                                  aria-hidden="true"></i><span>{{ 'admin.shipping.edit.ship_date'|trans }}</span></div>
                                             <div class="col">
                                                 {{ form_widget(form.shipping_date) }}
                                                 {{ form_errors(form.shipping_date) }}
@@ -247,14 +253,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         </div>
                                         <div class="row mb-2 align-items-center">
                                             <div class="col-3"><i class="fa fa-refresh mr-1"
-                                                                  aria-hidden="true"></i><span>最終更新日</span>
+                                                                  aria-hidden="true"></i><span>{{ 'admin.shipping.edit.last_update_date'|trans }}</span>
                                             </div>
                                             <div class="col">
                                                 <span>{{ Shipping.id ? Shipping.update_date|date_format }}</span></div>
                                         </div>
                                         <div class="row mb-2 align-items-center">
                                             <div class="col-3"><i class="fa fa-user mr-1"
-                                                                  aria-hidden="true"></i><span>最終更新者</span></div>
+                                                                  aria-hidden="true"></i><span>{{ 'admin.shipping.edit.last_modified_by'|trans }}</span></div>
                                             <div class="col"><span>{{ Shipping.id ? Shipping.creator }}</span>
                                             </div>
                                         </div>
@@ -269,7 +275,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <div class="col-8">
                                     <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
                                          title="Tooltip">
-                                        <span class="card-title">出荷商品情報</span><i
+                                        <span class="card-title">{{ 'admin.shipping.edit.produtcs_title'|trans }}</span><i
                                                 class="fa fa-question-circle fa-lg ml-1"
                                                 aria-hidden="true"></i></div>
                                 </div>
@@ -283,18 +289,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <div class="row mb-2">
                                     <div class="col-12">
                                         <button class="btn btn-ec-regular mr-2" type="button" data-toggle="modal"
-                                                data-target="#addProduct">商品を追加
+                                                data-target="#addProduct">{{ 'admin.shipping.edit.add_product'|trans }}
                                         </button>
                                         {# TODO 送料計算の仕様を検討 #}
                                         <button class="btn btn-ec-regular mr-2" type="button"
-                                                onclick="alert('この機能は準備中です')">送料を計算
+                                                onclick="alert('この機能は準備中です')">{{ 'admin.shipping.edit.calculate_shipping_fee'|trans }}
                                         </button>
                                         <div class="modal fade" id="addProduct" tabindex="-1" role="dialog"
                                              aria-labelledby="addProduct" aria-hidden="true">
                                             <div class="modal-dialog modal-lg" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title">商品を追加</h5>
+                                                        <h5 class="modal-title">{{ 'admin.shipping.edit.add_product'|trans }}</h5>
                                                         <button class="close" type="button" data-dismiss="modal"
                                                                 aria-label="Close"><span aria-hidden="true">×</span>
                                                         </button>
@@ -302,7 +308,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     <div class="modal-body">
                                                         {# TODO 検索項目を検討する #}
                                                         <button id="searchItemsButton"
-                                                                class="btn btn-ec-conversion px-5 mb-4" type="button">検索
+                                                                class="btn btn-ec-conversion px-5 mb-4" type="button">{{ 'admin.shipping.edit.search'|trans }}
                                                         </button>
                                                         <div id="searchItemsResult"></div>
                                                     </div>
@@ -317,12 +323,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 </div>
                                 <table id="addOrderItem" class="table table-striped table-sm mb-0">
                                     <thead class="table-active">
-                                    <th class="pt-2 pb-2 pl-3">商品名・コード</th>
-                                    <th class="pt-2 pb-2">注文番号</th>
-                                    <th class="pt-2 pb-2">単価</th>
-                                    <th class="pt-2 pb-2">数量</th>
-                                    <th class="pt-2 pb-2">税率</th>
-                                    <th class="pt-2 pb-2">小計</th>
+                                    <th class="pt-2 pb-2 pl-3">{{ 'admin.shipping.edit.product_name_and_code'|trans }}</th>
+                                    <th class="pt-2 pb-2">{{ 'admin.shipping.edit.order_id'|trans }}</th>
+                                    <th class="pt-2 pb-2">{{ 'admin.shipping.edit.price'|trans }}</th>
+                                    <th class="pt-2 pb-2">{{ 'admin.shipping.edit.quantity'|trans }}</th>
+                                    <th class="pt-2 pb-2">{{ 'admin.shipping.edit.tax_rate'|trans }}</th>
+                                    <th class="pt-2 pb-2">{{ 'admin.shipping.edit.sub_total'|trans }}</th>
                                     <th class="pt-2 pb-2 pr-3"></th>
                                     </thead>
                                     <tbody>
@@ -340,7 +346,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <div class="col-8">
                                     <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
                                          title="Tooltip">
-                                    <span class="card-title">配達用メモ<i
+                                    <span class="card-title">{{ 'admin.shipping.edit.note_title'|trans }}<i
                                                 class="fa fa-question-circle fa-lg ml-1"></i></span></div>
                                 </div>
                                 <div class="col-4 text-right"><a data-toggle="collapse" href="#freeArea"
@@ -364,7 +370,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div class="col-6">
                         <div class="c-conversionArea__leftBlockItem"><a class="c-beseLink"
                                                                         href="{{ url("admin_shipping") }}?resume=1"><i
-                                        class="fa fa-backward" aria-hidden="true"></i><span>出荷マスター</span></a>
+                                        class="fa fa-backward" aria-hidden="true"></i><span>{{ 'admin.shipping.edit.shipping_mastar'|trans }}</span></a>
                         </div>
                     </div>
                     <div class="col-6">
@@ -376,7 +382,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <div class="col-auto">
                                 {# TODO (編集時)情報更新が行われたらモーダルを表示->モーダルからsubmitする #}
                                 <button type="submit" class="btn btn-ec-conversion px-4" name="mode" value="register">
-                                    出荷情報を登録
+                                    {{ 'admin.shipping.edit.register_shipping'|trans }}
                                 </button>
                                 {#<button type="submit" class="btn btn-ec-conversion px-4" data-toggle="modal"#}
                                 {#data-target="#registerShipment">出荷情報を登録#}

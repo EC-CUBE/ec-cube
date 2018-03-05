@@ -1,10 +1,10 @@
 {% if pagination|length > 0 %}
     <table class="table table-striped table-sm mb-3">
         <thead class="table-active">
-        <th class="pt-2 pb-2 pl-3">注文日時</th>
-        <th class="pt-2 pb-2">注文番号</th>
-        <th class="pt-2 pb-2">お名前</th>
-        <th class="pt-2 pb-2">注文内容</th>
+        <th class="pt-2 pb-2 pl-3">{{ 'admin.shipping.edit.order_date'|trans }}注文日時</th>
+        <th class="pt-2 pb-2">{{ 'admin.shipping.edit.order_id'|trans }}注文番号</th>
+        <th class="pt-2 pb-2">{{ 'admin.shipping.edit.order_name'|trans }}お名前</th>
+        <th class="pt-2 pb-2">{{ 'admin.shipping.edit.order_item'|trans }}注文内容</th>
         <th class="pt-2 pb-2 pr-3"></th>
         </thead>
         <tbody>
@@ -20,7 +20,10 @@
                 <td class="align-middle">
                     <p class="m-0">
                         {{ Order.name01 }} {{ Order.name02 }} ({{ Order.kana01 }} {{ Order.kana02 }})<br>
-                        {{ Order.zip01 }}-{{ Order.zip02 }}<br>
+                        {{ 'admin.shipping.edit.zip'|trans({
+                            '%zip01%': Order.zip01,
+                            '%zip02%': Order.zip02
+                        }) }}<br>
                         {{ Order.pref.name ~ Order.addr01 ~ Order.addr02 }}<br>
                     </p>
                 </td>
@@ -47,7 +50,7 @@
 {% else %}
     <div class="card rounded border-0">
         <div class="card-body p-4">
-            <div class="text-center text-muted mb-4 h5">検索条件に合致するデータが見つかりませんでした</div>
+            <div class="text-center text-muted mb-4 h5">{{ 'admin.shipping.edit.search_not_found'|trans }}</div>
         </div>
     </div>
 {% endif %}
