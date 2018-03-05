@@ -20,13 +20,13 @@
     <td class="align-middle"><span>{{ OrderItem.tax_rate }}%</span></td>
     <td class="align-middle">
         <span>{{ OrderItem.total_price|price }}</span>
-        <small>（税込）</small>
+        <small>{{ 'admin.shipping.edit.include_tax'|trans }}</small>
     </td>
     <td class="align-middle text-right pr-3">
         <div class="row justify-content-end">
             <div class="col-auto text-center"><a class="btn btn-ec-actionIcon remove-order-item"
                                                  data-toggle="tooltip"
-                                                 data-placement="top" title="削除"><i
+                                                 data-placement="top" title="{{ 'admin.shipping.edit.remove'|trans }}"><i
                             class="fa fa-close fa-lg text-secondary"
                             aria-hidden="true"></i></a></div>
         </div>

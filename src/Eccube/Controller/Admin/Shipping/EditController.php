@@ -153,7 +153,7 @@ class EditController extends AbstractController
                         $this->entityManager->persist($TargetShipping);
                         $this->entityManager->flush();
 
-                        $this->addSuccess('admin.shipping.save.complete', 'admin');
+                        $this->addSuccess('admin.shipping.edit.save.complete', 'admin');
 
                         log_info('出荷登録完了', array($TargetShipping->getId()));
 
