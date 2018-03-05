@@ -194,6 +194,7 @@ class CartService
     }
 
     /**
+     * カートに商品を追加します.
      * @param $ProductClass ProductClass 商品規格
      * @param int $quantity 数量
      * @throws CartException 例外
