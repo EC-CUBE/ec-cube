@@ -72,9 +72,10 @@
 
     $(window).on('load',function(){
         setTimeout(function(){
-            $('#overlay').fadeOut(function(){
-                $('body').css('overflow', 'auto');
-            });
+            // FIXME #overlay の実装
+            // $('#overlay').fadeOut(function(){
+            //     $('body').css('overflow', 'auto');
+            // });
         }, 750);
     });
 })(jQuery);
