@@ -1,123 +1,56 @@
-<script>
-
-    // 受注明細行を追加する.
-    // 受注明細行のレコード数カウンタ(order_items_count)は, edit.twig側で定義している.
-    function fnAddOrderItem($row, order_item_id, order_id, type) {
-
-        type = type === undefined ? {{ constant('Eccube\\Entity\\Master\\OrderItemType::PRODUCT') }} : type;
-
-        // 受注明細行を取得.
-        var list = $('#order_item_list');
-        var orderDetailExists = false;
-
-        $('*[id^="product_info_list__item--"]').each(function () {
-            var $inputs = $(this).find(':input');
-
-            if ($inputs.filter('[id$="_ProductClass"][value="'+order_item_id+'"]').length > 0) {
-
-                orderDetailExists = true;
-                return false;
-            }
-        });
-
-        if (!orderDetailExists) {
-
-            // prototype templateを取得.
-            var newWidget = list.attr('data-prototype');
-
-            // レコード数カウンタで置換.
-            newWidget = newWidget.replace(/__name__/g, order_items_count);
-            // フォーム入力値をセットm
-            $newWidget = $(newWidget);
-            $newWidget.find('#shipping_OrderItems_' + order_items_count + '_Order').val(order_id);
-            $newWidget.find('#shipping_OrderItems_' + order_items_count + '_id').val(order_item_id);
-            $newWidget.find('#shipping_OrderItems_' + order_items_count + '_order_item_type').val(type);
-
-            // 明細行に追加.
-            list.append($newWidget);
-        }
-
-        if (orderDetailExists) {
-            // カウンタを更新.
-            order_items_count++;
-        }
-
-        // モーダル閉じる.
-        $('#searchProductModal').modal('hide');
-
-        // 再計算のためsubmit.
-        setModeAndSubmit('modal');
-
-        return false;
-    }
-
-    // 商品検索
-    $('#product_pagination a').on('click', function(event) {
-        var list = $('#searchProductModalList');
-        list.children().remove();
-
-        $.ajax({
-            type: 'GET',
-            dataType: 'html',
-            url: $(this).attr('href'),
-            success: function(data) {
-                $('#searchProductModalList').html(data);
-            },
-            error: function() {
-                alert('search product failed.');
-            }
-        });
-        event.preventDefault();
-    });
-</script>
-<div class="table-responsive">
-    <table class="table">
-        <thead>
-            <tr>
-                {{'admin.shipping.search_product.800'|trans|raw}}<th></th>
-            </tr>
+{% if pagination|length > 0 %}
+    <table class="table table-striped table-sm mb-3">
+        <thead class="table-active">
+        <th class="pt-2 pb-2 pl-3">{{ 'admin.shipping.edit.order_date'|trans }}注文日時</th>
+        <th class="pt-2 pb-2">{{ 'admin.shipping.edit.order_id'|trans }}注文番号</th>
+        <th class="pt-2 pb-2">{{ 'admin.shipping.edit.order_name'|trans }}お名前</th>
+        <th class="pt-2 pb-2">{{ 'admin.shipping.edit.order_item'|trans }}注文内容</th>
+        <th class="pt-2 pb-2 pr-3"></th>
         </thead>
         <tbody>
-            {% for OrderItem in pagination %}
-                <form name="product_form{{ OrderItem.id }}">
-                    {% set form = forms[OrderItem.id] %}
-
-                    <tr>
-                        <td>
-                            {{ OrderItem.Order.order_date ? OrderItem.Order.order_date |date("Y/m/d H:i:s") : '' }}<br>{{'admin.shipping.search_product.801'|trans({'%order_id%':OrderItem.Order.id})}}
-                        </td>
-                        <td>
-                            {{ OrderItem.Order.Name01 }} {{ OrderItem.Order.Name02 }} ({{ OrderItem.Order.Kana01 }} {{ OrderItem.Order.Kana02 }})<br>
-                            {{ OrderItem.Order.Zip01 }}-{{ OrderItem.Order.Zip02 }}<br>
-                            {{ OrderItem.Order.Pref }}{{ OrderItem.Order.Addr01 }}{{ OrderItem.Order.Addr02 }}<br>
-                        </td>
-                        <td>
-                            {{ OrderItem.product_name }}
-                            {% if OrderItem.product_code %}
-                                <span><br/>{{ OrderItem.product_code }}
-                            {% endif %}
-                            <br />{{ OrderItem.price|price }}
-                        </td>
-                        <div class="extra-form">
-                            {% for f in form.getIterator %}
-                                {% if f.vars.name matches '[^plg*]' %}
-                                    {{ form_label(f) }}
-                                    {{ form_widget(f) }}
-                                    {{ form_errors(f) }}
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-                        <td class="text-right">
-                            <button onclick="fnAddOrderItem($(this).parent().parent(), {{ OrderItem.id }}, {{ OrderItem.Order.id }}, {{ OrderItem.OrderItemType.id }})" type="button" class="btn btn-default btn-sm" name="mode" value="modal">
-                                {{'admin.shipping.search_product.802'|trans}}
-                            </button>
-                        </td>
-                    </tr>
-                </form>
-            {% endfor %}
+        {% for OrderItem in pagination %}
+            {% set Order = OrderItem.Order %}
+            <tr>
+                <td class="align-middle pl-3">
+                    <p class="m-0">{{ Order.order_date|date_format }}</p>
+                </td>
+                <td class="align-middle">
+                    <p class="m-0">{{ Order.id }}</p>
+                </td>
+                <td class="align-middle">
+                    <p class="m-0">
+                        {{ Order.name01 }} {{ Order.name02 }} ({{ Order.kana01 }} {{ Order.kana02 }})<br>
+                        {{ 'admin.shipping.edit.zip'|trans({
+                            '%zip01%': Order.zip01,
+                            '%zip02%': Order.zip02
+                        }) }}<br>
+                        {{ Order.pref.name ~ Order.addr01 ~ Order.addr02 }}<br>
+                    </p>
+                </td>
+                <td class="align-middle">
+                    <p class="m-0">
+                        {{ OrderItem.product_name }}{% if OrderItem.product_code %}({{ OrderItem.product_code }}){% endif %}
+                        <br>
+                        {{ OrderItem.price|price }}
+                    </p>
+                </td>
+                <td class="align-middle pr-3 text-right">
+                    <i class="fa fa-plus fa-lg font-weight-bold text-secondary append-order-item"
+                       data-order-item-id="{{ OrderItem.id }}"></i>
+                </td>
+            </tr>
+        {% endfor %}
         </tbody>
     </table>
-    {% if pagination.totalItemCount > 0 %}
-        {% include "pager.twig" with {'id': 'product_pagination', 'pages': pagination.paginationData, 'routes': 'admin_order_search_product_page'} %}
+    {% if pagination.getTotalItemCount / pagination.count > 1 %}
+        <div class="row justify-content-md-center mb-4">
+            {% include "@admin/styleguide_pager.twig" with { 'pages' : pagination.paginationData } %}
+        </div>
     {% endif %}
-</div>
+{% else %}
+    <div class="card rounded border-0">
+        <div class="card-body p-4">
+            <div class="text-center text-muted mb-4 h5">{{ 'admin.shipping.edit.search_not_found'|trans }}</div>
+        </div>
+    </div>
+{% endif %}
