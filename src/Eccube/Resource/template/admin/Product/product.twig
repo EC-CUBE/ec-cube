@@ -379,18 +379,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             <div>
                                                 {{ form_widget(form.class.stock) }}
                                                 {{ form_errors(form.class.stock) }}
-                                                {# TODO: form_layoutに切り出し #}
-                                                <div class="form-check mb-2">
-                                                    <input class="form-check-input"
-                                                           id="{{ form.class.stock_unlimited.vars.id }}"
-                                                           name="{{ form.class.stock_unlimited.vars.full_name }}"
-                                                           type="checkbox"
-                                                           value="{{ form.class.stock_unlimited.vars.value }}">
-                                                    <label class="form-check-label"
-                                                           for="{{ form.class.stock_unlimited.vars.id }}">
-                                                        {{ 'admin.product.product.stock_unlimited'|trans }}
-                                                    </label>
-                                                </div>
+                                                {# TODO: form_layoutの調整 #}
+                                                {#<div class="form-check mb-2">#}
+                                                    {#<input class="form-check-input"#}
+                                                           {#id="{{ form.class.stock_unlimited.vars.id }}"#}
+                                                           {#name="{{ form.class.stock_unlimited.vars.full_name }}"#}
+                                                           {#type="checkbox"#}
+                                                           {#value="{{ form.class.stock_unlimited.vars.value }}">#}
+                                                    {#<label class="form-check-label"#}
+                                                           {#for="{{ form.class.stock_unlimited.vars.id }}">#}
+                                                        {#{{ 'admin.product.product.stock_unlimited'|trans }}#}
+                                                    {#</label>#}
+                                                {#</div>#}
+                                                {{ form_widget(form.class.stock_unlimited) }}
                                                 {{ form_errors(form.class.stock_unlimited) }}
                                             </div>
                                         </div>
