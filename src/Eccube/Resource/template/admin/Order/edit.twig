@@ -205,6 +205,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                                 </div>
                                                 <div class="modal-body">
+                                                    {# TODO 会員検索をして追加できるようにする #}
                                                     {{ form_widget(searchCustomerModalForm.multi, { attr : {'class': 'mb-2searchCustomerModal', placeholder : 'admin.order.edit.290'|trans } } ) }}
                                                     <button type="button" id="searchCustomerModalButton" class="btn btn-ec-conversion px-5 mb-4 mt-2">{{ 'admin.order.edit.294'|trans }}</button>
                                                     <div class="form-group" id="searchCustomerModalList"></div>
@@ -369,6 +370,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                         <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                                     </div>
                                                     <div class="modal-body">
+                                                        {# TODO 商品を追加できるようにする #}
                                                         {{ form_widget(searchProductModalForm.id, { attr : {'class': 'mb-3',  placeholder : 'admin.order.edit.293'|trans } } ) }}
                                                         {{ form_widget(searchProductModalForm.category_id) }}
                                                         <button type="button" id="searchProductModalButton" class="btn btn-ec-conversion px-5 mb-4 mt-2">{{ 'admin.order.edit.294'|trans }}</button>
@@ -386,6 +388,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                         <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                                     </div>
                                                     <div class="modal-body">
+                                                        {# TODO その他明細を追加できるようにする #}
                                                         <table class="table table-striped mb-3">
                                                             <thead class="table-active">
                                                             <th class="pt-2 pb-2 pl-3">{{ 'admin.order.edit.label.add_item'|trans }}</th>
@@ -490,6 +493,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             </td>
                                             <td class="align-middle text-right pr-3">
                                                 <div class="row justify-content-end">
+                                                    {# TODO 商品・明細を削除できるようにする #}
                                                     <div class="col-auto text-center"><a class="btn btn-ec-actionIcon delete" data-toggle="tooltip" data-placement="top" title="{{ 'common.label.delete'|trans }}"><i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a></div>
                                                 </div>
                                             </td>
@@ -573,6 +577,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <thead class="table-active">
                                         <tr>
                                             <th class="pt-2 pb-2 pl-3">{{ 'admin.order.edit.label.mail_delivery_date'|trans }}</th>
+                                            <th class="pt-2 pb-2 pl-3">{{ 'admin.order.edit.label.mail_delivery_template'|trans }}</th>
                                             <th class="pt-2 pb-2 pr-3">{{ 'admin.order.edit.label.mail_delivery_title'|trans }}</th>
                                         </tr>
                                         </thead>
@@ -580,6 +585,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         {% for MailHistory in Order.MailHistories %}
                                             <tr>
                                                 <td class="pl-3">{{ MailHistory.send_date|date_format }}</td>
+                                                {# TODO テンプレート名の表示 #}
+                                                <td class="pl-3"></td>
                                                 <td class="pr-3"><a class="text-primary" data-toggle="modal" data-target="#mail2">{{ MailHistory.mail_subject }}</a>
                                                     <div class="modal fade" id="mail2" tabindex="-1" role="dialog" aria-labelledby="mail2" aria-hidden="true">
                                                         <div class="modal-dialog" role="document">
