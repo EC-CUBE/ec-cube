@@ -23,8 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['order', 'order_edit'] %}
 
-{% block title %}{{ 'admin.order.edit.241'|trans }}{% endblock %}
-{% block sub_title %}{{ 'admin.order.edit.242'|trans }}{% endblock %}
+{% block title %}{{ 'admin.order.edit.242'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.order.edit.241'|trans }}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 {% form_theme searchCustomerModalForm '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
@@ -116,7 +116,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">注文概要</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.order.edit.label.order'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                 </div>
                                 <div class="col-4 text-right"><a data-toggle="collapse" href="#orderOverview" aria-expanded="false" aria-controls="orderOverview"><i class="fa fa-angle-up fa-lg"></i></a></div>
                             </div>
@@ -184,7 +184,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">注文者情報</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.order.edit.label.customer_info'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                 </div>
                                 <div class="col-4 text-right"><a data-toggle="collapse" href="#ordererInfo" aria-expanded="false" aria-controls="ordererInfo"><i class="fa fa-angle-up fa-lg"></i></a></div>
                             </div>
@@ -201,12 +201,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <div class="modal-dialog modal-lg" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title font-weight-bold">会員を検索</h5>
+                                                    <h5 class="modal-title font-weight-bold">{{ 'admin.order.edit.btn.search_customer'|trans }}</h5>
                                                     <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    {{ form_widget(searchCustomerModalForm.multi, { attr : {'class': 'mb-2searchCustomerModal', placeholder : '会員ID・メールアドレス・お名前' } } ) }}
-                                                    <button type="button" id="searchCustomerModalButton" class="btn btn-ec-conversion px-5 mb-4 mt-2">検索</button>
+                                                    {{ form_widget(searchCustomerModalForm.multi, { attr : {'class': 'mb-2searchCustomerModal', placeholder : 'admin.order.edit.290'|trans } } ) }}
+                                                    <button type="button" id="searchCustomerModalButton" class="btn btn-ec-conversion px-5 mb-4 mt-2">{{ 'admin.order.edit.294'|trans }}</button>
                                                     <div class="form-group" id="searchCustomerModalList"></div>
                                                 </div>
                                             </div>
@@ -256,7 +256,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <div class="col-3"><span>{{ 'admin.common.label.address'|trans }}</span><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></div>
                                     <div class="col mb-3">
                                         <div class="row justify-content-start">
-                                            <div class="col-auto text-center pr-0"><span>〒</span></div>
+                                            <div class="col-auto text-center pr-0"><span>{{ 'admin.order.edit.261'|trans }}</span></div>
                                             <div class="col-2 mb-2">
                                                 {{ form_widget(form.zip.zip01) }}
                                                 {{ form_errors(form.zip.zip01) }}
@@ -351,7 +351,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">受注商品情報<i class="fa fa-question-circle fa-lg ml-1"></i></span></div>
+                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.order.edit.label.product_info'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></span></div>
                                 </div>
                                 <div class="col-4 text-right"><a data-toggle="collapse" href="#orderItem" aria-expanded="false" aria-controls="orderItem"><i class="fa fa-angle-up fa-lg"></i></a></div>
                             </div>
@@ -360,52 +360,52 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <div class="card-body">
                                 <div class="row justify-content-between mb-2">
                                     <div class="col-6">
-                                        <a class="btn btn-ec-regular mr-2 add" data-toggle="modal" data-target="#addProduct">商品の追加</a>
+                                        <a class="btn btn-ec-regular mr-2 add" data-toggle="modal" data-target="#addProduct">{{ 'admin.order.edit.btn.add_product'|trans }}</a>
                                         <div class="modal fade" id="addProduct" tabindex="-1" role="dialog" aria-labelledby="addProduct" aria-hidden="true">
                                             <div class="modal-dialog modal-lg" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title">商品を追加</h5>
+                                                        <h5 class="modal-title">{{ 'admin.order.edit.btn.add_product'|trans }}</h5>
                                                         <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        {{ form_widget(searchProductModalForm.id, { attr : {'class': 'mb-3',  placeholder : '商品名・ID・コード' } } ) }}
+                                                        {{ form_widget(searchProductModalForm.id, { attr : {'class': 'mb-3',  placeholder : 'admin.order.edit.293'|trans } } ) }}
                                                         {{ form_widget(searchProductModalForm.category_id) }}
-                                                        <button type="button" id="searchProductModalButton" class="btn btn-ec-conversion px-5 mb-4 mt-2">検索</button>
+                                                        <button type="button" id="searchProductModalButton" class="btn btn-ec-conversion px-5 mb-4 mt-2">{{ 'admin.order.edit.294'|trans }}</button>
                                                         <div id="searchProductModalList"></div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <a class="btn btn-ec-regular mr-2" data-toggle="modal" data-target="#addDetail">その他の明細を追加</a>
+                                        <a class="btn btn-ec-regular mr-2" data-toggle="modal" data-target="#addDetail">{{ 'admin.order.edit.btn.add_other_item'|trans }}</a>
                                         <div class="modal fade" id="addDetail" tabindex="-1" role="dialog" aria-labelledby="addDetail" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title">その他の明細を追加</h5>
+                                                        <h5 class="modal-title">{{ 'admin.order.edit.btn.add_other_item'|trans }}</h5>
                                                         <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                                     </div>
                                                     <div class="modal-body">
                                                         <table class="table table-striped mb-3">
                                                             <thead class="table-active">
-                                                            <th class="pt-2 pb-2 pl-3">追加項目</th>
+                                                            <th class="pt-2 pb-2 pl-3">{{ 'admin.order.edit.label.add_item'|trans }}</th>
                                                             <th class="pt-2 pb-2 pr-3"></th>
                                                             </thead>
                                                             <tbody>
                                                             <tr>
-                                                                <td class="align-middle pl-3">送料を追加</td>
+                                                                <td class="align-middle pl-3">{{ 'admin.order.edit.label.add_delivery_fee'|trans }}</td>
                                                                 <td class="align-middle pr-3 text-right"><a><i class="fa fa-plus fa-lg font-weight-bold text-secondary"></i></a></td>
                                                             </tr>
                                                             <tr>
-                                                                <td class="align-middle pl-3">手数料を追加</td>
+                                                                <td class="align-middle pl-3">{{ 'admin.order.edit.label.add_charge'|trans }}</td>
                                                                 <td class="align-middle pr-3 text-right"><a><i class="fa fa-plus fa-lg font-weight-bold text-secondary"></i></a></td>
                                                             </tr>
                                                             <tr>
-                                                                <td class="align-middle pl-3">値引きを追加</td>
+                                                                <td class="align-middle pl-3">{{ 'admin.order.edit.label.add_discount'|trans }}</td>
                                                                 <td class="align-middle pr-3 text-right"><a><i class="fa fa-plus fa-lg font-weight-bold text-secondary"></i></a></td>
                                                             </tr>
                                                             <tr>
-                                                                <td class="align-middle pl-3">空白の明細を追加</td>
+                                                                <td class="align-middle pl-3">{{ 'admin.order.edit.label.add_blank'|trans }}</td>
                                                                 <td class="align-middle pr-3 text-right"><a><i class="fa fa-plus fa-lg font-weight-bold text-secondary"></i></a></td>
                                                             </tr>
                                                             </tbody>
@@ -433,7 +433,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                        data-prototype="{% filter escape %}{{ include('@admin/Order/order_item_prototype.twig', {'orderItemForm': form.OrderItems.vars.prototype}) }}{% endfilter %}">
                                     <thead class="table-active">
                                     <tr>
-                                        <th class="pt-2 pb-2 pl-3">{{ 'admin.common.label.product_name'|trans }}</th>
+                                        <th class="pt-2 pb-2 pl-3">{{ 'admin.order.edit.label.product_name_code'|trans }}</th>
                                         <th class="pt-2 pb-2">{{ 'admin.order.edit.246'|trans }}</th>
                                         <th class="pt-2 pb-2">{{ 'admin.common.label.price02'|trans }}</th>
                                         <th class="pt-2 pb-2">{{ 'admin.common.label.quantity'|trans }}</th>
@@ -490,7 +490,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             </td>
                                             <td class="align-middle text-right pr-3">
                                                 <div class="row justify-content-end">
-                                                    <div class="col-auto text-center"><a class="btn btn-ec-actionIcon delete" data-toggle="tooltip" data-placement="top" title="削除"><i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a></div>
+                                                    <div class="col-auto text-center"><a class="btn btn-ec-actionIcon delete" data-toggle="tooltip" data-placement="top" title="{{ 'common.label.delete'|trans }}"><i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a></div>
                                                 </div>
                                             </td>
                                             {{ form_widget(orderItemForm.Order) }}
@@ -513,19 +513,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 </table>
                                 <hr class="mt-0">
                                 <div class="row justify-content-end mb-3">
-                                    <div class="col-auto"><span class="align-middle">{{ 'admin.common.label.subtotal'|trans }}</span></div>
+                                    <div class="col-auto"><span class="align-middle">{{ 'admin.order.edit.276'|trans }}</span></div>
                                     <div class="col-2 text-right"><span class="h4 align-middle font-weight-normal">{{ Order.subtotal|price }}</span></div>
                                 </div>
                                 <div class="row justify-content-end mb-3">
-                                    <div class="col-auto"><span class="align-middle">{{ 'admin.common.label.discount'|trans }}</span></div>
+                                    <div class="col-auto"><span class="align-middle">{{ 'admin.order.edit.277'|trans }}</span></div>
                                     <div class="col-2 text-right"><span class="h4 align-middle text-danger font-weight-normal">- {{ Order.discount|price }}</span></div>
                                 </div>
                                 <div class="row justify-content-end mb-3">
-                                    <div class="col-auto"><span class="align-middle">{{ 'admin.common.label.delivery_fee'|trans }}</span></div>
+                                    <div class="col-auto"><span class="align-middle">{{ 'admin.order.edit.279'|trans }}</span></div>
                                     <div class="col-2 text-right"><span class="h4 align-middle font-weight-normal">{{ Order.delivery_fee_total|price }}</span></div>
                                 </div>
                                 <div class="row justify-content-end mb-3">
-                                    <div class="col-auto"><span class="align-middle">{{ 'admin.common.label.charge'|trans }}</span></div>
+                                    <div class="col-auto"><span class="align-middle">{{ 'admin.order.edit.280'|trans }}</span></div>
                                     <div class="col-2 text-right"><span class="h4 align-middle font-weight-normal">{{ Order.charge|price }}</span></div>
                                 </div>
                                 <div class="row justify-content-end mb-3">
@@ -563,7 +563,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="card rounded border-0 mb-4">
                             <div class="card-header">
                                 <div class="row">
-                                    <div class="col-8"><span class="card-title">メール配信履歴</span></div>
+                                    <div class="col-8"><span class="card-title">{{ 'admin.order.edit.label.mail_delivery_history'|trans }}</span></div>
                                     <div class="col-4 text-right"><a data-toggle="collapse" href="#mailHistory" aria-expanded="false" aria-controls="mailHistory"><i class="fa fa-angle-up fa-lg"></i></a></div>
                                 </div>
                             </div>
@@ -572,8 +572,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <table class="table table-striped">
                                         <thead class="table-active">
                                         <tr>
-                                            <th class="pt-2 pb-2 pl-3">配信日</th>
-                                            <th class="pt-2 pb-2 pr-3">件名</th>
+                                            <th class="pt-2 pb-2 pl-3">{{ 'admin.order.edit.label.mail_delivery_date'|trans }}</th>
+                                            <th class="pt-2 pb-2 pr-3">{{ 'admin.order.edit.label.mail_delivery_title'|trans }}</th>
                                         </tr>
                                         </thead>
                                         <tbody>
