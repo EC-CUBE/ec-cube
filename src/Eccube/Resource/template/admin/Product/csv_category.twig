@@ -83,14 +83,14 @@ $(function() {
                             <form id="upload-form" class="mb-2" method="post" action="{{ url('admin_product_category_csv_import') }}" enctype="multipart/form-data">
                                 {{ form_widget(form._token) }}
                                 <div class="mb-2">
-                                    <a class="btn btn-ec-regular mr-2" id="btn_select"  onclick="$('#admin_csv_import_import_file').click()">{{ 'admin.product.csv_category.choose_file'|trans}}</a><span id="admin_csv_import_import_file_name">{{ 'admin.product.csv_category.not_selected'|trans}}</span>
-                                    {{ form_widget(form.import_file, {'attr': {'accept': 'text/csv,text/tsv', 'class': 'd-none'}}) }}
+                                    {#<a class="btn btn-ec-regular mr-2" id="btn_select"  onclick="$('#admin_csv_import_import_file').click()">{{ 'admin.product.csv_category.choose_file'|trans}}</a><span id="admin_csv_import_import_file_name">{{ 'admin.product.csv_category.not_selected'|trans}}</span>#}
+                                    {# TODO: Required validation is not implemented yet, style sheet of input file#}
+                                    {{ form_widget(form.import_file, {'attr': {'accept': 'text/csv,text/tsv'}}) }}
                                     {{ form_errors(form.import_file) }}
                                 </div>
                                 {% for error in errors %}
                                     <div id="upload_box__error--{{ loop.index }}" class="text-danger">{{ error.message }}</div>
                                 {% endfor %}
-                                {# TODO: Required validation is not implemented yet #}
                                 <button class="btn btn-ec-conversion" id="upload-button" type="submit">{{ 'admin.product.csv_category.execute'|trans}}</button>
                             </form>
                         </div>
