@@ -1185,7 +1185,6 @@ return [
     'admin.setting.shop.csv.561' => '一つ下',
     'admin.setting.shop.csv.562' => '一番上',
     'admin.setting.shop.csv.563' => '一番下',
-    'admin.setting.shop.csv.564' => '設定',
     'admin.setting.shop.csv.565' => 'CSV出力項目',
     'admin.setting.shop.csv.566' => 'CSV出力種別',
     'admin.setting.shop.csv.567' => '操作項目',
