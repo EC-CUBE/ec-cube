@@ -23,14 +23,14 @@
 
 namespace Eccube\Controller\Admin\Shipping;
 
+use Eccube\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Eccube\Form\Type\Admin\CsvImportType;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Eccube\Exception\CsvImportException;
 
-class CsvImportController extends \Eccube\Controller\AbstractController
+class CsvImportController extends AbstractController
 {
     /**
      * @var array
