@@ -1238,17 +1238,32 @@ class CsvImportController
         );
     }
 
-
     /**
      * カテゴリCSVヘッダー定義
      */
     private function getCategoryCsvHeader()
     {
         return array(
-            'カテゴリID' => 'id',
-            'カテゴリ名' => 'category_name',
-            '親カテゴリID' => 'parent_category_id',
-            'カテゴリ削除フラグ' => 'category_del_flg',
+            trans('admin.product.csv_category.category_id') => array(
+                'id' => 'id',
+                'description' => 'admin.product.csv_category.category_id_description',
+                'required' => false
+            ),
+            trans('admin.product.csv_category.category_name') => array(
+                'id' => 'category_name',
+                'description' => '',
+                'required' => true
+            ),
+            trans('admin.product.csv_category.parent_category_id') => array(
+                'id' => 'parent_category_id',
+                'description' => '',
+                'required' => false
+            ),
+            trans('admin.product.csv_category.category_delete_flag') => array(
+                'id' => 'category_del_flg',
+                'description' => '',
+                'required' => false
+            ),
         );
     }
 
