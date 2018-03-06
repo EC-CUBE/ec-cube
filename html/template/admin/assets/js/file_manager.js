@@ -223,59 +223,63 @@
             if(level <= (old_level - 1)) {
                 tmp_level = old_level - level;
                 for(var up_roop = 0; up_roop <= tmp_level; up_roop++) {
-                    eccube.fileManager.tree += '</div>';
+                    eccube.fileManager.tree += '</label>';
                 }
             }
 
             // 同一階層で次のフォルダへ
             if(id !== old_id && level === old_level) {
-                eccube.fileManager.tree += '</div>';
+                eccube.fileManager.tree += '</label>';
             }
 
-            // 階層の分だけスペースを入れる
-            for(var space_cnt = 0; space_cnt < arrTree[i][3]; space_cnt++) {
-                eccube.fileManager.tree += "&nbsp;&nbsp;&nbsp;";
-            }
+            // // 階層の分だけスペースを入れる
+            // for(var space_cnt = 0; space_cnt < arrTree[i][3]; space_cnt++) {
+            //     eccube.fileManager.tree += "&nbsp;&nbsp;&nbsp;";
+            // }
 
             // 階層画像の表示・非表示処理
-            if(arrTree[i][4]) {
-                if(arrTree[i][1] === '_parent') {
-                    sort_no_img = eccube.fileManager.IMG_MINUS;
-                } else {
-                    sort_no_img = eccube.fileManager.IMG_NORMAL;
-                }
-                // 開き状態を保持
-                eccube.fileManager.arrTreeStatus.push(arrTree[i][2]);
-                display = 'block';
-            } else {
-                if(arrTree[i][1] === '_parent') {
-                    sort_no_img = eccube.fileManager.IMG_PLUS;
-                } else {
-                    sort_no_img = eccube.fileManager.IMG_NORMAL;
-                }
-                display = 'none';
-            }
+            // if(arrTree[i][4]) {
+            //     if(arrTree[i][1] === '_parent') {
+            //         sort_no_img = eccube.fileManager.IMG_MINUS;
+            //     } else {
+            //         sort_no_img = eccube.fileManager.IMG_NORMAL;
+            //     }
+            //     // 開き状態を保持
+            //     eccube.fileManager.arrTreeStatus.push(arrTree[i][2]);
+            //     display = 'block';
+            // } else {
+            //     if(arrTree[i][1] === '_parent') {
+            //         sort_no_img = eccube.fileManager.IMG_PLUS;
+            //     } else {
+            //         sort_no_img = eccube.fileManager.IMG_NORMAL;
+            //     }
+            //     display = 'none';
+            // }
 
-            arrFileSplit = arrTree[i][2].split("/");
+          arrFileSplit = arrTree[i][2].split("/");
+          console.log(arrFileSplit);
+          
             file_name = arrFileSplit[arrFileSplit.length-1];
+          file_name = file_name ? file_name : 'user_data';
 
-            // フォルダの画像を選択
+          // フォルダの画像を選択
             if(arrTree[i][2] === openFolder) {
-                folder_img = eccube.fileManager.IMG_FOLDER_OPEN;
-                file_name = "<b>" + file_name + "</b>";
+                //folder_img = eccube.fileManager.IMG_FOLDER_OPEN;
+              folder_img = 'collapsed';
             } else {
-                folder_img = eccube.fileManager.IMG_FOLDER_CLOSE;
+              folder_img = 'collapse';
+                //folder_img = eccube.fileManager.IMG_FOLDER_CLOSE;
             }
 
             // 階層画像に子供がいたらオンクリック処理をつける
-            if(sort_no_img !== eccube.fileManager.IMG_NORMAL) {
-                eccube.fileManager.tree += '<a href="javascript:eccube.fileManager.toggleTreeMenu(\'tree'+ i +'\',\'sort_no_img'+ i +'\',\''+ arrTree[i][2] +'\')"><span id="sort_no_img'+ i +'">' + sort_no_img + '</span>';
-            } else {
-                eccube.fileManager.tree += '<span id="sort_no_img'+ i +'">' + sort_no_img + '</span>';
+            // if(sort_no_img !== eccube.fileManager.IMG_NORMAL) {
+            //     eccube.fileManager.tree += '<a href="javascript:eccube.fileManager.toggleTreeMenu(\'tree'+ i +'\',\'sort_no_img'+ i +'\',\''+ arrTree[i][2] +'\')"><span id="sort_no_img'+ i +'">' + sort_no_img + '</span>';
+            // } else {
+            //     eccube.fileManager.tree += '<span id="sort_no_img'+ i +'">' + sort_no_img + '</span>';
 
-            }
-            eccube.fileManager.tree += '<a href="javascript:eccube.fileManager.openFolder(\''+ arrTree[i][2] +'\')"><span id="tree_img'+ i +'">' + folder_img + '&nbsp;'+ file_name +'</span></a><br/>';
-            eccube.fileManager.tree += '<div id="tree'+ i +'" style="display:'+ display +'">';
+            // }
+            eccube.fileManager.tree += '<li><label class="collapsed" data-toggle="collapse" href="#directory_userdata" aria-expanded="false" aria-controls="directory_userdata"><a href="javascript:eccube.fileManager.openFolder(\''+ arrTree[i][2] +'\')">' + file_name +'</a></label></li>';
+            // eccube.fileManager.tree += '<label id="tree'+ i +'" class="' + folder_img + '">';
 
         }
         document.getElementById(view_id).innerHTML = eccube.fileManager.tree;
