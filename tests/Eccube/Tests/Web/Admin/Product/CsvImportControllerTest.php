@@ -6,6 +6,7 @@ use Eccube\Entity\Product;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Faker\Generator;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class CsvImportControllerTest extends AbstractAdminWebTestCase
@@ -616,8 +617,9 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $Products = $this->productRepo->findAll();
         $this->actual = count($Products);
         $this->verify();
-        $this->assertRegexp("/$expectedMessage/u", $crawler->filter('div#upload_file_box__body_inner')->text());
+        $this->assertRegexp("/$expectedMessage/u", $crawler->filter('form#upload-form')->text());
     }
+
     /**
      * Imported product status flg is incorrect.
      *
@@ -631,12 +633,13 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $faker = $this->getFaker();
         // 1 product
         $csv[] = array('公開ステータス(ID)', '商品名', '販売種別(ID)', '在庫数無制限フラグ', '販売価格');
-        $csv[] = array($status,  "商品名".$faker->word."商品名", 1, 1, $faker->randomNumber(5));
+        $csv[] = array($status, "商品名".$faker->word."商品名", 1, 1, $faker->randomNumber(5));
         $this->filepath = $this->createCsvFromArray($csv);
         $crawler = $this->scenario();
 
-        $this->assertRegexp("/$expectedMessage/u", $crawler->filter('div#upload_file_box__body_inner')->text());
+        $this->assertRegexp("/$expectedMessage/u", $crawler->filter('form#upload-form')->text());
     }
+
     /**
      * Data for case check product id.
      *
