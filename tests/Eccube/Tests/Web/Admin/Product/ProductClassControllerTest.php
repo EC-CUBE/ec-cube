@@ -89,7 +89,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         $csvExportUrl = $crawler->filter('div#edit_box__footer div p a')->selectLink('前のページに戻る')->link()->getUri();
 
         $crawler = $this->client->request('GET', $csvExportUrl);
-        $panelName = $crawler->filter('div#main h1 span')->text();
+        $panelName = $crawler->filter('#page_admin_product_product_edit > div.c-container > div.c-contentsArea > div > div > span')->text();
         $this->assertContains('商品登録', $panelName);
     }
 
