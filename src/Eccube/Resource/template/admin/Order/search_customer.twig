@@ -1,36 +1,35 @@
 <script>
-    $('.set-customer').on('click', function () {
+    $('.set-customer').on('click', function() {
         $.ajax({
-            type: 'POST',
-            data: { 'id' : this.dataset.customer },
             url: '{{ url('admin_order_search_customer_by_id') }}',
-            success: function(data) {
-                // 顧客情報をフォームにセットする.
-                $('#order_CustomerId').html(data['id']);
-                $('#order_Customer').val(data['id']);
-                $('#order_name_name01').val(data['name01']);
-                $('#order_name_name02').val(data['name02']);
-                $('#order_kana_kana01').val(data['kana01']);
-                $('#order_kana_kana02').val(data['kana02']);
-                $('#order_zip_zip01').val(data['zip01']);
-                $('#order_zip_zip02').val(data['zip02']);
-                $('#order_address_pref').val(data['pref']);
-                $('#order_address_addr01').val(data['addr01']);
-                $('#order_address_addr02').val(data['addr02']);
-                $('#order_email').val(data['email']);
-                $('#order_tel_tel01').val(data['tel01']);
-                $('#order_tel_tel02').val(data['tel02']);
-                $('#order_tel_tel03').val(data['tel03']);
-                $('#order_fax_fax01').val(data['fax01']);
-                $('#order_fax_fax02').val(data['fax02']);
-                $('#order_fax_fax03').val(data['fax03']);
-                $('#order_company_name').val(data['company_name']);
-                // モーダルを閉じる.
-                $('#searchCustomerModal').modal('hide');
-            },
-            error: function() {
-                alert('search customer(by id) failed.');
-            }
+            type: 'POST',
+            dataType: 'json',
+            data: {'id': this.dataset.customer}
+        }).done(function(data) {
+            // 顧客情報をフォームにセットする.
+            $('#order_CustomerId').html(data['id']);
+            $('#order_Customer').val(data['id']);
+            $('#order_name_name01').val(data['name01']);
+            $('#order_name_name02').val(data['name02']);
+            $('#order_kana_kana01').val(data['kana01']);
+            $('#order_kana_kana02').val(data['kana02']);
+            $('#order_zip_zip01').val(data['zip01']);
+            $('#order_zip_zip02').val(data['zip02']);
+            $('#order_address_pref').val(data['pref']);
+            $('#order_address_addr01').val(data['addr01']);
+            $('#order_address_addr02').val(data['addr02']);
+            $('#order_email').val(data['email']);
+            $('#order_tel_tel01').val(data['tel01']);
+            $('#order_tel_tel02').val(data['tel02']);
+            $('#order_tel_tel03').val(data['tel03']);
+            $('#order_fax_fax01').val(data['fax01']);
+            $('#order_fax_fax02').val(data['fax02']);
+            $('#order_fax_fax03').val(data['fax03']);
+            $('#order_company_name').val(data['company_name']);
+            // モーダルを閉じる.
+            $('#searchCustomerModal').modal('hide');
+        }).fail(function(data) {
+            alert('search customer(by id) failed.');
         });
     });
 
@@ -41,54 +40,47 @@
             list.children().remove();
 
             $.ajax({
-                type: 'GET',
-                dataType: 'html',
                 url: $(this).attr('href'),
-                success: function(data) {
-                    $('#searchCustomerModalList').html(data);
-                },
-                error: function() {
-                    alert('search customer failed.');
-                }
+                type: 'GET',
+                dataType: 'html'
+            }).done(function(data) {
+                $('#searchCustomerModalList').html(data);
+            }).fail(function(data) {
+                alert('search customer failed.');
             });
         }
         event.preventDefault();
     });
 </script>
-<div class="table-responsive">
-    <table class="table">
-        <thead >
-            <tr id="search_customer_modal_box__body_inner_header">
-                <th>{{'admin.order.search_customer.373'|trans}}</th>
-                <th>{{'admin.order.search_customer.374'|trans}}</th>
-                <th>{{'admin.order.search_customer.375'|trans}}</th>
-                <th>{{'admin.order.search_customer.376'|trans}}</th>
-                <th>{{'admin.order.search_customer.377'|trans}}</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for Customer in data %}
-                <tr>
-                    <td>
-                        {{ Customer.id }}
-                    </td>
-                    <td>
-                        {{ Customer.name }}
-                    </td>
-                    <td>
-                        {{ Customer.tel }}
-                    </td>
-                    <td>
-                        {{ Customer.email }}
-                    </td>
-                    <td>
-                        <button type="button" class="btn btn-default btn-sm set-customer" data-customer="{{ Customer.id }}">{{'admin.order.search_customer.378'|trans}}</button>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    {% if pagination.totalItemCount > 0 %}
-        {% include "pager.twig" with {'id': 'customer_pagination', 'pages': pagination.paginationData, 'routes': 'admin_order_search_customer_html_page'} %}
-    {% endif %}
-</div>
+
+<table class="table table-striped">
+    <thead class="table-active">
+    <tr>
+        <th class="pt-2 pb-2 pl-3">{{ 'admin.common.label.id'|trans }}</th>
+        <th class="pt-2 pb-2">{{ 'admin.common.label.name'|trans }}</th>
+        <th class="pt-2 pb-2">{{ 'admin.common.label.tel'|trans }}</th>
+        <th class="pt-2 pb-2">{{ 'admin.common.label.email'|trans }}</th>
+        <th class="pt-2 pb-2 pl-5">&nbsp;</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for Customer in data %}
+        <tr>
+            <td class="text-center"><span>{{ Customer.id }}</span></td>
+            <td><span>{{ Customer.name }}</span></td>
+            <td><span>{{ Customer.tel }}</span></td>
+            <td><span>{{ Customer.email }}</span></td>
+            <td>
+                <div class="row justify-content-end pr-2">
+                    <button type="button" class="btn btn-ec-actionIcon set-customer" data-customer="{{ Customer.id }}"><i class="fa fa-plus fa-lg text-secondary" aria-hidden="true"></i></button>
+                </div>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% if pagination.totalItemCount > 0 %}
+    <div class="row justify-content-md-center mb-4">
+        {% include '@admin/styleguide_pager.twig' with {'id': 'customer_pagination', 'pages': pagination.paginationData, 'routes': 'admin_order_search_customer_html_page'} %}
+    </div>
+{% endif %}
