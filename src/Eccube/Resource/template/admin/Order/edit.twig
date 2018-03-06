@@ -157,6 +157,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         </div>
                                     </div>
                                     <div class="col-6">
+                                        {# TODO 日付か日時か #}
                                         <div class="row mb-3">
                                             <div class="col-3"><i class="fa fa-inbox mr-2" aria-hidden="true"></i><span>{{ 'admin.order.edit.label.order_date'|trans }}</span></div>
                                             <div class="col"><span>{{ Order.order_date ? Order.order_date|date('Y/m/d H:i:s') : '' }}</span></div>
@@ -514,6 +515,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     </tbody>
                                 </table>
                                 <hr class="mt-0">
+                                {# TODO 小計,内値引き,内送料,内手数料の金額が明細と合わない #}
                                 <div class="row justify-content-end mb-3">
                                     <div class="col-auto"><span class="align-middle">{{ 'admin.order.edit.276'|trans }}</span></div>
                                     <div class="col-2 text-right"><span class="h4 align-middle font-weight-normal">{{ Order.subtotal|price }}</span></div>
