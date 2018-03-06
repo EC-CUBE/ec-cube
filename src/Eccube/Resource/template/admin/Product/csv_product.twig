@@ -77,7 +77,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <form enctype="multipart/form-data" id="upload-form" method="post" action="{{ url('admin_product_csv_import') }}">
                                     {{ form_widget(form._token) }}
                                     {#Todo: do js script#}
-                                    {{ form_widget(form.import_file, {'attr': {'accept': 'text/csv,text/tsv', 'class': 'mb-2 btn btn-ec-regular mr-2'}}) }}
+                                    {{ form_widget(form.import_file, {'attr': {'accept': 'text/csv,text/tsv', 'class': 'mb-2'}}) }}
                                     {{ form_errors(form.import_file) }}
                                     {% for error in errors %}
                                         <div id="upload_file_box__upload_error--{{ loop.index }}" class="text-danger">{{ error.message }}</div>
