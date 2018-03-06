@@ -1,6 +1,10 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
+    # container parameters
+    container.dumper.inline_class_loader: true
+
+    # ec-cube parameters
     env(ECCUBE_LOCALE): 'ja'
     env(ECCUBE_TIMEZONE): 'Asia/Tokyo'
     env(ECCUBE_CURRENCY): 'JPY'

@@ -107,9 +107,6 @@
     "fzaninotto/faker": {
         "version": "v1.7.1"
     },
-    "gecko-packages/gecko-php-unit": {
-        "version": "v3.0"
-    },
     "guzzlehttp/guzzle": {
         "version": "6.3.0"
     },
