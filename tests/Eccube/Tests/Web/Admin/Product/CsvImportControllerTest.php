@@ -451,7 +451,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->actual = count($arrCategory);
         $this->verify();
 
-        $this->assertRegexp('/2行目のカテゴリ名が設定されていません。/u', $crawler->filter('div#upload_box__body')->text());
+        $this->assertRegexp('/2行目のカテゴリ名が設定されていません。/u', $crawler->filter('div#upload_box__error--1')->text());
     }
 
     /**
@@ -477,7 +477,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->actual = count($arrCategory);
         $this->verify();
 
-        $this->assertRegexp('/CSVのフォーマットが一致しません。/u', $crawler->filter('div#upload_box__body')->text());
+        $this->assertRegexp('/CSVのフォーマットが一致しません。/u', $crawler->filter('div#upload_box__error--1')->text());
     }
 
     /**

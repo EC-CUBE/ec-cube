@@ -21,72 +21,222 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 #}
-{% extends '@admin/default_frame.twig' %}
+{% extends '@admin/styleguide_frame.twig' %}
 
 {% set menus = ['content', 'layout'] %}
 
-{% block title %}{{'admin.content.layout_list.45'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.content.layout_list.46'|trans}}{% endblock %}
+{% block title %}{{'admin.content.layout_list.46'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.content.layout_list.45'|trans}}{% endblock %}
 
 {% block main %}
-    <div id="page_wrap" class="container-fluid">
-        <div id="layout_list" class="row">
-            <div id="layout_list_box" class="col-md-12">
-                <div id="layout_list__body" class="box">
-                    <div id="layout_list_box__header" class="box-header">
-                        <div class="box-title">
-                            {{'admin.content.layout_list.47'|trans}}
-                        </div>
+    <div class="c-outsideBlock">
+        <div class="c-outsideBlock__contents">
+            <div class="row">
+                <div class="col text-center">
+                    <div class="btn-group nav d-inline-flex" id="pills-tab" role="tablist">
+                        <a class="nav-link active btn btn-ec-tab py-2 pl-4 pr-4" id="pills-pc-tab" data-toggle="pill" href="#pills-pc" role="tab" aria-controls="pills-pc" aria-selected="true">{{ 'admin.content.layout_list.device_pc'|trans }}</a>
+                        <a class="nav-link btn btn-ec-tab py-2 pl-4 pr-4" id="pills-mobile-tab" data-toggle="pill" href="#pills-mobile" role="tab" aria-controls="pills-mobile" aria-selected="false">{{ 'admin.content.layout_list.device_mobile'|trans }}</a>
                     </div>
-                    <div id="sortable_list_box" class="box-body no-padding no-border">
-                        <div id="sortable_list_box__list" class="sortable_list">
-                            <div class="tableish">
-                                <div class="item_box tr" style="background-color: #F9F9F9;">
-                                    <div class="item_pattern td"><strong>ID</strong></div>
-                                    <div class="item_pattern td"><strong>{{'admin.content.layout_list.48'|trans}}</strong></div>
-                                    <div class="item_pattern td"><strong>{{'admin.content.layout_list.49'|trans}}</strong></div>
-                                    <div class="item_pattern td"></div>
-                                </div>
-                                {% for Layout in Layouts %}
-                                    <div id="sortable_list_box__item--{{ Layout.id }}" class="item_box tr">
-                                        <div id="sortable_list_box__id--{{ Layout.id }}" class="item_pattern td">
-                                            {{ Layout.id }}
-                                        </div>
-                                        <div id="sortable_list_box__name--{{ Layout.id }}" class="item_pattern td">
-                                            {{ Layout.name }}
-                                        </div>
-                                        <div id="sortable_list_box__device--{{ Layout.id }}" class="td">
-                                            {{ Layout.device_type }}
-                                        </div>
-                                        <div id="sortable_list_box__menu_box--{{ Layout.id }}" class="icon_edit td">
-                                            <div id="sortable_list_box__menu_box_toggle--{{ Layout.id }}" class="dropdown">
-                                                <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
-                                                <ul id="sortable_list_box__menu--{{ Layout.id }}" class="dropdown-menu dropdown-menu-right">
-                                                    <li>
-                                                        <a href="{{ url('admin_content_layout_edit', { id : Layout.id } ) }}" >{{'admin.content.layout_list.50'|trans}}</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="{{ url('admin_content_layout_delete', { 'id': Layout.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="{{'admin.content.layout_list.51'|trans}}">{{'common.label.delete'|trans}}</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div><!-- /.item_box -->
-                                {% endfor %}
-
-                            </div>
-                        </div>
-                    </div><!-- /.box-body -->
-                </div><!-- /.box -->
-                <!-- ▲ データがある時 ▲ -->
-            </div><!-- /.col -->
-
-            <div id="layout_list__footer" class="row btn_area2">
-                <div id="layout_list__insert_button" class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center">
-                    <a class="btn btn-primary btn-block btn-lg" href="{{ url('admin_content_layout_new')}}">{{'admin.content.layout_list.52'|trans}}</a>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="c-contentsArea__cols">
+        <div class="c-contentsArea__primaryCol">
+            <div class="c-primaryCol">
+                <div class="tab-content" id="pills-tabContent">
+                    <div class="tab-pane fade show active" id="pills-pc" role="tabpanel" aria-labelledby="pills-pc-tab">
+                        {# TODO レイアウト追加画面(PC)に移動する #}
+                        <div class="d-block mb-3">
+                            <a class="btn btn-ec-regular" href="{{ url('admin_content_layout_new')}}">{{ 'admin.content.layout_list.add_pc_layout'|trans }}</a>
+                        </div>
+                        <div class="card rounded border-0 mb-4">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.content.layout_list.default_layout'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                    </div>
+                                    <div class="col-4 text-right"><a data-toggle="collapse" href="#defaultLayout-pc" aria-expanded="false" aria-controls="defaultLayout-pc"><i class="fa fa-angle-up fa-lg"></i></a></div>
+                                </div>
+                            </div>
+                            <div class="collapse show ec-cardCollapse" id="defaultLayout-pc">
+                                <div class="card-body">
+                                    {# TODO デフォルトのレイアウトを選択して登録できるようにする #}
+                                    <div class="row">
+                                        <div class="col-3 pr-0">
+                                            <form>
+                                                <select class="form-control">
+                                                    {% for Layout in Layouts %}
+                                                        <option value="">{{ Layout.name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </form>
+                                        </div>
+                                        <div class="col">
+                                            <button class="btn btn-ec-regular" type="button">{{ 'common.label.save'|trans }}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
+                        {# layouts #}
+                        {% for Layout in Layouts %}
+                            {% if Layout.devicetype.id == constant('\\Eccube\\Entity\\Master\\DeviceType::DEVICE_TYPE_PC') %}
+                                <div class="card rounded border-0 mb-4">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-8"><a class="card-title align-middle" href="{{ url('admin_content_layout_edit', { id : Layout.id } ) }}">{{ Layout.name }}</a>
+                                                <button class="btn btn-ec-regular" type="button" data-toggle="modal" data-target="#addPage">{{ 'admin.content.layout_list.add_page'|trans }}</button>
+                                                <button class="btn btn-ec-sub" type="button" data-toggle="modal" data-target="#layoutDelete">{{ 'admin.content.layout_list.delete_layout'|trans }}</button>
+                                            </div>
+                                            <div class="col-4 text-right"><a data-toggle="collapse" href="#topPageLayout-pc" aria-expanded="false" aria-controls="topPageLayout-pc"><i class="fa fa-angle-up fa-lg"></i></a></div>
+                                        </div>
+                                    </div>
+
+                                    {# Pages #}
+                                    {% if Layout.pages|length > 0 %}
+                                        {# TODO ページをドラッグ＆ドロップで移動できるようにする #}
+                                        {% for Page in Layout.pages %}
+                                            <div class="collapse show ec-cardCollapse" id="topPageLayout-pc">
+                                                <div class="card-body p-0">
+                                                    <div class="row justify-content-between p-3">
+                                                        <div class="col-auto"><i class="fa fa-bars text-ec-gray mr-3"></i><span>{{ Page.name }}</span></div>
+                                                        {# TODO ページを削除できるようにする #}
+                                                        <div class="col-auto text-right"><a><i class="fa fa-close fa-lg text-secondary mr-1"></i></a></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    {% else %}
+                                        <div class="collapse show ec-cardCollapse" id="lpLayout-pc">
+                                            <div class="card-body p-0">
+                                                <div class="d-block p-3"><span class="text-muted">{{ 'admin.content.layout_list.no_pages_message'|trans }}</span></div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="tab-pane fade" id="pills-mobile" role="tabpanel" aria-labelledby="pills-mobile-tab">
+                        {# TODO レイアウト追加画面(スマホ)に移動する #}
+                        <div class="d-block mb-3">
+                            <a class="btn btn-ec-regular" href="{{ url('admin_content_layout_new')}}">{{ 'admin.content.layout_list.add_mobile_layout'|trans }}</a>
+                        </div>
+                        <div class="card rounded border-0 mb-4">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.content.layout_list.default_layout'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                    </div>
+                                    <div class="col-4 text-right"><a data-toggle="collapse" href="#defaultLayout-mobile" aria-expanded="false" aria-controls="defaultLayout-mobile"><i class="fa fa-angle-up fa-lg"></i></a></div>
+                                </div>
+                            </div>
+                            <div class="collapse show ec-cardCollapse" id="defaultLayout-mobile">
+                                <div class="card-body">
+                                    {# TODO デフォルトのレイアウトを選択して登録できるようにする #}
+                                    <div class="row">
+                                        <div class="col-3 pr-0">
+                                            <form>
+                                                <select class="form-control">
+                                                    {% for Layout in Layouts %}
+                                                        <option value="">{{ Layout.name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </form>
+                                        </div>
+                                        <div class="col">
+                                            <button class="btn btn-ec-regular" type="button">{{ 'common.label.save'|trans }}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {# layouts #}
+                        {% for Layout in Layouts %}
+                            {% if Layout.devicetype.id == constant('\\Eccube\\Entity\\Master\\DeviceType::DEVICE_TYPE_SP') %}
+                                <div class="card rounded border-0 mb-4">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-8"><a class="card-title align-middle" href="{{ url('admin_content_layout_edit', { id : Layout.id } ) }}">{{ Layout.name }}</a>
+                                                <button class="btn btn-ec-regular" type="button" data-toggle="modal" data-target="#addPage">{{ 'admin.content.layout_list.add_page'|trans }}</button>
+                                                <button class="btn btn-ec-sub" type="button" data-toggle="modal" data-target="#layoutDelete">{{ 'admin.content.layout_list.delete_layout'|trans }}</button>
+                                            </div>
+                                            <div class="col-4 text-right"><a data-toggle="collapse" href="#topPageLayout-mobile" aria-expanded="false" aria-controls="topPageLayout-mobile"><i class="fa fa-angle-up fa-lg"></i></a></div>
+                                        </div>
+                                    </div>
+
+                                    {# Pages #}
+                                    {% if Layout.pages|length > 0 %}
+                                        {# TODO ページをドラッグ＆ドロップで移動できるようにする #}
+                                        {% for Page in Layout.pages %}
+                                            <div class="collapse show ec-cardCollapse" id="topPageLayout-mobile">
+                                                <div class="card-body p-0">
+                                                    <div class="row justify-content-between p-3">
+                                                        <div class="col-auto"><i class="fa fa-bars text-ec-gray mr-3"></i><span>{{ Page.name }}</span></div>
+                                                        {# TODO ページを削除できるようにする #}
+                                                        <div class="col-auto text-right"><a><i class="fa fa-close fa-lg text-secondary mr-1"></i></a></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    {% else %}
+                                        <div class="collapse show ec-cardCollapse" id="lpLayout-mobile">
+                                            <div class="card-body p-0">
+                                                <div class="d-block p-3"><span class="text-muted">{{ 'admin.content.layout_list.no_pages_message'|trans }}</span></div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="modal fade" id="addPage" tabindex="-1" role="dialog" aria-labelledby="addPage" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        {# TODO レイアウトにページを追加できるようにする #}
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">{{ 'admin.content.layout_list.add_page.title'|trans }}</h5>
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>{{ 'admin.content.layout_list.add_page.confirm_message'|trans }}</p>
+                                <form>
+                                    <select class="form-control">
+
+                                        <option>// TODO ページの一覧表示</option>
+                                        <option>...</option>
+                                    </select>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-ec-sub w-25" type="button" data-dismiss="modal">{{ 'admin.content.layout_list.add_page.cancel'|trans }}</button>
+                                <button class="btn btn-ec-conversion w-25" type="button" data-dismiss="modal">{{ 'admin.content.layout_list.add_page.add'|trans }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="layoutDelete" tabindex="-1" role="dialog" aria-labelledby="layoutDelete" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        {# TODO レイアウトを削除できるようにする #}
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">{{ 'admin.content.layout_list.delete_layout.title'|trans }}</h5>
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>{{ 'admin.content.layout_list.delete_layout.confirm_message'|trans }}</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-ec-sub w-25" type="button" data-dismiss="modal">{{ 'admin.content.layout_list.delete_layout.cancel'|trans }}</button>
+                                <button class="btn btn-ec-delete" type="button" data-dismiss="modal">{{ 'admin.content.layout_list.delete_layout.delete'|trans }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
