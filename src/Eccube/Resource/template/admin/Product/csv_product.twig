@@ -103,11 +103,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div class="card-body">
                         <table class="table table-striped table-bordered">
                             <tbody>
-                            {% set requires = ['status', 'name', 'note', 'sale_type', 'stock_unlimited', 'price02'] %}
-                            {% for key, id in headers %}
+                            {% for key, item in headers %}
                                 <tr>
-                                    <th class="w-25 align-middle table-ec-lightGray">{{ key }}{% if id in requires  %}<span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span>{% endif %}</th>
-                                    {% set message = 'admin.product.csv_product.' ~ id  %}
+                                    <th class="w-25 align-middle table-ec-lightGray">{{ key }}{% if item['required']  %}<span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span>{% endif %}</th>
+                                    {% set message = item['description'] %}
                                     <td class="align-middle">{{ message|trans|raw }}</td>
                                 </tr>
                             {% endfor %}
