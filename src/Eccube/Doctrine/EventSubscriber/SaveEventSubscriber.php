@@ -24,35 +24,48 @@
 
 namespace Eccube\Doctrine\EventSubscriber;
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
-use Eccube\Application;
+use Eccube\Common\EccubeConfig;
+use Eccube\Entity\Member;
+use Eccube\Request\Context;
 
 class SaveEventSubscriber implements EventSubscriber
 {
     /**
-     * @var Application
+     * @var Context
      */
-    private $app;
+    protected $requestContext;
 
     /**
-     * @param Application $app
+     * @var EccubeConfig
      */
-    public function __construct(Application $app)
+    protected $eccubeConfig;
+
+    /**
+     * @param Context $requestContext
+     */
+    public function __construct(Context $requestContext, EccubeConfig $eccubeConfig)
     {
-        $this->app = $app;
+        $this->requestContext = $requestContext;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
+    /**
+     * @return array
+     */
     public function getSubscribedEvents()
     {
-        return array(
+        return [
             Events::prePersist,
             Events::preUpdate,
-        );
+        ];
     }
 
+    /**
+     * @param LifecycleEventArgs $args
+     */
     public function prePersist(LifecycleEventArgs $args)
     {
         $entity = $args->getObject();
@@ -64,22 +77,33 @@ class SaveEventSubscriber implements EventSubscriber
             $entity->setUpdateDate(new \DateTime());
         }
         if (method_exists($entity, 'setCurrencyCode')) {
-            // cofig実装後に修正
-            //$entity->setCurrencyCode($this->app['config']['currency']);
+            $currency = $this->eccubeConfig->get('currency');
+            $entity->setCurrencyCode($currency);
         }
-
-        // TODO コンストラクタインジェクションに変更
-        //        if ($this->app['security.token_storage']->getToken() && $this->app['security.authorization_checker']->isGranted('ROLE_ADMIN') && method_exists($entity, 'setCreator')) {
-//            $entity->setCreator($this->app->user());
-//        }
+        if (method_exists($entity, 'setCreator')) {
+            $user = $this->requestContext->getCurrentUser();
+            if ($user instanceof Member) {
+                $entity->setCreator($user);
+            }
+        }
     }
 
+    /**
+     * @param LifecycleEventArgs $args
+     */
     public function preUpdate(LifecycleEventArgs $args)
     {
         $entity = $args->getObject();
 
         if (method_exists($entity, 'setUpdateDate')) {
             $entity->setUpdateDate(new \DateTime());
+        }
+
+        if (method_exists($entity, 'setCreator')) {
+            $user = $this->requestContext->getCurrentUser();
+            if ($user instanceof Member) {
+                $entity->setCreator($user);
+            }
         }
     }
 }
