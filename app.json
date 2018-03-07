@@ -12,6 +12,15 @@
             }
         }
     ],
+    "env": {
+        "ADMIN_USER": {
+            "description": "The login id of admin user.",
+            "value": "admin"
+        },
+        "ADMIN_PASS": {
+            "description": "The password of admin user."
+        }
+    },
     "buildpacks": [
         {
             "url": "heroku/php"
