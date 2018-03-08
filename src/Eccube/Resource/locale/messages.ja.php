@@ -2168,7 +2168,6 @@ return [
     'delivery.label.payment' => '支払方法',
     'delivery.label.delivery_time' => 'お届け時間',
     'delivery.label.pref_setting' => '都道府県別設定',
-    'delivery.text.error.select_payment_method' => '支払方法を選択してください。',
     'logtype.label.log_file' => 'ログファイル',
     'logtype.label.number_of_rows' => '表示行数',
     'mailtype.label.tmpl' => 'テンプレート',
