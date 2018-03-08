@@ -23,8 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['setting', 'shop', 'shop_delivery'] %}
 
-{% block title %}{{ 'admin.setting.shop.delivery_edit.579'|trans }}{% endblock %}
-{% block sub_title %}{{ 'admin.setting.shop.delivery_edit.578'|trans }}{% endblock %}
+{% block title %}{{ 'admin.setting.shop.delivery_edit.title'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.setting.shop.delivery_edit.sub_title'|trans }}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
@@ -47,17 +47,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <div class="c-contentsArea__primaryCol">
                 <div class="c-primaryCol">
                     <div class="card rounded border-0 mb-4">
-                        <div class="card-header"><span>基本情報</span></div>
+                        <div class="card-header"><span>{{ 'admin.setting.shop.delivery_edit.basic'|trans }}</span></div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-3"><span>配送業者名</span></div>
+                                <div class="col-3"><span>{{ 'admin.setting.shop.delivery_edit.delivery_name'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.name)}}
                                     {{ form_errors(form.name) }}
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-3"><span>配送方法名称</span></div>
+                                <div class="col-3"><span>{{ 'admin.setting.shop.delivery_edit.delivery_service_name'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.service_name)}}
                                     {{ form_errors(form.service_name) }}
@@ -67,7 +67,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <div class="col-3">
                                     <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
                                          title="Tooltip">
-                                        <span>伝票No.URL</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                        <span>{{ 'admin.setting.shop.delivery_edit.slip_number_url'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                 </div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.confirm_url) }}
@@ -75,7 +75,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-3"><span>販売種別</span></div>
+                                <div class="col-3"><span>{{ 'admin.setting.shop.delivery_edit.sale_type'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.sale_type) }}
                                     {{ form_errors(form.sale_type) }}
@@ -84,7 +84,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </div>
                     </div>
                     <div class="card rounded border-0 mb-4">
-                        <div class="card-header"><span>取り扱う支払方法</span></div>
+                        <div class="card-header"><span>{{ 'admin.setting.shop.delivery_edit.payments'|trans }}</span></div>
                         <div class="card-body">
                             <div>
                                 {{ form_widget(form.payments, {'label_attr': {'class': 'checkbox-inline'}}) }}
@@ -93,7 +93,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </div>
                     </div>
                     <div class="card rounded border-0 mb-2">
-                        <div class="card-header"><span>お届け時間設定</span></div>
+                        <div class="card-header"><span>{{ 'admin.setting.shop.delivery_edit.delivery_times'|trans }}</span></div>
                         <div class="card-body p-0">
                             <div class="card rounded border-0 mb-2">
                                 <ul class="list-group list-group-flush">
@@ -103,7 +103,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 <input class="form-control" type="text">
                                             </div>
                                             <div class="col-auto d-flex align-items-center">
-                                                <button class="btn btn-ec-regular" type="submit">新規作成</button>
+                                                <button class="btn btn-ec-regular" type="button">{{ 'admin.setting.shop.delivery_edit.delivery_times_register'|trans }}</button>
                                             </div>
                                         </div>
                                     </li>
@@ -169,9 +169,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </div>
                     </div>
                     {# TODO 項目のドラッグ＆ドロップでの移動を実装する #}
-                    <p class="mb-4">項目の順番はドラッグ＆ドロップでも変更可能です。</p>
+                    <p class="mb-4">{{ 'admin.setting.shop.delivery_edit.delivery_times_drag&drop'|trans }}</p>
                     <div class="card rounded border-0 mb-4">
-                        <div class="card-header"><span>都道府県別送料設定</span></div>
+                        <div class="card-header"><span>{{ 'admin.setting.shop.delivery_edit.delivery_fees_by_pref'|trans }}</span></div>
                         <div class="card-body p-0">
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item">
@@ -179,14 +179,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <div class="col-2">
                                             <div class="d-inline-block align-middle" data-toggle="tooltip"
                                                  data-placement="top" title="Tooltip"><span
-                                                        class="card-title">全国一律に設定</span><i
+                                                        class="card-title">{{ 'admin.setting.shop.delivery_edit.delivery_fees_all_pref'|trans }}</span><i
                                                         class="fa fa-question-circle fa-lg ml-1"></i></div>
                                         </div>
                                         <div class="col-3">
                                             {{ form_widget(form.free_all) }}
                                         </div>
                                         <div class="col-auto">
-                                            <button id="set_fee_all" class="btn btn-ec-regular" type="button">各都道府県に適用</button>
+                                            <button id="set_fee_all" class="btn btn-ec-regular" type="button">{{ 'admin.setting.shop.delivery_edit.delivery_fees_apply'|trans }}</button>
                                         </div>
                                     </div>
                                 </li>
@@ -215,7 +215,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <div class="col-8">
                                     <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
                                          title="Tooltip">
-                                    <span class="card-title">ショップ用メモ欄<i
+                                    <span class="card-title">{{ 'admin.setting.shop.delivery_edit.note'|trans }}<i
                                                 class="fa fa-question-circle fa-lg ml-1"></i></span></div>
                                 </div>
                                 <div class="col-4 text-right"><a data-toggle="collapse" href="#freeArea"
@@ -227,6 +227,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <div class="card-body">
                                 <div>
                                     {{ form_widget(form.description, {'attr': {'rows': 8}}) }}
+                                    {{ form_errors(form.description) }}
                                 </div>
                             </div>
                         </div>
@@ -240,13 +241,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div class="col-6">
                         <div class="c-conversionArea__leftBlockItem"><a class="c-beseLink"
                                                                         href="{{ url('admin_setting_shop_delivery') }}"><i
-                                        class="fa fa-backward" aria-hidden="true"></i><span>配送方法一覧</span></a>
+                                        class="fa fa-backward" aria-hidden="true"></i><span>{{ 'admin.setting.shop.delivery_edit.delivery_list'|trans }}</span></a>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="row align-items-center justify-content-end">
                             <div class="col-auto">
-                                <button class="btn btn-ec-conversion px-5" type="submit">登録</button>
+                                <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.setting.shop.delivery_edit.register'|trans }}</button>
                             </div>
                         </div>
                     </div>
