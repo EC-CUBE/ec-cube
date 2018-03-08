@@ -246,11 +246,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 href="{{ url('admin_product_category_show', { parent_id : Category.id }) }}">{{ Category.name }}
                             ({{ Category.children|length }})</a></span></label>
                 {% if Category.children|length > 0 %}
-                    {% for ChildCategory in Category.children %}
-                        <ul class="collapse" id="directory_category{{ Category.id }}">
+                    <ul class="collapse" id="directory_category{{ Category.id }}">
+                        {% for ChildCategory in Category.children %}
                             {{ selfMacro.tree(ChildCategory, TargetId, level) }}
-                        </ul>
-                    {% endfor %}
+                        {% endfor %}
+                    </ul>
                 {% endif %}
             </li>
         {% endmacro %}
