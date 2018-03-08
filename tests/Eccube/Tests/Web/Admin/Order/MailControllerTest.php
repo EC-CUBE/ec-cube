@@ -75,24 +75,6 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    public function testIndexWithConfirm()
-    {
-        $form = $this->createFormData();
-        $crawler = $this->client->request(
-            'POST',
-            $this->generateUrl('admin_order_mail', array('id' => $this->Order->getId())),
-            array(
-                'mail' => $form,
-                'mode' => 'confirm',
-            )
-        );
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
-
-        $this->expected = $form['mail_footer'];
-        $this->actual = $crawler->filter('#mail_mail_footer')->text();
-        $this->verify();
-    }
-
     public function testIndexWithComplete()
     {
         $this->client->enableProfiler();
@@ -105,7 +87,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
                 'mode' => 'complete',
             )
         );
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_mail_complete')));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_page', ['page_no' => 1])));
 
         $mailCollector = $this->getMailCollector(false);
         $this->assertEquals(1, $mailCollector->getMessageCount());
@@ -147,31 +129,6 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    public function testMailAllWithConfirm()
-    {
-        $ids = array();
-        for ($i = 0; $i < 5; $i++) {
-            $Order = $this->createOrder($this->Customer);
-            $ids[] = $Order->getId();
-        }
-
-        $form = $this->createFormData();
-        $crawler = $this->client->request(
-            'POST',
-            $this->generateUrl('admin_order_mail_all'),
-            array(
-                'mail' => $form,
-                'mode' => 'confirm',
-                'ids' => implode(',', $ids),
-            )
-        );
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
-
-        $this->expected = $form['mail_footer'];
-        $this->actual = $crawler->filter('#mail_mail_footer')->text();
-        $this->verify();
-    }
-
     public function testMailAllWithComplete()
     {
         $this->client->enableProfiler();
@@ -192,7 +149,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
                 'ids' => implode(',', $ids),
             )
         );
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_mail_complete')));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_page', ['page_no' => 1])));
 
         $mailCollector = $this->getMailCollector(false);
         $this->assertEquals(5, $mailCollector->getMessageCount());
@@ -204,14 +161,5 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $this->expected = '['.$BaseInfo->getShopName().'] '.$form['mail_subject'];
         $this->actual = $Message->getSubject();
         $this->verify();
-    }
-
-    public function testComplete()
-    {
-        $this->client->request(
-            'GET',
-            $this->generateUrl('admin_order_mail_complete')
-        );
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 }
