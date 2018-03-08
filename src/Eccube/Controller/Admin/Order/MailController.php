@@ -374,7 +374,7 @@ class MailController extends AbstractController
                             );
                             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_MAIL_MAIL_ALL_COMPLETE, $event);
 
-                            return $this->redirectToRoute('admin_order_mail_complete');
+                            return $this->redirectToRoute('admin_order_page', ['page_no' => $this->session->get('eccube.admin.order.search.page_no', 1)]);
                             break;
                         default:
                             break;

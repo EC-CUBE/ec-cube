@@ -1047,6 +1047,7 @@ return [
     'admin.order.mail_all.351' => 'メール配信',
     'admin.order.mail_all.352' => '送信内容を確認',
     'admin.order.mail_all.353' => '検索結果へ戻る',
+    'admin.order.mail_all.354' => '※%count%人に送信｜下記内容は1通分の例です。受注情報・宛名は宛先ごとに異なります。',
     'admin.order.mail_all_confirm.354' => '受注管理',
     'admin.order.mail_all_confirm.355' => 'メール通知',
     'admin.order.mail_all_confirm.356' => 'メール配信',
