@@ -25,8 +25,8 @@
 
 {% set menus = ['content', 'page'] %}
 
-{% block title %}{{ 'admin.content.page.69'|trans }}{% endblock %}
-{% block sub_title %}{{ 'admin.content.page.70'|trans }}{% endblock %}
+{% block title %}{{ 'admin.content.page.title'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.content.page.sub_title'|trans }}{% endblock %}
 
 {% block main %}
     <div class="c-contentsArea__cols">
@@ -34,7 +34,7 @@
             <div class="c-primaryCol">
                 <div class="row justify-content-between mb-2">
                     <div class="col-9"><a class="btn btn-ec-regular py-2"
-                                          href="{{ url('admin_content_page_new') }}">新規追加</a></div>
+                                          href="{{ url('admin_content_page_new') }}">{{ 'admin.content.page.create'|trans }}</a></div>
                     <div class="col-3">
                         <form class="mb-2">
                             <div class="form-row">
@@ -54,8 +54,8 @@
                     <div class="card-body p-0">
                         <table class="table table-sm">
                             <thead>
-                            <th class="border-0 pt-2 pb-2 pl-3"> ページ名</th>
-                            <th class="border-0 pt-2 pb-2">レイアウト</th>
+                            <th class="border-0 pt-2 pb-2 pl-3">{{ 'admin.content.page.page_name'|trans }}</th>
+                            <th class="border-0 pt-2 pb-2">{{ 'admin.content.page.layout_name'|trans }}</th>
                             <th class="border-0 pt-2 pb-2 pr-3"></th>
                             </thead>
                             {% for Page in Pages %}
@@ -84,10 +84,10 @@
                                                 <a class="btn btn-ec-actionIcon"
                                                    data-toggle="tooltip"
                                                    data-placement="top"
-                                                   title="{{ 'common.label.delete'|trans }}"
+                                                   title="{{ 'admin.content.page.delete'|trans }}"
                                                    href="{{ url('admin_content_page_delete', { 'id': Page.id}) }}" {{ csrf_token_for_anchor() }}
                                                    data-method="delete"
-                                                   data-message="{{ 'admin.content.page.77'|trans }}"><i
+                                                   data-message="{{ 'admin.content.page.delete-message'|trans }}"><i
                                                                 class="fa fa-close fa-lg text-secondary"
                                                                 aria-hidden="true"></i></a>{% endif %}
                                             </div>
