@@ -37,6 +37,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class DeliveryTime extends \Eccube\Entity\AbstractEntity
 {
+    public function __toString()
+    {
+        return (string) $this->delivery_time;
+    }
+
     /**
      * @var int
      *
