@@ -24,6 +24,26 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block title %}{{ 'admin.index.159'|trans }}{% endblock %}
 {% block sub_title %}{% endblock %}
 
+{% block javascript %}
+    <script>
+        $(function () {
+            $('.order-summary-detail').click(function () {
+                $('#admin_search_order_status').val($(this).attr('data-order-status'));
+                $('#order-state').submit();
+                return false;
+            });
+            $('.shop-stock-detail').click(function () {
+                $('#shop-state-stock').submit();
+                return false;
+            });
+            $('.shop-member-detail').click(function () {
+                $('#shop-state-member').submit();
+                return false;
+            });
+        });
+    </script>
+{% endblock javascript %}
+
 {% block main %}
     <div class="c-contentsArea__cols">
         <div class="c-contentsArea__primaryCol">
@@ -38,8 +58,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div class="card-body pt-0 pr-0 pl-0">
                         <div class="row border border-top-0 border-left-0 border-right-0 p-3 align-items-center">
                             <div class="col-1 align-middle text-center">
-                                <i class="fa fa-flag fa-4x text-secondary"
-                                                                           aria-hidden="true"></i>
+                                <i class="fa fa-flag fa-4x text-secondary" aria-hidden="true"></i>
                             </div>
                             <div class="col-9">
                                 <span
@@ -47,7 +66,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <p>{{ 'admin.index.intro.commercial_law.001'|trans }}</p>
                             </div>
                             <div class="col-2 text-right align-middle">
-                                <a class="btn btn-ec-conversion px-4" href="{{ url('admin_setting_shop') }}">{{ 'admin.index.intro.to.setup'|trans }}</a>
+                                <a class="btn btn-ec-conversion px-4"
+                                   href="{{ url('admin_setting_shop') }}">{{ 'admin.index.intro.to.setup'|trans }}</a>
                             </div>
                         </div>
                         <div class="row border border-top-0 border-left-0 border-right-0 p-3 align-items-center">
@@ -59,7 +79,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <p>{{ 'admin.index.intro.commercial_law.001'|trans }}</p>
                             </div>
                             <div class="col-2 text-right align-middle">
-                                <a class="btn btn-ec-conversion px-4" href="{{ url('admin_product_product_new') }}">{{ 'admin.index.intro.to.setup'|trans }}</a>
+                                <a class="btn btn-ec-conversion px-4"
+                                   href="{{ url('admin_product_product_new') }}">{{ 'admin.index.intro.to.setup'|trans }}</a>
                             </div>
                         </div>
                         <div class="row border border-top-0 border-left-0 border-right-0 p-2 align-items-center mb-3">
@@ -73,19 +94,46 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="row">
                             <div class="col text-center align-middle">
                                 {# TODO: Link of すべてスキップ button  #}
-                                <a class="btn btn-ec-regular" href="/tutorial/complete">{{ 'admin.index.intro.skip.all'|trans }}</a>
+                                <a class="btn btn-ec-regular"
+                                   href="/tutorial/complete">{{ 'admin.index.intro.skip.all'|trans }}</a>
                             </div>
                         </div>
                     </div><!-- End.card-body -->
                 </div><!-- End.card.rounded -->
                 <div class="row">
                     <div class="col-4 mb-4">
+
                         <div id="order-status" class="card rounded border-0 h-100">
                             <div class="card-header">
-                                <a href="{{ url('admin_order') }}"><span class="card-title">{{ 'admin.index.160'|trans }}</span></a>
+                                <a href="{{ url('admin_order') }}"><span
+                                            class="card-title">{{ 'admin.index.160'|trans }}</span></a>
                             </div>
                             <div class="card-body p-0">
-                                <div class="d-block p-3 border border-top-0 border-left-0 border-right-0">
+                                <form id="order-state" name="form1" action="{{ url('admin_order') }}" method="post">
+                                    {{ form_widget(searchOrderForm._token) }}
+                                    <input type="hidden" id="admin_search_order_status"
+                                           name="admin_search_order[multi_status]"
+                                           value="">
+                                    {% for OrderStatus in OrderStatuses %}
+                                        <div class="d-block p-3 border border-top-0 border-left-0 border-right-0">
+                                            <div class="row align-items-center">
+                                                <div class="col-2 align-middle text-center">
+                                                    <i class="fa fa-inbox fa-2x text-secondary" aria-hidden="true"></i>
+                                                </div>
+                                                <div class="col p-0">
+                                                    <a href="#" class="order-summary-detail"
+                                                       data-order-status="{{ OrderStatus.id }}"><span
+                                                                class="align-middle">{{ OrderStatus.name }}</span></a>
+                                                </div>
+                                                <div class="col-auto text-right align-middle">
+                                                    <span class="h4 align-middle font-weight-normal">{{ Orders is not empty and Orders[OrderStatus.id] is defined ? Orders[OrderStatus.id] : 0 }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    {% endfor %}
+                                </form>
+                                {#<div class="d-block p-3 border border-top-0 border-left-0 border-right-0">
                                     <div class="row align-items-center">
                                         <div class="col-2 align-middle text-center">
                                             <i class="fa fa-inbox fa-2x text-secondary" aria-hidden="true"></i>
@@ -133,7 +181,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <div class="col-auto text-right align-middle">
                                             <span class="h4 align-middle font-weight-normal">24</span></div>
                                     </div>
-                                </div>
+                                </div>#}
                             </div>
                         </div><!-- End#order-status -->
                     </div>
@@ -366,6 +414,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <div class="row">
                     <div class="col mb-4">
                         <div id="shop-statistical" class="card rounded border-0 h-100">
+                            <form id="shop-state-stock" name="form2" action="{{ url('admin_homepage_nonstock') }}"
+                                  method="post">
+                                {{ form_widget(searchProductForm._token) }}
+                            </form>
+                            <form id="shop-state-member" name="form3" action="{{ url('admin_customer') }}"
+                                  method="post">
+                                {{ form_widget(searchCustomerForm._token) }}
+                                <input type="hidden" id="admin_search_customer_status_1"
+                                       name="admin_search_customer[customer_status]" value="2">
+                            </form>
+
                             <div class="card-header">
                                 <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
                                      title="Tooltip">
@@ -379,7 +438,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <div class="col-2 align-middle text-center">
                                             <i class="fa fa-inbox fa-2x text-secondary" aria-hidden="true"></i>
                                         </div>
-                                        <div class="col p-0"><a href="{{ url('admin_product') }}">
+                                        <div class="col p-0"><a href="#" class="shop-stock-detail">
                                                 <span class="align-middle">{{ 'admin.index.summary.shop.items.stock'|trans }}</span></a>
                                         </div>
                                         <div class="col-auto text-right align-middle">
@@ -394,7 +453,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             <i class="fa fa-cubes fa-2x text-secondary" aria-hidden="true"></i>
                                         </div>
                                         <div class="col p-0">
-                                            <a href="/product/master"><span class="align-middle">{{ 'admin.index.summary.shop.handled.product'|trans }}</span></a>
+                                            <a href="/product/master"><span
+                                                        class="align-middle">{{ 'admin.index.summary.shop.handled.product'|trans }}</span></a>
                                         </div>
                                         <div class="col-auto text-right align-middle">
                                             <span class="h4 align-middle font-weight-normal">263</span>
@@ -407,7 +467,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             <i class="fa fa-users fa-2x text-secondary" aria-hidden="true"></i>
                                         </div>
                                         <div class="col p-0">
-                                            <a href="{{ url('admin_customer') }}"><span class="align-middle">{{ 'admin.index.171'|trans }}</span></a>
+                                            <a href="#" class="shop-member-detail"><span
+                                                        class="align-middle">{{ 'admin.index.171'|trans }}</span></a>
                                         </div>
                                         <div class="col-auto text-check align-middle">
                                             <span class="h4 align-middle font-weight-normal">{{ countCustomers|number_format }}</span>
