@@ -114,25 +114,24 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <input type="hidden" id="admin_search_order_status"
                                            name="admin_search_order[multi_status]"
                                            value="">
-                                    {% for OrderStatus in OrderStatuses %}
-                                        <div class="d-block p-3 border border-top-0 border-left-0 border-right-0">
-                                            <div class="row align-items-center">
-                                                <div class="col-2 align-middle text-center">
-                                                    <i class="fa fa-inbox fa-2x text-secondary" aria-hidden="true"></i>
-                                                </div>
-                                                <div class="col p-0">
-                                                    <a href="#" class="order-summary-detail"
-                                                       data-order-status="{{ OrderStatus.id }}"><span
-                                                                class="align-middle">{{ OrderStatus.name }}</span></a>
-                                                </div>
-                                                <div class="col-auto text-right align-middle">
-                                                    <span class="h4 align-middle font-weight-normal">{{ Orders is not empty and Orders[OrderStatus.id] is defined ? Orders[OrderStatus.id] : 0 }}</span>
-                                                </div>
+                                </form>
+                                {% for OrderStatus in OrderStatuses %}
+                                    <div class="d-block p-3 border border-top-0 border-left-0 border-right-0">
+                                        <div class="row align-items-center">
+                                            <div class="col-2 align-middle text-center">
+                                                <i class="fa fa-inbox fa-2x text-secondary" aria-hidden="true"></i>
+                                            </div>
+                                            <div class="col p-0">
+                                                <a href="#" class="order-summary-detail"
+                                                   data-order-status="{{ OrderStatus.id }}"><span
+                                                            class="align-middle">{{ OrderStatus.name }}</span></a>
+                                            </div>
+                                            <div class="col-auto text-right align-middle">
+                                                <span class="h4 align-middle font-weight-normal">{{ Orders is not empty and Orders[OrderStatus.id] is defined ? Orders[OrderStatus.id] : 0 }}</span>
                                             </div>
                                         </div>
-
-                                    {% endfor %}
-                                </form>
+                                    </div>
+                                {% endfor %}
                                 {#<div class="d-block p-3 border border-top-0 border-left-0 border-right-0">
                                     <div class="row align-items-center">
                                         <div class="col-2 align-middle text-center">
