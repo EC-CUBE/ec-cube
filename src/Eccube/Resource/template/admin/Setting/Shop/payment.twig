@@ -61,14 +61,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <div class="col d-flex align-items-center">
                                         <span>
                                             {% if Payment.rule_min > 0 %}
-                                                {{ Payment.rule_min }}
+                                                {{ Payment.rule_min|price }}
                                             {% else %}
-                                                0
+                                                {{ 0|price }}
                                             {% endif %}
-                                            {{eccube_config.currency}}
+
 
                                             {% if Payment.rule_max > 0 %}
-                                                ～{{eccube_config.currency}}{{ Payment.rule_max }}
+                                                ～{{ Payment.rule_max|price }}
                                             {% elseif Payment.rule_max is null %}
                                                 ～{{'admin.setting.shop.payment.603'|trans}}
                                             {% endif %}
