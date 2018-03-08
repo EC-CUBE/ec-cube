@@ -51,7 +51,7 @@ class PaymentRegisterType extends AbstractType
                 ),
             ))
             ->add('rule_min', PriceType::class, array(
-                'label' => false,
+                'label' => 'paymentregister.label.rule',
                 'currency' => 'JPY',
                 'scale' => 0,
                 'grouping' => true,
@@ -72,7 +72,7 @@ class PaymentRegisterType extends AbstractType
                 'required' => false,
             ))
             ->add('payment_image_file', FileType::class, array(
-                'label' => trans('paymentregister.label.logo_image'),
+                'label' => 'paymentregister.label.logo_image',
                 'mapped' => false,
                 'required' => false,
             ))
