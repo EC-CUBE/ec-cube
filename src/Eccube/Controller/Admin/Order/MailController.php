@@ -33,7 +33,6 @@ use Eccube\Form\Type\Admin\MailType;
 use Eccube\Repository\MailHistoryRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\MailService;
-use Eccube\Util\MailUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -189,8 +188,7 @@ class MailController extends AbstractController
                             );
                             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_MAIL_INDEX_COMPLETE, $event);
 
-
-                            return $this->redirectToRoute('admin_order_mail_complete');
+                            return $this->redirectToRoute('admin_order_page', ['page_no' => $this->session->get('eccube.admin.order.search.page_no', 1)]);
                             break;
                         default:
                             break;
