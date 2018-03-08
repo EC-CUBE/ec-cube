@@ -80,7 +80,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 </div><!-- End.card.rounded -->
                 <div class="row">
                     <div class="col-4 mb-4">
-                        <div class="card rounded border-0 h-100">
+                        <div id="order-status" class="card rounded border-0 h-100">
                             <div class="card-header">
                                 <a href="{{ url('admin_order') }}"><span class="card-title">{{ 'admin.index.160'|trans }}</span></a>
                             </div>
@@ -135,10 +135,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     </div>
                                 </div>
                             </div>
-                        </div><!-- End.card.rounded -->
+                        </div><!-- End#order-status -->
                     </div>
                     <div class="col-8 mb-4">
-                        <div class="card rounded border-0 h-100">
+                        <div id="chart-statistics" class="card rounded border-0 h-100">
+                            {# TODO: Calculate metrics, representations on charts #}
                             <div class="card-header">
                                 <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
                                      title="Tooltip">
@@ -359,13 +360,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     </div>
                                 </div>
                             </div>
-                        </div><!-- End.card.rounded -->
+                        </div><!-- End#chart-statistics -->
                     </div>
                 </div>
                 <div class="row">
                     <div class="col mb-4">
-                        <div class="card rounded border-0 h-100">
-                            {# TODO: Calculate metrics, representations on charts #}
+                        <div id="shop-statistical" class="card rounded border-0 h-100">
                             <div class="card-header">
                                 <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
                                      title="Tooltip">
@@ -415,10 +415,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     </div>
                                 </div>
                             </div>
-                        </div><!-- End.card.rounded -->
+                        </div><!-- End#shop-statistical -->
                     </div>
                     <div class="col mb-4">
-                        <div class="card rounded border-0 h-100">
+                        <div id="ec-cube-news" class="card rounded border-0 h-100">
                             <div class="card-header">
                                 <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
                                      title="Tooltip"><span class="card-title">{{ 'admin.index.161'|trans }}</span></div>
@@ -428,7 +428,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         src="{{ eccube_config.eccube_info_url }}"
                                         style="width:100%; border:0; min-height:300px;"></iframe>
                             </div>
-                        </div><!-- End.card.rounded -->
+                        </div><!-- End#ec-cube-news -->
                     </div>
                 </div><!-- End.row -->
             </div><!-- End.c-primaryCol -->
