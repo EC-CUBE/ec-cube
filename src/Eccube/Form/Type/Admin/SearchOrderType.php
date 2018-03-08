@@ -55,7 +55,7 @@ class SearchOrderType extends AbstractType
         $builder
             // 受注ID・注文者名・注文者（フリガナ）・注文者会社名
             ->add('multi', TextType::class, array(
-                'label' => 'searchorder.label.customer_id',
+                'label' => 'searchorder.label.customer_id', // TODO: the translate key is not relevant to purpose of input
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array('max' => $this->eccubeConfig['eccube_stext_len'])),
@@ -70,12 +70,15 @@ class SearchOrderType extends AbstractType
                 'multiple' => true,
             ))
             ->add('name', TextType::class, array(
+                'label' => 'searchorder.label.name',
                 'required' => false,
             ))
             ->add('email', TextType::class, array(
+                'label' => 'searchorder.label.email',
                 'required' => false,
             ))
             ->add('tel', TextType::class, array(
+                'label' => 'common.label.phone_number',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Regex(array(
