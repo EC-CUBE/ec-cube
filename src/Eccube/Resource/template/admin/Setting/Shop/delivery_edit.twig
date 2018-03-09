@@ -19,19 +19,19 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends '@admin/default_frame.twig' %}
+{% extends '@admin/styleguide_frame.twig' %}
 
 {% set menus = ['setting', 'shop', 'shop_delivery'] %}
 
-{% block title %}{{'admin.setting.shop.delivery_edit.578'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.setting.shop.delivery_edit.579'|trans}}{% endblock %}
+{% block title %}{{ 'admin.setting.shop.delivery_edit.title'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.setting.shop.delivery_edit.sub_title'|trans }}{% endblock %}
 
-{% form_theme form '@admin/Form/bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block javascript %}
     <script>
-        $(function() {
-            $("#set_fee_all").on("click", function() {
+        $(function () {
+            $("#set_fee_all").on("click", function () {
                 var fee = $("#{{ form.free_all.vars.id }}").val();
                 $("input[name$='[fee]']").val(fee);
             });
@@ -40,132 +40,219 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% endblock javascript %}
 
 {% block main %}
-    <div class="row" id="aside_wrap">
-        <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="">
-            {{ form_widget(form._token) }}
-            <div id="detail_wrap" class="col-md-9">
-                <div id="delivery_info_box" class="box">
-                    <div id="delivery_info_box__header" class="box-header">
-                        <h3 class="box-title">{{'admin.setting.shop.delivery_edit.580'|trans}}</h3>
-                    </div><!-- /.box-header -->
-                    <div id="delivery_info_box__body" class="box-body">
-
-                        {{ form_row(form.name) }}
-                        {{ form_row(form.service_name) }}
-                        {{ form_row(form.confirm_url) }}
-                        {{ form_row(form.sale_type, { attr : { class : 'form-inline' } }) }}
-
-                        <div class="extra-form">
-                            {% for f in form.getIterator %}
-                                {% if f.vars.name matches '[^plg*]' %}
-                                    {{ form_row(f) }}
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-
-                    </div><!-- /.box-body -->
-                </div><!-- /.box -->
-
-                <div id="payments_box" class="box">
-                    <div id="payments_box__header" class="box-header">
-                        <h3 class="box-title">{{'admin.setting.shop.delivery_edit.581'|trans}}</h3>
-                    </div><!-- /.box-header -->
-                    <div id="payments_box__body" class="box-body">
-                        {{ form_widget(form.payments) }}
-                        {{ form_errors(form.payments) }}
-                    </div>
-                </div>
-
-                <div id="delivery_times_box" class="box accordion clearfix">
-                    <div id="delivery_times_box__toggle" class="box-header toggle">
-                        <h3 class="box-title">{{'admin.setting.shop.delivery_edit.582'|trans}}
-                            <svg class="cb cb-angle-down icon_down">
-                                <use xlink:href="#cb-angle-down"/>
-                            </svg>
-                        </h3>
-                    </div><!-- /.box-header -->
-                    <div id="delivery_times_box__body" class="box-body accpanel">
-                        {% for child in form.delivery_times %}
-                            {% if loop.first %}
-                                <div id="delivery_times_box__body_inner" class="form-group">
-                            {% endif %}
-
-                            <label class="col-sm-2 control-label">
-                                {{'admin.setting.shop.delivery_edit.583'|trans}}{{ loop.index }}
-                            </label>
-                            <div id="delivery_times_box__delivery_times--{{ loop.index0 }}" class="col-sm-4">
-                                {{ form_widget(child) }}
-                            </div>
-
-                            {% if loop.last == true %}
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                </div>
-
-                <div id="delivery_pref_box" class="box accordion">
-                    <div id="delivery_pref_box__header" class="box-header">
-                        <h3 class="box-title">{{'admin.setting.shop.delivery_edit.584'|trans}}</h3>
-                    </div>
-                    <div id="delivery_pref_box__body" class="box-body">
-                        <div id="delivery_pref_box__free_all" class="form-inline fees_area">
-                            {{'admin.setting.shop.delivery_edit.585'|trans}}&nbsp; {{ form_widget(form.free_all) }}
-                            <a class="btn btn-normal btn-default btn-sm" href="javascript:;" id="set_fee_all">{{'admin.setting.shop.delivery_edit.586'|trans}}</a>
-                        </div>
-                    </div><!-- /.box-header -->
-                    <div id="delivery_pref_box__body_toggle" class="box-body toggle active" style="position:relative;">
-                        <h3 class="box-title">{{'admin.setting.shop.delivery_edit.587'|trans}}<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
-                    </div>
-                    <div id="delivery_pref_box__body_inner" class="box-body accpanel" style="display: block;">
-                        {% for child in form.delivery_fees %}
-                            {% if loop.first %}
-                                <div id="delivery_pref_box__item" class="form-group">
-                            {% endif %}
-
-                            <label id="delivery_pref_box__header_delivery_fee--{{ child.vars.name }}" class="col-sm-2 control-label">
-                                {{ child.vars.data.pref|default('') }}
-                            </label>
-                            <div id="delivery_pref_box__delivery_fee--{{ child.vars.name }}" class="col-sm-4 fees_area">
-                                {{ form_widget(child) }}
-                            </div>
-
-                            {% if loop.last == true %}
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                </div>
-
-                <div id="detail__back_button" class="row hidden-xs hidden-sm">
-                    <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
-                        <p><a href="{{ url('admin_setting_shop_delivery') }}">{{'admin.setting.shop.delivery_edit.588'|trans}}</a></p>
-                    </div>
-                </div>
-
-            </div><!-- /.col -->
-            <div class="col-md-3" id="aside_column">
-                <div id="common_box" class="col_inner">
-                    <div id="common_button_box" class="box no-header">
-                        <div id="common_button_box__body" class="box-body">
-                            <div id="common_button_box__insert_button" class="row text-center">
-                                <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
-                                    <button class="btn btn-primary btn-block btn-lg" type="submit">{{'admin.setting.shop.delivery_edit.589'|trans}}</button>
+    <form method="post"
+          action="{{ delivery_id ? url('admin_setting_shop_delivery_edit', {'id': delivery_id}) : url('admin_setting_shop_delivery_new') }}">
+        {{ form_widget(form._token) }}
+        <div class="c-contentsArea__cols">
+            <div class="c-contentsArea__primaryCol">
+                <div class="c-primaryCol">
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header"><span>{{ 'admin.setting.shop.delivery_edit.basic'|trans }}</span></div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-3"><span>{{ 'admin.setting.shop.delivery_edit.delivery_name'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.name)}}
+                                    {{ form_errors(form.name) }}
                                 </div>
                             </div>
-                        </div><!-- /.box-body -->
-                    </div><!-- /.box -->
-                    <div id="common_shop_note_box" class="box">
-                        <div id="common_shop_note_box__header" class="box-header">
-                            <h3 class="box-title">{{'admin.setting.shop.delivery_edit.590'|trans}}</h3>
-                        </div><!-- /.box-header -->
-                        <div id="common_shop_note_box__body" class="box-body">
-                            {{ form_widget(form.description) }}
+                            <div class="row">
+                                <div class="col-3"><span>{{ 'admin.setting.shop.delivery_edit.delivery_service_name'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.service_name)}}
+                                    {{ form_errors(form.service_name) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
+                                         title="Tooltip">
+                                        <span>{{ 'admin.setting.shop.delivery_edit.slip_number_url'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                </div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.confirm_url) }}
+                                    {{ form_errors(form.confirm_url) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3"><span>{{ 'admin.setting.shop.delivery_edit.sale_type'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.sale_type) }}
+                                    {{ form_errors(form.sale_type) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header"><span>{{ 'admin.setting.shop.delivery_edit.payments'|trans }}</span></div>
+                        <div class="card-body">
+                            <div>
+                                {{ form_widget(form.payments, {'label_attr': {'class': 'checkbox-inline'}}) }}
+                                {{ form_errors(form.payments) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card rounded border-0 mb-2">
+                        <div class="card-header"><span>{{ 'admin.setting.shop.delivery_edit.delivery_times'|trans }}</span></div>
+                        <div class="card-body p-0">
+                            <div class="card rounded border-0 mb-2">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">
+                                        <div class="form-row">
+                                            <div class="col-auto d-flex align-items-center">
+                                                <input class="form-control" type="text">
+                                            </div>
+                                            <div class="col-auto d-flex align-items-center">
+                                                <button class="btn btn-ec-regular" type="button">{{ 'admin.setting.shop.delivery_edit.delivery_times_register'|trans }}</button>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    {# TODO お届け時間16行の固定入力になっているため, 動的に増やせるように実装を変更する #}
+                                    {# TODO 上下移動, 編集、削除アクションを実装する. サーバサイドでの処理は不要で、javascriptで画面上の動きだけ制御できればよい #}
+                                    {% for child in form.delivery_times %}
+                                    <li class="list-group-item">
+                                        <div class="row justify-content-around">
+                                            <div class="col-auto d-flex align-items-center"><i
+                                                        class="fa fa-bars text-ec-gray"></i></div>
+                                            <div class="col d-flex align-items-center"><a>{{ child.vars.value }}</a></div>
+                                            <div class="col-auto text-right"><a class="btn btn-ec-actionIcon mr-3"
+                                                                                href=""
+                                                                                data-toggle="tooltip"
+                                                                                data-placement="top"
+                                                                                title="上へ移動"><i
+                                                            class="fa fa-arrow-up fa-lg text-secondary"></i></a><a
+                                                        class="btn btn-ec-actionIcon mr-3" href="" data-toggle="tooltip"
+                                                        data-placement="top" title="下へ移動"><i
+                                                            class="fa fa-arrow-down fa-lg text-secondary"></i></a><a
+                                                        class="btn btn-ec-actionIcon mr-3" href="" data-toggle="tooltip"
+                                                        data-placement="top" title="名前を編集"><i
+                                                            class="fa fa-pencil fa-lg text-secondary"></i></a><a
+                                                        class="btn btn-ec-actionIcon mr-3" href="" data-toggle="tooltip"
+                                                        data-placement="top" title="削除"><i
+                                                            class="fa fa-close fa-lg text-secondary"></i></a></div>
+                                        </div>
+                                    </li>
+                                    {% endfor %}
+                                    {# TODO お届け時間の編集を実装する #}
+                                    <li class="list-group-item" style="display: none">
+                                        <div class="row justify-content-around">
+                                            <div class="col-7 d-flex align-items-center">
+                                                <div class="form-row">
+                                                    <div class="col-auto d-flex align-items-center">
+                                                        <input class="form-control" type="text" placeholder="配送方法名を入力">
+                                                    </div>
+                                                    <div class="col-auto d-flex align-items-center">
+                                                        <button class="btn btn-ec-conversion" type="submit">決定</button>
+                                                    </div>
+                                                    <div class="col-auto d-flex align-items-center">
+                                                        <button class="btn btn-ec-sub" type="submit">キャンセル</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-5 text-right"><a class="btn btn-ec-actionIcon mr-3" href=""
+                                                                             data-toggle="tooltip" data-placement="top"
+                                                                             title="上へ移動"><i
+                                                            class="fa fa-arrow-up fa-lg text-secondary"></i></a><a
+                                                        class="btn btn-ec-actionIcon mr-3" href="" data-toggle="tooltip"
+                                                        data-placement="top" title="下へ移動"><i
+                                                            class="fa fa-arrow-down fa-lg text-secondary"></i></a><a
+                                                        class="btn btn-ec-actionIcon mr-3" href="" data-toggle="tooltip"
+                                                        data-placement="top" title="名前を編集"><i
+                                                            class="fa fa-pencil fa-lg text-secondary"></i></a><a
+                                                        class="btn btn-ec-actionIcon mr-3" href="" data-toggle="tooltip"
+                                                        data-placement="top" title="削除"><i
+                                                            class="fa fa-close fa-lg text-secondary"></i></a></div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    {# TODO 項目のドラッグ＆ドロップでの移動を実装する #}
+                    <p class="mb-4">{{ 'admin.setting.shop.delivery_edit.delivery_times_drag&drop'|trans }}</p>
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header"><span>{{ 'admin.setting.shop.delivery_edit.delivery_fees_by_pref'|trans }}</span></div>
+                        <div class="card-body p-0">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                    <div class="row justify-content-start">
+                                        <div class="col-2">
+                                            <div class="d-inline-block align-middle" data-toggle="tooltip"
+                                                 data-placement="top" title="Tooltip"><span
+                                                        class="card-title">{{ 'admin.setting.shop.delivery_edit.delivery_fees_all_pref'|trans }}</span><i
+                                                        class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                        </div>
+                                        <div class="col-3">
+                                            {{ form_widget(form.free_all) }}
+                                        </div>
+                                        <div class="col-auto">
+                                            <button id="set_fee_all" class="btn btn-ec-regular" type="button">{{ 'admin.setting.shop.delivery_edit.delivery_fees_apply'|trans }}</button>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    {% for child in form.delivery_fees %}
+                                        {% if loop.index % 2 != 0 %}<div class="row mb-2">{% endif %}
+                                        <div class="col{{ loop.last ? '-6' }}">
+                                            <div class="row">
+                                                <div class="col-2">
+                                                    <label>{{ child.vars.data.pref }}</label>
+                                                </div>
+                                                <div class="col pl-0">
+                                                    {{ form_widget(child.fee) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% if loop.index % 2 == 0 or loop.last %}</div>{% endif %}
+                                    {% endfor %}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-8">
+                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
+                                         title="Tooltip">
+                                    <span class="card-title">{{ 'admin.setting.shop.delivery_edit.note'|trans }}<i
+                                                class="fa fa-question-circle fa-lg ml-1"></i></span></div>
+                                </div>
+                                <div class="col-4 text-right"><a data-toggle="collapse" href="#freeArea"
+                                                                 aria-expanded="false" aria-controls="freeArea"><i
+                                                class="fa fa-angle-up fa-lg"></i></a></div>
+                            </div>
+                        </div>
+                        <div class="collapse show ec-cardCollapse" id="freeArea">
+                            <div class="card-body">
+                                <div>
+                                    {{ form_widget(form.description, {'attr': {'rows': 8}}) }}
+                                    {{ form_errors(form.description) }}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div><!-- /.col -->
-        </form>
-    </div>
-
+            </div>
+        </div>
+        <div class="c-conversionArea">
+            <div class="c-conversionArea__container">
+                <div class="row justify-content-between align-items-center">
+                    <div class="col-6">
+                        <div class="c-conversionArea__leftBlockItem"><a class="c-beseLink"
+                                                                        href="{{ url('admin_setting_shop_delivery') }}"><i
+                                        class="fa fa-backward" aria-hidden="true"></i><span>{{ 'admin.setting.shop.delivery_edit.delivery_list'|trans }}</span></a>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="row align-items-center justify-content-end">
+                            <div class="col-auto">
+                                <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.setting.shop.delivery_edit.register'|trans }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
 {% endblock %}
