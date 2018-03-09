@@ -23,8 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['setting', 'shop', 'shop_mail'] %}
 
-{% block title %}{{'admin.setting.shop.mail.title'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.setting.shop.mail.sub_title'|trans}}{% endblock %}
+{% block title %}{{'admin.setting.shop.mail.title'|trans }}{% endblock %}
+{% block sub_title %}{{'admin.setting.shop.mail.sub_title'|trans }}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
@@ -68,25 +68,26 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <div class="c-contentsArea__primaryCol">
             <div class="c-primaryCol">
                 <div class="card rounded border-0 mb-4">
-                    <div class="card-header"><span class="card-title">{{ 'admin.setting.shop.mail.mail_template_edit'|trans}}</span></div>
+                    <div class="card-header"><span class="card-title">{{ 'admin.setting.shop.mail.mail_template_edit'|trans }}</span></div>
                     <div class="card-body">
                         <div class="row mb-2">
-                            <div class="col-2"><span>{{ 'admin.setting.shop.mail.template'|trans}}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                            <div class="col-2"><span>{{ 'admin.setting.shop.mail.template'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                             <div class="col-10">
                                 {{ form_widget(form.template) }}
                             </div>
                         </div>
                         <div class="row mb-2">
-                            <div class="col-2"><span>{{ 'admin.setting.shop.mail.subject'|trans}}</span><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans}}</span></div>
+                            <div class="col-2"><span>{{ 'admin.setting.shop.mail.subject'|trans }}</span><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></div>
                             <div class="col-10">
                                 {{ form_widget(form.mail_subject) }}
                             </div>
                         </div>
                         <div class="row mb-2">
-                            <div class="col-2"><span>{{ 'admin.setting.shop.mail.body'|trans}}</span><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans}}</span></div>
+                            <div class="col-2"><span>{{ 'admin.setting.shop.mail.body'|trans }}</span><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></div>
                             <div class="col-10">
                                 <div id="detail_box__tpl_data" class="form-group">
                                     {{ form_label(form.tpl_data) }}
+                                    {#TODO: define heigh of text , now fit 480px#}
                                         <div id="editor" style="height: 480px"></div>
                                         {{ form_widget(form.tpl_data) }}
                                         {{ form_errors(form.tpl_data) }}
@@ -94,13 +95,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             </div>
                         </div>
                         <div class="row mb-2">
-                            <div class="col-2"><span>{{ 'admin.setting.shop.mail.mail_header'|trans}}</span></div>
+                            <div class="col-2"><span>{{ 'admin.setting.shop.mail.mail_header'|trans }}</span></div>
                             <div class="col-10">
                                 {{ form_widget(form.mail_header, {'attr': {'rows': '8'}}) }}
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-2"><span>{{ 'admin.setting.shop.mail.mail_footer'|trans}}</span></div>
+                            <div class="col-2"><span>{{ 'admin.setting.shop.mail.mail_footer'|trans }}</span></div>
                             <div class="col-10">
                                 {{ form_widget(form.mail_footer, {'attr': {'rows': '8'}}) }}
                             </div>
@@ -127,7 +128,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <div class="col-6">
                     <div class="row align-items-center justify-content-end">
                         <div class="col-auto">
-                            <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.setting.shop.mail.register'|trans}}</button>
+                            <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.setting.shop.mail.register'|trans }}</button>
                         </div>
                    </div>
                 </div>
