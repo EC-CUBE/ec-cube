@@ -64,13 +64,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <div class="c-outsideBlock">
             <div class="c-outsideBlock__contents">
                 <nav aria-label="breadcrumb" role="navigation">
+                    {# TODO アクティブなフォルダ表示 #}
                     <ol class="breadcrumb mb-2 p-0" id="bread"></ol>
                 </nav>
                 <div class="card rounded border-0 mb-4">
-                    <div class="card-header"><span class="card-title">ファイル・フォルダを追加</span></div>
+                    <div class="card-header"><span class="card-title">{{ 'admin.content.file.title.upload_and_create'|trans }}</span></div>
                     <div class="card-body">
                         <div class="row mb-2">
-                            <div class="col-2"><span>ファイルを追加</span></div>
+                            <div class="col-2"><span>{{ 'admin.content.file.label.upload'|trans }}</span></div>
                             <div class="col mb-3">
                                 <div class="mb-2">
                                     <a class="btn btn-ec-regular mr-2" href="javascript:;" onclick="eccube.fileManager.setTreeStatus('tree_status');eccube.setModeAndSubmit('upload','',''); return false;">{{'admin.content.file.26'|trans}}</a>
@@ -82,7 +83,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             </div>
                         </div>
                         <div class="row mb-2">
-                            <div class="col-2"><span>フォルダを追加</span></div>
+                            <div class="col-2"><span>{{ 'admin.content.file.27'|trans }}</span></div>
                             <div class="col">
                                 <div class="form-row">
                                     <div class="col-3">
@@ -107,7 +108,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="card rounded border-0 mb-4">
                             <div class="card-header">
                                 <div class="row">
-                                    <div class="col-8"><span class="card-title">このフォルダ内のファイル</span></div>
+                                    <div class="col-8"><span class="card-title">{{ 'admin.content.file.title.lists'|trans }}</span></div>
                                     <div class="col-4 text-right"><a data-toggle="collapse" href="#fileList" aria-expanded="false" aria-controls="fileList"><i class="fa fa-angle-up fa-lg"></i></a></div>
                                 </div>
                             </div>
@@ -147,7 +148,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                         {{ file.file_size }}
                                                     </td>
                                                     <td class="align-middle">
-                                                        {{ file.file_time }} 更新
+                                                        {{ file.file_time }} {{ 'admin.content.file.31'|trans }} {# TODO 英語だとフォーマットが変わるかも #}
                                                     </td>
                                                     {% if file.is_dir %}
                                                         <td class="align-middle">
@@ -183,7 +184,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="card rounded border-0 mb-4">
                             <div class="card-header">
                                 <div class="row">
-                                    <div class="col-8"><span class="card-title">フォルダ構成</span></div>
+                                    <div class="col-8"><span class="card-title">{{ 'admin.content.file.title.folders'|trans }}</span></div>
                                     <div class="col-4 text-right"><a data-toggle="collapse" href="#folderDirectory" aria-expanded="false" aria-controls="folderDirectory"><i class="fa fa-lg fa-angle-down"></i></a></div>
                                 </div>
                             </div>
