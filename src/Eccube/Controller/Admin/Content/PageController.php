@@ -237,6 +237,8 @@ class PageController extends AbstractController
             $templatePath = $this->getParameter('eccube_theme_front_dir');
             $url = $router->getRouteCollection()->get($PrevPage->getUrl())->getPath();
         }
+        $projectDir = $this->getParameter('kernel.project_dir');
+        $templatePath = str_replace($projectDir.'/', '', $templatePath);
 
         return [
             'form' => $form->createView(),

@@ -113,16 +113,12 @@ class PageControllerTest extends AbstractAdminWebTestCase
             ),
             array(
                 'main_edit' => array(
-                    'id' => $Page->getId(),
                     'name' => 'testtest',
                     'url' => $Page->getUrl(),
                     'file_name' => $Page->getFileName(),
                     'tpl_data' => $source,
                     '_token' => 'dummy',
                 ),
-                'page_id' => $Page->getId(),
-                'editable' => $editable,
-                'template_path' => $templatePath,
             )
         );
 
