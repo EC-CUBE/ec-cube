@@ -117,17 +117,13 @@
                                                 </div>
                                             {% endif %}
                                             {{ form_errors(form.file_name) }}
-                                            {#<div class="col-2 pr-0 align-middle"><span class="align-middle">/app/html/user_data/</span>#}
-                                            {#</div>#}
-                                            {#<div class="col-10 pl-0">#}
-                                                {#<input class="form-control" type="text">#}
-                                            {#</div>#}
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-2"><span>コード編集</span><i
-                                                class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                                class="fa fa-question-circle fa-lg ml-1"></i><span
+                                                class="badge badge-primary ml-1">必須</span></div>
                                     <div class="col-10">
                                         <div id="editor" style="height: 480px" class="form-control{{ has_errors(form.tpl_data) ? ' is-invalid'}}"></div>
                                         <div style="display: none">{{ form_widget(form.tpl_data) }}</div>
