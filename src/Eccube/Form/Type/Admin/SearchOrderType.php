@@ -30,10 +30,10 @@ use Eccube\Form\Type\Master\PaymentType;
 use Eccube\Form\Type\Master\SexType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Eccube\Form\Type\PriceType;
 
 class SearchOrderType extends AbstractType
 {
@@ -163,11 +163,11 @@ class SearchOrderType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
-            ->add('payment_total_start', IntegerType::class, array(
+            ->add('payment_total_start', PriceType::class, array(
                 'label' => 'searchorder.label.purchased_amount_min',
                 'required' => false,
             ))
-            ->add('payment_total_end', IntegerType::class, array(
+            ->add('payment_total_end', PriceType::class, array(
                 'label' => 'searchorder.label.purchased_amount_max',
                 'required' => false,
             ))
