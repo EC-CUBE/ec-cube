@@ -142,16 +142,19 @@ class TaxRuleController extends AbstractController
         // edit tax rule form
         $forms = array();
         $errors = array();
-        /** @var TaxRule $taxRule */
-        foreach ($TaxRules as $taxRule) {
+        /** @var TaxRule $TaxRule */
+        foreach ($TaxRules as $TaxRule) {
             /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
-            $builder = $this->formFactory->createBuilder(TaxRuleType::class, $taxRule);
+            $builder = $this->formFactory->createBuilder(TaxRuleType::class, $TaxRule);
+            if ($TaxRule->isDefaultTaxRule()) {
+                $builder->remove('apply_date');
+            }
             $editTaxRuleForm = $builder->getForm();
             // error number
             $error = 0;
             if ($mode == 'edit_inline'
                 && $request->getMethod() === 'POST'
-                && (string)$taxRule->getId() === $request->get('tax_rule_id')
+                && (string)$TaxRule->getId() === $request->get('tax_rule_id')
                 ) {
                 $editTaxRuleForm->handleRequest($request);
                 if ($editTaxRuleForm->isValid()) {
@@ -166,8 +169,8 @@ class TaxRuleController extends AbstractController
                 $error = count($editTaxRuleForm->getErrors(true));
             }
 
-            $forms[$taxRule->getId()] = $editTaxRuleForm->createView();
-            $errors[$taxRule->getId()] = $error;
+            $forms[$TaxRule->getId()] = $editTaxRuleForm->createView();
+            $errors[$TaxRule->getId()] = $error;
         }
 
         return [
