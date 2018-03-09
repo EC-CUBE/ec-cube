@@ -23,10 +23,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['order', 'order_master'] %}
 
-{% block title %}{{'admin.order.index.295'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.order.index.296'|trans}}{% endblock %}
+{% block title %}{{'admin.order.index.296'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.order.index.295'|trans}}{% endblock %}
 
-{% form_theme searchForm '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
+{% form_theme searchForm '@admin/Form/bootstrap_4_layout.html.twig' %}
 
 {% block stylesheet %}
 <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datetimepicker.min.css', 'admin') }}">
@@ -122,9 +122,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <div class="form-group col-12">
                                 <p class="col-form-label">{{ searchForm.multi_status.vars.label|trans }}</p>
                                 {% for status in searchForm.multi_status %}
-                                    <div class="form-check form-check-inline">
-                                        {{ form_widget(status, {'attr': {'class': 'form-check-input'}, 'label_attr': {'class': 'form_check_label'}}) }}
-                                    </div>
+                                    {{ form_widget(status, {'attr': {'class': 'form-check-input'}, 'label_attr': {'class': 'checkbox-inline form_check_label'}}) }}
                                 {% endfor %}
                                 {{ form_errors(searchForm.multi_status) }}
                             </div>
@@ -152,7 +150,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <p class="col-form-label">{{ 'admin.order.index.304'|trans }}</p>
                             {% for payment in searchForm.payment %}
                                 <div class="form-check form-check-inline">
-                                    {{ form_widget(payment, {'attr': {'class': 'form-check-input'}, 'label_attr': {'class': 'form_check_label'}}) }}
+                                    {{ form_widget(payment, {'attr': {'class': 'form-check-input'}, 'label_attr': {'class': 'checkbox-inline form_check_label'}}) }}
                                 </div>
                             {% endfor %}
                             {{ form_errors(searchForm.payment) }}
@@ -267,7 +265,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <p class="col-form-label">{{ searchForm.sex.vars.label|trans }}</p>
                             {% for sex in searchForm.sex %}
                                 <div class="form-check form-check-inline">
-                                    {{ form_widget(sex, {'attr': {'class': 'form-check-input'}, 'label_attr': {'class': 'form_check_label'}}) }}
+                                    {{ form_widget(sex, {'attr': {'class': 'form-check-input'}, 'label_attr': {'class': 'checkbox-inline form_check_label'}}) }}
                                 </div>
                             {% endfor %}
                             {{ form_errors(searchForm.sex) }}
