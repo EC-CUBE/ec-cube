@@ -21,64 +21,52 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 #}
-{% extends '@admin/default_frame.twig' %}
+{% extends '@admin/styleguide_frame.twig' %}
 
 {% set menus = ['content', 'block'] %}
 
-{% block title %}{{'admin.content.block.5'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.content.block.6'|trans}}{% endblock %}
+{% block title %}{{ 'admin.content.block.5'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.content.block.6'|trans }}{% endblock %}
 
 {% block main %}
-<form name="content_block_form" id="content_block_form" method="post" action="">
-    <div id="block_wrap" class="container-fluid">
-        <div id="block_list" class="row">
-            <div id="block_list_box" class="col-md-12">
-                <div id="block_list_box__body" class="box">
-                    <div id="block_list_box__header" class="box-header">
-                        <div class="box-title">
-                            {{'admin.content.block.7'|trans}}
-                        </div>
-                    </div>
-                    <div id="sortable_list" class="box-body no-padding no-border">
-                        <div id="sortable_list_box" class="sortable_list">
-                            <div id="sortable_list__list"class="tableish">
+    <div class="c-contentsArea__cols">
+        <div class="c-contentsArea__primaryCol">
+            <div class="c-primaryCol">
+                <div class="card rounded border-0 mb-4">
+                    <div class="card-body p-0">
+                        <div class="card rounded border-0 mb-2">
+                            <ul class="list-group list-group-flush">
                                 {% for Block in Blocks %}
-                                    <div id="sortable_list__item--{{ Block.id }}" class="item_box tr">
-                                        <div id="sortable_list__name--{{ Block.id }}" class="item_pattern td">
-                                            {{ Block.name }}
-                                        </div>
-                                        <div id="sortable_list__menu_box--{{ Block.id }}" class="icon_edit td">
-                                            <div id="sortable_list__menu_box_toggle--{{ Block.id }}" class="dropdown">
-                                                <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
-                                                <ul id="sortable_list__menu--{{ Block.id }}" class="dropdown-menu dropdown-menu-right">
-                                                    <li>
-                                                        <a href="{{ url('admin_content_block_edit', {id: Block.id}) }}">{{'admin.content.block.8'|trans}}</a>
-                                                    </li>
-                                                    <li>
-                                                        {% if Block.deletable %}
-                                                            <a href="{{ url('admin_content_block_delete', { 'id': Block.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="このブロックを削除してもよろしいですか？">{{'admin.content.block.9'|trans}}</a>
-                                                        {% else %}
-                                                            <a>{{'admin.content.block.10'|trans}}</a>
-                                                        {% endif %}
-                                                    </li>
-                                                </ul>
+                                    <li class="list-group-item">
+                                        <div class="row justify-content-around">
+                                            <div class="col d-flex align-items-center">
+                                                <a href="{{ url('admin_content_block_edit', {id: Block.id}) }}">
+                                                    {{ Block.name }}
+                                                </a>
+                                            </div>
+                                            <div class="col-auto text-right">
+                                                <a href="{{ url('admin_content_block_edit', {id: Block.id}) }}" class="btn btn-ec-actionIcon mr-3" data-toggle="tooltip" data-placement="top" title="{{ 'admin.content.block_edit.14'|trans }}">
+                                                    <i class="fa fa-pencil fa-lg text-secondary"></i>
+                                                </a>
+                                                <a href="{{ url('admin_content_block_delete', {id: Block.Id} ) }}" class="btn btn-ec-actionIcon mr-3 {% if not Block.deletable %}disabled{% endif %}" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.label.delete'|trans }}" {{ csrf_token_for_anchor() }} data-method="delete">
+                                                    <i class="fa fa-close fa-lg text-secondary"></i>
+                                                </a>
                                             </div>
                                         </div>
-                                    </div><!-- /.item_box -->
+                                    </li>
                                 {% endfor %}
-                            </div>
+                            </ul>
                         </div>
-                    </div><!-- /.box-body -->
-                </div><!-- /.box -->
-            </div><!-- /.col -->
-
-            <div id="block_list__footer" class="row btn_area2">
-                <div id="block_list__insert_button" class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center">
-                    <a class="btn btn-primary btn-block btn-lg" href="{{ url('admin_content_block_new')}}">{{'admin.content.block.11'|trans}}</a>
+                    </div>
                 </div>
             </div>
-
+            <div class="card rounded border-0">
+                <div class="card-body p-4">
+                    <div class="text-center">
+                        <a href="{{ url('admin_content_block_new') }}" class="btn btn-ec-regular pl-4 pr-4">{{ 'admin.content.block.11'|trans }}</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</form>
 {% endblock %}
