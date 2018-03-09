@@ -609,7 +609,7 @@
             start_node: '<span>ホーム</span>',
             anchor_node: '<a onclick="eccube.setModeAndSubmit(\'tree\', \'parent_category_id\', ' +
                 '{category_id}); return false" href="javascript:;" />',
-            delimiter_node: '<span>&nbsp;&gt;&nbsp;</span>'
+            delimiter_node: '<span>&nbsp;/;&nbsp;</span>'
         };
 
         return this.each(function() {

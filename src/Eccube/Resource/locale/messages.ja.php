@@ -587,7 +587,7 @@ return [
     'admin.content.file.25' => 'ファイルのアップロード',
     'admin.content.file.26' => 'アップロード',
     'admin.content.file.27' => 'フォルダを追加',
-    'admin.content.file.28' => '作成',
+    'admin.content.file.28' => '新規作成',
     'admin.content.file.29' => 'ファイル名',
     'admin.content.file.30' => 'サイズ',
     'admin.content.file.31' => '更新',

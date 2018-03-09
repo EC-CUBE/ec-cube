@@ -31,7 +31,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     $(function() {
         var bread_crumbs = {{ now_dir_list|raw }};
         var file_path = '';
-        var $delimiter = '<span>&nbsp;&gt;&nbsp;</span>';
+        var $delimiter = '<span>&nbsp;/&nbsp;</span>';
         var $node = $('#bread');
         var total = bread_crumbs.length;
         for (var i in bread_crumbs) {
