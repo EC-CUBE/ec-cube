@@ -95,6 +95,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                         </a>
                                                     </div>
                                                     <div class="col-auto text-right">
+                                                        {# TODO ドラッグドロップで変更後の「上へ」「下へ」リンクの制御が不十分 #}
                                                         <a href="{{ url('admin_setting_shop_delivery_up', {id: Delivery.Id} ) }}" class="btn btn-ec-actionIcon mr-3 {% if loop.first %}disabled{% endif %}" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.label.move.up'|trans }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">
                                                             <i class="fa fa-arrow-up fa-lg text-secondary"></i>
                                                         </a>
@@ -118,6 +119,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <div class="card rounded border-0">
                     <div class="card-body p-4">
                         <div class="text-center">
+                            {# TODO 新規作成ボタンのレイアウトについてデザイン調整が必要 #}
                             <a href="{{ url('admin_setting_shop_delivery_new') }}" class="btn btn-ec-regular pl-4 pr-4">{{ 'admin.setting.shop.delivery.577'|trans }}</a>
                         </div>
                     </div>
