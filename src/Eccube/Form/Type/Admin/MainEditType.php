@@ -119,10 +119,10 @@ class MainEditType extends AbstractType
                     )),
                 ),
             ))
-            ->add('tpl_data', HiddenType::class, array(
+            ->add('tpl_data', TextType::class, array(
                 'label' => false,
                 'mapped' => false,
-                'required' => true,
+                'required' => false,
                 'constraints' => [
                     new Assert\NotBlank(),
                     new TwigLint(),
