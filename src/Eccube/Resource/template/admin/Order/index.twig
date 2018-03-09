@@ -59,35 +59,29 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 
     // 登録チェックボックス
-    $('#check-all').click(function() {
-      var checkall = $('#check-all').prop('checked');
-      if (checkall) {
-        $('input[id^=check-]').prop('checked', true);
+    $('#check-all').on('change', function() {
+        var checked = $(this).prop('checked');
+        if (checked) {
+            $('input[id^=check-]').prop('checked', true);
         } else {
-        $('input[id^=check-]').prop('checked', false);
-      }
+            $('input[id^=check-]').prop('checked', false);
+        }
     });
 
-    $('#dropmenu ul a').click(function(event) {
-      event.preventDefault();
-      var href = $(this).attr('href');
-      var isChecked = false;
-      $('input[id^=check-]').each(function() {
-        var check = $(this).prop('checked');
-        if (check) {
-          isChecked = true;
+    $('#btn_bulk_mail').on('click', function(event) {
+        event.preventDefault();
+        if (!$('#bulk_form input:checkbox[name^="ids"]:checked').length) {
+            alert("チェックボックスが選択されていません");
+            return false;
         }
-      });
-      if (!isChecked) {
-        alert("チェックボックスが選択されていません");
-        return false;
-      }
-      $('#dropdown-form').attr('action', href).submit();
+
+        $('#bulk_form').attr('action', $(this).prop('href')).submit();
         return false;
     });
 
     // フォーム値を確認し、アコーディオンを制御
     // 値あり : 開く / 値なし : 閉じる
+      {# TODO: Remove this js, should control show/hide search detail by active variable which passed from controller #}
     (function($, f) {
         //フォームがないページは処理キャンセル
         var $ac = $(".accpanel");
@@ -114,7 +108,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block main %}
 <!--検索条件設定テーブルここから-->
 <div class="c-outsideBlock">
-    <form name="search_form" id="search_form" method="post" action="{{ url('admin_order') }}">
+    <form name="search_form" id="search_form" method="POST" action="{{ url('admin_order') }}">
         <div class="c-outsideBlock__contents">
             <div class="row">
                 <div class="col-12">
@@ -122,6 +116,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div>
                             <label class="col-form">{{ searchForm.multi.vars.label|trans }}</label>
                             {{ form_widget(searchForm.multi) }}
+                            {{ form_errors(searchForm.multi) }}
                         </div>
                         <div class="form-row">
                             <div class="form-group col-12">
@@ -132,11 +127,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         {{ form_widget(status, {'attr': {'class': 'form-check-input'}, 'label_attr': {'class': 'form_check_label'}}) }}
                                     </div>
                                 {% endfor %}
+                                {{ form_errors(searchForm.multi_status) }}
                             </div>
                         </div>
-                        <div class="d-inline-block mb-3 collapsed" data-toggle="collapse" href="#searchDetail" aria-expanded="false" aria-controls="searchDetail">
+                        <div class="d-inline-block mb-3 {% if not active %}collapsed{% endif %}" data-toggle="collapse" href="#searchDetail" aria-expanded="false" aria-controls="searchDetail">
                             <a>
-                                <i class="fa font-weight-bold mr-1 fa-plus-square-o">
+                                <i class="fa font-weight-bold mr-1 {% if active %}fa-minus-square-o{% else %}fa-plus-square-o{% endif %}">
                                     <span class="font-weight-bold">{{ 'admin.order.index.detailed_search'|trans }}</span>
                                 </i>
                             </a>
@@ -144,11 +140,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 </div>
             </div>
         </div>
-        <div class="c-subContents ec-collapse collapse" id="searchDetail">
+        <div class="c-subContents ec-collapse collapse {% if active %}show{% endif %}" id="searchDetail">
             <div class="row">
                 <div class="col">
                     <label class="col-form-label">{{ searchForm.name.vars.label|trans }}</label>
                     {{ form_widget(searchForm.name) }}
+                    {{ form_errors(searchForm.name) }}
                 </div>
                 <div class="col">
                     <div class="form-row">
@@ -160,6 +157,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {{ form_widget(payment, {'attr': {'class': 'form-check-input'}, 'label_attr': {'class': 'form_check_label'}}) }}
                                 </div>
                             {% endfor %}
+                            {{ form_errors(searchForm.payment) }}
                         </div>
                     </div>
                 </div>
@@ -173,9 +171,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <div class="col">
                     <label class="col-form-label">{{ 'admin.order.index.305'|trans }}</label>
                     <div class="form-row align-items-center">
-                        <div class="col">{{ form_widget(searchForm.order_date_start) }}</div>
+                        <div class="col">
+                            {{ form_widget(searchForm.order_date_start) }}
+                            {{ form_errors(searchForm.order_date_start) }}
+                        </div>
                         <div class="col-auto text-center">{{ 'admin.order.index.306'|trans }}</div>
-                        <div class="col">{{ form_widget(searchForm.order_date_end) }}</div>
+                        <div class="col">
+                            {{ form_widget(searchForm.order_date_end) }}
+                            {{ form_errors(searchForm.order_date_end) }}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -188,9 +192,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <div class="col">
                     <label class="col-form-label">{{ 'admin.order.index.307'|trans }}</label>
                     <div class="form-row align-items-center">
-                        <div class="col">{{ form_widget(searchForm.payment_date_start) }}</div>
+                        <div class="col">
+                            {{ form_widget(searchForm.payment_date_start) }}
+                            {{ form_errors(searchForm.payment_date_start) }}
+                        </div>
                         <div class="col-auto text-center">{{ 'admin.order.index.308'|trans }}</div>
-                        <div class="col">{{ form_widget(searchForm.payment_date_end) }}</div>
+                        <div class="col">
+                            {{ form_widget(searchForm.payment_date_end) }}
+                            {{ form_errors(searchForm.payment_date_end) }}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -203,9 +213,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <div class="col">
                     <label class="col-form-label">{{ 'admin.order.index.311'|trans }}</label>
                     <div class="form-row align-items-center">
-                        <div class="col">{{ form_widget(searchForm.update_date_start) }}</div>
+                        <div class="col">
+                            {{ form_widget(searchForm.update_date_start) }}
+                            {{ form_errors(searchForm.update_date_start) }}
+                        </div>
                         <div class="col-auto text-center">{{ 'admin.order.index.312'|trans }}</div>
-                        <div class="col">{{ form_widget(searchForm.update_date_end) }}</div>
+                        <div class="col">
+                            {{ form_widget(searchForm.update_date_end) }}
+                            {{ form_errors(searchForm.update_date_end) }}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -227,6 +243,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <div class="input-group-text">￥</div>
                                 </div>
                                 {{ form_widget(searchForm.payment_total_start, {'type': 'number'}) }}
+                                {{ form_errors(searchForm.payment_total_start) }}
                             </div>
                         </div>
                         <div class="col-auto text-center">{{ 'admin.order.index.314'|trans }}</div>
@@ -239,6 +256,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <div class="input-group-text">￥</div>
                                 </div>
                                 {{ form_widget(searchForm.payment_total_end, {'type': 'number'}) }}
+                                {{ form_errors(searchForm.payment_total_end) }}
                             </div>
                         </div>
                     </div>
@@ -248,10 +266,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <div class="col">
                     <label class="col-form-label">{{ searchForm.tel.vars.label|trans }}</label>
                     {{ form_widget(searchForm.tel) }}
+                    {{ form_errors(searchForm.tel) }}
                 </div>
                 <div class="col">
                     <label class="col-form-label">{{ searchForm.buy_product_name.vars.label|trans }}</label>
                     {{ form_widget(searchForm.buy_product_name) }}
+                    {{ form_errors(searchForm.buy_product_name) }}
                 </div>
             </div>
             <div class="row">
@@ -265,6 +285,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {{ form_widget(sex, {'attr': {'class': 'form-check-input'}, 'label_attr': {'class': 'form_check_label'}}) }}
                                 </div>
                             {% endfor %}
+                            {{ form_errors(searchForm.sex) }}
                         </div>
                     </div>
                 </div>
@@ -293,7 +314,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <div class="mb-4">
                     <div class="col-12">
                         <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.order.index.317'|trans }}</button>
-                        {% if pagination %}
+                        {% if pagination and app.request.method == 'POST' %}
                             <span class="font-weight-bold ml-2">{{'admin.order.index.paginator_total_count'|trans({"%count%":pagination.totalItemCount})|raw}}</span>
                         {% endif %}
                     </div>
@@ -304,161 +325,158 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 </div>
 <!--検索条件設定テーブルここまで-->
 
-
 <div class="c-contentsArea__cols">
     <div class="c-contentsArea__primaryCol">
         <div class="c-primaryCol">
             {% if pagination and pagination.totalItemCount %}
-                <div class="row justify-content-between mb-2">
-                    <div class="col-auto">
-                        <label class="mr-2">{{ 'admin.order.index.label_bulk_actions'|trans }}</label>
-                        {# TODO: This button is not implemented yet? Is this func mail all ? #}
-                        <button class="btn btn-ec-regular mr-2">{{ 'admin.order.index.btn_bulk_mail'|trans }}</button>
-                        {# TODO: This button is not implemented yet #}
-                        <button class="btn btn-ec-regular mr-2">{{ 'admin.order.index.btn_bulk_export'|trans }}</button>
-                        {# TODO: This button is not implemented yet #}
-                        <button class="btn btn-ec-delete">{{ 'admin.order.index.btn_bulk_delete'|trans }}</button>
-                    </div>
-                    <div class="col">
-                        <div class="d-inline-block mr-2">
-                            {# TODO: This select input is not implemented yet #}
-                            <select class="custom-select">
-                                <option selected>{{ 'admin.order.index.option_bulk_change_status'|trans }}</option>
-                                <option>...</option>
-                            </select>
+                <form id="bulk_form" method="GET" action="">
+                    <div class="row justify-content-between mb-2">
+                        <div class="col-auto">
+                            <label class="mr-2">{{ 'admin.order.index.label_bulk_actions'|trans }}</label>
+                            {# TODO: This button is not implemented yet? Is this func mail all ? #}
+                            <a id="btn_bulk_mail" href="{{ url('admin_order_mail_all') }}" class="btn btn-ec-regular mr-2">{{ 'admin.order.index.btn_bulk_mail'|trans }}</a>
+                            {# TODO: This button is not implemented yet #}
+                            <button class="btn btn-ec-regular mr-2">{{ 'admin.order.index.btn_bulk_export'|trans }}</button>
+                            {# TODO: This button is not implemented yet #}
+                            <button class="btn btn-ec-delete">{{ 'admin.order.index.btn_bulk_delete'|trans }}</button>
                         </div>
-                        {# TODO: This button is not implemented yet #}
-                        <button class="btn btn-ec-regular mr-2">{{ 'admin.order.index.btn_bulk_submit'|trans }}</button>
-                    </div>
-                    <div class="col-auto text-right">
-                        <div class="d-inline-block">
-                            <select class="custom-select">
-                                {# TODO: implement js #}
-                                {# <a href="{{ path('admin_order_page', {'page_no': 1, 'page_count': pageMax.name}) }}"> #}
-                                {% for pageMax in pageMaxis %}
-                                    <option {% if pageMax.name == page_count%} selected {% endif %}>{{ pageMax.name|e }}件</option>
-                                {% endfor %}
-                            </select>
+                        <div class="col">
+                            <div class="d-inline-block mr-2">
+                                {# TODO: This select input is not implemented yet #}
+                                <select class="custom-select">
+                                    <option selected>{{ 'admin.order.index.option_bulk_change_status'|trans }}</option>
+                                    <option>...</option>
+                                </select>
+                            </div>
+                            {# TODO: This button is not implemented yet #}
+                            <button class="btn btn-ec-regular mr-2">{{ 'admin.order.index.btn_bulk_submit'|trans }}</button>
                         </div>
-                        <div class="d-inline-block">
-                            <div class="btn-group" role="group">
-                                <a class="btn btn-ec-regular" href="{{ url('admin_order_export_order') }}">
-                                    <i class="fa fa-cloud-download mr-1 text-secondary"></i>
-                                    <span>{{ 'admin.order.index.321'|trans }}</span>
-                                </a>
-                                <a class="btn btn-ec-regular" href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_ORDER') }) }}">
-                                    <i class="fa fa-cog mr-1 text-secondary"></i>
-                                    <span>{{ 'admin.order.index.btn_csv_setting'|trans }}</span>
-                                </a>
+                        <div class="col-auto text-right">
+                            <div class="d-inline-block">
+                                <select class="custom-select">
+                                    {# TODO: implement js  #}
+                                    {% for pageMax in pageMaxis %}
+                                        <option {% if pageMax.name == page_count%} selected {% endif %}>{{ pageMax.name|e }}件</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="d-inline-block">
+                                <div class="btn-group" role="group">
+                                    <a class="btn btn-ec-regular" href="{{ url('admin_order_export_order') }}">
+                                        <i class="fa fa-cloud-download mr-1 text-secondary"></i>
+                                        <span>{{ 'admin.order.index.321'|trans }}</span>
+                                    </a>
+                                    <a class="btn btn-ec-regular" href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_ORDER') }) }}">
+                                        <i class="fa fa-cog mr-1 text-secondary"></i>
+                                        <span>{{ 'admin.order.index.btn_csv_setting'|trans }}</span>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                {# TODO: desgin should display total count of result #}
-                <div class="card rounded border-0 mb-4">
-                    <div class="card-body p-0">
-                        <table class="table table-sm">
-                            <thead>
-                                <tr>
-                                    <th class="border-top-0 pt-2 pb-2 pl-3">
-                                        <input type="checkbox" id="check-all" name="filter" value="open">
-                                    </th>
-                                    <th class="border-top-0 pt-2 pb-2">{{ 'admin.order.index.328'|trans }}</th>
-                                    <th class="border-top-0 pt-2 pb-2">{{ 'admin.order.index.329'|trans }}</th>
-                                    <th class="border-top-0 pt-2 pb-2">{{ 'admin.order.index.330'|trans }}</th>
-                                    <th class="border-top-0 pt-2 pb-2">{{ 'admin.order.index.331'|trans }}</th>
-                                    <th class="border-top-0 pt-2 pb-2">{{ 'admin.order.index.332'|trans }}</th>
-                                    <th class="border-top-0 pt-2 pb-2">{{ 'admin.order.index.th_delivery_number'|trans }}</th> {# TODO: This col is not impelemented yet #}
-                                    <th class="border-top-0 pt-2 pb-2">{{ 'admin.order.index.334'|trans }}</th>
-                                    <th class="border-top-0 pt-2 pb-2">{{ 'admin.order.index.th_note'|trans }}</th> {# TODO: This col is not impelemented yet #}
-                                    <th class="border-top-0 pt-2 pb-2 pr-3"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            {% for Order in pagination %}
-                                <tr>
-                                    <td class="align-middle pl-3">
-                                        <input type="checkbox" name="filter" id="checkbox--{{ Order.id }}" value="open">
-                                    </td>
-                                    <td class="align-middle" id="order_date--{{ Order.id }}">{{ Order.order_date|date('Y/m/d H:i') }}</td> {# TODO: date time format should follow locale #}
-                                    <td class="align-middle" id="id--{{ Order.id }}"><a href="{{ url('admin_order_edit', { id : Order.id }) }}">{{ Order.id }}</a></td>
-                                    <td class="align-middle" id="name--{{ Order.id }}">{{ Order.name01 }} {{ Order.name02 }}</td>
-                                    <td class="align-middle" id="payment_method--{{ Order.id }}">{{ Order.payment_method }}</td>
-                                    <td class="align-middle" id="payment_total--{{ Order.id }}">{{ Order.payment_total|number_format }}</td>
-                                    <td class="align-middle">00000</td>
-                                    <td class="align-middle"  id="order_status--{{ Order.id }}">
-                                        {% if Order.OrderStatus.id == constant('NEW', Order.OrderStatus) %}
-                                            <span class="badge badge-ec-blue">{{ Order.OrderStatus }}</span>
-                                        {% elseif Order.OrderStatus.id == constant('PAY_WAIT', Order.OrderStatus) %}
-                                            <span class="badge badge-ec-red">{{ Order.OrderStatus }}</span>
-                                        {% elseif Order.OrderStatus.id == constant('BACK_ORDER', Order.OrderStatus) %}
-                                            <span class="badge badge-ec-red">{{ Order.OrderStatus }}</span>
-                                        {% elseif Order.OrderStatus.id == constant('CANCEL', Order.OrderStatus) %}
-                                            <span class="badge badge-ec-glay">{{ Order.OrderStatus }}</span>
-                                        {% elseif Order.OrderStatus.id == constant('DELIVERED', Order.OrderStatus) %}
-                                            <span class="badge badge-ec-glay">{{ Order.OrderStatus }}</span>
-                                        {% elseif Order.OrderStatus.id == constant('PAID', Order.OrderStatus) %}
-                                            <span class="badge badge-ec-green">{{ Order.OrderStatus }}</span>
-                                        {% elseif Order.OrderStatus.id == constant('PENDING', Order.OrderStatus) %}
-                                            <span class="badge badge-ec-yellow">{{ Order.OrderStatus }}</span>
-                                        {% elseif Order.OrderStatus.id == constant('PROCESSING', Order.OrderStatus) %}
-                                            <span class="badge badge-ec-yellow">{{ Order.OrderStatus }}</span>
-                                        {% endif %}
-                                    </td>
-                                    <td class="align-middle">
-                                        {# TODO: This col is not implement yet #}
-                                        <a class="btn btn-ec-actionIcon" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ 'admin.order.index.th_note'|trans }}" aria-describedby="tooltip819464">
-                                            <i class="fa fa-commenting fa-lg text-secondary" aria-hidden="true"></i>
-                                        </a>
-                                    </td>
-                                    <td class="align-middle pr-3">
-                                        <div class="row justify-content-end">
-                                            <div class="col-auto text-center">
-                                                <a class="btn btn-ec-actionIcon" href="{{ url('admin_order_mail', {'id': Order.id}) }}" data-toggle="tooltip" data-placement="top" title data-original-title="{{ 'admin.order.index.btn_send_mail'|trans }}">
-                                                    <i class="fa fa-send fa-lg text-secondary" aria-hidden="true"></i>
-                                                </a>
+                    {# TODO: desgin should display total count of result #}
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-body p-0">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th class="border-top-0 pt-2 pb-2 pl-3">
+                                            <input type="checkbox" id="check-all" name="filter" value="open">
+                                        </th>
+                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.order.index.328'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.order.index.329'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.order.index.330'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.order.index.331'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.order.index.332'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.order.index.th_delivery_number'|trans }}</th> {# TODO: This col is not impelemented yet #}
+                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.order.index.334'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.order.index.th_note'|trans }}</th> {# TODO: This col is not impelemented yet #}
+                                        <th class="border-top-0 pt-2 pb-2 pr-3"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% set cssClassStatus = {
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::NEW')): "badge-ec-blue",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::PAY_WAIT')): "badge-ec-red",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::BACK_ORDER')): "badge-ec-red",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::CANCEL')): "badge-ec-glay",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::DELIVERED')): "badge-ec-glay",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::PAID')): "badge-ec-green",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::PENDING')): "badge-ec-yellow",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::PROCESSING')): "badge-ec-yellow"
+                                    }
+                                %}
+                                {% for Order in pagination %}
+                                    <tr>
+                                        <td class="align-middle pl-3">
+                                            <input type="checkbox"  name="ids{{ Order.id }}" id="check--{{ Order.id }}" value="on">
+                                        </td>
+                                        <td class="align-middle" id="order_date--{{ Order.id }}">{{ Order.order_date|date('Y/m/d H:i') }}</td> {# TODO: date time format should follow locale #}
+                                        <td class="align-middle" id="id--{{ Order.id }}"><a href="{{ url('admin_order_edit', { id : Order.id }) }}">{{ Order.id }}</a></td>
+                                        <td class="align-middle" id="name--{{ Order.id }}">{{ Order.name01 }} {{ Order.name02 }}</td>
+                                        <td class="align-middle" id="payment_method--{{ Order.id }}">{{ Order.payment_method }}</td>
+                                        <td class="align-middle" id="payment_total--{{ Order.id }}">{{ Order.payment_total|number_format }}</td>
+                                        <td class="align-middle">00000</td>
+                                        <td class="align-middle"  id="order_status--{{ Order.id }}">
+                                            <span class="badge {{ attribute(cssClassStatus, Order.OrderStatus.id) }}">{{ Order.OrderStatus }}</span>
+                                        </td>
+                                        <td class="align-middle">
+                                            {# TODO: This col is not implement yet #}
+                                            <a class="btn btn-ec-actionIcon" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ 'admin.order.index.th_note'|trans }}" aria-describedby="tooltip819464">
+                                                <i class="fa fa-commenting fa-lg text-secondary" aria-hidden="true"></i>
+                                            </a>
+                                        </td>
+                                        <td class="align-middle pr-3">
+                                            <div class="row justify-content-end">
+                                                <div class="col-auto text-center">
+                                                    <a class="btn btn-ec-actionIcon" href="{{ url('admin_order_mail', {'id': Order.id}) }}" data-toggle="tooltip" data-placement="top" title data-original-title="{{ 'admin.order.index.btn_send_mail'|trans }}">
+                                                        <i class="fa fa-send fa-lg text-secondary" aria-hidden="true"></i>
+                                                    </a>
+                                                </div>
+                                                <div class="col-auto text-center">
+                                                    {# TODO: This func is not implemented yet #}
+                                                    <a class="btn btn-ec-actionIcon" href="" data-toggle="tooltip" data-placement="top" title data-original-title="{{ 'admin.order.index.btn_form'|trans }}">
+                                                        <i class="fa fa-table fa-lg text-secondary" aria-hidden="true"></i>
+                                                    </a>
+                                                </div>
+                                                <div class="col-auto text-center">
+                                                    {# TODO: This func is not implemented yet #}
+                                                    <a class="btn btn-ec-actionIcon" href="{{ url('admin_order_delete', { id : Order.id }) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="こ{{'admin.order.index.336'|trans}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ 'common.label.delete'|trans }}">
+                                                        <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
+                                                    </a>
+                                                </div>
                                             </div>
-                                            <div class="col-auto text-center">
-                                                {# TODO: This func is not implemented yet #}
-                                                <a class="btn btn-ec-actionIcon" href="" data-toggle="tooltip" data-placement="top" title data-original-title="{{ 'admin.order.index.btn_form'|trans }}">
-                                                    <i class="fa fa-table fa-lg text-secondary" aria-hidden="true"></i>
-                                                </a>
-                                            </div>
-                                            <div class="col-auto text-center">
-                                                {# TODO: This func is not implemented yet #}
-                                                <a class="btn btn-ec-actionIcon" href="{{ url('admin_order_delete', { id : Order.id }) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="こ{{'admin.order.index.336'|trans}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ 'common.label.delete'|trans }}">
-                                                    <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                        <div class="row justify-content-md-center mb-4"></div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <div class="row justify-content-md-center mb-4"></div>
+                        </div>
+                        <div class="row justify-content-md-center mb-4">
+                            {% if pagination.totalItemCount > 0 %}
+                                {% include "@admin/styleguide_pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_order_page' } %}
+                            {% endif %}
+                        </div>
                     </div>
-                    <div class="row justify-content-md-center mb-4">
-                        {% if pagination.totalItemCount > 0 %}
-                            {% include "@admin/styleguide_pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_order_page' } %}
-                        {% endif %}
-                    </div>
-                </div>
+                </form>
             {% else %}
                 {% if app.request.method == 'POST' %}
                     <div class="card rounded border-0">
                         <div class="card-body p-4">
-                            <div class="text-center text-muted mb-4 h5">検索条件に合致するデータが見つかりませんでした</div>
-                            <div class="text-center text-muted">検索条件を変えて、再度検索をお試しください。</div>
-                            <div class="text-center text-muted">[詳細検索]も試してみましょう。</div>
+                            <div class="text-center text-muted mb-4 h5">{{ 'admin.order.index.no_matching_search_data'|trans }}</div>
+                            <div class="text-center text-muted">{{ 'admin.order.index.pls_change_search_criteria'|trans }}</div>
+                            <div class="text-center text-muted">{{ 'admin.order.index.pls_try_advanced_search'|trans }}</div>
                         </div>
                     </div>
                 {% else %}
                     <div class="card rounded border-0">
                         <div class="card-body p-4">
-                            <div class="text-center text-muted mb-2 h5">現在データが登録されていません。登録してみましょう！</div>
-                            <div class="text-center mb-4"><a class="btn btn-ec-regular pl-4 pr-4" href="/order/register">新規登録</a></div>
-                            <div class="text-center text-muted">データが消えてしまいましたか？バックアップをしているならリストアを試してみましょう。</div>
+                            <div class="text-center text-muted mb-2 h5">{{ 'admin.order.index.not_found_any_data'|trans }}</div>
+                            <div class="text-center mb-4">
+                                <a class="btn btn-ec-regular pl-4 pr-4" href="{{ url('admin_order_new') }}">{{ 'admin.order.index.btn_signup'|trans }}</a>
+                            </div>
+                            <div class="text-center text-muted">{{ 'admin.order.index.if_backup_restore'|trans }}</div>
                         </div>
                     </div>
                 {% endif %}
