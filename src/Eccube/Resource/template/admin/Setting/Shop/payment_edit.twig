@@ -148,19 +148,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="card-header"><span>{{'admin.setting.shop.payment_edit.header'|trans}}</span></div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-3">{{ form_label(form.method) }}</div>
+                                <div class="col-3"><span>{{ 'paymentregister.label.payment_method'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.method) }}
                                 </div>
                                 {{ form_errors(form.method) }}
                             </div>
-                            <div class="row"><div class="col-3">{{ form_label(form.charge) }}</div>
+                            <div class="row"><div class="col-3"><span>{{ 'paymentregister.label.commision'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.charge) }}
                                     {{ form_errors(form.charge) }}
                                 </div>
                             </div>
-                            <div class="row"><div class="col-3">{{ form_label(form.rule_min) }}</div>
+                            <div class="row"><div class="col-3"><span>{{ 'paymentregister.label.rule'|trans }}</span></div>
                                 <div class="col mb-2">
                                     <div class="row justify-content-start">
                                         <div class="col-4">
@@ -179,7 +179,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <div class="row">
                                 <div class="col-3">
                                     <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{{ 'paymentregister.label.logo_image.tooltip'|trans }}">
-                                        <span>{{ form_label(form.payment_image_file) }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                                        <span>{{ 'paymentregister.label.logo_image'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
                                     </div>
                                 </div>
                                 <div class="col mb-2">
