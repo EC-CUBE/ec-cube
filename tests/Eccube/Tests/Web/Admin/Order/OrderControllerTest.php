@@ -20,6 +20,9 @@ class OrderControllerTest extends AbstractAdminWebTestCase
     {
         parent::setUp();
 
+        // FIXME: Should remove exist data before generate data for test
+        $this->deleteAllRows(array('dtb_order'));
+
         $Sex = $this->container->get(SexRepository::class)->find(1);
         $Payment = $this->container->get(PaymentRepository::class)->find(1);
         $OrderStatus = $this->container->get(OrderStatusRepository::class)->find(OrderStatus::NEW);
@@ -76,8 +79,8 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $this->expected = '検索結果 1 件 が該当しました';
-        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->expected = '検索結果：1件が該当しました';
+        $this->actual = $crawler->filter('#search_form #search_total_count')->text();
         $this->verify();
     }
 
@@ -98,8 +101,8 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $this->expected = '検索結果 ' . $cnt . ' 件 が該当しました';
-        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->expected = '検索結果：' . $cnt . '件が該当しました';
+        $this->actual = $crawler->filter('#search_form #search_total_count')->text();
         $this->verify();
     }
 
@@ -116,8 +119,8 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $this->expected = '検索結果 10 件 が該当しました';
-        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->expected = '検索結果：10件が該当しました';
+        $this->actual = $crawler->filter('#search_form #search_total_count')->text();
         $this->verify();
     }
 
@@ -143,8 +146,8 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $this->expected = '検索結果 10 件 が該当しました';
-        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->expected = '検索結果：10件が該当しました';
+        $this->actual = $crawler->filter('#search_form #search_total_count')->text();
         $this->verify();
     }
 
@@ -196,8 +199,8 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             )
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->expected = '検索結果 10 件 が該当しました';
-        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->expected = '検索結果：10件が該当しました';
+        $this->actual = $crawler->filter('#search_form #search_total_count')->text();
         $this->verify();
 
         $this->expectOutputRegex('/user-[0-9]@example.com/', 'user-[0-9]@example.com が含まれる CSV が出力されるか');
@@ -208,6 +211,9 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         );
     }
 
+    /**
+     * TODO: This test should move to Shipping Test
+     */
     public function testExportShipping()
     {
         // 受注件数を11件にしておく
@@ -228,8 +234,8 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             )
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->expected = '検索結果 10 件 が該当しました';
-        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->expected = '検索結果：10件が該当しました';
+        $this->actual = $crawler->filter('#search_form #search_total_count')->text();
         $this->verify();
 
         $this->expectOutputRegex('/user-[0-9]@example.com/', 'user-[0-9]@example.com が含まれる CSV が出力されるか');
@@ -260,13 +266,13 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $this->expected = '検索結果 1 件 が該当しました';
-        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->expected = '検索結果：1件が該当しました';
+        $this->actual = $crawler->filter('#search_form #search_total_count')->text();
         $this->verify();
 
         /* @var $customer \Eccube\Entity\Customer */
         $customer = $this->container->get(CustomerRepository::class)->findOneBy(array('email' => 'user-1@example.com'));
 
-        $this->assertContains($customer->getName01(), $crawler->filter('div#result_list_main__body')->html());
+        $this->assertContains($customer->getName01(), $crawler->filter('table#search_result')->html());
     }
 }

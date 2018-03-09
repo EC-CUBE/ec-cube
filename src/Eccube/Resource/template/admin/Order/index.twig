@@ -314,8 +314,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <div class="mb-4">
                     <div class="col-12">
                         <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.order.index.317'|trans }}</button>
-                        {% if pagination and app.request.method == 'POST' %}
-                            <span class="font-weight-bold ml-2">{{'admin.order.index.paginator_total_count'|trans({"%count%":pagination.totalItemCount})|raw}}</span>
+                        {% if pagination %}
+                            <span class="font-weight-bold ml-2" id="search_total_count">{{'admin.order.index.paginator_total_count'|trans({"%count%":pagination.totalItemCount})|raw}}</span>
                         {% endif %}
                     </div>
                 </div>
@@ -377,7 +377,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     {# TODO: desgin should display total count of result #}
                     <div class="card rounded border-0 mb-4">
                         <div class="card-body p-0">
-                            <table class="table table-sm">
+                            <table class="table table-sm" id="search_result">
                                 <thead>
                                     <tr>
                                         <th class="border-top-0 pt-2 pb-2 pl-3">
