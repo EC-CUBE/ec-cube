@@ -56,7 +56,6 @@ class TaxRuleType extends AbstractType
                 'mapped' => false,
             ))
             ->add('tax_rate', IntegerType::class, array(
-                'label' => 'taxrule.label.tax_rate',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
@@ -68,22 +67,20 @@ class TaxRuleType extends AbstractType
                 ),
             ))
             ->add('rounding_type', RoundingTypeType::class, array(
-                'label' => 'taxrule.label.tax_rules',
                 'required' => true,
             ))
             ->add('apply_date', DateType::class, array(
-                'label' => 'taxrule.label.tax_date',
-                'required' => 'false',
+                'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd HH:mm',
+                'format' => 'yyyy-MM-dd',
                 'years' => range(date('Y'), date('Y') + 2),
                 'placeholder' => array(
                     'year' => '----',
                     'month' => '--',
                     'day' => '--',
-                    'hours' => '--',
-                    'minutes' => '--'
+//                    'hours' => '--',
+//                    'minutes' => '--'
                 ),
                 'constraints' => array(
                     new Assert\NotBlank(),

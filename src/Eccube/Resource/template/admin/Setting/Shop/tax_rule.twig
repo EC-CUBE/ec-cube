@@ -19,146 +19,169 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends '@admin/default_frame.twig' %}
+{% extends '@admin/styleguide_frame.twig' %}
 
 {% set menus = ['setting', 'shop', 'shop_tax'] %}
 
-{% block title %}{{'admin.setting.shop.tax_rule.637'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.setting.shop.tax_rule.638'|trans}}{% endblock %}
+{% block title %}{{'admin.setting.shop.tax_rule.title'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.setting.shop.tax_rule.subtitle'|trans}}{% endblock %}
 
-{% form_theme form '@admin/Form/bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datetimepicker.min.css', 'admin') }}">
+    <style type="text/css">
+        .edit {
+            display: none;
+        }
+        .has-error .list {
+            display: none;
+        }
+        .has-error .edit {
+            display: block;
+        }
+    </style>
 {% endblock stylesheet %}
 
 {% block javascript %}
-    <script src="{{ asset('assets/js/vendor/moment.min.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/moment-ja.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/bootstrap-datetimepicker.min.js', 'admin') }}"></script>
-    <script>
+    <script type="text/javascript">
         $(function() {
-
-            $('#tax_rule_apply_date').datetimepicker({
-                locale: '{{eccube_config.locale}}',
-                format: 'YYYY-MM-DD HH:mm',
-                useCurrent: false,
-                showTodayButton: true
+            $(".tax_rule_list_item td.action a.edit-button").click(function() {
+                var id = $(this).data('id');
+                $("#tax_rule_list__item--" + id).find(".list").hide();
+                $("#tax_rule_list__item--" + id).find(".edit").show();
             });
 
+            $('.tax_rule_list_item .cancel').click(function() {
+                var id = $(this).data('id');
+                $("#tax_rule_list__item--" + id).find(".edit").hide();
+                $("#tax_rule_list__item--" + id).find(".list").show();
+            });
         });
-
-        function fnChange(action) {
-            document.form1.action = action;
-            document.form1.submit();
-            return false;
-        }
     </script>
 {% endblock javascript %}
 
 {% block main %}
-    <form name="form1" role="form" class="form-horizontal" id="form1" method="post" action="
-    {%- if TargetTaxRule.id is null -%}
-        {{ url('admin_setting_shop_tax_new') }}
-    {%- else -%}
-        {{ url('admin_setting_shop_tax_edit', { id : TargetTaxRule.id }) }}
-    {%- endif -%}">
-        {{ form_widget(form._token) }}
-        <div id="tax_rule_wrap" class="row">
-            <div id="tax_rule_box" class="col-md-12">
-                {# 個別税率設定 #}
-                <div id="tax_rule_box__body" class="box">
-                    <div id="tax_rule_box__header" class="box-header">
-                        <h3 class="box-title">{{'admin.setting.shop.tax_rule.639'|trans}}</h3>
-                    </div><!-- /.box-header -->
-                    <div id="tax_rule_box__body_inner" class="box-body">
-                        {{ form_row(form.option_product_tax_rule) }}
-                    </div><!-- /.box-body -->
-                </div><!-- /.box -->
-                <div id="tax_rule_box__insert_button" class="row btn_area2">
-                    <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center">
-                        <button class="btn btn-primary btn-block btn-lg"
-                                onclick="fnChange('{{ url('admin_setting_shop_tax_edit_param') }}'); return false;">{{'common.label.save'|trans}}
-                        </button>
+    <div class="c-contentsArea__cols">
+        <div class="c-contentsArea__primaryCol">
+            <div class="c-primaryCol">
+                <div class="card rounded border-0 mb-4">
+                    <div class="card-header"><span>{{ 'admin.setting.shop.tax_rule.header'|trans }}</span></div>
+                    <div class="card-body p-0">
+                        <table class="table tabel-sm">
+                            <colgroup>
+                                <col width="5%">
+                                <col width="12%">
+                                <col width="15%">
+                                <col width="20%">
+                                <col width="20%">
+                                <col width="10%">
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th class="border-top-0 pt-2 pb-2 pl-3">{{ 'admin.setting.shop.tax_rule.table_col_1'|trans }}</th>
+                                <th class="border-top-0 pt-2 pb-2 pl-3">{{ 'admin.setting.shop.tax_rule.table_col_2'|trans }}</th>
+                                <th class="border-top-0 pt-2 pb-2 pl-3">{{ 'admin.setting.shop.tax_rule.table_col_3'|trans }}</th>
+                                <th class="border-top-0 pt-2 pb-2 pl-3">{{ 'admin.setting.shop.tax_rule.table_col_4'|trans }}</th>
+                                <th class="border-top-0 pt-2 pb-2 pl-3">{{ 'admin.setting.shop.tax_rule.table_col_5'|trans }}</th>
+                                <th class="border-top-0 pt-2 pb-2 pl-3 pr-5">{{ 'admin.setting.shop.tax_rule.table_col_6'|trans }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
 
-                    </div>
-                </div>
+                            <tr id="tax_rule_item_new">
+                                <form name="form1" role="form" class="form-horizontal" id="form1" method="post" action="{{ url('admin_setting_shop_tax_new') }}">
+                                    {{ form_widget(form._token) }}
+                                    <td class="align-middle pl-3"></td>
+                                    <td class="align-middle" style="width:230px;">
+                                        <div class="form-inline justify-content-end">
+                                            {{ form_widget(form.tax_rate, {attr: {class: 'col-auto text-right', max: '100'}}) }}<span class="pl-1 col-auto">%</span>
+                                        </div>
+                                    </td>
+                                    <td class="align-middle">
+                                        {{ form_widget(form.rounding_type) }}
+                                    </td>
+                                    <td class="align-middle">
+                                        {% if TargetTaxRule.default_tax_rule %}
+                                            {{ 'admin.setting.shop.tax_rule.tax_rule_default'|trans }}
+                                        {% else %}
+                                            {{ form_widget(form.apply_date) }}
+                                        {% endif %}
+                                    </td>
+                                    <td class="align-middle"></td>
+                                    <td class="align-middle pr-5">
+                                        <div class="row justify-content-end">
+                                            <button class="btn btn-ec-regular px-4" type="submit">{{ 'common.label.add'|trans }}</button>
+                                        </div>
+                                    </td>
+                                </form>
+                            </tr>
 
-                {# 共通税率設定 #}
-                <div id="tax_common_rule_box" class="box">
-                    <div id="tax_common_rule_box__header" class="box-header">
-                        <h3 class="box-title">{{'admin.setting.shop.tax_rule.643'|trans}}</h3>
-                    </div><!-- /.box-header -->
-                    <div id="tax_common_rule_box__body" class="box-body">
-                        {{ form_row(form.tax_rate) }}
-                        {{ form_row(form.rounding_type) }}
-                        {% if TargetTaxRule.default_tax_rule == false %}
-                            {{ form_row(form.apply_date) }}
-                        {% endif %}
-                        <div class="extra-form">
-                            {% for f in form.getIterator %}
-                                {% if f.vars.name matches '[^plg*]' %}
-                                    {{ form_row(f) }}
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-                    </div><!-- /.box-body -->
-                </div><!-- /.box -->
-                <div id="tax_common_rule_box__insert_button" class="row btn_area2">
-                    <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center">
-                        <button class="btn btn-primary btn-block btn-lg" type="submit">登録</button>
-                    </div>
-                </div>
-
-                {# 税率一覧 #}
-                <div id="tax_rule_list" class="box">
-                    <div id="tax_rule_list__header" class="box-header">
-                        <h3 class="box-title">税率一覧</h3>
-                    </div><!-- /.box-header -->
-                    <div id="tax_rule_list__body" class="box-body">
-                        <div id="tax_rule_list__list" class="table-responsive">
-                            <table class="table table-striped">
-                                <thead>
-                                <tr id="tax_rule_list__header">
-                                    <th id="tax_rule_list__header_id">ID</th>
-                                    <th id="tax_rule_list__header_tax_rate">消費税率</th>
-                                    <th id="tax_rule_list__header_rounding_type">課税規則</th>
-                                    <th id="tax_rule_list__header_default_tax_rule">適用日時</th>
-                                    <th id="tax_rule_list__header_menu_box">&nbsp;</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% for TaxRule in TaxRules %}
-                                    <tr id="tax_rule_list__item--{{ TaxRule.id }}">
-                                        <td id="tax_rule_list__id--{{ TaxRule.id }}">{{ TaxRule.id }}</td>
-                                        <td id="tax_rule_list__tax_rate--{{ TaxRule.id }}">{{ TaxRule.tax_rate }}%</td>
-                                        <td id="tax_rule_list__rounding_type--{{ TaxRule.id }}">{{ TaxRule.rounding_type }}</td>
-                                        <td id="tax_rule_list__default_tax_rule--{{ TaxRule.id }}">{{ TaxRule.default_tax_rule  ? '基本税率設定' : TaxRule.apply_date|date('Y/m/d  H:i') }}</td>
-                                        <td id="tax_rule_list__menu_box--{{ TaxRule.id }}" class="icon_edit">
-                                            <div id="tax_rule_list__menu_box_toggle" class="dropdown">
-                                                <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                                    <svg class="cb cb-ellipsis-h">
-                                                        <use xlink:href="#cb-ellipsis-h"/>
-                                                    </svg>
-                                                </a>
-                                                <ul id="tax_rule_list__menu--{{ TaxRule.id }}" class="dropdown-menu dropdown-menu-right">
-                                                    <li><a href="{{ url('admin_setting_shop_tax_edit', { id : TaxRule.id }) }}">編集</a></li>
-                                                    {% if TaxRule.default_tax_rule %}
-                                                        <li><a>削除</a></li>
-                                                    {% else %}
-                                                        <li><a href="{{ url('admin_setting_shop_tax_delete', { id : TaxRule.id }) }}" {{ csrf_token_for_anchor() }} data-method="delete">削除</a></li>
-                                                    {% endif %}
-                                                </ul>
+                            {% for TaxRule in TaxRules %}
+                                <form name="edit-form" id="edit-form_{{ TaxRule.id }}" method="post" action="{{ url('admin_setting_shop_tax') }}">
+                                    {{ form_widget(forms[TaxRule.id]._token) }}
+                                    <input type="hidden" value="{{ TaxRule.id }}" name="tax_rule_id">
+                                    <input type="hidden" value="edit_inline" name="mode"/>
+                                    <tr class="tax_rule_list_item {% if errors[TaxRule.id] %}has-error{%  endif %}" id="tax_rule_list__item--{{ TaxRule.id }}">
+                                        <td class="align-middle pl-3"><span>{{ TaxRule.id }}</span></td>
+                                        <td class="align-middle text-right" style="width:230px;">
+                                            <div class="edit form-inline justify-content-end">
+                                                {{ form_widget(forms[TaxRule.id].tax_rate, {attr: {class: 'col-auto text-right', max: '100'}}) }}<span class="pl-1 col-auto">%</span>
+                                                {{ form_errors(forms[TaxRule.id].tax_rate) }}
+                                            </div>
+                                            <div class="list">
+                                                <span class="col-6 text-right pr-0">{{ TaxRule.tax_rate }}</span><span class="col-6 pl-1">%</span>
+                                            </div>
+                                        </td>
+                                        <td class="align-middle">
+                                            <div class="edit">
+                                                {{ form_widget(forms[TaxRule.id].rounding_type) }}
+                                            </div>
+                                            <div class="list">
+                                                <span>{{ TaxRule.rounding_type }}</span>
+                                            </div>
+                                        </td>
+                                        <td class="align-middle">
+                                            <div class="edit">
+                                                {% if TaxRule.default_tax_rule %}
+                                                    {{ 'admin.setting.shop.tax_rule.tax_rule_default'|trans }}
+                                                {% else %}
+                                                    {{ form_widget(forms[TaxRule.id].apply_date) }}
+                                                {% endif %}
+                                            </div>
+                                            <div class="list">
+                                                <span>{{ TaxRule.default_tax_rule  ? 'admin.setting.shop.tax_rule.tax_rule_default'|trans : TaxRule.apply_date|date('Y/m/d  H:i ~') }}</span>
+                                            </div>
+                                        </td>
+                                        <td class="align-middle">
+                                            <div class="edit">
+                                                <button type="submit" class="btn btn-ec-conversion">{{ 'admin.setting.shop.tax_rule.decision'|trans }}</button>
+                                                <button type="button" class="btn btn-ec-sub cancel" data-id="{{ TaxRule.id }}">{{ 'admin.setting.shop.tax_rule.cancel'|trans }}</button>
+                                            </div>
+                                        </td>
+                                        <td class="align-middle action">
+                                            <div class="row justify-content-end pr-2">
+                                                <div class="col-auto text-center pr-0"><a class="btn btn-ec-actionIcon edit-button" data-toggle="tooltip" data-id="{{ TaxRule.id }}" data-placement="top" title="{{ 'common.label.edit'|trans }}"><i class="fa fa-pencil fa-lg text-secondary" aria-hidden="true"></i></a></div>
+                                                {% if TaxRule.default_tax_rule %}
+                                                    <div class="col-auto text-center">
+                                                        <a class="btn btn-ec-actionIcon">
+                                                            <i class="fa fa-times fa-lg text-secondary" aria-hidden="true"></i>
+                                                        </a>
+                                                    </div>
+                                                {% else %}
+                                                    <div class="col-auto text-center">
+                                                        <a class="btn btn-ec-actionIcon" data-toggle="tooltip" data-placement="top" title="{{ 'common.label.delete'|trans }}" href="{{ url('admin_setting_shop_tax_delete', { id : TaxRule.id }) }}" {{ csrf_token_for_anchor() }} data-method="delete">
+                                                            <i class="fa fa-times fa-lg text-secondary" aria-hidden="true"></i></a></div>
+                                                {% endif %}
                                             </div>
                                         </td>
                                     </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div><!-- /.box-body -->
-                </div><!-- /.box -->
+                                </form>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
-    </form>
+    </div>
 {% endblock %}
