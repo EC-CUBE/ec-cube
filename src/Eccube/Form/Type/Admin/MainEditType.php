@@ -172,11 +172,6 @@ class MainEditType extends AbstractType
                     ))
                 )
             ))
-            ->add('DeviceType', EntityType::class, array(
-                'class' => 'Eccube\Entity\Master\DeviceType',
-                'choice_label' => 'id',
-            ))
-            ->add('id', HiddenType::class)
             ->add('PcLayout', EntityType::class, [
                 'mapped' => false,
                 'placeholder' => '---',
@@ -223,32 +218,31 @@ class MainEditType extends AbstractType
                     }
                 }
             })
-            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
                 $form = $event->getForm();
-                $url = $form['url']->getData();
-                $DeviceType = $form['DeviceType']->getData();
-                $page_id = $form['id']->getData();
+
+                /** @var Page $Page */
+                $Page = $event->getData();
 
                 $qb = $this->entityManager->createQueryBuilder();
-                $qb->select('p')
+                $qb->select('count(p)')
                     ->from('Eccube\\Entity\\Page', 'p')
                     ->where('p.url = :url')
-                    ->setParameter('url', $url)
                     ->andWhere('p.DeviceType = :DeviceType')
-                    ->setParameter('DeviceType', $DeviceType);
-                if (is_null($page_id)) {
+                    ->setParameter('url', $Page->getUrl())
+                    ->setParameter('DeviceType', $Page->getDeviceType());
+
+                if (null === $Page->getId()) {
                     $qb
                         ->andWhere('p.id IS NOT NULL');
                 } else {
                     $qb
                         ->andWhere('p.id <> :page_id')
-                        ->setParameter('page_id', $page_id);
+                        ->setParameter('page_id', $Page->getId());
                 }
 
-                $Page = $qb
-                    ->getQuery()
-                    ->getResult();
-                if (count($Page) > 0) {
+                $count = $qb->getQuery()->getSingleScalarResult();
+                if ($count > 0) {
                     $form['url']->addError(new FormError('mainedit.text.error.url_exists'));
                 }
             });
