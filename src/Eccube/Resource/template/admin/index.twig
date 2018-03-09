@@ -54,7 +54,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <span
                                     class="card-title">{{ 'admin.index.intro'|trans }}</span><i
                                     class="fa fa-question-circle fa-lg ml-1" aria-hidden="true"></i></div>
-                    </div><!-- End.card-header -->
+                    </div><!-- /.card-header -->
                     <div class="card-body pt-0 pr-0 pl-0">
                         <div class="row border border-top-0 border-left-0 border-right-0 p-3 align-items-center">
                             <div class="col-1 align-middle text-center">
@@ -98,8 +98,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                    href="/tutorial/complete">{{ 'admin.index.intro.skip.all'|trans }}</a>
                             </div>
                         </div>
-                    </div><!-- End.card-body -->
-                </div><!-- End.card.rounded -->
+                    </div><!-- /.card-body -->
+                </div><!-- /.card.rounded -->
                 <div class="row">
                     <div class="col-4 mb-4">
 
@@ -108,13 +108,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <a href="{{ url('admin_order') }}"><span
                                             class="card-title">{{ 'admin.index.160'|trans }}</span></a>
                             </div>
+                            <form id="order-state" name="form1" action="{{ url('admin_order') }}" method="post">
+                                {{ form_widget(searchOrderForm._token) }}
+                                <input type="hidden" id="admin_search_order_status"
+                                       name="admin_search_order[multi_status]"
+                                       value="">
+                            </form>
                             <div class="card-body p-0">
-                                <form id="order-state" name="form1" action="{{ url('admin_order') }}" method="post">
-                                    {{ form_widget(searchOrderForm._token) }}
-                                    <input type="hidden" id="admin_search_order_status"
-                                           name="admin_search_order[multi_status]"
-                                           value="">
-                                </form>
+                                {# TODO: Need improve function to add each order status with a class different (relapse to class: fa fa-inbox fa-2x) #}
                                 {% for OrderStatus in OrderStatuses %}
                                     <div class="d-block p-3 border border-top-0 border-left-0 border-right-0">
                                         <div class="row align-items-center">
@@ -132,57 +133,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         </div>
                                     </div>
                                 {% endfor %}
-                                {#<div class="d-block p-3 border border-top-0 border-left-0 border-right-0">
-                                    <div class="row align-items-center">
-                                        <div class="col-2 align-middle text-center">
-                                            <i class="fa fa-inbox fa-2x text-secondary" aria-hidden="true"></i>
-                                        </div>
-                                        <div class="col p-0">
-                                            <a href="/order/master"><span class="align-middle">{{ 'admin.index.summary.order.status.new.reception'|trans }}</span></a>
-                                        </div>
-                                        <div class="col-auto text-right align-middle">
-                                            <span class="h4 align-middle font-weight-normal">13</span></div>
-                                    </div>
-                                </div>
-                                <div class="d-block p-3 border border-top-0 border-left-0 border-right-0">
-                                    <div class="row align-items-center">
-                                        <div class="col-2 align-middle text-center">
-                                            <i class="fa fa-money fa-2x text-secondary" aria-hidden="true"></i>
-                                        </div>
-                                        <div class="col p-0">
-                                            <a href="/order/master"><span class="align-middle">{{ 'admin.index.summary.order.status.waiting.deposit'|trans }}</span></a>
-                                        </div>
-                                        <div class="col-auto text-right align-middle">
-                                            <span class="h4 align-middle font-weight-normal">24</span></div>
-                                    </div>
-                                </div>
-                                <div class="d-block p-3 border border-top-0 border-left-0 border-right-0">
-                                    <div class="row align-items-center">
-                                        <div class="col-2 align-middle text-center">
-                                            <i class="fa fa-check fa-2x text-secondary" aria-hidden="true"></i>
-                                        </div>
-                                        <div class="col p-0">
-                                            <a href="/order/master"><span class="align-middle">{{ 'admin.index.summary.order.status.payment.done'|trans }}</span></a>
-                                        </div>
-                                        <div class="col-auto text-center align-middle">
-                                            <span class="h4 align-middle font-weight-normal">13</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="d-block p-3 border border-top-0 border-left-0 border-right-0">
-                                    <div class="row align-items-center">
-                                        <div class="col-2 align-middle text-center">
-                                            <i class="fa fa-plane fa-2x text-secondary" aria-hidden="true"></i>
-                                        </div>
-                                        <div class="col p-0">
-                                            <a href="/order/master"><span class="align-middle">{{ 'admin.index.summary.order.status.tobe.ordered'|trans }}</span></a>
-                                        </div>
-                                        <div class="col-auto text-right align-middle">
-                                            <span class="h4 align-middle font-weight-normal">24</span></div>
-                                    </div>
-                                </div>#}
                             </div>
-                        </div><!-- End#order-status -->
+                        </div><!-- /#order-status -->
                     </div>
                     <div class="col-8 mb-4">
                         <div id="chart-statistics" class="card rounded border-0 h-100">
@@ -407,7 +359,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     </div>
                                 </div>
                             </div>
-                        </div><!-- End#chart-statistics -->
+                        </div><!-- /#chart-statistics -->
                     </div>
                 </div>
                 <div class="row">
@@ -475,7 +427,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     </div>
                                 </div>
                             </div>
-                        </div><!-- End#shop-statistical -->
+                        </div><!-- /#shop-statistical -->
                     </div>
                     <div class="col mb-4">
                         <div id="ec-cube-news" class="card rounded border-0 h-100">
@@ -488,11 +440,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         src="{{ eccube_config.eccube_info_url }}"
                                         style="width:100%; border:0; min-height:300px;"></iframe>
                             </div>
-                        </div><!-- End#ec-cube-news -->
+                        </div><!-- /#ec-cube-news -->
                     </div>
-                </div><!-- End.row -->
-            </div><!-- End.c-primaryCol -->
-        </div><!-- End.c-contentsArea__primaryCol -->
-    </div><!-- End.c-contentsArea__cols -->
+                </div><!-- /.row -->
+            </div><!-- /.c-primaryCol -->
+        </div><!-- /.c-contentsArea__primaryCol -->
+    </div><!-- /.c-contentsArea__cols -->
 
 {% endblock %}
