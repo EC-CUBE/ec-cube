@@ -70,7 +70,7 @@ class TaxRuleType extends AbstractType
                 'required' => true,
             ))
             ->add('apply_date', DateType::class, array(
-                'required' => false,
+                'required' => true,
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
