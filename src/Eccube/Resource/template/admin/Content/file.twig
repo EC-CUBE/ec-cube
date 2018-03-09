@@ -18,8 +18,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['content', 'file'] %}
 
-{% block title %}{{'admin.content.file.23'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.content.file.24'|trans}}{% endblock %}
+{% block title %}{{'admin.content.file.24'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.content.file.23'|trans}}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
@@ -27,6 +27,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 <script src="{{ asset('assets/js/file_manager.js', 'admin') }}"></script>
 <script>
     arrTree = {{ tpl_javascript|raw }};
+    var paths = {{ paths|raw }}; // TODO 仮実装
     $(function() {
         var bread_crumbs = {{ now_dir_list|raw }};
         var file_path = '';
@@ -189,7 +190,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <div class="collapse show ec-cardCollapse" id="folderDirectory">
                                 <div class="card-body">
                                     <div class="c-directoryTree--folder mb-3">
-                                        <ul id="directory_userdata">
+                                        <ul id="directory_userdata"> {# TODO フォルダ構成 #}
                                             <li>
                                                 <label class="collapsed" data-toggle="collapse" href="#directory_userdata" aria-expanded="false" aria-controls="directory_userdata">user_data</label>
                                                 <ul class="collapse" style="">

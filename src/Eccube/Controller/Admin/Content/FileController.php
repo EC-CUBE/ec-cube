@@ -95,6 +95,7 @@ class FileController extends AbstractController
 
         $tree = $this->getTree($this->getUserDataDir(), $request);
         $arrFileList = $this->getFileList($nowDir);
+        $paths = $this->getPathsToArray($tree);
         $tree = $this->getTreeToArray($tree);
 
         return [
@@ -108,6 +109,7 @@ class FileController extends AbstractController
             'tpl_parent_dir' => $parentDir,
             'arrFileList' => $arrFileList,
             'error' => $this->error,
+            'paths' => json_encode($paths)
         ];
     }
 
@@ -258,6 +260,16 @@ class FileController extends AbstractController
         return $arrTree;
     }
 
+    private function getPathsToArray($tree)
+    {
+        $paths = [];
+        foreach ($tree as $val) {
+            $paths[] = $this->getJailDir($val['path']);
+        }
+
+        return $paths;
+    }
+
     private function getTree($topDir, $request)
     {
         $finder = Finder::create()->in($topDir)
@@ -376,6 +388,7 @@ class FileController extends AbstractController
     private function getJailDir($path)
     {
         $realpath = realpath($path);
-        return str_replace($this->getUserDataDir(), '', $realpath);
+        $jailPath = str_replace($this->getUserDataDir(), '', $realpath);
+        return $jailPath ? $jailPath : '/';
     }
 }

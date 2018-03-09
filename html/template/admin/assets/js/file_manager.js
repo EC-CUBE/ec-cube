@@ -32,8 +32,8 @@
     //指定されたidの削除を行うページを実行する。
     eccube.deleteMember = function(id, pageno, lastAdminFlag) {
         var url = "./delete.php?id=" + id + "&pageno=" + pageno;
-        var message = lastAdminFlag ? 
-        '警告: 管理者がいなくなってしまいますと、システム設定などの操作が行えなくりますが宜しいでしょうか' 
+        var message = lastAdminFlag ?
+        '警告: 管理者がいなくなってしまいますと、システム設定などの操作が行えなくりますが宜しいでしょうか'
         : '登録内容を削除しても宜しいでしょうか';
         if(window.confirm(message)){
             location.href = url;
@@ -257,8 +257,7 @@
             // }
 
           arrFileSplit = arrTree[i][2].split("/");
-          console.log(arrFileSplit);
-          
+
             file_name = arrFileSplit[arrFileSplit.length-1];
           file_name = file_name ? file_name : 'user_data';
 
@@ -509,6 +508,50 @@
         eccube.fileManager.deleteTreeStatus(path);
     };
 
+  // TODO 仮実装
+  eccube.fileManager.convertToHierarchy = function (paths /* array of array of strings */) {
+    // Build the node structure
+    var rootNode = {name:"root", children:[]};
+    var $rootNode = $('<div />');
+
+
+    for (var i = 0; i < paths.length; i++) {
+      eccube.fileManager.buildNodeRecursive(
+        rootNode,
+        $rootNode,
+        paths[i].replace(/^\//, 'user_data/')
+          .replace(/\/$/, '')
+          .split('/'),
+        0
+      );
+    };
+    console.log(rootNode);
+    return $rootNode;
+  };
+
+  // TODO 仮実装
+  eccube.fileManager.buildNodeRecursive = function (node, $node, path, idx)
+  {
+    if (idx < path.length) {
+      let $item = $('<li>' + path[idx] + '</li>');
+      let item = path[idx];
+      let $dir = $node.find('ul');
+      let dir = node.children.find(function(child) {
+        return child.name == item;
+      });
+      if (!dir) {
+        node.children.push(dir = {name: item, children:[]});
+      }
+
+      if (!$dir.length) {
+        $dir = $('<ul />').append($item);
+        console.log($dir);
+        $node.append($dir);
+      }
+
+      eccube.fileManager.buildNodeRecursive(dir, $dir, path, idx + 1);
+    }
+  };
 
     /**
      * Initialize.
