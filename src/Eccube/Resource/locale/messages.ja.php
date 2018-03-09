@@ -2235,6 +2235,7 @@ return [
     'paymentregister.label.rule' => '利用条件',
     'paymentregister.label.logo_image' => 'ロゴ画像',
     'paymentregister.label.logo_image.tooltip' => 'ToolTip',
+    'paymentregistertype.validate.rule' => '利用条件(下限)は%price%円以下にしてください。',
     'paymentregistertype.464' => '',
     'pluginlocalinstall.text.message.select_file' => 'ファイルを選択してください。',
     'pluginlocalinstall.text.message.allowed_format' => 'zipファイル、tarファイル、tar.gzファイルのいずれかをアップロードしてください。',
