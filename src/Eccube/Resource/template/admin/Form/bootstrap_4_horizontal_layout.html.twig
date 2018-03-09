@@ -45,7 +45,9 @@
 {% block money_widget -%}
     {% set attr = attr|merge({class: attr.class|default('')}) %}
     {% if attr.class == 'notmoney' %}
+    <div class="input-group">
         {{- block('form_widget_simple') -}}
+    </div>
     {% else %}
         {{ parent() }}
     {% endif %}
@@ -53,4 +55,3 @@
 
 {% block form_label_class -%}
 {%- endblock form_label_class %}
-

@@ -156,12 +156,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             </div>
                             <div class="row"><div class="col-3">{{ form_label(form.charge) }}</div>
                                 <div class="col mb-2">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">￥</div>
-                                        </div>
-                                        {{ form_widget(form.charge, {attr: {class: 'notmoney'}}) }}
-                                    </div>
+                                    {{ form_widget(form.charge) }}
                                     {{ form_errors(form.charge) }}
                                 </div>
                             </div>
@@ -169,22 +164,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <div class="col mb-2">
                                     <div class="row justify-content-start">
                                         <div class="col-4">
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <div class="input-group-text">￥</div>
-                                                </div>
-                                                {{ form_widget(form.rule_min,{attr: {class: 'notmoney'}}) }}
-                                            </div>
+                                            {{ form_widget(form.rule_min) }}
                                             {{ form_errors(form.rule_min) }}
                                         </div>
                                         <div class="col-auto text-center p-0"><span class="align-middle">{{'admin.setting.shop.payment_edit.connect_min_max'|trans}}</span></div>
                                         <div class="col-4">
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <div class="input-group-text">￥</div>
-                                                </div>
-                                                {{ form_widget(form.rule_max, {attr: {class: 'notmoney'}}) }}
-                                            </div>
+                                            {{ form_widget(form.rule_max) }}
                                             {{ form_errors(form.rule_max) }}
                                         </div>
                                     </div>
