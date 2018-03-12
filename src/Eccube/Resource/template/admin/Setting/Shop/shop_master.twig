@@ -59,7 +59,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-3"><span>{{ 'common.label.shop_name'|trans }}</span></div>
+                                <div class="col-3"><span>{{ 'common.label.shop_name'|trans }}</span><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.shop_name) }}
                                     {{ form_errors(form.shop_name) }}
@@ -80,7 +80,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-3"><span>{{ 'common.label.address'|trans }}</span><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></div>
+                                <div class="col-3"><span>{{ 'common.label.address'|trans }}</span></div>
                                 <div class="col mb-2">
                                     <div class="mb-2">
                                         <div class="row justify-content-start">
@@ -115,7 +115,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 </div>
                             </div>
                             <div class="row mb-2">
-                                <div class="col-3"><span>{{ 'common.label.phone_number'|trans }}</span><span class="badge badge-primary ml-1">必須</span></div>
+                                <div class="col-3"><span>{{ 'common.label.phone_number'|trans }}</span></div>
                                 <div class="col">
                                     <div class="row justify-content-start">
                                         <div class="col-2">
@@ -164,28 +164,28 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <div class="col-3"><span>{{ 'common.label.email_from'|trans }}</span></div>
+                                <div class="col-3"><span>{{ 'common.label.email_from'|trans }}</span><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.email01) }}
                                     {{ form_errors(form.email01) }}
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <div class="col-3"><span>{{ 'common.label.email_for_inquiries'|trans }}</span></div>
+                                <div class="col-3"><span>{{ 'common.label.email_for_inquiries'|trans }}</span><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.email02) }}
                                     {{ form_errors(form.email02) }}
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <div class="col-3"><span>{{ 'common.label.email_reply_to'|trans }}</span></div>
+                                <div class="col-3"><span>{{ 'common.label.email_reply_to'|trans }}</span><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.email03) }}
                                     {{ form_errors(form.email03) }}
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <div class="col-3"><span>{{ 'common.label.email_return_path'|trans }}</span></div>
+                                <div class="col-3"><span>{{ 'common.label.email_return_path'|trans }}</span><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.email04) }}
                                     {{ form_errors(form.email04) }}
