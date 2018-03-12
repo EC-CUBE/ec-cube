@@ -316,7 +316,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div class="row justify-content-between mb-2">
                         <div class="col-auto">
                             <label class="mr-2">{{ 'admin.order.index.label_bulk_actions'|trans }}</label>
-                            {# TODO: This button is not implemented yet? Is this func mail all ? #}
                             <a id="btn_bulk_mail" href="{{ url('admin_order_mail_all') }}" class="btn btn-ec-regular mr-2">{{ 'admin.order.index.btn_bulk_mail'|trans }}</a>
                             {# TODO: This button is not implemented yet #}
                             <button class="btn btn-ec-regular mr-2">{{ 'admin.order.index.btn_bulk_export'|trans }}</button>
@@ -357,7 +356,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             </div>
                         </div>
                     </div>
-                    {# TODO: desgin should display total count of result #}
                     <div class="card rounded border-0 mb-4">
                         <div class="card-body p-0">
                             <table class="table table-sm" id="search_result">
@@ -371,9 +369,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <th class="border-top-0 pt-2 pb-2">{{ 'admin.order.index.330'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2">{{ 'admin.order.index.331'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2">{{ 'admin.order.index.332'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.order.index.th_delivery_number'|trans }}</th> {# TODO: This col is not impelemented yet #}
+                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.order.index.th_delivery_number'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2">{{ 'admin.order.index.334'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.order.index.th_note'|trans }}</th> {# TODO: This col is not impelemented yet #}
+                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.order.index.th_note'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2 pr-3"></th>
                                     </tr>
                                 </thead>
@@ -399,13 +397,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <td class="align-middle" id="name--{{ Order.id }}">{{ Order.name01 }} {{ Order.name02 }}</td>
                                         <td class="align-middle" id="payment_method--{{ Order.id }}">{{ Order.payment_method }}</td>
                                         <td class="align-middle" id="payment_total--{{ Order.id }}">{{ Order.payment_total|number_format }}</td>
-                                        <td class="align-middle">00000</td>
+                                        <td class="align-middle">
+                                            {% for shipping in Order.getShippings() %}
+                                                <a href="{{ url('admin_shipping_edit', {id: shipping.id}) }}">{{ shipping.id }}</a><br>
+                                            {% endfor %}
+                                        </td>
                                         <td class="align-middle"  id="order_status--{{ Order.id }}">
                                             <span class="badge {{ attribute(cssClassStatus, Order.OrderStatus.id) }}">{{ Order.OrderStatus }}</span>
                                         </td>
                                         <td class="align-middle">
-                                            {# TODO: This col is not implement yet #}
-                                            <a class="btn btn-ec-actionIcon" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ 'admin.order.index.th_note'|trans }}" aria-describedby="tooltip819464">
+                                            <a class="btn btn-ec-actionIcon" href="{{ url('admin_order_edit', { id : Order.id }) }}#order_note" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ Order.note }}" aria-describedby="tooltip819464">
                                                 <i class="fa fa-commenting fa-lg text-secondary" aria-hidden="true"></i>
                                             </a>
                                         </td>
@@ -453,6 +454,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </div>
                     </div>
                 {% else %}
+                    {# TODO: Need implement display data at index controller without search submit #}
                     <div class="card rounded border-0">
                         <div class="card-body p-4">
                             <div class="text-center text-muted mb-2 h5">{{ 'admin.order.index.not_found_any_data'|trans }}</div>
