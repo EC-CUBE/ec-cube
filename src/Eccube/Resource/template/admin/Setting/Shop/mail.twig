@@ -87,10 +87,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <div class="col-10">
                                 <div id="detail_box__tpl_data" class="form-group">
                                     {{ form_label(form.tpl_data) }}
-                                    {#TODO: define heigh of text , now fit 480px#}
-                                        <div id="editor" style="height: 480px"></div>
-                                        {{ form_widget(form.tpl_data) }}
-                                        {{ form_errors(form.tpl_data) }}
+                                    <div id="editor" style="height: 480px" class="form-control{{ has_errors(form.tpl_data) ? ' is-invalid'}}"></div>
+                                    <div style="display: none">{{ form_widget(form.tpl_data) }}</div>
+                                    {{ form_errors(form.tpl_data) }}
                                 </div>
                             </div>
                         </div>
