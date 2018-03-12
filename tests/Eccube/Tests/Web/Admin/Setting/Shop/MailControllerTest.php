@@ -87,6 +87,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
             'mail_subject' => 'Test Subject',
             'mail_header' => 'Test Header',
             'mail_footer' => 'Test Footer',
+            'tpl_data' => 'Test TPL Data'
         );
         $this->client->request(
             'POST',
