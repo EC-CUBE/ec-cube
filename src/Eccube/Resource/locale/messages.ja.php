@@ -623,6 +623,7 @@ return [
     'admin.content.block_edit.14' => 'ブロック編集',
     'admin.content.block_edit.15' => '戻る',
     'admin.content.block_edit.16' => '登録',
+    'admin.content.block_edit.17' => '削除',
     'admin.content.cache.17' => 'コンテンツ管理',
     'admin.content.cache.18' => 'キャッシュ管理',
     'admin.content.cache.19' => 'キャッシュ管理',
