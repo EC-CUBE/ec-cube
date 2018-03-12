@@ -121,35 +121,39 @@ class PaymentController extends AbstractController
         $oldPaymentImage = $Payment->getPaymentImage();
 
         // 登録ボタン押下
-        if ($form->isSubmitted() && $form->isValid()) {
-            $Payment = $form->getData();
+        if ($form->isSubmitted() ) {
+            if ($form->isValid()) {
+                $Payment = $form->getData();
 
-            // ファイルアップロード
-            $file = $form['payment_image']->getData();
-            $fs = new Filesystem();
-            if ($file && $fs->exists($this->getParameter('eccube_temp_image_dir').'/'.$file)) {
-                $fs->rename(
-                    $this->getParameter('eccube_temp_image_dir').'/'.$file,
-                    $this->getParameter('eccube_save_image_dir').'/'.$file
+                // ファイルアップロード
+                $file = $form['payment_image']->getData();
+                $fs = new Filesystem();
+                if ($file && $fs->exists($this->getParameter('eccube_temp_image_dir') . '/' . $file)) {
+                    $fs->rename(
+                        $this->getParameter('eccube_temp_image_dir') . '/' . $file,
+                        $this->getParameter('eccube_save_image_dir') . '/' . $file
+                    );
+                }
+
+                $Payment->setVisible(true);
+                $this->entityManager->persist($Payment);
+                $this->entityManager->flush();
+
+                $event = new EventArgs(
+                    array(
+                        'form' => $form,
+                        'Payment' => $Payment,
+                    ),
+                    $request
                 );
+                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_EDIT_COMPLETE, $event);
+
+                $this->addSuccess('admin.register.complete', 'admin');
+
+                return $this->redirectToRoute('admin_setting_shop_payment');
+            } else {
+                $this->addError('admin.register.failed', 'admin');
             }
-
-            $Payment->setVisible(true);
-            $this->entityManager->persist($Payment);
-            $this->entityManager->flush();
-
-            $event = new EventArgs(
-                array(
-                    'form' => $form,
-                    'Payment' => $Payment,
-                ),
-                $request
-            );
-            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_EDIT_COMPLETE, $event);
-
-            $this->addSuccess('admin.register.complete', 'admin');
-
-            return $this->redirectToRoute('admin_setting_shop_payment');
         }
 
         return [

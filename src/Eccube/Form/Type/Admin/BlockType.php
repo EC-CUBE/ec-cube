@@ -70,7 +70,7 @@ class BlockType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, array(
-                'label' => 'admin.content.block.form.label.block_name',
+                'label' => 'admin.content.block.form.label.block_name', // TODO form_label を使用しないのなら削除
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
@@ -80,7 +80,7 @@ class BlockType extends AbstractType
                 ),
             ))
             ->add('file_name', TextType::class, array(
-                'label' => 'common.label.file_name',
+                'label' => 'common.label.file_name', // TODO form_label を使用しないのなら削除
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
@@ -93,7 +93,7 @@ class BlockType extends AbstractType
                 ),
             ))
             ->add('block_html', HiddenType::class, array(
-                'label' => 'block.label.block_type',
+                'label' => 'block.label.block_type', // TODO form_label を使用しないのなら削除
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [

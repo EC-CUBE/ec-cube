@@ -19,14 +19,14 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends '@admin/default_frame.twig' %}
+{% extends '@admin/styleguide_frame.twig' %}
 
 {% set menus = ['setting', 'shop', 'shop_payment'] %}
 
-{% block title %}{{'admin.setting.shop.payment_edit.611'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.setting.shop.payment_edit.612'|trans}}{% endblock %}
+{% block title %}{{'admin.setting.shop.payment_edit.title'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.setting.shop.payment_edit.subtitle'|trans}}{% endblock %}
 
-{% form_theme form '@admin/Form/bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block stylesheet %}
     <link rel="stylesheet" href="{{ asset('assets/css/fileupload/jquery.fileupload.css', 'admin') }}">
@@ -58,18 +58,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         };
 
         var proto_img = ''
-                      + '<li class="ui-state-default">'
-                      + '<img src="__path__" />'
-                      + '<a class="delete-image">'
-                      + '<svg class="cb cb-close">'
-                      + '<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cb-close"></use>'
-                      + '</svg>'
-                      + '</a>'
-                      + '</li>';
+            + '<li class="ui-state-default">'
+            + '<img src="__path__" />'
+            + '<a class="delete-image">'
+            + '<svg class="cb cb-close">'
+            + '<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cb-close"></use>'
+            + '</svg>'
+            + '</a>'
+            + '</li>';
         var payment_image = $("#{{ form.payment_image.vars.id }}").val();
         if (payment_image != "") {
             var filename = $("#{{ form.payment_image.vars.id }}").val();
-            if(payment_image == "{{ oldPaymentImage }}") {
+            if (payment_image == "{{ oldPaymentImage }}") {
                 var path = '{{ asset('', 'save_image') }}' + filename;
             } else {
                 var path = '{{ asset('', 'temp_image') }}' + filename;
@@ -79,33 +79,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
             $('#thumb').append($img);
             hideSvg();
-        },
-        fail: function (e, data) {
-            alert('admin.setting.shop.payment_edit.613'|trans);
-        },
-        always: function (e, data) {
-            $('#progress').hide();
-            $('#progress .progress-bar').width('0%');
-        },
-        start: function (e, data) {
-            $('#progress').show();
-            $("#thumb").find("li").remove();
-            $("#{{ form.payment_image.vars.id }}").val('');
-        },
-        acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-        maxFileSize: 10000000,
-        maxNumberOfFiles: 1,
-        progressall: function (e, data) {
-            var progress = parseInt(data.loaded / data.total * 100, 10);
-            $('#progress .progress-bar').css(
-                    'width',
-                    progress + '%'
-            );
-        },
-        processalways: function (e, data) {
-            if (data.files.error) {
-                alert("{{'admin.setting.shop.payment_edit.614'|trans}}");
-            }
         }
         hideSvg();
 
@@ -113,69 +86,54 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             url: "{{ url('admin_payment_image_add') }}",
             type: "post",
             dataType: 'json',
-            done: function (e, data) {
+            done: function(e, data) {
                 $('#progress').hide();
                 var path = '{{ asset('', 'temp_image') }}/' + data.result.filename;
-
                 var $img = $(proto_img.replace(/__path__/g, path));
-                $("#{{ form.payment_image.vars.id }}").val(filename);
+                $("#{{ form.payment_image.vars.id }}").val(data.result.filename);
 
                 $('#thumb').append($img);
-            }
-            hideSvg();
-
-            $('#{{ form.payment_image_file.vars.id }}').fileupload({
-                url: "{{ url('admin_payment_image_add') }}",
-                type: "post",
-                dataType: 'json',
-                done: function(e, data) {
-                    $('#progress').hide();
-                    var path = '{{ asset('', 'temp_image') }}/' + data.result.filename;
-                    var $img = $(proto_img.replace(/__path__/g, path));
-                    $("#{{ form.payment_image.vars.id }}").val(data.result.filename);
-
-                    $('#thumb').append($img);
-                    hideSvg();
-                },
-                fail: function(e, data) {
-                    alert('アップロードに失敗しました。');
-                },
-                always: function(e, data) {
-                    $('#progress').hide();
-                    $('#progress .progress-bar').width('0%');
-                },
-                start: function(e, data) {
-                    $('#progress').show();
-                    $("#thumb").find("li").remove();
-                    $("#{{ form.payment_image.vars.id }}").val('');
-                },
-                acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-                maxFileSize: 10000000,
-                maxNumberOfFiles: 1,
-                progressall: function(e, data) {
-                    var progress = parseInt(data.loaded / data.total * 100, 10);
-                    $('#progress .progress-bar').css(
-                        'width',
-                        progress + '%'
-                    );
-                },
-                processalways: function(e, data) {
-                    if (data.files.error) {
-                        alert("画像ファイルサイズが大きいか画像ファイルではありません。");
-                    }
-                }
-            });
-
-            $("#thumb").on("click", ".delete-image", function() {
-                $("#{{ form.payment_image.vars.id }}").val('');
-                $(this).parent("li").remove();
                 hideSvg();
-            });
+            },
+            fail: function(e, data) {
+                alert('{{ 'admin.setting.shop.payment_edit.image_alert_false'|trans }}');
+            },
+            always: function(e, data) {
+                $('#progress').hide();
+                $('#progress .progress-bar').width('0%');
+            },
+            start: function(e, data) {
+                $('#progress').show();
+                $("#thumb").find("li").remove();
+                $("#{{ form.payment_image.vars.id }}").val('');
+            },
+            acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+            maxFileSize: 10000000,
+            maxNumberOfFiles: 1,
+            progressall: function(e, data) {
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                $('#progress .progress-bar').css(
+                    'width',
+                    progress + '%'
+                );
+            },
+            processalways: function(e, data) {
+                if (data.files.error) {
+                    alert("{{ 'admin.setting.shop.payment_edit.image_alert_false'|trans }}");
+                }
+            }
+        });
 
-            // 画像アップロード
-            $('#file_upload').on('click', function() {
-                $('#{{ form.payment_image_file.vars.id }}').click();
-            });
+        $("#thumb").on("click", ".delete-image", function() {
+            $("#{{ form.payment_image.vars.id }}").val('');
+            $(this).parent("li").remove();
+            hideSvg();
+        });
+
+        // 画像アップロード
+        $('#file_upload').on('click', function() {
+            $('#{{ form.payment_image_file.vars.id }}').click();
+        });
     </script>
 {% endblock %}
 
@@ -183,94 +141,98 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="" enctype="multipart/form-data">
         {{ form_widget(form._token) }}
         {{ form_widget(form.fixed) }}
-        <div class="row" id="aside_wrap">
-            <div id="detail_wrap" class="col-md-9">
-                <div id="detail_box" class="box">
-                    <div id="detail_box__header" class="box-header">
-                        <h3 class="box-title">{{'admin.setting.shop.payment_edit.615'|trans}}</h3>
-                    </div><!-- /.box-header -->
-                    <div id="detail_box__body" class="box-body">
-
-                        {{ form_row(form.method) }}
-                        {{ form_row(form.charge) }}
-
-                        <div id="detail_box__rule" class="form-group">
-                            <label class="col-sm-2 control-label">
-                                {{'admin.setting.shop.payment_edit.616'|trans}}
-                            </label>
-                            <div class="col-sm-10 form-inline{% if form.rule_min.vars.valid == false or form.rule_max.vars.valid == false %} has-error{% endif %}">
-                                {{ form_widget(form.rule_min) }}
-                                {{'admin.setting.shop.payment_edit.617'|trans}}
-                                {{ form_widget(form.rule_max) }}
-                                {{ form_errors(form.rule_min) }}
-                                {{ form_errors(form.rule_max) }}
+        <div class="c-contentsArea__cols">
+            <div class="c-contentsArea__primaryCol">
+                <div class="c-primaryCol">
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header"><span>{{'admin.setting.shop.payment_edit.header'|trans}}</span></div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-3"><span>{{ 'paymentregister.label.payment_method'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.method) }}
+                                </div>
+                                {{ form_errors(form.method) }}
                             </div>
-                        </div>
-                        <div id="detail_box__image" class="form-group">
-                            <label class="col-sm-2 control-label" for="admin_product_product_image">
-                                {{ form.payment_image_file.vars.label }}
-                                <br>
-                                <span class="small">{{'admin.setting.shop.payment_edit.618'|trans}}</span>
-                            </label>
-                            <div id="detail_box__files" class="col-sm-9 col-lg-10">
-                                <div class="photo_files" id="drag-drop-area">
-                                    <svg id="icon_no_image" class="cb cb-photo no-image">
-                                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cb-photo"></use>
-                                    </svg>
-                                    <ul id="thumb" class="clearfix"></ul>
+                            <div class="row"><div class="col-3"><span>{{ 'paymentregister.label.commision'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.charge) }}
+                                    {{ form_errors(form.charge) }}
                                 </div>
                             </div>
-                        </div>
-
-                        <div id="detail_list__payment_image" class="form-group">
-                            <div id="detail_list__payment_image_body" class="col-sm-offset-2 col-sm-9 col-lg-10 ">
-                                <div id="progress" class="progress progress-striped active" style="display:none;">
-                                    <div class="progress-bar progress-bar-info"></div>
+                            <div class="row"><div class="col-3"><span>{{ 'paymentregister.label.rule'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    <div class="row justify-content-start">
+                                        <div class="col-4">
+                                            {{ form_widget(form.rule_min) }}
+                                            {{ form_errors(form.rule_min) }}
+                                        </div>
+                                        <div class="col-auto text-center p-0"><span class="align-middle">{{'admin.setting.shop.payment_edit.connect_min_max'|trans}}</span></div>
+                                        <div class="col-4">
+                                            {{ form_widget(form.rule_max) }}
+                                            {{ form_errors(form.rule_max) }}
+                                        </div>
+                                    </div>
                                 </div>
-                                {{ form_widget(form.payment_image, { attr : { style : 'display:none;' } }) }}
-                                {{ form_widget(form.payment_image_file, { attr : { accept : 'image/*', style : 'display:none;' } }) }}
-                                <a id="file_upload" class="with-icon">
-                                    <svg class="cb cb-plus">
-                                        <use xlink:href="#cb-plus"/>
-                                    </svg>
-                                    {{'admin.setting.shop.payment_edit.619'|trans}}
-                                </a>
-                                {{ form_errors(form.payment_image_file) }}
                             </div>
-                        </div>
-                        <div class="extra-form">
-                            {% for f in form.getIterator %}
-                                {% if f.vars.name matches '[^plg*]' %}
-                                    {{ form_row(f) }}
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-                    </div><!-- /.box-body -->
-                </div><!-- /.box -->
-                <div id="detail_list__back_button" class="row">
-                    <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
-                        <p><a href="{{ url('admin_setting_shop_payment') }}">{{'admin.setting.shop.payment_edit.620'|trans}}</a></p>
-                    </div>
-                </div>
 
-            </div><!-- /.col -->
-
-            <div id="detail_list_footer" class="col-md-3">
-                <div class="col_inner" id="aside_column">
-                    <div id="detail_list_footer__body" class="box no-header">
-                        <div id="detail_list_footer__body_inner" class="box-body">
-                            <div id="detail_list_footer__insert_button" class="row text-center">
-                                <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
-                                    <button class="btn btn-primary btn-block btn-lg" type="submit">{{'admin.setting.shop.payment_edit.621'|trans}}</button>
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{{ 'paymentregister.label.logo_image.tooltip'|trans }}">
+                                        <span>{{ 'paymentregister.label.logo_image'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                                    </div>
                                 </div>
+                                <div class="col mb-2">
+                                    {#Todo: implement upload image new style#}
+                                    <div id="detail_box__files" class="col-sm-9 col-lg-10">
+                                        <div class="photo_files" id="drag-drop-area">
+                                            <ul id="thumb" class="clearfix"></ul>
+                                        </div>
+
+                                        <div id="detail_list__payment_image_body" class="col-sm-9 col-lg-10">
+                                            <div id="progress" class="progress progress-striped active" style="display:none;">
+                                                <div class="progress-bar progress-bar-info"></div>
+                                            </div>
+                                            {{ form_widget(form.payment_image, { attr : { style : 'display:none;' } }) }}
+                                            {{ form_widget(form.payment_image_file, { attr : { accept : 'image/*', style : 'display:none;' } }) }}
+                                            <a id="file_upload" class="with-icon">
+                                                {{'admin.setting.shop.payment_edit.image_upload_buton'|trans}}
+                                            </a>
+                                            {{ form_errors(form.payment_image_file) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="extra-form">
+                                {% for f in form.getIterator %}
+                                    {% if f.vars.name matches '[^plg*]' %}
+                                        {{ form_row(f) }}
+                                    {% endif %}
+                                {% endfor %}
                             </div>
                         </div><!-- /.box-body -->
-                    </div><!-- /.box -->
+                    </div>
                 </div>
-            </div><!-- /.col -->
-
+            </div><!-- /.box -->
+        </div><!-- /.col -->
+        <div class="c-conversionArea">
+            <div class="c-conversionArea__container">
+                <div class="row justify-content-between align-items-center">
+                    <div class="col-6">
+                        <div class="c-conversionArea__leftBlockItem"><a class="c-beseLink" href="{{ url('admin_setting_shop_payment') }}">
+                                <i class="fa fa-backward" aria-hidden="true"></i><span>{{'admin.setting.shop.payment_edit.back_button'|trans}}</span></a>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="row align-items-center justify-content-end">
+                            <div class="col-auto">
+                                <button class="btn btn-ec-conversion px-5" type="submit">{{'admin.setting.shop.payment_edit.submit_button'|trans}}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </form>
-
-
 {% endblock %}

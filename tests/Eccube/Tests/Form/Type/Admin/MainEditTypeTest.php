@@ -43,7 +43,6 @@ class MainEditTypeTest extends AbstractTypeTestCase
         'keyword' => '',
         'meta_robots' => '',
         'meta_tags' => '',
-        'DeviceType' => '10',
     );
 
     public function setUp()
