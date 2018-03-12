@@ -26,7 +26,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block title %}{{ 'admin.product.index.469'|trans }}{% endblock %}
 {% block sub_title %}{{ 'admin.product.index.468'|trans }}{% endblock %}
 
-{% form_theme searchForm '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
+{% form_theme searchForm '@admin/Form/bootstrap_4_layout.html.twig' %}
 
 {% block stylesheet %}
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datetimepicker.min.css', 'admin') }}">
@@ -114,22 +114,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="form-row mb-2">
                             <div class="col-12">
                                 <p class="col-form-label">{{ 'admin.product.index.filter'|trans }}</p>
-                                {# TODO: 未実装（フィルターが検索後の絞込から検索条件に併合された） #}
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" id="check_public" type="checkbox" value="">
-                                    <label class="form-check-label"
-                                           for="check_public">{{ 'admin.product.index.public'|trans }}</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" id="check_private" type="checkbox" value="">
-                                    <label class="form-check-label"
-                                           for="check_private">{{ 'admin.product.index.private'|trans }}</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" id="check_stockout" type="checkbox" value="">
-                                    <label class="form-check-label"
-                                           for="check_stockout">{{ 'admin.product.index.out_of_stock'|trans }}</label>
-                                </div>
+                                {% for status in searchForm.status %}
+                                    {{ form_widget(status, {'attr': {'class': 'form-check-input'}, 'label_attr': {'class': 'checkbox-inline form_check_label'}}) }}
+                                {% endfor %}
                             </div>
                         </div>
                     </div>
