@@ -76,7 +76,7 @@
                             <div class="card-body">
                                 <div class="row mb-2">
                                     <div class="col-2">
-                                        <span>{{ form_label(form.name) }}</span>{# TODO form_label を使うと崩れる #}
+                                        <span>{{ 'admin.content.block.form.label.block_name'|trans }}</span>
                                         <i class="fa fa-question-circle fa-lg ml-1"></i>
                                         <span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span>
                                     </div>
@@ -89,7 +89,7 @@
                             <div class="card-body">
                                 <div class="row mb-2">
                                     <div class="col-2">
-                                        <span>{{ form_label(form.file_name) }}</span>{# TODO form_label を使うと崩れる #}
+                                        <span>{{ 'common.label.file_name'|trans }}</span>
                                         <i class="fa fa-question-circle fa-lg ml-1"></i>
                                         <span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span>
                                     </div>
@@ -107,7 +107,7 @@
                             <div class="card-body">
                                 <div class="row mb-2">
                                     <div class="col-2">
-                                        <span>{{ form_label(form.block_html) }}</span>{# TODO form_label を使うと崩れる #}
+                                        <span>{{ 'block.label.block_data'|trans }}</span>
                                         <i class="fa fa-question-circle fa-lg ml-1"></i>
                                         <span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span>
                                     </div>
