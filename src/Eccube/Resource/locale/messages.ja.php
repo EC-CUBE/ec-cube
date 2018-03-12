@@ -458,6 +458,10 @@ return [
     'admin.common.label.add_point' => '加算ポイント',
     'admin.common.label.use_point' => '利用ポイント',
     'admin.common.label.close' => '閉じる',
+    'admin.common.label.delete' => '削除',
+    'admin.common.label.move.up' => '上へ移動',
+    'admin.common.label.move.down' => '下へ移動',
+    'admin.common.label.move.message' => '項目の順番はドラッグ＆ドロップでも変更可能です。',
 
     'admin.install.warning' => 'installphpPath は、インストール完了後にファイルを削除してください',
     'admin.register.complete' => '登録が完了しました。',
@@ -467,6 +471,7 @@ return [
     'admin.delete.failed.foreign_key' => '関連するデータがあるため, %name%を削除できませんでした。',
     'admin.delete.warning' => '既に削除されています。',
     'admin.sort_no.move.complete' => 'ランクの移動が完了しました。',
+    'admin.sort_no.move.error' => '順序の移動ができませんでした。',
     'admin.sort_no.up.error' => 'ランクの移動ができません。',
     'admin.sort_no.down.error' => 'ランクの移動ができません。',
     'admin.order.save.complete' => '受注情報を保存しました。',
