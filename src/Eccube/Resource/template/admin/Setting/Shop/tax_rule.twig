@@ -120,11 +120,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             </tr>
 
                             {% for TaxRule in TaxRules %}
-                                <form name="edit-form" id="edit-form_{{ TaxRule.id }}" method="post" action="{{ url('admin_setting_shop_tax') }}">
-                                    {{ form_widget(forms[TaxRule.id]._token) }}
-                                    <input type="hidden" value="{{ TaxRule.id }}" name="tax_rule_id">
-                                    <input type="hidden" value="edit_inline" name="mode"/>
-                                    <tr class="tax_rule_list_item {% if errors[TaxRule.id] %}has-error{%  endif %}" id="tax_rule_list__item--{{ TaxRule.id }}">
+                                <tr class="tax_rule_list_item {% if errors[TaxRule.id] %}has-error{%  endif %}" id="tax_rule_list__item--{{ TaxRule.id }}">
+                                    <form name="edit-form" id="edit-form_{{ TaxRule.id }}" method="post" action="{{ url('admin_setting_shop_tax') }}">
+                                        {{ form_widget(forms[TaxRule.id]._token) }}
+                                        <input type="hidden" value="{{ TaxRule.id }}" name="tax_rule_id">
+                                        <input type="hidden" value="edit_inline" name="mode"/>
                                         <td class="align-middle pl-3"><span>{{ TaxRule.id }}</span></td>
                                         <td class="align-middle text-right" style="width:230px;">
                                             <div class="edit form-inline justify-content-end">
@@ -177,8 +177,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 {% endif %}
                                             </div>
                                         </td>
-                                    </tr>
-                                </form>
+                                    </form>
+                                </tr>
                             {% endfor %}
                             </tbody>
                         </table>
