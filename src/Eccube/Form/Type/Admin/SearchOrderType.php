@@ -179,6 +179,7 @@ class SearchOrderType extends AbstractType
         $builder->add(
             $builder
                 ->create('kana', TextType::class, array(
+                    'label' => 'searchorder.label.kana',
                     'required' => false,
                     'constraints' => array(
                         new Assert\Regex(array(
