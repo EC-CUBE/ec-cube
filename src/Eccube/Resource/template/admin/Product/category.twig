@@ -37,7 +37,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         $(function () {
             var oldSortNos = [];
             // 画面の中のsortNo一覧を保持
-            $("div.tableish > .item_box").each(function () {
+            $(".list-group-item").each(function () {
                 oldSortNos.push(this.dataset.sortNo);
             });
             // rsort
@@ -45,11 +45,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 return a - b;
             }).reverse();
 
-            $("div.tableish").sortable({
-                items: '> .item_box',
+            $(".list-group").sortable({
+                items: '> .list-group-item',
                 cursor: 'move',
                 update: function (e, ui) {
-                    $("body").append($('<div class="modal-backdrop in"></div>'));
+                    $("body").append($('<div class="modal-backdrop show"></div>'));
                     updateSortNo();
                 }
             });
@@ -58,7 +58,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 // 並び替え後にsortNoを更新
                 var newSortNos = {};
                 var i = 0;
-                $("div.tableish > .item_box").each(function () {
+                $("list-group-item").each(function () {
                     newSortNos[this.dataset.categoryId] = oldSortNos[i];
                     i++;
                 });
@@ -155,74 +155,70 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     </form>
                                 </li>
                                 {% if Categories|length > 0 %}
-                                    <div class="tableish">
-                                        {% for Category in Categories %}
-                                            <div class="item_box">
-                                                <li class="list-group-item">
-                                                    {% if Category.id != TargetCategory.id %}
-                                                        <div class="row justify-content-around">
-                                                            <div class="col-auto d-flex align-items-center">
-                                                                <i class="fa fa-bars text-ec-gray"></i>
-                                                            </div>
-                                                            <div class="col d-flex align-items-center">
-                                                                <a href="{{ url('admin_product_category_show',  { parent_id : Category.id }) }}">{{ Category.name }}</a>
-                                                            </div>
-                                                            <div class="col-auto text-right">
-                                                                {# TODO: 「上へ移動」「下へ移動」のボタンの動作の実装 #}
-                                                                <a class="btn btn-ec-actionIcon mr-3" href=""
-                                                                   data-toggle="tooltip" data-placement="top"
-                                                                   title="{{ 'admin.product.category.up'|trans }}">
-                                                                    <i class="fa fa-arrow-up fa-lg text-secondary"></i>
-                                                                </a>
-                                                                <a class="btn btn-ec-actionIcon mr-3" href=""
-                                                                   data-toggle="tooltip" data-placement="top"
-                                                                   title="{{ 'admin.product.category.down'|trans }}">
-                                                                    <i class="fa fa-arrow-down fa-lg text-secondary"></i>
-                                                                </a>
-                                                                <a class="btn btn-ec-actionIcon mr-3"
-                                                                   href="{{ url('admin_product_category_edit', {id: Category.id}) }}"
-                                                                   data-toggle="tooltip" data-placement="top"
-                                                                   title="{{ 'admin.product.category.rename'|trans }}">
-                                                                    <i class="fa fa-pencil fa-lg text-secondary"></i>
-                                                                </a>
-                                                                {% if Category.Children|length > 0 or Category.hasProductCategories %}
-                                                                    {# TODO: 削除できない場合のxアイコンの表現をわかりやすくする #}
-                                                                    <a class="btn btn-ec-actionIcon mr-3"
-                                                                       data-toggle="tooltip" data-placement="top"
-                                                                       title="{{ 'admin.product.category.text01'|trans }}">
-                                                                        <i class="fa fa-close fa-lg text-secondary"></i>
-                                                                    </a>
-                                                                {% else %}
-                                                                    <a class="btn btn-ec-actionIcon mr-3"
-                                                                       href="{{ url('admin_product_category_delete', {id: Category.id}) }}"
-                                                                       data-toggle="tooltip" data-placement="top"
-                                                                       title="{{ 'admin.product.category.410'|trans }}" {{ csrf_token_for_anchor() }}
-                                                                       data-method="delete">
-                                                                        <i class="fa fa-close fa-lg text-secondary"></i>
-                                                                    </a>
-                                                                {% endif %}
-                                                            </div>
-                                                        </div>
-                                                    {% else %}
-                                                        {# TODO: 新編集UIの実装 #}
-                                                        <form class="form-row">
-                                                            <div class="col-auto d-flex align-items-center">
-                                                                <input class="form-control" type="text">
-                                                            </div>
-                                                            <div class="col-auto d-flex align-items-center">
-                                                                <button class="btn btn-ec-conversion" type="submit">決定
-                                                                </button>
-                                                            </div>
-                                                            <div class="col-auto d-flex align-items-center">
-                                                                <button class="btn btn-ec-sub" type="submit">キャンセル
-                                                                </button>
-                                                            </div>
-                                                        </form>
-                                                    {% endif %}
-                                                </li>
-                                            </div>
-                                        {% endfor %}
-                                    </div>
+                                    {% for Category in Categories %}
+                                        <li class="list-group-item">
+                                            {% if Category.id != TargetCategory.id %}
+                                                <div class="row justify-content-around">
+                                                    <div class="col-auto d-flex align-items-center">
+                                                        <i class="fa fa-bars text-ec-gray"></i>
+                                                    </div>
+                                                    <div class="col d-flex align-items-center">
+                                                        <a href="{{ url('admin_product_category_show',  { parent_id : Category.id }) }}">{{ Category.name }}</a>
+                                                    </div>
+                                                    <div class="col-auto text-right">
+                                                        {# TODO: 「上へ移動」「下へ移動」のボタンの動作の実装 #}
+                                                        <a class="btn btn-ec-actionIcon mr-3" href=""
+                                                           data-toggle="tooltip" data-placement="top"
+                                                           title="{{ 'admin.product.category.up'|trans }}">
+                                                            <i class="fa fa-arrow-up fa-lg text-secondary"></i>
+                                                        </a>
+                                                        <a class="btn btn-ec-actionIcon mr-3" href=""
+                                                           data-toggle="tooltip" data-placement="top"
+                                                           title="{{ 'admin.product.category.down'|trans }}">
+                                                            <i class="fa fa-arrow-down fa-lg text-secondary"></i>
+                                                        </a>
+                                                        <a class="btn btn-ec-actionIcon mr-3"
+                                                           href="{{ url('admin_product_category_edit', {id: Category.id}) }}"
+                                                           data-toggle="tooltip" data-placement="top"
+                                                           title="{{ 'admin.product.category.rename'|trans }}">
+                                                            <i class="fa fa-pencil fa-lg text-secondary"></i>
+                                                        </a>
+                                                        {% if Category.Children|length > 0 or Category.hasProductCategories %}
+                                                            {# TODO: 削除できない場合のxアイコンの表現をわかりやすくする #}
+                                                            <a class="btn btn-ec-actionIcon mr-3"
+                                                               data-toggle="tooltip" data-placement="top"
+                                                               title="{{ 'admin.product.category.text01'|trans }}">
+                                                                <i class="fa fa-close fa-lg text-secondary"></i>
+                                                            </a>
+                                                        {% else %}
+                                                            <a class="btn btn-ec-actionIcon mr-3"
+                                                               href="{{ url('admin_product_category_delete', {id: Category.id}) }}"
+                                                               data-toggle="tooltip" data-placement="top"
+                                                               title="{{ 'admin.product.category.410'|trans }}" {{ csrf_token_for_anchor() }}
+                                                               data-method="delete">
+                                                                <i class="fa fa-close fa-lg text-secondary"></i>
+                                                            </a>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            {% else %}
+                                                {# TODO: 新編集UIの実装 #}
+                                                <form class="form-row">
+                                                    <div class="col-auto d-flex align-items-center">
+                                                        <input class="form-control" type="text">
+                                                    </div>
+                                                    <div class="col-auto d-flex align-items-center">
+                                                        <button class="btn btn-ec-conversion" type="submit">決定
+                                                        </button>
+                                                    </div>
+                                                    <div class="col-auto d-flex align-items-center">
+                                                        <button class="btn btn-ec-sub" type="submit">キャンセル
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            {% endif %}
+                                        </li>
+                                    {% endfor %}
                                 {% else %}
                                     {# TODO: データがない場合のデザイン #}
                                     <p>{{ 'admin.product.category.message.no_result'|trans }}</p>
