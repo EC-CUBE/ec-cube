@@ -40,21 +40,38 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             display: block;
         }
     </style>
+<link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datetimepicker.min.css', 'admin') }}">
 {% endblock stylesheet %}
 
 {% block javascript %}
+    <script src="{{ asset('assets/js/vendor/moment.min.js', 'admin') }}"></script>
+    <script src="{{ asset('assets/js/vendor/moment-ja.js', 'admin') }}"></script>
+    <script src="{{ asset('assets/js/vendor/bootstrap-datetimepicker.min.js', 'admin') }}"></script>
     <script type="text/javascript">
         $(function() {
+            var inputDate = document.createElement('input');
+            inputDate.setAttribute('type', 'date');
+            if (inputDate.type !== 'date') {
+                $('input[name$="apply_date]"]').datetimepicker({
+                    locale: 'ja',
+                    format: 'YYYY-MM-DD',
+                    useCurrent: false,
+                    showTodayButton: true
+                });
+            }
+
             $(".tax_rule_list_item td.action a.edit-button").click(function() {
                 var id = $(this).data('id');
-                $("#tax_rule_list__item--" + id).find(".list").hide();
-                $("#tax_rule_list__item--" + id).find(".edit").show();
+                var tr = $("#tax_rule_list__item--" + id);
+                $(tr).find(".list").hide();
+                $(tr).find(".edit").show();
             });
 
             $('.tax_rule_list_item .cancel').click(function() {
                 var id = $(this).data('id');
-                $("#tax_rule_list__item--" + id).find(".edit").hide();
-                $("#tax_rule_list__item--" + id).find(".list").show();
+                var tr = $("#tax_rule_list__item--" + id);
+                $(tr).find(".edit").hide();
+                $(tr).find(".list").show();
             });
         });
     </script>
