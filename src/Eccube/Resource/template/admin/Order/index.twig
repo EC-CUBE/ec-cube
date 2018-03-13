@@ -114,13 +114,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <div class="col-12">
                         {{ form_widget(searchForm._token) }}
                         <div>
-                            <label class="col-form">{{ searchForm.multi.vars.label|trans }}</label>
-                            {{ form_widget(searchForm.multi) }}
+                            <label class="col-form-label">{{ 'admin.order.index.297'|trans }}</label>
+                            {{ form_widget(searchForm.multi,  {attr: { class : 'input_search' }}) }}
                             {{ form_errors(searchForm.multi) }}
                         </div>
                         <div class="form-row">
                             <div class="form-group col-12">
-                                <p class="col-form-label">{{ searchForm.multi_status.vars.label|trans }}</p>
+                                <p class="col-form-label">{{ 'admin.order.index.298'|trans }}</p>
                                 {% for status in searchForm.multi_status %}
                                     {{ form_widget(status, {'attr': {'class': 'form-check-input'}, 'label_attr': {'class': 'checkbox-inline form_check_label'}}) }}
                                 {% endfor %}
@@ -140,7 +140,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <div class="c-subContents ec-collapse collapse {% if active %}show{% endif %}" id="searchDetail">
             <div class="row">
                 <div class="col">
-                    <label class="col-form-label">{{ searchForm.name.vars.label|trans }}</label>
+                    <label class="col-form-label">{{ 'admin.order.index.299'|trans }}</label>
                     {{ form_widget(searchForm.name) }}
                     {{ form_errors(searchForm.name) }}
                 </div>
@@ -149,9 +149,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="col-12">
                             <p class="col-form-label">{{ 'admin.order.index.304'|trans }}</p>
                             {% for payment in searchForm.payment %}
-                                <div class="form-check form-check-inline">
-                                    {{ form_widget(payment, {'attr': {'class': 'form-check-input'}, 'label_attr': {'class': 'checkbox-inline form_check_label'}}) }}
-                                </div>
+                                {{ form_widget(payment, {'attr': {'class': 'form-check-input'}, 'label_attr': {'class': 'checkbox-inline form_check_label'}}) }}
                             {% endfor %}
                             {{ form_errors(searchForm.payment) }}
                         </div>
@@ -160,7 +158,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             </div>
             <div class="row">
                 <div class="col">
-                    <label class="col-form-label">{{ searchForm.kana.vars.label|trans }}</label>
+                    <label class="col-form-label">{{ 'admin.order.index.300'|trans }}</label>
                     {{ form_widget(searchForm.kana) }}
                     {{ form_errors(searchForm.kana) }}
                 </div>
@@ -202,7 +200,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             </div>
             <div class="row">
                 <div class="col">
-                    <label class="col-form-label">{{ searchForm.email.vars.label|trans }}</label>
+                    <label class="col-form-label">{{ 'admin.order.index.302'|trans }}</label>
                     {{ form_widget(searchForm.email) }}
                     {{ form_errors(searchForm.email) }}
                 </div>
@@ -248,12 +246,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             </div>
             <div class="row">
                 <div class="col">
-                    <label class="col-form-label">{{ searchForm.tel.vars.label|trans }}</label>
+                    <label class="col-form-label">{{ 'admin.order.index.301'|trans }}</label>
                     {{ form_widget(searchForm.tel) }}
                     {{ form_errors(searchForm.tel) }}
                 </div>
                 <div class="col">
-                    <label class="col-form-label">{{ searchForm.buy_product_name.vars.label|trans }}</label>
+                    <label class="col-form-label">{{ 'admin.order.index.315'|trans }}</label>
                     {{ form_widget(searchForm.buy_product_name) }}
                     {{ form_errors(searchForm.buy_product_name) }}
                 </div>
@@ -262,11 +260,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <div class="col">
                     <div class="form-row">
                         <div class="col-12">
-                            <p class="col-form-label">{{ searchForm.sex.vars.label|trans }}</p>
+                            <p class="col-form-label">{{ 'admin.order.index.303'|trans }}</p>
                             {% for sex in searchForm.sex %}
-                                <div class="form-check form-check-inline">
-                                    {{ form_widget(sex, {'attr': {'class': 'form-check-input'}, 'label_attr': {'class': 'checkbox-inline form_check_label'}}) }}
-                                </div>
+                                {{ form_widget(sex, {'attr': {'class': 'form-check-input'}, 'label_attr': {'class': 'checkbox-inline form_check_label'}}) }}
                             {% endfor %}
                             {{ form_errors(searchForm.sex) }}
                         </div>

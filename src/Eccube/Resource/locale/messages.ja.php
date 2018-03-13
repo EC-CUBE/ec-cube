@@ -1010,7 +1010,7 @@ return [
     'admin.order.edit.294' => '検索',
     'admin.order.index.295' => '受注管理',
     'admin.order.index.296' => '受注マスター',
-    'admin.order.index.297' => '受注ID・注文者名・注文者会社名',
+    'admin.order.index.297' => '受注ID・注文者名・注文者会社名・メールアドレス・電話番号',
     'admin.order.index.298' => '対応状況',
     'admin.order.index.299' => '注文者名',
     'admin.order.index.300' => '注文者名(フリガナ)',
