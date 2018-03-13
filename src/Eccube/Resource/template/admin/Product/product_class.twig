@@ -23,8 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['product', 'product_master'] %}
 
-{% block title %}{{ 'admin.product.product_class.524'|trans }}{% endblock %}
-{% block sub_title %}{{ 'admin.product.product_class.525'|trans }}{% endblock %}
+{% block title %}{{ 'admin.product.product_class.title'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.product.product_class.sub_title'|trans }}{% endblock %}
 
 {% if not_product_class %}
     {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
@@ -149,44 +149,44 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8"><span
-                                            class="card-title align-middle">商品名：{{ Product.name }}</span>
+                                            class="card-title align-middle">{{ 'admin.product.product_class.product_name_label'|trans }}{{ Product.name }}</span>
                                 </div>
-                                {% if not_product_class  %}
+                                {% if not_product_class %}
                                     <div class="col-4 text-right">
                                         <button class="btn btn-ec-conversion" type="submit"
                                                 data-action="{{ url('admin_product_product_class', { id : Product.id}) }}">
-                                            商品規格の設定
+                                            {{ 'admin.product.product_class.create_product_class_matrix'|trans }}
                                         </button>
                                     </div>
                                 {% else %}
                                     <div class="col-4 text-right">
                                         <button class="btn btn-ec-delete" type="button"
                                                 data-toggle="modal"
-                                                data-target="#initializationConfirm">商品規格を初期化
+                                                data-target="#initializationConfirm">{{ 'admin.product.product_class.clear_product_class_matrix'|trans }}
                                         </button>
                                         <div class="modal fade" id="initializationConfirm" tabindex="-1" role="dialog"
                                              aria-labelledby="deleteConfirm" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title font-weight-bold">この商品の規格を初期化します</h5>
+                                                        <h5 class="modal-title font-weight-bold">{{ 'admin.product.product_class.clear_product_class_message'|trans }}</h5>
                                                         <button class="close" type="button" data-dismiss="modal"
                                                                 aria-label="Close"><span aria-hidden="true">×</span>
                                                         </button>
                                                     </div>
                                                     <div class="modal-body">
                                                         <p class="text-left">
-                                                            この商品に登録された規格を初期化します。これまでの販売データには影響はありませんが、この操作は取り消すことができません。初期化しますか？</p>
+                                                            {{ 'admin.product.product_class.clear_product_class_alert'|trans }}</p>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button class="btn btn-ec-sub" type="button"
                                                                 data-dismiss="modal">
-                                                            キャンセル
+                                                            {{ 'admin.product.product_class.clear_product_class_cancel'|trans }}
                                                         </button>
                                                         <button class="btn btn-ec-delete" type="submit" name="mode"
                                                                 value="delete"
                                                                 data-action="{{ url('admin_product_product_class_edit', { id : Product.id}) }}">
-                                                            規格を初期化
+                                                            {{ 'admin.product.product_class.clear_product_class_execute'|trans }}
                                                         </button>
                                                     </div>
                                                 </div>
@@ -199,13 +199,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="card-body">
                             <div class="row mb-2">
                                 <div class="col">
-                                    <div class="d-inline-block mr-2"><span>規格１</span></div>
-                                    {% if not_product_class  %}
+                                    <div class="d-inline-block mr-2">
+                                        <span>{{ 'admin.product.product_class.class_name1_label'|trans }}</span></div>
+                                    {% if not_product_class %}
                                         {{ form_widget(form.class_name1) }}
                                         {{ form_errors(form.class_name1) }}
                                     {% else %}
                                         {#TODO 規格の管理名称実装後に対応 #}
-                                        <div class="d-inline-block"><span>{{ class_name1 }} [表示名：{{ class_name1 }}
+                                        <div class="d-inline-block"><span>{{ class_name1 }} [{{ 'admin.product.product_class.class_display_name_label'|trans }}{{ class_name1 }}
                                                 ]</span>
                                         </div>
 
@@ -214,13 +215,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    <div class="d-inline-block mr-2"><span>規格２</span></div>
-                                    {% if not_product_class  %}
+                                    <div class="d-inline-block mr-2">
+                                        <span>{{ 'admin.product.product_class.class_name2_label'|trans }}</span></div>
+                                    {% if not_product_class %}
                                         {{ form_widget(form.class_name2) }}
                                         {{ form_errors(form.class_name2) }}
                                     {% else %}
                                         {#TODO 規格の管理名称実装後に対応 #}
-                                        <div class="d-inline-block"><span>{{ class_name2 }} [表示名：{{ class_name2 }}
+                                        <div class="d-inline-block"><span>{{ class_name2 }} [{{ 'admin.product.product_class.class_display_name_label'|trans }}{{ class_name2 }}
                                                 ]</span>
                                         </div>
                                     {% endif %}
@@ -232,8 +234,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="card rounded border-0 mb-4">
                             <div class="card-header">
                                 <div class="row justify-content-between">
-                                    <div class="col-6"><span class="align-middle">{{ classForm.product_classes|length }}
-                                            件の規格の組み合わせがあります</span></div>
+                                    <div class="col-6"><span class="align-middle">
+                                            {#<p class="font-weight-bold text-danger">{{ 'admin.order.mail_all.354'|trans({'%count%': ids|split(',')|length}) }}</p>#}
+
+                                            {{ 'admin.product.product_class.product_class_matrix_count'|trans({
+                                                '%count%' : classForm.product_classes|length
+                                            }) }}</span>
+                                    </div>
                                     <div class="col-4 text-right">
                                         <button id="copy" class="btn btn-ec-regular"><i
                                                     class="fa fa-files-o mr-1"></i><span>一行目をすべての行に複製</span></button>
@@ -248,19 +255,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     </th>
                                     <th class="pt-2 pb-2">{{ class_name1 is defined ? class_name1 }}</th>
                                     <th class="pt-2 pb-2">{{ class_name2 is defined ? class_name2 }}</th>
-                                    <th class="pt-2 pb-2">コード</th>
-                                    <th class="pt-2 pb-2">在庫数</th>
-                                    <th class="pt-2 pb-2">販売制限数</th>
-                                    <th class="pt-2 pb-2">通常価格</th>
-                                    <th class="pt-2 pb-2">販売価格</th>
+                                    <th class="pt-2 pb-2">{{ 'admin.product.product_class.product_code'|trans }}</th>
+                                    <th class="pt-2 pb-2">{{ 'admin.product.product_class.product_stock'|trans }}</th>
+                                    <th class="pt-2 pb-2">{{ 'admin.product.product_class.product_sale_limit'|trans }}</th>
+                                    <th class="pt-2 pb-2">{{ 'admin.product.product_class.product_price01'|trans }}</th>
+                                    <th class="pt-2 pb-2">{{ 'admin.product.product_class.delivery_fee'|trans }}</th>
                                     {% if BaseInfo.option_product_delivery_fee %}
-                                        <th class="pt-2 pb-2">送料</th>
+                                        <th class="pt-2 pb-2">{{ 'admin.product.product_class.delivery_fee'|trans }}</th>
                                     {% endif %}
                                     {% if BaseInfo.option_product_tax_rule %}
-                                        <th class="pt-2 pb-2">販売税率</th>
+                                        <th class="pt-2 pb-2">{{ 'admin.product.product_class.tax_rate'|trans }}</th>
                                     {% endif %}
-                                    <th class="pt-2 pb-2">お届け可能日</th>
-                                    <th class="pt-2 pb-2 pr-3">販売種別</th>
+                                    <th class="pt-2 pb-2">{{ 'admin.product.product_class.delivery_date'|trans }}</th>
+                                    <th class="pt-2 pb-2 pr-3">{{ 'admin.product.product_class.sale_tyle'|trans }}</th>
                                     </thead>
                                     {% for product_class_form in classForm.product_classes %}
                                         <tr>
@@ -344,7 +351,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div class="col-6">
                         <div class="c-conversionArea__leftBlockItem"><a class="c-beseLink"
                                                                         href="{{ url('admin_product') ~ '?resume=1' }}"><i
-                                        class="fa fa-backward" aria-hidden="true"></i><span>商品マスター</span></a>
+                                        class="fa fa-backward" aria-hidden="true"></i><span>{{ 'admin.product.product_class.product_list'|trans }}</span></a>
                         </div>
                     </div>
                     <div class="col-6">
@@ -355,13 +362,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <button class="btn btn-ec-conversion px-5" type="submit" name="mode"
                                                 value="edit"
                                                 data-action="{{ url('admin_product_product_class_edit', { id : Product.id}) }}">
-                                            登録
+                                            {{ 'admin.product.product_class.register'|trans }}
                                         </button>
                                     {% else %}
                                         <button class="btn btn-ec-conversion px-5" type="submit" name="mode"
                                                 value="update"
                                                 data-action="{{ url('admin_product_product_class_edit', { id : Product.id}) }}">
-                                            更新
+                                            {{ 'admin.product.product_class.update'|trans }}
                                         </button>
                                     {% endif %}
                                 </div>
