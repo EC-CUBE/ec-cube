@@ -46,6 +46,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
@@ -138,7 +139,9 @@ class ProductClassController extends AbstractController
 
             log_info('商品規格新規登録表示', [$id]);
 
-            $builder = $this->formFactory->createBuilder();
+            $builder = $this->formFactory->createBuilder(FormType::class, null, [
+                'allow_extra_fields' => true,
+            ]);
 
             $builder
                 ->add('class_name1', EntityType::class, [
@@ -371,7 +374,9 @@ class ProductClassController extends AbstractController
         }
 
         /* @var FormBuilder $builder */
-        $builder = $this->formFactory->createBuilder();
+        $builder = $this->formFactory->createBuilder(FormType::class, null, [
+            'allow_extra_fields' => true,
+        ]);
         $builder->add('product_classes', CollectionType::class, array(
                     'entry_type' => ProductClassType::class,
                     'allow_add' => true,
