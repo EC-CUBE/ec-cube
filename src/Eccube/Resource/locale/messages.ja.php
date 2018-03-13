@@ -679,6 +679,7 @@ return [
     'admin.content.layout.block.modal.code.body' => '編集が必要な場合はブロック編集画面から編集してください（この時レイアウト設定は保存されません）',
     'admin.content.layout.block.modal.code.back' => 'レイアウト編集に戻る',
     'admin.content.layout.block.modal.code.edit' => 'コードを編集',
+    'admin.content.layout.block.modal.code.progress' => 'ブロックのコードを読み込んでいます...',
     'admin.content.layout.block.context.moveup' => '上に移動',
     'admin.content.layout.block.context.movedown' => '下に移動',
     'admin.content.layout.block.context.movesection' => 'セクションに移動',

@@ -34,25 +34,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.mouse.min.js', 'admin') }}"></script>
     <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.sortable.min.js', 'admin') }}"></script>
     <script src="{{ asset('assets/js/layout_design.js', 'admin') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ace.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ext-language_tools.js"></script>
+
     <script>
         $(function(){
-            $('#blockModal').on('show.bs.modal', function(event) {
-                var target = $(event.relatedTarget);
-                var modal = $(this);
-                modal.find('#blockModalLabel').text(target.data('name'));
-
-                $.ajax({
-                    url: '{{ url('admin_content_layout_view_block') }}',
-                    type: 'POST',
-                    data: {
-                        id: target.data('id')
-                    }
-                }).done(function(data) {
-                    $('#blockModalContent').val(data.source);
-                }).fail(function(data) {
-                    alert('err');
-                });
-            });
             $('.block-context-menu').popover({
                 placement: 'bottom',
                 html: true,
@@ -62,20 +48,66 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 }
             }).on('shown.bs.popover', function () {
                 var $menu = $(this);
-                var $block = $(this).closest('[id^="detail_box__layout_item"]');
-                var $block_prev = $block.prev('[id^="detail_box__layout_item"]');
-                var $block_next = $block.next('[id^="detail_box__layout_item"]');
-                $('.context-moveup').on('click', function() {
-                    if ($block_prev.length) {
-                        $block.insertBefore($block_prev);
-                        $menu.popover('hide');
+                var $block = $menu.closest('[id^="detail_box__layout_item"]');
+                var block = {
+                    'menu': $menu,
+                    'current': $block,
+                    'prev': $block.prev('[id^="detail_box__layout_item"]'),
+                    'next': $block.next('[id^="detail_box__layout_item"]')
+                };
+                $('.context-moveup').on('click', block, function() {
+                    if (block.prev.length) {
+                        block.current.insertBefore(block.prev);
+                        block.menu.popover('hide');
                     }
                 });
-                $('.context-movedown').on('click', function() {
-                    if ($block_next.length) {
-                        $block.insertAfter($block_next);
-                        $menu.popover('hide');
+                $('.context-movedown').on('click', block, function() {
+                    if (block.next.length) {
+                        block.current.insertAfter(block.next);
+                        block.menu.popover('hide');
                     }
+                });
+                $('.context-movesection').on('click', block, function() {
+                    $('#clickStreamConfirm').modal();
+                });
+                $('#clickStreamConfirm').on('show.bs.modal', function(event) {
+                    var $modal = $(this);
+                });
+                $('.context-preview').on('click', block, function() {
+                    $('#codePreview').modal();
+                    block.menu.popover('hide');
+                });
+
+                $('#codePreview').on('show.bs.modal', block, function(event) {
+                    var attr_id = block.current.attr('id').match(/^detail_box__layout_item--([0-9]+)/);
+                    var block_id = attr_id[1];
+                    var $modal = $(this);
+                    var $block_edit = $modal.find('#block-edit');
+                    var onclick = $block_edit.attr('onclick').replace(/{{ constant('Eccube\\Controller\\Admin\\Content\\LayoutController::DUMMY_BLOCK_ID') }}/, block_id);
+                    $block_edit.attr('onclick', onclick);
+
+                    ace.require("ace/ext/language_tools");
+                    var editor = ace.edit("block-source-code");
+                    editor.session.setMode("ace/mode/twig");
+                    editor.setTheme("ace/theme/tomorrow");
+                    editor.setOptions({
+                        readOnly: true,
+                        autoScrollEditorIntoView: true,
+                        minLines: 20,
+                        maxLines: 20
+                    });
+
+                    $.ajax({
+                        url: '{{ url('admin_content_layout_view_block') }}',
+                        type: 'POST',
+                        data: {
+                            id: block_id
+                        }
+                    }).done(function(json, statusText, jqXHR) {
+                        editor.setValue(json.source);
+                    }).fail(function(jqXHR, statusText, errorThrown) {
+                        editor.setValue(statusText + ' ' + errorThrown);
+                    });
                 });
             });
         });
@@ -368,11 +400,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             </div>
                                             <div class="modal-body">
                                                 <p>{{ 'admin.content.layout.block.modal.code.body'|trans }}</p>
-                                                <div class="d-block border bg-ec-lightGray p-2">{# TODO 未実装 #}codeが入ります</div>
+                                                <div id="block-source-code" class="d-block border bg-ec-lightGray p-2">{{ 'admin.content.layout.block.modal.code.progress'|trans }}</div>
                                             </div>
                                             <div class="modal-footer">
                                                 <button class="btn btn-ec-regular" type="button" data-dismiss="modal">{{ 'admin.content.layout.block.modal.code.back'|trans }}</button>
-                                                <button class="btn btn-ec-conversion w-25" type="button" data-dismiss="modal">{{ 'admin.content.layout.block.modal.code.edit'|trans }}</button>
+                                                <button id="block-edit" onclick="location.href='{{ url('admin_content_block_edit', {id: constant('Eccube\\Controller\\Admin\\Content\\LayoutController::DUMMY_BLOCK_ID')}) }}'" class="btn btn-ec-conversion w-25" type="button" data-dismiss="modal">{{ 'admin.content.layout.block.modal.code.edit'|trans }}</button>
                                             </div>
                                         </div>
                                     </div>
@@ -385,9 +417,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <a href='javascript:;' class='context-movedown list-group-item list-group-item-action border-0'>
                                             <i class='fa fa-long-arrow-down mr-1'></i>{{ 'admin.content.layout.block.context.movedown'|trans }}
                                         </a>
-                                        <a href='javascript:;' class='list-group-item list-group-item-action border-0' data-toggle='modal' data-target='#clickStreamConfirm'>
+                                        <a href='javascript:;' class='context-movesection list-group-item list-group-item-action border-0'>
                                             <i class='fa fa-arrows mr-1'></i>{{ 'admin.content.layout.block.context.movesection'|trans }}
-                                        </a><a href='javascript:;' class='list-group-item list-group-item-action border-0' data-toggle='modal' data-target='#codePreview'>
+                                        </a>
+                                        <a href='javascript:;' class='context-preview list-group-item list-group-item-action border-0'>
                                             <i class='fa fa-code mr-1'></i>{{ 'admin.content.layout.block.context.preview'|trans }}
                                         </a>
                                     </div>
