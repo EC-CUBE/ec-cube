@@ -76,7 +76,6 @@ class MailType extends AbstractType
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [
-                    new Assert\NotBlank(),
                     new TwigLint(),
                 ]
             ))
