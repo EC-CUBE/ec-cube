@@ -462,6 +462,7 @@ return [
     'admin.common.label.move.up' => '上へ移動',
     'admin.common.label.move.down' => '下へ移動',
     'admin.common.label.move.message' => '項目の順番はドラッグ＆ドロップでも変更可能です。',
+    'admin.common.pagination.item' => '件',
 
     'admin.install.warning' => 'installphpPath は、インストール完了後にファイルを削除してください',
     'admin.register.complete' => '登録が完了しました。',

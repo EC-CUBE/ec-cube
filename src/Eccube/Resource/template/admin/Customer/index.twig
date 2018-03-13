@@ -302,14 +302,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <div class="col-6"></div>
                                 <div class="col-5 text-right">
                                     <div class="d-inline-block mr-2">
-                                        {# TODO: 未実装 表示件数 #}
                                         <select class="custom-select">
                                             {% for pageMax in pageMaxis %}
                                                 <option {% if pageMax.name == page_count %} selected {% endif %}
                                                         value="{{ path('admin_customer_page', {'page_no': 1, 'page_count': pageMax.name}) }}">
-                                                    {{ pageMax.name|e }}件
+                                                    {{ pageMax.name|e }}{{ 'admin.common.pagination.item'|trans }}
                                                 </option>
-
                                             {% endfor %}
                                         </select>
                                     </div>
