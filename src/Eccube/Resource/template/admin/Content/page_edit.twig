@@ -21,14 +21,14 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 #}
-{% extends '@admin/default_frame.twig' %}
+{% extends '@admin/styleguide_frame.twig' %}
 
 {% set menus = ['content', 'page'] %}
 
-{% block title %}{{'admin.content.page_edit.80'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.content.page_edit.81'|trans}}{% endblock %}
+{% block title %}{{ 'admin.content.page_edit.title'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.content.page_edit.sub_title'|trans }}{% endblock %}
 
-{% form_theme form '@admin/Form/bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block javascript %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ace.js"></script>
@@ -53,125 +53,191 @@
 {% endblock %}
 
 {% block main %}
-<div class="row" id="aside_wrap">
-    <form role="form" name="content_page_form" id="content_page_form" method="post"
+    <form id="content_page_form"
+          method="post"
           action="{%- if page_id is not null %}{{ url('admin_content_page_edit', {id: page_id}) }}{% else %}{{ url('admin_content_page_new') }}{% endif -%}">
         {{ form_widget(form._token) }}
-        {{ form_widget(form.id) }}
-        {{ form_widget(form.DeviceType, { attr : { style : 'display: none;' } } ) }}
-            <div id="detail" class="col-md-9">
-                <div id="detail_box" class="box form-horizontal">
-                    <div id="detail_box__header" class="box-header">
-                        <h3 class="box-title">{{'admin.content.page_edit.82'|trans}}</h3>
-                    </div>
-                    <!-- /.box-header -->
-                    <div id="detail_box__body" class="box-body">
 
-                        <div id="detail_box__name" class="form-group">
-                            {{ form_label(form.name) }}
-                            <div class="col-sm-9 col-lg-10">
-                                {{ form_widget(form.name) }}
-                                {{ form_errors(form.name) }}
+        <div class="c-contentsArea__cols">
+            <div class="c-contentsArea__primaryCol">
+                <div class="c-primaryCol">
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-8"><span class="card-title">{{ 'admin.content.page_edit.page_detail'|trans }}</span></div>
+                                <div class="col-4 text-right"><a data-toggle="collapse" href="#pageDetail"
+                                                                 aria-expanded="false" aria-controls="pageDetail"><i
+                                                class="fa fa-angle-up fa-lg"></i></a></div>
                             </div>
                         </div>
-                        <div id="detail_box__url" class="form-group word-break">
-                            {{ form_label(form.url) }}
-                            <div class="col-sm-9 col-lg-10 form-inline">
-                                {% if is_user_data_page %}
-                                    {{ url('homepage') }}{{ eccube_config.eccube_user_data_route }}/{{ form_widget(form.url) }}
-                                {% else %}
-                                    {{ app.request.schemeAndHttpHost }}{{ app.request.basePath }}{{ url }}
-                                    {{ form_widget(form.url, { type : 'hidden' } ) }}
-                                {% endif %}
-                                {{ form_errors(form.url) }}
-                            </div>
-                        </div>
-                        <div id="detail_box__file_name" class="form-group word-break">
-                            {{ form_label(form.file_name) }}
-                            <div class="col-sm-9 col-lg-10 form-inline">
-                                {% if is_user_data_page %}
-                                    {{ template_path }}/{{ form_widget(form.file_name) }}.twig
-                                {% else %}
-                                    {{ template_path }}/{{ form.file_name.vars.value }}.twig
-                                    {{ form_widget(form.file_name, { type : 'hidden' } ) }}
-                                {% endif %}
-                                {{ form_errors(form.file_name) }}
-                            </div>
-                        </div>
-
-                        <div id="detail_box__tpl_data" class="form-group">
-                            {{ form_label(form.tpl_data) }}
-                            <div class="col-sm-9 col-lg-10">
-                                <div id="editor" style="height: 480px"></div>
-                                {{ form_widget(form.tpl_data) }}
-                                {{ form_errors(form.tpl_data) }}
-                            </div>
-                        </div>
-
-                        <div class="extra-form">
-                            {% for f in form.getIterator %}
-                                {% if f.vars.name matches '[^plg*]' %}
-                                    {{ form_row(f) }}
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-
-                <div id="detail_device_box" class="box form-horizontal">
-                    <div id="detail_device_box__header" class="box-header">
-                        <h3 class="box-title">
-                            {{'admin.content.page_edit.83'|trans}}
-                        </h3>
-                    </div>
-                    <!-- /.box-header -->
-
-                    <div id="detail_device_box__body" class="box-body">
-                        {{ form_row(form.PcLayout) }}
-                        {{ form_row(form.SpLayout) }}
-                    </div>
-                </div>
-
-                <div id="detail_meta_box" class="box form-horizontal">
-                    <div id="detail_meta_box__header" class="box-header">
-                        <h3 class="box-title">
-                            {{'admin.content.page_edit.84'|trans}}
-                        </h3>
-                    </div>
-                    <!-- /.box-header -->
-
-                    <div id="detail_meta_box__body" class="box-body">
-                        {{ form_row(form.author) }}
-                        {{ form_row(form.description) }}
-                        {{ form_row(form.keyword) }}
-                        {{ form_row(form.meta_robots) }}
-                        {{ form_row(form.meta_tags, { attr : { placeholder : '複数のmetaタグを入力可能'}}) }}
-                    </div>
-                </div>
-
-                <div id="detail_box__footer" class="row hidden-xs hidden-sm">
-                    <div id="detail_box__back_button" class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
-                        <p><a href="{{ url('admin_content_page') }}">{{'admin.content.page_edit.85'|trans}}</a></p>
-                    </div>
-                </div>
-            </div>
-            <!-- /.col -->
-            <div class="col-md-3" id="aside_column">
-                <div id="common_box" class="col_inner">
-                    <div id="common_button_box" class="box no-header">
-                        <div id="common_button_box__body" class="box-body">
-                            <div id="common_button_box__insert_button" class="row text-center">
-                                <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
-                                    <button class="btn btn-primary btn-block btn-lg" type="submit">{{'admin.content.page_edit.86'|trans}}</button>
+                        <div class="collapse show ec-cardCollapse" id="pageDetail">
+                            <div class="card-body">
+                                <div class="row mb-2">
+                                    <div class="col-2"><span>{{ 'admin.content.page_edit.page_name'|trans }}</span><i
+                                                class="fa fa-question-circle fa-lg ml-1"></i><span
+                                                class="badge badge-primary ml-1">{{ 'admin.content.page_edit.required'|trans }}</span></div>
+                                    <div class="col-10">
+                                        {{ form_widget(form.name) }}
+                                        {{ form_errors(form.name) }}
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-2"><span>{{ 'admin.content.page_edit.page_url'|trans }}</span><i
+                                                class="fa fa-question-circle fa-lg ml-1"></i><span
+                                                class="badge badge-primary ml-1">{{ 'admin.content.page_edit.required'|trans }}</span></div>
+                                    <div class="col-10">
+                                        <div class="form-row">
+                                            {% if is_user_data_page %}
+                                                <div class="col-3 pr-0"><span class="align-middle">{{ url('homepage') }}{{ eccube_config.eccube_user_data_route }}/</span></div>
+                                                <div class="col-9 pl-0">{{ form_widget(form.url) }}</div>
+                                            {% else %}
+                                                <div class="col pr-0"><span class="align-middle">{{ app.request.schemeAndHttpHost }}{{ app.request.basePath }}{{ url }}</span></div>
+                                                <div>{{ form_widget(form.url, { type : 'hidden' } ) }}</div>
+                                            {% endif %}
+                                            {{ form_errors(form.url) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-2"><span>{{ 'admin.content.page_edit.page_file'|trans }}</span><i
+                                                class="fa fa-question-circle fa-lg ml-1"></i><span
+                                                class="badge badge-primary ml-1">{{ 'admin.content.page_edit.required'|trans }}</span></div>
+                                    <div class="col-10">
+                                        <div class="form-row">
+                                            {% if is_user_data_page %}
+                                                <div class="col-3 pr-0 align-middle"><span class="align-middle">{{ template_path }}/</span></div>
+                                                <div class="col-7 pl-0">
+                                                    {{ form_widget(form.file_name) }}
+                                                </div>
+                                                <div class="col-2 pl-0">.twig</div>
+                                            {% else %}
+                                                <div class="col pr-0 align-middle">
+                                                    <span class="align-middle">{{ template_path }}/{{ form.file_name.vars.value }}.twig</span>
+                                                    <div>{{ form_widget(form.file_name, { type : 'hidden' } ) }}</div>
+                                                </div>
+                                            {% endif %}
+                                            {{ form_errors(form.file_name) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-2"><span>{{ 'admin.content.page_edit.page_code_edit'|trans }}</span><i
+                                                class="fa fa-question-circle fa-lg ml-1"></i><span
+                                                class="badge badge-primary ml-1">{{ 'admin.content.page_edit.required'|trans }}</span></div>
+                                    <div class="col-10">
+                                        <div id="editor" style="height: 480px" class="form-control{{ has_errors(form.tpl_data) ? ' is-invalid'}}"></div>
+                                        <div style="display: none">{{ form_widget(form.tpl_data) }}</div>
+                                        {{ form_errors(form.tpl_data) }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- /.box-body -->
                     </div>
-                    <!-- /.box -->
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-8">
+                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
+                                         title="Tooltip"><span class="card-title">{{ 'admin.content.page_edit.layout_setting'|trans }}</span><i
+                                                class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                </div>
+                                <div class="col-4 text-right"><a data-toggle="collapse" href="#pageLayout"
+                                                                 aria-expanded="false" aria-controls="pageLayout"><i
+                                                class="fa fa-angle-up fa-lg"></i></a></div>
+                            </div>
+                        </div>
+                        <div class="collapse show ec-cardCollapse" id="pageLayout">
+                            <div class="card-body">
+                                <div class="row mb-2">
+                                    <div class="col-2"><span>{{ 'admin.content.page_edit.layout_pc'|trans }}</span></div>
+                                    <div class="col-10">
+                                        {{ form_widget(form.PcLayout) }}
+                                        {{ form_errors(form.PcLayout) }}
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-2"><span>{{ 'admin.content.page_edit.layout_mobile'|trans }}</span></div>
+                                    <div class="col-10">
+                                        {{ form_widget(form.SpLayout) }}
+                                        {{ form_errors(form.SpLayout) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-8">
+                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
+                                         title="Tooltip"><span class="card-title">{{ 'admin.content.page_edit.meta_setting'|trans }}</span><i
+                                                class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                </div>
+                                <div class="col-4 text-right"><a data-toggle="collapse" href="#pageMeta"
+                                                                 aria-expanded="false" aria-controls="pageMeta"><i
+                                                class="fa fa-angle-up fa-lg"></i></a></div>
+                            </div>
+                        </div>
+                        <div class="collapse show ec-cardCollapse" id="pageMeta">
+                            <div class="card-body">
+                                <div class="row mb-2">
+                                    <div class="col-2"><span>{{ 'admin.content.page_edit.meta_author'|trans }}</span></div>
+                                    <div class="col-10">
+                                        {{ form_widget(form.author) }}
+                                        {{ form_errors(form.author) }}
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-2"><span>{{ 'admin.content.page_edit.meta_description'|trans }}</span></div>
+                                    <div class="col-10">
+                                        {{ form_widget(form.description) }}
+                                        {{ form_errors(form.description) }}
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-2"><span>{{ 'admin.content.page_edit.meta_keyword'|trans }}</span></div>
+                                    <div class="col-10">
+                                        {{ form_widget(form.keyword) }}
+                                        {{ form_errors(form.keyword) }}
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-2"><span>{{ 'admin.content.page_edit.meta_robot'|trans }}</span></div>
+                                    <div class="col-10">
+                                        {{ form_widget(form.meta_robots) }}
+                                        {{ form_errors(form.meta_robots) }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-2"><span>{{ 'admin.content.page_edit.meta_tags'|trans }}</span></div>
+                                    <div class="col-10">
+                                        {{ form_widget(form.meta_tags, { attr : { placeholder : 'admin.content.page_edit.meta_tags_description'|trans}}) }}
+                                        {{ form_errors(form.meta_tags) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <!-- /.col -->
+        </div>
+        <div class="c-conversionArea">
+            <div class="c-conversionArea__container">
+                <div class="row justify-content-between align-items-center">
+                    <div class="col-6">
+                        <div class="c-conversionArea__leftBlockItem"><a class="c-beseLink" href="{{ url('admin_content_page') }}"><i
+                                        class="fa fa-backward" aria-hidden="true"></i><span>{{ 'admin.content.page_edit.page_list'|trans }}</span></a>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="row align-items-center justify-content-end">
+                            <div class="col-auto">
+                                <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.content.page_edit.register'|trans }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </form>
-</div>
 {% endblock %}

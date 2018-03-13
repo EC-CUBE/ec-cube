@@ -30,10 +30,10 @@ use Eccube\Form\Type\Master\PaymentType;
 use Eccube\Form\Type\Master\SexType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Eccube\Form\Type\PriceType;
 
 class SearchOrderType extends AbstractType
 {
@@ -55,7 +55,7 @@ class SearchOrderType extends AbstractType
         $builder
             // 受注ID・注文者名・注文者（フリガナ）・注文者会社名
             ->add('multi', TextType::class, array(
-                'label' => 'searchorder.label.customer_id',
+                'label' => 'searchorder.label.customer_id', // TODO: the translate key is not relevant to purpose of input
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array('max' => $this->eccubeConfig['eccube_stext_len'])),
@@ -70,12 +70,15 @@ class SearchOrderType extends AbstractType
                 'multiple' => true,
             ))
             ->add('name', TextType::class, array(
+                'label' => 'searchorder.label.name',
                 'required' => false,
             ))
             ->add('email', TextType::class, array(
+                'label' => 'searchorder.label.email',
                 'required' => false,
             ))
             ->add('tel', TextType::class, array(
+                'label' => 'common.label.phone_number',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Regex(array(
@@ -160,11 +163,11 @@ class SearchOrderType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
-            ->add('payment_total_start', IntegerType::class, array(
+            ->add('payment_total_start', PriceType::class, array(
                 'label' => 'searchorder.label.purchased_amount_min',
                 'required' => false,
             ))
-            ->add('payment_total_end', IntegerType::class, array(
+            ->add('payment_total_end', PriceType::class, array(
                 'label' => 'searchorder.label.purchased_amount_max',
                 'required' => false,
             ))
@@ -176,6 +179,7 @@ class SearchOrderType extends AbstractType
         $builder->add(
             $builder
                 ->create('kana', TextType::class, array(
+                    'label' => 'searchorder.label.kana',
                     'required' => false,
                     'constraints' => array(
                         new Assert\Regex(array(

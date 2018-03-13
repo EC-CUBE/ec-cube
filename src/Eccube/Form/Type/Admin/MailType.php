@@ -71,9 +71,10 @@ class MailType extends AbstractType
                     new Assert\NotBlank(),
                 ),
             ))
-            ->add('tpl_data', HiddenType::class, array(
+            ->add('tpl_data', TextareaType::class, array(
                 'label' => false,
                 'mapped' => false,
+                'required' => false,
                 'constraints' => [
                     new TwigLint(),
                 ]

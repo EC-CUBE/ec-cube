@@ -14,30 +14,32 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends '@admin/default_frame.twig' %}
+{% extends '@admin/styleguide_frame.twig' %}
 
 {% set menus = ['content', 'file'] %}
 
-{% block title %}{{'admin.content.file.23'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.content.file.24'|trans}}{% endblock %}
+{% block title %}{{'admin.content.file.24'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.content.file.23'|trans}}{% endblock %}
 
-{% form_theme form '@admin/Form/bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block javascript %}
 <script src="{{ asset('assets/js/file_manager.js', 'admin') }}"></script>
 <script>
-{{ tpl_javascript|raw }}
+    arrTree = {{ tpl_javascript|raw }};
+    var paths = {{ paths|raw }}; // TODO 仮実装
     $(function() {
         var bread_crumbs = {{ now_dir_list|raw }};
-        var file_path = '{{ html_dir }}';
-        var $delimiter = '<span>&nbsp;&gt;&nbsp;</span>';
+        var file_path = '';
+        var $delimiter = '<span>&nbsp;/&nbsp;</span>';
         var $node = $('#bread');
         var total = bread_crumbs.length;
         for (var i in bread_crumbs) {
             file_path += '/' + bread_crumbs[i];
-            $('<a href="javascript:;" onclick="eccube.fileManager.openFolder(\'' + file_path + '\'); return false;" />')
-                .text(bread_crumbs[i])
-                .appendTo($node);
+            $a = $('<a href="javascript:;" onclick="eccube.fileManager.openFolder(\'' + file_path.replace(/user_data/, '') + '\'); return false;" />')
+                .text(bread_crumbs[i]);
+            $li = $('<li class="breadcrumb-item" />').append($a);
+            $li.appendTo($node);
             if (i < total - 1) $node.append($delimiter);
         }
     });
@@ -47,134 +49,180 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     eccube.fileManager.IMG_PLUS           = "<svg class='cb cb-plus-square'><use xlink:href='#cb-plus-square' /></svg>";          // プラスライン
     eccube.fileManager.IMG_MINUS          = "<svg class='cb cb-minus-square'><use xlink:href='#cb-minus-square' /></svg>";         // マイナスライン
     eccube.fileManager.IMG_NORMAL         = "　";         // スペース
-    {{ tpl_onload|raw }}
+    eccube.fileManager.viewFileTree('directory_userdata', arrTree, '{{ tpl_now_dir }}', 'tree_select_file', 'tree_status', 'move');
 </script>
-
 {% endblock javascript %}
 {% block main %}
-<div class="row" id="aside_wrap">
     <form name="form1" id="form1" method="post" action="?"  enctype="multipart/form-data">
-    <input type="hidden" name="mode" value="" />
-    <input type="hidden" name="now_file" value="{{ tpl_now_dir }}" />
-    <input type="hidden" name="now_dir" value="{{ tpl_now_dir }}" />
-    <input type="hidden" name="tree_select_file" value="{{ tpl_now_dir }}" />
-    <input type="hidden" name="tree_status" value="" />
-    <input type="hidden" name="select_file" value="" />
+        <input type="hidden" name="mode" value="" />
+        <input type="hidden" name="now_file" value="{{ tpl_now_dir }}" />
+        <input type="hidden" name="now_dir" value="{{ tpl_now_dir }}" />
+        <input type="hidden" name="tree_select_file" value="{{ tpl_now_dir }}" />
+        <input type="hidden" name="tree_status" value="" />
+        <input type="hidden" name="select_file" value="" />
+        {{ form_widget(form._token) }}
+        <div class="c-outsideBlock">
+            <div class="c-outsideBlock__contents">
+                <nav aria-label="breadcrumb" role="navigation">
+                    {# TODO アクティブなフォルダ表示 #}
+                    <ol class="breadcrumb mb-2 p-0" id="bread"></ol>
+                </nav>
+                <div class="card rounded border-0 mb-4">
+                    <div class="card-header"><span class="card-title">{{ 'admin.content.file.title.upload_and_create'|trans }}</span></div>
+                    <div class="card-body">
+                        <div class="row mb-2">
+                            <div class="col-2"><span>{{ 'admin.content.file.label.upload'|trans }}</span></div>
+                            <div class="col mb-3">
+                                <div class="mb-2">
+                                    <a class="btn btn-ec-regular mr-2" href="javascript:;" onclick="eccube.fileManager.setTreeStatus('tree_status');eccube.setModeAndSubmit('upload','',''); return false;">{{'admin.content.file.26'|trans}}</a>
 
-        <div id="upload_wrap" class="col-md-9">
-            <div id="upload_list_box" class="box">
-                <div id="upload_box" class="box-header form-horizontal">
-                    {{ form_widget(form._token) }}
-                    <div id="upload_box__body" class="form-group">
-                        <label class="col-sm-4 col-lg-3 control-label">{{'admin.content.file.25'|trans}}</label>
-                        <div id="upload_box__file" class="col-sm-8 col-lg-9 padT07">
-                            {{ form_widget(form.file) }}
-                            <div class="marT10"><a class="btn btn-default btn-sm" href="javascript;" onclick="eccube.fileManager.setTreeStatus('tree_status');eccube.setModeAndSubmit('upload','',''); return false;">{{'admin.content.file.26'|trans}}</a></div>
-                        </div>
-                    </div>
-                    <div id="create_box__create_file" class="form-group form-inline">
-                        <label class="col-sm-4 col-lg-3 control-label">{{'admin.content.file.27'|trans}}</label>
-                        <div class="col-sm-8 col-lg-9">
-                            {{ form_widget(form.create_file) }}
-                            <a class="btn btn-default btn-sm" href="javascript:" onclick="eccube.fileManager.setTreeStatus('tree_status');eccube.setModeAndSubmit('create','',''); return false;">{{'admin.content.file.28'|trans}}</a>
-                        </div>
-                    </div>
-                {% if error is not null %}
-                    <p id="upload_box__error_message" class="text-danger errormsg">{{ error.message }}</p>
-                {% endif %}
-
-                </div><!-- /.box-header -->
-
-                <div id="bread" style="margin-left: 10px;"></div>
-                <div id="result_list" class="box-body">
-                    <div id="result_list__list_box" class="table_list">
-                        <div id="result_list__list" class="table-responsive">
-                            <table class="table table-striped with-border">
-                                <thead>
-                                    <tr id="result_list__header">
-                                        <th id="result_list__header_name">{{'admin.content.file.29'|trans}}</th>
-                                        <th id="result_list__header_size">{{'admin.content.file.30'|trans}}</th>
-                                        <th id="result_list__header_time">{{'admin.content.file.31'|trans}}</th>
-                                        <th id="result_list__header_view">{{'admin.content.file.32'|trans}}</th>
-                                        <th id="result_list__header_download">{{'admin.content.file.33'|trans}}</th>
-                                        <th id="result_list__header_delete">{{'admin.content.file.34'|trans}}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                {% if tpl_is_top_dir == false %}
-                    <tr id="parent_dir" onclick="eccube.setValue('select_file', '{{ tpl_parent_dir }}', 'form1'); eccube.fileManager.selectFile('parent_dir', '#808080');" onDblClick="eccube.fileManager.setTreeStatus('tree_status');eccube.fileManager.doubleClick(arrTree, '{{ tpl_parent_dir }}', true, '{{ tpl_now_dir }}', true)" style="">
-                        <td id="result_list__name"><svg class="cb cb-ellipsis-h"><use xlink:href="#cb-ellipsis-h" /></svg></td>
-                        <td id="result_list__size">&nbsp;</td>
-                        <td id="result_list__time">&nbsp;</td>
-                        <td id="result_list__view">&nbsp;</td>
-                        <td id="result_list__download">&nbsp;</td>
-                        <td id="result_list__delete">&nbsp;</td>
-                    </tr>
-                {% endif %}
-                {% for file in arrFileList %}
-                    <tr id="{{ loop.index }}" style="">
-                        <td id="result_list__name--{{ loop.index }}" class="file-name" onDblClick="eccube.fileManager.setTreeStatus('tree_status');eccube.fileManager.doubleClick(arrTree, '{{ file.file_path }}', {% if file.is_dir %}true{% else %}false{% endif %} '{{ tpl_now_dir }}', false)">
-                            {% if file.is_dir %}
-                                <svg class="cb cb-folder"><use xlink:href="#cb-folder" /></svg>
-                            {% else %}
-                                <svg class="cb cb-file-text"><use xlink:href="#cb-file-text" /></svg>
-                            {% endif %}
-                            {{ file.file_name }}
-                        </td>
-                        <td id="result_list__size--{{ loop.index }}" class="text-right">
-                            {{ file.file_size }}
-                        </td>
-                        <td id="result_list__time--{{ loop.index }}" class="text-center">
-                            {{ file.file_time }}
-                        </td>
-                        <td id="result_list__view--{{ loop.index }}" class="text-center">
-                            {% if file.is_dir %}
-                                <a href="javascript:;" onclick="eccube.setValue('tree_select_file', '{{ file.file_path }}', 'form1'); eccube.fileManager.selectFile('{{ loop.index }}', '#808080');eccube.setModeAndSubmit('move','',''); return false;">{{'admin.content.file.35'|trans}}</a>
-                            {% else %}
-                                <a href="{{ url('admin_content_file_view') }}?file={{ file.file_path|e('url') }}" target="_blank">{{'admin.content.file.36'|trans}}</a>
-                            {% endif %}
-                        </td>
-                        {% if file.is_dir %}
-                            {# ディレクトリはダウンロード不可 #}
-                            <td id="result_list__download--{{ loop.index }}" class="text-center">-</td>
-                        {% else %}
-                            <td id="result_list__download--{{ loop.index }}"class="text-center">
-                                <a href="{{ url('admin_content_file_download') }}?select_file={{ file.file_path|e('url') }}" target="_blank">{{'admin.content.file.37'|trans}}</a>
-                            </td>
-                        {% endif %}
-                        <td id="result_list__delete--{{ loop.index }}" class="text-center">
-                            <a href="{{ url('admin_content_file_delete', { 'select_file': file.file_path}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="{{'admin.content.file.38'|trans}}">{{'admin.content.file.34'|trans}}</a>
-                        </td>
-                    </tr>
-                {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div><!-- /.box-body --> 
-            </div>
-        </div><!-- /.col -->
-        
-        <div class="col-md-3" id="aside_column">
-            <div id="common_box" class="col_inner">
-                <div id="tree_box" class="box no-header">
-                    <div id="tree_box__body" class="box-body">
-                        <div id="tree_box__tree" class="row">
-                            <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
-                                <div id="tree"></div>
+                                </div>
+                                <div>
+                                    {{ form_widget(form.file) }}{# TODO input type="file" の装飾 #}
+                                </div>
                             </div>
                         </div>
-                    </div><!-- /.box-body -->
-                </div><!-- /.box -->
+                        <div class="row mb-2">
+                            <div class="col-2"><span>{{ 'admin.content.file.27'|trans }}</span></div>
+                            <div class="col">
+                                <div class="form-row">
+                                    <div class="col-3">
+                                        {{ form_widget(form.create_file) }}{# TODO ブレースホルダ #}
+                                    </div>
+                                    <div class="col-auto">
+                                        <a class="btn btn-ec-regular" href="javascript:" onclick="eccube.fileManager.setTreeStatus('tree_status');eccube.setModeAndSubmit('create','',''); return false;">{{'admin.content.file.28'|trans}}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div><!-- /.col --> 
+            {% if error is not null %}
+                <p id="upload_box__error_message" class="text-danger errormsg">{{ error.message }}</p>
+            {% endif %}
 
-    </form>
-</div>
+            <div class="c-contentsArea__cols">
+                <div class="c-contentsArea__primaryCol">
+                    <div class="c-primaryCol">
+                        <div class="card rounded border-0 mb-4">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-8"><span class="card-title">{{ 'admin.content.file.title.lists'|trans }}</span></div>
+                                    <div class="col-4 text-right"><a data-toggle="collapse" href="#fileList" aria-expanded="false" aria-controls="fileList"><i class="fa fa-angle-up fa-lg"></i></a></div>
+                                </div>
+                            </div>
+                            <div class="collapse show ec-cardCollapse" id="fileList">
+                                <div class="card-body p-0">
 
+                                    <table class="table">
+                                        <tbody>
+                                            {% if tpl_is_top_dir != false %}
+                                                <tr id="parent_dir">
+                                                    <td class="align-middle text-center">&nbsp;</td>
+                                                    <td class="align-middle"><a onclick="eccube.setValue('select_file', '{{ tpl_parent_dir }}', 'form1'); eccube.fileManager.selectFile('parent_dir', '#808080');" onDblClick="eccube.fileManager.setTreeStatus('tree_status');eccube.fileManager.doubleClick(arrTree, '{{ tpl_parent_dir }}', true, '{{ tpl_now_dir }}', true)">TODO 上の階層へ</a></td>
+                                                    <td class="align-middle">&nbsp;</td>
+                                                    <td class="align-middle">&nbsp;</td>
+                                                    <td class="align-middle">&nbsp;</td>
+                                                </tr>
+                                            {% endif %}
+                                            {% for file in arrFileList %}
+                                                <tr id="{{ loop.index }}" style="">
+                                                    <td class="align-middle text-center" onDblClick="eccube.fileManager.setTreeStatus('tree_status');eccube.fileManager.doubleClick(arrTree, '{{ file.file_path }}', {% if file.is_dir %}true{% else %}false{% endif %} '{{ tpl_now_dir }}', false)">
+                                                        {% if file.is_dir %}
+                                                            <i class="fa fa-folder-o fa-2x"></i>
+                                                        {% else %}
+                                                            {# TODO ファイル種別の表示 #}
+                                                            <div class="d-inline-block p-3 bg-light"><i class="fa fa-file-pdf-o fa-2x"></i></div>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td class="align-middle">
+                                                        {% if file.is_dir %}
+                                                            <a href="javascript:;" onclick="eccube.setValue('tree_select_file', '{{ file.file_path }}', 'form1'); eccube.fileManager.selectFile('{{ loop.index }}', '#808080');eccube.setModeAndSubmit('move','',''); return false;">{{ file.file_name }}</a>
+                                                        {% else %}
+                                                            {{ file.file_name }}
+                                                        {% endif %}
+                                                    </td>
+                                                    <td class="align-middle">
+                                                        {# TODO KB の表示 #}
+                                                        {{ file.file_size }}
+                                                    </td>
+                                                    <td class="align-middle">
+                                                        {{ file.file_time }} {{ 'admin.content.file.31'|trans }} {# TODO 英語だとフォーマットが変わるかも #}
+                                                    </td>
+                                                    {% if file.is_dir %}
+                                                        <td class="align-middle">
+                                                        </td>
+                                                    {% else %}
+                                                        <td class="align-middle text-right pr-3">
+                                                            <div class="row justify-content-end">
+                                                                <div class="col-auto text-center">
+                                                                    <a href="{{ url('admin_content_file_view') }}?file={{ file.file_path|e('url') }}" class="btn btn-ec-actionIcon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{'admin.content.file.36'|trans}}" ><i class="fa fa-eye fa-lg text-secondary" aria-hidden="true"></i></a>
+                                                                </div>
 
+                                                                <div class="col-auto text-center">
+                                                                    <a href="{{ url('admin_content_file_download') }}?select_file={{ file.file_path|e('url') }}" class="btn btn-ec-actionIcon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{'admin.content.file.37'|trans}}"><i class="fa fa-cloud-download fa-lg text-secondary" aria-hidden="true"></i></a>
+                                                                </div>
+
+                                                                <div class="col-auto text-center">
+                                                                    <a class="btn btn-ec-actionIcon" href="{{ url('admin_content_file_delete', { 'select_file': file.file_path}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{'admin.content.file.34'|trans}}"><i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    {% endif %}
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="c-contentsArea__secondaryCol">
+                    <div class="c-secondaryCol">
+                        <div class="card rounded border-0 mb-4">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-8"><span class="card-title">{{ 'admin.content.file.title.folders'|trans }}</span></div>
+                                    <div class="col-4 text-right"><a data-toggle="collapse" href="#folderDirectory" aria-expanded="false" aria-controls="folderDirectory"><i class="fa fa-lg fa-angle-down"></i></a></div>
+                                </div>
+                            </div>
+                            <div class="collapse show ec-cardCollapse" id="folderDirectory">
+                                <div class="card-body">
+                                    <div class="c-directoryTree--folder mb-3">
+                                        <ul id="directory_userdata"> {# TODO フォルダ構成 #}
+                                            <li>
+                                                <label class="collapsed" data-toggle="collapse" href="#directory_userdata" aria-expanded="false" aria-controls="directory_userdata">user_data</label>
+                                                <ul class="collapse" style="">
+                                                    <li>
+                                                        <label class="collapsed" data-toggle="collapse" href="#directory_pdf" aria-expanded="false" aria-controls="directory_pdf"><a href="/content/file">pdf</a></label>
+                                                        <ul class="collapse" id="directory_pdf">
+                                                            <li>
+                                                                <label><a href="/content/file">フォルダA</a></label>
+                                                            </li>
+                                                            <li>
+                                                                <label><span>フォルダB</span></label>
+                                                            </li>
+                                                            <li>
+                                                                <label class="collapsed" data-toggle="collapse" href="#directory_eBook" aria-expanded="false" aria-controls="directory_eBook"><span class="font-weight-bold">電子書籍</span></label>
+                                                                <ul class="collapse" id="directory_eBook">
+                                                                    <li>
+                                                                        <label><span>実用書</span></label>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
 {% endblock %}
-
-
-
-

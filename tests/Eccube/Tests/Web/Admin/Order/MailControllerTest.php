@@ -60,6 +60,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
             'mail_subject' => $faker->word,
             'mail_header' => $faker->paragraph,
             'mail_footer' => $faker->paragraph,
+            'tpl_data' => $faker->text,
             '_token' => 'dummy',
         );
 

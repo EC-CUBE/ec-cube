@@ -21,14 +21,14 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 #}
-{% extends '@admin/default_frame.twig' %}
+{% extends '@admin/styleguide_frame.twig' %}
 
 {% set menus = ['content', 'block'] %}
 
-{% block title %}{{'admin.content.block_edit.12'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.content.block_edit.13'|trans}}{% endblock %}
+{% block title %}{{'admin.content.block_edit.13'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.content.block_edit.12'|trans}}{% endblock %}
 
-{% form_theme form '@admin/Form/bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block javascript %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ace.js"></script>
@@ -53,85 +53,102 @@
 {% endblock %}
 
 {% block main %}
-<div class="row" id="aside_wrap">
-<form name="content_block_form" id="content_block_form" method="post" action="
-{%- if block_id is not null %}{{ url('admin_content_block_edit', {id: block_id}) }}{% else %}{{ url('admin_content_block_new')}}{% endif -%}">
-    {{ form_widget(form._token) }}
-    {{ form_widget(form.id) }}
-    {{ form_widget(form.DeviceType, { attr : { style : 'display: none;' } } ) }}
-        <div id="detail_wrap" class="col-md-9">
-            <div id="detail_box" class="box form-horizontal">
-                <div id="detail_box__header" class="box-header">
-                    <h3 class="box-title">{{'admin.content.block_edit.14'|trans}}</h3>
-                </div>
-                <!-- /.box-header -->
-                <div id="detail_box__body" class="box-body">
-
-                    <div id="detail_box__name" class="form-group">
-                        {{ form_label(form.name) }}
-                        <div class="col-sm-9 col-lg-10">
-                            {{ form_widget(form.name) }}
-                            {{ form_errors(form.name) }}
+    <form name="content_block_form" id="content_block_form" method="post" action="
+                {%- if block_id is not null %}{{ url('admin_content_block_edit', {id: block_id}) }}{% else %}{{ url('admin_content_block_new')}}{% endif -%}">
+        {{ form_widget(form._token) }}
+        {{ form_widget(form.id) }}
+        {{ form_widget(form.DeviceType, { attr : { style : 'display: none;' } } ) }}
+        <div class="c-contentsArea__cols">
+            <div class="c-contentsArea__primaryCol">
+                <div class="c-primaryCol">
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-8"><span class="card-title">{{'admin.content.block_edit.14'|trans}}</span></div>
+                                <div class="col-4 text-right">
+                                    <a data-toggle="collapse" href="#blockEdit" aria-expanded="false" aria-controls="blockEdit">
+                                        <i class="fa fa-angle-up fa-lg"></i>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-
-                    <div id="detail_box__file_name" class="form-group">
-                        {{ form_label(form.file_name) }}
-                        <div class="col-sm-9 col-lg-10 padT07">
-                            {% if deletable %}
-                                {{ form_widget(form.file_name) }}.twig
-                            {% else %}
-                                {{ form.file_name.vars.value }}.twig
-                                {{ form_widget(form.file_name, { type : 'hidden' } ) }}
-                            {% endif %}
-                            {{ form_errors(form.file_name) }}
-                        </div>
-                    </div>
-
-                    <div id="detail_box__block_html" class="form-group">
-                        {{ form_label(form.block_html) }}
-                        <div class="col-sm-9 col-lg-10">
-                            <div id="editor" style="height: 480px"></div>
-                            {{ form_widget(form.block_html) }}
-                            {{ form_errors(form.block_html) }}
-                        </div>
-                    </div>
-
-                    <div class="extra-form">
-                        {% for f in form.getIterator %}
-                            {% if f.vars.name matches '[^plg*]' %}
-                                {{ form_row(f) }}
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-
-            <div id="detail_box__footer" class="row hidden-xs hidden-sm">
-                <div id="detail_box__back_button" class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
-                    <p><a href="{{ url('admin_content_block') }}">{{'admin.content.block_edit.15'|trans}}</a></p>
-                </div>
-            </div>
-
-        </div>
-        <!-- /.col -->
-        <div class="col-md-3" id="aside_column">
-            <div id="common_box" class="col_inner">
-                <div id="common_button_box" class="box no-header">
-                    <div id="common_button_box__body" class="box-body">
-                        <div id="common_button_box__insert_button" class="row text-center">
-                            <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
-                                <button class="btn btn-primary btn-block btn-lg" type="submit">{{'admin.content.block_edit.16'|trans}}</button>
+                        <div class="collapse show ec-cardCollapse" id="blockEdit">
+                            <div class="card-body">
+                                <div class="row mb-2">
+                                    <div class="col-2">
+                                        <span>{{ 'admin.content.block.form.label.block_name'|trans }}</span>
+                                        <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                        <span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span>
+                                    </div>
+                                    <div class="col-10">
+                                        {{ form_widget(form.name) }}
+                                        {{ form_errors(form.name) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-2">
+                                    <div class="col-2">
+                                        <span>{{ 'common.label.file_name'|trans }}</span>
+                                        <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                        <span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span>
+                                    </div>
+                                    <div class="col-10">
+                                        {% if deletable %}
+                                            {{ form_widget(form.file_name) }}.twig
+                                        {% else %}
+                                            {{ form.file_name.vars.value }}.twig
+                                            {{ form_widget(form.file_name, { type : 'hidden' } ) }}
+                                        {% endif %}
+                                        {{ form_errors(form.file_name) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-2">
+                                    <div class="col-2">
+                                        <span>{{ 'block.label.block_data'|trans }}</span>
+                                        <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                        <span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span>
+                                    </div>
+                                    <div id="editor" style="height: 480px" class="form-control{{ has_errors(form.block_html) ? ' is-invalid'}}"></div>
+                                    {{ form_widget(form.block_html) }}
+                                    {{ form_errors(form.block_html) }}
+                                </div>
+                                <div class="card-body">
+                                    <div class="row mb-2 extra-form">
+                                        {% for f in form.getIterator %}
+                                            {% if f.vars.name matches '[^plg*]' %}
+                                                {{ form_row(f) }}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <!-- /.box-body -->
                 </div>
-                <!-- /.box -->
             </div>
         </div>
-        <!-- /.col -->
-</form>
-</div>
-
+        <div class="c-conversionArea">
+            <div class="c-conversionArea__container">
+                <div class="row justify-content-between align-items-center">
+                    <div class="col-6">
+                        <div class="c-conversionArea__leftBlockItem">
+                            <a class="c-beseLink" href="{{ url('admin_content_block') }}">
+                                <i class="fa fa-backward" aria-hidden="true"></i><span>{{ 'admin.content.block.7'|trans }}</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="row align-items-center justify-content-end">
+                            <div class="col-auto">
+                                <button class="btn btn-ec-conversion px-5" type="submit">{{'admin.content.block_edit.16'|trans}}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
 {% endblock %}

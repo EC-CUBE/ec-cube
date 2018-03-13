@@ -12,7 +12,7 @@ class AdminControllerProductNonStockTest extends AbstractAdminWebTestCase
     /**
      * @var string
      */
-    protected $target = '#shop_info';
+    protected $target = '#shop-statistical';
 
     /**
      * test redirect when click
@@ -43,8 +43,6 @@ class AdminControllerProductNonStockTest extends AbstractAdminWebTestCase
      */
     public function testAdminNonStockWithSearch()
     {
-        $this->markTestIncomplete('Function not implement');
-
         /* @var Client $client */
         $client = $this->client;
         $crawler = $client->request('GET', $this->generateUrl('admin_homepage'));
@@ -52,14 +50,14 @@ class AdminControllerProductNonStockTest extends AbstractAdminWebTestCase
 
         $this->assertContains('在庫切れ商品', $crawler->filter($this->target)->html());
 
-        $section = trim($crawler->filter($this->target.' .shop-stock-detail .item_number')->text());
+        $section = trim($crawler->filter($this->target.' .card-body .d-block:nth-child(1) span.h4')->text());
         $this->expected = $showNumber = preg_replace('/\D/', '', $section);
 
         $client->request('POST', $this->generateUrl('admin_homepage_nonstock'),
                 array('admin_search_product' => array('_token' =>  'dummy')));
 
         $crawler = $client->followRedirect();
-        $this->actual = $crawler->filter('.tableish .item_box')->count();
+        $this->actual = $crawler->filter('.table-sm > tbody > tr')->count();
 
         $this->verify();
     }
