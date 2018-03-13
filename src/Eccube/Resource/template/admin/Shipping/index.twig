@@ -69,14 +69,16 @@
         <div class="c-outsideBlock__contents">
             <div class="row">
                 <div class="col-12">
-
+                    <div>
                         <label class="col-form-label">{{ 'admin.shipping.index.762'|trans }}</label>
-                        {{ form_widget(searchForm.multi, { attr: { class : 'input_search' } } ) }}
+                        {{ form_widget(searchForm.multi) }}
+                    </div>
+                    <div class="form-row">
                         <div class="form-group col-12">
                             <p class="col-form-label">{{'admin.shipping.index.763'|trans}}</p>
-                            {# TODO 受注状況を横並びにする #}
-                            {{ form_widget(searchForm.order_status) }}
+                            {{ form_widget(searchForm.order_status, {'label_attr': {'class': 'checkbox-inline'}}) }}
                         </div>
+                    </div>
                     <div class="d-inline-block mb-3 collapsed" data-toggle="collapse" href="#searchDetail" aria-expanded="false" aria-controls="searchDetail"><a><i class="fa font-weight-bold mr-1 fa-plus-square-o"></i><span class="font-weight-bold">{{ 'admin.shipping.index.823'|trans }}</span></a></div>
                 </div>
             </div>
