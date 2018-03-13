@@ -60,6 +60,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
             'mail_subject' => $faker->word,
             'mail_header' => $faker->paragraph,
             'mail_footer' => $faker->paragraph,
+            'tpl_data' => $faker->text,
             '_token' => 'dummy',
         );
 
@@ -87,6 +88,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
                 'mode' => 'complete',
             )
         );
+        dump($this->client->getResponse()->getContent());
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_page', ['page_no' => 1])));
 
         $mailCollector = $this->getMailCollector(false);
