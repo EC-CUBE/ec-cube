@@ -3,8 +3,9 @@
         {# 前へ #}
         {% if pages.previous is defined %}
             <li class="page-item">
+                {# FIXME: Need check pass routes before use default _route from request #}
                 <a class="page-link"
-                   href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pageno': pages.previous})) }}">
+                   href="{{ path(routes ? routes : app.request.attributes.get('_route'), app.request.query.all|merge({'page_no': pages.previous})) }}">
                     Previous
                 </a>
             </li>
@@ -17,8 +18,9 @@
 
         {% for page in pages.pagesInRange %}
             <li class="page-item{% if page == pages.current %} active{% endif %}">
+                {# FIXME: Need check pass routes before use default _route from request #}
                 <a class="page-link"
-                   href="{{ path(app.request.attributes.get('_route'),app.request.query.all|merge({'pageno': page})) }}">
+                   href="{{ path(routes ? routes : app.request.attributes.get('_route'),app.request.query.all|merge({'page_no': page})) }}">
                     {{ page }}
                 </a>
             </li>
@@ -32,8 +34,9 @@
         {# 次へ #}
         {% if pages.next is defined %}
             <li class="page-item">
+                {# FIXME: Need check pass routes before use default _route from request #}
                 <a class="page-link"
-                   href="{{ path(app.request.attributes.get('_route'),app.request.query.all|merge({'pageno': pages.next})) }}">
+                   href="{{ path(routes ? routes : app.request.attributes.get('_route'),app.request.query.all|merge({'page_no': pages.next})) }}">
                     Next
                 </a>
             </li>

@@ -112,35 +112,73 @@ class TaxRuleController extends AbstractController
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_TAX_RULE_INDEX_INITIALIZE, $event);
 
         $form = $builder->getForm();
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $this->isValid($form)) {
+        $mode = $request->get('mode');
+        if ($mode != 'edit_inline') {
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $this->isValid($form)) {
+                $this->entityManager->persist($TargetTaxRule);
+                $this->entityManager->flush();
 
-            $this->entityManager->persist($TargetTaxRule);
-            $this->entityManager->flush();
+                $event = new EventArgs(
+                    array(
+                        'form' => $form,
+                        'BaseInfo' => $this->BaseInfo,
+                        'TargetTaxRule' => $TargetTaxRule,
+                    ),
+                    $request
+                );
+                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_TAX_RULE_INDEX_COMPLETE, $event);
 
-            $event = new EventArgs(
-                array(
-                    'form' => $form,
-                    'BaseInfo' => $this->BaseInfo,
-                    'TargetTaxRule' => $TargetTaxRule,
-                ),
-                $request
-            );
-            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_TAX_RULE_INDEX_COMPLETE, $event);
+                $this->addSuccess('admin.shop.tax.save.complete', 'admin');
 
-            $this->addSuccess('admin.shop.tax.save.complete', 'admin');
-
-            return $this->redirectToRoute('admin_setting_shop_tax');
+                return $this->redirectToRoute('admin_setting_shop_tax');
+            }
         }
 
         // 共通税率一覧
         $TaxRules = $this->taxRuleRepository->getList();
 
+        // edit tax rule form
+        $forms = array();
+        $errors = array();
+        /** @var TaxRule $TaxRule */
+        foreach ($TaxRules as $TaxRule) {
+            /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
+            $builder = $this->formFactory->createBuilder(TaxRuleType::class, $TaxRule);
+            if ($TaxRule->isDefaultTaxRule()) {
+                $builder->remove('apply_date');
+            }
+            $editTaxRuleForm = $builder->getForm();
+            // error number
+            $error = 0;
+            if ($mode == 'edit_inline'
+                && $request->getMethod() === 'POST'
+                && (string)$TaxRule->getId() === $request->get('tax_rule_id')
+                ) {
+                $editTaxRuleForm->handleRequest($request);
+                if ($editTaxRuleForm->isValid()) {
+                    $taxRuleData = $editTaxRuleForm->getData();
+
+                    $this->entityManager->persist($taxRuleData);
+                    $this->entityManager->flush();
+
+                    $this->addSuccess('admin.shop.tax.save.complete', 'admin');
+                    return $this->redirectToRoute('admin_setting_shop_tax');
+                }
+                $error = count($editTaxRuleForm->getErrors(true));
+            }
+
+            $forms[$TaxRule->getId()] = $editTaxRuleForm->createView();
+            $errors[$TaxRule->getId()] = $error;
+        }
+
         return [
             'TargetTaxRule' => $TargetTaxRule,
             'TaxRules' => $TaxRules,
             'form' => $form->createView(),
+            'forms' => $forms,
+            'errors' => $errors
         ];
     }
 

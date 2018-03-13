@@ -194,7 +194,8 @@ class EditController extends AbstractController
             throw new BadRequestHttpException();
         }
 
-        $page_no = (int)$request->get('pageno', 1);
+        // FIXME: should use consistent param for pageno ? Other controller use page_no, but here use pageno, then I change from pageno to page_no
+        $page_no = (int)$request->get('page_no', 1);
         $page_count = $this->eccubeConfig['eccube_default_page_count'];
 
         // TODO OrderItemRepository に移動
