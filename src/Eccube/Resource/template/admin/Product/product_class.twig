@@ -125,22 +125,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
             });
 
-
-            $('#delete').click(function () {
-                if (confirm('{{ 'admin.product.product_class.526'|trans }}')) {
-                    $('#mode').val('delete');
-                    $('#product-class-form').submit();
-                    return true;
-                }
-                return false;
-            });
-
-            $('button[type=submit]').click(function (event) {
+            $(document).on('click', 'button[type=submit]', function (event) {
                 if ($(this).data('action')) {
                     $(this).parents('form').attr('action', $(this).data('action'));
                 }
             });
-
         });
     </script>
 {% endblock javascript %}
@@ -148,67 +137,96 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% block main %}
     <form id="form" method="post">
-        {{ form_widget(classForm._token) }}
+        {% if classForm %}
+            {{ form_widget(classForm._token) }}
+        {% else %}
+            {{ form_widget(form._token) }}
+        {% endif %}
         <div class="c-contentsArea__cols">
             <div class="c-contentsArea__primaryCol">
                 <div class="c-primaryCol">
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header">
                             <div class="row">
-                                <div class="col-8"><span class="card-title align-middle">商品名：{{ Product.name }}</span>
+                                <div class="col-8"><span
+                                            class="card-title align-middle">商品名：{{ Product.name }}</span>
                                 </div>
-                                <div class="col-4 text-right">
-                                    <button class="btn btn-ec-delete" data-toggle="modal"
-                                            data-target="#initializationConfirm">商品規格を初期化
-                                    </button>
-                                    <div class="modal fade" id="initializationConfirm" tabindex="-1" role="dialog"
-                                         aria-labelledby="deleteConfirm" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title font-weight-bold">この商品の規格を初期化します</h5>
-                                                    <button class="close" type="button" data-dismiss="modal"
-                                                            aria-label="Close"><span aria-hidden="true">×</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <p class="text-left">
-                                                        この商品に登録された規格を初期化します。これまでの販売データには影響はありませんが、この操作は取り消すことができません。初期化しますか？</p>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button class="btn btn-ec-sub" type="button" data-dismiss="modal">
-                                                        キャンセル
-                                                    </button>
-                                                    <button class="btn btn-ec-delete" type="button">規格を初期化</button>
+                                {% if not_product_class  %}
+                                    <div class="col-4 text-right">
+                                        <button class="btn btn-ec-conversion" type="submit"
+                                                data-action="{{ url('admin_product_product_class', { id : Product.id}) }}">
+                                            商品規格の設定
+                                        </button>
+                                    </div>
+                                {% else %}
+                                    <div class="col-4 text-right">
+                                        <button class="btn btn-ec-delete" type="button"
+                                                data-toggle="modal"
+                                                data-target="#initializationConfirm">商品規格を初期化
+                                        </button>
+                                        <div class="modal fade" id="initializationConfirm" tabindex="-1" role="dialog"
+                                             aria-labelledby="deleteConfirm" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title font-weight-bold">この商品の規格を初期化します</h5>
+                                                        <button class="close" type="button" data-dismiss="modal"
+                                                                aria-label="Close"><span aria-hidden="true">×</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p class="text-left">
+                                                            この商品に登録された規格を初期化します。これまでの販売データには影響はありませんが、この操作は取り消すことができません。初期化しますか？</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button class="btn btn-ec-sub" type="button"
+                                                                data-dismiss="modal">
+                                                            キャンセル
+                                                        </button>
+                                                        <button class="btn btn-ec-delete" type="submit" name="mode"
+                                                                value="delete"
+                                                                data-action="{{ url('admin_product_product_class_edit', { id : Product.id}) }}">
+                                                            規格を初期化
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                {% endif %}
                             </div>
                         </div>
-                        {% if classForm %}
-                            <div class="card-body">
-                                <div class="row mb-2">
-                                    <div class="col">
-                                        <div class="d-inline-block mr-2"><span>規格１</span></div>
+                        <div class="card-body">
+                            <div class="row mb-2">
+                                <div class="col">
+                                    <div class="d-inline-block mr-2"><span>規格１</span></div>
+                                    {% if not_product_class  %}
+                                        {{ form_widget(form.class_name1) }}
+                                        {{ form_errors(form.class_name1) }}
+                                    {% else %}
                                         {#TODO 規格の管理名称実装後に対応 #}
                                         <div class="d-inline-block"><span>{{ class_name1 }} [表示名：{{ class_name1 }}
                                                 ]</span>
                                         </div>
-                                    </div>
+
+                                    {% endif %}
                                 </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="d-inline-block mr-2"><span>規格２</span></div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="d-inline-block mr-2"><span>規格２</span></div>
+                                    {% if not_product_class  %}
+                                        {{ form_widget(form.class_name2) }}
+                                        {{ form_errors(form.class_name2) }}
+                                    {% else %}
                                         {#TODO 規格の管理名称実装後に対応 #}
                                         <div class="d-inline-block"><span>{{ class_name2 }} [表示名：{{ class_name2 }}
                                                 ]</span>
                                         </div>
-                                    </div>
+                                    {% endif %}
                                 </div>
                             </div>
-                        {% endif %}
+                        </div>
                     </div>
                     {% if classForm %}
                         <div class="card rounded border-0 mb-4">
@@ -228,8 +246,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <th class="pt-2 pb-2 pl-3">
                                         <input type="checkbox" id="add-all">
                                     </th>
-                                    <th class="pt-2 pb-2">{{ class_name1 }}</th>
-                                    <th class="pt-2 pb-2">{{ class_name2 }}</th>
+                                    <th class="pt-2 pb-2">{{ class_name1 is defined ? class_name1 }}</th>
+                                    <th class="pt-2 pb-2">{{ class_name2 is defined ? class_name2 }}</th>
                                     <th class="pt-2 pb-2">コード</th>
                                     <th class="pt-2 pb-2">在庫数</th>
                                     <th class="pt-2 pb-2">販売制限数</th>
