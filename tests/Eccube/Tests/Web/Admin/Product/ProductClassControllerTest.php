@@ -122,6 +122,10 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         $form = $crawler->selectButton('登録')->form();
         $form['form[product_classes][0][add]']->tick();
         $form['form[product_classes][0][tax_rate]'] = -2;
+        $node = $form->getNode(0);
+        $node->setAttribute('action', $this->generateUrl('admin_product_product_class_edit', [
+            'id' => $product->getId(),
+        ]));
         $crawler = $this->client->submit($form);
 
         // THEN
@@ -305,6 +309,11 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         $form = $crawler->selectButton('更新')->form();
         $form['form[product_classes][0][tax_rate]'] = -1;
         $form['mode'] = 'update';
+        $node = $form->getNode(0);
+        $node->setAttribute('action', $this->generateUrl('admin_product_product_class_edit', [
+            'id' => $id,
+        ]));
+
         $crawler = $this->client->submit($form);
 
         // THEN
