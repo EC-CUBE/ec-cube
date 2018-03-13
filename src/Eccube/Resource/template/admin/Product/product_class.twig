@@ -116,13 +116,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 var tax_rate = $('#form_product_classes_0_tax_rate').val();
                 $('input[id$=_tax_rate]').val(tax_rate);
 
-                var sale_type = $('#form_product_classes_0_sale_type_1').prop('checked');
-                if (sale_type) {
-                    $('input[id$=_sale_type_1]').prop('checked', true);
-                } else {
-                    $('input[id$=_sale_type_2]').prop('checked', true);
-                }
-
+                var sale_type = $('#form_product_classes_0_sale_type').val();
+                $('select[id$=_sale_type]').val(sale_type);
             });
 
             $(document).on('click', 'button[type=submit]', function (event) {
