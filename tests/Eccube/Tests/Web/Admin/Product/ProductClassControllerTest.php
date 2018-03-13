@@ -23,12 +23,12 @@
 namespace Eccube\Tests\Web\Admin\Product;
 
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\TaxRule;
 use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\DomCrawler\Form;
-use Eccube\Entity\TaxRule;
 
 /**
  * Class ProductClassControllerTest
@@ -86,11 +86,11 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
 
         // 商品登録画面に移動する確認
         $crawler = $this->client->followRedirect();
-        $csvExportUrl = $crawler->filter('div#edit_box__footer div p a')->selectLink('前のページに戻る')->link()->getUri();
+        $csvExportUrl = $crawler->filter('div.c-conversionArea > div > div > div:nth-child(1) > div > a')->selectLink('商品マスター')->link()->getUri();
 
         $crawler = $this->client->request('GET', $csvExportUrl);
-        $panelName = $crawler->filter('#page_admin_product_product_edit > div.c-container > div.c-contentsArea > div > div > span')->text();
-        $this->assertContains('商品登録', $panelName);
+        $panelName = $crawler->filter('div.c-pageTitle > div > h2')->text();
+        $this->assertContains('商品マスター', $panelName);
     }
 
     /**
@@ -164,6 +164,10 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         /* @var \Symfony\Component\DomCrawler\Form $form */
         $form = $crawler->selectButton('登録')->form();
         $form['form[product_classes][0][add]']->tick();
+        $node = $form->getNode(0);
+        $node->setAttribute('action', $this->generateUrl('admin_product_product_class_edit', [
+            'id' => $product->getId(),
+        ]));
         $this->client->submit($form);
 
         // THEN
@@ -210,6 +214,10 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         $form = $crawler->selectButton('登録')->form();
         $form['form[product_classes][0][add]']->tick();
         $form['form[product_classes][0][tax_rate]'] = $taxRate;
+        $node = $form->getNode(0);
+        $node->setAttribute('action', $this->generateUrl('admin_product_product_class_edit', [
+            'id' => $product->getId(),
+        ]));
         $this->client->submit($form);
 
         // THEN
@@ -254,6 +262,10 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         $form = $crawler->selectButton('登録')->form();
         $form['form[product_classes][0][add]']->tick();
         $form['form[product_classes][0][tax_rate]'] = $this->faker->randomNumber(2);
+        $node = $form->getNode(0);
+        $node->setAttribute('action', $this->generateUrl('admin_product_product_class_edit', [
+            'id' => $product->getId(),
+        ]));
         $this->client->submit($form);
 
         // THEN
@@ -326,12 +338,16 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         $form = $crawler->selectButton('更新')->form();
         $form['form[product_classes][0][tax_rate]'] = 0;
         $form['mode'] = 'update';
+        $node = $form->getNode(0);
+        $node->setAttribute('action', $this->generateUrl('admin_product_product_class_edit', [
+            'id' => $id,
+        ]));
         $this->client->submit($form);
 
         // THEN
         // check submit
         $crawler = $this->client->followRedirect();
-        $htmlMessage = $crawler->filter('body .container-fluid')->html();
+        $htmlMessage = $crawler->filter('body .c-contentsArea')->html();
         $this->assertContains('商品規格を更新しました。', $htmlMessage);
 
         // check database
@@ -364,12 +380,16 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         $form = $crawler->selectButton('更新')->form();
         $form['form[product_classes][0][tax_rate]'] = '';
         $form['mode'] = 'update';
+        $node = $form->getNode(0);
+        $node->setAttribute('action', $this->generateUrl('admin_product_product_class_edit', [
+            'id' => $id,
+        ]));
         $this->client->submit($form);
 
         // THEN
         // check submit
         $crawler = $this->client->followRedirect();
-        $htmlMessage = $crawler->filter('body .container-fluid')->html();
+        $htmlMessage = $crawler->filter('body .c-contentsArea')->html();
         $this->assertContains('商品規格を更新しました。', $htmlMessage);
 
         // check database
@@ -401,12 +421,16 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         $form = $crawler->selectButton('更新')->form();
         $form['form[product_classes][0][tax_rate]'] = $this->faker->randomNumber(2);
         $form['mode'] = 'update';
+        $node = $form->getNode(0);
+        $node->setAttribute('action', $this->generateUrl('admin_product_product_class_edit', [
+            'id' => $id,
+        ]));
         $this->client->submit($form);
 
         // THEN
         // check submit
         $crawler = $this->client->followRedirect();
-        $htmlMessage = $crawler->filter('body .container-fluid')->html();
+        $htmlMessage = $crawler->filter('body .c-contentsArea')->html();
         $this->assertContains('商品規格を更新しました。', $htmlMessage);
 
         // check database
@@ -457,12 +481,16 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         $form['form[product_classes][0][tax_rate]'] = $this->faker->randomNumber(2);
         $form['form[product_classes][2][tax_rate]'] = $this->faker->randomNumber(2);
         $form['mode'] = 'update';
+        $node = $form->getNode(0);
+        $node->setAttribute('action', $this->generateUrl('admin_product_product_class_edit', [
+            'id' => $product->getId(),
+        ]));
         $this->client->submit($form);
 
         // THEN
         // check submit
         $crawler = $this->client->followRedirect();
-        $htmlMessage = $crawler->filter('body .container-fluid')->html();
+        $htmlMessage = $crawler->filter('body .c-contentsArea')->html();
         $this->assertContains('商品規格を更新しました。', $htmlMessage);
 
         // check database
@@ -494,13 +522,17 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         $form = $crawler->selectButton('更新')->form();
         $form['form[product_classes][0][add]']->untick();
         $form['mode'] = 'delete';
+        $node = $form->getNode(0);
+        $node->setAttribute('action', $this->generateUrl('admin_product_product_class_edit', [
+            'id' => $id,
+        ]));
         $this->client->submit($form);
 
         // THEN
         // check submit
 
         $crawler = $this->client->followRedirect();
-        $htmlMessage = $crawler->filter('body .container-fluid')->html();
+        $htmlMessage = $crawler->filter('body .c-contentsArea')->html();
         $this->assertContains('商品規格を削除しました。', $htmlMessage);
         // check database
         $product = $this->productRepository->find($id);
@@ -540,19 +572,26 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         $client = $this->client;
         $crawler = $client->request('GET', $this->generateUrl('admin_product_product_class', array('id' => 1)));
         $this->assertTrue($client->getResponse()->isSuccessful());
-        $classCategory[] = $crawler->filter('#result_box__class_category1--0')->text();
-        $classCategory[] = $crawler->filter('#result_box__class_category1--3')->text();
-        $classCategory[] = $crawler->filter('#result_box__class_category1--6')->text();
-        $class1  = $classCategory[0].$classCategory[1].$classCategory[2];
+
+        $classCategories = [];
+        foreach ($crawler->filterXPath('//table/tr') as $i => $tr) {
+            $crawler = new Crawler($tr);
+            foreach ($crawler->filter('td') as $j => $td) {
+                if ($j === 1) {
+                    $classCategories[] = trim($td->nodeValue);
+                }
+            }
+        }
+
         //金, 銀, プラチナ sort by rank setup above.
         $this->expected = '金';
-        $this->actual = $classCategory[0];
+        $this->actual = $classCategories[1];
         $this->assertContains( $this->expected, $this->actual);
         $this->expected = '銀';
-        $this->actual = $classCategory[1];
+        $this->actual = $classCategories[4];
         $this->assertContains( $this->expected, $this->actual);
         $this->expected = 'プラチナ';
-        $this->actual = $classCategory[2];
+        $this->actual = $classCategories[7];
         $this->assertContains( $this->expected, $this->actual);
     }
 }
