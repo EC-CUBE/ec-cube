@@ -510,7 +510,7 @@ return [
     'admin.tag.save.complete' => 'タグを保存しました。',
     'admin.tag.save.error' => 'タグを保存できませんでした。',
     'admin.tag.delete.complete' => 'タグを削除しました。',
-    'admin.product.tag.title' => 'タグ',
+    'admin.product.tag.title' => 'タグ管理',
     'admin.product.tag.sub_title' => '商品管理',
     'admin.product.tag.create' => '新規作成',
     'admin.product.tag.drag&drop' => '項目の順番はドラッグ＆ドロップでも変更可能です。',
