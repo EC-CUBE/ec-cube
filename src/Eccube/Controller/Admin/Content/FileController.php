@@ -47,24 +47,14 @@ class FileController extends AbstractController
     private $encode = '';
 
     /**
-     * @var FilesystemUtil
-     */
-    protected $fileSystemUtil;
-
-    /**
      * FileController constructor.
-     *
-     * @param FilesystemUtil $filesystemUtil
      */
-    public function __construct(
-        FilesystemUtil $filesystemUtil
-    ) {
+    public function __construct()
+    {
         $this->encode = self::UTF;
         if ('\\' === DIRECTORY_SEPARATOR) {
             $this->encode = self::SJIS;
         }
-
-        $this->fileSystemUtil = $filesystemUtil;
     }
 
     /**
@@ -349,7 +339,7 @@ class FileController extends AbstractController
             $arrFileList[] = array(
                 'file_name' => $this->convertStrFromServer($dir->getFilename()),
                 'file_path' => $this->convertStrFromServer($this->getJailDir($this->normalizePath($dir->getRealPath()))),
-                'file_size' => $this->fileSystemUtil->sizeToHumanReadable($dir->getSize()),
+                'file_size' => FilesystemUtil::sizeToHumanReadable($dir->getSize()),
                 'file_time' => date("Y/m/d", $dir->getmTime()),
                 'is_dir' => true,
             );
@@ -358,7 +348,7 @@ class FileController extends AbstractController
             $arrFileList[] = array(
                 'file_name' => $this->convertStrFromServer($file->getFilename()),
                 'file_path' => $this->convertStrFromServer($this->getJailDir($this->normalizePath($file->getRealPath()))),
-                'file_size' => $this->fileSystemUtil->sizeToHumanReadable($file->getSize()),
+                'file_size' => FilesystemUtil::sizeToHumanReadable($file->getSize()),
                 'file_time' => date("Y/m/d", $file->getmTime()),
                 'is_dir' => false,
             );

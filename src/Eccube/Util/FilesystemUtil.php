@@ -10,7 +10,7 @@ class FilesystemUtil
      *
      * @return string
      */
-    public function sizeToHumanReadable($size, $decimals = 0)
+    public static function sizeToHumanReadable($size, $decimals = 0)
     {
         $units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
 
