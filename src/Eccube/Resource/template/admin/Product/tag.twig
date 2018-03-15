@@ -26,6 +26,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block title %}{{ 'admin.product.tag.title'|trans }}{% endblock %}
 {% block sub_title %}{{ 'admin.product.tag.sub_title'|trans }}{% endblock %}
 
+{% block stylesheet %}
+    <style>
+        .list-group-item:hover{
+            z-index: inherit;
+        }
+    </style>
+{% endblock stylesheet %}
 {% block javascript %}
     <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.core.min.js', 'admin') }}"></script>
     <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.widget.min.js', 'admin') }}"></script>
@@ -130,10 +137,44 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     <a
                                                             class="btn btn-ec-actionIcon mr-3"
                                                             href="{{ url('admin_product_tag_delete', {id: Tag.id}) }}"
-                                                            {{ csrf_token_for_anchor() }} data-method="delete"
+                                                            data-toggle="modal"
+                                                            data-target="#confirmModal-{{ Tag.id }}"
                                                             data-toggle="tooltip"
                                                             data-placement="top" title="削除"><i
                                                                 class="fa fa-close fa-lg text-secondary"></i></a>
+                                                </div>
+                                            </div>
+
+                                            <div class="modal fade" id="confirmModal-{{ Tag.id }}" tabindex="-1" role="dialog"
+                                                 aria-labelledby="confirmModal-{{ Tag.id }}" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title font-weight-bold">
+                                                                {{ 'admin.product.index.text02'|trans }}</h5>
+                                                            <button class="close" type="button"
+                                                                    data-dismiss="modal"
+                                                                    aria-label="Close"><span
+                                                                        aria-hidden="true">×</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body text-left">
+                                                            <p class="text-left">
+                                                                {{ 'admin.product.index.text03'|trans }}</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button class="btn btn-ec-sub" type="button"
+                                                                    data-dismiss="modal">{{ 'admin.product.index.cancel'|trans }}
+                                                            </button>
+                                                            <button class="btn btn-ec-delete" type="button"
+                                                                    data-href="{{ url('admin_product_tag_delete', {'id' : Tag.id}) }}" {{ csrf_token_for_anchor() }}
+                                                                    data-method="delete"
+                                                                    data-message="{{ 'admin.product.index.text04'|trans }}">
+                                                                {{ 'admin.product.index.stop_handling'|trans }}
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </li>
                                     {% endfor %}

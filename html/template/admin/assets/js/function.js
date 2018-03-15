@@ -201,17 +201,13 @@ $(function () {
         return $form;
     };
 
-    $('a[token-for-anchor]').click(function (e) {
+    $('button[token-for-anchor]').click(function (e) {
         e.preventDefault();
         var $this = $(this);
         var data = $this.data();
-        if (data.confirm != false) {
-            if (!confirm(data.message ? data.message : '削除してもよろしいですか?')) {
-                return false;
-            }
-        }
 
-        var $form = createForm($this.attr('href'), {
+        alert(1111);
+        var $form = createForm($this.attr('data-href'), {
             _token: $this.attr('token-for-anchor'),
             _method: data.method
         }).hide();
