@@ -64,15 +64,29 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 $.ajax({
                     url: '{{ url('admin_product_class_name_sort_no_move') }}',
                     type: 'POST',
-                    data: newSortNos,
+                    data: newSortNos
                 }).done(function(data) {
-                    console.log(data);
                     location.reload(true);
                 }).fail(function() {
-                    console.log('fail');
                     $(".modal-backdrop").remove();
                 });
             };
+
+            $("ul.tableish > .item_box a.up").click(function (e) {
+                e.preventDefault();
+                var current = $(this).parents(".item_box");
+                current.prev().before(current);
+                $("body").append($('<div class="modal-backdrop show"></div>'));
+                updateSortNo();
+            });
+
+            $("ul.tableish > .item_box a.down").click(function (e) {
+                e.preventDefault();
+                var current = $(this).parents(".item_box");
+                current.next().after(current);
+                $("body").append($('<div class="modal-backdrop show"></div>'));
+                updateSortNo();
+            });
         });
     </script>
 {% endblock %}
@@ -110,12 +124,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         {# TODO 表示名 #}
                                         <div class="col d-flex align-items-center"><a href="{{ url('admin_product_class_category', {class_name_id : ClassName.id }) }}">{{ ClassName.name }} ({{ ClassName.ClassCategories|length }})</a></div>
                                         <div class="col-auto text-right">
-                                            {# TODO 上に移動 #}
-                                            <a class="btn btn-ec-actionIcon mr-3 {% if loop.first %}disabled{% endif %}" href="" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.class_name.439'|trans }}">
+                                            <a class="btn btn-ec-actionIcon mr-3 up {% if loop.first %}disabled{% endif %}" href="" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.class_name.439'|trans }}">
                                                 <i class="fa fa-arrow-up fa-lg text-secondary"></i>
                                             </a>
-                                            {# TODO 下に移動 #}
-                                            <a class="btn btn-ec-actionIcon mr-3 {% if loop.last %}disabled{% endif %}" href="" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.class_name.440'|trans }}">
+                                            <a class="btn btn-ec-actionIcon mr-3 down {% if loop.last %}disabled{% endif %}" href="" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.class_name.440'|trans }}">
                                                 <i class="fa fa-arrow-down fa-lg text-secondary"></i>
                                             </a>
                                             {# TODO 編集機能 #}
