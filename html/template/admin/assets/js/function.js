@@ -205,11 +205,6 @@ $(function () {
         e.preventDefault();
         var $this = $(this);
         var data = $this.data();
-        if (data.confirm != false) {
-            if (!confirm(data.message ? data.message : '削除してもよろしいですか?')) {
-                return false;
-            }
-        }
 
         var $form = createForm($this.attr('href'), {
             _token: $this.attr('token-for-anchor'),
