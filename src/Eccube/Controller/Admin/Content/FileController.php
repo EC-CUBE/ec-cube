@@ -37,6 +37,7 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Eccube\Util\FilesystemUtil;
 
 class FileController extends AbstractController
 {
@@ -45,11 +46,25 @@ class FileController extends AbstractController
     private $error = null;
     private $encode = '';
 
-    public function __construct() {
+    /**
+     * @var FilesystemUtil
+     */
+    protected $fileSystemUtil;
+
+    /**
+     * FileController constructor.
+     *
+     * @param FilesystemUtil $filesystemUtil
+     */
+    public function __construct(
+        FilesystemUtil $filesystemUtil
+    ) {
         $this->encode = self::UTF;
         if ('\\' === DIRECTORY_SEPARATOR) {
             $this->encode = self::SJIS;
         }
+
+        $this->fileSystemUtil = $filesystemUtil;
     }
 
     /**
@@ -334,7 +349,7 @@ class FileController extends AbstractController
             $arrFileList[] = array(
                 'file_name' => $this->convertStrFromServer($dir->getFilename()),
                 'file_path' => $this->convertStrFromServer($this->getJailDir($this->normalizePath($dir->getRealPath()))),
-                'file_size' => $dir->getSize(),
+                'file_size' => $this->fileSystemUtil->sizeToHumanReadable($dir->getSize()),
                 'file_time' => date("Y/m/d", $dir->getmTime()),
                 'is_dir' => true,
             );
@@ -343,7 +358,7 @@ class FileController extends AbstractController
             $arrFileList[] = array(
                 'file_name' => $this->convertStrFromServer($file->getFilename()),
                 'file_path' => $this->convertStrFromServer($this->getJailDir($this->normalizePath($file->getRealPath()))),
-                'file_size' => $file->getSize(),
+                'file_size' => $this->fileSystemUtil->sizeToHumanReadable($file->getSize()),
                 'file_time' => date("Y/m/d", $file->getmTime()),
                 'is_dir' => false,
             );
