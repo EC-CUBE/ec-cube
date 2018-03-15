@@ -340,6 +340,46 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     <td class="align-middle"></td>
                                                     <td class="align-middle pr-3">
                                                         <div class="row justify-content-end">
+                                                            {% if Customer.Status.id == 1 %}
+                                                                <div class="col text-center" data-toggle="tooltip"
+                                                                     data-placement="top"
+                                                                     title="{{ 'admin.customer.index.label.resend_registmail'|trans }}"><a class="btn btn-ec-actionIcon" data-toggle="modal"
+                                                                                                                            data-target="#discontinuance"><i
+                                                                                class="fa fa-envelope fa-lg text-secondary"
+                                                                                aria-hidden="true"></i></a>
+                                                                    <div class="modal fade" id="discontinuance" tabindex="-1"
+                                                                         role="dialog"
+                                                                         aria-labelledby="discontinuance" aria-hidden="true">
+                                                                        <div class="modal-dialog" role="document">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    <h5 class="modal-title font-weight-bold">
+                                                                                        {{ 'admin.customer.index.label.resend_registmail'|trans }}</h5>
+                                                                                    <button class="close" type="button"
+                                                                                            data-dismiss="modal"
+                                                                                            aria-label="Close"><span
+                                                                                                aria-hidden="true">×</span>
+                                                                                    </button>
+                                                                                </div>
+                                                                                <div class="modal-body text-left">
+                                                                                    <p class="text-left">
+                                                                                        {{ 'admin.customer.index.label.resend_registmail'|trans }}</p>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <button class="btn btn-ec-sub" type="button"
+                                                                                            data-dismiss="modal">{{ 'admin.customer.index.cancel'|trans }}
+                                                                                    </button>
+                                                                                    <a href="{{ url('admin_customer_resend', {'id' : Customer.id}) }}" {{ csrf_token_for_anchor() }}>
+                                                                                        <button class="btn btn-ec-delete" type="button">
+                                                                                            {{ 'admin.customer.index.send'|trans }}
+                                                                                        </button>
+                                                                                    </a>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            {% endif %}
                                                             <div class="col-auto text-center"><a "{{ url('admin_customer_delete', { 'id': Customer.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" class="btn btn-ec-actionIcon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ 'admin.customer.index.delete'|trans }}"><i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a></div>
                                                         </div>
                                                     </td>

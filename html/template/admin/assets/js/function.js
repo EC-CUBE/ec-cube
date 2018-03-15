@@ -190,6 +190,7 @@ jQuery(document).ready(function ($) {
 // data-confirm : falseを定義すると確認ダイアログを出さない。デフォルトはダイアログを出す
 // data-message : 確認ダイアログを出す際のメッセージをデフォルトから変更する
 //
+
 $(function () {
     var createForm = function (action, data) {
         var $form = $('<form action="' + action + '" method="post"></form>');
@@ -205,11 +206,6 @@ $(function () {
         e.preventDefault();
         var $this = $(this);
         var data = $this.data();
-        if (data.confirm != false) {
-            if (!confirm(data.message ? data.message : '削除してもよろしいですか?')) {
-                return false;
-            }
-        }
 
         var $form = createForm($this.attr('href'), {
             _token: $this.attr('token-for-anchor'),

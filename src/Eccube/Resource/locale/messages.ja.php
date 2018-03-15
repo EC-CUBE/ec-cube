@@ -857,6 +857,8 @@ return [
     'admin.customer.subnavi.148' => '会員管理',
     'admin.customer.subnavi.149' => '会員マスター',
     'admin.customer.subnavi.150' => '会員登録',
+    'admin.customer.index.cancel' => 'キャンセル',
+    'admin.customer.index.send' => '再送',
     'admin.default_frame.151' => 'EC-CUBE管理画面',
     'admin.default_frame.152' => '%name% 様',
     'admin.default_frame.153' => '最終ログイン',
