@@ -89,15 +89,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item">
                                         <div class="form-row">
-                                            <div class="col-auto d-flex align-items-center">
-                                                <input class="form-control" type="text">
-                                            </div>
-                                             {#TODO 新規作成を実装する#}
-                                            <div class="col-auto d-flex align-items-center">
-                                                <button class="btn btn-ec-regular" type="submit">{{ 'admin.product.tag.create'|trans }}
-                                                </button>
-                                            </div>
-                                        </div>
+                                            <form role="form" class="form-row" name="form1" id="form1" method="post"
+                                                  action="{% if Tag.id %}{{ path('admin_product_tag_edit', {id: Tag.id}) }}{% else %}{{ url('admin_product_tag')}} {% endif %}"
+                                                  enctype="multipart/form-data">
+                                                {{ form_widget(form._token) }}
+                                                <div class="col-auto d-flex align-items-center">
+                                                    {{ form_widget(form.name) }}
+                                                    {{ form_errors(form.name) }}
+                                                </div>
+                                                <div class="col-auto d-flex align-items-center">
+                                                    <button class="btn btn-ec-regular" type="submit">
+                                                        {{ 'admin.product.category.403'|trans }}
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div><!-- /.form-row -->
                                     </li>
                                     {% for Tag in Tags %}
                                         {# TODO 上下移動, 編集, 削除を実装する #}
@@ -114,15 +120,20 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                             class="btn btn-ec-actionIcon mr-3" href=""
                                                             data-toggle="tooltip"
                                                             data-placement="top" title="下へ移動"><i
-                                                                class="fa fa-arrow-down fa-lg text-secondary"></i></a><a
-                                                            class="btn btn-ec-actionIcon mr-3" href=""
+                                                                class="fa fa-arrow-down fa-lg text-secondary"></i></a>
+                                                    <a
+                                                            class="btn btn-ec-actionIcon mr-3"
+                                                            href="{{ url('admin_product_tag_edit', {id: Tag.id}) }}"
                                                             data-toggle="tooltip"
                                                             data-placement="top" title="名前を編集"><i
-                                                                class="fa fa-pencil fa-lg text-secondary"></i></a><a
-                                                            class="btn btn-ec-actionIcon mr-3" href=""
+                                                                class="fa fa-pencil fa-lg text-secondary"></i></a>
+                                                    <a
+                                                            class="btn btn-ec-actionIcon mr-3"
+                                                            href="{{ url('admin_product_tag_delete', {id: Tag.id}) }}"
+                                                            {{ csrf_token_for_anchor() }} data-method="delete"
                                                             data-toggle="tooltip"
                                                             data-placement="top" title="削除"><i
-                                                                class="fa fa-close fa-lg text-secondary"></i></a></div>
+                                                                class="fa fa-close fa-lg text-secondary"></i></a>
                                             </div>
                                         </li>
                                     {% endfor %}
