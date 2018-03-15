@@ -107,14 +107,23 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 <div class="col-auto d-flex align-items-center"><i
                                                             class="fa fa-bars text-ec-gray"></i></div>
                                                 <div class="col d-flex align-items-center"><a>{{ Tag.name }}</a></div>
-                                                <div class="col-auto text-right"><a class="btn btn-ec-actionIcon mr-3"
-                                                                                    href="" data-toggle="tooltip"
-                                                                                    data-placement="top" title="上へ移動"><i
-                                                                class="fa fa-arrow-up fa-lg text-secondary"></i></a><a
-                                                            class="btn btn-ec-actionIcon mr-3" href=""
+                                                <div class="col-auto text-right">
+                                                    <a class="btn btn-ec-actionIcon mr-3"
+                                                       href="{{ url('admin_product_tag_up', {id: Tag.id}) }}" {{ csrf_token_for_anchor() }}
+                                                       data-method="put"
+                                                       data-confirm="false"
+                                                       data-toggle="tooltip"
+                                                       data-placement="top" title="上へ移動"><i
+                                                                class="fa fa-arrow-up fa-lg text-secondary"></i></a>
+                                                    <a
+                                                            class="btn btn-ec-actionIcon mr-3"
+                                                            href="{{ url('admin_product_tag_down', {id: Tag.id}) }}" {{ csrf_token_for_anchor() }}
+                                                            data-method="put"
+                                                            data-confirm="false"
                                                             data-toggle="tooltip"
                                                             data-placement="top" title="下へ移動"><i
-                                                                class="fa fa-arrow-down fa-lg text-secondary"></i></a><a
+                                                                class="fa fa-arrow-down fa-lg text-secondary"></i></a>
+                                                    <a
                                                             class="btn btn-ec-actionIcon mr-3" href=""
                                                             data-toggle="tooltip"
                                                             data-placement="top" title="名前を編集"><i
