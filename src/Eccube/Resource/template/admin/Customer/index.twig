@@ -298,17 +298,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <div class="col-6"></div>
                                 <div class="col-5 text-right">
                                     <div class="d-inline-block mr-2">
-                                        <div>
-                                            {# TODO: 未実装 表示件数 #}
-                                            {% for pageMax in pageMaxis if pageMax.name == page_count %}
-                                                <a class="dropdown-toggle" data-toggle="dropdown">{{'admin.customer.index.135'|trans({'%count%':pageMax.name})|e}}<svg class="cb cb-angle-down icon_down"><use xlink:href="#cb-angle-down"></svg></a>
-                                                    <ul class="dropdown-menu">
+                                        {# TODO: 未実装 表示件数 #}
+                                        <select class="custom-select">
+                                            {% for pageMax in pageMaxis %}
+                                                <option {% if pageMax.name == page_count %} selected {% endif %}
+                                                        value="{{ path('admin_customer_page', {'page_no': 1, 'page_count': pageMax.name}) }}">
+                                                    {{ pageMax.name|e }}{{ 'admin.common.pagination.item'|trans }}
+                                                </option>
                                             {% endfor %}
-                                            {% for pageMax in pageMaxis if pageMax.name != page_count %}
-                                                <li><a href="{{ path('admin_customer_page', {'page_no': 1, 'page_count': pageMax.name}) }}">{{pageMax.name|e}}</a></li>
-                                            {% endfor %}
-                                                    </ul>
-                                        </div>
+                                        </select>
                                     </div>
                                     <div class="d-inline-block">
                                         <div class="btn-group" role="group">
@@ -369,19 +367,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                                                     <button class="btn btn-ec-sub" type="button"
                                                                                             data-dismiss="modal">{{ 'admin.customer.index.cancel'|trans }}
                                                                                     </button>
-                                                                                    <button class="btn btn-ec-delete" type="button"
-                                                                                        data-url="{{ url('admin_customer_resend', {'id' : Customer.id}) }}"
-                                                                                        {{ csrf_token_for_anchor() }}
-                                                                                        data-method="get">
-                                                                                        {{ 'admin.customer.index.send'|trans }}
-                                                                                    </button>
+                                                                                    {# TODO: CSSの変更は別タスクでやります #}
+                                                                                    <a class="btn btn-ec-delete" href="{{ url('admin_customer_resend', {'id' : Customer.id}) }}" {{ csrf_token_for_anchor() }}
+                                                                                       data-method="get" data-confirm="false">{{ 'admin.customer.index.send'|trans }}
+                                                                                    </a>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             {% endif %}
-                                                            <div class="col-auto text-center"><a "{{ url('admin_customer_delete', { 'id': Customer.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" class="btn btn-ec-actionIcon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ 'admin.customer.index.delete'|trans }}"><i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a></div>
+                                                            <div class="col-auto text-center"><a href="{{ url('admin_customer_delete', { 'id': Customer.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" class="btn btn-ec-actionIcon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ 'admin.customer.index.delete'|trans }}"><i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a></div>
                                                         </div>
                                                     </td>
                                                 </tr>
