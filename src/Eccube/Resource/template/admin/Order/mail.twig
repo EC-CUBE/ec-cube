@@ -84,7 +84,13 @@ $(function() {
                             {% for MailHistory in MailHistories %}
                                 <tr id="history_box__item--{{ MailHistory.id }}">
                                     <td id="history_box__send_date--{{ MailHistory.id }}">{{ MailHistory.send_date|date_format }}</td>
-                                    <td id="history_box__mail_template--{{ MailHistory.id }}">{{ MailHistory.subject }}</td>
+                                    <td id="history_box__mail_template--{{ MailHistory.id }}">
+                                        {% if MailHistory.mail_template is not empty %}
+                                            {{ MailHistory.mail_template.subject }}
+                                        {% else %}
+                                            {{ MailHistory.subject }}
+                                        {% endif %}
+                                    </td>
                                     <td id="history_box__subject--{{ MailHistory.id }}"><a href="#mailModal" data-toggle="modal" data-whatever="{{ MailHistory.id }}">{{ MailHistory.subject }}</a></td>
                                 </tr>
                             {% endfor %}
