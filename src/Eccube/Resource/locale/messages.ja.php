@@ -848,6 +848,7 @@ return [
     'admin.customer.index.145' => 'この会員情報を削除してもよろしいですか？',
     'admin.customer.index.146' => '仮登録メールを再送してもよろしいですか？',
     'admin.customer.index.label.resend_registmail' => '仮会員メール再送',
+    'admin.customer.index.label.resend_registmail_content' => '仮登録メールを再送してもよろしいですか？',
     'admin.customer.index.147' => '検索条件に合致するデータが見つかりませんでした',
     'admin.customer.index.text06' => '検索条件を変えて、再度検索をお試しください。',
     'admin.customer.index.text07' => '[詳細検索]も試してみましょう。',

@@ -202,12 +202,12 @@ $(function () {
         return $form;
     };
 
-    $('a[token-for-anchor]').click(function (e) {
+    $('button[token-for-anchor]').click(function (e) {
         e.preventDefault();
         var $this = $(this);
         var data = $this.data();
 
-        var $form = createForm($this.attr('href'), {
+        var $form = createForm($this.attr('data-url'), {
             _token: $this.attr('token-for-anchor'),
             _method: data.method
         }).hide();
@@ -234,6 +234,7 @@ $(window).on('load', function() {
 
     function openPanel(el) {
         var accordion = el.parents('div.accordion');
+        var $ac = $('.accpanel', accordion);
         var $ac = $('.accpanel', accordion);
         if (!$ac) {
             return false;
