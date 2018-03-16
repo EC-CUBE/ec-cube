@@ -36,7 +36,7 @@ class TagContorllerTest extends AbstractAdminWebTestCase
 
     public function testUp()
     {
-        $tagId = 4;
+        $tagId = 3;
         $Item = $this->container->get(TagRepository::class)->find($tagId);
         $before = $Item->getSortNo();
         $this->client->request('PUT',
@@ -53,15 +53,15 @@ class TagContorllerTest extends AbstractAdminWebTestCase
     public function testDown()
     {
         $tagId = 1;
-        $Payment = $this->container->get(TagRepository::class)->find($tagId);
-        $before = $Payment->getSortNo();
+        $Item = $this->container->get(TagRepository::class)->find($tagId);
+        $before = $Item->getSortNo();
         $this->client->request('PUT',
             $this->generateUrl('admin_product_tag_down', array('id' => $tagId))
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirection());
 
-        $after = $Payment->getSortNo();
+        $after = $Item->getSortNo();
         $this->actual = $after;
         $this->expected = $before - 1;
         $this->verify();
