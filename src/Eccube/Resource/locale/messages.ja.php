@@ -533,6 +533,8 @@ return [
     'admin.customer.save.failed' => '会員情報を保存できませんでした。',
     'admin.customer.delivery.save.complete' => 'お届け先情報を保存しました。',
     'admin.customer.delivery.save.failed' => 'お届け先情報を保存できませんでした。',
+    'admin.customer.delete.confirm.title' => '会員情報を削除します。',
+    'admin.customer.delete.confirm.message' => '会員情報を削除してもよろしいですか？',
     'admin.customer.delete.complete' => '会員情報を削除しました。',
     'admin.customer.delete.failed' => '会員情報を削除できませんでした。',
     'admin.customer.delivery.delete.complete' => 'お届け先情報を削除しました。',
