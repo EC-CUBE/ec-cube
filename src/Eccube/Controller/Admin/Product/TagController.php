@@ -124,45 +124,4 @@ class TagController extends AbstractController
 
         return new Response();
     }
-
-    /**
-     * @Method("PUT")
-     * @Route("/%eccube_admin_route%/product/tag/{id}/up", requirements={"id" = "\d+"}, name="admin_product_tag_up")
-     */
-    public function up(Tag $current)
-    {
-        $this->isTokenValid();
-        $currentSortNo = $current->getSortNo();
-        $targetSortNo = $currentSortNo + 1;
-        $target = $this->tagRepository->findOneBy(array('sort_no' => $targetSortNo));
-        if ($target) {
-            $this->entityManager->persist($target->setSortNo($currentSortNo));
-            $this->entityManager->persist($current->setSortNo($targetSortNo));
-            $this->entityManager->flush();
-            $this->addSuccess('admin.sort_no.move.complete', 'admin');
-        } else {
-            $this->addError('admin.sort_no.up.error', 'admin');
-        }
-        return $this->redirectToRoute('admin_product_tag');
-    }
-    /**
-     * @Method("PUT")
-     * @Route("/%eccube_admin_route%/product/tag/{id}/down", requirements={"id" = "\d+"}, name="admin_product_tag_down")
-     */
-    public function down(Tag $current)
-    {
-        $this->isTokenValid();
-        $currentSortNo = $current->getSortNo();
-        $targetSortNo = $currentSortNo - 1;
-        $target = $this->tagRepository->findOneBy(array('sort_no' => $targetSortNo));
-        if ($target) {
-            $this->entityManager->persist($target->setSortNo($currentSortNo));
-            $this->entityManager->persist($current->setSortNo($targetSortNo));
-            $this->entityManager->flush();
-            $this->addSuccess('admin.sort_no.move.complete', 'admin');
-        } else {
-            $this->addError('admin.sort_no.down.error', 'admin');
-        }
-        return $this->redirectToRoute('admin_product_tag');
-    }
 }

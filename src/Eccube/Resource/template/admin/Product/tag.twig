@@ -32,10 +32,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.mouse.min.js', 'admin') }}"></script>
     <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.sortable.min.js', 'admin') }}"></script>
     <script>
+        var mainRows = "ul.tableish";
         $(function () {
             var oldSortNos = [];
             // 画面の中のsort_no一覧を保持
-            $("ul.tableish > .item_box").each(function () {
+            $(mainRows + " > .item_box").each(function () {
                 oldSortNos.push(this.dataset.sortNo);
             });
             // rsort
@@ -43,7 +44,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 return a - b;
             }).reverse();
 
-            $("ul.tableish").sortable({
+            $(mainRows).sortable({
                 items: '> .item_box',
                 cursor: 'move',
                 update: function (e, ui) {
@@ -56,7 +57,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 // 並び替え後にsortNoを更新
                 var newSortNos = {};
                 var i = 0;
-                $("ul.tableish > .item_box").each(function () {
+                $(mainRows + " > .item_box").each(function () {
                     newSortNos[this.dataset.tagId] = oldSortNos[i];
                     i++;
                 });
@@ -73,17 +74,33 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 });
             };
 
-            // Do set disable arrow up/down
-            function doDisableArrow() {
-                $("a.up.disabled").removeClass('disabled');
-                $("a.down.disabled").removeClass('disabled');
-                // First element
-                $("ul.tableish > li:nth-child(2) > div a.up").addClass('disabled');
-                // Last element
-                $("ul.tableish > li").last().find("a.down").addClass('disabled');
-                $(".modal-backdrop").remove();
-            }
+            $(mainRows).on('click', '.item_box a.up', function (e) {
+                e.preventDefault();
+                var current = $(this).closest("li.item_box");
+                current.prev().before(current);
+                $("body").append($('<div class="modal-backdrop show"></div>'));
+                updateSortNo();
+            });
+
+            $(mainRows).on('click', ".item_box a.down", function (e) {
+                e.preventDefault();
+                var current = $(this).closest("li.item_box");
+                current.next().after(current);
+                $("body").append($('<div class="modal-backdrop show"></div>'));
+                updateSortNo();
+            });
         });
+
+        // Do set disable arrow up/down
+        function doDisableArrow() {
+            $("a.up.disabled").removeClass('disabled');
+            $("a.down.disabled").removeClass('disabled');
+            // First element
+            $("ul.tableish > li:nth-child(2) > div a.up").addClass('disabled');
+            // Last element
+            $("ul.tableish > li").last().find("a.down").addClass('disabled');
+            $(".modal-backdrop").remove();
+        }
     </script>
 {% endblock %}
 
@@ -109,8 +126,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         </div>
                                     </li>
                                     {% for Tag in Tags %}
-                                        {# TODO 上下移動, 編集, 削除を実装する #}
-                                        {# TODO ドラッグアンドドロップを実装する #}
                                         <li class="list-group-item item_box" data-tag-id="{{ Tag.id }}" data-sort-no="{{ Tag.sortNo }}">
                                             <div class="row justify-content-around">
                                                 <div class="col-auto d-flex align-items-center"><i
@@ -118,20 +133,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 <div class="col d-flex align-items-center"><a>{{ Tag.name }}</a></div>
                                                 <div class="col-auto text-right">
                                                     <a class="btn btn-ec-actionIcon up mr-3 {% if loop.first %}disabled{% endif %}"
-                                                       href="{{ url('admin_product_tag_up', {id: Tag.id}) }}" {{ csrf_token_for_anchor() }}
-                                                       data-method="put"
-                                                       data-confirm="false"
+                                                       href="#"
                                                        data-toggle="tooltip"
                                                        data-placement="top" title="上へ移動"><i
-                                                                class="fa fa-arrow-up fa-lg text-secondary"></i></a>
+                                                            class="fa fa-arrow-up fa-lg text-secondary"></i></a>
                                                     <a
-                                                            class="btn btn-ec- down mr-3 {% if loop.last %}disabled{% endif %}"
-                                                            href="{{ url('admin_product_tag_down', {id: Tag.id}) }}" {{ csrf_token_for_anchor() }}
-                                                            data-method="put"
-                                                            data-confirm="false"
-                                                            data-toggle="tooltip"
-                                                            data-placement="top" title="下へ移動"><i
-                                                                class="fa fa-arrow-down fa-lg text-secondary"></i></a>
+                                                        class="btn btn-ec- down mr-3 {% if loop.last %}disabled{% endif %}"
+                                                        href="#"
+                                                        data-toggle="tooltip"
+                                                        data-placement="top" title="下へ移動"><i
+                                                            class="fa fa-arrow-down fa-lg text-secondary"></i></a>
                                                     <a
                                                             class="btn btn-ec-actionIcon mr-3" href=""
                                                             data-toggle="tooltip"
