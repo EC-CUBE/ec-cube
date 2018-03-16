@@ -37,12 +37,14 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Filesystem\Exception\IOException;
 
 class FileController extends AbstractController
 {
     const SJIS = 'sjis-win';
     const UTF = 'UTF-8';
-    private $error = null;
+    private $errors = [];
     private $encode = '';
 
     public function __construct() {
@@ -108,7 +110,7 @@ class FileController extends AbstractController
             'now_dir_list' => $nowDirList,
             'tpl_parent_dir' => $parentDir,
             'arrFileList' => $arrFileList,
-            'error' => $this->error,
+            'errors' => $this->errors,
             'paths' => json_encode($paths)
         ];
     }
@@ -127,38 +129,56 @@ class FileController extends AbstractController
         throw new NotFoundHttpException();
     }
 
+    /**
+     * Create directory
+     *
+     * @param Request $request
+     */
     public function create(Request $request)
     {
-
         $form = $this->formFactory->createBuilder(FormType::class)
             ->add('file', FileType::class)
-            ->add('create_file', TextType::class)
+            ->add('create_file', TextType::class, [
+                'constraints' => [
+                    new Assert\NotBlank([
+                        'message' => 'file.text.error.folder_name'
+                    ]),
+                    new Assert\Regex([
+                        'pattern' => "/[^[:alnum:]_.\\-]/",
+                        'match' => false,
+                        'message' => 'file.text.error.folder_symbol'
+                    ]),
+                    new Assert\Regex([
+                        'pattern' => "/^\.(.*)$/",
+                        'match' => false,
+                        'message' => 'file.text.error.folder_period'
+                    ]),
+                ]
+            ])
             ->getForm();
 
         $form->handleRequest($request);
-
-        if ($form->isValid()) {
-
-            $fs = new Filesystem();
-            $filename = $form->get('create_file')->getData();
-
-            $pattern = "/[^[:alnum:]_.\\-]/";
-            $pattern2 = "/^\.(.*)$/";
-            if (empty($filename)) {
-                $this->error = array('message' => trans('file.text.error.folder_name'));
-            } elseif (strlen($filename) > 0 && preg_match($pattern, $filename)) {
-                $this->error = array('message' => trans('file.text.error.folder_symbol'));
-            } elseif (strlen($filename) > 0 && preg_match($pattern2, $filename)) {
-                $this->error = array('message' => trans('file.text.error.folder_period'));
-            } else {
-                $topDir = $this->getUserDataDir();
-                $nowDir = $this->checkDir($request->get('now_dir'), $this->getUserDataDir())
-                    ? $this->normalizePath($request->get('now_dir'))
-                    : $topDir;
-                $fs->mkdir($nowDir . '/' . $filename);
-
-                $this->addSuccess('admin.create.complete', 'admin');
+        if (!$form->isValid()) {
+            foreach ($form->getErrors(true) as $error) {
+                $this->errors[] = ['message' => $error->getMessage()];
             }
+            return;
+        }
+
+        $fs = new Filesystem();
+        $filename = $form->get('create_file')->getData();
+
+        try {
+            $topDir = $this->getUserDataDir();
+            $nowDir = $this->getUserDataDir($request->get('now_dir'));
+            $nowDir = $this->checkDir($nowDir, $this->getUserDataDir())
+                ? $this->normalizePath($nowDir)
+                : $topDir;
+            $fs->mkdir($nowDir . '/' . $filename);
+
+            $this->addSuccess('admin.create.complete', 'admin');
+        } catch (IOException $e) {
+            $this->errors[] = ['message' => $e->getMessage()];
         }
     }
 
