@@ -2013,6 +2013,7 @@ return [
     'file.text.error.folder_symbol' => 'フォルダ名には、英数字、記号（_ - .）のみを入力して下さい。',
     'file.text.error.folder_period' => '.から始まるフォルダ名は作成できません。',
     'file.text.error.file_not_selected' => 'ファイルが選択されていません。',
+    'file.text.error.invalid_upload_folder' => '無効なアップロードフォルダ',
     'layout.label' => 'レイアウト名',
     'layout.text.error.not_found' => 'みつかりませんでした',
     'news.text.name' => '',
