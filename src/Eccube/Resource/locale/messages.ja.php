@@ -517,6 +517,8 @@ return [
     'admin.product.tag.up' => '上へ移動',
     'admin.product.tag.down' => '下へ移動',
     'admin.product.tag.edit' => '編集',
+    'admin.product.tag.delete.confirm.title' => 'タグを削除します。',
+    'admin.product.tag.delete.confirm.message' => '削除してもよろしいですか?',
     'admin.product.tag.delete' => '削除',
     'admin.product.search.stock' => '在庫なし',
     'admin.product.product_class.save.complete' => '商品規格を登録しました。',

@@ -206,8 +206,7 @@ $(function () {
         var $this = $(this);
         var data = $this.data();
 
-        alert(1111);
-        var $form = createForm($this.attr('data-href'), {
+        var $form = createForm($this.attr('data-url'), {
             _token: $this.attr('token-for-anchor'),
             _method: data.method
         }).hide();
