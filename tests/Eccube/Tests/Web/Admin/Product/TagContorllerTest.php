@@ -112,7 +112,7 @@ class TagContorllerTest extends AbstractAdminWebTestCase
         $this->assertNull($Item);
     }
 
-    public function testDeleteFail_NotFound()
+    public function testDeleteFailNotFound()
     {
         $tagId = 9999;
         $this->client->request(
