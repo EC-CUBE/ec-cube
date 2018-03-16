@@ -191,10 +191,13 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Get MailTemplate
      *
-     * @return \Eccube\Entity\MailTemplate
+     * @return \Eccube\Entity\MailTemplate|null
      */
     public function getMailTemplate()
     {
+        if (EntityUtil::isEmpty($this->MailTemplate)) {
+            return null;
+        }
         return $this->MailTemplate;
     }
 
