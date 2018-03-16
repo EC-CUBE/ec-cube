@@ -86,7 +86,7 @@ $(function() {
                                     <td id="history_box__send_date--{{ MailHistory.id }}">{{ MailHistory.send_date|date_format }}</td>
                                     <td id="history_box__mail_template--{{ MailHistory.id }}">
                                         {% if MailHistory.mail_template is not empty %}
-                                            {{ MailHistory.mail_template.subject }}
+                                            {{ MailHistory.mail_template.name }}
                                         {% else %}
                                             {{ MailHistory.subject }}
                                         {% endif %}
