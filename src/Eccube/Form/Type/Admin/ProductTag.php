@@ -53,7 +53,6 @@ class ProductTag extends AbstractType
     {
         $builder
             ->add('name', TextType::class, array(
-                'label' => 'category.label.category_name',
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
