@@ -23,6 +23,7 @@
 
 namespace Eccube\Tests\Web\Admin\Product;
 
+use Eccube\Repository\TagRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class TagContorllerTest extends AbstractAdminWebTestCase
@@ -31,5 +32,38 @@ class TagContorllerTest extends AbstractAdminWebTestCase
     {
         $this->client->request('GET', $this->generateUrl('admin_product_tag'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
+    public function testUp()
+    {
+        $tagId = 4;
+        $Item = $this->container->get(TagRepository::class)->find($tagId);
+        $before = $Item->getSortNo();
+        $this->client->request('PUT',
+            $this->generateUrl('admin_product_tag_up', array('id' => $tagId))
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirection());
+
+        $after = $Item->getSortNo();
+        $this->actual = $after;
+        $this->expected = $before + 1;
+        $this->verify();
+    }
+
+    public function testDown()
+    {
+        $tagId = 1;
+        $Payment = $this->container->get(TagRepository::class)->find($tagId);
+        $before = $Payment->getSortNo();
+        $this->client->request('PUT',
+            $this->generateUrl('admin_product_tag_down', array('id' => $tagId))
+        );
+
+        $this->assertTrue($this->client->getResponse()->isRedirection());
+
+        $after = $Payment->getSortNo();
+        $this->actual = $after;
+        $this->expected = $before - 1;
+        $this->verify();
     }
 }
