@@ -28,42 +28,40 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class TagContorllerTest extends AbstractAdminWebTestCase
 {
+    /**
+     * @var TagRepository
+     */
+    private $TagRepo;
+
+    public function setUp()
+    {
+        parent::setUp();
+        $this->TagRepo = $this->container->get(TagRepository::class);
+    }
+
     public function testRouting()
     {
         $this->client->request('GET', $this->generateUrl('admin_product_tag'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    public function testUp()
+    public function testMoveSortNo()
     {
-        $tagId = 3;
-        $Item = $this->container->get(TagRepository::class)->find($tagId);
-        $before = $Item->getSortNo();
-        $this->client->request('PUT',
-            $this->generateUrl('admin_product_tag_up', array('id' => $tagId))
+        $Item = $this->TagRepo->findOneBy(array('id' => '3'));
+
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_product_tag_sort_no_move'),
+            array($Item->getId() => 2),
+            array(),
+            array(
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            )
         );
-        $this->assertTrue($this->client->getResponse()->isRedirection());
-
-        $after = $Item->getSortNo();
-        $this->actual = $after;
-        $this->expected = $before + 1;
-        $this->verify();
-    }
-
-    public function testDown()
-    {
-        $tagId = 1;
-        $Item = $this->container->get(TagRepository::class)->find($tagId);
-        $before = $Item->getSortNo();
-        $this->client->request('PUT',
-            $this->generateUrl('admin_product_tag_down', array('id' => $tagId))
-        );
-
-        $this->assertTrue($this->client->getResponse()->isRedirection());
-
-        $after = $Item->getSortNo();
-        $this->actual = $after;
-        $this->expected = $before - 1;
+        $newItem = $this->TagRepo->find($Item->getId());
+        $this->expected = 2;
+        $this->actual = $newItem->getSortNo();
         $this->verify();
     }
 }
