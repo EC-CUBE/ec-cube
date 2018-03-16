@@ -120,7 +120,6 @@ class TagContorllerTest extends AbstractAdminWebTestCase
             $this->generateUrl('admin_product_tag_delete', array('id' => $tagId))
         );
         $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
-
     }
 
     public function createFormData()

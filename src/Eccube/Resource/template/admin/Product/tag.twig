@@ -168,8 +168,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                         <button class="btn btn-ec-delete" type="button"
                                                                 data-url="{{ url('admin_product_tag_delete', {'id' : Tag.id}) }}"
                                                                 {{ csrf_token_for_anchor() }}
-                                                                data-method="delete"
-                                                                data-message="{{ 'admin.product.index.text04'|trans }}">
+                                                                data-method="delete">
                                                             {{ 'admin.product.index.stop_handling'|trans }}
                                                         </button>
                                                     </div>
