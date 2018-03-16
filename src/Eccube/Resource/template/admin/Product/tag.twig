@@ -93,12 +93,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
         // Do set disable arrow up/down
         function doDisableArrow() {
-            $("a.up.disabled").removeClass('disabled');
-            $("a.down.disabled").removeClass('disabled');
+            $(mainRows + " a.up.disabled").removeClass('disabled');
+            $(mainRows + " a.down.disabled").removeClass('disabled');
             // First element
-            $("ul.tableish > li:nth-child(2) > div a.up").addClass('disabled');
+            $(mainRows + " > li:nth-child(2) > div a.up").addClass('disabled');
             // Last element
-            $("ul.tableish > li").last().find("a.down").addClass('disabled');
+            $(mainRows + " > li").last().find("a.down").addClass('disabled');
             $(".modal-backdrop").remove();
         }
     </script>
