@@ -32,8 +32,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.mouse.min.js', 'admin') }}"></script>
     <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.sortable.min.js', 'admin') }}"></script>
     <script>
-        var mainRows = "ul.tableish";
         $(function () {
+            var mainRows = "ul.tableish";
             var oldSortNos = [];
             // 画面の中のsort_no一覧を保持
             $(mainRows + " > .item_box").each(function () {
@@ -89,18 +89,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 $("body").append($('<div class="modal-backdrop show"></div>'));
                 updateSortNo();
             });
-        });
 
-        // Do set disable arrow up/down
-        function doDisableArrow() {
-            $(mainRows + " a.up.disabled").removeClass('disabled');
-            $(mainRows + " a.down.disabled").removeClass('disabled');
-            // First element
-            $(mainRows + " > li:nth-child(2) > div a.up").addClass('disabled');
-            // Last element
-            $(mainRows + " > li").last().find("a.down").addClass('disabled');
-            $(".modal-backdrop").remove();
-        }
+            // Do set disable arrow up/down
+            function doDisableArrow() {
+                $(mainRows + " a.up.disabled").removeClass('disabled');
+                $(mainRows + " a.down.disabled").removeClass('disabled');
+                // First element
+                $(mainRows + " > li:nth-child(2) > div a.up").addClass('disabled');
+                // Last element
+                $(mainRows + " > li").last().find("a.down").addClass('disabled');
+                $(".modal-backdrop").remove();
+            }
+        });
     </script>
 {% endblock %}
 
@@ -135,13 +135,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     <a class="btn btn-ec-actionIcon up mr-3 {% if loop.first %}disabled{% endif %}"
                                                        href="#"
                                                        data-toggle="tooltip"
-                                                       data-placement="top" title="上へ移動"><i
+                                                       data-placement="top" title="{{ 'admin.product.tag.up'|trans }}"><i
                                                             class="fa fa-arrow-up fa-lg text-secondary"></i></a>
                                                     <a
                                                         class="btn btn-ec- down mr-3 {% if loop.last %}disabled{% endif %}"
                                                         href="#"
                                                         data-toggle="tooltip"
-                                                        data-placement="top" title="下へ移動"><i
+                                                        data-placement="top" title="{{ 'admin.product.tag.down'|trans }}"><i
                                                             class="fa fa-arrow-down fa-lg text-secondary"></i></a>
                                                     <a
                                                             class="btn btn-ec-actionIcon mr-3" href=""
