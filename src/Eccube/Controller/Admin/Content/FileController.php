@@ -176,7 +176,7 @@ class FileController extends AbstractController
                 : $topDir;
             $fs->mkdir($nowDir . '/' . $filename);
 
-            $this->addSuccess('admin.create.complete', 'admin');
+            $this->addSuccess('admin.content.file.create_dir_success', 'admin');
         } catch (IOException $e) {
             $this->errors[] = ['message' => $e->getMessage()];
         }
