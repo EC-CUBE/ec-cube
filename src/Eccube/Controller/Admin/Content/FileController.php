@@ -251,7 +251,7 @@ class FileController extends AbstractController
         $filename = $this->convertStrToServer($data['file']->getClientOriginalName());
         try {
             $data['file']->move($nowDir, $filename);
-            $this->addSuccess('admin.save.complete', 'admin');
+            $this->addSuccess('admin.content.file.upload_success', 'admin');
         } catch (FileException $e) {
             $this->errors[] = ['message' => $e->getMessage()];
         }
