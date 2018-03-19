@@ -516,7 +516,7 @@ return [
     'admin.product.tag.drag&drop' => '項目の順番はドラッグ＆ドロップでも変更可能です。',
     'admin.product.tag.up' => '上へ移動',
     'admin.product.tag.down' => '下へ移動',
-    'admin.product.tag.edit' => '編集',
+    'admin.product.tag.edit' => '名前を編集',
     'admin.product.tag.delete.confirm.title' => 'タグを削除します。',
     'admin.product.tag.delete.confirm.message' => '削除してもよろしいですか?',
     'admin.product.tag.delete' => '削除',

@@ -112,7 +112,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     </div><!-- /.form-row -->
                                 </li>
                                 {% for Tag in Tags %}
-                                    {# TODO 上下移動, 編集, 削除を実装する #}
+                                    {# TODO 上下移動 る #}
                                     {# TODO ドラッグアンドドロップを実装する #}
                                     <li class="list-group-item">
                                         <div class="row justify-content-around">
@@ -131,7 +131,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                         class="btn btn-ec-actionIcon mr-3"
                                                         href="{{ url('admin_product_tag_edit', {id: Tag.id}) }}"
                                                         data-toggle="tooltip"
-                                                        data-placement="top" title="名前を編集"><i
+                                                        data-placement="top" title="{{ 'admin.product.tag.edit'|trans }}"><i
                                                             class="fa fa-pencil fa-lg text-secondary"></i></a>
                                                 <a
                                                         class="btn btn-ec-actionIcon mr-3"
@@ -139,7 +139,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                         data-toggle="modal"
                                                         data-target="#confirmModal-{{ Tag.id }}"
                                                         data-toggle="tooltip"
-                                                        data-placement="top" title="削除"><i
+                                                        data-placement="top" title="{{ 'admin.product.tag.delete'|trans }}"><i
                                                             class="fa fa-close fa-lg text-secondary"></i></a>
                                             </div>
                                         </div>
