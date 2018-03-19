@@ -171,7 +171,7 @@ class FileController extends AbstractController
         try {
             $topDir = $this->getUserDataDir();
             $nowDir = $this->getUserDataDir($request->get('now_dir'));
-            $nowDir = $this->checkDir($nowDir, $this->getUserDataDir())
+            $nowDir = $this->checkDir($nowDir, $topDir)
                 ? $this->normalizePath($nowDir)
                 : $topDir;
             $fs->mkdir($nowDir . '/' . $filename);
