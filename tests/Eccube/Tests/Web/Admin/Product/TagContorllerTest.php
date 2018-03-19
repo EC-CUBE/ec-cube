@@ -30,6 +30,17 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TagContorllerTest extends AbstractAdminWebTestCase
 {
+    /**
+     * @var TagRepository
+     */
+    private $TagRepo;
+
+    public function setUp()
+    {
+        parent::setUp();
+        $this->TagRepo = $this->container->get(TagRepository::class);
+    }
+
     public function testRouting()
     {
         $this->client->request('GET', $this->generateUrl('admin_product_tag'));
@@ -62,7 +73,7 @@ class TagContorllerTest extends AbstractAdminWebTestCase
 
     public function testRoutingEdit()
     {
-        $Item = $this->container->get(TagRepository::class)->find(1);
+        $Item = $this->TagRepo->find(1);
         $this->client->request('GET', $this->generateUrl('admin_product_tag_edit', array('id' => $Item->getId())));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
@@ -79,7 +90,7 @@ class TagContorllerTest extends AbstractAdminWebTestCase
             $formData['method'] = '';
         }
 
-        $Item = $this->container->get(TagRepository::class)->find(1);
+        $Item = $this->TagRepo->find(1);
 
         $this->client->request('POST',
             $this->generateUrl('admin_product_tag_edit', array('id' => $Item->getId())),
@@ -89,6 +100,10 @@ class TagContorllerTest extends AbstractAdminWebTestCase
         );
         $this->expected = $expected;
         $this->actual = $this->client->getResponse()->isRedirection();
+        $this->verify();
+
+        $this->expected = 'Tag-101';
+        $this->actual = $Item->getName();
         $this->verify();
     }
 
@@ -108,7 +123,7 @@ class TagContorllerTest extends AbstractAdminWebTestCase
 
         $this->assertTrue($this->client->getResponse()->isRedirection());
 
-        $Item = $this->container->get(TagRepository::class)->find($TagId);
+        $Item = $this->TagRepo->find($TagId);
         $this->assertNull($Item);
     }
 
@@ -138,7 +153,6 @@ class TagContorllerTest extends AbstractAdminWebTestCase
         return array(
             array(false, false),
             array(true, true),
-            // To do implement
         );
     }
 }
