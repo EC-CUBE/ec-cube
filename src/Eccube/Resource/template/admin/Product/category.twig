@@ -35,9 +35,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.sortable.min.js', 'admin') }}"></script>
     <script>
         $(function () {
+            var mainRows = "ul.tableish";
             var oldSortNos = [];
             // 画面の中のsortNo一覧を保持
-            $(".list-group-item").each(function () {
+            $(mainRows + " > .list-group-item").each(function () {
                 oldSortNos.push(this.dataset.sortNo);
             });
             // rsort
@@ -45,8 +46,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 return a - b;
             }).reverse();
 
-            $(".list-group").sortable({
-                items: '> .list-group-item',
+            $(mainRows).sortable({
+                items: ' > .list-group-item',
                 cursor: 'move',
                 update: function (e, ui) {
                     $("body").append($('<div class="modal-backdrop show"></div>'));
@@ -58,7 +59,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 // 並び替え後にsortNoを更新
                 var newSortNos = {};
                 var i = 0;
-                $("list-group-item").each(function () {
+                $(mainRows + " > .list-group-item").each(function () {
                     newSortNos[this.dataset.categoryId] = oldSortNos[i];
                     i++;
                 });
@@ -68,13 +69,39 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     type: 'POST',
                     data: newSortNos,
                 }).done(function (data) {
-                    console.log(data);
-                    $(".modal-backdrop").remove();
+                    doDisableArrow();
                 }).fail(function () {
-                    console.log('fail');
+                    console.log('Fail!');
                     $(".modal-backdrop").remove();
                 });
             };
+
+            $(mainRows).on('click', '.list-group-item a.up', function (e) {
+                e.preventDefault();
+                var current = $(this).closest("li.list-group-item");
+                current.prev().before(current);
+                $("body").append($('<div class="modal-backdrop show"></div>'));
+                updateSortNo();
+            });
+
+            $(mainRows).on('click', ".list-group-item a.down", function (e) {
+                e.preventDefault();
+                var current = $(this).closest("li.list-group-item");
+                current.next().after(current);
+                $("body").append($('<div class="modal-backdrop show"></div>'));
+                updateSortNo();
+            });
+
+            // Do set disable arrow up/down
+            function doDisableArrow() {
+                $(mainRows + " a.up.disabled").removeClass('disabled');
+                $(mainRows + " a.down.disabled").removeClass('disabled');
+                // First element
+                $(mainRows + " > li:first-child > div a.up").addClass('disabled');
+                // Last element
+                $(mainRows + " > li").last().find("a.down").addClass('disabled');
+                $(".modal-backdrop").remove();
+            }
         });
     </script>
 {% endblock %}
@@ -153,10 +180,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {% endfor %}
                                 </form>
                             </li>
-                            <ul class="list-group list-group-flush">
+                            <ul class="list-group list-group-flush tableish">
                                 {% if Categories|length > 0 %}
                                     {% for Category in Categories %}
-                                        <li class="list-group-item">
+                                        <li class="list-group-item" data-category-id="{{ Category.id }}" data-sort-no="{{ Category.sort_no }}" >
                                             {% if Category.id != TargetCategory.id %}
                                                 <div class="row justify-content-around">
                                                     <div class="col-auto d-flex align-items-center">
@@ -166,13 +193,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                         <a href="{{ url('admin_product_category_show',  { parent_id : Category.id }) }}">{{ Category.name }}</a>
                                                     </div>
                                                     <div class="col-auto text-right">
-                                                        {# TODO: 「上へ移動」「下へ移動」のボタンの動作の実装 #}
-                                                        <a class="btn btn-ec-actionIcon mr-3" href=""
+                                                        <a class="btn btn-ec-actionIcon up mr-3 {% if loop.first %} disabled {% endif %}" href=""
                                                            data-toggle="tooltip" data-placement="top"
                                                            title="{{ 'admin.product.category.up'|trans }}">
                                                             <i class="fa fa-arrow-up fa-lg text-secondary"></i>
                                                         </a>
-                                                        <a class="btn btn-ec-actionIcon mr-3" href=""
+                                                        <a class="btn btn-ec-actionIcon down mr-3 {% if loop.last %} disabled {% endif %}" href=""
                                                            data-toggle="tooltip" data-placement="top"
                                                            title="{{ 'admin.product.category.down'|trans }}">
                                                             <i class="fa fa-arrow-down fa-lg text-secondary"></i>
@@ -184,8 +210,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                             <i class="fa fa-pencil fa-lg text-secondary"></i>
                                                         </a>
                                                         {% if Category.Children|length > 0 or Category.hasProductCategories %}
-                                                            {# TODO: 削除できない場合のxアイコンの表現をわかりやすくする #}
-                                                            <a class="btn btn-ec-actionIcon mr-3"
+                                                            <a class="btn btn-ec-actionIcon mr-3 disabled"
                                                                data-toggle="tooltip" data-placement="top"
                                                                title="{{ 'admin.product.category.text01'|trans }}">
                                                                 <i class="fa fa-close fa-lg text-secondary"></i>
