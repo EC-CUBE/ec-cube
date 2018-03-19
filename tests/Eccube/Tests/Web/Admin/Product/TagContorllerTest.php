@@ -47,21 +47,25 @@ class TagContorllerTest extends AbstractAdminWebTestCase
 
     public function testMoveSortNo()
     {
-        $Item = $this->TagRepo->findOneBy(array('id' => '3'));
+        $idAndSortNo = [
+            1 => 4,
+            2 => 5,
+            3 => 6,
+        ];
 
         $this->client->request(
             'POST',
             $this->generateUrl('admin_product_tag_sort_no_move'),
-            array($Item->getId() => 2),
+            $idAndSortNo,
             array(),
             array(
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
                 'CONTENT_TYPE' => 'application/json',
             )
         );
-        $newItem = $this->TagRepo->find($Item->getId());
-        $this->expected = 2;
-        $this->actual = $newItem->getSortNo();
+
+        $this->expected = 6;
+        $this->actual = $this->TagRepo->find(3)->getSortNo();
         $this->verify();
     }
 }
