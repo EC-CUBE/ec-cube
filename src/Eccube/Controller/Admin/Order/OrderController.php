@@ -138,7 +138,7 @@ class OrderController extends AbstractController
 
         $searchForm = $builder->getForm();
 
-        $pagination = array();
+        $searchData = [];
 
         $ProductStatuses = $this->productStatusRepository->findAll();
         $pageMaxis = $this->pageMaxRepository->findAll();
@@ -153,24 +153,7 @@ class OrderController extends AbstractController
             if ($searchForm->isValid()) {
                 $searchData = $searchForm->getData();
 
-                // paginator
-                $qb = $this->orderRepository->getQueryBuilderBySearchDataForAdmin($searchData);
-
-                $event = new EventArgs(
-                    array(
-                        'form' => $searchForm,
-                        'qb' => $qb,
-                    ),
-                    $request
-                );
-                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_SEARCH, $event);
-
                 $page_no = 1;
-                $pagination = $paginator->paginate(
-                    $qb,
-                    $page_no,
-                    $page_count
-                );
 
                 // sessionのデータ保持
                 $this->session->set('eccube.admin.order.search', $searchData);
@@ -181,6 +164,7 @@ class OrderController extends AbstractController
                 // sessionを削除
                 $this->session->remove('eccube.admin.order.search');
                 $this->session->remove('eccube.admin.order.search.page_no');
+                $page_no = 1;
             } else {
                 // pagingなどの処理
                 $searchData = $this->session->get('eccube.admin.order.search');
@@ -191,69 +175,69 @@ class OrderController extends AbstractController
                 }
 
                 if (!is_null($searchData)) {
-
+                    $formData = $searchData;
                     // 公開ステータス
                     $status = $request->get('status');
                     if (!empty($status)) {
                         if ($status != $this->eccubeConfig['eccube_admin_product_stock_status']) {
-                            $searchData['status']->clear();
-                            $searchData['status']->add($status);
+                            $formData['status']->clear();
+                            $formData['status']->add($status);
                         } else {
-                            $searchData['stock_status'] = $this->eccubeConfig['disabled'];
+                            $formData['stock_status'] = $this->eccubeConfig['disabled'];
                         }
                         $page_status = $status;
                     }
-                    // 表示件数
-                    $pcount = $request->get('page_count');
-
-                    $page_count = empty($pcount) ? $page_count : $pcount;
-
-                    $qb = $this->orderRepository->getQueryBuilderBySearchDataForAdmin($searchData);
-
-                    $event = new EventArgs(
-                        array(
-                            'form' => $searchForm,
-                            'qb' => $qb,
-                        ),
-                        $request
-                    );
-                    $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_SEARCH, $event);
-
-                    $pagination = $paginator->paginate(
-                        $qb,
-                        $page_no,
-                        $page_count
-                    );
 
                     // セッションから検索条件を復元
-                    if (!empty($searchData['status'])) {
-                        $searchData['status'] = $this->orderStatusRepository->find($searchData['status']);
+                    if (!empty($formData['status'])) {
+                        $formData['status'] = $this->orderStatusRepository->find($formData['status']);
                     }
-                    if (count($searchData['multi_status']) > 0) {
+                    if (count($formData['multi_status']) > 0) {
                         $statusIds = array();
-                        foreach ($searchData['multi_status'] as $Status) {
+                        foreach ($formData['multi_status'] as $Status) {
                             $statusIds[] = $Status->getId();
                         }
-                        $searchData['multi_status'] = $this->orderStatusRepository->findBy(array('id' => $statusIds));
+                        $formData['multi_status'] = $this->orderStatusRepository->findBy(['id' => $statusIds]);
                     }
-                    if (count($searchData['sex']) > 0) {
-                        $sex_ids = array();
-                        foreach ($searchData['sex'] as $Sex) {
+                    if (count($formData['sex']) > 0) {
+                        $sex_ids = [];
+                        foreach ($formData['sex'] as $Sex) {
                             $sex_ids[] = $Sex->getId();
                         }
-                        $searchData['sex'] = $this->sexRepository->findBy(array('id' => $sex_ids));
+                        $formData['sex'] = $this->sexRepository->findBy(['id' => $sex_ids]);
                     }
-                    if (count($searchData['payment']) > 0) {
-                        $payment_ids = array();
-                        foreach ($searchData['payment'] as $Payment) {
+                    if (count($formData['payment']) > 0) {
+                        $payment_ids = [];
+                        foreach ($formData['payment'] as $Payment) {
                             $payment_ids[] = $Payment->getId();
                         }
-                        $searchData['payment'] = $this->paymentRepository->findBy(array('id' => $payment_ids));
+                        $formData['payment'] = $this->paymentRepository->findBy(['id' => $payment_ids]);
                     }
-                    $searchForm->setData($searchData);
+                    $searchForm->setData($formData);
                 }
             }
         }
+
+        // 表示件数
+        $pcount = $request->get('page_count');
+
+        $page_count = empty($pcount) ? $page_count : $pcount;
+
+        $qb = $this->orderRepository->getQueryBuilderBySearchDataForAdmin($searchData);
+
+        $event = new EventArgs(
+            array(
+                'form' => $searchForm,
+                'qb' => $qb,
+            ),
+            $request
+        );
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_SEARCH, $event);
+        $pagination = $paginator->paginate(
+            $qb,
+            $page_no,
+            $page_count
+        );
 
         return [
             'searchForm' => $searchForm->createView(),
