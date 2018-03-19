@@ -37,20 +37,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 sortItems = sortContainer.find('> .item_box'),
                 oldSortNos = [];
 
-            // 画面の中のsortNo一覧を保持
-            sortItems.each(function() {
-                oldSortNos.push(this.dataset.sortNo);
-            });
-            // rsort
-            oldSortNos.sort(function(a,b){return a - b;}).reverse();
-
-            sortContainer.sortable({
-                items: '> .item_box',
-                cursor: 'move'
-            }).on('sortupdate', function(e, ui) {
-                $("body").append($('<div class="modal-backdrop show"></div>'));
-                updateSortNo();
-            });
+            var initSortNo = function () {
+                var items = $('ul.tableish > li.item_box');
+                items.find('a').removeClass('disabled');
+                items.first().find('a.action-up').addClass('disabled');
+                items.last().find('a.action-down').addClass('disabled');
+            };
 
             var updateSortNo = function() {
                 // 並び替え後にsortNoを更新
@@ -70,6 +62,25 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     $(".modal-backdrop").remove();
                 });
             };
+
+            // 画面の中のsortNo一覧を保持
+            sortItems.each(function() {
+                oldSortNos.push(this.dataset.sortNo);
+            });
+            // rsort
+            oldSortNos.sort(function(a,b){return a - b;}).reverse();
+
+            sortContainer.sortable({
+                items: '> .item_box',
+                cursor: 'move',
+                create: function (e, ui) {
+                    initSortNo();
+                }
+            }).on('sortupdate', function(e, ui) {
+                $("body").append($('<div class="modal-backdrop show"></div>'));
+                updateSortNo();
+                initSortNo();
+            });
 
             sortItems.find("a.action-up").click(function (e) {
                 e.preventDefault();
@@ -111,7 +122,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <button class="btn btn-ec-regular" type="submit">{{'admin.setting.shop.payment.610'|trans}}</button>
                             </div>
                         </div>
-                        <ul class="list-group list-group-flush mb-4 tableish" id="a">
+                        <ul class="list-group list-group-flush mb-4 tableish">
                             <li class="list-group-item">
                                 <div class="row justify-content-around">
                                     <div class="col-auto"><strong>&nbsp;</strong></div>
