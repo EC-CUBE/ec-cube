@@ -40,6 +40,7 @@ class PageLayout extends AbstractEntity
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="page_id", referencedColumnName="id")
      * })
+     * @ORM\OrderBy({"sort_no" = "ASC"})
      */
     private $Page;
 

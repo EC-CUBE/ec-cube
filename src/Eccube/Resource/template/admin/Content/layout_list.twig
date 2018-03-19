@@ -28,6 +28,54 @@
 {% block title %}{{'admin.content.layout_list.46'|trans}}{% endblock %}
 {% block sub_title %}{{'admin.content.layout_list.45'|trans}}{% endblock %}
 
+{% block javascript %}
+    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.core.min.js', 'admin') }}"></script>
+    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.widget.min.js', 'admin') }}"></script>
+    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.mouse.min.js', 'admin') }}"></script>
+    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.sortable.min.js', 'admin') }}"></script>
+    <script>
+        $(function () {
+            var containerRows = $('div.ec-cardCollapse');
+            containerRows.each(function () {
+                updateSortNo($(this));
+            });
+
+            function updateSortNo (mainRows) {
+                $(mainRows).sortable({
+                    items: ' > div.card-body',
+                    cursor: 'move',
+                    update: function (e, ui) {
+                        $("body").append($('<div class="modal-backdrop show"></div>'));
+                        updateSortNo();
+                    }
+                });
+
+                var updateSortNo = function () {
+
+                    // 並び替え後にsortNoを更新
+                    var newSortNos = {};
+                    var i = 0;
+                    $("div.card-body", mainRows).each(function () {
+                        newSortNos[this.dataset.pageId] = oldSortNos[i];
+                        i++;
+                    });
+                    console.log(newSortNos);
+                    $.ajax({
+                        url: '{{ url('admin_content_layout_sort_no_move') }}',
+                        type: 'POST',
+                        data: newSortNos,
+                    }).done(function (data) {
+                        $(".modal-backdrop").remove();
+                    }).fail(function () {
+                        console.log('Failed');
+                        $(".modal-backdrop").remove();
+                    });
+                }
+            };
+        });
+    </script>
+{% endblock %}
+
 {% block main %}
     <div class="c-outsideBlock">
         <div class="c-outsideBlock__contents">
@@ -79,7 +127,6 @@
                                 </div>
                             </div>
                         </div>
-
                         {# layouts #}
                         {% for Layout in Layouts %}
                             {% if Layout.devicetype.id == constant('\\Eccube\\Entity\\Master\\DeviceType::DEVICE_TYPE_PC') %}
@@ -90,28 +137,36 @@
                                                 <button class="btn btn-ec-regular" type="button" data-toggle="modal" data-target="#addPage">{{ 'admin.content.layout_list.add_page'|trans }}</button>
                                                 <button class="btn btn-ec-sub" type="button" data-toggle="modal" data-target="#layoutDelete">{{ 'admin.content.layout_list.delete_layout'|trans }}</button>
                                             </div>
-                                            <div class="col-4 text-right"><a data-toggle="collapse" href="#topPageLayout-pc" aria-expanded="false" aria-controls="topPageLayout-pc"><i class="fa fa-angle-up fa-lg"></i></a></div>
+                                            <div class="col-4 text-right"><a data-toggle="collapse" href="#topPageLayout-pc-{{ Layout.id }}" aria-expanded="false" aria-controls="topPageLayout-pc-{{ Layout.id }}"><i class="fa fa-angle-up fa-lg"></i></a></div>
                                         </div>
                                     </div>
 
                                     {# Pages #}
                                     {% if Layout.pages|length > 0 %}
                                         {# TODO ページをドラッグ＆ドロップで移動できるようにする #}
-                                        {% for Page in Layout.pages %}
-                                            <div class="collapse show ec-cardCollapse" id="topPageLayout-pc">
-                                                <div class="card-body p-0">
+                                        <div class="collapse show ec-cardCollapse"
+                                             id="topPageLayout-pc-{{ Layout.id }}">
+                                            {% for Page in Layout.pages %}
+                                                <div class="card-body p-0" data-page-id="{{ Page.id }}" data-sort-no="{{ Page.sort_no }}">
                                                     <div class="row justify-content-between p-3">
-                                                        <div class="col-auto"><i class="fa fa-bars text-ec-gray mr-3"></i><span>{{ Page.name }}</span></div>
+                                                        <div class="col-auto">
+                                                            <i class="fa fa-bars text-ec-gray mr-3"></i><span>{{ Page.name }}</span>
+                                                        </div>
                                                         {# TODO ページを削除できるようにする #}
-                                                        <div class="col-auto text-right"><a><i class="fa fa-close fa-lg text-secondary mr-1"></i></a></div>
+                                                        <div class="col-auto text-right">
+                                                            <a href=""><i class="fa fa-close fa-lg text-secondary mr-1"></i></a>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        {% endfor %}
+                                            {% endfor %}
+                                        </div>
                                     {% else %}
-                                        <div class="collapse show ec-cardCollapse" id="lpLayout-pc">
+                                        <div class="collapse show ec-cardCollapse"
+                                             id="topPageLayout-pc-{{ Layout.id }}">
                                             <div class="card-body p-0">
-                                                <div class="d-block p-3"><span class="text-muted">{{ 'admin.content.layout_list.no_pages_message'|trans }}</span></div>
+                                                <div class="d-block p-3">
+                                                    <span class="text-muted">{{ 'admin.content.layout_list.no_pages_message'|trans }}</span>
+                                                </div>
                                             </div>
                                         </div>
                                     {% endif %}
@@ -163,24 +218,29 @@
                                                 <button class="btn btn-ec-regular" type="button" data-toggle="modal" data-target="#addPage">{{ 'admin.content.layout_list.add_page'|trans }}</button>
                                                 <button class="btn btn-ec-sub" type="button" data-toggle="modal" data-target="#layoutDelete">{{ 'admin.content.layout_list.delete_layout'|trans }}</button>
                                             </div>
-                                            <div class="col-4 text-right"><a data-toggle="collapse" href="#topPageLayout-mobile" aria-expanded="false" aria-controls="topPageLayout-mobile"><i class="fa fa-angle-up fa-lg"></i></a></div>
+                                            <div class="col-4 text-right">
+                                                <a data-toggle="collapse" href="#topPageLayout-mobile-{{ Layout.devicetype.id }}" aria-expanded="false" aria-controls="topPageLayout-mobile"><i class="fa fa-angle-up fa-lg"></i></a></div>
                                         </div>
                                     </div>
 
                                     {# Pages #}
                                     {% if Layout.pages|length > 0 %}
                                         {# TODO ページをドラッグ＆ドロップで移動できるようにする #}
-                                        {% for Page in Layout.pages %}
-                                            <div class="collapse show ec-cardCollapse" id="topPageLayout-mobile">
+                                        <div class="collapse show ec-cardCollapse" id="topPageLayout-mobile-{{ Layout.devicetype.id }}">
+                                            {% for Page in Layout.pages %}
                                                 <div class="card-body p-0">
                                                     <div class="row justify-content-between p-3">
-                                                        <div class="col-auto"><i class="fa fa-bars text-ec-gray mr-3"></i><span>{{ Page.name }}</span></div>
+                                                        <div class="col-auto"><i
+                                                                    class="fa fa-bars text-ec-gray mr-3"></i><span>{{ Page.name }}</span>
+                                                        </div>
                                                         {# TODO ページを削除できるようにする #}
-                                                        <div class="col-auto text-right"><a><i class="fa fa-close fa-lg text-secondary mr-1"></i></a></div>
+                                                        <div class="col-auto text-right"><a><i
+                                                                        class="fa fa-close fa-lg text-secondary mr-1"></i></a>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        {% endfor %}
+                                            {% endfor %}
+                                        </div>
                                     {% else %}
                                         <div class="collapse show ec-cardCollapse" id="lpLayout-mobile">
                                             <div class="card-body p-0">

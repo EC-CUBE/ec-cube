@@ -28,9 +28,11 @@ use Doctrine\ORM\NoResultException;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BlockPosition;
 use Eccube\Entity\Layout;
+use Eccube\Entity\Page;
 use Eccube\Form\Type\Master\DeviceTypeType;
 use Eccube\Repository\BlockRepository;
 use Eccube\Repository\LayoutRepository;
+use Eccube\Repository\PageRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -38,6 +40,7 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -56,14 +59,21 @@ class LayoutController extends AbstractController
     protected $layoutRepository;
 
     /**
+     * @var PageRepository
+     */
+    protected $pageRepository;
+
+    /**
      * LayoutController constructor.
      * @param BlockRepository $blockRepository
      * @param LayoutRepository $layoutRepository
+     * @param PageRepository $pageRepository
      */
-    public function __construct(BlockRepository $blockRepository, LayoutRepository $layoutRepository)
+    public function __construct(BlockRepository $blockRepository, LayoutRepository $layoutRepository, PageRepository $pageRepository)
     {
         $this->blockRepository = $blockRepository;
         $this->layoutRepository = $layoutRepository;
+        $this->pageRepository = $pageRepository;
     }
 
     /**
@@ -220,6 +230,26 @@ class LayoutController extends AbstractController
             'Layout' => $Layout,
             'UnusedBlocks' => $UnusedBlocks,
         ];
+    }
+
+    /**
+     * @Method("POST")
+     * @Route("/%eccube_admin_route%/content/layout/sort_no/move", name="admin_content_layout_sort_no_move")
+     */
+    public function moveSortNo(Request $request)
+    {
+        if ($request->isXmlHttpRequest()) {
+            $sortNos = $request->request->all();
+            foreach ($sortNos as $pageId => $sortNo) {
+                /* @var $Tag \Eccube\Entity\Page */
+                $Tag = $this->pageRepository
+                    ->find($pageId);
+                $Tag->setSortNo($sortNo);
+                $this->entityManager->persist($Tag);
+            }
+            $this->entityManager->flush();
+        }
+        return new Response();
     }
 
     /**

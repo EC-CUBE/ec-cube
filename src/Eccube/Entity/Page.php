@@ -365,6 +365,13 @@ class Page extends \Eccube\Entity\AbstractEntity
     private $meta_tags;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="sort_no", type="smallint", options={"unsigned":true})
+     */
+    private $sort_no;
+
+    /**
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(targetEntity="Eccube\Entity\BlockPosition", mappedBy="Page", cascade={"persist","remove"})
@@ -709,6 +716,19 @@ class Page extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * Set sort_no
+     *
+     * @param string $sortNo
+     * @return Page
+     */
+    public function setSortNo($sortNo)
+    {
+        $this->sort_no = $sortNo;
+
+        return $this;
+    }
+
+    /**
      * Get meta_tags
      *
      * @return string
@@ -716,6 +736,16 @@ class Page extends \Eccube\Entity\AbstractEntity
     public function getMetaTags()
     {
         return $this->meta_tags;
+    }
+
+    /**
+     * Get sort_no
+     *
+     * @return string
+     */
+    public function getSortNo()
+    {
+        return $this->sort_no;
     }
 
     /**
