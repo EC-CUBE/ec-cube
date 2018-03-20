@@ -34,6 +34,7 @@ use Eccube\Repository\ProductRepository;
 use Eccube\Entity\BaseInfo;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Repository\Master\ProductStatusRepository;
+use Eccube\Entity\Product;
 
 class ProductControllerTest extends AbstractAdminWebTestCase
 {
@@ -680,6 +681,52 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->expected = 'application/octet-stream';
         $this->actual = $this->client->getResponse()->headers->get('Content-Type');
         $this->verify();
+    }
+
+    /**
+     * Test for bulk action update product status
+     */
+    public function testProductBulkProductStatus()
+    {
+        // case invalid method
+        $this->client->request(
+            'GET',
+            $this->generateUrl('admin_product_bulk_product_status', ['id' => ProductStatus::DISPLAY_SHOW]),
+            []
+        );
+        $this->assertEquals(400, $this->client->getResponse()->getStatusCode());
+
+        // case invalid product status id
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_product_bulk_product_status', ['id' => 0]),
+            []
+        );
+        $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
+
+        // case true
+        $productIds = [];
+        /** @var Product[] $Products */
+        $Products = $this->productRepository->findBy([], [], 5);
+        foreach ($Products as $Product) {
+            $productIds[] = $Product->getId();
+        }
+
+        $productStatuses = [
+            ProductStatus::DISPLAY_SHOW,
+            ProductStatus::DISPLAY_HIDE,
+            ProductStatus::DISPLAY_ABOLISHED
+        ];
+        foreach ($productStatuses as $productStatusId) {
+            $ProductStatus = $this->productStatusRepository->find($productStatusId);
+            $this->client->request(
+                'POST',
+                $this->generateUrl('admin_product_bulk_product_status', ['id' => $productStatusId]),
+                ['ids' => $productIds]
+            );
+            $result = $this->productRepository->findBy(['id' => $productIds, 'Status' => $ProductStatus]);
+            $this->assertEquals(count($productIds), count($result));
+        }
     }
 
     /**

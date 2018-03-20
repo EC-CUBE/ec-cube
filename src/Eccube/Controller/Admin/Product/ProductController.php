@@ -61,6 +61,7 @@ use Eccube\Entity\ProductStock;
 use Eccube\Entity\ProductImage;
 use Eccube\Entity\ProductCategory;
 use Eccube\Entity\ExportCsvRow;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * @Route(service=ProductController::class)
@@ -979,5 +980,57 @@ class ProductController extends AbstractController
         $ProductCategory->setSortNo($count);
 
         return $ProductCategory;
+    }
+
+    /**
+     * Bulk public action
+     *
+     * @Route("/%eccube_admin_route%/product/bulk/product-status/{id}", requirements={"id" = "\d+"}, name="admin_product_bulk_product_status")
+     *
+     * @param Request $request
+     * @param integer $id
+     *
+     * @return RedirectResponse
+     */
+    public function bulkProductStatus(Request $request, $id)
+    {
+        if ($request->getMethod() != Request::METHOD_POST) {
+            throw new BadRequestHttpException('Unsupported method!');
+        }
+
+        $this->isTokenValid();
+
+        /** @var ProductStatus $ProductStatus */
+        $ProductStatus = $this->productStatusRepository->find($id);
+        if (!$ProductStatus) {
+            throw new NotFoundHttpException('Product status not found!');
+        }
+
+        /** @var Product[] $Products */
+        $Products = $this->productRepository->findBy(['id' => $request->get('ids')]);
+        $count = 0;
+        foreach ($Products as $Product) {
+            try {
+                $Product->setStatus($ProductStatus);
+                $this->productRepository->save($Product);
+                $count++;
+            } catch (\Exception $e) {
+                $this->addError($e->getMessage(), 'admin');
+            }
+        }
+        try {
+            if ($count) {
+                $this->entityManager->flush();
+                $msg = $this->translator->trans('admin.product.index.bulk_product_status_success_count', [
+                    '%count%' => $count,
+                    '%status%' => $ProductStatus->getName()
+                ]);
+                $this->addSuccess($msg, 'admin');
+            }
+        } catch (\Exception $e) {
+            $this->addError($e->getMessage(), 'admin');
+        }
+
+        return $this->redirectToRoute('admin_product', ['resume' => 1]);
     }
 }
