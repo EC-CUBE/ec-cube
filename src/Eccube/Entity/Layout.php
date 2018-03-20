@@ -31,9 +31,7 @@ class Layout extends AbstractEntity
         $Pages = [];
         foreach ($this->PageLayouts as $PageLayout)
         {
-            $page = $PageLayout->getPage();
-            $page->setSortNo($PageLayout->getSortNo());
-            $Pages[] = $page;
+            $Pages[] = $PageLayout->getPage();
         }
 
         return $Pages;

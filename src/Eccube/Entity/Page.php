@@ -837,21 +837,6 @@ class Page extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * @var int
-     */
-    public $sort_no;
-
-    /**
-     * @param $sort_no
-     * @return $this
-     */
-    public function setSortNo($sort_no){
-        $this->sort_no = $sort_no;
-
-        return $this;
-    }
-
-    /**
      * @param $layoutId
      * @return null|string
      */
