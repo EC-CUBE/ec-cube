@@ -31,7 +31,9 @@ class Layout extends AbstractEntity
         $Pages = [];
         foreach ($this->PageLayouts as $PageLayout)
         {
-            $Pages[] = $PageLayout->getPage();
+            $page = $PageLayout->getPage();
+            $page->setSortNo($PageLayout->getSortNo());
+            $Pages[] = $page;
         }
 
         return $Pages;
@@ -116,6 +118,7 @@ class Layout extends AbstractEntity
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(targetEntity="Eccube\Entity\PageLayout", mappedBy="Layout", cascade={"persist","remove"})
+     * @ORM\OrderBy({"sort_no" = "ASC"})
      */
     private $PageLayouts;
 

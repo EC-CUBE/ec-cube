@@ -28,10 +28,10 @@ use Doctrine\ORM\NoResultException;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BlockPosition;
 use Eccube\Entity\Layout;
-use Eccube\Entity\Page;
 use Eccube\Form\Type\Master\DeviceTypeType;
 use Eccube\Repository\BlockRepository;
 use Eccube\Repository\LayoutRepository;
+use Eccube\Repository\PageLayoutRepository;
 use Eccube\Repository\PageRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -59,21 +59,21 @@ class LayoutController extends AbstractController
     protected $layoutRepository;
 
     /**
-     * @var PageRepository
+     * @var PageLayoutRepository
      */
-    protected $pageRepository;
+    protected $pageLayoutRepository;
 
     /**
      * LayoutController constructor.
      * @param BlockRepository $blockRepository
      * @param LayoutRepository $layoutRepository
-     * @param PageRepository $pageRepository
+     * @param PageLayoutRepository $pageLayoutRepository
      */
-    public function __construct(BlockRepository $blockRepository, LayoutRepository $layoutRepository, PageRepository $pageRepository)
+    public function __construct(BlockRepository $blockRepository, LayoutRepository $layoutRepository, PageLayoutRepository $pageLayoutRepository)
     {
         $this->blockRepository = $blockRepository;
         $this->layoutRepository = $layoutRepository;
-        $this->pageRepository = $pageRepository;
+        $this->pageLayoutRepository = $pageLayoutRepository;
     }
 
     /**
@@ -241,14 +241,19 @@ class LayoutController extends AbstractController
         if ($request->isXmlHttpRequest()) {
             $sortNos = $request->request->all();
             foreach ($sortNos as $pageId => $sortNo) {
-                /* @var $Tag \Eccube\Entity\Page */
-                $Tag = $this->pageRepository
-                    ->find($pageId);
-                $Tag->setSortNo($sortNo);
-                $this->entityManager->persist($Tag);
+                $ids = explode('#', $pageId);
+                $pageId = $ids[0];
+                $layoutId = $ids[1];
+
+                /* @var $Item PageLayoutRepository */
+                $Item = $this->pageLayoutRepository
+                    ->findOneBy(['page_id' => $pageId, 'layout_id' => $layoutId]);
+                $Item->setSortNo($sortNo);
+                $this->entityManager->persist($Item);
             }
             $this->entityManager->flush();
         }
+
         return new Response();
     }
 

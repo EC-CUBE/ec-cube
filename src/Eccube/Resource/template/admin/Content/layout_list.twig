@@ -37,10 +37,19 @@
         $(function () {
             var containerRows = $('div.ec-cardCollapse');
             containerRows.each(function () {
-                updateSortNo($(this));
+                doUpdateSortNo($(this));
             });
 
-            function updateSortNo (mainRows) {
+            function doUpdateSortNo(mainRows) {
+                var oldSortNos = [];
+                $("div.card-body", mainRows).each(function () {
+                    oldSortNos.push(this.dataset.sortNo);
+                });
+                // rsort
+                oldSortNos.sort(function (a, b) {
+                    return a - b;
+                });
+
                 $(mainRows).sortable({
                     items: ' > div.card-body',
                     cursor: 'move',
@@ -49,14 +58,12 @@
                         updateSortNo();
                     }
                 });
-
                 var updateSortNo = function () {
-
                     // 並び替え後にsortNoを更新
                     var newSortNos = {};
                     var i = 0;
                     $("div.card-body", mainRows).each(function () {
-                        newSortNos[this.dataset.pageId] = oldSortNos[i];
+                        newSortNos[this.dataset.pageId + '#' + this.dataset.layoutId] = oldSortNos[i];
                         i++;
                     });
                     console.log(newSortNos);
@@ -71,7 +78,7 @@
                         $(".modal-backdrop").remove();
                     });
                 }
-            };
+            }
         });
     </script>
 {% endblock %}
@@ -147,7 +154,10 @@
                                         <div class="collapse show ec-cardCollapse"
                                              id="topPageLayout-pc-{{ Layout.id }}">
                                             {% for Page in Layout.pages %}
-                                                <div class="card-body p-0" data-page-id="{{ Page.id }}" data-sort-no="{{ Page.sort_no }}">
+                                                <div class="card-body p-0" 
+                                                     data-page-id="{{ Page.id }}"
+                                                     data-layout-id="{{ Layout.id }}"
+                                                     data-sort-no="{{ Page.getSortNo(Layout.id) }}">
                                                     <div class="row justify-content-between p-3">
                                                         <div class="col-auto">
                                                             <i class="fa fa-bars text-ec-gray mr-3"></i><span>{{ Page.name }}</span>

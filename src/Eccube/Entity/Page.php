@@ -365,13 +365,6 @@ class Page extends \Eccube\Entity\AbstractEntity
     private $meta_tags;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="sort_no", type="smallint", options={"unsigned":true})
-     */
-    private $sort_no;
-
-    /**
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(targetEntity="Eccube\Entity\BlockPosition", mappedBy="Page", cascade={"persist","remove"})
@@ -716,19 +709,6 @@ class Page extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set sort_no
-     *
-     * @param string $sortNo
-     * @return Page
-     */
-    public function setSortNo($sortNo)
-    {
-        $this->sort_no = $sortNo;
-
-        return $this;
-    }
-
-    /**
      * Get meta_tags
      *
      * @return string
@@ -736,16 +716,6 @@ class Page extends \Eccube\Entity\AbstractEntity
     public function getMetaTags()
     {
         return $this->meta_tags;
-    }
-
-    /**
-     * Get sort_no
-     *
-     * @return string
-     */
-    public function getSortNo()
-    {
-        return $this->sort_no;
     }
 
     /**
@@ -864,5 +834,39 @@ class Page extends \Eccube\Entity\AbstractEntity
     public function getMasterPage()
     {
         return $this->MasterPage;
+    }
+
+    /**
+     * @var int
+     */
+    public $sort_no;
+
+    /**
+     * @param $sort_no
+     * @return $this
+     */
+    public function setSortNo($sort_no){
+        $this->sort_no = $sort_no;
+
+        return $this;
+    }
+
+    /**
+     * @param $layoutId
+     * @return null|string
+     */
+    public function getSortNo($layoutId)
+    {
+        $pageLayouts = $this->getPageLayouts();
+
+        /** @var PageLayout $pageLayout */
+        foreach ($pageLayouts as $pageLayout) {
+            if ($pageLayout->getLayoutId() == $layoutId) {
+
+                return $pageLayout->getSortNo();
+            }
+        }
+
+        return null;
     }
 }

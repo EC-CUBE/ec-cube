@@ -34,13 +34,19 @@ class PageLayout extends AbstractEntity
     private $layout_id;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="sort_no", type="smallint", options={"unsigned":true})
+     */
+    private $sort_no;
+
+    /**
      * @var \Eccube\Entity\Page
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Page", inversedBy="PageLayouts")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="page_id", referencedColumnName="id")
      * })
-     * @ORM\OrderBy({"sort_no" = "ASC"})
      */
     private $Page;
 
@@ -101,6 +107,29 @@ class PageLayout extends AbstractEntity
     public function getLayoutId()
     {
         return $this->layout_id;
+    }
+
+    /**
+     * Set sort_no
+     *
+     * @param string $sortNo
+     * @return Page
+     */
+    public function setSortNo($sortNo)
+    {
+        $this->sort_no = $sortNo;
+
+        return $this;
+    }
+
+    /**
+     * Get sort_no
+     *
+     * @return string
+     */
+    public function getSortNo()
+    {
+        return $this->sort_no;
     }
 
     /**
