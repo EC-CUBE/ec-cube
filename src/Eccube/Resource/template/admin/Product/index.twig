@@ -226,6 +226,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <button {{ csrf_token_for_anchor() }} data-action="{{ url('admin_product_bulk_product_status', {id: constant('Eccube\\Entity\\Master\\ProductStatus::DISPLAY_ABOLISHED')}) }}" class="btn btn-ec-regular mr-2 action-submit">
                                         {{ 'admin.product.index.abolition'|trans }}
                                     </button>
+                                    {# TODO: this button is not implemented yet #}
                                     <button class="btn btn-ec-delete">{{ 'admin.product.index.permanently_delete'|trans }}</button>
                                 </div>
                                 <div class="col-5 text-right">
