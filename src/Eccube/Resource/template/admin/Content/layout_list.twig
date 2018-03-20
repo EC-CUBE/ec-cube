@@ -66,7 +66,7 @@
                         newSortNos[this.dataset.pageId + '-' + this.dataset.layoutId] = oldSortNos[i];
                         i++;
                     });
-                    console.log(newSortNos);
+
                     $.ajax({
                         url: '{{ url('admin_content_layout_sort_no_move') }}',
                         type: 'POST',
