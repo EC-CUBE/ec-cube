@@ -63,7 +63,7 @@
                     var newSortNos = {};
                     var i = 0;
                     $("div.card-body", mainRows).each(function () {
-                        newSortNos[this.dataset.pageId + '#' + this.dataset.layoutId] = oldSortNos[i];
+                        newSortNos[this.dataset.pageId + '-' + this.dataset.layoutId] = oldSortNos[i];
                         i++;
                     });
                     console.log(newSortNos);

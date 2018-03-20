@@ -32,7 +32,6 @@ use Eccube\Form\Type\Master\DeviceTypeType;
 use Eccube\Repository\BlockRepository;
 use Eccube\Repository\LayoutRepository;
 use Eccube\Repository\PageLayoutRepository;
-use Eccube\Repository\PageRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -240,8 +239,9 @@ class LayoutController extends AbstractController
     {
         if ($request->isXmlHttpRequest()) {
             $sortNos = $request->request->all();
-            foreach ($sortNos as $pageId => $sortNo) {
-                $ids = explode('#', $pageId);
+            foreach ($sortNos as $ids => $sortNo) {
+
+                $ids = explode('-', $ids);
                 $pageId = $ids[0];
                 $layoutId = $ids[1];
 
