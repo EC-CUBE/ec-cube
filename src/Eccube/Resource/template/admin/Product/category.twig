@@ -210,6 +210,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                             <i class="fa fa-pencil fa-lg text-secondary"></i>
                                                         </a>
                                                         {% if Category.Children|length > 0 or Category.hasProductCategories %}
+                                                            {# TODO: Need fix css for tooltip to work (currently using `disabled` class) #}
                                                             <a class="btn btn-ec-actionIcon mr-3 disabled"
                                                                data-toggle="tooltip" data-placement="top"
                                                                title="{{ 'admin.product.category.text01'|trans }}">
