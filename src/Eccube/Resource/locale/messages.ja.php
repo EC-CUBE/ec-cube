@@ -1361,7 +1361,7 @@ return [
     'admin.product.index.text08' => '現在データが登録されていません。登録してみましょう！',
     'admin.product.index.text09' => '新規登録',
     'admin.product.index.text10' => 'データが消えてしまいましたか？バックアップをしているならリストアを試してみましょう。',
-    'admin.product.index.standard.modal.header' => 'パーコレーターの規格',
+    'admin.product.index.standard.modal.header' => '%name%の規格',
     'admin.product.index.standart.modal.col1' => '規格１',
     'admin.product.index.standart.modal.col2' => '規格２',
     'admin.product.index.standart.modal.col3' => '商品コード',
