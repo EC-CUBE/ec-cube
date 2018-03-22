@@ -1,8 +1,10 @@
 <nav>
     <ul class="c-mainNavArea__nav">
         <li class="c-mainNavArea__navItem">
-            <a class="c-mainNavArea__navItemTitle" href="{{ url('admin_homepage') }}"><i class="fa fa-home"
-                                                                                         aria-hidden="true"></i><span>ホーム</span></a>
+            <a class="c-mainNavArea__navItemTitle" href="{{ url('admin_homepage') }}">
+                <i class="fa fa-home" aria-hidden="true"></i>
+                <span>{{ 'admin.nav.home'|trans }}</span>
+            </a>
         </li>
         {% for level1 in eccube_config.eccube_nav if app.request.baseUrl ~ '/' ~ eccube_config.eccube_admin_route ~ '/' ~ level1.id not in AuthorityRoles %}
             <li class="c-mainNavArea__navItem">
@@ -62,11 +64,11 @@
             <a class="c-mainNavArea__navItemTitle collapsed" data-toggle="collapse" href="#others" aria-expanded="false"
                aria-controls="others">
                 <i class="fa fa-truck" aria-hidden="true"></i>
-                <span>その他</span>
+                <span>{{ 'admin.nav.other'|trans }}</span>
             </a>
             <ul class="collapse" id="others">
                 <li>
-                    <a href="/styleguide/">スタイルガイド</a>
+                    <a href="/styleguide/">{{ 'admin.nav.styleguide'|trans }}</a>
                 </li>
             </ul>
         </li>

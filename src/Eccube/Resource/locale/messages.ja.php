@@ -364,6 +364,15 @@ return [
     'admin_setting_shop_shop_master.label.customer_setting' => '会員設定',
     'admin_setting_shop_shop_master.label.product_setting' => '商品設定',
 
+    'admin.header.mr' => '様',
+    'admin.header.change_password' => 'パスワード変更',
+    'admin.header.last_login' => '最終ログイン',
+    'admin.header.logout' => 'ログアウト',
+
+    'admin.nav.home' => 'ホーム',
+    'admin.nav.other' => 'その他',
+    'admin.nav.styleguide' => 'スタイルガイド',
+
 
     'Login email' => 'メールアドレス',
     'Login pass' => 'パスワード',
