@@ -440,6 +440,8 @@ return [
     'front.shopping.system.error' => '購入処理でシステムエラーが発生しました。大変お手数ですが、サイト管理者までご連絡ください。',
 
 
+    'admin.page.title.suffix' => '管理画面',
+
     'admin.common.label.id' => 'ID',
     'admin.common.label.name' => 'お名前',
     'admin.common.label.first_name' => '名',
