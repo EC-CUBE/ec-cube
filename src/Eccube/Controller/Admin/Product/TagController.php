@@ -60,15 +60,18 @@ class TagController extends AbstractController
      * @Route("/%eccube_admin_route%/product/tag", name="admin_product_tag")
      * @Route("/%eccube_admin_route%/product/tag/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_tag_edit")
      * @Template("@admin/Product/tag.twig")
+     *
+     * @param Request $request
+     * @param Tag|null $Tag
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function index(Request $request, $id = null)
+    public function index(Request $request, Tag $Tag = null)
     {
         $Tags = $this->tagRepository->getList();
-        if ($id) {
-            $Tag = $this->tagRepository->find($id);
-        } else {
-            $Tag = new \Eccube\Entity\Tag();
+        if (!$Tag) {
+            $Tag = new Tag();
         }
+
         $builder = $this->formFactory
             ->createBuilder(ProductTag::class, $Tag);
         $event = new EventArgs(
