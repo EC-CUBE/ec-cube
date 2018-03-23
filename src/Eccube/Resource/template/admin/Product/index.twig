@@ -79,6 +79,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 }
             })($, formPropStateSubscriber);
 
+            toggleBtnBulk('input[name="filter"]', '#btn_bulk');
+            $('input[name="filter"]').on('change', function() {
+                toggleBtnBulk('input[name="filter"]', '#btn_bulk');
+            });
+
 
             $('#check_all').on('change', function() {
                 var checked = $(this).prop('checked');
@@ -214,20 +219,22 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <form id="form_bulk" method="POST" action="">
                             <div class="row justify-content-between mb-2">
                                 <div class="col-6">
-                                    <label class="mr-2">{{ 'admin.product.index.bulk_actions'|trans }}</label>
-                                    <div class="btn-group mr-2" role="group">
-                                        <button {{ csrf_token_for_anchor() }} data-action="{{ url('admin_product_bulk_product_status', {id: constant('Eccube\\Entity\\Master\\ProductStatus::DISPLAY_SHOW')}) }}" class="btn btn-ec-regular action-submit" type="button" >
-                                            <span>{{ 'admin.product.index.public'|trans }}</span>
+                                    <div id="btn_bulk">
+                                        <label class="mr-2">{{ 'admin.product.index.bulk_actions'|trans }}</label>
+                                        <div class="btn-group mr-2" role="group">
+                                            <button {{ csrf_token_for_anchor() }} data-action="{{ url('admin_product_bulk_product_status', {id: constant('Eccube\\Entity\\Master\\ProductStatus::DISPLAY_SHOW')}) }}" class="btn btn-ec-regular action-submit" type="button" >
+                                                <span>{{ 'admin.product.index.public'|trans }}</span>
+                                            </button>
+                                            <button {{ csrf_token_for_anchor() }} data-action="{{ url('admin_product_bulk_product_status', {id: constant('Eccube\\Entity\\Master\\ProductStatus::DISPLAY_HIDE')}) }}" class="btn btn-ec-regular action-submit" type="button">
+                                                <span>{{ 'admin.product.index.private'|trans }}</span>
+                                            </button>
+                                        </div>
+                                        <button {{ csrf_token_for_anchor() }} data-action="{{ url('admin_product_bulk_product_status', {id: constant('Eccube\\Entity\\Master\\ProductStatus::DISPLAY_ABOLISHED')}) }}" class="btn btn-ec-regular mr-2 action-submit">
+                                            {{ 'admin.product.index.abolition'|trans }}
                                         </button>
-                                        <button {{ csrf_token_for_anchor() }} data-action="{{ url('admin_product_bulk_product_status', {id: constant('Eccube\\Entity\\Master\\ProductStatus::DISPLAY_HIDE')}) }}" class="btn btn-ec-regular action-submit" type="button">
-                                            <span>{{ 'admin.product.index.private'|trans }}</span>
-                                        </button>
+                                        {# TODO: this button is not implemented yet #}
+                                        <button class="btn btn-ec-delete">{{ 'admin.product.index.permanently_delete'|trans }}</button>
                                     </div>
-                                    <button {{ csrf_token_for_anchor() }} data-action="{{ url('admin_product_bulk_product_status', {id: constant('Eccube\\Entity\\Master\\ProductStatus::DISPLAY_ABOLISHED')}) }}" class="btn btn-ec-regular mr-2 action-submit">
-                                        {{ 'admin.product.index.abolition'|trans }}
-                                    </button>
-                                    {# TODO: this button is not implemented yet #}
-                                    <button class="btn btn-ec-delete">{{ 'admin.product.index.permanently_delete'|trans }}</button>
                                 </div>
                                 <div class="col-5 text-right">
                                     <div class="d-inline-block mr-2">
