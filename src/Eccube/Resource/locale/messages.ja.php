@@ -1368,7 +1368,7 @@ return [
     'admin.product.index.standart.modal.col4' => '在庫数',
     'admin.product.index.standart.modal.col5' => '販売価格（円）',
     'admin.product.index.standart.modal.unlimited' => '無制限',
-    'admin.product.index.not_specified' => '商品クラスが指定されていません。',
+    'admin.product.index.not_specified' => '無制限',
 
     'admin.product.product.495' => '商品管理',
     'admin.product.product.496' => '商品登録',
