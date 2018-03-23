@@ -79,9 +79,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 }
             })($, formPropStateSubscriber);
 
-            toggleBtnBulk('input[name="filter"]', '#btn_bulk');
-            $('input[name="filter"]').on('change', function() {
-                toggleBtnBulk('input[name="filter"]', '#btn_bulk');
+            toggleBtnBulk('input[name^="ids"]', '#btn_bulk');
+            $('input[name^="ids"]').on('change', function() {
+                toggleBtnBulk('input[name^="ids"]', '#btn_bulk');
             });
 
 
