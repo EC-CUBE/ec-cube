@@ -98,7 +98,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     return false;
                 }
 
-                $('<input />').attr('type', 'hidden').attr('name', '_token')
+                $('<input />').attr('type', 'hidden').attr('name', '{{ constant('Eccube\\Common\\Constant::TOKEN_NAME') }}')
                     .val($(this).attr('token-for-anchor'))
                     .appendTo(form);
                 form.attr('action', $(this).data('action')).submit();

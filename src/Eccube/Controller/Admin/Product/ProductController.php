@@ -985,26 +985,17 @@ class ProductController extends AbstractController
     /**
      * Bulk public action
      *
+     * @Method("POST")
      * @Route("/%eccube_admin_route%/product/bulk/product-status/{id}", requirements={"id" = "\d+"}, name="admin_product_bulk_product_status")
      *
      * @param Request $request
-     * @param integer $id
+     * @param ProductStatus $ProductStatus
      *
      * @return RedirectResponse
      */
-    public function bulkProductStatus(Request $request, $id)
+    public function bulkProductStatus(Request $request, ProductStatus $ProductStatus)
     {
-        if ($request->getMethod() != Request::METHOD_POST) {
-            throw new BadRequestHttpException('Unsupported method!');
-        }
-
         $this->isTokenValid();
-
-        /** @var ProductStatus $ProductStatus */
-        $ProductStatus = $this->productStatusRepository->find($id);
-        if (!$ProductStatus) {
-            throw new NotFoundHttpException('Product status not found!');
-        }
 
         /** @var Product[] $Products */
         $Products = $this->productRepository->findBy(['id' => $request->get('ids')]);
@@ -1031,6 +1022,6 @@ class ProductController extends AbstractController
             $this->addError($e->getMessage(), 'admin');
         }
 
-        return $this->redirectToRoute('admin_product', ['resume' => 1]);
+        return $this->redirectToRoute('admin_product', ['resume' => Constant::ENABLED]);
     }
 }
