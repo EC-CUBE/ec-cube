@@ -78,6 +78,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     $ac.slideUp(0);
                 }
             })($, formPropStateSubscriber);
+
+            toggleBtnBulk('input[name="filter"]', '#btn_bulk');
+            $('input[name="filter"]').on('change', function() {
+                toggleBtnBulk('input[name="filter"]', '#btn_bulk');
+            });
         });
     </script>
 {% endblock javascript %}
@@ -187,14 +192,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     {% if pagination|length > 0 %}
                         <div class="row justify-content-between mb-2">
                             <div class="col-6">
-                                <label class="mr-2">{{ 'admin.product.index.bulk_actions'|trans }}</label>
-                                {# TODO ここのボタンは新機能なので実装が必要 #}
-                                <div class="btn-group mr-2" role="group">
-                                    <button class="btn btn-ec-regular" type="button"><span>{{ 'admin.product.index.public'|trans }}</span></button>
-                                    <button class="btn btn-ec-regular" type="button"><span>{{ 'admin.product.index.private'|trans }}</span></button>
+                                <div id="btn_bulk">
+                                    <label class="mr-2">{{ 'admin.product.index.bulk_actions'|trans }}</label>
+                                    {# TODO ここのボタンは新機能なので実装が必要 #}
+                                    <div class="btn-group mr-2" role="group">
+                                        <button class="btn btn-ec-regular" type="button"><span>{{ 'admin.product.index.public'|trans }}</span></button>
+                                        <button class="btn btn-ec-regular" type="button"><span>{{ 'admin.product.index.private'|trans }}</span></button>
+                                    </div>
+                                    <button class="btn btn-ec-regular mr-2">{{ 'admin.product.index.abolition'|trans }}</button>
+                                    <button class="btn btn-ec-delete">{{ 'admin.product.index.permanently_delete'|trans }}</button>
                                 </div>
-                                <button class="btn btn-ec-regular mr-2">{{ 'admin.product.index.abolition'|trans }}</button>
-                                <button class="btn btn-ec-delete">{{ 'admin.product.index.permanently_delete'|trans }}</button>
                             </div>
                             <div class="col-5 text-right">
                                 <div class="d-inline-block mr-2">
