@@ -366,6 +366,39 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->verify();
     }
 
+    public function testDisplayProduct()
+    {
+        $productClassNum = 0;
+        $Product = $this->createProduct('Test', $productClassNum);
+        $crawler = $this->client->request(
+            'GET',
+            $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()])
+        );
+
+        // Only have 1 div button
+        $this->expected = 1;
+        $this->actual = $crawler->filter('#standardConfig > div > div')->count();
+        $this->verify();
+    }
+
+    public function testDisplayProductHasClass()
+    {
+        $productClassNum = 3;
+        $Product = $this->createProduct('Test', $productClassNum);
+        $crawler = $this->client->request(
+            'GET',
+            $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()])
+        );
+
+        $expected = 'この商品の規格';
+        $actual = $crawler->filter('#standardConfig > div > div.d-inline-block')->text();
+        $this->assertContains($expected, $actual);
+        
+        $this->expected = $productClassNum;
+        $this->actual = $crawler->filter('#standardConfig > div > table > tbody > tr')->count();
+        $this->verify();
+    }
+
     public function testDelete()
     {
         $Product = $this->createProduct();
