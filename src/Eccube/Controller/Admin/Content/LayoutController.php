@@ -238,7 +238,9 @@ class LayoutController extends AbstractController
     public function moveSortNo(Request $request)
     {
         if ($request->isXmlHttpRequest()) {
-            $sortNos = $request->request->all();
+            $sortNos = $request->request->get('newSortNos');
+            $layoutIds = $request->request->get('layoutId');
+
             foreach ($sortNos as $ids => $sortNo) {
 
                 $ids = explode('-', $ids);
@@ -248,6 +250,8 @@ class LayoutController extends AbstractController
                 /* @var $Item PageLayoutRepository */
                 $Item = $this->pageLayoutRepository
                     ->findOneBy(['page_id' => $pageId, 'layout_id' => $layoutId]);
+
+                $Item->setLayoutId($layoutIds);
                 $Item->setSortNo($sortNo);
                 $this->entityManager->persist($Item);
             }

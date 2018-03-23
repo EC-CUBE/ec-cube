@@ -35,13 +35,15 @@
     <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.sortable.min.js', 'admin') }}"></script>
     <script>
         $(function () {
-            var containerRows = $('div.ec-cardCollapse');
+            var isUpdate = true;
+            var containerRows = $('div.sortables');
             containerRows.each(function () {
                 doUpdateSortNo($(this));
             });
 
             function doUpdateSortNo(mainRows) {
                 var oldSortNos = [];
+                var layoutId = mainRows.attr('data-layout-id');
                 $("div.card-body", mainRows).each(function () {
                     oldSortNos.push(this.dataset.sortNo);
                 });
@@ -50,33 +52,51 @@
                     return a - b;
                 });
 
-                $(mainRows).sortable({
+                mainRows.sortable({
                     items: ' > div.card-body',
+                    connectWith: "div.ec-cardCollapse",
                     cursor: 'move',
+                    start: function (ev, ui) {
+                        ui.item.prop('main', ui.item.parent());
+                    },
+                    stop: function (ev, ui) {
+                        if (ui.item.prop('main').attr('id') == ui.item.parent().attr('id')) {
+                            return;
+                        }
+                        if (ui.item.parent().find('[data-page-id="' + ui.item.data('page-id') + '"]').length > 1) {
+                            isUpdate = false;
+                            $(this).sortable("cancel");
+                        }
+                    },
                     update: function (e, ui) {
+                        console.log(e);
                         $("body").append($('<div class="modal-backdrop show"></div>'));
-                        updateSortNo();
+                        if(isUpdate){
+                            updateSortNo();
+                        }
                     }
                 });
+
                 var updateSortNo = function () {
                     // 並び替え後にsortNoを更新
                     var newSortNos = {};
-                    var i = 0;
+                    var i = 1;
                     $("div.card-body", mainRows).each(function () {
-                        newSortNos[this.dataset.pageId + '-' + this.dataset.layoutId] = oldSortNos[i];
+                        newSortNos[this.dataset.pageId + '-' + this.dataset.layoutId] = i;
                         i++;
                     });
 
                     $.ajax({
                         url: '{{ url('admin_content_layout_sort_no_move') }}',
                         type: 'POST',
-                        data: newSortNos,
+                        data: {'newSortNos': newSortNos, 'layoutId' : layoutId}
                     }).done(function (data) {
                         $(".modal-backdrop").remove();
                     }).fail(function () {
                         console.log('Failed');
                         $(".modal-backdrop").remove();
                     });
+                    isUpdate = true;
                 }
             }
         });
@@ -84,6 +104,9 @@
 {% endblock %}
 
 {% block main %}
+    <style>
+        .ec-cardCollapse{ min-height: 49px;}
+    </style>
     <div class="c-outsideBlock">
         <div class="c-outsideBlock__contents">
             <div class="row">
@@ -151,16 +174,17 @@
                                     {# Pages #}
                                     {% if Layout.pages|length > 0 %}
                                         {# TODO ページをドラッグ＆ドロップで移動できるようにする #}
-                                        <div class="collapse show ec-cardCollapse"
+                                        <div class="collapse show ec-cardCollapse sortables"
+                                             data-layout-id="{{ Layout.id }}"
                                              id="topPageLayout-pc-{{ Layout.id }}">
                                             {% for Page in Layout.pages %}
-                                                <div class="card-body p-0" 
+                                                <div class="card-body p-0 page-id-{{ Page.id }}"
                                                      data-page-id="{{ Page.id }}"
                                                      data-layout-id="{{ Layout.id }}"
                                                      data-sort-no="{{ Page.getSortNo(Layout.id) }}">
                                                     <div class="row justify-content-between p-3">
                                                         <div class="col-auto">
-                                                            <i class="fa fa-bars text-ec-gray mr-3"></i><span>{{ Page.name }}</span>
+                                                            <i class="fa fa-bars text-ec-gray mr-3"></i><span>[PageID:{{ Page.id }}]#[LayoutID:{{ Layout.id }}]#{{ Page.getSortNo(Layout.id) }} - {{ Page.name }}</span>
                                                         </div>
                                                         {# TODO ページを削除できるようにする #}
                                                         <div class="col-auto text-right">
