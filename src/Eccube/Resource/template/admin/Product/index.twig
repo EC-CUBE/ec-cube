@@ -271,19 +271,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 {% endif %}
                                             </td>
                                             <td class="align-middle">
-                                                {% if (Product.hasProductClass) %}
-                                                    {# TODO 規格のモーダル表示を実装 #}
+                                                {% if Product.hasProductClass %}
                                                     <button class="btn page-link text-dark d-inline-block" type="button"
-                                                            data-toggle="modal" data-target="#standardConfirm">{{ 'admin.product.index.standard_confirm'|trans }}
+                                                            data-toggle="modal" data-target="#standardConfirm_{{ Product.id }}">{{ 'admin.product.index.standard_confirm'|trans }}
                                                     </button>
-                                                    <div class="modal fade" id="standardConfirm" tabindex="-1"
+                                                    <div class="modal fade" id="standardConfirm_{{ Product.id }}" tabindex="-1"
                                                          role="dialog"
-                                                         aria-labelledby="standardConfirm" aria-hidden="true"
+                                                         aria-labelledby="standardConfirm-{{ Product.id }}" aria-hidden="true"
                                                          style="display: none;">
                                                         <div class="modal-dialog" role="document">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    <h5 class="modal-title">パーコレーターの規格</h5>
+                                                                    <h5 class="modal-title">{{ 'admin.product.index.standard.modal.header'|trans({'%name%': Product.name}) }}</h5>
                                                                     <button class="close" type="button"
                                                                             data-dismiss="modal"
                                                                             aria-label="Close"><span aria-hidden="true">×</span>
@@ -293,43 +292,39 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                                     <table class="table table-striped">
                                                                         <thead class="table-active">
                                                                         <tr>
-                                                                            <th class="pt-2 pb-2 pl-2">規格１</th>
-                                                                            <th class="pt-2 pb-2">規格２</th>
-                                                                            <th class="pt-2 pb-2">商品コード</th>
-                                                                            <th class="pt-2 pb-2">在庫数</th>
-                                                                            <th class="pt-2 pb-2 pr-2">販売価格（円）</th>
+                                                                            <th class="pt-2 pb-2 pl-2">{{ 'admin.product.index.standart.modal.col1'|trans }}</th>
+                                                                            <th class="pt-2 pb-2">{{ 'admin.product.index.standart.modal.col2'|trans }}</th>
+                                                                            <th class="pt-2 pb-2">{{ 'admin.product.index.standart.modal.col3'|trans }}</th>
+                                                                            <th class="pt-2 pb-2">{{ 'admin.product.index.standart.modal.col4'|trans }}</th>
+                                                                            <th class="pt-2 pb-2 pr-2">{{ 'admin.product.index.standart.modal.col5'|trans }}</th>
                                                                         </tr>
                                                                         </thead>
                                                                         <tbody>
-                                                                        <tr>
-                                                                            <td class="pl-2">プラチナ</td>
-                                                                            <td>100cm</td>
-                                                                            <td>aa-001</td>
-                                                                            <td>4</td>
-                                                                            <td class="pr-2">10,000</td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td class="pl-2">プラチナ</td>
-                                                                            <td>130cm</td>
-                                                                            <td>aa-002</td>
-                                                                            <td>8</td>
-                                                                            <td class="pr-2">10,000</td>
-                                                                        </tr>
+                                                                        {% for Class in Product.ProductClasses %}
+                                                                            {% if Class.visible == 1 %}
+                                                                                <tr>
+                                                                                    <td class="pl-3">{% if Class.hasClassCategory1 %}{{ Class.ClassCategory1.name }}{% endif %}</td>
+                                                                                    <td>{% if Class.hasClassCategory2 %}{{ Class.ClassCategory2.name }}{% endif %}</td>
+                                                                                    <td>{{ Class.code }}</td>
+                                                                                    <td>{% if Class.stock_unlimited %}{{ 'admin.product.index.standart.modal.unlimited'|trans }}{% else %}{{ Class.stock }}{% endif %}</td>
+                                                                                    <td class="pr-3">{{ Class.price02|price }}</td>
+                                                                                </tr>
+                                                                            {% endif %}
+                                                                        {% endfor %}
                                                                         </tbody>
                                                                     </table>
-                                                                </div>
+
                                                                 <div class="modal-footer">
                                                                 <button class="btn btn-v-sub" type="button"
                                                                             data-dismiss="modal">
                                                                         {{ 'admin.product.index.back'|trans }}
                                                                     </button>
-                                                                    </button>
                                                                     <a class="btn btn-ec-conversion"
-                                                                       href="/product/register/standard">
+                                                                       href="{{ url('admin_product_product_class', { 'id' : Product.id }) }}">
                                                                         {{ 'admin.product.index.standard_edit'|trans }}
-                                                                        </button>
                                                                     </a>
                                                                 </div>
+                                                            </div>
                                                             </div>
                                                         </div>
                                                     </div>
