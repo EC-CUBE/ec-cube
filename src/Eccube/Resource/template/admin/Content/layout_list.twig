@@ -54,7 +54,6 @@
                         if (ui.item.prop('main').attr('id') != ui.item.parent().attr('id')
                             && ui.item.parent().find('[data-page-id="' + ui.item.data('page-id') + '"]').length > 1) {
                             ui.item.prop('isUpdate', false);
-//                            alert('Can not use 2 pages for a layout !');
                             $('#duplicate-error').modal('show');
                         } else {
                             ui.item.prop('isUpdate', true)
