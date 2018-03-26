@@ -41,62 +41,53 @@
             });
 
             function doUpdateSortNo(mainRows) {
-                var oldSortNos = [];
                 var layoutId = mainRows.attr('data-layout-id');
-                $("div.card-body", mainRows).each(function () {
-                    oldSortNos.push(this.dataset.sortNo);
-                });
-                // rsort
-                oldSortNos.sort(function (a, b) {
-                    return a - b;
-                });
-
                 mainRows.sortable({
                     items: ' > div.card-body',
                     connectWith: "div.ec-cardCollapse",
                     cursor: 'move',
                     start: function (ev, ui) {
                         ui.item.prop('main', ui.item.parent());
-                        ui.item.prop('isUpdate', true);
+                        ui.item.prop('isUpdate', false);
                     },
-                    stop: function (ev, ui) {
-                        console.log(ui.item.prop('isUpdate'), 11111);
-                        console.log(ui.item.prop('main').attr('id'), 'id');
-                        console.log(ui.item.parent().attr('id'), 'id2');
-                        if (ui.item.prop('main').attr('id') == ui.item.parent().attr('id')) {
-                            updateSortNo();
-                            return;
-                        }
-                        console.log(ui.item.parent().find('[data-page-id="' + ui.item.data('page-id') + '"]').length, 'length');
-                        if (ui.item.parent().find('[data-page-id="' + ui.item.data('page-id') + '"]').length > 1) {
-                            console.log(ui.item.prop('isUpdate'), 33333);
+                    beforeStop: function (ev, ui) {
+                        if (ui.item.prop('main').attr('id') != ui.item.parent().attr('id')
+                            && ui.item.parent().find('[data-page-id="' + ui.item.data('page-id') + '"]').length > 1) {
                             ui.item.prop('isUpdate', false);
-                            $(this).sortable("cancel");
-                        }else{
-                            updateSortNo();
+                        } else {
+                            ui.item.prop('isUpdate', true)
                         }
                     },
                     update: function (e, ui) {
-                        console.log(ui.item.prop('main').attr('id'), ui.item.parent().attr('id'));
-//                        updateSortNo();
+                        if (ui.item.prop('isUpdate') == true) {
+                            updateSortNo(layoutId);
+                        }else{
+                            $(this).sortable("cancel");
+                        }
                     }
                 });
 
-                var updateSortNo = function () {
+                var updateSortNo = function (layoutId) {
+                    $(".modal-backdrop").remove();
                     $("body").append($('<div class="modal-backdrop show"></div>'));
-                    // 並び替え後にsortNoを更新
+
                     var newSortNos = {};
                     var i = 1;
                     $("div.card-body", mainRows).each(function () {
-                        newSortNos[this.dataset.pageId + '-' + this.dataset.layoutId] = i;
-                        i++;
+                        if (this.dataset.pageId != undefined && this.dataset.layoutId != undefined) {
+                            newSortNos[this.dataset.pageId + '-' + this.dataset.layoutId] = i;
+                            i++;
+                        }
                     });
 
                     $.ajax({
                         url: '{{ url('admin_content_layout_sort_no_move') }}',
                         type: 'POST',
-                        data: {'newSortNos': newSortNos, 'layoutId' : layoutId}
+                        data: {'newSortNos': newSortNos, 'targetLayoutId': layoutId}
                     }).done(function (data) {
+                        $('div.card-body', mainRows).each(function () {
+                            $(this).attr('data-layout-id', layoutId);
+                        });
                         $(".modal-backdrop").remove();
                     }).fail(function () {
                         console.log('Failed');
@@ -108,10 +99,13 @@
     </script>
 {% endblock %}
 
-{% block main %}
+{% block stylesheet %}
     <style>
         .ec-cardCollapse{ min-height: 49px;}
     </style>
+{% endblock stylesheet %}
+
+{% block main %}
     <div class="c-outsideBlock">
         <div class="c-outsideBlock__contents">
             <div class="row">
@@ -183,13 +177,13 @@
                                              data-layout-id="{{ Layout.id }}"
                                              id="topPageLayout-pc-{{ Layout.id }}">
                                             {% for Page in Layout.pages %}
-                                                <div class="card-body p-0 page-id-{{ Page.id }}"
+                                                <div class="card-body p-0"
                                                      data-page-id="{{ Page.id }}"
                                                      data-layout-id="{{ Layout.id }}"
                                                      data-sort-no="{{ Page.getSortNo(Layout.id) }}">
                                                     <div class="row justify-content-between p-3">
                                                         <div class="col-auto">
-                                                            <i class="fa fa-bars text-ec-gray mr-3"></i><span>[PageID:{{ Page.id }}]#[LayoutID:{{ Layout.id }}]#{{ Page.getSortNo(Layout.id) }} - {{ Page.name }}</span>
+                                                            <i class="fa fa-bars text-ec-gray mr-3"></i><span>{{ Page.name }}</span>
                                                         </div>
                                                         {# TODO ページを削除できるようにする #}
                                                         <div class="col-auto text-right">
