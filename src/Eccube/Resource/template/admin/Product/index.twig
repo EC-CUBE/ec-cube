@@ -220,7 +220,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <form id="form_bulk" method="POST" action="">
                             <div class="row justify-content-between mb-2">
                                 <div class="col-6">
-                                    <div id="btn_bulk">
+                                    <div id="btn_bulk" class="d-none">
                                         <label class="mr-2">{{ 'admin.product.index.bulk_actions'|trans }}</label>
                                         <div class="btn-group mr-2" role="group">
                                             <button {{ csrf_token_for_anchor() }} data-action="{{ url('admin_product_bulk_product_status', {id: constant('Eccube\\Entity\\Master\\ProductStatus::DISPLAY_SHOW')}) }}" class="btn btn-ec-regular action-submit" type="button" >
