@@ -61,6 +61,7 @@ use Eccube\Entity\ProductStock;
 use Eccube\Entity\ProductImage;
 use Eccube\Entity\ProductCategory;
 use Eccube\Entity\ExportCsvRow;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * @Route(service=ProductController::class)
@@ -982,5 +983,48 @@ class ProductController extends AbstractController
         );
 
         return $pagination;
+    }
+
+    /**
+     * Bulk public action
+     *
+     * @Method("POST")
+     * @Route("/%eccube_admin_route%/product/bulk/product-status/{id}", requirements={"id" = "\d+"}, name="admin_product_bulk_product_status")
+     *
+     * @param Request $request
+     * @param ProductStatus $ProductStatus
+     *
+     * @return RedirectResponse
+     */
+    public function bulkProductStatus(Request $request, ProductStatus $ProductStatus)
+    {
+        $this->isTokenValid();
+
+        /** @var Product[] $Products */
+        $Products = $this->productRepository->findBy(['id' => $request->get('ids')]);
+        $count = 0;
+        foreach ($Products as $Product) {
+            try {
+                $Product->setStatus($ProductStatus);
+                $this->productRepository->save($Product);
+                $count++;
+            } catch (\Exception $e) {
+                $this->addError($e->getMessage(), 'admin');
+            }
+        }
+        try {
+            if ($count) {
+                $this->entityManager->flush();
+                $msg = $this->translator->trans('admin.product.index.bulk_product_status_success_count', [
+                    '%count%' => $count,
+                    '%status%' => $ProductStatus->getName()
+                ]);
+                $this->addSuccess($msg, 'admin');
+            }
+        } catch (\Exception $e) {
+            $this->addError($e->getMessage(), 'admin');
+        }
+
+        return $this->redirectToRoute('admin_product', ['resume' => Constant::ENABLED]);
     }
 }
