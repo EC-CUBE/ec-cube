@@ -124,6 +124,24 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 {% endfor %}
                             </div>
                         </div>
+                        <div class="form-row mb-2">
+                            <div class="col-12">
+                                <p class="col-form-label">{{ 'admin.product.index.filter_by_stock'|trans }}</p>
+                                {# TODO: These checkboxes are not implemented yet #}
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" id="check_stock_yes" type="checkbox" value="">
+                                    <label class="form-check-label" for="check_stock_yes">
+                                        {{ 'admin.product.index.filter_by_stock_yes'|trans }}
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" id="check_stock_no" type="checkbox" value="">
+                                    <label class="form-check-label" for="check_stock_no">
+                                        {{ 'admin.product.index.filter_by_stock_none'|trans }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-6">
                         <div class="mb-2">
