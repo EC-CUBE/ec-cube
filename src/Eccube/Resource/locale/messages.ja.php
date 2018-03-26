@@ -1342,7 +1342,7 @@ return [
     'admin.product.index.private' => '非公開',
     'admin.product.index.out_of_stock' => '在庫切れ',
     'admin.product.index.bulk_actions' => '一括操作',
-    'admin.product.index.filter' => 'フィルタ',
+    'admin.product.index.filter' => 'ステータス',
     'admin.product.index.abolition' => '廃止',
     'admin.product.index.permanently_delete' => '完全に削除',
     'admin.product.index.num' => '件',
@@ -1380,6 +1380,9 @@ return [
     'admin.product.index.standart.modal.col5' => '販売価格（円）',
     'admin.product.index.standart.modal.unlimited' => '無制限',
     'admin.product.index.not_specified' => '無制限',
+    'admin.product.index.filter_by_stock' => '在庫',
+    'admin.product.index.filter_by_stock_yes' => 'あり',
+    'admin.product.index.filter_by_stock_none' => 'なし',
 
     'admin.product.product.495' => '商品管理',
     'admin.product.product.496' => '商品登録',

@@ -89,6 +89,7 @@ class SearchProductType extends AbstractType
                 'label' => 'searchproduct.label.type',
                 'multiple'=> true,
                 'required' => false,
+                'expanded' => true,
                 'data' => $this->productStatusRepository->findBy(['id' => [
                     ProductStatus::DISPLAY_SHOW,
                     ProductStatus::DISPLAY_HIDE
