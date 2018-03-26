@@ -37,6 +37,7 @@ return [
     'common.label.shop_name_kana' => '店名（フリガナ）',
     'common.placeholder.address01' => '市区町村名（例：千代田区神田神保町）',
     'common.placeholder.address02' => '番地・ビル名（例：1-3-5）',
+    'common.grid.checkbox_required' => 'チェックボックスが選択されていません',
 
     //Store Front
     'common.label.all_products' => '',
@@ -1368,6 +1369,7 @@ return [
     'admin.product.index.text08' => '現在データが登録されていません。登録してみましょう！',
     'admin.product.index.text09' => '新規登録',
     'admin.product.index.text10' => 'データが消えてしまいましたか？バックアップをしているならリストアを試してみましょう。',
+    'admin.product.index.bulk_product_status_success_count' => '%status%: %count%件が正常に適用されました。',
     'admin.product.index.standard.modal.header' => '%name%の規格',
     'admin.product.index.standart.modal.col1' => '規格１',
     'admin.product.index.standart.modal.col2' => '規格２',
