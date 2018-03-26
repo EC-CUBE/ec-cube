@@ -727,7 +727,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             $this->generateUrl('admin_product_bulk_product_status', ['id' => ProductStatus::DISPLAY_SHOW]),
             []
         );
-        $this->assertEquals(400, $this->client->getResponse()->getStatusCode());
+        $this->assertEquals(405, $this->client->getResponse()->getStatusCode());
 
         // case invalid product status id
         $this->client->request(
