@@ -23,6 +23,7 @@
 
 namespace Eccube\Tests\Web\Admin\Product;
 
+use Eccube\Entity\Tag;
 use Eccube\Repository\TagRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\HttpFoundation\Response;

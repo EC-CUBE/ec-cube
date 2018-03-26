@@ -28,7 +28,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% block stylesheet %}
     <style>
-        .list-group-item:hover{
+        .list-group-item:hover {
             z-index: inherit;
         }
     </style>
@@ -112,67 +112,73 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% endblock %}
 
 {% block main %}
-        <div class="c-contentsArea__cols">
-            <div class="c-contentsArea__primaryCol">
-                <div class="c-primaryCol">
-                    <div class="card rounded border-0 mb-4">
-                        <div class="card-body p-0">
-                            <div class="card rounded border-0 mb-2">
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">
-                                        <div class="form-row">
-                                            <form role="form" class="form-row" name="form1" id="form1" method="post"
-                                                  action="{% if Tag.id %}{{ path('admin_product_tag_edit', {id: Tag.id}) }}{% else %}{{ url('admin_product_tag')}} {% endif %}"
-                                                  enctype="multipart/form-data">
-                                                {{ form_widget(form._token) }}
-                                                <div class="col-auto d-flex align-items-center">
-                                                    {{ form_widget(form.name) }}
-                                                    {{ form_errors(form.name) }}
-                                                </div>
-                                                <div class="col-auto d-flex align-items-center">
-                                                    <button class="btn btn-ec-regular" type="submit">
-                                                        {{ 'admin.product.tag.create'|trans }}
-                                                    </button>
-                                                </div>
-                                            </form>
-                                        </div><!-- /.form-row -->
-                                    </li>
-                                    {% for Tag in Tags %}
-                                        <li class="list-group-item">
-                                            <div class="row justify-content-around">
-                                                <div class="col-auto d-flex align-items-center"><i
-                                                            class="fa fa-bars text-ec-gray"></i></div>
-                                                <div class="col d-flex align-items-center"><a>{{ Tag.name }}</a></div>
-                                                <div class="col-auto text-right">
-                                                    <a class="btn btn-ec-actionIcon up mr-3 {% if loop.first %}disabled{% endif %}"
-                                                       href="#"
-                                                       data-toggle="tooltip"
-                                                       data-placement="top" title="{{ 'admin.product.tag.up'|trans }}"><i
-                                                                class="fa fa-arrow-up fa-lg text-secondary"></i></a>
-                                                    <a
-                                                            class="btn btn-ec-actionIcon down mr-3 {% if loop.last %}disabled{% endif %}"
-                                                            href="#"
-                                                            data-toggle="tooltip"
-                                                            data-placement="top" title="{{ 'admin.product.tag.down'|trans }}"><i
-                                                                class="fa fa-arrow-down fa-lg text-secondary"></i></a>
-                                                    <a
-                                                            class="btn btn-ec-actionIcon mr-3"
-                                                            href="{{ url('admin_product_tag_edit', {id: Tag.id}) }}"
-                                                            data-toggle="tooltip"
-                                                            data-placement="top" title="{{ 'admin.product.tag.edit'|trans }}"><i
-                                                                class="fa fa-pencil fa-lg text-secondary"></i></a>
-                                                    <a
-                                                            class="btn btn-ec-actionIcon mr-3"
-                                                            href="{{ url('admin_product_tag_delete', {id: Tag.id}) }}"
-                                                            data-toggle="modal"
-                                                            data-target="#confirmModal-{{ Tag.id }}"
-                                                            data-toggle="tooltip"
-                                                            data-placement="top" title="{{ 'admin.product.tag.delete'|trans }}"><i
-                                                                class="fa fa-close fa-lg text-secondary"></i></a>
-                                                </div>
+    <div class="c-contentsArea__cols">
+        <div class="c-contentsArea__primaryCol">
+            <div class="c-primaryCol">
+                <div class="card rounded border-0 mb-4">
+                    <div class="card-body p-0">
+                        <div class="card rounded border-0 mb-2">
+                            <ul class="list-group list-group-flush tableish">
+                                <li class="list-group-item">
+                                    <div class="form-row">
+                                        <form role="form" class="form-row" name="form1" id="form1" method="post"
+                                              action="{% if Tag.id %}{{ path('admin_product_tag_edit', {id: Tag.id}) }}{% else %}{{ url('admin_product_tag') }} {% endif %}"
+                                              enctype="multipart/form-data">
+                                            {{ form_widget(form._token) }}
+                                            <div class="col-auto d-flex align-items-center">
+                                                {{ form_widget(form.name) }}
+                                                {{ form_errors(form.name) }}
                                             </div>
+                                            <div class="col-auto d-flex align-items-center">
+                                                <button class="btn btn-ec-regular" type="submit">
+                                                    {{ 'admin.product.tag.create'|trans }}
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div><!-- /.form-row -->
+                                </li>
+                                {% for Tag in Tags %}
+                                    <li class="list-group-item item_box" data-tag-id="{{ Tag.id }}"
+                                        data-sort-no="{{ Tag.sortNo }}">
+                                        <div class="row justify-content-around">
+                                            <div class="col-auto d-flex align-items-center"><i
+                                                        class="fa fa-bars text-ec-gray"></i></div>
+                                            <div class="col d-flex align-items-center"><a>{{ Tag.name }}</a>
+                                            </div>
+                                            <div class="col-auto text-right">
+                                                <a class="btn btn-ec-actionIcon up mr-3 {% if loop.first %}disabled{% endif %}"
+                                                   href="#"
+                                                   data-toggle="tooltip"
+                                                   data-placement="top" title="{{ 'admin.product.tag.up'|trans }}"><i
+                                                            class="fa fa-arrow-up fa-lg text-secondary"></i></a>
+                                                <a
+                                                        class="btn btn-ec-actionIcon down mr-3 {% if loop.last %}disabled{% endif %}"
+                                                        href="#"
+                                                        data-toggle="tooltip"
+                                                        data-placement="top"
+                                                        title="{{ 'admin.product.tag.down'|trans }}"><i
+                                                            class="fa fa-arrow-down fa-lg text-secondary"></i></a>
+                                                <a
+                                                        class="btn btn-ec-actionIcon mr-3"
+                                                        href="{{ url('admin_product_tag_edit', {id: Tag.id}) }}"
+                                                        data-toggle="tooltip"
+                                                        data-placement="top"
+                                                        title="{{ 'admin.product.tag.edit'|trans }}"><i
+                                                            class="fa fa-pencil fa-lg text-secondary"></i></a>
+                                                <a
+                                                        class="btn btn-ec-actionIcon mr-3"
+                                                        href="{{ url('admin_product_tag_delete', {id: Tag.id}) }}"
+                                                        data-toggle="modal"
+                                                        data-target="#confirmModal-{{ Tag.id }}"
+                                                        data-toggle="tooltip"
+                                                        data-placement="top"
+                                                        title="{{ 'admin.product.tag.delete'|trans }}"><i
+                                                            class="fa fa-close fa-lg text-secondary"></i></a>
+                                            </div>
+                                        </div>
 
-                                        <div class="modal fade" id="confirmModal-{{ Tag.id }}" tabindex="-1" role="dialog"
+                                        <div class="modal fade" id="confirmModal-{{ Tag.id }}" tabindex="-1"
+                                             role="dialog"
                                              aria-labelledby="confirmModal-{{ Tag.id }}" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
