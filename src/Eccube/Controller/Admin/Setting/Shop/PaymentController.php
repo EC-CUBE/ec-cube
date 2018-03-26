@@ -326,6 +326,7 @@ class PaymentController extends AbstractController
     public function moveSortNo(Request $request)
     {
         if ($request->isXmlHttpRequest()) {
+            $this->isTokenValid();
             $sortNos = $request->request->all();
             foreach ($sortNos as $paymentId => $sortNo) {
                 /** @var Payment $Payment */
