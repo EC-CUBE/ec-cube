@@ -26,11 +26,35 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
 
     public function testMoveSortNo()
     {
-        $dataSortNo = [
-            '1-1' => 5,
-            '1-2' => 6,
-            '2-3' => 7,
+        $data['newSortNos'] = [
+            '2-3' => 5,
+            '3-3' => 6,
+            '4-3' => 7,
         ];
+        $data['targetLayoutId'] = 3;
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_content_layout_sort_no_move'),
+            $data,
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            ]
+        );
+        $this->expected = 7;
+        $this->actual = $this->PageLayoutRepo->findOneBy(['page_id' => 4, 'layout_id' => 3])->getSortNo();
+        $this->verify();
+    }
+
+    public function testMoveSortNoToOtherList()
+    {
+        $dataSortNo['newSortNos'] = [
+            '1-2' => 5,
+            '2-3' => 6,
+            '3-3' => 7,
+        ];
+        $dataSortNo['targetLayoutId'] = 3;
         $this->client->request(
             'POST',
             $this->generateUrl('admin_content_layout_sort_no_move'),
@@ -41,8 +65,8 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
                 'CONTENT_TYPE' => 'application/json',
             ]
         );
-        $this->expected = 7;
-        $this->actual = $this->PageLayoutRepo->findOneBy(['page_id' => 2, 'layout_id' => 3])->getSortNo();
+        $this->expected = 5;
+        $this->actual = $this->PageLayoutRepo->findOneBy(['page_id' => 1, 'layout_id' => 3])->getSortNo();
         $this->verify();
     }
 

@@ -234,12 +234,15 @@ class LayoutController extends AbstractController
     /**
      * @Method("POST")
      * @Route("/%eccube_admin_route%/content/layout/sort_no/move", name="admin_content_layout_sort_no_move")
+     *
+     * @param Request $request
+     * @return Response
      */
     public function moveSortNo(Request $request)
     {
         if ($request->isXmlHttpRequest()) {
             $sortNos = $request->request->get('newSortNos');
-            $layoutIds = $request->request->get('layoutId');
+            $targetLayoutId = $request->request->get('targetLayoutId');
 
             foreach ($sortNos as $ids => $sortNo) {
 
@@ -251,7 +254,7 @@ class LayoutController extends AbstractController
                 $Item = $this->pageLayoutRepository
                     ->findOneBy(['page_id' => $pageId, 'layout_id' => $layoutId]);
 
-                $Item->setLayoutId($layoutIds);
+                $Item->setLayoutId($targetLayoutId);
                 $Item->setSortNo($sortNo);
                 $this->entityManager->persist($Item);
             }
