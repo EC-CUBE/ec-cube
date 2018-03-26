@@ -200,28 +200,10 @@ class ProductController extends AbstractController
             $searchForm->handleRequest($request);
 
             if ($searchForm->isValid()) {
+                $page_no = 1;
                 $searchData = $searchForm->getData();
 
-                // paginator
-                $qb = $this->productRepository->getQueryBuilderBySearchDataForAdmin($searchData);
-                $page_no = 1;
-
-                $event = new EventArgs(
-                    [
-                        'qb' => $qb,
-                        'searchData' => $searchData,
-                    ],
-                    $request
-                );
-                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_INDEX_SEARCH, $event);
-                $searchData = $event->getArgument('searchData');
-
-                $pagination = $paginator->paginate(
-                    $qb,
-                    $page_no,
-                    $page_count,
-                    ['wrap-queries' => true]
-                );
+                $pagination = $this->buildPagination($paginator, $request, $searchData, $page_no, $page_count);
 
                 // sessionに検索条件を保持
                 $viewData = FormUtil::getViewData($searchForm);
@@ -234,6 +216,11 @@ class ProductController extends AbstractController
                 $session->remove('eccube.admin.product.search');
                 $session->remove('eccube.admin.product.search.page_no');
                 $session->remove('eccube.admin.product.search.page_count');
+
+                $page_no = 1;
+                $searchData = [];
+
+                $pagination = $this->buildPagination($paginator, $request, $searchData, $page_no, $page_count);
             } else {
                 // pagingなどの処理
                 if (is_null($page_no)) {
@@ -282,24 +269,7 @@ class ProductController extends AbstractController
 
                     $session->set('eccube.admin.product.search', $viewData);
 
-                    $qb = $this->productRepository->getQueryBuilderBySearchDataForAdmin($searchData);
-
-                    $event = new EventArgs(
-                        [
-                            'qb' => $qb,
-                            'searchData' => $searchData,
-                        ],
-                        $request
-                    );
-                    $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_INDEX_SEARCH, $event);
-                    $searchData = $event->getArgument('searchData');
-
-                    $pagination = $paginator->paginate(
-                        $qb,
-                        $page_no,
-                        $page_count,
-                        ['wrap-queries' => true]
-                    );
+                    $pagination = $this->buildPagination($paginator, $request, $searchData, $page_no, $page_count);
 
                     // セッションから検索条件を復元(カテゴリ)
                     if (!empty($searchData['category_id'])) {
@@ -980,6 +950,39 @@ class ProductController extends AbstractController
         $ProductCategory->setSortNo($count);
 
         return $ProductCategory;
+    }
+
+    /**
+     * @param Paginator $paginator
+     * @param Request $request
+     * @param array $searchData
+     * @param integer $page_no
+     * @param integer $page_count
+     * @return Paginator
+     */
+    private function buildPagination(Paginator $paginator, Request $request, array &$searchData, $page_no, $page_count)
+    {
+        $qb = $this->productRepository->getQueryBuilderBySearchDataForAdmin($searchData);
+
+        $event = new EventArgs(
+            [
+                'qb' => $qb,
+                'searchData' => $searchData,
+            ],
+            $request
+        );
+
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_INDEX_SEARCH, $event);
+        $searchData = $event->getArgument('searchData');
+
+        $pagination = $paginator->paginate(
+            $qb,
+            $page_no,
+            $page_count,
+            ['wrap-queries' => true]
+        );
+
+        return $pagination;
     }
 
     /**
