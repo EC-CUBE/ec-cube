@@ -120,9 +120,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                                     </button>
                                                                     <a class="btn btn-ec-delete" href="{{ url('admin_setting_shop_payment_delete', {'id' : Payment.id}) }}" {{ csrf_token_for_anchor() }}
                                                                        data-method="delete" data-confirm="false">{{ 'common.label.delete'|trans }}</a>
-                                                                    <a class="btn btn-ec-delete" href="{{ url('admin_setting_shop_payment_visible', {'id' : Payment.id}) }}" {{ csrf_token_for_anchor() }} data-method="PUT" data-confirm="false">
-                                                                        {{ 'common.label.stop'|trans }}
-                                                                    </a>
                                                                 </div>
                                                             </div>
                                                         </div>
