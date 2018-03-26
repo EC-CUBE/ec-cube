@@ -35,7 +35,6 @@
     <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.sortable.min.js', 'admin') }}"></script>
     <script>
         $(function () {
-            var isUpdate = true;
             var containerRows = $('div.sortables');
             containerRows.each(function () {
                 doUpdateSortNo($(this));
@@ -58,26 +57,33 @@
                     cursor: 'move',
                     start: function (ev, ui) {
                         ui.item.prop('main', ui.item.parent());
+                        ui.item.prop('isUpdate', true);
                     },
                     stop: function (ev, ui) {
+                        console.log(ui.item.prop('isUpdate'), 11111);
+                        console.log(ui.item.prop('main').attr('id'), 'id');
+                        console.log(ui.item.parent().attr('id'), 'id2');
                         if (ui.item.prop('main').attr('id') == ui.item.parent().attr('id')) {
+                            updateSortNo();
                             return;
                         }
+                        console.log(ui.item.parent().find('[data-page-id="' + ui.item.data('page-id') + '"]').length, 'length');
                         if (ui.item.parent().find('[data-page-id="' + ui.item.data('page-id') + '"]').length > 1) {
-                            isUpdate = false;
+                            console.log(ui.item.prop('isUpdate'), 33333);
+                            ui.item.prop('isUpdate', false);
                             $(this).sortable("cancel");
+                        }else{
+                            updateSortNo();
                         }
                     },
                     update: function (e, ui) {
-                        console.log(e);
-                        $("body").append($('<div class="modal-backdrop show"></div>'));
-                        if(isUpdate){
-                            updateSortNo();
-                        }
+                        console.log(ui.item.prop('main').attr('id'), ui.item.parent().attr('id'));
+//                        updateSortNo();
                     }
                 });
 
                 var updateSortNo = function () {
+                    $("body").append($('<div class="modal-backdrop show"></div>'));
                     // 並び替え後にsortNoを更新
                     var newSortNos = {};
                     var i = 1;
@@ -96,7 +102,6 @@
                         console.log('Failed');
                         $(".modal-backdrop").remove();
                     });
-                    isUpdate = true;
                 }
             }
         });
