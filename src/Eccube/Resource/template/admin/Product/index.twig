@@ -79,19 +79,20 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 }
             })($, formPropStateSubscriber);
 
-            toggleBtnBulk('input[name^="ids"]', '#btn_bulk');
-            $('input[name^="ids"]').on('change', function() {
-                toggleBtnBulk('input[name^="ids"]', '#btn_bulk');
+            toggleBtnBulk('input[id^="check_"]', '#btn_bulk');
+            $('input[id^="check_"]').on('change', function() {
+                toggleBtnBulk('input[id^="check_"]', '#btn_bulk');
             });
 
 
             $('#check_all').on('change', function() {
                 var checked = $(this).prop('checked');
                 if (checked) {
-                    $('input[id^=check_]').prop('checked', true);
+                    $('input[id^="check_"]').prop('checked', true);
                 } else {
-                    $('input[id^=check_]').prop('checked', false);
+                    $('input[id^="check_"]').prop('checked', false);
                 }
+                toggleBtnBulk('input[id^="check_"]', '#btn_bulk');
             });
 
             $('#form_bulk').find('.action-submit').on('click', function(event) {
