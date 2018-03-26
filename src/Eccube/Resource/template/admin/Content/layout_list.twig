@@ -54,6 +54,8 @@
                         if (ui.item.prop('main').attr('id') != ui.item.parent().attr('id')
                             && ui.item.parent().find('[data-page-id="' + ui.item.data('page-id') + '"]').length > 1) {
                             ui.item.prop('isUpdate', false);
+//                            alert('Can not use 2 pages for a layout !');
+                            $('#duplicate-error').modal('show');
                         } else {
                             ui.item.prop('isUpdate', true)
                         }
@@ -328,6 +330,28 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="duplicate-error" tabindex="-1" role="dialog" aria-labelledby="duplicate-error" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-bold">Error</h5>
+                    <button class="close" type="button"
+                            data-dismiss="modal"
+                            aria-label="Close"><span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body text-left">
+                    <p class="text-left">Can not move this page to target layout !</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-ec-sub" type="button"
+                            data-dismiss="modal">{{ 'admin.product.index.cancel'|trans }}
+                    </button>
                 </div>
             </div>
         </div>

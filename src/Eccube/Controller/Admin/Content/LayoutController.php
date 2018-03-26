@@ -246,9 +246,9 @@ class LayoutController extends AbstractController
 
             foreach ($sortNos as $ids => $sortNo) {
 
-                $ids = explode('-', $ids);
-                $pageId = $ids[0];
-                $layoutId = $ids[1];
+                $id = explode('-', $ids);
+                $pageId = $id[0];
+                $layoutId = $id[1];
 
                 /* @var $Item PageLayoutRepository */
                 $Item = $this->pageLayoutRepository
