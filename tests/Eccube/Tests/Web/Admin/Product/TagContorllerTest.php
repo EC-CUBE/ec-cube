@@ -47,6 +47,30 @@ class TagContorllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
+    public function testMoveSortNo()
+    {
+        $idAndSortNo = [
+            1 => 4,
+            2 => 5,
+            3 => 6,
+        ];
+
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_product_tag_sort_no_move'),
+            $idAndSortNo,
+            array(),
+            array(
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            )
+        );
+
+        $this->expected = 6;
+        $this->actual = $this->TagRepo->find(3)->getSortNo();
+        $this->verify();
+    }
+
     /**
      * @param $isSuccess
      * @param $expected
