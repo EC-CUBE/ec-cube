@@ -26,6 +26,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block title %}{{ 'admin.product.tag.title'|trans }}{% endblock %}
 {% block sub_title %}{{ 'admin.product.tag.sub_title'|trans }}{% endblock %}
 
+{% block stylesheet %}
+    <style>
+        .list-group-item:hover{
+            z-index: inherit;
+        }
+    </style>
+{% endblock stylesheet %}
 {% block javascript %}
     <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.core.min.js', 'admin') }}"></script>
     <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.widget.min.js', 'admin') }}"></script>
@@ -105,28 +112,33 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% endblock %}
 
 {% block main %}
-    <form method="post" action="">
         <div class="c-contentsArea__cols">
             <div class="c-contentsArea__primaryCol">
                 <div class="c-primaryCol">
                     <div class="card rounded border-0 mb-4">
                         <div class="card-body p-0">
                             <div class="card rounded border-0 mb-2">
-                                <ul class="list-group list-group-flush tableish">
+                                <ul class="list-group list-group-flush">
                                     <li class="list-group-item">
                                         <div class="form-row">
-                                            <div class="col-auto d-flex align-items-center">
-                                                <input class="form-control" type="text">
-                                            </div>
-                                             {#TODO 新規作成を実装する#}
-                                            <div class="col-auto d-flex align-items-center">
-                                                <button class="btn btn-ec-regular" type="submit">{{ 'admin.product.tag.create'|trans }}
-                                                </button>
-                                            </div>
-                                        </div>
+                                            <form role="form" class="form-row" name="form1" id="form1" method="post"
+                                                  action="{% if Tag.id %}{{ path('admin_product_tag_edit', {id: Tag.id}) }}{% else %}{{ url('admin_product_tag')}} {% endif %}"
+                                                  enctype="multipart/form-data">
+                                                {{ form_widget(form._token) }}
+                                                <div class="col-auto d-flex align-items-center">
+                                                    {{ form_widget(form.name) }}
+                                                    {{ form_errors(form.name) }}
+                                                </div>
+                                                <div class="col-auto d-flex align-items-center">
+                                                    <button class="btn btn-ec-regular" type="submit">
+                                                        {{ 'admin.product.tag.create'|trans }}
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div><!-- /.form-row -->
                                     </li>
                                     {% for Tag in Tags %}
-                                        <li class="list-group-item item_box" data-tag-id="{{ Tag.id }}" data-sort-no="{{ Tag.sortNo }}">
+                                        <li class="list-group-item">
                                             <div class="row justify-content-around">
                                                 <div class="col-auto d-flex align-items-center"><i
                                                             class="fa fa-bars text-ec-gray"></i></div>
@@ -136,47 +148,86 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                        href="#"
                                                        data-toggle="tooltip"
                                                        data-placement="top" title="{{ 'admin.product.tag.up'|trans }}"><i
-                                                            class="fa fa-arrow-up fa-lg text-secondary"></i></a>
+                                                                class="fa fa-arrow-up fa-lg text-secondary"></i></a>
                                                     <a
-                                                        class="btn btn-ec-actionIcon down mr-3 {% if loop.last %}disabled{% endif %}"
-                                                        href="#"
-                                                        data-toggle="tooltip"
-                                                        data-placement="top" title="{{ 'admin.product.tag.down'|trans }}"><i
-                                                            class="fa fa-arrow-down fa-lg text-secondary"></i></a>
+                                                            class="btn btn-ec-actionIcon down mr-3 {% if loop.last %}disabled{% endif %}"
+                                                            href="#"
+                                                            data-toggle="tooltip"
+                                                            data-placement="top" title="{{ 'admin.product.tag.down'|trans }}"><i
+                                                                class="fa fa-arrow-down fa-lg text-secondary"></i></a>
                                                     <a
-                                                            class="btn btn-ec-actionIcon mr-3" href=""
+                                                            class="btn btn-ec-actionIcon mr-3"
+                                                            href="{{ url('admin_product_tag_edit', {id: Tag.id}) }}"
                                                             data-toggle="tooltip"
-                                                            data-placement="top" title="名前を編集"><i
-                                                                class="fa fa-pencil fa-lg text-secondary"></i></a><a
-                                                            class="btn btn-ec-actionIcon mr-3" href=""
+                                                            data-placement="top" title="{{ 'admin.product.tag.edit'|trans }}"><i
+                                                                class="fa fa-pencil fa-lg text-secondary"></i></a>
+                                                    <a
+                                                            class="btn btn-ec-actionIcon mr-3"
+                                                            href="{{ url('admin_product_tag_delete', {id: Tag.id}) }}"
+                                                            data-toggle="modal"
+                                                            data-target="#confirmModal-{{ Tag.id }}"
                                                             data-toggle="tooltip"
-                                                            data-placement="top" title="削除"><i
-                                                                class="fa fa-close fa-lg text-secondary"></i></a></div>
+                                                            data-placement="top" title="{{ 'admin.product.tag.delete'|trans }}"><i
+                                                                class="fa fa-close fa-lg text-secondary"></i></a>
+                                                </div>
                                             </div>
-                                        </li>
-                                    {% endfor %}
-                                    {#TODO タグの編集を実装#}
-                                    {#<li class="list-group-item">#}
-                                    {#<form class="form-row">#}
-                                    {#<div class="col-auto d-flex align-items-center">#}
-                                    {#<input class="form-control" type="text">#}
-                                    {#</div>#}
-                                    {#<div class="col-auto d-flex align-items-center">#}
-                                    {#<button class="btn btn-ec-conversion" type="submit">決定</button>#}
-                                    {#</div>#}
-                                    {#<div class="col-auto d-flex align-items-center">#}
-                                    {#<button class="btn btn-ec-sub" type="submit">キャンセル</button>#}
-                                    {#</div>#}
-                                    {#</form>#}
-                                    {#</li>#}
-                                </ul>
-                            </div>
+
+                                        <div class="modal fade" id="confirmModal-{{ Tag.id }}" tabindex="-1" role="dialog"
+                                             aria-labelledby="confirmModal-{{ Tag.id }}" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title font-weight-bold">
+                                                            {{ 'admin.product.tag.delete.confirm.title'|trans }}</h5>
+                                                        <button class="close" type="button"
+                                                                data-dismiss="modal"
+                                                                aria-label="Close"><span
+                                                                    aria-hidden="true">×</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body text-left">
+                                                        <p class="text-left">
+                                                            {{ 'admin.product.tag.delete.confirm.message'|trans }}</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button class="btn btn-ec-sub" type="button"
+                                                                data-dismiss="modal">{{ 'admin.product.index.cancel'|trans }}
+                                                        </button>
+                                                        <a
+                                                                href="{{ url('admin_product_tag_delete', {'id' : Tag.id}) }}"
+                                                                class="btn btn-ec-delete"
+                                                                data-confirm="false"
+                                                                {{ csrf_token_for_anchor() }}
+                                                                data-method="delete">
+                                                            {{ 'admin.product.index.delete'|trans }}
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                                {#TODO タグの編集を実装#}
+                                {#<li class="list-group-item">#}
+                                {#<form class="form-row">#}
+                                {#<div class="col-auto d-flex align-items-center">#}
+                                {#<input class="form-control" type="text">#}
+                                {#</div>#}
+                                {#<div class="col-auto d-flex align-items-center">#}
+                                {#<button class="btn btn-ec-conversion" type="submit">決定</button>#}
+                                {#</div>#}
+                                {#<div class="col-auto d-flex align-items-center">#}
+                                {#<button class="btn btn-ec-sub" type="submit">キャンセル</button>#}
+                                {#</div>#}
+                                {#</form>#}
+                                {#</li>#}
+                            </ul>
                         </div>
                     </div>
-                    <p>{{ 'admin.product.tag.drag&drop'|trans }}</p>
                 </div>
+                <p>{{ 'admin.product.tag.drag&drop'|trans }}</p>
             </div>
         </div>
-    </form>
+    </div>
 
 {% endblock %}

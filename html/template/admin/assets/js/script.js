@@ -104,3 +104,13 @@ var cardCollapseIconUp = function(){
     })
 };
 cardCollapseIconUp();
+
+// toggle bulk button
+var toggleBtnBulk = function(checkboxSelector, btnSelector) {
+    if ($(checkboxSelector + ':checked').length) {
+        $(btnSelector).show();
+    } else {
+        $(btnSelector).hide();
+    }
+};
+

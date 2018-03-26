@@ -25,6 +25,7 @@ namespace Eccube\Tests\Web\Admin\Product;
 
 use Eccube\Repository\TagRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\HttpFoundation\Response;
 
 class TagContorllerTest extends AbstractAdminWebTestCase
 {
@@ -67,5 +68,114 @@ class TagContorllerTest extends AbstractAdminWebTestCase
         $this->expected = 6;
         $this->actual = $this->TagRepo->find(3)->getSortNo();
         $this->verify();
+    }
+
+    /**
+     * @param $isSuccess
+     * @param $expected
+     * @dataProvider dataSubmitProvider
+     */
+    public function testAddNew($isSuccess, $expected)
+    {
+        $formData = $this->createFormData();
+        if (!$isSuccess) {
+            $formData['method'] = '';
+        }
+
+        $this->client->request('POST',
+            $this->generateUrl('admin_product_tag'),
+            array(
+                'admin_product_tag' => $formData
+            )
+        );
+
+        $this->expected = $expected;
+        $this->actual = $this->client->getResponse()->isRedirection();
+        $this->verify();
+    }
+
+    public function testRoutingEdit()
+    {
+        $Item = $this->TagRepo->find(1);
+        $this->client->request('GET', $this->generateUrl('admin_product_tag_edit', array('id' => $Item->getId())));
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
+    /**
+     * @param $isSuccess
+     * @param $expected
+     * @dataProvider dataSubmitProvider
+     */
+    public function testEdit($isSuccess, $expected)
+    {
+        $formData = $this->createFormData();
+        if (!$isSuccess) {
+            $formData['method'] = '';
+        }
+
+        $Item = $this->TagRepo->find(1);
+
+        $this->client->request('POST',
+            $this->generateUrl('admin_product_tag_edit', array('id' => $Item->getId())),
+            array(
+                'admin_product_tag' => $formData
+            )
+        );
+        $this->expected = $expected;
+        $this->actual = $this->client->getResponse()->isRedirection();
+        $this->verify();
+
+        $this->expected = 'Tag-101';
+        $this->actual = $Item->getName();
+        $this->verify();
+    }
+
+    public function testDeleteSuccess()
+    {
+        $Item = new Tag();
+        $Item->setName('Tag-102')
+            ->setSortNo(999);
+
+        $this->entityManager->persist($Item);
+        $this->entityManager->flush();
+
+        $TagId = $Item->getId();
+        $this->client->request('DELETE',
+            $this->generateUrl('admin_product_tag_delete', array('id' => $TagId))
+        );
+
+        $this->assertTrue($this->client->getResponse()->isRedirection());
+
+        $Item = $this->TagRepo->find($TagId);
+        $this->assertNull($Item);
+    }
+
+    public function testDeleteFailNotFound()
+    {
+        $tagId = 9999;
+        $this->client->request(
+            'DELETE',
+            $this->generateUrl('admin_product_tag_delete', array('id' => $tagId))
+        );
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
+    }
+
+    public function createFormData()
+    {
+
+        $form = array(
+            '_token' => 'dummy',
+            'name' => 'Tag-101',
+        );
+
+        return $form;
+    }
+
+    public function dataSubmitProvider()
+    {
+        return array(
+            array(false, false),
+            array(true, true),
+        );
     }
 }

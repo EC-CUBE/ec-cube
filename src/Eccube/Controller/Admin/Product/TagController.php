@@ -29,6 +29,7 @@ use Eccube\Controller\AbstractController;
 use Eccube\Entity\Tag;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Form\Type\Admin\ProductTag;
 use Eccube\Repository\TagRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -60,12 +61,53 @@ class TagController extends AbstractController
      * @Route("/%eccube_admin_route%/product/tag", name="admin_product_tag")
      * @Route("/%eccube_admin_route%/product/tag/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_tag_edit")
      * @Template("@admin/Product/tag.twig")
+     *
+     * @param Request $request
+     * @param Tag|null $Tag
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function index(Request $request)
+    public function index(Request $request, Tag $Tag = null)
     {
         $Tags = $this->tagRepository->getList();
+        if (!$Tag) {
+            $Tag = new Tag();
+        }
+
+        $builder = $this->formFactory
+            ->createBuilder(ProductTag::class, $Tag);
+        $event = new EventArgs(
+            array(
+                'builder' => $builder,
+                'Tag' => $Tag,
+            ),
+            $request
+        );
+
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_TAG_INDEX_INITIALIZE, $event);
+
+        $form = $builder->getForm();
+        if ($request->getMethod() === 'POST') {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+
+                $this->tagRepository->save($Tag);
+                $event = new EventArgs(
+                    array(
+                        'form' => $form,
+                        'Tag' => $Tag,
+                    ),
+                    $request
+                );
+                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_TAG_INDEX_COMPLETE, $event);
+
+                $this->addSuccess('admin.tag.save.complete', 'admin');
+                return $this->redirectToRoute('admin_product_tag');
+            }
+        }
 
         return [
+            'form' => $form->createView(),
+            'Tag' => $Tag,
             'Tags' => $Tags,
         ];
     }
