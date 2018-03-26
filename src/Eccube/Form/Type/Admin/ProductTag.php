@@ -22,35 +22,51 @@
  */
 
 
-namespace Eccube\Form\Type\Master;
+namespace Eccube\Form\Type\Admin;
 
-use Doctrine\ORM\EntityRepository;
-use Eccube\Annotation\FormType;
-use Eccube\Form\Type\MasterType;
+use Eccube\Common\EccubeConfig;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @FormType
- */
-class RoundingTypeType extends AbstractType
+class ProductTag extends AbstractType
 {
-    public function configureOptions(OptionsResolver $resolver)
+    /**
+     * @var EccubeConfig
+     */
+    protected $eccubeConfig;
+
+    /**
+     * CategoryType constructor.
+     * @param EccubeConfig $eccubeConfig
+     */
+    public function __construct(EccubeConfig $eccubeConfig)
     {
-        $resolver->setDefaults(array(
-            'class' => 'Eccube\Entity\Master\RoundingType',
-            'expanded' => false,
-        ));
+        $this->eccubeConfig = $eccubeConfig;
     }
 
-    public function getParent()
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        return MasterType::class;
+        $builder
+            ->add('name', TextType::class, array(
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                    new Assert\Length(array(
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
+                    )),
+                ),
+            ));
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getBlockPrefix()
     {
-        return 'rounding_type';
+        return 'admin_product_tag';
     }
 }
