@@ -159,7 +159,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     </div>
                     <div class="col-6">
                         <div class="mb-2">
-                            <label class="col-form-label" data-toggle="tooltip" data-placement="top" title="Tooltip">
+                            <label class="col-form-label" data-tooltip="tooltip" data-placement="top" title="Tooltip">
                                 {{ 'admin.product.index.473'|trans }}
                                 <i class="fa fa-question-circle fa-lg ml-1"></i>
                             </label>
@@ -381,14 +381,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 </td>
                                                 <td class="align-middle pr-3" colspan="3">
                                                     <div class="row">
-                                                        <div class="col text-center" data-toggle="tooltip"
+                                                        <div class="col text-center" data-tooltip="tooltip"
                                                              data-placement="top"
                                                              title="{{ 'admin.product.index.display'|trans }}"><a class="btn btn-ec-actionIcon"
                                                                            href="{{ url('product_detail', {id:Product.id}) }}"
                                                                            target="_blank"><i
                                                                         class="fa fa-eye fa-lg text-secondary"
                                                                         aria-hidden="true"></i></a></div>
-                                                        <div class="col text-center" data-toggle="tooltip"
+                                                        <div class="col text-center" data-tooltip="tooltip"
                                                              data-placement="top"
                                                              title="{{ 'admin.product.index.duplicate'|trans }}"><a class="btn btn-ec-actionIcon"
                                                                            href="{{ url('admin_product_product_copy', {'id' : Product.id}) }}" {{ csrf_token_for_anchor() }}
@@ -396,7 +396,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                                            data-message="{{ 'admin.product.index.text01'|trans }}"><i
                                                                         class="fa fa-files-o fa-lg text-secondary"
                                                                         aria-hidden="true"></i></a></div>
-                                                        <div class="col text-center" data-toggle="tooltip"
+                                                        <div class="col text-center" data-tooltip="tooltip"
                                                              data-placement="top"
                                                              title="{{ 'admin.product.index.abolition'|trans }}"><a class="btn btn-ec-actionIcon" data-toggle="modal"
                                                                            data-target="#discontinuance_{{ Product.id }}"><i

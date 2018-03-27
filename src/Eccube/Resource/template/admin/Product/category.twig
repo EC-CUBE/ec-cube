@@ -168,32 +168,32 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     <div class="col-auto text-right">
                                                         {# TODO: 「上へ移動」「下へ移動」のボタンの動作の実装 #}
                                                         <a class="btn btn-ec-actionIcon mr-3" href=""
-                                                           data-toggle="tooltip" data-placement="top"
+                                                           data-tooltip="tooltip" data-placement="top"
                                                            title="{{ 'admin.product.category.up'|trans }}">
                                                             <i class="fa fa-arrow-up fa-lg text-secondary"></i>
                                                         </a>
                                                         <a class="btn btn-ec-actionIcon mr-3" href=""
-                                                           data-toggle="tooltip" data-placement="top"
+                                                           data-tooltip="tooltip" data-placement="top"
                                                            title="{{ 'admin.product.category.down'|trans }}">
                                                             <i class="fa fa-arrow-down fa-lg text-secondary"></i>
                                                         </a>
                                                         <a class="btn btn-ec-actionIcon mr-3"
                                                            href="{{ url('admin_product_category_edit', {id: Category.id}) }}"
-                                                           data-toggle="tooltip" data-placement="top"
+                                                           data-tooltip="tooltip" data-placement="top"
                                                            title="{{ 'admin.product.category.rename'|trans }}">
                                                             <i class="fa fa-pencil fa-lg text-secondary"></i>
                                                         </a>
                                                         {% if Category.Children|length > 0 or Category.hasProductCategories %}
                                                             {# TODO: 削除できない場合のxアイコンの表現をわかりやすくする #}
                                                             <a class="btn btn-ec-actionIcon mr-3"
-                                                               data-toggle="tooltip" data-placement="top"
+                                                               data-tooltip="tooltip" data-placement="top"
                                                                title="{{ 'admin.product.category.text01'|trans }}">
                                                                 <i class="fa fa-close fa-lg text-secondary"></i>
                                                             </a>
                                                         {% else %}
                                                             <a class="btn btn-ec-actionIcon mr-3"
                                                                href="{{ url('admin_product_category_delete', {id: Category.id}) }}"
-                                                               data-toggle="tooltip" data-placement="top"
+                                                               data-tooltip="tooltip" data-placement="top"
                                                                title="{{ 'admin.product.category.410'|trans }}" {{ csrf_token_for_anchor() }}
                                                                data-method="delete">
                                                                 <i class="fa fa-close fa-lg text-secondary"></i>

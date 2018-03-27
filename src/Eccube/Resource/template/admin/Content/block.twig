@@ -45,10 +45,10 @@
                                                 </a>
                                             </div>
                                             <div class="col-auto text-right">
-                                                <a href="{{ url('admin_content_block_edit', {id: Block.id}) }}" class="btn btn-ec-actionIcon mr-3" data-toggle="tooltip" data-placement="top" title="{{ 'admin.content.block_edit.14'|trans }}">
+                                                <a href="{{ url('admin_content_block_edit', {id: Block.id}) }}" class="btn btn-ec-actionIcon mr-3" data-tooltip="tooltip" data-placement="top" title="{{ 'admin.content.block_edit.14'|trans }}">
                                                     <i class="fa fa-pencil fa-lg text-secondary"></i>
                                                 </a>
-                                                <a href="{{ url('admin_content_block_delete', {id: Block.Id} ) }}" class="btn btn-ec-actionIcon mr-3 {% if not Block.deletable %}disabled{% endif %}" data-toggle="tooltip" data-placement="top" title="{{ 'admin.content.block_edit.17'|trans }}" {{ csrf_token_for_anchor() }} data-method="delete">
+                                                <a href="{{ url('admin_content_block_delete', {id: Block.Id} ) }}" class="btn btn-ec-actionIcon mr-3 {% if not Block.deletable %}disabled{% endif %}" data-tooltip="tooltip" data-placement="top" title="{{ 'admin.content.block_edit.17'|trans }}" {{ csrf_token_for_anchor() }} data-method="delete">
                                                     <i class="fa fa-close fa-lg text-secondary"></i>
                                                 </a>
                                             </div>
