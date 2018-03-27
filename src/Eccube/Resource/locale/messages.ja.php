@@ -1377,8 +1377,8 @@ return [
     'admin.product.index.standart.modal.unlimited' => '無制限',
     'admin.product.index.not_specified' => '無制限',
     'admin.product.index.filter_by_stock' => '在庫',
-    'admin.product.index.filter_by_stock_yes' => 'あり',
-    'admin.product.index.filter_by_stock_none' => 'なし',
+    'admin.product.index.filter_in_stock' => 'あり',
+    'admin.product.index.filter_out_of_stock' => 'なし',
 
     'admin.product.product.495' => '商品管理',
     'admin.product.product.496' => '商品登録',
