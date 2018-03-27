@@ -35,6 +35,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -163,26 +164,6 @@ class TagController extends AbstractController
             $this->entityManager->flush();
         }
 
-        return true;
-    }
-
-    // TODO 新規作成
-    public function new(Request $request)
-    {
-    }
-
-    // TODO 更新
-    public function edit(Request $request)
-    {
-    }
-
-    // TODO 上へ
-    public function up(Request $request)
-    {
-    }
-
-    // TODO 下へ
-    public function down(Request $request)
-    {
+        return new Response();
     }
 }

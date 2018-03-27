@@ -6,6 +6,8 @@ return [
     'common.label.edit' => '編集',
     'common.label.delete' => '削除',
     'common.label.save' => '登録',
+    'common.label.cancel' => 'キャンセル',
+    'common.label.stop' => '取扱を停止',
     'common.label.file_name' => 'ファイル名',
     'common.label.disabled' => '無効',
     'common.label.enabled' => '有効',
@@ -37,6 +39,7 @@ return [
     'common.label.shop_name_kana' => '店名（フリガナ）',
     'common.placeholder.address01' => '市区町村名（例：千代田区神田神保町）',
     'common.placeholder.address02' => '番地・ビル名（例：1-3-5）',
+    'common.grid.checkbox_required' => 'チェックボックスが選択されていません',
 
     //Store Front
     'common.label.all_products' => '',
@@ -1368,6 +1371,7 @@ return [
     'admin.product.index.text08' => '現在データが登録されていません。登録してみましょう！',
     'admin.product.index.text09' => '新規登録',
     'admin.product.index.text10' => 'データが消えてしまいましたか？バックアップをしているならリストアを試してみましょう。',
+    'admin.product.index.bulk_product_status_success_count' => '%status%: %count%件が正常に適用されました。',
     'admin.product.index.standard.modal.header' => '%name%の規格',
     'admin.product.index.standart.modal.col1' => '規格１',
     'admin.product.index.standart.modal.col2' => '規格２',
@@ -1592,6 +1596,8 @@ return [
     'admin.setting.shop.payment.608' => '上へ移動',
     'admin.setting.shop.payment.609' => '下へ移動',
     'admin.setting.shop.payment.610' => '新規作成',
+    'admin.setting.shop.payment.modal.header' => '支払方法を削除します',
+    'admin.setting.shop.payment.modal.body' => '支払方法は一覧（マスター）から削除されますが、これまでの取引等のデータから消えることはありません。この操作はあとから取り消すことができません。この支払方法を削除しますか？',
     'admin.setting.shop.payment_edit.title' => '支払方法登録・編集',
     'admin.setting.shop.payment_edit.subtitle' => '基本情報設定',
     'admin.setting.shop.payment_edit.image_alert_false' => 'アップロードに失敗しました。',
