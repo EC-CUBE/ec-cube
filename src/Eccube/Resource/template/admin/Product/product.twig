@@ -177,6 +177,37 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         }
 
     </script>
+    <script>
+        searchWord = function(){
+            var searchText = $(this).val(), // 検索ボックスに入力された値
+                targetText
+
+            // 検索ボックスに値が入っていない場合
+            if (searchText == '') {
+                // 全て表示する
+                $('.category-li').show();
+                return;
+            }
+
+            // 検索ボックスに値が入ってる場合
+            // 表示を全て空にする
+            $('.category-li').hide();
+
+            // 検索ワードが（子を含めて）含まれる要素のみ表示
+            $('.category-li').each(function() {
+                targetText = $(this).text();
+
+                // 検索対象となるリストに入力された文字列が存在するかどうかを判断
+                if (targetText.indexOf(searchText) != -1) {
+                    // 存在する場合はそのリストのテキストを用意した配列に格納
+                    $(this).show();
+                }
+            });
+        };
+
+        // searchWordの実行
+        $('#search-category').on('input', searchWord);
+    </script>
 {% endblock javascript %}
 
 {% block main %}
@@ -669,7 +700,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {# TODO: カテゴリ検索機能の実装 #}
                                     <div class="form-row">
                                         <div class="col">
-                                            <input class="form-control" type="search"
+                                            <input id="search-category" class="form-control" type="search"
                                                    placeholder="{{ 'admin.product.product.text12'|trans }}"
                                                    aria-label="Search">
                                         </div>
@@ -681,70 +712,33 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     </div>
                                 </div>
 
-                                {# TODO: カテゴリ選択方法の変更 #}
-                                <div id="detail_category_box__list"
-                                     class="accpanel padT08{% if form.Category.vars.valid == false %} has-error{% endif %}">
-                                    {{ form_widget(form.Category) }}
-                                    {{ form_errors(form.Category) }}
-                                </div>
-                                {#
-                                <div class="c-directoryTree--register rounded border mb-3 p-3">
-                                    <ul>
-                                        <li class="c-directoryTree--registerItem">
-                                            <input type="checkbox">
-                                            <label>カテゴリA</label>
+                                {% macro tree(Category, form) %}
+                                    {% import _self as selfMacro %}
+                                    {% set category_id = 'category_'~Category.id %}
+                                    <li class="c-directoryTree--registerItem category-li">
+                                        {# TODO: htmlの構造をモックと合わせる #}
+                                        {#{{ form_widget(attribute(form, category_id)) }}#}
+                                        <input type="checkbox" id="admin_product_{{ category_id }}" name="admin_product[{{ category_id }}]" class="form-check-input" value="1">
+                                        <label class="form-check-label" for="admin_product_{{ category_id }}">{{ attribute(form, category_id).vars.label }}</label>
+                                        {% if Category.children|length > 0 %}
                                             <ul>
-                                                <li class="c-directoryTree--registerItem">
-                                                    <input type="checkbox">
-                                                    <label>カテゴリA-a</label>
-                                                </li>
-                                                <li class="c-directoryTree--registerItem">
-                                                    <input type="checkbox">
-                                                    <label>カテゴリA-b</label>
-                                                </li>
-                                                <li class="c-directoryTree--registerItem">
-                                                    <input type="checkbox">
-                                                    <label>カテゴリA-c</label>
-                                                    <ul>
-                                                        <li class="c-directoryTree--registerItem">
-                                                            <input type="checkbox">
-                                                            <label>カテゴリA-c-1</label>
-                                                        </li>
-                                                        <li class="c-directoryTree--registerItem">
-                                                            <input type="checkbox">
-                                                            <label>カテゴリA-c-2</label>
-                                                            <ul>
-                                                                <li class="c-directoryTree--registerItem">
-                                                                    <input type="checkbox">
-                                                                    <label>カテゴリA-c-2-1</label>
-                                                                </li>
-                                                                <li class="c-directoryTree--registerItem">
-                                                                    <input type="checkbox">
-                                                                    <label>カテゴリA-c-2-2</label>
-                                                                </li>
-                                                            </ul>
-                                                        </li>
-                                                    </ul>
-                                                </li>
+                                                {% for ChildCategory in Category.children %}
+                                                    {{ selfMacro.tree(ChildCategory, form) }}
+                                                {% endfor %}
                                             </ul>
-                                        </li>
-                                    </ul>
-                                    <ul>
-                                        <li class="c-directoryTree--registerItem">
-                                            <input type="checkbox">
-                                            <label>カテゴリB</label>
-                                        </li>
-                                    </ul>
-                                    <ul>
-                                        <li class="c-directoryTree--registerItem">
-                                            <input type="checkbox">
-                                            <label>カテゴリC</label>
-                                        </li>
-                                    </ul>
+                                        {% endif %}
+                                    </li>
+                                {% endmacro %}
+
+                                <div class="c-directoryTree--register rounded border mb-3 p-3">
+                                    {% import _self as renderMacro %}
+                                    {% for TopCategory in TopCategories %}
+                                        <ul>
+                                            {{ renderMacro.tree(TopCategory, form) }}
+                                        </ul>
+                                    {% endfor %}
                                 </div>
-                                #}
                                 <div class="d-block text-center">
-                                    {# TODO onclickは適切ではないのでaタグで実装できるようにする #}
                                     <button class="btn btn-block btn-ec-regular" type="button"
                                             onclick='location.href="{{ url('admin_product_category') }}"'>
                                         {{ 'admin.product.product.text13'|trans }}
