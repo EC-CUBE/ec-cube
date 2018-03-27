@@ -38,7 +38,8 @@ use Eccube\Repository\Master\SexRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Service\CsvExportService;
-use Knp\Component\Pager\Paginator;
+use Eccube\Util\FormUtil;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -123,7 +124,7 @@ class OrderController extends AbstractController
      * @Route("/%eccube_admin_route%/order/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_order_page")
      * @Template("@admin/Order/index.twig")
      */
-    public function index(Request $request, $page_no = null, Paginator $paginator)
+    public function index(Request $request, $page_no = null, PaginatorInterface $paginator)
     {
         $builder = $this->formFactory
             ->createBuilder(SearchOrderType::class);
@@ -138,130 +139,103 @@ class OrderController extends AbstractController
 
         $searchForm = $builder->getForm();
 
-        $pagination = array();
-
-        $ProductStatuses = $this->productStatusRepository->findAll();
-        $pageMaxis = $this->pageMaxRepository->findAll();
-        $page_count = $this->eccubeConfig['eccube_default_page_count'];
-        $page_status = null;
+        // 詳細検索が実行されたかどうか.
         $active = false;
+
+        /**
+         * ページの表示件数は, 以下の順に優先される.
+         * - リクエストパラメータ
+         * - セッション
+         * - デフォルト値
+         * また, セッションに保存する際は mtb_page_maxと照合し, 一致した場合のみ保存する.
+         **/
+        $page_count = $this->session->get('eccube.admin.order.search.page_count',
+                $this->eccubeConfig->get('eccube_default_page_count'));
+
+        $page_count_param = (int)$request->get('page_count');
+        $pageMaxis = $this->pageMaxRepository->findAll();
+
+        if ($page_count_param) {
+            foreach ($pageMaxis as $pageMax) {
+                if ($page_count_param == $pageMax->getName()) {
+                    $page_count = $pageMax->getName();
+                    $this->session->set('eccube.admin.product.search.page_count', $page_count);
+                    break;
+                }
+            }
+        }
 
         if ('POST' === $request->getMethod()) {
 
             $searchForm->handleRequest($request);
 
             if ($searchForm->isValid()) {
+                /**
+                 * 検索が実行された場合は, セッションに検索条件を保存する.
+                 * ページ番号は最初のページ番号に初期化する.
+                 */
+                $page_no = 1;
                 $searchData = $searchForm->getData();
 
-                // paginator
-                $qb = $this->orderRepository->getQueryBuilderBySearchDataForAdmin($searchData);
+                // TODO 詳細検索のみ
+                if (!empty($searchData)) {
+                    $active = true;
+                }
 
-                $event = new EventArgs(
-                    array(
-                        'form' => $searchForm,
-                        'qb' => $qb,
-                    ),
-                    $request
-                );
-                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_SEARCH, $event);
-
-                $page_no = 1;
-                $pagination = $paginator->paginate(
-                    $qb,
-                    $page_no,
-                    $page_count
-                );
-
-                // sessionのデータ保持
-                $this->session->set('eccube.admin.order.search', $searchData);
+                // 検索条件, ページ番号をセッションに保持.
+                $this->session->set('eccube.admin.order.search', FormUtil::getViewData($searchForm));
                 $this->session->set('eccube.admin.order.search.page_no', $page_no);
             }
         } else {
-            if (is_null($page_no) && $request->get('resume') != Constant::ENABLED) {
-                // sessionを削除
-                $this->session->remove('eccube.admin.order.search');
-                $this->session->remove('eccube.admin.order.search.page_no');
+            if (null !== $page_no || $request->get('resume')) {
+                /**
+                 * ページ送りの場合または、他画面から戻ってきた場合は, セッションから検索条件を復旧する.
+                 */
+                $page_no = $page_no ?: $this->session->get('eccube.admin.order.search.page_no', 1);
+                $viewData = $this->session->get('eccube.admin.order.search', []);
+                $searchData = FormUtil::submitAndGetData($searchForm, $viewData);
+
+                // TODO 詳細検索のみ
+                if (!empty($searchData)) {
+                    $active = true;
+                }
             } else {
-                // pagingなどの処理
-                $searchData = $this->session->get('eccube.admin.order.search');
-                if (is_null($page_no)) {
-                    $page_no = intval($this->session->get('eccube.admin.order.search.page_no'));
-                } else {
-                    $this->session->set('eccube.admin.order.search.page_no', $page_no);
-                }
+                /**
+                 * 初期表示の場合.
+                 */
+                $page_no = 1;
+                $page_count = $this->eccubeConfig['eccube_default_page_count'];
+                $searchData = [];
 
-                if (!is_null($searchData)) {
-
-                    // 公開ステータス
-                    $status = $request->get('status');
-                    if (!empty($status)) {
-                        if ($status != $this->eccubeConfig['eccube_admin_product_stock_status']) {
-                            $searchData['status']->clear();
-                            $searchData['status']->add($status);
-                        } else {
-                            $searchData['stock_status'] = $this->eccubeConfig['disabled'];
-                        }
-                        $page_status = $status;
-                    }
-                    // 表示件数
-                    $pcount = $request->get('page_count');
-
-                    $page_count = empty($pcount) ? $page_count : $pcount;
-
-                    $qb = $this->orderRepository->getQueryBuilderBySearchDataForAdmin($searchData);
-
-                    $event = new EventArgs(
-                        array(
-                            'form' => $searchForm,
-                            'qb' => $qb,
-                        ),
-                        $request
-                    );
-                    $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_SEARCH, $event);
-
-                    $pagination = $paginator->paginate(
-                        $qb,
-                        $page_no,
-                        $page_count
-                    );
-
-                    // セッションから検索条件を復元
-                    if (!empty($searchData['status'])) {
-                        $searchData['status'] = $this->orderStatusRepository->find($searchData['status']);
-                    }
-                    if (count($searchData['multi_status']) > 0) {
-                        $statusIds = array();
-                        foreach ($searchData['multi_status'] as $Status) {
-                            $statusIds[] = $Status->getId();
-                        }
-                        $searchData['multi_status'] = $this->orderStatusRepository->findBy(array('id' => $statusIds));
-                    }
-                    if (count($searchData['sex']) > 0) {
-                        $sex_ids = array();
-                        foreach ($searchData['sex'] as $Sex) {
-                            $sex_ids[] = $Sex->getId();
-                        }
-                        $searchData['sex'] = $this->sexRepository->findBy(array('id' => $sex_ids));
-                    }
-                    if (count($searchData['payment']) > 0) {
-                        $payment_ids = array();
-                        foreach ($searchData['payment'] as $Payment) {
-                            $payment_ids[] = $Payment->getId();
-                        }
-                        $searchData['payment'] = $this->paymentRepository->findBy(array('id' => $payment_ids));
-                    }
-                    $searchForm->setData($searchData);
-                }
+                // セッション中の検索条件, ページ番号を初期化.
+                $this->session->set('eccube.admin.order.search', $searchData);
+                $this->session->set('eccube.admin.order.search.page_no', $page_no);
             }
         }
+
+        $qb = $this->orderRepository->getQueryBuilderBySearchDataForAdmin($searchData);
+
+        $event = new EventArgs(
+            [
+                'qb' => $qb,
+                'searchData' => $searchData,
+            ],
+            $request
+        );
+
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_SEARCH, $event);
+
+        $pagination = $paginator->paginate(
+            $qb,
+            $page_no,
+            $page_count
+        );
 
         return [
             'searchForm' => $searchForm->createView(),
             'pagination' => $pagination,
-            'productStatuses' => $ProductStatuses,
             'pageMaxis' => $pageMaxis,
             'page_no' => $page_no,
-            'page_status' => $page_status,
             'page_count' => $page_count,
             'active' => $active, //TODO: have not logic implement to set active
         ];
