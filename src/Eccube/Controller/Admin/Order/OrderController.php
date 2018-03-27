@@ -159,7 +159,7 @@ class OrderController extends AbstractController
             foreach ($pageMaxis as $pageMax) {
                 if ($page_count_param == $pageMax->getName()) {
                     $page_count = $pageMax->getName();
-                    $this->session->set('eccube.admin.product.search.page_count', $page_count);
+                    $this->session->set('eccube.admin.order.search.page_count', $page_count);
                     break;
                 }
             }
@@ -191,7 +191,13 @@ class OrderController extends AbstractController
                 /**
                  * ページ送りの場合または、他画面から戻ってきた場合は, セッションから検索条件を復旧する.
                  */
-                $page_no = $page_no ?: $this->session->get('eccube.admin.order.search.page_no', 1);
+                if ($page_no) {
+                    // ページ送りで遷移した場合.
+                    $this->session->set('eccube.admin.order.search.page_no', (int)$page_no);
+                } else {
+                    // 他画面から遷移した場合.
+                    $page_no = $this->session->get('eccube.admin.order.search.page_no', 1);
+                }
                 $viewData = $this->session->get('eccube.admin.order.search', []);
                 $searchData = FormUtil::submitAndGetData($searchForm, $viewData);
 
