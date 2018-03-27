@@ -230,42 +230,9 @@ class ProductController extends AbstractController
                 }
                 $viewData = $session->get('eccube.admin.product.search');
                 if (!is_null($viewData)) {
-                    // 公開ステータス
-                    // 1:公開, 2:非公開, 3:在庫なし
-                    $linkStatus = $request->get('status');
-                    if (!empty($linkStatus)) {
-                        // リンクステータスは在庫なし:3以外
-                        if ($linkStatus != $this->eccubeConfig['eccube_admin_product_stock_status']) {
-                            $viewData['link_status'] = $linkStatus;
-                            $viewData['stock_status'] = null;
-                            $viewData['status'] = null;
-                        } else {
-                            // リンクステータスは在庫なし:3
-                            $viewData['link_status'] = null;
-                            $viewData['stock_status'] = Constant::DISABLED;
-                            $viewData['status'] = null;
-                        }
-                        // ページステータスを設定します（リンクステータスAタグ表示のために）
-                        $page_status = $linkStatus;
-                    } else {
-                        // すべてを選択
-                        $viewData['link_status'] = null;
-                        $viewData['stock_status'] = null;
-                        if (!$viewData['status']) {
-                            $viewData['status'] = array();
-                        }
-                    }
-
                     // 表示件数
                     $page_count = $request->get('page_count', $page_count);
                     $searchData = FormUtil::submitAndGetData($searchForm, $viewData);
-                    if ($viewData['link_status']) {
-                        $searchData['link_status'] = $this->productStatusRepository->find($viewData['link_status']);
-                    }
-                    // リンクステータス[在庫なし]設定されている場合は検索パラメター設定する
-                    if (isset($viewData['stock_status'])) {
-                        $searchData['stock_status'] = $viewData['stock_status'];
-                    }
 
                     $session->set('eccube.admin.product.search', $viewData);
 
