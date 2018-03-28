@@ -37,13 +37,15 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\Validator\Constraints as Assert;
 use Eccube\Util\FilesystemUtil;
 
 class FileController extends AbstractController
 {
     const SJIS = 'sjis-win';
     const UTF = 'UTF-8';
-    private $error = null;
+    private $errors = [];
     private $encode = '';
 
     /**
@@ -113,7 +115,7 @@ class FileController extends AbstractController
             'now_dir_list' => $nowDirList,
             'tpl_parent_dir' => $parentDir,
             'arrFileList' => $arrFileList,
-            'error' => $this->error,
+            'errors' => $this->errors,
             'paths' => json_encode($paths)
         ];
     }
@@ -150,11 +152,11 @@ class FileController extends AbstractController
             $pattern = "/[^[:alnum:]_.\\-]/";
             $pattern2 = "/^\.(.*)$/";
             if (empty($filename)) {
-                $this->error = array('message' => trans('file.text.error.folder_name'));
+                $this->errors[] = array('message' => trans('file.text.error.folder_name'));
             } elseif (strlen($filename) > 0 && preg_match($pattern, $filename)) {
-                $this->error = array('message' => trans('file.text.error.folder_symbol'));
+                $this->errors[] = array('message' => trans('file.text.error.folder_symbol'));
             } elseif (strlen($filename) > 0 && preg_match($pattern2, $filename)) {
-                $this->error = array('message' => trans('file.text.error.folder_period'));
+                $this->errors[] = array('message' => trans('file.text.error.folder_period'));
             } else {
                 $topDir = $this->getUserDataDir();
                 $nowDir = $this->checkDir($request->get('now_dir'), $this->getUserDataDir())
@@ -224,28 +226,39 @@ class FileController extends AbstractController
     public function upload(Request $request)
     {
         $form = $this->formFactory->createBuilder(FormType::class)
-            ->add('file', FileType::class,
-                  array('options' => array(
-                      'attr' => array('class' => 'btn btn-ec-conversion')
-                  )))
+            ->add('file', FileType::class, [
+                'constraints' => [
+                    new Assert\NotBlank([
+                        'message' => 'file.text.error.file_not_selected'
+                    ])
+                ]
+            ])
             ->add('create_file', TextType::class)
             ->getForm();
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
-            $data = $form->getData();
-            if (empty($data['file'])) {
-                $this->error = array('message' => trans('file.text.error.file_not_selectedd.'));
-            } else {
-                $topDir = $this->getUserDataDir();
-                if ($this->checkDir($request->get('now_dir'), $topDir)) {
-                    $filename = $this->convertStrToServer($data['file']->getClientOriginalName());
-                    $data['file']->move($request->get('now_dir'), $filename);
-
-                    $this->addSuccess('admin.save.complete', 'admin');
-                }
+        if (!$form->isValid()) {
+            foreach ($form->getErrors(true) as $error) {
+                $this->errors[] = ['message' => $error->getMessage()];
             }
+            return;
+        }
+
+        $data = $form->getData();
+        $topDir = $this->getUserDataDir();
+        $nowDir = $this->getUserDataDir($request->get('now_dir'));
+        if (!$this->checkDir($nowDir, $topDir)) {
+            $this->errors[] = ['message' => 'file.text.error.invalid_upload_folder'];
+            return;
+        }
+
+        $filename = $this->convertStrToServer($data['file']->getClientOriginalName());
+        try {
+            $data['file']->move($nowDir, $filename);
+            $this->addSuccess('admin.content.file.upload_success', 'admin');
+        } catch (FileException $e) {
+            $this->errors[] = ['message' => $e->getMessage()];
         }
     }
 

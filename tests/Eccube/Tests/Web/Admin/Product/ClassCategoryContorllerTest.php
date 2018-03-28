@@ -27,6 +27,7 @@ namespace Eccube\Tests\Web\Admin\Product;
 use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\ClassNameRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\DomCrawler\Crawler;
 
 class ClassCategoryControllerTest extends AbstractAdminWebTestCase
 {
@@ -164,6 +165,54 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
             array('_token' => 'dummy')
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
+    }
+
+    /**
+     * testProductClassSortByRank
+     */
+    public function testClassCategorySortByRank()
+    {
+        /* @var $ClassCategory \Eccube\Entity\ClassCategory */
+        //set 金 rank
+        $ClassCategory = $this->classCategoryRepository->findOneBy(array('name' => '金'));
+        $testData[$ClassCategory->getId()] = 1;
+        $ClassCategory->setSortNo(3);
+        $this->entityManager->persist($ClassCategory);
+        $this->entityManager->flush($ClassCategory);
+        //set 銀 rank
+        $ClassCategory = $this->classCategoryRepository->findOneBy(array('name' => '銀'));
+        $testData[$ClassCategory->getId()] = 3;
+        $ClassCategory->setSortNo(2);
+        $this->entityManager->persist($ClassCategory);
+        $this->entityManager->flush($ClassCategory);
+        //set プラチナ rank
+        $ClassCategory = $this->classCategoryRepository->findOneBy(array('name' => 'プラチナ'));
+        $testData[$ClassCategory->getId()] = 2;
+        $ClassCategory->setSortNo(1);
+        $this->entityManager->persist($ClassCategory);
+        $this->entityManager->flush($ClassCategory);
+
+
+        $client = $this->client;
+        $client->request('POST', $this->generateUrl('admin_product_class_category_sort_no_move'),
+            $testData,
+            [],
+            ['HTTP_X-Requested-With' => 'XMLHttpRequest',]
+        );
+        $this->assertTrue($client->getResponse()->isSuccessful());
+        /** @var Crawler $crawler */
+        $crawler = $client->request('GET', $this->generateUrl('admin_product_class_category', ['class_name_id' => 1]));
+
+        //金, 銀, プラチナ sort by rank setup above.
+        $this->expected = '銀';
+        $this->actual = $crawler->filter('ul.tableish > li:nth-child(2)')->text();
+        $this->assertContains( $this->expected, $this->actual);
+        $this->expected = 'プラチナ';
+        $this->actual = $crawler->filter('ul.tableish > li:nth-child(3)')->text();
+        $this->assertContains( $this->expected, $this->actual);
+        $this->expected = '金';
+        $this->actual = $crawler->filter('ul.tableish > li:nth-child(4)')->text();
+        $this->assertContains( $this->expected, $this->actual);
     }
 
     private function newTestClassName($TestCreator)

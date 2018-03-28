@@ -15,6 +15,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ProductStock extends \Eccube\Entity\AbstractEntity
 {
+    const IN_STOCK = 1;
+    const OUT_OF_STOCK = 2;
+
     /**
      * @var integer
      */
