@@ -259,8 +259,6 @@ class OrderController extends AbstractController
     public function delete(Request $request, $id)
     {
         $this->isTokenValid();
-        $page_no = intval($this->session->get('eccube.admin.order.search.page_no'));
-        $page_no = $page_no ? $page_no : Constant::ENABLED;
 
         $Order = $this->orderRepository
             ->find($id);
@@ -268,8 +266,7 @@ class OrderController extends AbstractController
         if (!$Order) {
             $this->deleteMessage();
 
-            return $this->redirect($this->generateUrl('admin_order_page',
-                    array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
+            return $this->redirect($this->generateUrl('admin_order', ['resume' => Constant::ENABLED]));
         }
 
         log_info('受注削除開始', array($Order->getId()));
@@ -283,8 +280,7 @@ class OrderController extends AbstractController
             $message = trans('admin.delete.failed.foreign_key', ['%name%' => trans('order.text.name')]);
             $this->addError($message, 'admin');
 
-            return $this->redirect($this->generateUrl('admin_order_page',
-                    array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
+            return $this->redirect($this->generateUrl('admin_order', ['resume' => Constant::ENABLED]));
         }
 
         $Customer = $Order->getCustomer();
@@ -311,8 +307,7 @@ class OrderController extends AbstractController
 
         log_info('受注削除完了', array($Order->getId()));
 
-        return $this->redirect($this->generateUrl('admin_order_page',
-                array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
+        return $this->redirect($this->generateUrl('admin_order', ['resume' => Constant::ENABLED]));
     }
 
 
