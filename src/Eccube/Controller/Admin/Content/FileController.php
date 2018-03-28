@@ -37,6 +37,7 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Filesystem\Exception\IOException;
 
@@ -239,28 +240,39 @@ class FileController extends AbstractController
     public function upload(Request $request)
     {
         $form = $this->formFactory->createBuilder(FormType::class)
-            ->add('file', FileType::class,
-                  array('options' => array(
-                      'attr' => array('class' => 'btn btn-ec-conversion')
-                  )))
+            ->add('file', FileType::class, [
+                'constraints' => [
+                    new Assert\NotBlank([
+                        'message' => 'file.text.error.file_not_selected'
+                    ])
+                ]
+            ])
             ->add('create_file', TextType::class)
             ->getForm();
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
-            $data = $form->getData();
-            if (empty($data['file'])) {
-                $this->error = array('message' => trans('file.text.error.file_not_selectedd.'));
-            } else {
-                $topDir = $this->getUserDataDir();
-                if ($this->checkDir($request->get('now_dir'), $topDir)) {
-                    $filename = $this->convertStrToServer($data['file']->getClientOriginalName());
-                    $data['file']->move($request->get('now_dir'), $filename);
-
-                    $this->addSuccess('admin.save.complete', 'admin');
-                }
+        if (!$form->isValid()) {
+            foreach ($form->getErrors(true) as $error) {
+                $this->errors[] = ['message' => $error->getMessage()];
             }
+            return;
+        }
+
+        $data = $form->getData();
+        $topDir = $this->getUserDataDir();
+        $nowDir = $this->getUserDataDir($request->get('now_dir'));
+        if (!$this->checkDir($nowDir, $topDir)) {
+            $this->errors[] = ['message' => 'file.text.error.invalid_upload_folder'];
+            return;
+        }
+
+        $filename = $this->convertStrToServer($data['file']->getClientOriginalName());
+        try {
+            $data['file']->move($nowDir, $filename);
+            $this->addSuccess('admin.content.file.upload_success', 'admin');
+        } catch (FileException $e) {
+            $this->errors[] = ['message' => $e->getMessage()];
         }
     }
 

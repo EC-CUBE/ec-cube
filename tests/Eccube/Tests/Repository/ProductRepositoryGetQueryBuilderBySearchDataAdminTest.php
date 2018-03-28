@@ -5,6 +5,7 @@ namespace Eccube\Tests\Repository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Entity\Category;
 use Eccube\Entity\Master\ProductStatus;
+use Eccube\Entity\ProductStock;
 use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Repository\CategoryRepository;
 
@@ -174,7 +175,40 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
         $this->entityManager->flush();
 
         $this->searchData = array(
-            'stock_status' => 0
+            'stock' => [ProductStock::OUT_OF_STOCK]
+        );
+        $this->scenario();
+
+        $this->expected = 1;
+        $this->actual = count($this->Results);
+        $this->verify();
+    }
+
+    public function testStockStatusWithUnlimited()
+    {
+        $faker = $this->getFaker();
+        // 全商品の在庫をなしにする
+        $Products = $this->productRepository->findAll();
+        foreach ($Products as $Product) {
+            foreach ($Product->getProductClasses() as $ProductClass) {
+                $ProductClass
+                    ->setStockUnlimited(false)
+                    ->setStock(0);
+            }
+        }
+        $this->entityManager->flush();
+
+        // 1商品だけ無制限に設定する
+        $Product = $this->productRepository->findOneBy(['name' => '商品-1']);
+        foreach ($Product->getProductClasses() as $ProductClass) {
+            $ProductClass
+                ->setStockUnlimited(true)
+                ->setStock(0);
+        }
+        $this->entityManager->flush();
+
+        $this->searchData = array(
+            'stock' => [ProductStock::IN_STOCK]
         );
         $this->scenario();
 

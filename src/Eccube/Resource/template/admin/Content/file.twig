@@ -70,14 +70,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <div class="card rounded border-0 mb-4">
                     <div class="card-header"><span class="card-title">{{ 'admin.content.file.title.upload_and_create'|trans }}</span></div>
                     <div class="card-body">
-                        <div class="row mb-2">
+                        <div class="row mb-2" id="upload_box__file">
                             <div class="col-2"><span>{{ 'admin.content.file.label.upload'|trans }}</span></div>
                             <div class="col mb-3">
                                 <div class="mb-2">
                                     {{ form_widget(form.file) }}{# TODO input type="file" の装飾 #}
                                 </div>
                                 <div class="mb-2">
-                                    <a class="btn btn-ec-conversion" href="javascript:;" onclick="eccube.fileManager.setTreeStatus('tree_status');eccube.setModeAndSubmit('upload','',''); return false;">{{'admin.content.file.26'|trans}}</a>
+                                    <a class="btn btn-ec-conversion action-upload" href="javascript:;" onclick="eccube.fileManager.setTreeStatus('tree_status');eccube.setModeAndSubmit('upload','',''); return false;">{{'admin.content.file.26'|trans}}</a>
                                 </div>
                             </div>
                         </div>
