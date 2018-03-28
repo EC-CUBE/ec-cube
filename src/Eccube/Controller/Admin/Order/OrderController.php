@@ -120,6 +120,22 @@ class OrderController extends AbstractController
     }
 
     /**
+     * 受注一覧画面.
+     *
+     * - 検索条件, ページ番号, 表示件数はセッションに保持されます.
+     * - クエリパラメータでresume=1が指定された場合、検索条件, ページ番号, 表示件数をセッションから復旧します.
+     * - 各データの, セッションに保持するアクションは以下の通りです.
+     *   - 検索ボタン押下時
+     *      - 検索条件をセッションに保存します
+     *      - ページ番号は1で初期化し、セッションに保存します。
+     *   - 表示件数変更時
+     *      - クエリパラメータpage_countをセッションに保存します。
+     *      - ただし, mtb_page_maxと一致しない場合, eccube_default_page_countが保存されます.
+     *   - ページング時
+     *      - URLパラメータpage_noをセッションに保存します.
+     *   - 初期表示
+     *      - 検索条件は空配列, ページ番号は1で初期化し, セッションに保存します.
+     *
      * @Route("/%eccube_admin_route%/order", name="admin_order")
      * @Route("/%eccube_admin_route%/order/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_order_page")
      * @Template("@admin/Order/index.twig")
@@ -177,11 +193,6 @@ class OrderController extends AbstractController
                 $page_no = 1;
                 $searchData = $searchForm->getData();
 
-                // TODO 詳細検索のみ
-                if (!empty($searchData)) {
-                    $active = true;
-                }
-
                 // 検索条件, ページ番号をセッションに保持.
                 $this->session->set('eccube.admin.order.search', FormUtil::getViewData($searchForm));
                 $this->session->set('eccube.admin.order.search.page_no', $page_no);
@@ -200,17 +211,11 @@ class OrderController extends AbstractController
                 }
                 $viewData = $this->session->get('eccube.admin.order.search', []);
                 $searchData = FormUtil::submitAndGetData($searchForm, $viewData);
-
-                // TODO 詳細検索のみ
-                if (!empty($searchData)) {
-                    $active = true;
-                }
             } else {
                 /**
                  * 初期表示の場合.
                  */
                 $page_no = 1;
-                $page_count = $this->eccubeConfig['eccube_default_page_count'];
                 $searchData = [];
 
                 // セッション中の検索条件, ページ番号を初期化.
