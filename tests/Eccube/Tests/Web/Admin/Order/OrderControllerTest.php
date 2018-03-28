@@ -129,7 +129,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $this->expected = '検索結果：' . $cnt . '件が該当しました';
+        $this->expected = '検索結果：'.$cnt.'件が該当しました';
         $this->actual = $crawler->filter('#search_form #search_total_count')->text();
         $this->verify();
     }

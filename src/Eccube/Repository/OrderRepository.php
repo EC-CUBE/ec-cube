@@ -331,7 +331,7 @@ class OrderRepository extends AbstractRepository
         if (isset($searchData['company_name']) && StringUtil::isNotBlank($searchData['company_name'])) {
             $qb
                 ->andWhere('o.company_name LIKE :company_name')
-                ->setParameter('company_name', '%' . $searchData['company_name'] . '%');
+                ->setParameter('company_name', '%'.$searchData['company_name'].'%');
         }
 
         // name
