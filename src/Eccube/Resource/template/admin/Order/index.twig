@@ -388,7 +388,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <td class="align-middle pl-3">
                                             <input type="checkbox"  name="ids{{ Order.id }}" id="check--{{ Order.id }}" value="on">
                                         </td>
-                                        <td class="align-middle" id="order_date--{{ Order.id }}">{{ Order.order_date|date('Y/m/d H:i') }}</td> {# TODO: date time format should follow locale #}
+                                        <td class="align-middle" id="order_date--{{ Order.id }}">{{ Order.order_date|date_min }}</td>
                                         <td class="align-middle" id="id--{{ Order.id }}"><a class="action-edit" href="{{ url('admin_order_edit', { id : Order.id }) }}">{{ Order.id }}</a></td>
                                         <td class="align-middle" id="name--{{ Order.id }}">{{ Order.name01 }} {{ Order.name02 }}</td>
                                         <td class="align-middle" id="payment_method--{{ Order.id }}">{{ Order.payment_method }}</td>
