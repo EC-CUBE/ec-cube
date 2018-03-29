@@ -129,6 +129,8 @@
             $($lastRow).find('#order_OrderItems_' + index + '_order_item_type').val(type);
             $($lastRow).find('#order_OrderItems_' + index + '_product_name').val(product_name);
             $($lastRow).find('#order_OrderItems_' + index + '_product_code').val(product_code);
+            // Because all value include tax
+            $($lastRow).find('#order_OrderItems_' + index + '_tax_display_type').val({{ constant('Eccube\\Entity\\Master\\TaxDisplayType::INCLUDED') }});
         }
 
         // モーダル閉じる.
