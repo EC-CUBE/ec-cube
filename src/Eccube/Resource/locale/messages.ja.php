@@ -1124,6 +1124,7 @@ return [
     'admin.order.index.pls_try_advanced_search' => '[詳細検索]も試してみましょう',
     'admin.order.index.not_found_any_data' => '現在データが登録されていません。登録してみましょう！',
     'admin.order.index.if_backup_restore' => 'データが消えてしまいましたか？バックアップをしているならリストアを試してみましょう。',
+    'admin.order.index.num' => '件',
     'admin.order.mail.339' => '受注管理',
     'admin.order.mail.340' => 'メール通知',
     'admin.order.mail.341' => '取得に失敗しました',

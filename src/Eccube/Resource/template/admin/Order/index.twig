@@ -331,10 +331,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </div>
                         <div class="col-auto text-right">
                             <div class="d-inline-block">
-                                <select class="custom-select">
-                                    {# TODO: implement js  #}
+                                <select class="custom-select" onchange="location = this.value;">
                                     {% for pageMax in pageMaxis %}
-                                        <option {% if pageMax.name == page_count%} selected {% endif %}>{{ pageMax.name|e }}件</option>
+                                        <option {% if pageMax.name == page_count%} selected {% endif %}
+                                                value="{{ path('admin_order_page', {'page_no': 1, 'page_count': pageMax.name}) }}">
+                                            {{ pageMax.name|e }}{{ 'admin.order.index.num'|trans }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
