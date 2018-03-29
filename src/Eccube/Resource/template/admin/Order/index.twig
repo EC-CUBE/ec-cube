@@ -125,9 +125,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div class="form-row">
                         <div class="col-12">
                             <p class="col-form-label">{{ 'admin.order.index.304'|trans }}</p>
-                            {% for payment in searchForm.payment %}
-                                {{ form_widget(payment, {'attr': {'class': 'form-check-input'}, 'label_attr': {'class': 'checkbox-inline form_check_label'}}) }}
-                            {% endfor %}
+                            {{ form_widget(searchForm.payment, { 'label_attr': { 'class': 'checkbox-inline'}}) }}
                             {{ form_errors(searchForm.payment) }}
                         </div>
                     </div>
@@ -238,9 +236,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div class="form-row">
                         <div class="col-12">
                             <p class="col-form-label">{{ 'admin.order.index.303'|trans }}</p>
-                            {% for sex in searchForm.sex %}
-                                {{ form_widget(sex, {'attr': {'class': 'form-check-input'}, 'label_attr': {'class': 'checkbox-inline form_check_label'}}) }}
-                            {% endfor %}
+                            {{ form_widget(searchForm.sex, { 'label_attr': { 'class': 'checkbox-inline'}}) }}
                             {{ form_errors(searchForm.sex) }}
                         </div>
                     </div>
