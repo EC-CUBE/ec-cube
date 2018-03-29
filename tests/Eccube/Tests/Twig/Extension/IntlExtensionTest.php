@@ -21,6 +21,7 @@ class IntlExtensionTest extends TestCase
         $loader->setTemplate('date_min_template', '{{ date|date_min }}');
 
         $this->twig = new Environment($loader);
+        $this->twig->getExtension('Twig_Extension_Core')->setTimezone('Asia/Tokyo');
         $this->twig->addExtension(new IntlExtension());
 
         // twig_localized_date_filter関数を使うため, Twig_Extensions_Extension_Intlをautoloadする.
