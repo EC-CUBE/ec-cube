@@ -778,9 +778,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 {# TODO: タグ選択方法の変更 #}
                                 {{ form_widget(form.Tag) }}
                                 {{ form_errors(form.Tag) }}
-                                {#
+
                                 <div class="d-inline-block mb-2 mr-2">
-                                    <button class="btn btn-outline-primary" type="button">オススメ</button>
+                                    <button class="btn btn-outline-primary" type="button">オススメ111</button>
+                                    {% if(Tags|length > 0) %}
+
+                                        {% for Tag in Tags %}
+                                        <button class="btn btn-outline-primary" type="button">オススメ111</button>
+                                        {% endfor %}
+                                    {% endif %}
                                 </div>
                                 <div class="d-block mb-3" data-toggle="collapse" href="#allTags" role="button"
                                      aria-expanded="false" aria-controls="allTags">
@@ -796,7 +802,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <div class="d-block mb-3" data-toggle="collapse" href="#allTags" role="button"
                                          aria-expanded="false" aria-controls="allTags"></div>
                                 </div>
-                                #}
+
                                 <div class="d-block text-center">
                                     <button class="btn btn-block btn-ec-regular" type="button">
                                         {{ 'admin.product.product.text14'|trans }}
