@@ -148,20 +148,20 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             <div class="col-auto text-right">
                                                 <a class="btn btn-ec-actionIcon up mr-3 {% if loop.first %}disabled{% endif %}"
                                                    href="#"
-                                                   data-toggle="tooltip"
+                                                   data-tooltip="tooltip"
                                                    data-placement="top" title="{{ 'admin.product.tag.up'|trans }}"><i
                                                             class="fa fa-arrow-up fa-lg text-secondary"></i></a>
                                                 <a
                                                         class="btn btn-ec-actionIcon down mr-3 {% if loop.last %}disabled{% endif %}"
                                                         href="#"
-                                                        data-toggle="tooltip"
+                                                        data-tooltip="tooltip"
                                                         data-placement="top"
                                                         title="{{ 'admin.product.tag.down'|trans }}"><i
                                                             class="fa fa-arrow-down fa-lg text-secondary"></i></a>
                                                 <a
                                                         class="btn btn-ec-actionIcon mr-3"
                                                         href="{{ url('admin_product_tag_edit', {id: Tag.id}) }}"
-                                                        data-toggle="tooltip"
+                                                        data-tooltip="tooltip"
                                                         data-placement="top"
                                                         title="{{ 'admin.product.tag.edit'|trans }}"><i
                                                             class="fa fa-pencil fa-lg text-secondary"></i></a>
@@ -170,43 +170,42 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                         href="{{ url('admin_product_tag_delete', {id: Tag.id}) }}"
                                                         data-toggle="modal"
                                                         data-target="#confirmModal-{{ Tag.id }}"
-                                                        data-toggle="tooltip"
+                                                        data-tooltip="tooltip"
                                                         data-placement="top"
                                                         title="{{ 'admin.product.tag.delete'|trans }}"><i
                                                             class="fa fa-close fa-lg text-secondary"></i></a>
-                                            </div>
-                                        </div>
-
-                                        <div class="modal fade" id="confirmModal-{{ Tag.id }}" tabindex="-1"
-                                             role="dialog"
-                                             aria-labelledby="confirmModal-{{ Tag.id }}" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title font-weight-bold">
-                                                            {{ 'admin.product.tag.delete.confirm.title'|trans }}</h5>
-                                                        <button class="close" type="button"
-                                                                data-dismiss="modal"
-                                                                aria-label="Close"><span
-                                                                    aria-hidden="true">×</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body text-left">
-                                                        <p class="text-left">
-                                                            {{ 'admin.product.tag.delete.confirm.message'|trans }}</p>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button class="btn btn-ec-sub" type="button"
-                                                                data-dismiss="modal">{{ 'admin.product.index.cancel'|trans }}
-                                                        </button>
-                                                        <a
-                                                                href="{{ url('admin_product_tag_delete', {'id' : Tag.id}) }}"
-                                                                class="btn btn-ec-delete"
-                                                                data-confirm="false"
-                                                                {{ csrf_token_for_anchor() }}
-                                                                data-method="delete">
-                                                            {{ 'admin.product.index.delete'|trans }}
-                                                        </a>
+                                                <div class="modal fade" id="confirmModal-{{ Tag.id }}" tabindex="-1"
+                                                     role="dialog"
+                                                     aria-labelledby="confirmModal-{{ Tag.id }}" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title font-weight-bold">
+                                                                    {{ 'admin.product.tag.delete.confirm.title'|trans }}</h5>
+                                                                <button class="close" type="button"
+                                                                        data-dismiss="modal"
+                                                                        aria-label="Close"><span
+                                                                            aria-hidden="true">×</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body text-left">
+                                                                <p class="text-left">
+                                                                    {{ 'admin.product.tag.delete.confirm.message'|trans }}</p>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button class="btn btn-ec-sub" type="button"
+                                                                        data-dismiss="modal">{{ 'admin.product.index.cancel'|trans }}
+                                                                </button>
+                                                                <a
+                                                                        href="{{ url('admin_product_tag_delete', {'id' : Tag.id}) }}"
+                                                                        class="btn btn-ec-delete"
+                                                                        data-confirm="false"
+                                                                        {{ csrf_token_for_anchor() }}
+                                                                        data-method="delete">
+                                                                    {{ 'admin.product.index.delete'|trans }}
+                                                                </a>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

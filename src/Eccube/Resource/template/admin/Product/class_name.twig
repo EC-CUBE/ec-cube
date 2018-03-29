@@ -131,17 +131,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         {# TODO 表示名 #}
                                         <div class="col d-flex align-items-center"><a href="{{ url('admin_product_class_category', {class_name_id : ClassName.id }) }}">{{ ClassName.name }} ({{ ClassName.ClassCategories|length }})</a></div>
                                         <div class="col-auto text-right">
-                                            <a class="btn btn-ec-actionIcon mr-3 up {% if loop.first %}disabled{% endif %}" href="" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.class_name.439'|trans }}">
+                                            <a class="btn btn-ec-actionIcon mr-3 up {% if loop.first %}disabled{% endif %}" href="" data-tooltip="tooltip" data-placement="top" title="{{ 'admin.product.class_name.439'|trans }}">
                                                 <i class="fa fa-arrow-up fa-lg text-secondary"></i>
                                             </a>
-                                            <a class="btn btn-ec-actionIcon mr-3 down {% if loop.last %}disabled{% endif %}" href="" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.class_name.440'|trans }}">
+                                            <a class="btn btn-ec-actionIcon mr-3 down {% if loop.last %}disabled{% endif %}" href="" data-tooltip="tooltip" data-placement="top" title="{{ 'admin.product.class_name.440'|trans }}">
                                                 <i class="fa fa-arrow-down fa-lg text-secondary"></i>
                                             </a>
                                             {# TODO 編集機能 #}
-                                            <a class="btn btn-ec-actionIcon mr-3" href="" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.class_name.441'|trans }}">
+                                            <a class="btn btn-ec-actionIcon mr-3" href="" data-tooltip="tooltip" data-placement="top" title="{{ 'admin.product.class_name.441'|trans }}">
                                                 <i class="fa fa-pencil fa-lg text-secondary"></i>
                                             </a>
-                                            <a class="btn btn-ec-actionIcon mr-3 {% if ClassName.ClassCategories|length > 0 %}disabled{% endif %}" href="{{ url('admin_product_class_name_delete', {id: ClassName.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-toggle="tooltip" data-placement="top" title="{{ 'common.label.delete'|trans }}">
+                                            <a class="btn btn-ec-actionIcon mr-3 {% if ClassName.ClassCategories|length > 0 %}disabled{% endif %}" href="{{ url('admin_product_class_name_delete', {id: ClassName.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-tooltip="tooltip" data-placement="top" title="{{ 'common.label.delete'|trans }}">
                                                 <i class="fa fa-close fa-lg text-secondary"></i>
                                             </a>
                                         </div>
@@ -166,10 +166,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             {#<button class="btn btn-ec-sub" type="submit">キャンセル</button>#}
                                         {#</div>#}
                                         {#<div class="col text-right justify-content-end">#}
-                                            {#<a class="btn btn-ec-actionIcon mr-3" href="" data-toggle="tooltip" data-placement="top" title="上へ移動"><i class="fa fa-arrow-up fa-lg text-secondary"></i></a>#}
-                                            {#<a class="btn btn-ec-actionIcon mr-3" href="" data-toggle="tooltip" data-placement="top" title="下へ移動"><i class="fa fa-arrow-down fa-lg text-secondary"></i></a>#}
-                                            {#<a class="btn btn-ec-actionIcon mr-3" href="" data-toggle="tooltip" data-placement="top" title="名前を編集"><i class="fa fa-pencil fa-lg text-secondary"></i></a>#}
-                                            {#<a class="btn btn-ec-actionIcon mr-3" href="" data-toggle="tooltip" data-placement="top" title="削除"><i class="fa fa-close fa-lg text-secondary"></i></a>#}
+                                            {#<a class="btn btn-ec-actionIcon mr-3" href="" data-tooltip="tooltip" data-placement="top" title="上へ移動"><i class="fa fa-arrow-up fa-lg text-secondary"></i></a>#}
+                                            {#<a class="btn btn-ec-actionIcon mr-3" href="" data-tooltip="tooltip" data-placement="top" title="下へ移動"><i class="fa fa-arrow-down fa-lg text-secondary"></i></a>#}
+                                            {#<a class="btn btn-ec-actionIcon mr-3" href="" data-tooltip="tooltip" data-placement="top" title="名前を編集"><i class="fa fa-pencil fa-lg text-secondary"></i></a>#}
+                                            {#<a class="btn btn-ec-actionIcon mr-3" href="" data-tooltip="tooltip" data-placement="top" title="削除"><i class="fa fa-close fa-lg text-secondary"></i></a>#}
                                         {#</div>#}
                                     {#</form>#}
                                 {#</li>#}

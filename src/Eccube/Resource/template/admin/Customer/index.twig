@@ -340,7 +340,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     <td class="align-middle"></td>
                                                     <td class="align-middle pr-3">
                                                         <div class="row justify-content-end">
-                                                            <div class="col-auto text-center"><a "{{ url('admin_customer_delete', { 'id': Customer.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" class="btn btn-ec-actionIcon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ 'admin.customer.index.delete'|trans }}"><i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a></div>
+                                                            <div class="col-auto text-center"><a "{{ url('admin_customer_delete', { 'id': Customer.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" class="btn btn-ec-actionIcon" data-tooltip="tooltip" data-placement="top" title="" data-original-title="{{ 'admin.customer.index.delete'|trans }}"><i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a></div>
                                                         </div>
                                                     </td>
                                                 </tr>

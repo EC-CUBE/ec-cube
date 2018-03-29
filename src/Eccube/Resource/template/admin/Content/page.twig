@@ -82,7 +82,7 @@
                                             {# TODO 削除出来ないページの表示 #}
                                             <div class="col-auto text-center">{% if Page.edit_type == constant('Eccube\\Entity\\Page::EDIT_TYPE_USER') %}
                                                 <a class="btn btn-ec-actionIcon"
-                                                   data-toggle="tooltip"
+                                                   data-tooltip="tooltip"
                                                    data-placement="top"
                                                    title="{{ 'admin.content.page.delete'|trans }}"
                                                    href="{{ url('admin_content_page_delete', { 'id': Page.id}) }}" {{ csrf_token_for_anchor() }}

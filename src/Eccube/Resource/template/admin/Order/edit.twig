@@ -116,7 +116,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.order.edit.label.order'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                    <div class="d-inline-block" data-tooltip="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.order.edit.label.order'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                 </div>
                                 <div class="col-4 text-right"><a data-toggle="collapse" href="#orderOverview" aria-expanded="false" aria-controls="orderOverview"><i class="fa fa-angle-up fa-lg"></i></a></div>
                             </div>
@@ -139,7 +139,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col-3">
-                                                <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>{{ 'admin.order.index.298'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                                <div class="d-inline-block" data-tooltip="tooltip" data-placement="top" title="Tooltip"><span>{{ 'admin.order.index.298'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                             </div>
                                             <div class="col">
                                                 {{ form_widget(form.OrderStatus) }}
@@ -183,7 +183,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.order.edit.label.customer_info'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                    <div class="d-inline-block" data-tooltip="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.order.edit.label.customer_info'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                 </div>
                                 <div class="col-4 text-right"><a data-toggle="collapse" href="#ordererInfo" aria-expanded="false" aria-controls="ordererInfo"><i class="fa fa-angle-up fa-lg"></i></a></div>
                             </div>
@@ -215,7 +215,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 {% endif %}
                                 <div class="row mb-2">
                                     <div class="col-3">
-                                        <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>{{ 'admin.order.edit.customer_id'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                        <div class="d-inline-block" data-tooltip="tooltip" data-placement="top" title="Tooltip"><span>{{ 'admin.order.edit.customer_id'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                     </div>
                                     <div class="col">
                                         <p id="order_CustomerId">{{ form.Customer.vars.value is empty ? 'admin.order.edit.256'|trans :  form.Customer.vars.value }}</p>
@@ -351,7 +351,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.order.edit.label.product_info'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></span></div>
+                                    <div class="d-inline-block" data-tooltip="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.order.edit.label.product_info'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></span></div>
                                 </div>
                                 <div class="col-4 text-right"><a data-toggle="collapse" href="#orderItem" aria-expanded="false" aria-controls="orderItem"><i class="fa fa-angle-up fa-lg"></i></a></div>
                             </div>
@@ -493,7 +493,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             <td class="align-middle text-right pr-3">
                                                 <div class="row justify-content-end">
                                                     {# TODO 商品・明細を削除できるようにする #}
-                                                    <div class="col-auto text-center"><a class="btn btn-ec-actionIcon delete" data-toggle="tooltip" data-placement="top" title="{{ 'common.label.delete'|trans }}"><i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a></div>
+                                                    <div class="col-auto text-center"><a class="btn btn-ec-actionIcon delete" data-tooltip="tooltip" data-placement="top" title="{{ 'common.label.delete'|trans }}"><i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a></div>
                                                 </div>
                                             </td>
                                             {{ form_widget(orderItemForm.Order) }}
@@ -622,7 +622,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.common.label.memo'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></span></div>
+                                    <div class="d-inline-block" data-tooltip="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.common.label.memo'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></span></div>
                                 </div>
                                 <div class="col-4 text-right"><a data-toggle="collapse" href="#freeArea" aria-expanded="false" aria-controls="freeArea"><i class="fa fa-angle-up fa-lg"></i></a></div>
                             </div>

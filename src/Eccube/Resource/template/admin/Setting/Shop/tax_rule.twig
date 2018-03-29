@@ -180,7 +180,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         </td>
                                         <td class="align-middle action">
                                             <div class="row justify-content-end pr-2">
-                                                <div class="col-auto text-center pr-0"><a class="btn btn-ec-actionIcon edit-button" data-toggle="tooltip" data-id="{{ TaxRule.id }}" data-placement="top" title="{{ 'common.label.edit'|trans }}"><i class="fa fa-pencil fa-lg text-secondary" aria-hidden="true"></i></a></div>
+                                                <div class="col-auto text-center pr-0"><a class="btn btn-ec-actionIcon edit-button" data-tooltip="tooltip" data-id="{{ TaxRule.id }}" data-placement="top" title="{{ 'common.label.edit'|trans }}"><i class="fa fa-pencil fa-lg text-secondary" aria-hidden="true"></i></a></div>
                                                 {% if TaxRule.default_tax_rule %}
                                                     <div class="col-auto text-center">
                                                         <a class="btn btn-ec-actionIcon">
@@ -189,7 +189,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     </div>
                                                 {% else %}
                                                     <div class="col-auto text-center">
-                                                        <a class="btn btn-ec-actionIcon" data-toggle="tooltip" data-placement="top" title="{{ 'common.label.delete'|trans }}" href="{{ url('admin_setting_shop_tax_delete', { id : TaxRule.id }) }}" {{ csrf_token_for_anchor() }} data-method="delete">
+                                                        <a class="btn btn-ec-actionIcon" data-tooltip="tooltip" data-placement="top" title="{{ 'common.label.delete'|trans }}" href="{{ url('admin_setting_shop_tax_delete', { id : TaxRule.id }) }}" {{ csrf_token_for_anchor() }} data-method="delete">
                                                             <i class="fa fa-times fa-lg text-secondary" aria-hidden="true"></i></a></div>
                                                 {% endif %}
                                             </div>
