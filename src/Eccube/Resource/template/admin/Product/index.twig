@@ -57,6 +57,64 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 });
             }
 
+            $('#bulkDelete').on('click', function() {
+
+                var modal = $('#bulkDeleteModal');
+
+                // 削除中のUI変更処理
+                modal.find('button').attr('disabled', 'disabled');
+                $('.modal-body p', modal).text("{{ 'admin.product.index.496'|trans }}");
+                $('.progress', modal).show();
+
+                var checkedList = $('input[type=checkbox][data-delete-url]:checked');
+                var totalCount = checkedList.length;
+                var currentCount = 0;
+
+                var promises = checkedList.map(function() {
+                    return $.ajax({
+                        'url': $(this).data('delete-url'),
+                        'type': 'delete',
+                        'data': { '_token': $(this).attr('token-for-anchor') },
+                        'headers': {
+                            'x-csrf-token': $('meta[name="x-csrf-token"]').attr('content')
+                        }
+                    }).always(function() {
+                        $('.progress-bar', modal).css('width', (++currentCount / totalCount * 100) + '%');
+                    });
+                });
+
+                var addError = function(errorMessage) {
+                    $('<li><span class="badge badge-danger">ERROR</span> </li>')
+                        .append($('<span></span>').text(errorMessage))
+                        .appendTo('#bulkErrors');
+                };
+
+                $.when.apply($, promises)
+                    .done(function() {
+                        // 削除できなかった場合はエラーメッセージを表示
+                        [].slice.call(arguments).map(function(result) {
+                            return result[0];
+                        }).filter(function(result) {
+                            return result.success === false;
+                        }).forEach(function(result) {
+                            addError(result.message);
+                        });
+                    })
+                    .fail(function() {
+                        // システムエラー
+                        addError("{{ 'application.text.error.system'|trans }}");
+                    })
+                    .always(function() {
+                        $('.progress', modal).hide();
+                        $('.modal-body p', modal).text("{{ 'admin.product.index.498'|trans }}");
+                        modal.find('button').removeAttr('disabled').toggle();
+                    })
+            });
+
+            $('#bulkDeleteDone').on('click', function() {
+                location.reload(true);
+            });
+
             // フォーム値を確認し、アコーディオンを制御
             // 値あり : 開く / 値なし : 閉じる
             (function ($, f) {
@@ -225,8 +283,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <button {{ csrf_token_for_anchor() }} data-action="{{ url('admin_product_bulk_product_status', {id: constant('Eccube\\Entity\\Master\\ProductStatus::DISPLAY_ABOLISHED')}) }}" class="btn btn-ec-regular mr-2 action-submit">
                                             {{ 'admin.product.index.abolition'|trans }}
                                         </button>
-                                        {# TODO: this button is not implemented yet #}
-                                        <button class="btn btn-ec-delete">{{ 'admin.product.index.permanently_delete'|trans }}</button>
+                                        <button type="button" data-toggle="modal" data-target="#bulkDeleteModal" class="btn btn-ec-delete">{{ 'admin.product.index.permanently_delete'|trans }}</button>
                                     </div>
                                 </div>
                                 <div class="col-5 text-right">
@@ -280,7 +337,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         {% for Product in pagination %}
                                             <tr>
                                                 <td class="align-middle pl-3">
-                                                    <input type="checkbox" name="ids[]" value="{{ Product.id }}" id="check_{{ Product.id }}">
+                                                    <input type="checkbox" name="ids[]" value="{{ Product.id }}" id="check_{{ Product.id }}" data-delete-url="{{ url('admin_product_product_delete', { id: Product.id }) }}">
                                                 </td>
                                                 <td class="align-middle">{{ Product.id }}</td>
                                                 {# TODO: 画像のサイズをベタ指定しているので、styleguide側を直す #}
@@ -468,6 +525,29 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </div>
                     </div>
                 {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="bulkDeleteModal" tabindex="-1" role="dialog" aria-labelledby="discontinuance" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-bold">{{ 'admin.product.index.495'|trans }}</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body text-left">
+                    <p class="text-left">{{ 'admin.product.index.491'|trans }}</p>
+                    <ul id="bulkErrors"></ul>
+                    <div class="progress" style="display: none">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.product.index.cancel'|trans }}</button>
+                    <button class="btn btn-ec-delete" type="button" id="bulkDelete">{{ 'admin.product.index.permanently_delete' | trans }}</button>
+                    <button class="btn btn-ec-regular" id="bulkDeleteDone" style="display: none" type="button" data-dismiss="modal">{{ 'admin.product.index.497'|trans }}</button>
+                </div>
             </div>
         </div>
     </div>
