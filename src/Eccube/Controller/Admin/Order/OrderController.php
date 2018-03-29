@@ -155,9 +155,6 @@ class OrderController extends AbstractController
 
         $searchForm = $builder->getForm();
 
-        // 詳細検索が実行されたかどうか.
-        $active = false;
-
         /**
          * ページの表示件数は, 以下の順に優先される.
          * - リクエストパラメータ
@@ -248,7 +245,6 @@ class OrderController extends AbstractController
             'pageMaxis' => $pageMaxis,
             'page_no' => $page_no,
             'page_count' => $page_count,
-            'active' => $active, //TODO: have not logic implement to set active
         ];
     }
 
