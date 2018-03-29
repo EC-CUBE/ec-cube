@@ -274,6 +274,13 @@ class OrderRepository extends AbstractRepository
         $qb = $this->createQueryBuilder('o');
 
         // order_id_start
+        if (isset($searchData['order_id']) && StringUtil::isNotBlank($searchData['order_id'])) {
+            $qb
+                ->andWhere('o.id = :order_id')
+                ->setParameter('order_id', $searchData['order_id']);
+        }
+
+        // order_id_start
         if (isset($searchData['order_id_start']) && StringUtil::isNotBlank($searchData['order_id_start'])) {
             $qb
                 ->andWhere('o.id >= :order_id_start')
@@ -318,6 +325,13 @@ class OrderRepository extends AbstractRepository
                 ->findNotContainsBy(array('id' => OrderStatus::PROCESSING));
             $qb->andWhere($qb->expr()->in('o.OrderStatus', ':status'))
                 ->setParameter('status', $OrderStatuses);
+        }
+
+        // company_name
+        if (isset($searchData['company_name']) && StringUtil::isNotBlank($searchData['company_name'])) {
+            $qb
+                ->andWhere('o.company_name LIKE :company_name')
+                ->setParameter('company_name', '%'.$searchData['company_name'].'%');
         }
 
         // name

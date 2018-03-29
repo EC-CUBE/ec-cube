@@ -82,6 +82,20 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $this->expected = '検索結果：1件が該当しました';
         $this->actual = $crawler->filter('#search_form #search_total_count')->text();
         $this->verify();
+
+        $crawler = $this->client->request(
+            'POST', $this->generateUrl('admin_order'), array(
+                'admin_search_order' => array(
+                    '_token' => 'dummy',
+                    'order_id' => $Order->getId(),
+                )
+            )
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $this->expected = '検索結果：1件が該当しました';
+        $this->actual = $crawler->filter('#search_form #search_total_count')->text();
+        $this->verify();
     }
 
     public function testSearchOrderByName()
@@ -102,6 +116,20 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         $this->expected = '検索結果：' . $cnt . '件が該当しました';
+        $this->actual = $crawler->filter('#search_form #search_total_count')->text();
+        $this->verify();
+
+        $crawler = $this->client->request(
+            'POST', $this->generateUrl('admin_order'), array(
+                'admin_search_order' => array(
+                    '_token' => 'dummy',
+                    'company_name' => $companyName,
+                )
+            )
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $this->expected = '検索結果：'.$cnt.'件が該当しました';
         $this->actual = $crawler->filter('#search_form #search_total_count')->text();
         $this->verify();
     }

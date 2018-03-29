@@ -180,8 +180,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <div class="row">
                 <div class="col">
                     <label class="col-form-label">{{ 'admin.order.index.label_order_company_name'|trans }}</label>
-                    {# TODO: Search criteria is not implemented yet #}
-                    <input class="form-control" type="text">
+                    {{ form_widget(searchForm.company_name) }}
+                    {{ form_errors(searchForm.company_name) }}
                 </div>
                 <div class="col">
                     <label class="col-form-label">{{ 'admin.order.index.307'|trans }}</label>
@@ -222,8 +222,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <div class="row">
                 <div class="col">
                     <label class="col-form-label">{{ 'admin.order.index.label_order_id'|trans }}</label>
-                    {# TODO: Search criteria is not implemented yet #}
-                    <input class="form-control" type="text">
+                    {{ form_widget(searchForm.order_id) }}
+                    {{ form_errors(searchForm.order_id) }}
                 </div>
                 <div class="col">
                     <label class="col-form-label">{{ 'admin.order.index.313'|trans }}</label>
