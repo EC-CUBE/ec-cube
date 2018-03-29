@@ -23,7 +23,7 @@ class IntlExtensionTest extends TestCase
         $this->twig = new Environment($loader);
         $this->twig->addExtension(new IntlExtension());
 
-        // twig_localized_date_filterをautoloadするため.
+        // twig_localized_date_filter関数を使うため, Twig_Extensions_Extension_Intlをautoloadする.
         class_exists('Twig_Extensions_Extension_Intl');
     }
 
