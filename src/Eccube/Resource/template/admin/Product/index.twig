@@ -138,6 +138,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             // Append html and show popup
             function renderClass(data, btnClass) {
                 $('div.modal-body', modalClass).html(data);
+                $('h5.modal-title', modalClass).html(btnClass.data('message'));
                 $('a.btn-ec-conversion', modalClass).attr('href', btnClass.data('class-url'));
                 modalClass.modal('show');
                 btnClass.attr('disabled', false);
@@ -339,6 +340,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     {% if Product.hasProductClass %}
                                                         <button type="button" class="standardConfirm btn page-link text-dark d-inline-block"
                                                                 data-product-id="{{ Product.id }}"
+                                                                data-message="{{ 'admin.product.index.standard.modal.header'|trans({'%name%': Product.name}) }}"
                                                                 data-class-url="{{ url('admin_product_product_class', { 'id' : Product.id }) }}">
                                                             {{ 'admin.product.index.standard_confirm'|trans }}
                                                         </button>
@@ -457,7 +459,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title font-weight-bold">{{ 'admin.product.index.text02'|trans }}</h5>
+                    <h5 class="modal-title font-weight-bold">{# Title #}</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
                     </button>
                 </div>
