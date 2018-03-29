@@ -110,6 +110,38 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 form.attr('action', $(this).data('action')).submit();
                 return false;
             });
+
+            var dataClass = [];
+            var modalClass = $('#product-classes');
+            $('form#form_bulk').on('click', 'table.table button.standardConfirm', function () {
+                var btnClass = $(this);
+                btnClass.attr('disabled', true);
+                var productId = btnClass.data('product-id');
+
+                if (dataClass[productId] != undefined) {
+                    renderClass(dataClass[productId], btnClass);
+                    return;
+                }
+
+                $.ajax({
+                    url: '{{ url('admin_product_classes_load') }}',
+                    type: 'POST',
+                    data: {'productId': productId},
+                }).done(function (data) {
+                    dataClass[productId] = data;
+                    renderClass(dataClass[productId], btnClass);
+                }).fail(function () {
+                    console.log('Failed');
+                });
+            });
+
+            // Append html and show popup
+            function renderClass(data, btnClass) {
+                $('div.modal-body', modalClass).html(data);
+                $('a.btn-ec-conversion', modalClass).attr('href', btnClass.data('class-url'));
+                modalClass.modal('show');
+                btnClass.attr('disabled', false);
+            }
         });
     </script>
 {% endblock javascript %}
@@ -305,62 +337,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 </td>
                                                 <td class="align-middle">
                                                     {% if Product.hasProductClass %}
-                                                        <button class="btn page-link text-dark d-inline-block" type="button"
-                                                                data-toggle="modal" data-target="#standardConfirm_{{ Product.id }}">{{ 'admin.product.index.standard_confirm'|trans }}
+                                                        <button type="button" class="standardConfirm btn page-link text-dark d-inline-block"
+                                                                data-product-id="{{ Product.id }}"
+                                                                data-class-url="{{ url('admin_product_product_class', { 'id' : Product.id }) }}">
+                                                            {{ 'admin.product.index.standard_confirm'|trans }}
                                                         </button>
-                                                        <div class="modal fade" id="standardConfirm_{{ Product.id }}" tabindex="-1"
-                                                             role="dialog"
-                                                             aria-labelledby="standardConfirm-{{ Product.id }}" aria-hidden="true"
-                                                             style="display: none;">
-                                                            <div class="modal-dialog" role="document">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title">{{ 'admin.product.index.standard.modal.header'|trans({'%name%': Product.name}) }}</h5>
-                                                                        <button class="close" type="button"
-                                                                                data-dismiss="modal"
-                                                                                aria-label="Close"><span aria-hidden="true">×</span>
-                                                                        </button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <table class="table table-striped">
-                                                                            <thead class="table-active">
-                                                                            <tr>
-                                                                                <th class="pt-2 pb-2 pl-2">{{ 'admin.product.index.standart.modal.col1'|trans }}</th>
-                                                                                <th class="pt-2 pb-2">{{ 'admin.product.index.standart.modal.col2'|trans }}</th>
-                                                                                <th class="pt-2 pb-2">{{ 'admin.product.index.standart.modal.col3'|trans }}</th>
-                                                                                <th class="pt-2 pb-2">{{ 'admin.product.index.standart.modal.col4'|trans }}</th>
-                                                                                <th class="pt-2 pb-2 pr-2">{{ 'admin.product.index.standart.modal.col5'|trans }}</th>
-                                                                            </tr>
-                                                                            </thead>
-                                                                            <tbody>
-                                                                            {% for Class in Product.ProductClasses %}
-                                                                                {% if Class.visible == 1 %}
-                                                                                    <tr>
-                                                                                        <td class="pl-3">{% if Class.hasClassCategory1 %}{{ Class.ClassCategory1.name }}{% endif %}</td>
-                                                                                        <td>{% if Class.hasClassCategory2 %}{{ Class.ClassCategory2.name }}{% endif %}</td>
-                                                                                        <td>{{ Class.code }}</td>
-                                                                                        <td>{% if Class.stock_unlimited %}{{ 'admin.product.index.standart.modal.unlimited'|trans }}{% else %}{{ Class.stock }}{% endif %}</td>
-                                                                                        <td class="pr-3">{{ Class.price02|price }}</td>
-                                                                                    </tr>
-                                                                                {% endif %}
-                                                                            {% endfor %}
-                                                                            </tbody>
-                                                                        </table>
-
-                                                                    <div class="modal-footer">
-                                                                    <button class="btn btn-v-sub" type="button"
-                                                                                data-dismiss="modal">
-                                                                            {{ 'admin.product.index.back'|trans }}
-                                                                        </button>
-                                                                        <a class="btn btn-ec-conversion"
-                                                                           href="{{ url('admin_product_product_class', { 'id' : Product.id }) }}">
-                                                                            {{ 'admin.product.index.standard_edit'|trans }}
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
                                                     {% else %}
                                                         {# 規格なし商品 は在庫数を表示 #}
                                                         {% if Product.stockunlimited_min %}
@@ -471,5 +452,29 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="product-classes" tabindex="-1" role="dialog" aria-labelledby="product-classes" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-bold">{{ 'admin.product.index.text02'|trans }}</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {# Append data list #}
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-v-sub" type="button" data-dismiss="modal">
+                        {{ 'admin.product.index.back'|trans }}
+                    </button>
+                    <a class="btn btn-ec-conversion"
+                       href="#">
+                        {{ 'admin.product.index.standard_edit'|trans }}
+                    </a>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.product-classes -->
 {% endblock %}
 

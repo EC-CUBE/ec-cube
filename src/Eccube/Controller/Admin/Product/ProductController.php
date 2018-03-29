@@ -269,6 +269,39 @@ class ProductController extends AbstractController
         ];
     }
 
+
+    /**
+     * @Method("POST")
+     * @Route("/%eccube_admin_route%/product/classes/load", name="admin_product_classes_load")
+     * @Template("@admin/Product/product_class_popup.twig")
+     */
+    public function loadProductClasses(Request $request){
+
+        if ($request->isXmlHttpRequest()) {
+            $data = [];
+            $productId = $request->request->get('productId');
+
+            /** @var $Product ProductRepository */
+            $Product = $this->productRepository->find($productId);
+            if (!$Product) {
+                throw new NotFoundHttpException();
+            }
+
+            if ($Product->hasProductClass()) {
+                $class = $Product->getProductClasses();
+                foreach ($class as $item) {
+                    if ($item['visible']) {
+                        $data[] = $item;
+                    }
+                }
+            }
+
+            return [
+                'data' => $data
+            ];
+        }
+    }
+
     /**
      * @Method("POST")
      * @Route("/%eccube_admin_route%/product/product/image/add", name="admin_product_image_add")
