@@ -74,10 +74,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     return $.ajax({
                         'url': $(this).data('delete-url'),
                         'type': 'delete',
-                        'data': { '_token': $(this).attr('token-for-anchor') },
-                        'headers': {
-                            'x-csrf-token': $('meta[name="x-csrf-token"]').attr('content')
-                        }
+                        'data': { '_token': $(this).attr('token-for-anchor') }
                     }).always(function() {
                         $('.progress-bar', modal).css('width', (++currentCount / totalCount * 100) + '%');
                     });
