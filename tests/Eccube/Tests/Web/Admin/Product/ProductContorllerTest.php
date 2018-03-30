@@ -360,6 +360,14 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $rUrl = $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()]);
         $this->assertTrue($this->client->getResponse()->isRedirect($rUrl));
 
+        $formData['return_link'] = $this->generateUrl('admin_product_category');
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()]),
+            ['admin_product' => $formData]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($formData['return_link']));
+
         $EditedProduct = $this->productRepository->find($Product->getId());
         $this->expected = $formData['name'];
         $this->actual = $EditedProduct->getName();

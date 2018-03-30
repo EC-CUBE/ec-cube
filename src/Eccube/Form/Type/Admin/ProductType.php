@@ -171,6 +171,9 @@ class ProductType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
             ))
+            ->add('return_link', HiddenType::class, [
+                'mapped' => false
+            ])
         ;
     }
 

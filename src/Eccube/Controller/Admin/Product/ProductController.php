@@ -565,6 +565,10 @@ class ProductController extends AbstractController
 
                 $this->addSuccess('admin.register.complete', 'admin');
 
+                if ($returnLink = $form->get('return_link')->getData()) {
+                    return $this->redirect($returnLink);
+                }
+
                 return $this->redirectToRoute('admin_product_product_edit', ['id' => $Product->getId()]);
             }
         }

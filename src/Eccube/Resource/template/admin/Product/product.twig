@@ -168,6 +168,28 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             $('#file_upload').on('click', function () {
                 $('#{{ form.product_image.vars.id }}').click();
             });
+
+            {# TODO: Should move logic of js into .js file instead of .html file #}
+            var confirmFormChange = function (form, target, modal) {
+                {# TODO: Should detect form change before show confirm modal #}
+                var returnLink = form.find('input[type="hidden"][name*="return_link"]'),
+                    saveBtn = modal.find('a[data-action="save"]'),
+                    cancelBtn = modal.find('a[data-action="cancel"]');
+                modal.on('hidden.bs.modal', function () {
+                    returnLink.val('');
+                });
+                saveBtn.on('click', function () {
+                    returnLink.val($(this).data('return-link'));
+                    form.submit();
+                });
+                target.on('click', function () {
+                    modal.modal('show');
+                    saveBtn.data('return-link', $(this).attr('href'));
+                    cancelBtn.attr('href', $(this).attr('href'));
+                    return false;
+                });
+            };
+            confirmFormChange($('#form1'), $('a[data-action="confirm"]'), $('#confirmFormChangeModal'))
         });
 
         function fnClass(action) {
@@ -180,8 +202,33 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% endblock javascript %}
 
 {% block main %}
+    <div class="modal fade" id="confirmFormChangeModal" tabindex="-1" role="dialog"
+         aria-labelledby="confirmFormChangeModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ 'admin.product.product.text10'|trans }}</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>{{ 'admin.product.product.text11'|trans }}</p>
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-ec-conversion" data-action="save" href="javascript:void(0)">
+                        {{ 'admin.product.product.save'|trans }}
+                    </a>
+                    <a class="btn btn-ec-sub" data-action="cancel" href="javascript:void(0)">
+                        {{ 'admin.product.product.cancel'|trans }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
     <form role="form" name="form1" id="form1" method="post" action="" novalidate enctype="multipart/form-data">
         {{ form_widget(form._token) }}
+        {{ form_widget(form.return_link) }}
         <div class="c-contentsArea__cols">
             <div class="c-contentsArea__primaryCol">
                 <div class="c-primaryCol">
@@ -570,38 +617,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {% endif %}
 
                                     <div class="d-block text-center text-center">
-                                        <button class="btn btn-ec-regular" type="button" data-toggle="modal"
-                                                data-target="#confirmModal">
+                                        <a href="{{ url('admin_product_product_class', { 'id' : id }) }}" class="btn btn-ec-regular" data-action="confirm">
                                             {{ 'admin.product.product.text09'|trans }}
-                                        </button>
-                                        <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog"
-                                             aria-labelledby="confirmModal" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title">{{ 'admin.product.product.text10'|trans }}</h5>
-                                                        <button class="close" type="button" data-dismiss="modal"
-                                                                aria-label="Close">
-                                                            <span aria-hidden="true">×</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <p>{{ 'admin.product.product.text11'|trans }}</p>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        {# TODO: 変更を保存する機能の実装　#}
-                                                        <a class="btn btn-ec-conversion"
-                                                           href="{{ url('admin_product_product_class', { 'id' : id }) }}">
-                                                            {{ 'admin.product.product.save'|trans }}
-                                                        </a>
-                                                        <button class="btn btn-ec-sub" type="button"
-                                                                data-dismiss="modal">
-                                                            {{ 'admin.product.product.cancel'|trans }}
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -745,10 +763,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 #}
                                 <div class="d-block text-center">
                                     {# TODO onclickは適切ではないのでaタグで実装できるようにする #}
-                                    <button class="btn btn-block btn-ec-regular" type="button"
-                                            onclick='location.href="{{ url('admin_product_category') }}"'>
+                                    <a class="btn btn-block btn-ec-regular" data-action="confirm" href="{{ url('admin_product_category') }}">
                                         {{ 'admin.product.product.text13'|trans }}
-                                    </button>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -798,9 +815,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 </div>
                                 #}
                                 <div class="d-block text-center">
-                                    <button class="btn btn-block btn-ec-regular" type="button">
+                                    <a href="{{ url('admin_product_tag') }}" class="btn btn-block btn-ec-regular" data-action="confirm">
                                         {{ 'admin.product.product.text14'|trans }}
-                                    </button>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -887,7 +904,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <div class="row justify-content-between align-items-center">
                     <div class="col-6">
                         <div class="c-conversionArea__leftBlockItem">
-                            <a class="c-beseLink" href="{{ url('admin_product_page', { page_no : app.session.get('eccube.admin.product.search.page_no')|default('1') } ) }}?resume=1">
+                            <a class="c-beseLink" href="{{ url('admin_product_page', { page_no : app.session.get('eccube.admin.product.search.page_no')|default('1') } ) }}?resume=1" data-action="confirm">
                                 <i class="fa fa-backward" aria-hidden="true"></i>
                                 <span>{{ 'admin.product.product.509'|trans }}</span></a>
                         </div>
