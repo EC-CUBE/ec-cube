@@ -403,7 +403,7 @@ class ProductController extends AbstractController
         $Tags = [];
         $ProductTags = $Product->getProductTag();
         foreach ($ProductTags as $ProductTag) {
-            $Tags[$ProductTag->getTag()->getId()] = $ProductTag->getTag();
+            $Tags[] = $ProductTag->getTag();
         }
         $form['Tag']->setData($Tags);
 

@@ -170,6 +170,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             });
 
             var mainTags = $('#allTags');
+            var adminProductTag = $('#admin_product_Tag');
+            $('input', adminProductTag).each(function () {
+                if($(this).is(':checked')){
+                    $('button[data-tag-id="'+ $(this).val() +'"]').addClass('active');
+                }
+            });
             mainTags.on('click', 'button.btn', function () {
                 var btnTag = $(this);
                 var tagId = btnTag.data('tag-id');
@@ -810,7 +816,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {% if(TagsList|length > 0) %}
                                         {% for Tag in TagsList %}
                                             <div class="d-inline-block mb-2 mr-2">
-                                                <button class="btn btn-outline-primary {% if Tag.id in Tags|keys %} active {% endif %}" type="button"
+                                                <button class="btn btn-outline-primary" type="button"
                                                         data-tag-id="{{ Tag.id }}">{{ Tag.name }}</button>
                                             </div>
                                         {% endfor %}
