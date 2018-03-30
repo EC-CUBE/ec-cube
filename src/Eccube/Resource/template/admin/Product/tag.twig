@@ -40,73 +40,94 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.sortable.min.js', 'admin') }}"></script>
     <script>
         $(function () {
-            var mainRows = "ul.tableish";
+            // 初期表示時のsort noを保持.
             var oldSortNos = [];
-            // 画面の中のsort_no一覧を保持
-            $(mainRows + " > .item_box").each(function () {
+            $('.sortable-item').each(function () {
                 oldSortNos.push(this.dataset.sortNo);
             });
-            // rsort
             oldSortNos.sort(function (a, b) {
                 return a - b;
             }).reverse();
-
-            $(mainRows).sortable({
-                items: '> .item_box',
-                cursor: 'move',
-                update: function (e, ui) {
-                    $("body").append($('<div class="modal-backdrop show"></div>'));
-                    updateSortNo();
-                }
-            });
-
+            // 並び替え後にsort noを更新
             var updateSortNo = function () {
-                // 並び替え後にsortNoを更新
                 var newSortNos = {};
                 var i = 0;
-                $(mainRows + " > .item_box").each(function () {
-                    newSortNos[this.dataset.tagId] = oldSortNos[i];
+                $('.sortable-item').each(function () {
+                    newSortNos[this.dataset.id] = oldSortNos[i];
                     i++;
                 });
-
                 $.ajax({
                     url: '{{ url('admin_product_tag_sort_no_move') }}',
                     type: 'POST',
-                    data: newSortNos,
-                }).done(function (data) {
-                    doDisableArrow();
-                }).fail(function () {
-                    console.log('Failed');
+                    headers: {
+                        'x-csrf-token': $('meta[name="x-csrf-token"]').attr('content')
+                    },
+                    data: newSortNos
+                }).always(function () {
                     $(".modal-backdrop").remove();
                 });
             };
-
-            $(mainRows).on('click', '.item_box a.up', function (e) {
-                e.preventDefault();
-                var current = $(this).closest("li.item_box");
-                current.prev().before(current);
-                $("body").append($('<div class="modal-backdrop show"></div>'));
+            // 最初と最後の↑↓を再描画
+            var redrawDisableAllows = function () {
+                var items = $('.sortable-item');
+                items.find('a').removeClass('disabled');
+                items.first().find('a.action-up').addClass('disabled');
+                items.last().find('a.action-down').addClass('disabled');
+            };
+            // オーバレイ後, 表示順の更新を行う
+            var moveSortNo = function () {
+                $('body').append($('<div class="modal-backdrop show"></div>'));
                 updateSortNo();
-            });
-
-            $(mainRows).on('click', ".item_box a.down", function (e) {
-                e.preventDefault();
-                var current = $(this).closest("li.item_box");
-                current.next().after(current);
-                $("body").append($('<div class="modal-backdrop show"></div>'));
-                updateSortNo();
-            });
-
-            // Do set disable arrow up/down
-            function doDisableArrow() {
-                $(mainRows + " a.up.disabled").removeClass('disabled');
-                $(mainRows + " a.down.disabled").removeClass('disabled');
-                // First element
-                $(mainRows + " > li:nth-child(2) > div a.up").addClass('disabled');
-                // Last element
-                $(mainRows + " > li").last().find("a.down").addClass('disabled');
-                $(".modal-backdrop").remove();
+                redrawDisableAllows();
             }
+            // Drag and Drop
+            $(".sortable-container").sortable({
+                items: '> .sortable-item',
+                cursor: 'move',
+                update: function (e, ui) {
+                    moveSortNo();
+                }
+            });
+            // Up
+            $(".sortable-item").on('click', 'a.action-up', function (e) {
+                e.preventDefault();
+                var current = $(this).parents("li");
+                if (current.prev().hasClass('sortable-item')) {
+                    current.prev().before(current);
+                    moveSortNo();
+                }
+            });
+            // Down
+            $(".sortable-item").on('click', 'a.action-down', function (e) {
+                e.preventDefault();
+                var current = $(this).parents("li");
+                if (current.next().hasClass('sortable-item')) {
+                    current.next().after(current);
+                    moveSortNo();
+                }
+            });
+
+            // 編集
+            $(".sortable-item").on('click', 'a.action-edit', function (e) {
+                e.preventDefault();
+                var current = $(this).parents("li");
+                current.find('.mode-view').addClass('d-none');
+                current.find('.mode-edit').removeClass('d-none');
+            });
+
+            // 編集キャンセル
+            $('.sortable-item').on('click', 'button.action-edit-cancel', function (e) {
+                e.preventDefault();
+                var current = $(this).parents("li");
+                current.find('.mode-view').removeClass('d-none');
+                current.find('.mode-edit').addClass('d-none');
+            });
+            // 編集時, エラーがあれば入力欄を表示.
+            $('.sortable-item').find('.is-invalid').each(function (e) {
+                var current = $(this).parents("li");
+                current.find('.mode-view').addClass('d-none');
+                current.find('.mode-edit').removeClass('d-none');
+            });
         });
     </script>
 {% endblock %}
@@ -118,56 +139,50 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <div class="card rounded border-0 mb-4">
                     <div class="card-body p-0">
                         <div class="card rounded border-0 mb-2">
-                            <ul class="list-group list-group-flush tableish">
+                            <ul class="list-group list-group-flush sortable-container">
                                 <li class="list-group-item">
-                                    <div class="form-row">
-                                        <form role="form" class="form-row" name="form1" id="form1" method="post"
-                                              action="{% if Tag.id %}{{ path('admin_product_tag_edit', {id: Tag.id}) }}{% else %}{{ url('admin_product_tag') }} {% endif %}"
-                                              enctype="multipart/form-data">
-                                            {{ form_widget(form._token) }}
-                                            <div class="col-auto d-flex align-items-center">
-                                                {{ form_widget(form.name) }}
-                                                {{ form_errors(form.name) }}
-                                            </div>
-                                            <div class="col-auto d-flex align-items-center">
-                                                <button class="btn btn-ec-regular" type="submit">
-                                                    {{ 'admin.product.tag.create'|trans }}
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </div><!-- /.form-row -->
+                                    <form role="form" class="form-row" method="post" action="{{ url('admin_product_tag') }}">
+                                        {{ form_widget(form._token) }}
+                                        <div class="col-auto align-items-center">
+                                            {{ form_widget(form.name) }}
+                                            {{ form_errors(form.name) }}
+                                        </div>
+                                        <div class="col-auto align-items-center">
+                                            <button class="btn btn-ec-regular" type="submit">
+                                                {{ 'admin.product.tag.create'|trans }}
+                                            </button>
+                                        </div>
+                                    </form>
                                 </li>
                                 {% for Tag in Tags %}
-                                    <li class="list-group-item item_box" data-tag-id="{{ Tag.id }}"
+                                    <li class="list-group-item sortable-item" data-id="{{ Tag.id }}"
                                         data-sort-no="{{ Tag.sortNo }}">
-                                        <div class="row justify-content-around">
+                                        <div class="row justify-content-around mode-view">
                                             <div class="col-auto d-flex align-items-center"><i
                                                         class="fa fa-bars text-ec-gray"></i></div>
                                             <div class="col d-flex align-items-center"><a>{{ Tag.name }}</a>
                                             </div>
                                             <div class="col-auto text-right">
-                                                <a class="btn btn-ec-actionIcon up mr-3 {% if loop.first %}disabled{% endif %}"
+                                                <a class="btn btn-ec-actionIcon mr-3 action-up{% if loop.first %} disabled{% endif %}"
                                                    href="#"
                                                    data-toggle="tooltip"
                                                    data-placement="top" title="{{ 'admin.product.tag.up'|trans }}"><i
                                                             class="fa fa-arrow-up fa-lg text-secondary"></i></a>
                                                 <a
-                                                        class="btn btn-ec-actionIcon down mr-3 {% if loop.last %}disabled{% endif %}"
+                                                        class="btn btn-ec-actionIcon mr-3 action-down{% if loop.last %} disabled{% endif %}"
                                                         href="#"
                                                         data-toggle="tooltip"
                                                         data-placement="top"
                                                         title="{{ 'admin.product.tag.down'|trans }}"><i
                                                             class="fa fa-arrow-down fa-lg text-secondary"></i></a>
                                                 <a
-                                                        class="btn btn-ec-actionIcon mr-3"
-                                                        href="{{ url('admin_product_tag_edit', {id: Tag.id}) }}"
+                                                        class="btn btn-ec-actionIcon mr-3 action-edit"
                                                         data-toggle="tooltip"
                                                         data-placement="top"
                                                         title="{{ 'admin.product.tag.edit'|trans }}"><i
                                                             class="fa fa-pencil fa-lg text-secondary"></i></a>
                                                 <a
                                                         class="btn btn-ec-actionIcon mr-3"
-                                                        href="{{ url('admin_product_tag_delete', {id: Tag.id}) }}"
                                                         data-toggle="modal"
                                                         data-target="#confirmModal-{{ Tag.id }}"
                                                         data-toggle="tooltip"
@@ -211,22 +226,22 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <form class="form-row d-none mode-edit" method="post" action="{{ url('admin_product_tag') }}">
+                                            {{ form_widget(forms[Tag.id]._token) }}
+                                            <div class="col-auto align-items-center">
+                                                {{ form_widget(forms[Tag.id].name) }}
+                                                {{ form_errors(forms[Tag.id].name) }}
+                                            </div>
+                                            <div class="col-auto align-items-center">
+                                                <button class="btn btn-ec-conversion" type="submit">決定</button>
+                                            </div>
+                                            <div class="col-auto align-items-center">
+                                                <button class="btn btn-ec-sub action-edit-cancel" type="button">キャンセル</button>
+                                            </div>
+                                        </form>
                                     </li>
                                 {% endfor %}
-                                {#TODO タグの編集を実装#}
-                                {#<li class="list-group-item">#}
-                                {#<form class="form-row">#}
-                                {#<div class="col-auto d-flex align-items-center">#}
-                                {#<input class="form-control" type="text">#}
-                                {#</div>#}
-                                {#<div class="col-auto d-flex align-items-center">#}
-                                {#<button class="btn btn-ec-conversion" type="submit">決定</button>#}
-                                {#</div>#}
-                                {#<div class="col-auto d-flex align-items-center">#}
-                                {#<button class="btn btn-ec-sub" type="submit">キャンセル</button>#}
-                                {#</div>#}
-                                {#</form>#}
-                                {#</li>#}
                             </ul>
                         </div>
                     </div>
