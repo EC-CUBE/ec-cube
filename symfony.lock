@@ -464,6 +464,15 @@
     "symfony/yaml": {
         "version": "v3.4.1"
     },
+    "twig/extensions": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "4851df0afc426b8f07204379d21fca25b6df5d68"
+        }
+    },
     "twig/twig": {
         "version": "v2.4.4"
     },

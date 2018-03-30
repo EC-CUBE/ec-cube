@@ -61,6 +61,7 @@ use Eccube\Entity\ProductStock;
 use Eccube\Entity\ProductImage;
 use Eccube\Entity\ProductCategory;
 use Eccube\Entity\ExportCsvRow;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * @Route(service=ProductController::class)
@@ -199,28 +200,10 @@ class ProductController extends AbstractController
             $searchForm->handleRequest($request);
 
             if ($searchForm->isValid()) {
+                $page_no = 1;
                 $searchData = $searchForm->getData();
 
-                // paginator
-                $qb = $this->productRepository->getQueryBuilderBySearchDataForAdmin($searchData);
-                $page_no = 1;
-
-                $event = new EventArgs(
-                    [
-                        'qb' => $qb,
-                        'searchData' => $searchData,
-                    ],
-                    $request
-                );
-                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_INDEX_SEARCH, $event);
-                $searchData = $event->getArgument('searchData');
-
-                $pagination = $paginator->paginate(
-                    $qb,
-                    $page_no,
-                    $page_count,
-                    ['wrap-queries' => true]
-                );
+                $pagination = $this->buildPagination($paginator, $request, $searchData, $page_no, $page_count);
 
                 // sessionに検索条件を保持
                 $viewData = FormUtil::getViewData($searchForm);
@@ -233,6 +216,15 @@ class ProductController extends AbstractController
                 $session->remove('eccube.admin.product.search');
                 $session->remove('eccube.admin.product.search.page_no');
                 $session->remove('eccube.admin.product.search.page_count');
+
+                $page_no = 1;
+                $searchData = [];
+
+                $pagination = $this->buildPagination($paginator, $request, $searchData, $page_no, $page_count);
+                $viewData = FormUtil::getViewData($searchForm);
+
+                $session->set('eccube.admin.product.search', $viewData);
+                $session->set('eccube.admin.product.search.page_no', $page_no);
             } else {
                 // pagingなどの処理
                 if (is_null($page_no)) {
@@ -242,63 +234,13 @@ class ProductController extends AbstractController
                 }
                 $viewData = $session->get('eccube.admin.product.search');
                 if (!is_null($viewData)) {
-                    // 公開ステータス
-                    // 1:公開, 2:非公開, 3:在庫なし
-                    $linkStatus = $request->get('status');
-                    if (!empty($linkStatus)) {
-                        // リンクステータスは在庫なし:3以外
-                        if ($linkStatus != $this->eccubeConfig['eccube_admin_product_stock_status']) {
-                            $viewData['link_status'] = $linkStatus;
-                            $viewData['stock_status'] = null;
-                            $viewData['status'] = null;
-                        } else {
-                            // リンクステータスは在庫なし:3
-                            $viewData['link_status'] = null;
-                            $viewData['stock_status'] = Constant::DISABLED;
-                            $viewData['status'] = null;
-                        }
-                        // ページステータスを設定します（リンクステータスAタグ表示のために）
-                        $page_status = $linkStatus;
-                    } else {
-                        // すべてを選択
-                        $viewData['link_status'] = null;
-                        $viewData['stock_status'] = null;
-                        if (!$viewData['status']) {
-                            $viewData['status'] = array();
-                        }
-                    }
-
                     // 表示件数
                     $page_count = $request->get('page_count', $page_count);
                     $searchData = FormUtil::submitAndGetData($searchForm, $viewData);
-                    if ($viewData['link_status']) {
-                        $searchData['link_status'] = $this->productStatusRepository->find($viewData['link_status']);
-                    }
-                    // リンクステータス[在庫なし]設定されている場合は検索パラメター設定する
-                    if (isset($viewData['stock_status'])) {
-                        $searchData['stock_status'] = $viewData['stock_status'];
-                    }
 
                     $session->set('eccube.admin.product.search', $viewData);
 
-                    $qb = $this->productRepository->getQueryBuilderBySearchDataForAdmin($searchData);
-
-                    $event = new EventArgs(
-                        [
-                            'qb' => $qb,
-                            'searchData' => $searchData,
-                        ],
-                        $request
-                    );
-                    $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_INDEX_SEARCH, $event);
-                    $searchData = $event->getArgument('searchData');
-
-                    $pagination = $paginator->paginate(
-                        $qb,
-                        $page_no,
-                        $page_count,
-                        ['wrap-queries' => true]
-                    );
+                    $pagination = $this->buildPagination($paginator, $request, $searchData, $page_no, $page_count);
 
                     // セッションから検索条件を復元(カテゴリ)
                     if (!empty($searchData['category_id'])) {
@@ -979,5 +921,81 @@ class ProductController extends AbstractController
         $ProductCategory->setSortNo($count);
 
         return $ProductCategory;
+    }
+
+    /**
+     * @param Paginator $paginator
+     * @param Request $request
+     * @param array $searchData
+     * @param integer $page_no
+     * @param integer $page_count
+     * @return Paginator
+     */
+    private function buildPagination(Paginator $paginator, Request $request, array &$searchData, $page_no, $page_count)
+    {
+        $qb = $this->productRepository->getQueryBuilderBySearchDataForAdmin($searchData);
+
+        $event = new EventArgs(
+            [
+                'qb' => $qb,
+                'searchData' => $searchData,
+            ],
+            $request
+        );
+
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_INDEX_SEARCH, $event);
+        $searchData = $event->getArgument('searchData');
+
+        $pagination = $paginator->paginate(
+            $qb,
+            $page_no,
+            $page_count,
+            ['wrap-queries' => true]
+        );
+
+        return $pagination;
+    }
+
+    /**
+     * Bulk public action
+     *
+     * @Method("POST")
+     * @Route("/%eccube_admin_route%/product/bulk/product-status/{id}", requirements={"id" = "\d+"}, name="admin_product_bulk_product_status")
+     *
+     * @param Request $request
+     * @param ProductStatus $ProductStatus
+     *
+     * @return RedirectResponse
+     */
+    public function bulkProductStatus(Request $request, ProductStatus $ProductStatus)
+    {
+        $this->isTokenValid();
+
+        /** @var Product[] $Products */
+        $Products = $this->productRepository->findBy(['id' => $request->get('ids')]);
+        $count = 0;
+        foreach ($Products as $Product) {
+            try {
+                $Product->setStatus($ProductStatus);
+                $this->productRepository->save($Product);
+                $count++;
+            } catch (\Exception $e) {
+                $this->addError($e->getMessage(), 'admin');
+            }
+        }
+        try {
+            if ($count) {
+                $this->entityManager->flush();
+                $msg = $this->translator->trans('admin.product.index.bulk_product_status_success_count', [
+                    '%count%' => $count,
+                    '%status%' => $ProductStatus->getName()
+                ]);
+                $this->addSuccess($msg, 'admin');
+            }
+        } catch (\Exception $e) {
+            $this->addError($e->getMessage(), 'admin');
+        }
+
+        return $this->redirectToRoute('admin_product', ['resume' => Constant::ENABLED]);
     }
 }

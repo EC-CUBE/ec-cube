@@ -78,13 +78,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="collapse show ec-cardCollapse" id="layoutOverview">
                             <div class="card-body">
                                 <div class="row mb-2">
-                                    <div class="col-3 pr-0"><span>{{ 'admin.content.layout_list.48'|trans }}</span><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></div>
+                                    <div class="col-3 pr-0"><span>{{ 'admin.content.layout.name'|trans }}</span><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></div>
                                     <div class="col">
                                         {{ form_widget(form.name) }}
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-3 pr-0"><span>{{ 'admin.content.layout_list.49'|trans }}</span></div>
+                                    <div class="col-3 pr-0"><span>{{ 'admin.content.layout.device_type'|trans }}</span></div>
                                     <div class="col"><span>{{ form_widget(form.DeviceType) }}</span></div>{# TODO hidden にする #}
                                 </div>
                             </div>
@@ -94,7 +94,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.content.layout_list.50'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.content.layout.block_edit'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                 </div>
                                 <div class="col-4 text-right"><a data-toggle="collapse" href="#layoutBlockEdit" aria-expanded="false" aria-controls="layoutBlockEdit"><i class="fa fa-angle-up fa-lg"></i></a></div>
                             </div>
@@ -361,7 +361,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <div class="c-conversionArea__container">
                     <div class="row justify-content-between align-items-center">
                         <div class="col-6">
-                            <div class="c-conversionArea__leftBlockItem"><a class="c-beseLink" href="{{ url('admin_content_layout') }}"><i class="fa fa-backward" aria-hidden="true"></i><span>{{ 'admin.content.layout_list.47'|trans }}</span></a>
+                            <div class="c-conversionArea__leftBlockItem"><a class="c-beseLink" href="{{ url('admin_content_layout') }}"><i class="fa fa-backward" aria-hidden="true"></i><span>{{ 'admin.content.layout.list'|trans }}</span></a>
                             </div>
                         </div>
                         <div class="col-6">

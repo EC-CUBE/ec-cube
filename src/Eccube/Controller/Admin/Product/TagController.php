@@ -29,11 +29,13 @@ use Eccube\Controller\AbstractController;
 use Eccube\Entity\Tag;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Form\Type\Admin\ProductTag;
 use Eccube\Repository\TagRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -59,12 +61,53 @@ class TagController extends AbstractController
      * @Route("/%eccube_admin_route%/product/tag", name="admin_product_tag")
      * @Route("/%eccube_admin_route%/product/tag/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_tag_edit")
      * @Template("@admin/Product/tag.twig")
+     *
+     * @param Request $request
+     * @param Tag|null $Tag
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function index(Request $request)
+    public function index(Request $request, Tag $Tag = null)
     {
         $Tags = $this->tagRepository->getList();
+        if (!$Tag) {
+            $Tag = new Tag();
+        }
+
+        $builder = $this->formFactory
+            ->createBuilder(ProductTag::class, $Tag);
+        $event = new EventArgs(
+            array(
+                'builder' => $builder,
+                'Tag' => $Tag,
+            ),
+            $request
+        );
+
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_TAG_INDEX_INITIALIZE, $event);
+
+        $form = $builder->getForm();
+        if ($request->getMethod() === 'POST') {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+
+                $this->tagRepository->save($Tag);
+                $event = new EventArgs(
+                    array(
+                        'form' => $form,
+                        'Tag' => $Tag,
+                    ),
+                    $request
+                );
+                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_TAG_INDEX_COMPLETE, $event);
+
+                $this->addSuccess('admin.tag.save.complete', 'admin');
+                return $this->redirectToRoute('admin_product_tag');
+            }
+        }
 
         return [
+            'form' => $form->createView(),
+            'Tag' => $Tag,
             'Tags' => $Tags,
         ];
     }
@@ -121,26 +164,6 @@ class TagController extends AbstractController
             $this->entityManager->flush();
         }
 
-        return true;
-    }
-
-    // TODO 新規作成
-    public function new(Request $request)
-    {
-    }
-
-    // TODO 更新
-    public function edit(Request $request)
-    {
-    }
-
-    // TODO 上へ
-    public function up(Request $request)
-    {
-    }
-
-    // TODO 下へ
-    public function down(Request $request)
-    {
+        return new Response();
     }
 }

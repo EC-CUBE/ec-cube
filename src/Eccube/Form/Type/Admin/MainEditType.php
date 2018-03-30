@@ -34,7 +34,6 @@ use Eccube\Form\Validator\TwigLint;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -119,7 +118,7 @@ class MainEditType extends AbstractType
                     )),
                 ),
             ))
-            ->add('tpl_data', TextType::class, array(
+            ->add('tpl_data', TextareaType::class, array(
                 'label' => false,
                 'mapped' => false,
                 'required' => false,
