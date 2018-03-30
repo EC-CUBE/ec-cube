@@ -1075,16 +1075,16 @@
         },
         {
             "name": "knplabs/knp-components",
-            "version": "1.3.5",
+            "version": "1.3.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/knp-components.git",
-                "reference": "a03bbd87ecf9e56db6f7533db2c63d6da6cd5f33"
+                "reference": "464e1ee889fe01144127b3811d1fa102519de682"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/knp-components/zipball/a03bbd87ecf9e56db6f7533db2c63d6da6cd5f33",
-                "reference": "a03bbd87ecf9e56db6f7533db2c63d6da6cd5f33",
+                "url": "https://api.github.com/repos/KnpLabs/knp-components/zipball/464e1ee889fe01144127b3811d1fa102519de682",
+                "reference": "464e1ee889fe01144127b3811d1fa102519de682",
                 "shasum": ""
             },
             "require": {
@@ -1144,7 +1144,7 @@
                 "pager",
                 "paginator"
             ],
-            "time": "2017-09-15T12:50:01+00:00"
+            "time": "2018-03-22T14:54:27+00:00"
         },
         {
             "name": "mobiledetect/mobiledetectlib",
@@ -1278,16 +1278,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "1.24.1",
+            "version": "1.25.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "ef12cbd8ba5ce624f0a6a95e0850c4cc13e71e41"
+                "reference": "cbcf13da0b531767e39eb86e9687f5deba9857b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/ef12cbd8ba5ce624f0a6a95e0850c4cc13e71e41",
-                "reference": "ef12cbd8ba5ce624f0a6a95e0850c4cc13e71e41",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/cbcf13da0b531767e39eb86e9687f5deba9857b4",
+                "reference": "cbcf13da0b531767e39eb86e9687f5deba9857b4",
                 "shasum": ""
             },
             "require": {
@@ -1327,7 +1327,7 @@
                 "datetime",
                 "time"
             ],
-            "time": "2018-03-09T15:49:34+00:00"
+            "time": "2018-03-19T15:50:49+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -3677,16 +3677,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.35.2",
+            "version": "v1.35.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "9c24f2cd39dc1906b76879e099970b7e53724601"
+                "reference": "b48680b6eb7d16b5025b9bfc4108d86f6b8af86f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/9c24f2cd39dc1906b76879e099970b7e53724601",
-                "reference": "9c24f2cd39dc1906b76879e099970b7e53724601",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/b48680b6eb7d16b5025b9bfc4108d86f6b8af86f",
+                "reference": "b48680b6eb7d16b5025b9bfc4108d86f6b8af86f",
                 "shasum": ""
             },
             "require": {
@@ -3694,8 +3694,8 @@
             },
             "require-dev": {
                 "psr/container": "^1.0",
-                "symfony/debug": "~2.7",
-                "symfony/phpunit-bridge": "~3.3@dev"
+                "symfony/debug": "^2.7",
+                "symfony/phpunit-bridge": "^3.3"
             },
             "type": "library",
             "extra": {
@@ -3738,7 +3738,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2018-03-03T16:21:29+00:00"
+            "time": "2018-03-20T04:25:58+00:00"
         }
     ],
     "packages-dev": [
