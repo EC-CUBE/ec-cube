@@ -112,8 +112,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             });
 
             var dataClass = [];
-            var modalClass = $('#product-classes');
-            $('form#form_bulk').on('click', 'table.table button.standardConfirm', function () {
+            var modalClass = $('#productClassesModal');
+            $('form#form_bulk').on('click', 'table.table button[data-class-url]', function () {
                 var btnClass = $(this);
                 btnClass.attr('disabled', true);
                 var productId = btnClass.data('product-id');
@@ -124,14 +124,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 }
 
                 $.ajax({
-                    url: '{{ url('admin_product_classes_load') }}',
-                    type: 'POST',
-                    data: {'productId': productId},
+                    url: btnClass.data('class-load'),
+                    type: 'GET',
                 }).done(function (data) {
                     dataClass[productId] = data;
                     renderClass(dataClass[productId], btnClass);
                 }).fail(function () {
-                    console.log('Failed');
+                    alert('Failed');
                 });
             });
 
@@ -338,9 +337,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 </td>
                                                 <td class="align-middle">
                                                     {% if Product.hasProductClass %}
-                                                        <button type="button" class="standardConfirm btn page-link text-dark d-inline-block"
+                                                        <button type="button" class="btn page-link text-dark d-inline-block"
                                                                 data-product-id="{{ Product.id }}"
                                                                 data-message="{{ 'admin.product.index.standard.modal.header'|trans({'%name%': Product.name}) }}"
+                                                                data-class-load="{{ url('admin_product_classes_load', { 'id' : Product.id }) }}"
                                                                 data-class-url="{{ url('admin_product_product_class', { 'id' : Product.id }) }}">
                                                             {{ 'admin.product.index.standard_confirm'|trans }}
                                                         </button>
@@ -455,7 +455,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         </div>
     </div>
 
-    <div class="modal fade" id="product-classes" tabindex="-1" role="dialog" aria-labelledby="product-classes" aria-hidden="true">
+    <div class="modal fade" id="productClassesModal" tabindex="-1" role="dialog" aria-labelledby="productClassesModal" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -477,6 +477,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
-    </div><!-- /.product-classes -->
+    </div><!-- /#productClassesModal -->
 {% endblock %}
 
