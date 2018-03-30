@@ -827,7 +827,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <span>{{ 'admin.product.product.521'|trans }}</span>
                                     </div>
                                     <div class="col">
-                                        <span>：{{ Product.create_date|date_format }}</span>
+                                        <span>：{{ Product.create_date|date_min }}</span>
                                     </div>
                                 </div>
                                 <div class="row mb-2">
@@ -836,7 +836,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <span>{{ 'admin.product.product.522'|trans }}</span>
                                     </div>
                                     <div class="col">
-                                        <span>：{{ Product.update_date|date_format }}</span>
+                                        <span>：{{ Product.update_date|date_min }}</span>
                                     </div>
                                 </div>
                                 <div class="row mb-2">
@@ -845,8 +845,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <span>{{ 'admin.product.product.update_member'|trans }}</span>
                                     </div>
                                     <div class="col">
-                                        {# TODO: 最終更新者の表示 #}
-                                        <span>：{{ Product.Creator }}</span>
+                                        <span>：{{ Product.Creator ? Product.Creator.name }}</span>
                                     </div>
                                 </div>
                             </div>

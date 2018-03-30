@@ -221,6 +221,10 @@ class ProductController extends AbstractController
                 $searchData = [];
 
                 $pagination = $this->buildPagination($paginator, $request, $searchData, $page_no, $page_count);
+                $viewData = FormUtil::getViewData($searchForm);
+
+                $session->set('eccube.admin.product.search', $viewData);
+                $session->set('eccube.admin.product.search.page_no', $page_no);
             } else {
                 // pagingなどの処理
                 if (is_null($page_no)) {
