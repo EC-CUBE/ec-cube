@@ -48,6 +48,14 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     private $errors = [];
 
     /**
+     * Clone method
+     */
+    public function __clone()
+    {
+        $this->id = null;
+    }
+
+    /**
      * isMultiple
      * 
      * @return boolean
@@ -372,7 +380,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Eccube\Entity\OrderItem", mappedBy="Order", cascade={"persist","remove"})
+     * @ORM\OneToMany(targetEntity="Eccube\Entity\OrderItem", mappedBy="Order", orphanRemoval=true, cascade={"persist","remove","merge"})
      */
     private $OrderItems;
 

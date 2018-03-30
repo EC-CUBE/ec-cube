@@ -43,6 +43,11 @@ class OrderItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
 
     private $price_inc_tax = null;
 
+    public function __clone()
+    {
+        $this->id = null;
+    }
+
     /**
      * Set price IncTax
      *
