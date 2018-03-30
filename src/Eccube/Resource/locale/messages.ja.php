@@ -1006,6 +1006,8 @@ return [
     'admin.order.edit.label.product_info' => '受注商品情報',
     'admin.order.edit.btn.add_product' => '商品を追加',
     'admin.order.edit.btn.add_other_item' => 'その他の明細を追加',
+    'admin.order.edit.delete.modal.header' => '製品を削除します',
+    'admin.order.edit.delete.modal.body' => '商品は注文から削除されます。この商品を削除しますか？',
     'admin.order.edit.label.add_item' => '追加項目',
     'admin.order.edit.label.add_delivery_fee' => '送料を追加',
     'admin.order.edit.label.add_charge' => '手数料を追加',
