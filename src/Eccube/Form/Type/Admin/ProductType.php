@@ -31,6 +31,7 @@ use Eccube\Repository\CategoryRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -66,20 +67,7 @@ class ProductType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        /**
-         * @var ArrayCollection $arrCategory array of category
-         */
-        $arrCategory = $this->categoryRepository->getList(null, true);
-        foreach ($arrCategory as $Category) {
-            $formId = 'category_' . $Category->getId();
-            $builder
-                ->add($formId, CheckboxType::class, array(
-                    'label' => $Category->getName(),
-                    'mapped' => false,
-                    'value' => '1',
-                    'required' => false,
-                ));
-        }
+        $Categories = $this->categoryRepository->getList(null, true);
 
         $builder
             // 商品規格情報
@@ -106,14 +94,13 @@ class ProductType extends AbstractType
                 'label' => 'product.label.product_description_list',
                 'required' => false,
             ))
-            ->add('Category', EntityType::class, array(
-                'class' => 'Eccube\Entity\Category',
-                'choice_label' => 'NameWithLevel',
+            ->add('Category', ChoiceType::class, array(
+                'choice_label' => 'Name',
                 'label' => 'product.label.product_category',
                 'multiple' => true,
                 'mapped' => false,
-                // Choices list (overdrive mapped)
-                'choices' => $arrCategory,
+                'expanded' => true,
+                'choices' => $Categories,
             ))
 
             // 詳細な説明
