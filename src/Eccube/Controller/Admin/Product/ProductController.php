@@ -40,7 +40,6 @@ use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Repository\ProductClassRepository;
 use Eccube\Repository\ProductImageRepository;
 use Eccube\Repository\ProductRepository;
-use Eccube\Repository\ProductTagRepository;
 use Eccube\Repository\TagRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Service\CsvExportService;
@@ -116,12 +115,6 @@ class ProductController extends AbstractController
     protected $productStatusRepository;
 
     /**
-     * @var ProductTagRepository
-     */
-    protected $productTagRepository;
-
-
-    /**
      * @var TagRepository
      */
     protected $tagRepository;
@@ -138,7 +131,6 @@ class ProductController extends AbstractController
      * @param BaseInfo $BaseInfo
      * @param PageMaxRepository $pageMaxRepository
      * @param ProductStatusRepository $productStatusRepository
-     * @param ProductTagRepository $productTagRepository
      * @param TagRepository $tagRepository
      */
     public function __construct(
@@ -151,7 +143,6 @@ class ProductController extends AbstractController
         BaseInfo $BaseInfo,
         PageMaxRepository $pageMaxRepository,
         ProductStatusRepository $productStatusRepository,
-        ProductTagRepository $productTagRepository,
         TagRepository $tagRepository
     ) {
         $this->csvExportService = $csvExportService;
@@ -163,7 +154,6 @@ class ProductController extends AbstractController
         $this->BaseInfo = $BaseInfo;
         $this->pageMaxRepository = $pageMaxRepository;
         $this->productStatusRepository = $productStatusRepository;
-        $this->productTagRepository = $productTagRepository;
         $this->tagRepository = $tagRepository;
     }
 
@@ -415,7 +405,6 @@ class ProductController extends AbstractController
         foreach ($ProductTags as $ProductTag) {
             $Tags[$ProductTag->getTag()->getId()] = $ProductTag->getTag();
         }
-
         $form['Tag']->setData($Tags);
 
         if ('POST' === $request->getMethod()) {
@@ -604,6 +593,7 @@ class ProductController extends AbstractController
             $searchForm->handleRequest($request);
         }
 
+        // Get Tags
         $TagsList = $this->tagRepository->getList();
         if(!$TagsList){
             $TagsList = [];
