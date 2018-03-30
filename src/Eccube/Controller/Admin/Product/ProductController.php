@@ -588,12 +588,16 @@ class ProductController extends AbstractController
             $searchForm->handleRequest($request);
         }
 
+        // ツリー表示のため、ルートからのカテゴリを取得
+        $TopCategories = $this->categoryRepository->getList(null);
+
         return [
             'Product' => $Product,
             'form' => $form->createView(),
             'searchForm' => $searchForm->createView(),
             'has_class' => $has_class,
             'id' => $id,
+            'TopCategories' => $TopCategories,
         ];
     }
 
