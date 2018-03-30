@@ -415,26 +415,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     </div>
                 </form>
             {% else %}
-                {% if app.request.method == 'POST' %}
-                    <div class="card rounded border-0">
-                        <div class="card-body p-4">
-                            <div class="text-center text-muted mb-4 h5">{{ 'admin.order.index.no_matching_search_data'|trans }}</div>
-                            <div class="text-center text-muted">{{ 'admin.order.index.pls_change_search_criteria'|trans }}</div>
-                            <div class="text-center text-muted">{{ 'admin.order.index.pls_try_advanced_search'|trans }}</div>
-                        </div>
+                <div class="card rounded border-0">
+                    <div class="card-body p-4">
+                        <div class="text-center text-muted mb-4 h5">{{ 'admin.order.index.no_matching_search_data'|trans }}</div>
+                        <div class="text-center text-muted">{{ 'admin.order.index.pls_change_search_criteria'|trans }}</div>
+                        <div class="text-center text-muted">{{ 'admin.order.index.pls_try_advanced_search'|trans }}</div>
                     </div>
-                {% else %}
-                    {# TODO: Need implement display data at index controller without search submit #}
-                    <div class="card rounded border-0">
-                        <div class="card-body p-4">
-                            <div class="text-center text-muted mb-2 h5">{{ 'admin.order.index.not_found_any_data'|trans }}</div>
-                            <div class="text-center mb-4">
-                                <a class="btn btn-ec-regular pl-4 pr-4" href="{{ url('admin_order_new') }}">{{ 'admin.order.index.btn_signup'|trans }}</a>
-                            </div>
-                            <div class="text-center text-muted">{{ 'admin.order.index.if_backup_restore'|trans }}</div>
-                        </div>
-                    </div>
-                {% endif %}
+                </div>
             {% endif %}
         </div>
     </div>
