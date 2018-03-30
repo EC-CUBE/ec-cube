@@ -766,11 +766,9 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     public function testLoadProductClass()
     {
         $this->client->request(
-            'POST',
-            $this->generateUrl('admin_product_classes_load'),
-            array(
-                'productId' => 1
-            ),
+            'GET',
+            $this->generateUrl('admin_product_classes_load', ['id' => 1]),
+            array(),
             array(),
             array(
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',

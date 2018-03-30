@@ -44,6 +44,7 @@ use Eccube\Repository\TaxRuleRepository;
 use Eccube\Service\CsvExportService;
 use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Eccube\Util\FormUtil;
@@ -271,21 +272,19 @@ class ProductController extends AbstractController
 
 
     /**
-     * @Method("POST")
-     * @Route("/%eccube_admin_route%/product/classes/load", name="admin_product_classes_load")
+     * @Method("GET")
+     * @Route("/%eccube_admin_route%/product/classes/{id}/load", name="admin_product_classes_load", requirements={"id" = "\d+"})
      * @Template("@admin/Product/product_class_popup.twig")
+     * @ParamConverter("Product")
      */
-    public function loadProductClasses(Request $request){
+    public function loadProductClasses(Request $request, Product $Product){
 
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException();
         }
 
         $data = [];
-        $productId = $request->request->get('productId');
-
         /** @var $Product ProductRepository */
-        $Product = $this->productRepository->find($productId);
         if (!$Product) {
             throw new NotFoundHttpException();
         }
