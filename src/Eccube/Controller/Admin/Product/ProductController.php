@@ -277,29 +277,31 @@ class ProductController extends AbstractController
      */
     public function loadProductClasses(Request $request){
 
-        if ($request->isXmlHttpRequest()) {
-            $data = [];
-            $productId = $request->request->get('productId');
+        if (!$request->isXmlHttpRequest()) {
+            throw new BadRequestHttpException();
+        }
 
-            /** @var $Product ProductRepository */
-            $Product = $this->productRepository->find($productId);
-            if (!$Product) {
-                throw new NotFoundHttpException();
-            }
+        $data = [];
+        $productId = $request->request->get('productId');
 
-            if ($Product->hasProductClass()) {
-                $class = $Product->getProductClasses();
-                foreach ($class as $item) {
-                    if ($item['visible']) {
-                        $data[] = $item;
-                    }
+        /** @var $Product ProductRepository */
+        $Product = $this->productRepository->find($productId);
+        if (!$Product) {
+            throw new NotFoundHttpException();
+        }
+
+        if ($Product->hasProductClass()) {
+            $class = $Product->getProductClasses();
+            foreach ($class as $item) {
+                if ($item['visible']) {
+                    $data[] = $item;
                 }
             }
-
-            return [
-                'data' => $data
-            ];
         }
+
+        return [
+            'data' => $data
+        ];
     }
 
     /**
