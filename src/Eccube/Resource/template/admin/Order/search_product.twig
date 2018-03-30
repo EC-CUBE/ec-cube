@@ -224,8 +224,8 @@
     </tbody>
 </table>
 {% if pagination.totalItemCount > 0 %}
-    <div class="row justify-content-md-center mb-4">
-        {% include "@admin/styleguide_pager.twig" with {'id': 'product_pagination', 'pages': pagination.paginationData, 'routes': 'admin_order_search_product_page'} %}
+    <div id="product_pagination" class="row justify-content-md-center mb-4">
+        {% include "@admin/styleguide_pager.twig" with {'pages': pagination.paginationData, 'routes': 'admin_order_search_product_page'} %}
     </div>
 {% endif %}
 
