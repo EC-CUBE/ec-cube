@@ -30,6 +30,7 @@ use Eccube\Form\Validator\TwigLint;
 use Eccube\Repository\CategoryRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -69,6 +70,16 @@ class ProductType extends AbstractType
          * @var ArrayCollection $arrCategory array of category
          */
         $arrCategory = $this->categoryRepository->getList(null, true);
+        foreach ($arrCategory as $Category) {
+            $formId = 'category_' . $Category->getId();
+            $builder
+                ->add($formId, CheckboxType::class, array(
+                    'label' => $Category->getName(),
+                    'mapped' => false,
+                    'value' => '1',
+                    'required' => false,
+                ));
+        }
 
         $builder
             // 商品規格情報
