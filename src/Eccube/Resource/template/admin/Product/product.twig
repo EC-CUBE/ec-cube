@@ -775,19 +775,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
                         <div class="collapse show ec-cardCollapse" id="tag">
                             <div class="card-body">
-                                {# TODO: タグ選択方法の変更 #}
-                                {{ form_widget(form.Tag) }}
-                                {{ form_errors(form.Tag) }}
+                                {% if(Tags|length > 0) %}
+                                    {% for Tag in Tags %}
+                                        <div class="d-inline-block mb-2 mr-2">
+                                            <button class="btn btn-outline-primary" type="button">{{ Tag.name }}</button>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
 
-                                <div class="d-inline-block mb-2 mr-2">
-                                    <button class="btn btn-outline-primary" type="button">オススメ111</button>
-                                    {% if(Tags|length > 0) %}
-
-                                        {% for Tag in Tags %}
-                                        <button class="btn btn-outline-primary" type="button">オススメ111</button>
-                                        {% endfor %}
-                                    {% endif %}
-                                </div>
                                 <div class="d-block mb-3" data-toggle="collapse" href="#allTags" role="button"
                                      aria-expanded="false" aria-controls="allTags">
                                     <a>
@@ -796,9 +791,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     </a>
                                 </div>
                                 <div class="collapse p-3 bg-ec-lightGray mb-3 ec-collapse" id="allTags">
-                                    <div class="d-inline-block mb-2 mr-2">
-                                        <button class="btn btn-outline-primary" type="button">オススメ</button>
+                                    <div class="">
+                                        {{ form_widget(form.Tag) }}
                                     </div>
+                                    {% if(TagsList|length > 0) %}
+                                        {% for Tag in TagsList %}
+                                            <div class="d-inline-block mb-2 mr-2">
+                                                {% set _class = '' %}
+                                                {% if Tag.id in tagActived|keys %}
+                                                    {% set _class = 'active' %}
+                                                {% endif %}
+                                                <button class="btn btn-outline-primary {{ _class }}" type="button" data-tag-id="{{ Tag.id }}">{{ Tag.name }}</button>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+
                                     <div class="d-block mb-3" data-toggle="collapse" href="#allTags" role="button"
                                          aria-expanded="false" aria-controls="allTags"></div>
                                 </div>

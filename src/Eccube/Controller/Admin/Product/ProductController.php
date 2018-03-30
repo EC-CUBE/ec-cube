@@ -41,6 +41,7 @@ use Eccube\Repository\ProductClassRepository;
 use Eccube\Repository\ProductImageRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Repository\ProductTagRepository;
+use Eccube\Repository\TagRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Service\CsvExportService;
 use Knp\Component\Pager\Paginator;
@@ -119,6 +120,12 @@ class ProductController extends AbstractController
      */
     protected $productTagRepository;
 
+
+    /**
+     * @var TagRepository
+     */
+    protected $tagRepository;
+
     /**
      * ProductController constructor.
      *
@@ -132,6 +139,7 @@ class ProductController extends AbstractController
      * @param PageMaxRepository $pageMaxRepository
      * @param ProductStatusRepository $productStatusRepository
      * @param ProductTagRepository $productTagRepository
+     * @param TagRepository $tagRepository
      */
     public function __construct(
         CsvExportService $csvExportService,
@@ -143,7 +151,8 @@ class ProductController extends AbstractController
         BaseInfo $BaseInfo,
         PageMaxRepository $pageMaxRepository,
         ProductStatusRepository $productStatusRepository,
-        ProductTagRepository $productTagRepository
+        ProductTagRepository $productTagRepository,
+        TagRepository $tagRepository
     ) {
         $this->csvExportService = $csvExportService;
         $this->productClassRepository = $productClassRepository;
@@ -155,6 +164,7 @@ class ProductController extends AbstractController
         $this->pageMaxRepository = $pageMaxRepository;
         $this->productStatusRepository = $productStatusRepository;
         $this->productTagRepository = $productTagRepository;
+        $this->tagRepository = $tagRepository;
     }
 
     /**
@@ -594,9 +604,18 @@ class ProductController extends AbstractController
             $searchForm->handleRequest($request);
         }
 
+        $TagsList = $this->tagRepository->getList();
+
+        $tagActived = [];
+        foreach ($Tags as $tag){
+            $tagActived[$tag->getId()] = $tag->getId();
+        }
+
         return [
             'Product' => $Product,
             'Tags' => $Tags,
+            'TagsList' => $TagsList,
+            'tagActived' => $tagActived,
             'form' => $form->createView(),
             'searchForm' => $searchForm->createView(),
             'has_class' => $has_class,
