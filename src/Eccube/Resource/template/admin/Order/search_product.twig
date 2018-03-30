@@ -2,7 +2,7 @@
     // 商品規格情報. 規格2のプルダウンリストの設定に利用する,
     var productsClassCategories = {
         {% for Product in pagination %}
-        "{{ Product.id|escape('js') }}": {{ class_categories_as_json(Product)|raw }}{% if loop.last == false %}, {% endif %}
+        "{{ Product.id|escape('js') }}": {{ class_categories_as_json(Product, false)|raw }}{% if loop.last == false %}, {% endif %}
         {% endfor %}
     };
 
@@ -46,6 +46,7 @@
         var quantity = 1;
         var product_code = null;
         var tax_rate = 8;
+        var tax_display_type = {{ constant('Eccube\\Entity\\Master\\TaxDisplayType::INCLUDED') }};
 
         type = type === undefined ? {{ constant('Eccube\\Entity\\Master\\OrderItemType::PRODUCT') }} : type;
 
@@ -59,6 +60,7 @@
                 break;
             default:
             case {{ constant('Eccube\\Entity\\Master\\OrderItemType::PRODUCT') }}:
+                tax_display_type = {{ constant('Eccube\\Entity\\Master\\TaxDisplayType::EXCLUDED') }};
                 // 規格なし商品の場合
                 if (!$sele1.length && !$sele2.length) {
                     var product = productsClassCategories[product_id]['__unselected2']['#'];
@@ -129,8 +131,7 @@
             $($lastRow).find('#order_OrderItems_' + index + '_order_item_type').val(type);
             $($lastRow).find('#order_OrderItems_' + index + '_product_name').val(product_name);
             $($lastRow).find('#order_OrderItems_' + index + '_product_code').val(product_code);
-            // Because all value include tax
-            $($lastRow).find('#order_OrderItems_' + index + '_tax_display_type').val({{ constant('Eccube\\Entity\\Master\\TaxDisplayType::INCLUDED') }});
+            $($lastRow).find('#order_OrderItems_' + index + '_tax_display_type').val(tax_display_type);
         }
 
         // モーダル閉じる.

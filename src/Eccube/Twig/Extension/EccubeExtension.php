@@ -263,9 +263,10 @@ class EccubeExtension extends AbstractExtension
      * Get the ClassCategories as JSON.
      *
      * @param Product $Product
+     * @param bool    $includeTax
      * @return string
      */
-    public function getClassCategoriesAsJson(Product $Product)
+    public function getClassCategoriesAsJson(Product $Product, $includeTax = true)
     {
         $Product->_calc();
         $class_categories = [
@@ -292,12 +293,14 @@ class EccubeExtension extends AbstractExtension
                 'name'              => trans('product.text.please_select'),
                 'product_class_id'  => '',
             );
+            $price01 = $includeTax ? number_format($ProductClass->getPrice01IncTax()) : number_format($ProductClass->getPrice01());
+            $price02 = $includeTax ? number_format($ProductClass->getPrice02IncTax()) : number_format($ProductClass->getPrice02()) ;
             $class_categories[$class_category_id1]['#'.$class_category_id2] = array(
                 'classcategory_id2' => $class_category_id2,
                 'name'              => $class_category_name2,
                 'stock_find'        => $ProductClass->getStockFind(),
-                'price01'           => $ProductClass->getPrice01() === null ? '' : number_format($ProductClass->getPrice01IncTax()),
-                'price02'           => number_format($ProductClass->getPrice02IncTax()),
+                'price01'           => $ProductClass->getPrice01() === null ? '' : $price01,
+                'price02'           => $price02,
                 'product_class_id'  => (string) $ProductClass->getId(),
                 'product_code'      => $ProductClass->getCode() === null ? '' : $ProductClass->getCode(),
                 'sale_type'      => (string) $ProductClass->getSaleType()->getId(),
