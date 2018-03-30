@@ -14,19 +14,6 @@ var mainNavArea = function(){
 };
 mainNavArea();
 
-//c-directoryTreeRegister
-var directoryTreeRegister = function(){
-    $(function () {
-        $(".c-directoryTree--registerItem label").on('click',function () {
-            $tar = $(this).siblings("input");
-            var value = $tar.prop("checked")
-            $tar.prop("checked",!value);
-        });
-    })
-};
-
-directoryTreeRegister();
-
 //Bootstrap ツールチップ
 var toolTip = function(){
     $(function () {

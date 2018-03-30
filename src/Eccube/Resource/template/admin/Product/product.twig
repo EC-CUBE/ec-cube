@@ -178,7 +178,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
     </script>
     <script>
-        searchWord = function(){
+        var searchWord = function(){
             var searchText = $(this).val(), // 検索ボックスに入力された値
                 targetText
 
@@ -700,14 +700,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {# TODO: カテゴリ検索機能の実装 #}
                                     <div class="form-row">
                                         <div class="col">
-                                            <input id="search-category" class="form-control" type="search"
-                                                   placeholder="{{ 'admin.product.product.text12'|trans }}"
-                                                   aria-label="Search">
-                                        </div>
-                                        <div class="col-auto">
-                                            <button class="btn btn-ec-sub" type="submit">
-                                                <i class="fa fa-search"></i>
-                                            </button>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1">
+                                                            <i class="fa fa-search"></i>
+                                                    </span>
+                                                </div>
+                                                <input id="search-category" class="form-control" type="search"
+                                                       placeholder="{{ 'admin.product.product.text12'|trans }}"
+                                                       aria-label="Search">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -716,10 +718,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {% import _self as selfMacro %}
                                     {% set category_id = 'category_'~Category.id %}
                                     <li class="c-directoryTree--registerItem category-li">
-                                        {# TODO: htmlの構造をモックと合わせる #}
                                         {#{{ form_widget(attribute(form, category_id)) }}#}
-                                        <input type="checkbox" id="admin_product_{{ category_id }}" name="admin_product[{{ category_id }}]" class="form-check-input" value="1">
-                                        <label class="form-check-label" for="admin_product_{{ category_id }}">{{ attribute(form, category_id).vars.label }}</label>
+                                        <input type="checkbox" id="admin_product_category_{{ category_id }}" name="admin_product[{{ category_id }}]" value="1">
+                                        <label for="admin_product_category_{{ category_id }}">{{ attribute(form, category_id).vars.label }}</label>
                                         {% if Category.children|length > 0 %}
                                             <ul>
                                                 {% for ChildCategory in Category.children %}
