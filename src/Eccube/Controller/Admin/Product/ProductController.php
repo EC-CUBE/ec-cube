@@ -412,10 +412,10 @@ class ProductController extends AbstractController
 
         $Tags = [];
         $ProductTags = $Product->getProductTag();
-//        var_dump($ProductTags); die;
         foreach ($ProductTags as $ProductTag) {
-            $Tags[] = $ProductTag->getTag();
+            $Tags[$ProductTag->getTag()->getId()] = $ProductTag->getTag();
         }
+
         $form['Tag']->setData($Tags);
 
         if ('POST' === $request->getMethod()) {
@@ -605,17 +605,14 @@ class ProductController extends AbstractController
         }
 
         $TagsList = $this->tagRepository->getList();
-
-        $tagActived = [];
-        foreach ($Tags as $tag){
-            $tagActived[$tag->getId()] = $tag->getId();
+        if(!$TagsList){
+            $TagsList = [];
         }
 
         return [
             'Product' => $Product,
             'Tags' => $Tags,
             'TagsList' => $TagsList,
-            'tagActived' => $tagActived,
             'form' => $form->createView(),
             'searchForm' => $searchForm->createView(),
             'has_class' => $has_class,
