@@ -583,7 +583,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <tbody>
                                         {% for MailHistory in Order.MailHistories %}
                                             <tr>
-                                                <td class="pl-3">{{ MailHistory.send_date|date_format('', 'Y/m/d H:i') }}</td>
+                                                <td class="pl-3">{{ MailHistory.send_date|date_min }}</td>
                                                 <td class="pr-3"><a class="text-primary" data-toggle="modal" data-target="#mail2">{{ MailHistory.mail_subject }}</a>
                                                     <div class="modal fade" id="mail2" tabindex="-1" role="dialog" aria-labelledby="mail2" aria-hidden="true">
                                                         <div class="modal-dialog" role="document">
