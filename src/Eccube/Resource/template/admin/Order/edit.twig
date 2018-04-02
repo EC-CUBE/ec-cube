@@ -577,16 +577,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <thead class="table-active">
                                         <tr>
                                             <th class="pt-2 pb-2 pl-3">{{ 'admin.order.edit.label.mail_delivery_date'|trans }}</th>
-                                            <th class="pt-2 pb-2 pl-3">{{ 'admin.order.edit.label.mail_delivery_template'|trans }}</th>
                                             <th class="pt-2 pb-2 pr-3">{{ 'admin.order.edit.label.mail_delivery_title'|trans }}</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         {% for MailHistory in Order.MailHistories %}
                                             <tr>
-                                                <td class="pl-3">{{ MailHistory.send_date|date_format }}</td>
-                                                {# TODO テンプレート名の表示 #}
-                                                <td class="pl-3"></td>
+                                                <td class="pl-3">{{ MailHistory.send_date|date_min }}</td>
                                                 <td class="pr-3"><a class="text-primary" data-toggle="modal" data-target="#mail2">{{ MailHistory.mail_subject }}</a>
                                                     <div class="modal fade" id="mail2" tabindex="-1" role="dialog" aria-labelledby="mail2" aria-hidden="true">
                                                         <div class="modal-dialog" role="document">
@@ -641,9 +638,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <div class="row justify-content-between align-items-center">
                     <div class="col-6">
                         <div class="c-conversionArea__leftBlockItem">
-                            {% if id is not null %}
-                                <a class="c-beseLink" href="{{ url('admin_order_page', { page_no: app.session.get('eccube.admin.order.search.page_no')|default('1') }) }}?resume=1"><i class="fa fa-backward" aria-hidden="true"></i><span>{{ 'admin.order.subnavi.395'|trans }}</span></a>
-                            {% endif %}
+                            <a class="c-beseLink" href="{{ url('admin_order', { 'resume': 1 }) }}"><i class="fa fa-backward" aria-hidden="true"></i><span>{{ 'admin.order.subnavi.395'|trans }}</span></a>
                         </div>
                     </div>
                     <div class="col-6">

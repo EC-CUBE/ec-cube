@@ -197,9 +197,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             $this->generateUrl('admin_order_delete', array('id' => $Order->getId()))
         );
         $this->assertTrue($this->client->getResponse()->isRedirect(
-            $this->generateUrl(
-                'admin_order_page', array('page_no' => 1)
-            ).'?resume=1'
+            $this->generateUrl('admin_order', array('resume' => 1))
         ));
 
         $DeletedOrder = $this->container->get(OrderRepository::class)->find($id);
