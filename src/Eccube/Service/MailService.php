@@ -554,9 +554,7 @@ class MailService
     /**
      * 発送通知メールを送信する
      * @param Shipping $Shipping
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
+     * @throws \Twig_Error
      */
     public function sendShippingNotifyMail(Shipping $Shipping) {
 
@@ -568,13 +566,7 @@ class MailService
         }, $Shipping->getOrders()->toArray());
         $toList = array_unique($toList);
 
-        /** @var MailTemplate $MailTemplate */
         $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['eccube_shipping_notify_mail_template_id']);
-        $body = $this->twig->render($MailTemplate->getFileName(), [
-            'Shipping' => $Shipping,
-            'header' => $MailTemplate->getMailHeader(),
-            'footer' => $MailTemplate->getMailFooter()
-        ]);
 
         $message = (new \Swift_Message())
             ->setSubject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
@@ -583,10 +575,27 @@ class MailService
             ->setBcc($this->BaseInfo->getEmail01())
             ->setReplyTo($this->BaseInfo->getEmail03())
             ->setReturnPath($this->BaseInfo->getEmail04())
-            ->setBody($body);
+            ->setBody($this->getShippingNotifyMailBody($Shipping, $MailTemplate));
 
         $this->mailer->send($message);
 
         log_info('出荷通知メール送信処理完了', ['id' => $Shipping->getId()]);
+    }
+
+    /**
+     * @param Shipping $Shipping
+     * @param MailTemplate|null $MailTemplate
+     * @return string
+     * @throws \Twig_Error
+     */
+    public function getShippingNotifyMailBody(Shipping $Shipping, MailTemplate $MailTemplate = null)
+    {
+        /** @var MailTemplate $MailTemplate */
+        $MailTemplate = $MailTemplate ?? $this->mailTemplateRepository->find($this->eccubeConfig['eccube_shipping_notify_mail_template_id']);
+        return $this->twig->render($MailTemplate->getFileName(), [
+            'Shipping' => $Shipping,
+            'header' => $MailTemplate->getMailHeader(),
+            'footer' => $MailTemplate->getMailFooter()
+        ]);
     }
 }

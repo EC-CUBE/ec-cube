@@ -21,6 +21,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ShippingController extends AbstractController
 {
@@ -243,5 +244,16 @@ class ShippingController extends AbstractController
         }
 
         return new JsonResponse(['success' => true]);
+    }
+
+    /**
+     * @Route("/%eccube_admin_route%/shipping/preview_notify_mail/{id}", requirements={"id" = "\d+"}, name="admin_shipping_preview_notify_mail")
+     * @param Shipping $Shipping
+     * @return Response
+     * @throws \Twig_Error
+     */
+    public function previewShippingNotifyMail(Shipping $Shipping)
+    {
+        return new Response($this->mailService->getShippingNotifyMailBody($Shipping));
     }
 }

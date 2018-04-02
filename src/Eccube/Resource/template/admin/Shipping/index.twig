@@ -59,7 +59,20 @@
                 }
             })($, formPropStateSubscriber);
 
-            // 一括で配送済みに更新
+
+            var isBulkUpdate = false;
+
+            // メールプレビューを表示
+            $('#sentUpdateModal').on('show.bs.modal', function(e) {
+                isBulkUpdate = !$(e.relatedTarget).hasAttribute('data-preview-notify-mail-url');
+                var url = isBulkUpdate ? $(e.relatedTarget).data('preview-notify-mail-url') // 個別の場合
+                            : $('input[data-preview-notify-mail-url]:checked').data('preview-notify-mail-url'); // 一括の場合
+                $.ajax(url).done(function(res) {
+                    $('#viewEmail > pre').text(res);
+                });
+            });
+
+            // 配送済みに更新
             $('#bulkChange').on('click', function() {
                 var modal = $('#sentUpdateModal');
 
@@ -82,7 +95,7 @@
                     })
                 });
                 $.when.apply($, promises)
-                    .fail(function(e) {
+                    .fail(function() {
                         $('<li><span class="badge badge-danger">ERROR</span> </li>')
                             .append($('<span></span>').text("{{ 'application.text.error.system'|trans }}"))
                             .appendTo('#bulkErrors');
@@ -94,7 +107,7 @@
                     });
             });
 
-            // 一括更新完了ボタン
+            // 更新完了ボタン
             $('#bulkChangeComplete').on('click', function() {
                 location.reload(true);
             });
@@ -297,7 +310,9 @@
                                 {% for Shipping in pagination %}
                                 <tr>
                                     <td class="align-middle pl-3">
-                                        <input type="checkbox" id="check-{{ Shipping.id }}" data-id="{{ Shipping.id }}" name="ids{{ Shipping.id }}" data-mark-as-shipped-url="{{ url('admin_shipping_mark_as_shipped', { id: Shipping.id}) }}">
+                                        <input type="checkbox" id="check-{{ Shipping.id }}" data-id="{{ Shipping.id }}" name="ids{{ Shipping.id }}"
+                                            data-mark-as-shipped-url="{{ url('admin_shipping_mark_as_shipped', { id: Shipping.id}) }}"
+                                            data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: Shipping.id}) }}" />
                                     </td>
                                     <td class="align-middle"><a href="{{ url('admin_shipping_edit', { id : Shipping.id }) }}">{{ Shipping.id }}</a></td>
                                     <td class="align-middle">{{ Shipping.TrackingNumber|default('admin.shipping.index.798'|trans) }}</td>
@@ -324,7 +339,7 @@
                                             {# TODO メール送信ボタン #}
                                             {# TODO 発送済みにするボタン #}
                                             <div class="col" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ 'admin.shipping.index.824'|trans }}"><a class="btn btn-ec-actionIcon" href="/shipment/mail/"><i class="fa fa-send fa-lg text-secondary" aria-hidden="true"></i></a></div>
-                                            <div class="col" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ 'admin.shipping.index.825'|trans }}"><a class="btn btn-ec-actionIcon"><i class="fa fa-check fa-lg text-secondary" aria-hidden="true"></i></a></div>
+                                            <div class="col" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ 'admin.shipping.index.825'|trans }}"><a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#sentUpdateModal" data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: Shipping.id}) }}"><i class="fa fa-check fa-lg text-secondary" aria-hidden="true"></i></a></div>
                                         </div>
                                     </td>
                                 </tr>
@@ -378,11 +393,8 @@
                             </div>
                             <div>
                                 <div class="d-inline-block" data-toggle="collapse" href="#viewEmail" aria-expanded="false" aria-controls="viewEmail"><a><i class="fa fa-plus-square-o font-weight-bold mr-1"></i><span class="font-weight-bold">{{ 'admin.shipping.index.814'|trans }}</span></a></div>
-                                <div class="collapse bg-light p-4 ec-collapse bg-ec-formGray" id="viewEmail">
-                                    {# TODO 発送お知らせメール表示 #}
-                                    <p>[注文者名]様</p>
-                                    <p>お客さまがご注文された以下の商品を発送いたしました。商品の到着まで、今しばらくお待ちくださいませ。</p>
-                                    <p>[発送商品リストと明細]</p>
+                                <div class="collapse bg-light p-4 ec-collapse bg-ec-formGray" id="viewEmail" style="word-wrap: break-word; word-break:break-all">
+                                    <pre></pre>
                                 </div>
                             </div>
                         </div>
