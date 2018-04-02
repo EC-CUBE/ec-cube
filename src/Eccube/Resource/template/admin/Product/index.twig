@@ -89,9 +89,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 $.when.apply($, promises)
                     .done(function() {
                         // 削除できなかった場合はエラーメッセージを表示
-                        [].slice.call(arguments).map(function(result) {
+                        var args = promises.length === 1 ? [arguments[0]] : [].slice.call(arguments).map(function(result) {
                             return result[0];
-                        }).filter(function(result) {
+                        });
+                        args.filter(function(result) {
                             return result.success === false;
                         }).forEach(function(result) {
                             addError(result.message);
