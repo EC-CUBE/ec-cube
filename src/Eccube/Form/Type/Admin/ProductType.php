@@ -25,6 +25,7 @@
 namespace Eccube\Form\Type\Admin;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Eccube\Entity\Category;
 use Eccube\Form\Type\Master\ProductStatusType;
 use Eccube\Form\Validator\TwigLint;
 use Eccube\Repository\CategoryRepository;
@@ -67,8 +68,6 @@ class ProductType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $Categories = $this->categoryRepository->getList(null, true);
-
         $builder
             // 商品規格情報
             ->add('class', ProductClassType::class, array(
@@ -100,7 +99,10 @@ class ProductType extends AbstractType
                 'multiple' => true,
                 'mapped' => false,
                 'expanded' => true,
-                'choices' => $Categories,
+                'choices' => $this->categoryRepository->getList(null, true),
+                'choice_value' => function (Category $Category = null) {
+                    return $Category ? $Category->getId() : null;
+                }
             ))
 
             // 詳細な説明

@@ -713,14 +713,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     </div>
                                 </div>
 
-                                {% macro tree(Category, form) %}
+                                {% macro tree(ChoicedIds, Category, form) %}
                                     {% import _self as selfMacro %}
                                     <li class="c-directoryTree--registerItem category-li">
-                                        <input type="checkbox" id="admin_product_category_{{ Category.id }}" name="admin_product[Category][]" value="{{ Category.id }}" {% if Category.id in form.vars.value %}checked{% endif %}>
+                                        <input type="checkbox" id="admin_product_category_{{ Category.id }}" name="admin_product[Category][]" value="{{ Category.id }}" {% if Category.id in ChoicedIds %}checked{% endif %}>
                                         <label for="admin_product_category_{{ Category.id }}">{{ Category.name }}</label>
                                         <ul>
                                             {% for child,ChildCategory in Category.children %}
-                                                {{ selfMacro.tree(ChildCategory, form) }}
+                                                {{ selfMacro.tree(ChoicedIds, ChildCategory, form) }}
                                             {% endfor %}
                                         </ul>
                                     </li>
@@ -730,9 +730,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {% import _self as renderMacro %}
                                     {% for TopCategory in TopCategories %}
                                         <ul>
-                                            {{ renderMacro.tree(TopCategory, form.Category) }}
+                                            {{ renderMacro.tree(ChoicedCategoryIds, TopCategory, form.Category) }}
                                         </ul>
                                     {% endfor %}
+                                    {{ form_errors(form.Category) }}
                                 </div>
                                 <div class="d-block text-center">
                                     <button class="btn btn-block btn-ec-regular" type="button"
