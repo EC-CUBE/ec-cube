@@ -172,18 +172,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             var mainTags = $('#allTags');
             var adminProductTag = $('#admin_product_Tag');
             $('input', adminProductTag).each(function () {
-                if($(this).is(':checked')){
-                    $('button[data-tag-id="'+ $(this).val() +'"]').addClass('active');
+                if ($(this).is(':checked')) {
+                    $('button[data-tag-id="' + $(this).val() + '"]').removeClass('btn-outline-primary').addClass('btn-outline-secondary');
                 }
             });
             mainTags.on('click', 'button.btn', function () {
                 var btnTag = $(this);
                 var tagId = btnTag.data('tag-id');
-                if (btnTag.hasClass('active')) {
-                    btnTag.removeClass('active');
+                if (btnTag.hasClass('btn-outline-secondary')) {
+                    btnTag.removeClass('btn-outline-secondary').addClass('btn-outline-primary');
                     $('input[value="' + tagId + '"]', mainTags).prop('checked', false);
                 } else {
-                    btnTag.addClass('active');
+                    btnTag.removeClass('btn-outline-primary').addClass('btn-outline-secondary');
                     $('input[value="' + tagId + '"]', mainTags).prop('checked', true);
                 }
             });
