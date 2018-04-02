@@ -180,7 +180,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 var btnTag = $(this);
                 var tagId = btnTag.data('tag-id');
                 if (btnTag.hasClass('btn-outline-primary')) {
-                    btnTag.removeClass('btn-outline-secondary').addClass('btn-outline-secondary');
+                    btnTag.removeClass('btn-outline-primary').addClass('btn-outline-secondary');
                     $('input[value="' + tagId + '"]', mainTags).prop('checked', false);
                 } else {
                     btnTag.removeClass('btn-outline-secondary').addClass('btn-outline-primary');
