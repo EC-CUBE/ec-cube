@@ -25,6 +25,7 @@
 namespace Eccube\Service;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
 use Eccube\Form\Type\Admin\SearchShippingType;
@@ -310,12 +311,9 @@ class CsvExportService
     {
         // エンティティ名が一致するかどうかチェック.
         $csvEntityName = str_replace('\\\\', '\\', $Csv->getEntityName());
-        $entityName = str_replace('\\\\', '\\', get_class($entity));
+        $entityName = ClassUtils::getClass($entity);
         if ($csvEntityName !== $entityName) {
-            $entityName = str_replace('DoctrineProxy\\__CG__\\', '', $entityName);
-            if ($csvEntityName !== $entityName) {
-                return null;
-            }
+            return null;
         }
 
         // カラム名がエンティティに存在するかどうかをチェック.
