@@ -26,6 +26,9 @@ namespace Eccube\Service;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
+use Eccube\Entity\MailTemplate;
+use Eccube\Entity\Order;
+use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Repository\BaseInfoRepository;
@@ -546,5 +549,44 @@ class MailService
             ->setBody($body);
 
         $this->mailer->send($message);
+    }
+
+    /**
+     * 発送通知メールを送信する
+     * @param Shipping $Shipping
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
+     */
+    public function sendShippingNotifyMail(Shipping $Shipping) {
+
+        log_info('出荷通知メール送信処理開始', ['id' => $Shipping->getId()]);
+
+        // 注文者に対してメールを送る
+        $toList = array_map(function(Order $Order) {
+            return $Order->getEmail();
+        }, $Shipping->getOrders()->toArray());
+        $toList = array_unique($toList);
+
+        /** @var MailTemplate $MailTemplate */
+        $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['eccube_shipping_notify_mail_template_id']);
+        $body = $this->twig->render($MailTemplate->getFileName(), [
+            'Shipping' => $Shipping,
+            'header' => $MailTemplate->getMailHeader(),
+            'footer' => $MailTemplate->getMailFooter()
+        ]);
+
+        $message = (new \Swift_Message())
+            ->setSubject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
+            ->setFrom([$this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()])
+            ->setTo($toList)
+            ->setBcc($this->BaseInfo->getEmail01())
+            ->setReplyTo($this->BaseInfo->getEmail03())
+            ->setReturnPath($this->BaseInfo->getEmail04())
+            ->setBody($body);
+
+        $this->mailer->send($message);
+
+        log_info('出荷通知メール送信処理完了', ['id' => $Shipping->getId()]);
     }
 }
