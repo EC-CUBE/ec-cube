@@ -78,29 +78,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         $('#form_bulk').attr('action', $(this).prop('href')).submit();
         return false;
     });
-
-    // フォーム値を確認し、アコーディオンを制御
-    // 値あり : 開く / 値なし : 閉じる
-      {# TODO: Remove this js, should control show/hide search detail by active variable which passed from controller #}
-    (function($, f) {
-        //フォームがないページは処理キャンセル
-        var $ac = $(".accpanel");
-        if (!$ac) {
-            return false
-        }
-
-        //フォーム内全項目取得
-        var c = f();
-        if (c.formState()) {
-            if ($ac.css("display") == "none") {
-                $ac.siblings('.toggle').addClass("active");
-                $ac.slideDown(0);
-            }
-        } else {
-            $ac.siblings('.toggle').removeClass("active");
-            $ac.slideUp(0);
-        }
-    })($, formPropStateSubscriber);
 });
 </script>
 {% endblock javascript %}
@@ -127,9 +104,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 {{ form_errors(searchForm.multi_status) }}
                             </div>
                         </div>
-                        <div class="d-inline-block mb-3 {% if not active %}collapsed{% endif %}" data-toggle="collapse" href="#searchDetail" aria-expanded="false" aria-controls="searchDetail">
+                        <div class="d-inline-block mb-3 collapsed" data-toggle="collapse" href="#searchDetail" aria-expanded="false" aria-controls="searchDetail">
                             <a>
-                                <i class="fa font-weight-bold mr-1 {% if active %}fa-minus-square-o{% else %}fa-plus-square-o{% endif %}">
+                                <i class="fa font-weight-bold mr-1 fa-plus-square-o">
                                     <span class="font-weight-bold">{{ 'admin.order.index.detailed_search'|trans }}</span>
                                 </i>
                             </a>
@@ -137,7 +114,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 </div>
             </div>
         </div>
-        <div class="c-subContents ec-collapse collapse {% if active %}show{% endif %}" id="searchDetail">
+        <div class="c-subContents ec-collapse collapse" id="searchDetail">
             <div class="row">
                 <div class="col">
                     <label class="col-form-label">{{ 'admin.order.index.299'|trans }}</label>
@@ -148,9 +125,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div class="form-row">
                         <div class="col-12">
                             <p class="col-form-label">{{ 'admin.order.index.304'|trans }}</p>
-                            {% for payment in searchForm.payment %}
-                                {{ form_widget(payment, {'attr': {'class': 'form-check-input'}, 'label_attr': {'class': 'checkbox-inline form_check_label'}}) }}
-                            {% endfor %}
+                            {{ form_widget(searchForm.payment, { 'label_attr': { 'class': 'checkbox-inline'}}) }}
                             {{ form_errors(searchForm.payment) }}
                         </div>
                     </div>
@@ -261,9 +236,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div class="form-row">
                         <div class="col-12">
                             <p class="col-form-label">{{ 'admin.order.index.303'|trans }}</p>
-                            {% for sex in searchForm.sex %}
-                                {{ form_widget(sex, {'attr': {'class': 'form-check-input'}, 'label_attr': {'class': 'checkbox-inline form_check_label'}}) }}
-                            {% endfor %}
+                            {{ form_widget(searchForm.sex, { 'label_attr': { 'class': 'checkbox-inline'}}) }}
                             {{ form_errors(searchForm.sex) }}
                         </div>
                     </div>
@@ -389,7 +362,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <td class="align-middle pl-3">
                                             <input type="checkbox"  name="ids{{ Order.id }}" id="check--{{ Order.id }}" value="on">
                                         </td>
-                                        <td class="align-middle" id="order_date--{{ Order.id }}">{{ Order.order_date|date('Y/m/d H:i') }}</td> {# TODO: date time format should follow locale #}
+                                        <td class="align-middle" id="order_date--{{ Order.id }}">{{ Order.order_date|date_min }}</td>
                                         <td class="align-middle" id="id--{{ Order.id }}"><a class="action-edit" href="{{ url('admin_order_edit', { id : Order.id }) }}">{{ Order.id }}</a></td>
                                         <td class="align-middle" id="name--{{ Order.id }}">{{ Order.name01 }} {{ Order.name02 }}</td>
                                         <td class="align-middle" id="payment_method--{{ Order.id }}">{{ Order.payment_method }}</td>
@@ -442,26 +415,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     </div>
                 </form>
             {% else %}
-                {% if app.request.method == 'POST' %}
-                    <div class="card rounded border-0">
-                        <div class="card-body p-4">
-                            <div class="text-center text-muted mb-4 h5">{{ 'admin.order.index.no_matching_search_data'|trans }}</div>
-                            <div class="text-center text-muted">{{ 'admin.order.index.pls_change_search_criteria'|trans }}</div>
-                            <div class="text-center text-muted">{{ 'admin.order.index.pls_try_advanced_search'|trans }}</div>
-                        </div>
+                <div class="card rounded border-0">
+                    <div class="card-body p-4">
+                        <div class="text-center text-muted mb-4 h5">{{ 'admin.order.index.no_matching_search_data'|trans }}</div>
+                        <div class="text-center text-muted">{{ 'admin.order.index.pls_change_search_criteria'|trans }}</div>
+                        <div class="text-center text-muted">{{ 'admin.order.index.pls_try_advanced_search'|trans }}</div>
                     </div>
-                {% else %}
-                    {# TODO: Need implement display data at index controller without search submit #}
-                    <div class="card rounded border-0">
-                        <div class="card-body p-4">
-                            <div class="text-center text-muted mb-2 h5">{{ 'admin.order.index.not_found_any_data'|trans }}</div>
-                            <div class="text-center mb-4">
-                                <a class="btn btn-ec-regular pl-4 pr-4" href="{{ url('admin_order_new') }}">{{ 'admin.order.index.btn_signup'|trans }}</a>
-                            </div>
-                            <div class="text-center text-muted">{{ 'admin.order.index.if_backup_restore'|trans }}</div>
-                        </div>
-                    </div>
-                {% endif %}
+                </div>
             {% endif %}
         </div>
     </div>

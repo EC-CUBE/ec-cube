@@ -50,6 +50,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Eccube\Util\FormUtil;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -222,6 +223,10 @@ class ProductController extends AbstractController
                 $searchData = [];
 
                 $pagination = $this->buildPagination($paginator, $request, $searchData, $page_no, $page_count);
+                $viewData = FormUtil::getViewData($searchForm);
+
+                $session->set('eccube.admin.product.search', $viewData);
+                $session->set('eccube.admin.product.search.page_no', $page_no);
             } else {
                 // pagingなどの処理
                 if (is_null($page_no)) {
@@ -489,8 +494,8 @@ class ProductController extends AbstractController
                 $Categories = $form->get('Category')->getData();
                 $categoriesIdList = [];
                 foreach ($Categories as $Category) {
-                    foreach($Category->getPath() as $ParentCategory){
-                        if (!isset($categoriesIdList[$ParentCategory->getId()])){
+                    foreach($Category->getPath() as $ParentCategory) {
+                        if (!isset($categoriesIdList[$ParentCategory->getId()])) {
                             $ProductCategory = $this->createProductCategory($Product, $ParentCategory, $count);
                             $this->entityManager->persist($ProductCategory);
                             $count++;
@@ -595,6 +600,10 @@ class ProductController extends AbstractController
 
                 $this->addSuccess('admin.register.complete', 'admin');
 
+                if ($returnLink = $form->get('return_link')->getData()) {
+                    return $this->redirect($returnLink);
+                }
+
                 return $this->redirectToRoute('admin_product_product_edit', ['id' => $Product->getId()]);
             }
         }
@@ -618,12 +627,20 @@ class ProductController extends AbstractController
             $searchForm->handleRequest($request);
         }
 
+        // ツリー表示のため、ルートからのカテゴリを取得
+        $TopCategories = $this->categoryRepository->getList(null);
+        $ChoicedCategoryIds = array_map(function ($Category) {
+            return $Category->getId();
+        }, $form->get('Category')->getData());
+
         return [
             'Product' => $Product,
             'form' => $form->createView(),
             'searchForm' => $searchForm->createView(),
             'has_class' => $has_class,
             'id' => $id,
+            'TopCategories' => $TopCategories,
+            'ChoicedCategoryIds' => $ChoicedCategoryIds
         ];
     }
 
@@ -637,6 +654,8 @@ class ProductController extends AbstractController
         $session = $request->getSession();
         $page_no = intval($session->get('eccube.admin.product.search.page_no'));
         $page_no = $page_no ? $page_no : Constant::ENABLED;
+        $message = null;
+        $success = false;
 
         if (!is_null($id)) {
             /* @var $Product \Eccube\Entity\Product */
@@ -680,25 +699,37 @@ class ProductController extends AbstractController
 
                     log_info('商品削除完了', [$id]);
 
-                    $this->addSuccess('admin.delete.complete', 'admin');
+                    $success = true;
+                    $message = trans('admin.delete.complete');
 
                 } catch (ForeignKeyConstraintViolationException $e) {
                     log_info('商品削除エラー', [$id]);
-                    $message = trans('admin.delete.failed.foreign_key', ['%name%' => trans('product.text.name')]);
-                    $this->addError($message, 'admin');
+                    $message = trans('admin.delete.failed.foreign_key', ['%name%' => $Product->getName()]);
                 }
             } else {
                 log_info('商品削除エラー', [$id]);
-                $this->addError('admin.delete.failed', 'admin');
+                $message = trans('admin.delete.failed');
             }
         } else {
             log_info('商品削除エラー', [$id]);
-            $this->addError('admin.delete.failed', 'admin');
+            $message = trans('admin.delete.failed');
         }
 
-        $rUrl = $this->generateUrl('admin_product_page', ['page_no' => $page_no]).'?resume='.Constant::ENABLED;
+        if ($request->isXmlHttpRequest()) {
 
-        return $this->redirect($rUrl);
+            return new JsonResponse(['success' => $success, 'message' => $message]);
+
+        } else {
+
+            if ($success) {
+                $this->addSuccess($message, 'admin');
+            } else {
+                $this->addError($message, 'admin');
+            }
+
+            $rUrl = $this->generateUrl('admin_product_page', ['page_no' => $page_no]).'?resume='.Constant::ENABLED;
+            return $this->redirect($rUrl);
+        }
     }
 
     /**

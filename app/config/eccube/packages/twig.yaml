@@ -16,3 +16,5 @@ twig:
 
     #     - 'default_frame.twig'
     #     - 'Form/form_div_layout.twig'
+    date:
+      timezone: '%timezone%'

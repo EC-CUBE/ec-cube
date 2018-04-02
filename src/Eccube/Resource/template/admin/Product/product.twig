@@ -168,6 +168,29 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             $('#file_upload').on('click', function () {
                 $('#{{ form.product_image.vars.id }}').click();
             });
+
+            {# TODO: Should move logic of js into .js file instead of .html file #}
+            var confirmFormChange = function (form, target, modal) {
+                {# TODO: Should detect form change before show confirm modal #}
+                var returnLink = form.find('input[type="hidden"][name*="return_link"]'),
+                    saveBtn = modal.find('a[data-action="save"]'),
+                    cancelBtn = modal.find('a[data-action="cancel"]');
+                modal.on('hidden.bs.modal', function () {
+                    returnLink.val('');
+                });
+                saveBtn.on('click', function () {
+                    returnLink.val($(this).data('return-link'));
+                    form.submit();
+                });
+                target.on('click', function () {
+                    modal.find('.modal-body .screen-name').text($(this).attr('title'));
+                    modal.modal('show');
+                    saveBtn.data('return-link', $(this).attr('href'));
+                    cancelBtn.attr('href', $(this).attr('href'));
+                    return false;
+                });
+            };
+            confirmFormChange($('#form1'), $('a[data-action="confirm"]'), $('#confirmFormChangeModal'))
         });
 
         function fnClass(action) {
@@ -177,11 +200,67 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         }
 
     </script>
+    <script>
+        var searchWord = function(){
+            var searchText = $(this).val(), // 検索ボックスに入力された値
+                targetText
+
+            // 検索ボックスに値が入っていない場合
+            if (searchText == '') {
+                // 全て表示する
+                $('.category-li').show();
+                return;
+            }
+
+            // 検索ボックスに値が入ってる場合
+            // 表示を全て空にする
+            $('.category-li').hide();
+
+            // 検索ワードが（子を含めて）含まれる要素のみ表示
+            $('.category-li').each(function() {
+                targetText = $(this).text();
+
+                // 検索対象となるリストに入力された文字列が存在するかどうかを判断
+                if (targetText.indexOf(searchText) != -1) {
+                    // 存在する場合はそのリストのテキストを用意した配列に格納
+                    $(this).show();
+                }
+            });
+        };
+
+        // searchWordの実行
+        $('#search-category').on('input', searchWord);
+    </script>
 {% endblock javascript %}
 
 {% block main %}
+    <div class="modal fade" id="confirmFormChangeModal" tabindex="-1" role="dialog"
+         aria-labelledby="confirmFormChangeModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ 'admin.product.product.text10'|trans }}</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="screen-name"></p>
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-ec-conversion" data-action="save" href="javascript:void(0)">
+                        {{ 'admin.product.product.save'|trans }}
+                    </a>
+                    <a class="btn btn-ec-sub" data-action="cancel" href="javascript:void(0)">
+                        {{ 'admin.product.product.cancel'|trans }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
     <form role="form" name="form1" id="form1" method="post" action="" novalidate enctype="multipart/form-data">
         {{ form_widget(form._token) }}
+        {{ form_widget(form.return_link) }}
         <div class="c-contentsArea__cols">
             <div class="c-contentsArea__primaryCol">
                 <div class="c-primaryCol">
@@ -234,6 +313,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     </div>
                                     <div class="col mb-2">
                                         {{ form_widget(form.name) }}
+                                        {{ form_errors(form.name) }}
                                     </div>
                                 </div>
                                 {% if has_class == false %}
@@ -570,38 +650,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {% endif %}
 
                                     <div class="d-block text-center text-center">
-                                        <button class="btn btn-ec-regular" type="button" data-toggle="modal"
-                                                data-target="#confirmModal">
-                                            {{ 'admin.product.product.text09'|trans }}
-                                        </button>
-                                        <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog"
-                                             aria-labelledby="confirmModal" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title">{{ 'admin.product.product.text10'|trans }}</h5>
-                                                        <button class="close" type="button" data-dismiss="modal"
-                                                                aria-label="Close">
-                                                            <span aria-hidden="true">×</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <p>{{ 'admin.product.product.text11'|trans }}</p>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        {# TODO: 変更を保存する機能の実装　#}
-                                                        <a class="btn btn-ec-conversion"
-                                                           href="{{ url('admin_product_product_class', { 'id' : id }) }}">
-                                                            {{ 'admin.product.product.save'|trans }}
-                                                        </a>
-                                                        <button class="btn btn-ec-sub" type="button"
-                                                                data-dismiss="modal">
-                                                            {{ 'admin.product.product.cancel'|trans }}
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <a href="{{ url('admin_product_product_class', { 'id' : id }) }}" class="btn btn-ec-regular" data-action="confirm"
+                                           title="{{ 'admin.product.product.text11'|trans({
+                                               '%name%' : 'admin.product.product.title_product_class_screen'|trans
+                                           }) }}">{{ 'admin.product.product.text09'|trans }}</a>
                                     </div>
                                 </div>
                             </div>
@@ -666,89 +718,50 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="collapse show ec-cardCollapse" id="category">
                             <div class="card-body">
                                 <div class="mb-3">
-                                    {# TODO: カテゴリ検索機能の実装 #}
                                     <div class="form-row">
                                         <div class="col">
-                                            <input class="form-control" type="search"
-                                                   placeholder="{{ 'admin.product.product.text12'|trans }}"
-                                                   aria-label="Search">
-                                        </div>
-                                        <div class="col-auto">
-                                            <button class="btn btn-ec-sub" type="submit">
-                                                <i class="fa fa-search"></i>
-                                            </button>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1">
+                                                            <i class="fa fa-search"></i>
+                                                    </span>
+                                                </div>
+                                                <input id="search-category" class="form-control" type="search"
+                                                       placeholder="{{ 'admin.product.product.text12'|trans }}"
+                                                       aria-label="Search">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                {# TODO: カテゴリ選択方法の変更 #}
-                                <div id="detail_category_box__list"
-                                     class="accpanel padT08{% if form.Category.vars.valid == false %} has-error{% endif %}">
-                                    {{ form_widget(form.Category) }}
+                                {% macro tree(ChoicedIds, Category, form) %}
+                                    {% import _self as selfMacro %}
+                                    <li class="c-directoryTree--registerItem category-li">
+                                        <input type="checkbox" id="admin_product_category_{{ Category.id }}" name="admin_product[Category][]" value="{{ Category.id }}" {% if Category.id in ChoicedIds %}checked{% endif %}>
+                                        <label for="admin_product_category_{{ Category.id }}">{{ Category.name }}</label>
+                                        <ul>
+                                            {% for child,ChildCategory in Category.children %}
+                                                {{ selfMacro.tree(ChoicedIds, ChildCategory, form) }}
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                {% endmacro %}
+
+                                <div class="c-directoryTree--register rounded border mb-3 p-3">
+                                    {% import _self as renderMacro %}
+                                    {% for TopCategory in TopCategories %}
+                                        <ul>
+                                            {{ renderMacro.tree(ChoicedCategoryIds, TopCategory, form.Category) }}
+                                        </ul>
+                                    {% endfor %}
                                     {{ form_errors(form.Category) }}
                                 </div>
-                                {#
-                                <div class="c-directoryTree--register rounded border mb-3 p-3">
-                                    <ul>
-                                        <li class="c-directoryTree--registerItem">
-                                            <input type="checkbox">
-                                            <label>カテゴリA</label>
-                                            <ul>
-                                                <li class="c-directoryTree--registerItem">
-                                                    <input type="checkbox">
-                                                    <label>カテゴリA-a</label>
-                                                </li>
-                                                <li class="c-directoryTree--registerItem">
-                                                    <input type="checkbox">
-                                                    <label>カテゴリA-b</label>
-                                                </li>
-                                                <li class="c-directoryTree--registerItem">
-                                                    <input type="checkbox">
-                                                    <label>カテゴリA-c</label>
-                                                    <ul>
-                                                        <li class="c-directoryTree--registerItem">
-                                                            <input type="checkbox">
-                                                            <label>カテゴリA-c-1</label>
-                                                        </li>
-                                                        <li class="c-directoryTree--registerItem">
-                                                            <input type="checkbox">
-                                                            <label>カテゴリA-c-2</label>
-                                                            <ul>
-                                                                <li class="c-directoryTree--registerItem">
-                                                                    <input type="checkbox">
-                                                                    <label>カテゴリA-c-2-1</label>
-                                                                </li>
-                                                                <li class="c-directoryTree--registerItem">
-                                                                    <input type="checkbox">
-                                                                    <label>カテゴリA-c-2-2</label>
-                                                                </li>
-                                                            </ul>
-                                                        </li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                    <ul>
-                                        <li class="c-directoryTree--registerItem">
-                                            <input type="checkbox">
-                                            <label>カテゴリB</label>
-                                        </li>
-                                    </ul>
-                                    <ul>
-                                        <li class="c-directoryTree--registerItem">
-                                            <input type="checkbox">
-                                            <label>カテゴリC</label>
-                                        </li>
-                                    </ul>
-                                </div>
-                                #}
                                 <div class="d-block text-center">
-                                    {# TODO onclickは適切ではないのでaタグで実装できるようにする #}
-                                    <button class="btn btn-block btn-ec-regular" type="button"
-                                            onclick='location.href="{{ url('admin_product_category') }}"'>
-                                        {{ 'admin.product.product.text13'|trans }}
-                                    </button>
+                                    <a class="btn btn-block btn-ec-regular"
+                                       data-action="confirm"
+                                       href="{{ url('admin_product_category') }}"
+                                       title="{{ 'admin.product.product.text11'|trans({
+                                           '%name%' : 'admin.product.product.title_category_screen'|trans}) }}">{{ 'admin.product.product.text13'|trans }}</a>
                                 </div>
                             </div>
                         </div>
@@ -798,9 +811,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 </div>
                                 #}
                                 <div class="d-block text-center">
-                                    <button class="btn btn-block btn-ec-regular" type="button">
-                                        {{ 'admin.product.product.text14'|trans }}
-                                    </button>
+                                    <a href="{{ url('admin_product_tag') }}"
+                                       class="btn btn-block btn-ec-regular"
+                                       data-action="confirm"
+                                       title="{{ 'admin.product.product.text11'|trans({
+                                           '%name%' : 'admin.product.product.title_tag_screen'|trans }) }}">{{ 'admin.product.product.text14'|trans }}</a>
                                 </div>
                             </div>
                         </div>
@@ -827,7 +842,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <span>{{ 'admin.product.product.521'|trans }}</span>
                                     </div>
                                     <div class="col">
-                                        <span>：{{ Product.create_date|date_format }}</span>
+                                        <span>：{{ Product.create_date|date_min }}</span>
                                     </div>
                                 </div>
                                 <div class="row mb-2">
@@ -836,7 +851,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <span>{{ 'admin.product.product.522'|trans }}</span>
                                     </div>
                                     <div class="col">
-                                        <span>：{{ Product.update_date|date_format }}</span>
+                                        <span>：{{ Product.update_date|date_min }}</span>
                                     </div>
                                 </div>
                                 <div class="row mb-2">
@@ -845,8 +860,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <span>{{ 'admin.product.product.update_member'|trans }}</span>
                                     </div>
                                     <div class="col">
-                                        {# TODO: 最終更新者の表示 #}
-                                        <span>：{{ Product.Creator }}</span>
+                                        <span>：{{ Product.Creator ? Product.Creator.name }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -887,9 +901,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <div class="row justify-content-between align-items-center">
                     <div class="col-6">
                         <div class="c-conversionArea__leftBlockItem">
-                            <a class="c-beseLink" href="{{ url('admin_product_page', { page_no : app.session.get('eccube.admin.product.search.page_no')|default('1') } ) }}?resume=1">
-                                <i class="fa fa-backward" aria-hidden="true"></i>
-                                <span>{{ 'admin.product.product.509'|trans }}</span></a>
+                            <a class="c-beseLink" href="{{ url('admin_product_page', { page_no : app.session.get('eccube.admin.product.search.page_no')|default('1') } ) }}?resume=1"
+                               data-action="confirm"
+                               title="{{ 'admin.product.product.text11'|trans({
+                                    '%name%' : 'admin.product.product.title_product_screen'|trans })
+                               }}"><i class="fa fa-backward" aria-hidden="true"></i><span>{{ 'admin.product.product.509'|trans }}</span></a>
                         </div>
                     </div>
                     <div class="col-6">
