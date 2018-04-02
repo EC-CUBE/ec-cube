@@ -14,6 +14,15 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script type="text/javascript" src="{{ asset('assets/js/script.js', 'admin') }}"></script>
     <script src="{{ asset('assets/js/function.js', 'admin') }}"></script>
+    <script>
+        $(function() {
+            $.ajaxSetup({
+                'headers': {
+                    'x-csrf-token': $('meta[name="x-csrf-token"]').attr('content')
+                }
+            });
+        });
+    </script>
 </head>
 <body id="page_{{ app.request.get('_route') }}">
 <header class="c-headerBar">
