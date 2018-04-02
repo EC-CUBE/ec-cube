@@ -519,6 +519,7 @@ class OrderController extends AbstractController
         $count = 0;
         foreach ($Orders as $Order) {
             try {
+                // TODO: should support event for plugin customize
                 // 編集前の受注情報を保持
                 $OriginOrder = clone $Order;
 
@@ -538,7 +539,6 @@ class OrderController extends AbstractController
                     foreach ($flowResult->getErrors() as $error) {
                         $this->addError('#'.$Order->getId().': '.$error->getMessage(), 'admin');
                     }
-
                     continue;
                 }
 
