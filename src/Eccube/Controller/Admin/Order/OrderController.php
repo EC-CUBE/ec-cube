@@ -45,9 +45,20 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Eccube\Entity\Master\OrderStatus;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Eccube\Entity\Order;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
+use Eccube\Service\PurchaseFlow\PurchaseFlow;
+use Eccube\Service\PurchaseFlow\PurchaseException;
 
 class OrderController extends AbstractController
 {
+    /**
+     * @var PurchaseFlow
+     */
+    protected $purchaseFlow;
+
     /**
      * @var CsvExportService
      */
@@ -90,6 +101,8 @@ class OrderController extends AbstractController
 
     /**
      * OrderController constructor.
+     *
+     * @param PurchaseFlow $purchaseFlow
      * @param CsvExportService $csvExportService
      * @param CustomerRepository $customerRepository
      * @param PaymentRepository $paymentRepository
@@ -100,6 +113,7 @@ class OrderController extends AbstractController
      * @param OrderRepository $orderRepository
      */
     public function __construct(
+        PurchaseFlow $purchaseFlow,
         CsvExportService $csvExportService,
         CustomerRepository $customerRepository,
         PaymentRepository $paymentRepository,
@@ -109,6 +123,7 @@ class OrderController extends AbstractController
         ProductStatusRepository $productStatusRepository,
         OrderRepository $orderRepository
     ) {
+        $this->purchaseFlow = $purchaseFlow;
         $this->csvExportService = $csvExportService;
         $this->customerRepository = $customerRepository;
         $this->paymentRepository = $paymentRepository;
@@ -481,5 +496,79 @@ class OrderController extends AbstractController
         log_info('配送CSV出力ファイル名', array($filename));
 
         return $response;
+    }
+
+    /**
+     * Bulk action to order status
+     *
+     * @Method("POST")
+     * @Route("/%eccube_admin_route%/order/bulk/order-status/{id}", requirements={"id" = "\d+"}, name="admin_order_bulk_order_status")
+     *
+     * @param Request $request
+     * @param OrderStatus $OrderStatus
+     *
+     * @return RedirectResponse
+     */
+    public function bulkOrderStatus(Request $request, OrderStatus $OrderStatus)
+    {
+        $this->isTokenValid();
+
+        /** @var Order[] $Orders */
+        $Orders = $this->orderRepository->findBy(['id' => $request->get('ids')]);
+
+        $count = 0;
+        foreach ($Orders as $Order) {
+            try {
+                // 編集前の受注情報を保持
+                $OriginOrder = clone $Order;
+
+                $Order->setOrderStatus($OrderStatus);
+
+                $purchaseContext = new PurchaseContext($OriginOrder, $OriginOrder->getCustomer());
+
+                $flowResult = $this->purchaseFlow->calculate($Order, $purchaseContext);
+                if ($flowResult->hasWarning()) {
+                    foreach ($flowResult->getWarning() as $warning) {
+                        // TODO Warning の場合の処理
+                        $this->addWarning($warning->getMessage(), 'admin');
+                    }
+                }
+
+                if ($flowResult->hasError()) {
+                    foreach ($flowResult->getErrors() as $error) {
+                        $this->addError($error->getMessage(), 'admin');
+                    }
+
+                    continue;
+                }
+
+                try {
+                    $this->purchaseFlow->purchase($Order, $purchaseContext);
+                } catch (PurchaseException $e) {
+                    $this->addError($e->getMessage(), 'admin');
+                    continue;
+                }
+
+                $this->orderRepository->save($Order);
+
+                $count++;
+            } catch (\Exception $e) {
+                $this->addError($e->getMessage(), 'admin');
+            }
+        }
+        try {
+            if ($count) {
+                $this->entityManager->flush();
+                $msg = $this->translator->trans('admin.order.index.bulk_order_status_success_count', [
+                    '%count%' => $count,
+                    '%status%' => $OrderStatus->getName()
+                ]);
+                $this->addSuccess($msg, 'admin');
+            }
+        } catch (\Exception $e) {
+            $this->addError($e->getMessage(), 'admin');
+        }
+
+        return $this->redirectToRoute('admin_order', ['resume' => Constant::ENABLED]);
     }
 }
