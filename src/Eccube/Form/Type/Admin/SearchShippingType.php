@@ -25,7 +25,6 @@
 namespace Eccube\Form\Type\Admin;
 
 use Eccube\Common\EccubeConfig;
-use Eccube\Form\Type\Master\OrderStatusType;
 use Eccube\Form\Type\Master\ShippingStatusType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -60,7 +59,7 @@ class SearchShippingType extends AbstractType
                     new Assert\Length(array('max' => $this->eccubeConfig['eccube_stext_len'])),
                 ),
             ))
-            ->add('order_status', OrderStatusType::class, array(
+            ->add('shipping_status', ShippingStatusType::class, array(
                 'label' => 'searchshipping.label.order_status',
                 'expanded' => true,
                 'multiple' => true,

@@ -24,10 +24,10 @@
 
 namespace Eccube\Repository;
 
+use Doctrine\Orm\QueryBuilder;
 use Eccube\Entity\Shipping;
 use Eccube\Util\StringUtil;
 use Symfony\Bridge\Doctrine\RegistryInterface;
-use Doctrine\Orm\QueryBuilder;
 
 /**
  * ShippingRepository
@@ -92,13 +92,6 @@ class ShippingRepository extends AbstractRepository
                 ->setParameter('order_code', "%{$searchData['order_code']}%");
         }
 
-        // order status
-        if (isset($searchData['order_status']) && count($searchData['order_status'])) {
-            $s = $searchData['order_status'];
-            $qb
-                ->andWhere($qb->expr()->in('o.OrderStatus', ':order_status'))
-                ->setParameter('order_status', $searchData['order_status']);
-        }
         // shipping status
         if (isset($searchData['shipping_status']) && count($searchData['shipping_status'])) {
             $qb

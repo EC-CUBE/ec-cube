@@ -12,7 +12,8 @@ use Eccube\Repository\Master\PageMaxRepository;
 use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Repository\Master\ShippingStatusRepository;
 use Eccube\Repository\ShippingRepository;
-use Knp\Component\Pager\Paginator;
+use Eccube\Util\FormUtil;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -50,7 +51,8 @@ class ShippingController extends AbstractController
         PageMaxRepository $pageMaxRepository,
         ProductStatusRepository $productStatusRepository,
         ShippingStatusRepository $shippingStatusRepository
-    ) {
+    )
+    {
         $this->orderStatusRepository = $orderStatusRepository;
         $this->shippingRepository = $shippingRepository;
         $this->pageMaxRepository = $pageMaxRepository;
@@ -64,10 +66,8 @@ class ShippingController extends AbstractController
      * @Route("/%eccube_admin_route%/shipping/page/{page_no}", name="admin_shipping_page")
      * @Template("@admin/Shipping/index.twig")
      */
-    public function index(Request $request, $page_no = null, Paginator $paginator)
+    public function index(Request $request, $page_no = null, PaginatorInterface $paginator)
     {
-        $session = $request->getSession();
-
         $builder = $this->formFactory
             ->createBuilder(SearchShippingType::class);
 
@@ -81,112 +81,75 @@ class ShippingController extends AbstractController
 
         $searchForm = $builder->getForm();
 
-        $pagination = array();
+        $page_count = $this->session->get('eccube.admin.shipping.search.page_count',
+            $this->eccubeConfig->get('eccube_default_page_count'));
+
+        $page_count_param = (int)$request->get('page_count');
+        $pageMaxis = $this->pageMaxRepository->findAll();
+        if ($page_count_param) {
+            foreach ($pageMaxis as $pageMax) {
+                if ($page_count_param == $pageMax->getName()) {
+                    $page_count = $pageMax->getName();
+                    $this->session->set('eccube.admin.shipping.search.page_count', $page_count);
+                    break;
+                }
+            }
+        }
 
         $ProductStatuses = $this->productStatusRepository->findAll();
-        $pageMaxis = $this->pageMaxRepository->findAll();
-        $page_count = $this->eccubeConfig['eccube_default_page_count'];
-        $page_status = null;
-        $active = false;
 
         if ('POST' === $request->getMethod()) {
 
             $searchForm->handleRequest($request);
 
             if ($searchForm->isValid()) {
+                $page_no = 1;
                 $searchData = $searchForm->getData();
 
-                // paginator
-                $qb = $this->shippingRepository->getQueryBuilderBySearchDataForAdmin($searchData);
-
-                $event = new EventArgs(
-                    array(
-                        'form' => $searchForm,
-                        'qb' => $qb,
-                    ),
-                    $request
-                );
-                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_SEARCH, $event);
-
-                $page_no = 1;
-                $pagination = $paginator->paginate(
-                    $qb,
-                    $page_no,
-                    $page_count
-                );
-
-                // sessionのデータ保持
-                $session->set('eccube.admin.shipping.search', $searchData);
-                $session->set('eccube.admin.shipping.search.page_no', $page_no);
+                // 検索条件, ページ番号をセッションに保持.
+                $this->session->set('eccube.admin.shipping.search', FormUtil::getViewData($searchForm));
+                $this->session->set('eccube.admin.shipping.search.page_no', $page_no);
             }
         } else {
-            if (is_null($page_no) && $request->get('resume') != Constant::ENABLED) {
-                // sessionを削除
-                $session->remove('eccube.admin.shipping.search');
-                $session->remove('eccube.admin.shipping.search.page_no');
-            } else {
-                // pagingなどの処理
-                $searchData = $session->get('eccube.admin.shipping.search');
-                if (is_null($page_no)) {
-                    $page_no = intval($session->get('eccube.admin.shipping.search.page_no'));
+            if ($page_no || $request->get('resume') == Constant::ENABLED) {
+                if ($page_no) {
+                    // ページ送りで遷移した場合.
+                    $this->session->set('eccube.admin.shipping.search.page_no', (int)$page_no);
                 } else {
-                    $session->set('eccube.admin.shipping.search.page_no', $page_no);
+                    // 他画面から遷移した場合.
+                    $page_no = $this->session->get('eccube.admin.shipping.search.page_no', 1);
                 }
-
-                if (!is_null($searchData)) {
-
-                    // 公開ステータス
-                    $status = $request->get('status');
-                    if (!empty($status)) {
-                        if ($status != $this->eccubeConfig['eccube_admin_product_stock_status']) {
-                            $searchData['status']->clear();
-                            $searchData['status']->add($status);
-                        } else {
-                            $searchData['stock_status'] = $this->eccubeConfig['disabled'];
-                        }
-                        $page_status = $status;
-                    }
-                    // 表示件数
-                    $pcount = $request->get('page_count');
-
-                    $page_count = empty($pcount) ? $page_count : $pcount;
-
-                    $qb = $this->shippingRepository->getQueryBuilderBySearchDataForAdmin($searchData);
-
-                    $event = new EventArgs(
-                        array(
-                            'form' => $searchForm,
-                            'qb' => $qb,
-                        ),
-                        $request
-                    );
-                    $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_SEARCH, $event);
-
-                    $pagination = $paginator->paginate(
-                        $qb,
-                        $page_no,
-                        $page_count
-                    );
-
-                    if (isset($searchData['order_status']) && count($searchData['order_status']) > 0) {
-                        $statusIds = array();
-                        foreach ($searchData['order_status'] as $Status) {
-                            $statusIds[] = $Status->getId();
-                        }
-                        $searchData['order_status'] = $this->orderStatusRepository->findBy(array('id' => $statusIds));
-                    }
-                    if (isset($searchData['shipping_status']) && count($searchData['shipping_status']) > 0) {
-                        $statusIds = array();
-                        foreach ($searchData['shipping_status'] as $Status) {
-                            $statusIds[] = $Status->getId();
-                        }
-                        $searchData['shipping_status'] = $this->shippingStatusRepository->findBy(array('id' => $statusIds));
-                    }
-
-                    $searchForm->setData($searchData);
-                }
+                $viewData = $this->session->get('eccube.admin.shipping.search', []);
+                $searchData = FormUtil::submitAndGetData($searchForm, $viewData);
+            } else {
+                // 初期表示
+                $page_no = 1;
+                $searchData = [];
+                $page_count = $this->eccubeConfig->get('eccube_default_page_count');
+                // セッション中の検索条件, ページ番号を初期化.
+                $this->session->set('eccube.admin.shipping.search', $searchData);
+                $this->session->set('eccube.admin.shipping.search.page_no', $page_no);
+                $this->session->set('eccube.admin.shipping.search.page_count', $page_count);
             }
         }
+
+        // paginator
+        $qb = $this->shippingRepository->getQueryBuilderBySearchDataForAdmin($searchData);
+
+        $event = new EventArgs(
+            array(
+                'form' => $searchForm,
+                'qb' => $qb,
+            ),
+            $request
+        );
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_SEARCH, $event);
+
+        $pagination = $paginator->paginate(
+            $qb,
+            $page_no,
+            $page_count
+        );
 
         return [
             'searchForm' => $searchForm->createView(),
@@ -194,9 +157,7 @@ class ShippingController extends AbstractController
             'productStatuses' => $ProductStatuses,
             'pageMaxis' => $pageMaxis,
             'page_no' => $page_no,
-            'page_status' => $page_status,
             'page_count' => $page_count,
-            'active' => $active,
         ];
     }
 }
