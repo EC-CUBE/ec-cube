@@ -35,6 +35,7 @@ use Eccube\Entity\BaseInfo;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Entity\Product;
+use Symfony\Component\HttpFoundation\Response;
 
 class ProductControllerTest extends AbstractAdminWebTestCase
 {
@@ -768,6 +769,21 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             $result = $this->productRepository->findBy(['id' => $productIds, 'Status' => $ProductStatus]);
             $this->assertEquals(count($productIds), count($result));
         }
+    }
+
+    public function testLoadProductClass()
+    {
+        $this->client->request(
+            'GET',
+            $this->generateUrl('admin_product_classes_load', ['id' => 1]),
+            array(),
+            array(),
+            array(
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            )
+        );
+
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
 
     /**
