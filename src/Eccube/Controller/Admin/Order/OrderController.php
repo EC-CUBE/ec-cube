@@ -102,7 +102,7 @@ class OrderController extends AbstractController
     /**
      * OrderController constructor.
      *
-     * @param PurchaseFlow $purchaseFlow
+     * @param PurchaseFlow $orderPurchaseFlow
      * @param CsvExportService $csvExportService
      * @param CustomerRepository $customerRepository
      * @param PaymentRepository $paymentRepository
@@ -113,7 +113,7 @@ class OrderController extends AbstractController
      * @param OrderRepository $orderRepository
      */
     public function __construct(
-        PurchaseFlow $purchaseFlow,
+        PurchaseFlow $orderPurchaseFlow,
         CsvExportService $csvExportService,
         CustomerRepository $customerRepository,
         PaymentRepository $paymentRepository,
@@ -123,7 +123,7 @@ class OrderController extends AbstractController
         ProductStatusRepository $productStatusRepository,
         OrderRepository $orderRepository
     ) {
-        $this->purchaseFlow = $purchaseFlow;
+        $this->purchaseFlow = $orderPurchaseFlow;
         $this->csvExportService = $csvExportService;
         $this->customerRepository = $customerRepository;
         $this->paymentRepository = $paymentRepository;
@@ -530,13 +530,13 @@ class OrderController extends AbstractController
                 if ($flowResult->hasWarning()) {
                     foreach ($flowResult->getWarning() as $warning) {
                         // TODO Warning の場合の処理
-                        $this->addWarning($warning->getMessage(), 'admin');
+                        $this->addWarning('#'.$Order->getId().': '.$warning->getMessage(), 'admin');
                     }
                 }
 
                 if ($flowResult->hasError()) {
                     foreach ($flowResult->getErrors() as $error) {
-                        $this->addError($error->getMessage(), 'admin');
+                        $this->addError('#'.$Order->getId().': '.$error->getMessage(), 'admin');
                     }
 
                     continue;
@@ -545,7 +545,7 @@ class OrderController extends AbstractController
                 try {
                     $this->purchaseFlow->purchase($Order, $purchaseContext);
                 } catch (PurchaseException $e) {
-                    $this->addError($e->getMessage(), 'admin');
+                    $this->addError('#'.$Order->getId().': '.$e->getMessage(), 'admin');
                     continue;
                 }
 
@@ -553,7 +553,7 @@ class OrderController extends AbstractController
 
                 $count++;
             } catch (\Exception $e) {
-                $this->addError($e->getMessage(), 'admin');
+                $this->addError('#'.$Order->getId().': '.$e->getMessage(), 'admin');
             }
         }
         try {

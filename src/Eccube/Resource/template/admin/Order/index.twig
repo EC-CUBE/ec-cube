@@ -326,7 +326,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <p>{{ 'admin.product.product.text11'|trans }}</p>
                                 </div>
                                 <div class="modal-footer">
-                                    <button class="btn btn-ec-sub" data-action="yes" type="button"
+                                    <button class="btn btn-ec-conversion" data-action="yes" type="button"
                                             data-dismiss="modal">
                                         {{ 'admin.product.product.save'|trans }}
                                     </button>
@@ -345,9 +345,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 {{ 'admin.order.index.btn_bulk_mail'|trans }}
                             </a>
                             {# TODO: This button is not implemented yet #}
-                            <button class="btn btn-ec-regular mr-2">{{ 'admin.order.index.btn_bulk_export'|trans }}</button>
+                            <a href="javascript:void(0)" class="btn btn-ec-regular mr-2" data-submit="bulk">{{ 'admin.order.index.btn_bulk_export'|trans }}</a>
                             {# TODO: This button is not implemented yet #}
-                            <button class="btn btn-ec-delete">{{ 'admin.order.index.btn_bulk_delete'|trans }}</button>
+                            <a href="javascript:void(0)" class="btn btn-ec-delete" data-submit="bulk">{{ 'admin.order.index.btn_bulk_delete'|trans }}</a>
                         </div>
                         <div class="col">
                             <div class="d-inline-block mr-2">
