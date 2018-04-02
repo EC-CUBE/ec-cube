@@ -169,6 +169,25 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 $('#{{ form.product_image.vars.id }}').click();
             });
 
+            var mainTags = $('#allTags');
+            var adminProductTag = $('#admin_product_Tag');
+            $('input', adminProductTag).each(function () {
+                if ($(this).is(':checked')) {
+                    $('button[data-tag-id="' + $(this).val() + '"]').removeClass('btn-outline-secondary').addClass('btn-outline-primary');
+                }
+            });
+            mainTags.on('click', 'button.btn', function () {
+                var btnTag = $(this);
+                var tagId = btnTag.data('tag-id');
+                if (btnTag.hasClass('btn-outline-primary')) {
+                    btnTag.removeClass('btn-outline-primary').addClass('btn-outline-secondary');
+                    $('input[value="' + tagId + '"]', mainTags).prop('checked', false);
+                } else {
+                    btnTag.removeClass('btn-outline-secondary').addClass('btn-outline-primary');
+                    $('input[value="' + tagId + '"]', mainTags).prop('checked', true);
+                }
+            });
+
             {# TODO: Should move logic of js into .js file instead of .html file #}
             var confirmFormChange = function (form, target, modal) {
                 {# TODO: Should detect form change before show confirm modal #}
@@ -788,13 +807,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
                         <div class="collapse show ec-cardCollapse" id="tag">
                             <div class="card-body">
-                                {# TODO: タグ選択方法の変更 #}
-                                {{ form_widget(form.Tag) }}
-                                {{ form_errors(form.Tag) }}
-                                {#
-                                <div class="d-inline-block mb-2 mr-2">
-                                    <button class="btn btn-outline-primary" type="button">オススメ</button>
-                                </div>
+                                {% if(Tags|length > 0) %}
+                                    {% for Tag in Tags %}
+                                        <div class="d-inline-block mb-2 mr-2">
+                                            <button class="btn btn-outline-primary" type="button">{{ Tag.name }}</button>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+
                                 <div class="d-block mb-3" data-toggle="collapse" href="#allTags" role="button"
                                      aria-expanded="false" aria-controls="allTags">
                                     <a>
@@ -803,13 +823,22 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     </a>
                                 </div>
                                 <div class="collapse p-3 bg-ec-lightGray mb-3 ec-collapse" id="allTags">
-                                    <div class="d-inline-block mb-2 mr-2">
-                                        <button class="btn btn-outline-primary" type="button">オススメ</button>
+                                    <div class="d-none">
+                                        {{ form_widget(form.Tag) }}
                                     </div>
+                                    {% if(TagsList|length > 0) %}
+                                        {% for Tag in TagsList %}
+                                            <div class="d-inline-block mb-2 mr-2">
+                                                <button class="btn btn-outline-secondary" type="button"
+                                                        data-tag-id="{{ Tag.id }}">{{ Tag.name }}</button>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+
                                     <div class="d-block mb-3" data-toggle="collapse" href="#allTags" role="button"
                                          aria-expanded="false" aria-controls="allTags"></div>
                                 </div>
-                                #}
+
                                 <div class="d-block text-center">
                                     <a href="{{ url('admin_product_tag') }}"
                                        class="btn btn-block btn-ec-regular"

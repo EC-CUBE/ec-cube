@@ -40,6 +40,7 @@ use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Repository\ProductClassRepository;
 use Eccube\Repository\ProductImageRepository;
 use Eccube\Repository\ProductRepository;
+use Eccube\Repository\TagRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Service\CsvExportService;
 use Knp\Component\Pager\Paginator;
@@ -115,6 +116,11 @@ class ProductController extends AbstractController
     protected $productStatusRepository;
 
     /**
+     * @var TagRepository
+     */
+    protected $tagRepository;
+
+    /**
      * ProductController constructor.
      *
      * @param CsvExportService $csvExportService
@@ -126,6 +132,7 @@ class ProductController extends AbstractController
      * @param BaseInfo $BaseInfo
      * @param PageMaxRepository $pageMaxRepository
      * @param ProductStatusRepository $productStatusRepository
+     * @param TagRepository $tagRepository
      */
     public function __construct(
         CsvExportService $csvExportService,
@@ -136,7 +143,8 @@ class ProductController extends AbstractController
         ProductRepository $productRepository,
         BaseInfo $BaseInfo,
         PageMaxRepository $pageMaxRepository,
-        ProductStatusRepository $productStatusRepository
+        ProductStatusRepository $productStatusRepository,
+        TagRepository $tagRepository
     ) {
         $this->csvExportService = $csvExportService;
         $this->productClassRepository = $productClassRepository;
@@ -147,6 +155,7 @@ class ProductController extends AbstractController
         $this->BaseInfo = $BaseInfo;
         $this->pageMaxRepository = $pageMaxRepository;
         $this->productStatusRepository = $productStatusRepository;
+        $this->tagRepository = $tagRepository;
     }
 
     /**
@@ -593,6 +602,9 @@ class ProductController extends AbstractController
             $searchForm->handleRequest($request);
         }
 
+        // Get Tags
+        $TagsList = $this->tagRepository->getList();
+
         // ツリー表示のため、ルートからのカテゴリを取得
         $TopCategories = $this->categoryRepository->getList(null);
         $ChoicedCategoryIds = array_map(function ($Category) {
@@ -601,6 +613,8 @@ class ProductController extends AbstractController
 
         return [
             'Product' => $Product,
+            'Tags' => $Tags,
+            'TagsList' => $TagsList,
             'form' => $form->createView(),
             'searchForm' => $searchForm->createView(),
             'has_class' => $has_class,
