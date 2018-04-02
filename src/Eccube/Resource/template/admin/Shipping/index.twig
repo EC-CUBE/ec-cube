@@ -271,10 +271,13 @@
                         </div>
                         <div class="d-inline-block">
                             <div class="btn-group" role="group">
-                                {# TODO CSVダウンロード #}
-                                <button class="btn btn-ec-regular" type="button"><i class="fa fa-cloud-download mr-1 text-secondary"></i><span>{{ 'admin.shipping.index.785'|trans }}</span></button>
-                                {# TODO CSV出力項目設定 #}
-                                <button class="btn btn-ec-regular" type="button"><i class="fa fa-cog mr-1 text-secondary"></i><span>{{ 'admin.shipping.index.818'|trans }}</span></button>
+                                <a class="btn btn-ec-regular" href="{{ url('admin_order_export_shipping') }}"><i
+                                            class="fa fa-cloud-download mr-1 text-secondary"></i><span>{{ 'admin.shipping.index.785'|trans }}</span>
+                                </a>
+                                <a class="btn btn-ec-regular"
+                                   href="{{ url('admin_setting_shop_csv', { 'id' : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_SHIPPING') }) }}'"><i
+                                            class="fa fa-cog mr-1 text-secondary"></i><span>{{ 'admin.shipping.index.818'|trans }}</span>
+                                </a>
                             </div>
                         </div>
                     </div>
