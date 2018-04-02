@@ -460,8 +460,8 @@ class ProductController extends AbstractController
                 $Categories = $form->get('Category')->getData();
                 $categoriesIdList = [];
                 foreach ($Categories as $Category) {
-                    foreach($Category->getPath() as $ParentCategory){
-                        if (!isset($categoriesIdList[$ParentCategory->getId()])){
+                    foreach($Category->getPath() as $ParentCategory) {
+                        if (!isset($categoriesIdList[$ParentCategory->getId()])) {
                             $ProductCategory = $this->createProductCategory($Product, $ParentCategory, $count);
                             $this->entityManager->persist($ProductCategory);
                             $count++;
@@ -591,6 +591,9 @@ class ProductController extends AbstractController
 
         // ツリー表示のため、ルートからのカテゴリを取得
         $TopCategories = $this->categoryRepository->getList(null);
+        $ChoicedCategoryIds = array_map(function ($Category) {
+            return $Category->getId();
+        }, $form->get('Category')->getData());
 
         return [
             'Product' => $Product,
@@ -599,6 +602,7 @@ class ProductController extends AbstractController
             'has_class' => $has_class,
             'id' => $id,
             'TopCategories' => $TopCategories,
+            'ChoicedCategoryIds' => $ChoicedCategoryIds
         ];
     }
 

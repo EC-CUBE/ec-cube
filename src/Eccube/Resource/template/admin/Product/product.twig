@@ -697,7 +697,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="collapse show ec-cardCollapse" id="category">
                             <div class="card-body">
                                 <div class="mb-3">
-                                    {# TODO: カテゴリ検索機能の実装 #}
                                     <div class="form-row">
                                         <div class="col">
                                             <div class="input-group mb-3">
@@ -714,20 +713,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     </div>
                                 </div>
 
-                                {% macro tree(Category, form) %}
+                                {% macro tree(ChoicedIds, Category, form) %}
                                     {% import _self as selfMacro %}
-                                    {% set category_id = 'category_'~Category.id %}
                                     <li class="c-directoryTree--registerItem category-li">
-                                        {#{{ form_widget(attribute(form, category_id)) }}#}
-                                        <input type="checkbox" id="admin_product_category_{{ category_id }}" name="admin_product[{{ category_id }}]" value="1">
-                                        <label for="admin_product_category_{{ category_id }}">{{ attribute(form, category_id).vars.label }}</label>
-                                        {% if Category.children|length > 0 %}
-                                            <ul>
-                                                {% for ChildCategory in Category.children %}
-                                                    {{ selfMacro.tree(ChildCategory, form) }}
-                                                {% endfor %}
-                                            </ul>
-                                        {% endif %}
+                                        <input type="checkbox" id="admin_product_category_{{ Category.id }}" name="admin_product[Category][]" value="{{ Category.id }}" {% if Category.id in ChoicedIds %}checked{% endif %}>
+                                        <label for="admin_product_category_{{ Category.id }}">{{ Category.name }}</label>
+                                        <ul>
+                                            {% for child,ChildCategory in Category.children %}
+                                                {{ selfMacro.tree(ChoicedIds, ChildCategory, form) }}
+                                            {% endfor %}
+                                        </ul>
                                     </li>
                                 {% endmacro %}
 
@@ -735,9 +730,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {% import _self as renderMacro %}
                                     {% for TopCategory in TopCategories %}
                                         <ul>
-                                            {{ renderMacro.tree(TopCategory, form) }}
+                                            {{ renderMacro.tree(ChoicedCategoryIds, TopCategory, form.Category) }}
                                         </ul>
                                     {% endfor %}
+                                    {{ form_errors(form.Category) }}
                                 </div>
                                 <div class="d-block text-center">
                                     <button class="btn btn-block btn-ec-regular" type="button"
