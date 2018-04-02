@@ -95,40 +95,41 @@ class TagContorllerTest extends AbstractAdminWebTestCase
         $this->verify();
     }
 
-    public function testRoutingEdit()
-    {
-        $Item = $this->TagRepo->find(1);
-        $this->client->request('GET', $this->generateUrl('admin_product_tag_edit', array('id' => $Item->getId())));
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
-    }
-
-    /**
-     * @param $isSuccess
-     * @param $expected
-     * @dataProvider dataSubmitProvider
-     */
-    public function testEdit($isSuccess, $expected)
+    public function testEdit()
     {
         $formData = $this->createFormData();
-        if (!$isSuccess) {
-            $formData['method'] = '';
-        }
 
         $Item = $this->TagRepo->find(1);
 
         $this->client->request('POST',
-            $this->generateUrl('admin_product_tag_edit', array('id' => $Item->getId())),
+            $this->generateUrl('admin_product_tag'),
             array(
-                'admin_product_tag' => $formData
+                'tag_'.$Item->getId() => $formData
             )
         );
-        $this->expected = $expected;
-        $this->actual = $this->client->getResponse()->isRedirection();
-        $this->verify();
+
+        $this->assertTrue($this->client->getResponse()->isRedirection());
 
         $this->expected = 'Tag-101';
         $this->actual = $Item->getName();
         $this->verify();
+    }
+
+    public function testEditInvalid()
+    {
+        $Item = $this->TagRepo->find(1);
+
+        $crawler = $this->client->request('POST',
+            $this->generateUrl('admin_product_tag'),
+            array(
+                'tag_'.$Item->getId() => [
+                    '_token' => 'dummy',
+                    'name' => ''
+                ],
+            )
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertContains('入力されていません', $crawler->html());
     }
 
     public function testDeleteSuccess()
