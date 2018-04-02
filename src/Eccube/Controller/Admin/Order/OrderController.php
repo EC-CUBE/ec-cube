@@ -26,7 +26,10 @@ namespace Eccube\Controller\Admin\Order;
 
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\Csv;
 use Eccube\Entity\Master\CsvType;
+use Eccube\Entity\OrderItem;
+use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\SearchOrderType;
@@ -419,56 +422,56 @@ class OrderController extends AbstractController
 
             // 受注データ検索用のクエリビルダを取得.
             $qb = $this->csvExportService
-                ->getOrderQueryBuilder($request);
+                ->getShippingQueryBuilder($request);
 
             // データ行の出力.
             $this->csvExportService->setExportQueryBuilder($qb);
             $this->csvExportService->exportData(function ($entity, $csvService) use ($request) {
 
+                /** @var Csv[] $Csvs */
                 $Csvs = $csvService->getCsvs();
 
-                /** @var $Order \Eccube\Entity\Order */
-                $Order = $entity;
-                /** @var $Shippings \Eccube\Entity\Shipping[] */
-                $Shippings = $Order->getShippings();
+                /** @var Shipping $Shipping */
+                $Shipping = $entity;
+                /** @var OrderItem[] $OrderItems */
+                $OrderItems = $Shipping->getOrderItems();
 
-                foreach ($Shippings as $Shipping) {
-                    /** @var $OrderItems \Eccube\Entity\OrderItem */
-                    $OrderItems = $Shipping->getOrderItems();
-                    foreach ($OrderItems as $OrderItem) {
-                        $ExportCsvRow = new \Eccube\Entity\ExportCsvRow();
+                foreach ($OrderItems as $OrderItem) {
+                    $ExportCsvRow = new \Eccube\Entity\ExportCsvRow();
 
-                        // CSV出力項目と合致するデータを取得.
-                        foreach ($Csvs as $Csv) {
-                            // 受注データを検索.
-                            $ExportCsvRow->setData($csvService->getData($Csv, $Order));
-                            if ($ExportCsvRow->isDataNull()) {
-                                // 配送情報を検索.
-                                $ExportCsvRow->setData($csvService->getData($Csv, $Shipping));
-                            }
-                            if ($ExportCsvRow->isDataNull()) {
-                                // 配送商品を検索.
-                                $ExportCsvRow->setData($csvService->getData($Csv, $OrderItem));
-                            }
+                    $Order = $OrderItem->getOrder();
+                    // CSV出力項目と合致するデータを取得.
+                    foreach ($Csvs as $Csv) {
+                        // 受注データを検索.
+                        $ExportCsvRow->setData($csvService->getData($Csv, $Order));
 
-                            $event = new EventArgs(
-                                array(
-                                    'csvService' => $csvService,
-                                    'Csv' => $Csv,
-                                    'OrderItem' => $OrderItem,
-                                    'ExportCsvRow' => $ExportCsvRow,
-                                ),
-                                $request
-                            );
-                            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_CSV_EXPORT_SHIPPING, $event);
-
-                            $ExportCsvRow->pushData();
+                        if ($ExportCsvRow->isDataNull()) {
+                            // 受注データにない場合は, 出荷データを検索.
+                            $ExportCsvRow->setData($csvService->getData($Csv, $Shipping));
                         }
-                        //$row[] = number_format(memory_get_usage(true));
-                        // 出力.
-                        $csvService->fputcsv($ExportCsvRow->getRow());
+                        if ($ExportCsvRow->isDataNull()) {
+                            // 出荷データにない場合は, 出荷明細を検索.
+                            $ExportCsvRow->setData($csvService->getData($Csv, $OrderItem));
+                        }
+
+                        $event = new EventArgs(
+                            array(
+                                'csvService' => $csvService,
+                                'Csv' => $Csv,
+                                'OrderItem' => $OrderItem,
+                                'ExportCsvRow' => $ExportCsvRow,
+                            ),
+                            $request
+                        );
+                        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_CSV_EXPORT_SHIPPING, $event);
+
+                        $ExportCsvRow->pushData();
                     }
+                    //$row[] = number_format(memory_get_usage(true));
+                    // 出力.
+                    $csvService->fputcsv($ExportCsvRow->getRow());
                 }
+
             });
         });
 
@@ -478,7 +481,7 @@ class OrderController extends AbstractController
         $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
         $response->send();
 
-        log_info('配送CSV出力ファイル名', array($filename));
+        log_info('出荷CSV出力ファイル名', array($filename));
 
         return $response;
     }
