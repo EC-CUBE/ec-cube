@@ -1,5 +1,5 @@
 {% if pages.pageCount > 1 %}
-    <ul class="pagination">
+    <ul class="pagination" id="{{ id|default('pagination_wrap') }}">
         {# 前へ #}
         {% if pages.previous is defined %}
             <li class="page-item">
