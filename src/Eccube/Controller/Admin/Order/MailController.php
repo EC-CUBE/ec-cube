@@ -284,7 +284,7 @@ class MailController extends AbstractController
                 }
             }
         } else {
-            $ids = implode(',', $request->get('ids'));
+            $ids = implode(',', (array)$request->get('ids'));
         }
 
         return [
