@@ -14,19 +14,6 @@ var mainNavArea = function(){
 };
 mainNavArea();
 
-//c-directoryTreeRegister
-var directoryTreeRegister = function(){
-    $(function () {
-        $(".c-directoryTree--registerItem label").on('click',function () {
-            $tar = $(this).siblings("input");
-            var value = $tar.prop("checked")
-            $tar.prop("checked",!value);
-        });
-    })
-};
-
-directoryTreeRegister();
-
 //Bootstrap ツールチップ
 var toolTip = function(){
     $(function () {
@@ -104,3 +91,13 @@ var cardCollapseIconUp = function(){
     })
 };
 cardCollapseIconUp();
+
+// toggle bulk button
+var toggleBtnBulk = function(checkboxSelector, btnSelector) {
+    if ($(checkboxSelector + ':checked').length) {
+        $(btnSelector).addClass('d-block').removeClass('d-none');
+    } else {
+        $(btnSelector).addClass('d-none').removeClass('d-block');
+    }
+};
+

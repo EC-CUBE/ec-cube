@@ -24,6 +24,7 @@
 
 namespace Eccube\Twig\Extension;
 
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Product;
 use Eccube\Service\TaxRuleService;
 use Eccube\Util\StringUtil;
@@ -35,13 +36,19 @@ use Twig\TwigFunction;
 class EccubeExtension extends AbstractExtension
 {
     /**
+     * @var EccubeConfig
+     */
+    protected $eccubeConfig;
+
+    /**
      * @var TaxRuleService
      */
     protected $TaxRuleService;
 
-    public function __construct(TaxRuleService $TaxRuleService)
+    public function __construct(TaxRuleService $TaxRuleService, EccubeConfig $eccubeConfig)
     {
         $this->TaxRuleService = $TaxRuleService;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
@@ -152,12 +159,8 @@ class EccubeExtension extends AbstractExtension
      */
     public function getPriceFilter($number, $decimals = 0, $decPoint = '.', $thousandsSep = ',')
     {
-        // $locale = $this->app['config']['locale'];
-        // $currency = $this->app['config']['currency'];
-
-        // FIXME
-        $locale = 'ja_JP';
-        $currency = 'JPY';
+        $locale = $this->eccubeConfig['locale'];
+        $currency = $this->eccubeConfig['currency'];
         $formatter = new \NumberFormatter($locale, \NumberFormatter::CURRENCY);
 
         return $formatter->formatCurrency($number, $currency);

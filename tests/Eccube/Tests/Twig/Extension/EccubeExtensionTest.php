@@ -2,6 +2,7 @@
 
 namespace Eccube\Tests\Twig\Extension;
 
+use Eccube\Common\EccubeConfig;
 use Eccube\Service\TaxRuleService;
 use Eccube\Twig\Extension\EccubeExtension;
 use Eccube\Tests\EccubeTestCase;
@@ -16,8 +17,9 @@ class EccubeExtensionTest extends EccubeTestCase
     public function setUp()
     {
         parent::setUp();
+        $EccubeConfig = $this->container->get(EccubeConfig::class);
         $TaxRuleService = $this->container->get(TaxRuleService::class);
-        $this->Extension = new EccubeExtension($TaxRuleService);
+        $this->Extension = new EccubeExtension($TaxRuleService, $EccubeConfig);
     }
 
     public function testGetClassCategoriesAsJson()

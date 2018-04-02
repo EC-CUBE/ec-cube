@@ -26,7 +26,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block title %}{{ 'admin.product.index.469'|trans }}{% endblock %}
 {% block sub_title %}{{ 'admin.product.index.468'|trans }}{% endblock %}
 
-{% form_theme searchForm '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
+{% form_theme searchForm '@admin/Form/bootstrap_4_layout.html.twig' %}
 
 {% block stylesheet %}
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datetimepicker.min.css', 'admin') }}">
@@ -57,6 +57,62 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 });
             }
 
+            $('#bulkDelete').on('click', function() {
+
+                var modal = $('#bulkDeleteModal');
+
+                // 削除中のUI変更処理
+                modal.find('button').attr('disabled', 'disabled');
+                $('.modal-body p', modal).text("{{ 'admin.product.index.496'|trans }}");
+                $('.progress', modal).show();
+
+                var checkedList = $('input[type=checkbox][data-delete-url]:checked');
+                var totalCount = checkedList.length;
+                var currentCount = 0;
+
+                var promises = checkedList.map(function() {
+                    return $.ajax({
+                        'url': $(this).data('delete-url'),
+                        'type': 'delete',
+                        'data': { '_token': $(this).attr('token-for-anchor') }
+                    }).always(function() {
+                        $('.progress-bar', modal).css('width', (++currentCount / totalCount * 100) + '%');
+                    });
+                });
+
+                var addError = function(errorMessage) {
+                    $('<li><span class="badge badge-danger">ERROR</span> </li>')
+                        .append($('<span></span>').text(errorMessage))
+                        .appendTo('#bulkErrors');
+                };
+
+                $.when.apply($, promises)
+                    .done(function() {
+                        // 削除できなかった場合はエラーメッセージを表示
+                        var args = promises.length === 1 ? [arguments[0]] : [].slice.call(arguments).map(function(result) {
+                            return result[0];
+                        });
+                        args.filter(function(result) {
+                            return result.success === false;
+                        }).forEach(function(result) {
+                            addError(result.message);
+                        });
+                    })
+                    .fail(function() {
+                        // システムエラー
+                        addError("{{ 'application.text.error.system'|trans }}");
+                    })
+                    .always(function() {
+                        $('.progress', modal).hide();
+                        $('.modal-body p', modal).text("{{ 'admin.product.index.498'|trans }}");
+                        modal.find('button').removeAttr('disabled').toggle();
+                    })
+            });
+
+            $('#bulkDeleteDone').on('click', function() {
+                location.reload(true);
+            });
+
             // フォーム値を確認し、アコーディオンを制御
             // 値あり : 開く / 値なし : 閉じる
             (function ($, f) {
@@ -78,6 +134,38 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     $ac.slideUp(0);
                 }
             })($, formPropStateSubscriber);
+
+            toggleBtnBulk('input[id^="check_"]', '#btn_bulk');
+            $('input[id^="check_"]').on('change', function() {
+                toggleBtnBulk('input[id^="check_"]', '#btn_bulk');
+            });
+
+
+            $('#check_all').on('change', function() {
+                var checked = $(this).prop('checked');
+                if (checked) {
+                    $('input[id^="check_"]').prop('checked', true);
+                } else {
+                    $('input[id^="check_"]').prop('checked', false);
+                }
+                toggleBtnBulk('input[id^="check_"]', '#btn_bulk');
+            });
+
+            $('#form_bulk').find('.action-submit').on('click', function(event) {
+                event.preventDefault();
+                var form = $(this).closest('form');
+                if (!form.find('input:checkbox[name^="ids"]:checked').length) {
+                    {# TODO: should use modal instead of alert #}
+                    alert('{{ 'common.grid.checkbox_required'|trans }}');
+                    return false;
+                }
+
+                $('<input />').attr('type', 'hidden').attr('name', '{{ constant('Eccube\\Common\\Constant::TOKEN_NAME') }}')
+                    .val($(this).attr('token-for-anchor'))
+                    .appendTo(form);
+                form.attr('action', $(this).data('action')).submit();
+                return false;
+            });
         });
     </script>
 {% endblock javascript %}
@@ -114,22 +202,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="form-row mb-2">
                             <div class="col-12">
                                 <p class="col-form-label">{{ 'admin.product.index.filter'|trans }}</p>
-                                {# TODO: 未実装（フィルターが検索後の絞込から検索条件に併合された） #}
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" id="check_public" type="checkbox" value="">
-                                    <label class="form-check-label"
-                                           for="check_public">{{ 'admin.product.index.public'|trans }}</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" id="check_private" type="checkbox" value="">
-                                    <label class="form-check-label"
-                                           for="check_private">{{ 'admin.product.index.private'|trans }}</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" id="check_stockout" type="checkbox" value="">
-                                    <label class="form-check-label"
-                                           for="check_stockout">{{ 'admin.product.index.out_of_stock'|trans }}</label>
-                                </div>
+                                {{ form_widget(searchForm.status, {'label_attr': {'class': 'checkbox-inline'}}) }}
+                            </div>
+                        </div>
+                        <div class="form-row mb-2">
+                            <div class="col-12">
+                                <p class="col-form-label">{{ 'admin.product.index.filter_by_stock'|trans }}</p>
+                                {{ form_widget(searchForm.stock, {'label_attr': {'class': 'checkbox-inline'}}) }}
+                                {{ form_errors(searchForm.stock) }}
                             </div>
                         </div>
                     </div>
@@ -185,245 +265,244 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 {# TODO 「商品が全く登録されていない場合の条件に変更 #}
                 {% if pagination %}
                     {% if pagination|length > 0 %}
-                        <div class="row justify-content-between mb-2">
-                            <div class="col-6">
-                                <label class="mr-2">{{ 'admin.product.index.bulk_actions'|trans }}</label>
-                                {# TODO ここのボタンは新機能なので実装が必要 #}
-                                <div class="btn-group mr-2" role="group">
-                                    <button class="btn btn-ec-regular" type="button"><span>{{ 'admin.product.index.public'|trans }}</span></button>
-                                    <button class="btn btn-ec-regular" type="button"><span>{{ 'admin.product.index.private'|trans }}</span></button>
-                                </div>
-                                <button class="btn btn-ec-regular mr-2">{{ 'admin.product.index.abolition'|trans }}</button>
-                                <button class="btn btn-ec-delete">{{ 'admin.product.index.permanently_delete'|trans }}</button>
-                            </div>
-                            <div class="col-5 text-right">
-                                <div class="d-inline-block mr-2">
-                                    <div>
-                                        <select class="custom-select">
-                                            {# TODO リンクからセレクトボックスに変更されているので実装必要 #}
-                                            {% for pageMax in pageMaxis %}
-                                                <option {% if pageMax.name == page_count %}selected=""{% endif %}>{{ pageMax.name|e }}{{ 'admin.product.index.num'|trans }}</option>
-                                            {% endfor %}
-                                        </select>
+                        <form id="form_bulk" method="POST" action="">
+                            <div class="row justify-content-between mb-2">
+                                <div class="col-6">
+                                    <div id="btn_bulk" class="d-none">
+                                        <label class="mr-2">{{ 'admin.product.index.bulk_actions'|trans }}</label>
+                                        <div class="btn-group mr-2" role="group">
+                                            <button {{ csrf_token_for_anchor() }} data-action="{{ url('admin_product_bulk_product_status', {id: constant('Eccube\\Entity\\Master\\ProductStatus::DISPLAY_SHOW')}) }}" class="btn btn-ec-regular action-submit" type="button" >
+                                                <span>{{ 'admin.product.index.public'|trans }}</span>
+                                            </button>
+                                            <button {{ csrf_token_for_anchor() }} data-action="{{ url('admin_product_bulk_product_status', {id: constant('Eccube\\Entity\\Master\\ProductStatus::DISPLAY_HIDE')}) }}" class="btn btn-ec-regular action-submit" type="button">
+                                                <span>{{ 'admin.product.index.private'|trans }}</span>
+                                            </button>
+                                        </div>
+                                        <button {{ csrf_token_for_anchor() }} data-action="{{ url('admin_product_bulk_product_status', {id: constant('Eccube\\Entity\\Master\\ProductStatus::DISPLAY_ABOLISHED')}) }}" class="btn btn-ec-regular mr-2 action-submit">
+                                            {{ 'admin.product.index.abolition'|trans }}
+                                        </button>
+                                        <button type="button" data-toggle="modal" data-target="#bulkDeleteModal" class="btn btn-ec-delete">{{ 'admin.product.index.permanently_delete'|trans }}</button>
                                     </div>
                                 </div>
-                                <div class="d-inline-block">
-                                    <div class="btn-group" role="group">
-                                        {# TODO onclickは適切ではないのでaタグで実装できるようにする #}
-                                        <button class="btn btn-ec-regular" type="button"
-                                                onclick='location.href="{{ url('admin_product_export') }}"'><i
-                                                    class="fa fa-cloud-download mr-1 text-secondary"></i><span>{{ 'admin.product.index.484'|trans }}</span>
-                                        </button>
-                                        {# TODO onclickは適切ではないのでaタグで実装できるようにする #}
-                                        <button class="btn btn-ec-regular" type="button"
-                                                onclick='location.href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_PRODUCT') }) }}"'>
-                                            <i
-                                                    class="fa fa-cog mr-1 text-secondary"></i><span>{{ 'admin.product.index.486'|trans }}</span>
-                                        </button>
+                                <div class="col-5 text-right">
+                                    <div class="d-inline-block mr-2">
+                                        <div>
+                                            <select class="custom-select" onchange="location = this.value;">
+                                                {% for pageMax in pageMaxis %}
+                                                    <option {% if pageMax.name == page_count %}selected=""{% endif %} value="{{ path('admin_product_page', {'page_no': 1, 'page_count': pageMax.name}) }}">{{ pageMax.name|e }}{{ 'admin.product.index.num'|trans }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="d-inline-block">
+                                        <div class="btn-group" role="group">
+                                            {# TODO onclickは適切ではないのでaタグで実装できるようにする #}
+                                            <button class="btn btn-ec-regular" type="button"
+                                                    onclick='location.href="{{ url('admin_product_export') }}"'><i
+                                                        class="fa fa-cloud-download mr-1 text-secondary"></i><span>{{ 'admin.product.index.484'|trans }}</span>
+                                            </button>
+                                            {# TODO onclickは適切ではないのでaタグで実装できるようにする #}
+                                            <button class="btn btn-ec-regular" type="button"
+                                                    onclick='location.href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_PRODUCT') }) }}"'>
+                                                <i
+                                                        class="fa fa-cog mr-1 text-secondary"></i><span>{{ 'admin.product.index.486'|trans }}</span>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="card rounded border-0 mb-4">
-                            <div class="card-body p-0">
-                                <table class="table table-sm">
-                                    <thead>
-                                    <tr>
-                                        <th class="border-top-0 pl-3 pt-2 pb-2">
-                                            <input type="checkbox" name="filter" value="open">
-                                        </th>
-                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.index.id'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.index.image'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.index.product_name'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.index.code'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.index.price'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.index.stock_number'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.index.public_state'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.index.473'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.index.475'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 pr-3" colspan="3"></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for Product in pagination %}
+                            <div class="card rounded border-0 mb-4">
+                                <div class="card-body p-0">
+                                    <table class="table table-sm">
+                                        <thead>
                                         <tr>
-                                            <td class="align-middle pl-3">
-                                                <input type="checkbox" name="filter" value="open">
-                                            </td>
-                                            <td class="align-middle">{{ Product.id }}</td>
-                                            {# TODO: 画像のサイズをベタ指定しているので、styleguide側を直す #}
-                                            <td class="align-middle">
-                                                <a href="{{ url('admin_product_product_edit', { id : Product.id }) }}">
-                                                    <img src="{{ asset(Product.mainFileName|no_image_product, 'save_image') }}"
-                                                         style="max-width: 50px">
-                                                </a>
-                                            </td>
-                                            <td class="align-middle"><a
-                                                        href="{{ url('admin_product_product_edit', { id : Product.id }) }}">{{ Product.name }}</a>
-                                            </td>
-                                            <td class="align-middle">
-                                                {{ Product.code_min }}
-                                                {% if Product.code_min != Product.code_max %}{{ 'admin.product.index.474'|trans }}{{ Product.code_max }}
-                                                {% endif %}
-                                            </td>
-                                            <td class="align-middle">
-                                                {{ Product.price02_min|price }}
-                                                {% if Product.price02_min != Product.price02_max %}{{ 'admin.product.index.474'|trans }}{{ Product.price02_max|price }}
-                                                {% endif %}
-                                            </td>
-                                            <td class="align-middle">
-                                                {% if (Product.hasProductClass) %}
-                                                    {# TODO 規格のモーダル表示を実装 #}
-                                                    <button class="btn page-link text-dark d-inline-block" type="button"
-                                                            data-toggle="modal" data-target="#standardConfirm">{{ 'admin.product.index.standard_confirm'|trans }}
-                                                    </button>
-                                                    <div class="modal fade" id="standardConfirm" tabindex="-1"
-                                                         role="dialog"
-                                                         aria-labelledby="standardConfirm" aria-hidden="true"
-                                                         style="display: none;">
-                                                        <div class="modal-dialog" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title">パーコレーターの規格</h5>
-                                                                    <button class="close" type="button"
-                                                                            data-dismiss="modal"
-                                                                            aria-label="Close"><span aria-hidden="true">×</span>
-                                                                    </button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <table class="table table-striped">
-                                                                        <thead class="table-active">
-                                                                        <tr>
-                                                                            <th class="pt-2 pb-2 pl-2">規格１</th>
-                                                                            <th class="pt-2 pb-2">規格２</th>
-                                                                            <th class="pt-2 pb-2">商品コード</th>
-                                                                            <th class="pt-2 pb-2">在庫数</th>
-                                                                            <th class="pt-2 pb-2 pr-2">販売価格（円）</th>
-                                                                        </tr>
-                                                                        </thead>
-                                                                        <tbody>
-                                                                        <tr>
-                                                                            <td class="pl-2">プラチナ</td>
-                                                                            <td>100cm</td>
-                                                                            <td>aa-001</td>
-                                                                            <td>4</td>
-                                                                            <td class="pr-2">10,000</td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td class="pl-2">プラチナ</td>
-                                                                            <td>130cm</td>
-                                                                            <td>aa-002</td>
-                                                                            <td>8</td>
-                                                                            <td class="pr-2">10,000</td>
-                                                                        </tr>
-                                                                        </tbody>
-                                                                    </table>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                <button class="btn btn-v-sub" type="button"
-                                                                            data-dismiss="modal">
-                                                                        {{ 'admin.product.index.back'|trans }}
-                                                                    </button>
-                                                                    </button>
-                                                                    <a class="btn btn-ec-conversion"
-                                                                       href="/product/register/standard">
-                                                                        {{ 'admin.product.index.standard_edit'|trans }}
-                                                                        </button>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                {% else %}
-                                                    {# 規格なし商品 は在庫数を表示 #}
-                                                    {% if Product.stockunlimited_min %}
-                                                        {{ 'admin.product.index.not_specified'|trans }}
-                                                    {% else %}
-                                                        {{ Product.stock_min }}
+                                            <th class="border-top-0 pl-3 pt-2 pb-2">
+                                                <input type="checkbox" name="filter" value="open" id="check_all">
+                                            </th>
+                                            <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.index.id'|trans }}</th>
+                                            <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.index.image'|trans }}</th>
+                                            <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.index.product_name'|trans }}</th>
+                                            <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.index.code'|trans }}</th>
+                                            <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.index.price'|trans }}</th>
+                                            <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.index.stock_number'|trans }}</th>
+                                            <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.index.public_state'|trans }}</th>
+                                            <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.index.473'|trans }}</th>
+                                            <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.index.475'|trans }}</th>
+                                            <th class="border-top-0 pt-2 pb-2 pr-3" colspan="3"></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for Product in pagination %}
+                                            <tr>
+                                                <td class="align-middle pl-3">
+                                                    <input type="checkbox" name="ids[]" value="{{ Product.id }}" id="check_{{ Product.id }}" data-delete-url="{{ url('admin_product_product_delete', { id: Product.id }) }}">
+                                                </td>
+                                                <td class="align-middle">{{ Product.id }}</td>
+                                                {# TODO: 画像のサイズをベタ指定しているので、styleguide側を直す #}
+                                                <td class="align-middle">
+                                                    <a href="{{ url('admin_product_product_edit', { id : Product.id }) }}">
+                                                        <img src="{{ asset(Product.mainFileName|no_image_product, 'save_image') }}"
+                                                             style="max-width: 50px">
+                                                    </a>
+                                                </td>
+                                                <td class="align-middle"><a
+                                                            href="{{ url('admin_product_product_edit', { id : Product.id }) }}">{{ Product.name }}</a>
+                                                </td>
+                                                <td class="align-middle">
+                                                    {{ Product.code_min }}
+                                                    {% if Product.code_min != Product.code_max %}{{ 'admin.product.index.474'|trans }}{{ Product.code_max }}
                                                     {% endif %}
-                                                {% endif %}
-                                            </td>
-                                            <td class="align-middle">
-                                                {{ Product.status.name }}
-                                            </td>
-                                            <td class="align-middle">
-                                                {{ Product.create_date|date_format }}
-                                            </td>
-                                            <td class="align-middle">
-                                                {{ Product.update_date|date_format }}
-                                            </td>
-                                            <td class="align-middle pr-3" colspan="3">
-                                                <div class="row">
-                                                    <div class="col text-center" data-toggle="tooltip"
-                                                         data-placement="top"
-                                                         title="{{ 'admin.product.index.display'|trans }}"><a class="btn btn-ec-actionIcon"
-                                                                       href="{{ url('product_detail', {id:Product.id}) }}"
-                                                                       target="_blank"><i
-                                                                    class="fa fa-eye fa-lg text-secondary"
-                                                                    aria-hidden="true"></i></a></div>
-                                                    <div class="col text-center" data-toggle="tooltip"
-                                                         data-placement="top"
-                                                         title="{{ 'admin.product.index.duplicate'|trans }}"><a class="btn btn-ec-actionIcon"
-                                                                       href="{{ url('admin_product_product_copy', {'id' : Product.id}) }}" {{ csrf_token_for_anchor() }}
-                                                                       data-method="post"
-                                                                       data-message="{{ 'admin.product.index.text01'|trans }}"><i
-                                                                    class="fa fa-files-o fa-lg text-secondary"
-                                                                    aria-hidden="true"></i></a></div>
-                                                    <div class="col text-center" data-toggle="tooltip"
-                                                         data-placement="top"
-                                                         title="{{ 'admin.product.index.abolition'|trans }}"><a class="btn btn-ec-actionIcon" data-toggle="modal"
-                                                                       data-target="#discontinuance"><i
-                                                                    class="fa fa-close fa-lg text-secondary"
-                                                                    aria-hidden="true"></i></a>
-                                                        <div class="modal fade" id="discontinuance" tabindex="-1"
+                                                </td>
+                                                <td class="align-middle">
+                                                    {{ Product.price02_min|price }}
+                                                    {% if Product.price02_min != Product.price02_max %}{{ 'admin.product.index.474'|trans }}{{ Product.price02_max|price }}
+                                                    {% endif %}
+                                                </td>
+                                                <td class="align-middle">
+                                                    {% if Product.hasProductClass %}
+                                                        <button class="btn page-link text-dark d-inline-block" type="button"
+                                                                data-toggle="modal" data-target="#standardConfirm_{{ Product.id }}">{{ 'admin.product.index.standard_confirm'|trans }}
+                                                        </button>
+                                                        <div class="modal fade" id="standardConfirm_{{ Product.id }}" tabindex="-1"
                                                              role="dialog"
-                                                             aria-labelledby="discontinuance" aria-hidden="true">
+                                                             aria-labelledby="standardConfirm-{{ Product.id }}" aria-hidden="true"
+                                                             style="display: none;">
                                                             <div class="modal-dialog" role="document">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
-                                                                        <h5 class="modal-title font-weight-bold">
-                                                                            {{ 'admin.product.index.text02'|trans }}</h5>
+                                                                        <h5 class="modal-title">{{ 'admin.product.index.standard.modal.header'|trans({'%name%': Product.name}) }}</h5>
                                                                         <button class="close" type="button"
                                                                                 data-dismiss="modal"
-                                                                                aria-label="Close"><span
-                                                                                    aria-hidden="true">×</span>
+                                                                                aria-label="Close"><span aria-hidden="true">×</span>
                                                                         </button>
                                                                     </div>
-                                                                    <div class="modal-body text-left">
-                                                                        <p class="text-left">
-                                                                            {{ 'admin.product.index.text03'|trans }}</p>
-                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <table class="table table-striped">
+                                                                            <thead class="table-active">
+                                                                            <tr>
+                                                                                <th class="pt-2 pb-2 pl-2">{{ 'admin.product.index.standart.modal.col1'|trans }}</th>
+                                                                                <th class="pt-2 pb-2">{{ 'admin.product.index.standart.modal.col2'|trans }}</th>
+                                                                                <th class="pt-2 pb-2">{{ 'admin.product.index.standart.modal.col3'|trans }}</th>
+                                                                                <th class="pt-2 pb-2">{{ 'admin.product.index.standart.modal.col4'|trans }}</th>
+                                                                                <th class="pt-2 pb-2 pr-2">{{ 'admin.product.index.standart.modal.col5'|trans }}</th>
+                                                                            </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                            {% for Class in Product.ProductClasses %}
+                                                                                {% if Class.visible == 1 %}
+                                                                                    <tr>
+                                                                                        <td class="pl-3">{% if Class.hasClassCategory1 %}{{ Class.ClassCategory1.name }}{% endif %}</td>
+                                                                                        <td>{% if Class.hasClassCategory2 %}{{ Class.ClassCategory2.name }}{% endif %}</td>
+                                                                                        <td>{{ Class.code }}</td>
+                                                                                        <td>{% if Class.stock_unlimited %}{{ 'admin.product.index.standart.modal.unlimited'|trans }}{% else %}{{ Class.stock }}{% endif %}</td>
+                                                                                        <td class="pr-3">{{ Class.price02|price }}</td>
+                                                                                    </tr>
+                                                                                {% endif %}
+                                                                            {% endfor %}
+                                                                            </tbody>
+                                                                        </table>
+
                                                                     <div class="modal-footer">
-                                                                        <button class="btn btn-ec-sub" type="button"
-                                                                                data-dismiss="modal">{{ 'admin.product.index.cancel'|trans }}
+                                                                    <button class="btn btn-v-sub" type="button"
+                                                                                data-dismiss="modal">
+                                                                            {{ 'admin.product.index.back'|trans }}
                                                                         </button>
-                                                                        {# TODO: 削除のアラートを出さないようにする #}
-                                                                        <a href="{{ url('admin_product_product_delete', {'id' : Product.id}) }}" {{ csrf_token_for_anchor() }}
-                                                                           data-method="delete"
-                                                                           data-message="{{ 'admin.product.index.text04'|trans }}">{{ 'admin.product.index.delete'|trans }}</a>
-                                                                        <button class="btn btn-ec-delete" type="button">
-                                                                            {{ 'admin.product.index.stop_handling'|trans }}
-                                                                        </button>
+                                                                        <a class="btn btn-ec-conversion"
+                                                                           href="{{ url('admin_product_product_class', { 'id' : Product.id }) }}">
+                                                                            {{ 'admin.product.index.standard_edit'|trans }}
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    {% else %}
+                                                        {# 規格なし商品 は在庫数を表示 #}
+                                                        {% if Product.stockunlimited_min %}
+                                                            {{ 'admin.product.index.not_specified'|trans }}
+                                                        {% else %}
+                                                            {{ Product.stock_min }}
+                                                        {% endif %}
+                                                    {% endif %}
+                                                </td>
+                                                <td class="align-middle">
+                                                    {{ Product.status.name }}
+                                                </td>
+                                                <td class="align-middle">
+                                                    {{ Product.create_date|date_format }}
+                                                </td>
+                                                <td class="align-middle">
+                                                    {{ Product.update_date|date_format }}
+                                                </td>
+                                                <td class="align-middle pr-3" colspan="3">
+                                                    <div class="row">
+                                                        <div class="col text-center" data-toggle="tooltip"
+                                                             data-placement="top"
+                                                             title="{{ 'admin.product.index.display'|trans }}"><a class="btn btn-ec-actionIcon"
+                                                                           href="{{ url('product_detail', {id:Product.id}) }}"
+                                                                           target="_blank"><i
+                                                                        class="fa fa-eye fa-lg text-secondary"
+                                                                        aria-hidden="true"></i></a></div>
+                                                        <div class="col text-center" data-toggle="tooltip"
+                                                             data-placement="top"
+                                                             title="{{ 'admin.product.index.duplicate'|trans }}"><a class="btn btn-ec-actionIcon"
+                                                                           href="{{ url('admin_product_product_copy', {'id' : Product.id}) }}" {{ csrf_token_for_anchor() }}
+                                                                           data-method="post"
+                                                                           data-message="{{ 'admin.product.index.text01'|trans }}"><i
+                                                                        class="fa fa-files-o fa-lg text-secondary"
+                                                                        aria-hidden="true"></i></a></div>
+                                                        <div class="col text-center" data-toggle="tooltip"
+                                                             data-placement="top"
+                                                             title="{{ 'admin.product.index.abolition'|trans }}"><a class="btn btn-ec-actionIcon" data-toggle="modal"
+                                                                           data-target="#discontinuance_{{ Product.id }}"><i
+                                                                        class="fa fa-close fa-lg text-secondary"
+                                                                        aria-hidden="true"></i></a>
+                                                            <div class="modal fade" id="discontinuance_{{ Product.id }}" tabindex="-1"
+                                                                 role="dialog"
+                                                                 aria-labelledby="discontinuance" aria-hidden="true">
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title font-weight-bold">
+                                                                                {{ 'admin.product.index.text02'|trans }}</h5>
+                                                                            <button class="close" type="button"
+                                                                                    data-dismiss="modal"
+                                                                                    aria-label="Close"><span
+                                                                                        aria-hidden="true">×</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="modal-body text-left">
+                                                                            <p class="text-left">
+                                                                                {{ 'admin.product.index.text03'|trans }}</p>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button class="btn btn-ec-sub" type="button"
+                                                                                    data-dismiss="modal">{{ 'admin.product.index.cancel'|trans }}
+                                                                            </button>
+                                                                            {# TODO: CSSの変更は別タスクでやります #}
+                                                                            <a class="btn btn-ec-delete" href="{{ url('admin_product_product_delete', {'id' : Product.id}) }}" {{ csrf_token_for_anchor() }}
+                                                                               data-method="delete" data-confirm="false"
+                                                                               data-message="{{ 'admin.product.index.text04'|trans }}">{{ 'admin.product.index.stop_handling'|trans }}</a>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
 
-                                    </tbody>
-                                </table>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="row justify-content-md-center mb-4">
+                                    {% if pagination.totalItemCount > 0 %}
+                                        {% include "@admin/styleguide_pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_product_page' } %}
+                                    {% endif %}
+                                </div>
                             </div>
-                            <div class="row justify-content-md-center mb-4">
-                                {% if pagination.totalItemCount > 0 %}
-                                    {% include "@admin/styleguide_pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_product_page' } %}
-                                {% endif %}
-                            </div>
-                        </div>
-
+                        </form>
                     {% else %}
                         <div class="card rounded border-0">
                             <div class="card-body p-4">
@@ -445,7 +524,32 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     </div>
                 {% endif %}
             </div>
+
+            <div class="modal fade" id="bulkDeleteModal" tabindex="-1" role="dialog" aria-labelledby="discontinuance" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title font-weight-bold">{{ 'admin.product.index.495'|trans }}</h5>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        </div>
+                        <div class="modal-body text-left">
+                            <p class="text-left">{{ 'admin.product.index.491'|trans }}</p>
+                            <ul id="bulkErrors"></ul>
+                            <div class="progress" style="display: none">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.product.index.cancel'|trans }}</button>
+                            <button class="btn btn-ec-delete" type="button" id="bulkDelete">{{ 'admin.product.index.permanently_delete' | trans }}</button>
+                            <button class="btn btn-ec-regular" id="bulkDeleteDone" style="display: none" type="button" data-dismiss="modal">{{ 'admin.product.index.497'|trans }}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
+
 {% endblock %}
 

@@ -26,8 +26,94 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block title %}{{'admin.setting.shop.payment.596'|trans}}{% endblock %}
 {% block sub_title %}{{'admin.setting.shop.payment.595'|trans}}{% endblock %}
 
-{% block main %}
+{% block stylesheet %}
+    <style type="text/css">
+        li.list-group-item {
+            z-index: inherit !important;
+        }
+    </style>
+{% endblock %}
 
+{% block javascript %}
+    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.core.min.js', 'admin') }}"></script>
+    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.widget.min.js', 'admin') }}"></script>
+    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.mouse.min.js', 'admin') }}"></script>
+    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.sortable.min.js', 'admin') }}"></script>
+    <script>
+        $(function() {
+            var sortContainer = $('ul.tableish'),
+                sortItems = sortContainer.find('> .item_box'),
+                oldSortNos = [];
+
+            var initSortNo = function () {
+                var items = $('ul.tableish > li.item_box');
+                items.find('a').removeClass('disabled');
+                items.first().find('a.action-up').addClass('disabled');
+                items.last().find('a.action-down').addClass('disabled');
+            };
+
+            var updateSortNo = function() {
+                // 並び替え後にsortNoを更新
+                var newSortNos = {};
+                var i = 0;
+                // not use sortItems var because DOM was modified, then need select new DOM
+                $('ul.tableish > .item_box').each(function() {
+                    newSortNos[this.dataset.paymentId] = oldSortNos[i];
+                    i++;
+                });
+
+                $.ajax({
+                    url: '{{ url('admin_setting_shop_payment_sort_no_move') }}',
+                    type: 'POST',
+                    data: newSortNos
+                }).always(function() {
+                    $(".modal-backdrop").remove();
+                });
+            };
+
+            // 画面の中のsortNo一覧を保持
+            sortItems.each(function() {
+                oldSortNos.push(this.dataset.sortNo);
+            });
+            // rsort
+            oldSortNos.sort(function(a,b){return a - b;}).reverse();
+
+            sortContainer.sortable({
+                items: '> .item_box',
+                cursor: 'move',
+                create: function (e, ui) {
+                    initSortNo();
+                }
+            }).on('sortupdate', function(e, ui) {
+                $("body").append($('<div class="modal-backdrop show"></div>'));
+                updateSortNo();
+                initSortNo();
+            });
+
+            sortItems.find("a.action-up").click(function (e) {
+                e.preventDefault();
+                var current = $(this).parents(".item_box");
+
+                if (current.prev().hasClass('item_box')) {
+                    current.prev().before(current);
+                    sortContainer.trigger('sortupdate');
+                }
+            });
+
+            sortItems.find("a.action-down").click(function (e) {
+                e.preventDefault();
+                var current = $(this).parents(".item_box");
+
+                if (current.next().hasClass('item_box')) {
+                    current.next().after(current);
+                    sortContainer.trigger('sortupdate');
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block main %}
     <div class="c-contentsArea__cols">
         <div class="c-contentsArea__primaryCol">
             <div class="c-primaryCol">
@@ -43,7 +129,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <button class="btn btn-ec-regular" type="submit">{{'admin.setting.shop.payment.610'|trans}}</button>
                             </div>
                         </div>
-                        <ul class="list-group list-group-flush mb-4">
+                        <ul class="list-group list-group-flush mb-4 tableish">
                             <li class="list-group-item">
                                 <div class="row justify-content-around">
                                     <div class="col-auto"><strong>&nbsp;</strong></div>
@@ -53,7 +139,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 </div>
                             </li>
                             {% for Payment in Payments %}
-                            <li class="list-group-item">
+                            <li class="list-group-item item_box" data-payment-id="{{ Payment.id }}" data-sort-no="{{ Payment.sortNo }}">
                                 <div class="row justify-content-around">
                                     <div class="col-auto d-flex align-items-center"><i class="fa fa-bars text-ec-gray"></i></div>
                                     <div class="col-1 d-flex align-items-center"><a href="{{ url('admin_setting_shop_payment_edit', { id: Payment.id}) }}">{{ Payment.methodForAdmin }}</a></div>
@@ -66,27 +152,61 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 {{ 0|price }}
                                             {% endif %}
 
-
                                             {% if Payment.rule_max > 0 %}
                                                 ～{{ Payment.rule_max|price }}
                                             {% elseif Payment.rule_max is null %}
                                                 ～{{'admin.setting.shop.payment.603'|trans}}
                                             {% endif %}
                                         </span>
+                                        </div>
+                                        <div class="col-3 text-right">
+                                            <div class="row">
+                                                <div class="col text-center" data-toggle="tooltip" data-placement="top" title="{{ 'admin.setting.shop.payment.608'|trans }}">
+                                                    <a class="btn btn-ec-actionIcon mr-3 action-up" data-toggle="tooltip" data-placement="top" title="{{'admin.setting.shop.payment.608'|trans}}">
+                                                        <i class="fa fa-arrow-up fa-lg text-secondary"></i>
+                                                    </a>
+                                                </div>
+                                                <div class="col text-center" data-toggle="tooltip" data-placement="top" title="{{ 'admin.setting.shop.payment.609'|trans }}">
+                                                    <a class="btn btn-ec-actionIcon mr-3 action-down"  data-toggle="tooltip" data-placement="top" title="{{'admin.setting.shop.payment.609'|trans}}">
+                                                        <i class="fa fa-arrow-down fa-lg text-secondary"></i>
+                                                    </a>
+                                                </div>
+                                                <div class="col text-center" data-toggle="tooltip" data-placement="top" title="{{'admin.setting.shop.payment.607'|trans}}">
+                                                    <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#delete_{{ Payment.id }}">
+                                                        <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
+                                                    </a>
+                                                    <div class="modal fade" id="delete_{{ Payment.id }}" tabindex="-1"
+                                                         role="dialog"
+                                                         aria-labelledby="delete_{{ Payment.id }}" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title font-weight-bold">
+                                                                        {{ 'admin.setting.shop.payment.modal.header'|trans }}</h5>
+                                                                    <button class="close" type="button"
+                                                                            data-dismiss="modal"
+                                                                            aria-label="Close"><span
+                                                                                aria-hidden="true">×</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body text-left">
+                                                                    <p class="text-left">
+                                                                        {{ 'admin.setting.shop.payment.modal.body'|trans }}</p>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'common.label.cancel'|trans }}
+                                                                    </button>
+                                                                    <a class="btn btn-ec-delete" href="{{ url('admin_setting_shop_payment_delete', {'id' : Payment.id}) }}" {{ csrf_token_for_anchor() }}
+                                                                       data-method="delete" data-confirm="false">{{ 'common.label.delete'|trans }}</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-3 text-right">
-                                        <a class="btn btn-ec-actionIcon mr-3" href="{{ url('admin_setting_shop_payment_up', {id: Payment.id}) }}" {{ csrf_token_for_anchor() }}  data-method="put" data-confirm="false" data-toggle="tooltip" data-placement="top" title="{{'admin.setting.shop.payment.608'|trans}}">
-                                            <i class="fa fa-arrow-up fa-lg text-secondary"></i>
-                                        </a>
-                                        <a class="btn btn-ec-actionIcon mr-3" href="{{ url('admin_setting_shop_payment_down', {id: Payment.id}) }}" {{ csrf_token_for_anchor() }}  data-method="put" data-confirm="false" data-toggle="tooltip" data-placement="top" title="{{'admin.setting.shop.payment.609'|trans}}">
-                                            <i class="fa fa-arrow-down fa-lg text-secondary"></i>
-                                        </a>
-                                        <a class="btn btn-ec-actionIcon mr-3" href="{{ url('admin_setting_shop_payment_delete', { id: Payment.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-toggle="tooltip" data-placement="top" title="{{'admin.setting.shop.payment.607'|trans}}">
-                                            <i class="fa fa-close fa-lg text-secondary"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </li>
+                                </li>
                             {% endfor %}
 
                         </ul>
