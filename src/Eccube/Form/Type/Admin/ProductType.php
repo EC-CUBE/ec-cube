@@ -25,12 +25,14 @@
 namespace Eccube\Form\Type\Admin;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Eccube\Entity\Category;
 use Eccube\Form\Type\Master\ProductStatusType;
 use Eccube\Form\Validator\TwigLint;
 use Eccube\Repository\CategoryRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -66,21 +68,6 @@ class ProductType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        /**
-         * @var ArrayCollection $arrCategory array of category
-         */
-        $arrCategory = $this->categoryRepository->getList(null, true);
-        foreach ($arrCategory as $Category) {
-            $formId = 'category_' . $Category->getId();
-            $builder
-                ->add($formId, CheckboxType::class, array(
-                    'label' => $Category->getName(),
-                    'mapped' => false,
-                    'value' => '1',
-                    'required' => false,
-                ));
-        }
-
         $builder
             // 商品規格情報
             ->add('class', ProductClassType::class, array(
@@ -106,14 +93,16 @@ class ProductType extends AbstractType
                 'label' => 'product.label.product_description_list',
                 'required' => false,
             ))
-            ->add('Category', EntityType::class, array(
-                'class' => 'Eccube\Entity\Category',
-                'choice_label' => 'NameWithLevel',
+            ->add('Category', ChoiceType::class, array(
+                'choice_label' => 'Name',
                 'label' => 'product.label.product_category',
                 'multiple' => true,
                 'mapped' => false,
-                // Choices list (overdrive mapped)
-                'choices' => $arrCategory,
+                'expanded' => true,
+                'choices' => $this->categoryRepository->getList(null, true),
+                'choice_value' => function (Category $Category = null) {
+                    return $Category ? $Category->getId() : null;
+                }
             ))
 
             // 詳細な説明
@@ -182,6 +171,9 @@ class ProductType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
             ))
+            ->add('return_link', HiddenType::class, [
+                'mapped' => false
+            ])
         ;
     }
 

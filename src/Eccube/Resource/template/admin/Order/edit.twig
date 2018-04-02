@@ -80,6 +80,23 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 });
             });
 
+            // Trigger paging after append
+            $(document).on('click', '#searchProductModalList ul.pagination li.page-item a.page-link', function(e) {
+                e.preventDefault();
+                var list = $('#searchProductModalList');
+                list.children().remove();
+                var url = $(this).attr('href');
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    dataType: 'html'
+                }).done(function(data) {
+                    $('#searchProductModalList').html(data);
+                }).fail(function(data) {
+                    alert('search product failed.');
+                });
+            });
+
             // 商品追加
             $collectionHolder = $('#table-form-field');
             index = $collectionHolder.find('.input-price').length;

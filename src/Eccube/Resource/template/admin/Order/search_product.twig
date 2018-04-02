@@ -2,7 +2,7 @@
     // 商品規格情報. 規格2のプルダウンリストの設定に利用する,
     var productsClassCategories = {
         {% for Product in pagination %}
-        "{{ Product.id|escape('js') }}": {{ class_categories_as_json(Product)|raw }}{% if loop.last == false %}, {% endif %}
+        "{{ Product.id|escape('js') }}": {{ class_categories_as_json(Product, false)|raw }}{% if loop.last == false %}, {% endif %}
         {% endfor %}
     };
 
@@ -11,7 +11,7 @@
         // 規格1の要素を取得
         var $sele1 = $(select);
         // 規格2の要素を取得
-        var $sele2 = $sele1.parent().find('select[name=classcategory_id2]');
+        var $sele2 = $sele1.parents(".align-middle").find('select[name=classcategory_id2]');
 
         // 規格1の選択肢
         var classcat_id1 = $sele1.val() ? $sele1.val() : '';
@@ -35,8 +35,7 @@
     }
 
     // 受注明細行を追加する.
-    // 受注明細行のレコード数カウンタ(order_items_count)は, edit.twig側で定義している.
-    function fnAddOrderItem($row, product_id, type) {
+    function fnAddOrderItem($row, product_id, type, product_name) {
         // 規格1の要素を取得
         var $sele1 = $row.find('select[name=classcategory_id1]');
         // 規格2の要素を取得
@@ -46,7 +45,8 @@
         var price = null;
         var quantity = 1;
         var product_code = null;
-        var tax_rate = null;
+        var tax_rate = 8;
+        var tax_display_type = {{ constant('Eccube\\Entity\\Master\\TaxDisplayType::INCLUDED') }};
 
         type = type === undefined ? {{ constant('Eccube\\Entity\\Master\\OrderItemType::PRODUCT') }} : type;
 
@@ -60,6 +60,7 @@
                 break;
             default:
             case {{ constant('Eccube\\Entity\\Master\\OrderItemType::PRODUCT') }}:
+                tax_display_type = {{ constant('Eccube\\Entity\\Master\\TaxDisplayType::EXCLUDED') }};
                 // 規格なし商品の場合
                 if (!$sele1.length && !$sele2.length) {
                     var product = productsClassCategories[product_id]['__unselected2']['#'];
@@ -72,33 +73,35 @@
                         var class_category_id1 = $sele1.val();
                         var class_cateogry_id2 = $sele2.val();
                         if (class_category_id1 == '__unselected' || !class_cateogry_id2) {
-                            alert('admin.order.search_product.379' | trans)
+                            alert('{{'admin.order.search_product.379'|trans}}');
                             return;
                         }
                         var product = productsClassCategories[product_id][class_category_id1]['#' + class_cateogry_id2];
 
                         product_class_id = product['product_class_id'];
                         price = product['price02'];
+                        product_code = product['product_code'];
                     } else {
                         var class_category_id1 = $sele1.val();
                         if (class_category_id1 == '__unselected') {
-                            alert('admin.order.search_product.379' | trans)
+                            alert('{{ 'admin.order.search_product.379'|trans }}');
                             return;
                         }
                         var product = productsClassCategories[product_id][class_category_id1]['#'];
 
                         product_class_id = product['product_class_id'];
                         price = product['price02'];
+                        product_code = product['product_code'];
                     }
                 }
 
         }
 
         // 受注明細行を取得.
-        var list = $('#order_item_list');
+        var list = '#table-form-field';
         var orderDetailExists = false;
 
-        $('*[id^="product_info_list__item--"]').each(function() {
+        $(list + " tbody > tr").each(function() {
             var $inputs = $(this).find(':input');
 
             if ($inputs.filter('[id$="_ProductClass"][value="' + product_class_id + '"]').length > 0) {
@@ -114,26 +117,21 @@
         });
 
         if (!orderDetailExists) {
-
             var prototype = $collectionHolder.data('prototype');
             index++;
             var newForm = prototype.replace(/__name__/g, index);
-            var $lastRow = $('#table-form-field tbody > tr:last');
-            $lastRow.after(newForm);
+            $(list + ' tbody').append(newForm);
+            var $lastRow = $(list + ' tbody > tr:last');
 
-
-            $lastRow.find('#order_OrderItems_' + index + '_Product').val(product_id);
-            $lastRow.find('#order_OrderItems_' + index + '_ProductClass').val(product_class_id);
-            $lastRow.find('#order_OrderItems_' + index + '_price').val(price);
-            $lastRow.find('#order_OrderItems_' + index + '_quantity').val(1); // コントローラ側で再取得するため、仮の値をセット
-            $lastRow.find('#order_OrderItems_' + index + '_tax_rate').val(8); // コントローラ側で再取得するため、仮の値をセット
-            $lastRow.find('#order_OrderItems_' + index + '_order_item_type').val(type);
-
-        }
-
-        if (orderDetailExists) {
-            // カウンタを更新.
-            order_items_count++;
+            $($lastRow).find('#order_OrderItems_' + index + '_Product').val(product_id);
+            $($lastRow).find('#order_OrderItems_' + index + '_ProductClass').val(product_class_id);
+            $($lastRow).find('#order_OrderItems_' + index + '_price').val(price);
+            $($lastRow).find('#order_OrderItems_' + index + '_quantity').val(quantity); // コントローラ側で再取得するため、仮の値をセット
+            $($lastRow).find('#order_OrderItems_' + index + '_tax_rate').val(tax_rate); // コントローラ側で再取得するため、仮の値をセット
+            $($lastRow).find('#order_OrderItems_' + index + '_order_item_type').val(type);
+            $($lastRow).find('#order_OrderItems_' + index + '_product_name').val(product_name);
+            $($lastRow).find('#order_OrderItems_' + index + '_product_code').val(product_code);
+            $($lastRow).find('#order_OrderItems_' + index + '_tax_display_type').val(tax_display_type);
         }
 
         // モーダル閉じる.
@@ -214,7 +212,7 @@
                     {% endif %}
                 </td>
                 <td class="align-middle pr-3 text-right">
-                    <button type="button" class="btn btn-ec-actionIcon" onclick="fnAddOrderItem($(this).parent().parent(), {{ Product.id }}, {{ constant('Eccube\\Entity\\Master\\OrderItemType::PRODUCT') }})" name="mode" value="modal">
+                    <button type="button" class="btn btn-ec-actionIcon" onclick="fnAddOrderItem($(this).parent().parent(), {{ Product.id }}, {{ constant('Eccube\\Entity\\Master\\OrderItemType::PRODUCT') }}, '{{ Product.name }}')" name="mode" value="modal">
                         <i class="fa fa-plus fa-lg font-weight-bold text-secondary"></i>
                     </button>
                 </td>
