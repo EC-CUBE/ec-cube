@@ -177,7 +177,7 @@ id,csv_type_id,creator_id,entity_name,field_name,reference_field_name,disp_name,
 "175","4",,"Eccube\\Entity\\Shipping","DeliveryFee","id","送料ID","63","1","2017-03-07 10:14:55","2017-03-07 10:14:55","csv"
 "176","4",,"Eccube\\Entity\\Shipping","shipping_delivery_fee",,"送料","64","1","2017-03-07 10:14:55","2017-03-07 10:14:55","csv"
 "177","4",,"Eccube\\Entity\\Shipping","shipping_date",,"発送日","65","1","2017-03-07 10:14:55","2017-03-07 10:14:55","csv"
-"178","4",,"Eccube\\Entity\\Shipping","traking_number",,"出荷伝票番号","66","1","2017-03-07 10:14:55","2017-03-07 10:14:55","csv"
+"178","4",,"Eccube\\Entity\\Shipping","tracking_number",,"出荷伝票番号","66","1","2017-03-07 10:14:55","2017-03-07 10:14:55","csv"
 "179","4",,"Eccube\\Entity\\Shipping","note",,"配達用メモ","67","1","2017-03-07 10:14:55","2017-03-07 10:14:55","csv"
 "180","4",,"Eccube\\Entity\\Shipping","ShippingStatus","id","出荷状況(ID)","68","1","2017-03-07 10:14:55","2017-03-07 10:14:55","csv"
 "181","4",,"Eccube\\Entity\\Shipping","ShippingStatus","name","出荷状況(名称)","69","1","2017-03-07 10:14:55","2017-03-07 10:14:55","csv"
