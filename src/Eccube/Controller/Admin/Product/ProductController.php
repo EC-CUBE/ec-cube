@@ -604,9 +604,6 @@ class ProductController extends AbstractController
 
         // Get Tags
         $TagsList = $this->tagRepository->getList();
-        if(!$TagsList){
-            $TagsList = [];
-        }
 
         // ツリー表示のため、ルートからのカテゴリを取得
         $TopCategories = $this->categoryRepository->getList(null);
