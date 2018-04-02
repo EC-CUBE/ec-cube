@@ -119,6 +119,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             $('.sortable-item').on('click', 'button.action-edit-cancel', function (e) {
                 e.preventDefault();
                 var current = $(this).parents("li");
+                current.find('[data-origin-value]').each(function(e) {
+                    $(this).val($(this).attr('data-origin-value'));
+                });
                 current.find('.mode-view').removeClass('d-none');
                 current.find('.mode-edit').addClass('d-none');
             });
@@ -230,7 +233,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <form class="form-row d-none mode-edit" method="post" action="{{ url('admin_product_tag') }}">
                                             {{ form_widget(forms[Tag.id]._token) }}
                                             <div class="col-auto align-items-center">
-                                                {{ form_widget(forms[Tag.id].name) }}
+                                                {{ form_widget(forms[Tag.id].name, {'attr': {'data-origin-value': forms[Tag.id].name.vars.value }}) }}
                                                 {{ form_errors(forms[Tag.id].name) }}
                                             </div>
                                             <div class="col-auto align-items-center">
