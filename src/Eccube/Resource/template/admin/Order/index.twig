@@ -38,7 +38,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 <script src="{{ asset('assets/js/vendor/bootstrap-datetimepicker.min.js', 'admin') }}"></script>
 <script>
   $(function() {
-
+      {# TODO: Should move js logic into .js file instead of .html file #}
     var inputDate = document.createElement('input');
     inputDate.setAttribute('type', 'date');
     if (inputDate.type !== 'date') {
@@ -57,6 +57,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
       });
     }
 
+    {# TODO: Implement toggleBtn JS function to show/hide bulk buttons depend on checked checkbox #}
 
     // 登録チェックボックス
     $('#check-all').on('change', function() {
@@ -68,16 +69,45 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         }
     });
 
-    $('#btn_bulk_mail').on('click', function(event) {
-        event.preventDefault();
-        if (!$('#form_bulk input:checkbox[name^="ids"]:checked').length) {
+    $('#btn_bulk_status').on('bulk-submit', function (event) {
+        var value = $('#option_bulk_status').val();
+        if (!value) {
+            $(this).data('cancel', true);
             alert("チェックボックスが選択されていません");
             return false;
         }
-
-        $('#form_bulk').attr('action', $(this).prop('href')).submit();
-        return false;
+        $(this).data('cancel', false);
+        $(this).data('url', value);
     });
+    var bulkAction = function (form, modal) {
+        modal.find('[data-action="execute"]').on('click', function () {
+            form.submit();
+        });
+        form.find('[data-submit="bulk"]').on('click', function (event) {
+            event.preventDefault();
+
+            if (!form.find('input:checkbox[name^="ids"]:checked').length) {
+                alert("チェックボックスが選択されていません");
+                return false;
+            }
+
+            $(this).trigger('bulk-submit');
+            if ($(this).data('cancel') === true) {
+                return false;
+            }
+
+            form.attr('action', $(this).data('url'));
+            form.attr('method', $(this).data('method') || 'POST');
+
+            if ($(this).data('confirm')) {
+                modal.modal('show');
+            } else {
+                form.submit();
+            }
+        });
+    };
+    bulkAction($('#form_bulk'), $('#confirmBulkModal'));
+
 });
 </script>
 {% endblock javascript %}
@@ -281,11 +311,41 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <div class="c-contentsArea__primaryCol">
         <div class="c-primaryCol">
             {% if pagination and pagination.totalItemCount %}
-                <form id="form_bulk" method="GET" action="">
+                <div class="modal fade" id="confirmBulkModal" tabindex="-1" role="dialog"
+                     aria-labelledby="confirmModal" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">{{ 'admin.order.index.bulk_modal_title'|trans }}</h5>
+                                <button class="close" type="button" data-dismiss="modal"
+                                        aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>{{ 'admin.order.index.bulk_modal_body'|trans }}</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-ec-conversion" data-action="execute" type="button"
+                                        data-dismiss="modal">
+                                    {{ 'common.label.execute'|trans }}
+                                </button>
+                                <button class="btn btn-ec-sub" data-action="cancel" type="button"
+                                        data-dismiss="modal">
+                                    {{ 'common.label.cancel'|trans }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <form id="form_bulk" method="POST" action="">
+                    <input type="hidden" name="{{ constant('Eccube\\Common\\Constant::TOKEN_NAME') }}" value="{{ csrf_token(constant('Eccube\\Common\\Constant::TOKEN_NAME')) }}">
                     <div class="row justify-content-between mb-2">
                         <div class="col-auto">
                             <label class="mr-2">{{ 'admin.order.index.label_bulk_actions'|trans }}</label>
-                            <a id="btn_bulk_mail" href="{{ url('admin_order_mail_all') }}" class="btn btn-ec-regular mr-2">{{ 'admin.order.index.btn_bulk_mail'|trans }}</a>
+                            <button id="btn_bulk_mail" data-url="{{ url('admin_order_mail_all') }}" class="btn btn-ec-regular mr-2" data-submit="bulk" data-method="GET">
+                                {{ 'admin.order.index.btn_bulk_mail'|trans }}
+                            </button>
                             {# TODO: This button is not implemented yet #}
                             <button class="btn btn-ec-regular mr-2">{{ 'admin.order.index.btn_bulk_export'|trans }}</button>
                             {# TODO: This button is not implemented yet #}
@@ -293,14 +353,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </div>
                         <div class="col">
                             <div class="d-inline-block mr-2">
-                                {# TODO: This select input is not implemented yet #}
-                                <select class="custom-select">
-                                    <option selected>{{ 'admin.order.index.option_bulk_change_status'|trans }}</option>
-                                    <option>...</option>
+                                <select class="custom-select" id="option_bulk_status">
+                                    <option value="" selected>{{ 'admin.order.index.option_bulk_change_status'|trans }}</option>
+                                    {% for status in searchForm.multi_status %}
+                                        <option value="{{ url('admin_order_bulk_order_status', {'id': status.vars.value}) }}">{{ status.vars.label }}</option>
+                                    {% endfor %}
                                 </select>
                             </div>
-                            {# TODO: This button is not implemented yet #}
-                            <button class="btn btn-ec-regular mr-2">{{ 'admin.order.index.btn_bulk_submit'|trans }}</button>
+                            <button id="btn_bulk_status" class="btn btn-ec-regular mr-2" data-submit="bulk" data-confirm="true">
+                                {{ 'admin.order.index.btn_bulk_submit'|trans }}
+                            </button>
                         </div>
                         <div class="col-auto text-right">
                             <div class="d-inline-block">
@@ -360,7 +422,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 {% for Order in pagination %}
                                     <tr>
                                         <td class="align-middle pl-3">
-                                            <input type="checkbox"  name="ids{{ Order.id }}" id="check--{{ Order.id }}" value="on">
+                                            <input type="checkbox"  name="ids[]" id="check--{{ Order.id }}" value="{{ Order.id }}">
                                         </td>
                                         <td class="align-middle" id="order_date--{{ Order.id }}">{{ Order.order_date|date_min }}</td>
                                         <td class="align-middle" id="id--{{ Order.id }}"><a class="action-edit" href="{{ url('admin_order_edit', { id : Order.id }) }}">{{ Order.id }}</a></td>

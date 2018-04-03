@@ -12,20 +12,58 @@ use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
+use Eccube\Entity\Order;
+use Eccube\Common\Constant;
 
 class OrderControllerTest extends AbstractAdminWebTestCase
 {
+    /**
+     * @var OrderStatusRepository
+     */
+    protected $orderStatusRepository;
+
+    /**
+     * @var PaymentRepository
+     */
+    protected $paymentRepository;
+
+    /**
+     * @var SexRepository
+     */
+    protected $sexRepository;
+
+    /**
+     * @var CsvTypeRepository
+     */
+    protected $csvTypeRepository;
+
+    /**
+     * @var OrderRepository
+     */
+    protected $orderRepository;
+
+    /**
+     * @var CustomerRepository
+     */
+    protected $customerRepository;
 
     public function setUp()
     {
         parent::setUp();
 
+        $this->orderStatusRepository = $this->container->get(OrderStatusRepository::class);
+        $this->paymentRepository = $this->container->get(PaymentRepository::class);
+        $this->sexRepository = $this->container->get(SexRepository::class);
+        $this->csvTypeRepository = $this->container->get(CsvTypeRepository::class);
+        $this->orderRepository = $this->container->get(OrderRepository::class);
+        $this->customerRepository = $this->container->get(CustomerRepository::class);
+
         // FIXME: Should remove exist data before generate data for test
         $this->deleteAllRows(array('dtb_order'));
 
-        $Sex = $this->container->get(SexRepository::class)->find(1);
-        $Payment = $this->container->get(PaymentRepository::class)->find(1);
-        $OrderStatus = $this->container->get(OrderStatusRepository::class)->find(OrderStatus::NEW);
+        $Sex = $this->sexRepository->find(1);
+        $Payment = $this->paymentRepository->find(1);
+        $OrderStatus = $this->orderStatusRepository->find(OrderStatus::NEW);
         for ($i = 0; $i < 10; $i++) {
             $Customer = $this->createCustomer('user-'.$i.'@example.com');
             $Customer->setSex($Sex);
@@ -36,7 +74,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         }
 
         // sqlite では CsvType が生成されないので、ここで作る
-        $OrderCsvType = $this->container->get(CsvTypeRepository::class)->find(3);
+        $OrderCsvType = $this->csvTypeRepository->find(3);
         if (!is_object($OrderCsvType)) {
             $OrderCsvType = new CsvType();
             $OrderCsvType->setId(3);
@@ -45,7 +83,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             $this->entityManager->persist($OrderCsvType);
             $this->entityManager->flush();
         }
-        $ShipCsvType = $this->container->get(CsvTypeRepository::class)->find(4);
+        $ShipCsvType = $this->csvTypeRepository->find(4);
         if (!is_object($ShipCsvType)) {
             $ShipCsvType = new CsvType();
             $ShipCsvType->setId(4);
@@ -67,7 +105,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
 
     public function testSearchOrderById()
     {
-        $Order = $this->container->get(OrderRepository::class)->findOneBy(array());
+        $Order = $this->orderRepository->findOneBy(array());
 
         $crawler = $this->client->request(
             'POST', $this->generateUrl('admin_order'), array(
@@ -100,9 +138,9 @@ class OrderControllerTest extends AbstractAdminWebTestCase
 
     public function testSearchOrderByName()
     {
-        $Order = $this->container->get(OrderRepository::class)->findOneBy(array());
+        $Order = $this->orderRepository->findOneBy(array());
         $companyName = $Order->getCompanyName();
-        $OrderList = $this->container->get(OrderRepository::class)->findBy(array('company_name' => $companyName));
+        $OrderList = $this->orderRepository->findBy(array('company_name' => $companyName));
         $cnt = count($OrderList);
 
         $crawler = $this->client->request(
@@ -200,7 +238,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             $this->generateUrl('admin_order', array('resume' => 1))
         ));
 
-        $DeletedOrder = $this->container->get(OrderRepository::class)->find($id);
+        $DeletedOrder = $this->orderRepository->find($id);
 
         $this->assertNull($DeletedOrder);
     }
@@ -209,7 +247,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
     {
         // 受注件数を11件にしておく
         $Order = $this->createOrder($this->createCustomer('dummy-user@example.com'));
-        $OrderStatus = $this->container->get(OrderStatusRepository::class)->find(OrderStatus::NEW);
+        $OrderStatus = $this->orderStatusRepository->find(OrderStatus::NEW);
         $Order->setOrderStatus($OrderStatus);
         $this->entityManager->flush();
 
@@ -262,8 +300,87 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $this->verify();
 
         /* @var $customer \Eccube\Entity\Customer */
-        $customer = $this->container->get(CustomerRepository::class)->findOneBy(array('email' => 'user-1@example.com'));
+        $customer = $this->customerRepository->findOneBy(array('email' => 'user-1@example.com'));
 
         $this->assertContains($customer->getName01(), $crawler->filter('table#search_result')->html());
+    }
+
+    /**
+     * @param int $orderStatusId
+     *
+     * @dataProvider dataBulkOrderStatusProvider
+     */
+    public function testBulkOrderStatus($orderStatusId)
+    {
+        // case true
+        $orderIds = [];
+        /** @var Order[] $Orders */
+        $OrderStatus = $this->orderStatusRepository->find(OrderStatus::NEW);
+        $Orders = $this->orderRepository->findBy(['OrderStatus' => $OrderStatus], [], 2);
+        foreach ($Orders as $Order) {
+            $orderIds[] = $Order->getId();
+            $this->assertEquals(null, $Order->getShippingDate());
+            $this->assertEquals(null, $Order->getPaymentDate());
+        }
+
+        $OrderStatus = $this->orderStatusRepository->find($orderStatusId);
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_order_bulk_order_status', ['id' => $orderStatusId]),
+            [
+                'ids' => $orderIds,
+                Constant::TOKEN_NAME => 'dummy'
+            ]
+        );
+
+        $result = $this->orderRepository->findBy(['id' => $orderIds, 'OrderStatus' => $OrderStatus]);
+        if ($orderStatusId == OrderStatus::PAID) {
+            foreach ($result as $Order) {
+                $this->assertNotNull($Order->getPaymentDate());
+            }
+        }
+
+        if ($orderStatusId == OrderStatus::DELIVERED) {
+            foreach ($result as $Order) {
+                $this->assertNotNull($Order->getShippingDate());
+            }
+        }
+
+        $this->assertEquals(count($orderIds), count($result));
+    }
+
+    /**
+     * @return array
+     */
+    public function dataBulkOrderStatusProvider()
+    {
+        return [
+            [OrderStatus::PAID],
+            [OrderStatus::DELIVERED]
+        ];
+    }
+
+    public function testBulkOrderStatusInvalidMethod()
+    {
+        $this->client->request(
+            'GET',
+            $this->generateUrl('admin_order_bulk_order_status', ['id' => OrderStatus::NEW]),
+            [
+                Constant::TOKEN_NAME => 'dummy'
+            ]
+        );
+        $this->assertEquals(405, $this->client->getResponse()->getStatusCode());
+    }
+
+    public function testBulkOrderStatusInvalidStatus()
+    {
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_order_bulk_order_status', ['id' => 0]),
+            [
+                Constant::TOKEN_NAME => 'dummy'
+            ]
+        );
+        $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
     }
 }
