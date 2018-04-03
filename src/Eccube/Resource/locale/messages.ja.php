@@ -523,6 +523,8 @@ return [
     'admin.product.tag.delete.confirm.title' => 'タグを削除します。',
     'admin.product.tag.delete.confirm.message' => '削除してもよろしいですか?',
     'admin.product.tag.delete' => '削除',
+    'admin.product.tag.ok' => '決定',
+    'admin.product.tag.cancel' => 'キャンセル',
     'admin.product.search.stock' => '在庫なし',
     'admin.product.product_class.save.complete' => '商品規格を登録しました。',
     'admin.product.product_class.update.complete' => '商品規格を更新しました。',
