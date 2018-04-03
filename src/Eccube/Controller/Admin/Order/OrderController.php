@@ -566,7 +566,8 @@ class OrderController extends AbstractController
                 $this->addSuccess($msg, 'admin');
             }
         } catch (\Exception $e) {
-            $this->addError($e->getMessage(), 'admin');
+            log_error('Bulk order status error', [$e]);
+            $this->addError('admin.flash.register_failed', 'admin');
         }
 
         return $this->redirectToRoute('admin_order', ['resume' => Constant::ENABLED]);
