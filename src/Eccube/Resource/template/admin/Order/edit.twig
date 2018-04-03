@@ -101,10 +101,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             $collectionHolder = $('#table-form-field');
             index = $collectionHolder.find('.input-price').length;
 
-            $(document).on('click', '.delete', function() {
+            $(document).on('click', '.delete', function(e) {
                 // 商品削除
-                $(this).parent('div').parent('div').parent('td').parent('tr').remove();
+                $(this).parents('tr').remove();
                 index--;
+                $("#calculate").trigger('click');
             });
 
             // 計算結果の更新が押されたらページ内リンクさせる
@@ -445,7 +446,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         </div>
                                     </div>
                                     <div class="col-5 text-right">
-                                        <button type="submit" class="btn btn-ec-regular mr-2" name="mode" value="calc" data-link="order-product">{{ 'admin.order.edit.267'|trans }}</button>
+                                        <button type="submit" class="btn btn-ec-regular mr-2" name="mode" value="calc" data-link="order-product" id="calculate">{{ 'admin.order.edit.267'|trans }}</button>
                                     </div>
                                 </div>
                                 <table id="table-form-field" class="table table-striped table-sm mb-0"
@@ -509,8 +510,23 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             </td>
                                             <td class="align-middle text-right pr-3">
                                                 <div class="row justify-content-end">
-                                                    {# TODO 商品・明細を削除できるようにする #}
-                                                    <div class="col-auto text-center"><a class="btn btn-ec-actionIcon delete" data-toggle="tooltip" data-placement="top" title="{{ 'common.label.delete'|trans }}"><i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a></div>
+                                                    <div class="col-auto text-center"><a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#delete_{{ orderItemForm.Product.vars.value }}" data-tooltip="tooltip" data-placement="top" title="{{ 'common.label.delete'|trans }}"><i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a>
+                                                        <div class="modal fade" id="delete_{{ orderItemForm.Product.vars.value }}" tabindex="-1" role="dialog" aria-labelledby="delete_{{ orderItemForm.Product.vars.value }}" aria-hidden="true">
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title font-weight-bold">{{ 'admin.order.edit.delete.modal.header'|trans }}</h5>
+                                                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                                    </div>
+                                                                    <div class="modal-body text-left"><p class="text-left">{{ 'admin.order.edit.delete.modal.body'|trans }}</p></div>
+                                                                    <div class="modal-footer">
+                                                                        <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'common.label.cancel'|trans }}</button>
+                                                                        <a href="#order-product" class="btn delete btn-ec-delete">{{ 'common.label.delete'|trans }}</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </td>
                                             {{ form_widget(orderItemForm.Order) }}
