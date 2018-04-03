@@ -205,6 +205,27 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $this->assertNull($DeletedOrder);
     }
 
+    public function testBulkDelete()
+    {
+        $orderIds = [];
+        $Customer = $this->createCustomer();
+        for ($i = 0; $i < 5; $i++) {
+            $Order = $this->createOrder($Customer);
+            $orderIds[] = $Order->getId();
+        }
+
+        $this->entityManager->flush();
+
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_order_bulk_delete'),
+            ['ids' => $orderIds]
+        );
+
+        $Orders = $this->container->get(OrderRepository::class)->findBy(['id' => $orderIds]);
+        $this->assertCount(0, $Orders);
+    }
+
     public function testExportOrder()
     {
         // 受注件数を11件にしておく
