@@ -1834,7 +1834,6 @@ return [
     'admin.shipping.index.801' => '注文番号',
     'admin.shipping.index.802' => '配送業者',
     'admin.shipping.index.803' => '一括操作',
-    'admin.shipping.index.804' => 'メールする',
     'admin.shipping.index.805' => '発送済みに更新',
     'admin.shipping.index.806' => '削除',
     'admin.shipping.index.807' => '一括で発送済みにします',
