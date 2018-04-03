@@ -291,65 +291,6 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @Method("DELETE")
-     * @Route("/%eccube_admin_route%/order/{id}/delete", requirements={"id" = "\d+"}, name="admin_order_delete")
-     */
-    public function delete(Request $request, $id)
-    {
-        $this->isTokenValid();
-
-        $Order = $this->orderRepository
-            ->find($id);
-
-        if (!$Order) {
-            $this->deleteMessage();
-
-            return $this->redirect($this->generateUrl('admin_order', ['resume' => Constant::ENABLED]));
-        }
-
-        log_info('受注削除開始', array($Order->getId()));
-
-        // 出荷に紐付いている明細がある場合は削除できない.
-        $hasShipping = $Order->getItems()->exists(function ($k, $v) {
-            return false === is_null($v->getShipping());
-        });
-        if ($hasShipping) {
-            log_info('受注削除失敗', [$Order->getId()]);
-            $message = trans('admin.delete.failed.foreign_key', ['%name%' => trans('order.text.name')]);
-            $this->addError($message, 'admin');
-
-            return $this->redirect($this->generateUrl('admin_order', ['resume' => Constant::ENABLED]));
-        }
-
-        $Customer = $Order->getCustomer();
-        $OrderStatusId = $Order->getOrderStatus()->getId();
-
-        $this->entityManager->remove($Order);
-        $this->entityManager->flush();
-
-        if ($Customer) {
-            // FIXME 会員の場合、購入回数、購入金額などを更新
-            //$this->customerRepository->updateBuyData($app, $Customer, $OrderStatusId);
-        }
-
-        $event = new EventArgs(
-            array(
-                'Order' => $Order,
-                'Customer' => $Customer,
-            ),
-            $request
-        );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_DELETE_COMPLETE, $event);
-
-        $this->addSuccess('admin.order.delete.complete', 'admin');
-
-        log_info('受注削除完了', array($Order->getId()));
-
-        return $this->redirect($this->generateUrl('admin_order', ['resume' => Constant::ENABLED]));
-    }
-
-
-    /**
      * 受注CSVの出力.
      *
      * @Route("/%eccube_admin_route%/order/export/order", name="admin_order_export_order")
