@@ -4,6 +4,7 @@ namespace Eccube\Controller\Admin\Shipping;
 
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\MailHistory;
 use Eccube\Entity\Master\ShippingStatus;
 use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
@@ -236,11 +237,12 @@ class ShippingController extends AbstractController
             $StatusShipped = $this->shippingStatusRepository->find(ShippingStatus::SHIPPED);
             $Shipping->setShippingStatus($StatusShipped);
             $this->shippingRepository->save($Shipping);
-            $this->entityManager->flush();
 
             if ($request->get('notificationMail')) {
                 $this->mailService->sendShippingNotifyMail($Shipping);
             }
+
+            $this->entityManager->flush();
         }
 
         return new JsonResponse(['success' => true]);

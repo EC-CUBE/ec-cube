@@ -26,13 +26,14 @@ namespace Eccube\Service;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
+use Eccube\Entity\MailHistory;
 use Eccube\Entity\MailTemplate;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
-use Eccube\Repository\BaseInfoRepository;
+use Eccube\Repository\MailHistoryRepository;
 use Eccube\Repository\MailTemplateRepository;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -48,6 +49,11 @@ class MailService
      * @var MailTemplateRepository
      */
     protected $mailTemplateRepository;
+
+    /**
+     * @var MailHistoryRepository
+     */
+    private $mailHistoryRepository;
 
     /**
      * @var EventDispatcher
@@ -74,14 +80,16 @@ class MailService
      *
      * @param \Swift_Mailer $mailer
      * @param MailTemplateRepository $mailTemplateRepository
+     * @param MailHistoryRepository $mailHistoryRepository
      * @param BaseInfo $baseInfo
-     * @param EventDispatcher $eventDispatcher
+     * @param EventDispatcherInterface $eventDispatcher
      * @param \Twig_Environment $twig
      * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
         \Swift_Mailer $mailer,
         MailTemplateRepository $mailTemplateRepository,
+        MailHistoryRepository $mailHistoryRepository,
         BaseInfo $baseInfo,
         EventDispatcherInterface $eventDispatcher,
         \Twig_Environment $twig,
@@ -89,6 +97,7 @@ class MailService
     ) {
         $this->mailer = $mailer;
         $this->mailTemplateRepository = $mailTemplateRepository;
+        $this->mailHistoryRepository = $mailHistoryRepository;
         $this->BaseInfo = $baseInfo;
         $this->eventDispatcher = $eventDispatcher;
         $this->eccubeConfig = $eccubeConfig;
@@ -576,6 +585,14 @@ class MailService
                 ->setBody($this->getShippingNotifyMailBody($Shipping, $Order, $MailTemplate));
 
             $this->mailer->send($message);
+
+            $MailHistory = new MailHistory();
+            $MailHistory->setMailSubject($message->getSubject())
+                    ->setMailBody($message->getBody())
+                    ->setOrder($Order)
+                    ->setSendDate(new \DateTime());
+
+            $this->mailHistoryRepository->save($MailHistory);
         }
 
         log_info('出荷通知メール送信処理完了', ['id' => $Shipping->getId()]);
