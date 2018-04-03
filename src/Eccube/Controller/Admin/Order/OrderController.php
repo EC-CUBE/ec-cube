@@ -530,14 +530,21 @@ class OrderController extends AbstractController
                 $flowResult = $this->purchaseFlow->calculate($Order, $purchaseContext);
                 if ($flowResult->hasWarning()) {
                     foreach ($flowResult->getWarning() as $warning) {
-                        // TODO Warning の場合の処理
-                        $this->addWarning('#'.$Order->getId().': '.$warning->getMessage(), 'admin');
+                        $msg = $this->translator->trans('admin.order.index.bulk_warning', [
+                          '%orderId%' => $Order->getId(),
+                          '%message%' => $warning->getMessage()
+                        ]);
+                        $this->addWarning($msg, 'admin');
                     }
                 }
 
                 if ($flowResult->hasError()) {
                     foreach ($flowResult->getErrors() as $error) {
-                        $this->addError('#'.$Order->getId().': '.$error->getMessage(), 'admin');
+                        $msg = $this->translator->trans('admin.order.index.bulk_error', [
+                          '%orderId%' => $Order->getId(),
+                          '%message%' => $error->getMessage()
+                        ]);
+                        $this->addError($msg, 'admin');
                     }
                     continue;
                 }
@@ -545,7 +552,11 @@ class OrderController extends AbstractController
                 try {
                     $this->purchaseFlow->purchase($Order, $purchaseContext);
                 } catch (PurchaseException $e) {
-                    $this->addError('#'.$Order->getId().': '.$e->getMessage(), 'admin');
+                    $msg = $this->translator->trans('admin.order.index.bulk_error', [
+                      '%orderId%' => $Order->getId(),
+                      '%message%' => $e->getMessage()
+                    ]);
+                    $this->addError($msg, 'admin');
                     continue;
                 }
 

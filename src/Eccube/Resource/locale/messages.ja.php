@@ -1128,6 +1128,8 @@ return [
     'admin.order.index.bulk_order_status_success_count' => '%status%: %count%件が正常に適用されました。',
     'admin.order.index.bulk_modal_title' => '一括操作の確認',
     'admin.order.index.bulk_modal_body' => '複数の項目を変更します。実行して宜しいですか。',
+    'admin.order.index.bulk_error' => '注文番号 %orderId%: %message%',
+    'admin.order.index.bulk_warning' => '注文番号 %orderId%: %message%',
     'admin.order.mail.339' => '受注管理',
     'admin.order.mail.340' => 'メール通知',
     'admin.order.mail.341' => '取得に失敗しました',
