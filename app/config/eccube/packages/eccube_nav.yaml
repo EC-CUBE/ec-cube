@@ -12,13 +12,13 @@ parameters:
             name: 商品登録
             url: admin_product_product_new
           - id: class_name
-            name: 規格登録
+            name: 規格管理
             url: admin_product_class_name
           - id: class_category
-            name: カテゴリ登録
+            name: カテゴリ管理
             url: admin_product_category
           - id: product_tag
-            name: タグ登録
+            name: タグ管理
             url: admin_product_tag
           - id: product_csv_import
             name: 商品CSV登録
