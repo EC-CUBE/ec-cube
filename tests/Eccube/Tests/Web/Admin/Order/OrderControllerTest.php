@@ -217,32 +217,6 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $this->verify();
     }
 
-
-    public function testDelete()
-    {
-        $Order = $this->createOrder($this->createCustomer());
-        $id = $Order->getId();
-
-        // 出荷と明細の紐付けを解除してから削除する.
-        $Items = $Order->getItems();
-        foreach ($Items as $Item) {
-            $Item->setShipping(null);
-        }
-        $this->entityManager->flush();
-
-        $crawler = $this->client->request(
-            'DELETE',
-            $this->generateUrl('admin_order_delete', array('id' => $Order->getId()))
-        );
-        $this->assertTrue($this->client->getResponse()->isRedirect(
-            $this->generateUrl('admin_order', array('resume' => 1))
-        ));
-
-        $DeletedOrder = $this->orderRepository->find($id);
-
-        $this->assertNull($DeletedOrder);
-    }
-
     public function testBulkDelete()
     {
         $orderIds = [];

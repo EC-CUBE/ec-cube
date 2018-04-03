@@ -1100,7 +1100,6 @@ return [
     'admin.order.index.333' => '発送日',
     'admin.order.index.334' => '対応状況',
     'admin.order.index.335' => '編集',
-    'admin.order.index.336' => 'の受注情報を削除してもよろしいですか？',
     'admin.order.index.337' => 'メール通知',
     'admin.order.index.338' => '検索条件に該当するデータがありませんでした。',
     'admin.order.index.339' => '受注情報を削除してもよろしいですか？',
