@@ -78,6 +78,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         $('#form_bulk').attr('action', $(this).prop('href')).submit();
         return false;
     });
+
+    $('#btn_bulk_delete').on('click', function(event) {
+        event.preventDefault();
+        $('#form_bulk').attr('action', "{{ url('admin_order_bulk_delete') }}").submit();
+        return false;
+    });
 });
 </script>
 {% endblock javascript %}
@@ -281,7 +287,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <div class="c-contentsArea__primaryCol">
         <div class="c-primaryCol">
             {% if pagination and pagination.totalItemCount %}
-                <form id="form_bulk" method="GET" action="">
+                <form id="form_bulk" method="POST" action="">
+                    <input type="hidden" name="{{ constant('Eccube\\Common\\Constant::TOKEN_NAME') }}" value="{{ csrf_token(constant('Eccube\\Common\\Constant::TOKEN_NAME')) }}">
                     <div class="row justify-content-between mb-2">
                         <div class="col-auto">
                             <label class="mr-2">{{ 'admin.order.index.label_bulk_actions'|trans }}</label>
@@ -289,7 +296,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             {# TODO: This button is not implemented yet #}
                             <button class="btn btn-ec-regular mr-2">{{ 'admin.order.index.btn_bulk_export'|trans }}</button>
                             {# TODO: This button is not implemented yet #}
-                            <button class="btn btn-ec-delete">{{ 'admin.order.index.btn_bulk_delete'|trans }}</button>
+                            <button type="button" class="btn btn-ec-delete" data-toggle="modal" data-target="#bulkDeleteModal">{{ 'admin.order.index.btn_bulk_delete'|trans }}</button>
                         </div>
                         <div class="col">
                             <div class="d-inline-block mr-2">
@@ -360,7 +367,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 {% for Order in pagination %}
                                     <tr>
                                         <td class="align-middle pl-3">
-                                            <input type="checkbox"  name="ids{{ Order.id }}" id="check--{{ Order.id }}" value="on">
+                                            <input type="checkbox"  name="ids[]" id="check--{{ Order.id }}" value="{{ Order.id }}">
                                         </td>
                                         <td class="align-middle" id="order_date--{{ Order.id }}">{{ Order.order_date|date_min }}</td>
                                         <td class="align-middle" id="id--{{ Order.id }}"><a class="action-edit" href="{{ url('admin_order_edit', { id : Order.id }) }}">{{ Order.id }}</a></td>
@@ -395,7 +402,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 </div>
                                                 <div class="col-auto text-center">
                                                     {# TODO: This func is not implemented yet #}
-                                                    <a class="btn btn-ec-actionIcon action-delete" href="{{ url('admin_order_delete', { id : Order.id }) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="こ{{'admin.order.index.336'|trans}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ 'common.label.delete'|trans }}">
+                                                    <a class="btn btn-ec-actionIcon action-delete" href="{{ url('admin_order_delete', { id : Order.id }) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="{{'admin.order.index.336'|trans}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ 'common.label.delete'|trans }}">
                                                         <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
                                                     </a>
                                                 </div>
@@ -423,6 +430,29 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     </div>
                 </div>
             {% endif %}
+
+            <div class="modal fade" id="bulkDeleteModal" tabindex="-1" role="dialog" aria-labelledby="discontinuance" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title font-weight-bold">{{ 'admin.product.index.495'|trans }}</h5>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        </div>
+                        <div class="modal-body text-left">
+                            <p class="text-left">{{ 'admin.order.index.339'|trans }}</p>
+                            <ul id="bulkErrors"></ul>
+                            <div class="progress" style="display: none">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.product.index.cancel'|trans }}</button>
+                            <button class="btn btn-ec-delete" type="button" id="btn_bulk_delete">{{ 'admin.product.index.permanently_delete' | trans }}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>

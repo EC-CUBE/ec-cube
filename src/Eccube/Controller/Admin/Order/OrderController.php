@@ -252,6 +252,30 @@ class OrderController extends AbstractController
     }
 
     /**
+     * @Method("POST")
+     * @Route("/%eccube_admin_route%/order/bulk_delete", name="admin_order_bulk_delete")
+     */
+    public function bulkDelete(Request $request)
+    {
+        $this->isTokenValid();
+        $ids = $request->get('ids');
+        foreach ($ids as $order_id) {
+            $Order = $this->orderRepository
+                ->find($order_id);
+            if ($Order) {
+                $this->entityManager->remove($Order);
+                log_info('受注削除', array($Order->getId()));
+            }
+        }
+
+        $this->entityManager->flush();
+
+        $this->addSuccess('admin.order.delete.complete', 'admin');
+
+        return $this->redirect($this->generateUrl('admin_order', ['resume' => Constant::ENABLED]));
+    }
+
+    /**
      * @Method("DELETE")
      * @Route("/%eccube_admin_route%/order/{id}/delete", requirements={"id" = "\d+"}, name="admin_order_delete")
      */
