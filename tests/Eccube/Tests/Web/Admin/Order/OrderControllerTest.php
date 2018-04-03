@@ -340,7 +340,12 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $this->assertContains($customer->getName01(), $crawler->filter('table#search_result')->html());
     }
 
-    public function testBulkOrderStatus()
+    /**
+     * @param int $orderStatusId
+     *
+     * @dataProvider dataBulkOrderStatusProvider
+     */
+    public function testBulkOrderStatus($orderStatusId)
     {
         // case true
         $orderIds = [];
@@ -353,39 +358,45 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             $this->assertEquals(null, $Order->getPaymentDate());
         }
 
-        $orderStatuses = [
-            OrderStatus::PAID,
-            OrderStatus::DELIVERED,
-        ];
+        $OrderStatus = $this->orderStatusRepository->find($orderStatusId);
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_order_bulk_order_status', ['id' => $orderStatusId]),
+            [
+                'ids' => $orderIds,
+                Constant::TOKEN_NAME => 'dummy'
+            ]
+        );
 
-        foreach ($orderStatuses as $orderStatusId) {
-            $OrderStatus = $this->orderStatusRepository->find($orderStatusId);
-            $this->client->request(
-                'POST',
-                $this->generateUrl('admin_order_bulk_order_status', ['id' => $orderStatusId]),
-                [
-                    'ids' => $orderIds,
-                    Constant::TOKEN_NAME => 'dummy'
-                ]
-            );
-
-            $result = $this->orderRepository->findBy(['id' => $orderIds, 'OrderStatus' => $OrderStatus]);
-            if ($orderStatusId == OrderStatus::PAID) {
-                foreach ($result as $Order) {
-                    $this->assertNotNull($Order->getPaymentDate());
-                }
+        $result = $this->orderRepository->findBy(['id' => $orderIds, 'OrderStatus' => $OrderStatus]);
+        if ($orderStatusId == OrderStatus::PAID) {
+            foreach ($result as $Order) {
+                $this->assertNotNull($Order->getPaymentDate());
             }
-
-            if ($orderStatusId == OrderStatus::DELIVERED) {
-                foreach ($result as $Order) {
-                    $this->assertNotNull($Order->getShippingDate());
-                }
-            }
-
-            $this->assertEquals(count($orderIds), count($result));
         }
 
-        // case invalid method
+        if ($orderStatusId == OrderStatus::DELIVERED) {
+            foreach ($result as $Order) {
+                $this->assertNotNull($Order->getShippingDate());
+            }
+        }
+
+        $this->assertEquals(count($orderIds), count($result));
+    }
+
+    /**
+     * @return array
+     */
+    public function dataBulkOrderStatusProvider()
+    {
+        return [
+            [OrderStatus::PAID],
+            [OrderStatus::DELIVERED]
+        ];
+    }
+
+    public function testBulkOrderStatusInvalidMethod()
+    {
         $this->client->request(
             'GET',
             $this->generateUrl('admin_order_bulk_order_status', ['id' => OrderStatus::NEW]),
@@ -394,8 +405,10 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             ]
         );
         $this->assertEquals(405, $this->client->getResponse()->getStatusCode());
+    }
 
-        // case invalid order status id
+    public function testBulkOrderStatusInvalidStatus()
+    {
         $this->client->request(
             'POST',
             $this->generateUrl('admin_order_bulk_order_status', ['id' => 0]),

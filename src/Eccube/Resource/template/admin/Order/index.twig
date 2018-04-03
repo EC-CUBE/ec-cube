@@ -83,9 +83,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         modal.find('[data-action="yes"]').on('click', function () {
             form.submit();
         });
-        $('<input />').attr('type', 'hidden').attr('name', '{{ constant('Eccube\\Common\\Constant::TOKEN_NAME') }}')
-            .val($('meta[name="x-csrf-token"]').attr('content'))
-            .appendTo(form);
         form.find('a[data-submit="bulk"]').on('click', function (event) {
             event.preventDefault();
 
@@ -311,6 +308,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <div class="c-primaryCol">
             {% if pagination and pagination.totalItemCount %}
                 <form id="form_bulk" method="POST" action="">
+                    <input type="hidden" name="{{ constant('Eccube\\Common\\Constant::TOKEN_NAME') }}" value="{{ csrf_token(constant('Eccube\\Common\\Constant::TOKEN_NAME')) }}">
                     <div class="modal fade" id="confirmBulkModal" tabindex="-1" role="dialog"
                          aria-labelledby="confirmModal" aria-hidden="true">
                         <div class="modal-dialog" role="document">
@@ -332,7 +330,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     </button>
                                     <button class="btn btn-ec-sub" data-action="no" type="button"
                                             data-dismiss="modal">
-                                        {{ 'admin.order.index.bulk_modal_btn_no'|trans }}
+                                        {{ 'common.label.cancel'|trans }}
                                     </button>
                                 </div>
                             </div>
