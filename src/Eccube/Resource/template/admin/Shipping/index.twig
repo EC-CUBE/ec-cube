@@ -59,17 +59,19 @@
                 }
             })($, formPropStateSubscriber);
 
-
-            var isBulkUpdate = false;
+            var updater;
 
             // メールプレビューを表示
             $('#sentUpdateModal').on('show.bs.modal', function(e) {
-                isBulkUpdate = !$(e.relatedTarget).hasAttribute('data-preview-notify-mail-url');
-                var url = isBulkUpdate ? $(e.relatedTarget).data('preview-notify-mail-url') // 個別の場合
-                            : $('input[data-preview-notify-mail-url]:checked').data('preview-notify-mail-url'); // 一括の場合
-                $.ajax(url).done(function(res) {
+                var eventTarget = $(e.relatedTarget);
+                updater = eventTarget.data('bulk-update') ? new BulkUpdate(eventTarget) : new SimpleUpdate(eventTarget);
+
+                $.ajax(updater.getPreviewUrl()).done(function(res) {
                     $('#viewEmail > pre').text(res);
                 });
+
+                $('.modal-title', this).text(updater.modalTitle);
+                $('.modal-body > p', this).text(updater.modalMessage);
             });
 
             // 配送済みに更新
@@ -81,19 +83,16 @@
                 $('#bulk-options').hide();
                 $('.progress', modal).show();
 
-                var checkedList = $('input[data-mark-as-shipped-url]:checked');
-                var totalCount = checkedList.length,
-                    currentCount = 0;
+                var totalCount = updater.getTotalCount();
+                var currentCount = 0;
 
-                var promises = checkedList.map(function() {
-                    return $.ajax({
-                        'url': $(this).data('mark-as-shipped-url'),
-                        'type': 'PUT',
-                        'data': { 'notificationMail' : $('input#notificationMail:checked').val() }
-                    }).always(function() {
-                        $('.progress-bar', modal).css('width', (++currentCount / totalCount * 100) + '%');
-                    })
+                var progress = new $.Deferred();
+                progress.progress(function() {
+                    $('.progress-bar', modal).css('width', (++currentCount / totalCount * 100) + '%');
                 });
+
+                var promises = updater.getPromises(progress);
+
                 $.when.apply($, promises)
                     .fail(function() {
                         $('<li><span class="badge badge-danger">ERROR</span> </li>')
@@ -101,9 +100,11 @@
                             .appendTo('#bulkErrors');
                     })
                     .always(function() {
-                        $('.progress', modal).hide();
-                        $('.modal-body > p', modal).text("{{ 'admin.shipping.index.828'|trans }}");
-                        $('#bulkChangeComplete').show();
+                        setTimeout(function() {
+                            $('.progress', modal).hide();
+                            $('.modal-body > p', modal).text("{{ 'admin.shipping.index.828'|trans }}");
+                            $('#bulkChangeComplete').show();
+                        }, 500);
                     });
             });
 
@@ -112,6 +113,59 @@
                 location.reload(true);
             });
         });
+
+
+        /*
+         * 一括更新
+         */
+        function BulkUpdate() {}
+        BulkUpdate.prototype = {
+            modalTitle: "{{ 'admin.shipping.index.807'|trans }}",
+            modalMessage: "{{ 'admin.shipping.index.808'|trans }}",
+            getPreviewUrl: function() {
+                return $('input[data-preview-notify-mail-url]:checked').data('preview-notify-mail-url');
+            },
+            getTotalCount: function() {
+                return $('input[data-mark-as-shipped-url]:checked').length;
+            },
+            getPromises: function(progress) {
+                return $('input[data-mark-as-shipped-url]:checked').map(function() {
+                    return $.ajax({
+                        'url': $(this).data('mark-as-shipped-url'),
+                        'type': 'PUT',
+                        'data': { 'notificationMail' : $('input#notificationMail:checked').val() }
+                    }).always(function() {
+                        progress.notify();
+                    });
+                });
+            }
+        };
+
+        /*
+         * 個別更新
+         */
+        function SimpleUpdate(relatedTarget) {
+            this.eventTarget = relatedTarget;
+        }
+        SimpleUpdate.prototype = {
+            modalTitle: "{{ 'admin.shipping.index.829'|trans }}",
+            modalMessage: "{{ 'admin.shipping.index.830'|trans }}",
+            getPreviewUrl: function() {
+                return this.eventTarget.data('preview-notify-mail-url')
+            },
+            getTotalCount: function() {
+                return 1;
+            },
+            getPromises: function(progress) {
+                return $.ajax({
+                    'url': this.eventTarget.data('mark-as-shipped-url'),
+                    'type': 'PUT',
+                    'data': { 'notificationMail' : $('input#notificationMail:checked').val() }
+                }).always(function() {
+                    progress.notify();
+                });
+            }
+        };
     </script>
 {% endblock javascript %}
 
@@ -259,7 +313,7 @@
                 <div class="row justify-content-between mb-2">
                     <div class="col-6">
                         <label class="mr-2">{{ 'admin.shipping.index.803'|trans }}</label>
-                        <button class="btn btn-ec-regular mr-2" data-toggle="modal" data-target="#sentUpdateModal">{{ 'admin.shipping.index.805'|trans }}</button>
+                        <button class="btn btn-ec-regular mr-2" data-toggle="modal" data-target="#sentUpdateModal" data-bulk-update="true">{{ 'admin.shipping.index.805'|trans }}</button>
                         {# TODO 一括削除 #}
                         <button class="btn btn-ec-delete">{{ 'admin.shipping.index.817'|trans }}</button>
                     </div>
@@ -337,9 +391,10 @@
                                     <td class="align-middle pr-3">
                                         <div class="row text-center">
                                             {# TODO メール送信ボタン #}
-                                            {# TODO 発送済みにするボタン #}
                                             <div class="col" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ 'admin.shipping.index.824'|trans }}"><a class="btn btn-ec-actionIcon" href="/shipment/mail/"><i class="fa fa-send fa-lg text-secondary" aria-hidden="true"></i></a></div>
-                                            <div class="col" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ 'admin.shipping.index.825'|trans }}"><a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#sentUpdateModal" data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: Shipping.id}) }}"><i class="fa fa-check fa-lg text-secondary" aria-hidden="true"></i></a></div>
+                                            <div class="col" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ 'admin.shipping.index.825'|trans }}"><a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#sentUpdateModal"
+                                                                                                                                                                                 data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: Shipping.id}) }}"
+                                                                                                                                                                                 data-mark-as-shipped-url="{{ url('admin_shipping_mark_as_shipped', { id: Shipping.id}) }}"><i class="fa fa-check fa-lg text-secondary" aria-hidden="true"></i></a></div>
                                         </div>
                                     </td>
                                 </tr>
@@ -378,11 +433,11 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title font-weight-bold">{{ 'admin.shipping.index.807'|trans }}</h5>
+                        <h5 class="modal-title font-weight-bold"></h5>
                         <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                     </div>
                     <div class="modal-body">
-                        <p class="mb-4">{{ 'admin.shipping.index.808'|trans }}</p>
+                        <p class="mb-4"></p>
                         <ul id="bulkErrors"></ul>
                         <div id="bulk-options">
                             <div class="font-weight-bold mb-2">{{ 'admin.shipping.index.812'|trans }}</div>
