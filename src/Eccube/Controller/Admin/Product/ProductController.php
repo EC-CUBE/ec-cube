@@ -675,9 +675,14 @@ class ProductController extends AbstractController
             /* @var $Product \Eccube\Entity\Product */
             $Product = $this->productRepository->find($id);
             if (!$Product) {
-                $this->deleteMessage();
-                $rUrl = $this->generateUrl('admin_product_page', ['page_no' => $page_no]) . '?resume=' . Constant::ENABLED;
-                return $this->redirect($rUrl);
+                if ($request->isXmlHttpRequest()) {
+                    $message = trans('admin.delete.warning');
+                    return new JsonResponse(['success' => $success, 'message' => $message]);
+                } else {
+                    $this->deleteMessage();
+                    $rUrl = $this->generateUrl('admin_product_page', ['page_no' => $page_no]) . '?resume=' . Constant::ENABLED;
+                    return $this->redirect($rUrl);
+                }
             }
 
             if ($Product instanceof Product) {
