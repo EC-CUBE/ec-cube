@@ -75,8 +75,8 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-12">
-                            <p class="col-form-label">{{'admin.shipping.index.763'|trans}}</p>
-                            {{ form_widget(searchForm.order_status, {'label_attr': {'class': 'checkbox-inline'}}) }}
+                            <p class="col-form-label">{{'admin.shipping.index.764'|trans}}</p>
+                            {{ form_widget(searchForm.shipping_status, {'label_attr': {'class': 'checkbox-inline'}}) }}
                         </div>
                     </div>
                     <div class="d-inline-block mb-3 collapsed" data-toggle="collapse" href="#searchDetail" aria-expanded="false" aria-controls="searchDetail"><a><i class="fa font-weight-bold mr-1 fa-plus-square-o"></i><span class="font-weight-bold">{{ 'admin.shipping.index.823'|trans }}</span></a></div>
@@ -202,7 +202,7 @@
 <div class="c-contentsArea__cols">
     <div class="c-contentsArea__primaryCol">
         <div class="c-primaryCol">
-            {% if pagination %}
+            {% if pagination and pagination.totalItemCount %}
                 <div class="row justify-content-between mb-2">
                     <div class="col-6">
                         <label class="mr-2">{{ 'admin.shipping.index.803'|trans }}</label>
@@ -257,15 +257,14 @@
                         <button class="btn btn-ec-delete">{{ 'admin.shipping.index.817'|trans }}</button>
                     </div>
                     <div class="col-5 text-right">
-                        <div class="d-inline-block mr-2">
-                            <form>
-                                <select class="custom-select">
-                                    {# TODO リンクからセレクトボックスに変更されているので実装必要 #}
-                                    {% for pageMax in pageMaxis %}
-                                        <option {% if pageMax.name == page_count %}selected=""{% endif %}>{{ pageMax.name|e }}{{ 'admin.shipping.index.822'|trans }}</option>
-                                    {% endfor %}
-                                </select>
-                            </form>
+                        <div class="d-inline-block">
+                            <select class="custom-select" onchange="location.href = this.value;">
+                                {% for pageMax in pageMaxis %}
+                                    <option {% if pageMax.name == page_count%} selected {% endif %}
+                                            value="{{ path('admin_shipping_page', {'page_no': 1, 'page_count': pageMax.name}) }}">
+                                        {{ pageMax.name|e }}{{ 'admin.shipping.index.822'|trans }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                         <div class="d-inline-block">
                             <div class="btn-group" role="group">
@@ -281,85 +280,86 @@
                     </div>
                 </div>
                 <div class="card rounded border-0 mb-4">
-                    {% if pagination.totalItemCount > 0 %}
-                        <div class="card-body p-0">
-                            <table class="table table-sm">
-                                <thead>
-                                <tr>
-                                    <th class="border-top-0 pt-2 pb-2 pl-3">
-                                        <input type="checkbox" id="check-all" name="filter" value="open">
-                                    </th>
-                                    <th class="border-top-0 pt-2 pb-2">{{'admin.shipping.index.791'|trans}}</th>
-                                    <th class="border-top-0 pt-2 pb-2">{{'admin.shipping.index.792'|trans}}</th>
-                                    <th class="border-top-0 pt-2 pb-2">{{'admin.shipping.index.801'|trans}}</th>
-                                    <th class="border-top-0 pt-2 pb-2">{{'admin.shipping.index.800'|trans}}</th>
-                                    <th class="border-top-0 pt-2 pb-2">{{'admin.shipping.index.802'|trans}}</th>
-                                    <th class="border-top-0 pt-2 pb-2">{{'admin.shipping.index.796'|trans}}</th>
-                                    <th class="border-top-0 pt-2 pb-2">&nbsp;</th>
-                                    <th class="border-top-0 pt-2 pb-2 pr-3">&nbsp;</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% for Shipping in pagination %}
-                                <tr>
-                                    <td class="align-middle pl-3">
-                                        <input type="checkbox" id="check-{{ Shipping.id }}" data-id="{{ Shipping.id }}" name="ids{{ Shipping.id }}">
-                                    </td>
-                                    <td class="align-middle"><a href="{{ url('admin_shipping_edit', { id : Shipping.id }) }}">{{ Shipping.id }}</a></td>
-                                    <td class="align-middle">{{ Shipping.TrackingNumber|default('admin.shipping.index.798'|trans) }}</td>
-                                    <td class="align-middle">
-                                        {% for Order in Shipping.Orders %}
-                                            {# TODO 受注ステータスごとの色 #}
-                                            <div class="d-block"><a href="{{ url('admin_order_edit', { id : Order.id }) }}">{{ Order.id }}</a><span class="badge badge-ec-blue ml-2 mb-2">{{ Order.OrderStatus }}</span></div>
-                                        {% endfor %}
-                                    </td>
-                                    <td class="align-middle">
-                                        <label class="m-0">{{ Shipping.zip01 }}-{{ Shipping.zip02 }}<br>{{ Shipping.pref }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}<br>{{ Shipping.name01 }} {{ Shipping.name02 }}<br>{{ Shipping.tel01 }}-{{ Shipping.tel02 }}-{{ Shipping.tel03 }}</label>
-                                    </td>
-                                    <td class="align-middle">{{ Shipping.ShippingDeliveryName }}</td>
-                                    <td class="align-middle">
-                                        {% if Shipping.ShippingDeliveryDate %}
-                                        <i class="fa fa-check fa-lg text-success mr-1" aria-hidden="true"></i>{{ Shipping.ShippingDeliveryDate|date_format }}
-                                        {% else %}
-                                            -
-                                        {% endif %}
-                                    </td>
-                                    <td class="align-middle"></td>
-                                    <td class="align-middle pr-3">
-                                        <div class="row text-center">
-                                            {# TODO メール送信ボタン #}
-                                            {# TODO 発送済みにするボタン #}
-                                            <div class="col" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ 'admin.shipping.index.824'|trans }}"><a class="btn btn-ec-actionIcon" href="/shipment/mail/"><i class="fa fa-send fa-lg text-secondary" aria-hidden="true"></i></a></div>
-                                            <div class="col" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ 'admin.shipping.index.825'|trans }}"><a class="btn btn-ec-actionIcon"><i class="fa fa-check fa-lg text-secondary" aria-hidden="true"></i></a></div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
-                            <div class="row justify-content-md-center mb-4">
+                    <div class="card-body p-0">
+                        <table class="table table-sm">
+                            <thead>
+                            <tr>
+                                <th class="border-top-0 pt-2 pb-2 pl-3">
+                                    <input type="checkbox" id="check-all" name="filter" value="open">
+                                </th>
+                                <th class="border-top-0 pt-2 pb-2">{{'admin.shipping.index.791'|trans}}</th>
+                                <th class="border-top-0 pt-2 pb-2">{{'admin.shipping.index.792'|trans}}</th>
+                                <th class="border-top-0 pt-2 pb-2">{{'admin.shipping.index.801'|trans}}</th>
+                                <th class="border-top-0 pt-2 pb-2">{{'admin.shipping.index.800'|trans}}</th>
+                                <th class="border-top-0 pt-2 pb-2">{{'admin.shipping.index.802'|trans}}</th>
+                                <th class="border-top-0 pt-2 pb-2">{{'admin.shipping.index.796'|trans}}</th>
+                                <th class="border-top-0 pt-2 pb-2">&nbsp;</th>
+                                <th class="border-top-0 pt-2 pb-2 pr-3">&nbsp;</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for Shipping in pagination %}
+                            <tr>
+                                <td class="align-middle pl-3">
+                                    <input type="checkbox" id="check-{{ Shipping.id }}" data-id="{{ Shipping.id }}" name="ids{{ Shipping.id }}">
+                                </td>
+                                <td class="align-middle"><a href="{{ url('admin_shipping_edit', { id : Shipping.id }) }}">{{ Shipping.id }}</a></td>
+                                <td class="align-middle">{{ Shipping.TrackingNumber|default('admin.shipping.index.798'|trans) }}</td>
+                                <td class="align-middle">
+                                    {% set cssClassStatus = {
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::NEW')): "badge-ec-blue",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::PAY_WAIT')): "badge-ec-red",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::BACK_ORDER')): "badge-ec-red",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::CANCEL')): "badge-ec-glay",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::DELIVERED')): "badge-ec-glay",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::PAID')): "badge-ec-green",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::PENDING')): "badge-ec-yellow",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::PROCESSING')): "badge-ec-yellow"
+                                    }
+                                    %}
+                                    {% for Order in Shipping.Orders %}
+                                        <div class="d-block">
+                                            <a href="{{ url('admin_order_edit', { id : Order.id }) }}">{{ Order.id }}</a>
+                                            <span class="badge {{ attribute(cssClassStatus, Order.OrderStatus.id) }} ml-2 mb-2">{{ Order.OrderStatus }}</span></div>
+                                    {% endfor %}
+                                </td>
+                                <td class="align-middle">
+                                    <label class="m-0">{{ Shipping.zip01 }}-{{ Shipping.zip02 }}<br>{{ Shipping.pref }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}<br>{{ Shipping.name01 }} {{ Shipping.name02 }}<br>{{ Shipping.tel01 }}-{{ Shipping.tel02 }}-{{ Shipping.tel03 }}</label>
+                                </td>
+                                <td class="align-middle">{{ Shipping.ShippingDeliveryName }}</td>
+                                <td class="align-middle">
+                                    {% if Shipping.ShippingDeliveryDate %}
+                                    <i class="fa fa-check fa-lg text-success mr-1" aria-hidden="true"></i>{{ Shipping.ShippingDeliveryDate|date_format }}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                                <td class="align-middle"></td>
+                                <td class="align-middle pr-3">
+                                    <div class="row text-center">
+                                        {# TODO メール送信ボタン #}
+                                        {# TODO 発送済みにするボタン #}
+                                        <div class="col" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ 'admin.shipping.index.824'|trans }}"><a class="btn btn-ec-actionIcon" href="/shipment/mail/"><i class="fa fa-send fa-lg text-secondary" aria-hidden="true"></i></a></div>
+                                        <div class="col" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ 'admin.shipping.index.825'|trans }}"><a class="btn btn-ec-actionIcon"><i class="fa fa-check fa-lg text-secondary" aria-hidden="true"></i></a></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class="row justify-content-md-center mb-4">
+                            {% if pagination.totalItemCount > 0 %}
                                 {% include "@admin/styleguide_pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_shipping_page' } %}
-                            </div>
+                            {% endif %}
                         </div>
-                    {% else %}
-                        <div class="card rounded border-0">
-                            <div class="card-body p-4">
-                                <div class="text-center text-muted mb-4 h5">{{ 'admin.shipping.index.819'|trans }}</div>
-                                <div class="text-center text-muted">{{ 'admin.shipping.index.820'|trans }}</div>
-                                <div class="text-center text-muted">{{ 'admin.shipping.index.821'|trans }}</div>
-                            </div>
                         </div>
-                    {% endif %}
                 </div>
             {% else %}
-                {# TODO 「商品が全く登録されていない場合のみ表示する #}
                 <div class="card rounded border-0">
                     <div class="card-body p-4">
-                        <div class="text-center text-muted mb-2 h5">{{ 'admin.product.index.text08'|trans }}</div>
-                        <div class="text-center mb-4"><a class="btn btn-ec-regular pl-4 pr-4"
-                                                         href="{{ url('admin_shipping_new') }}">{{ 'admin.product.index.text09'|trans }}</a>
-                        </div>
-                        <div class="text-center text-muted">{{ 'admin.product.index.text10'|trans }}</div>
+                        <div class="text-center text-muted mb-4 h5">{{ 'admin.shipping.index.819'|trans }}</div>
+                        <div class="text-center text-muted">{{ 'admin.shipping.index.820'|trans }}</div>
+                        <div class="text-center text-muted">{{ 'admin.shipping.index.821'|trans }}</div>
                     </div>
                 </div>
             {% endif %}
