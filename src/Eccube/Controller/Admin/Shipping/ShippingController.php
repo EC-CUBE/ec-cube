@@ -187,6 +187,8 @@ class ShippingController extends AbstractController
      */
     public function markAsShipped(Request $request, Shipping $Shipping)
     {
+        $this->isTokenValid();
+
         if ($Shipping->getShippingStatus()->getId() !== ShippingStatus::SHIPPED) {
             /** @var ShippingStatus $StatusShipped */
             $StatusShipped = $this->shippingStatusRepository->find(ShippingStatus::SHIPPED);
