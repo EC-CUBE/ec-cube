@@ -118,7 +118,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             <div id="position_{{ constant('Eccube\\Entity\\Page::TARGET_ID_HEAD') }}"
                                                  class="d-block p-3 border border-ec-gray border-top-0 border-right-0 border-left-0 ui-sortable">
                                                 <p class="font-weight-bold mb-2">{{ 'admin.content.layout.section.body_after'|trans }}</p>
-                                                {% set target_id = 'Eccube\\Entity\\Page::TARGET_ID_HEAD' %}{# TODO body 直後の ID 未実装 #}
+                                                {% set target_id = 'Eccube\\Entity\\Page::TARGET_ID_BODY_AFTER' %}
                                                 {% for BlockPosition in Layout.getBlockPositionsBy(constant(target_id)) %}
                                                     {{ include('@admin/Content/layout_block.twig') }}
                                                     {% set loop_index = loop_index + 1 %}
@@ -238,7 +238,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 <div id="position_{{ constant('Eccube\\Entity\\Page::TARGET_ID_FOOTER') }}"
                                                      class="d-block p-3 ui-sortable">
                                                     <p class="font-weight-bold mb-2">{{ 'admin.content.layout.section.drawer'|trans }}</p>
-                                                    {% set target_id = 'Eccube\\Entity\\Page::TARGET_ID_FOOTER' %}{# TODO drawer の ID 未実装 #}
+                                                    {% set target_id = 'Eccube\\Entity\\Page::TARGET_ID_DRAWER' %}
                                                     {% for BlockPosition in Layout.getBlockPositionsBy(constant(target_id)) %}
                                                         {{ include('@admin/Content/layout_block.twig') }}
                                                         {% set loop_index = loop_index + 1 %}
@@ -251,7 +251,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 <div id="position_{{ constant('Eccube\\Entity\\Page::TARGET_ID_FOOTER') }}"
                                                      class="d-block p-3 border-top-0 border-right-0 border-left-0 ui-sortable">
                                                     <p class="font-weight-bold mb-2">{{ 'admin.content.layout.section.close_body_before'|trans }}</p>
-                                                    {% set target_id = 'Eccube\\Entity\\Page::TARGET_ID_FOOTER' %}{# TODO /body 直前の ID 未実装 #}
+                                                    {% set target_id = 'Eccube\\Entity\\Page::TARGET_ID_CLOSE_BODY_BEFORE' %}
                                                     {% for BlockPosition in Layout.getBlockPositionsBy(constant(target_id)) %}
                                                         {{ include('@admin/Content/layout_block.twig') }}
                                                         {% set loop_index = loop_index + 1 %}
