@@ -289,15 +289,6 @@ class ShippingType extends AbstractType
             })
             ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
                 $form = $event->getForm();
-                $OrderItems = $form['OrderItems']->getData();
-
-                if (empty($OrderItems) || count($OrderItems) < 1) {
-                    // 画面下部にエラーメッセージを表示させる
-                    $form['OrderItemsError']->addError(new FormError('shipping.text.error.product_not_added'));
-                }
-            })
-            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
-                $form = $event->getForm();
                 $Shipping = $event->getData();
                 $Delivery = $Shipping->getDelivery();
                 $Shipping->setShippingDeliveryName($Delivery ? $Delivery->getName() : null);
