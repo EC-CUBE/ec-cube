@@ -24,6 +24,7 @@
 
 namespace Eccube\Twig\Extension;
 
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Product;
 use Eccube\Service\TaxRuleService;
 use Eccube\Util\StringUtil;
@@ -35,13 +36,19 @@ use Twig\TwigFunction;
 class EccubeExtension extends AbstractExtension
 {
     /**
+     * @var EccubeConfig
+     */
+    protected $eccubeConfig;
+
+    /**
      * @var TaxRuleService
      */
     protected $TaxRuleService;
 
-    public function __construct(TaxRuleService $TaxRuleService)
+    public function __construct(TaxRuleService $TaxRuleService, EccubeConfig $eccubeConfig)
     {
         $this->TaxRuleService = $TaxRuleService;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
@@ -152,12 +159,8 @@ class EccubeExtension extends AbstractExtension
      */
     public function getPriceFilter($number, $decimals = 0, $decPoint = '.', $thousandsSep = ',')
     {
-        // $locale = $this->app['config']['locale'];
-        // $currency = $this->app['config']['currency'];
-
-        // FIXME
-        $locale = 'ja_JP';
-        $currency = 'JPY';
+        $locale = $this->eccubeConfig['locale'];
+        $currency = $this->eccubeConfig['currency'];
         $formatter = new \NumberFormatter($locale, \NumberFormatter::CURRENCY);
 
         return $formatter->formatCurrency($number, $currency);
@@ -296,8 +299,10 @@ class EccubeExtension extends AbstractExtension
                 'classcategory_id2' => $class_category_id2,
                 'name'              => $class_category_name2,
                 'stock_find'        => $ProductClass->getStockFind(),
-                'price01'           => $ProductClass->getPrice01() === null ? '' : number_format($ProductClass->getPrice01IncTax()),
-                'price02'           => number_format($ProductClass->getPrice02IncTax()),
+                'price01'           => $ProductClass->getPrice01() === null ? '' : number_format($ProductClass->getPrice01()),
+                'price02'           => number_format($ProductClass->getPrice02()),
+                'price01_inc_tax'    => $ProductClass->getPrice01() === null ? '' : number_format($ProductClass->getPrice01IncTax()),
+                'price02_inc_tax'    => number_format($ProductClass->getPrice02IncTax()),
                 'product_class_id'  => (string) $ProductClass->getId(),
                 'product_code'      => $ProductClass->getCode() === null ? '' : $ProductClass->getCode(),
                 'sale_type'      => (string) $ProductClass->getSaleType()->getId(),

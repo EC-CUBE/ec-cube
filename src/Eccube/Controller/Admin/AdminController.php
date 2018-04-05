@@ -30,6 +30,7 @@ use Doctrine\ORM\QueryBuilder;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\ProductStock;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\ChangePasswordType;
@@ -334,7 +335,7 @@ class AdminController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // 在庫なし商品の検索条件をセッションに付与し, 商品マスタへリダイレクトする.
             $searchData = array();
-            $searchData['stock_status'] = Constant::DISABLED;
+            $searchData['stock'] = [ProductStock::OUT_OF_STOCK];
             $session = $request->getSession();
             $session->set('eccube.admin.product.search', $searchData);
 

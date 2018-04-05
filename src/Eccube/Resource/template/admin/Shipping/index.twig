@@ -69,14 +69,16 @@
         <div class="c-outsideBlock__contents">
             <div class="row">
                 <div class="col-12">
-
+                    <div>
                         <label class="col-form-label">{{ 'admin.shipping.index.762'|trans }}</label>
-                        {{ form_widget(searchForm.multi, { attr: { class : 'input_search' } } ) }}
+                        {{ form_widget(searchForm.multi) }}
+                    </div>
+                    <div class="form-row">
                         <div class="form-group col-12">
                             <p class="col-form-label">{{'admin.shipping.index.763'|trans}}</p>
-                            {# TODO 受注状況を横並びにする #}
-                            {{ form_widget(searchForm.order_status) }}
+                            {{ form_widget(searchForm.order_status, {'label_attr': {'class': 'checkbox-inline'}}) }}
                         </div>
+                    </div>
                     <div class="d-inline-block mb-3 collapsed" data-toggle="collapse" href="#searchDetail" aria-expanded="false" aria-controls="searchDetail"><a><i class="fa font-weight-bold mr-1 fa-plus-square-o"></i><span class="font-weight-bold">{{ 'admin.shipping.index.823'|trans }}</span></a></div>
                 </div>
             </div>
@@ -204,8 +206,6 @@
                 <div class="row justify-content-between mb-2">
                     <div class="col-6">
                         <label class="mr-2">{{ 'admin.shipping.index.803'|trans }}</label>
-                        {# TODO 一括メール #}
-                        <button class="btn btn-ec-regular mr-2">{{ 'admin.shipping.index.804'|trans }}</button>
                         {# TODO 一括ステタース更新 #}
                         <button class="btn btn-ec-regular mr-2" data-toggle="modal" data-target="#sentUpdate">{{ 'admin.shipping.index.805'|trans }}</button>
                         <div class="modal fade" id="sentUpdate" tabindex="-1" role="dialog" aria-labelledby="sentUpdate" aria-hidden="true">
@@ -269,10 +269,13 @@
                         </div>
                         <div class="d-inline-block">
                             <div class="btn-group" role="group">
-                                {# TODO CSVダウンロード #}
-                                <button class="btn btn-ec-regular" type="button"><i class="fa fa-cloud-download mr-1 text-secondary"></i><span>{{ 'admin.shipping.index.785'|trans }}</span></button>
-                                {# TODO CSV出力項目設定 #}
-                                <button class="btn btn-ec-regular" type="button"><i class="fa fa-cog mr-1 text-secondary"></i><span>{{ 'admin.shipping.index.818'|trans }}</span></button>
+                                <a class="btn btn-ec-regular" href="{{ url('admin_order_export_shipping') }}"><i
+                                            class="fa fa-cloud-download mr-1 text-secondary"></i><span>{{ 'admin.shipping.index.785'|trans }}</span>
+                                </a>
+                                <a class="btn btn-ec-regular"
+                                   href="{{ url('admin_setting_shop_csv', { 'id' : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_SHIPPING') }) }}"><i
+                                            class="fa fa-cog mr-1 text-secondary"></i><span>{{ 'admin.shipping.index.818'|trans }}</span>
+                                </a>
                             </div>
                         </div>
                     </div>
