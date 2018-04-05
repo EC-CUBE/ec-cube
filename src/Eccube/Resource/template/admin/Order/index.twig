@@ -63,7 +63,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     });
 
     // 登録チェックボックス
-    $('#check-all').on('change', function() {
+    $('#check_all').on('change', function() {
         var checked = $(this).prop('checked');
         if (checked) {
             $('input[id^="check_"]').prop('checked', true);
@@ -408,7 +408,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <thead>
                                     <tr>
                                         <th class="border-top-0 pt-2 pb-2 pl-3">
-                                            <input type="checkbox" id="check-all" name="filter" value="open">
+                                            <input type="checkbox" id="check_all" name="filter" value="open">
                                         </th>
                                         <th class="border-top-0 pt-2 pb-2">{{ 'admin.order.index.328'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2">{{ 'admin.order.index.329'|trans }}</th>
