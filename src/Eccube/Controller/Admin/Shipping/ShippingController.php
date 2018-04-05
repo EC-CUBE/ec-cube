@@ -191,6 +191,7 @@ class ShippingController extends AbstractController
             /** @var ShippingStatus $StatusShipped */
             $StatusShipped = $this->shippingStatusRepository->find(ShippingStatus::SHIPPED);
             $Shipping->setShippingStatus($StatusShipped);
+            $Shipping->setShippingDate(new \DateTime());
             $this->shippingRepository->save($Shipping);
 
             if ($request->get('notificationMail')) {
