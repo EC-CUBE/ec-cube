@@ -2,9 +2,11 @@
 
 namespace Eccube\Controller\Admin\Shipping;
 
+use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\ShippingStatus;
 use Eccube\Entity\Shipping;
+use Eccube\Entity\OrderItem;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\SearchShippingType;
@@ -108,6 +110,8 @@ class ShippingController extends AbstractController
         }
 
         if ('POST' === $request->getMethod()) {
+
+            $searchData = [];
 
             $searchForm->handleRequest($request);
 
@@ -215,5 +219,34 @@ class ShippingController extends AbstractController
     public function previewShippingNotifyMail(Shipping $Shipping)
     {
         return new Response($this->mailService->getShippingNotifyMailBody($Shipping, $Shipping->getOrders()->first()));
+    }
+
+    /**
+     * @Method("POST")
+     * @Route("/%eccube_admin_route%/shipping/bulk_delete", name="admin_shipping_bulk_delete")
+     */
+    public function bulkDelete(Request $request)
+    {
+        $this->isTokenValid();
+        $ids = $request->get('ids');
+
+        foreach ($ids as $shipping_id) {
+            /** @var Shipping $Shipping */
+            $Shipping = $this->shippingRepository->find($shipping_id);
+            if ($Shipping) {
+                $OrderItems = $Shipping->getOrderItems();
+                /** @var OrderItem $OrderItem */
+                foreach ($OrderItems as $OrderItem) {
+                    $OrderItem->setShipping(null);
+                }
+                $this->entityManager->remove($Shipping);
+                log_info('出荷削除', array($Shipping->getId()));
+            }
+        }
+        $this->entityManager->flush();
+
+        $this->addSuccess('admin.shipping.delete.complete', 'admin');
+
+        return $this->redirect($this->generateUrl('admin_shipping', ['resume' => Constant::ENABLED]));
     }
 }
