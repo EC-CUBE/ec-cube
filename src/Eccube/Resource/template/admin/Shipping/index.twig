@@ -39,6 +39,11 @@
     <script>
         $(function() {
 
+            toggleBtnBulk('input[id^="check-"]', '#btn_bulk');
+            $('input[id^="check-"]').on('change', function() {
+                toggleBtnBulk('input[id^="check-"]', '#btn_bulk');
+            });
+
             // 登録チェックボックス
             $('#check-all').click(function() {
                 var checkall = $('#check-all').prop('checked');
@@ -47,6 +52,7 @@
                 } else {
                     $('input[id^=check-]').prop('checked', false);
                 }
+                toggleBtnBulk('input[id^="check-"]', '#btn_bulk');
             });
 
             // フォーム値を確認し、アコーディオンを制御
@@ -205,6 +211,7 @@
             {% if pagination %}
                 <div class="row justify-content-between mb-2">
                     <div class="col-6">
+                      <div id="btn_bulk" class="d-none">
                         <label class="mr-2">{{ 'admin.shipping.index.803'|trans }}</label>
                         {# TODO 一括ステタース更新 #}
                         <button class="btn btn-ec-regular mr-2" data-toggle="modal" data-target="#sentUpdate">{{ 'admin.shipping.index.805'|trans }}</button>
@@ -255,6 +262,7 @@
                         </div>
                         {# TODO 一括削除 #}
                         <button class="btn btn-ec-delete">{{ 'admin.shipping.index.817'|trans }}</button>
+                      </div>
                     </div>
                     <div class="col-5 text-right">
                         <div class="d-inline-block mr-2">
