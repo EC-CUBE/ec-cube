@@ -1,9 +1,9 @@
 <tr>
     <input type="hidden" name="shipping[OrderItems][{{ OrderItem.id }}][id]" value="{{ OrderItem.id }}">
     <td class="align-middle w-25 pl-3">
-        <p class="font-weight-bold mb-0">{{ OrderItem.product.name }}</p>
+        <p class="font-weight-bold mb-0">{{ OrderItem.Product is not null ? OrderItem.Product.name }}</p>
         <span>{{ OrderItem.product_code }}
-            {% if OrderItem.product.has_product_class %}
+            {% if OrderItem.Product is not null and OrderItem.Product.has_product_class %}
                 / ( {{ OrderItem.class_name1 }}： {{ OrderItem.class_category_name1 }}
                 {% if OrderItem.class_name2 %}
                     / {{ OrderItem.class_name2 }}: {{ OrderItem.class_category_name2 }}
