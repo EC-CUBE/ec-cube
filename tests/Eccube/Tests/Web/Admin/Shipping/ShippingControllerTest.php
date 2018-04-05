@@ -8,6 +8,8 @@ use Eccube\Repository\Master\CsvTypeRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\Master\SexRepository;
 use Eccube\Repository\PaymentRepository;
+use Eccube\Entity\Master\ShippingStatus;
+use Eccube\Entity\Shipping;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class ShippingControllerTest extends AbstractAdminWebTestCase
@@ -91,5 +93,56 @@ class ShippingControllerTest extends AbstractAdminWebTestCase
             'GET',
             $this->generateUrl('admin_order_export_shipping')
         );
+    }
+
+    public function testMarkAsShipped()
+    {
+        $this->client->enableProfiler();
+
+        $Order = $this->createOrder($this->createCustomer());
+        /** @var Shipping $Shipping */
+        $Shipping = $Order->getShippings()->first();
+        $Shipping->setShippingStatus($this->entityManager->find(ShippingStatus::class, ShippingStatus::PREPARED));
+        $this->entityManager->persist($Shipping);
+        $this->entityManager->flush();
+
+        $this->client->request(
+            'PUT',
+            $this->generateUrl('admin_shipping_mark_as_shipped', ['id' => $Shipping->getId()])
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $Messages = $this->getMailCollector(false)->getMessages();
+        self::assertEquals(0, count($Messages));
+    }
+
+    public function testMarkAsShipped_sendNotifyMail()
+    {
+        $this->client->enableProfiler();
+
+        $Order = $this->createOrder($this->createCustomer());
+        /** @var Shipping $Shipping */
+        $Shipping = $Order->getShippings()->first();
+        $Shipping->setShippingStatus($this->entityManager->find(ShippingStatus::class, ShippingStatus::PREPARED));
+        $this->entityManager->persist($Shipping);
+        $this->entityManager->flush();
+
+        $this->client->request(
+            'PUT',
+            $this->generateUrl('admin_shipping_mark_as_shipped', ['id' => $Shipping->getId()]),
+            ['notificationMail' => 'on']
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $Messages = $this->getMailCollector(false)->getMessages();
+        self::assertEquals(1, count($Messages));
+
+        /** @var \Swift_Message $Message */
+        $Message = $Messages[0];
+
+        self::assertRegExp('/\[.*?\] 商品出荷のお知らせ/', $Message->getSubject());
+        self::assertEquals([$Order->getEmail() => null], $Message->getTo());
     }
 }

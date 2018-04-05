@@ -3,16 +3,24 @@
 namespace Eccube\Controller\Admin\Shipping;
 
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\Master\ShippingStatus;
+use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\SearchShippingType;
 use Eccube\Repository\Master\PageMaxRepository;
+use Eccube\Repository\Master\ProductStatusRepository;
+use Eccube\Repository\Master\ShippingStatusRepository;
 use Eccube\Repository\ShippingRepository;
+use Eccube\Service\MailService;
 use Eccube\Util\FormUtil;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ShippingController extends AbstractController
 {
@@ -26,12 +34,33 @@ class ShippingController extends AbstractController
      */
     protected $pageMaxRepository;
 
+    /**
+     * @var MailService
+     */
+    protected $mailService;
+
+    /**
+     * @var ShippingStatusRepository
+     */
+    protected $shippingStatusRepository;
+
+    /**
+     * ShippingController constructor.
+     * @param ShippingRepository $shippingRepository
+     * @param PageMaxRepository $pageMaxRepository
+     * @param ShippingStatusRepository $shippingStatusRepository
+     * @param MailService $mailService
+     */
     public function __construct(
         ShippingRepository $shippingRepository,
-        PageMaxRepository $pageMaxRepository
+        PageMaxRepository $pageMaxRepository,
+        ShippingStatusRepository $shippingStatusRepository,
+        MailService $mailService
     ) {
         $this->shippingRepository = $shippingRepository;
         $this->pageMaxRepository = $pageMaxRepository;
+        $this->shippingStatusRepository = $shippingStatusRepository;
+        $this->mailService = $mailService;
     }
 
 
@@ -146,5 +175,45 @@ class ShippingController extends AbstractController
             'page_no' => $page_no,
             'page_count' => $page_count,
         ];
+    }
+
+    /**
+     * @Method("PUT")
+     * @Route("/%eccube_admin_route%/shipping/mark_as_shipped/{id}", requirements={"id" = "\d+"}, name="admin_shipping_mark_as_shipped")
+     * @param Request $request
+     * @param Shipping $Shipping
+     * @return JsonResponse
+     * @throws \Twig_Error
+     */
+    public function markAsShipped(Request $request, Shipping $Shipping)
+    {
+        $this->isTokenValid();
+
+        if ($Shipping->getShippingStatus()->getId() !== ShippingStatus::SHIPPED) {
+            /** @var ShippingStatus $StatusShipped */
+            $StatusShipped = $this->shippingStatusRepository->find(ShippingStatus::SHIPPED);
+            $Shipping->setShippingStatus($StatusShipped);
+            $Shipping->setShippingDate(new \DateTime());
+            $this->shippingRepository->save($Shipping);
+
+            if ($request->get('notificationMail')) {
+                $this->mailService->sendShippingNotifyMail($Shipping);
+            }
+
+            $this->entityManager->flush();
+        }
+
+        return new JsonResponse(['success' => true]);
+    }
+
+    /**
+     * @Route("/%eccube_admin_route%/shipping/preview_notify_mail/{id}", requirements={"id" = "\d+"}, name="admin_shipping_preview_notify_mail")
+     * @param Shipping $Shipping
+     * @return Response
+     * @throws \Twig_Error
+     */
+    public function previewShippingNotifyMail(Shipping $Shipping)
+    {
+        return new Response($this->mailService->getShippingNotifyMailBody($Shipping, $Shipping->getOrders()->first()));
     }
 }
