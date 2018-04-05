@@ -211,58 +211,58 @@
             {% if pagination %}
                 <div class="row justify-content-between mb-2">
                     <div class="col-6">
-                      <div id="btn_bulk" class="d-none">
-                        <label class="mr-2">{{ 'admin.shipping.index.803'|trans }}</label>
-                        {# TODO 一括ステタース更新 #}
-                        <button class="btn btn-ec-regular mr-2" data-toggle="modal" data-target="#sentUpdate">{{ 'admin.shipping.index.805'|trans }}</button>
-                        <div class="modal fade" id="sentUpdate" tabindex="-1" role="dialog" aria-labelledby="sentUpdate" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title font-weight-bold">{{ 'admin.shipping.index.807'|trans }}</h5>
-                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p class="mb-4">{{ 'admin.shipping.index.808'|trans }}</p>
-                                        <form class="mb-4">
-                                            <div class="font-weight-bold mb-2">{{ 'admin.shipping.index.809'|trans }}</div>
-                                            <div class="form-check form-check-inline">
-                                                <label class="form-check-label">
-                                                    <input class="form-check-input" type="radio" name="orderStatus" checked=""> {{ 'admin.shipping.index.810'|trans }}
-                                                </label>
+                        <div id="btn_bulk" class="d-none">
+                            <label class="mr-2">{{ 'admin.shipping.index.803'|trans }}</label>
+                            {# TODO 一括ステタース更新 #}
+                            <button class="btn btn-ec-regular mr-2" data-toggle="modal" data-target="#sentUpdate">{{ 'admin.shipping.index.805'|trans }}</button>
+                                <div class="modal fade" id="sentUpdate" tabindex="-1" role="dialog" aria-labelledby="sentUpdate" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title font-weight-bold">{{ 'admin.shipping.index.807'|trans }}</h5>
+                                                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                             </div>
-                                            <div class="form-check form-check-inline">
-                                                <label class="form-check-label">
-                                                    <input class="form-check-input" type="radio" name="orderStatus"> {{ 'admin.shipping.index.811'|trans }}
-                                                </label>
+                                            <div class="modal-body">
+                                                <p class="mb-4">{{ 'admin.shipping.index.808'|trans }}</p>
+                                                <form class="mb-4">
+                                                    <div class="font-weight-bold mb-2">{{ 'admin.shipping.index.809'|trans }}</div>
+                                                    <div class="form-check form-check-inline">
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input" type="radio" name="orderStatus" checked=""> {{ 'admin.shipping.index.810'|trans }}
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input" type="radio" name="orderStatus"> {{ 'admin.shipping.index.811'|trans }}
+                                                        </label>
+                                                    </div>
+                                                </form>
+                                                <form>
+                                                    <div class="font-weight-bold mb-2">{{ 'admin.shipping.index.812'|trans }}</div>
+                                                    <div class="form-check form-check-inline">
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input" type="checkbox" name="notificationMail" checked=""> {{ 'admin.shipping.index.813'|trans }}
+                                                        </label>
+                                                    </div>
+                                                </form>
+                                                <div class="d-inline-block" data-toggle="collapse" href="#viewEmail" aria-expanded="false" aria-controls="viewEmail"><a><i class="fa fa-plus-square-o font-weight-bold mr-1"></i><span class="font-weight-bold">{{ 'admin.shipping.index.814'|trans }}</span></a></div>
+                                                <div class="collapse bg-light p-4 ec-collapse bg-ec-formGray" id="viewEmail">
+                                                    {# TODO 発送お知らせメール表示 #}
+                                                    <p>[注文者名]様</p>
+                                                    <p>お客さまがご注文された以下の商品を発送いたしました。商品の到着まで、今しばらくお待ちくださいませ。</p>
+                                                    <p>[発送商品リストと明細]</p>
+                                                </div>
                                             </div>
-                                        </form>
-                                        <form>
-                                            <div class="font-weight-bold mb-2">{{ 'admin.shipping.index.812'|trans }}</div>
-                                            <div class="form-check form-check-inline">
-                                                <label class="form-check-label">
-                                                    <input class="form-check-input" type="checkbox" name="notificationMail" checked=""> {{ 'admin.shipping.index.813'|trans }}
-                                                </label>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.shipping.index.815'|trans }}</button>
+                                                <button class="btn btn-ec-conversion" type="button" data-dismiss="modal">{{ 'admin.shipping.index.816'|trans }}</button>
                                             </div>
-                                        </form>
-                                        <div class="d-inline-block" data-toggle="collapse" href="#viewEmail" aria-expanded="false" aria-controls="viewEmail"><a><i class="fa fa-plus-square-o font-weight-bold mr-1"></i><span class="font-weight-bold">{{ 'admin.shipping.index.814'|trans }}</span></a></div>
-                                        <div class="collapse bg-light p-4 ec-collapse bg-ec-formGray" id="viewEmail">
-                                            {# TODO 発送お知らせメール表示 #}
-                                            <p>[注文者名]様</p>
-                                            <p>お客さまがご注文された以下の商品を発送いたしました。商品の到着まで、今しばらくお待ちくださいませ。</p>
-                                            <p>[発送商品リストと明細]</p>
                                         </div>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.shipping.index.815'|trans }}</button>
-                                        <button class="btn btn-ec-conversion" type="button" data-dismiss="modal">{{ 'admin.shipping.index.816'|trans }}</button>
-                                    </div>
                                 </div>
-                            </div>
+                            {# TODO 一括削除 #}
+                            <button class="btn btn-ec-delete">{{ 'admin.shipping.index.817'|trans }}</button>
                         </div>
-                        {# TODO 一括削除 #}
-                        <button class="btn btn-ec-delete">{{ 'admin.shipping.index.817'|trans }}</button>
-                      </div>
                     </div>
                     <div class="col-5 text-right">
                         <div class="d-inline-block mr-2">
