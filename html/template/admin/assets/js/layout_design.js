@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-(function($){
+;(function($, window, document, undefined){
     var updateUpDown = function(sortable){
         $('div:not(.ui-sortable-helper)', sortable)
             .removeClass('first')
@@ -38,44 +38,34 @@
     };
 
     $(document).ready(function(){
-        var els = [
-            '#position_0',
-            '#position_1',
-            '#position_2',
-            '#position_3',
-            '#position_4',
-            '#position_5',
-            '#position_6',
-            '#position_7',
-            '#position_8',
-            '#position_9'
-        ];
-        var $els = $(els.toString());
+        // `window.els` is defined in layout.twig
+        var $els = $(window.els.toString());
 
         $els.each(function(){
             updateUpDown(this);
         });
 
         $els.sortable({
-            items: '> div',
+            items: '> div.block',
             cursor: 'move',
             appendTo: 'body',
             placeholder: 'placeholder',
-            connectWith: els,
+            connectWith: window.els,
             start: function(e,ui) {
                 ui.helper.css("width", ui.item.width());
             },
-            //change: sortableChange,
+            stop: function(e, ui) {
+                // sortable が子要素を強制的に表示するため show(), hide() が使えない
+                if ($(this).children('.block').length <= 0) {
+                    // show placeholder
+                    $(this).append($('#target-placeholder').html());
+                }
+                if (ui.item.parent().children('.block').length > 0) {
+                    // hide placeholder
+                    ui.item.parent().children('.target-placeholder').remove();
+                }
+            },
             update: sortableUpdate
         });
     });
-
-    $(window).on('load',function(){
-        setTimeout(function(){
-            // FIXME #overlay の実装
-            // $('#overlay').fadeOut(function(){
-            //     $('body').css('overflow', 'auto');
-            // });
-        }, 750);
-    });
-})(jQuery);
+})(jQuery, window, document);
