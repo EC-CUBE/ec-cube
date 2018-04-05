@@ -47,12 +47,11 @@
                 } else {
                     confirmMove.data('confirm', false);
                 }
-                console.log(confirmMove.data('confirm'), 'click');
             });
 
             function doUpdateSortNo(mainRows) {
-                var layoutId = mainRows.attr('data-layout-id');
                 var update = [];
+                var layoutId = mainRows.attr('data-layout-id');
 
                 mainRows.sortable({
                     items: ' > div.card-body',
@@ -87,7 +86,6 @@
                         }
                     },
                     update: function (e, ui) {
-                        console.log(mainRows, layoutId, 10000);
                         if (ui.item.prop('isOtherList')) {
                             update.push([mainRows, layoutId]);
                         } else {
@@ -99,7 +97,6 @@
             }
 
             function updateSortNo(mainRows, layoutId) {
-                console.log(mainRows, layoutId, 11111111);
                 $(".modal-backdrop").remove();
                 $("body").append($('<div class="modal-backdrop show"></div>'));
 
@@ -214,7 +211,7 @@
                                                      data-sort-no="{{ Page.getSortNo(Layout.id) }}">
                                                     <div class="row justify-content-between p-3">
                                                         <div class="col-auto">
-                                                            <i class="fa fa-bars text-ec-gray mr-3"></i><span>[{{ Page.id }}-{{ Layout.id }}] {{ Page.name }}</span>
+                                                            <i class="fa fa-bars text-ec-gray mr-3"></i><span>{{ Page.name }}</span>
                                                         </div>
                                                         {# TODO ページを削除できるようにする #}
                                                         <div class="col-auto text-right">
@@ -376,7 +373,7 @@
                     <p class="text-left">{{ 'admin.content.layout.popup.message'|trans }}</p>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.content.layout.cancel'|trans }}</button>
+                    <button class="btn btn-v-sub" type="button" data-dismiss="modal">{{ 'admin.content.layout.cancel'|trans }}</button>
                 </div>
             </div>
         </div>
@@ -386,16 +383,16 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title font-weight-bold">Confirm</h5>
+                    <h5 class="modal-title font-weight-bold">{{ 'admin.content.layout.popup.confirm.title'|trans }}</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
                     </button>
                 </div>
                 <div class="modal-body text-left">
-                    <p class="text-left">Are you sure you want move to other layout ?</p>
+                    <p class="text-left">{{ 'admin.content.layout.popup.confirm.message'|trans|raw }}</p>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-v-sub" type="button" data-dismiss="modal">{{ 'admin.content.layout.cancel'|trans }}</button>
-                    <button class="btn btn-ec-conversion" type="button" data-dismiss="modal">Move</button>
+                    <button class="btn btn-ec-conversion" type="button" data-dismiss="modal">{{ 'admin.content.layout.popup.button.move'|trans }}</button>
                 </div>
             </div>
         </div>
