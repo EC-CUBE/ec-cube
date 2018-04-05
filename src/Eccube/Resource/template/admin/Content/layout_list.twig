@@ -35,13 +35,25 @@
     <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.sortable.min.js', 'admin') }}"></script>
     <script>
         $(function () {
+            var confirmMove = $('#confirmMove');
             var containerRows = $('div.sortables');
             containerRows.each(function () {
                 doUpdateSortNo($(this));
             });
 
+            confirmMove.on('click', 'button', function () {
+                if ($(this).hasClass('btn-ec-conversion')) {
+                    confirmMove.data('confirm', true);
+                } else {
+                    confirmMove.data('confirm', false);
+                }
+                console.log(confirmMove.data('confirm'), 'click');
+            });
+
             function doUpdateSortNo(mainRows) {
                 var layoutId = mainRows.attr('data-layout-id');
+                var update = [];
+
                 mainRows.sortable({
                     items: ' > div.card-body',
                     connectWith: "div.ec-cardCollapse",
@@ -49,52 +61,70 @@
                     start: function (ev, ui) {
                         ui.item.prop('main', ui.item.parent());
                         ui.item.prop('isUpdate', false);
+                        ui.item.prop('isOtherList', false);
                     },
                     beforeStop: function (ev, ui) {
-                        if (ui.item.prop('main').attr('id') != ui.item.parent().attr('id')
-                            && ui.item.parent().find('[data-page-id="' + ui.item.data('page-id') + '"]').length > 1) {
-                            ui.item.prop('isUpdate', false);
-                            $('#duplicate-error').modal('show');
-                        } else {
-                            ui.item.prop('isUpdate', true)
+                        if (ui.item.prop('main').attr('id') != ui.item.parent().attr('id')) {
+                            ui.item.prop('isOtherList', true);
+                            confirmMove.modal('show');
+                            confirmMove.off('hidden.bs.modal');
+                            confirmMove.on('hidden.bs.modal', function () {
+                                if (confirmMove.data('confirm') == false) {
+                                    mainRows.sortable("cancel");
+                                }
+                                if (confirmMove.data('confirm') == true) {
+                                    if (ui.item.parent().find('[data-page-id="' + ui.item.data('page-id') + '"]').length > 1) {
+                                        $('#duplicateNotification').modal('show');
+                                        mainRows.sortable("cancel");
+                                    } else {
+                                        $.each(update, function (a, b) {
+                                            updateSortNo(b[0], b[1]);
+                                        });
+                                        update = [];
+                                    }
+                                }
+                            });
                         }
                     },
                     update: function (e, ui) {
-                        if (ui.item.prop('isUpdate') == true) {
-                            updateSortNo(layoutId);
-                        }else{
-                            $(this).sortable("cancel");
+                        console.log(mainRows, layoutId, 10000);
+                        if (ui.item.prop('isOtherList')) {
+                            update.push([mainRows, layoutId]);
+                        } else {
+                            updateSortNo(mainRows, layoutId);
                         }
+
+                    }
+                });
+            }
+
+            function updateSortNo(mainRows, layoutId) {
+                console.log(mainRows, layoutId, 11111111);
+                $(".modal-backdrop").remove();
+                $("body").append($('<div class="modal-backdrop show"></div>'));
+
+                var newSortNos = {};
+                var i = 1;
+                $("div.card-body", mainRows).each(function () {
+                    if (this.dataset.pageId != undefined && this.dataset.layoutId != undefined) {
+                        newSortNos[this.dataset.pageId + '-' + this.dataset.layoutId] = i;
+                        i++;
                     }
                 });
 
-                var updateSortNo = function (layoutId) {
+                $.ajax({
+                    url: '{{ url('admin_content_layout_sort_no_move') }}',
+                    type: 'POST',
+                    data: {'newSortNos': newSortNos, 'targetLayoutId': layoutId}
+                }).done(function (data) {
+                    $('div.card-body', mainRows).each(function () {
+                        $(this).attr('data-layout-id', layoutId);
+                    });
                     $(".modal-backdrop").remove();
-                    $("body").append($('<div class="modal-backdrop show"></div>'));
-
-                    var newSortNos = {};
-                    var i = 1;
-                    $("div.card-body", mainRows).each(function () {
-                        if (this.dataset.pageId != undefined && this.dataset.layoutId != undefined) {
-                            newSortNos[this.dataset.pageId + '-' + this.dataset.layoutId] = i;
-                            i++;
-                        }
-                    });
-
-                    $.ajax({
-                        url: '{{ url('admin_content_layout_sort_no_move') }}',
-                        type: 'POST',
-                        data: {'newSortNos': newSortNos, 'targetLayoutId': layoutId}
-                    }).done(function (data) {
-                        $('div.card-body', mainRows).each(function () {
-                            $(this).attr('data-layout-id', layoutId);
-                        });
-                        $(".modal-backdrop").remove();
-                    }).fail(function () {
-                        console.log('Failed');
-                        $(".modal-backdrop").remove();
-                    });
-                }
+                }).fail(function () {
+                    console.log('Failed');
+                    $(".modal-backdrop").remove();
+                });
             }
         });
     </script>
@@ -184,7 +214,7 @@
                                                      data-sort-no="{{ Page.getSortNo(Layout.id) }}">
                                                     <div class="row justify-content-between p-3">
                                                         <div class="col-auto">
-                                                            <i class="fa fa-bars text-ec-gray mr-3"></i><span>{{ Page.name }}</span>
+                                                            <i class="fa fa-bars text-ec-gray mr-3"></i><span>[{{ Page.id }}-{{ Layout.id }}] {{ Page.name }}</span>
                                                         </div>
                                                         {# TODO ページを削除できるようにする #}
                                                         <div class="col-auto text-right">
@@ -334,25 +364,40 @@
         </div>
     </div>
 
-    <div class="modal fade" id="duplicate-error" tabindex="-1" role="dialog" aria-labelledby="duplicate-error" aria-hidden="true">
+    <div class="modal fade" id="duplicateNotification" tabindex="-1" role="dialog" aria-labelledby="duplicateNotification" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title font-weight-bold">{{ 'admin.content.layout.popup.error'|trans }}</h5>
-                    <button class="close" type="button"
-                            data-dismiss="modal"
-                            aria-label="Close"><span aria-hidden="true">×</span>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
                     </button>
                 </div>
                 <div class="modal-body text-left">
                     <p class="text-left">{{ 'admin.content.layout.popup.message'|trans }}</p>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-ec-sub" type="button"
-                            data-dismiss="modal">{{ 'admin.content.layout.cancel'|trans }}
-                    </button>
+                    <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.content.layout.cancel'|trans }}</button>
                 </div>
             </div>
         </div>
-    </div>
+    </div><!-- /#duplicateNotification -->
+
+    <div class="modal fade" id="confirmMove" tabindex="-1" role="dialog" aria-labelledby="confirmMove" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-bold">Confirm</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body text-left">
+                    <p class="text-left">Are you sure you want move to other layout ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-v-sub" type="button" data-dismiss="modal">{{ 'admin.content.layout.cancel'|trans }}</button>
+                    <button class="btn btn-ec-conversion" type="button" data-dismiss="modal">Move</button>
+                </div>
+            </div>
+        </div>
+    </div><!-- /#confirmMove -->
 {% endblock %}

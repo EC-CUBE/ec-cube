@@ -240,26 +240,28 @@ class LayoutController extends AbstractController
      */
     public function moveSortNo(Request $request)
     {
-        if ($request->isXmlHttpRequest()) {
-            $sortNos = $request->request->get('newSortNos');
-            $targetLayoutId = $request->request->get('targetLayoutId');
-
-            foreach ($sortNos as $ids => $sortNo) {
-
-                $id = explode('-', $ids);
-                $pageId = $id[0];
-                $layoutId = $id[1];
-
-                /* @var $Item PageLayoutRepository */
-                $Item = $this->pageLayoutRepository
-                    ->findOneBy(['page_id' => $pageId, 'layout_id' => $layoutId]);
-
-                $Item->setLayoutId($targetLayoutId);
-                $Item->setSortNo($sortNo);
-                $this->entityManager->persist($Item);
-            }
-            $this->entityManager->flush();
+        if (!$request->isXmlHttpRequest()) {
+            throw new BadRequestHttpException();
         }
+
+        $sortNos = $request->request->get('newSortNos');
+        $targetLayoutId = $request->request->get('targetLayoutId');
+
+        foreach ($sortNos as $ids => $sortNo) {
+
+            $id = explode('-', $ids);
+            $pageId = $id[0];
+            $layoutId = $id[1];
+
+            /* @var $Item PageLayoutRepository */
+            $Item = $this->pageLayoutRepository
+                ->findOneBy(['page_id' => $pageId, 'layout_id' => $layoutId]);
+
+            $Item->setLayoutId($targetLayoutId);
+            $Item->setSortNo($sortNo);
+            $this->entityManager->persist($Item);
+        }
+        $this->entityManager->flush();
 
         return new Response();
     }
