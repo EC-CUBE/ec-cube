@@ -91,10 +91,31 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 });
                 $('.context-movesection').on('click', block, function() {
                     $('#clickStreamConfirm').modal();
+                    $('#target-block').val($(block.current).attr('id'));
+                    block.menu.popover('hide');
                 });
                 $('#clickStreamConfirm').on('show.bs.modal', function(event) {
-                    var $modal = $(this);
+                    for (var target_id in sections) {
+                        $('#move-section').append('<option value="' + target_id + '">' + sections[target_id] + '</option>');
+                    }
                 });
+                $('#move-to-section').on('click', function() {
+                    var $position = $('#position_' + $('#move-section').val());
+                    var $target = $('#' + $('#target-block').val());
+                    var $parent = $target.parent();
+
+                    $position.append($target);
+
+                    if ($position.children('.block').length > 0) {
+                        // hide placeholder
+                        $position.children('.target-placeholder').remove();
+                    }
+                    if ($parent.children('.block').length <= 0) {
+                        // show placeholder
+                        $parent.append($('#target-placeholder').html());
+                    }
+                });
+
                 $('.context-preview').on('click', block, function() {
                     $('#codePreview').modal();
                     block.menu.popover('hide');
@@ -401,15 +422,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             <div class="modal-body">
                                                 <p>{{ 'admin.content.layout.block.modal.move.body'|trans }}</p>
                                                 <div>
-                                                    <select class="form-control">
-                                                        <option>{{ 'admin.content.layout.section.header'|trans }}</option>
-                                                        <option>...</option>
+                                                    <select id="move-section" class="form-control">
                                                     </select>
+                                                    <input type="hidden" id="target-block" />
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
                                                 <button class="btn btn-ec-regular w-25" type="button" data-dismiss="modal">{{ 'admin.content.layout.block.modal.move.close'|trans }}</button>
-                                                <button class="btn btn-ec-conversion w-25" type="button" data-dismiss="modal">{{ 'admin.content.layout.block.modal.move.execute'|trans }}</button>
+                                                <button id="move-to-section" class="btn btn-ec-conversion w-25" type="button" data-dismiss="modal">{{ 'admin.content.layout.block.modal.move.execute'|trans }}</button>
                                             </div>
                                         </div>
                                     </div>
