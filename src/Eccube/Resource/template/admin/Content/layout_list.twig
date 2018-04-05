@@ -38,7 +38,7 @@
             var confirmMove = $('#confirmMove');
             var containerRows = $('div.sortables');
             containerRows.each(function () {
-                doUpdateSortNo($(this));
+                updateSortNumber($(this));
             });
 
             confirmMove.on('click', 'button', function () {
@@ -49,7 +49,7 @@
                 }
             });
 
-            function doUpdateSortNo(mainRows) {
+            function updateSortNumber(mainRows) {
                 var update = [];
                 var layoutId = mainRows.attr('data-layout-id');
 
@@ -71,6 +71,7 @@
                                 if (confirmMove.data('confirm') == false) {
                                     mainRows.sortable("cancel");
                                 }
+
                                 if (confirmMove.data('confirm') == true) {
                                     if (ui.item.parent().find('[data-page-id="' + ui.item.data('page-id') + '"]').length > 1) {
                                         $('#duplicateNotification').modal('show');
@@ -91,7 +92,6 @@
                         } else {
                             updateSortNo(mainRows, layoutId);
                         }
-
                     }
                 });
             }
