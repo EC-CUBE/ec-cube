@@ -54,26 +54,25 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 });
             });
 
-            var main = $('#unused-block');
-            var input = $("div.first input", main);
-            input.on('keyup', function () {
-                searchBlock();
+            // Search block unused
+            var unusedBlock = $('#unused-block');
+            var input = $("div.first input", unusedBlock);
+            input.on('keyup change', function () {
+                searchUnusedBlock(unusedBlock);
             });
-            function searchBlock() {
-                var filter, ul, li, a, i;
 
-                filter = input.val().toUpperCase();
-                ul = $("div.sort", main);
-                li = ul.getElementsByTagName("div");
-                for (i = 0; i < li.length; i++) {
-                    a = li[i].getElementsByTagName("a")[0];
-                    if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                        li[i].style.display = "";
+            var searchUnusedBlock = function (unusedBlock) {
+                var filter = input.val().toUpperCase();
+                var items = unusedBlock.find("div.sort");
+                items.each(function () {
+                    var a = $('a.view_readme', $(this));
+                    if (a.html().toUpperCase().indexOf(filter) > -1) {
+                        $(this).removeClass('d-none').addClass('d-block');
                     } else {
-                        li[i].style.display = "none";
+                        $(this).addClass('d-none').removeClass('d-block');
                     }
-                }
-            }
+                });
+            };
         });
     </script>
 {% endblock javascript %}
@@ -287,14 +286,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <div id="unused-block" class="d-block border border-ec-gray">
                                             <div id="position_{{ constant('Eccube\\Entity\\Page::TARGET_ID_UNUSED') }}" class="d-block p-3 ui-sortable">
                                                 <p class="font-weight-bold mb-2">{{ 'admin.content.layout.block.unuse'|trans }}</p>
-                                                {# TODO 未実装 ブロック検索 #}
                                                 <div class="mb-3">
                                                     <div class="form-row">
                                                         <div class="col">
-                                                            <input class="form-control" type="search" aria-label="Search">
-                                                        </div>
-                                                        <div class="col-auto">
-                                                            <button class="btn btn-ec-sub" type="submit"><i class="fa fa-search fa-lg text-secondary"></i></button>
+                                                            <div class="input-group mb-3">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text" id="basic-addon1"><i class="fa fa-search"></i></span>
+                                                                </div>
+                                                                <input class="form-control" type="search" aria-label="Search">
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -329,7 +329,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     {% set loop_index = loop_index + 1 %}
                                                 {% endfor %}
                                             </div>
-                                        </div>
+                                        </div><!-- /#unused-block -->
                                     </div>
                                 </div>
                                 <div class="modal fade" id="clickStreamConfirm" tabindex="-1" role="dialog" aria-labelledby="clickStreamConfirm" aria-hidden="true">
