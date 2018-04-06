@@ -50,25 +50,49 @@ class EditController extends AbstractController
     protected $shippingRepository;
 
     /**
+     * @var SerializerInterface
+     */
+    protected $serializer;
+
+    /**
      * @var ShippingStatusRepository
      */
-    protected $shippingStatusReposisotry;
+    protected $shippingStatusRepository;
 
+    /**
+     * @var \Eccube\Service\MailService
+     */
+    protected $mailService;
+
+    /**
+     * EditController constructor.
+     *
+     * @param MailService $mailService
+     * @param OrderItemRepository $orderItemRepository
+     * @param CategoryRepository $categoryRepository
+     * @param DeliveryRepository $deliveryRepository
+     * @param TaxRuleService $taxRuleService
+     * @param ShippingRepository $shippingRepository
+     * @param ShippingStatusRepository $shippingStatusRepository
+     * @param SerializerInterface $serializer
+     */
     public function __construct(
+        MailService $mailService,
         OrderItemRepository $orderItemRepository,
         CategoryRepository $categoryRepository,
         DeliveryRepository $deliveryRepository,
         TaxRuleService $taxRuleService,
         ShippingRepository $shippingRepository,
-        ShippingStatusRepository $shippingStatusReposisotry,
+        ShippingStatusRepository $shippingStatusRepository,
         SerializerInterface $serializer
     ) {
+        $this->mailService = $mailService;
         $this->orderItemRepository = $orderItemRepository;
         $this->categoryRepository = $categoryRepository;
         $this->deliveryRepository = $deliveryRepository;
         $this->taxRuleService = $taxRuleService;
         $this->shippingRepository = $shippingRepository;
-        $this->shippingStatusReposisotry = $shippingStatusReposisotry;
+        $this->shippingStatusRepository = $shippingStatusRepository;
         $this->serializer = $serializer;
     }
 
@@ -100,7 +124,7 @@ class EditController extends AbstractController
         // 編集前のお届け先のアイテム情報を保持
         $OriginalOrderItems = new ArrayCollection();
 
-        foreach ($TargetShipping->getOrderItems() as $OrderItem) {
+        foreach ($OriginShipping->getOrderItems() as $OrderItem) {
             $OriginalOrderItems->add($OrderItem);
         }
 
@@ -110,7 +134,8 @@ class EditController extends AbstractController
         $form = $builder->getForm();
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
+            // TODO: Should move logic out of controller such as service, modal
 
             // FIXME 税額計算は CalculateService で処理する. ここはテストを通すための暫定処理
             // see EditControllerTest::testOrderProcessingWithTax
@@ -124,47 +149,51 @@ class EditController extends AbstractController
                 $taxtotal += $tax * $OrderItem->getQuantity();
             }
 
-            // 登録ボタン押下
-            switch ($request->get('mode')) {
-                case 'register_and_commit':
-                    if ($form->isValid()) {
-                        $ShippingStatus = $this->shippingStatusReposisotry->find(ShippingStatus::SHIPPED);
-                        $TargetShipping->setShippingStatus($ShippingStatus);
-                        $TargetShipping->setShippingDate(new \DateTime());
-                    }
-                // no break
-                case 'register':
-
-                    log_info('出荷登録開始', array($TargetShipping->getId()));
-                    // TODO 在庫の有無や販売制限数のチェックなども行う必要があるため、完了処理もcaluclatorのように抽象化できないか検討する.
-                    if ($form->isValid()) {
-                        // TODO 後続にある会員情報の更新のように、完了処理もcaluclatorのように抽象化できないか検討する.
-
-                        // 画面上で削除された明細をremove
-                        foreach ($OriginalOrderItems as $OrderItem) {
-                            if (false === $TargetShipping->getOrderItems()->contains($OrderItem)) {
-                                $OrderItem->setShipping(null);
-                            }
-                        }
-
-                        foreach ($TargetShipping->getOrderItems() as $OrderItem) {
-                            $OrderItem->setShipping($TargetShipping);
-                        }
-                        $this->entityManager->persist($TargetShipping);
-                        $this->entityManager->flush();
-
-                        $this->addSuccess('admin.shipping.edit.save.complete', 'admin');
-
-                        log_info('出荷登録完了', array($TargetShipping->getId()));
-
-                        return $this->redirectToRoute('admin_shipping_edit', array('id' => $TargetShipping->getId()));
-                    }
-
-                    break;
-
-                default:
-                    break;
+            log_info('出荷登録開始', array($TargetShipping->getId()));
+            // TODO 在庫の有無や販売制限数のチェックなども行う必要があるため、完了処理もcaluclatorのように抽象化できないか検討する.
+            // TODO 後続にある会員情報の更新のように、完了処理もcaluclatorのように抽象化できないか検討する.
+            // 画面上で削除された明細をremove
+            foreach ($OriginalOrderItems as $OrderItem) {
+                if (false === $TargetShipping->getOrderItems()->contains($OrderItem)) {
+                    $OrderItem->setShipping(null);
+                }
             }
+
+            foreach ($TargetShipping->getOrderItems() as $OrderItem) {
+                $OrderItem->setShipping($TargetShipping);
+            }
+
+            $OriginShippingStatus = $OriginShipping->getShippingStatus();
+            $TargetShippingStatus = $TargetShipping->getShippingStatus();
+            if ((!$OriginShippingStatus || $OriginShippingStatus->getId() != ShippingStatus::SHIPPED)
+                && ($TargetShippingStatus && $TargetShippingStatus->getId() == ShippingStatus::SHIPPED)
+            ) {
+                $TargetShipping->setShippingDate(new \DateTime());
+                if ($form->get('notify_email')->getData()) {
+                    try {
+                        $this->mailService->sendShippingNotifyMail($TargetShipping);
+                    } catch (\Twig_Error $e) {
+                        log_error('メール通知エラー', [$TargetShipping->getId(), $e]);
+                        $this->addError('admin.shipping.edit.shipped_mail_failed', 'admin');
+                    }
+
+                }
+            }
+
+            try {
+                $this->entityManager->persist($TargetShipping);
+                $this->entityManager->flush();
+
+                $this->addSuccess('admin.shipping.edit.save.complete', 'admin');
+
+                log_info('出荷登録完了', array($TargetShipping->getId()));
+
+                return $this->redirectToRoute('admin_shipping_edit', array('id' => $TargetShipping->getId()));
+            } catch (\Exception $e) {
+                log_error('配信登録エラー', [$TargetShipping->getId(), $e]);
+                $this->addError('admin.flash.register_failed', 'admin');
+            }
+
         }
 
         // 配送業者のお届け時間

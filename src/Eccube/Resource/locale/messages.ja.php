@@ -1799,6 +1799,7 @@ return [
     'admin.shipping.edit.order_date' => '注文日時',
     'admin.shipping.edit.order_name' => 'お名前',
     'admin.shipping.edit.order_item' => '注文内容',
+    'admin.shipping.edit.shipped_mail_failed' => 'メール通知エラー',
     'admin.shipping.index.759' => '出荷管理',
     'admin.shipping.index.760' => '出荷マスター',
     'admin.shipping.index.761' => 'チェックボックスが選択されていません',
