@@ -53,6 +53,27 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     alert('err');
                 });
             });
+
+            var main = $('#unused-block');
+            var input = $("div.first input", main);
+            input.on('keyup', function () {
+                searchBlock();
+            });
+            function searchBlock() {
+                var filter, ul, li, a, i;
+
+                filter = input.val().toUpperCase();
+                ul = $("div.sort", main);
+                li = ul.getElementsByTagName("div");
+                for (i = 0; i < li.length; i++) {
+                    a = li[i].getElementsByTagName("a")[0];
+                    if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        li[i].style.display = "";
+                    } else {
+                        li[i].style.display = "none";
+                    }
+                }
+            }
         });
     </script>
 {% endblock javascript %}
@@ -263,7 +284,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         </div>
                                     </div>
                                     <div class="col-3 p-2">
-                                        <div class="d-block border border-ec-gray">
+                                        <div id="unused-block" class="d-block border border-ec-gray">
                                             <div id="position_{{ constant('Eccube\\Entity\\Page::TARGET_ID_UNUSED') }}" class="d-block p-3 ui-sortable">
                                                 <p class="font-weight-bold mb-2">{{ 'admin.content.layout.block.unuse'|trans }}</p>
                                                 {# TODO 未実装 ブロック検索 #}
