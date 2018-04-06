@@ -2,8 +2,10 @@
 
 namespace Eccube\Tests\Web\Admin\Order;
 
+use Eccube\Common\Constant;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Order;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\Master\CsvTypeRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
@@ -12,8 +14,6 @@ use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
-use Eccube\Entity\Order;
-use Eccube\Common\Constant;
 
 class OrderControllerTest extends AbstractAdminWebTestCase
 {
@@ -101,6 +101,20 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             $this->generateUrl('admin_order')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
+    public function testIndexInitial()
+    {
+        // 初期表示時検索条件テスト
+        $crawler = $this->client->request(
+            'GET',
+            $this->generateUrl('admin_order')
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $this->expected = '検索結果：10件が該当しました';
+        $this->actual = $crawler->filter('#search_form #search_total_count')->text();
+        $this->verify();
     }
 
     public function testSearchOrderById()
