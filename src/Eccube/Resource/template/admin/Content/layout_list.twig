@@ -35,6 +35,7 @@
     <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.sortable.min.js', 'admin') }}"></script>
     <script>
         $(function () {
+            var update = [];
             var confirmMove = $('#confirmMove');
             var containerRows = $('div.sortables');
             containerRows.each(function () {
@@ -50,7 +51,6 @@
             });
 
             function updateSortNumber(mainRows) {
-                var update = [];
                 var layoutId = mainRows.attr('data-layout-id');
 
                 mainRows.sortable({
