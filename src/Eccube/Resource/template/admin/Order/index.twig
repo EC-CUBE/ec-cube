@@ -57,6 +57,29 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
       });
     }
 
+    // 購入金額
+    function paymentCommaConvert(value){
+        // 入力値を数字型に変換
+        value = value.split(',').join('').trim();
+        if(!isNaN(value)) {
+            value = Number(value);
+            // カンマ区切り表記に変換
+            value = value.toLocaleString();
+        }
+        return value;
+    }
+
+    $('input[id^="admin_search_order_payment_total_start"]').keyup(function() {
+        var value = $(this).val();
+        value = paymentCommaConvert(value);
+        $(this).val(value);
+    });
+    $('input[id^="admin_search_order_payment_total_end"]').keyup(function() {
+        var value = $(this).val();
+        value = paymentCommaConvert(value);
+        $(this).val(value);
+    });
+
     toggleBtnBulk('input[id^="check_"]', '.btn-bulk-wrapper');
     $('input[id^="check_"]').on('change', function() {
         toggleBtnBulk('input[id^="check_"]', '.btn-bulk-wrapper');
