@@ -53,27 +53,38 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     alert('err');
                 });
             });
-
-            // Search block unused
-            var unusedBlock = $('#unused-block');
-            var input = $("div.first input", unusedBlock);
-            input.on('keyup change', function () {
-                searchUnusedBlock(unusedBlock);
-            });
-
-            var searchUnusedBlock = function (unusedBlock) {
-                var filter = input.val().toUpperCase();
-                var items = unusedBlock.find("div.sort");
-                items.each(function () {
-                    var a = $('a.view_readme', $(this));
-                    if (a.html().toUpperCase().indexOf(filter) > -1) {
-                        $(this).removeClass('d-none').addClass('d-block');
-                    } else {
-                        $(this).addClass('d-none').removeClass('d-block');
-                    }
-                });
-            };
         });
+    </script>
+    <script>
+        var searchWord = function(){
+            var searchText = $(this).val(), // 検索ボックスに入力された値
+                targetText;
+
+            // 検索ボックスに値が入っていない場合
+            if (searchText == '') {
+                // 全て表示する
+                $('#unused-block .sort').show();
+                return;
+            }
+
+            // 検索ボックスに値が入ってる場合
+            // 表示を全て空にする
+            $('#unused-block .sort').hide();
+
+            // 検索ワードが（子を含めて）含まれる要素のみ表示
+            $('#unused-block .sort').each(function() {
+                targetText = $(this).find('.col a').text();
+
+                // 検索対象となるリストに入力された文字列が存在するかどうかを判断
+                if (targetText.indexOf(searchText) != -1) {
+                    // 存在する場合はそのリストのテキストを用意した配列に格納
+                    $(this).show();
+                }
+            });
+        };
+
+        // searchWordの実行
+        $('#search-block').on('input', searchWord);
     </script>
 {% endblock javascript %}
 
@@ -293,14 +304,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text" id="basic-addon1"><i class="fa fa-search"></i></span>
                                                                 </div>
-                                                                <input class="form-control" type="search" aria-label="Search">
+                                                                <input id="search-block" class="form-control" type="search" aria-label="Search">
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 {% for UnusedBlock in UnusedBlocks %}
                                                     <div id="detail_box__layout_item--{{ UnusedBlock.id }}"
-                                                         class="sort{% if loop.first %} first{% endif %} d-block border border-ec-gray bg-ec-lightGray p-2 mb-2">
+                                                         class="sort{% if loop.first %} first{% endif %} border border-ec-gray bg-ec-lightGray p-2 mb-2">
                                                         <div class="row justify-content-between">
                                                             <div class="col">
                                                                 <i class="fa fa-bars text-ec-gray mr-3"></i>
