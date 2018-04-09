@@ -125,7 +125,7 @@ class EditController extends AbstractController
         // 編集前のお届け先のアイテム情報を保持
         $OriginalOrderItems = new ArrayCollection();
 
-        foreach ($OriginShipping->getOrderItems() as $OrderItem) {
+        foreach ($TargetShipping->getOrderItems() as $OrderItem) {
             $OriginalOrderItems->add($OrderItem);
         }
 
