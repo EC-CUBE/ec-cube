@@ -55,11 +55,19 @@ class ShippingEditControllerTest extends AbstractAdminWebTestCase
 
     public function testEditShippingStatusShipped()
     {
+        $this->client->enableProfiler();
+
+        $Order = $this->createOrder($this->createCustomer());
         /** @var Shipping $Shipping */
-        $Shipping = $this->shippingRepository->findOneBy(['ShippingStatus' => ShippingStatus::PREPARED]);
+        $Shipping = $Order->getShippings()->first();
+        $Shipping->setShippingStatus($this->entityManager->find(ShippingStatus::class, ShippingStatus::PREPARED));
+        $this->entityManager->persist($Shipping);
+        $this->entityManager->flush();
+
         $this->assertNull($Shipping->getShippingDate());
         $arrFormData = $this->createShippingForm();
         $arrFormData['ShippingStatus'] = ShippingStatus::SHIPPED;
+        $arrFormData['notify_email'] = 'on';
         $this->client->request(
             'POST',
             $this->generateUrl('admin_shipping_edit', ['id' => $Shipping->getId()]),
@@ -67,6 +75,17 @@ class ShippingEditControllerTest extends AbstractAdminWebTestCase
                 'shipping' => $arrFormData
             )
         );
+        $this->assertTrue($this->client->getResponse()->isRedirection());
+
+
+        $Messages = $this->getMailCollector(false)->getMessages();
+        self::assertEquals(1, count($Messages));
+        /** @var \Swift_Message $Message */
+        $Message = $Messages[0];
+
+        self::assertRegExp('/\[.*?\] 商品出荷のお知らせ/', $Message->getSubject());
+        self::assertEquals([$Order->getEmail() => null], $Message->getTo());
+
         $crawler = $this->client->followRedirect();
 
         $success = $crawler->filter('#page_admin_shipping_edit > div.c-container > div.c-contentsArea > div.alert.alert-success')->text();
@@ -77,8 +96,14 @@ class ShippingEditControllerTest extends AbstractAdminWebTestCase
 
     public function testEditShippingStatusPrepared()
     {
+        $Order = $this->createOrder($this->createCustomer());
         /** @var Shipping $Shipping */
-        $Shipping = $this->shippingRepository->findOneBy(['ShippingStatus' => ShippingStatus::SHIPPED]);
+        $Shipping = $Order->getShippings()->first();
+        $Shipping->setShippingStatus($this->entityManager->find(ShippingStatus::class, ShippingStatus::SHIPPED));
+        $Shipping->setShippingDate(new \DateTime());
+        $this->entityManager->persist($Shipping);
+        $this->entityManager->flush();
+
         $this->assertNotNull($Shipping->getShippingDate());
         $arrFormData = $this->createShippingForm();
         $arrFormData['ShippingStatus'] = ShippingStatus::PREPARED;

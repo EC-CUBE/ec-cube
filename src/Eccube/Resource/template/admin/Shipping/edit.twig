@@ -103,38 +103,32 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             shippingDateInput = shippingForm.find('input[name*="shipping_date"]'),
             shippingStatusSelect = shippingForm.find('select[name*="ShippingStatus"]');
 
-        shippedNotifyModal.find('[data-confirm]').on('click', function() {
-            shippedNotifyModal.data('confirm', $(this).data('confirm'));
-        });
         shippingStatusSelect.on('change', function() {
             if ($(this).val() == {{ constant('Eccube\\Entity\\Master\\ShippingStatus::SHIPPED') }}) {
-                shippingDateInput.attr('disabled', 'disabled');
+                shippingDateInput.attr('readonly', 'readonly');
+                shippingForm.find('#btn_save')
+                .attr('data-toggle', 'modal')
+                .attr('data-target', '#shippedNotifyModal')
+                .attr('type', 'button');
             } else {
-                shippingDateInput.removeAttr('disabled');
+                shippingDateInput.removeAttr('readonly');
+                shippingForm.find('#btn_save')
+                .attr('type', 'submit')
+                .removeAttr('data-toggle')
+                .removeAttr('data-target');
                 shippingDateInput.val('');
             }
         });
-         shippedNotifyModal.on('show.bs.modal', function(e) {
-                var viewUrl = $('#viewEmail');
-                if (viewUrl.length) {
-                    $.ajax(viewUrl.data('preview-url')).done(function(res) {
-                        viewUrl.find(' > pre').text(res);
-                    });
-                }
+        shippingStatusSelect.trigger('change');
+        shippedNotifyModal.on('show.bs.modal', function(e) {
+            var viewUrl = $('#viewEmail');
+            if (viewUrl.length) {
+                $.ajax(viewUrl.data('preview-url')).done(function(res) {
+                    viewUrl.find(' > pre').text(res);
+                });
+            }
+        });
 
-            });
-         shippedNotifyModal.on('hidden.bs.modal', function() {
-            if (shippedNotifyModal.data('confirm') == 'continue') {
-                shippingForm.off('submit.shipped');
-                shippingForm.submit();
-            }
-        });
-        shippingForm.on('submit.shipped', function(event) {
-            if (shippingStatusSelect.val() == {{ constant('Eccube\\Entity\\Master\\ShippingStatus::SHIPPED') }}) {
-                event.preventDefault();
-                shippedNotifyModal.modal('show');
-            }
-        });
     </script>
 
 {% endblock javascript %}
@@ -178,8 +172,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button class="btn btn-ec-sub" type="button" data-dismiss="modal" data-confirm="cancel">{{ 'admin.shipping.index.815'|trans }}</button>
-                                    <button class="btn btn-ec-conversion" type="button" data-dismiss="modal" data-confirm="continue">{{ 'admin.shipping.index.816'|trans }}</button>
+                                    <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.shipping.index.815'|trans }}</button>
+                                    <button class="btn btn-ec-conversion" type="submit">{{ 'admin.shipping.index.816'|trans }}</button>
                                 </div>
                             </div>
                         </div>
@@ -325,7 +319,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                                   aria-hidden="true"></i><span>{{ 'admin.shipping.edit.ship_date'|trans }}</span></div>
                                             <div class="col">
                                                 {% set shippingDateDisabled = (Shipping.ShippingStatus and Shipping.ShippingStatus.id == constant('Eccube\\Entity\\Master\\ShippingStatus::SHIPPED')) %}
-                                                {{ form_widget(form.shipping_date, {attr: {'disabled': (shippingDateDisabled ? 'disabled' : false)}}) }}
+                                                {{ form_widget(form.shipping_date, {attr: {'readonly': (shippingDateDisabled ? 'readonly' : false)}}) }}
                                                 {{ form_errors(form.shipping_date) }}
                                             </div>
                                         </div>
@@ -458,8 +452,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 {{ form_errors(form.ShippingStatus) }}
                             </div>
                             <div class="col-auto">
-                                {# TODO (編集時)情報更新が行われたらモーダルを表示->モーダルからsubmitする #}
-                                <button type="submit" class="btn btn-ec-conversion px-4">
+                                <button type="submit" class="btn btn-ec-conversion px-4" id="btn_save">
                                     {{ 'admin.shipping.edit.register_shipping'|trans }}
                                 </button>
                                 {#<button type="submit" class="btn btn-ec-conversion px-4" data-toggle="modal"#}
