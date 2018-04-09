@@ -24,6 +24,7 @@ class IntlExtension extends AbstractExtension
      * localizeddate('medium', 'none')のショートカット.
      *
      * 2015/08/28のように、日までのフォーマットで表示します(localeがjaの場合).
+     * null,空文字に対して利用した場合は、空文字を返却します.
      *
      * @param Environment $env
      * @param $date
@@ -31,6 +32,10 @@ class IntlExtension extends AbstractExtension
      */
     public function date_day(Environment $env, $date)
     {
+        if (!$date) {
+            return '';
+        }
+
         return \twig_localized_date_filter($env, $date, 'medium', 'none');
     }
 
@@ -38,6 +43,7 @@ class IntlExtension extends AbstractExtension
      * localizeddate('medium', 'short')のショートカット.
      *
      * 2015/08/28 16:13のように、分までのフォーマットで表示します(localeがjaの場合).
+     * null,空文字に対して利用した場合は、空文字を返却します.
      *
      * @param Environment $env
      * @param $date
@@ -45,6 +51,10 @@ class IntlExtension extends AbstractExtension
      */
     public function date_min(Environment $env, $date)
     {
+        if (!$date) {
+            return '';
+        }
+
         return \twig_localized_date_filter($env, $date, 'medium', 'short');
     }
 }
