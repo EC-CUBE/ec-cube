@@ -187,11 +187,6 @@ class ShippingType extends AbstractType
                     new Assert\NotBlank(),
                 ),
             ))
-            ->add('shipping_date', DateType::class, array(
-                'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
-                'required' => false,
-            ))
             ->add('shipping_delivery_date', DateType::class, array(
                 'label' => 'shipping.label.delivery_date',
                 'placeholder' => '',

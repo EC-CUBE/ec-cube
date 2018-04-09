@@ -100,13 +100,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         {# TODO: Should move logic js into js file intead of twig #}
         var shippedNotifyModal = $('#shippedNotifyModal'),
             shippingForm = $('#form_shipping'),
-            shippingDateInput = shippingForm.find('input[name*="shipping_date"]'),
             shippingStatusSelect = shippingForm.find('select[name*="ShippingStatus"]');
 
         shippingStatusSelect.on('change', function() {
             if ($(this).val() == {{ constant('Eccube\\Entity\\Master\\ShippingStatus::SHIPPED') }}) {
-                shippingDateInput.addClass('d-none');
-                shippingDateInput.next('.value').removeClass('d-none');
                 {%  if Shipping.ShippingStatus and  Shipping.ShippingStatus.id != constant('Eccube\\Entity\\Master\\ShippingStatus::SHIPPED') %}
                     shippingForm.find('#btn_save')
                         .attr('data-toggle', 'modal')
@@ -114,8 +111,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         .attr('type', 'button');
                 {% endif %}
             } else {
-                shippingDateInput.removeClass('d-none').val(shippingDateInput.attr('value'));
-                shippingDateInput.next('span').addClass('d-none');
                 {%  if Shipping.ShippingStatus and  Shipping.ShippingStatus.id != constant('Eccube\\Entity\\Master\\ShippingStatus::SHIPPED') %}
                     shippingForm.find('#btn_save')
                         .attr('type', 'submit')
@@ -323,14 +318,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             <div class="col-3"><i class="fa fa-truck mr-1"
                                                                   aria-hidden="true"></i><span>{{ 'admin.shipping.edit.ship_date'|trans }}</span></div>
                                             <div class="col">
-                                                {%  if Shipping.ShippingStatus and Shipping.ShippingStatus.id == constant('Eccube\\Entity\\Master\\ShippingStatus::SHIPPED') %}
-                                                    {{ form_widget(form.shipping_date, {attr: {class: 'd-none'}}) }}
-                                                    <span class="value">{{ Shipping.shipping_date|date_format }}</span>
-                                                {% else %}
-                                                    {{ form_widget(form.shipping_date) }}
-                                                {% endif %}
-                                                {{ form_errors(form.shipping_date) }}
-                                            </div>
+                                                <span>{{ Shipping.id ? Shipping.shipping_date|date_min }}</span></div>
                                         </div>
                                         <div class="row mb-2 align-items-center">
                                             <div class="col-3"><i class="fa fa-refresh mr-1"
