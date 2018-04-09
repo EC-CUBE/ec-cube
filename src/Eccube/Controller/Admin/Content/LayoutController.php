@@ -234,7 +234,7 @@ class LayoutController extends AbstractController
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException();
         }
-
+        $this->isTokenValid();
         $id = $request->get('id');
 
         if (is_null($id)) {
