@@ -166,19 +166,33 @@ class EditController extends AbstractController
 
             $OriginShippingStatus = $OriginShipping->getShippingStatus();
             $TargetShippingStatus = $TargetShipping->getShippingStatus();
-            if ((!$OriginShippingStatus || $OriginShippingStatus->getId() != ShippingStatus::SHIPPED)
-                && ($TargetShippingStatus && $TargetShippingStatus->getId() == ShippingStatus::SHIPPED)
-            ) {
-                $TargetShipping->setShippingDate(new \DateTime());
-                if ($form->get('notify_email')->getData()) {
-                    try {
-                        $this->mailService->sendShippingNotifyMail($TargetShipping);
-                    } catch (\Twig_Error $e) {
-                        log_error('メール通知エラー', [$TargetShipping->getId(), $e]);
-                        $this->addError('admin.shipping.edit.shipped_mail_failed', 'admin');
-                    }
 
+            // 出荷ステータス変更時の処理
+            if ($TargetShippingStatus !== null
+             && $TargetShippingStatus->getId() == ShippingStatus::SHIPPED) {
+                // 「出荷済み」にステータスが変更された場合
+                if ($OriginShippingStatus === null
+                 || $OriginShippingStatus->getId() != $TargetShippingStatus->getId()) {
+                    // 出荷日時を更新
+                    $TargetShipping->setShippingDate(new \DateTime());
+                    // 出荷メールを送信
+                    if ($form->get('notify_email')->getData()) {
+                        try {
+                            $this->mailService->sendShippingNotifyMail(
+                              $TargetShipping
+                            );
+                        } catch (\Twig_Error $e) {
+                            log_error('メール通知エラー', [$TargetShipping->getId(), $e]);
+                            $this->addError(
+                              'admin.shipping.edit.shipped_mail_failed',
+                              'admin'
+                            );
+                        }
+                    }
                 }
+            } else {
+                // 「出荷済み」以外に変更した場合は、出荷日時をクリアする
+                $TargetShipping->setShippingDate(null);
             }
 
             try {
