@@ -184,6 +184,7 @@
                                 </div>
                             </div>
                         </div>
+
                         {# layouts #}
                         {% for Layout in Layouts %}
                             {% if Layout.devicetype.id == constant('\\Eccube\\Entity\\Master\\DeviceType::DEVICE_TYPE_PC') %}
@@ -211,10 +212,6 @@
                                                     <div class="row justify-content-between p-3">
                                                         <div class="col-auto">
                                                             <i class="fa fa-bars text-ec-gray mr-3"></i><span>{{ Page.name }}</span>
-                                                        </div>
-                                                        {# TODO ページを削除できるようにする #}
-                                                        <div class="col-auto text-right">
-                                                            <a href=""><i class="fa fa-close fa-lg text-secondary mr-1"></i></a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -290,13 +287,7 @@
                                             {% for Page in Layout.pages %}
                                                 <div class="card-body p-0">
                                                     <div class="row justify-content-between p-3">
-                                                        <div class="col-auto"><i
-                                                                    class="fa fa-bars text-ec-gray mr-3"></i><span>{{ Page.name }}</span>
-                                                        </div>
-                                                        {# TODO ページを削除できるようにする #}
-                                                        <div class="col-auto text-right"><a><i
-                                                                        class="fa fa-close fa-lg text-secondary mr-1"></i></a>
-                                                        </div>
+                                                        <div class="col-auto"><i class="fa fa-bars text-ec-gray mr-3"></i><span>{{ Page.name }}</span></div>
                                                     </div>
                                                 </div>
                                             {% endfor %}

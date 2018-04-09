@@ -26,9 +26,14 @@ namespace Eccube\Service;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
+use Eccube\Entity\MailHistory;
+use Eccube\Entity\MailTemplate;
+use Eccube\Entity\Order;
+use Eccube\Entity\OrderItem;
+use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
-use Eccube\Repository\BaseInfoRepository;
+use Eccube\Repository\MailHistoryRepository;
 use Eccube\Repository\MailTemplateRepository;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -44,6 +49,11 @@ class MailService
      * @var MailTemplateRepository
      */
     protected $mailTemplateRepository;
+
+    /**
+     * @var MailHistoryRepository
+     */
+    private $mailHistoryRepository;
 
     /**
      * @var EventDispatcher
@@ -70,14 +80,16 @@ class MailService
      *
      * @param \Swift_Mailer $mailer
      * @param MailTemplateRepository $mailTemplateRepository
+     * @param MailHistoryRepository $mailHistoryRepository
      * @param BaseInfo $baseInfo
-     * @param EventDispatcher $eventDispatcher
+     * @param EventDispatcherInterface $eventDispatcher
      * @param \Twig_Environment $twig
      * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
         \Swift_Mailer $mailer,
         MailTemplateRepository $mailTemplateRepository,
+        MailHistoryRepository $mailHistoryRepository,
         BaseInfo $baseInfo,
         EventDispatcherInterface $eventDispatcher,
         \Twig_Environment $twig,
@@ -85,6 +97,7 @@ class MailService
     ) {
         $this->mailer = $mailer;
         $this->mailTemplateRepository = $mailTemplateRepository;
+        $this->mailHistoryRepository = $mailHistoryRepository;
         $this->BaseInfo = $baseInfo;
         $this->eventDispatcher = $eventDispatcher;
         $this->eccubeConfig = $eccubeConfig;
@@ -546,5 +559,65 @@ class MailService
             ->setBody($body);
 
         $this->mailer->send($message);
+    }
+
+    /**
+     * 発送通知メールを送信する.
+     * 発送通知メールは受注ごとに送られる
+     * @param Shipping $Shipping
+     * @throws \Twig_Error
+     */
+    public function sendShippingNotifyMail(Shipping $Shipping) {
+
+        log_info('出荷通知メール送信処理開始', ['id' => $Shipping->getId()]);
+
+        $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['eccube_shipping_notify_mail_template_id']);
+
+        /** @var Order $Order */
+        foreach ($Shipping->getOrders() as $Order) {
+            $message = (new \Swift_Message())
+                ->setSubject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
+                ->setFrom([$this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()])
+                ->setTo($Order->getEmail())
+                ->setBcc($this->BaseInfo->getEmail01())
+                ->setReplyTo($this->BaseInfo->getEmail03())
+                ->setReturnPath($this->BaseInfo->getEmail04())
+                ->setBody($this->getShippingNotifyMailBody($Shipping, $Order, $MailTemplate));
+
+            $this->mailer->send($message);
+
+            $MailHistory = new MailHistory();
+            $MailHistory->setMailSubject($message->getSubject())
+                    ->setMailBody($message->getBody())
+                    ->setOrder($Order)
+                    ->setSendDate(new \DateTime());
+
+            $this->mailHistoryRepository->save($MailHistory);
+        }
+
+        log_info('出荷通知メール送信処理完了', ['id' => $Shipping->getId()]);
+    }
+
+    /**
+     * @param Shipping $Shipping
+     * @param Order $Order
+     * @param MailTemplate|null $MailTemplate
+     * @return string
+     * @throws \Twig_Error
+     */
+    public function getShippingNotifyMailBody(Shipping $Shipping, Order $Order, MailTemplate $MailTemplate = null)
+    {
+        $ShippingItems = array_filter($Shipping->getOrderItems()->toArray(), function(OrderItem $OrderItem) use ($Order) {
+            return $OrderItem->getOrderId() === $Order->getId();
+        });
+
+        /** @var MailTemplate $MailTemplate */
+        $MailTemplate = $MailTemplate ?? $this->mailTemplateRepository->find($this->eccubeConfig['eccube_shipping_notify_mail_template_id']);
+        return $this->twig->render($MailTemplate->getFileName(), [
+            'Shipping' => $Shipping,
+            'ShippingItems' => $ShippingItems,
+            'header' => $MailTemplate->getMailHeader(),
+            'footer' => $MailTemplate->getMailFooter()
+        ]);
     }
 }

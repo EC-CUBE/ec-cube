@@ -1,0 +1,22 @@
+<table class="table table-striped">
+    <thead class="table-active">
+    <tr>
+        <th class="pt-2 pb-2 pl-2">{{ 'admin.product.index.standart.modal.col1'|trans }}</th>
+        <th class="pt-2 pb-2">{{ 'admin.product.index.standart.modal.col2'|trans }}</th>
+        <th class="pt-2 pb-2">{{ 'admin.product.index.standart.modal.col3'|trans }}</th>
+        <th class="pt-2 pb-2">{{ 'admin.product.index.standart.modal.col4'|trans }}</th>
+        <th class="pt-2 pb-2 pr-2">{{ 'admin.product.index.standart.modal.col5'|trans }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for Class in data %}
+        <tr>
+            <td class="pl-3">{% if Class.hasClassCategory1 %}{{ Class.ClassCategory1.name }}{% endif %}</td>
+            <td>{% if Class.hasClassCategory2 %}{{ Class.ClassCategory2.name }}{% endif %}</td>
+            <td>{{ Class.code }}</td>
+            <td>{% if Class.stock_unlimited %}{{ 'admin.product.index.standart.modal.unlimited'|trans }}{% else %}{{ Class.stock }}{% endif %}</td>
+            <td class="pr-3">{{ Class.price02|price }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
