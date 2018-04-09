@@ -1781,7 +1781,6 @@ return [
     'admin.shipping.edit.last_modified_by' => '最終更新者',
     'admin.shipping.edit.produtcs_title' => '出荷商品概要',
     'admin.shipping.edit.add_product' => '商品を追加',
-    'admin.shipping.edit.calculate_shipping_fee' => '送料を計算',
     'admin.shipping.edit.product_name_and_code' => '商品名・コード',
     'admin.shipping.edit.order_id' => '注文番号',
     'admin.shipping.edit.price' => '単価',
