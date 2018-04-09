@@ -38,6 +38,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class PaymentController
@@ -313,5 +314,30 @@ class PaymentController extends AbstractController
         }
 
         return $this->redirectToRoute('admin_setting_shop_payment');
+    }
+
+    /**
+     * @Method("POST")
+     * @Route("/%eccube_admin_route%/setting/shop/payment/sort_no/move", name="admin_setting_shop_payment_sort_no_move")
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function moveSortNo(Request $request)
+    {
+        if ($request->isXmlHttpRequest()) {
+            $this->isTokenValid();
+            $sortNos = $request->request->all();
+            foreach ($sortNos as $paymentId => $sortNo) {
+                /** @var Payment $Payment */
+                $Payment = $this->paymentRepository
+                    ->find($paymentId);
+                $Payment->setSortNo($sortNo);
+                $this->entityManager->persist($Payment);
+            }
+            $this->entityManager->flush();
+        }
+
+        return new Response();
     }
 }

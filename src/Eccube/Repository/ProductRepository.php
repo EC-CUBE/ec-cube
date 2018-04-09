@@ -27,6 +27,7 @@ namespace Eccube\Repository;
 use Eccube\Common\EccubeConfig;
 use Eccube\Doctrine\Query\Queries;
 use Eccube\Entity\Product;
+use Eccube\Entity\ProductStock;
 use Eccube\Util\StringUtil;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -248,6 +249,20 @@ class ProductRepository extends AbstractRepository
             $qb
                 ->andWhere('pc.stock_unlimited = :StockUnlimited AND pc.stock = 0')
                 ->setParameter('StockUnlimited', $searchData['stock_status']);
+        }
+
+        // stock status
+        if (isset($searchData['stock']) && !empty($searchData['stock'])) {
+            switch ($searchData['stock']) {
+                case [ProductStock::IN_STOCK]:
+                    $qb->andWhere('pc.stock_unlimited = true OR pc.stock > 0');
+                    break;
+                case [ProductStock::OUT_OF_STOCK]:
+                    $qb->andWhere('pc.stock_unlimited = false AND pc.stock <= 0');
+                    break;
+                default:
+                    // 共に選択された場合は全権該当するので検索条件に含めない
+            }
         }
 
         // crate_date

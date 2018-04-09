@@ -534,8 +534,8 @@
                 // 初期値を保持しておく
                 this.proce01_origin = $price01.text();
             }
-            if (classcat2 && typeof classcat2.price01 !== 'undefined' && String(classcat2.price01).length >= 1) {
-                $price01.text('¥ ' + classcat2.price01);
+            if (classcat2 && typeof classcat2.price01_inc_tax !== 'undefined' && String(classcat2.price01_inc_tax).length >= 1) {
+                $price01.text('¥ ' + classcat2.price01_inc_tax);
             } else {
                 $price01.text(this.proce01_origin);
             }
@@ -548,8 +548,8 @@
                 // 初期値を保持しておく
                 this.proce02_origin = $price02.text();
             }
-            if (classcat2 && typeof classcat2.price02 !== 'undefined' && String(classcat2.price02).length >= 1) {
-                $price02.text('¥ ' + classcat2.price02);
+            if (classcat2 && typeof classcat2.price02_inc_tax !== 'undefined' && String(classcat2.price02_inc_tax).length >= 1) {
+                $price02.text('¥ ' + classcat2.price02_inc_tax);
             } else {
                 $price02.text(this.proce02_origin);
             }
