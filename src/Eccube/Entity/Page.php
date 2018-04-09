@@ -838,7 +838,7 @@ class Page extends \Eccube\Entity\AbstractEntity
 
     /**
      * @param $layoutId
-     * @return null|string
+     * @return null|int
      */
     public function getSortNo($layoutId)
     {

@@ -112,7 +112,7 @@ class PageLayout extends AbstractEntity
     /**
      * Set sort_no
      *
-     * @param string $sortNo
+     * @param int $sortNo
      * @return Page
      */
     public function setSortNo($sortNo)
@@ -125,7 +125,7 @@ class PageLayout extends AbstractEntity
     /**
      * Get sort_no
      *
-     * @return string
+     * @return int
      */
     public function getSortNo()
     {

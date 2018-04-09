@@ -244,24 +244,26 @@ class LayoutController extends AbstractController
             throw new BadRequestHttpException();
         }
 
-        $sortNos = $request->request->get('newSortNos');
-        $targetLayoutId = $request->request->get('targetLayoutId');
+        if ($this->isTokenValid()) {
+            $sortNos = $request->request->get('newSortNos');
+            $targetLayoutId = $request->request->get('targetLayoutId');
 
-        foreach ($sortNos as $ids => $sortNo) {
+            foreach ($sortNos as $ids => $sortNo) {
 
-            $id = explode('-', $ids);
-            $pageId = $id[0];
-            $layoutId = $id[1];
+                $id = explode('-', $ids);
+                $pageId = $id[0];
+                $layoutId = $id[1];
 
-            /* @var $Item PageLayoutRepository */
-            $Item = $this->pageLayoutRepository
-                ->findOneBy(['page_id' => $pageId, 'layout_id' => $layoutId]);
+                /* @var $Item PageLayoutRepository */
+                $Item = $this->pageLayoutRepository
+                    ->findOneBy(['page_id' => $pageId, 'layout_id' => $layoutId]);
 
-            $Item->setLayoutId($targetLayoutId);
-            $Item->setSortNo($sortNo);
-            $this->entityManager->persist($Item);
+                $Item->setLayoutId($targetLayoutId);
+                $Item->setSortNo($sortNo);
+                $this->entityManager->persist($Item);
+            }
+            $this->entityManager->flush();
         }
-        $this->entityManager->flush();
 
         return new Response();
     }
