@@ -1655,6 +1655,7 @@ return [
     'admin.setting.shop.tax_rule.tax_rule_default' => '基本税率設定',
     'admin.setting.shop.tax_rule.decision' => '決定',
     'admin.setting.shop.tax_rule.cancel' => 'キャンセル',
+    'admin.setting.shop.tax_rule.639' => '個別税率設定',
     'admin.setting.shop.tradelaw.651' => 'ショップ設定',
     'admin.setting.shop.tradelaw.652' => '特定商取引法管理',
     'admin.setting.shop.tradelaw.653' => '特定商取引法',
