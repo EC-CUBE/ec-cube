@@ -218,8 +218,7 @@
                                             {% endfor %}
                                         </div>
                                     {% else %}
-                                        <div class="collapse show ec-cardCollapse"
-                                             id="topPageLayout-pc-{{ Layout.id }}">
+                                        <div class="collapse show ec-cardCollapse" id="topPageLayout-pc-{{ Layout.id }}">
                                             <div class="card-body p-0">
                                                 <div class="d-block p-3">
                                                     <span class="text-muted">{{ 'admin.content.layout_list.no_pages_message'|trans }}</span>
@@ -276,7 +275,7 @@
                                                 <button class="btn btn-ec-sub" type="button" data-toggle="modal" data-target="#layoutDelete">{{ 'admin.content.layout_list.delete_layout'|trans }}</button>
                                             </div>
                                             <div class="col-4 text-right">
-                                                <a data-toggle="collapse" href="#topPageLayout-mobile-{{ Layout.devicetype.id }}" aria-expanded="false" aria-controls="topPageLayout-mobile"><i class="fa fa-angle-up fa-lg"></i></a></div>
+                                                <a data-toggle="collapse" href="#topPageLayout-mobile-{{ Layout.devicetype.id }}" aria-expanded="false" aria-controls="topPageLayout-mobile-{{ Layout.devicetype.id }}"><i class="fa fa-angle-up fa-lg"></i></a></div>
                                         </div>
                                     </div>
 
