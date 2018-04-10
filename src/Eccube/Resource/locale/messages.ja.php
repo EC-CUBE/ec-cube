@@ -1882,6 +1882,8 @@ return [
     'admin.shipping.index.828' => '処理完了',
     'admin.shipping.index.829' => '発送済みにします',
     'admin.shipping.index.830' => '出荷情報を発送済みにします。同時におこなう操作を選択してから［変更を確定］ボタンを押してください。この操作は取り消すことができません。ご注意ください。',
+    'admin.shipping.index.831' => '出荷情報を削除してもよろしいですか？',
+    'admin.shipping.delete.complete' => '出荷情報を削除しました。',
     'admin.shipping.search_product.800' => '注文日・注文ID<br>注文者<br>注文内容',
     'admin.shipping.search_product.801' => '注文ID: %order_id%',
     'admin.shipping.search_product.802' => '決定',

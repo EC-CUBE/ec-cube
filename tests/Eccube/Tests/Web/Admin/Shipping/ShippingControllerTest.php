@@ -5,10 +5,12 @@ namespace Eccube\Tests\Web\Admin\Shipping;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Master\ShippingStatus;
+use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
 use Eccube\Repository\Master\CsvTypeRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\Master\SexRepository;
+use Eccube\Repository\OrderItemRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Repository\ShippingRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
@@ -150,6 +152,48 @@ class ShippingControllerTest extends AbstractAdminWebTestCase
         $this->verify();
     }
 
+    public function testBulkDelete()
+    {
+        $shippingIds = [];
+        $orderItemIds = [];
+
+        $Customer = $this->createCustomer();
+
+        for ($i = 0; $i < 5; $i++) {
+            $Order = $this->createOrder($Customer);
+
+            $Shippings = $Order->getShippings();
+
+            /** @var Shipping $Shipping */
+            foreach ($Shippings as $Shipping) {
+                $shippingIds[] = $Shipping->getId();
+
+                $OrderItems = $Shipping->getOrderItems();
+
+                /** @var OrderItem $OrderItem */
+                foreach ($OrderItems as $OrderItem) {
+                    $orderItemIds[] = $OrderItem->getId();
+                }
+            }
+        }
+
+        $this->entityManager->flush();
+
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_shipping_bulk_delete'),
+            ['ids' => $shippingIds]
+        );
+
+        $Shippings = $this->container->get(ShippingRepository::class)->findBy(['id' => $shippingIds]);
+        $this->assertCount(0, $Shippings);
+
+        $OrderItems = $this->container->get(OrderItemRepository::class)->findBy(['id' => $orderItemIds]);
+        /** @var OrderItem $OrderItem */
+        foreach ($OrderItems as $OrderItem) {
+            $this->assertNull($OrderItem->getShipping());
+        }
+    }
 
     public function testExportShipping()
     {
