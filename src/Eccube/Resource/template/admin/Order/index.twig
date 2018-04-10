@@ -57,16 +57,20 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
       });
     }
 
-    {# TODO: Implement toggleBtn JS function to show/hide bulk buttons depend on checked checkbox #}
+    toggleBtnBulk('input[id^="check_"]', '.btn-bulk-wrapper');
+    $('input[id^="check_"]').on('change', function() {
+        toggleBtnBulk('input[id^="check_"]', '.btn-bulk-wrapper');
+    });
 
     // 登録チェックボックス
-    $('#check-all').on('change', function() {
+    $('#check_all').on('change', function() {
         var checked = $(this).prop('checked');
         if (checked) {
-            $('input[id^=check-]').prop('checked', true);
+            $('input[id^="check_"]').prop('checked', true);
         } else {
-            $('input[id^=check-]').prop('checked', false);
+            $('input[id^="check_"]').prop('checked', false);
         }
+         toggleBtnBulk('input[id^="check_"]', '.btn-bulk-wrapper');
     });
 
     $('#btn_bulk_status').on('bulk-submit', function (event) {
@@ -347,30 +351,34 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <form id="form_bulk" method="POST" action="">
                     <input type="hidden" name="{{ constant('Eccube\\Common\\Constant::TOKEN_NAME') }}" value="{{ csrf_token(constant('Eccube\\Common\\Constant::TOKEN_NAME')) }}">
                     <div class="row justify-content-between mb-2">
-                        <div class="col-auto">
-                            <label class="mr-2">{{ 'admin.order.index.label_bulk_actions'|trans }}</label>
-                            <button id="btn_bulk_mail" data-url="{{ url('admin_order_mail_all') }}" class="btn btn-ec-regular mr-2" data-submit="bulk" data-method="GET">
-                                {{ 'admin.order.index.btn_bulk_mail'|trans }}
-                            </button>
-                            {# TODO: This button is not implemented yet #}
-                            <button class="btn btn-ec-regular mr-2">{{ 'admin.order.index.btn_bulk_export'|trans }}</button>
-                            {# TODO: This button is not implemented yet #}
-                            <button type="button" class="btn btn-ec-delete" data-toggle="modal" data-target="#bulkDeleteModal">{{ 'admin.order.index.btn_bulk_delete'|trans }}</button>
-                        </div>
-                        <div class="col">
-                            <div class="d-inline-block mr-2">
-                                <select class="custom-select" id="option_bulk_status">
-                                    <option value="" selected>{{ 'admin.order.index.option_bulk_change_status'|trans }}</option>
-                                    {% for status in searchForm.multi_status %}
-                                        <option value="{{ url('admin_order_bulk_order_status', {'id': status.vars.value}) }}">{{ status.vars.label }}</option>
-                                    {% endfor %}
-                                </select>
+                        <div class="col-6">
+                            <div class="row justify-content-between">
+                                <div class="col-auto d-none btn-bulk-wrapper">
+                                    <label class="mr-2">{{ 'admin.order.index.label_bulk_actions'|trans }}</label>
+                                    <button id="btn_bulk_mail" data-url="{{ url('admin_order_mail_all') }}" class="btn btn-ec-regular mr-2" data-submit="bulk" data-method="GET">
+                                        {{ 'admin.order.index.btn_bulk_mail'|trans }}
+                                    </button>
+                                    {# TODO: This button is not implemented yet #}
+                                    <button class="btn btn-ec-regular mr-2">{{ 'admin.order.index.btn_bulk_export'|trans }}</button>
+                                    {# TODO: This button is not implemented yet #}
+                                    <button type="button" class="btn btn-ec-delete" data-toggle="modal" data-target="#bulkDeleteModal">{{ 'admin.order.index.btn_bulk_delete'|trans }}</button>
+                                </div>
+                                <div class="col d-none btn-bulk-wrapper">
+                                    <div class="d-inline-block mr-2">
+                                        <select class="custom-select" id="option_bulk_status">
+                                            <option value="" selected>{{ 'admin.order.index.option_bulk_change_status'|trans }}</option>
+                                            {% for status in searchForm.multi_status %}
+                                                <option value="{{ url('admin_order_bulk_order_status', {'id': status.vars.value}) }}">{{ status.vars.label }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <button id="btn_bulk_status" class="btn btn-ec-regular mr-2" data-submit="bulk" data-confirm="true">
+                                        {{ 'admin.order.index.btn_bulk_submit'|trans }}
+                                    </button>
+                                </div>
                             </div>
-                            <button id="btn_bulk_status" class="btn btn-ec-regular mr-2" data-submit="bulk" data-confirm="true">
-                                {{ 'admin.order.index.btn_bulk_submit'|trans }}
-                            </button>
                         </div>
-                        <div class="col-auto text-right">
+                        <div class="col-5 text-right">
                             <div class="d-inline-block">
                                 <select class="custom-select" onchange="location = this.value;">
                                     {% for pageMax in pageMaxis %}
@@ -400,7 +408,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <thead>
                                     <tr>
                                         <th class="border-top-0 pt-2 pb-2 pl-3">
-                                            <input type="checkbox" id="check-all" name="filter" value="open">
+                                            <input type="checkbox" id="check_all" name="filter" value="open">
                                         </th>
                                         <th class="border-top-0 pt-2 pb-2">{{ 'admin.order.index.328'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2">{{ 'admin.order.index.329'|trans }}</th>
@@ -428,7 +436,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 {% for Order in pagination %}
                                     <tr>
                                         <td class="align-middle pl-3">
-                                            <input type="checkbox"  name="ids[]" id="check--{{ Order.id }}" value="{{ Order.id }}">
+                                            <input type="checkbox"  name="ids[]" id="check_{{ Order.id }}" value="{{ Order.id }}">
                                         </td>
                                         <td class="align-middle" id="order_date--{{ Order.id }}">{{ Order.order_date|date_min }}</td>
                                         <td class="align-middle" id="id--{{ Order.id }}"><a class="action-edit" href="{{ url('admin_order_edit', { id : Order.id }) }}">{{ Order.id }}</a></td>
@@ -444,9 +452,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             <span class="badge {{ attribute(cssClassStatus, Order.OrderStatus.id) }}">{{ Order.OrderStatus }}</span>
                                         </td>
                                         <td class="align-middle">
-                                            <a class="btn btn-ec-actionIcon" href="{{ url('admin_order_edit', { id : Order.id }) }}#order_note" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ Order.note }}" aria-describedby="tooltip819464">
-                                                <i class="fa fa-commenting fa-lg text-secondary" aria-hidden="true"></i>
-                                            </a>
+                                            {% if Order.note is not empty %}
+                                                <a class="btn btn-ec-actionIcon" href="{{ url('admin_order_edit', { id : Order.id }) }}#order_note" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ Order.note }}" aria-describedby="tooltip819464">
+                                                    <i class="fa fa-commenting fa-lg text-secondary" aria-hidden="true"></i>
+                                                </a>
+                                            {% endif %}
                                         </td>
                                         <td class="align-middle pr-3">
                                             <div class="row justify-content-end">
