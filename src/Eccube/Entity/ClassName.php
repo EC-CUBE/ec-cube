@@ -42,7 +42,7 @@ class ClassName extends \Eccube\Entity\AbstractEntity
      */
     public function __toString()
     {
-        return $this->getName();
+        return $this->getBackendName();
     }
 
     /**
@@ -57,9 +57,9 @@ class ClassName extends \Eccube\Entity\AbstractEntity
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="backend_name", type="string", length=255)
      */
-    private $name;
+    private $backend_name;
 
     /**
      * @var string
@@ -129,27 +129,27 @@ class ClassName extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set name.
+     * Set backend_name.
      *
-     * @param string $name
+     * @param string $backend_name
      *
      * @return ClassName
      */
-    public function setName($name)
+    public function setBackendName($backendName)
     {
-        $this->name = $name;
+        $this->backend_name = $backendName;
 
         return $this;
     }
 
     /**
-     * Get name.
+     * Get backend_name.
      *
      * @return string
      */
-    public function getName()
+    public function getBackendName()
     {
-        return $this->name;
+        return $this->backend_name;
     }
 
     /**
@@ -177,7 +177,7 @@ class ClassName extends \Eccube\Entity\AbstractEntity
             return $this->display_name;
         }
 
-        return $this->name;
+        return $this->backend_name;
     }
 
     /**
