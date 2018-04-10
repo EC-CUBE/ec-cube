@@ -43,10 +43,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Twig\Environment as Twig;
 
 // todo プレビュー実装
 class LayoutController extends AbstractController
 {
+    const DUMMY_BLOCK_ID = 9999999999;
+
     /**
      * @var BlockRepository
      */
@@ -269,10 +272,14 @@ class LayoutController extends AbstractController
     }
 
     /**
-     * @Method("POST")
+     * @Method("GET")
      * @Route("/%eccube_admin_route%/content/layout/view_block", name="admin_content_layout_view_block")
+     *
+     * @param Request $request
+     * @param Twig $twig
+     * @return JsonResponse
      */
-    public function viewBlock(Request $request)
+    public function viewBlock(Request $request, Twig $twig)
     {
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException();
@@ -287,13 +294,12 @@ class LayoutController extends AbstractController
         $Block = $this->blockRepository->find($id);
 
         if (null === $Block) {
-            return new JsonResponse('layout.text.error.not_found');
+            throw new NotFoundHttpException();
         }
 
-        // ブロックのソースコードの取得.
-        // FIXME twig loaderから取得するように修正.
-        $file = $this->blockRepository->getReadTemplateFile($Block->getFileName());
-        $source = $file['tpl_data'];
+        $source = $twig->getLoader()
+                ->getSourceContext('Block/'.$Block->getFileName().'.twig')
+                ->getCode();
 
         return new JsonResponse([
             'id' => $Block->getId(),
