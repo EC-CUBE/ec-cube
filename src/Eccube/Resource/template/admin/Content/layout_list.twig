@@ -99,29 +99,34 @@
             function updateSortNo(mainRows, layoutId) {
                 $(".modal-backdrop").remove();
                 $("body").append($('<div class="modal-backdrop show"></div>'));
-
-                var newSortNos = {};
-                var i = 1;
-                $("div.card-body", mainRows).each(function () {
-                    if (this.dataset.pageId != undefined && this.dataset.layoutId != undefined) {
-                        newSortNos[this.dataset.pageId + '-' + this.dataset.layoutId] = i;
-                        i++;
-                    }
-                });
-
-                $.ajax({
-                    url: '{{ url('admin_content_layout_sort_no_move') }}',
-                    type: 'POST',
-                    data: {'newSortNos': newSortNos, 'targetLayoutId': layoutId}
-                }).done(function (data) {
-                    $('div.card-body', mainRows).each(function () {
-                        $(this).attr('data-layout-id', layoutId);
+                var items = $('div.card-body', mainRows);
+                if (items.length > 0) {
+                    var newSortNos = {};
+                    var i = 1;
+                    items.each(function () {
+                        if (this.dataset.pageId != undefined && this.dataset.layoutId != undefined) {
+                            newSortNos[this.dataset.pageId + '-' + this.dataset.layoutId] = i;
+                            i++;
+                        }
                     });
-                    $(".modal-backdrop").remove();
-                }).fail(function () {
-                    console.log('Failed');
-                    $(".modal-backdrop").remove();
-                });
+
+                    $.ajax({
+                        url: '{{ url('admin_content_layout_sort_no_move') }}',
+                        type: 'POST',
+                        data: {'newSortNos': newSortNos, 'targetLayoutId': layoutId}
+                    }).done(function (data) {
+                        $('div.empty-item', mainRows).hide();
+                        items.each(function () {
+                            $(this).attr('data-layout-id', layoutId);
+                        });
+                        $(".modal-backdrop").remove();
+                    }).fail(function () {
+                        console.log('Failed');
+                        $(".modal-backdrop").remove();
+                    });
+                } else {
+                    $('div.empty-item', mainRows).show();
+                }
             }
         });
     </script>
@@ -218,8 +223,10 @@
                                             {% endfor %}
                                         </div>
                                     {% else %}
-                                        <div class="collapse show ec-cardCollapse" id="topPageLayout-pc-{{ Layout.id }}">
-                                            <div class="card-body p-0">
+                                        <div class="collapse show ec-cardCollapse sortables"
+                                             data-layout-id="{{ Layout.id }}"
+                                             id="topPageLayout-pc-{{ Layout.id }}">
+                                            <div class="p-0 empty-item">
                                                 <div class="d-block p-3">
                                                     <span class="text-muted">{{ 'admin.content.layout_list.no_pages_message'|trans }}</span>
                                                 </div>
