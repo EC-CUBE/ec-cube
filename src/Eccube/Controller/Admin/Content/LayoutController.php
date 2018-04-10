@@ -226,7 +226,7 @@ class LayoutController extends AbstractController
     }
 
     /**
-     * @Method("POST")
+     * @Method("GET")
      * @Route("/%eccube_admin_route%/content/layout/view_block", name="admin_content_layout_view_block")
      */
     public function viewBlock(Request $request, Twig $twig)
@@ -234,7 +234,7 @@ class LayoutController extends AbstractController
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException();
         }
-        $this->isTokenValid();
+
         $id = $request->get('id');
 
         if (is_null($id)) {
