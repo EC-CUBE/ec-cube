@@ -146,7 +146,7 @@ class ProductClassController extends AbstractController
             $builder
                 ->add('class_name1', EntityType::class, [
                     'class' => 'Eccube\Entity\ClassName',
-                    'choice_label' => 'name',
+                    'choice_label' => 'backend_name',
                     'placeholder' => trans('product.placeholder.select_category01'),
                     'constraints' => [
                         new Assert\NotBlank(),
@@ -154,7 +154,7 @@ class ProductClassController extends AbstractController
                 ])
                 ->add('class_name2', EntityType::class, array(
                     'class' => 'Eccube\Entity\ClassName',
-                    'choice_label' => 'name',
+                    'choice_label' => 'backend_name',
                     'placeholder' => trans('product.placeholder.select_category02'),
                     'required' => false,
                 ));
@@ -669,13 +669,13 @@ class ProductClassController extends AbstractController
         $form = $this->formFactory->createBuilder()
             ->add('class_name1', EntityType::class, array(
                 'class' => 'Eccube\Entity\ClassName',
-                'choice_label' => 'name',
+                'choice_label' => 'backend_name',
                 'placeholder' => trans('product.placeholder.select_category01'),
                 'data' => $ClassName1,
             ))
             ->add('class_name2', EntityType::class, array(
                 'class' => 'Eccube\Entity\ClassName',
-                'choice_label' => 'name',
+                'choice_label' => 'backend_name',
                 'placeholder' => trans('product.placeholder.select_category02'),
                 'data' => $ClassName2,
             ))
