@@ -154,7 +154,7 @@ class EditController extends AbstractController
                         $this->entityManager->flush();
 
                         $this->addSuccess('admin.shipping.edit.save.complete', 'admin');
-
+                        $this->addInfo('admin.shipping.edit.save.info', 'admin');
                         log_info('出荷登録完了', array($TargetShipping->getId()));
 
                         return $this->redirectToRoute('admin_shipping_edit', array('id' => $TargetShipping->getId()));

@@ -19,3 +19,5 @@ id,creator_id,name,file_name,mail_subject,mail_header,mail_footer,create_date,up
 "5",,"問合受付メール","Mail/contact_mail.twig","お問い合わせを受け付けました。",,,"2017-03-07 10:14:52","2017-03-07 10:14:52","mailtemplate"
 "6",,"パスワードリセット","Mail/forgot_mail.twig","パスワード変更のご確認",,,"2017-03-07 10:14:52","2017-03-07 10:14:52","mailtemplate"
 "7",,"パスワードリマインダー","Mail/reset_complete_mail.twig","パスワード変更のお知らせ",,,"2017-03-07 10:14:52","2017-03-07 10:14:52","mailtemplate"
+"8",,"出荷通知メール","@admin/Mail/shipping_notify.twig","商品出荷のお知らせ","お客さまがご注文された以下の商品を発送いたしました。
+商品の到着まで、今しばらくお待ちください。",,"2017-03-07 10:14:52","2017-03-07 10:14:52","mailtemplate"
