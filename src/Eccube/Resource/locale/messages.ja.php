@@ -529,7 +529,7 @@ return [
     'admin.product.search.stock' => '在庫なし',
     'admin.product.product_class.save.complete' => '商品規格を登録しました。',
     'admin.product.product_class.update.complete' => '商品規格を更新しました。',
-    'admin.product.product_class.delete.complete' => '商品規格を削除しました。',
+    'admin.product.product_class.clear.complete' => '商品規格を削除しました。',
     'admin.product.copy.complete' => '商品を複製しました。',
     'admin.product.copy.failed' => '商品の複製に失敗しました。',
     'admin.product.csv_import.save.complete' => '商品登録CSVファイルをアップロードしました。',

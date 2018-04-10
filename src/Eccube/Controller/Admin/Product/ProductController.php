@@ -387,11 +387,19 @@ class ProductController extends AbstractController
             if (!$Product) {
                 throw new NotFoundHttpException();
             }
-            // 規格あり商品か
+            // 規格無しの商品の場合は、デフォルト規格を表示用に取得する
             $has_class = $Product->hasProductClass();
             if (!$has_class) {
                 $ProductClasses = $Product->getProductClasses();
-                $ProductClass = $ProductClasses[0];
+                foreach ($ProductClasses as $pc) {
+                    if (!is_null($pc->getClassCategory1())) {
+                        continue;
+                    }
+                    if ($pc->isVisible()) {
+                        $ProductClass = $pc;
+                        break;
+                    }
+                }
                 if ($this->BaseInfo->isOptionProductTaxRule() && $ProductClass->getTaxRule()) {
                     $ProductClass->setTaxRate($ProductClass->getTaxRule()->getTaxRate());
                 }
