@@ -838,4 +838,23 @@ class Page extends \Eccube\Entity\AbstractEntity
     {
         return $this->MasterPage;
     }
+
+    /**
+     * @param $layoutId
+     * @return null|int
+     */
+    public function getSortNo($layoutId)
+    {
+        $pageLayouts = $this->getPageLayouts();
+
+        /** @var PageLayout $pageLayout */
+        foreach ($pageLayouts as $pageLayout) {
+            if ($pageLayout->getLayoutId() == $layoutId) {
+
+                return $pageLayout->getSortNo();
+            }
+        }
+
+        return null;
+    }
 }

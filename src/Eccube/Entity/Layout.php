@@ -116,6 +116,7 @@ class Layout extends AbstractEntity
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(targetEntity="Eccube\Entity\PageLayout", mappedBy="Layout", cascade={"persist","remove"})
+     * @ORM\OrderBy({"sort_no" = "ASC"})
      */
     private $PageLayouts;
 
