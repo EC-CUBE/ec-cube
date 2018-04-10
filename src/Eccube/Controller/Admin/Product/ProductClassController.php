@@ -203,12 +203,14 @@ class ProductClassController extends AbstractController
                 'Product' => $Product,
             ]);
 
+            // デフォルト規格のみ有効にする
             foreach ($ProductClasses as $ProductClass) {
-                // デフォルト規格のみ有効にする
+                $ProductClass->setVisible(false);
+            }
+            foreach ($ProductClasses as $ProductClass) {
                 if (null === $ProductClass->getClassCategory1() && null === $ProductClass->getClassCategory2()) {
                     $ProductClass->setVisible(true);
-                } else {
-                    $ProductClass->setVisible(false);
+                    break;
                 }
             }
 
