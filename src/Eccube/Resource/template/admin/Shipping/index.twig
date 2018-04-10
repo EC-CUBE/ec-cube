@@ -361,7 +361,7 @@
                                 <th class="border-top-0 pt-2 pb-2">{{'admin.shipping.index.801'|trans}}</th>
                                 <th class="border-top-0 pt-2 pb-2">{{'admin.shipping.index.800'|trans}}</th>
                                 <th class="border-top-0 pt-2 pb-2">{{'admin.shipping.index.802'|trans}}</th>
-                                <th class="border-top-0 pt-2 pb-2">{{'admin.shipping.index.796'|trans}}</th>
+                                <th class="border-top-0 pt-2 pb-2">{{'admin.shipping.index.773'|trans}}</th>
                                 <th class="border-top-0 pt-2 pb-2">&nbsp;</th>
                                 <th class="border-top-0 pt-2 pb-2 pr-3">&nbsp;</th>
                             </tr>
@@ -399,8 +399,8 @@
                                 </td>
                                 <td class="align-middle">{{ Shipping.ShippingDeliveryName }}</td>
                                 <td class="align-middle">
-                                    {% if Shipping.ShippingDeliveryDate %}
-                                    <i class="fa fa-check fa-lg text-success mr-1" aria-hidden="true"></i>{{ Shipping.ShippingDeliveryDate|date_format }}
+                                    {% if Shipping.ShippingDate %}
+                                    <i class="fa fa-check fa-lg text-success mr-1" aria-hidden="true"></i>{{ Shipping.ShippingDate|date_format }}
                                     {% else %}
                                         -
                                     {% endif %}
