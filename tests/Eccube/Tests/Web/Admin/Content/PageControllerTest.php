@@ -133,4 +133,42 @@ class PageControllerTest extends AbstractAdminWebTestCase
             unlink($templatePath.'/'.$Page->getFileName().'.twig');
         }
     }
+
+    public function test_routing_AdminContentPageWithCreate()
+    {
+        $client = $this->client;
+        $faker = $this->getFaker();
+
+        $templatePath = $this->container->getParameter('eccube_theme_user_data_dir');
+
+        $name = $faker->word;
+        $source = $faker->realText();
+        $client->request(
+            'POST',
+            $this->generateUrl(
+                'admin_content_page_new'
+            ),
+            array(
+                'main_edit' => array(
+                    'name' => $name,
+                    'url' => $name,
+                    'file_name' => $name,
+                    'tpl_data' => $source,
+                    '_token' => 'dummy',
+                ),
+            )
+        );
+
+        $this->assertTrue($client->getResponse()->isRedirection());
+        preg_match('|content/page/([0-9]+)/edit|', $client->getResponse()->headers->get('Location'), $matches);
+        $Page = $this->container->get(PageRepository::class)->find($matches[1]);
+
+        $this->expected = $name;
+        $this->actual = $Page->getName();
+        $this->verify();
+
+        if (file_exists($templatePath.'/'.$Page->getFileName().'.twig')) {
+            unlink($templatePath.'/'.$Page->getFileName().'.twig');
+        }
+    }
 }
