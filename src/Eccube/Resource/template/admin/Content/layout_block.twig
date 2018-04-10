@@ -1,4 +1,4 @@
-<div class="d-block border border-ec-gray bg-ec-lightGray p-2 mb-2">
+<div id="detail_box__layout_item--{{ BlockPosition.Block.id }}" class="block d-block border border-ec-gray bg-ec-lightGray p-2 mb-2">
     <div class="row justify-content-between">
         <div class="col">
             <i class="fa fa-bars text-ec-gray mr-3"></i>
@@ -10,8 +10,7 @@
             >{{ BlockPosition.Block.name|length > 10 ? BlockPosition.Block.name|slice(0, 10) ~ '…' : BlockPosition.Block.name }}</a>
         </div>
         <div class="col-auto text-right">
-            <div id="detail_box__layout_item--{{ BlockPosition.Block.id }}"
-                 class="d-inline-block px-3 sort{% if loop.first %} first{% endif %}" data-container="body" data-toggle="popover" data-placement="bottom" data-content="&lt;div class='list-group'&gt;&lt;a href='#' class='list-group-item list-group-item-action border-0'&gt;&lt;i class='fa fa-long-arrow-up mr-1'&gt;&lt;/i&gt;上に移動&lt;/a&gt;&lt;a href='#' class='list-group-item list-group-item-action border-0'&gt;&lt;i class='fa fa-long-arrow-down mr-1'&gt;&lt;/i&gt;下に移動&lt;/a&gt;&lt;a href='#' class='list-group-item list-group-item-action border-0' data-toggle='modal' data-target='#clickStreamConfirm'&gt;&lt;i class='fa fa-arrows mr-1'&gt;&lt;/i&gt;セクションに移動&lt;/a&gt;&lt;a href='#' class='list-group-item list-group-item-action border-0' data-toggle='modal' data-target='#codePreview'&gt;&lt;i class='fa fa-code mr-1'&gt;&lt;/i&gt; コードプレビュー&lt;/a&gt;&lt;/div&gt;" data-html="true">
+            <div class="d-inline-block px-3 sort{% if loop.first %} first{% endif %}" data-container="body" data-toggle="popover" data-placement="bottom" data-content="&lt;div class='list-group'&gt;&lt;a href='#' class='list-group-item list-group-item-action border-0'&gt;&lt;i class='fa fa-long-arrow-up mr-1'&gt;&lt;/i&gt;上に移動&lt;/a&gt;&lt;a href='#' class='list-group-item list-group-item-action border-0'&gt;&lt;i class='fa fa-long-arrow-down mr-1'&gt;&lt;/i&gt;下に移動&lt;/a&gt;&lt;a href='#' class='list-group-item list-group-item-action border-0' data-toggle='modal' data-target='#clickStreamConfirm'&gt;&lt;i class='fa fa-arrows mr-1'&gt;&lt;/i&gt;セクションに移動&lt;/a&gt;&lt;a href='#' class='list-group-item list-group-item-action border-0' data-toggle='modal' data-target='#codePreview'&gt;&lt;i class='fa fa-code mr-1'&gt;&lt;/i&gt; コードプレビュー&lt;/a&gt;&lt;/div&gt;" data-html="true">
                 <input type="hidden" class="name" name="name_{{ loop_index }}"
                        value="{{ BlockPosition.Block.name }}"/>
                 <input type="hidden" class="block-id"
