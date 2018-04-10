@@ -55,6 +55,37 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             });
         });
     </script>
+    <script>
+        var searchWord = function(){
+            var searchText = $(this).val(), // 検索ボックスに入力された値
+                targetText;
+
+            // 検索ボックスに値が入っていない場合
+            if (searchText == '') {
+                // 全て表示する
+                $('#unused-block .sort').show();
+                return;
+            }
+
+            // 検索ボックスに値が入ってる場合
+            // 表示を全て空にする
+            $('#unused-block .sort').hide();
+
+            // 検索ワードが（子を含めて）含まれる要素のみ表示
+            $('#unused-block .sort').each(function() {
+                targetText = $(this).find('.col a').text();
+
+                // 検索対象となるリストに入力された文字列が存在するかどうかを判断
+                if (targetText.indexOf(searchText) != -1) {
+                    // 存在する場合はそのリストのテキストを用意した配列に格納
+                    $(this).show();
+                }
+            });
+        };
+
+        // searchWordの実行
+        $('#search-block').on('input', searchWord);
+    </script>
 {% endblock javascript %}
 
 {% block main %}
@@ -263,23 +294,24 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         </div>
                                     </div>
                                     <div class="col-3 p-2">
-                                        <div class="d-block border border-ec-gray">
+                                        <div id="unused-block" class="d-block border border-ec-gray">
                                             <div id="position_{{ constant('Eccube\\Entity\\Page::TARGET_ID_UNUSED') }}" class="d-block p-3 ui-sortable">
                                                 <p class="font-weight-bold mb-2">{{ 'admin.content.layout.block.unuse'|trans }}</p>
-                                                {# TODO 未実装 ブロック検索 #}
                                                 <div class="mb-3">
                                                     <div class="form-row">
                                                         <div class="col">
-                                                            <input class="form-control" type="search" aria-label="Search">
-                                                        </div>
-                                                        <div class="col-auto">
-                                                            <button class="btn btn-ec-sub" type="submit"><i class="fa fa-search fa-lg text-secondary"></i></button>
+                                                            <div class="input-group mb-3">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text" id="basic-addon1"><i class="fa fa-search"></i></span>
+                                                                </div>
+                                                                <input id="search-block" class="form-control" type="search" aria-label="Search">
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 {% for UnusedBlock in UnusedBlocks %}
                                                     <div id="detail_box__layout_item--{{ UnusedBlock.id }}"
-                                                         class="sort{% if loop.first %} first{% endif %} d-block border border-ec-gray bg-ec-lightGray p-2 mb-2">
+                                                         class="sort{% if loop.first %} first{% endif %} border border-ec-gray bg-ec-lightGray p-2 mb-2">
                                                         <div class="row justify-content-between">
                                                             <div class="col">
                                                                 <i class="fa fa-bars text-ec-gray mr-3"></i>
