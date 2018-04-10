@@ -41,15 +41,14 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class ShippingType extends AbstractType
 {
@@ -73,6 +72,14 @@ class ShippingType extends AbstractType
      */
     protected $BaseInfo;
 
+    /**
+     * ShippingType constructor.
+     *
+     * @param EccubeConfig $eccubeConfig
+     * @param DeliveryRepository $deliveryRepository
+     * @param DeliveryTimeRepository $deliveryTimeRepository
+     * @param BaseInfo $BaseInfo
+     */
     public function __construct(
         EccubeConfig $eccubeConfig,
         DeliveryRepository $deliveryRepository,
@@ -180,11 +187,6 @@ class ShippingType extends AbstractType
                     new Assert\NotBlank(),
                 ),
             ))
-            ->add('shipping_date', DateType::class, array(
-                'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
-                'required' => false,
-            ))
             ->add('shipping_delivery_date', DateType::class, array(
                 'label' => 'shipping.label.delivery_date',
                 'placeholder' => '',
@@ -221,6 +223,12 @@ class ShippingType extends AbstractType
                 'mapped' => false,
             ])
             ->add('ShippingStatus', ShippingStatusType::class)
+            ->add('notify_email', CheckboxType::class, array(
+                'label' => 'admin.shipping.index.813',
+                'mapped' => false,
+                'required' => false,
+                'data' => true
+            ))
             ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
                 /** @var \Eccube\Entity\Shipping $data */
                 $data = $event->getData();
