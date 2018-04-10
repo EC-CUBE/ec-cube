@@ -391,7 +391,11 @@ class ProductController extends AbstractController
             $has_class = $Product->hasProductClass();
             if (!$has_class) {
                 $ProductClasses = $Product->getProductClasses();
-                $ProductClass = $ProductClasses[0];
+                foreach ($ProductClasses as $productClass) {
+                    if ($productClass->isVisible()) {
+                        $ProductClass = $productClass;
+                    }
+                }
                 if ($this->BaseInfo->isOptionProductTaxRule() && $ProductClass->getTaxRule()) {
                     $ProductClass->setTaxRate($ProductClass->getTaxRule()->getTaxRate());
                 }
