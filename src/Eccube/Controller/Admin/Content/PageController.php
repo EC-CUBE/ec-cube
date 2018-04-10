@@ -33,6 +33,7 @@ use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\MainEditType;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\PageRepository;
+use Eccube\Repository\PageLayoutRepository;
 use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -50,6 +51,11 @@ class PageController extends AbstractController
     protected $pageRepository;
 
     /**
+     * @var PageLayoutRepository
+     */
+    protected $pageLayoutRepository;
+
+    /**
      * @var DeviceTypeRepository
      */
     protected $deviceTypeRepository;
@@ -62,9 +68,11 @@ class PageController extends AbstractController
      */
     public function __construct(
         PageRepository $pageRepository,
+        PageLayoutRepository $pageLayoutRepository,
         DeviceTypeRepository $deviceTypeRepository
     ) {
         $this->pageRepository = $pageRepository;
+        $this->pageLayoutRepository = $pageLayoutRepository;
         $this->deviceTypeRepository = $deviceTypeRepository;
     }
 
@@ -187,11 +195,15 @@ class PageController extends AbstractController
             }
 
             $Layout = $form['PcLayout']->getData();
+            $LastPageLayout = $this->pageLayoutRepository->findOneBy([], ['sort_no' => 'DESC']);
+            $sortNo = $LastPageLayout->getSortNo();
+
             if ($Layout) {
                 $PageLayout = new PageLayout();
                 $PageLayout->setLayoutId($Layout->getId());
                 $PageLayout->setLayout($Layout);
                 $PageLayout->setPageId($Page->getId());
+                $PageLayout->setSortNo($sortNo++);
                 $PageLayout->setPage($Page);
 
                 $this->entityManager->persist($PageLayout);
@@ -204,6 +216,7 @@ class PageController extends AbstractController
                 $PageLayout->setLayoutId($Layout->getId());
                 $PageLayout->setLayout($Layout);
                 $PageLayout->setPageId($Page->getId());
+                $PageLayout->setSortNo($sortNo++);
                 $PageLayout->setPage($Page);
 
                 $this->entityManager->persist($PageLayout);
