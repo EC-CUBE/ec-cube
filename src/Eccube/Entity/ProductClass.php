@@ -39,7 +39,6 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
 {
     private $price01_inc_tax = null;
     private $price02_inc_tax = null;
-    private $add = false;
     private $tax_rate = false;
 
     /**
@@ -111,30 +110,6 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
             return false;
         }
     }
-
-    /**
-     * Set add
-     *
-     * @param  bool $add
-     * @return ProductClass
-     */
-    public function setAdd($add)
-    {
-        $this->add = $add;
-
-        return $this;
-    }
-
-    /**
-     * Get add
-     *
-     * @return bool
-     */
-    public function getAdd()
-    {
-        return $this->add;
-    }
-
 
     /**
      * Set tax_rate

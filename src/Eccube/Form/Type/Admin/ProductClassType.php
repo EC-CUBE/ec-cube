@@ -134,11 +134,6 @@ class ProductClassType extends AbstractType
                 'required' => false,
                 'placeholder' => 'productclass.placeholder.not_specified',
             ])
-            ->add('add', CheckboxType::class, [
-                'label' => false,
-                'required' => false,
-                'value' => 1,
-            ])
             ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
                 $form = $event->getForm();
                 $data = $form->getData();
