@@ -181,7 +181,7 @@ class EditController extends AbstractController
                             $this->mailService->sendShippingNotifyMail(
                               $TargetShipping
                             );
-                        } catch (\Twig_Error $e) {
+                        } catch (\Exception $e) {
                             log_error('メール通知エラー', [$TargetShipping->getId(), $e]);
                             $this->addError(
                               'admin.shipping.edit.shipped_mail_failed',
@@ -205,7 +205,7 @@ class EditController extends AbstractController
 
                 return $this->redirectToRoute('admin_shipping_edit', array('id' => $TargetShipping->getId()));
             } catch (\Exception $e) {
-                log_error('配信登録エラー', [$TargetShipping->getId(), $e]);
+                log_error('出荷登録エラー', [$TargetShipping->getId(), $e]);
                 $this->addError('admin.flash.register_failed', 'admin');
             }
 
