@@ -31,6 +31,7 @@ use Eccube\Entity\Layout;
 use Eccube\Form\Type\Master\DeviceTypeType;
 use Eccube\Repository\BlockRepository;
 use Eccube\Repository\LayoutRepository;
+use Eccube\Repository\PageLayoutRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -38,13 +39,17 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Twig\Environment as Twig;
 
 // todo プレビュー実装
 class LayoutController extends AbstractController
 {
+    const DUMMY_BLOCK_ID = 9999999999;
+
     /**
      * @var BlockRepository
      */
@@ -56,14 +61,21 @@ class LayoutController extends AbstractController
     protected $layoutRepository;
 
     /**
+     * @var PageLayoutRepository
+     */
+    protected $pageLayoutRepository;
+
+    /**
      * LayoutController constructor.
      * @param BlockRepository $blockRepository
      * @param LayoutRepository $layoutRepository
+     * @param PageLayoutRepository $pageLayoutRepository
      */
-    public function __construct(BlockRepository $blockRepository, LayoutRepository $layoutRepository)
+    public function __construct(BlockRepository $blockRepository, LayoutRepository $layoutRepository, PageLayoutRepository $pageLayoutRepository)
     {
         $this->blockRepository = $blockRepository;
         $this->layoutRepository = $layoutRepository;
+        $this->pageLayoutRepository = $pageLayoutRepository;
     }
 
     /**
@@ -224,9 +236,50 @@ class LayoutController extends AbstractController
 
     /**
      * @Method("POST")
-     * @Route("/%eccube_admin_route%/content/layout/view_block", name="admin_content_layout_view_block")
+     * @Route("/%eccube_admin_route%/content/layout/sort_no/move", name="admin_content_layout_sort_no_move")
+     *
+     * @param Request $request
+     * @return Response
      */
-    public function viewBlock(Request $request)
+    public function moveSortNo(Request $request)
+    {
+        if (!$request->isXmlHttpRequest()) {
+            throw new BadRequestHttpException();
+        }
+
+        if ($this->isTokenValid()) {
+            $sortNos = $request->request->get('newSortNos');
+            $targetLayoutId = $request->request->get('targetLayoutId');
+
+            foreach ($sortNos as $ids => $sortNo) {
+
+                $id = explode('-', $ids);
+                $pageId = $id[0];
+                $layoutId = $id[1];
+
+                /* @var $Item PageLayoutRepository */
+                $Item = $this->pageLayoutRepository
+                    ->findOneBy(['page_id' => $pageId, 'layout_id' => $layoutId]);
+
+                $Item->setLayoutId($targetLayoutId);
+                $Item->setSortNo($sortNo);
+                $this->entityManager->persist($Item);
+            }
+            $this->entityManager->flush();
+        }
+
+        return new Response();
+    }
+
+    /**
+     * @Method("GET")
+     * @Route("/%eccube_admin_route%/content/layout/view_block", name="admin_content_layout_view_block")
+     *
+     * @param Request $request
+     * @param Twig $twig
+     * @return JsonResponse
+     */
+    public function viewBlock(Request $request, Twig $twig)
     {
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException();
@@ -241,13 +294,12 @@ class LayoutController extends AbstractController
         $Block = $this->blockRepository->find($id);
 
         if (null === $Block) {
-            return new JsonResponse('layout.text.error.not_found');
+            throw new NotFoundHttpException();
         }
 
-        // ブロックのソースコードの取得.
-        // FIXME twig loaderから取得するように修正.
-        $file = $this->blockRepository->getReadTemplateFile($Block->getFileName());
-        $source = $file['tpl_data'];
+        $source = $twig->getLoader()
+                ->getSourceContext('Block/'.$Block->getFileName().'.twig')
+                ->getCode();
 
         return new JsonResponse([
             'id' => $Block->getId(),

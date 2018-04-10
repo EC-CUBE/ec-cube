@@ -172,6 +172,7 @@ class OrderController extends AbstractController
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_INITIALIZE, $event);
 
         $searchForm = $builder->getForm();
+        $searchData = [];
 
         /**
          * ページの表示件数は, 以下の順に優先される.

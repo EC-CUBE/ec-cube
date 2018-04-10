@@ -69,28 +69,41 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
     }
 
     /**
-     * Render test
+     * 規格あり商品の初期表示
      */
-    public function testRoutingAdminProductProductClassEdit()
+    public function testRoutingProductClass()
     {
         $Product = $this->createProduct();
-        // Main
-        $redirectUrl = $this->generateUrl('admin_product_product_class', ['id' => $Product->getId()]);
-        $this->client->request(
-            'POST',
-            $this->generateUrl('admin_product_product_class_edit', ['id' => $Product->getId()])
+        $crawler = $this->client->request(
+            'GET',
+            $this->generateUrl('admin_product_product_class', ['id' => $Product->getId()])
         );
 
-        // Then
-        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        // 商品登録画面に移動する確認
-        $crawler = $this->client->followRedirect();
-        $csvExportUrl = $crawler->filter('div.c-conversionArea > div > div > div:nth-child(1) > div > a')->selectLink('商品マスター')->link()->getUri();
+        // 初期化ボタンが表示されている
+        $this->assertCount(1, $crawler->selectButton('商品規格の初期化'));
+        // 更新ボタンが表示されている
+        $this->assertCount(1, $crawler->selectButton('更新'));
+    }
 
-        $crawler = $this->client->request('GET', $csvExportUrl);
-        $panelName = $crawler->filter('div.c-pageTitle > div > h2')->text();
-        $this->assertContains('商品マスター', $panelName);
+    /**
+     * 規格なし商品の初期表示
+     */
+    public function testRoutingNonProductClass()
+    {
+        $Product = $this->createProduct(null, 0);
+        $crawler = $this->client->request(
+            'GET',
+            $this->generateUrl('admin_product_product_class', ['id' => $Product->getId()])
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        // 設定ボタンが表示されている
+        $this->assertCount(1, $crawler->selectButton('商品規格の設定'));
+        // 登録ボタンは表示されていない
+        $this->assertCount(0, $crawler->selectButton('登録'));
     }
 
     /**
@@ -115,17 +128,13 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
             $this->generateUrl('admin_product_product_class', ['id' => $product->getId()])
         );
         $form = $crawler->selectButton('商品規格の設定')->form();
-        $form['form[class_name1]'] = $className->getId();
+        $form['product_class_matrix[class_name1]'] = $className->getId();
         $crawler = $this->client->submit($form);
         // select class category without tax
         /* @var \Symfony\Component\DomCrawler\Form $form */
         $form = $crawler->selectButton('登録')->form();
-        $form['form[product_classes][0][add]']->tick();
-        $form['form[product_classes][0][tax_rate]'] = -2;
-        $node = $form->getNode(0);
-        $node->setAttribute('action', $this->generateUrl('admin_product_product_class_edit', [
-            'id' => $product->getId(),
-        ]));
+        $form['product_class_matrix[product_classes][0][checked]']->tick();
+        $form['product_class_matrix[product_classes][0][tax_rate]'] = -2;
         $crawler = $this->client->submit($form);
 
         // THEN
@@ -161,17 +170,16 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
             $this->generateUrl('admin_product_product_class', ['id' => $product->getId()])
         );
         $form = $crawler->selectButton('商品規格の設定')->form();
-        $form['form[class_name1]'] = $className->getId();
+        $form['product_class_matrix[class_name1]'] = $className->getId();
         $crawler = $this->client->submit($form);
 
         // select class category without tax
         /* @var \Symfony\Component\DomCrawler\Form $form */
         $form = $crawler->selectButton('登録')->form();
-        $form['form[product_classes][0][add]']->tick();
-        $node = $form->getNode(0);
-        $node->setAttribute('action', $this->generateUrl('admin_product_product_class_edit', [
-            'id' => $product->getId(),
-        ]));
+        $form['product_class_matrix[product_classes][0][checked]']->tick();
+        $form['product_class_matrix[product_classes][0][stock]'] = 1;
+        $form['product_class_matrix[product_classes][0][price02]'] = 1;
+
         $this->client->submit($form);
 
         // THEN
@@ -209,19 +217,17 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
             $this->generateUrl('admin_product_product_class', ['id' => $product->getId()])
         );
         $form = $crawler->selectButton('商品規格の設定')->form();
-        $form['form[class_name1]'] = $className->getId();
+        $form['product_class_matrix[class_name1]'] = $className->getId();
         $crawler = $this->client->submit($form);
 
         // select class category with tax = 0;
         $taxRate = 0;
         /* @var \Symfony\Component\DomCrawler\Form $form */
         $form = $crawler->selectButton('登録')->form();
-        $form['form[product_classes][0][add]']->tick();
-        $form['form[product_classes][0][tax_rate]'] = $taxRate;
-        $node = $form->getNode(0);
-        $node->setAttribute('action', $this->generateUrl('admin_product_product_class_edit', [
-            'id' => $product->getId(),
-        ]));
+        $form['product_class_matrix[product_classes][0][checked]']->tick();
+        $form['product_class_matrix[product_classes][0][stock]'] = 1;
+        $form['product_class_matrix[product_classes][0][price02]'] = 1;
+        $form['product_class_matrix[product_classes][0][tax_rate]'] = $taxRate;
         $this->client->submit($form);
 
         // THEN
@@ -258,18 +264,16 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
             $this->generateUrl('admin_product_product_class', ['id' => $product->getId()])
         );
         $form = $crawler->selectButton('商品規格の設定')->form();
-        $form['form[class_name1]'] = $className->getId();
+        $form['product_class_matrix[class_name1]'] = $className->getId();
         $crawler = $this->client->submit($form);
 
         // select class category without tax
         /* @var \Symfony\Component\DomCrawler\Form $form */
         $form = $crawler->selectButton('登録')->form();
-        $form['form[product_classes][0][add]']->tick();
-        $form['form[product_classes][0][tax_rate]'] = $this->faker->randomNumber(2);
-        $node = $form->getNode(0);
-        $node->setAttribute('action', $this->generateUrl('admin_product_product_class_edit', [
-            'id' => $product->getId(),
-        ]));
+        $form['product_class_matrix[product_classes][0][checked]']->tick();
+        $form['product_class_matrix[product_classes][0][stock]'] = 1;
+        $form['product_class_matrix[product_classes][0][price02]'] = 1;
+        $form['product_class_matrix[product_classes][0][tax_rate]'] = $this->faker->randomNumber(2);
         $this->client->submit($form);
 
         // THEN
@@ -282,7 +286,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         /* @var TaxRule $taxRule */
         $taxRule = $this->taxRuleRepository->findOneBy(['Product' => $product]);
 
-        $this->assertEquals($form['form[product_classes][0][tax_rate]']->getValue(), $taxRule->getTaxRate());
+        $this->assertEquals($form['product_class_matrix[product_classes][0][tax_rate]']->getValue(), $taxRule->getTaxRate());
     }
 
     /**
@@ -307,13 +311,10 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // edit class category with tax rate invalid
         /* @var Form $form */
         $form = $crawler->selectButton('更新')->form();
-        $form['form[product_classes][0][tax_rate]'] = -1;
-        $form['mode'] = 'update';
-        $node = $form->getNode(0);
-        $node->setAttribute('action', $this->generateUrl('admin_product_product_class_edit', [
-            'id' => $id,
-        ]));
-
+        $form['product_class_matrix[product_classes][0][checked]']->tick();
+        $form['product_class_matrix[product_classes][0][stock]'] = 1;
+        $form['product_class_matrix[product_classes][0][price02]'] = 1;
+        $form['product_class_matrix[product_classes][0][tax_rate]'] = -1;
         $crawler = $this->client->submit($form);
 
         // THEN
@@ -345,12 +346,10 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // edit class category with tax = 0
         /* @var Form $form */
         $form = $crawler->selectButton('更新')->form();
-        $form['form[product_classes][0][tax_rate]'] = 0;
-        $form['mode'] = 'update';
-        $node = $form->getNode(0);
-        $node->setAttribute('action', $this->generateUrl('admin_product_product_class_edit', [
-            'id' => $id,
-        ]));
+        $form['product_class_matrix[product_classes][0][checked]']->tick();
+        $form['product_class_matrix[product_classes][0][stock]'] = 1;
+        $form['product_class_matrix[product_classes][0][price02]'] = 1;
+        $form['product_class_matrix[product_classes][0][tax_rate]'] = 0;
         $this->client->submit($form);
 
         // THEN
@@ -387,12 +386,10 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // edit class category without tax
         /* @var Form $form */
         $form = $crawler->selectButton('更新')->form();
-        $form['form[product_classes][0][tax_rate]'] = '';
-        $form['mode'] = 'update';
-        $node = $form->getNode(0);
-        $node->setAttribute('action', $this->generateUrl('admin_product_product_class_edit', [
-            'id' => $id,
-        ]));
+        $form['product_class_matrix[product_classes][0][checked]']->tick();
+        $form['product_class_matrix[product_classes][0][stock]'] = 1;
+        $form['product_class_matrix[product_classes][0][price02]'] = 1;
+        $form['product_class_matrix[product_classes][0][tax_rate]'] = '';
         $this->client->submit($form);
 
         // THEN
@@ -428,12 +425,10 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
 
         /* @var Form $form */
         $form = $crawler->selectButton('更新')->form();
-        $form['form[product_classes][0][tax_rate]'] = $this->faker->randomNumber(2);
-        $form['mode'] = 'update';
-        $node = $form->getNode(0);
-        $node->setAttribute('action', $this->generateUrl('admin_product_product_class_edit', [
-            'id' => $id,
-        ]));
+        $form['product_class_matrix[product_classes][0][checked]']->tick();
+        $form['product_class_matrix[product_classes][0][stock]'] = 1;
+        $form['product_class_matrix[product_classes][0][price02]'] = 1;
+        $form['product_class_matrix[product_classes][0][tax_rate]'] = $this->faker->randomNumber(2);
         $this->client->submit($form);
 
         // THEN
@@ -486,14 +481,12 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // edit class category with tax
         /* @var Form $form */
         $form = $crawler->selectButton('更新')->form();
-        $form['form[product_classes][2][add]']->tick();
-        $form['form[product_classes][0][tax_rate]'] = $this->faker->randomNumber(2);
-        $form['form[product_classes][2][tax_rate]'] = $this->faker->randomNumber(2);
-        $form['mode'] = 'update';
-        $node = $form->getNode(0);
-        $node->setAttribute('action', $this->generateUrl('admin_product_product_class_edit', [
-            'id' => $product->getId(),
-        ]));
+        $form['product_class_matrix[product_classes][2][checked]']->tick();
+        $form['product_class_matrix[product_classes][2][stock]'] = 1;
+        $form['product_class_matrix[product_classes][2][price02]'] = 1;
+        $form['product_class_matrix[product_classes][2][tax_rate]'] = $this->faker->randomNumber(2);
+        $form['product_class_matrix[product_classes][0][tax_rate]'] = $this->faker->randomNumber(2);
+
         $this->client->submit($form);
 
         // THEN
@@ -529,12 +522,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // edit class category with tax
         /* @var Form $form */
         $form = $crawler->selectButton('更新')->form();
-        $form['form[product_classes][0][add]']->untick();
-        $form['mode'] = 'delete';
-        $node = $form->getNode(0);
-        $node->setAttribute('action', $this->generateUrl('admin_product_product_class_edit', [
-            'id' => $id,
-        ]));
+        $form['product_class_matrix[product_classes][0][checked]']->untick();
         $this->client->submit($form);
 
         // THEN
@@ -542,7 +530,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
 
         $crawler = $this->client->followRedirect();
         $htmlMessage = $crawler->filter('body .c-contentsArea')->html();
-        $this->assertContains('商品規格を削除しました。', $htmlMessage);
+        $this->assertContains('商品規格を更新しました。', $htmlMessage);
         // check database
         $product = $this->productRepository->find($id);
         /* @var TaxRule $taxRule */

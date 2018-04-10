@@ -411,6 +411,9 @@ class Product extends \Eccube\Entity\AbstractEntity
     public function hasProductClass()
     {
         foreach ($this->ProductClasses as $ProductClass) {
+            if (!$ProductClass->isVisible()) {
+                continue;
+            }
             if (!is_null($ProductClass->getClassCategory1())) {
                 return true;
             }
