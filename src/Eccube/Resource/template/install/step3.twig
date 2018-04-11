@@ -46,7 +46,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <div class="main_inner">
             <div class="main_content">
                 <div class="page-header">
-                    <h1>サイトの設定</h1>
+                    <h1>{{ 'step3.text.message.page_header'|trans }}</h1>
                 </div>
                 <div class="container-fluid">
                     <div class="row">
@@ -58,25 +58,25 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 {{ form_row(form.login_id) }}
                                 {{ form_row(form.login_pass) }}
 
-                                <h2>セキュリティの設定</h2>
-                                {{ form_row(form.admin_dir , {attr : {placeholder: 'セキュリティのため推測されにくいディレクトリ名を入力して下さい'}}) }}
+                                <h2>{{ 'step3.text.message.security_setting'|trans}}</h2>
+                                {{ form_row(form.admin_dir , {attr : {placeholder: 'step3.placeholder.admin_dir'|trans }}) }}
                                 {% if request.secure %}
                                     {{ form_row(form.admin_force_ssl) }}
                                 {% else %}
-                                    <span class="text-danger">httpsからの接続でなければSSL制限を設定できません。</span>
+                                    <span class="text-danger">{{ 'step3.text.message.ssl'|trans }}</span>
                                     {{ form_row(form.admin_force_ssl , {attr : {disabled: 'disabled', 'value': null}}) }}
                                 {% endif %}
                                 {{ form_row(form.admin_allow_hosts , {attr : {rows: '5'}}) }}
 
-                                <h2>メールの設定</h2>
+                                <h2>{{ 'step3.text.message.mail_setting'|trans }}</h2>
                                 {{ form_row(form.smtp_host) }}
                                 {{ form_row(form.smtp_port) }}
                                 {{ form_row(form.smtp_username) }}
                                 {{ form_row(form.smtp_password) }}
 
                                 <ul class="btn_area">
-                                    <li><button type="submit" class="btn btn-primary btn-block btn-lg">次へ進む</button></li>
-                                    <li><a href="{{ path('install_step2') }}" class="btn btn-link btn-block btn-lg">前に戻る</a></li>
+                                    <li><button type="submit" class="btn btn-primary btn-block btn-lg">{{ 'install.next'|trans }}</button></li>
+                                    <li><a href="{{ path('install_step2') }}" class="btn btn-link btn-block btn-lg">{{ 'install.back'|trans }}</a></li>
                                 </ul>
                             </form>
                         </div>
