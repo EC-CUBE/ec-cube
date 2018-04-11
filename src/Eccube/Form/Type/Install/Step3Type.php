@@ -64,7 +64,7 @@ class Step3Type extends AbstractType
     {
         $builder
             ->add('shop_name', TextType::class, array(
-                'label' => 'step3.label.store_name',
+                'label' => trans('step3.label.store_name'),
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
@@ -73,14 +73,14 @@ class Step3Type extends AbstractType
                 ),
             ))
             ->add('email', EmailType::class, array(
-                'label' => 'step3.label.email',
+                'label' => trans('step3.label.email'),
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Email(array('strict' => true)),
                 ),
             ))
             ->add('login_id', TextType::class, array(
-                'label' => '管理画面ログインID（半角英数字'.$this->eccubeConfig['eccube_id_min_len'].'～'.$this->eccubeConfig['eccube_id_max_len'].'文字）',
+                'label' => trans('step3.label.login_id1').$this->eccubeConfig['eccube_id_min_len'].trans('step3.label.login_id2').$this->eccubeConfig['eccube_id_max_len'].trans('step3.label.login_id3'),
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
@@ -94,7 +94,7 @@ class Step3Type extends AbstractType
                 ),
             ))
             ->add('login_pass', PasswordType::class, array(
-                'label' => '管理画面パスワード（半角英数字'.$this->eccubeConfig['eccube_password_min_len'].'～'.$this->eccubeConfig['eccube_password_max_len'].'文字）',
+                'label' => trans('step3.label.login_pass1').$this->eccubeConfig['eccube_password_min_len'].trans('step3.label.login_pass2').$this->eccubeConfig['eccube_password_max_len'].trans('step3.label.login_pass3'),
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
@@ -108,7 +108,7 @@ class Step3Type extends AbstractType
                 ),
             ))
             ->add('admin_dir', TextType::class, array(
-                'label' => '管理画面のディレクトリ名（半角英数字'.$this->eccubeConfig['eccube_id_min_len'].'～'.$this->eccubeConfig['eccube_id_max_len'].'文字）',
+                'label' => trans('step3.label.admin_dir1').$this->eccubeConfig['eccube_id_min_len'].trans('step3.label.admin_dir2').$this->eccubeConfig['eccube_id_max_len'].trans('step3.label.admin_dir3'),
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
@@ -119,27 +119,27 @@ class Step3Type extends AbstractType
                 ),
             ))
             ->add('admin_force_ssl', CheckboxType::class, array(
-                'label' => 'step3.label.ssl',
+                'label' => trans('step3.label.ssl'),
                 'required' => false,
             ))
             ->add('admin_allow_hosts', TextareaType::class, array(
-                'label' => 'step3.label.ips',
+                'label' => trans('step3.label.ips'),
                 'required' => false,
             ))
             ->add('smtp_host', TextType::class, array(
-                'label' => 'step3.label.smtp_host',
+                'label' => trans('step3.label.smtp_host'),
                 'required' => false,
             ))
             ->add('smtp_port', TextType::class, array(
-                'label' => 'step3.label.smtp_port',
+                'label' => trans('step3.label.smtp_port'),
                 'required' => false,
             ))
             ->add('smtp_username', TextType::class, array(
-                'label' => 'step3.label.smtp_user',
+                'label' => trans('step3.label.smtp_user'),
                 'required' => false,
             ))
             ->add('smtp_password', PasswordType::class, array(
-                'label' => 'step3.label.smtp_pass',
+                'label' => trans('step3.label.smtp_pass'),
                 'required' => false,
             ))
             ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
@@ -154,7 +154,7 @@ class Step3Type extends AbstractType
                         )
                     );
                     if ($errors->count() != 0) {
-                        $form['admin_allow_hosts']->addError(new FormError($ip . 'はIPv4アドレスではありません。'));
+                        $form['admin_allow_hosts']->addError(new FormError($ip . trans('setp3.text.error.ips')));
                     }
                 }
             })
