@@ -2630,6 +2630,7 @@ return [
     'step3.text.help.mailer_backend_smtp_smtpauth' => 'メーラーバックエンドがSMTPかつSMTP-AUTH使用時のみ指定',
     'step3.label.smtp_pass' => 'SMTPパスワード',
     'step3type.667' => '',
+    'step4.text.message.page_header' => 'データベースの設定',
     'step4.label.postgresql' => 'PostgreSQL',
     'step4.label.mysql' => 'MySQL',
     'step4.label.sqllite' => 'SQLite(開発者用)',
