@@ -35,7 +35,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                           <div class="row">
                             <div class="alert alert-danger alert-dismissable">
                               <button type="button" class="close" data-dismiss="alert"><span class="alert-close" aria-hidden="true">&times;</span></button>
-                              <svg class="cb cb-info-circle"> <use xlink:href="#cb-info-circle" /></svg> {{ message|trans }} <a href="http://www.ec-cube.net/product/system.php">システム要件</a>をご確認ください。
+                              <svg class="cb cb-info-circle"> <use xlink:href="#cb-info-circle" /></svg> {{ message|trans }} <a href="http://www.ec-cube.net/product/system.php">{{ 'step1.text.message.system_requirement1'|trans }}</a>{{ 'step1.text.message.system_requirement2'|trans }}
                             </div>
                           </div>
                           {% endfor %}
@@ -62,25 +62,22 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 {% endfor %}
                             {% endif %}
                             <div class="page-header">
-                                <h1>ようこそ</h1>
+                                <h1>{{ 'step1.text.message.welcome'|trans }}</h1>
                             </div>
                             <form name="form1" id="form1" method="post" action="{{ path('install_step1') }}">
                                 {{ form_widget(form._token) }}
                                 <div class="intro">
                                     <svg class="cb cb-inbox"> <use xlink:href="#cb-inbox" /></svg>
-                                    <p>EC-CUBEのインストールを開始します。</p>
-                                    <p>あらかじめ、使用するデータベースの情報（DB名など）をご準備ください。</p>
+                                    {{ 'step1.text.message.install_start'|trans|raw }}
                                 </div>
                                 <div class="note_box">
                                     <p>
-                                        EC-CUBEのシステム向上・デバッグのため、サイト情報の提供にご協力おねがいいたします。<br>
-                                        目的以外で利用することはございません。<br>
-                                        <span class="small">（サイト情報：お店のURL、PHPバージョン、DBバージョン）</span>
+                                        {{ 'step1.text.message.agree'|trans|raw }}
                                     </p>
                                     {{ form_widget(form.agree) }}
                                 </div>
                                 <ul class="btn_area">
-                                    <li><button type="submit" class="btn btn-primary btn-block btn-lg">次へ進む</button></li>
+                                    <li><button type="submit" class="btn btn-primary btn-block btn-lg">{{ 'install.next'|trans }}</button></li>
                                 </ul>
                             </form>
                         </div><!-- /.col -->
