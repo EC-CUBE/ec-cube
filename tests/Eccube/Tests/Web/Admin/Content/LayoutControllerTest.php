@@ -152,31 +152,33 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
     {
         $PcDeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_PC);
 
-        /** @var Layout $defaultLayout */
-        $defaultLayout = $this->layoutRepository->findOneBy([
-            'default_layout' => 1,
-            'DeviceType' => $PcDeviceType
-        ]);
-        $this->assertNotNull($defaultLayout);
+        $DefaultLayout = new Layout();
+        $DefaultLayout->setDeviceType($PcDeviceType);
+        $DefaultLayout->setDefaultLayout(1);
+        $DefaultLayout->setName('SP Layout for Unit Test');
+        $this->layoutRepository->save($DefaultLayout);
 
-        /** @var Layout $normalLayout */
-        $normalLayout = $this->layoutRepository->findOneBy([
-            'default_layout' => 0,
-            'DeviceType' => $PcDeviceType
-        ]);
-        $this->assertNotNull($normalLayout);
+        $NormalLayout = new Layout();
+        $NormalLayout->setDeviceType($PcDeviceType);
+        $NormalLayout->setName('PC Layout for Unit Test');
+        $this->layoutRepository->save($NormalLayout);
+
+        $this->entityManager->flush();
+
+        $this->assertTrue((boolean)$DefaultLayout->getDefaultLayout());
+        $this->assertFalse((boolean)$NormalLayout->getDefaultLayout());
 
         $this->client->request(
             'POST',
-            $this->generateUrl('admin_content_layout_default', ['id' => $normalLayout->getId()]),
+            $this->generateUrl('admin_content_layout_default', ['id' => $NormalLayout->getId()]),
             ['_token' => 'dummy']
         );
         $crawler = $this->client->followRedirect();
 
         $this->assertRegExp('/登録が完了しました。/u', $crawler->filter('div.alert-success')->text());
 
-        $this->assertEquals(1, $normalLayout->getDefaultLayout());
-        $this->assertEquals(0, $defaultLayout->getDefaultLayout());
+        $this->assertEquals(1, $NormalLayout->getDefaultLayout());
+        $this->assertEquals(0, $DefaultLayout->getDefaultLayout());
     }
 
     public function testLayoutSetDefaultFail()
