@@ -37,9 +37,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-/**
- * @Route(service=ClassNameController::class)
- */
 class ClassNameController extends AbstractController
 {
     /**
@@ -56,7 +53,6 @@ class ClassNameController extends AbstractController
         $this->classNameRepository = $classNameRepository;
     }
 
-
     /**
      * @Route("/%eccube_admin_route%/product/class_name", name="admin_product_class_name")
      * @Route("/%eccube_admin_route%/product/class_name/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_class_name_edit")
@@ -65,56 +61,70 @@ class ClassNameController extends AbstractController
     public function index(Request $request, $id = null)
     {
         if ($id) {
-            $TargetClassName = $this->classNameRepository->find($id);
-            if (!$TargetClassName) {
-                throw new NotFoundHttpException(trans('classname.text.error.no_option'));
+            if (null === $ClassName = $this->classNameRepository->find($id)) {
+                throw new NotFoundHttpException();
             }
         } else {
-            $TargetClassName = new \Eccube\Entity\ClassName();
+            $ClassName = new ClassName();
         }
 
+        /**
+         * 新規登録用フォーム
+         */
         $builder = $this->formFactory
-            ->createBuilder(ClassNameType::class, $TargetClassName);
-
-        $event = new EventArgs(
-            array(
-                'builder' => $builder,
-                'TargetClassName' => $TargetClassName,
-            ),
-            $request
-        );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_NAME_INDEX_INITIALIZE, $event);
-
+            ->createBuilder(ClassNameType::class, $ClassName);
         $form = $builder->getForm();
 
-        if ($request->getMethod() === 'POST') {
+        /**
+         * 編集用フォーム
+         */
+        $ClassNames = $this->classNameRepository->getList();
+        $forms = [];
+        foreach ($ClassNames as $EditClassName) {
+            $id = $EditClassName->getId();
+            $forms[$id] = $this
+                ->formFactory
+                ->createNamed('class_name_'.$id, ClassNameType::class, $EditClassName);
+        }
+
+        if ('POST' === $request->getMethod()) {
+            /**
+             * 登録処理
+             */
             $form->handleRequest($request);
-            if ($form->isValid()) {
-                log_info('商品規格登録開始', array($id));
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->classNameRepository->save($form->getData());
 
-                $this->classNameRepository->save($TargetClassName);
+                $this->addSuccess('登録完了', 'admin');
 
-                log_info('商品規格登録完了', array($id));
-
-                $event = new EventArgs(
-                    array(
-                        'form' => $form,
-                        'TargetClassName' => $TargetClassName,
-                    ),
-                    $request
-                );
-                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_NAME_INDEX_COMPLETE, $event);
-
-                $this->addSuccess('admin.class_name.save.complete', 'admin');
                 return $this->redirectToRoute('admin_product_class_name');
             }
+            /**
+             * 編集処理
+             */
+            foreach ($forms as $editForm) {
+                $editForm->handleRequest($request);
+
+                if ($editForm->isSubmitted() && $editForm->isValid()) {
+                    $this->classNameRepository->save($editForm->getData());
+
+                    $this->addSuccess('編集完了', 'admin');
+
+                    return $this->redirectToRoute('admin_product_class_name');
+                }
+            }
         }
-        $ClassNames = $this->classNameRepository->getList();
+
+        $formViews = [];
+        foreach ($forms as $key => $value) {
+            $formViews[$key] = $value->createView();
+        }
 
         return [
             'form' => $form->createView(),
+            'ClassName' => $ClassName,
             'ClassNames' => $ClassNames,
-            'TargetClassName' => $TargetClassName,
+            'forms' => $formViews,
         ];
     }
 

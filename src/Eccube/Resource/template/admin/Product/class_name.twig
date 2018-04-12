@@ -23,10 +23,26 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['product', 'class_name'] %}
 
-{% block title %}{{'admin.product.class_name.429'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.product.class_name.428'|trans}}{% endblock %}
+{% block title %}{{ 'admin.product.class_name.429'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.product.class_name.428'|trans }}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
+
+{% block stylesheet %}
+    <style type="text/css">
+        .edit {
+            display: none;
+        }
+
+        .has-error .list {
+            display: none;
+        }
+
+        .has-error .edit {
+            display: block;
+        }
+    </style>
+{% endblock stylesheet %}
 
 {% block javascript %}
     <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.core.min.js', 'admin') }}"></script>
@@ -34,29 +50,31 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.mouse.min.js', 'admin') }}"></script>
     <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.sortable.min.js', 'admin') }}"></script>
     <script>
-        $(function() {
+        $(function () {
             var oldSortNos = [];
             // 画面の中のsortNo一覧を保持
-            $("ul.tableish > .item_box").each(function() {
+            $(".sort-element").each(function () {
                 oldSortNos.push(this.dataset.sortNo);
             });
             // rsort
-            oldSortNos.sort(function(a,b){return a - b;}).reverse();
+            oldSortNos.sort(function (a, b) {
+                return a - b;
+            }).reverse();
 
-            $("ul.tableish").sortable({
-                items: '> .item_box',
+            $("#sort-list").sortable({
+                items: '> .sort-element',
                 cursor: 'move',
-                update: function(e, ui) {
+                update: function (e, ui) {
                     $("body").append($('<div class="modal-backdrop show"></div>'));
                     updateSortNo();
                 }
             });
 
-            var updateSortNo = function() {
+            var updateSortNo = function () {
                 // 並び替え後にsortNoを更新
                 var newSortNos = {};
                 var i = 0;
-                $("ul.tableish > .item_box").each(function() {
+                $(".sort-elemelt").each(function () {
                     newSortNos[this.dataset.classNameId] = oldSortNos[i];
                     i++;
                 });
@@ -65,34 +83,46 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     url: '{{ url('admin_product_class_name_sort_no_move') }}',
                     type: 'POST',
                     data: newSortNos
-                }).done(function(data) {
+                }).done(function (data) {
                     // remove class disable
                     $("a.up.disabled").removeClass('disabled');
                     $("a.down.disabled").removeClass('disabled');
                     // First element
-                    $("ul.tableish > li:nth-child(2) > div > div.col-auto.text-right > a.up").addClass('disabled');
+                    $("#sort-list > li:nth-child(2) > a.up").addClass('disabled');
                     // Last element
-                    $("ul.tableish > li").last().find("a.down").addClass('disabled');
+                    $("#sort-list > li").last().find("a.down").addClass('disabled');
                     $(".modal-backdrop").remove();
-                }).fail(function() {
+                }).fail(function () {
                     $(".modal-backdrop").remove();
                 });
             };
 
-            $("ul.tableish > .item_box a.up").click(function (e) {
+            $(".sort-element a.up").click(function (e) {
                 e.preventDefault();
-                var current = $(this).parents(".item_box");
+                var current = $(this).parents("li");
                 current.prev().before(current);
                 $("body").append($('<div class="modal-backdrop show"></div>'));
                 updateSortNo();
             });
 
-            $("ul.tableish > .item_box a.down").click(function (e) {
+            $(".sort-element a.down").click(function (e) {
                 e.preventDefault();
-                var current = $(this).parents(".item_box");
+                var current = $(this).parents("li");
                 current.next().after(current);
                 $("body").append($('<div class="modal-backdrop show"></div>'));
                 updateSortNo();
+            });
+
+            $('.sort-element .edit-button').click(function () {
+                var li = $(this).parents('li');
+                $(li).find(".edit").show();
+                $(li).find(".view").hide();
+            });
+
+            $('.sort-element .cancel').click(function () {
+                var li = $(this).parents('li');
+                $(li).find(".edit").hide();
+                $(li).find(".view").show();
             });
         });
     </script>
@@ -105,74 +135,86 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <div class="card rounded border-0 mb-4">
                     <div class="card-body p-0">
                         <div class="card rounded border-0 mb-2">
-                            <ul class="list-group list-group-flush tableish">
+                            <ul id="sort-list" class="list-group list-group-flush">
                                 <li class="list-group-item">
-                                    <form role="form" class="form-row" name="form1" id="form1" method="post" action="{{ url('admin_product_class_name') }}">
-                                        <div class="col-auto align-self-center"><span>{{ 'admin.product.class_name.437'|trans }}</span></div>
+                                    <form role="form" class="form-row" method="post"
+                                          action="{{ url('admin_product_class_name') }}">
+                                        <div class="col-auto align-self-center">
+                                            <span>{{ 'admin.product.class_name.437'|trans }}</span></div>
                                         <div class="col-3 mr-2">
                                             {{ form_widget(form._token) }}
                                             {{ form_widget(form.name) }}
                                             {{ form_errors(form.name) }}
                                         </div>
-                                        <div class="col-auto align-self-center"><span>{{ 'admin.product.class_name.438'|trans }}</span></div>
+                                        <div class="col-auto align-self-center">
+                                            <span>{{ 'admin.product.class_name.438'|trans }}</span></div>
                                         <div class="col-3">
                                             {# TODO 表示名 #}
                                             <input class="form-control" type="text">
                                         </div>
                                         <div class="col-auto">
-                                            <button class="btn btn-ec-regular" type="submit">{{ 'admin.product.class_name.443'|trans }}</button>
+                                            <button class="btn btn-ec-regular"
+                                                    type="submit">{{ 'admin.product.class_name.443'|trans }}</button>
                                         </div>
                                     </form>
                                 </li>
                                 {% for ClassName in ClassNames %}
-                                <li class="list-group-item item_box" data-class-name-id="{{ ClassName.id }}" data-sort-no="{{ ClassName.sortNo }}">
-                                    <div class="row justify-content-around">
-                                        <div class="col-auto d-flex align-items-center"><i class="fa fa-bars text-ec-gray"></i></div>
-                                        {# TODO 表示名 #}
-                                        <div class="col d-flex align-items-center"><a href="{{ url('admin_product_class_category', {class_name_id : ClassName.id }) }}">{{ ClassName.name }} ({{ ClassName.ClassCategories|length }})</a></div>
-                                        <div class="col-auto text-right">
-                                            <a class="btn btn-ec-actionIcon mr-3 up {% if loop.first %}disabled{% endif %}" href="" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.class_name.439'|trans }}">
-                                                <i class="fa fa-arrow-up fa-lg text-secondary"></i>
-                                            </a>
-                                            <a class="btn btn-ec-actionIcon mr-3 down {% if loop.last %}disabled{% endif %}" href="" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.class_name.440'|trans }}">
-                                                <i class="fa fa-arrow-down fa-lg text-secondary"></i>
-                                            </a>
-                                            {# TODO 編集機能 #}
-                                            <a class="btn btn-ec-actionIcon mr-3" href="" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.class_name.441'|trans }}">
-                                                <i class="fa fa-pencil fa-lg text-secondary"></i>
-                                            </a>
-                                            <a class="btn btn-ec-actionIcon mr-3 {% if ClassName.ClassCategories|length > 0 %}disabled{% endif %}" href="{{ url('admin_product_class_name_delete', {id: ClassName.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-toggle="tooltip" data-placement="top" title="{{ 'common.label.delete'|trans }}">
-                                                <i class="fa fa-close fa-lg text-secondary"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </li>
+                                    <li class="list-group-item sort-element" data-class-name-id="{{ ClassName.id }}"
+                                        data-sort-no="{{ ClassName.sortNo }}">
+                                        <form class="form-row" method="post"
+                                              action="{{ url('admin_product_class_name_edit', { id : ClassName.id }) }}">
+                                            {{ form_widget(forms[ClassName.id]._token) }}
+                                            <div class="col-auto d-flex align-items-center"><i
+                                                        class="view fa fa-bars text-ec-gray"></i></div>
+                                            <div class="col d-flex align-items-center"><a
+                                                        class="view"
+                                                        href="{{ url('admin_product_class_category', {class_name_id : ClassName.id }) }}">{{ ClassName.name }}
+                                                    ({{ ClassName.ClassCategories|length }})</a></div>
+
+                                            <div class="edit col-auto align-self-center"><span>管理名</span></div>
+                                            <div class="edit col-3 mr-2">
+                                                {{ form_widget(forms[ClassName.id].name) }}
+                                                {{ form_errors(forms[ClassName.id].name) }}
+                                            </div>
+                                            <div class="edit col-auto align-self-center"><span>表示名</span></div>
+                                            <div class="edit col-3">
+                                                <input class="form-control" type="text">
+                                            </div>
+                                            <div class="col-auto d-flex align-items-center">
+                                                <button class="edit btn btn-ec-conversion" type="submit">決定</button>
+                                            </div>
+                                            <div class="col-auto d-flex align-items-center">
+                                                <button class="edit cancel btn btn-ec-sub" type="button">キャンセル</button>
+                                            </div>
+
+                                            <div class="col text-right justify-content-end">
+                                                <a class="btn btn-ec-actionIcon mr-3 up {% if loop.first %}disabled{% endif %}"
+                                                   data-toggle="tooltip" data-placement="top"
+                                                   title="{{ 'admin.product.class_name.439'|trans }}">
+                                                    <i class="fa fa-arrow-up fa-lg text-secondary"></i>
+                                                </a>
+                                                <a class="btn btn-ec-actionIcon mr-3 down {% if loop.last %}disabled{% endif %}"
+                                                   data-toggle="tooltip" data-placement="top"
+                                                   title="{{ 'admin.product.class_name.440'|trans }}">
+                                                    <i class="fa fa-arrow-down fa-lg text-secondary"></i>
+                                                </a>
+                                                <a class="btn btn-ec-actionIcon mr-3 edit-button"
+                                                   data-toggle="tooltip"
+                                                   data-placement="top"
+                                                   title="{{ 'admin.product.class_name.441'|trans }}">
+                                                    <i class="fa fa-pencil fa-lg text-secondary"></i>
+                                                </a>
+                                                <a class="btn btn-ec-actionIcon mr-3 {% if ClassName.ClassCategories|length > 0 %}disabled{% endif %}"
+                                                   href="{{ url('admin_product_class_name_delete', {id: ClassName.id}) }}" {{ csrf_token_for_anchor() }}
+                                                   data-method="delete" data-toggle="tooltip"
+                                                   data-placement="top"
+                                                   title="{{ 'common.label.delete'|trans }}">
+                                                    <i class="fa fa-close fa-lg text-secondary"></i>
+                                                </a>
+                                            </div>
+                                        </form>
+                                    </li>
                                 {% endfor %}
-                                {# TODO 編集フォーム #}
-                                {#<li class="list-group-item">#}
-                                    {#<form class="form-row">#}
-                                        {#<div class="col-auto align-self-center"><span>管理名</span></div>#}
-                                        {#<div class="col-3 mr-2">#}
-                                            {#<input class="form-control" type="text">#}
-                                        {#</div>#}
-                                        {#<div class="col-auto align-self-center"><span>表示名</span></div>#}
-                                        {#<div class="col-3">#}
-                                            {#<input class="form-control" type="text">#}
-                                        {#</div>#}
-                                        {#<div class="col-auto d-flex align-items-center">#}
-                                            {#<button class="btn btn-ec-conversion" type="submit">決定</button>#}
-                                        {#</div>#}
-                                        {#<div class="col-auto d-flex align-items-center">#}
-                                            {#<button class="btn btn-ec-sub" type="submit">キャンセル</button>#}
-                                        {#</div>#}
-                                        {#<div class="col text-right justify-content-end">#}
-                                            {#<a class="btn btn-ec-actionIcon mr-3" href="" data-toggle="tooltip" data-placement="top" title="上へ移動"><i class="fa fa-arrow-up fa-lg text-secondary"></i></a>#}
-                                            {#<a class="btn btn-ec-actionIcon mr-3" href="" data-toggle="tooltip" data-placement="top" title="下へ移動"><i class="fa fa-arrow-down fa-lg text-secondary"></i></a>#}
-                                            {#<a class="btn btn-ec-actionIcon mr-3" href="" data-toggle="tooltip" data-placement="top" title="名前を編集"><i class="fa fa-pencil fa-lg text-secondary"></i></a>#}
-                                            {#<a class="btn btn-ec-actionIcon mr-3" href="" data-toggle="tooltip" data-placement="top" title="削除"><i class="fa fa-close fa-lg text-secondary"></i></a>#}
-                                        {#</div>#}
-                                    {#</form>#}
-                                {#</li>#}
                             </ul>
                         </div>
                     </div>
