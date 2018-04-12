@@ -745,6 +745,7 @@ return [
     'admin.content.layout.device_type' => '端末種別',
     'admin.content.layout.block_edit' => 'レイアウトブロック編集',
     'admin.content.layout.list' => 'レイアウト一覧',
+    'admin.content.layout.device_type.invalid' => '無効な端末種別です。',
     'admin.content.layout.overview' => 'レイアウト概要',
     'admin.content.layout.section.head' => 'headセクション',
     'admin.content.layout.section.body_after' => '<body>タグ直後',

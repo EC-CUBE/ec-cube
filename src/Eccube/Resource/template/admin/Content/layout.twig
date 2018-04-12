@@ -212,11 +212,20 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <div class="col-3 pr-0"><span>{{ 'admin.content.layout.name'|trans }}</span><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></div>
                                     <div class="col">
                                         {{ form_widget(form.name) }}
+                                        {{ form_errors(form.name) }}
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-3 pr-0"><span>{{ 'admin.content.layout.device_type'|trans }}</span></div>
-                                    <div class="col"><span>{{ form_widget(form.DeviceType) }}</span></div>{# TODO hidden にする #}
+                                    <div class="col">
+                                        <span>
+                                            {% if form.DeviceType.vars.value in form.DeviceType.vars.choices|keys %}
+                                                {{ form.DeviceType.vars.choices[form.DeviceType.vars.value].label }}
+                                            {% endif %}
+                                            {{ form_errors(form.DeviceType) }}
+                                            <input type="hidden" name="{{ form.DeviceType.vars.full_name }}" value="{{ form.DeviceType.vars.value }}" />
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
