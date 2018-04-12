@@ -106,6 +106,13 @@ class Layout extends AbstractEntity
     private $update_date;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="default_layout", type="boolean", options={"default":false})
+     */
+    private $default_layout = false;
+
+    /**
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(targetEntity="Eccube\Entity\BlockPosition", mappedBy="Layout", cascade={"persist","remove"})
@@ -222,6 +229,30 @@ class Layout extends AbstractEntity
     }
 
     /**
+     * Get default_layout
+     *
+     * @return boolean
+     */
+    public function getDefaultLayout()
+    {
+        return $this->default_layout;
+    }
+
+    /**
+     * Set default_layout
+     *
+     * @param $defaultLayout
+     *
+     * @return $this
+     */
+    public function setDefaultLayout($defaultLayout)
+    {
+        $this->default_layout = $defaultLayout;
+
+        return $this;
+    }
+
+    /**
      * Add blockPosition
      *
      * @param \Eccube\Entity\BlockPosition $blockPosition
@@ -311,5 +342,23 @@ class Layout extends AbstractEntity
     public function getDeviceType()
     {
         return $this->DeviceType;
+    }
+
+    /**
+     * Check layout can delete or not
+     *
+     * @return boolean
+     */
+    public function isDeletable()
+    {
+        if ($this->getDefaultLayout()) {
+            return false;
+        }
+
+        if ($this->getPageLayouts()->count()) {
+            return false;
+        }
+
+        return true;
     }
 }

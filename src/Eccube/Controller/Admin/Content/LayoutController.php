@@ -45,6 +45,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Twig\Environment as Twig;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 // todo プレビュー実装
 class LayoutController extends AbstractController
@@ -95,13 +96,18 @@ class LayoutController extends AbstractController
     /**
      * @Method("DELETE")
      * @Route("/%eccube_admin_route%/content/layout/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_layout_delete")
+     *
+     * @param integer $id
+     *
+     * @return RedirectResponse
      */
     public function delete($id)
     {
         $this->isTokenValid();
 
+        /** @var Layout $Layout */
         $Layout = $this->layoutRepository->find($id);
-        if (!$Layout) {
+        if (!$Layout || !$Layout->isDeletable()) {
             $this->deleteMessage();
 
             return $this->redirectToRoute('admin_content_layout');
