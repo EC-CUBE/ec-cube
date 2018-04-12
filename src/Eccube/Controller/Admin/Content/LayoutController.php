@@ -46,7 +46,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Twig\Environment as Twig;
 use Eccube\Repository\Master\DeviceTypeRepository;
-use Eccube\Entity\Master\DeviceType;
 
 // todo プレビュー実装
 class LayoutController extends AbstractController
