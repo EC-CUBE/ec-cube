@@ -117,6 +117,23 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('admin_product_class_name')));
     }
 
+    public function testIndexWithPostDisplayName()
+    {
+        $client = $this->client;
+        $client->request(
+            'POST',
+            $this->generateUrl('admin_product_class_name'),
+            array(
+                'admin_class_name' => array(
+                    'name' => '規格1',
+                    'display_name' => '表示規格1',
+                    Constant::TOKEN_NAME => 'dummy',
+                ))
+        );
+        $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('admin_product_class_name')));
+    }
+
+
     public function testRoutingAdminProductClassNameEdit()
     {
         // before
@@ -127,6 +144,26 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
         $test_class_name_id = $this->classNameRepo
             ->findOneBy(array(
                 'name' => $TestClassName->getName()
+            ))
+            ->getId();
+
+        // main
+        $this->client->request('GET',
+            $this->generateUrl('admin_product_class_name_edit', array('id' => $test_class_name_id))
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
+    public function testRoutingAdminProductClassDisplayNameEdit()
+    {
+        // before
+        $TestCreator = $this->Member;
+        $TestClassName = $this->newTestClassName($TestCreator);
+        $this->entityManager->persist($TestClassName);
+        $this->entityManager->flush();
+        $test_class_name_id = $this->classNameRepo
+            ->findOneBy(array(
+                'display_name' => $TestClassName->getDisplayName()
             ))
             ->getId();
 
@@ -186,6 +223,7 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
     {
         $TestClassName = new \Eccube\Entity\ClassName();
         $TestClassName->setName('形状')
+            ->setDisplayName('表示形状')
             ->setSortNo(100)
             ->setCreator($TestCreator);
 

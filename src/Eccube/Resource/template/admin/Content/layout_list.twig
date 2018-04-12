@@ -163,9 +163,8 @@
             <div class="c-primaryCol">
                 <div class="tab-content" id="pills-tabContent">
                     <div class="tab-pane fade show active" id="pills-pc" role="tabpanel" aria-labelledby="pills-pc-tab">
-                        {# TODO レイアウト追加画面(PC)に移動する #}
                         <div class="d-block mb-3">
-                            <a class="btn btn-ec-regular" href="{{ url('admin_content_layout_new')}}">{{ 'admin.content.layout_list.add_pc_layout'|trans }}</a>
+                            <a class="btn btn-ec-regular" href="{{ url('admin_content_layout_new')}}?DeviceType={{ constant('\\Eccube\\Entity\\Master\\DeviceType::DEVICE_TYPE_PC') }}">{{ 'admin.content.layout_list.add_pc_layout'|trans }}</a>
                         </div>
                         <div class="card rounded border-0 mb-4">
                             <div class="card-header">
@@ -251,9 +250,8 @@
                         {% endfor %}
                     </div>
                     <div class="tab-pane fade" id="pills-mobile" role="tabpanel" aria-labelledby="pills-mobile-tab">
-                        {# TODO レイアウト追加画面(スマホ)に移動する #}
                         <div class="d-block mb-3">
-                            <a class="btn btn-ec-regular" href="{{ url('admin_content_layout_new')}}">{{ 'admin.content.layout_list.add_mobile_layout'|trans }}</a>
+                            <a class="btn btn-ec-regular" href="{{ url('admin_content_layout_new')}}?DeviceType={{ constant('\\Eccube\\Entity\\Master\\DeviceType::DEVICE_TYPE_SP') }}">{{ 'admin.content.layout_list.add_mobile_layout'|trans }}</a>
                         </div>
                         {# layouts #}
                         {% for Layout in Layouts %}

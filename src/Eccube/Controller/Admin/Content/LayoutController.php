@@ -28,6 +28,7 @@ use Doctrine\ORM\NoResultException;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BlockPosition;
 use Eccube\Entity\Layout;
+use Eccube\Entity\Master\DeviceType;
 use Eccube\Form\Type\Master\DeviceTypeType;
 use Eccube\Repository\BlockRepository;
 use Eccube\Repository\LayoutRepository;
@@ -193,6 +194,18 @@ class LayoutController extends AbstractController
 
         $form = $builder->getForm();
         $form->handleRequest($request);
+
+        if (is_null($id)) {     // admin_content_layout_new only
+            if ($deviceTypeId = $request->get('DeviceType')) {
+                if ($DeviceType = $this->entityManager->find(DeviceType::class, $deviceTypeId)) {
+                    $form['DeviceType']->setData($DeviceType);
+                } else {
+                    throw new BadRequestHttpException(trans('admin.content.layout.device_type.invalid'));
+                }
+            } else {
+                throw new BadRequestHttpException(trans('admin.content.layout.device_type.invalid'));
+            }
+        }
 
         if ($form->isSubmitted() && $form->isValid()) {
             // Layoutの更新
