@@ -66,9 +66,13 @@ class LayoutEditPage extends AbstractAdminPageStyleGuide
     {
         $this->コンテキストメニューを開く($blockName);
         $this->tester->waitForElementVisible(['xpath' => "//div[contains(@id, 'popover')]/div[2]/div/a[3]"]);
+        $this->tester->wait(1);
         $this->tester->click(['xpath' => "//div[contains(@id, 'popover')]/div[2]/div/a[3]"]);
         $this->tester->waitForElementVisible(['id' => "move-to-section"]);
+        $this->tester->wait(1);
         $this->tester->click(['id' => "move-to-section"]);
+        $this->tester->waitForElementNotVisible(['id' => "move-to-section"]);
+        $this->tester->wait(1);
         return $this;
     }
 
