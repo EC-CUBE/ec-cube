@@ -223,7 +223,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 </div>
                                                 <div class="modal-body">
                                                     {# TODO 会員検索をして追加できるようにする #}
-                                                    {{ form_widget(searchCustomerModalForm.multi, { attr : {'class': 'mb-2searchCustomerModal', placeholder : 'admin.order.edit.290'|trans } } ) }}
+                                                    {{ form_widget(searchCustomerModalForm.multi, { attr : {'class': 'mb-2searchCustomerModal', placeholder : 'admin.order.edit.290' }}) }}
                                                     <button type="button" id="searchCustomerModalButton" class="btn btn-ec-conversion px-5 mb-4 mt-2">{{ 'admin.order.edit.294'|trans }}</button>
                                                     <div class="form-group" id="searchCustomerModalList"></div>
                                                 </div>
@@ -247,10 +247,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
                                         <div class="row">
                                             <div class="col">
-                                                {{ form_widget(form.name.name01, {attr: {placeholder: 'admin.common.label.family_name'|trans}}) }}
+                                                {{ form_widget(form.name.name01, {attr: {placeholder: 'admin.common.label.family_name' }}) }}
                                             </div>
                                             <div class="col">
-                                                {{ form_widget(form.name.name02, {attr: {placeholder: 'admin.common.label.first_name'|trans}}) }}
+                                                {{ form_widget(form.name.name02, {attr: {placeholder: 'admin.common.label.first_name' }}) }}
                                             </div>
                                         </div>
                                         {{ form_errors(form.name.name01) }}
@@ -262,10 +262,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <div class="col">
                                         <div class="row">
                                             <div class="col">
-                                                {{ form_widget(form.kana.kana01, {attr: {placeholder: 'admin.common.label.family_name_kana'|trans}}) }}
+                                                {{ form_widget(form.kana.kana01, {attr: {placeholder: 'admin.common.label.family_name_kana' }}) }}
                                             </div>
                                             <div class="col">
-                                                {{ form_widget(form.kana.kana02, {attr: {placeholder: 'admin.common.label.first_name_kana'|trans}}) }}
+                                                {{ form_widget(form.kana.kana02, {attr: {placeholder: 'admin.common.label.first_name_kana' }}) }}
                                             </div>
                                         </div>
                                     </div>
@@ -292,10 +292,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             </div>
                                         </div>
                                         <div class="mb-2">
-                                            {{ form_widget(form.address.addr01, { attr : {placeholder : 'admin.order.edit.262'|trans}} ) }}
+                                            {{ form_widget(form.address.addr01, { attr : {placeholder : 'admin.order.edit.262' }}) }}
                                             {{ form_errors(form.address.addr01) }}
                                         </div>
-                                        {{ form_widget(form.address.addr02, { attr : { placeholder : 'admin.order.edit.263'|trans }}) }}
+                                        {{ form_widget(form.address.addr02, { attr : { placeholder : 'admin.order.edit.263' }}) }}
                                         {{ form_errors(form.address.addr02) }}
                                     </div>
                                 </div>
@@ -358,7 +358,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <div class="row mb-2">
                                     <div class="col-3"><span>{{ 'order.label.inquiry'|trans }}</span></div>
                                     <div class="col">
-                                        {{ form_widget(form.message, { attr : {'rows': 8, placeholder : 'admin.order.edit.264'|trans }}) }}
+                                        {{ form_widget(form.message, { attr : {'rows': 8, placeholder : 'admin.order.edit.264' }}) }}
                                         {{ form_errors(form.message) }}
                                     </div>
                                 </div>
@@ -388,7 +388,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     </div>
                                                     <div class="modal-body">
                                                         {# TODO 商品を追加できるようにする #}
-                                                        {{ form_widget(searchProductModalForm.id, { attr : {'class': 'mb-3',  placeholder : 'admin.order.edit.293'|trans } } ) }}
+                                                        {{ form_widget(searchProductModalForm.id, { attr : {'class': 'mb-3',  placeholder : 'admin.order.edit.293' }}) }}
                                                         {{ form_widget(searchProductModalForm.category_id) }}
                                                         <button type="button" id="searchProductModalButton" class="btn btn-ec-conversion px-5 mb-4 mt-2">{{ 'admin.order.edit.294'|trans }}</button>
                                                         <div id="searchProductModalList"></div>
@@ -686,4 +686,3 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         </div>
     </form>
 {% endblock %}
-
