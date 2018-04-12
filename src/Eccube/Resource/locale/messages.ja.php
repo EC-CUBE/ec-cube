@@ -356,6 +356,8 @@ return [
     'mypage.history.label.order_status' => 'ご注文状況',
 
     //Admin Panel Theme
+    'admin.page.title.suffix' => '管理画面',
+
     'admin.nav.setting' => '設定',
     'admin.nav.setting_shop' => '基本情報設定',
     'admin.nav.setting_shop_shop_master' => 'ショップマスター',
@@ -367,6 +369,74 @@ return [
     'admin_setting_shop_shop_master.label.shippment_setting' => '送料設定',
     'admin_setting_shop_shop_master.label.customer_setting' => '会員設定',
     'admin_setting_shop_shop_master.label.product_setting' => '商品設定',
+
+    'admin.header.user_name' => '%name% 様',
+    'admin.header.change_password' => 'パスワード変更',
+    'admin.header.last_login' => '最終ログイン',
+    'admin.header.logout' => 'ログアウト',
+
+
+    'admin.nav.product' => '商品管理',
+    'admin.nav.product.product_master' => '商品マスター',
+    'admin.nav.product.product_edit' => '商品登録',
+    'admin.nav.product.class_name' => '規格登録',
+    'admin.nav.product.class_category' => 'カテゴリ登録',
+    'admin.nav.product.product_tag' => 'タグ登録',
+    'admin.nav.product.product_csv_import' => '商品CSV登録',
+    'admin.nav.product.category_csv_import' => 'カテゴリCSV登録',
+
+    'admin.nav.order' => '受注管理',
+    'admin.nav.order.order_master' => '受注マスター',
+    'admin.nav.order.order_edit' => '受注登録',
+
+    'admin.nav.shipping' => '出荷管理',
+    'admin.nav.shipping.shipping_master' => '出荷マスター',
+    'admin.nav.shipping.shipping_edit' => '出荷登録',
+    'admin.nav.shipping.shipping_csv_import' => '出荷CSV登録',
+
+    'admin.nav.customer' => '会員管理',
+    'admin.nav.customer.customer_master' => '会員マスター',
+    'admin.nav.customer.customer_edit' => '会員登録',
+
+    'admin.nav.content' => 'コンテンツ管理',
+    'admin.nav.content.news' => '新着情報管理',
+    'admin.nav.content.file' => 'ファイル管理',
+    'admin.nav.content.layout' => 'レイアウト管理',
+    'admin.nav.content.page' => 'ページ管理',
+    'admin.nav.content.block' => 'ブロック管理',
+    'admin.nav.content.cache' => 'キャッシュ管理',
+
+    'admin.nav.setting' => '設定',
+    'admin.nav.setting.shop' => '基本情報設定',
+    'admin.nav.setting.shop.shop_index' => 'ショップマスター',
+    'admin.nav.setting.shop.shop_payment' => '支払方法設定',
+    'admin.nav.setting.shop.shop_delivery' => '配送方法設定',
+    'admin.nav.setting.shop.shop_tax' => '税率設定',
+    'admin.nav.setting.shop.shop_mail' => 'メール設定',
+    'admin.nav.setting.shop.shop_csv' => 'CSV出力項目設定',
+
+    'admin.nav.setting.system' => 'システム情報設定',
+    'admin.nav.setting.system.system_index' => 'システム情報',
+    'admin.nav.setting.system.member' => 'メンバー管理',
+    'admin.nav.setting.system.authority' => '権限管理',
+    'admin.nav.setting.system.security' => 'セキュリティ管理',
+    'admin.nav.setting.system.log' => 'EC-CUBE ログ表示',
+    'admin.nav.setting.system.masterdata' => 'マスターデータ管理',
+
+    'admin.nav.store' => 'オーナーズストア',
+    'admin.nav.store.plugin' => 'プラグイン',
+    'admin.nav.store.plugin.plugin_list' => 'プラグイン一覧',
+    'admin.nav.store.plugin.plugin_owners_install' => '購入済プラグイン',
+    'admin.nav.store.plugin.plugin_handler' => '高度な設定',
+
+    'admin.nav.store.template' => 'テンプレート',
+    'admin.nav.store.template.template_list' => 'テンプレート一覧',
+    'admin.nav.store.template.template_install' => 'アップロード',
+    'admin.nav.store.authentication_setting' => '認証キー設定',
+
+    'admin.nav.home' => 'ホーム',
+    'admin.nav.other' => 'その他',
+    'admin.nav.styleguide' => 'スタイルガイド',
 
 
     'Login email' => 'メールアドレス',
