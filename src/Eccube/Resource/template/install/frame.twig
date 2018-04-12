@@ -28,7 +28,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="{{ asset('img/common/favicon.ico', 'install') }}">
-    <title>ようこそ | EC-CUBEインストール</title>
+    <title>{{ 'install.label.title'|trans }}</title>
     <link href="{{ asset('dist/css/bootstrap.min.css', 'install') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/dashboard.css', 'install') }}" rel="stylesheet">
     <script src="{{ asset('assets/js/ie10-viewport-bug-workaround.js', 'install') }}"></script>
@@ -52,12 +52,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <aside id="side">
             <div class="step_nav">
                 <ol>
-                    <li{% if current >= 1 %} class="current"{% endif %}><span class="number">1</span>ようこそ</li>
-                    <li{% if current >= 2 %} class="current"{% endif %}><span class="number">2</span>権限チェック</li>
-                    <li{% if current >= 3 %} class="current"{% endif %}><span class="number">3</span>サイトの設定</li>
-                    <li{% if current >= 4 %} class="current"{% endif %}><span class="number">4</span>データベースの設定</li>
-                    <li{% if current >= 5 %} class="current"{% endif %}><span class="number">5</span>データベースの初期化</li>
-                    <li{% if current >= 6 %} class="current"{% endif %}><span class="number">6</span>インストール完了</li>
+                    <li{% if current >= 1 %} class="current"{% endif %}><span class="number">1</span>{{ 'install.label.step_nav1'|trans }}</li>
+                    <li{% if current >= 2 %} class="current"{% endif %}><span class="number">2</span>{{ 'install.label.step_nav2'|trans }}</li>
+                    <li{% if current >= 3 %} class="current"{% endif %}><span class="number">3</span>{{ 'install.label.step_nav3'|trans }}</li>
+                    <li{% if current >= 4 %} class="current"{% endif %}><span class="number">4</span>{{ 'install.label.step_nav4'|trans }}</li>
+                    <li{% if current >= 5 %} class="current"{% endif %}><span class="number">5</span>{{ 'install.label.step_nav5'|trans }}</li>
+                    <li{% if current >= 6 %} class="current"{% endif %}><span class="number">6</span>{{ 'install.label.step_nav6'|trans }}</li>
                 </ol>
             </div>
         </aside>
