@@ -3,6 +3,7 @@ return [
 
     //common
     'common.label.add' => '新規作成',
+    'common.label.num' => '件',
     'common.label.edit' => '編集',
     'common.label.delete' => '削除',
     'common.label.save' => '登録',
@@ -929,8 +930,6 @@ return [
     'admin.customer.index.132' => '検索条件クリア',
     'admin.customer.index.133' => '検索',
     'admin.customer.index.134' => '検索結果：%count%件が該当しました',
-    'admin.customer.index.135' => '%count%件',
-    'admin.customer.index.136' => '%count%件',
     'admin.customer.index.137' => 'CSVダウンロード',
     'admin.customer.index.138' => 'CSVダウンロード',
     'admin.customer.index.139' => 'CSV項目設定',
