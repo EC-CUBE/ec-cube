@@ -379,9 +379,9 @@ return [
     'admin.nav.product' => '商品管理',
     'admin.nav.product.product_master' => '商品マスター',
     'admin.nav.product.product_edit' => '商品登録',
-    'admin.nav.product.class_name' => '規格登録',
-    'admin.nav.product.class_category' => 'カテゴリ登録',
-    'admin.nav.product.product_tag' => 'タグ登録',
+    'admin.nav.product.class_name' => '規格管理',
+    'admin.nav.product.class_category' => 'カテゴリ管理',
+    'admin.nav.product.product_tag' => 'タグ管理',
     'admin.nav.product.product_csv_import' => '商品CSV登録',
     'admin.nav.product.category_csv_import' => 'カテゴリCSV登録',
 
