@@ -125,7 +125,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <div class="c-primaryCol">
                 <div class="card rounded border-0 mb-4">
                     <div class="card-body p-0">
-                        <div class="card rounded border-0 mb-2">
+                        <div class="card rounded border-0">
                             <li class="list-group-item">
                                 <form role="form" class="form-row" name="form1" id="form1" method="post"
                                       action="{% if TargetCategory.id %}{{ path('admin_product_category_edit', {id: TargetCategory.id}) }}{% elseif Parent %}{{ url('admin_product_category_show', {'parent_id': Parent.id}) }}{% else %}{{ url('admin_product_category') }}{% endif %}"
@@ -219,9 +219,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             {% endif %}
                                         </li>
                                     {% endfor %}
-                                {% else %}
-                                    {# TODO: データがない場合のデザイン #}
-                                    <p>{{ 'admin.product.category.message.no_result'|trans }}</p>
                                 {% endif %}
                             </ul>
                         </div>
