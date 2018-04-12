@@ -383,6 +383,8 @@ return [
     'Kana01' => 'セイ',// TODO: enとIDが違う
     'Kana02' => 'メイ',// TODO: enとIDが違う
     'Zip' => '郵便番号',
+    'Zip01' => '郵便番号1',
+    'Zip02' => '郵便番号2',
     'Address' => '住所',
     'Tel' => '電話番号',
     'Fax' => 'FAX番号',
@@ -1812,6 +1814,7 @@ return [
     'admin.shipping.edit.order_name' => 'お名前',
     'admin.shipping.edit.order_item' => '注文内容',
     'admin.shipping.edit.shipped_mail_failed' => 'メール送信エラー',
+    'admin.shipping.placeholder.tracking_number' => '1234-567890',
     'admin.shipping.index.759' => '出荷管理',
     'admin.shipping.index.760' => '出荷マスター',
     'admin.shipping.index.761' => 'チェックボックスが選択されていません',
