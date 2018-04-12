@@ -5,6 +5,7 @@ namespace Eccube\Tests\Web\Admin\Content;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Repository\PageLayoutRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\HttpFoundation\Response;
 
 class LayoutControllerTest extends AbstractAdminWebTestCase
 {
@@ -118,10 +119,10 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
             'GET',
             $this->generateUrl(
                 'admin_content_layout_new',
-                ['DeviceType' => 99999999]
+                ['DeviceType' => 999]
             )
         );
-        $this->assertTrue($this->client->getResponse()->isClientError());
+        $this->assertEquals(Response::HTTP_BAD_REQUEST, $this->client->getResponse()->getStatusCode());
     }
 
     public function testIndexWithDeviceNotFound()
