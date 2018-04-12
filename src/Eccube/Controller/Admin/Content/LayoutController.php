@@ -306,4 +306,30 @@ class LayoutController extends AbstractController
             'source' => $source,
         ]);
     }
+
+    /**
+     * @Method("POST")
+     * @Route("/%eccube_admin_route%/content/layout/{id}/default", requirements={"id" = "\d+"}, name="admin_content_layout_default")
+     *
+     * @param Layout $Layout
+
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function setDefaultLayout(Layout $Layout)
+    {
+        $this->isTokenValid();
+
+        try {
+            $Layout->setDefaultLayout(1);
+            $this->layoutRepository->save($Layout);
+            $this->entityManager->flush();
+
+            $this->addSuccess('admin.register.complete', 'admin');
+        } catch (\Exception $e) {
+            log_error('デフォルトのレイアウトの登録に失敗しました', [$Layout->getId(), $e]);
+            $this->addError('admin.register.failed', 'admin');
+        }
+
+        return $this->redirectToRoute('admin_content_layout');
+    }
 }

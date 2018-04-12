@@ -128,6 +128,13 @@
                     $('div.empty-item', mainRows).show();
                 }
             }
+
+            {# TODO: JS logic should move to js file, not html #}
+            var formDefaultLayout = $('#form_default_layout');
+            formDefaultLayout.find('[name="default_layout"]').on('change', function(event) {
+                var url = $(this).find('option[value="' + $(this).val() +'"]').data('url');
+                formDefaultLayout.attr('action', url);
+            }).trigger('change');
         });
     </script>
 {% endblock %}
@@ -172,20 +179,26 @@
                             <div class="collapse show ec-cardCollapse" id="defaultLayout-pc">
                                 <div class="card-body">
                                     {# TODO デフォルトのレイアウトを選択して登録できるようにする #}
-                                    <div class="row">
-                                        <div class="col-3 pr-0">
-                                            <form>
-                                                <select class="form-control">
+                                    <form id="form_default_layout" method="POST" action="#">
+                                        <div class="row">
+                                            <div class="col-3 pr-0">
+                                                <input type="hidden" name="{{ constant('Eccube\\Common\\Constant::TOKEN_NAME') }}" value="{{ csrf_token(constant('Eccube\\Common\\Constant::TOKEN_NAME')) }}">
+                                                <select name="default_layout" class="form-control">
                                                     {% for Layout in Layouts %}
-                                                        <option value="">{{ Layout.name }}</option>
+                                                        {% if (Layout.DeviceType.id == constant('Eccube\\Entity\\Master\\DeviceType::DEVICE_TYPE_PC')) %}
+                                                            <option value="{{ Layout.id }}" {{ Layout.default_layout ? 'selected' }} data-url="{{ url('admin_content_layout_default', {id: Layout.id}) }}">
+                                                                {{ Layout.name }}
+                                                            </option>
+                                                        {% endif %}
                                                     {% endfor %}
                                                 </select>
-                                            </form>
+
+                                            </div>
+                                            <div class="col">
+                                                <button class="btn btn-ec-regular" type="submit">{{ 'common.label.save'|trans }}</button>
+                                            </div>
                                         </div>
-                                        <div class="col">
-                                            <button class="btn btn-ec-regular" type="button">{{ 'common.label.save'|trans }}</button>
-                                        </div>
-                                    </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -241,35 +254,6 @@
                         {# TODO レイアウト追加画面(スマホ)に移動する #}
                         <div class="d-block mb-3">
                             <a class="btn btn-ec-regular" href="{{ url('admin_content_layout_new')}}">{{ 'admin.content.layout_list.add_mobile_layout'|trans }}</a>
-                        </div>
-                        <div class="card rounded border-0 mb-4">
-                            <div class="card-header">
-                                <div class="row">
-                                    <div class="col-8">
-                                        <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.content.layout_list.default_layout'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
-                                    </div>
-                                    <div class="col-4 text-right"><a data-toggle="collapse" href="#defaultLayout-mobile" aria-expanded="false" aria-controls="defaultLayout-mobile"><i class="fa fa-angle-up fa-lg"></i></a></div>
-                                </div>
-                            </div>
-                            <div class="collapse show ec-cardCollapse" id="defaultLayout-mobile">
-                                <div class="card-body">
-                                    {# TODO デフォルトのレイアウトを選択して登録できるようにする #}
-                                    <div class="row">
-                                        <div class="col-3 pr-0">
-                                            <form>
-                                                <select class="form-control">
-                                                    {% for Layout in Layouts %}
-                                                        <option value="">{{ Layout.name }}</option>
-                                                    {% endfor %}
-                                                </select>
-                                            </form>
-                                        </div>
-                                        <div class="col">
-                                            <button class="btn btn-ec-regular" type="button">{{ 'common.label.save'|trans }}</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                         {# layouts #}
                         {% for Layout in Layouts %}
