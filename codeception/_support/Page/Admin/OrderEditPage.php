@@ -125,19 +125,20 @@ class OrderEditPage extends AbstractAdminPageStyleGuide
 
     public function 商品検索($value = '')
     {
-        $this->tester->scrollTo(['css' => '#orderItem > div > div.row.justify-content-between.mb-2 > div.col-6 > a.btn.btn-ec-regular.mr-2.add'], 0, 50);
+        $this->tester->scrollTo(['css' => '#orderItem > div > div.row.justify-content-between.mb-2 > div.col-6 > a.btn.btn-ec-regular.mr-2.add'], 0, -50);
         $this->tester->click(['css' => '#orderItem > div > div.row.justify-content-between.mb-2 > div.col-6 > a.btn.btn-ec-regular.mr-2.add']);
         $this->tester->waitForElement(['id' => 'addProduct']);
         $this->tester->wait(1);
         $this->tester->fillField(['id' => 'admin_search_product_id'], $value);
         $this->tester->click('#searchProductModalButton');
+        $this->tester->waitForElementVisible('#searchProductModalList table');
+        $this->tester->wait(1);
         return $this;
     }
 
     public function 商品検索結果_選択($rowNum)
     {
         $rowNum = $rowNum * 2;
-        $this->tester->wait(8);
         $this->tester->click("#searchProductModalList > table > tbody > tr:nth-child(${rowNum}) > td.text-right > button");
         return $this;
     }
