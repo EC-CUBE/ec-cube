@@ -249,12 +249,12 @@ class OrderHelper
             $ClassCategory1 = $ProductClass->getClassCategory1();
             if (!is_null($ClassCategory1)) {
                 $OrderItem->setClasscategoryName1($ClassCategory1->getName());
-                $OrderItem->setClassName1($ClassCategory1->getClassName()->getName());
+                $OrderItem->setClassName1($ClassCategory1->getClassName()->getDisplayName());
             }
             $ClassCategory2 = $ProductClass->getClassCategory2();
             if (!is_null($ClassCategory2)) {
                 $OrderItem->setClasscategoryName2($ClassCategory2->getName());
-                $OrderItem->setClassName2($ClassCategory2->getClassName()->getName());
+                $OrderItem->setClassName2($ClassCategory2->getClassName()->getDisplayName());
             }
 
             return $OrderItem;
