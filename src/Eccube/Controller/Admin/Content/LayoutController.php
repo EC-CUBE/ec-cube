@@ -44,6 +44,8 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Twig\Environment as Twig;
+use Eccube\Repository\Master\DeviceTypeRepository;
+use Eccube\Entity\Master\DeviceType;
 
 // todo プレビュー実装
 class LayoutController extends AbstractController
@@ -66,16 +68,27 @@ class LayoutController extends AbstractController
     protected $pageLayoutRepository;
 
     /**
+     * @var DeviceTypeRepository
+     */
+    protected $deviceTypeRepository;
+
+    /**
      * LayoutController constructor.
      * @param BlockRepository $blockRepository
      * @param LayoutRepository $layoutRepository
      * @param PageLayoutRepository $pageLayoutRepository
+     * @param DeviceTypeRepository $deviceTypeRepository
      */
-    public function __construct(BlockRepository $blockRepository, LayoutRepository $layoutRepository, PageLayoutRepository $pageLayoutRepository)
-    {
+    public function __construct(
+        BlockRepository $blockRepository,
+        LayoutRepository $layoutRepository,
+        PageLayoutRepository $pageLayoutRepository,
+        DeviceTypeRepository $deviceTypeRepository
+    ) {
         $this->blockRepository = $blockRepository;
         $this->layoutRepository = $layoutRepository;
         $this->pageLayoutRepository = $pageLayoutRepository;
+        $this->deviceTypeRepository = $deviceTypeRepository;
     }
 
     /**
@@ -318,10 +331,23 @@ class LayoutController extends AbstractController
     public function setDefaultLayout(Layout $Layout)
     {
         $this->isTokenValid();
-
         try {
-            $Layout->setDefaultLayout(1);
-            $this->layoutRepository->save($Layout);
+            if ($Layout->getDeviceType()->getId() != DeviceType::DEVICE_TYPE_PC) {
+                throw new \InvalidArgumentException('Only support PC device type now');
+            }
+
+            $PcDeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_PC);
+            $PcLayouts = $this->layoutRepository->findBy(['DeviceType' => $PcDeviceType]);
+
+            /** @var Layout $PcLayout */
+            foreach ($PcLayouts as $PcLayout) {
+                if ($PcLayout->getId() === $Layout->getId()) {
+                    $PcLayout->setDefaultLayout(1);
+                } else {
+                    $PcLayout->setDefaultLayout(0);
+                }
+                $this->layoutRepository->save($PcLayout);
+            }
             $this->entityManager->flush();
 
             $this->addSuccess('admin.register.complete', 'admin');
