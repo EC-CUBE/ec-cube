@@ -93,9 +93,14 @@ class ShippingControllerTest extends AbstractAdminWebTestCase
 
     public function testSearchOrderByName()
     {
+        $faker = $this->getFaker();
         /** @var Shipping $Shipping */
         $Shipping = $this->shippingRepository->findOneBy(array());
         $name = $Shipping->getName01();
+        $name .= $faker->realText(10);
+        $Shipping->setName01($name);
+        $this->entityManager->flush($Shipping);
+
         $Shippings = $this->shippingRepository->findBy(array('name01' => $name));
         $cnt = count($Shippings);
 
