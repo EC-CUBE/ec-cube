@@ -33,33 +33,34 @@ before_install:
   - unzip -o -q chromedriver_linux64.zip
   - sudo mv -f ./chromedriver /usr/local/bin/
   - sudo chmod +x /usr/local/bin/chromedriver
+  - gem install mailcatcher
 
 install:
   - composer install --dev --no-interaction -o --apcu-autoloader
-  - echo "APP_ENV=test" > .env
+  - echo "APP_ENV=codeception" > .env
   - bin/console doctrine:database:create
   - bin/console doctrine:schema:create
   - bin/console eccube:fixtures:load
 
 jobs:
   include:
-    - stage: Unit Test
-      env:
-        - DB=mysql DATABASE_URL=mysql://root:@localhost/cube4_dev DATABASE_SERVER_VERSION=5
-      script:
-        - ./bin/phpunit --exclude-group cache-clear
-        - ./bin/phpunit --group cache-clear
-    - env:
-        - DB=pgsql DATABASE_URL=postgres://postgres:password@localhost/cube4_dev DATABASE_SERVER_VERSION=9
-      script:
-        - ./bin/phpunit --exclude-group cache-clear
-        - ./bin/phpunit --group cache-clear
+#    - stage: Unit Test
+#      env:
+#        - DB=mysql DATABASE_URL=mysql://root:@localhost/cube4_dev DATABASE_SERVER_VERSION=5
+#      script:
+#        - ./bin/phpunit --exclude-group cache-clear
+#        - ./bin/phpunit --group cache-clear
+#    - env:
+#        - DB=pgsql DATABASE_URL=postgres://postgres:password@localhost/cube4_dev DATABASE_SERVER_VERSION=9
+#      script:
+#        - ./bin/phpunit --exclude-group cache-clear
+#        - ./bin/phpunit --group cache-clear
     - stage: E2E Test
-      env: GROUP=admin01 APP_ENV=dev DB=pgsql DATABASE_URL=postgres://postgres:password@localhost/cube4_dev DATABASE_SERVER_VERSION=9 ECCUBE_DB_USERNAME=postgres ECCUBE_DB_PASSWORD=password BASE_URL=http://localhost:8000 ECCUBE_DB_HOST=localhost ECCUBE_DB_DATABASE=cube4_dev WEB_DRIVER_HOST=localhost WEB_DRIVER_PORT=9515
+      env: GROUP=admin01 APP_ENV=dev DB=pgsql DATABASE_URL=postgres://postgres:password@localhost/cube4_dev DATABASE_SERVER_VERSION=9 ECCUBE_DB_USERNAME=postgres ECCUBE_DB_PASSWORD=password BASE_URL=http://localhost:8000 ECCUBE_DB_HOST=localhost ECCUBE_DB_DATABASE=cube4_dev WEB_DRIVER_HOST=localhost WEB_DRIVER_PORT=9515 MAILCATCHER_HOST=localhost
       script: ./codeception.sh -g ${GROUP}
-    - env: GROUP=admin02 APP_ENV=dev DB=pgsql DATABASE_URL=postgres://postgres:password@localhost/cube4_dev DATABASE_SERVER_VERSION=9 ECCUBE_DB_USERNAME=postgres ECCUBE_DB_PASSWORD=password BASE_URL=http://localhost:8000 ECCUBE_DB_HOST=localhost ECCUBE_DB_DATABASE=cube4_dev WEB_DRIVER_HOST=localhost WEB_DRIVER_PORT=9515
+    - env: GROUP=admin02 APP_ENV=dev DB=pgsql DATABASE_URL=postgres://postgres:password@localhost/cube4_dev DATABASE_SERVER_VERSION=9 ECCUBE_DB_USERNAME=postgres ECCUBE_DB_PASSWORD=password BASE_URL=http://localhost:8000 ECCUBE_DB_HOST=localhost ECCUBE_DB_DATABASE=cube4_dev WEB_DRIVER_HOST=localhost WEB_DRIVER_PORT=9515 MAILCATCHER_HOST=localhost
       script: ./codeception.sh -g ${GROUP}
-    - env: GROUP=admin03 APP_ENV=dev DB=pgsql DATABASE_URL=postgres://postgres:password@localhost/cube4_dev DATABASE_SERVER_VERSION=9 ECCUBE_DB_USERNAME=postgres ECCUBE_DB_PASSWORD=password BASE_URL=http://localhost:8000 ECCUBE_DB_HOST=localhost ECCUBE_DB_DATABASE=cube4_dev WEB_DRIVER_HOST=localhost WEB_DRIVER_PORT=9515
+    - env: GROUP=admin03 APP_ENV=dev DB=pgsql DATABASE_URL=postgres://postgres:password@localhost/cube4_dev DATABASE_SERVER_VERSION=9 ECCUBE_DB_USERNAME=postgres ECCUBE_DB_PASSWORD=password BASE_URL=http://localhost:8000 ECCUBE_DB_HOST=localhost ECCUBE_DB_DATABASE=cube4_dev WEB_DRIVER_HOST=localhost WEB_DRIVER_PORT=9515 MAILCATCHER_HOST=localhost
       script: ./codeception.sh -g ${GROUP}
-    - env: GROUP=front APP_ENV=dev DB=pgsql DATABASE_URL=postgres://postgres:password@localhost/cube4_dev DATABASE_SERVER_VERSION=9 ECCUBE_DB_USERNAME=postgres ECCUBE_DB_PASSWORD=password BASE_URL=http://localhost:8000 ECCUBE_DB_HOST=localhost ECCUBE_DB_DATABASE=cube4_dev WEB_DRIVER_HOST=localhost WEB_DRIVER_PORT=9515
+    - env: GROUP=front APP_ENV=dev DB=pgsql DATABASE_URL=postgres://postgres:password@localhost/cube4_dev DATABASE_SERVER_VERSION=9 ECCUBE_DB_USERNAME=postgres ECCUBE_DB_PASSWORD=password BASE_URL=http://localhost:8000 ECCUBE_DB_HOST=localhost ECCUBE_DB_DATABASE=cube4_dev WEB_DRIVER_HOST=localhost WEB_DRIVER_PORT=9515 MAILCATCHER_HOST=localhost
       script: ./codeception.sh -g ${GROUP}

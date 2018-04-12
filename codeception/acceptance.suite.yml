@@ -29,7 +29,7 @@ modules:
                 unexpectedAlertBehaviour: 'accept'
                 elementScrollBehavior: 1
         MailCatcher:
-            url: mailcatcher
+            url: '%MAILCATCHER_HOST%'
             port: 1080
 
 env:
