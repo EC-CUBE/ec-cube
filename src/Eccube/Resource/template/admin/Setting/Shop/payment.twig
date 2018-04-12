@@ -123,16 +123,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <div class="c-primaryCol">
                 <div class="card rounded border-0 mb-4">
                     <div class="card-body p-0">
-                        <div class="row my-3 ml-1">
-                            <div class="col-3">
-                                <form target="{{ url('admin_setting_shop_payment_new') }}">
-                                    <input class="form-control" type="text"> {#TODO: User input new name and submit to create#}
-                                </form>
-                            </div>
-                            <div class="col-auto pl-0">
-                                <a class="btn btn-ec-regular" href="{{ url('admin_setting_shop_payment_new') }}">{{'admin.setting.shop.payment.610'|trans}}</a>
-                            </div>
-                        </div>
                         <ul class="list-group list-group-flush mb-4 sortable-container">
                             <li class="list-group-item">
                                 <div class="row justify-content-around">
@@ -217,6 +207,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     </div>
                 </div>
                 <p>{{'admin.setting.shop.payment.notice'|trans}}</p>
+            </div>
+            <div class="card rounded border-0">
+                <div class="card-body p-4">
+                    <div class="text-center">
+                        {# TODO 新規作成ボタンのレイアウトについてデザイン調整が必要 #}
+                        <a href="{{ url('admin_setting_shop_payment_new') }}" class="btn btn-ec-regular pl-4 pr-4">{{'admin.setting.shop.payment.610'|trans}}</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

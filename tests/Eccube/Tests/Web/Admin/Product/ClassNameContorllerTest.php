@@ -174,6 +174,26 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
+    public function testRoutingAdminProductClassDisplayNameEdit()
+    {
+        // before
+        $TestCreator = $this->Member;
+        $TestClassName = $this->newTestClassName($TestCreator);
+        $this->entityManager->persist($TestClassName);
+        $this->entityManager->flush();
+        $test_class_name_id = $this->classNameRepo
+            ->findOneBy(array(
+                'display_name' => $TestClassName->getDisplayName()
+            ))
+            ->getId();
+
+        // main
+        $this->client->request('GET',
+            $this->generateUrl('admin_product_class_name_edit', array('id' => $test_class_name_id))
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
     public function testRoutingAdminProductClassNameDelete()
     {
         // before
