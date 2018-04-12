@@ -55,6 +55,7 @@ class ClassNameRepositoryTest extends EccubeTestCase
         for ($i = 0; $i < 3; $i++) {
             $ClassName = new ClassName();
             $ClassName
+                ->setDisplayName('class-'.$i)
                 ->setBackendName('class-'.$i)
                 ->setCreator($this->Member)
                 ->setSortNo($i)
@@ -103,6 +104,7 @@ class ClassNameRepositoryTest extends EccubeTestCase
         $faker = $this->getFaker();
         $ClassName = new ClassName();
         $ClassName
+            ->setDisplayName($faker->name)
             ->setBackendName($faker->name)
             ->setCreator($this->Member);
 
@@ -119,6 +121,7 @@ class ClassNameRepositoryTest extends EccubeTestCase
         $faker = $this->getFaker();
         $ClassName = new ClassName();
         $ClassName
+            ->setDisplayName($faker->name)
             ->setBackendName($faker->name)
             ->setCreator($this->Member);
 
@@ -143,6 +146,7 @@ class ClassNameRepositoryTest extends EccubeTestCase
     public function testDeleteWithException()
     {
         $ClassName = new ClassName();
+        $ClassName->setDisplayName('sample');
         $ClassName->setBackendName('sample');
         $ClassName->setSortNo(100);
         $ClassCateogory = new ClassCategory();

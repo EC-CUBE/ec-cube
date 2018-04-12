@@ -67,6 +67,7 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
         for ($i = 0; $i < 3; $i++) {
             $ClassName = new ClassName();
             $ClassName
+                ->setDisplayName('class-'.$i)
                 ->setBackendName('class-'.$i)
                 ->setCreator($this->Member)
                 ->setSortNo($i)
