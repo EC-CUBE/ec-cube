@@ -1,5 +1,3 @@
-/_data/*
-!/_data/plugin_fixtures.php
 /_output/*
 /_support/_downloads/*
 /_support/_generated/*
