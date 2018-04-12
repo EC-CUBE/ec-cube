@@ -7,4 +7,4 @@ trap "kill ${CDPID}" exit
 mailcatcher
 php -S localhost:8000 &
 
-vendor/bin/codecept -vvv run acceptance --env pgsql,chrome-headless "$@"
+vendor/bin/codecept -vvv run acceptance --env chrome-headless,local "$@"
