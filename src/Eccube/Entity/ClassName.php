@@ -69,6 +69,13 @@ class ClassName extends \Eccube\Entity\AbstractEntity
     private $display_name;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="display_name", type="string", length=255, nullable=true)
+     */
+    private $display_name;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="sort_no", type="integer")
@@ -178,6 +185,34 @@ class ClassName extends \Eccube\Entity\AbstractEntity
         }
 
         return $this->backend_name;
+    }
+
+    /**
+     * Set displayName.
+     *
+     * @param string $displayName
+     *
+     * @return ClassName
+     */
+    public function setDisplayName($displayName)
+    {
+        $this->display_name = $displayName;
+
+        return $this;
+    }
+
+    /**
+     * Get displayName.
+     *
+     * @return string
+     */
+    public function getDisplayName()
+    {
+        if ($this->display_name) {
+            return $this->display_name;
+        }
+
+        return $this->name;
     }
 
     /**

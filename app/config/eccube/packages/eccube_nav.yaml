@@ -1,168 +1,168 @@
 parameters:
   eccube_nav:
     - id: product
-      name: 商品管理
+      name: admin.nav.product
       has_child: true
       icon: fa-cube
       child:
           - id: product_master
-            name: 商品マスター
+            name: admin.nav.product.product_master
             url: admin_product
           - id: product_edit
-            name: 商品登録
+            name: admin.nav.product.product_edit
             url: admin_product_product_new
           - id: class_name
-            name: 規格登録
+            name: admin.nav.product.class_name
             url: admin_product_class_name
           - id: class_category
-            name: カテゴリ登録
+            name: admin.nav.product.class_category
             url: admin_product_category
           - id: product_tag
-            name: タグ登録
+            name: admin.nav.product.product_tag
             url: admin_product_tag
           - id: product_csv_import
-            name: 商品CSV登録
+            name: admin.nav.product.product_csv_import
             url: admin_product_csv_import
           - id: category_csv_import
-            name: カテゴリCSV登録
+            name: admin.nav.product.category_csv_import
             url: admin_product_category_csv_import
     - id: order
-      name: 受注管理
+      name: admin.nav.order
       has_child: true
       icon: fa-inbox
       child:
           - id: order_master
-            name: 受注マスター
+            name: admin.nav.order.order_master
             url: admin_order
           - id: order_edit
-            name: 受注登録
+            name: admin.nav.order.order_edit
             url: admin_order_new
     - id: shipping
-      name: 出荷管理
+      name: admin.nav.shipping
       has_child: true
       icon: fa-truck
       child:
           - id: shipping_master
-            name: 出荷マスター
+            name: admin.nav.shipping.shipping_master
             url: admin_shipping
           - id: shipping_edit
-            name: 出荷登録
+            name: admin.nav.shipping.shipping_edit
             url: admin_shipping_new
           - id: shipping_csv_import
-            name: 出荷CSV登録 #TODO: nav need use translate key
+            name: admin.nav.shipping.shipping_csv_import
             url: admin_shipping_csv_import
     - id: customer
-      name: 会員管理
+      name: admin.nav.customer
       has_child: true
       icon: fa-users
       child:
           - id: customer_master
-            name: 会員マスター
+            name: admin.nav.customer.customer_master
             url: admin_customer
           - id: customer_edit
-            name: 会員登録
+            name: admin.nav.customer.customer_edit
             url: admin_customer_new
 
     - id: content
-      name: コンテンツ管理
+      name: admin.nav.content
       has_child: true
       icon: fa-file-text-o
       child:
           - id: news
-            name: 新着情報管理
+            name: admin.nav.content.news
             url : admin_content_news
           - id: file
-            name: ファイル管理
+            name: admin.nav.content.file
             url: admin_content_file
-          - id: lauout
-            name: レイアウト管理
+          - id: layout
+            name: admin.nav.content.layout
             url: admin_content_layout
           - id: page
-            name: ページ管理
+            name: admin.nav.content.page
             url: admin_content_page
           - id: block
-            name: ブロック管理
+            name: admin.nav.content.block
             url: admin_content_block
           - id: cache
-            name: キャッシュ管理
+            name: admin.nav.content.cache
             url: admin_content_cache
     - id: setting
-      name: 設定
+      name: admin.nav.setting
       has_child: true
       icon: fa-cog
       child:
           - id: shop
-            name: 基本情報設定
+            name: admin.nav.setting.shop
             has_child: true
             child:
                 - id: shop_index
-                  name: ショップマスター
+                  name: admin.nav.setting.shop.shop_index
                   url: admin_setting_shop
                 - id: shop_payment
-                  name: 支払方法設定
+                  name: admin.nav.setting.shop.shop_payment
                   url: admin_setting_shop_payment
                 - id: shop_delivery
-                  name: 配送方法設定
+                  name: admin.nav.setting.shop.shop_delivery
                   url: admin_setting_shop_delivery
                 - id: shop_tax
-                  name: 税率設定
+                  name: admin.nav.setting.shop.shop_tax
                   url: admin_setting_shop_tax
                 - id: shop_mail
-                  name: メール設定
+                  name: admin.nav.setting.shop.shop_mail
                   url: admin_setting_shop_mail
                 - id: shop_csv
-                  name: CSV出力項目設定
+                  name: admin.nav.setting.shop.shop_csv
                   url: admin_setting_shop_csv
           - id: system
-            name: システム情報設定
+            name: admin.nav.setting.system
             has_child: true
             child:
                 - id: system_index
-                  name: システム情報
+                  name: admin.nav.setting.system.system_index
                   url: admin_setting_system_system
                 - id: member
-                  name: メンバー管理
+                  name: admin.nav.setting.system.member
                   url: admin_setting_system_member
                 - id: authority
-                  name: 権限管理
+                  name: admin.nav.setting.system.authority
                   url: admin_setting_system_authority
                 - id: security
-                  name: セキュリティ管理
+                  name: admin.nav.setting.system.security
                   url: admin_setting_system_security
                 - id: log
-                  name: EC-CUBE ログ表示
+                  name: admin.nav.setting.system.log
                   url: admin_setting_system_log
                 - id: masterdata
-                  name: マスターデータ管理
+                  name: admin.nav.setting.system.masterdata
                   url: admin_setting_system_masterdata
     - id: store
-      name: オーナーズストア
+      name: admin.nav.store
       has_child: true
       icon: fa-info-circle
       child:
       - id: plugin
-        name: プラグイン
+        name: admin.nav.store.plugin
         has_child: true
         child:
             - id: plugin_list
-              name: プラグイン一覧
+              name: admin.nav.store.plugin.plugin_list
               url: admin_store_plugin
 #            - id: plugin_owners_install
-#              name: 購入済プラグイン
+#              name: admin.nav.store.plugin.plugin_owners_install
 #              url: admin_store_plugin_owners_install
             - id: plugin_handler
-              name: 高度な設定
+              name: admin.nav.store.plugin.plugin_handler
               url: admin_store_plugin_handler
       - id: template
-        name: テンプレート
+        name: admin.nav.store.template
         has_child: true
         child:
           - id: template_list
-            name: テンプレート一覧
+            name: admin.nav.store.template.template_list
             url: admin_store_template
           - id: template_install
-            name: アップロード
+            name: admin.nav.store.template.template_install
             url: admin_store_template_install
       - id: authentication_setting
-        name: 認証キー設定
+        name: admin.nav.store.authentication_setting
         url: admin_store_authentication_setting
