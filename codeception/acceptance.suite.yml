@@ -20,14 +20,13 @@ modules:
             cleanup: false
             reconnect: true
         WebDriver:
-            host: browser                 # Selenium ContainerのIP/hostname
-            port: 4444                      # Selenium Container内部の4444portにmapしたport番号
+            host: '%WEB_DRIVER_HOST%'
+            port: '%WEB_DRIVER_PORT%'
             url: '%BASE_URL%'    # テスト対象のurl
             window_size: 1680x3000
             wait: 10
             capabilities:
                 unexpectedAlertBehaviour: 'accept'
-                firefox_profile: '/root/ff_profile.zip.b64'
                 elementScrollBehavior: 1
         MailCatcher:
             url: mailcatcher
@@ -61,17 +60,22 @@ env:
             config:
                 WebDriver:
                     browser: firefox
+                    capabilities:
+                        firefox_profile: '/root/ff_profile.zip.b64'
 
     chrome:
         modules:
             config:
                 WebDriver:
                     browser: chrome
-    phantomjs:
+    chrome-headless:
         modules:
             config:
                 WebDriver:
-                    browser: phantomjs
+                    browser: chrome
+                    capabilities:
+                      chromeOptions:
+                        args: ["--headless", "--disable-gpu"]
     mysql:
         modules:
             config:

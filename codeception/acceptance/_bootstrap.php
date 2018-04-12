@@ -4,7 +4,7 @@ use Faker\Factory as Faker;
 use Eccube\Kernel;
 
 
-$config = parse_ini_file('tests/acceptance/config.ini',true);
+$config = parse_ini_file(__DIR__.'/config.ini',true);
 
 /**
  * create fixture
@@ -12,7 +12,12 @@ $config = parse_ini_file('tests/acceptance/config.ini',true);
  * よってCodeceptionの設定によってコントロールされず、テスト後もデータベース内にこのデータは残る
  * データの件数によって、作成するかどうか判定される
  */
-require_once $config['eccube_path'].'/vendor/autoload.php';
+if (file_exists($config['eccube_path'].'/vendor/autoload.php')) {
+    require_once $config['eccube_path'].'/vendor/autoload.php';
+}
+if (file_exists(__DIR__.'/../../.env')) {
+    (new \Dotenv\Dotenv(__DIR__.'/../../'))->overload();
+}
 $kernel = new Kernel('test', false);
 $kernel->boot();
 
