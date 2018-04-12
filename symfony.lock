@@ -2,6 +2,9 @@
     "behat/gherkin": {
         "version": "v4.5.1"
     },
+    "captbaritone/mailcatcher-codeception-module": {
+        "version": "1.2.1"
+    },
     "codeception/codeception": {
         "version": "2.4.1"
     },
