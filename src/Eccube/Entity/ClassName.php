@@ -42,7 +42,7 @@ class ClassName extends \Eccube\Entity\AbstractEntity
      */
     public function __toString()
     {
-        return $this->getBackendName();
+        return $this->getDisplayName();
     }
 
     /**
@@ -173,11 +173,7 @@ class ClassName extends \Eccube\Entity\AbstractEntity
      */
     public function getDisplayName()
     {
-        if ($this->display_name) {
-            return $this->display_name;
-        }
-
-        return $this->backend_name;
+        return $this->display_name;
     }
 
     /**

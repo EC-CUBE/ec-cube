@@ -106,10 +106,10 @@ class Product extends \Eccube\Entity\AbstractEntity
 
                 if ($i === 0) {
                     if ($ProductClass->getClassCategory1() && $ProductClass->getClassCategory1()->getId()) {
-                        $this->className1 = $ProductClass->getClassCategory1()->getClassName()->getBackendName();
+                        $this->className1 = $ProductClass->getClassCategory1()->getClassName()->getDisplayName();
                     }
                     if ($ProductClass->getClassCategory2() && $ProductClass->getClassCategory2()->getId()) {
-                        $this->className2 = $ProductClass->getClassCategory2()->getClassName()->getBackendName();
+                        $this->className2 = $ProductClass->getClassCategory2()->getClassName()->getDisplayName();
                     }
                 }
                 if ($ProductClass->getClassCategory1()) {
