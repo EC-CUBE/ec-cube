@@ -98,6 +98,8 @@
         "vlucas/phpdotenv": "v2.4.0"
     },
     "require-dev": {
+        "captbaritone/mailcatcher-codeception-module": "^1.2",
+        "codeception/codeception": "^2.4",
         "dama/doctrine-test-bundle": "^4.0",
         "easycorp/easy-log-handler": "^1.0",
         "friendsofphp/php-cs-fixer": "^2.10",

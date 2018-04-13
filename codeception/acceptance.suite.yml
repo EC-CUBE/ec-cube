@@ -1,0 +1,88 @@
+# Codeception Test Suite Configuration
+#
+# Suite for acceptance tests.
+# Perform tests in browser using the WebDriver or PhpBrowser.
+# If you need both WebDriver and PHPBrowser tests - create a separate suite.
+
+class_name: AcceptanceTester
+modules:
+    enabled:
+        - \Helper\Acceptance
+        - Db
+        - WebDriver
+        - Asserts
+        - MailCatcher
+    config:
+        Db:
+            user: '%ECCUBE_DB_USERNAME%'
+            password: '%ECCUBE_DB_PASSWORD%'
+            populate: true
+            cleanup: false
+            reconnect: true
+        WebDriver:
+            host: '%WEB_DRIVER_HOST%'
+            port: '%WEB_DRIVER_PORT%'
+            url: '%BASE_URL%'    # テスト対象のurl
+            window_size: 1680x3000
+            wait: 10
+            capabilities:
+                unexpectedAlertBehaviour: 'accept'
+                elementScrollBehavior: 1
+        MailCatcher:
+            url: '%MAILCATCHER_HOST%'
+            port: 1080
+
+env:
+    default:
+        modules:
+            config:
+                WebDriver:
+                    browser: firefox
+                Db:
+                    dsn: 'pgsql:host=%ECCUBE_DB_HOST%;dbname=%ECCUBE_DB_DATABASE%'
+
+    front: # Backward compatibility
+        modules:
+            config:
+                WebDriver:
+                    browser: firefox
+                Db:
+                    dsn: 'pgsql:host=%ECCUBE_DB_HOST%;dbname=%ECCUBE_DB_DATABASE%'
+    admin: # Backward compatibility
+        modules:
+            config:
+                WebDriver:
+                    browser: firefox
+                Db:
+                    dsn: 'pgsql:host=%ECCUBE_DB_HOST%;dbname=%ECCUBE_DB_DATABASE%'
+    firefox:
+        modules:
+            config:
+                WebDriver:
+                    browser: firefox
+                    capabilities:
+                        firefox_profile: '/root/ff_profile.zip.b64'
+
+    chrome:
+        modules:
+            config:
+                WebDriver:
+                    browser: chrome
+    chrome-headless:
+        modules:
+            config:
+                WebDriver:
+                    browser: chrome
+                    capabilities:
+                      chromeOptions:
+                        args: ["--headless", "--disable-gpu"]
+    mysql:
+        modules:
+            config:
+                Db:
+                    dsn: 'mysql:host=%ECCUBE_DB_HOST%;dbname=%ECCUBE_DB_DATABASE%;charset=utf8'
+    pgsql:
+        modules:
+            config:
+                Db:
+                    dsn: 'pgsql:host=%ECCUBE_DB_HOST%;dbname=%ECCUBE_DB_DATABASE%'

@@ -3,9 +3,16 @@
 git:
   submodules: false
 
-sudo: false
+sudo: required
 
 language: php
+
+addons:
+  apt:
+    sources:
+      - google-chrome
+    packages:
+      - google-chrome-stable
 
 cache:
   directories:
@@ -15,33 +22,6 @@ cache:
 
 php:
   - 7.2
-#  - 7.1
-#  - 7.0
-
-env:
-  matrix:
-    - DB=mysql DATABASE_URL=mysql://root:@localhost/cube4_dev DATABASE_SERVER_VERSION=5
-    - DB=pgsql DATABASE_URL=postgres://postgres:password@localhost/cube4_dev DATABASE_SERVER_VERSION=9
-#    - DB=sqlite DATABASE_URL=sqlite:///%kernel.project_dir%/var/eccube.db DATABASE_SERVER_VERSION=3
-    # カバレッジレポート用
-#    - DB=pgsql DATABASE_URL=postgres://postgres:password@localhost/cube4_dev DATABASE_SERVER_VERSION=9 COVERAGE=true
-
-matrix:
-  fast_finish: true
-  exclude:
-    # php7.1以外のカバレッジレポート用matrixは除外
-    - php: 7.0
-      env: DB=pgsql DATABASE_URL=postgres://postgres:password@localhost/cube4_dev DATABASE_SERVER_VERSION=9 COVERAGE=true
-    - php: 7.2
-      env: DB=pgsql DATABASE_URL=postgres://postgres:password@localhost/cube4_dev DATABASE_SERVER_VERSION=9 COVERAGE=true
-  allow_failures:
-    # sqlite
-    - env: DB=sqlite DATABASE_URL=sqlite:///%kernel.project_dir%/var/eccube.db DATABASE_SERVER_VERSION=3
-    # カバレッジレポートはphp7.1のmatrixで実行
-    - php: 7.1
-      env: DB=pgsql DATABASE_URL=postgres://postgres:password@localhost/cube4_dev DATABASE_SERVER_VERSION=9 COVERAGE=true
-#    # php7.2
-#    - php: 7.2
 
 before_install:
   ## see https://github.com/symfony/symfony/blob/e0bdc0c35e9afdb3bee8af172f90e9648c4012fc/.travis.yml#L92-L97
@@ -49,19 +29,38 @@ before_install:
   - echo "opcache.enable_cli=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - echo "apc.enable_cli=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - echo "memory_limit=-1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  - wget -c -nc --retry-connrefused --tries=0 http://chromedriver.storage.googleapis.com/2.37/chromedriver_linux64.zip
+  - unzip -o -q chromedriver_linux64.zip
+  - sudo mv -f ./chromedriver /usr/local/bin/
+  - sudo chmod +x /usr/local/bin/chromedriver
+  - gem install mailcatcher
 
 install:
   - composer install --dev --no-interaction -o --apcu-autoloader
-  - bin/console doctrine:database:create --env=dev
-  - bin/console doctrine:schema:create --env=dev
-  - bin/console eccube:fixtures:load --env=dev
+  - echo "APP_ENV=codeception" > .env
+  - bin/console doctrine:database:create
+  - bin/console doctrine:schema:create
+  - bin/console eccube:fixtures:load
 
-script:
-  - if [ $COVERAGE ]  ; then phpdbg -qrr ./bin/phpunit --exclude-group cache-clear --coverage-clover=coverage.clover ; fi
-  - if [ ! $COVERAGE ]; then ./bin/phpunit --exclude-group cache-clear; fi
-  - if [ ! $COVERAGE ]; then ./bin/phpunit --group cache-clear; fi
-
-after_script:
-  - if [ $COVERAGE ]; then wget https://scrutinizer-ci.com/ocular.phar ; fi
-  - if [ $COVERAGE ]; then php ocular.phar code-coverage:upload --format=php-clover coverage.clover ; fi
-  - if [ $COVERAGE ]; then php vendor/bin/php-coveralls -v -x coverage.clover ; fi
+jobs:
+  include:
+    - stage: Unit Test
+      env:
+        - DB=mysql DATABASE_URL=mysql://root:@localhost/cube4_dev DATABASE_SERVER_VERSION=5
+      script:
+        - ./bin/phpunit --exclude-group cache-clear
+        - ./bin/phpunit --group cache-clear
+    - env:
+      - DB=pgsql DATABASE_URL=postgres://postgres:password@localhost/cube4_dev DATABASE_SERVER_VERSION=9
+      script:
+        - ./bin/phpunit --exclude-group cache-clear
+        - ./bin/phpunit --group cache-clear
+    - stage: E2E Test
+      env: GROUP=admin01 APP_ENV=codeception DB=pgsql DATABASE_URL=postgres://postgres:password@localhost/eccube_db DATABASE_SERVER_VERSION=9 MAILER_URL=smtp://localhost:1025
+      script: ./codeception.sh -g ${GROUP}
+    - env: GROUP=admin02 APP_ENV=codeception DB=pgsql DATABASE_URL=postgres://postgres:password@localhost/eccube_db DATABASE_SERVER_VERSION=9 MAILER_URL=smtp://localhost:1025
+      script: ./codeception.sh -g ${GROUP}
+    - env: GROUP=admin03 APP_ENV=codeception DB=pgsql DATABASE_URL=postgres://postgres:password@localhost/eccube_db DATABASE_SERVER_VERSION=9 MAILER_URL=smtp://localhost:1025
+      script: ./codeception.sh -g ${GROUP}
+    - env: GROUP=front APP_ENV=codeception DB=pgsql DATABASE_URL=postgres://postgres:password@localhost/eccube_db DATABASE_SERVER_VERSION=9 MAILER_URL=smtp://localhost:1025
+      script: ./codeception.sh -g ${GROUP}
