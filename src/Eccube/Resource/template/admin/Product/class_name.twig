@@ -147,8 +147,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <div class="col-auto align-self-center"><span>{{ 'admin.common.label.class_name'|trans }}</span></div>
                                         <div class="col-3 mr-2">
                                             {{ form_widget(form._token) }}
-                                            {{ form_widget(form.name) }}
-                                            {{ form_errors(form.name) }}
+                                            {{ form_widget(form.backend_name) }}
+                                            {{ form_errors(form.backend_name) }}
                                         </div>
                                         <div class="col-auto align-self-center"><span>{{ 'admin.common.label.display_name'|trans }}</span></div>
                                         <div class="col-3">
@@ -165,7 +165,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <div class="row justify-content-around mode-view">
                                             <div class="col-auto d-flex align-items-center"><i class="fa fa-bars text-ec-gray"></i></div>
                                             <div class="col d-flex align-items-center">
-                                                <a href="{{ url('admin_product_class_category', {class_name_id : ClassName.id }) }}">{{ ClassName.name }}［表示名：{{ ClassName.display_name }}］ ({{ ClassName.ClassCategories|length }})</a>
+                                                <a href="{{ url('admin_product_class_category', {class_name_id : ClassName.id }) }}">{{ ClassName.backend_name }}［表示名：{{ ClassName.display_name }}］ ({{ ClassName.ClassCategories|length }})</a>
                                             </div>
                                             <div class="col-auto text-right">
                                                 <a class="btn btn-ec-actionIcon mr-3 up {% if loop.first %}disabled{% endif %}" href="" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.class_name.439'|trans }}">
@@ -187,8 +187,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             {{ form_widget(forms[ClassName.id]._token) }}
                                             <div class="col-auto align-self-center"><span>{{ 'admin.common.label.class_name'|trans }}</span></div>
                                             <div class="col-auto align-items-center">
-                                                {{ form_widget(forms[ClassName.id].name, {'attr': {'data-origin-value': forms[ClassName.id].name.vars.value}}) }}
-                                                {{ form_errors(forms[ClassName.id].name) }}
+                                                {{ form_widget(forms[ClassName.id].backend_name, {'attr': {'data-origin-value': forms[ClassName.id].backend_name.vars.value}}) }}
+                                                {{ form_errors(forms[ClassName.id].backend_name) }}
                                             </div>
                                             <div class="col-auto align-self-center"><span>{{ 'admin.common.label.display_name'|trans }}</span></div>
                                             <div class="col-auto align-items-center">

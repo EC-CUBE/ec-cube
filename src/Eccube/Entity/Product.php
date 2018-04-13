@@ -106,10 +106,10 @@ class Product extends \Eccube\Entity\AbstractEntity
 
                 if ($i === 0) {
                     if ($ProductClass->getClassCategory1() && $ProductClass->getClassCategory1()->getId()) {
-                        $this->className1 = $ProductClass->getClassCategory1()->getClassName()->getName();
+                        $this->className1 = $ProductClass->getClassCategory1()->getClassName()->getDisplayName();
                     }
                     if ($ProductClass->getClassCategory2() && $ProductClass->getClassCategory2()->getId()) {
-                        $this->className2 = $ProductClass->getClassCategory2()->getClassName()->getName();
+                        $this->className2 = $ProductClass->getClassCategory2()->getClassName()->getDisplayName();
                     }
                 }
                 if ($ProductClass->getClassCategory1()) {
@@ -946,25 +946,25 @@ class Product extends \Eccube\Entity\AbstractEntity
     {
         return $this->ProductTag;
     }
-    
+
     /**
      * Get Tag
      * フロント側タグsort_no順の配列を作成する
-     * 
+     *
      * @return []Tag
      */
     public function getTags()
     {
         $tags = array();
-        
+
         foreach ($this->getProductTag() as $productTag) {
             $tags[] = $productTag->getTag();
         }
-        
+
         usort($tags, function(Tag $tag1, Tag $tag2) {
             return $tag1->getSortNo() < $tag2->getSortNo();
         });
-        
+
         return $tags;
     }
 
