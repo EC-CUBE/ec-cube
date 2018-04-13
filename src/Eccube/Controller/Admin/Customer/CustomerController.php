@@ -151,14 +151,14 @@ class CustomerController extends AbstractController
                     $page_no = $session->get('eccube.admin.customer.search.page_no', 1);
                 }
 
-                $viewData = $this->session->get('eccube.admin.customer.search', []);
+                $viewData = $session->get('eccube.admin.customer.search', []);
                 $searchData = FormUtil::submitAndGetData($searchForm, $viewData);
             } else {
                 $page_no = 1;
                 $searchData = [];
 
-                $this->session->set('eccube.admin.customer.search', $searchData);
-                $this->session->set('eccube.admin.customer.search.page_no', $page_no);
+                $session->set('eccube.admin.customer.search', $searchData);
+                $session->set('eccube.admin.customer.search.page_no', $page_no);
             }
         }
 
