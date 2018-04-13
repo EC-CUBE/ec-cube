@@ -1,0 +1,13 @@
+modules:
+    config:
+        Db:
+            user: 'postgres'
+            password: ''
+            dsn: 'pgsql:host=localhost;dbname=eccube_db'
+        WebDriver:
+            host: 'localhost'
+            port: 9515
+            url: 'http://localhost:8000'
+        MailCatcher:
+            url: 'localhost'
+            port: 1080
