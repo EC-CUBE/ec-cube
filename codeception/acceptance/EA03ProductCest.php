@@ -409,7 +409,8 @@ class EA03ProductCest
         $I->wantTo('EA0303-UC01-T01 規格登録');
 
         ClassNameManagePage::go($I)
-            ->入力_管理名('test class1')
+            ->入力_管理名('backend test class1')
+            ->入力_表示名('display test class1')
             ->規格作成();
 
         $I->see('規格を保存しました。', ClassNameManagePage::$登録完了メッセージ);
@@ -425,14 +426,15 @@ class EA03ProductCest
     {
         $I->wantTo('EA0303-UC02-T01 規格編集');
 
-        $I->getScenario()->skip('編集機能を実装するまでスキップ');
+        $ProductClassPage = ClassNameManagePage::go($I)->一覧_編集(2);
 
-        $ProductClassPage = ClassNameManagePage::go($I)->一覧_編集(1);
+        $backendValue = $I->grabValueFrom(ClassNameManagePage::$管理名編集3);
+        $I->assertEquals('backend test class1', $backendValue);
 
-        $value = $I->grabValueFrom(ClassNameManagePage::$管理名);
-        $I->assertEquals('test class1', $value);
+        $displayValue = $I->grabValueFrom(ClassNameManagePage::$表示名編集3);
+        $I->assertEquals('display test class1', $displayValue);
 
-        $ProductClassPage->規格作成();
+        $ProductClassPage->規格編集(2);
 
         $I->see('規格を保存しました。', ClassNameManagePage::$登録完了メッセージ);
     }
@@ -507,7 +509,7 @@ class EA03ProductCest
         $I->see('規格を保存しました。', ClassNameManagePage::$登録完了メッセージ);
 
         $ProductClassPage->一覧_分類登録(1);
-        $I->see('規格名 test class2', 'div.card-header');
+        $I->see('管理名 test class2', '#page_admin_product_class_category > div > div.c-contentsArea > div.c-contentsArea__cols > div > div.c-primaryCol > div:nth-child(1) > div.card-body > div:nth-child(1)');
 
         $ProductClassCategoryPage = ClassCategoryManagePage::at($I)
             ->入力_分類名('test class2 category1')
