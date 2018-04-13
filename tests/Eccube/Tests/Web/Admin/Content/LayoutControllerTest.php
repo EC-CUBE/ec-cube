@@ -232,8 +232,7 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
             'DELETE',
             $this->generateUrl('admin_content_layout_delete', ['id' => 0])
         );
-        $crawler = $this->client->followRedirect();
-        $this->assertRegExp('/既に削除されています。/u', $crawler->filter('div.alert-warning')->text());
+        $this->assertTrue($this->client->getResponse()->isNotFound());
     }
 
     public function testDeleteFailByPages()
