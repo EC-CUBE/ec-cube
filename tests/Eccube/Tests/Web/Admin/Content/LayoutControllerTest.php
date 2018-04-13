@@ -237,24 +237,6 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
         $this->assertRegExp('/既に削除されています。/u', $crawler->filter('div.alert-warning')->text());
     }
 
-    public function testDeleteFailByDefault()
-    {
-        $PcDeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_PC);
-        $Layout = new Layout();
-        $Layout->setName('Layout for unit test');
-        $Layout->setDeviceType($PcDeviceType);
-        $Layout->setDefaultLayout(1);
-        $this->layoutRepository->save($Layout);
-        $this->entityManager->flush();
-
-        $this->client->request(
-            'DELETE',
-            $this->generateUrl('admin_content_layout_delete', ['id' => $Layout->getId()])
-        );
-        $crawler = $this->client->followRedirect();
-        $this->assertRegExp('/既に削除されています。/u', $crawler->filter('div.alert-warning')->text());
-    }
-
     public function testDeleteFailByPages()
     {
         $PcDeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_PC);

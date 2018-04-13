@@ -124,7 +124,7 @@
                         {# TODO: JS logic should move to .js file #}
                         $('[data-target="#layoutDelete"]').each(function() {
                             var pageCount = $(this).closest('.card-header').next('.ec-cardCollapse').find('.card-body').length;
-                            if (!pageCount && !$(this).data('default-layout')) {
+                            if (!pageCount) {
                                 $(this).removeAttr('disabled');
                             } else {
                                 $(this).attr('disabled', 'disabled');
@@ -216,7 +216,6 @@
                                                         data-toggle="modal"
                                                         data-target="#layoutDelete"
                                                         data-url="{{ url('admin_content_layout_delete', {id: Layout.id}) }}"
-                                                        data-default-layout="{{ Layout.default_layout }}"
                                                         {{ not Layout.isDeletable() ? 'disabled' }}>
                                                     {{ 'admin.content.layout_list.delete_layout'|trans }}
                                                 </button>
@@ -303,7 +302,6 @@
                                                         data-toggle="modal"
                                                         data-target="#layoutDelete"
                                                         data-url="{{ url('admin_content_layout_delete', {id: Layout.id}) }}"
-                                                        data-default-layout="{{ Layout.default_layout }}"
                                                         {{ not Layout.isDeletable() ? 'disabled' }}>
                                                     {{ 'admin.content.layout_list.delete_layout'|trans }}
                                                 </button>

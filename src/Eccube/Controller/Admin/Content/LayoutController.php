@@ -97,17 +97,16 @@ class LayoutController extends AbstractController
      * @Method("DELETE")
      * @Route("/%eccube_admin_route%/content/layout/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_layout_delete")
      *
-     * @param integer $id
+     * @param Layout $Layout
      *
      * @return RedirectResponse
      */
-    public function delete($id)
+    public function delete(Layout $Layout)
     {
         $this->isTokenValid();
 
         /** @var Layout $Layout */
-        $Layout = $this->layoutRepository->find($id);
-        if (!$Layout || !$Layout->isDeletable()) {
+        if (!$Layout->isDeletable()) {
             $this->deleteMessage();
 
             return $this->redirectToRoute('admin_content_layout');
