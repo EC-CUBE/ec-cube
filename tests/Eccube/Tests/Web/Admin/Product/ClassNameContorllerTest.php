@@ -111,7 +111,7 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
             $this->generateUrl('admin_product_class_name'),
             array(
                 'admin_class_name' => array(
-                'backend_name' => '規格1',
+                'display_name' => '規格1',
                 Constant::TOKEN_NAME => 'dummy',
             ))
         );
