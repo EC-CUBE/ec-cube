@@ -13,7 +13,7 @@ class ClassNameManagePage extends AbstractAdminPageStyleGuide
 {
 
     public static $登録完了メッセージ = ['css' => '#page_admin_product_class_name > div > div.c-contentsArea > div.alert'];
-    public static $管理名 = ['id' => 'admin_class_name_name'];
+    public static $管理名 = ['id' => 'admin_class_name_backend_name'];
 
     /**
      * ProductClassPage constructor.
@@ -44,13 +44,12 @@ class ClassNameManagePage extends AbstractAdminPageStyleGuide
     public function 一覧_名称($rowNum)
     {
         $rowNum += 1;
-        return "ul.tableish > li:nth-child(${rowNum}) > div > div:nth-child(2) a:nth-child(1)";
+        return "#page_admin_product_class_name > div > div.c-contentsArea > div.c-contentsArea__cols > div > div > div > div > div > ul > li:nth-child(${rowNum}) > div > div.col.d-flex.align-items-center > a";
     }
 
     public function 一覧_分類登録($rowNum)
     {
-        $rowNum += 1;
-        $this->tester->click("ul.tableish > li:nth-child(${rowNum}) > div > div:nth-child(2) a:nth-child(1)");
+        $this->tester->click($this->一覧_名称($rowNum));
         return $this;
     }
 
@@ -76,14 +75,14 @@ class ClassNameManagePage extends AbstractAdminPageStyleGuide
     public function 一覧_上に($rowNum)
     {
         $rowNum += 1;
-        $this->tester->dragAndDropBy("ul.tableish > li:nth-child(${rowNum})", 0, -60);
+        $this->tester->dragAndDropBy("#page_admin_product_class_name > div > div.c-contentsArea > div.c-contentsArea__cols > div > div > div > div > div > ul > li:nth-child(${rowNum})", 0, -60);
         return $this;
     }
 
     public function 一覧_下に($rowNum)
     {
         $rowNum += 1;
-        $this->tester->dragAndDropBy("ul.tableish > li:nth-child(${rowNum})", 0, 60);
+        $this->tester->dragAndDropBy("#page_admin_product_class_name > div > div.c-contentsArea > div.c-contentsArea__cols > div > div > div > div > div > ul > li:nth-child(${rowNum})", 0, 60);
         return $this;
     }
 }
