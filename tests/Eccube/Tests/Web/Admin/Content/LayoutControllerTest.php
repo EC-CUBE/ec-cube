@@ -219,7 +219,6 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
         $Layout = new Layout();
         $Layout->setName('Layout for unit test');
         $Layout->setDeviceType($PcDeviceType);
-        $Layout->setDefaultLayout(1);
         $this->layoutRepository->save($Layout);
         $this->entityManager->flush();
 
