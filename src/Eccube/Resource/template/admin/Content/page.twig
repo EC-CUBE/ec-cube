@@ -80,16 +80,43 @@
                                         <div class="row justify-content-end">
                                             {# TODO 削除はモーダル化が必要かどうか確認 #}
                                             {# TODO 削除出来ないページの表示 #}
-                                            <div class="col-auto text-center">{% if Page.edit_type == constant('Eccube\\Entity\\Page::EDIT_TYPE_USER') %}
-                                                <a class="btn btn-ec-actionIcon"
-                                                   data-toggle="tooltip"
-                                                   data-placement="top"
-                                                   title="{{ 'admin.content.page.delete'|trans }}"
-                                                   href="{{ url('admin_content_page_delete', { 'id': Page.id}) }}" {{ csrf_token_for_anchor() }}
-                                                   data-method="delete"
-                                                   data-message="{{ 'admin.content.page.delete_message'|trans }}"><i
-                                                                class="fa fa-close fa-lg text-secondary"
-                                                                aria-hidden="true"></i></a>{% endif %}
+                                            <div class="col-auto text-center" data-toggle="tooltip" data-placement="top" title="{{ 'admin.content.page.delete'|trans }}">
+                                                {% if Page.edit_type == constant('Eccube\\Entity\\Page::EDIT_TYPE_USER') %}
+                                                    <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#delete_{{ Page.id }}">
+                                                        <i class="fa fa-close fa-lg text-secondary"
+                                                           aria-hidden="true"></i>
+                                                    </a>
+                                                    <div class="modal fade" id="delete_{{ Page.id }}" tabindex="-1"
+                                                         role="dialog"
+                                                         aria-labelledby="delete_{{ Page.id }}" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title font-weight-bold">
+                                                                        {{ 'admin.content.page.delete_message'|trans }}</h5>
+                                                                    <button class="close" type="button"
+                                                                            data-dismiss="modal"
+                                                                            aria-label="Close"><span
+                                                                                aria-hidden="true">×</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body text-left">
+                                                                    <p class="text-left">
+                                                                        {{ 'admin.content.page.delete_message'|trans }}</p>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button class="btn btn-ec-sub" type="button"
+                                                                            data-dismiss="modal">{{ 'common.label.cancel'|trans }}
+                                                                    </button>
+                                                                    <a class="btn btn-ec-delete"
+                                                                       href="{{ url('admin_content_page_delete', {'id' : Page.id}) }}" {{ csrf_token_for_anchor() }}
+                                                                       data-method="delete"
+                                                                       data-confirm="false">{{ 'common.label.delete'|trans }}</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
                                             </div>
                                         </div>
                                     </td>
