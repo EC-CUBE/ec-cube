@@ -118,7 +118,7 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('admin_product_class_name')));
     }
 
-    public function testIndexWithPostDisplayName()
+    public function testIndexWithPostBackendName()
     {
         $client = $this->client;
         $client->request(
