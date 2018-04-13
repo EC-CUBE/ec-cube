@@ -36,7 +36,7 @@ class PageLayout extends AbstractEntity
     /**
      * @var int
      *
-     * @ORM\Column(name="sort_no", type="smallint", options={"unsigned":true})
+     * @ORM\Column(name=“sort_no”, type=“smallint”, nullable=true, options={“unsigned”:true})
      */
     private $sort_no;
 
