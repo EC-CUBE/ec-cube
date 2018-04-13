@@ -6,6 +6,9 @@ use Eccube\Entity\Master\DeviceType;
 use Eccube\Repository\PageLayoutRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\HttpFoundation\Response;
+use Eccube\Repository\LayoutRepository;
+use Eccube\Repository\Master\DeviceTypeRepository;
+use Eccube\Entity\Layout;
 
 class LayoutControllerTest extends AbstractAdminWebTestCase
 {
@@ -14,10 +17,25 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
      */
     private $PageLayoutRepo;
 
+    /**
+     * @var LayoutRepository
+     */
+    protected $layoutRepository;
+
+    /**
+     * @var DeviceTypeRepository
+     */
+    protected $deviceTypeRepository;
+
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         parent::setUp();
         $this->PageLayoutRepo = $this->container->get(PageLayoutRepository::class);
+        $this->layoutRepository = $this->container->get(LayoutRepository::class);
+        $this->deviceTypeRepository = $this->container->get(DeviceTypeRepository::class);
     }
 
     public function testIndex()
@@ -164,5 +182,78 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect(
             $this->app->url('homepage').'?preview=1'
         ));
+    }
+
+    public function testLayoutSetDefaultSuccess()
+    {
+        $PcDeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_PC);
+
+        $DefaultLayout = new Layout();
+        $DefaultLayout->setDeviceType($PcDeviceType);
+        $DefaultLayout->setDefaultLayout(1);
+        $DefaultLayout->setName('SP Layout for Unit Test');
+        $this->layoutRepository->save($DefaultLayout);
+
+        $NormalLayout = new Layout();
+        $NormalLayout->setDeviceType($PcDeviceType);
+        $NormalLayout->setName('PC Layout for Unit Test');
+        $this->layoutRepository->save($NormalLayout);
+
+        $this->entityManager->flush();
+
+        $this->assertTrue((boolean)$DefaultLayout->getDefaultLayout());
+        $this->assertFalse((boolean)$NormalLayout->getDefaultLayout());
+
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_content_layout_default', ['id' => $NormalLayout->getId()]),
+            ['_token' => 'dummy']
+        );
+        $crawler = $this->client->followRedirect();
+
+        $this->assertRegExp('/登録が完了しました。/u', $crawler->filter('div.alert-success')->text());
+
+        $this->assertEquals(1, $NormalLayout->getDefaultLayout());
+        $this->assertEquals(0, $DefaultLayout->getDefaultLayout());
+    }
+
+    public function testLayoutSetDefaultFail()
+    {
+        $SpDeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_SP);
+        $PcDeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_PC);
+
+        $SpLayout = new Layout();
+        $SpLayout->setDeviceType($SpDeviceType);
+        $SpLayout->setName('SP Layout for Unit Test');
+        $this->layoutRepository->save($SpLayout);
+
+        $PcLayout = new Layout();
+        $PcLayout->setDeviceType($PcDeviceType);
+        $PcLayout->setName('PC Layout for Unit Test');
+        $this->layoutRepository->save($PcLayout);
+
+        $this->entityManager->flush();
+
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_content_layout_default', ['id' => 0]),
+            ['_token' => 'dummy']
+        );
+        $this->assertTrue($this->client->getResponse()->isNotFound());
+
+        $this->client->request(
+            'GET',
+            $this->generateUrl('admin_content_layout_default', ['id' => $PcDeviceType->getId()]),
+            ['_token' => 'dummy']
+        );
+        $this->assertEquals(405, $this->client->getResponse()->getStatusCode());
+
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_content_layout_default', ['id' => $SpLayout->getId()]),
+            ['_token' => 'dummy']
+        );
+        $crawler = $this->client->followRedirect();
+        $this->assertRegExp('/登録できませんでした。/u', $crawler->filter('div.alert-danger')->text());
     }
 }

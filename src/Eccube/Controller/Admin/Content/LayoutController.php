@@ -45,6 +45,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Twig\Environment as Twig;
+use Eccube\Repository\Master\DeviceTypeRepository;
 
 // todo プレビュー実装
 class LayoutController extends AbstractController
@@ -67,16 +68,27 @@ class LayoutController extends AbstractController
     protected $pageLayoutRepository;
 
     /**
+     * @var DeviceTypeRepository
+     */
+    protected $deviceTypeRepository;
+
+    /**
      * LayoutController constructor.
      * @param BlockRepository $blockRepository
      * @param LayoutRepository $layoutRepository
      * @param PageLayoutRepository $pageLayoutRepository
+     * @param DeviceTypeRepository $deviceTypeRepository
      */
-    public function __construct(BlockRepository $blockRepository, LayoutRepository $layoutRepository, PageLayoutRepository $pageLayoutRepository)
-    {
+    public function __construct(
+        BlockRepository $blockRepository,
+        LayoutRepository $layoutRepository,
+        PageLayoutRepository $pageLayoutRepository,
+        DeviceTypeRepository $deviceTypeRepository
+    ) {
         $this->blockRepository = $blockRepository;
         $this->layoutRepository = $layoutRepository;
         $this->pageLayoutRepository = $pageLayoutRepository;
+        $this->deviceTypeRepository = $deviceTypeRepository;
     }
 
     /**
@@ -318,5 +330,44 @@ class LayoutController extends AbstractController
             'id' => $Block->getId(),
             'source' => $source,
         ]);
+    }
+
+    /**
+     * @Method("POST")
+     * @Route("/%eccube_admin_route%/content/layout/{id}/default", requirements={"id" = "\d+"}, name="admin_content_layout_default")
+     *
+     * @param Layout $Layout
+
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function setDefaultLayout(Layout $Layout)
+    {
+        $this->isTokenValid();
+        try {
+            if ($Layout->getDeviceType()->getId() != DeviceType::DEVICE_TYPE_PC) {
+                throw new \InvalidArgumentException('Only support PC device type now');
+            }
+
+            $PcDeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_PC);
+            $PcLayouts = $this->layoutRepository->findBy(['DeviceType' => $PcDeviceType]);
+
+            /** @var Layout $PcLayout */
+            foreach ($PcLayouts as $PcLayout) {
+                if ($PcLayout->getId() === $Layout->getId()) {
+                    $PcLayout->setDefaultLayout(1);
+                } else {
+                    $PcLayout->setDefaultLayout(0);
+                }
+                $this->layoutRepository->save($PcLayout);
+            }
+            $this->entityManager->flush();
+
+            $this->addSuccess('admin.register.complete', 'admin');
+        } catch (\Exception $e) {
+            log_error('デフォルトのレイアウトの登録に失敗しました', [$Layout->getId(), $e]);
+            $this->addError('admin.register.failed', 'admin');
+        }
+
+        return $this->redirectToRoute('admin_content_layout');
     }
 }
