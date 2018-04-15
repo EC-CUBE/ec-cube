@@ -2916,6 +2916,63 @@ class CartValidationTest extends AbstractWebTestCase
         $this->assertNotContains('この商品は同時に購入することはできません。', $message);
     }
 
+    /**
+     * Test product in history order when invalid payment method before confirm
+     * with MultiShipping
+     * enable add cart
+     */
+    public function testProductInHistoryOrderWhenInvalidPaymentMethodBeforeConfirm()
+    {
+        // GIVE
+        // enable multi shipping
+        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $BaseInfo->setOptionMultipleShipping(Constant::ENABLED);
+        $this->app['orm.em']->persist($BaseInfo);
+        $this->app['orm.em']->flush();
+        $this->logIn();
+        $productStock = 10;
+        $productClassNum = 1;
+
+        /** @var Product $Product */
+        $productName = $this->getFaker()->word;
+        $Product = $this->createProduct(
+          $productName,
+          $productClassNum,
+          $productStock
+        );
+        $ProductClass = $Product->getProductClasses()->first();
+        $productClassId = $ProductClass->getId();
+
+        /* product 2 */
+        $productName2 = $this->getFaker()->word;
+        $Product2 = $this->createProduct(
+          $productName2,
+          $productClassNum,
+          $productStock
+        );
+        $ProductClass2 = $Product2->getProductClasses()->first();
+        $productClassId2 = $ProductClass2->getId();
+
+        // WHEN
+        /** @var Client $client */
+        $client = $this->client;
+
+        // add to cart
+        $stockInCart = 3;
+        $this->scenarioCartIn($client, $productClassId, $stockInCart);
+        $this->app['eccube.service.cart']->unlock();
+        $this->scenarioCartIn($client, $productClassId2, $stockInCart);
+
+        // shopping step
+        $this->scenarioConfirm($client);
+        $client->followRedirect();
+
+        // order complete, with invalid method payment
+        $this->scenarioComplete($client, '', array(), 3);
+
+        // error page
+        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping_error')));
+    }
 
     /**
      * @param $client
@@ -2946,10 +3003,11 @@ class CartValidationTest extends AbstractWebTestCase
     /**
      * @param $client
      * @param string $confirmUrl
-     * @param array  $arrShopping
+     * @param array $arrShopping
+     * @param int $payment
      * @return mixed
      */
-    protected function scenarioComplete($client, $confirmUrl = '', $arrShopping = array())
+    protected function scenarioComplete($client, $confirmUrl = '', $arrShopping = array(), $payment = 1)
     {
         $faker = $this->getFaker();
         if (strlen($confirmUrl) == 0) {
@@ -2965,7 +3023,7 @@ class CartValidationTest extends AbstractWebTestCase
                             'deliveryTime' => 1
                         ),
                     ),
-                'payment' => 3,
+                'payment' => $payment,
                 'message' => $faker->text(),
                 '_token' => 'dummy',
             );
