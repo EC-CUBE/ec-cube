@@ -331,17 +331,15 @@ class DeliveryController extends AbstractController
             throw new BadRequestHttpException();
         }
 
-        if (!$this->isTokenValid()) {
-            throw new BadRequestHttpException();
+        if ($this->isTokenValid()) {
+            $sortNos = $request->request->all();
+            foreach ($sortNos as $deliveryId => $sortNo) {
+                $Delivery = $this->deliveryRepository->find($deliveryId);
+                $Delivery->setSortNo($sortNo);
+                $this->entityManager->persist($Delivery);
+            }
+            $this->entityManager->flush();
         }
-
-        $sortNos = $request->request->all();
-        foreach ($sortNos as $deliveryId => $sortNo) {
-            $Delivery = $this->deliveryRepository->find($deliveryId);
-            $Delivery->setSortNo($sortNo);
-            $this->entityManager->persist($Delivery);
-        }
-        $this->entityManager->flush();
 
         return $this->json('OK', 200);
     }
