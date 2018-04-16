@@ -106,14 +106,20 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
                 // 要素数をインクリメント
                 index++;
+
+                moveSortNo();
             });
 
             // 明細行の削除
             $('#delivery-time-group').on('click', '.remove-delivery-time-item', function (event) {
                 event.preventDefault();
 
+                $(this).tooltip('hide');
+
                 // 自身の行を削除.
                 $(event.target).parents('li').remove();
+
+                moveSortNo();
             });
 
             // 初期表示時のsort noを保持.
@@ -134,7 +140,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 }
             });
             // Up
-            $(".sortable-item").on('click', 'a.action-up', function (e) {
+            $('#delivery-time-group').on('click', 'a.action-up', function (e) {
                 e.preventDefault();
                 var current = $(this).parents("li");
                 if (current.prev().hasClass('sortable-item')) {
@@ -143,7 +149,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 }
             });
             // Down
-            $(".sortable-item").on('click', 'a.action-down', function (e) {
+            $('#delivery-time-group').on('click', 'a.action-down', function (e) {
                 e.preventDefault();
                 var current = $(this).parents("li");
                 if (current.next().hasClass('sortable-item')) {
@@ -153,7 +159,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             });
 
             // 編集
-            $(".sortable-item").on('click', 'a.action-edit', function (e) {
+            $('#delivery-time-group').on('click', 'a.action-edit', function (e) {
                 e.preventDefault();
                 var current = $(this).parents("li");
                 current.find('.mode-view').addClass('d-none');
@@ -161,7 +167,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             });
 
             // 編集決定
-            $('.sortable-item').on('click', 'button.action-edit-submit', function (e) {
+            $('#delivery-time-group').on('click', 'button.action-edit-submit', function (e) {
                 e.preventDefault();
                 var current = $(this).parents("li");
                 var value = current.find('.form-control').val()
@@ -170,7 +176,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 current.find('.mode-edit').addClass('d-none');
             });
             // 編集キャンセル
-            $('.sortable-item').on('click', 'button.action-edit-cancel', function (e) {
+            $('#delivery-time-group').on('click', 'button.action-edit-cancel', function (e) {
                 e.preventDefault();
                 var current = $(this).parents("li");
                 current.find('[data-origin-value]').each(function(e) {
@@ -182,7 +188,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 current.find('.mode-edit').addClass('d-none');
             });
             // 編集時, エラーがあれば入力欄を表示.
-            $('.sortable-item').find('.is-invalid').each(function (e) {
+            $('#delivery-time-group').find('.is-invalid').each(function (e) {
                 var current = $(this).parents("li");
                 current.find('.mode-view').addClass('d-none');
                 current.find('.mode-edit').removeClass('d-none');

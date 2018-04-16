@@ -29,6 +29,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class DeliveryTimeType extends AbstractType
 {
@@ -40,8 +41,12 @@ class DeliveryTimeType extends AbstractType
         $builder
             ->add('delivery_time', TextType::class, array(
                 'label' => false,
+                'required' => true,
                 'attr' => array(
                     'placeholder' => '配送方法名を入力',
+                ),
+                'constraints' => array(
+                    new Assert\NotBlank(),
                 ),
             ))
         ;
