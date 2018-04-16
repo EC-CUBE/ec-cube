@@ -81,12 +81,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     if (block.prev.length) {
                         block.current.insertBefore(block.prev);
                         block.menu.popover('hide');
+                        window.updateUpDown($block.parent('.ui-sortable').first());
                     }
                 });
                 $('.context-movedown').on('click', block, function() {
                     if (block.next.length) {
                         block.current.insertAfter(block.next);
                         block.menu.popover('hide');
+                        window.updateUpDown($block.parent('.ui-sortable').first());
                     }
                 });
                 $('.context-movesection').on('click', block, function() {
@@ -95,6 +97,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     block.menu.popover('hide');
                 });
                 $('#clickStreamConfirm').on('show.bs.modal', function(event) {
+                    $('#move-section').children('option').remove();
                     for (var target_id in sections) {
                         $('#move-section').append('<option value="' + target_id + '">' + sections[target_id] + '</option>');
                     }
@@ -105,6 +108,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     var $parent = $target.parent();
 
                     $position.append($target);
+                    window.updateUpDown($position);
+                    window.updateUpDown($parent);
 
                     if ($position.children('.block').length > 0) {
                         // hide placeholder
@@ -189,7 +194,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% endblock javascript %}
 
 {% block main %}
-    {% set loop_index = 1 %}
+    {% set loop_index = 0 %}
     <form name="form1" id="form1" method="post" action="{% if Layout.id -%}
                 {{ url('admin_content_layout_edit', {id: Layout.id}) }}
     {%- else -%}
@@ -212,11 +217,20 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <div class="col-3 pr-0"><span>{{ 'admin.content.layout.name'|trans }}</span><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></div>
                                     <div class="col">
                                         {{ form_widget(form.name) }}
+                                        {{ form_errors(form.name) }}
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-3 pr-0"><span>{{ 'admin.content.layout.device_type'|trans }}</span></div>
-                                    <div class="col"><span>{{ form_widget(form.DeviceType) }}</span></div>{# TODO hidden にする #}
+                                    <div class="col">
+                                        <span>
+                                            {% if form.DeviceType.vars.value in form.DeviceType.vars.choices|keys %}
+                                                {{ form.DeviceType.vars.choices[form.DeviceType.vars.value].label }}
+                                            {% endif %}
+                                            {{ form_errors(form.DeviceType) }}
+                                            <input type="hidden" name="{{ form.DeviceType.vars.full_name }}" value="{{ form.DeviceType.vars.value }}" />
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -484,7 +498,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         </div>
                                     </div>
                                 </div>
-                                <div id="context-menu">
+                                <div id="context-menu" style="display: none">
                                     <div class='list-group'>
                                         <a href='javascript:;' class='context-moveup list-group-item list-group-item-action border-0'>
                                             <i class='fa fa-long-arrow-up mr-1'></i>{{ 'admin.content.layout.block.context.moveup'|trans }}
