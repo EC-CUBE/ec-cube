@@ -8,16 +8,13 @@ pipeline {
     }
     stage('deploy') {
       when {
-        branch ('origin/pr/' + env.pullRequestId + '/from')
+        branch 'master'
       }
       steps {
         echo 'deploying...'
       }
     }
     stage('GUI test') {
-      when {
-        branch ('origin/pr/' + env.pullRequestId + '/from')
-      }
       steps {
         sh '''cd e2e/selenide
 DISPLAY=:1 ./gradlew clean test'''
