@@ -153,34 +153,34 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <div class="card rounded border-0 mb-4">
                     <div class="card-body p-0">
                         <div class="card rounded border-0 mb-2">
-                            <li class="list-group-item">
-                                <form role="form" class="form-row" name="form1" id="form1" method="post"
-                                      action="{% if TargetCategory.id %}{{ path('admin_product_category_edit', {id: TargetCategory.id}) }}{% elseif Parent %}{{ url('admin_product_category_show', {'parent_id': Parent.id}) }}{% else %}{{ url('admin_product_category') }}{% endif %}"
-                                      enctype="multipart/form-data">
-                                    {% if TargetCategory.hierarchy < eccube_config.eccube_category_nest_level %}
-                                        {{ form_widget(form._token) }}
-                                        <div class="col-auto">
-                                            {{ form_widget(form.name) }}
-                                            {{ form_errors(form.name) }}
-                                        </div>
-                                        <div class="col-auto">
-                                            <button class="btn btn-ec-regular" type="submit">
-                                                {{ 'admin.product.category.403'|trans }}
-                                            </button>
-                                        </div>
-                                    {% endif %}
-                                    {% for f in form.getIterator %}
-                                        {% if f.vars.name matches '[^plg*]' %}
+                            <ul class="list-group list-group-flush sortable-container">
+                                <li class="list-group-item">
+                                    <form role="form" class="form-row" name="form1" id="form1" method="post"
+                                          action="{% if TargetCategory.id %}{{ path('admin_product_category_edit', {id: TargetCategory.id}) }}{% elseif Parent %}{{ url('admin_product_category_show', {'parent_id': Parent.id}) }}{% else %}{{ url('admin_product_category') }}{% endif %}"
+                                          enctype="multipart/form-data">
+                                        {% if TargetCategory.hierarchy < eccube_config.eccube_category_nest_level %}
+                                            {{ form_widget(form._token) }}
                                             <div class="col-auto">
-                                                {{ form_label(f) }}
-                                                {{ form_widget(f) }}
-                                                {{ form_errors(f) }}
+                                                {{ form_widget(form.name) }}
+                                                {{ form_errors(form.name) }}
+                                            </div>
+                                            <div class="col-auto">
+                                                <button class="btn btn-ec-regular" type="submit">
+                                                    {{ 'admin.product.category.403'|trans }}
+                                                </button>
                                             </div>
                                         {% endif %}
-                                    {% endfor %}
-                                </form>
-                            </li>
-                            <ul class="list-group list-group-flush sortable-container">
+                                        {% for f in form.getIterator %}
+                                            {% if f.vars.name matches '[^plg*]' %}
+                                                <div class="col-auto">
+                                                    {{ form_label(f) }}
+                                                    {{ form_widget(f) }}
+                                                    {{ form_errors(f) }}
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </form>
+                                </li>
                                 {% if Categories|length > 0 %}
                                     {% for Category in Categories %}
                                         <li class="list-group-item sortable-item" data-id="{{ Category.id }}" data-sort-no="{{ Category.sort_no }}" >
