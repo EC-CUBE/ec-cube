@@ -216,17 +216,20 @@ class CategoryController extends AbstractController
      */
     public function moveSortNo(Request $request)
     {
-        if ($request->isXmlHttpRequest()) {
-            $sortNos = $request->request->all();
-            foreach ($sortNos as $categoryId => $sortNo) {
-                /* @var $Category \Eccube\Entity\Category */
-                $Category = $this->categoryRepository
-                    ->find($categoryId);
-                $Category->setSortNo($sortNo);
-                $this->entityManager->persist($Category);
-            }
-            $this->entityManager->flush();
+        if (!$request->isXmlHttpRequest()) {
+            throw new BadRequestHttpException();
         }
+        $this->isTokenValid();
+        $sortNos = $request->request->all();
+        foreach ($sortNos as $categoryId => $sortNo) {
+            /* @var $Category \Eccube\Entity\Category */
+            $Category = $this->categoryRepository
+                ->find($categoryId);
+            $Category->setSortNo($sortNo);
+            $this->entityManager->persist($Category);
+        }
+        $this->entityManager->flush();
+
         return new Response('Successful');
     }
 

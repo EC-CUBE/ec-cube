@@ -35,73 +35,72 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.sortable.min.js', 'admin') }}"></script>
     <script>
         $(function () {
-            var mainRows = "ul.tableish";
+            // 初期表示時のsort noを保持.
             var oldSortNos = [];
-            // 画面の中のsortNo一覧を保持
-            $(mainRows + " > .list-group-item").each(function () {
+            $('.sortable-item').each(function () {
                 oldSortNos.push(this.dataset.sortNo);
             });
-            // rsort
             oldSortNos.sort(function (a, b) {
                 return a - b;
             }).reverse();
-
-            $(mainRows).sortable({
-                items: ' > .list-group-item',
-                cursor: 'move',
-                update: function (e, ui) {
-                    $("body").append($('<div class="modal-backdrop show"></div>'));
-                    updateSortNo();
-                }
-            });
-
+            // 並び替え後にsort noを更新
             var updateSortNo = function () {
-                // 並び替え後にsortNoを更新
                 var newSortNos = {};
                 var i = 0;
-                $(mainRows + " > .list-group-item").each(function () {
-                    newSortNos[this.dataset.categoryId] = oldSortNos[i];
+                $('.sortable-item').each(function () {
+                    newSortNos[this.dataset.id] = oldSortNos[i];
                     i++;
                 });
-
                 $.ajax({
                     url: '{{ url('admin_product_category_sort_no_move') }}',
                     type: 'POST',
-                    data: newSortNos,
-                }).done(function (data) {
-                    doDisableArrow();
-                }).fail(function () {
-                    console.log('Fail!');
+                    headers: {
+                        'x-csrf-token': $('meta[name="x-csrf-token"]').attr('content')
+                    },
+                    data: newSortNos
+                }).always(function () {
                     $(".modal-backdrop").remove();
                 });
             };
-
-            $(mainRows).on('click', '.list-group-item a.up', function (e) {
-                e.preventDefault();
-                var current = $(this).closest("li.list-group-item");
-                current.prev().before(current);
-                $("body").append($('<div class="modal-backdrop show"></div>'));
+            // 最初と最後の↑↓を再描画
+            var redrawDisableAllows = function () {
+                var items = $('.sortable-item');
+                items.find('a').removeClass('disabled');
+                items.first().find('a.action-up').addClass('disabled');
+                items.last().find('a.action-down').addClass('disabled');
+            };
+            // オーバレイ後, 表示順の更新を行う
+            var moveSortNo = function () {
+                $('body').append($('<div class="modal-backdrop show"></div>'));
                 updateSortNo();
-            });
-
-            $(mainRows).on('click', ".list-group-item a.down", function (e) {
-                e.preventDefault();
-                var current = $(this).closest("li.list-group-item");
-                current.next().after(current);
-                $("body").append($('<div class="modal-backdrop show"></div>'));
-                updateSortNo();
-            });
-
-            // Do set disable arrow up/down
-            function doDisableArrow() {
-                $(mainRows + " a.up.disabled").removeClass('disabled');
-                $(mainRows + " a.down.disabled").removeClass('disabled');
-                // First element
-                $(mainRows + " > li:first-child > div a.up").addClass('disabled');
-                // Last element
-                $(mainRows + " > li").last().find("a.down").addClass('disabled');
-                $(".modal-backdrop").remove();
+                redrawDisableAllows();
             }
+            // Drag and Drop
+            $(".sortable-container").sortable({
+                items: '> .sortable-item',
+                cursor: 'move',
+                update: function (e, ui) {
+                    moveSortNo();
+                }
+            });
+            // Up
+            $(".sortable-item").on('click', 'a.action-up', function (e) {
+                e.preventDefault();
+                var current = $(this).parents("li");
+                if (current.prev().hasClass('sortable-item')) {
+                    current.prev().before(current);
+                    moveSortNo();
+                }
+            });
+            // Down
+            $(".sortable-item").on('click', 'a.action-down', function (e) {
+                e.preventDefault();
+                var current = $(this).parents("li");
+                if (current.next().hasClass('sortable-item')) {
+                    current.next().after(current);
+                    moveSortNo();
+                }
+            });
         });
     </script>
 {% endblock %}
@@ -180,10 +179,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {% endfor %}
                                 </form>
                             </li>
-                            <ul class="list-group list-group-flush tableish">
+                            <ul class="list-group list-group-flush sortable-container">
                                 {% if Categories|length > 0 %}
                                     {% for Category in Categories %}
-                                        <li class="list-group-item" data-category-id="{{ Category.id }}" data-sort-no="{{ Category.sort_no }}" >
+                                        <li class="list-group-item sortable-item" data-id="{{ Category.id }}" data-sort-no="{{ Category.sort_no }}" >
                                             {% if Category.id != TargetCategory.id %}
                                                 <div class="row justify-content-around">
                                                     <div class="col-auto d-flex align-items-center">
@@ -193,12 +192,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                         <a href="{{ url('admin_product_category_show',  { parent_id : Category.id }) }}">{{ Category.name }}</a>
                                                     </div>
                                                     <div class="col-auto text-right">
-                                                        <a class="btn btn-ec-actionIcon up mr-3 {% if loop.first %} disabled {% endif %}" href=""
+                                                        <a class="btn btn-ec-actionIcon action-up mr-3 {% if loop.first %} disabled {% endif %}" href=""
                                                            data-toggle="tooltip" data-placement="top"
                                                            title="{{ 'admin.product.category.up'|trans }}">
                                                             <i class="fa fa-arrow-up fa-lg text-secondary"></i>
                                                         </a>
-                                                        <a class="btn btn-ec-actionIcon down mr-3 {% if loop.last %} disabled {% endif %}" href=""
+                                                        <a class="btn btn-ec-actionIcon action-down mr-3 {% if loop.last %} disabled {% endif %}" href=""
                                                            data-toggle="tooltip" data-placement="top"
                                                            title="{{ 'admin.product.category.down'|trans }}">
                                                             <i class="fa fa-arrow-down fa-lg text-secondary"></i>
