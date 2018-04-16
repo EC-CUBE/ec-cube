@@ -50,16 +50,25 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         });
     </script>
     <script>
-        {# TODO: sort_noの実装#}
+        // 降順にソートする
+        $(function(){
+            var $items_wrapper = $('.sortable-container');
+            var $items = $('.sortable-item');
+            $items.sort(function(a, b){
+                return parseInt($(a).find('.sort-no').val()) > parseInt($(b).find('.sort-no').val());
+            });
+            $items.each(function(){
+                $items_wrapper.append($(this).remove());
+            })
+        });
+
         // 並び替え後にsort noを更新
-        // function updateSortNo() {
-        //     var newSortNos = {};
-        //     var i = 0;
-        //     $('.sortable-item').each(function () {
-        //         newSortNos[this.dataset.id] = oldSortNos[i];
-        //         i++;
-        //     });
-        // }
+        function updateSortNo() {
+            var $items = $('.sortable-container').find('.sortable-item');
+            $items.each(function(){
+                $(this).find('.sort-no').val($items.index(this) + 1);
+            });
+        }
 
         // 最初と最後の↑↓を再描画
         function redrawDisableAllows() {
@@ -71,7 +80,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
         // 表示順の更新を行う
         function moveSortNo() {
-            // updateSortNo();
+            updateSortNo();
             redrawDisableAllows();
         }
 
@@ -121,15 +130,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
                 moveSortNo();
             });
-
-            // 初期表示時のsort noを保持.
-            var oldSortNos = [];
-            $('.sortable-item').each(function () {
-                oldSortNos.push(this.dataset.sortNo);
-            });
-            oldSortNos.sort(function (a, b) {
-                return a - b;
-            }).reverse();
 
             // Drag and Drop
             $(".sortable-container").sortable({

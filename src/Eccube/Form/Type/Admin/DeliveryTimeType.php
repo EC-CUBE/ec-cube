@@ -26,6 +26,7 @@ namespace Eccube\Form\Type\Admin;
 
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -49,6 +50,13 @@ class DeliveryTimeType extends AbstractType
                     new Assert\NotBlank(),
                 ),
             ))
+            ->add('sort_no', HiddenType::class, array(
+                'label' => false,
+                'required' => true,
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                ),
+            ))
         ;
     }
 
@@ -62,7 +70,7 @@ class DeliveryTimeType extends AbstractType
             'query_builder' => function(EntityRepository $er) {
                 return $er
                     ->createQueryBuilder('dt')
-                    ->orderBy('dt.time_id', 'ASC');
+                    ->orderBy('dt.sort_no', 'ASC');
             },
         ));
     }
