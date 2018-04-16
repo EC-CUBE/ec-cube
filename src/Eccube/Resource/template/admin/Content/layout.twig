@@ -29,36 +29,172 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block javascript %}
+    <script>
+        var sections = {
+            {{ constant('Eccube\\Entity\\Page::TARGET_ID_UNUSED') }} : '{{ 'admin.content.layout.block.unuse'|trans }}',
+            {{ constant('Eccube\\Entity\\Page::TARGET_ID_HEAD') }} : '{{ 'admin.content.layout.section.head'|trans }}',
+            {{ constant('Eccube\\Entity\\Page::TARGET_ID_BODY_AFTER') }} : '{{ 'admin.content.layout.section.body_after'|trans }}',
+            {{ constant('Eccube\\Entity\\Page::TARGET_ID_HEADER') }} : '{{ 'admin.content.layout.section.header'|trans }}',
+            {{ constant('Eccube\\Entity\\Page::TARGET_ID_CONTENTS_TOP') }} : '{{ 'admin.content.layout.section.contents_top'|trans }}',
+            {{ constant('Eccube\\Entity\\Page::TARGET_ID_SIDE_LEFT') }} : '{{ 'admin.content.layout.section.side_left'|trans }}',
+            {{ constant('Eccube\\Entity\\Page::TARGET_ID_MAIN_TOP') }} : '{{ 'admin.content.layout.section.main_top'|trans }}',
+            {{ constant('Eccube\\Entity\\Page::TARGET_ID_MAIN_BOTTOM') }} : '{{ 'admin.content.layout.section.main_bottom'|trans }}',
+            {{ constant('Eccube\\Entity\\Page::TARGET_ID_SIDE_RIGHT') }} : '{{ 'admin.content.layout.section.side_right'|trans }}',
+            {{ constant('Eccube\\Entity\\Page::TARGET_ID_CONTENTS_BOTTOM') }} : '{{ 'admin.content.layout.section.contents_bottom'|trans }}',
+            {{ constant('Eccube\\Entity\\Page::TARGET_ID_FOOTER') }} : '{{ 'admin.content.layout.section.footer'|trans }}',
+            {{ constant('Eccube\\Entity\\Page::TARGET_ID_DRAWER') }} : '{{ 'admin.content.layout.section.drawer'|trans }}',
+            {{ constant('Eccube\\Entity\\Page::TARGET_ID_CLOSE_BODY_BEFORE') }} : '{{ 'admin.content.layout.section.close_body_before'|trans }}'
+        };
+
+        // use for layout_design.js
+        var els = Object.keys(sections).map(function(id) {
+            return '#position_' + id;
+        });
+    </script>
     <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.core.min.js', 'admin') }}"></script>
     <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.widget.min.js', 'admin') }}"></script>
     <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.mouse.min.js', 'admin') }}"></script>
     <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.sortable.min.js', 'admin') }}"></script>
     <script src="{{ asset('assets/js/layout_design.js', 'admin') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ace.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ext-language_tools.js"></script>
+
     <script>
         $(function(){
-            $('#blockModal').on('show.bs.modal', function(event) {
-                var target = $(event.relatedTarget);
-                var modal = $(this);
-                modal.find('#blockModalLabel').text(target.data('name'));
-
-                $.ajax({
-                    url: '{{ url('admin_content_layout_view_block') }}',
-                    type: 'POST',
-                    data: {
-                        id: target.data('id')
+            $('.block-context-menu').popover({
+                placement: 'bottom',
+                html: true,
+                container: 'body',
+                content: function () {
+                    return $('#context-menu').html();
+                }
+            }).on('shown.bs.popover', function () {
+                var $menu = $(this);
+                var $block = $menu.closest('[id^="detail_box__layout_item"]');
+                var block = {
+                    'menu': $menu,
+                    'current': $block,
+                    'prev': $block.prev('[id^="detail_box__layout_item"]'),
+                    'next': $block.next('[id^="detail_box__layout_item"]')
+                };
+                $('.context-moveup').on('click', block, function() {
+                    if (block.prev.length) {
+                        block.current.insertBefore(block.prev);
+                        block.menu.popover('hide');
+                        window.updateUpDown($block.parent('.ui-sortable').first());
                     }
-                }).done(function(data) {
-                    $('#blockModalContent').val(data.source);
-                }).fail(function(data) {
-                    alert('err');
+                });
+                $('.context-movedown').on('click', block, function() {
+                    if (block.next.length) {
+                        block.current.insertAfter(block.next);
+                        block.menu.popover('hide');
+                        window.updateUpDown($block.parent('.ui-sortable').first());
+                    }
+                });
+                $('.context-movesection').on('click', block, function() {
+                    $('#clickStreamConfirm').modal();
+                    $('#target-block').val($(block.current).attr('id'));
+                    block.menu.popover('hide');
+                });
+                $('#clickStreamConfirm').on('show.bs.modal', function(event) {
+                    $('#move-section').children('option').remove();
+                    for (var target_id in sections) {
+                        $('#move-section').append('<option value="' + target_id + '">' + sections[target_id] + '</option>');
+                    }
+                });
+                $('#move-to-section').on('click', function() {
+                    var $position = $('#position_' + $('#move-section').val());
+                    var $target = $('#' + $('#target-block').val());
+                    var $parent = $target.parent();
+
+                    $position.append($target);
+                    window.updateUpDown($position);
+                    window.updateUpDown($parent);
+
+                    if ($position.children('.block').length > 0) {
+                        // hide placeholder
+                        $position.children('.target-placeholder').remove();
+                    }
+                    if ($parent.children('.block').length <= 0) {
+                        // show placeholder
+                        $parent.append($('#target-placeholder').html());
+                    }
+                });
+
+                $('.context-preview').on('click', block, function() {
+                    $('#codePreview').modal();
+                    block.menu.popover('hide');
+                });
+
+                $('#codePreview').on('show.bs.modal', block, function(event) {
+                    var attr_id = block.current.attr('id').match(/^detail_box__layout_item--([0-9]+)/);
+                    var block_id = attr_id[1];
+                    var $modal = $(this);
+                    var $block_edit = $modal.find('#block-edit');
+                    var onclick = $block_edit.attr('onclick').replace(/{{ constant('Eccube\\Controller\\Admin\\Content\\LayoutController::DUMMY_BLOCK_ID') }}/, block_id);
+                    $block_edit.attr('onclick', onclick);
+
+                    ace.require("ace/ext/language_tools");
+                    var editor = ace.edit("block-source-code");
+                    editor.session.setMode("ace/mode/twig");
+                    editor.setTheme("ace/theme/tomorrow");
+                    editor.setOptions({
+                        readOnly: true,
+                        autoScrollEditorIntoView: true,
+                        minLines: 20,
+                        maxLines: 20
+                    });
+
+                    $.ajax({
+                        url: '{{ url('admin_content_layout_view_block') }}',
+                        type: 'GET',
+                        data: {
+                            id: block_id
+                        }
+                    }).done(function(json, statusText, jqXHR) {
+                        editor.setValue(json.source);
+                    }).fail(function(jqXHR, statusText, errorThrown) {
+                        editor.setValue(statusText + ' ' + errorThrown);
+                    });
                 });
             });
         });
     </script>
+    <script>
+        var searchWord = function(){
+            var searchText = $(this).val(), // 検索ボックスに入力された値
+                targetText;
+
+            // 検索ボックスに値が入っていない場合
+            if (searchText == '') {
+                // 全て表示する
+                $('#unused-block .sort').show();
+                return;
+            }
+
+            // 検索ボックスに値が入ってる場合
+            // 表示を全て空にする
+            $('#unused-block .sort').hide();
+
+            // 検索ワードが（子を含めて）含まれる要素のみ表示
+            $('#unused-block .sort').each(function() {
+                targetText = $(this).find('.col a').text();
+
+                // 検索対象となるリストに入力された文字列が存在するかどうかを判断
+                if (targetText.indexOf(searchText) != -1) {
+                    // 存在する場合はそのリストのテキストを用意した配列に格納
+                    $(this).show();
+                }
+            });
+        };
+
+        // searchWordの実行
+        $('#search-block').on('input', searchWord);
+    </script>
 {% endblock javascript %}
 
 {% block main %}
-    {% set loop_index = 1 %}
+    {% set loop_index = 0 %}
     <form name="form1" id="form1" method="post" action="{% if Layout.id -%}
                 {{ url('admin_content_layout_edit', {id: Layout.id}) }}
     {%- else -%}
@@ -81,11 +217,20 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <div class="col-3 pr-0"><span>{{ 'admin.content.layout.name'|trans }}</span><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></div>
                                     <div class="col">
                                         {{ form_widget(form.name) }}
+                                        {{ form_errors(form.name) }}
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-3 pr-0"><span>{{ 'admin.content.layout.device_type'|trans }}</span></div>
-                                    <div class="col"><span>{{ form_widget(form.DeviceType) }}</span></div>{# TODO hidden にする #}
+                                    <div class="col">
+                                        <span>
+                                            {% if form.DeviceType.vars.value in form.DeviceType.vars.choices|keys %}
+                                                {{ form.DeviceType.vars.choices[form.DeviceType.vars.value].label }}
+                                            {% endif %}
+                                            {{ form_errors(form.DeviceType) }}
+                                            <input type="hidden" name="{{ form.DeviceType.vars.full_name }}" value="{{ form.DeviceType.vars.value }}" />
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -104,182 +249,184 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <div class="row">
                                     <div class="col p-2">
                                         <div class="d-block border border-ec-gray">
-                                            <div id="position_{{ constant('Eccube\\Entity\\Page::TARGET_ID_HEAD') }}"
+                                            {% set target_id = constant('Eccube\\Entity\\Page::TARGET_ID_HEAD') %}
+                                            <div id="position_{{ target_id }}"
                                                  class="d-block p-3 border border-ec-gray border-top-0 border-right-0 border-left-0 ui-sortable">
                                                 <p class="font-weight-bold mb-2">{{ 'admin.content.layout.section.head'|trans }}</p>
-                                                {% set target_id = 'Eccube\\Entity\\Page::TARGET_ID_HEAD' %}
-                                                {% for BlockPosition in Layout.getBlockPositionsBy(constant(target_id)) %}
+                                                {% for BlockPosition in Layout.getBlockPositionsBy(target_id) %}
                                                     {{ include('@admin/Content/layout_block.twig') }}
                                                     {% set loop_index = loop_index + 1 %}
                                                 {% else %}
-                                                    <div class="d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout.block.drag_and_drop'|trans }}</span></div>
+                                                    <div class="target-placeholder d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout.block.drag_and_drop'|trans }}</span></div>
                                                 {% endfor %}
                                             </div>
-                                            <div id="position_{{ constant('Eccube\\Entity\\Page::TARGET_ID_HEAD') }}"
+                                            {% set target_id = constant('Eccube\\Entity\\Page::TARGET_ID_BODY_AFTER') %}
+                                            <div id="position_{{ target_id }}"
                                                  class="d-block p-3 border border-ec-gray border-top-0 border-right-0 border-left-0 ui-sortable">
                                                 <p class="font-weight-bold mb-2">{{ 'admin.content.layout.section.body_after'|trans }}</p>
-                                                {% set target_id = 'Eccube\\Entity\\Page::TARGET_ID_HEAD' %}{# TODO body 直後の ID 未実装 #}
-                                                {% for BlockPosition in Layout.getBlockPositionsBy(constant(target_id)) %}
+                                                {% for BlockPosition in Layout.getBlockPositionsBy(target_id) %}
                                                     {{ include('@admin/Content/layout_block.twig') }}
                                                     {% set loop_index = loop_index + 1 %}
                                                 {% else %}
-                                                    <div class="d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout.block.drag_and_drop'|trans }}</span></div>
+                                                    <div class="target-placeholder d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout.block.drag_and_drop'|trans }}</span></div>
                                                 {% endfor %}
                                             </div>
-                                            <div id="position_{{ constant('Eccube\\Entity\\Page::TARGET_ID_HEADER') }}"
+                                            {% set target_id = constant('Eccube\\Entity\\Page::TARGET_ID_HEADER') %}
+                                            <div id="position_{{ target_id }}"
                                                  class="d-block p-3 border border-ec-gray border-top-0 border-right-0 border-left-0 ui-sortable">
                                                 <p class="font-weight-bold mb-2">{{ 'admin.content.layout.section.header'|trans }}</p>
-                                                {% set target_id = 'Eccube\\Entity\\Page::TARGET_ID_HEADER' %}
-                                                {% for BlockPosition in Layout.getBlockPositionsBy(constant(target_id)) %}
+                                                {% for BlockPosition in Layout.getBlockPositionsBy(target_id) %}
                                                     {{ include('@admin/Content/layout_block.twig') }}
                                                     {% set loop_index = loop_index + 1 %}
                                                 {% else %}
-                                                    <div class="d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout.block.drag_and_drop'|trans }}</span></div>
+                                                    <div class="target-placeholder d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout.block.drag_and_drop'|trans }}</span></div>
                                                 {% endfor %}
                                             </div>
-                                            <div id="position_{{ constant('Eccube\\Entity\\Page::TARGET_ID_CONTENTS_TOP') }}"
+                                            {% set target_id = constant('Eccube\\Entity\\Page::TARGET_ID_CONTENTS_TOP') %}
+                                            <div id="position_{{ target_id }}"
                                                  class="d-block p-3 border border-ec-gray border-top-0 border-right-0 border-left-0 ui-sortable">
                                                 <p class="font-weight-bold mb-2">{{ 'admin.content.layout.section.contents_top'|trans }}</p>
-                                                {% set target_id = 'Eccube\\Entity\\Page::TARGET_ID_CONTENTS_TOP' %}
-                                                {% for BlockPosition in Layout.getBlockPositionsBy(constant(target_id)) %}
+                                                {% for BlockPosition in Layout.getBlockPositionsBy(target_id) %}
                                                     {{ include('@admin/Content/layout_block.twig') }}
                                                     {% set loop_index = loop_index + 1 %}
                                                 {% else %}
-                                                    <div class="d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout.block.drag_and_drop'|trans }}</span></div>
+                                                    <div class="target-placeholder d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout.block.drag_and_drop'|trans }}</span></div>
                                                 {% endfor %}
                                             </div>
                                             <div class="d-block pl-3 pr-3">
                                                 <div class="row">
                                                     <div class="col align-items-start pr-0 p-3 border border-ec-gray border-top-0">
-                                                        <div id="position_{{ constant('Eccube\\Entity\\Page::TARGET_ID_SIDE_LEFT') }}"
+                                                        {% set target_id = constant('Eccube\\Entity\\Page::TARGET_ID_SIDE_LEFT') %}
+                                                        <div id="position_{{ target_id }}"
                                                              class="d-block ui-sortable">
                                                             <p class="font-weight-bold mb-2">{{ 'admin.content.layout.section.side_left'|trans }}</p>
-                                                            {% set target_id = 'Eccube\\Entity\\Page::TARGET_ID_SIDE_LEFT' %}
-                                                            {% for BlockPosition in Layout.getBlockPositionsBy(constant(target_id)) %}
+                                                            {% for BlockPosition in Layout.getBlockPositionsBy(target_id) %}
                                                                 {{ include('@admin/Content/layout_block.twig') }}
                                                                 {% set loop_index = loop_index + 1 %}
                                                             {% else %}
-                                                                <div class="d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout.block.drag_and_drop'|trans }}</span></div>
+                                                                <div class="target-placeholder d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout.block.drag_and_drop'|trans }}</span></div>
                                                             {% endfor %}
                                                         </div>
                                                     </div>
                                                     <div class="col align-items-start pl-0 pr-0 border border-ec-gray border-top-0 border-left-0 border-bottom-0">
                                                         <div class="d-block h-100">
-                                                            <div id="position_{{ constant('Eccube\\Entity\\Page::TARGET_ID_MAIN_TOP') }}"
+                                                            {% set target_id = constant('Eccube\\Entity\\Page::TARGET_ID_MAIN_TOP') %}
+                                                            <div id="position_{{ target_id }}"
                                                                  class="d-block p-3 border border-ec-gray border-top-0 border-left-0 border-right-0 ui-sortable">
                                                                 <p class="font-weight-bold mb-2">{{ 'admin.content.layout.section.main_top'|trans }}</p>
-                                                                {% set target_id = 'Eccube\\Entity\\Page::TARGET_ID_MAIN_TOP' %}
-                                                                {% for BlockPosition in Layout.getBlockPositionsBy(constant(target_id)) %}
+                                                                {% for BlockPosition in Layout.getBlockPositionsBy(target_id) %}
                                                                     {{ include('@admin/Content/layout_block.twig') }}
                                                                     {% set loop_index = loop_index + 1 %}
                                                                 {% else %}
-                                                                    <div class="d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout.block.drag_and_drop'|trans }}</span></div>
+                                                                    <div class="target-placeholder d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout.block.drag_and_drop'|trans }}</span></div>
                                                                 {% endfor %}
                                                             </div>
                                                             <div class="d-block p-3 border border-ec-gray border-top-0 border-left-0 border-right-0 bg-ec-lightGray">
                                                                 <p class="font-weight-bold mb-2">{{ 'admin.content.layout.section.main'|trans }}</p>
                                                                 <div class="d-block text-center p-3"></div>
                                                             </div>
-                                                            <div id="position_{{ constant('Eccube\\Entity\\Page::TARGET_ID_MAIN_BOTTOM') }}"
+                                                            {% set target_id = constant('Eccube\\Entity\\Page::TARGET_ID_MAIN_BOTTOM') %}
+                                                            <div id="position_{{ target_id }}"
                                                                  class="d-block p-3 border border-ec-gray border-top-0 border-left-0 border-right-0 ui-sortable">
                                                                 <p class="font-weight-bold mb-2">{{ 'admin.content.layout.section.main_bottom'|trans }}</p>
-                                                                {% set target_id = 'Eccube\\Entity\\Page::TARGET_ID_MAIN_BOTTOM' %}
-                                                                {% for BlockPosition in Layout.getBlockPositionsBy(constant(target_id)) %}
+                                                                {% for BlockPosition in Layout.getBlockPositionsBy(target_id) %}
                                                                     {{ include('@admin/Content/layout_block.twig') }}
                                                                     {% set loop_index = loop_index + 1 %}
                                                                 {% else %}
-                                                                    <div class="d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout.block.drag_and_drop'|trans }}</span></div>
+                                                                    <div class="target-placeholder d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout.block.drag_and_drop'|trans }}</span></div>
                                                                 {% endfor %}
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="col align-items-start pl-0 border border-ec-gray border-top-0 border-left-0">
-                                                        <div id="position_{{ constant('Eccube\\Entity\\Page::TARGET_ID_SIDE_RIGHT') }}"
+                                                        {% set target_id = constant('Eccube\\Entity\\Page::TARGET_ID_SIDE_RIGHT') %}
+                                                        <div id="position_{{ target_id }}"
                                                              class="d-block p-3 h-100 ui-sortable">
                                                             <p class="font-weight-bold mb-2">{{ 'admin.content.layout.section.side_right'|trans }}</p>
-                                                            {% set target_id = 'Eccube\\Entity\\Page::TARGET_ID_SIDE_RIGHT' %}
-                                                            {% for BlockPosition in Layout.getBlockPositionsBy(constant(target_id)) %}
+                                                            {% for BlockPosition in Layout.getBlockPositionsBy(target_id) %}
                                                                 {{ include('@admin/Content/layout_block.twig') }}
                                                                 {% set loop_index = loop_index + 1 %}
                                                             {% else %}
-                                                                <div class="d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout.block.drag_and_drop'|trans }}</span></div>
+                                                                <div class="target-placeholder d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout.block.drag_and_drop'|trans }}</span></div>
                                                             {% endfor %}
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="d-block border border-ec-gray border-top-0 border-right-0 border-left-0">
-                                                <div id="position_{{ constant('Eccube\\Entity\\Page::TARGET_ID_CONTENTS_BOTTOM') }}"
+                                                {% set target_id = constant('Eccube\\Entity\\Page::TARGET_ID_CONTENTS_BOTTOM') %}
+                                                <div id="position_{{ target_id }}"
                                                      class="d-block p-3 ui-sortable">
                                                     <p class="font-weight-bold mb-2">{{ 'admin.content.layout.section.contents_bottom'|trans }}</p>
-                                                    {% set target_id = 'Eccube\\Entity\\Page::TARGET_ID_CONTENTS_BOTTOM' %}
-                                                    {% for BlockPosition in Layout.getBlockPositionsBy(constant(target_id)) %}
+                                                    {% for BlockPosition in Layout.getBlockPositionsBy(target_id) %}
                                                         {{ include('@admin/Content/layout_block.twig') }}
                                                         {% set loop_index = loop_index + 1 %}
                                                     {% else %}
-                                                        <div class="d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout.block.drag_and_drop'|trans }}</span></div>
+                                                        <div class="target-placeholder d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout.block.drag_and_drop'|trans }}</span></div>
                                                     {% endfor %}
                                                 </div>
                                             </div>
                                             <div class="d-block border border-ec-gray border-top-0 border-right-0 border-left-0">
-                                                <div id="position_{{ constant('Eccube\\Entity\\Page::TARGET_ID_FOOTER') }}"
+                                                {% set target_id = constant('Eccube\\Entity\\Page::TARGET_ID_FOOTER') %}
+                                                <div id="position_{{ target_id }}"
                                                      class="d-block p-3 ui-sortable">
                                                     <p class="font-weight-bold mb-2">{{ 'admin.content.layout.section.footer'|trans }}</p>
-                                                    {% set target_id = 'Eccube\\Entity\\Page::TARGET_ID_FOOTER' %}
-                                                    {% for BlockPosition in Layout.getBlockPositionsBy(constant(target_id)) %}
+                                                    {% for BlockPosition in Layout.getBlockPositionsBy(target_id) %}
                                                         {{ include('@admin/Content/layout_block.twig') }}
                                                         {% set loop_index = loop_index + 1 %}
                                                     {% else %}
-                                                        <div class="d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout.block.drag_and_drop'|trans }}</span></div>
+                                                        <div class="target-placeholder d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout.block.drag_and_drop'|trans }}</span></div>
                                                     {% endfor %}
                                                 </div>
                                             </div>
                                             <div class="d-block border border-ec-gray border-top-0 border-right-0 border-left-0">
-                                                <div id="position_{{ constant('Eccube\\Entity\\Page::TARGET_ID_FOOTER') }}"
+                                                {% set target_id = constant('Eccube\\Entity\\Page::TARGET_ID_DRAWER') %}
+                                                <div id="position_{{ target_id }}"
                                                      class="d-block p-3 ui-sortable">
                                                     <p class="font-weight-bold mb-2">{{ 'admin.content.layout.section.drawer'|trans }}</p>
-                                                    {% set target_id = 'Eccube\\Entity\\Page::TARGET_ID_FOOTER' %}{# TODO drawer の ID 未実装 #}
-                                                    {% for BlockPosition in Layout.getBlockPositionsBy(constant(target_id)) %}
+                                                    {% for BlockPosition in Layout.getBlockPositionsBy(target_id) %}
                                                         {{ include('@admin/Content/layout_block.twig') }}
                                                         {% set loop_index = loop_index + 1 %}
                                                     {% else %}
-                                                        <div class="d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout.block.drag_and_drop'|trans }}</span></div>
+                                                        <div class="target-placeholder d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout.block.drag_and_drop'|trans }}</span></div>
                                                     {% endfor %}
                                                 </div>
                                             </div>
                                             <div class="d-block">
-                                                <div id="position_{{ constant('Eccube\\Entity\\Page::TARGET_ID_FOOTER') }}"
+                                                {% set target_id = constant('Eccube\\Entity\\Page::TARGET_ID_CLOSE_BODY_BEFORE') %}
+                                                <div id="position_{{ target_id }}"
                                                      class="d-block p-3 border-top-0 border-right-0 border-left-0 ui-sortable">
                                                     <p class="font-weight-bold mb-2">{{ 'admin.content.layout.section.close_body_before'|trans }}</p>
-                                                    {% set target_id = 'Eccube\\Entity\\Page::TARGET_ID_FOOTER' %}{# TODO /body 直前の ID 未実装 #}
-                                                    {% for BlockPosition in Layout.getBlockPositionsBy(constant(target_id)) %}
+                                                    {% for BlockPosition in Layout.getBlockPositionsBy(target_id) %}
                                                         {{ include('@admin/Content/layout_block.twig') }}
                                                         {% set loop_index = loop_index + 1 %}
                                                     {% else %}
-                                                        <div class="d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout.block.drag_and_drop'|trans }}</span></div>
+                                                        <div class="target-placeholder d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout.block.drag_and_drop'|trans }}</span></div>
                                                     {% endfor %}
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-3 p-2">
-                                        <div class="d-block border border-ec-gray">
-                                            <div id="position_{{ constant('Eccube\\Entity\\Page::TARGET_ID_UNUSED') }}" class="d-block p-3 ui-sortable">
+                                        <div id="unused-block" class="d-block border border-ec-gray">
+                                            {% set unused_target_id = constant('Eccube\\Entity\\Page::TARGET_ID_UNUSED') %}
+                                            <div id="position_{{ unused_target_id }}" class="d-block p-3 ui-sortable">
                                                 <p class="font-weight-bold mb-2">{{ 'admin.content.layout.block.unuse'|trans }}</p>
-                                                {# TODO 未実装 ブロック検索 #}
                                                 <div class="mb-3">
                                                     <div class="form-row">
                                                         <div class="col">
-                                                            <input class="form-control" type="search" aria-label="Search">
-                                                        </div>
-                                                        <div class="col-auto">
-                                                            <button class="btn btn-ec-sub" type="submit"><i class="fa fa-search fa-lg text-secondary"></i></button>
+                                                            <div class="input-group mb-3">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text" id="basic-addon1"><i class="fa fa-search"></i></span>
+                                                                </div>
+                                                                <input id="search-block" class="form-control" type="search" aria-label="Search">
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 {% for UnusedBlock in UnusedBlocks %}
                                                     <div id="detail_box__layout_item--{{ UnusedBlock.id }}"
-                                                         class="sort{% if loop.first %} first{% endif %} d-block border border-ec-gray bg-ec-lightGray p-2 mb-2">
+                                                         class="block sort{% if loop.first %} first{% endif %} border border-ec-gray bg-ec-lightGray p-2 mb-2">
                                                         <div class="row justify-content-between">
                                                             <div class="col">
                                                                 <i class="fa fa-bars text-ec-gray mr-3"></i>
@@ -297,11 +444,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                                        value="{{ UnusedBlock.id }}"/>
                                                                 <input type="hidden" class="target-id"
                                                                        name="section_{{ loop_index }}"
-                                                                       value="{{ constant('Eccube\\Entity\\Page::TARGET_ID_UNUSED') }}"/>
+                                                                       value="{{ unused_target_id }}"/>
                                                                 <input type="hidden" class="block-row"
                                                                        name="block_row_{{ loop_index }}"
                                                                        value="{{ UnusedBlock.id }}"/>
-                                                                <div class="d-inline-block px-3" data-container="body" data-toggle="popover" data-placement="bottom" data-content="&lt;div class='list-group'&gt;&lt;a href='#' class='list-group-item list-group-item-action border-0'&gt;&lt;i class='fa fa-long-arrow-up mr-1'&gt;&lt;/i&gt;上に移動&lt;/a&gt;&lt;a href='#' class='list-group-item list-group-item-action border-0'&gt;&lt;i class='fa fa-long-arrow-down mr-1'&gt;&lt;/i&gt;下に移動&lt;/a&gt;&lt;a href='#' class='list-group-item list-group-item-action border-0' data-toggle='modal' data-target='#clickStreamConfirm'&gt;&lt;i class='fa fa-arrows mr-1'&gt;&lt;/i&gt;セクションに移動&lt;/a&gt;&lt;a href='#' class='list-group-item list-group-item-action border-0' data-toggle='modal' data-target='#codePreview'&gt;&lt;i class='fa fa-code mr-1'&gt;&lt;/i&gt; コードプレビュー&lt;/a&gt;&lt;/div&gt;" data-html="true"><i class="fa fa-ellipsis-v fa-lg text-secondary"></i></div>
+                                                                <div class="block-context-menu d-inline-block px-3"><i class="fa fa-ellipsis-v fa-lg text-secondary"></i></div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -321,15 +468,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             <div class="modal-body">
                                                 <p>{{ 'admin.content.layout.block.modal.move.body'|trans }}</p>
                                                 <div>
-                                                    <select class="form-control">
-                                                        <option>{{ 'admin.content.layout.section.header'|trans }}</option>
-                                                        <option>...</option>
+                                                    <select id="move-section" class="form-control">
                                                     </select>
+                                                    <input type="hidden" id="target-block" />
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
                                                 <button class="btn btn-ec-regular w-25" type="button" data-dismiss="modal">{{ 'admin.content.layout.block.modal.move.close'|trans }}</button>
-                                                <button class="btn btn-ec-conversion w-25" type="button" data-dismiss="modal">{{ 'admin.content.layout.block.modal.move.execute'|trans }}</button>
+                                                <button id="move-to-section" class="btn btn-ec-conversion w-25" type="button" data-dismiss="modal">{{ 'admin.content.layout.block.modal.move.execute'|trans }}</button>
                                             </div>
                                         </div>
                                     </div>
@@ -343,13 +489,29 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             </div>
                                             <div class="modal-body">
                                                 <p>{{ 'admin.content.layout.block.modal.code.body'|trans }}</p>
-                                                <div class="d-block border bg-ec-lightGray p-2">{# TODO 未実装 #}codeが入ります</div>
+                                                <div id="block-source-code" class="d-block border bg-ec-lightGray p-2">{{ 'admin.content.layout.block.modal.code.progress'|trans }}</div>
                                             </div>
                                             <div class="modal-footer">
                                                 <button class="btn btn-ec-regular" type="button" data-dismiss="modal">{{ 'admin.content.layout.block.modal.code.back'|trans }}</button>
-                                                <button class="btn btn-ec-conversion w-25" type="button" data-dismiss="modal">{{ 'admin.content.layout.block.modal.code.edit'|trans }}</button>
+                                                <button id="block-edit" onclick="location.href='{{ url('admin_content_block_edit', {id: constant('Eccube\\Controller\\Admin\\Content\\LayoutController::DUMMY_BLOCK_ID')}) }}'" class="btn btn-ec-conversion w-25" type="button" data-dismiss="modal">{{ 'admin.content.layout.block.modal.code.edit'|trans }}</button>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                                <div id="context-menu" style="display: none">
+                                    <div class='list-group'>
+                                        <a href='javascript:;' class='context-moveup list-group-item list-group-item-action border-0'>
+                                            <i class='fa fa-long-arrow-up mr-1'></i>{{ 'admin.content.layout.block.context.moveup'|trans }}
+                                        </a>
+                                        <a href='javascript:;' class='context-movedown list-group-item list-group-item-action border-0'>
+                                            <i class='fa fa-long-arrow-down mr-1'></i>{{ 'admin.content.layout.block.context.movedown'|trans }}
+                                        </a>
+                                        <a href='javascript:;' class='context-movesection list-group-item list-group-item-action border-0'>
+                                            <i class='fa fa-arrows mr-1'></i>{{ 'admin.content.layout.block.context.movesection'|trans }}
+                                        </a>
+                                        <a href='javascript:;' class='context-preview list-group-item list-group-item-action border-0'>
+                                            <i class='fa fa-code mr-1'></i>{{ 'admin.content.layout.block.context.preview'|trans }}
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -357,6 +519,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     </div>
                 </div>
             </div>
+            <div id="target-placeholder" style="display: none"><div class="target-placeholder d-block text-center border-ec-dashed p-3"><span class="text-ec-gray">{{ 'admin.content.layout.block.drag_and_drop'|trans }}</span></div></div>
             <div class="c-conversionArea">
                 <div class="c-conversionArea__container">
                     <div class="row justify-content-between align-items-center">

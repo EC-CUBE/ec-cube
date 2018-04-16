@@ -23,6 +23,7 @@
 
 namespace Eccube\Controller\Admin\Order;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\DeviceType;
@@ -157,6 +158,10 @@ class EditController extends AbstractController
 
         // 編集前の受注情報を保持
         $OriginOrder = clone $TargetOrder;
+        $OriginItems = new ArrayCollection();
+        foreach ($TargetOrder->getOrderItems() as $Item) {
+            $OriginItems->add($Item);
+        }
 
         $builder = $this->formFactory
             ->createBuilder(OrderType::class, $TargetOrder,
@@ -219,6 +224,13 @@ class EditController extends AbstractController
                         }
 
                         $this->entityManager->persist($TargetOrder);
+                        $this->entityManager->flush();
+
+                        foreach ($OriginItems as $Item) {
+                            if (false === $TargetOrder->getOrderItems()->contains($Item)) {
+                                $this->entityManager->remove($Item);
+                            }
+                        }
                         $this->entityManager->flush();
 
                         // TODO 集計系に移動

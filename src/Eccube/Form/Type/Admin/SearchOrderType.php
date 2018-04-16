@@ -24,16 +24,17 @@
 
 namespace Eccube\Form\Type\Admin;
 
-use Eccube\Common\EccubeConfig;
-use Eccube\Form\Type\Master\OrderStatusType;
-use Eccube\Form\Type\Master\PaymentType;
-use Eccube\Form\Type\Master\SexType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Eccube\Common\EccubeConfig;
 use Eccube\Form\Type\PriceType;
+use Eccube\Form\Type\Master\OrderStatusType;
+use Eccube\Form\Type\Master\PaymentType;
+use Eccube\Form\Type\Master\SexType;
 
 class SearchOrderType extends AbstractType
 {
@@ -60,6 +61,10 @@ class SearchOrderType extends AbstractType
                 'constraints' => array(
                     new Assert\Length(array('max' => $this->eccubeConfig['eccube_stext_len'])),
                 ),
+            ))
+            ->add('order_id', NumberType::class, array(
+                'label' => 'searchorder.label.order_id',
+                'required' => false,
             ))
             ->add('status', OrderStatusType::class, array(
                 'label' => 'searchorder.label.status',
@@ -173,6 +178,10 @@ class SearchOrderType extends AbstractType
             ))
             ->add('buy_product_name', TextType::class, array(
                 'label' => 'searchorder.label.purchased_products',
+                'required' => false,
+            ))
+            ->add('company_name', TextType::class, array(
+                'label' => 'searchorder.label.company_name',
                 'required' => false,
             ));
 

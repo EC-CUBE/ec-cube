@@ -116,6 +116,7 @@ class Layout extends AbstractEntity
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(targetEntity="Eccube\Entity\PageLayout", mappedBy="Layout", cascade={"persist","remove"})
+     * @ORM\OrderBy({"sort_no" = "ASC"})
      */
     private $PageLayouts;
 
@@ -310,5 +311,19 @@ class Layout extends AbstractEntity
     public function getDeviceType()
     {
         return $this->DeviceType;
+    }
+
+    /**
+     * Check layout can delete or not
+     *
+     * @return boolean
+     */
+    public function isDeletable()
+    {
+        if (!$this->getPageLayouts()->isEmpty()) {
+            return false;
+        }
+
+        return true;
     }
 }
