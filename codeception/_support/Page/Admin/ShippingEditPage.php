@@ -130,6 +130,12 @@ class ShippingEditPage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    public function 入力_配達用メモ($value)
+    {
+        $this->tester->fillField(['id' => 'shipping_note'], $value);
+        return $this;
+    }
+
     public function 商品検索($value = '')
     {
         $this->tester->click(['xpath' => '//*[@id="shipmentItem"]/div/div/div/button']);
