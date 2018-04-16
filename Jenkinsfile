@@ -8,7 +8,7 @@ pipeline {
     }
     stage('deploy') {
       when {
-        branch: ('origin/pr/' + env.pullRequestId + '/from')
+        branch ('origin/pr/' + env.pullRequestId + '/from')
       }
       steps {
         echo 'deploying...'
@@ -16,7 +16,7 @@ pipeline {
     }
     stage('GUI test') {
       when {
-        branch: ('origin/pr/' + env.pullRequestId + '/from')
+        branch ('origin/pr/' + env.pullRequestId + '/from')
       }
       steps {
         sh '''cd e2e/selenide
