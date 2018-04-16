@@ -32,6 +32,7 @@ use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Master\CustomerStatus;
+use Eccube\Entity\Master\ShippingStatus;
 
 $faker = Faker::create('ja_JP');
 Fixtures::add('faker', $faker);
@@ -197,6 +198,28 @@ $findOrders = function () use ($entityManager) {
 };
 /** 受注を検索するクロージャ. */
 Fixtures::add('findOrders', $findOrders);
+
+$findShippings = function () use ($entityManager) {
+    return $entityManager->getRepository('Eccube\Entity\Shipping')
+    ->createQueryBuilder('o')
+    ->getQuery()
+    ->getResult();
+};
+/** 出荷を検索するクロージャ. */
+Fixtures::add('findShippings', $findShippings);
+
+$resetShippingStatusPrepared = function () use ($entityManager) {
+    $StatusPrepared = $entityManager->find(ShippingStatus::class, ShippingStatus::PREPARED);
+    $Shippings = $entityManager->getRepository('Eccube\Entity\Shipping')
+        ->findAll();
+    foreach ($Shippings as $Shipping) {
+        $Shipping->setShippingStatus($StatusPrepared);
+    }
+    $entityManager->flush();
+    return true;
+};
+/** 出荷準備中に更新するクロージャ. */
+Fixtures::add('resetShippingStatusPrepared', $resetShippingStatusPrepared);
 
 $findProducts = function () use ($entityManager) {
     return $entityManager->getRepository('Eccube\Entity\Product')
