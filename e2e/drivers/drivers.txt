@@ -1,0 +1,13 @@
+## 自動ダウンロード等の機能は現状設けていませんが、手運用にしてもどこからどのバージョンを持ってきたかが分からないと困るため記載しています。
+## Linuxは64bit用のみ、Windowsも64bit環境用のみ（IE11の遅い問題のため、IEは32bit用）置いています。
+## 他のバージョンが必要な場合は適宜DriverProviderクラスも書き換えてください。
+
+linux.chromedriver=https://chromedriver.storage.googleapis.com/2.37/chromedriver_linux64.zip
+linux.geckodriver=https://github.com/mozilla/geckodriver/releases/download/v0.16.1/geckodriver-v0.16.1-linux64.tar.gz
+mac.chromedriver=https://chromedriver.storage.googleapis.com/2.37/chromedriver_mac64.zip
+mac.geckodriver=https://github.com/mozilla/geckodriver/releases/download/v0.16.1/geckodriver-v0.16.1-macos.tar.gz
+mac.safaridriver=/usr/bin/safaridriver(Safari10以上が入っていれば自動的に配置)
+win.chromedriver=https://chromedriver.storage.googleapis.com/2.37/chromedriver_win32.zip
+win.geckodriver=https://github.com/mozilla/geckodriver/releases/download/v0.16.1/geckodriver-v0.16.1-win64.zip
+win.iedriver=http://selenium-release.storage.googleapis.com/3.4/IEDriverServer_Win32_3.4.0.zip
+win.microsoftwebdriver=https://download.microsoft.com/download/3/4/2/342316D7-EBE0-4F10-ABA2-AE8E0CDF36DD/MicrosoftWebDriver.exe
