@@ -6,6 +6,10 @@
     <span class="sf-toolbar-value">{{ collector.version }}</span>
     {% endset %}
     {% set text %}
+    <script>
+        // Minimize to toolbar
+        Sfjs.setPreference('toolbar/displayState', 'none');
+    </script>
     <style>
         .sf-toolbar-block .sf-toolbar-info-piece.sf-toolbar-plugins .sf-toolbar-status {
             display: block !important;
