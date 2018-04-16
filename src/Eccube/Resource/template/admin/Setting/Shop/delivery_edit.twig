@@ -76,7 +76,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             items.find('a').removeClass('disabled');
             items.first().find('a.action-up').addClass('disabled');
             items.last().find('a.action-down').addClass('disabled');
-        };
+        }
 
         // 表示順の更新を行う
         function moveSortNo() {
@@ -96,6 +96,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
                 // 追加するお届け時間名を取得
                 var deliveryTimeName = $('#add-delivery-time-value').val();
+
+                if (deliveryTimeName == '') {
+                    return;
+                }
 
                 var prototype = $collectionHolder.data('prototype');
 
@@ -182,7 +186,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 current.find('[data-origin-value]').each(function(e) {
                     $(this).val($(this).attr('data-origin-value'));
                 });
-                var value = current.find('.form-control').val()
+                var value = current.find('.form-control').val();
                 current.find('.display-label').text(value);
                 current.find('.mode-view').removeClass('d-none');
                 current.find('.mode-edit').addClass('d-none');
