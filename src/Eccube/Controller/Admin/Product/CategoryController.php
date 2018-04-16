@@ -169,7 +169,7 @@ class CategoryController extends AbstractController
                         array(
                             'form' => $form,
                             'Parent' => $Parent,
-                            'TargetCategory' => $TargetCategory,
+                            'TargetCategory' => $editForm->getData(),
                         ),
                         $request
                     );
