@@ -7,11 +7,17 @@ pipeline {
       }
     }
     stage('deploy') {
+      when {
+        branch: ('origin/pr/' + env.pullRequestId + '/from')
+      }
       steps {
         echo 'deploying...'
       }
     }
     stage('GUI test') {
+      when {
+        branch: ('origin/pr/' + env.pullRequestId + '/from')
+      }
       steps {
         sh '''cd e2e/selenide
 DISPLAY=:1 ./gradlew clean test'''
@@ -19,7 +25,7 @@ DISPLAY=:1 ./gradlew clean test'''
     }
     stage('deploy to production') {
       steps {
-        input 'Deploying to production. Are you sure?'
+        input '本番環境にデプロイします。よろしいですか？'
       }
     }
   }
