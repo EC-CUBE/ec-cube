@@ -1,0 +1,30 @@
+!!jp.shiftinc.automation.eccube3.data.UserForExercise
+lastName: SHIFT
+firstName: 次郎
+lastNameKana: シフト
+firstNameKana: ジロウ
+zip1: 106
+zip2: 0041
+prefecture: 東京都
+town: 港区麻布台
+address: 2-4-5
+tel1: 03
+tel2: 6809
+tel3: 1129
+fax1: 03
+fax2: 6809
+fax3: 1198
+email1: shift_test_jidou02@shiftinc.jp
+email2: shift_test_jidou02@shiftinc.jp
+password: password
+birthYear: 1912
+birthMonth: 04
+birthDate: 16
+sex: 男性
+job: コンピューター関連技術職
+mailAccount: !!jp.shiftinc.automation.data.mail.MailConfiguration
+  protocol: imap
+  host: shiftinc4.sakura.ne.jp
+  port: 143
+  userName: shift_test_jidou02@shiftinc.jp
+  password: jF7mXhQA

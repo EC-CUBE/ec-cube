@@ -1,0 +1,68 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "ru.d10xa:gradle-allure-plugin:0.5.2"
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'ru.d10xa.allure'
+
+group = 'ec-cube3'
+version = '0.0.1-SNAPSHOT'
+
+description = """ec-cube3"""
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+allure {
+    aspectjweaver = true
+    testNG = true
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    // 共通ライブラリ
+    // バージョンアップする際は、新しいjarをlib以下に配置して↓の行のバージョン番号を書き換えて下さい。
+    testCompile files('lib/automation-common-1.0.6-SNAPSHOT.jar')
+
+    // テスティングフレームワーク
+//    testCompile group: 'junit', name: 'junit', version:'4.12'
+    testCompile group: 'org.testng', name: 'testng', version: '6.9.13.6'
+    // WebDriverのラッパー
+    testCompile 'com.codeborne:selenide:4.8'
+    runtime 'org.seleniumhq.selenium:selenium-safari-driver:3.6.0'
+
+    /** データクラス関連 */
+    // テストデータ自動生成
+    testCompile 'br.com.six2six:fixture-factory:3.1.0'
+    // Accessor自動生成
+    testCompile 'org.projectlombok:lombok:1.16.6'
+    // YAMLによるデータ外出し
+    testCompile "org.yaml:snakeyaml:1.17"
+
+    /** その他ユーティリティ */
+    // メール受信
+    testCompile 'com.sun.mail:javax.mail:1.5.6'
+    testCompile 'javax.mail:javax.mail-api:1.5.6'
+
+//    testCompile 'ru.yandex.qatools.allure:allure-testng-adaptor:1.4.24.RC2'
+
+}
+
+tasks.withType(Test) {
+    // コマンドラインから渡したシステムプロパティをGradleにも渡す
+    systemProperties = System.getProperties()
+    // テスト失敗したときにBuild Failureにしない
+    ignoreFailures = true
+    useTestNG()
+}
+
+test.finalizedBy 'allureReport'

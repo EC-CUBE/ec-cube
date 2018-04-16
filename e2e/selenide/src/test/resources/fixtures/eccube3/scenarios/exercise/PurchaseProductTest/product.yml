@@ -1,0 +1,11 @@
+!!jp.shiftinc.automation.eccube3.data.Product
+## ランダムに設定
+#productCode: 123456
+#productName: ああああ
+#sellingPrice: 100
+productType: 1
+productDescriptionDetail: 自動テスト用商品
+productStock: 100
+productCategory: 2
+productStatus: 1
+
