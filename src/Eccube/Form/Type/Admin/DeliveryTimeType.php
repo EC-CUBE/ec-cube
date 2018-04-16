@@ -40,6 +40,9 @@ class DeliveryTimeType extends AbstractType
         $builder
             ->add('delivery_time', TextType::class, array(
                 'label' => false,
+                'attr' => array(
+                    'placeholder' => '配送方法名を入力',
+                ),
             ))
         ;
     }
