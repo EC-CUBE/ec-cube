@@ -32,6 +32,7 @@ use Eccube\Common\EccubeConfig;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -202,9 +203,13 @@ class AbstractController extends Controller
      */
     protected function isTokenValid()
     {
+        /** @var Request $request */
         $request = $this->container->get('request_stack')->getCurrentRequest();
+        $token = $request->get(Constant::TOKEN_NAME)
+            ? $request->get(Constant::TOKEN_NAME)
+            : $request->headers->get('x-csrf-token');
 
-        if (!$this->isCsrfTokenValid(Constant::TOKEN_NAME, $request->get(Constant::TOKEN_NAME))) {
+        if (!$this->isCsrfTokenValid(Constant::TOKEN_NAME, $token)) {
             throw new AccessDeniedHttpException('CSRF token is invalid.');
         }
 

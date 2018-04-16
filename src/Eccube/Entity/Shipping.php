@@ -251,7 +251,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Eccube\Entity\OrderItem", mappedBy="Shipping", cascade={"persist","remove"})
+     * @ORM\OneToMany(targetEntity="Eccube\Entity\OrderItem", mappedBy="Shipping")
      */
     private $OrderItems;
 

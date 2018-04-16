@@ -165,10 +165,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             <div class="ec-cartRow__name">
                                                 <a target="_blank" href="{{ url('product_detail', {id : Product.id} ) }}">{{ Product.name }}</a>
                                                 {% if ProductClass.ClassCategory1 and ProductClass.ClassCategory1.id %}
-                                                    <br>{{ ProductClass.ClassCategory1.ClassName }}：{{ ProductClass.ClassCategory1 }}
+                                                    <br>{{ ProductClass.ClassCategory1.ClassName.display_name }}：{{ ProductClass.ClassCategory1 }}
                                                 {% endif %}
                                                 {% if ProductClass.ClassCategory2 and ProductClass.ClassCategory2.id %}
-                                                    <br>{{ ProductClass.ClassCategory2.ClassName }}：{{ ProductClass.ClassCategory2 }}
+                                                    <br>{{ ProductClass.ClassCategory2.ClassName.display_name }}：{{ ProductClass.ClassCategory2 }}
                                                 {% endif %}
                                             </div>
                                             <div class="ec-cartRow__unitPrice">{{ CartItem.price|price }}</div>
