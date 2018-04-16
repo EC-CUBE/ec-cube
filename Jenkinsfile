@@ -13,7 +13,8 @@ pipeline {
     }
     stage('GUI test') {
       steps {
-        sh 'DISPLAY=:1 e2e/selenide/gradlew clean test'
+        sh '''cd e2e/selenide
+DISPLAY=:1 ./gradlew clean test'''
       }
     }
     stage('deploy to production') {
