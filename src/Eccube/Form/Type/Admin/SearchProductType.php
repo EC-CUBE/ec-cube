@@ -27,10 +27,12 @@ namespace Eccube\Form\Type\Admin;
 use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
 use Eccube\Entity\Master\ProductStatus;
+use Eccube\Entity\ProductStock;
 use Eccube\Form\Type\Master\CategoryType as MasterCategoryType;
 use Eccube\Form\Type\Master\ProductStatusType;
 use Eccube\Repository\Master\ProductStatusRepository;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -89,6 +91,7 @@ class SearchProductType extends AbstractType
                 'label' => 'searchproduct.label.type',
                 'multiple'=> true,
                 'required' => false,
+                'expanded' => true,
                 'data' => $this->productStatusRepository->findBy(['id' => [
                     ProductStatus::DISPLAY_SHOW,
                     ProductStatus::DISPLAY_HIDE
@@ -128,6 +131,14 @@ class SearchProductType extends AbstractType
             ))
             ->add('link_status', HiddenType::class, array(
                 'mapped' => false,
+            ))
+            ->add('stock', ChoiceType::class, array(
+                'choices'  => array(
+                    'admin.product.index.filter_in_stock' => ProductStock::IN_STOCK,
+                    'admin.product.index.filter_out_of_stock' => ProductStock::OUT_OF_STOCK,
+                ),
+                'expanded' => true,
+                'multiple' => true,
             ))
         ;
     }

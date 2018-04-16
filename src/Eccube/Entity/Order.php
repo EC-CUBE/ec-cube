@@ -379,7 +379,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Eccube\Entity\MailHistory", mappedBy="Order")
+     * @ORM\OneToMany(targetEntity="Eccube\Entity\MailHistory", mappedBy="Order", cascade={"remove"})
      * @ORM\OrderBy({
      *     "send_date"="DESC"
      * })
@@ -1376,7 +1376,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     public function getProductOrderItems()
     {
         $sio = new OrderItemCollection($this->OrderItems->toArray());
-        return $sio->getProductClasses()->toArray();
+        return array_values($sio->getProductClasses()->toArray());
     }
 
     /**

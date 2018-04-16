@@ -107,11 +107,11 @@ $(function() {
                                             <dd id="multiple_list__product_class_category--{{ idx }}" class="item_pattern small">
                                                 <p>
                                                     {% if orderItem.productClass.classCategory1 %}
-                                                        {{ orderItem.productClass.classCategory1.className }}：{{ orderItem.productClass.classCategory1 }}
+                                                        {{ orderItem.productClass.classCategory1.className.display_name }}：{{ orderItem.productClass.classCategory1 }}
                                                         <br>
                                                     {% endif %}
                                                     {% if orderItem.productClass.classCategory2 %}
-                                                        {{ orderItem.productClass.classCategory2.className }}：{{ orderItem.productClass.classCategory2 }}
+                                                        {{ orderItem.productClass.classCategory2.className.display_name }}：{{ orderItem.productClass.classCategory2 }}
                                                         <br>
                                                     {% endif %}
                                                 </p>

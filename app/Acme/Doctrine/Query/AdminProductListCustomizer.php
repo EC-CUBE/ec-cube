@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Acme\Entity;
+namespace Acme\Doctrine\Query;
 
 
 use Eccube\Doctrine\Query\OrderByClause;
@@ -19,7 +19,9 @@ class AdminProductListCustomizer extends OrderByCustomizer
      */
     protected function createStatements($params, $queryKey)
     {
-        return [new OrderByClause('p.id')];
+        return [];
+        // このサンプルを動作させるには、以下を有効にしてください.
+        // return [new OrderByClause('p.id')];
     }
 
     /**

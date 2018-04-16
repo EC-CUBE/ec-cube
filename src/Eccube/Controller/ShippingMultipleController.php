@@ -28,8 +28,8 @@ use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Entity\CustomerAddress;
-use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Master\OrderItemType;
+use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
@@ -295,12 +295,12 @@ class ShippingMultipleController extends AbstractShoppingController
                         $ClassCategory1 = $ProductClass->getClassCategory1();
                         if (!is_null($ClassCategory1)) {
                             $OrderItem->setClasscategoryName1($ClassCategory1->getName());
-                            $OrderItem->setClassName1($ClassCategory1->getClassName()->getName());
+                            $OrderItem->setClassName1($ClassCategory1->getClassName()->getDisplayName());
                         }
                         $ClassCategory2 = $ProductClass->getClassCategory2();
                         if (!is_null($ClassCategory2)) {
                             $OrderItem->setClasscategoryName2($ClassCategory2->getName());
-                            $OrderItem->setClassName2($ClassCategory2->getClassName()->getName());
+                            $OrderItem->setClassName2($ClassCategory2->getClassName()->getDisplayName());
                         }
                         $Shipping->addOrderItem($OrderItem);
                         $this->entityManager->persist($OrderItem);

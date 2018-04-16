@@ -296,18 +296,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         {% if pagination|length > 0 %}
                             <div class="row justify-content-between mb-2">
                                 <div class="col-6"></div>
+
                                 <div class="col-5 text-right">
+                                    {#Dropdown page count#}
                                     <div class="d-inline-block mr-2">
-                                        {# TODO: 未実装 表示件数 #}
-                                        <select class="custom-select">
+                                        <select class="custom-select" onchange="location = this.value;">
                                             {% for pageMax in pageMaxis %}
-                                                <option {% if pageMax.name == page_count %} selected {% endif %}
+                                                <option {% if pageMax.name == page_count%} selected {% endif %}
                                                         value="{{ path('admin_customer_page', {'page_no': 1, 'page_count': pageMax.name}) }}">
-                                                    {{ pageMax.name|e }}{{ 'admin.common.pagination.item'|trans }}
-                                                </option>
+                                                    {{ pageMax.name|e }}{{ 'common.label.num'|trans }}</option>
                                             {% endfor %}
                                         </select>
                                     </div>
+
                                     <div class="d-inline-block">
                                         <div class="btn-group" role="group">
                                             {# TODO CSVダウンロード・項目設定 #}

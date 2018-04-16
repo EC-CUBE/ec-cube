@@ -55,7 +55,7 @@ class BaseInfoRepository extends AbstractRepository
 
     /**
      * @param int $id
-     * @return mixed
+     * @return BaseInfo
      *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
