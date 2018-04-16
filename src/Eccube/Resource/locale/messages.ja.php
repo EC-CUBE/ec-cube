@@ -540,7 +540,7 @@ return [
     'admin.common.label.ok' => '決定',
     'admin.common.label.cancel' => 'キャンセル',
     'admin.common.label.class_name' => '管理名',
-    'admin.common.label.display_name' => '表示名',
+    'admin.common.label.display_name' => '規格名',
 
     'admin.install.warning' => 'installphpPath は、インストール完了後にファイルを削除してください',
     'admin.register.complete' => '登録が完了しました。',
@@ -1594,7 +1594,7 @@ return [
     'admin.product.product_class.clear_product_class_alert' => 'この商品に登録された規格を初期化します。これまでの販売データには影響はありませんが、この操作は取り消すことができません。初期化しますか？',
     'admin.product.product_class.clear_product_class_cancel' => 'キャンセル',
     'admin.product.product_class.clear_product_class_execute' => '規格を初期化',
-    'admin.product.product_class.class_display_name_label' => '表示名：',
+    'admin.product.product_class.class_backend_name_label' => '管理名：',
     'admin.product.product_class.copy_to_all_rows' => '一行目をすべての行に複製',
     'admin.product.product_class.product_code' => 'コード',
     'admin.product.product_class.product_stock' => '在庫数',

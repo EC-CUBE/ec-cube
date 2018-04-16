@@ -504,12 +504,13 @@ class EA03ProductCest
 
         $ProductClassPage = ClassNameManagePage::go($I)
             ->入力_管理名('test class2')
+            ->入力_表示名('test class2')
             ->規格作成();
 
         $I->see('規格を保存しました。', ClassNameManagePage::$登録完了メッセージ);
 
         $ProductClassPage->一覧_分類登録(1);
-        $I->see('管理名 test class2', '#page_admin_product_class_category > div > div.c-contentsArea > div.c-contentsArea__cols > div > div.c-primaryCol > div:nth-child(1) > div.card-body > div:nth-child(1)');
+        $I->see('test class2', '#page_admin_product_class_category > div > div.c-contentsArea > div.c-contentsArea__cols > div > div.c-primaryCol > div:nth-child(1) > div.card-body > div:nth-child(2) > div:nth-child(2) > span');
 
         $ProductClassCategoryPage = ClassCategoryManagePage::at($I)
             ->入力_分類名('test class2 category1')
