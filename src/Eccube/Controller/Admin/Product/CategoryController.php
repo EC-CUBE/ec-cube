@@ -219,18 +219,20 @@ class CategoryController extends AbstractController
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException();
         }
-        $this->isTokenValid();
-        $sortNos = $request->request->all();
-        foreach ($sortNos as $categoryId => $sortNo) {
-            /* @var $Category \Eccube\Entity\Category */
-            $Category = $this->categoryRepository
-                ->find($categoryId);
-            $Category->setSortNo($sortNo);
-            $this->entityManager->persist($Category);
-        }
-        $this->entityManager->flush();
 
-        return new Response('Successful');
+        if ($this->isTokenValid()) {
+            $sortNos = $request->request->all();
+            foreach ($sortNos as $categoryId => $sortNo) {
+                /* @var $Category \Eccube\Entity\Category */
+                $Category = $this->categoryRepository
+                    ->find($categoryId);
+                $Category->setSortNo($sortNo);
+                $this->entityManager->persist($Category);
+            }
+            $this->entityManager->flush();
+
+            return new Response('Successful');
+        }
     }
 
 
