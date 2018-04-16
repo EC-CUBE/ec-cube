@@ -85,13 +85,12 @@ class FileControllerTest extends AbstractAdminWebTestCase
 
     public function testIndexWithUpload()
     {
-        $this->markTestIncomplete('ファイルアップロード未実装');
         $filepath = $this->getUserDataDir().'/../aaa.html';
         $contents = '<html><body><h1>test</h1></body></html>';
         file_put_contents($filepath, $contents);
 
         $file = new UploadedFile(
-            $filepath,          // file path
+            realpath($filepath),          // file path
             'aaa.html',         // original name
             'text/html',        // mimeType
             null,               // file size
@@ -108,7 +107,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
                     'file' => $file
                 ),
                 'mode' => 'upload',
-                'now_dir' => $this->getUserDataDir()
+                'now_dir' => '/'
             ),
             array('file' => $file)
         );

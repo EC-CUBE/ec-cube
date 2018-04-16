@@ -55,7 +55,8 @@ class ClassNameRepositoryTest extends EccubeTestCase
         for ($i = 0; $i < 3; $i++) {
             $ClassName = new ClassName();
             $ClassName
-                ->setName('class-'.$i)
+                ->setDisplayName('class-'.$i)
+                ->setBackendName('class-'.$i)
                 ->setCreator($this->Member)
                 ->setSortNo($i)
                 ;
@@ -103,7 +104,8 @@ class ClassNameRepositoryTest extends EccubeTestCase
         $faker = $this->getFaker();
         $ClassName = new ClassName();
         $ClassName
-            ->setName($faker->name)
+            ->setDisplayName($faker->name)
+            ->setBackendName($faker->name)
             ->setCreator($this->Member);
 
         $this->classNameRepository->save($ClassName);
@@ -119,7 +121,8 @@ class ClassNameRepositoryTest extends EccubeTestCase
         $faker = $this->getFaker();
         $ClassName = new ClassName();
         $ClassName
-            ->setName($faker->name)
+            ->setDisplayName($faker->name)
+            ->setBackendName($faker->name)
             ->setCreator($this->Member);
 
         $this->classNameRepository->save($ClassName);
@@ -132,7 +135,7 @@ class ClassNameRepositoryTest extends EccubeTestCase
     public function testDelete()
     {
         $ClassName = $this->classNameRepository->findOneBy(
-            array('name' => 'class-0')
+            array('backend_name' => 'class-0')
         );
         $ClassNameId = $ClassName->getId();
         $this->classNameRepository->delete($ClassName);
@@ -143,7 +146,8 @@ class ClassNameRepositoryTest extends EccubeTestCase
     public function testDeleteWithException()
     {
         $ClassName = new ClassName();
-        $ClassName->setName('sample');
+        $ClassName->setDisplayName('sample');
+        $ClassName->setBackendName('sample');
         $ClassName->setSortNo(100);
         $ClassCateogory = new ClassCategory();
         $ClassCateogory->setClassName($ClassName);

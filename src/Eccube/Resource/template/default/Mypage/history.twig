@@ -139,10 +139,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <p>{{ orderItem.productName }} ×{{ orderItem.quantity }}</p>
                                         {% if orderItem.ProductClass is not null %}
                                             {% if orderItem.ProductClass.ClassCategory1 is not null %}
-                                                {{ orderItem.productClass.classCategory1.className }}：{{ orderItem.productClass.classCategory1 }}
+                                                {{ orderItem.productClass.classCategory1.className.display_name }}：{{ orderItem.productClass.classCategory1 }}
                                             {% endif %}
                                             {% if orderItem.ProductClass.ClassCategory2 %}
-                                                <br>{{ orderItem.productClass.classCategory2.className }}：{{ orderItem.productClass.classCategory2 }}
+                                                <br>{{ orderItem.productClass.classCategory2.className.display_name }}：{{ orderItem.productClass.classCategory2 }}
                                             {% endif %}
                                         {% endif %}
                                     </div>

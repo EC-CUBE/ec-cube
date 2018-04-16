@@ -30,6 +30,21 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class PaymentControllerTest extends AbstractAdminWebTestCase
 {
+    /**
+     * @var PaymentRepository
+     */
+    protected $paymentRepository;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->paymentRepository = $this->container->get(PaymentRepository::class);
+    }
+
     public function testRouting()
     {
         $this->client->request('GET', $this->generateUrl('admin_setting_shop_payment'));
@@ -68,7 +83,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
 
     public function testRoutingEdit()
     {
-        $Payment = $this->container->get(PaymentRepository::class)->find(1);
+        $Payment = $this->paymentRepository->find(1);
         $this->client->request('GET', $this->generateUrl('admin_setting_shop_payment_edit', array('id' => $Payment->getId())));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
@@ -85,7 +100,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
             $formData['method'] = '';
         }
 
-        $Payment = $this->container->get(PaymentRepository::class)->find(1);
+        $Payment = $this->paymentRepository->find(1);
 
         $this->client->request('POST',
             $this->generateUrl('admin_setting_shop_payment_edit', array('id' => $Payment->getId())),
@@ -120,7 +135,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
 
         $this->assertTrue($this->client->getResponse()->isRedirection());
 
-        $Payment = $this->container->get(PaymentRepository::class)->find($pid);
+        $Payment = $this->paymentRepository->find($pid);
         $this->assertNull($Payment);
     }
 
@@ -138,7 +153,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
     public function testUp()
     {
         $pid = 4;
-        $Payment = $this->container->get(PaymentRepository::class)->find($pid);
+        $Payment = $this->paymentRepository->find($pid);
         $before = $Payment->getSortNo();
         $this->client->request('PUT',
             $this->generateUrl('admin_setting_shop_payment_up', array('id' => $pid))
@@ -154,7 +169,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
     public function testDown()
     {
         $pid = 1;
-        $Payment = $this->container->get(PaymentRepository::class)->find($pid);
+        $Payment = $this->paymentRepository->find($pid);
         $before = $Payment->getSortNo();
         $this->client->request('PUT',
             $this->generateUrl('admin_setting_shop_payment_down', array('id' => $pid))
@@ -218,6 +233,44 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
     //            )
     //        );
     //    }
+
+    public function testMoveSortNo()
+    {
+        /** @var Payment[] $Payments */
+        $Payments = $this->paymentRepository->findBy([], ['sort_no' => 'DESC']);
+
+        $this->expected = [];
+        foreach ($Payments as $Payment) {
+            $this->expected[$Payment->getId()] = $Payment->getSortNo();
+        }
+
+        // swap sort_no
+        reset($this->expected);
+        $firstKey = key($this->expected);
+        end($this->expected);
+        $lastKey = key($this->expected);
+
+        $tmp = $this->expected[$firstKey];
+        $this->expected[$firstKey] = $this->expected[$lastKey];
+        $this->expected[$lastKey] = $tmp;
+
+        $this->client->request('POST',
+            $this->generateUrl('admin_setting_shop_payment_sort_no_move'),
+            $this->expected,
+            [],
+            ['HTTP_X-Requested-With' => 'XMLHttpRequest',]
+        );
+
+        $Payments = $this->paymentRepository->findBy([], ['sort_no' => 'DESC']);
+        $this->actual = [];
+        foreach ($Payments as $Payment) {
+            $this->actual[$Payment->getId()] = $Payment->getSortNo();
+        }
+        sort($this->expected);
+        sort($this->actual);
+
+        $this->verify();
+    }
 
     public function createFormData()
     {
