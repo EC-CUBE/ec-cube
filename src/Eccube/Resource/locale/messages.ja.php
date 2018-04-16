@@ -540,7 +540,7 @@ return [
     'admin.common.label.ok' => '決定',
     'admin.common.label.cancel' => 'キャンセル',
     'admin.common.label.class_name' => '管理名',
-    'admin.common.label.display_name' => '表示名',
+    'admin.common.label.display_name' => '規格名',
     'admin.common.pagination.item' => '件',
 
     'admin.install.warning' => 'installphpPath は、インストール完了後にファイルを削除してください',

@@ -57,14 +57,14 @@ class ClassName extends \Eccube\Entity\AbstractEntity
     /**
      * @var string
      *
-     * @ORM\Column(name="backend_name", type="string", length=255)
+     * @ORM\Column(name="backend_name", type="string", length=255, nullable=true)
      */
     private $backend_name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="display_name", type="string", length=255, nullable=true)
+     * @ORM\Column(name="display_name", type="string", length=255)
      */
     private $display_name;
 
