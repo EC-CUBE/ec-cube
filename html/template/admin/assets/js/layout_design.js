@@ -21,13 +21,16 @@
  */
 ;(function($, window, document, undefined){
     var updateUpDown = function(sortable){
+        if (sortable instanceof $) {
+            sortable = sortable.get(0);
+        }
         $('div:not(.ui-sortable-helper)', sortable)
             .removeClass('first')
             .filter(':first').addClass('first').end()
-            .children('input.target-id').val(sortable.id.replace('position_', '')).end()
-            .each(function(){
-                var top = $(this).prevAll().length + 1;
-                $(this).children('input.block-row').val(top);
+            .children('input.target-id').val(sortable.id.replace('position_', ''));
+        $(sortable)
+            .find('input.block-row').each(function(i){
+                $(this).val(i);
             });
     };
 
@@ -36,6 +39,7 @@
         if(ui.sender)
             updateUpDown(ui.sender[0]);
     };
+    window.updateUpDown = updateUpDown;
 
     $(document).ready(function(){
         // `window.els` is defined in layout.twig

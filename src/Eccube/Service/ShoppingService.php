@@ -42,9 +42,7 @@ use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
-use Eccube\Exception\ShoppingException;
 use Eccube\Form\Type\ShippingItemType;
-use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerAddressRepository;
 use Eccube\Repository\DeliveryFeeRepository;
 use Eccube\Repository\DeliveryRepository;
@@ -718,12 +716,12 @@ class ShoppingService
         $ClassCategory1 = $ProductClass->getClassCategory1();
         if (!is_null($ClassCategory1)) {
             $OrderItem->setClasscategoryName1($ClassCategory1->getName());
-            $OrderItem->setClassName1($ClassCategory1->getClassName()->getName());
+            $OrderItem->setClassName1($ClassCategory1->getClassName()->getDisplayName());
         }
         $ClassCategory2 = $ProductClass->getClassCategory2();
         if (!is_null($ClassCategory2)) {
             $OrderItem->setClasscategoryName2($ClassCategory2->getName());
-            $OrderItem->setClassName2($ClassCategory2->getClassName()->getName());
+            $OrderItem->setClassName2($ClassCategory2->getClassName()->getDisplayName());
         }
         $Shipping->addOrderItem($OrderItem);
         $this->entityManager->persist($OrderItem);
