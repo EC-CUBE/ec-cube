@@ -48,6 +48,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CustomerController extends AbstractController
 {
@@ -202,7 +203,11 @@ class CustomerController extends AbstractController
             throw new NotFoundHttpException();
         }
 
-        $activateUrl = $this->generateUrl('entry_activate', array('secret_key' => $Customer->getSecretKey()));
+        $activateUrl = $this->generateUrl(
+            'entry_activate',
+            array('secret_key' => $Customer->getSecretKey()),
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
 
         // メール送信
         $this->mailService->sendAdminCustomerConfirmMail($Customer, $activateUrl);
