@@ -339,7 +339,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     <td class="align-middle"></td>
                                                     <td class="align-middle pr-3">
                                                         <div class="row justify-content-end">
-                                                            {% if Customer.Status.id == constant('Eccube\\Entity\\Master\\CustomerStatus::NONACTIVE') %}
+                                                            {% if Customer.Status.id == constant('Eccube\\Entity\\Master\\CustomerStatus::PROVISIONAL') %}
                                                                 <div class="col-auto text-center" data-toggle="tooltip" data-placement="top" title="{{ 'admin.customer.index.label.resend_registmail'|trans }}">
                                                                     <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#discontinuance_cus_{{ Customer.id }}">
                                                                         <i class="fa fa-send fa-lg text-secondary" aria-hidden="true"></i>
@@ -370,7 +370,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                             {% endif %}
                                                             <div class="col-auto text-center" data-toggle="tooltip"
                                                                  data-placement="top"
-                                                                 title="{{ 'admin.product.index.abolition'|trans }}">
+                                                                 title="{{ 'admin.customer.index.delete'|trans }}">
                                                                 <a class="btn btn-ec-actionIcon" data-toggle="modal"
                                                                    data-target="#discontinuance-{{ Customer.id }}"><i
                                                                             class="fa fa-close fa-lg text-secondary"
