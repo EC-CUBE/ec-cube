@@ -339,9 +339,38 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     <td class="align-middle"></td>
                                                     <td class="align-middle pr-3">
                                                         <div class="row justify-content-end">
-                                                            <div class="col text-center" data-toggle="tooltip"
+                                                            {% if Customer.Status.id == constant('Eccube\\Entity\\Master\\CustomerStatus::PROVISIONAL') %}
+                                                                <div class="col-auto text-center" data-toggle="tooltip" data-placement="top" title="{{ 'admin.customer.index.label.resend_registmail'|trans }}">
+                                                                    <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#discontinuance_cus_{{ Customer.id }}">
+                                                                        <i class="fa fa-send fa-lg text-secondary" aria-hidden="true"></i>
+                                                                    </a>
+                                                                    <div class="modal fade" id="discontinuance_cus_{{ Customer.id }}" tabindex="-1" role="dialog" aria-labelledby="discontinuance" aria-hidden="true">
+                                                                        <div class="modal-dialog" role="document">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    <h5 class="modal-title font-weight-bold">{{ 'admin.customer.index.label.resend_registmail'|trans }}</h5>
+                                                                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                                                        <span aria-hidden="true">×</span>
+                                                                                    </button>
+                                                                                </div>
+                                                                                <div class="modal-body text-left">
+                                                                                    <p class="text-left">{{ 'admin.customer.index.label.resend_registmail_content'|trans }}</p>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.customer.index.cancel'|trans }}</button>
+                                                                                    {# TODO: CSSの変更は別タスクでやります #}
+                                                                                    <a class="btn btn-ec-delete" href="{{ url('admin_customer_resend', {'id' : Customer.id}) }}" {{ csrf_token_for_anchor() }} data-method="get" data-confirm="false">
+                                                                                        {{ 'admin.customer.index.send'|trans }}
+                                                                                    </a>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            {% endif %}
+                                                            <div class="col-auto text-center" data-toggle="tooltip"
                                                                  data-placement="top"
-                                                                 title="{{ 'admin.product.index.abolition'|trans }}">
+                                                                 title="{{ 'admin.customer.index.delete'|trans }}">
                                                                 <a class="btn btn-ec-actionIcon" data-toggle="modal"
                                                                    data-target="#discontinuance-{{ Customer.id }}"><i
                                                                             class="fa fa-close fa-lg text-secondary"
