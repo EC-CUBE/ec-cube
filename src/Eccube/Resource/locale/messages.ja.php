@@ -2514,6 +2514,7 @@ return [
     'member.label.varify_pass' => 'パスワード(確認)',
     'news.label.date' => '日付',
     'news.label.title' => 'タイトル',
+    'news.label.url' => 'URL',
     'news.label.new_window' => '別ウィンドウを開く',
     'news.label.text_body' => '本文',
     'orderitem.text.data.shipping_charge' => '送料',
