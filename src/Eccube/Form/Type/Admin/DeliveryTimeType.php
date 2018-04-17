@@ -42,7 +42,6 @@ class DeliveryTimeType extends AbstractType
         $builder
             ->add('delivery_time', TextType::class, array(
                 'label' => false,
-                'required' => true,
                 'attr' => array(
                     'placeholder' => '配送方法名を入力',
                 ),
@@ -52,7 +51,6 @@ class DeliveryTimeType extends AbstractType
             ))
             ->add('sort_no', HiddenType::class, array(
                 'label' => false,
-                'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
