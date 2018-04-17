@@ -1312,6 +1312,8 @@ return [
     'admin.product.category.410' => '削除',
     'admin.product.category.411' => 'データはありません。',
     'admin.product.category.412' => '全カテゴリー',
+    'admin.product.category.ok' => '決定',
+    'admin.product.category.cancel' => 'キャンセル',
     'admin.product.category.up' => '上へ移動',
     'admin.product.category.down' => '下へ移動',
     'admin.product.category.rename' => '名前を編集',
