@@ -20,6 +20,10 @@ class EA09ShippingCest
         // すべてのテストケース実施前にログインしておく
         // ログイン後は管理アプリのトップページに遷移している
         $I->loginAsAdmin();
+
+        // shipping一括発送済み更新が失敗してしまうため、OrderItemの存在しない出荷を削除しておく
+        $deleteShippingNotExistsOfItem = Fixtures::get('deleteShippingNotExistsOfItem'); // Closure
+        $deleteShippingNotExistsOfItem();
     }
 
     public function _after(\AcceptanceTester $I)
@@ -174,7 +178,7 @@ class EA09ShippingCest
         $I->wait(5);
         $I->waitForElementVisible(['xpath' => '//*[@id="sentUpdateModal"]/div/div/div[2]/p']);
         $I->see('処理完了', ['xpath' => '//*[@id="sentUpdateModal"]/div/div/div[2]/p']);
-        $I->seeEmailCount(18);  // XXX 何故か travis では 18 になる
+        $I->seeEmailCount(20);
 
         $I->click(['id' => 'bulkChangeComplete']);
     }
