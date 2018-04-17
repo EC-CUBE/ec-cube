@@ -32,8 +32,8 @@ class LayoutEditPage extends AbstractAdminPageStyleGuide
 
     public function ブロックを移動($blockName, $dest, $timeout = 10)
     {
-        if (strlen($blockName) > 10) {
-            $blockName = mb_strimwidth($blockName, 0, 11, '…');
+        if (mb_strlen($blockName) > 10) {
+            $blockName = mb_substr($blockName, 0, 10).'…';
         }
         $this->tester->waitForElementVisible(['xpath' => "//div[contains(@id, 'detail_box__layout_item')][div[div[1][a[text()='${blockName}']]]]"], $timeout);
         $this->tester->dragAndDrop(['xpath' => "//div[contains(@id, 'detail_box__layout_item')][div[div[1][a[text()='${blockName}']]]]"], $dest);
