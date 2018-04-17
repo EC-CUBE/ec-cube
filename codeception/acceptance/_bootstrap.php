@@ -221,6 +221,26 @@ $resetShippingStatusPrepared = function () use ($entityManager) {
 /** 出荷準備中に更新するクロージャ. */
 Fixtures::add('resetShippingStatusPrepared', $resetShippingStatusPrepared);
 
+$deleteShippingNotExistsOfItem = function () use ($entityManager) {
+    $sub = $entityManager->getRepository('Eccube\Entity\OrderItem')
+        ->createQueryBuilder('oi');
+    $sub->select('oi')
+        ->andWhere('oi.Shipping = s.id');
+    $qb = $entityManager->getRepository('Eccube\Entity\Shipping')
+        ->createQueryBuilder('s');
+    $qb->select('s')
+    ->andWhere($qb->expr()->not($qb->expr()->exists($sub->getDQL())));
+    $Shippings = $qb->getQuery()->getResult();
+
+    foreach ($Shippings as $Shipping) {
+        $entityManager->remove($Shipping);
+    }
+    $entityManager->flush();
+    return true;
+};
+/** OrderItemの存在しない出荷を削除するクロージャ. */
+Fixtures::add('deleteShippingNotExistsOfItem', $deleteShippingNotExistsOfItem);
+
 $findProducts = function () use ($entityManager) {
     return $entityManager->getRepository('Eccube\Entity\Product')
         ->createQueryBuilder('p')
