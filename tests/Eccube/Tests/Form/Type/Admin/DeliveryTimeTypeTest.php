@@ -33,6 +33,7 @@ class DeliveryTimeTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
     /** @var array デフォルト値（正常系）を設定 */
     protected $formData = array(
         'delivery_time' => '午前中',
+        'sort_no' => '1',
     );
 
     public function setUp()

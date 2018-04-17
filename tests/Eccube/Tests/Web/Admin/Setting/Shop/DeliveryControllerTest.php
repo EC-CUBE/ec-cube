@@ -242,6 +242,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
             $deliveryFree[$i] = array('fee' => $tmpFee);
         }
 
+        $i = 0;
         $form = array(
             '_token' => 'dummy',
             'name' => $faker->word,
@@ -251,22 +252,21 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
             'sale_type' => rand(1, 2),
             'payments' => array('1'),
             'delivery_times' => array(
-                array('delivery_time' => 'AM'),
-                array('delivery_time' => 'PM'),
-                array('delivery_time' => $faker->word),
-                array('delivery_time' => $faker->word),
-                array('delivery_time' => $faker->word),
-                array('delivery_time' => $faker->word),
-                array('delivery_time' => $faker->word),
-                array('delivery_time' => $faker->word),
-                array('delivery_time' => $faker->word),
-                array('delivery_time' => $faker->word),
-                array('delivery_time' => $faker->word),
-                array('delivery_time' => $faker->word),
-                array('delivery_time' => $faker->word),
-                array('delivery_time' => $faker->word),
-                array('delivery_time' => $faker->word),
-                array('delivery_time' => null),
+                array('delivery_time' => 'AM', 'sort_no' => $i++),
+                array('delivery_time' => 'PM', 'sort_no' => $i++),
+                array('delivery_time' => $faker->word, 'sort_no' => $i++),
+                array('delivery_time' => $faker->word, 'sort_no' => $i++),
+                array('delivery_time' => $faker->word, 'sort_no' => $i++),
+                array('delivery_time' => $faker->word, 'sort_no' => $i++),
+                array('delivery_time' => $faker->word, 'sort_no' => $i++),
+                array('delivery_time' => $faker->word, 'sort_no' => $i++),
+                array('delivery_time' => $faker->word, 'sort_no' => $i++),
+                array('delivery_time' => $faker->word, 'sort_no' => $i++),
+                array('delivery_time' => $faker->word, 'sort_no' => $i++),
+                array('delivery_time' => $faker->word, 'sort_no' => $i++),
+                array('delivery_time' => $faker->word, 'sort_no' => $i++),
+                array('delivery_time' => $faker->word, 'sort_no' => $i++),
+                array('delivery_time' => $faker->word, 'sort_no' => $i++),
             ),
             'free_all' => $faker->randomNumber(5),
             'delivery_fees' => $deliveryFree
