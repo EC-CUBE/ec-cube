@@ -911,7 +911,20 @@ return [
     'admin.customer.edit.sipping_edit' => '編集',
     'admin.customer.edit.sipping_add' => 'お届け先追加',
     'admin.customer.edit.sipping_text01' => 'お届け先登録の上限の%eccube_deliv_addr_max%件に達しています。お届け先を入力したい場合は、削除か変更を行ってください',
-    'admin.customer.edit.customer_index' => '会員マスター',
+    'admin.customer.delivery_edit.1' => '会員マスター',
+    'admin.customer.edit.110' => '会員管理',
+    'admin.customer.edit.111' => 'お届け先登録・編集',
+    'admin.customer.edit.112' => 'お届け先情報',
+    'admin.customer.edit.113' => 'お届け先ID',
+    'admin.customer.edit.114' => '市区町村名（例：千代田区神田神保町）',
+    'admin.customer.edit.115' => '番地・ビル名（例：1-3-5）',
+    'admin.customer.edit.116' => 'お届け先を登録',
+    'admin.customer.edit.117' => '戻る',
+
+
+
+
+
     'admin.customer.index.110' => '会員管理',
     'admin.customer.index.111' => '会員マスター',
     'admin.customer.index.112' => '会員ID・メールアドレス・お名前',
