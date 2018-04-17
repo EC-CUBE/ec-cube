@@ -20,10 +20,6 @@ class EA09ShippingCest
         // すべてのテストケース実施前にログインしておく
         // ログイン後は管理アプリのトップページに遷移している
         $I->loginAsAdmin();
-
-        // shipping一括発送済み更新が失敗してしまうため、OrderItemの存在しない出荷を削除しておく
-        $deleteShippingNotExistsOfItem = Fixtures::get('deleteShippingNotExistsOfItem'); // Closure
-        $deleteShippingNotExistsOfItem();
     }
 
     public function _after(\AcceptanceTester $I)
@@ -158,6 +154,11 @@ class EA09ShippingCest
     public function shipping一括発送済み更新(\AcceptanceTester $I)
     {
         $I->wantTo('EA0902-UC01-T01 一括発送済み更新');
+
+        // 一括操作用の受注を生成しておく
+        $createCustomer = Fixtures::get('createCustomer');
+        $createOrders = Fixtures::get('createOrders');
+        $createOrders($createCustomer(), 10, array());
 
         $I->resetEmails();
 
