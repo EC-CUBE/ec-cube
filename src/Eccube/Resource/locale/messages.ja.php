@@ -722,6 +722,7 @@ return [
     'admin.content.cache.20' => '本番環境にFTPなどでTwigファイルをアップロードして入れ替えた場合、画面を反映させるにはTwigキャッシュを削除する必要があります。',
     'admin.content.cache.21' => 'キャッシュ削除するディレクトリを選択してください。',
     'admin.content.cache.22' => 'キャッシュ削除',
+    'admin.content.cache.23' => '実行結果',
     'admin.content.file.23' => 'コンテンツ管理',
     'admin.content.file.24' => 'ファイル管理',
     'admin.content.file.25' => 'ファイルのアップロード',
