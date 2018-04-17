@@ -341,7 +341,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                         <div class="row justify-content-end">
                                                             {% if Customer.Status.id == constant('Eccube\\Entity\\Master\\CustomerStatus::NONACTIVE') %}
                                                                 <div class="col-auto text-center" data-toggle="tooltip" data-placement="top" title="{{ 'admin.customer.index.label.resend_registmail'|trans }}">
-                                                                    <a class="btn btn-ec-actionIcon action-resend-mail" data-toggle="modal" data-target="#discontinuance_cus_{{ Customer.id }}">
+                                                                    <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#discontinuance_cus_{{ Customer.id }}">
                                                                         <i class="fa fa-send fa-lg text-secondary" aria-hidden="true"></i>
                                                                     </a>
                                                                     <div class="modal fade" id="discontinuance_cus_{{ Customer.id }}" tabindex="-1" role="dialog" aria-labelledby="discontinuance" aria-hidden="true">
