@@ -1356,6 +1356,7 @@ return [
     'admin.product.class_name.441' => '名前を編集',
     'admin.product.class_name.442' => '項目の順番はドラッグ＆ドロップでも変更可能です。',
     'admin.product.class_name.443' => '新規作成',
+    'admin.product.class_name.444' => '管理名：',
     'admin.product.csv_category.title' => 'カテゴリCSV登録',
     'admin.product.csv_category.sub_title' => '商品管理',
     'admin.product.csv_category.csv_file_upload' => 'CSVファイルをアップロード',
