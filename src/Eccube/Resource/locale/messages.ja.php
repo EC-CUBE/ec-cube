@@ -1551,6 +1551,7 @@ return [
     'admin.product.product.text12' => 'カテゴリ検索',
     'admin.product.product.text13' => 'カテゴリの追加・編集',
     'admin.product.product.tag' => 'タグ',
+    'admin.product.product.tag_all' => '全てのタグを表示',
     'admin.product.product.text14' => 'タグの追加・編集',
     'admin.product.product.text15' => '登録日・更新日',
     'admin.product.product.update_member' => '最終更新者',
