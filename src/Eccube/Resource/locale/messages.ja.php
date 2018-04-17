@@ -1009,7 +1009,7 @@ return [
     'admin.login.173' => 'パスワード',
     'admin.login.174' => 'ログイン',
     'admin.login_frame.175' => 'EC-CUBE管理画面',
-    'admin.login_frame.176' => 'JavaScript を有効にしてご利用ください',
+    'admin.login_frame.176' => 'JavaScript を有効にしてご利用ください.',
     'admin.mail.entry_confirm.177' => '※本メールは自動配信メールです。',
     'admin.mail.entry_confirm.178' => '等幅フォント(MSゴシック12ポイント、Osaka-等幅など)で',
     'admin.mail.entry_confirm.179' => '最適にご覧になれます。',
