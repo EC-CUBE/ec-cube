@@ -222,20 +222,18 @@ $resetShippingStatusPrepared = function () use ($entityManager) {
 Fixtures::add('resetShippingStatusPrepared', $resetShippingStatusPrepared);
 
 $deleteShippingNotExistsOfItem = function () use ($entityManager) {
-    $sub = $entityManager->getRepository('Eccube\Entity\OrderItem')
-        ->createQueryBuilder('oi');
-    $sub->select('oi')
-        ->andWhere('oi.Shipping = s.id');
-    $qb = $entityManager->getRepository('Eccube\Entity\Shipping')
-        ->createQueryBuilder('s');
-    $qb->select('s')
-    ->andWhere($qb->expr()->not($qb->expr()->exists($sub->getDQL())));
-    $Shippings = $qb->getQuery()->getResult();
 
-    foreach ($Shippings as $Shipping) {
-        $entityManager->remove($Shipping);
+    $Shippings= $entityManager->getRepository('Eccube\Entity\Shipping')->findAll();
+
+    if ($Shippings) {
+        foreach ($Shippings as $Shipping) {
+            if ($Shipping->getOrderItems()->isEmpty()) {
+                $entityManager->remove($Shipping);
+            }
+        }
+        $entityManager->flush();
     }
-    $entityManager->flush();
+
     return true;
 };
 /** OrderItemの存在しない出荷を削除するクロージャ. */
