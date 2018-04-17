@@ -86,7 +86,7 @@ class LayoutController extends AbstractController
      */
     public function index()
     {
-        $Layouts = $this->layoutRepository->findBy([], ['id' => 'DESC']);
+        $Layouts = $this->layoutRepository->findBy([], ['DeviceType' => 'DESC', 'id' => 'ASC']);
 
         return [
             'Layouts' => $Layouts,
@@ -186,18 +186,6 @@ class LayoutController extends AbstractController
 
         $form = $builder->getForm();
         $form->handleRequest($request);
-
-        if (is_null($id)) {     // admin_content_layout_new only
-            if ($deviceTypeId = $request->get('DeviceType')) {
-                if ($DeviceType = $this->entityManager->find(DeviceType::class, $deviceTypeId)) {
-                    $form['DeviceType']->setData($DeviceType);
-                } else {
-                    throw new BadRequestHttpException(trans('admin.content.layout.device_type.invalid'));
-                }
-            } else {
-                throw new BadRequestHttpException(trans('admin.content.layout.device_type.invalid'));
-            }
-        }
 
         if ($form->isSubmitted() && $form->isValid()) {
             // Layoutの更新

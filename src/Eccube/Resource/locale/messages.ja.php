@@ -792,7 +792,7 @@ return [
     'admin.content.layout_list.add_page' => 'ページ追加',
     'admin.content.layout_list.delete_layout' => 'レイアウト削除',
     'admin.content.layout_list.no_pages_message' => 'ページの登録がありません',
-    'admin.content.layout_list.add_pc_layout' => 'PC用レイアウトを新規追加',
+    'admin.content.layout_list.add_layout' => 'レイアウトを新規追加',
     'admin.content.layout_list.add_mobile_layout' => 'モバイル用レイアウトを新規追加',
     'admin.content.layout_list.default_layout' => 'デフォルトのレイアウト',
     'admin.content.layout_list.add_page.title' => 'ページを追加',
