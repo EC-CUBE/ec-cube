@@ -26,8 +26,8 @@
 
 {% set menus = ['customer', 'customer_edit'] %}
 
-{% block title %}{{ 'admin.customer.edit.110'|trans }}{% endblock %}
-{% block sub_title %}{{ 'admin.customer.edit.111'|trans }}{% endblock %}
+{% block title %}{{ 'admin.customer.delivery_edit.110'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.customer.delivery_edit.111'|trans }}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_3_horizontal_layout.html.twig' %}
 
@@ -42,14 +42,14 @@
         <span class="p-country-name" style="display:none;">Japan</span>
         <div id="detail_box" class="box">
             <div id="detail_box__header" class="box-header">
-                <h3 class="box-title">{{ 'admin.customer.edit.112'|trans }}</h3>
+                <h3 class="box-title">{{ 'admin.customer.delivery_edit.112'|trans }}</h3>
             </div><!-- /.box-header -->
             <div id="detail_box__body" class="box-body accpanel" style="display: block;">
                 <div class="form-horizontal">
                     {# お届け先ID #}
                     {% if CustomerAddress.id %}
                         <div id="detail_box__id" class="form-group">
-                            <label class="col-sm-3 col-lg-2 control-label">{{ 'admin.customer.edit.113'|trans }}</label>
+                            <label class="col-sm-3 col-lg-2 control-label">{{ 'admin.customer.delivery_edit.113'|trans }}</label>
                             <div class="col-sm-9 col-lg-10">{{ CustomerAddress.id }}</div>
                         </div>
                     {% endif %}
@@ -101,14 +101,14 @@
                     {# 住所：住所1 #}
                     <div class="form-group">
                         <div id="detail_box__addr01" class="col-sm-offset-2 col-sm-9 col-lg-10">
-                            {{ form_widget(form.address.addr01, { attr : { placeholder : 'admin.customer.edit.114'}} ) }}
+                            {{ form_widget(form.address.addr01, { attr : { placeholder : 'admin.customer.delivery_edit.114'}} ) }}
                             {{ form_errors(form.address.addr01) }}
                         </div>
                     </div>
                     {# 住所：住所2 #}
                     <div class="form-group">
                         <div id="detail_box__addr02" class="col-sm-offset-2 col-sm-9 col-lg-10">
-                            {{ form_widget(form.address.addr02, { attr : { placeholder : 'admin.customer.edit.115'}}) }}
+                            {{ form_widget(form.address.addr02, { attr : { placeholder : 'admin.customer.delivery_edit.115'}}) }}
                             {{ form_errors(form.address.addr02) }}
                         </div>
                     </div>
@@ -153,14 +153,14 @@
 
                     <div id="detail__insert_button" class="row btn_area">
                         <p class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center">
-                            <button type="submit" class="btn btn-primary btn-block btn-lg" name="mode" value="register">{{ 'admin.customer.edit.116'|trans }}</button>
+                            <button type="submit" class="btn btn-primary btn-block btn-lg" name="mode" value="register">{{ 'admin.customer.delivery_edit.116'|trans }}</button>
                         </p>
                         <!-- /.col -->
                     </div>
 
                     <div id="detail__back_button" class="row hidden-xs hidden-sm">
                         <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
-                            <p><a href="{{ url('admin_customer_edit', { id: Customer.id }) }}">{{ 'admin.customer.edit.117'|trans }}</a></p>
+                            <p><a href="{{ url('admin_customer_edit', { id: Customer.id }) }}">{{ 'admin.customer.delivery_edit.117'|trans }}</a></p>
                         </div>
                     </div>
                 </div>
