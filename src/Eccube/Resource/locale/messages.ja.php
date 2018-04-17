@@ -1192,6 +1192,7 @@ return [
     'admin.order.index.337' => 'メール通知',
     'admin.order.index.338' => '検索条件に該当するデータがありませんでした。',
     'admin.order.index.339' => '受注情報を削除してもよろしいですか？',
+    'admin.order.index.340' => 'チェックボックスが選択されていません',
     'admin.order.index.detailed_search' => '詳細検索',
     'admin.order.index.label_order_company_name' => '注文者会社名',
     'admin.order.index.label_order_id' => '受注ID',
