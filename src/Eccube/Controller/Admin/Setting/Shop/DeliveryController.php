@@ -251,62 +251,6 @@ class DeliveryController extends AbstractController
     }
 
     /**
-     * @Method("PUT")
-     * @Route("/%eccube_admin_route%/setting/shop/delivery/{id}/up", requirements={"id" = "\d+"}, name="admin_setting_shop_delivery_up")
-     * @param Delivery $current
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function up(Delivery $current)
-    {
-        $this->isTokenValid();
-
-        $currentSortNo = $current->getSortNo();
-        $targetSortNo = $currentSortNo + 1;
-
-        $target = $this->deliveryRepository->findOneBy(array('sort_no' => $targetSortNo));
-
-        if ($target) {
-            $this->entityManager->persist($target->setSortNo($currentSortNo));
-            $this->entityManager->persist($current->setSortNo($targetSortNo));
-            $this->entityManager->flush();
-
-            $this->addSuccess('admin.sort_no.move.complete', 'admin');
-        } else {
-            $this->addError('admin.sort_no.move.error', 'admin');
-        }
-
-        return $this->redirectToRoute('admin_setting_shop_delivery');
-    }
-
-    /**
-     * @Method("PUT")
-     * @Route("/%eccube_admin_route%/setting/shop/delivery/{id}/down", requirements={"id" = "\d+"}, name="admin_setting_shop_delivery_down")
-     * @param Delivery $current
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function down(Delivery $current)
-    {
-        $this->isTokenValid();
-
-        $currentSortNo = $current->getSortNo();
-        $targetSortNo = $currentSortNo - 1;
-
-        $target = $this->deliveryRepository->findOneBy(array('sort_no' => $targetSortNo));
-
-        if ($target) {
-            $this->entityManager->persist($target->setSortNo($currentSortNo));
-            $this->entityManager->persist($current->setSortNo($targetSortNo));
-            $this->entityManager->flush();
-
-            $this->addSuccess('admin.sort_no.move.complete', 'admin');
-        } else {
-            $this->addError('admin.sort_no.move.error', 'admin');
-        }
-
-        return $this->redirectToRoute('admin_setting_shop_delivery');
-    }
-
-    /**
      * @Method("DELETE")
      * @Route("/%eccube_admin_route%/setting/shop/delivery/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_shop_delivery_delete")
      */
@@ -387,13 +331,15 @@ class DeliveryController extends AbstractController
             throw new BadRequestHttpException();
         }
 
-        $sortNos = $request->request->all();
-        foreach ($sortNos as $deliveryId => $sortNo) {
-            $Delivery = $this->deliveryRepository
-                ->find($deliveryId);
-            $Delivery->setSortNo($sortNo);
+        if ($this->isTokenValid()) {
+            $sortNos = $request->request->all();
+            foreach ($sortNos as $deliveryId => $sortNo) {
+                $Delivery = $this->deliveryRepository->find($deliveryId);
+                $Delivery->setSortNo($sortNo);
+                $this->entityManager->persist($Delivery);
+            }
+            $this->entityManager->flush();
         }
-        $this->entityManager->flush();
 
         return $this->json('OK', 200);
     }
