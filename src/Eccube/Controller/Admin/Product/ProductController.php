@@ -1011,39 +1011,6 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @param Paginator $paginator
-     * @param Request $request
-     * @param array $searchData
-     * @param integer $page_no
-     * @param integer $page_count
-     * @return Paginator
-     */
-    private function buildPagination(Paginator $paginator, Request $request, array &$searchData, $page_no, $page_count)
-    {
-        $qb = $this->productRepository->getQueryBuilderBySearchDataForAdmin($searchData);
-
-        $event = new EventArgs(
-            [
-                'qb' => $qb,
-                'searchData' => $searchData,
-            ],
-            $request
-        );
-
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_INDEX_SEARCH, $event);
-        $searchData = $event->getArgument('searchData');
-
-        $pagination = $paginator->paginate(
-            $qb,
-            $page_no,
-            $page_count,
-            ['wrap-queries' => true]
-        );
-
-        return $pagination;
-    }
-
-    /**
      * Bulk public action
      *
      * @Method("POST")
