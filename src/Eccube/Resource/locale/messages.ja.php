@@ -1491,7 +1491,7 @@ return [
     'admin.product.index.filter_by_stock' => '在庫',
     'admin.product.index.filter_in_stock' => 'あり',
     'admin.product.index.filter_out_of_stock' => 'なし',
-
+    'admin.product.index.invalid_search_data' => '検索条件に誤りがあります。',
     'admin.product.product.495' => '商品管理',
     'admin.product.product.496' => '商品登録',
     'admin.product.product.497' => 'アップロードに失敗しました。',
