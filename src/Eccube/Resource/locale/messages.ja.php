@@ -962,6 +962,7 @@ return [
     'admin.customer.subnavi.150' => '会員登録',
     'admin.customer.index.cancel' => 'キャンセル',
     'admin.customer.index.send' => '再送',
+    'admin.customer.index.invalid_search_data' => '検索条件に誤りがあります。',
     'admin.default_frame.151' => 'EC-CUBE管理画面',
     'admin.default_frame.152' => '%name% 様',
     'admin.default_frame.153' => '最終ログイン',

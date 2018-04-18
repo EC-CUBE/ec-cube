@@ -126,7 +126,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     </div>
                 </div>
             </div>
-            <div class="c-subContents ec-collapse collapse" id="searchDetail" style="">
+            <div class="c-subContents ec-collapse collapse{{ has_errors ? ' show' }}" id="searchDetail">
                 <div class="row mb-2">
                     <div class="col">
                         <div class="form-row">
@@ -292,8 +292,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <div class="c-contentsArea__cols">
             <div class="c-contentsArea__primaryCol">
                 <div class="c-primaryCol">
-                    {% if pagination %}
-                        {% if pagination|length > 0 %}
+                    {% if pagination and pagination.totalItemCount %}
                             <div class="row justify-content-between mb-2">
                                 <div class="col-6"></div>
 
@@ -424,23 +423,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     </div>
                                 </div>
                             </div>
-                        {% else %}
+                    {% elseif has_errors %}
                             <div class="card rounded border-0">
                                 <div class="card-body p-4">
-                                    <div class="text-center text-muted mb-4 h5">{{ 'admin.customer.index.147'|trans }}</div>
+                                    <div class="text-center text-muted mb-4 h5">{{ 'admin.customer.index.invalid_search_data'|trans }}</div>
                                     <div class="text-center text-muted">{{ 'admin.customer.index.text06'|trans }}</div>
-                                    <div class="text-center text-muted">{{ 'admin.customer.index.text07'|trans }}</div>
                                 </div>
                             </div>
-                        {% endif %}
                     {% else %}
                         <div class="card rounded border-0">
                             <div class="card-body p-4">
-                                <div class="text-center text-muted mb-2 h5">{{ 'admin.customer.index.text08'|trans }}</div>
-                                <div class="text-center mb-4"><a class="btn btn-ec-regular pl-4 pr-4"
-                                                                 href="{{ url('admin_customer_new') }}">{{ 'admin.customer.index.text09'|trans }}</a>
-                                </div>
-                                <div class="text-center text-muted">{{ 'admin.customer.index.text10'|trans }}</div>
+                                <div class="text-center text-muted mb-4 h5">{{ 'admin.customer.index.147'|trans }}</div>
+                                <div class="text-center text-muted">{{ 'admin.customer.index.text06'|trans }}</div>
+                                <div class="text-center text-muted">{{ 'admin.customer.index.text07'|trans }}</div>
                             </div>
                         </div>
                     {% endif %}
