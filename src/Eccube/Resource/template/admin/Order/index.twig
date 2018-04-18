@@ -154,7 +154,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 </div>
             </div>
         </div>
-        <div class="c-subContents ec-collapse collapse" id="searchDetail">
+        <div class="c-subContents ec-collapse collapse{{ has_errors ? ' show' }}" id="searchDetail">
             <div class="row">
                 <div class="col">
                     <label class="col-form-label">{{ 'admin.order.index.299'|trans }}</label>
@@ -486,6 +486,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </div>
                     </div>
                 </form>
+            {# 検索条件エラー時 #}
+            {% elseif has_errors %}
+                <div class="card rounded border-0">
+                    <div class="card-body p-4">
+                        <div class="text-center text-muted mb-4 h5">{{ 'admin.order.index.invalid_search_data'|trans }}</div>
+                        <div class="text-center text-muted">{{ 'admin.order.index.pls_change_search_criteria'|trans }}</div>
+                    </div>
+                </div>
+            {# 検索結果なし #}
             {% else %}
                 <div class="card rounded border-0">
                     <div class="card-body p-4">

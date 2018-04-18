@@ -1216,6 +1216,7 @@ return [
     'admin.order.index.paginator_total_count' => '検索結果：%count%件が該当しました',
     'admin.order.index.btn_signup' => '新規登録',
     'admin.order.index.no_matching_search_data' => '検索条件に合致するデータが見つかりませんでした',
+    'admin.order.index.invalid_search_data' => '検索条件に誤りがあります。',
     'admin.order.index.pls_change_search_criteria' => '検索条件を変えて、再度検索をお試しください。',
     'admin.order.index.pls_try_advanced_search' => '[詳細検索]も試してみましょう',
     'admin.order.index.not_found_any_data' => '現在データが登録されていません。登録してみましょう！',
