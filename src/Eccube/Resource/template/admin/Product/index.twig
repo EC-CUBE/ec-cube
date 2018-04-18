@@ -213,6 +213,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="mb-2">
                             <label class="col-form-label">{{ 'admin.product.index.470'|trans }}</label>
                             {{ form_widget(searchForm.id) }}
+                            {{ form_errors(searchForm.id) }}
                         </div>
                         <div class="d-inline-block mb-3" data-toggle="collapse" href="#searchDetail"
                              aria-expanded="false" aria-controls="searchDetail"><a><i
@@ -229,12 +230,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <div class="col-6">
                                 <label class="col-form-label">{{ 'admin.product.index.471'|trans }}</label>
                                 {{ form_widget(searchForm.category_id) }}
+                                {{ form_errors(searchForm.category_id) }}
                             </div>
                         </div>
                         <div class="form-row mb-2">
                             <div class="col-12">
                                 <p class="col-form-label">{{ 'admin.product.index.filter'|trans }}</p>
                                 {{ form_widget(searchForm.status, {'label_attr': {'class': 'checkbox-inline'}}) }}
+                                {{ form_errors(searchForm.status, {'label_attr': {'class': 'checkbox-inline'}}) }}
                             </div>
                         </div>
                         <div class="form-row mb-2">
@@ -255,11 +258,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <div class="col">
                                     {# TODO: カレンダー表示の調整 #}
                                     {{ form_widget(searchForm.create_date_start) }}
+                                    {{ form_errors(searchForm.create_date_start) }}
                                 </div>
                                 <div class="col-auto text-center"><span>{{ 'admin.product.index.474'|trans }}</span>
                                 </div>
                                 <div class="col">
                                     {{ form_widget(searchForm.create_date_end) }}
+                                    {{ form_errors(searchForm.create_date_end) }}
                                 </div>
                             </div>
                         </div>
@@ -269,10 +274,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <div class="col">
                                     {# TODO: カレンダー表示の調整 #}
                                     {{ form_widget(searchForm.update_date_start) }}
+                                    {{ form_errors(searchForm.update_date_start) }}
                                 </div>
                                 <div class="col-auto"><span>{{ 'admin.product.index.474'|trans }}</span></div>
                                 <div class="col">
                                     {{ form_widget(searchForm.update_date_end) }}
+                                    {{ form_errors(searchForm.update_date_end) }}
                                 </div>
                             </div>
                         </div>
