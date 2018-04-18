@@ -504,12 +504,13 @@ class EA03ProductCest
 
         $ProductClassPage = ClassNameManagePage::go($I)
             ->入力_管理名('test class2')
+            ->入力_表示名('test class2')
             ->規格作成();
 
         $I->see('規格を保存しました。', ClassNameManagePage::$登録完了メッセージ);
 
         $ProductClassPage->一覧_分類登録(1);
-        $I->see('管理名 test class2', '#page_admin_product_class_category > div > div.c-contentsArea > div.c-contentsArea__cols > div > div.c-primaryCol > div:nth-child(1) > div.card-body > div:nth-child(1)');
+        $I->see('test class2', '#page_admin_product_class_category > div > div.c-contentsArea > div.c-contentsArea__cols > div > div.c-primaryCol > div:nth-child(1) > div.card-body > div:nth-child(2) > div:nth-child(2) > span');
 
         $ProductClassCategoryPage = ClassCategoryManagePage::at($I)
             ->入力_分類名('test class2 category1')
@@ -539,7 +540,7 @@ class EA03ProductCest
 
         $I->see('カテゴリを保存しました。', CategoryManagePage::$登録完了メッセージ);
 
-        $CategoryPage->一覧_編集(1);
+        $CategoryPage->一覧_編集(2);
 
         $I->see('test category1', CategoryManagePage::$パンくず_1階層);
 
@@ -547,7 +548,7 @@ class EA03ProductCest
             ->入力_カテゴリ名('test category11')
             ->カテゴリ作成();
 
-        $I->see('カテゴリを保存しました。', $CategoryPage::$登録完了メッセージ);
+        $I->see('カテゴリを保存しました。', CategoryManagePage::$登録完了メッセージ);
 
         // csv EA0305-UC04-T01
         $CategoryPage
@@ -563,7 +564,7 @@ class EA03ProductCest
 
         // サブカテゴリ EA0305-UC01-03 & UC01-04
         $CategoryPage = CategoryManagePage::go($I)
-            ->一覧_選択(1);
+            ->一覧_選択(2);
 
         $I->see('test category11', CategoryManagePage::$パンくず_1階層);
 
@@ -572,8 +573,12 @@ class EA03ProductCest
             ->カテゴリ作成();
         $I->see('カテゴリを保存しました。', CategoryManagePage::$登録完了メッセージ);
 
-        // カテゴリ削除
-        $CategoryPage->一覧_削除(1);
+        // カテゴリ削除 (children)
+        $CategoryPage->一覧_削除(2);
+        $I->acceptPopup();
+
+        // Delete category root
+        CategoryManagePage::go($I)->一覧_削除(2);
         $I->acceptPopup();
     }
 
@@ -650,9 +655,10 @@ class EA03ProductCest
         $I->see('カテゴリ登録CSVファイルをアップロードしました', CategoryCsvUploadPage::$完了メッセージ);
 
         CategoryManagePage::go($I);
-        $I->seeElement(['xpath' => '//li[@class="list-group-item"]//a[contains(text(), "アップロードカテゴリ1")]']);
-        $I->seeElement(['xpath' => '//li[@class="list-group-item"]//a[contains(text(), "アップロードカテゴリ2")]']);
-        $I->seeElement(['xpath' => '//li[@class="list-group-item"]//a[contains(text(), "アップロードカテゴリ3")]']);
+
+        $I->seeElement(['xpath' => CategoryManagePage::XPathでタグを取得する('アップロードカテゴリ1')]);
+        $I->seeElement(['xpath' => CategoryManagePage::XPathでタグを取得する('アップロードカテゴリ2')]);
+        $I->seeElement(['xpath' => CategoryManagePage::XPathでタグを取得する('アップロードカテゴリ3')]);
     }
 
     /**

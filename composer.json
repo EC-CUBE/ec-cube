@@ -62,6 +62,7 @@
         "symfony/dom-crawler": "^3.4",
         "symfony/dotenv": "^3.4",
         "symfony/event-dispatcher": "^3.4",
+        "symfony/expression-language": "^3.4",
         "symfony/filesystem": "^3.4",
         "symfony/finder": "^3.4",
         "symfony/flex": "^1.0",
