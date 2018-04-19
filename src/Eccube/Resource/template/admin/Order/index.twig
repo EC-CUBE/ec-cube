@@ -442,7 +442,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <td class="align-middle" id="id--{{ Order.id }}"><a class="action-edit" href="{{ url('admin_order_edit', { id : Order.id }) }}">{{ Order.id }}</a></td>
                                         <td class="align-middle" id="name--{{ Order.id }}">{{ Order.name01 }} {{ Order.name02 }}</td>
                                         <td class="align-middle" id="payment_method--{{ Order.id }}">{{ Order.payment_method }}</td>
-                                        <td class="align-middle" id="payment_total--{{ Order.id }}">{{ Order.payment_total|number_format }}</td>
+                                        <td class="align-middle text-right" id="payment_total--{{ Order.id }}">{{ Order.payment_total|price }}</td>
                                         <td class="align-middle">
                                             {% for shipping in Order.getShippings() %}
                                                 <a href="{{ url('admin_shipping_edit', {id: shipping.id}) }}">{{ shipping.id }}</a><br>

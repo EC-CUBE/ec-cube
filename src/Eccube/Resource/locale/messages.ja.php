@@ -1190,7 +1190,7 @@ return [
     'admin.order.index.329' => '注文番号',
     'admin.order.index.330' => 'お名前',
     'admin.order.index.331' => '支払方法',
-    'admin.order.index.332' => '購入金額 (円)',
+    'admin.order.index.332' => '購入金額',
     'admin.order.index.333' => '発送日',
     'admin.order.index.334' => '対応状況',
     'admin.order.index.335' => '編集',
