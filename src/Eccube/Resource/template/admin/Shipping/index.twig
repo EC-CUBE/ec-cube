@@ -78,10 +78,13 @@
 
                 $('.modal-title', this).text(updater.modalTitle);
                 $('.modal-body > p', this).text(updater.modalMessage);
+                $('#bulkChange').attr('data-bulk-update', eventTarget.data('bulk-update'));
             });
 
             // 配送済みに更新
-            $('#bulkChange').on('click', function() {
+            $('#bulkChange').on('click', function(e) {
+                var eventTarget = $(e.currentTarget);
+                updater = eventTarget.data('bulk-update') ? new BulkUpdate(eventTarget) : new SimpleUpdate(eventTarget);
                 var modal = $('#sentUpdateModal');
 
                 $('.modal-body > p', modal).text("{{ 'admin.shipping.index.827'|trans }}");
@@ -126,29 +129,28 @@
             });
         });
 
-
         /*
-         * 一括更新
+         * Super class
          */
-        function BulkUpdate() {}
-        BulkUpdate.prototype = {
-            modalTitle: "{{ 'admin.shipping.index.807'|trans }}",
-            modalMessage: "{{ 'admin.shipping.index.808'|trans }}",
+        function ConfirmationModal() {
+        }
+        ConfirmationModal.prototype = {
+            modalTitle: "{{ 'admin.shipping.index.829'|trans }}",
+            modalMessage: "{{ 'admin.shipping.index.830'|trans }}",
             getPreviewUrl: function() {
-                return $('input[data-preview-notify-mail-url]:checked').data('preview-notify-mail-url');
+                // TODO define to default url
+                return 'default url';
             },
             getTotalCount: function() {
-                return $('input[data-mark-as-shipped-url]:checked').length;
+                return 1;
             },
-            getPromises: function(progress) {
-                return $('input[data-mark-as-shipped-url]:checked').map(function() {
-                    return $.ajax({
-                        'url': $(this).data('mark-as-shipped-url'),
-                        'type': 'PUT',
-                        'data': { 'notificationMail' : $('input#notificationMail:checked').val() }
-                    }).always(function() {
-                        progress.notify();
-                    });
+            getPromises: function(progress, url) {
+                return $.ajax({
+                    'url': url,
+                    'type': 'PUT',
+                    'data': { 'notificationMail' : $('input#notificationMail:checked').val() }
+                }).always(function() {
+                    progress.notify();
                 });
             }
         };
@@ -159,25 +161,59 @@
         function SimpleUpdate(relatedTarget) {
             this.eventTarget = relatedTarget;
         }
-        SimpleUpdate.prototype = {
-            modalTitle: "{{ 'admin.shipping.index.829'|trans }}",
-            modalMessage: "{{ 'admin.shipping.index.830'|trans }}",
-            getPreviewUrl: function() {
-                return this.eventTarget.data('preview-notify-mail-url')
+        SimpleUpdate.prototype = Object.create(ConfirmationModal.prototype, {
+            constructor: {
+                configurable: true,
+                enumerable: true,
+                writable: true,
+                value: ConfirmationModal
             },
-            getTotalCount: function() {
-                return 1;
+            getPreviewUrl: {
+                value: function () {
+                    return this.eventTarget.data('preview-notify-mail-url');
+                }
             },
-            getPromises: function(progress) {
-                return $.ajax({
-                    'url': this.eventTarget.data('mark-as-shipped-url'),
-                    'type': 'PUT',
-                    'data': { 'notificationMail' : $('input#notificationMail:checked').val() }
-                }).always(function() {
-                    progress.notify();
-                });
+            getPromises: {
+                value: function(progress) {
+                    var url = this.eventTarget.data('mark-as-shipped-url');
+                    return ConfirmationModal.prototype.getPromises.call(this, progress, url);
+                }
             }
-        };
+        });
+
+        /*
+         * 一括更新
+         */
+        function BulkUpdate() {
+            ConfirmationModal.call(this);
+        }
+        BulkUpdate.prototype = Object.create(ConfirmationModal.prototype, {
+            constructor: {
+                configurable: true,
+                enumerable: true,
+                writable: true,
+                value: ConfirmationModal
+            },
+            modalTitle: {
+                value: '{{ 'admin.shipping.index.807'|trans }}'
+            },
+            modalMessage: {
+                value: "{{ 'admin.shipping.index.808'|trans }}"
+            },
+            getTotalCount: {
+                value: function() {
+                    return $('input[data-mark-as-shipped-url]:checked').length;
+                }
+            },
+            getPromises: {
+                value: function(progress) {
+                    return $('input[data-mark-as-shipped-url]:checked').map(function() {
+                        var url = $(this).data('mark-as-shipped-url');
+                        return ConfirmationModal.prototype.getPromises.call(this, progress, url);
+                    });
+                }
+            }
+        });
     </script>
 {% endblock javascript %}
 
