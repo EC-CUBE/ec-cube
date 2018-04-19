@@ -312,4 +312,18 @@ class Layout extends AbstractEntity
     {
         return $this->DeviceType;
     }
+
+    /**
+     * Check layout can delete or not
+     *
+     * @return boolean
+     */
+    public function isDeletable()
+    {
+        if (!$this->getPageLayouts()->isEmpty()) {
+            return false;
+        }
+
+        return true;
+    }
 }

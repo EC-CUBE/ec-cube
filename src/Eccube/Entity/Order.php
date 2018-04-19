@@ -1376,7 +1376,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     public function getProductOrderItems()
     {
         $sio = new OrderItemCollection($this->OrderItems->toArray());
-        return $sio->getProductClasses()->toArray();
+        return array_values($sio->getProductClasses()->toArray());
     }
 
     /**

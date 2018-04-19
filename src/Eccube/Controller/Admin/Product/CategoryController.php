@@ -216,7 +216,11 @@ class CategoryController extends AbstractController
      */
     public function moveSortNo(Request $request)
     {
-        if ($request->isXmlHttpRequest()) {
+        if (!$request->isXmlHttpRequest()) {
+            throw new BadRequestHttpException();
+        }
+
+        if ($this->isTokenValid()) {
             $sortNos = $request->request->all();
             foreach ($sortNos as $categoryId => $sortNo) {
                 /* @var $Category \Eccube\Entity\Category */
@@ -226,8 +230,9 @@ class CategoryController extends AbstractController
                 $this->entityManager->persist($Category);
             }
             $this->entityManager->flush();
+
+            return new Response('Successful');
         }
-        return new Response('Successful');
     }
 
 

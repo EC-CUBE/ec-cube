@@ -296,20 +296,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         {% if pagination|length > 0 %}
                             <div class="row justify-content-between mb-2">
                                 <div class="col-6"></div>
+
                                 <div class="col-5 text-right">
+                                    {#Dropdown page count#}
                                     <div class="d-inline-block mr-2">
-                                        <div>
-                                            {# TODO: 未実装 表示件数 #}
-                                            {% for pageMax in pageMaxis if pageMax.name == page_count %}
-                                                <a class="dropdown-toggle" data-toggle="dropdown">{{'admin.customer.index.135'|trans({'%count%':pageMax.name})|e}}<svg class="cb cb-angle-down icon_down"><use xlink:href="#cb-angle-down"></svg></a>
-                                                    <ul class="dropdown-menu">
+                                        <select class="custom-select" onchange="location = this.value;">
+                                            {% for pageMax in pageMaxis %}
+                                                <option {% if pageMax.name == page_count%} selected {% endif %}
+                                                        value="{{ path('admin_customer_page', {'page_no': 1, 'page_count': pageMax.name}) }}">
+                                                    {{ pageMax.name|e }}{{ 'common.label.num'|trans }}</option>
                                             {% endfor %}
-                                            {% for pageMax in pageMaxis if pageMax.name != page_count %}
-                                                <li><a href="{{ path('admin_customer_page', {'page_no': 1, 'page_count': pageMax.name}) }}">{{pageMax.name|e}}</a></li>
-                                            {% endfor %}
-                                                    </ul>
-                                        </div>
+                                        </select>
                                     </div>
+
                                     <div class="d-inline-block">
                                         <div class="btn-group" role="group">
                                             {# TODO CSVダウンロード・項目設定 #}
@@ -340,8 +339,80 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     <td class="align-middle"></td>
                                                     <td class="align-middle pr-3">
                                                         <div class="row justify-content-end">
-                                                            <div class="col-auto text-center"><a "{{ url('admin_customer_delete', { 'id': Customer.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" class="btn btn-ec-actionIcon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ 'admin.customer.index.delete'|trans }}"><i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a></div>
-                                                        </div>
+                                                            {% if Customer.Status.id == constant('Eccube\\Entity\\Master\\CustomerStatus::PROVISIONAL') %}
+                                                                <div class="col-auto text-center" data-toggle="tooltip" data-placement="top" title="{{ 'admin.customer.index.label.resend_registmail'|trans }}">
+                                                                    <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#discontinuance_cus_{{ Customer.id }}">
+                                                                        <i class="fa fa-send fa-lg text-secondary" aria-hidden="true"></i>
+                                                                    </a>
+                                                                    <div class="modal fade" id="discontinuance_cus_{{ Customer.id }}" tabindex="-1" role="dialog" aria-labelledby="discontinuance" aria-hidden="true">
+                                                                        <div class="modal-dialog" role="document">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    <h5 class="modal-title font-weight-bold">{{ 'admin.customer.index.label.resend_registmail'|trans }}</h5>
+                                                                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                                                        <span aria-hidden="true">×</span>
+                                                                                    </button>
+                                                                                </div>
+                                                                                <div class="modal-body text-left">
+                                                                                    <p class="text-left">{{ 'admin.customer.index.label.resend_registmail_content'|trans }}</p>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.customer.index.cancel'|trans }}</button>
+                                                                                    {# TODO: CSSの変更は別タスクでやります #}
+                                                                                    <a class="btn btn-ec-delete" href="{{ url('admin_customer_resend', {'id' : Customer.id}) }}" {{ csrf_token_for_anchor() }} data-method="get" data-confirm="false">
+                                                                                        {{ 'admin.customer.index.send'|trans }}
+                                                                                    </a>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            {% endif %}
+                                                            <div class="col-auto text-center" data-toggle="tooltip"
+                                                                 data-placement="top"
+                                                                 title="{{ 'admin.customer.index.delete'|trans }}">
+                                                                <a class="btn btn-ec-actionIcon" data-toggle="modal"
+                                                                   data-target="#discontinuance-{{ Customer.id }}"><i
+                                                                            class="fa fa-close fa-lg text-secondary"
+                                                                            aria-hidden="true"></i></a>
+                                                                <div class="modal fade"
+                                                                     id="discontinuance-{{ Customer.id }}" tabindex="-1"
+                                                                     role="dialog"
+                                                                     aria-labelledby="discontinuance"
+                                                                     aria-hidden="true">
+                                                                    <div class="modal-dialog" role="document">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title font-weight-bold">
+                                                                                    {{ 'admin.customer.delete.confirm.title'|trans }}</h5>
+                                                                                <button class="close" type="button"
+                                                                                        data-dismiss="modal"
+                                                                                        aria-label="Close"><span
+                                                                                            aria-hidden="true">×</span>
+                                                                                </button>
+                                                                            </div>
+                                                                            <div class="modal-body text-left">
+                                                                                <p class="text-left">
+                                                                                    {{ 'admin.customer.delete.confirm.message'|trans }}</p>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button class="btn btn-ec-sub"
+                                                                                        type="button"
+                                                                                        data-dismiss="modal">{{ 'admin.product.index.cancel'|trans }}
+                                                                                </button>
+                                                                                <a href="{{ url('admin_customer_delete', {'id' : Customer.id}) }}"
+                                                                                        class="btn btn-ec-delete"
+                                                                                        {{ csrf_token_for_anchor() }}
+                                                                                        data-method="delete"
+                                                                                        data-confirm="false">
+                                                                                    {{ 'admin.product.index.delete'|trans }}
+                                                                                </a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div><!-- /.justify-content-end -->
                                                     </td>
                                                 </tr>
                                             {% endfor %}
