@@ -12,9 +12,10 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
 
     public static $検索条件_プロダクト = ['id' => 'admin_search_product_id'];
     public static $検索ボタン = '#search_form .c-outsideBlock__contents button';
-
+    public static $詳細検索ボタン = '//*[@id="search_form"]/div[1]/div/div/div[2]/a/span';
     public static $検索結果_メッセージ = '#search_form > div.c-outsideBlock__contents.mb-5 > span';
     public static $検索結果_結果なしメッセージ = '.c-contentsArea .c-contentsArea__cols div.text-center.h5';
+    public static $検索結果_エラーメッセージ = '.c-contentsArea .c-contentsArea__cols div.text-center.h5';
     public static $検索結果_一覧 = "#page_admin_product > div > div.c-contentsArea > div.c-contentsArea__cols > div > div > form > div.card.rounded.border-0.mb-4 > div.card-body.p-0 > table > tbody";
     public static $一括削除エラー = ['id' => 'bulkErrors'];
 
@@ -58,6 +59,15 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    public function 詳細検索_ステータス($value)
+    {
+        $this->tester->click(self::$詳細検索ボタン);
+        $this->tester->wait(1);
+        $this->tester->checkOption(['id' => 'admin_search_product_status_' . $value]);
+        $this->tester->click(self::$検索ボタン);
+        $this->tester->see('商品マスター商品管理', '.c-pageTitle');
+        return $this;
+    }
     /**
      * 検索結果の指定した行の規格設定に遷移。
      * @param int $rowNum 検索結果の行番号(1から始まる)

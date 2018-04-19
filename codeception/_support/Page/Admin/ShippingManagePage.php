@@ -7,6 +7,8 @@ class ShippingManagePage extends AbstractAdminPageStyleGuide
 {
     public static $検索条件_受注ステータス = ['id' => 'admin_search_shipping_status'];
     public static $検索結果_メッセージ = '#search_form > div.c-outsideBlock__contents.mb-3 > span';
+    public static $検索結果_エラーメッセージ = '//*[@id="page_admin_shipping"]/div[1]/div[3]/div[3]/div/div[1]/div/div/div[1]';
+    public static $詳細検索ボタン = '//*[@id="search_form"]/div[1]/div/div/div[3]/a/span';
 
     /**
      * ShippingListPage constructor.
@@ -31,6 +33,15 @@ class ShippingManagePage extends AbstractAdminPageStyleGuide
     public function 検索($value = '')
     {
         $this->tester->fillField(['id' => 'admin_search_shipping_multi'], $value);
+        $this->tester->click('#search_form > div.c-outsideBlock__contents.mb-3 > button');
+        return $this;
+    }
+
+    public function 詳細検索_電話番号($value = '')
+    {
+        $this->tester->click(self::$詳細検索ボタン);
+        $this->tester->wait(1);
+        $this->tester->fillField(['id' => 'admin_search_shipping_tel'], $value);
         $this->tester->click('#search_form > div.c-outsideBlock__contents.mb-3 > button');
         return $this;
     }
