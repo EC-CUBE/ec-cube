@@ -70,7 +70,21 @@
             // メールプレビューを表示
             $('#sentUpdateModal').on('show.bs.modal', function(e) {
                 var eventTarget = $(e.relatedTarget);
-                updater = eventTarget.data('bulk-update') ? new BulkUpdate(eventTarget) : new SimpleUpdate(eventTarget);
+                var type = eventTarget.data('type');
+                switch (type) {
+                    case 'mail':
+                        updater = eventTarget.data('bulk-update') ? new BulkSendMail(eventTarget) : new SimpleSendMail(eventTarget);
+                        $('#notificationMail').attr('type', 'hidden');
+                        $('.notificationMail').hide();
+                        $('#viewEmail').removeClass('collapse').addClass('collapsed');;
+                        break;
+                    case 'update':
+                    default:
+                        updater = eventTarget.data('bulk-update') ? new BulkUpdate(eventTarget) : new SimpleUpdate(eventTarget);
+                        $('#notificationMail').attr('type', 'checkbox');
+                        $('.notificationMail').show();
+                        $('#viewEmail').removeClass('collapsed').addClass('collapse');
+                }
 
                 $.ajax(updater.getPreviewUrl()).done(function(res) {
                     $('#viewEmail > pre').text(res);
@@ -78,13 +92,23 @@
 
                 $('.modal-title', this).text(updater.modalTitle);
                 $('.modal-body > p', this).text(updater.modalMessage);
-                $('#bulkChange').attr('data-bulk-update', eventTarget.data('bulk-update'));
+                $('#bulkChange')
+                    .attr('data-bulk-update', eventTarget.data('bulk-update'))
+                    .text(updater.modalButton);
             });
 
             // 配送済みに更新
             $('#bulkChange').on('click', function(e) {
                 var eventTarget = $(e.currentTarget);
-                updater = eventTarget.data('bulk-update') ? new BulkUpdate(eventTarget) : new SimpleUpdate(eventTarget);
+                var type = eventTarget.data('type');
+                switch (type) {
+                    case 'mail':
+                        updater = eventTarget.data('bulk-update') ? new BulkSendMail(eventTarget) : new SimpleSendMail(eventTarget);
+                        break;
+                    case 'update':
+                    default:
+                        updater = eventTarget.data('bulk-update') ? new BulkUpdate(eventTarget) : new SimpleUpdate(eventTarget);
+                }
                 var modal = $('#sentUpdateModal');
 
                 $('.modal-body > p', modal).text("{{ 'admin.shipping.index.827'|trans }}");
@@ -137,9 +161,10 @@
         ConfirmationModal.prototype = {
             modalTitle: "{{ 'admin.shipping.index.829'|trans }}",
             modalMessage: "{{ 'admin.shipping.index.830'|trans }}",
+            modalButton: "{{ 'admin.shipping.index.816'|trans }}",
             getPreviewUrl: function() {
                 // TODO define to default url
-                return 'default url';
+                return $('input[data-preview-notify-mail-url]:checked').data('preview-notify-mail-url');
             },
             getTotalCount: function() {
                 return 1;
@@ -211,6 +236,73 @@
                         var url = $(this).data('mark-as-shipped-url');
                         return ConfirmationModal.prototype.getPromises.call(this, progress, url);
                     });
+                }
+            }
+        });
+
+        /*
+         * メール一括送信
+         */
+        function BulkSendMail() {
+            BulkUpdate.call(this);
+        }
+        BulkSendMail.prototype = Object.create(ConfirmationModal.prototype, {
+            constructor: {
+                configurable: true,
+                enumerable: true,
+                writable: true,
+                value: BulkUpdate
+            },
+            modalTitle: {
+                value: "{{ 'admin.shipping.index.832'|trans }}"
+            },
+            modalMessage: {
+                value: "{{ 'admin.shipping.index.833'|trans }}"
+            },
+            modalButton: {
+                value: "{{ 'admin.shipping.index.834'|trans }}"
+            },
+            getTotalCount: {
+                value: function() {
+                    return $('input[data-preview-notify-mail-url]:checked').length;
+                }
+            },
+            getPromises: {
+                value: function(progress) {
+                    return $('input[data-notify-mail-url]:checked').map(function() {
+                        var url = $(this).data('data-notify-mail-url');
+                        return BulkUpdate.prototype.getPromises.call(this, progress, url);
+                    });
+                }
+            }
+        });
+
+        /*
+         * 個別メール送信
+         */
+        function SimpleSendMail(relatedTarget) {
+            this.eventTarget = relatedTarget;
+        }
+        SimpleSendMail.prototype = Object.create(SimpleUpdate.prototype, {
+            constructor: {
+                configurable: true,
+                enumerable: true,
+                writable: true,
+                value: SimpleUpdate
+            },
+            modalTitle: {
+                value: "{{ 'admin.shipping.index.835'|trans }}"
+            },
+            modalMessage: {
+                value: "{{ 'admin.shipping.index.836'|trans }}"
+            },
+            modalButton: {
+                value: "{{ 'admin.shipping.index.834'|trans }}"
+            },
+            getPromises: {
+                value: function(progress) {
+                    var url = this.eventTarget.data('data-notify-mail-url');
+                    return SimpleUpdate.prototype.getPromises.call(this, progress, url);
                 }
             }
         });
@@ -364,8 +456,8 @@
                     <div class="col-6">
                         <div id="btn_bulk" class="d-none">
                             <label class="mr-2">{{ 'admin.shipping.index.803'|trans }}</label>
-                            <button class="btn btn-ec-regular mr-2" data-toggle="modal" data-target="#sentUpdateModal" data-bulk-update="true" type="button">{{ 'admin.shipping.index.824'|trans }}</button>
-                            <button class="btn btn-ec-regular mr-2" data-toggle="modal" data-target="#sentUpdateModal" data-bulk-update="true" type="button">{{ 'admin.shipping.index.805'|trans }}</button>
+                            <button class="btn btn-ec-regular mr-2" data-toggle="modal" data-target="#sentUpdateModal" data-type="mail" data-bulk-update="true" type="button">{{ 'admin.shipping.index.824'|trans }}</button>
+                            <button class="btn btn-ec-regular mr-2" data-toggle="modal" data-target="#sentUpdateModal" data-type="update" data-bulk-update="true" type="button">{{ 'admin.shipping.index.805'|trans }}</button>
                             <button type="button" class="btn btn-ec-delete" data-toggle="modal" data-target="#bulkDeleteModal">{{ 'admin.shipping.index.817'|trans }}</button>
                         </div>
                     </div>
@@ -452,9 +544,10 @@
                                 <td class="align-middle"></td>
                                 <td class="align-middle pr-3">
                                     <div class="row text-center">
-                                        {# TODO メール送信ボタン #}
-                                        <div class="col" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ 'admin.shipping.index.824'|trans }}"><a class="btn btn-ec-actionIcon" href="/shipment/mail/"><i class="fa fa-send fa-lg text-secondary" aria-hidden="true"></i></a></div>
-                                        <div class="col" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ 'admin.shipping.index.825'|trans }}"><a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#sentUpdateModal"
+                                        <div class="col" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ 'admin.shipping.index.824'|trans }}"><a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#sentUpdateModal" data-type="mail"
+                                                                                                                                                                             data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: Shipping.id}) }}"
+                                                                                                                                                                             data-notify-mail-url="{{ url('admin_shipping_mark_as_shipped', { id: Shipping.id}) }}"><i class="fa fa-send fa-lg text-secondary" aria-hidden="true"></i></a></div>
+                                        <div class="col" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ 'admin.shipping.index.825'|trans }}"><a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#sentUpdateModal" data-type="update"
                                                                                                                                                                              data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: Shipping.id}) }}"
                                                                                                                                                                              data-mark-as-shipped-url="{{ url('admin_shipping_mark_as_shipped', { id: Shipping.id}) }}"><i class="fa fa-check fa-lg text-secondary" aria-hidden="true"></i></a></div>
                                     </div>
@@ -493,10 +586,11 @@
                         <p class="mb-4"></p>
                         <ul id="bulkErrors"></ul>
                         <div id="bulk-options">
-                            <div class="font-weight-bold mb-2">{{ 'admin.shipping.index.812'|trans }}</div>
-                            <div class="form-check form-check-inline">
-                                <label class="form-check-label">
-                                    <input class="form-check-input" type="checkbox" id="notificationMail" checked=""> {{ 'admin.shipping.index.813'|trans }}
+                                <div class="font-weight-bold mb-2 notificationMail">{{ 'admin.shipping.index.812'|trans }}</div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="notificationMail" checked="">
+                                    <label class="form-check-label notificationMail">
+                                    {{ 'admin.shipping.index.813'|trans }}
                                 </label>
                             </div>
                             <div>
