@@ -545,7 +545,7 @@ class EA03ProductCest
         $I->seeElement('body > div > div.c-contentsArea > div.c-contentsArea__cols > div.c-contentsArea__primaryCol > div > div > div > div > ul > li:nth-child(2) > form.mode-edit');
 
         $CategoryPage->一覧_インライン編集_カテゴリ名(2, 'test category11')
-            ->一覧_インライン編集_提出する(2);
+            ->一覧_インライン編集_決定(2);
 
         $I->see('カテゴリを保存しました。', CategoryManagePage::$登録完了メッセージ);
 

@@ -174,7 +174,7 @@ class CategoryController extends AbstractController
                         $request
                     );
 
-                    $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_TAG_INDEX_COMPLETE, $event);
+                    $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CATEGORY_INDEX_COMPLETE, $event);
 
                     $this->addSuccess('admin.category.save.complete', 'admin');
 

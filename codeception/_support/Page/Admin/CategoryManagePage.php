@@ -58,7 +58,7 @@ class CategoryManagePage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
-    public function 一覧_インライン編集_提出する($rowNum)
+    public function 一覧_インライン編集_決定($rowNum)
     {
         $this->tester->click('body > div > div.c-contentsArea > div.c-contentsArea__cols > div.c-contentsArea__primaryCol > div > div > div > div > ul > li:nth-child('.$rowNum.') > form.mode-edit button[type="submit"]');
         return $this;
