@@ -132,60 +132,59 @@ class EA06ContentsManagementCest
             ->登録();
         $I->see('登録が完了しました。', PageEditPage::$登録完了メッセージ);
 
-        // TODO : implement later
-//        $I->amOnPage('/user_data/'.$page);
-//        $I->see($page, 'body');
-//
-//        /* 編集 */
-//        PageManagePage::go($I)->ページ編集($page);
-//        PageEditPage::at($I)
-//            ->入力_内容("{% extends 'default_frame.twig' %}")
-//            ->登録();
-//        $I->see('登録が完了しました。', PageEditPage::$登録完了メッセージ);
-//
-//        $I->amOnPage('/user_data/'.$page);
-//        $config = Fixtures::get('config');
-//        $I->seeElement('div.ec-layoutRole__footer');
-//
-//        /* レイアウト編集 */
-//        LayoutManagePage::go($I)->レイアウト編集('下層ページ用レイアウト');
-//        LayoutEditPage::at($I)
-//            ->ブロックを移動('新着情報', '#position_4')
-//            ->登録();
-//
-//        $I->see('登録が完了しました。', LayoutEditPage::$登録完了メッセージ);
-//        $I->amOnPage('/user_data/'.$page);
-//        $I->see('新着情報', '.ec-news');
-//
-//        LayoutManagePage::go($I)->レイアウト編集('下層ページ用レイアウト');
-//        LayoutEditPage::at($I)
-//            ->ブロックを移動('カゴの中', '#position_2')
-//            ->登録();
-//        LayoutEditPage::at($I)
-//            ->ブロックを移動('ログインナビ', '#position_2')
-//            ->登録();
-//        LayoutEditPage::at($I)
-//            ->ブロックを移動('商品検索', '#position_2')
-//            ->コンテキストメニューで上に移動('商品検索')
-//            ->登録();
-//        LayoutEditPage::at($I)
-//            ->コンテキストメニューで下に移動('商品検索')
-//            ->登録();
-//        LayoutEditPage::at($I)
-//            ->コンテキストメニューでセクションに移動('商品検索')
-//            ->登録();
-//        LayoutEditPage::at($I)
-//            ->コンテキストメニューでコードプレビュー(
-//                '商品検索',
-//                ['xpath' => "//*[@id='block-source-code']//div[contains(text(), 'This file is part of EC-CUBE')]"]
-//            );
-//
-//        $I->getScenario()->incomplete('未実装：プレビューは未実装');
-//
-//        LayoutManagePage::go($I)->レイアウト編集('下層ページ用レイアウト');
-//        LayoutEditPage::at($I)
-//            ->ブロックを移動('新着情報', '#position_0')
-//            ->プレビュー();
+        $I->amOnPage('/user_data/'.$page);
+        $I->see($page, 'body');
+
+        /* 編集 */
+        PageManagePage::go($I)->ページ編集($page);
+        PageEditPage::at($I)
+            ->入力_内容("{% extends 'default_frame.twig' %}")
+            ->登録();
+        $I->see('登録が完了しました。', PageEditPage::$登録完了メッセージ);
+
+        $I->amOnPage('/user_data/'.$page);
+        $config = Fixtures::get('config');
+        $I->seeElement('div.ec-layoutRole__footer');
+
+        /* レイアウト編集 */
+        LayoutManagePage::go($I)->レイアウト編集('下層ページ用レイアウト');
+        LayoutEditPage::at($I)
+            ->ブロックを移動('新着情報', '#position_4')
+            ->登録();
+
+        $I->see('登録が完了しました。', LayoutEditPage::$登録完了メッセージ);
+        $I->amOnPage('/user_data/'.$page);
+        $I->see('新着情報', '.ec-news');
+
+        LayoutManagePage::go($I)->レイアウト編集('下層ページ用レイアウト');
+        LayoutEditPage::at($I)
+            ->ブロックを移動('カゴの中', '#position_2')
+            ->登録();
+        LayoutEditPage::at($I)
+            ->ブロックを移動('ログインナビ', '#position_2')
+            ->登録();
+        LayoutEditPage::at($I)
+            ->ブロックを移動('商品検索', '#position_2')
+            ->コンテキストメニューで上に移動('商品検索')
+            ->登録();
+        LayoutEditPage::at($I)
+            ->コンテキストメニューで下に移動('商品検索')
+            ->登録();
+        LayoutEditPage::at($I)
+            ->コンテキストメニューでセクションに移動('商品検索')
+            ->登録();
+        LayoutEditPage::at($I)
+            ->コンテキストメニューでコードプレビュー(
+                '商品検索',
+                ['xpath' => "//*[@id='block-source-code']//div[contains(text(), 'This file is part of EC-CUBE')]"]
+            );
+
+        $I->getScenario()->incomplete('未実装：プレビューは未実装');
+
+        LayoutManagePage::go($I)->レイアウト編集('下層ページ用レイアウト');
+        LayoutEditPage::at($I)
+            ->ブロックを移動('新着情報', '#position_0')
+            ->プレビュー();
 
         $I->switchToNewWindow();
 

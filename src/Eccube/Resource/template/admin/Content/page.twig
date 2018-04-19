@@ -78,8 +78,6 @@
                                     </td>
                                     <td class="align-middle pr-3">
                                         <div class="row justify-content-end">
-                                            {# TODO 削除はモーダル化が必要かどうか確認 #}
-                                            {# TODO 削除出来ないページの表示 #}
                                             <div class="col-auto text-center" data-toggle="tooltip" data-placement="top" title="{{ 'admin.content.page.delete'|trans }}">
                                                 {% if Page.edit_type == constant('Eccube\\Entity\\Page::EDIT_TYPE_USER') %}
                                                     <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#delete_{{ Page.id }}">
