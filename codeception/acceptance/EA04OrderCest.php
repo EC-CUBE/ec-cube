@@ -299,4 +299,24 @@ class EA04OrderCest
         OrderManagePage::go($I)->受注ステータス検索(OrderStatus::DELIVERED);
         $I->see('検索結果：'.(count($DeliveredOrders) + count($NewOrders)).'件が該当しました', OrderManagePage::$検索結果_メッセージ);
     }
+
+    public function order_商品を削除(\AcceptanceTester $I)
+    {
+        $I->wantTo('EA0405-UC01-T03 Order 商品を削除');
+
+        $OrderRegisterPage = OrderEditPage::goEdit($I);
+
+        $productName = $OrderRegisterPage->製品名を取得(1);
+        // delete
+        $OrderRegisterPage->商品を削除(1)
+            ->acceptDeleteModal(1);
+        $I->wait(5);
+
+        // before submit
+        $I->dontSee($productName, "#table-form-field");
+
+        // after submit
+        $OrderRegisterPage->受注情報登録();
+        $I->dontSee($productName, "#table-form-field");
+    }
 }

@@ -26,6 +26,13 @@ class OrderEditPage extends AbstractAdminPageStyleGuide
         return $page;
     }
 
+    public static function goEdit($I, $id = 1)
+    {
+        $page = new self($I);
+        $page->goPage("/order/{$id}/edit", '受注登録受注管理');
+        return $page;
+    }
+
     public static function at($I)
     {
         $page = new self($I);
@@ -147,6 +154,24 @@ class OrderEditPage extends AbstractAdminPageStyleGuide
     {
         $this->tester->click('#form1 > div.c-conversionArea > div > div > div:nth-child(2) > div > div > button');
         $this->tester->wait(5);
+        return $this;
+    }
+
+    public function 製品名を取得($row)
+    {
+        return $this->tester->grabTextFrom("#table-form-field > tbody > tr:nth-child({$row}) > td.align-middle.w-25.pl-3");
+    }
+
+    public function 商品を削除($row)
+    {
+        $this->tester->click("#table-form-field > tbody > tr:nth-child({$row}) > td.align-middle.text-right.pr-3 > div > div > a");
+        $this->tester->wait(2);
+        return $this;
+    }
+
+    public function acceptDeleteModal($row)
+    {
+        $this->tester->click("#table-form-field > tbody > tr:nth-child({$row}) > td.align-middle.text-right.pr-3 div.modal a.delete");
         return $this;
     }
 }
