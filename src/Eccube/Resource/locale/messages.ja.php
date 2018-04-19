@@ -524,6 +524,8 @@ return [
     'admin.common.label.tax' => '税率',
     'admin.common.label.taxinc' => '税込',
     'admin.common.label.subtotal' => '小計',
+    'admin.common.label.tax_status' => '課税区分',
+    'admin.common.label.shipping_status' => '出荷状況',
     'admin.common.label.discount' => '値引き',
     'admin.common.label.delivery_fee' => '送料',
     'admin.common.label.charge' => '手数料',
@@ -542,7 +544,6 @@ return [
     'admin.common.label.cancel' => 'キャンセル',
     'admin.common.label.class_name' => '管理名',
     'admin.common.label.display_name' => '規格名',
-    'admin.common.pagination.item' => '件',
 
     'admin.install.warning' => 'installphpPath は、インストール完了後にファイルを削除してください',
     'admin.register.complete' => '登録が完了しました。',

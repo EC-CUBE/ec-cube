@@ -131,7 +131,14 @@ class OrderItemType extends AbstractType
                     )),
                 ),
             ))
-            ->add('product_name', HiddenType::class)
+            ->add('product_name', TextType::class, array(
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                    new Assert\Length(array(
+                        'max' => $this->eccubeConfig['eccube_mtext_len'],
+                    )),
+                ),
+            ))
             ->add('product_code', HiddenType::class)
             ->add('class_name1', HiddenType::class)
             ->add('class_name2', HiddenType::class)
