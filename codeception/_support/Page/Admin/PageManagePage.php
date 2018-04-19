@@ -33,7 +33,12 @@ class PageManagePage extends AbstractAdminPageStyleGuide
 
     public function 削除($pageName)
     {
-        $this->tester->click(['xpath' => "//*[@id='sortable_list_box__list']//div[@class='item_box tr']/div[@class='item_pattern td']/a[contains(text(),'${pageName}')]/parent::node()/parent::node()/div[@class='icon_edit td']/div/a"]);
-        $this->tester->click(['xpath' => "//*[@id='sortable_list_box__list']//div[@class='item_box tr']/div[@class='item_pattern td']/a[contains(text(),'${pageName}')]/parent::node()/parent::node()/div[@class='icon_edit td']/div/ul/li[2]/a"]);
+        $this->tester->click(['xpath'=> "//*[@id='list_page_tbl']/tbody/tr/td/a[contains(text(), '${pageName}')]/parent::node()/parent::node()/td[@class='align-middle pr-3']/div/div/a"]);
+        $this->accept_削除($pageName);
+    }
+
+    public function accept_削除($pageName) {
+        $this->tester->waitForElementVisible(['xpath' => "//*[@id='list_page_tbl']/tbody/tr/td/a[contains(text(), '${pageName}')]/parent::node()/parent::node()/td[@class='align-middle pr-3']/div/div/div[contains(@class, 'modal')]"]);
+        $this->tester->click(['xpath' => "//*[@id='list_page_tbl']/tbody/tr/td/a[contains(text(), '${pageName}')]/parent::node()/parent::node()/td[@class='align-middle pr-3']/div/div/div[contains(@class, 'modal')]/div/div/div/a[contains(@class, 'btn-ec-delete')]"]);
     }
 }
