@@ -55,8 +55,8 @@ class EA03ProductCest
         $em = Fixtures::get('entityManager');
         $ProductStatus = new \Eccube\Entity\Master\ProductStatus();
         $ProductStatus->setName('ダミー');
-        $ProductStatus->setSortNo(99999);
-        $ProductStatus->setId(99999);
+        $ProductStatus->setSortNo(999);
+        $ProductStatus->setId(999);
         $em->persist($ProductStatus);
         $em->flush();
 
@@ -68,7 +68,7 @@ class EA03ProductCest
         $em->flush();
 
         // 存在しないステータスで検索するため, `有効な値ではありません`のバリデーションエラーが発生するはず
-        $page->詳細検索_ステータス(99999);
+        $page->詳細検索_ステータス(999);
         $I->see('検索条件に誤りがあります。', ProductManagePage::$検索結果_エラーメッセージ);
     }
 
