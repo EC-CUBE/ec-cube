@@ -62,6 +62,7 @@ class PaymentRegisterType extends AbstractType
                 'precision' => 0,
                 'scale' => 0,
                 'grouping' => true,
+                'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
                         'max' => $app['config']['int_len'],

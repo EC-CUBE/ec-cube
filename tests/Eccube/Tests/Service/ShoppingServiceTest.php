@@ -4,6 +4,7 @@ namespace Eccube\Tests\Service;
 
 use Eccube\Application;
 use Eccube\Common\Constant;
+use Eccube\Entity\Customer;
 use Eccube\Entity\Master\Taxrule;
 use Eccube\Entity\Shipping;
 use Eccube\Exception\ShoppingException;
@@ -130,6 +131,34 @@ class ShoppingServiceTest extends AbstractServiceTestCase
         $this->expected = $NonMember->getPref()->getId();
         $this->actual = $Customer->getPref()->getId();
         $this->verify('都道府県IDが一致するか');
+
+        $this->expected = $NonMember->getName01();
+        $this->actual = $Customer->getName01();
+        $this->verify('name01 が一致するか');
+    }
+
+    public function testSetNonMember()
+    {
+        $NonMember = $this->createNonMember();
+        $CopyNonMember = new Customer();
+        $CopyNonMember->copyProperties($NonMember);
+        $this->app['eccube.service.shopping']->setNonMember('eccube.front.shopping.nonmember', $CopyNonMember);
+
+        $Customer = $this->app['eccube.service.shopping']->getNonMember('eccube.front.shopping.nonmember');
+
+        $this->expected = $NonMember->getEmail();
+        $this->actual = $Customer->getEmail();
+        $this->verify('保存したメールアドレスが一致するか');
+
+        $this->expected = $NonMember->getPref()->getId();
+        $this->actual = $Customer->getPref()->getId();
+        $this->verify('保存した都道府県IDが一致するか');
+
+        $this->expected = $NonMember->getName01();
+        $this->actual = $Customer->getName01();
+        $this->verify('保存した name01 が一致するか');
+
+        $this->assertNotSame($Customer, $NonMember);
     }
 
     public function testGetDeliveries()

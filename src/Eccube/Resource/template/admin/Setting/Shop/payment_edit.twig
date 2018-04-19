@@ -66,9 +66,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             + '</svg>'
             + '</a>'
             + '</li>';
-    if ($("#{{ form.payment_image.vars.id }}").val() != "") {
+    var payment_image = $("#{{ form.payment_image.vars.id }}").val();
+    if (payment_image != "") {
         var filename = $("#{{ form.payment_image.vars.id }}").val();
-        var path = '{{ app.config.image_save_urlpath }}/' + filename;
+        if(payment_image == "{{ oldPaymentImage }}") {
+            var path = '{{ app.config.image_save_urlpath }}/' + filename;
+        } else {
+            var path = '{{ app.config.image_temp_urlpath }}/' + filename;
+        }
         var $img = $(proto_img.replace(/__path__/g, path));
         $("#{{ form.payment_image.vars.id }}").val(filename);
 

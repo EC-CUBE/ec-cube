@@ -56,29 +56,27 @@ class TradelawController extends AbstractController
 
         $form = $builder->getForm();
 
-        if ('POST' === $app['request']->getMethod()) {
-            $form->handleRequest($app['request']);
-            if ($form->isValid()) {
-                $Help = $form->getData();
-                $app['orm.em']->persist($Help);
+        $form->handleRequest($request);
 
-                $app['orm.em']->flush();
+        if ($form->isSubmitted() && $form->isValid()) {
 
-                $event = new EventArgs(
-                    array(
-                        'form' => $form,
-                        'Help' => $Help,
-                    ),
-                    $request
-                );
-                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_TRADE_LAW_INDEX_COMPLETE, $event);
+            $Help = $form->getData();
+            $app['orm.em']->persist($Help);
 
-                $app->addSuccess('admin.register.complete', 'admin');
+            $app['orm.em']->flush();
 
-                return $app->redirect($app->url('admin_setting_shop_tradelaw'));
-            } else {
-                $app->addError('admin.register.failed', 'admin');
-            }
+            $event = new EventArgs(
+                array(
+                    'form' => $form,
+                    'Help' => $Help,
+                ),
+                $request
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_TRADE_LAW_INDEX_COMPLETE, $event);
+
+            $app->addSuccess('admin.register.complete', 'admin');
+
+            return $app->redirect($app->url('admin_setting_shop_tradelaw'));
         }
 
         return $app->render('Setting/Shop/tradelaw.twig', array(

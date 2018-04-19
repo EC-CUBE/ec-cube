@@ -22,7 +22,7 @@
           <conditions>
             <add input="{REQUEST_FILENAME}" matchType="IsFile" ignoreCase="false" negate="true" />
             <add input="{REQUEST_FILENAME}" matchType="IsDirectory" ignoreCase="false" negate="true" />
-            <add input="{URL}" pattern="^(.*)\.(gif|png|jpe?g|css|ico|js|svg)$" ignoreCase="false" negate="true" />
+            <add input="{URL}" pattern="^(.*)\.(gif|png|jpe?g|css|ico|js|svg|map)$" ignoreCase="false" negate="true" />
           </conditions>
           <action type="Rewrite" url="index.php/{R:1}" appendQueryString="true" />
         </rule>
@@ -31,6 +31,12 @@
     
     <security>
       <requestFiltering>
+        <hiddenSegments>
+          <add segment="app"/>
+          <add segment="src"/>
+          <add segment="vendor"/>
+          <add segment="tests"/>
+        </hiddenSegments>
         <denyUrlSequences>
           <add sequence="composer" />
           <add sequence="autoload" />

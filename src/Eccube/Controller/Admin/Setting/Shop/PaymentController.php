@@ -76,6 +76,8 @@ class PaymentController extends AbstractController
 
         $form = $builder->getForm();
 
+        // 既に画像保存されてる場合は取得する
+        $oldPaymentImage = $Payment->getPaymentImage();
         $form->setData($Payment);
 
         // 登録ボタン押下
@@ -123,6 +125,7 @@ class PaymentController extends AbstractController
             'form' => $form->createView(),
             'payment_id' => $id,
             'Payment' => $Payment,
+            'oldPaymentImage' => $oldPaymentImage,
         ));
     }
 

@@ -24,14 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% set body_class = 'cart_page' %}
 
 {% block javascript %}
-<script src="//ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
-<script>
-    $(function() {
-        $('#zip-search').click(function() {
-            AjaxZip3.zip2addr('nonmember[zip][zip01]', 'nonmember[zip][zip02]', 'nonmember[address][pref]', 'nonmember[address][addr01]');
-        });
-    });
-</script>
+    <script src="//yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
 {% endblock javascript %}
 
 {% block main %}
@@ -47,7 +40,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <li><span class="flow_number">4</span><br>完了</li>
                 </ul>
             </div>
-            <form method="post" action="{{ url('shopping_nonmember') }}">
+            <form method="post" action="{{ url('shopping_nonmember') }}" class="h-adr">
+                <span class="p-country-name" style="display:none;">Japan</span>
                 {{ form_widget(form._token) }}
                 <div id="detail_box__body" class="dl_table">
                     <dl id="detail_box__name">

@@ -40,6 +40,7 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
 use Eccube\Exception\ShoppingException;
+use Eccube\Util\MailUtil;
 use Eccube\Util\Str;
 
 
@@ -118,10 +119,26 @@ class ShoppingService
         }
 
         $Customer = $nonMember['customer'];
+        $Customer->setPropertiesFromArray($nonMember, array('customer', 'id', 'pref', 'email', 'password', 'salt'));
         $Customer->setPref($this->app['eccube.repository.master.pref']->find($nonMember['pref']));
-
         return $Customer;
+    }
 
+    /**
+     * 非会員情報をセッションに設定する
+     *
+     * @param $sesisonKey
+     * @param Customer $Customer
+     * @return ShoppingService
+     */
+    public function setNonMember($sessionKey, Customer $Customer)
+    {
+        $nonMember = $Customer->toArray(array('id', 'email', 'password', 'salt'));
+        $nonMember['pref'] = $Customer->getPref()->getId();
+        $nonMember['customer'] = $Customer; // Customer::serialize() で対象となっているプロパティのみ保存される
+        $this->app['session']->set($sessionKey, $nonMember);
+
+        return $this;
     }
 
     /**
@@ -1265,6 +1282,8 @@ class ShoppingService
 
         // メール送信
         $message = $this->app['eccube.service.mail']->sendOrderMail($Order);
+
+        MailUtil::convertMessage($this->app, $message);
 
         // 送信履歴を保存.
         $MailTemplate = $this->app['eccube.repository.mail_template']->find(1);

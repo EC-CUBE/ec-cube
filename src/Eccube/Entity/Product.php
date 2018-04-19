@@ -24,8 +24,8 @@
 
 namespace Eccube\Entity;
 
-use Eccube\Common\Constant;
 use Doctrine\Common\Collections\ArrayCollection;
+use Eccube\Common\Constant;
 use Eccube\Util\EntityUtil;
 
 /**

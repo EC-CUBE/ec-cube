@@ -24,7 +24,6 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Eccube\Common\Constant;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -33,7 +32,7 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 /**
  * Customer
  */
-class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
+class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface, \Serializable
 {
     /**
      * @var integer
@@ -1062,7 +1061,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Add Orders
      *
-     * @param  \Eccube\Entity\Orders $order
+     * @param  \Eccube\Entity\Order $order
      * @return Customer
      */
     public function addOrder(\Eccube\Entity\Order $order)
@@ -1075,7 +1074,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Remove Orders
      *
-     * @param \Eccube\Entity\Orders $order
+     * @param \Eccube\Entity\Order $order
      */
     public function removeOrder(\Eccube\Entity\Order $order)
     {
@@ -1238,5 +1237,42 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
         $this->CustomerAddresses[] = $customerAddresses;
 
         return $this;
+    }
+
+    /**
+     * String representation of object
+     * @link http://php.net/manual/en/serializable.serialize.php
+     * @return string the string representation of the object or null
+     * @since 5.1.0
+     */
+    public function serialize()
+    {
+        // see https://symfony.com/doc/2.7/security/entity_provider.html#create-your-user-entity
+        // CustomerRepository::loadUserByUsername() で Status をチェックしているため、ここでは不要
+        return serialize(array(
+            $this->id,
+            $this->email,
+            $this->password,
+            $this->salt,
+        ));
+    }
+
+    /**
+     * Constructs the object
+     * @link http://php.net/manual/en/serializable.unserialize.php
+     * @param string $serialized <p>
+     * The string representation of the object.
+     * </p>
+     * @return void
+     * @since 5.1.0
+     */
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->email,
+            $this->password,
+            $this->salt,
+            ) = unserialize($serialized);
     }
 }

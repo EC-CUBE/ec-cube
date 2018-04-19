@@ -24,14 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% set body_class = 'registration_page' %}
 
 {% block javascript %}
-<script src="//ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
-<script>
-    $(function() {
-        $('#zip-search').click(function() {
-            AjaxZip3.zip2addr('entry[zip][zip01]', 'entry[zip][zip02]', 'entry[address][pref]', 'entry[address][addr01]');
-        });
-    });
-</script>
+    <script src="//yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
 {% endblock javascript %}
 
 {% block main %}
@@ -39,7 +32,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 <div id="top_wrap" class="container-fluid">
     <div id="top_box" class="row">
         <div id="top_box__body" class="col-md-10 col-md-offset-1">
-            <form method="post" action="{{ url('entry') }}">
+            <form method="post" action="{{ url('entry') }}" class="h-adr">
+                <span class="p-country-name" style="display:none;">Japan</span>
                 {{ form_widget(form._token) }}
                 <div id="top_box__body_inner" class="dl_table">
                     <dl id="top_box__name">

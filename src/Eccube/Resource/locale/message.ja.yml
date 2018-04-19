@@ -74,6 +74,7 @@ shopping.delivery.not.producttype: |-
 
 shopping.total.price: 合計金額が不正です。(¥ totalPrice)
 front.shopping.order.error: 購入処理でエラーが発生しました。
+front.shopping.payment.error: お支払方法が異なるためこの配送方法は選択できません。
 front.shopping.stock.error: 選択された商品の在庫が不足しております。該当商品をカートから削除しました。
 front.shopping.system.error: 購入処理でシステムエラーが発生しました。大変お手数ですが、サイト管理者までご連絡ください。
 
@@ -87,6 +88,8 @@ admin.delete.warning: 既に削除されています。
 admin.rank.move.complete: ランクの移動が完了しました。
 admin.rank.up.error: ランクを上へ移動できませんでした。
 admin.rank.down.error: ランクを下へ移動できませんでした。
+admin.create.complete: 作成しました。
+admin.save.complete: 保存しました。
 
 admin.order.save.complete: 受注情報を保存しました。
 admin.order.delete.complete: 受注情報を削除しました。

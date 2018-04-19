@@ -22,18 +22,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% extends 'default_frame.twig' %}
 
 {% block javascript %}
-<script src="//ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
-<script>
-    $(function() {
-        $('#zip-search').click(function() {
-            AjaxZip3.zip2addr('contact[zip][zip01]', 'contact[zip][zip02]', 'contact[address][pref]', 'contact[address][addr01]');
-        });
-    });
-</script>
+    <script src="//yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
 {% endblock javascript %}
 
 {% block main %}
-
 <div id="contents" class="main_only">
     <div class="container-fluid inner no-padding">
         <div id="main">
@@ -45,7 +37,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <p>内容によっては回答をさしあげるのにお時間をいただくこともございます。<br/>
                             また、休業日は翌営業日以降の対応となりますのでご了承ください。</p>
 
-                        <form name="form1" id="form1" method="post" action="{{ url('contact') }}">
+                        <form name="form1" id="form1" method="post" action="{{ url('contact') }}" class="h-adr">
+                            <span class="p-country-name" style="display:none;">Japan</span>
                             {{ form_widget(form._token) }}
                             <div id="top_box__body_inner" class="dl_table">
                                 <dl id="top_box__name">

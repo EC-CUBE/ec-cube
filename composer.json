@@ -58,7 +58,7 @@
         "composer/ca-bundle": "^1.0",
         "ext-mbstring": "*",
         "jbinfo/mobile-detect-service-provider": "^1.1",
-        "twig/twig": "1.34.0"
+        "doctrine/data-fixtures": "^1.1"
     },
     "require-dev": {
         "phpunit/phpunit": "4.8.*",

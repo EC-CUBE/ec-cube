@@ -23,8 +23,6 @@
 
 namespace Eccube\Tests\Web\Admin\Order;
 
-use Eccube\Entity\Order;
-
 class EditControllerTest extends AbstractEditControllerTestCase
 {
     protected $Customer;
@@ -97,6 +95,26 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->verify();
         $this->expected = 1;
         $this->actual = $EditedOrder->getCustomer()->getBuyTimes();
+        $this->verify();
+    }
+
+    public function testNotUpdateLastBuyDate()
+    {
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrder($Customer);
+        $formData = $this->createFormData($Customer, $this->Product);
+        $this->client->request(
+            'POST',
+            $this->app->url('admin_order_edit', array('id' => $Order->getId())),
+            array(
+                'order' => $formData,
+                'mode' => 'register'
+            )
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_order_edit', array('id' => $Order->getId()))));
+        $EditedCustomer = $this->app['eccube.repository.customer']->find($Customer->getId());
+        $this->expected = $Customer->getLastBuyDate();
+        $this->actual = $EditedCustomer->getLastBuyDate();
         $this->verify();
     }
 

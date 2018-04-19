@@ -5,8 +5,22 @@
     "repository": "https://github.com/EC-CUBE/ec-cube",
     "keywords": ["php", "ec", "e-commerce", "ec-cube"],
     "addons": [
-        "heroku-postgresql"
+        {
+            "plan": "heroku-postgresql",
+            "options": {
+              "version": "9.6"
+            }
+        }
     ],
+    "env": {
+        "ADMIN_USER": {
+            "description": "The login id of admin user.",
+            "value": "admin"
+        },
+        "ADMIN_PASS": {
+            "description": "The password of admin user."
+        }
+    },
     "buildpacks": [
         {
             "url": "heroku/php"

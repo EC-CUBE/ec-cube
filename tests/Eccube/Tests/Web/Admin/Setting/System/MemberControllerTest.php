@@ -66,10 +66,6 @@ class MemberControllerTest extends AbstractAdminWebTestCase
             $this->app->url('admin_setting_system_member_edit', array('id' => $test_member_id))
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-
-        // after
-        $this->app['orm.em']->remove($TestMember);
-        $this->app['orm.em']->flush();
     }
 
     public function testRoutingAdminSettingSystemMemberDelete()
@@ -90,10 +86,6 @@ class MemberControllerTest extends AbstractAdminWebTestCase
             $this->app->url('admin_setting_system_member_delete', array('id' => $test_member_id))
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
-
-        // after
-        $this->app['orm.em']->remove($TestMember);
-        $this->app['orm.em']->flush();
     }
 
     public function testRoutingAdminSettingSystemMemberUp()
@@ -114,10 +106,6 @@ class MemberControllerTest extends AbstractAdminWebTestCase
             $this->app->url('admin_setting_system_member_up', array('id' => $test_member_id))
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
-
-        // after
-        //$this->app['orm.em']->remove($TestMember);
-        //$this->app['orm.em']->flush();
     }
 
     public function testRoutingAdminSettingSystemMemberDown()
@@ -138,10 +126,6 @@ class MemberControllerTest extends AbstractAdminWebTestCase
             $this->app->url('admin_setting_system_member_down', array('id' => $test_member_id))
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
-
-        // after
-        // $this->app['orm.em']->remove($TestMember);
-        // $this->app['orm.em']->flush();
     }
 
     /**

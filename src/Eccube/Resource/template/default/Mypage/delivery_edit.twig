@@ -26,14 +26,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% set body_class = 'mypage' %}
 
 {% block javascript %}
-<script src="//ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
-<script>
-$(function() {
-    $('#zip-search').click(function() {
-        AjaxZip3.zip2addr('customer_address[zip][zip01]', 'customer_address[zip][zip02]', 'customer_address[address][pref]', 'customer_address[address][addr01]');
-    });
-});
-</script>
+    <script src="//yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
 {% endblock javascript %}
 
 {% block main %}
@@ -44,7 +37,8 @@ $(function() {
 
         <div id="detail_box" class="row">
             <div id="detail_box__body" class="col-sm-10 col-sm-offset-1">
-                <form role="form" action="" method="post">
+                <form role="form" action="" method="post" class="h-adr">
+                    <span class="p-country-name" style="display:none;">Japan</span>
                     {{ form_widget(form._token) }}
                     <div id="detail_box__body_inner" class="dl_table">
 

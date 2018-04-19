@@ -2,7 +2,6 @@
 
 namespace Eccube\Tests\Repository;
 
-use Eccube\Application;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Tests\EccubeTestCase;
 

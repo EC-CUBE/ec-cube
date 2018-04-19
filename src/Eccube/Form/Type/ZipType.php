@@ -91,7 +91,7 @@ class ZipType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'options' => array('constraints' => array()),
+            'options' => array('constraints' => array(), 'attr' => array('class' => 'p-postal-code')),
             'zip01_options' => array(
                 'constraints' => array(
                     new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),

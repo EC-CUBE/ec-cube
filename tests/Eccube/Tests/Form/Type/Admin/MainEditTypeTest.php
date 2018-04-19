@@ -252,7 +252,7 @@ class MainEditTestType extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
-    
+
     public function testValidMetaTags_Blank()
     {
         $this->formData['meta_tags'] = '';
@@ -260,11 +260,17 @@ class MainEditTestType extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInValidMetaTags_FreeLength()
+    public function testValidMetaTags_FreeLength()
     {
         $this->formData['meta_tags'] = '<meta name="meta_tags_test" content="test" />';
         $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testInValidMetaTags_MaxLength()
+    {
+        $this->formData['meta_tags'] = str_repeat('1', $this->app['config']['lltext_len'] + 1);
+        $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
-    
 }

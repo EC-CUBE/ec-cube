@@ -135,7 +135,7 @@ class Str
     public static function characterEncoding($value, $encoding = array('UTF-8', 'SJIS', 'EUC-JP', 'ASCII', 'JIS', 'sjis-win'))
     {
         foreach ($encoding as $encode) {
-            if (mb_convert_encoding($value, $encode, $encode) == $value) {
+            if (mb_check_encoding($value, $encode)) {
                 return $encode;
             }
         }

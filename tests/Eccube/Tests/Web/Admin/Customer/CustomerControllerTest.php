@@ -2,8 +2,8 @@
 
 namespace Eccube\Tests\Web\Admin\Customer;
 
-use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Eccube\Entity\Master\CsvType;
+use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 /**
  * Class CustomerControllerTest

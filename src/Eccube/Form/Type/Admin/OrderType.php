@@ -85,6 +85,7 @@ class OrderType extends AbstractType
                     'constraints' => array(
                         new Assert\NotBlank(),
                     ),
+                    'attr' => array('class' => 'p-postal-code'),
                 ),
             ))
             ->add('address', 'address', array(
@@ -93,6 +94,7 @@ class OrderType extends AbstractType
                     'constraints' => array(
                         new Assert\NotBlank(),
                     ),
+                    'attr' => array('class' => 'p-region-id'),
                 ),
                 'addr01_options' => array(
                     'constraints' => array(
@@ -101,6 +103,7 @@ class OrderType extends AbstractType
                             'max' => $config['mtext_len'],
                         )),
                     ),
+                    'attr' => array('class' => 'p-locality p-street-address'),
                 ),
                 'addr02_options' => array(
                     'required' => false,
@@ -110,6 +113,7 @@ class OrderType extends AbstractType
                             'max' => $config['mtext_len'],
                         )),
                     ),
+                    'attr' => array('class' => 'p-extended-address'),
                 ),
             ))
             ->add('email', 'email', array(

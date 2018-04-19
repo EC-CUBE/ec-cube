@@ -29,7 +29,6 @@ use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Exception\PluginException;
 use Eccube\Util\Str;
-use Monolog\Logger;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
@@ -313,16 +312,32 @@ class PluginController extends AbstractController
 
     public function handler_up(Application $app, $handlerId)
     {
-        $repo = $app['eccube.repository.plugin_event_handler'];
-        $repo->upPriority($repo->find($handlerId));
+        $this->isTokenValid($app);
+
+        try {
+            $repo = $app['eccube.repository.plugin_event_handler'];
+            $repo->upPriority($repo->find($handlerId));
+
+            $app->addSuccess('admin.rank.move.complete', 'admin');
+        } catch (\Exception $e) {
+            $app->addError('admin.rank.up.error', 'admin');
+        }
 
         return $app->redirect($app->url('admin_store_plugin_handler'));
     }
 
     public function handler_down(Application $app, $handlerId)
     {
-        $repo = $app['eccube.repository.plugin_event_handler'];
-        $repo->upPriority($repo->find($handlerId), false);
+        $this->isTokenValid($app);
+
+        try {
+            $repo = $app['eccube.repository.plugin_event_handler'];
+            $repo->upPriority($repo->find($handlerId), false);
+
+            $app->addSuccess('admin.rank.move.complete', 'admin');
+        } catch (\Exception $e) {
+            $app->addError('admin.rank.down.error', 'admin');
+        }
 
         return $app->redirect($app->url('admin_store_plugin_handler'));
     }
@@ -623,6 +638,7 @@ class PluginController extends AbstractController
         $form->add(
             'authentication_key', 'text', array(
             'label' => '認証キー',
+            'required' => false,
             'constraints' => array(
                 new Assert\Regex(array(
                     'pattern' => "/^[0-9a-zA-Z]+$/",

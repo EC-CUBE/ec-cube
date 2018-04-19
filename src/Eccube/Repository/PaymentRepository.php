@@ -110,30 +110,26 @@ class PaymentRepository extends EntityRepository
     public function findAllowedPayments($deliveries)
     {
         $payments = array();
-        $i = 0;
+        $productTypes = array();
 
         foreach ($deliveries as $Delivery) {
             $p = $this->findPayments($Delivery);
-
-            if ($i != 0) {
-
-                $arr = array();
-                foreach ($p as $payment) {
-                    foreach ($payments as $pay) {
-                        if ($payment['id'] == $pay['id']) {
-                            $arr[] = $payment;
-                            break;
-                        }
-                    }
-                }
-
-                $payments = $arr;
-            } else {
-                $payments = $p;
+            if ($p == null) {
+                continue;
             }
-            $i++;
+            foreach ($p as $payment) {
+                $payments[$payment['id']] = $payment;
+                $productTypes[$Delivery->getProductType()->getId()][$payment['id']] = true;
+            }
         }
-
+        foreach($payments as $key => $payment){
+            foreach($productTypes as $row){
+                if(!isset($row[$payment['id']])){
+                    unset($payments[$key]);
+                    continue;
+                }
+            }
+        }
         return $payments;
     }
 }

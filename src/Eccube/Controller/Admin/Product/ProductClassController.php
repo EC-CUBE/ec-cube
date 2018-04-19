@@ -200,7 +200,15 @@ class ProductClassController
 
             // 登録済み商品規格と空の商品規格をマージ
             $flag = false;
-            foreach ($createProductClasses as $createProductClass) {
+
+            // 削除されてる商品規格情報を取得のためにフィルターから「ProductClass」を外す
+            /* @var $softDeleteFilter \Eccube\Doctrine\Filter\SoftDeleteFilter */
+            $softDeleteFilter = $app['orm.em']->getFilters()->getFilter('soft_delete');
+            $oldExcludes = $softDeleteFilter->getExcludes();
+            $softDeleteFilter->setExcludes(array(
+                'Eccube\Entity\ProductClass',
+            ));
+            foreach ($createProductClasses as $index => $createProductClass) {
                 // 既に登録済みの商品規格にチェックボックスを設定
                 foreach ($ProductClasses as $productClass) {
                     if ($productClass->getClassCategory1() == $createProductClass->getClassCategory1() &&
@@ -214,11 +222,28 @@ class ProductClassController
                 }
 
                 if (!$flag) {
-                    $mergeProductClasses[] = $createProductClass;
+                    // 商品の中に規格ない場合は削除されている規格を取得する
+                    $condition = array();
+                    $condition['Product'] = $Product;
+                    $condition['ClassCategory1'] = $createProductClass->getClassCategory1();
+                    $condition['ClassCategory2'] = $createProductClass->getClassCategory2();
+                    $condition['del_flg'] = Constant::ENABLED;
+
+                    $delProductClass = $app['eccube.repository.product_class']->findOneBy($condition);
+                    if ($delProductClass){
+                        // 削除されている規格あった場合はその規格を使う
+                        $mergeProductClasses[] = $delProductClass;
+                    } else {
+                        // 取得できない場合はデフォルトの規格を使う
+                        $mergeProductClasses[] = $createProductClass;
+                    }
                 }
 
                 $flag = false;
             }
+
+            // 上で変わったフィルター情報を戻す
+            $softDeleteFilter->setExcludes($oldExcludes);
 
             // 登録済み商品規格と空の商品規格をマージ
             foreach ($mergeProductClasses as $mergeProductClass) {
@@ -408,6 +433,13 @@ class ProductClassController
                         return $this->render($app, $Product, $tempProductClass, false, $form, $error);
                     }
 
+                    // 削除されてる商品規格情報を取得のためにフィルターから「ProductClass」を外す
+                    /* @var $softDeleteFilter \Eccube\Doctrine\Filter\SoftDeleteFilter */
+                    $softDeleteFilter = $app['orm.em']->getFilters()->getFilter('soft_delete');
+                    $oldExcludes =  $softDeleteFilter->getExcludes();
+                    $softDeleteFilter->setExcludes(array(
+                        'Eccube\Entity\ProductClass',
+                    ));
 
                     // 登録対象と更新対象の行か判断する
                     $addProductClasses = array();
@@ -436,10 +468,39 @@ class ProductClassController
                                 break;
                             }
                         }
+
                         if (!$flag) {
-                            $addProductClasses[] = $cp;
+                            // 削除されている規格取得する
+                            $condition = array();
+                            $condition['Product'] = $Product;
+                            $condition['ClassCategory1'] = $cp->getClassCategory1();
+                            $condition['ClassCategory2'] = $cp->getClassCategory2();
+                            $condition['del_flg'] = Constant::ENABLED;
+
+                            $delProductClass = $app['eccube.repository.product_class']->findOneBy($condition);
+                            if ($delProductClass){
+                                // 削除されている商品を見つけた場合は使います
+                                // 商品情報
+                                $cp->setProduct($Product);
+                                // 商品在庫
+                                $productStock = $productClass->getProductStock();
+                                if (!$cp->getStockUnlimited()) {
+                                    $productStock->setStock($cp->getStock());
+                                } else {
+                                    $productStock->setStock(null);
+                                }
+                                $this->setDefualtProductClass($app, $delProductClass, $cp);
+                                // 削除されている規格を復活する（del_flgを更新）
+                                $delProductClass->setDelFlg(Constant::DISABLED);
+                                $ProductClasses[] = $delProductClass;
+                            } else {
+                                $addProductClasses[] = $cp;
+                            }
                         }
                     }
+
+                    // 上で変わったフィルター情報を戻す
+                    $softDeleteFilter->setExcludes($oldExcludes);
 
                     foreach ($removeProductClasses as $rc) {
                         // 登録されている商品規格に削除フラグをセット
