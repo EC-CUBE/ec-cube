@@ -1253,6 +1253,7 @@ return [
     'admin.order.mail.363' => '配信内容を確認',
     'admin.order.mail.364' => '下の内容でメールを送信してもよろしいですか？ 確認の上、［メール送信］ボタンを押してください。',
     'admin.order.mail.365' => '送信',
+    'admin.order.mail.body' => '本文',
     'admin.order.mail_all.349' => '受注管理',
     'admin.order.mail_all.350' => 'メール通知',
     'admin.order.mail_all.351' => 'メール配信',
