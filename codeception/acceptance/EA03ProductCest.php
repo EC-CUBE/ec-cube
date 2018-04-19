@@ -542,11 +542,10 @@ class EA03ProductCest
 
         $CategoryPage->一覧_編集(2);
 
-        $I->see('test category1', CategoryManagePage::$パンくず_1階層);
+        $I->seeElement('body > div > div.c-contentsArea > div.c-contentsArea__cols > div.c-contentsArea__primaryCol > div > div > div > div > ul > li:nth-child(2) > form.mode-edit');
 
-        $CategoryPage
-            ->入力_カテゴリ名('test category11')
-            ->カテゴリ作成();
+        $CategoryPage->一覧_インライン編集_カテゴリ名(2, 'test category11')
+            ->一覧_インライン編集_提出する(2);
 
         $I->see('カテゴリを保存しました。', CategoryManagePage::$登録完了メッセージ);
 

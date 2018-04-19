@@ -52,6 +52,18 @@ class CategoryManagePage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    public function 一覧_インライン編集_カテゴリ名($rowNum, $value)
+    {
+        $this->tester->fillField('body > div > div.c-contentsArea > div.c-contentsArea__cols > div.c-contentsArea__primaryCol > div > div > div > div > ul > li:nth-child('.$rowNum.') > form.mode-edit input[type="text"][name*="category_"]', $value);
+        return $this;
+    }
+
+    public function 一覧_インライン編集_提出する($rowNum)
+    {
+        $this->tester->click('body > div > div.c-contentsArea > div.c-contentsArea__cols > div.c-contentsArea__primaryCol > div > div > div > div > ul > li:nth-child('.$rowNum.') > form.mode-edit button[type="submit"]');
+        return $this;
+    }
+
     public function 一覧_削除($rowNum)
     {
         $this->tester->click("body > div > div.c-contentsArea > div.c-contentsArea__cols > div.c-contentsArea__primaryCol > div > div > div > div > ul > li:nth-child(${rowNum}) > div > div.col-auto.text-right > a:nth-child(4)");
