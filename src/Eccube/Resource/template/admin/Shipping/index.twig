@@ -67,7 +67,7 @@
 
             var updater;
 
-            // メールプレビューを表示
+            // モーダルの表示を制御
             $('#sentUpdateModal').on('show.bs.modal', function(e) {
                 var eventTarget = $(e.relatedTarget);
                 var type = eventTarget.data('type');
@@ -97,7 +97,7 @@
                     .text(updater.modalButton);
             });
 
-            // 配送済みに更新
+            // 一括更新
             $('#bulkChange').on('click', function(e) {
                 var eventTarget = $(e.currentTarget);
                 var type = eventTarget.data('type');
@@ -141,7 +141,7 @@
                     });
             });
 
-            // 更新完了ボタン
+            // 完了ボタン
             $('#bulkChangeComplete').on('click', function() {
                 location.reload(true);
             });
