@@ -60,7 +60,7 @@ class TaxRuleType extends AbstractType
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Range(array('min' => 0, 'max' => 100)),
+                    new Assert\Range(array('min' => 0)),
                     new Assert\Regex(array(
                         'pattern' => "/^\d+(\.\d+)?$/u",
                         'message' => 'form.type.float.invalid'
@@ -72,18 +72,7 @@ class TaxRuleType extends AbstractType
             ))
             ->add('apply_date', DateTimeType::class, array(
                 'required' => true,
-                'input' => 'datetime',
-                'date_widget' => 'single_text',
-                'time_widget' => 'single_text',
-                'format' => 'yyyy-MM-dd HH:mm',
-                'years' => range(date('Y'), date('Y') + 2),
-                'placeholder' => array(
-                    'year' => '----',
-                    'month' => '--',
-                    'day' => '--',
-//                    'hours' => '--',
-//                    'minutes' => '--'
-                ),
+                'widget' => 'single_text',
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
