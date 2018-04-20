@@ -8,8 +8,10 @@ class CustomerManagePage extends AbstractAdminPageStyleGuide
     public static $URL = '/customer';
 
     public static $検索ボタン = '#search_form .c-outsideBlock__contents button';
+    public static $詳細検索ボタン = '//*[@id="search_form"]/div[1]/div[1]/div/div/div[2]/a/span';
     public static $検索結果メッセージ = '#search_form > div.c-outsideBlock__contents.mb-5 > span';
     public static $検索結果_結果なしメッセージ = '.c-contentsArea .c-contentsArea__cols div.text-center.h5';
+    public static $検索結果_エラーメッセージ = '.c-contentsArea .c-contentsArea__cols div.text-center.h5';
     public static $検索条件_仮会員 = ['id' => 'admin_search_customer_customer_status_0'];
     public static $検索条件_本会員 = ['id' => 'admin_search_customer_customer_status_1'];
 
@@ -31,6 +33,16 @@ class CustomerManagePage extends AbstractAdminPageStyleGuide
     public function 検索($value = '')
     {
         $this->tester->fillField(['id' => 'admin_search_customer_multi'], $value);
+        $this->tester->click(self::$検索ボタン);
+        $this->tester->see('会員マスター会員管理', '.c-pageTitle');
+        return $this;
+    }
+
+    public function 詳細検索_電話番号($value = '')
+    {
+        $this->tester->click(self::$詳細検索ボタン);
+        $this->tester->wait(1);
+        $this->tester->fillField(['id' => 'admin_search_customer_tel'], $value);
         $this->tester->click(self::$検索ボタン);
         $this->tester->see('会員マスター会員管理', '.c-pageTitle');
         return $this;
