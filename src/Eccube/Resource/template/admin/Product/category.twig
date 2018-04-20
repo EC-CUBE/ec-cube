@@ -99,6 +99,31 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     moveSortNo();
                 }
             });
+
+            var groupItem = $('.list-group-item');
+            groupItem.on('click', 'a.action-edit', function(e) {
+                e.preventDefault();
+                var current = $(this).parents('li');
+                current.find('.mode-view').addClass('d-none');
+                current.find('.mode-edit').removeClass('d-none');
+            });
+
+            groupItem.on('click', 'button.action-edit-cancel', function(e) {
+                e.preventDefault();
+                var current = $(this).parents('li');
+                current.find('[data-origin-value]').each(function(e) {
+                    $(this).val($(this).attr('data-origin-value'));
+                });
+                current.find('.mode-view').removeClass('d-none');
+                current.find('.mode-edit').addClass('d-none');
+            });
+
+            groupItem.find('.is-invalid').each(function (e) {
+                e.preventDefault();
+                var current = $(this).parents("li");
+                current.find('.mode-view').addClass('d-none');
+                current.find('.mode-edit').removeClass('d-none');
+            });
         });
     </script>
 {% endblock %}
@@ -182,7 +207,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {% for Category in Categories %}
                                         <li class="list-group-item sortable-item" data-id="{{ Category.id }}" data-sort-no="{{ Category.sort_no }}" >
                                             {% if Category.id != TargetCategory.id %}
-                                                <div class="row justify-content-around">
+                                                <div class="row justify-content-around mode-view">
                                                     <div class="col-auto d-flex align-items-center">
                                                         <i class="fa fa-bars text-ec-gray"></i>
                                                     </div>
@@ -200,8 +225,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                            title="{{ 'admin.product.category.down'|trans }}">
                                                             <i class="fa fa-arrow-down fa-lg text-secondary"></i>
                                                         </a>
-                                                        {# TODO: 新編集UIの実装 #}
-                                                        <a class="btn btn-ec-actionIcon mr-3"
+                                                        <a class="btn btn-ec-actionIcon mr-3 action-edit"
                                                            href="{{ url('admin_product_category_edit', {id: Category.id}) }}"
                                                            data-toggle="tooltip" data-placement="top"
                                                            title="{{ 'admin.product.category.rename'|trans }}">
@@ -225,19 +249,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                         {% endif %}
                                                     </div>
                                                 </div>
-                                            {% else %}
-                                                {# TODO: 新編集UIの実装 #}
-                                                <form class="form-row">
-                                                    <div class="col-auto d-flex align-items-center">
-                                                        <input class="form-control" type="text">
+                                                <form class="form-row d-none mode-edit" method="POST" action="{{ (Parent and Parent.id) ? url('admin_product_category_show', {'parent_id': Parent.id}) : url('admin_product_category') }}">
+                                                    {{ form_widget(forms[Category.id]._token) }}
+                                                    <div class="col-auto align-items-center">
+                                                        {{ form_widget(forms[Category.id].name, {'attr': {'data-origin-value': forms[Category.id].name.vars.value}}) }}
+                                                        {{ form_errors(forms[Category.id].name) }}
                                                     </div>
-                                                    <div class="col-auto d-flex align-items-center">
-                                                        <button class="btn btn-ec-conversion" type="submit">決定
-                                                        </button>
+                                                    <div class="col-auto align-items-center">
+                                                        <button class="btn btn-ec-conversion" type="submit">{{ 'admin.common.label.ok'|trans }}</button>
                                                     </div>
-                                                    <div class="col-auto d-flex align-items-center">
-                                                        <button class="btn btn-ec-sub" type="submit">キャンセル
-                                                        </button>
+                                                    <div class="col-auto align-items-center">
+                                                        <button class="btn btn-ec-sub action-edit-cancel" type="button">{{ 'admin.common.label.cancel'|trans }}</button>
                                                     </div>
                                                 </form>
                                             {% endif %}
