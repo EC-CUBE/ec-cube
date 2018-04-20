@@ -214,45 +214,27 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <div class="col-3">
                                     <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>{{ 'common.label.option_delivery_fee_free_amount'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                 </div>
-                                <div class="col mb-2">
-                                    <div class="input-group col-4 pl-0">
-                                        <div class="input-group-prepend">
-                                            {# TODO フォームの左側の角が丸くなっている #}
-                                            <div class="input-group-text">￥</div>
-                                            {{ form_widget(form.delivery_free_amount, {'attr': {'class': 'notmoney'}}) }}
-                                            {{ form_errors(form.delivery_free_amount) }}
-                                        </div>
-
-                                    </div>
+                                <div class="col-4 mb-2">
+                                    {{ form_widget(form.delivery_free_amount) }}
+                                    {{ form_errors(form.delivery_free_amount) }}
                                 </div>
+                                <div class="col"></div>
                             </div>
                             <div class="row">
                                 <div class="col-3">
                                     <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>{{ 'common.label.option_delivery_free_quantity'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                 </div>
-                                <div class="col mb-2">
-                                    <div class="input-group col-4 pl-0">
-                                        {{ form_widget(form.delivery_free_quantity) }}
-                                        {{ form_errors(form.delivery_free_quantity) }}
-                                        <div class="input-group-append">
-                                            <div class="input-group-text">個</div>
-                                        </div>
-                                    </div>
+                                <div class="col-4 mb-2">
+                                    {{ form_widget(form.delivery_free_quantity) }}
+                                    {{ form_errors(form.delivery_free_quantity) }}
                                 </div>
+                                <div class="col"></div>
                             </div>
                             <div class="row">
                                 <div class="col-3"><span>{{ 'common.label.option_product_delivery_fee'|trans }}</span></div>
                                 <div class="col mb-2">
-                                    <div class="c-toggleSwitch">
-                                        <div class="c-toggleSwitch__btn">
-                                            {# TODO チェックボックスに変更する #}
-                                            {{ form_widget(form.option_product_delivery_fee) }}
-                                            {{ form_errors(form.option_product_delivery_fee) }}
-                                            <label for="switch_productCost"></label>
-                                        </div>
-                                        <div class="c-toggleSwitch__label"><span class="text-dark">無効</span>
-                                        </div>
-                                    </div>
+                                    {{ form_widget(form.option_product_delivery_fee) }}
+                                    {{ form_errors(form.option_product_delivery_fee) }}
                                 </div>
                             </div>
                             <div class="row">
@@ -260,16 +242,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>{{ 'common.label.option_multiple_shipping'|trans }}</span></div>
                                 </div>
                                 <div class="col mb-2">
-                                    <div class="c-toggleSwitch">
-                                        <div class="c-toggleSwitch__btn">
-                                            {# TODO チェックボックスに変更する #}
-                                            {{ form_widget(form.option_multiple_shipping) }}
-                                            {{ form_errors(form.option_multiple_shipping) }}
-                                            <label for="switch_multiDelivery"></label>
-                                        </div>
-                                        <div class="c-toggleSwitch__label"><span class="text-dark">無効</span>
-                                        </div>
-                                    </div>
+                                    {{ form_widget(form.option_multiple_shipping) }}
+                                    {{ form_errors(form.option_multiple_shipping) }}
                                 </div>
                             </div>
                         </div>
@@ -280,61 +254,29 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <div class="row">
                                 <div class="col-3"><span>{{ 'common.label.option_customer_activate'|trans }}</span></div>
                                 <div class="col mb-2">
-                                    <div class="c-toggleSwitch">
-                                        <div class="c-toggleSwitch__btn">
-                                            {# TODO チェックボックスに変更する #}
-                                            {{ form_widget(form.option_customer_activate) }}
-                                            {{ form_errors(form.option_customer_activate) }}
-                                            <label for="switch_provisionalUser"></label>
-                                        </div>
-                                        <div class="c-toggleSwitch__label"><span class="text-dark">有効</span>
-                                        </div>
-                                    </div>
+                                    {{ form_widget(form.option_customer_activate) }}
+                                    {{ form_errors(form.option_customer_activate) }}
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-3"><span>{{ 'common.label.option_mypage_order_status_display'|trans }}</span></div>
                                 <div class="col mb-2">
-                                    <div class="c-toggleSwitch">
-                                        <div class="c-toggleSwitch__btn">
-                                            {# TODO チェックボックスに変更する #}
-                                            {{ form_widget(form.option_mypage_order_status_display) }}
-                                            {{ form_errors(form.option_mypage_order_status_display) }}
-                                            <label for="switch_mypageOrder"></label>
-                                        </div>
-                                        <div class="c-toggleSwitch__label"><span class="text-dark">有効</span>
-                                        </div>
-                                    </div>
+                                    {{ form_widget(form.option_mypage_order_status_display) }}
+                                    {{ form_errors(form.option_mypage_order_status_display) }}
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-3"><span>{{ 'common.label.option_favorite_product'|trans }}</span></div>
                                 <div class="col mb-2">
-                                    <div class="c-toggleSwitch">
-                                        <div class="c-toggleSwitch__btn">
-                                            {# TODO チェックボックスに変更する #}
-                                            {{ form_widget(form.option_favorite_product) }}
-                                            {{ form_errors(form.option_favorite_product) }}
-                                            <label for="switch_favoriteProduct"></label>
-                                        </div>
-                                        <div class="c-toggleSwitch__label"><span class="text-dark">有効</span>
-                                        </div>
-                                    </div>
+                                    {{ form_widget(form.option_favorite_product) }}
+                                    {{ form_errors(form.option_favorite_product) }}
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-3"><span>{{ 'common.label.option_remember_me'|trans }}</span></div>
                                 <div class="col mb-2">
-                                    <div class="c-toggleSwitch">
-                                        <div class="c-toggleSwitch__btn">
-                                            {# TODO チェックボックスに変更する #}
-                                            {{ form_widget(form.option_remember_me) }}
-                                            {{ form_errors(form.option_remember_me) }}
-                                            <label for="switch_autoLogin"></label>
-                                        </div>
-                                        <div class="c-toggleSwitch__label"><span class="text-dark">無効</span>
-                                        </div>
-                                    </div>
+                                    {{ form_widget(form.option_remember_me) }}
+                                    {{ form_errors(form.option_remember_me) }}
                                 </div>
                             </div>
                         </div>
@@ -345,16 +287,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <div class="row">
                                 <div class="col-3"><span>{{ 'common.label.nostock_hidden'|trans }}</span></div>
                                 <div class="col mb-2">
-                                    <div class="c-toggleSwitch">
-                                        <div class="c-toggleSwitch__btn">
-                                            {# TODO チェックボックスに変更する #}
-                                            {{ form_widget(form.option_nostock_hidden) }}
-                                            {{ form_errors(form.option_nostock_hidden) }}
-                                            <label for="switch_productDisplay"></label>
-                                        </div>
-                                        <div class="c-toggleSwitch__label"><span class="text-dark">非表示</span>
-                                        </div>
-                                    </div>
+                                    {{ form_widget(form.option_nostock_hidden) }}
+                                    {{ form_errors(form.option_nostock_hidden) }}
                                 </div>
                             </div>
                         </div>
@@ -367,15 +301,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>{{ 'shopmaster.label.option_product_tax_rule'|trans }}</span></div>
                                 </div>
                                 <div class="col mb-2">
-                                    <div class="c-toggleSwitch">
-                                        <div class="c-toggleSwitch__btn">
-                                            {# TODO 個別税率設定を税率設定画面からショップマスターに移植する #}
-                                            <input type="checkbox" id="switch_autoLogin">
-                                            <label for="switch_autoLogin"></label>
-                                        </div>
-                                        <div class="c-toggleSwitch__label"><span class="text-dark">無効</span>
-                                        </div>
-                                    </div>
+                                    {{ form_widget(form.option_product_tax_rule) }}
+                                    {{ form_errors(form.option_product_tax_rule) }}
                                 </div>
                             </div>
                         </div>
@@ -386,16 +313,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <div class="row">
                                 <div class="col-3"><span>{{ 'shopmaster.label.option_point'|trans }}</span></div>
                                 <div class="col mb-2">
-                                    <div class="c-toggleSwitch">
-                                        <div class="c-toggleSwitch__btn">
-                                            {# TODO チェックボックスに変更する #}
-                                            {{ form_widget(form.option_point) }}
-                                            {{ form_errors(form.option_point) }}
-                                            <label for="switch_productDisplay"></label>
-                                        </div>
-                                        <div class="c-toggleSwitch__label"><span class="text-dark">有効</span>
-                                        </div>
-                                    </div>
+                                    {{ form_widget(form.option_point) }}
+                                    {{ form_errors(form.option_point) }}
                                 </div>
                             </div>
                             <div class="row">

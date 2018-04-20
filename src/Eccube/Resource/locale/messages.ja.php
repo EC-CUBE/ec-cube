@@ -13,6 +13,8 @@ return [
     'common.label.file_name' => 'ファイル名',
     'common.label.disabled' => '無効',
     'common.label.enabled' => '有効',
+    'common.label.display' => '表示',
+    'common.label.hide' => '非表示',
     'common.label.Open' => '',
     'common.label.close' => '閉じる',
     'common.label.company_name' => '会社名',

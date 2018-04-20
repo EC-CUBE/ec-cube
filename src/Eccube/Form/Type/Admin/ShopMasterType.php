@@ -29,9 +29,9 @@ use Eccube\Form\EventListener\ConvertKanaListener;
 use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\PriceType;
 use Eccube\Form\Type\TelType;
+use Eccube\Form\Type\ToggleSwitchType;
 use Eccube\Form\Type\ZipType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -173,12 +173,12 @@ class ShopMasterType extends AbstractType
                     ]),
                 ],
             ])
-
             // 送料設定
             ->add('delivery_free_amount', PriceType::class, [
                 'label' => 'common.label.option_delivery_fee_free_amount',
                 'required' => false,
             ])
+            //
             ->add('delivery_free_quantity', IntegerType::class, [
                 'label' => 'common.label.option_delivery_free_quantity',
                 'required' => false,
@@ -189,85 +189,26 @@ class ShopMasterType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('option_product_delivery_fee', ChoiceType::class, [
-                'label' => 'common.label.option_product_delivery_fee',
-                'choices' => array_flip([
-                    '0' => 'common.label.disabled',
-                    '1' => 'common.label.enabled',
-                ]),
-                'expanded' => true,
-                'multiple' => false,
-            ])
-            ->add('option_multiple_shipping', ChoiceType::class, [
-                'label' => 'common.label.option_multiple_shipping',
-                'choices' => array_flip([
-                    '0' => 'common.label.disabled',
-                    '1' => 'common.label.enabled',
-                ]),
-                'expanded' => true,
-                'multiple' => false,
-            ])
-
+            ->add('option_product_delivery_fee', ToggleSwitchType::class)
+            // 複数配送
+            ->add('option_multiple_shipping', ToggleSwitchType::class)
             // 会員設定
-            ->add('option_customer_activate', ChoiceType::class, [
-                'label' => 'common.label.option_customer_activate',
-                'choices' => array_flip([
-                    '0' => 'common.label.disabled',
-                    '1' => 'common.label.enabled',
-                ]),
-                'expanded' => true,
-                'multiple' => false,
+            ->add('option_customer_activate', ToggleSwitchType::class)
+            // マイページに注文状況を表示する
+            ->add('option_mypage_order_status_display', ToggleSwitchType::class)
+            // 自動ログイン
+            ->add('option_remember_me', ToggleSwitchType::class)
+            // お気に入り商品設定
+            ->add('option_favorite_product', ToggleSwitchType::class)
+            // 在庫切れ商品を非表示にする
+            ->add('option_nostock_hidden', ToggleSwitchType::class, [
+                'label_off' => 'common.label.display',
+                'label_on' => 'common.label.hide',
             ])
-            ->add('option_mypage_order_status_display', ChoiceType::class, [
-                'label' => 'common.label.option_mypage_order_status_display',
-                'choices' => array_flip([
-                    '0' => 'common.label.disabled',
-                    '1' => 'common.label.enabled',
-
-                ]),
-                'expanded' => true,
-                'multiple' => false,
-            ])
-            ->add('option_remember_me', ChoiceType::class, [
-                'label' => 'common.label.option_remember_me',
-                'choices' => array_flip([
-                    '0' => 'common.label.disabled',
-                    '1' => 'common.label.enabled',
-                ]),
-                'expanded' => true,
-                'multiple' => false,
-            ])
-            ->add('option_favorite_product', ChoiceType::class, [
-                'label' => 'common.label.option_favorite_product',
-                'choices' => array_flip([
-                    '0' => 'common.label.disabled',
-                    '1' => 'common.label.enabled',
-                ]),
-                'expanded' => true,
-                'multiple' => false,
-            ])
-
-            // 商品設定
-            ->add('option_nostock_hidden', ChoiceType::class, [
-                'label' => 'common.label.nostock_hidden',
-                'choices' => array_flip([
-                    '0' => 'common.label.disabled',
-                    '1' => 'common.label.enabled',
-
-                ]),
-                'expanded' => true,
-                'multiple' => false,
-            ])
+            // 個別税率設定
+            ->add('option_product_tax_rule', ToggleSwitchType::class)
             // ポイント設定
-            ->add('option_point', ChoiceType::class, [
-                'label' => 'common.label.option_point', // TODO 未翻訳
-                'choices' => array_flip([
-                    '0' => 'common.label.disabled',
-                    '1' => 'common.label.enabled',
-                ]),
-                'expanded' => true,
-                'multiple' => false,
-            ])
+            ->add('option_point', ToggleSwitchType::class)
             ->add('basic_point_rate', NumberType::class, [
                 'required' => false,
                 'label' => 'common.label.basic_point_rate', // TODO 未翻訳
