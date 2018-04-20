@@ -153,6 +153,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         }
                     }).done(function(json, statusText, jqXHR) {
                         editor.setValue(json.source);
+                        editor.goTo(1);
+                        editor.scrollTo(1);
                     }).fail(function(jqXHR, statusText, errorThrown) {
                         editor.setValue(statusText + ' ' + errorThrown);
                     });
@@ -224,11 +226,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <div class="col-3 pr-0"><span>{{ 'admin.content.layout.device_type'|trans }}</span></div>
                                     <div class="col">
                                         <span>
-                                            {% if form.DeviceType.vars.value in form.DeviceType.vars.choices|keys %}
-                                                {{ form.DeviceType.vars.choices[form.DeviceType.vars.value].label }}
+                                            {% if Layout.id %}
+                                                {{ form.DeviceType.vars.data.name }}
+                                                <input type="hidden" name="{{ form.DeviceType.vars.full_name }}" value="{{ form.DeviceType.vars.value }}" />
+                                            {% else %}
+                                                {{ form_widget(form.DeviceType) }}
                                             {% endif %}
                                             {{ form_errors(form.DeviceType) }}
-                                            <input type="hidden" name="{{ form.DeviceType.vars.full_name }}" value="{{ form.DeviceType.vars.value }}" />
                                         </span>
                                     </div>
                                 </div>

@@ -126,6 +126,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <form name="form1" id="form1" method="post" action="?" class="h-adr">
         <span class="p-country-name" style="display:none;">Japan</span>
         <input type="hidden" name="mode" value="">
+        <input type="hidden" name="modal" value="">
         {{ form_widget(form._token) }}
         <div class="c-contentsArea__cols">
             <div class="c-contentsArea__primaryCol">
@@ -469,6 +470,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             <td class="align-middle w-25 pl-3">
                                                 <p class="mb-0 font-weight-bold">
                                                     {{ orderItemForm.vars.value.product_name }}
+                                                </p>
+                                                <span>
+                                                    {{ orderItemForm.vars.value.product_code }}
                                                     {% if orderItemForm.vars.value.class_category_name1 is not empty %}
                                                         / (
                                                         {{ orderItemForm.vars.value.class_name1 }}：
@@ -480,7 +484,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                         {% endif %}
                                                         )
                                                     {% endif %}
-                                                </p><span>{{ orderItemForm.vars.value.product_code }}</span>
+                                                </span>
                                             </td>
                                             <td class="align-middle">
                                                 {% if orderItemForm.vars.value.Shipping %}

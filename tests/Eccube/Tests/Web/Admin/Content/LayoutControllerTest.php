@@ -54,52 +54,6 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    public function testMoveSortNo()
-    {
-        $data['newSortNos'] = [
-            '2-3' => 5,
-            '3-3' => 6,
-            '4-3' => 7,
-        ];
-        $data['targetLayoutId'] = 3;
-        $this->client->request(
-            'POST',
-            $this->generateUrl('admin_content_layout_sort_no_move'),
-            $data,
-            [],
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-                'CONTENT_TYPE' => 'application/json',
-            ]
-        );
-        $this->expected = 7;
-        $this->actual = $this->PageLayoutRepo->findOneBy(['page_id' => 4, 'layout_id' => 3])->getSortNo();
-        $this->verify();
-    }
-
-    public function testMoveSortNoToOtherList()
-    {
-        $dataSortNo['newSortNos'] = [
-            '1-2' => 5,
-            '2-3' => 6,
-            '3-3' => 7,
-        ];
-        $dataSortNo['targetLayoutId'] = 3;
-        $this->client->request(
-            'POST',
-            $this->generateUrl('admin_content_layout_sort_no_move'),
-            $dataSortNo,
-            [],
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-                'CONTENT_TYPE' => 'application/json',
-            ]
-        );
-        $this->expected = 5;
-        $this->actual = $this->PageLayoutRepo->findOneBy(['page_id' => 1, 'layout_id' => 3])->getSortNo();
-        $this->verify();
-    }
-
     public function testIndexWithPost()
     {
         $crawler = $this->client->request(
@@ -134,34 +88,10 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
         $this->client->request(
             'GET',
             $this->generateUrl(
-                'admin_content_layout_new',
-                ['DeviceType' => DeviceType::DEVICE_TYPE_PC]
-            )
-        );
-        $this->assertTrue($this->client->getResponse()->isOk());
-    }
-
-    public function testIndexWithInvalid()
-    {
-        $this->client->request(
-            'GET',
-            $this->generateUrl(
-                'admin_content_layout_new',
-                ['DeviceType' => 999]
-            )
-        );
-        $this->assertEquals(Response::HTTP_BAD_REQUEST, $this->client->getResponse()->getStatusCode());
-    }
-
-    public function testIndexWithDeviceNotFound()
-    {
-        $this->client->request(
-            'GET',
-            $this->generateUrl(
                 'admin_content_layout_new'
             )
         );
-        $this->assertTrue($this->client->getResponse()->isClientError());
+        $this->assertTrue($this->client->getResponse()->isOk());
     }
 
     public function testIndexWithPostPreview()

@@ -157,10 +157,14 @@ class MailController extends AbstractController
             }
         }
 
+        // 本文確認用
+        $body = $this->createBody('', '', $Order);
+
         return [
             'form' => $form->createView(),
             'Order' => $Order,
             'MailHistories' => $MailHistories,
+            'body' => $body,
         ];
     }
 
@@ -287,9 +291,18 @@ class MailController extends AbstractController
             $ids = implode(',', (array)$request->get('ids'));
         }
 
+        // 本文確認用
+        $body = '';
+        if ($ids != '') {
+            $idArray = explode(',', $ids);
+            $Order = $this->orderRepository->find($idArray[0]);
+            $body = $this->createBody('', '', $Order);
+        }
+
         return [
             'form' => $form->createView(),
             'ids' => $ids,
+            'body' => $body,
         ];
     }
 

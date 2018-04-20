@@ -35,12 +35,41 @@ class EA03ProductCest
 
     public function product_商品検索(\AcceptanceTester $I)
     {
-        $I->wantTo('EA0301-UC01-T01 商品検索');
+        $I->wantTo('EA0301-UC01-T01 (& UC01-T02) 商品検索');
 
         ProductManagePage::go($I)->検索('フォーク');
 
         $I->see("検索結果：1件が該当しました", ProductManagePage::$検索結果_メッセージ);
         $I->see("ディナーフォーク", ProductManagePage::$検索結果_一覧);
+
+        ProductManagePage::go($I)->検索('gege@gege.com');
+        $I->see('検索結果：0件が該当しました', ProductManagePage::$検索結果_メッセージ);
+    }
+
+    public function product_商品検索エラー(\AcceptanceTester $I)
+    {
+        $I->wantTo('EA0301-UC01-T03 商品検索 エラー');
+
+        // バリデーションエラーが発生するフォーム項目がないため, ダミーのステータスを作っておく
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = Fixtures::get('entityManager');
+        $ProductStatus = new \Eccube\Entity\Master\ProductStatus();
+        $ProductStatus->setName('ダミー');
+        $ProductStatus->setSortNo(999);
+        $ProductStatus->setId(999);
+        $em->persist($ProductStatus);
+        $em->flush();
+
+        // 商品マスターを表示
+        $page = ProductManagePage::go($I);
+
+        // ダミーのステータスを削除する
+        $em->remove($ProductStatus);
+        $em->flush();
+
+        // 存在しないステータスで検索するため, `有効な値ではありません`のバリデーションエラーが発生するはず
+        $page->詳細検索_ステータス(999);
+        $I->see('検索条件に誤りがあります。', ProductManagePage::$検索結果_エラーメッセージ);
     }
 
     public function product_規格確認のポップアップ表示(\AcceptanceTester $I)
@@ -542,11 +571,10 @@ class EA03ProductCest
 
         $CategoryPage->一覧_編集(2);
 
-        $I->see('test category1', CategoryManagePage::$パンくず_1階層);
+        $I->seeElement('body > div > div.c-contentsArea > div.c-contentsArea__cols > div.c-contentsArea__primaryCol > div > div > div > div > ul > li:nth-child(2) > form.mode-edit');
 
-        $CategoryPage
-            ->入力_カテゴリ名('test category11')
-            ->カテゴリ作成();
+        $CategoryPage->一覧_インライン編集_カテゴリ名(2, 'test category11')
+            ->一覧_インライン編集_決定(2);
 
         $I->see('カテゴリを保存しました。', CategoryManagePage::$登録完了メッセージ);
 

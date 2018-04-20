@@ -39,7 +39,7 @@ class LayoutManagePage extends AbstractAdminPageStyleGuide
 
     public function レイアウト編集($layoutName)
     {
-        $this->tester->click(['xpath' => "//*[@id='pills-pc']//div[a]/a[translate(text(), ' \r\n', '')='${layoutName}']"]);
+        $this->tester->click(['xpath' => "//*[@id=\"page_admin_content_layout\"]/div[1]/div[3]/div[2]/div/div//div/a[translate(text(), ' \r\n', '')='${layoutName}']"]);
     }
 
     public function 削除($layoutName)
