@@ -24,6 +24,7 @@
 
 namespace Eccube\Tests\Web\Admin\Product;
 
+use Eccube\Common\Constant;
 use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\ClassNameRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
@@ -101,6 +102,43 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
         );
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
+    public function testRoutingAdminProductClassCategoryEditInline()
+    {
+        // before
+        $TestCreator = $this->createMember();
+        $TestClassName = $this->newTestClassName($TestCreator);
+        $this->entityManager->persist($TestClassName);
+        $this->entityManager->flush();
+
+        $test_class_name_id = $TestClassName->getId();
+
+        $TestClassCategory = $this->newTestClassCategory($TestCreator, $TestClassName);
+        $this->entityManager->persist($TestClassCategory);
+        $this->entityManager->flush();
+        $test_class_category_id = $TestClassCategory->getId();
+        $name = 'new name';
+
+        // main
+        $this->client->request('GET',
+            $this->generateUrl('admin_product_class_category',
+                array('class_name_id' => $test_class_name_id))
+        );
+        $editInlineForm = [
+            'class_category_'.$test_class_category_id => [
+                'name' => $name,
+                Constant::TOKEN_NAME => 'dummy',
+            ]
+        ];
+        $this->client->request('POST',
+            $this->generateUrl('admin_product_class_category_edit', ['class_name_id' => $test_class_name_id, 'id' => $test_class_category_id]),
+            $editInlineForm
+        );
+
+        $crawler = $this->client->followRedirect();
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertContains($name, $crawler->filter('ul.tableish li:nth-child(2)')->text());
     }
 
     public function testRoutingAdminProductClassCategoryDelete()
