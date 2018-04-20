@@ -402,9 +402,6 @@ class EditControllerTest extends AbstractEditControllerTestCase
             $totalTax += $tax * $formDataForEdit['OrderItems'][$indx]['quantity'];
         }
 
-        dump($tax);
-        dump($totalTax);
-
         // 管理画面で受注編集する
         $this->client->request(
             'POST', $this->generateUrl('admin_order_edit', array('id' => $Order->getId())), array(

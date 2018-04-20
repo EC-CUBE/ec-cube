@@ -169,6 +169,8 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
             'charge' => $Order->getCharge(),
             'Payment' => $Order->getPayment()->getId(),
             'note' => $Order->getNote(),
+            'add_point' => 0,
+            'use_point' => 0,
         );
         return $order;
     }

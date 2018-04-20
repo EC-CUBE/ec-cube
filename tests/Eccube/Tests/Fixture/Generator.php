@@ -451,8 +451,7 @@ class Generator
                 ->setProduct($Product)
                 ->setSaleType($SaleType)
                 ->setStockUnlimited(false)
-                // ->setPrice02($faker->randomNumber(1))
-                ->setPrice02(1)
+                ->setPrice02($faker->randomNumber(5))
                 ->setDeliveryDuration($DeliveryDurations[$faker->numberBetween(0, 8)])
                 ->setCreateDate(new \DateTime()) // FIXME
                 ->setUpdateDate(new \DateTime())
