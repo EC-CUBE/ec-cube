@@ -65,8 +65,8 @@ class ShippingManagePage extends AbstractAdminPageStyleGuide
 
     public function 一覧_削除()
     {
-        $this->tester->waitForElementVisible(['xpath' => '//*[@id="btn_bulk"]/button[2]']);
-        $this->tester->click(['xpath' => '//*[@id="btn_bulk"]/button[2]']);
+        $this->tester->waitForElementVisible(['xpath' => '//*[@id="btn_bulk"]/button[3]']);
+        $this->tester->click(['xpath' => '//*[@id="btn_bulk"]/button[3]']);
         $this->tester->waitForElementVisible(['xpath' => '//*[@id="btn_bulk_delete"]']);
         $this->tester->click(['xpath' => '//*[@id="btn_bulk_delete"]']);
         return $this;
@@ -80,6 +80,15 @@ class ShippingManagePage extends AbstractAdminPageStyleGuide
     }
 
     public function 一括発送済み更新()
+    {
+        $this->tester->waitForElementVisible(['xpath' => '//*[@id="btn_bulk"]/button[2]']);
+        $this->tester->click(['xpath' => '//*[@id="btn_bulk"]/button[2]']);
+        $this->tester->wait(3);
+        $this->tester->click(['id' => 'bulkChange']);
+        return $this;
+    }
+
+    public function 一括発送済みメール送信()
     {
         $this->tester->waitForElementVisible(['xpath' => '//*[@id="btn_bulk"]/button[1]']);
         $this->tester->click(['xpath' => '//*[@id="btn_bulk"]/button[1]']);
