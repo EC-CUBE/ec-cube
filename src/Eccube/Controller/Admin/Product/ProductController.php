@@ -166,121 +166,120 @@ class ProductController extends AbstractController
      */
     public function index(Request $request, $page_no = null, Paginator $paginator)
     {
-
-        $session = $this->session;
-
         $builder = $this->formFactory
             ->createBuilder(SearchProductType::class);
 
         $event = new EventArgs(
-            [
+            array(
                 'builder' => $builder,
-            ],
+            ),
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_INDEX_INITIALIZE, $event);
 
         $searchForm = $builder->getForm();
 
-        $pagination = [];
+        /**
+         * ページの表示件数は, 以下の順に優先される.
+         * - リクエストパラメータ
+         * - セッション
+         * - デフォルト値
+         * また, セッションに保存する際は mtb_page_maxと照合し, 一致した場合のみ保存する.
+         **/
+        $page_count = $this->session->get('eccube.admin.order.search.page_count',
+            $this->eccubeConfig->get('eccube_default_page_count'));
 
-        $ProductStatuses = $this->productStatusRepository->findAll();
+        $page_count_param = (int)$request->get('page_count');
         $pageMaxis = $this->pageMaxRepository->findAll();
 
-        // 表示件数は順番で取得する、1.SESSION 2.設定ファイル
-        $page_count = $session->get('eccube.admin.product.search.page_count', $this->eccubeConfig['eccube_default_page_count']);
-        // 表示件数
-        $page_count_param = $request->get('page_count');
-        // 表示件数はURLパラメターから取得する
-        if ($page_count_param && is_numeric($page_count_param)) {
+        if ($page_count_param) {
             foreach ($pageMaxis as $pageMax) {
                 if ($page_count_param == $pageMax->getName()) {
                     $page_count = $pageMax->getName();
-                    // 表示件数入力値正し場合はSESSIONに保存する
-                    $session->set('eccube.admin.product.search.page_count', $page_count);
+                    $this->session->set('eccube.admin.order.search.page_count', $page_count);
                     break;
                 }
             }
         }
-
-        $page_status = null;
-        $active = false;
 
         if ('POST' === $request->getMethod()) {
 
             $searchForm->handleRequest($request);
 
             if ($searchForm->isValid()) {
+                /**
+                 * 検索が実行された場合は, セッションに検索条件を保存する.
+                 * ページ番号は最初のページ番号に初期化する.
+                 */
                 $page_no = 1;
                 $searchData = $searchForm->getData();
 
-                $pagination = $this->buildPagination($paginator, $request, $searchData, $page_no, $page_count);
-
-                // sessionに検索条件を保持
-                $viewData = FormUtil::getViewData($searchForm);
-                $session->set('eccube.admin.product.search', $viewData);
-                $session->set('eccube.admin.product.search.page_no', $page_no);
+                // 検索条件, ページ番号をセッションに保持.
+                $this->session->set('eccube.admin.product.search', FormUtil::getViewData($searchForm));
+                $this->session->set('eccube.admin.product.search.page_no', $page_no);
+            } else {
+                // 検索エラーの際は, 詳細検索枠を開いてエラー表示する.
+                return [
+                    'searchForm' => $searchForm->createView(),
+                    'pagination' => [],
+                    'pageMaxis' => $pageMaxis,
+                    'page_no' => $page_no,
+                    'page_count' => $page_count,
+                    'has_errors' => true,
+                ];
             }
         } else {
-            if (is_null($page_no) && $request->get('resume') != Constant::ENABLED) {
-                // sessionを削除
-                $session->remove('eccube.admin.product.search');
-                $session->remove('eccube.admin.product.search.page_no');
-                $session->remove('eccube.admin.product.search.page_count');
-
+            if (null !== $page_no || $request->get('resume')) {
+                /**
+                 * ページ送りの場合または、他画面から戻ってきた場合は, セッションから検索条件を復旧する.
+                 */
+                if ($page_no) {
+                    // ページ送りで遷移した場合.
+                    $this->session->set('eccube.admin.product.search.page_no', (int)$page_no);
+                } else {
+                    // 他画面から遷移した場合.
+                    $page_no = $this->session->get('eccube.admin.product.search.page_no', 1);
+                }
+                $viewData = $this->session->get('eccube.admin.product.search', []);
+                $searchData = FormUtil::submitAndGetData($searchForm, $viewData);
+            } else {
+                /**
+                 * 初期表示の場合.
+                 */
                 $page_no = 1;
                 $searchData = [];
 
-                $pagination = $this->buildPagination($paginator, $request, $searchData, $page_no, $page_count);
-                $viewData = FormUtil::getViewData($searchForm);
-
-                $session->set('eccube.admin.product.search', $viewData);
-                $session->set('eccube.admin.product.search.page_no', $page_no);
-            } else {
-                // pagingなどの処理
-                if (is_null($page_no)) {
-                    $page_no = intval($session->get('eccube.admin.product.search.page_no'));
-                } else {
-                    $session->set('eccube.admin.product.search.page_no', $page_no);
-                }
-                $viewData = $session->get('eccube.admin.product.search');
-                if (!is_null($viewData)) {
-                    // 表示件数
-                    $page_count = $request->get('page_count', $page_count);
-                    $searchData = FormUtil::submitAndGetData($searchForm, $viewData);
-
-                    $session->set('eccube.admin.product.search', $viewData);
-
-                    $pagination = $this->buildPagination($paginator, $request, $searchData, $page_no, $page_count);
-
-                    // セッションから検索条件を復元(カテゴリ)
-                    if (!empty($searchData['category_id'])) {
-                        $searchData['category_id'] = $this->categoryRepository->find($searchData['category_id']);
-                    }
-
-                    // セッションから検索条件を復元(スーテタス)
-                    if (isset($searchData['status']) && count($searchData['status']) > 0) {
-                        $status_ids = [];
-                        foreach ($searchData['status'] as $Status) {
-                            $status_ids[] = $Status->getId();
-                        }
-                        $searchData['status'] = $this->productStatusRepository->findBy(['id' => $status_ids]);
-                    }
-                    $searchForm = $builder->getForm();
-                    $searchForm->setData($searchData);
-                }
+                // セッション中の検索条件, ページ番号を初期化.
+                $this->session->set('eccube.admin.product.search', $searchData);
+                $this->session->set('eccube.admin.product.search.page_no', $page_no);
             }
         }
+
+        $qb = $this->productRepository->getQueryBuilderBySearchDataForAdmin($searchData);
+
+        $event = new EventArgs(
+            [
+                'qb' => $qb,
+                'searchData' => $searchData,
+            ],
+            $request
+        );
+
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_INDEX_SEARCH, $event);
+
+        $pagination = $paginator->paginate(
+            $qb,
+            $page_no,
+            $page_count
+        );
 
         return [
             'searchForm' => $searchForm->createView(),
             'pagination' => $pagination,
-            'productStatuses' => $ProductStatuses,
             'pageMaxis' => $pageMaxis,
             'page_no' => $page_no,
-            'page_status' => $page_status,
             'page_count' => $page_count,
-            'active' => $active,
+            'has_errors' => false,
         ];
     }
 
@@ -683,9 +682,14 @@ class ProductController extends AbstractController
             /* @var $Product \Eccube\Entity\Product */
             $Product = $this->productRepository->find($id);
             if (!$Product) {
-                $this->deleteMessage();
-                $rUrl = $this->generateUrl('admin_product_page', ['page_no' => $page_no]) . '?resume=' . Constant::ENABLED;
-                return $this->redirect($rUrl);
+                if ($request->isXmlHttpRequest()) {
+                    $message = trans('admin.delete.warning');
+                    return new JsonResponse(['success' => $success, 'message' => $message]);
+                } else {
+                    $this->deleteMessage();
+                    $rUrl = $this->generateUrl('admin_product_page', ['page_no' => $page_no]) . '?resume=' . Constant::ENABLED;
+                    return $this->redirect($rUrl);
+                }
             }
 
             if ($Product instanceof Product) {
@@ -1004,39 +1008,6 @@ class ProductController extends AbstractController
         $ProductCategory->setSortNo($count);
 
         return $ProductCategory;
-    }
-
-    /**
-     * @param Paginator $paginator
-     * @param Request $request
-     * @param array $searchData
-     * @param integer $page_no
-     * @param integer $page_count
-     * @return Paginator
-     */
-    private function buildPagination(Paginator $paginator, Request $request, array &$searchData, $page_no, $page_count)
-    {
-        $qb = $this->productRepository->getQueryBuilderBySearchDataForAdmin($searchData);
-
-        $event = new EventArgs(
-            [
-                'qb' => $qb,
-                'searchData' => $searchData,
-            ],
-            $request
-        );
-
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_INDEX_SEARCH, $event);
-        $searchData = $event->getArgument('searchData');
-
-        $pagination = $paginator->paginate(
-            $qb,
-            $page_no,
-            $page_count,
-            ['wrap-queries' => true]
-        );
-
-        return $pagination;
     }
 
     /**

@@ -182,6 +182,12 @@ $(function() {
                             </div>
                         </div>
                         <div class="row mb-2">
+                            <div class="col-3"><span>{{ 'admin.order.mail.body'|trans }}</span></div>
+                            <div class="col">
+                                {{ body|nl2br }}
+                            </div>
+                        </div>
+                        <div class="row mb-2">
                             <div class="col-3"><span>{{ 'admin.order.mail.362'|trans }}</span><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></div>
                             <div class="col">
                                 {{ form_widget(form.mail_footer, {'attr': {'rows': '7'}}) }}

@@ -28,6 +28,7 @@ use Doctrine\ORM\NoResultException;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BlockPosition;
 use Eccube\Entity\Layout;
+use Eccube\Entity\Master\DeviceType;
 use Eccube\Form\Type\Master\DeviceTypeType;
 use Eccube\Repository\BlockRepository;
 use Eccube\Repository\LayoutRepository;
@@ -44,6 +45,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Twig\Environment as Twig;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 // todo プレビュー実装
 class LayoutController extends AbstractController
@@ -84,7 +86,7 @@ class LayoutController extends AbstractController
      */
     public function index()
     {
-        $Layouts = $this->layoutRepository->findBy([], ['id' => 'DESC']);
+        $Layouts = $this->layoutRepository->findBy([], ['DeviceType' => 'DESC', 'id' => 'ASC']);
 
         return [
             'Layouts' => $Layouts,
@@ -94,13 +96,17 @@ class LayoutController extends AbstractController
     /**
      * @Method("DELETE")
      * @Route("/%eccube_admin_route%/content/layout/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_layout_delete")
+     *
+     * @param Layout $Layout
+     *
+     * @return RedirectResponse
      */
-    public function delete($id)
+    public function delete(Layout $Layout)
     {
         $this->isTokenValid();
 
-        $Layout = $this->layoutRepository->find($id);
-        if (!$Layout) {
+        /** @var Layout $Layout */
+        if (!$Layout->isDeletable()) {
             $this->deleteMessage();
 
             return $this->redirectToRoute('admin_content_layout');
@@ -232,43 +238,6 @@ class LayoutController extends AbstractController
             'Layout' => $Layout,
             'UnusedBlocks' => $UnusedBlocks,
         ];
-    }
-
-    /**
-     * @Method("POST")
-     * @Route("/%eccube_admin_route%/content/layout/sort_no/move", name="admin_content_layout_sort_no_move")
-     *
-     * @param Request $request
-     * @return Response
-     */
-    public function moveSortNo(Request $request)
-    {
-        if (!$request->isXmlHttpRequest()) {
-            throw new BadRequestHttpException();
-        }
-
-        if ($this->isTokenValid()) {
-            $sortNos = $request->request->get('newSortNos');
-            $targetLayoutId = $request->request->get('targetLayoutId');
-
-            foreach ($sortNos as $ids => $sortNo) {
-
-                $id = explode('-', $ids);
-                $pageId = $id[0];
-                $layoutId = $id[1];
-
-                /* @var $Item PageLayoutRepository */
-                $Item = $this->pageLayoutRepository
-                    ->findOneBy(['page_id' => $pageId, 'layout_id' => $layoutId]);
-
-                $Item->setLayoutId($targetLayoutId);
-                $Item->setSortNo($sortNo);
-                $this->entityManager->persist($Item);
-            }
-            $this->entityManager->flush();
-        }
-
-        return new Response();
     }
 
     /**

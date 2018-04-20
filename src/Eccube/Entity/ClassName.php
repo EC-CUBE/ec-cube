@@ -42,7 +42,7 @@ class ClassName extends \Eccube\Entity\AbstractEntity
      */
     public function __toString()
     {
-        return $this->getName();
+        return $this->getDisplayName();
     }
 
     /**
@@ -57,9 +57,16 @@ class ClassName extends \Eccube\Entity\AbstractEntity
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="backend_name", type="string", length=255, nullable=true)
      */
-    private $name;
+    private $backend_name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="display_name", type="string", length=255)
+     */
+    private $display_name;
 
     /**
      * @var int
@@ -122,27 +129,51 @@ class ClassName extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set name.
+     * Set backend_name.
      *
-     * @param string $name
+     * @param string $backend_name
      *
      * @return ClassName
      */
-    public function setName($name)
+    public function setBackendName($backendName)
     {
-        $this->name = $name;
+        $this->backend_name = $backendName;
 
         return $this;
     }
 
     /**
-     * Get name.
+     * Get backend_name.
      *
      * @return string
      */
-    public function getName()
+    public function getBackendName()
     {
-        return $this->name;
+        return $this->backend_name;
+    }
+
+    /**
+     * Set displayName.
+     *
+     * @param string $displayName
+     *
+     * @return ClassName
+     */
+    public function setDisplayName($displayName)
+    {
+        $this->display_name = $displayName;
+
+        return $this;
+    }
+
+    /**
+     * Get displayName.
+     *
+     * @return string
+     */
+    public function getDisplayName()
+    {
+        return $this->display_name;
     }
 
     /**

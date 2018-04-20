@@ -58,7 +58,7 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->flush();
         $test_class_name_id = $this->classNameRepository
             ->findOneBy(array(
-                'name' => $TestClassName->getName()
+                'display_name' => $TestClassName->getDisplayName()
             ))
             ->getId();
 
@@ -80,7 +80,7 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
 
         $test_class_name_id = $this->classNameRepository
             ->findOneBy(array(
-                'name' => $TestClassName->getName()
+                'display_name' => $TestClassName->getDisplayName()
             ))
             ->getId();
 
@@ -112,7 +112,7 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->flush();
         $test_class_name_id = $this->classNameRepository
             ->findOneBy(array(
-                'name' => $TestClassName->getName()
+                'display_name' => $TestClassName->getDisplayName()
             ))
             ->getId();
         $TestClassCategory = $this->newTestClassCategory($TestCreator, $TestClassName);
@@ -145,7 +145,7 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->flush();
         $test_class_name_id = $this->classNameRepository
             ->findOneBy(array(
-                'name' => $TestClassName->getName()
+                'display_name' => $TestClassName->getDisplayName()
             ))
             ->getId();
         $TestClassCategory = $this->newTestClassCategory($TestCreator, $TestClassName);
@@ -218,7 +218,7 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
     private function newTestClassName($TestCreator)
     {
         $TestClassName = new \Eccube\Entity\ClassName();
-        $TestClassName->setName('形状')
+        $TestClassName->setDisplayName('形状')
             ->setSortNo(100)
             ->setCreator($TestCreator);
 
@@ -237,4 +237,3 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
         return $TestClassCategory;
     }
 }
-

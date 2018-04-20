@@ -1,0 +1,21 @@
+services:
+  Eccube\Tests\Fixture\Generator:
+    arguments:
+      - '@doctrine.orm.default_entity_manager'
+      - '@Eccube\Security\Core\Encoder\PasswordEncoder'
+      - '@Eccube\Repository\MemberRepository'
+      - '@Eccube\Repository\CategoryRepository'
+      - '@Eccube\Repository\CustomerRepository'
+      - '@Eccube\Repository\ClassNameRepository'
+      - '@Eccube\Repository\ClassCategoryRepository'
+      - '@Eccube\Repository\DeliveryDurationRepository'
+      - '@Eccube\Repository\DeliveryFeeRepository'
+      - '@Eccube\Repository\PaymentRepository'
+      - '@Eccube\Repository\PageRepository'
+      - '@Eccube\Repository\Master\PrefRepository'
+      - '@Eccube\Repository\TaxRuleRepository'
+      - '@eccube.purchase.flow.order'
+      - '@session'
+      - 'ja_JP'
+    lazy: true
+    public: true # Codeception対応

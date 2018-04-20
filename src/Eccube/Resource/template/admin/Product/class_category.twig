@@ -23,8 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['product', 'class_name'] %}
 
-{% block title %}{{'admin.product.class_category.417'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.product.class_category.416'|trans}}{% endblock %}
+{% block title %}{{ 'admin.product.class_category.417'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.product.class_category.416'|trans }}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
@@ -81,7 +81,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 });
             };
 
-            $("ul.tableish > .item_box a.up").click(function (e) {
+            $("ul.tableish > .item_box a.up").click(function(e) {
                 e.preventDefault();
                 var current = $(this).parents(".item_box");
                 current.prev().before(current);
@@ -89,7 +89,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 updateSortNo();
             });
 
-            $("ul.tableish > .item_box a.down").click(function (e) {
+            $("ul.tableish > .item_box a.down").click(function(e) {
                 e.preventDefault();
                 var current = $(this).parents(".item_box");
                 current.next().after(current);
@@ -105,14 +105,27 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <div class="c-contentsArea__primaryCol">
             <div class="c-primaryCol">
                 <div class="card rounded border-0 mb-4">
-                    {# TODO 規格名の表示デザイン #}
                     <div class="card-header">
                         <div class="row">
-                            <div class="col-8"><span class="card-title">{{ 'admin.product.class_category.418'|trans }} {{ ClassName }}</span></div>
+                            <div class="col"><span class="card-title">{{ 'admin.product.class_category.418'|trans }}</span></div>
                         </div>
                     </div>
+                    <div class="card-body">
+                        <div class="row mb-2">
+                            <div class="col-auto"><span>{{ 'admin.common.label.display_name'|trans }}</span></div>
+                            <div class="col-auto"><span>{{ ClassName.display_name }}</span></div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-auto"><span>{{ 'admin.common.label.class_name'|trans }}</span></div>
+                            <div class="col-auto"><span>{{ ClassName.backend_name }}</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card rounded border-0 mb-4">
+                    <div class="card-header"><span class="card-title">{{ 'admin.product.class_category.420'|trans }}</span></div>
                     <div class="card-body p-0">
                         <div class="card rounded border-0 mb-2">
+
                             <ul class="list-group list-group-flush tableish">
                                 <li class="list-group-item">
                                     <form role="form" class="form-row" name="form1" id="form1" method="post" action="{{ url('admin_product_class_category', {'class_name_id': ClassName.id}) }}">
@@ -182,7 +195,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 </div>
                 <p>{{ 'admin.product.class_category.433'|trans }}</p>
             </div>
-
             <div class="card rounded border-0">
                 <div class="card-body p-4">
                     <div class="text-center">

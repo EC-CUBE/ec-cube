@@ -102,6 +102,11 @@ class CategoryController extends AbstractController
             }
         }
 
+        $Categories = $this->categoryRepository->getList($Parent);
+
+        // ツリー表示のため、ルートからのカテゴリを取得
+        $TopCategories = $this->categoryRepository->getList(null);
+
         //
         $builder = $this->formFactory
             ->createBuilder(CategoryType::class, $TargetCategory);
@@ -117,6 +122,12 @@ class CategoryController extends AbstractController
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CATEGORY_INDEX_INITIALIZE, $event);
 
         $form = $builder->getForm();
+
+        $forms = [];
+        foreach ($Categories as $Category) {
+            $forms[$Category->getId()] = $this->formFactory
+                ->createNamed('category_' . $Category->getId(), CategoryType::class, $Category);
+        }
 
         //
         if ($request->getMethod() === 'POST') {
@@ -148,12 +159,38 @@ class CategoryController extends AbstractController
                     return $this->redirectToRoute('admin_product_category');
                 }
             }
+
+            foreach ($forms as $editForm) {
+                $editForm->handleRequest($request);
+                if ($editForm->isSubmitted() && $editForm->isValid()) {
+                    $this->categoryRepository->save($editForm->getData());
+
+                    $event = new EventArgs(
+                        array(
+                            'form' => $form,
+                            'Parent' => $Parent,
+                            'TargetCategory' => $editForm->getData(),
+                        ),
+                        $request
+                    );
+
+                    $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CATEGORY_INDEX_COMPLETE, $event);
+
+                    $this->addSuccess('admin.category.save.complete', 'admin');
+
+                    if ($Parent) {
+                        return $this->redirectToRoute('admin_product_category_show', array('parent_id' => $Parent->getId()));
+                    } else {
+                        return $this->redirectToRoute('admin_product_category');
+                    }
+                }
+            }
         }
 
-        $Categories = $this->categoryRepository->getList($Parent);
-
-        // ツリー表示のため、ルートからのカテゴリを取得
-        $TopCategories = $this->categoryRepository->getList(null);
+        $formViews = [];
+        foreach ($forms as $key => $value) {
+            $formViews[$key] = $value->createView();
+        }
 
         return [
             'form' => $form->createView(),
@@ -161,6 +198,7 @@ class CategoryController extends AbstractController
             'Categories' => $Categories,
             'TopCategories' => $TopCategories,
             'TargetCategory' => $TargetCategory,
+            'forms' => $formViews
         ];
     }
 
@@ -216,7 +254,11 @@ class CategoryController extends AbstractController
      */
     public function moveSortNo(Request $request)
     {
-        if ($request->isXmlHttpRequest()) {
+        if (!$request->isXmlHttpRequest()) {
+            throw new BadRequestHttpException();
+        }
+
+        if ($this->isTokenValid()) {
             $sortNos = $request->request->all();
             foreach ($sortNos as $categoryId => $sortNo) {
                 /* @var $Category \Eccube\Entity\Category */
@@ -226,8 +268,9 @@ class CategoryController extends AbstractController
                 $this->entityManager->persist($Category);
             }
             $this->entityManager->flush();
+
+            return new Response('Successful');
         }
-        return new Response('Successful');
     }
 
 

@@ -213,6 +213,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="mb-2">
                             <label class="col-form-label">{{ 'admin.product.index.470'|trans }}</label>
                             {{ form_widget(searchForm.id) }}
+                            {{ form_errors(searchForm.id) }}
                         </div>
                         <div class="d-inline-block mb-3" data-toggle="collapse" href="#searchDetail"
                              aria-expanded="false" aria-controls="searchDetail"><a><i
@@ -222,19 +223,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     </div>
                 </div>
             </div>
-            <div class="c-subContents collapse ec-collapse" id="searchDetail">
+            <div class="c-subContents collapse ec-collapse{{ has_errors ? ' show' }}" id="searchDetail">
                 <div class="row mb-2">
                     <div class="col-6">
                         <div class="form-row mb-2">
                             <div class="col-6">
                                 <label class="col-form-label">{{ 'admin.product.index.471'|trans }}</label>
                                 {{ form_widget(searchForm.category_id) }}
+                                {{ form_errors(searchForm.category_id) }}
                             </div>
                         </div>
                         <div class="form-row mb-2">
                             <div class="col-12">
                                 <p class="col-form-label">{{ 'admin.product.index.filter'|trans }}</p>
                                 {{ form_widget(searchForm.status, {'label_attr': {'class': 'checkbox-inline'}}) }}
+                                {{ form_errors(searchForm.status, {'label_attr': {'class': 'checkbox-inline'}}) }}
                             </div>
                         </div>
                         <div class="form-row mb-2">
@@ -255,11 +258,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <div class="col">
                                     {# TODO: カレンダー表示の調整 #}
                                     {{ form_widget(searchForm.create_date_start) }}
+                                    {{ form_errors(searchForm.create_date_start) }}
                                 </div>
                                 <div class="col-auto text-center"><span>{{ 'admin.product.index.474'|trans }}</span>
                                 </div>
                                 <div class="col">
                                     {{ form_widget(searchForm.create_date_end) }}
+                                    {{ form_errors(searchForm.create_date_end) }}
                                 </div>
                             </div>
                         </div>
@@ -269,10 +274,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <div class="col">
                                     {# TODO: カレンダー表示の調整 #}
                                     {{ form_widget(searchForm.update_date_start) }}
+                                    {{ form_errors(searchForm.update_date_start) }}
                                 </div>
                                 <div class="col-auto"><span>{{ 'admin.product.index.474'|trans }}</span></div>
                                 <div class="col">
                                     {{ form_widget(searchForm.update_date_end) }}
+                                    {{ form_errors(searchForm.update_date_end) }}
                                 </div>
                             </div>
                         </div>
@@ -294,9 +301,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <div class="c-contentsArea__cols">
         <div class="c-contentsArea__primaryCol">
             <div class="c-primaryCol">
-                {# TODO 「商品が全く登録されていない場合の条件に変更 #}
-                {% if pagination %}
-                    {% if pagination|length > 0 %}
+                {% if pagination and pagination.totalItemCount %}
                         <form id="form_bulk" method="POST" action="">
                             <div class="row justify-content-between mb-2">
                                 <div class="col-6">
@@ -486,23 +491,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 </div>
                             </div>
                         </form>
-                    {% else %}
+                {% elseif has_errors %}
                         <div class="card rounded border-0">
                             <div class="card-body p-4">
-                                <div class="text-center text-muted mb-4 h5">{{ 'admin.product.index.text05'|trans }}</div>
+                                <div class="text-center text-muted mb-4 h5">{{ 'admin.product.index.invalid_search_data'|trans }}</div>
                                 <div class="text-center text-muted">{{ 'admin.product.index.text06'|trans }}</div>
-                                <div class="text-center text-muted">{{ 'admin.product.index.text07'|trans }}</div>
                             </div>
                         </div>
-                    {% endif %}
                 {% else %}
                     <div class="card rounded border-0">
                         <div class="card-body p-4">
-                            <div class="text-center text-muted mb-2 h5">{{ 'admin.product.index.text08'|trans }}</div>
-                            <div class="text-center mb-4"><a class="btn btn-ec-regular pl-4 pr-4"
-                                                             href="{{ url('admin_product_product_new') }}">{{ 'admin.product.index.text09'|trans }}</a>
-                            </div>
-                            <div class="text-center text-muted">{{ 'admin.product.index.text10'|trans }}</div>
+                            <div class="text-center text-muted mb-4 h5">{{ 'admin.product.index.text05'|trans }}</div>
+                            <div class="text-center text-muted">{{ 'admin.product.index.text06'|trans }}</div>
+                            <div class="text-center text-muted">{{ 'admin.product.index.text07'|trans }}</div>
                         </div>
                     </div>
                 {% endif %}

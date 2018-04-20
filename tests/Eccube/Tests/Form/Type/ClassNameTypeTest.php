@@ -33,7 +33,7 @@ class ClassNameTypeTest extends AbstractTypeTestCase
 
     /** @var array デフォルト値（正常系）を設定 */
     protected $formData = array(
-        'name' => '形状'
+        'display_name' => '形状'
     );
 
     public function setUp()
@@ -57,7 +57,7 @@ class ClassNameTypeTest extends AbstractTypeTestCase
 
     public function testInvalidName_NotBlank()
     {
-        $this->formData['name'] = '';
+        $this->formData['display_name'] = '';
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
@@ -65,7 +65,7 @@ class ClassNameTypeTest extends AbstractTypeTestCase
 
     public function testInvalidName_SptabCheck()
     {
-        $this->formData['name'] = '     ';
+        $this->formData['display_name'] = '     ';
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
@@ -75,7 +75,7 @@ class ClassNameTypeTest extends AbstractTypeTestCase
     {
         $name = str_repeat('S', $this->eccubeConfig['eccube_stext_len']) . 'S';
 
-        $this->formData['name'] = $name;
+        $this->formData['display_name'] = $name;
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
@@ -85,7 +85,7 @@ class ClassNameTypeTest extends AbstractTypeTestCase
     {
         $name = str_repeat('S', $this->eccubeConfig['eccube_stext_len']);
 
-        $this->formData['name'] = $name;
+        $this->formData['display_name'] = $name;
         $this->form->submit($this->formData);
 
         $this->assertTrue($this->form->isValid());

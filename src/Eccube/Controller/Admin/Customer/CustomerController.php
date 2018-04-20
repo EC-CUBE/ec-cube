@@ -25,6 +25,7 @@
 namespace Eccube\Controller\Admin\Customer;
 
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use Doctrine\ORM\QueryBuilder;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
@@ -38,6 +39,7 @@ use Eccube\Repository\Master\PrefRepository;
 use Eccube\Repository\Master\SexRepository;
 use Eccube\Service\CsvExportService;
 use Eccube\Service\MailService;
+use Eccube\Util\FormUtil;
 use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -46,6 +48,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CustomerController extends AbstractController
 {
@@ -102,9 +105,8 @@ class CustomerController extends AbstractController
      */
     public function index(Request $request, $page_no = null, Paginator $paginator)
     {
-        $pagination = array();
-        $builder = $this->formFactory
-            ->createBuilder(SearchCustomerType::class);
+        $session = $this->session;
+        $builder = $this->formFactory->createBuilder(SearchCustomerType::class);
 
         $event = new EventArgs(
             array(
@@ -116,100 +118,80 @@ class CustomerController extends AbstractController
 
         $searchForm = $builder->getForm();
 
-        //アコーディオンの制御初期化( デフォルトでは閉じる )
-        $active = false;
-
         $pageMaxis = $this->pageMaxRepository->findAll();
-        $page_count = $this->eccubeConfig['eccube_default_page_count'];
-
-        if ('POST' === $request->getMethod()) {
-
-            $searchForm->handleRequest($request);
-
-            if ($searchForm->isValid()) {
-                $searchData = $searchForm->getData();
-
-                // paginator
-                $qb = $this->customerRepository->getQueryBuilderBySearchData($searchData);
-                $page_no = 1;
-
-                $event = new EventArgs(
-                    array(
-                        'form' => $searchForm,
-                        'qb' => $qb,
-                    ),
-                    $request
-                );
-                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_INDEX_SEARCH, $event);
-
-                $pagination = $paginator->paginate(
-                    $qb,
-                    $page_no,
-                    $page_count
-                );
-
-                // sessionのデータ保持
-                $this->session->set('eccube.admin.customer.search', $searchData);
-                $this->session->set('eccube.admin.customer.search.page_no', $page_no);
-            }
-        } else {
-            if (is_null($page_no) && $request->get('resume') != Constant::ENABLED) {
-                // sessionを削除
-                $this->session->remove('eccube.admin.customer.search');
-                $this->session->remove('eccube.admin.customer.search.page_no');
-            } else {
-                // pagingなどの処理
-                $searchData = $this->session->get('eccube.admin.customer.search');
-                if (is_null($page_no)) {
-                    $page_no = intval($this->session->get('eccube.admin.customer.search.page_no'));
-                } else {
-                    $this->session->set('eccube.admin.customer.search.page_no', $page_no);
-                }
-                if (!is_null($searchData)) {
-                    // 表示件数
-                    $pcount = $request->get('page_count');
-                    $page_count = empty($pcount) ? $page_count : $pcount;
-
-                    $qb = $this->customerRepository->getQueryBuilderBySearchData($searchData);
-
-                    $event = new EventArgs(
-                        array(
-                            'form' => $searchForm,
-                            'qb' => $qb,
-                        ),
-                        $request
-                    );
-                    $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_INDEX_SEARCH, $event);
-
-                    $pagination = $paginator->paginate(
-                        $qb,
-                        $page_no,
-                        $page_count
-                    );
-
-                    // セッションから検索条件を復元
-                    if (count($searchData['sex']) > 0) {
-                        $sex_ids = array();
-                        foreach ($searchData['sex'] as $Sex) {
-                            $sex_ids[] = $Sex->getId();
-                        }
-                        $searchData['sex'] = $this->sexRepository->findBy(array('id' => $sex_ids));
-                    }
-
-                    if (!is_null($searchData['pref'])) {
-                        $searchData['pref'] = $this->prefRepository->find($searchData['pref']->getId());
-                    }
-                    $searchForm->setData($searchData);
+        $pageCount = $session->get('eccube.admin.customer.search.page_count', $this->eccubeConfig['eccube_default_page_count']);
+        $pageCountParam = $request->get('page_count');
+        if ($pageCountParam && is_numeric($pageCountParam)) {
+            foreach ($pageMaxis as $pageMax) {
+                if ($pageCountParam == $pageMax->getName()) {
+                    $pageCount = $pageMax->getName();
+                    $session->set('eccube.admin.customer.search.page_count', $pageCount);
+                    break;
                 }
             }
         }
+
+        if ('POST' === $request->getMethod()) {
+            $searchForm->handleRequest($request);
+            if ($searchForm->isValid()) {
+                $searchData = $searchForm->getData();
+                $page_no = 1;
+
+                $session->set('eccube.admin.customer.search', FormUtil::getViewData($searchForm));
+                $session->set('eccube.admin.customer.search.page_no', $page_no);
+            } else {
+                return [
+                    'searchForm' => $searchForm->createView(),
+                    'pagination' => [],
+                    'pageMaxis' => $pageMaxis,
+                    'page_no' => $page_no,
+                    'page_count' => $pageCount,
+                    'has_errors' => true,
+                ];
+
+            }
+        } else {
+            if (null !== $page_no || $request->get('resume')) {
+                if ($page_no) {
+                    $session->set('eccube.admin.customer.search.page_no', (int) $page_no);
+                } else {
+                    $page_no = $session->get('eccube.admin.customer.search.page_no', 1);
+                }
+                $viewData = $session->get('eccube.admin.customer.search', []);
+            } else {
+                $page_no = 1;
+                $viewData = FormUtil::getViewData($searchForm);
+                $session->set('eccube.admin.customer.search', $viewData);
+                $session->set('eccube.admin.customer.search.page_no', $page_no);
+            }
+            $searchData = FormUtil::submitAndGetData($searchForm, $viewData);
+        }
+
+        /** @var QueryBuilder $qb */
+        $qb = $this->customerRepository->getQueryBuilderBySearchData($searchData);
+
+        $event = new EventArgs(
+            array(
+                'form' => $searchForm,
+                'qb' => $qb,
+            ),
+            $request
+        );
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_INDEX_SEARCH, $event);
+
+        $pagination = $paginator->paginate(
+            $qb,
+            $page_no,
+            $pageCount
+        );
+
         return [
             'searchForm' => $searchForm->createView(),
             'pagination' => $pagination,
             'pageMaxis' => $pageMaxis,
             'page_no' => $page_no,
-            'page_count' => $page_count,
-            'active' => $active,
+            'page_count' => $pageCount,
+            'has_errors' => false,
         ];
     }
 
@@ -227,7 +209,11 @@ class CustomerController extends AbstractController
             throw new NotFoundHttpException();
         }
 
-        $activateUrl = $this->generateUrl('entry_activate', array('secret_key' => $Customer->getSecretKey()));
+        $activateUrl = $this->generateUrl(
+            'entry_activate',
+            array('secret_key' => $Customer->getSecretKey()),
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
 
         // メール送信
         $this->mailService->sendAdminCustomerConfirmMail($Customer, $activateUrl);

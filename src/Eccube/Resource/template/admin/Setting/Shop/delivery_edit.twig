@@ -28,12 +28,174 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
+{% block stylesheet %}
+    <style>
+        .list-group-item:hover {
+            z-index: inherit;
+        }
+    </style>
+{% endblock stylesheet %}
+
 {% block javascript %}
+    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.core.min.js', 'admin') }}"></script>
+    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.widget.min.js', 'admin') }}"></script>
+    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.mouse.min.js', 'admin') }}"></script>
+    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.sortable.min.js', 'admin') }}"></script>
     <script>
         $(function () {
             $("#set_fee_all").on("click", function () {
                 var fee = $("#{{ form.free_all.vars.id }}").val();
                 $("input[name$='[fee]']").val(fee);
+            });
+        });
+    </script>
+    <script>
+        // 降順にソートする
+        $(function(){
+            var $items_wrapper = $('.sortable-container');
+            var $items = $('.sortable-item');
+            $items.sort(function(a, b){
+                return parseInt($(a).find('.sort-no').val()) > parseInt($(b).find('.sort-no').val());
+            });
+            $items.each(function(){
+                $items_wrapper.append($(this).remove());
+            })
+        });
+
+        // 並び替え後にsort noを更新
+        function updateSortNo() {
+            var $items = $('.sortable-container').find('.sortable-item');
+            $items.each(function(){
+                $(this).find('.sort-no').val($items.index(this) + 1);
+            });
+        }
+
+        // 最初と最後の↑↓を再描画
+        function redrawDisableAllows() {
+            var items = $('.sortable-item');
+            items.find('a').removeClass('disabled');
+            items.first().find('a.action-up').addClass('disabled');
+            items.last().find('a.action-down').addClass('disabled');
+        }
+
+        // 表示順の更新を行う
+        function moveSortNo() {
+            updateSortNo();
+            redrawDisableAllows();
+        }
+
+        $(function() {
+
+            var $collectionHolder = $('#delivery-time-group');
+            var index = $collectionHolder.find('.delivery-time-item').length;
+
+            redrawDisableAllows();
+
+            // お届け時間設定の新規作成ボタンでお届け時間項目を追加する
+            $('#add-delivery-time-button').on('click', function (event) {
+
+                // 追加するお届け時間名を取得
+                var deliveryTimeName = $('#add-delivery-time-value').val();
+
+                if (deliveryTimeName == '') {
+                    return;
+                }
+
+                var prototype = $collectionHolder.data('prototype');
+
+                var newForm = prototype.replace(/__name__/g, index);
+                var newForm = newForm.replace(/__value__/g, deliveryTimeName);
+
+                // 要素を追加
+                var $lastRow = $('#delivery-time-group > li:last');
+                $lastRow.after(newForm);
+
+                // お届け時間名を入れる
+                var inputId = '#delivery_delivery_times_' + index + '_delivery_time';
+                $(inputId).val(deliveryTimeName);
+
+                // 入力欄を初期化
+                $('#add-delivery-time-value').val('');
+
+                // 要素数をインクリメント
+                index++;
+
+                moveSortNo();
+            });
+
+            // 明細行の削除
+            $('#delivery-time-group').on('click', '.remove-delivery-time-item', function (event) {
+                event.preventDefault();
+
+                $(this).tooltip('hide');
+
+                // 自身の行を削除.
+                $(event.target).parents('li').remove();
+
+                moveSortNo();
+            });
+
+            // Drag and Drop
+            $(".sortable-container").sortable({
+                items: '> .sortable-item',
+                cursor: 'move',
+                update: function (e, ui) {
+                    moveSortNo();
+                }
+            });
+            // Up
+            $('#delivery-time-group').on('click', 'a.action-up', function (e) {
+                e.preventDefault();
+                var current = $(this).parents("li");
+                if (current.prev().hasClass('sortable-item')) {
+                    current.prev().before(current);
+                    moveSortNo();
+                }
+            });
+            // Down
+            $('#delivery-time-group').on('click', 'a.action-down', function (e) {
+                e.preventDefault();
+                var current = $(this).parents("li");
+                if (current.next().hasClass('sortable-item')) {
+                    current.next().after(current);
+                    moveSortNo();
+                }
+            });
+
+            // 編集
+            $('#delivery-time-group').on('click', 'a.action-edit', function (e) {
+                e.preventDefault();
+                var current = $(this).parents("li");
+                current.find('.mode-view').addClass('d-none');
+                current.find('.mode-edit').removeClass('d-none');
+            });
+
+            // 編集決定
+            $('#delivery-time-group').on('click', 'button.action-edit-submit', function (e) {
+                e.preventDefault();
+                var current = $(this).parents("li");
+                var value = current.find('.form-control').val()
+                current.find('.display-label').text(value);
+                current.find('.mode-view').removeClass('d-none');
+                current.find('.mode-edit').addClass('d-none');
+            });
+            // 編集キャンセル
+            $('#delivery-time-group').on('click', 'button.action-edit-cancel', function (e) {
+                e.preventDefault();
+                var current = $(this).parents("li");
+                current.find('[data-origin-value]').each(function(e) {
+                    $(this).val($(this).attr('data-origin-value'));
+                });
+                var value = current.find('.form-control').val();
+                current.find('.display-label').text(value);
+                current.find('.mode-view').removeClass('d-none');
+                current.find('.mode-edit').addClass('d-none');
+            });
+            // 編集時, エラーがあれば入力欄を表示.
+            $('#delivery-time-group').find('.is-invalid').each(function (e) {
+                var current = $(this).parents("li");
+                current.find('.mode-view').addClass('d-none');
+                current.find('.mode-edit').removeClass('d-none');
             });
         });
     </script>
@@ -96,79 +258,25 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="card-header"><span>{{ 'admin.setting.shop.delivery_edit.delivery_times'|trans }}</span></div>
                         <div class="card-body p-0">
                             <div class="card rounded border-0 mb-2">
-                                <ul class="list-group list-group-flush">
+                                <ul id="delivery-time-group" class="list-group list-group-flush sortable-container"
+                                    data-prototype="{% filter escape %}{{ include('@admin/Setting/Shop/delivery_time_prototype.twig', {'form': form.delivery_times.vars.prototype}) }}{% endfilter %}">
                                     <li class="list-group-item">
                                         <div class="form-row">
                                             <div class="col-auto d-flex align-items-center">
-                                                <input class="form-control" type="text">
+                                                <input id="add-delivery-time-value" class="form-control" type="text">
                                             </div>
                                             <div class="col-auto d-flex align-items-center">
-                                                <button class="btn btn-ec-regular" type="button">{{ 'admin.setting.shop.delivery_edit.delivery_times_register'|trans }}</button>
+                                                <button id="add-delivery-time-button" class="btn btn-ec-regular" type="button">{{ 'admin.setting.shop.delivery_edit.delivery_times_register'|trans }}</button>
                                             </div>
                                         </div>
                                     </li>
-                                    {# TODO お届け時間16行の固定入力になっているため, 動的に増やせるように実装を変更する #}
-                                    {# TODO 上下移動, 編集、削除アクションを実装する. サーバサイドでの処理は不要で、javascriptで画面上の動きだけ制御できればよい #}
                                     {% for child in form.delivery_times %}
-                                    <li class="list-group-item">
-                                        <div class="row justify-content-around">
-                                            <div class="col-auto d-flex align-items-center"><i
-                                                        class="fa fa-bars text-ec-gray"></i></div>
-                                            <div class="col d-flex align-items-center"><a>{{ child.vars.value }}</a></div>
-                                            <div class="col-auto text-right"><a class="btn btn-ec-actionIcon mr-3"
-                                                                                href=""
-                                                                                data-toggle="tooltip"
-                                                                                data-placement="top"
-                                                                                title="上へ移動"><i
-                                                            class="fa fa-arrow-up fa-lg text-secondary"></i></a><a
-                                                        class="btn btn-ec-actionIcon mr-3" href="" data-toggle="tooltip"
-                                                        data-placement="top" title="下へ移動"><i
-                                                            class="fa fa-arrow-down fa-lg text-secondary"></i></a><a
-                                                        class="btn btn-ec-actionIcon mr-3" href="" data-toggle="tooltip"
-                                                        data-placement="top" title="名前を編集"><i
-                                                            class="fa fa-pencil fa-lg text-secondary"></i></a><a
-                                                        class="btn btn-ec-actionIcon mr-3" href="" data-toggle="tooltip"
-                                                        data-placement="top" title="削除"><i
-                                                            class="fa fa-close fa-lg text-secondary"></i></a></div>
-                                        </div>
-                                    </li>
+                                        {{ include('@admin/Setting/Shop/delivery_time_prototype.twig', {'form': child}) }}
                                     {% endfor %}
-                                    {# TODO お届け時間の編集を実装する #}
-                                    <li class="list-group-item" style="display: none">
-                                        <div class="row justify-content-around">
-                                            <div class="col-7 d-flex align-items-center">
-                                                <div class="form-row">
-                                                    <div class="col-auto d-flex align-items-center">
-                                                        <input class="form-control" type="text" placeholder="配送方法名を入力">
-                                                    </div>
-                                                    <div class="col-auto d-flex align-items-center">
-                                                        <button class="btn btn-ec-conversion" type="submit">決定</button>
-                                                    </div>
-                                                    <div class="col-auto d-flex align-items-center">
-                                                        <button class="btn btn-ec-sub" type="submit">キャンセル</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-5 text-right"><a class="btn btn-ec-actionIcon mr-3" href=""
-                                                                             data-toggle="tooltip" data-placement="top"
-                                                                             title="上へ移動"><i
-                                                            class="fa fa-arrow-up fa-lg text-secondary"></i></a><a
-                                                        class="btn btn-ec-actionIcon mr-3" href="" data-toggle="tooltip"
-                                                        data-placement="top" title="下へ移動"><i
-                                                            class="fa fa-arrow-down fa-lg text-secondary"></i></a><a
-                                                        class="btn btn-ec-actionIcon mr-3" href="" data-toggle="tooltip"
-                                                        data-placement="top" title="名前を編集"><i
-                                                            class="fa fa-pencil fa-lg text-secondary"></i></a><a
-                                                        class="btn btn-ec-actionIcon mr-3" href="" data-toggle="tooltip"
-                                                        data-placement="top" title="削除"><i
-                                                            class="fa fa-close fa-lg text-secondary"></i></a></div>
-                                        </div>
-                                    </li>
                                 </ul>
                             </div>
                         </div>
                     </div>
-                    {# TODO 項目のドラッグ＆ドロップでの移動を実装する #}
                     <p class="mb-4">{{ 'admin.setting.shop.delivery_edit.delivery_times_drag&drop'|trans }}</p>
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header"><span>{{ 'admin.setting.shop.delivery_edit.delivery_fees_by_pref'|trans }}</span></div>

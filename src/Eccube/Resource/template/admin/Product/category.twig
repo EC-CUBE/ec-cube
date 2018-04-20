@@ -35,46 +35,95 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.sortable.min.js', 'admin') }}"></script>
     <script>
         $(function () {
+            // 初期表示時のsort noを保持.
             var oldSortNos = [];
-            // 画面の中のsortNo一覧を保持
-            $(".list-group-item").each(function () {
+            $('.sortable-item').each(function () {
                 oldSortNos.push(this.dataset.sortNo);
             });
-            // rsort
             oldSortNos.sort(function (a, b) {
                 return a - b;
             }).reverse();
-
-            $(".list-group").sortable({
-                items: '> .list-group-item',
-                cursor: 'move',
-                update: function (e, ui) {
-                    $("body").append($('<div class="modal-backdrop show"></div>'));
-                    updateSortNo();
-                }
-            });
-
+            // 並び替え後にsort noを更新
             var updateSortNo = function () {
-                // 並び替え後にsortNoを更新
                 var newSortNos = {};
                 var i = 0;
-                $("list-group-item").each(function () {
-                    newSortNos[this.dataset.categoryId] = oldSortNos[i];
+                $('.sortable-item').each(function () {
+                    newSortNos[this.dataset.id] = oldSortNos[i];
                     i++;
                 });
-
                 $.ajax({
                     url: '{{ url('admin_product_category_sort_no_move') }}',
                     type: 'POST',
-                    data: newSortNos,
-                }).done(function (data) {
-                    console.log(data);
-                    $(".modal-backdrop").remove();
-                }).fail(function () {
-                    console.log('fail');
+                    data: newSortNos
+                }).always(function () {
                     $(".modal-backdrop").remove();
                 });
             };
+            // 最初と最後の↑↓を再描画
+            var redrawDisableAllows = function () {
+                var items = $('.sortable-item');
+                items.find('a.action-up').removeClass('disabled');
+                items.find('a.action-down').removeClass('disabled');
+                items.first().find('a.action-up').addClass('disabled');
+                items.last().find('a.action-down').addClass('disabled');
+            };
+            // オーバレイ後, 表示順の更新を行う
+            var moveSortNo = function () {
+                $('body').append($('<div class="modal-backdrop show"></div>'));
+                updateSortNo();
+                redrawDisableAllows();
+            }
+            // Drag and Drop
+            $(".sortable-container").sortable({
+                items: '> .sortable-item',
+                cursor: 'move',
+                update: function (e, ui) {
+                    moveSortNo();
+                }
+            });
+            // Up
+            $(".sortable-item").on('click', 'a.action-up', function (e) {
+                e.preventDefault();
+                var current = $(this).parents("li");
+                if (current.prev().hasClass('sortable-item')) {
+                    current.prev().before(current);
+                    moveSortNo();
+                }
+            });
+            // Down
+            $(".sortable-item").on('click', 'a.action-down', function (e) {
+                e.preventDefault();
+                var current = $(this).parents("li");
+                if (current.next().hasClass('sortable-item')) {
+                    current.next().after(current);
+                    moveSortNo();
+                }
+            });
+
+            var groupItem = $('.list-group-item');
+            groupItem.on('click', 'a.action-edit', function(e) {
+                e.preventDefault();
+                var current = $(this).parents('li');
+                current.find('.mode-view').addClass('d-none');
+                current.find('.mode-edit').removeClass('d-none');
+            });
+
+            groupItem.on('click', 'button.action-edit-cancel', function(e) {
+                e.preventDefault();
+                var current = $(this).parents('li');
+                current.find('[data-origin-value]').each(function(e) {
+                    $(this).val($(this).attr('data-origin-value'));
+                });
+                current.find('.mode-view').removeClass('d-none');
+                current.find('.mode-edit').addClass('d-none');
+            });
+
+            groupItem.find('.is-invalid').each(function (e) {
+                e.preventDefault();
+                var current = $(this).parents("li");
+                current.find('.mode-view').addClass('d-none');
+                current.find('.mode-edit').removeClass('d-none');
+            });
         });
     </script>
 {% endblock %}
@@ -126,39 +175,39 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <div class="card rounded border-0 mb-4">
                     <div class="card-body p-0">
                         <div class="card rounded border-0 mb-2">
-                            <li class="list-group-item">
-                                <form role="form" class="form-row" name="form1" id="form1" method="post"
-                                      action="{% if TargetCategory.id %}{{ path('admin_product_category_edit', {id: TargetCategory.id}) }}{% elseif Parent %}{{ url('admin_product_category_show', {'parent_id': Parent.id}) }}{% else %}{{ url('admin_product_category') }}{% endif %}"
-                                      enctype="multipart/form-data">
-                                    {% if TargetCategory.hierarchy < eccube_config.eccube_category_nest_level %}
-                                        {{ form_widget(form._token) }}
-                                        <div class="col-auto">
-                                            {{ form_widget(form.name) }}
-                                            {{ form_errors(form.name) }}
-                                        </div>
-                                        <div class="col-auto">
-                                            <button class="btn btn-ec-regular" type="submit">
-                                                {{ 'admin.product.category.403'|trans }}
-                                            </button>
-                                        </div>
-                                    {% endif %}
-                                    {% for f in form.getIterator %}
-                                        {% if f.vars.name matches '[^plg*]' %}
+                            <ul class="list-group list-group-flush sortable-container">
+                                <li class="list-group-item">
+                                    <form role="form" class="form-row" name="form1" id="form1" method="post"
+                                          action="{% if TargetCategory.id %}{{ path('admin_product_category_edit', {id: TargetCategory.id}) }}{% elseif Parent %}{{ url('admin_product_category_show', {'parent_id': Parent.id}) }}{% else %}{{ url('admin_product_category') }}{% endif %}"
+                                          enctype="multipart/form-data">
+                                        {% if TargetCategory.hierarchy < eccube_config.eccube_category_nest_level %}
+                                            {{ form_widget(form._token) }}
                                             <div class="col-auto">
-                                                {{ form_label(f) }}
-                                                {{ form_widget(f) }}
-                                                {{ form_errors(f) }}
+                                                {{ form_widget(form.name) }}
+                                                {{ form_errors(form.name) }}
+                                            </div>
+                                            <div class="col-auto">
+                                                <button class="btn btn-ec-regular" type="submit">
+                                                    {{ 'admin.product.category.403'|trans }}
+                                                </button>
                                             </div>
                                         {% endif %}
-                                    {% endfor %}
-                                </form>
-                            </li>
-                            <ul class="list-group list-group-flush">
+                                        {% for f in form.getIterator %}
+                                            {% if f.vars.name matches '[^plg*]' %}
+                                                <div class="col-auto">
+                                                    {{ form_label(f) }}
+                                                    {{ form_widget(f) }}
+                                                    {{ form_errors(f) }}
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </form>
+                                </li>
                                 {% if Categories|length > 0 %}
                                     {% for Category in Categories %}
-                                        <li class="list-group-item">
+                                        <li class="list-group-item sortable-item" data-id="{{ Category.id }}" data-sort-no="{{ Category.sort_no }}" >
                                             {% if Category.id != TargetCategory.id %}
-                                                <div class="row justify-content-around">
+                                                <div class="row justify-content-around mode-view">
                                                     <div class="col-auto d-flex align-items-center">
                                                         <i class="fa fa-bars text-ec-gray"></i>
                                                     </div>
@@ -166,26 +215,25 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                         <a href="{{ url('admin_product_category_show',  { parent_id : Category.id }) }}">{{ Category.name }}</a>
                                                     </div>
                                                     <div class="col-auto text-right">
-                                                        {# TODO: 「上へ移動」「下へ移動」のボタンの動作の実装 #}
-                                                        <a class="btn btn-ec-actionIcon mr-3" href=""
+                                                        <a class="btn btn-ec-actionIcon action-up mr-3 {% if loop.first %} disabled {% endif %}" href=""
                                                            data-toggle="tooltip" data-placement="top"
                                                            title="{{ 'admin.product.category.up'|trans }}">
                                                             <i class="fa fa-arrow-up fa-lg text-secondary"></i>
                                                         </a>
-                                                        <a class="btn btn-ec-actionIcon mr-3" href=""
+                                                        <a class="btn btn-ec-actionIcon action-down mr-3 {% if loop.last %} disabled {% endif %}" href=""
                                                            data-toggle="tooltip" data-placement="top"
                                                            title="{{ 'admin.product.category.down'|trans }}">
                                                             <i class="fa fa-arrow-down fa-lg text-secondary"></i>
                                                         </a>
-                                                        <a class="btn btn-ec-actionIcon mr-3"
+                                                        <a class="btn btn-ec-actionIcon mr-3 action-edit"
                                                            href="{{ url('admin_product_category_edit', {id: Category.id}) }}"
                                                            data-toggle="tooltip" data-placement="top"
                                                            title="{{ 'admin.product.category.rename'|trans }}">
                                                             <i class="fa fa-pencil fa-lg text-secondary"></i>
                                                         </a>
                                                         {% if Category.Children|length > 0 or Category.hasProductCategories %}
-                                                            {# TODO: 削除できない場合のxアイコンの表現をわかりやすくする #}
-                                                            <a class="btn btn-ec-actionIcon mr-3"
+                                                            {# TODO: Need fix css for tooltip to work (currently using `disabled` class) #}
+                                                            <a class="btn btn-ec-actionIcon mr-3 disabled"
                                                                data-toggle="tooltip" data-placement="top"
                                                                title="{{ 'admin.product.category.text01'|trans }}">
                                                                 <i class="fa fa-close fa-lg text-secondary"></i>
@@ -201,27 +249,22 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                         {% endif %}
                                                     </div>
                                                 </div>
-                                            {% else %}
-                                                {# TODO: 新編集UIの実装 #}
-                                                <form class="form-row">
-                                                    <div class="col-auto d-flex align-items-center">
-                                                        <input class="form-control" type="text">
+                                                <form class="form-row d-none mode-edit" method="POST" action="{{ (Parent and Parent.id) ? url('admin_product_category_show', {'parent_id': Parent.id}) : url('admin_product_category') }}">
+                                                    {{ form_widget(forms[Category.id]._token) }}
+                                                    <div class="col-auto align-items-center">
+                                                        {{ form_widget(forms[Category.id].name, {'attr': {'data-origin-value': forms[Category.id].name.vars.value}}) }}
+                                                        {{ form_errors(forms[Category.id].name) }}
                                                     </div>
-                                                    <div class="col-auto d-flex align-items-center">
-                                                        <button class="btn btn-ec-conversion" type="submit">決定
-                                                        </button>
+                                                    <div class="col-auto align-items-center">
+                                                        <button class="btn btn-ec-conversion" type="submit">{{ 'admin.common.label.ok'|trans }}</button>
                                                     </div>
-                                                    <div class="col-auto d-flex align-items-center">
-                                                        <button class="btn btn-ec-sub" type="submit">キャンセル
-                                                        </button>
+                                                    <div class="col-auto align-items-center">
+                                                        <button class="btn btn-ec-sub action-edit-cancel" type="button">{{ 'admin.common.label.cancel'|trans }}</button>
                                                     </div>
                                                 </form>
                                             {% endif %}
                                         </li>
                                     {% endfor %}
-                                {% else %}
-                                    {# TODO: データがない場合のデザイン #}
-                                    <p>{{ 'admin.product.category.message.no_result'|trans }}</p>
                                 {% endif %}
                             </ul>
                         </div>
