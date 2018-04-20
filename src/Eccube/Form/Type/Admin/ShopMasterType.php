@@ -202,8 +202,8 @@ class ShopMasterType extends AbstractType
             ->add('option_favorite_product', ToggleSwitchType::class)
             // 在庫切れ商品を非表示にする
             ->add('option_nostock_hidden', ToggleSwitchType::class, [
-                'label_off' => '表示',
-                'label_on' => '非表示'
+                'label_off' => 'common.label.display',
+                'label_on' => 'common.label.hide',
             ])
             // 個別税率設定
             ->add('option_product_tax_rule', ToggleSwitchType::class)
