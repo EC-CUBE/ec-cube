@@ -111,34 +111,34 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
         $TestClassName = $this->newTestClassName($TestCreator);
         $this->entityManager->persist($TestClassName);
         $this->entityManager->flush();
-
-        $test_class_name_id = $TestClassName->getId();
+        $classNameId = $TestClassName->getId();
 
         $TestClassCategory = $this->newTestClassCategory($TestCreator, $TestClassName);
         $this->entityManager->persist($TestClassCategory);
         $this->entityManager->flush();
-        $test_class_category_id = $TestClassCategory->getId();
-        $name = 'new name';
+        $classCategoryId = $TestClassCategory->getId();
+
+        $editName = 'new name';
 
         // main
         $this->client->request('GET',
             $this->generateUrl('admin_product_class_category',
-                array('class_name_id' => $test_class_name_id))
+                array('class_name_id' => $classNameId))
         );
         $editInlineForm = [
-            'class_category_'.$test_class_category_id => [
-                'name' => $name,
+            'class_category_'.$classCategoryId => [
+                'name' => $editName,
                 Constant::TOKEN_NAME => 'dummy',
             ]
         ];
         $this->client->request('POST',
-            $this->generateUrl('admin_product_class_category_edit', ['class_name_id' => $test_class_name_id, 'id' => $test_class_category_id]),
+            $this->generateUrl('admin_product_class_category_edit', ['class_name_id' => $classNameId, 'id' => $classCategoryId]),
             $editInlineForm
         );
 
         $crawler = $this->client->followRedirect();
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertContains($name, $crawler->filter('ul.tableish li:nth-child(2)')->text());
+        $this->assertContains($editName, $crawler->filter('ul.tableish li:nth-child(2)')->text());
     }
 
     public function testRoutingAdminProductClassCategoryDelete()

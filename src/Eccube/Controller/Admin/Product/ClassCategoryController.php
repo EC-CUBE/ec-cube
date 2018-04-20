@@ -143,18 +143,18 @@ class ClassCategoryController extends AbstractController
 
                 return $this->redirectToRoute('admin_product_class_category', array('class_name_id' => $ClassName->getId()));
             }
-        }
 
-        foreach ($forms as $editForm) {
-            $editForm->handleRequest($request);
-            if ($editForm->isSubmitted() && $editForm->isValid()) {
-                $this->classCategoryRepository->save($editForm->getData());
-                $this->addSuccess('admin.class_category.save.complete', 'admin');
+            foreach ($forms as $editForm) {
+                $editForm->handleRequest($request);
+                if ($editForm->isSubmitted() && $editForm->isValid()) {
+                    $this->classCategoryRepository->save($editForm->getData());
+                    $this->addSuccess('admin.class_category.save.complete', 'admin');
 
-                return $this->redirectToRoute('admin_product_class_category', array('class_name_id' => $ClassName->getId()));
+                    return $this->redirectToRoute('admin_product_class_category', array('class_name_id' => $ClassName->getId()));
+                }
             }
         }
-
+        
         $formViews = [];
         foreach ($forms as $key => $value) {
             $formViews[$key] = $value->createView();
