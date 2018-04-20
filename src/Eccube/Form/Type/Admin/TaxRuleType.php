@@ -27,6 +27,7 @@ namespace Eccube\Form\Type\Admin;
 use Eccube\Form\Type\Master\RoundingTypeType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -69,11 +70,12 @@ class TaxRuleType extends AbstractType
             ->add('rounding_type', RoundingTypeType::class, array(
                 'required' => true,
             ))
-            ->add('apply_date', DateType::class, array(
+            ->add('apply_date', DateTimeType::class, array(
                 'required' => true,
                 'input' => 'datetime',
-                'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
+                'date_widget' => 'single_text',
+                'time_widget' => 'single_text',
+                'format' => 'yyyy-MM-dd HH:mm',
                 'years' => range(date('Y'), date('Y') + 2),
                 'placeholder' => array(
                     'year' => '----',
