@@ -567,6 +567,8 @@ return [
     'admin.class_name.save.error' => '規格を保存できませんでした。',
     'admin.class_name.delete.complete' => '規格を削除しました。',
     'admin.class_name.delete.error' => '規格を削除できませんでした。',
+    'admin.class_name.modal.header' => '規格を削除します',
+    'admin.class_name.modal.body' => '規格は一覧（マスター）から削除されますが、これまでの取引等のデータから消えることはありません。この操作はあとから取り消すことができません。この規格を削除しますか？',
     'admin.class_category.up.complete' => '分類を上へ移動しました。',
     'admin.class_category.up.error' => '分類を上へ移動できませんでした。',
     'admin.class_category.down.complete' => '分類を下へ移動しました。',

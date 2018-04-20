@@ -472,9 +472,16 @@ class EA03ProductCest
     {
         $I->wantTo('EA0303-UC03-T01 規格削除');
 
-        ClassNameManagePage::go($I)->一覧_削除(1);
+        // Create a class name for test
+        ClassNameManagePage::go($I)
+            ->入力_管理名('backend test class1')
+            ->入力_表示名('display test class1')
+            ->規格作成();
 
-        $I->acceptPopup();
+        ClassNameManagePage::go($I)->一覧_削除(1)
+            ->acceptModal(1);
+
+        $I->see('規格を削除しました。', ClassNameManagePage::$登録完了メッセージ);
     }
 
     public function product_規格表示順の変更(\AcceptanceTester $I)
