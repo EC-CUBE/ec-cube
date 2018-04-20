@@ -466,6 +466,9 @@ class EA03ProductCest
         $ProductClassPage->規格編集(2);
 
         $I->see('規格を保存しました。', ClassNameManagePage::$登録完了メッセージ);
+        // remove added class
+        ClassNameManagePage::go($I)->一覧_削除(1)
+            ->acceptModal(1);
     }
 
     public function product_規格削除(\AcceptanceTester $I)
