@@ -85,7 +85,6 @@ class ShippingController extends AbstractController
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SHIPPING_INDEX_INITIALIZE, $event);
 
         $searchForm = $builder->getForm();
-        $searchData = [];
 
         /**
          * ページの表示件数は, 以下の順に優先される.
@@ -125,6 +124,15 @@ class ShippingController extends AbstractController
                 // 検索条件, ページ番号をセッションに保持.
                 $this->session->set('eccube.admin.shipping.search', FormUtil::getViewData($searchForm));
                 $this->session->set('eccube.admin.shipping.search.page_no', $page_no);
+            } else {
+                return [
+                    'searchForm' => $searchForm->createView(),
+                    'pagination' => [],
+                    'pageMaxis' => $pageMaxis,
+                    'page_no' => $page_no,
+                    'page_count' => $page_count,
+                    'has_errors' => true,
+                ];
             }
         } else {
             if (null !== $page_no || $request->get('resume')) {
@@ -177,6 +185,7 @@ class ShippingController extends AbstractController
             'pageMaxis' => $pageMaxis,
             'page_no' => $page_no,
             'page_count' => $page_count,
+            'has_errors' => false,
         ];
     }
 

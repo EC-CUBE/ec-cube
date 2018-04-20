@@ -27,7 +27,7 @@ class EA04OrderCest
 
     public function order_受注検索(\AcceptanceTester $I)
     {
-        $I->wantTo('EA0401-UC01-T01(& UC01-T02) 受注検索');
+        $I->wantTo('EA0401-UC01-T01(& UC01-T02, UC01-T03) 受注検索');
 
         $findOrders = Fixtures::get('findOrders'); // Closure
         $TargetOrders = array_filter($findOrders(), function ($Order) {
@@ -38,6 +38,9 @@ class EA04OrderCest
 
         OrderManagePage::go($I)->検索('gege@gege.com');
         $I->see('検索結果：0件が該当しました', OrderManagePage::$検索結果_メッセージ);
+
+        OrderManagePage::go($I)->詳細検索_電話番号('あああ');
+        $I->see('検索条件に誤りがあります。', OrderManagePage::$検索結果_エラーメッセージ);
     }
 
     /**
