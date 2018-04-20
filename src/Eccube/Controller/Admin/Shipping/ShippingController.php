@@ -201,6 +201,7 @@ class ShippingController extends AbstractController
     {
         $this->isTokenValid();
 
+        $result = [];
         if ($Shipping->getShippingStatus()->getId() !== ShippingStatus::SHIPPED) {
             /** @var ShippingStatus $StatusShipped */
             $StatusShipped = $this->shippingStatusRepository->find(ShippingStatus::SHIPPED);
@@ -210,12 +211,20 @@ class ShippingController extends AbstractController
 
             if ($request->get('notificationMail')) {
                 $this->mailService->sendShippingNotifyMail($Shipping);
+                $result['mail'] = true;
+            } else {
+                $result['mail'] = false;
             }
 
             $this->entityManager->flush();
+            $result['shipped'] = true;
+            return new JsonResponse($result);
         }
 
-        return new JsonResponse(['success' => true]);
+        return new JsonResponse([
+            'shipped' => false,
+            'mail' => false
+        ]);
     }
 
     /**
@@ -242,9 +251,15 @@ class ShippingController extends AbstractController
 
         if ($Shipping->getShippingStatus()->getId() === ShippingStatus::SHIPPED) {
             $this->mailService->sendShippingNotifyMail($Shipping);
+            return new JsonResponse([
+                'mail' => true,
+                'shipped' => false
+            ]);
         }
-
-        return new JsonResponse(['success' => true]);
+        return new JsonResponse([
+            'mail' => false,
+            'shipped' => false
+        ]);
     }
 
     /**

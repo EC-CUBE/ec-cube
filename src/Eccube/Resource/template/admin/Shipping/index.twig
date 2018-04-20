@@ -123,9 +123,16 @@
 
                 var totalCount = updater.getTotalCount();
                 var currentCount = 0;
+                var mailCount = 0;
+                var notifierCompleteMessage = '';
 
                 var progress = new $.Deferred();
                 progress.progress(function() {
+                    var result = this;
+                    if (result.mail) {
+                        mailCount++;
+                        notifierCompleteMessage = '{{ 'admin.shipping.index.837'|trans }}'.replace(/%count%/, mailCount);
+                    }
                     $('.progress-bar', modal).css('width', (++currentCount / totalCount * 100) + '%');
                 });
 
@@ -140,7 +147,7 @@
                     .always(function() {
                         setTimeout(function() {
                             $('.progress', modal).hide();
-                            $('.modal-body > p', modal).text("{{ 'admin.shipping.index.828'|trans }}");
+                            $('.modal-body > p', modal).text("{{ 'admin.shipping.index.828'|trans }}" + notifierCompleteMessage);
                             $('#bulkChangeComplete').show();
                         }, 500);
                     });
@@ -168,7 +175,6 @@
             modalMessage: "{{ 'admin.shipping.index.830'|trans }}",
             modalButton: "{{ 'admin.shipping.index.816'|trans }}",
             getPreviewUrl: function() {
-                // TODO define to default url
                 return $('input[data-preview-notify-mail-url]:checked').data('preview-notify-mail-url');
             },
             getTotalCount: function() {
@@ -179,8 +185,9 @@
                     'url': url,
                     'type': 'PUT',
                     'data': { 'notificationMail' : $('input#notificationMail:checked').val() }
-                }).always(function() {
-                    progress.notify();
+                })
+                .always(function(data) {
+                    progress.notifyWith(data);
                 });
             }
         };
@@ -595,7 +602,7 @@
                         <div id="bulk-options">
                                 <div class="font-weight-bold mb-2 notificationMail">{{ 'admin.shipping.index.812'|trans }}</div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" id="notificationMail" checked="">
+                                    <input class="form-check-input" type="checkbox" id="notificationMail">
                                     <label class="form-check-label notificationMail">
                                     {{ 'admin.shipping.index.813'|trans }}
                                 </label>
