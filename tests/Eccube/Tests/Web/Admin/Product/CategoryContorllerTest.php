@@ -154,6 +154,53 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_product_category')));
     }
 
+    public function testInlineEdit()
+    {
+        /** @var Category $Category */
+        $Category = $this->categoryRepository->findOneBy(['name' => '親1']);
+        $params = [
+            'category_' . $Category->getId() => [
+                '_token' => 'dummy',
+                'name' => '親0'
+            ]
+        ];
+
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_product_category'),
+            $params
+        );
+
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_product_category')));
+        $this->assertEquals('親0', $Category->getName());
+    }
+
+    public function testInlineEditWithParent()
+    {
+        /** @var Category $Parent */
+        $Parent = $this->categoryRepository->findOneBy(['name' => '親1']);
+
+        /** @var Category $Category */
+        $Category = $Parent->getChildren()->current();
+
+        $params = [
+            'category_' . $Category->getId() => [
+                '_token' => 'dummy',
+                'name' => '子0'
+            ]
+        ];
+
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_product_category_show', ['parent_id' => $Parent->getId()]),
+            $params
+        );
+
+        $rUrl = $this->generateUrl('admin_product_category_show', ['parent_id' => $Parent->getId()]);
+        $this->assertTrue($this->client->getResponse()->isRedirect($rUrl));
+        $this->assertEquals('子0', $Category->getName());
+    }
+
     public function testIndexWithPostParent()
     {
         $params = array(
