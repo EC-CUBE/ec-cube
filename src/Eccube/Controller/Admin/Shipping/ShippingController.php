@@ -221,6 +221,24 @@ class ShippingController extends AbstractController
     }
 
     /**
+     * @Method("PUT")
+     * @Route("/%eccube_admin_route%/shipping/notify_mail/{id}", requirements={"id" = "\d+"}, name="admin_shipping_notify_mail")
+     * @param Request $request
+     * @param Shipping $Shipping
+     * @return JsonResponse
+     */
+    public function notifyMail(Shipping $Shipping)
+    {
+        $this->isTokenValid();
+
+        if ($Shipping->getShippingStatus()->getId() === ShippingStatus::SHIPPED) {
+            $this->mailService->sendShippingNotifyMail($Shipping);
+        }
+
+        return new JsonResponse(['success' => true]);
+    }
+
+    /**
      * @Method("POST")
      * @Route("/%eccube_admin_route%/shipping/bulk_delete", name="admin_shipping_bulk_delete")
      */

@@ -93,7 +93,12 @@
                 $('.modal-title', this).text(updater.modalTitle);
                 $('.modal-body > p', this).text(updater.modalMessage);
                 $('#bulkChange')
-                    .attr('data-bulk-update', eventTarget.data('bulk-update'))
+                    .attr({
+                        'data-bulk-update': eventTarget.data('bulk-update'),
+                        'data-type': eventTarget.data('type'),
+                        'data-mark-as-shipped-url': eventTarget.data('mark-as-shipped-url'),
+                        'data-notify-mail-url': eventTarget.data('notify-mail-url')
+                    })
                     .text(updater.modalButton);
             });
 
@@ -264,8 +269,8 @@
             getPromises: {
                 value: function(progress) {
                     return $('input[data-notify-mail-url]:checked').map(function() {
-                        var url = $(this).data('data-notify-mail-url');
-                        return BulkUpdate.prototype.getPromises.call(this, progress, url);
+                        var url = $(this).data('notify-mail-url');
+                        return ConfirmationModal.prototype.getPromises.call(this, progress, url);
                     });
                 }
             }
@@ -293,8 +298,8 @@
             },
             getPromises: {
                 value: function(progress) {
-                    var url = this.eventTarget.data('data-notify-mail-url');
-                    return SimpleUpdate.prototype.getPromises.call(this, progress, url);
+                    var url = this.eventTarget.data('notify-mail-url');
+                    return ConfirmationModal.prototype.getPromises.call(this, progress, url);
                 }
             }
         });
@@ -500,7 +505,8 @@
                                 <td class="align-middle pl-3">
                                     <input type="checkbox" id="check-{{ Shipping.id }}" data-id="{{ Shipping.id }}" name="ids[]" value="{{ Shipping.id }}"
                                            data-mark-as-shipped-url="{{ url('admin_shipping_mark_as_shipped', { id: Shipping.id}) }}"
-                                           data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: Shipping.id}) }}" />
+                                           data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: Shipping.id}) }}"
+                                           data-notify-mail-url="{{ url('admin_shipping_notify_mail', { id: Shipping.id}) }}"/>
                                 </td>
                                 <td class="align-middle"><a href="{{ url('admin_shipping_edit', { id : Shipping.id }) }}">{{ Shipping.id }}</a></td>
                                 <td class="align-middle">{{ Shipping.TrackingNumber|default('admin.shipping.index.798'|trans) }}</td>
@@ -538,7 +544,7 @@
                                     <div class="row text-center">
                                         <div class="col" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ 'admin.shipping.index.824'|trans }}"><a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#sentUpdateModal" data-type="mail"
                                                                                                                                                                              data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: Shipping.id}) }}"
-                                                                                                                                                                             data-notify-mail-url="{{ url('admin_shipping_mark_as_shipped', { id: Shipping.id}) }}"><i class="fa fa-send fa-lg text-secondary" aria-hidden="true"></i></a></div>
+                                                                                                                                                                             data-notify-mail-url="{{ url('admin_shipping_notify_mail', { id: Shipping.id}) }}"><i class="fa fa-send fa-lg text-secondary" aria-hidden="true"></i></a></div>
                                         <div class="col" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ 'admin.shipping.index.825'|trans }}"><a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#sentUpdateModal" data-type="update"
                                                                                                                                                                              data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: Shipping.id}) }}"
                                                                                                                                                                              data-mark-as-shipped-url="{{ url('admin_shipping_mark_as_shipped', { id: Shipping.id}) }}"><i class="fa fa-check fa-lg text-secondary" aria-hidden="true"></i></a></div>
