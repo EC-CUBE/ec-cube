@@ -50,6 +50,16 @@ class EA05CustomerCest
         $I->see('検索条件に合致するデータが見つかりませんでした', CustomerManagePage::$検索結果_結果なしメッセージ);
     }
 
+    public function customer_検索エラー(\AcceptanceTester $I)
+    {
+        $I->wantTo('EA0501-UC01-T03 検索 エラー');
+
+        CustomerManagePage::go($I)
+            ->詳細検索_電話番号('あああ');
+
+        $I->see('検索条件に誤りがあります。', CustomerManagePage::$検索結果_エラーメッセージ);
+    }
+
     public function customer_会員登録(\AcceptanceTester $I)
     {
         $I->wantTo('EA0502-UC01-T02(& UC01-T02) 会員登録');

@@ -28,7 +28,7 @@ class EA09ShippingCest
 
     public function shipping出荷検索(\AcceptanceTester $I)
     {
-        $I->wantTo('EA0901-UC01-T01(& UC01-T02) 出荷検索');
+        $I->wantTo('EA0901-UC01-T01(& UC01-T02, UC01-T3) 出荷検索');
 
         $TargetShippings = Fixtures::get('findShippings'); // Closure
         $Shippings = $TargetShippings();
@@ -37,6 +37,9 @@ class EA09ShippingCest
 
         ShippingManagePage::go($I)->検索('gege@gege.com');
         $I->see('検索結果 : 0 件が該当しました', ShippingManagePage::$検索結果_メッセージ);
+
+        ShippingManagePage::go($I)->詳細検索_電話番号('あああ');
+        $I->see('検索条件に誤りがあります', ShippingManagePage::$検索結果_エラーメッセージ);
     }
 
     /**
