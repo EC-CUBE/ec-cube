@@ -520,18 +520,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             </td>
                                             <td class="align-middle">
                                                 <div class="col-8">
-                                                    {% if orderItemForm.vars.value.OrderItemType.isProduct %}
-                                                        {{ orderItemForm.vars.value.tax_rate }}
-                                                    {% endif %}
+                                                    {{ orderItemForm.vars.value.tax_rate }}
                                                     {{ form_widget(orderItemForm.tax_rate, {'attr': {'class': 'd-none'}}) }}
                                                     {{ form_errors(orderItemForm.tax_rate) }}
                                                 </div>
                                             </td>
                                             <td class="align-middle">
                                                 <div class="col-8">
-                                                    {% if orderItemForm.vars.value.OrderItemType.isProduct %}
-                                                        {{ orderItemForm.vars.value.tax_type }}
-                                                    {% endif %}
+                                                    {{ orderItemForm.vars.value.tax_type }}
                                                 </div>
                                             </td>
                                             <td class="align-middle"><span>{{ orderItemForm.vars.value.total_price|price }}</span>
