@@ -80,7 +80,10 @@ class Step3Type extends AbstractType
                 ),
             ))
             ->add('login_id', TextType::class, array(
-                'label' => trans('step3.label.login_id1').$this->eccubeConfig['eccube_id_min_len'].trans('step3.label.login_id2').$this->eccubeConfig['eccube_id_max_len'].trans('step3.label.login_id3'),
+                'label' => trans('step3.label.login_id', [
+                    '%min_len%' => $this->eccubeConfig['eccube_id_min_len'],
+                    '%max_len%' => $this->eccubeConfig['eccube_id_max_len']
+                ]),
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
@@ -94,7 +97,10 @@ class Step3Type extends AbstractType
                 ),
             ))
             ->add('login_pass', PasswordType::class, array(
-                'label' => trans('step3.label.login_pass1').$this->eccubeConfig['eccube_password_min_len'].trans('step3.label.login_pass2').$this->eccubeConfig['eccube_password_max_len'].trans('step3.label.login_pass3'),
+                'label' => trans('step3.label.login_pass', [
+                    '%min_len%' => $this->eccubeConfig['eccube_password_min_len'],
+                    '%max_len%' => $this->eccubeConfig['eccube_password_max_len']
+                ]),
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
@@ -108,7 +114,10 @@ class Step3Type extends AbstractType
                 ),
             ))
             ->add('admin_dir', TextType::class, array(
-                'label' => trans('step3.label.admin_dir1').$this->eccubeConfig['eccube_id_min_len'].trans('step3.label.admin_dir2').$this->eccubeConfig['eccube_id_max_len'].trans('step3.label.admin_dir3'),
+                'label' => trans('step3.label.admin_dir', [
+                    '%min_len%' => $this->eccubeConfig['eccube_id_min_len'],
+                    '%max_len%' => $this->eccubeConfig['eccube_id_max_len']
+                ]),
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
