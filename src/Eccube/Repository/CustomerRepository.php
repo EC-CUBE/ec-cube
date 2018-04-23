@@ -243,13 +243,13 @@ class CustomerRepository extends AbstractRepository
                 ->setParameter('statuses', $searchData['customer_status']);
         }
 
-        // buy_product_name、buy_product_code
-        if (isset($searchData['buy_product_code']) && StringUtil::isNotBlank($searchData['buy_product_code'])) {
+        // buy_product_name
+        if (isset($searchData['buy_product_name']) && StringUtil::isNotBlank($searchData['buy_product_name'])) {
             $qb
                 ->leftJoin('c.Orders', 'o')
                 ->leftJoin('o.OrderItems', 'oi')
-                ->andWhere('oi.product_name LIKE :buy_product_name OR oi.product_code LIKE :buy_product_name')
-                ->setParameter('buy_product_name', '%'.$searchData['buy_product_code'].'%');
+                ->andWhere('oi.product_name LIKE :buy_product_name')
+                ->setParameter('buy_product_name', '%'.$searchData['buy_product_name'].'%');
         }
 
         // Order By

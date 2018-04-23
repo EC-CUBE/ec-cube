@@ -407,18 +407,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <table class="table table-sm" id="search_result">
                                 <thead>
                                     <tr>
-                                        <th class="border-top-0 pt-2 pb-2 pl-3">
+                                        <th class="border-top-0 pt-2 pb-2 text-center pl-3">
                                             <input type="checkbox" id="check_all" name="filter" value="open">
                                         </th>
-                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.order.index.328'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.order.index.329'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.order.index.330'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.order.index.331'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.order.index.332'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.order.index.th_delivery_number'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.order.index.334'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.order.index.th_note'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 pr-3"></th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.328'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.329'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.330'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.331'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.332'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_delivery_number'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.334'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_note'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center pr-3"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -435,30 +435,30 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 %}
                                 {% for Order in pagination %}
                                     <tr>
-                                        <td class="align-middle pl-3">
+                                        <td class="align-middle text-center pl-3">
                                             <input type="checkbox"  name="ids[]" id="check_{{ Order.id }}" value="{{ Order.id }}">
                                         </td>
-                                        <td class="align-middle" id="order_date--{{ Order.id }}">{{ Order.order_date|date_min }}</td>
-                                        <td class="align-middle" id="id--{{ Order.id }}"><a class="action-edit" href="{{ url('admin_order_edit', { id : Order.id }) }}">{{ Order.id }}</a></td>
-                                        <td class="align-middle" id="name--{{ Order.id }}">{{ Order.name01 }} {{ Order.name02 }}</td>
-                                        <td class="align-middle" id="payment_method--{{ Order.id }}">{{ Order.payment_method }}</td>
-                                        <td class="align-middle" id="payment_total--{{ Order.id }}">{{ Order.payment_total|number_format }}</td>
-                                        <td class="align-middle">
+                                        <td class="align-middle text-left" id="order_date--{{ Order.id }}">{{ Order.order_date|date_min }}</td>
+                                        <td class="align-middle text-center" id="id--{{ Order.id }}"><a class="action-edit" href="{{ url('admin_order_edit', { id : Order.id }) }}">{{ Order.id }}</a></td>
+                                        <td class="align-middle text-center" id="name--{{ Order.id }}">{{ Order.name01 }} {{ Order.name02 }}</td>
+                                        <td class="align-middle text-center" id="payment_method--{{ Order.id }}">{{ Order.payment_method }}</td>
+                                        <td class="align-middle text-right" id="payment_total--{{ Order.id }}">{{ Order.payment_total|price }}</td>
+                                        <td class="align-middle text-center">
                                             {% for shipping in Order.getShippings() %}
                                                 <a href="{{ url('admin_shipping_edit', {id: shipping.id}) }}">{{ shipping.id }}</a><br>
                                             {% endfor %}
                                         </td>
-                                        <td class="align-middle"  id="order_status--{{ Order.id }}">
+                                        <td class="align-middle text-center"  id="order_status--{{ Order.id }}">
                                             <span class="badge {{ attribute(cssClassStatus, Order.OrderStatus.id) }}">{{ Order.OrderStatus }}</span>
                                         </td>
-                                        <td class="align-middle">
+                                        <td class="align-middle text-center">
                                             {% if Order.note is not empty %}
                                                 <a class="btn btn-ec-actionIcon" href="{{ url('admin_order_edit', { id : Order.id }) }}#order_note" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ Order.note }}" aria-describedby="tooltip819464">
                                                     <i class="fa fa-commenting fa-lg text-secondary" aria-hidden="true"></i>
                                                 </a>
                                             {% endif %}
                                         </td>
-                                        <td class="align-middle pr-3">
+                                        <td class="align-middle pr-3 text-center">
                                             <div class="row justify-content-end">
                                                 <div class="col-auto text-center">
                                                     <a class="btn btn-ec-actionIcon action-mail" href="{{ url('admin_order_mail', {'id': Order.id}) }}" data-toggle="tooltip" data-placement="top" title data-original-title="{{ 'admin.order.index.btn_send_mail'|trans }}">

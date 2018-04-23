@@ -82,6 +82,14 @@ class ClassNameManagePage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    public function acceptModal($rowNum)
+    {
+        $rowNum += 1;
+        $this->tester->waitForElementVisible("ul.list-group > li:nth-child(${rowNum}) div.modal");
+        $this->tester->click("ul.list-group > li:nth-child(${rowNum}) div.modal a.btn-ec-delete");
+        return $this;
+    }
+
     public function 一覧_上に($rowNum)
     {
         $rowNum += 1;

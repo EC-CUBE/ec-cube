@@ -190,7 +190,7 @@ class EA06ContentsManagementCest
 
         /* 削除 */
         PageManagePage::go($I)->削除($page);
-        $I->acceptPopup();
+        $I->see('削除が完了しました。', PageEditPage::$登録完了メッセージ);
     }
 
     public function contentsmanagement_検索未使用ブロック(\AcceptanceTester $I)
