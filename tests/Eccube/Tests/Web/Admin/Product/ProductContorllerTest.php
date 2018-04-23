@@ -148,7 +148,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'create_date_end' => '',
                 'update_date_start' => '',
                 'update_date_end' => '',
-                'link_status' => '',
             ]
         ];
 
@@ -202,7 +201,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'create_date_end' => '',
                 'update_date_start' => '',
                 'update_date_end' => '',
-                'link_status' => '',
             ]
         ];
 
@@ -251,7 +249,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'create_date_end' => '',
                 'update_date_start' => '',
                 'update_date_end' => '',
-                'link_status' => '',
             ]
         ];
 
@@ -301,7 +298,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'create_date_end' => '',
                 'update_date_start' => '',
                 'update_date_end' => '',
-                'link_status' => '',
             ]
         ];
 
@@ -324,7 +320,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'create_date_end' => '',
                 'update_date_start' => '',
                 'update_date_end' => '',
-                'link_status' => '',
             ]
         ];
 
@@ -820,7 +815,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             'create_date_end' => '',
             'update_date_start' => '',
             'update_date_end' => '',
-            'link_status' => '',
         ];
 
         return $post;
