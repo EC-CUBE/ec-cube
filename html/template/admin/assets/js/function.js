@@ -116,7 +116,10 @@ jQuery(document).ready(function ($) {
 
 /////////// 2重submit制御.
 
-    Ladda.bind('button[type=submit]');
+    // FIXME 管理画面UI移行完了後, このif文は削除.
+    if (typeof Ladda !== 'undefined') {
+        Ladda.bind('button[type=submit]');
+    }
 
 /////////// 検索条件をクリア
     $('.search-clear').click(function (event) {
