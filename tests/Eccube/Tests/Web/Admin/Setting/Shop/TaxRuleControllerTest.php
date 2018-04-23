@@ -28,6 +28,7 @@ use Eccube\Entity\TaxRule;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class TaxRuleControllerTest extends AbstractAdminWebTestCase
 {
@@ -156,15 +157,20 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
         $form = array(
             '_token' => 'dummy',
             'tax_rate' => 10,
-            'calc_rule' => rand(1, 3),
-            'apply_date' => $now->format('Y-m-d H:i')
+            'rounding_type' => rand(1, 3),
+            'apply_date' => [
+                'date' => $now->format('Y-m-d'),
+                'time' => $now->format('H:i'),
+            ]
         );
 
         $this->client->request(
             'POST',
-            $this->generateUrl('admin_setting_shop_tax_edit', array('id' => $tid)),
+            $this->generateUrl('admin_setting_shop_tax'),
             array(
-                'tax_rule' => $form
+                'tax_rule' => $form,
+                'tax_rule_id' => "$tid",
+                'mode' => 'edit_inline',
             )
         );
 
