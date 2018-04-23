@@ -243,13 +243,13 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
 
         //金, 銀, プラチナ sort by rank setup above.
         $this->expected = '銀';
-        $this->actual = $crawler->filter('ul.tableish > li:nth-child(2)')->text();
+        $this->actual = $crawler->filter('ul.sortable-container > li:nth-child(2)')->text();
         $this->assertContains( $this->expected, $this->actual);
         $this->expected = 'プラチナ';
-        $this->actual = $crawler->filter('ul.tableish > li:nth-child(3)')->text();
+        $this->actual = $crawler->filter('ul.sortable-container > li:nth-child(3)')->text();
         $this->assertContains( $this->expected, $this->actual);
         $this->expected = '金';
-        $this->actual = $crawler->filter('ul.tableish > li:nth-child(4)')->text();
+        $this->actual = $crawler->filter('ul.sortable-container > li:nth-child(4)')->text();
         $this->assertContains( $this->expected, $this->actual);
     }
 
