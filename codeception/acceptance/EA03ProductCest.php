@@ -466,15 +466,25 @@ class EA03ProductCest
         $ProductClassPage->規格編集(2);
 
         $I->see('規格を保存しました。', ClassNameManagePage::$登録完了メッセージ);
+        // remove added class
+        ClassNameManagePage::go($I)->一覧_削除(1)
+            ->acceptModal(1);
     }
 
     public function product_規格削除(\AcceptanceTester $I)
     {
         $I->wantTo('EA0303-UC03-T01 規格削除');
 
-        ClassNameManagePage::go($I)->一覧_削除(1);
+        // Create a class name for test
+        ClassNameManagePage::go($I)
+            ->入力_管理名('backend test class1')
+            ->入力_表示名('display test class1')
+            ->規格作成();
 
-        $I->acceptPopup();
+        ClassNameManagePage::go($I)->一覧_削除(1)
+            ->acceptModal(1);
+
+        $I->see('規格を削除しました。', ClassNameManagePage::$登録完了メッセージ);
     }
 
     public function product_規格表示順の変更(\AcceptanceTester $I)
@@ -541,22 +551,27 @@ class EA03ProductCest
         $ProductClassPage->一覧_分類登録(1);
         $I->see('test class2', '#page_admin_product_class_category > div > div.c-contentsArea > div.c-contentsArea__cols > div > div.c-primaryCol > div:nth-child(1) > div.card-body > div:nth-child(2) > div:nth-child(2) > span');
 
+        // Create a class category
         $ProductClassCategoryPage = ClassCategoryManagePage::at($I)
             ->入力_分類名('test class2 category1')
             ->分類作成();
 
         $I->see('分類を保存しました。', ClassCategoryManagePage::$登録完了メッセージ);
+        $I->see('test class2 category1', $ProductClassCategoryPage->一覧_名称(1));
 
-        // TODO 編集機能を実装したらテスト
-//        $ProductClassCategoryPage->一覧_編集(1);
-//        $value = $I->grabValueFrom(ProductClassCategoryPage::$分類名);
-//        $I->assertEquals('test class2 category1', $value);
-//
-//        $ProductClassCategoryPage->分類作成();
-//        $I->see('分類を保存しました。', $ProductClassCategoryPage::$登録完了メッセージ);
+        // Edit class category 1
+        $ProductClassCategoryPage->一覧_編集(1)
+            ->一覧_入力_分類名(1, 'edit class category')
+            ->一覧_分類作成(1);
 
-        $ProductClassCategoryPage->一覧_削除(1);
-        $I->acceptPopup();
+        $I->see('分類を保存しました。', ClassCategoryManagePage::$登録完了メッセージ);
+        $I->see('edit class category', $ProductClassCategoryPage->一覧_名称(1));
+
+        // delete test
+        $ProductClassCategoryPage->一覧_削除(1)
+            ->acceptModal(1);
+
+        $I->see('分類を削除しました。', ClassCategoryManagePage::$登録完了メッセージ);
     }
 
     public function product_カテゴリ登録(\AcceptanceTester $I)
