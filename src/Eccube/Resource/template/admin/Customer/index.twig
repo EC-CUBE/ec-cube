@@ -133,8 +133,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="form-row">
                             <div class="col-12">
                                 <p class="col-form-label">{{ 'admin.customer.index.113'|trans }}</p>
-                                {# TODO: form_theme レイアウト修正  #}
-                                {{ form_widget(searchForm.customer_status) }}
+                                {{ form_widget(searchForm.customer_status, { 'label_attr': { 'class': 'checkbox-inline'}}) }}
                                 {{ form_errors(searchForm.customer_status) }}
                             </div>
                         </div>
@@ -142,8 +141,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div class="col">
                         <div>
                             <label>{{ 'admin.customer.index.129'|trans }}</label>
-                            {# TODO: 未実装 購入商品名検索 #}
-                            <input class="form-control" type="text">
+                            {{ form_widget(searchForm.buy_product_name) }}
+                            {{ form_errors(searchForm.buy_product_name) }}
                         </div>
                     </div>
                 </div>
@@ -152,8 +151,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="form-row">
                             <div class="col-12">
                                 <p class="col-form-label">{{ 'admin.customer.index.114'|trans }}</p>
-                                {# TODO: form_theme レイアウト修正  #}
-                                {{ form_widget(searchForm.sex) }}
+                                {{ form_widget(searchForm.sex, { 'label_attr': { 'class': 'checkbox-inline'}}) }}
                                 {{ form_errors(searchForm.sex) }}
                             </div>
                         </div>

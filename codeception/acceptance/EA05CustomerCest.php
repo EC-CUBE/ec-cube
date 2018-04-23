@@ -222,7 +222,6 @@ class EA05CustomerCest
 
     public function customer_仮会員メール再送(\AcceptanceTester $I)
     {
-        $I->getScenario()->incomplete('未実装：仮会員メール再送は未実装');
         $I->wantTo('EA0501-UC06-T01(& UC06-T02) 仮会員メール再送');
 
         $I->resetEmails();
@@ -234,8 +233,7 @@ class EA05CustomerCest
         CustomerManagePage::go($I)
             ->検索($customer->getEmail())
             ->一覧_仮会員メール再送(1);
-        $I->acceptPopup();
-        $I->wait(10);
+        $I->wait(5);
 
         $I->seeEmailCount(2);
         foreach (array($customer->getEmail(), $BaseInfo->getEmail01()) as $email) {
