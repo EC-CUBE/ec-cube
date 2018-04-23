@@ -71,7 +71,8 @@ class TaxRuleType extends AbstractType
                 'required' => true,
             ))
             ->add('apply_date', DateTimeType::class, array(
-                'widget' => 'single_text',
+                'date_widget' => 'single_text',
+                'time_widget' => 'single_text',
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
