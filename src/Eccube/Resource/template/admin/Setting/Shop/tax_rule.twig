@@ -39,20 +39,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         .has-error .edit {
             display: block;
         }
-
-        /* TODO: Change this code or/and move this code below into a stylesheet file */
-        #tax_rule_apply_date input{
-            height: 33.5px;
-        }
-        #tax_rule_apply_date input[type="date"]{
-            border-right: 0;
-            border-top-right-radius: 0;
-            border-bottom-right-radius: 0;
-        }
-        #tax_rule_apply_date input[type="time"]{
-            border-top-left-radius: 0;
-            border-bottom-left-radius: 0;
-        }
     </style>
 <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datetimepicker.min.css', 'admin') }}">
 {% endblock stylesheet %}
@@ -134,12 +120,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         {{ form_errors(form.rounding_type) }}
                                     </td>
                                     <td class="align-middle">
-                                        {% if TargetTaxRule.default_tax_rule %}
-                                            {{ 'admin.setting.shop.tax_rule.tax_rule_default'|trans }}
-                                        {% else %}
-                                            {{ form_widget(form.apply_date) }}
-                                            {{ form_errors(form.apply_date) }}
-                                        {% endif %}
+                                        {{ form_widget(form.apply_date.date) }}
+                                        {{ form_widget(form.apply_date.time, { 'attr': { 'placeholder': '--:--' }}) }}
+                                        {{ form_errors(form.apply_date) }}
                                     </td>
                                     <td class="align-middle"></td>
                                     <td class="align-middle pr-5">
@@ -179,7 +162,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 {% if TaxRule.default_tax_rule %}
                                                     {{ 'admin.setting.shop.tax_rule.tax_rule_default'|trans }}
                                                 {% else %}
-                                                    {{ form_widget(forms[TaxRule.id].apply_date) }}
+                                                    {{ form_widget(forms[TaxRule.id].apply_date.date) }}
+                                                    {{ form_widget(forms[TaxRule.id].apply_date.time, { 'attr': { 'placeholder': '--:--' }}) }}
+                                                    {{ form_errors(forms[TaxRule.id].apply_date) }}
                                                 {% endif %}
                                             </div>
                                             <div class="list">
