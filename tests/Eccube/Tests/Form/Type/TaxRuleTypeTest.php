@@ -33,7 +33,10 @@ class TaxRuleTypeTest extends AbstractTypeTestCase
     protected $formData = array(
         'tax_rate' => 10,
         'calc_rule' => 1,
-        'apply_date' => '2014-04-01 00:00',
+        'apply_date' => [
+            'date'  => '2014-04-01',
+            'time'  => '00:00',
+        ],
     );
 
     /** @var  FormInterface */
