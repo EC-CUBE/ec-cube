@@ -77,28 +77,11 @@ class TaxRuleController extends AbstractController
      * @Route("/%eccube_admin_route%/setting/shop/tax/new", name="admin_setting_shop_tax_new")
      * @Template("@admin/Setting/Shop/tax_rule.twig")
      */
-    public function index(Request $request, $id = null)
+    public function index(Request $request)
     {
-        if (is_null($id)) {
-            $TargetTaxRule = $this->taxRuleRepository->newTaxRule();
-        } else {
-            $TargetTaxRule = $this->taxRuleRepository->find($id);
-            if (is_null($TargetTaxRule)) {
-                throw new NotFoundHttpException();
-            }
-        }
-
+        $TargetTaxRule = $this->taxRuleRepository->newTaxRule();
         $builder = $this->formFactory
             ->createBuilder(TaxRuleType::class, $TargetTaxRule);
-
-        $builder
-            ->get('option_product_tax_rule')
-            ->setData($this->BaseInfo->isOptionProductTaxRule());
-
-        if ($TargetTaxRule->isDefaultTaxRule()) {
-            // 基本税率設定は適用日時の変更は行わない
-            $builder = $builder->remove('apply_date');
-        }
 
         $event = new EventArgs(
             array(

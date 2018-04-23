@@ -24,13 +24,16 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Entity\TaxRule;
 use Eccube\Form\Type\Master\RoundingTypeType;
+use Eccube\Repository\TaxRuleRepository;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -40,22 +43,19 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class TaxRuleType extends AbstractType
 {
+    protected $taxRuleRepository;
+
+    public function __construct(TaxRuleRepository $taxRuleRepository)
+    {
+        $this->taxRuleRepository = $taxRuleRepository;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('option_product_tax_rule', ChoiceType::class, array(
-                'label' => 'taxrule.text.radio.enabled',
-                'choices' => array_flip(array(
-                    '1' => 'taxrule.text.radio.enabled',
-                    '0' => 'taxrule.text.radio.disabled',
-                )),
-                'expanded' => true,
-                'multiple' => false,
-                'mapped' => false,
-            ))
             ->add('tax_rate', IntegerType::class, array(
                 'required' => true,
                 'constraints' => array(
@@ -77,6 +77,28 @@ class TaxRuleType extends AbstractType
                     new Assert\NotBlank(),
                 ),
             ));
+
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            /** @var TaxRule $TaxRule */
+            $TaxRule = $event->getData();
+            $qb = $this->taxRuleRepository->createQueryBuilder('t');
+            $qb
+                ->select('count(t.id)')
+                ->where('t.apply_date = :apply_date')
+                ->setParameter('apply_date', $TaxRule->getApplyDate());
+
+            if ($TaxRule->getId()) {
+                $qb
+                    ->andWhere('t.id <> :id')
+                    ->setParameter('id', $TaxRule->getId());
+            }
+            $count = $qb->getQuery()
+                ->getSingleScalarResult();
+            if ($count > 0) {
+                $form = $event->getForm();
+                $form['apply_date']->addError(new FormError(trans('taxrule.text.error.date_not_available')));
+            }
+        });
     }
 
     /**
@@ -85,7 +107,7 @@ class TaxRuleType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'allow_extra_fields' => true,
+            'data_class' => TaxRule::class,
         ));
     }
 
