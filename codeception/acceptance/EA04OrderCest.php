@@ -1,10 +1,10 @@
 <?php
 
 use Codeception\Util\Fixtures;
-use Page\Admin\CsvSettingsPage;
-use Page\Admin\OrderManagePage;
-use Page\Admin\OrderEditPage;
 use Eccube\Entity\Master\OrderStatus;
+use Page\Admin\CsvSettingsPage;
+use Page\Admin\OrderEditPage;
+use Page\Admin\OrderManagePage;
 
 /**
  * @group admin
@@ -84,11 +84,6 @@ class EA04OrderCest
         $I->assertEquals(3, $value);
     }
 
-    /**
-     * TODO: will fix when apply style guide for admin order edit
-     *
-     * @skip
-     */
     public function order_受注編集(\AcceptanceTester $I)
     {
         $I->wantTo('EA0401-UC05-T01(& UC05-T02/UC06-T01) 受注編集');

@@ -40,31 +40,51 @@ class OrderItemType extends \Eccube\Entity\Master\AbstractMasterEntity
 {
     /**
      * 商品.
+     *
      * @var integer
      */
     const PRODUCT = 1;
 
     /**
      * 送料.
+     *
      * @var integer
      */
     const DELIVERY_FEE = 2;
 
     /**
      * 手数料.
+     *
      * @var integer
      */
     const CHARGE = 3;
 
     /**
      * 値引き.
+     *
      * @var integer
      */
     const DISCOUNT = 4;
 
     /**
      * 税.
+     *
      * @var integer
      */
     const TAX = 5;
+
+
+    /**
+     * 商品かどうか
+     *
+     * @return bool
+     */
+    public function isProduct()
+    {
+        if ($this->id == self::PRODUCT) {
+            return true;
+        }
+
+        return false;
+    }
 }
