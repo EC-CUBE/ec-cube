@@ -39,6 +39,20 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         .has-error .edit {
             display: block;
         }
+
+        /* TODO: Change this code or/and move this code below into a stylesheet file */
+        #tax_rule_apply_date input{
+            height: 33.5px;
+        }
+        #tax_rule_apply_date input[type="date"]{
+            border-right: 0;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+        #tax_rule_apply_date input[type="time"]{
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
     </style>
 <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datetimepicker.min.css', 'admin') }}">
 {% endblock stylesheet %}
@@ -52,7 +66,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             var inputDate = document.createElement('input');
             inputDate.setAttribute('type', 'date');
             if (inputDate.type !== 'date') {
-                $('input[name$="apply_date]"]').datetimepicker({
+                $('input[name$="tax_rule[apply_date][date]"]').datetimepicker({
                     locale: 'ja',
                     format: 'YYYY-MM-DD',
                     useCurrent: false,
@@ -111,7 +125,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <td class="align-middle pl-3"></td>
                                     <td class="align-middle" style="width:230px;">
                                         <div class="form-inline justify-content-end">
-                                            {{ form_widget(form.tax_rate, {attr: {class: 'col-auto text-right', max: '100'}}) }}<span class="pl-1 col-auto">%</span>
+                                            {{ form_widget(form.tax_rate, {attr: {class: 'col-auto text-right'}}) }}<span class="pl-1 col-auto">%</span>
                                             {{ form_errors(form.tax_rate) }}
                                         </div>
                                     </td>
@@ -145,7 +159,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <td class="align-middle pl-3"><span>{{ TaxRule.id }}</span></td>
                                         <td class="align-middle text-right" style="width:230px;">
                                             <div class="edit form-inline justify-content-end">
-                                                {{ form_widget(forms[TaxRule.id].tax_rate, {attr: {class: 'col-auto text-right', max: '100'}}) }}<span class="pl-1 col-auto">%</span>
+                                                {{ form_widget(forms[TaxRule.id].tax_rate, {attr: {class: 'col-auto text-right'}}) }}<span class="pl-1 col-auto">%</span>
                                                 {{ form_errors(forms[TaxRule.id].tax_rate) }}
                                             </div>
                                             <div class="list">

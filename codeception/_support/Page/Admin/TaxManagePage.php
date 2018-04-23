@@ -24,9 +24,13 @@ class TaxManagePage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
-    public function 入力_適用日時($row, $value) {
-//        $this->tester->fillField(['css' => 'table tbody tr:nth-child('.$row.') input[type=date]'], $value);
-        $this->tester->executeJS("document.getElementById('tax_rule_apply_date').value = '{$value}'");
+    public function 入力_適用日($value) {
+        $this->tester->executeJS("document.getElementById('tax_rule_apply_date_date').value = '{$value}'");
+        return $this;
+    }
+
+    public function 入力_適用時($value) {
+        $this->tester->executeJS("document.getElementById('tax_rule_apply_date_time').value = '{$value}'");
         return $this;
     }
 
@@ -56,7 +60,7 @@ class TaxManagePage extends AbstractAdminPageStyleGuide
 
     public function 一覧_税率($rowNum)
     {
-        return "table > tbody > tr:nth-child(${rowNum}) > td.align-middle.text-right";
+        return "table > tbody > tr:nth-child(${rowNum}) > td.align-middle.text-right .list";
     }
 
     public function 共通税率設定_登録()
