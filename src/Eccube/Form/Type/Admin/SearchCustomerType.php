@@ -29,6 +29,7 @@ use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Form\Type\Master\CategoryType as MasterCategoryType;
 use Eccube\Form\Type\Master\CustomerStatusType;
 use Eccube\Form\Type\Master\PrefType;
+use Eccube\Form\Type\PriceType;
 use Eccube\Form\Type\Master\SexType;
 use Eccube\Repository\Master\CustomerStatusRepository;
 use Symfony\Component\Form\AbstractType;
@@ -128,14 +129,14 @@ class SearchCustomerType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('buy_total_start', IntegerType::class, [
+            ->add('buy_total_start', PriceType::class, [
                 'label' => 'searchcustomer.label.purchese_price',
                 'required' => false,
                 'constraints' => [
                     new Assert\Length(['max' => $this->eccubeConfig['eccube_price_len']]),
                 ],
             ])
-            ->add('buy_total_end', IntegerType::class, [
+            ->add('buy_total_end', PriceType::class, [
                 'label' => 'searchcustomer.label.purchese_price',
                 'required' => false,
                 'constraints' => [
