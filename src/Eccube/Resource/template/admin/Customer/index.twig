@@ -142,8 +142,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div class="col">
                         <div>
                             <label>{{ 'admin.customer.index.129'|trans }}</label>
-                            {# TODO: 未実装 購入商品名検索 #}
-                            <input class="form-control" type="text">
+                            {{ form_widget(searchForm.buy_product_name) }}
+                            {{ form_errors(searchForm.buy_product_name) }}
                         </div>
                     </div>
                 </div>
