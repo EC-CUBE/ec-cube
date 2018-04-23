@@ -248,7 +248,7 @@ class CustomerRepository extends AbstractRepository
             $qb
                 ->leftJoin('c.Orders', 'o')
                 ->leftJoin('o.OrderItems', 'oi')
-                ->andWhere('oi.product_name LIKE :buy_product_name OR oi.product_code LIKE :buy_product_name')
+                ->andWhere('oi.product_name LIKE :buy_product_name')
                 ->setParameter('buy_product_name', '%'.$searchData['buy_product_name'].'%');
         }
 
