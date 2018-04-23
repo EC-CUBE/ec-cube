@@ -69,8 +69,9 @@ class CustomerManagePage extends AbstractAdminPageStyleGuide
 
     public function 一覧_仮会員メール再送($rowNum)
     {
-        $this->一覧_メニュー($rowNum);
-        $this->tester->click("#search_form > div.row > div > div > div.box-body > div.table_list > div > table > tbody > tr:nth-child(${rowNum}) > td.icon_edit > div > ul > li:nth-child(3) > a");
+        $this->tester->click(['xpath' => "//*[@id='search_form']/div[3]/div/div/div[2]/div/table/tbody/tr[${rowNum}]/td[6]/div/div[1]/a"]);
+        $this->tester->wait(5);
+        $this->tester->click('再送');
         return $this;
     }
 
