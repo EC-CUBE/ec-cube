@@ -90,12 +90,4 @@ class TaxRuleTypeTest extends AbstractTypeTestCase
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
-
-    public function testValidDeliveryTaxRate_HasMinus()
-    {
-        $this->formData['tax_rate'] = '10.0';
-
-        $this->form->submit($this->formData);
-        $this->assertTrue($this->form->isValid());
-    }
 }
