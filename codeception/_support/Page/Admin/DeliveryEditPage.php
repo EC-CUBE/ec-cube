@@ -43,7 +43,7 @@ class DeliveryEditPage extends AbstractAdminPageStyleGuide
 
     public function 登録()
     {
-        $this->tester->click(['xpath' => '//button[text()="登録"]']);
+        $this->tester->click(['xpath' => '//button/span[text()="登録"]']);
         return $this;
     }
 
