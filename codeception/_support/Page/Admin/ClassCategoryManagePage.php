@@ -78,20 +78,20 @@ class ClassCategoryManagePage extends AbstractAdminPageStyleGuide
     {
 
         $rowNum += 1;
-        $this->tester->dragAndDropBy("ul.tableish > li:nth-child(${rowNum})", 0, -60);
+        $this->tester->dragAndDropBy("ul.list-group > li:nth-child(${rowNum})", 0, -60);
         return $this;
     }
 
     public function 一覧_下に($rowNum)
     {
         $rowNum += 1;
-        $this->tester->dragAndDropBy("ul.tableish > li:nth-child(${rowNum})", 0, 60);
+        $this->tester->dragAndDropBy("ul.list-group > li:nth-child(${rowNum})", 0, 60);
         return $this;
     }
 
     public function 一覧_名称($rowNum)
     {
         $rowNum += 1;
-        return "ul.tableish > li:nth-child(${rowNum}) > div > div.col.d-flex.align-items-center";
+        return "ul.list-group > li:nth-child(${rowNum}) > div > div.col.d-flex.align-items-center";
     }
 }

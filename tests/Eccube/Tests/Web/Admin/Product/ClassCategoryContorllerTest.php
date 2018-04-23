@@ -138,7 +138,7 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
 
         $crawler = $this->client->followRedirect();
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertContains($editName, $crawler->filter('ul.tableish li:nth-child(2)')->text());
+        $this->assertContains($editName, $crawler->filter('ul.sortable-container li:nth-child(2)')->text());
     }
 
     public function testRoutingAdminProductClassCategoryDelete()
