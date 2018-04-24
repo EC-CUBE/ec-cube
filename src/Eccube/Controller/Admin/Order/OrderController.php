@@ -274,6 +274,7 @@ class OrderController extends AbstractController
             'page_no' => $page_no,
             'page_count' => $page_count,
             'has_errors' => false,
+            'OrderStatuses' => $this->orderStatusRepository->findBy([], ['sort_no' => 'ASC']),
         ];
     }
 
