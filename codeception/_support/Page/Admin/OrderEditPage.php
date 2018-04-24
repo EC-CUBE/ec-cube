@@ -26,13 +26,6 @@ class OrderEditPage extends AbstractAdminPageStyleGuide
         return $page;
     }
 
-    public static function goEdit($I, $id = 1)
-    {
-        $page = new self($I);
-        $page->goPage("/order/{$id}/edit", '受注登録受注管理');
-        return $page;
-    }
-
     public static function at($I)
     {
         $page = new self($I);
