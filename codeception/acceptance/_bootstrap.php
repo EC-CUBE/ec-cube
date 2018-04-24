@@ -221,6 +221,19 @@ $resetShippingStatusPrepared = function () use ($entityManager) {
 /** 出荷準備中に更新するクロージャ. */
 Fixtures::add('resetShippingStatusPrepared', $resetShippingStatusPrepared);
 
+$resetShippingStatusShipped = function () use ($entityManager) {
+    $StatusShipped = $entityManager->find(ShippingStatus::class, ShippingStatus::SHIPPED);
+    $Shippings = $entityManager->getRepository('Eccube\Entity\Shipping')
+        ->findAll();
+    foreach ($Shippings as $Shipping) {
+        $Shipping->setShippingStatus($StatusShipped);
+    }
+    $entityManager->flush();
+    return true;
+};
+/** 出荷済みに更新するクロージャ. */
+Fixtures::add('resetShippingStatusShipped', $resetShippingStatusShipped);
+
 $deleteShippingNotExistsOfItem = function () use ($entityManager) {
 
     $Shippings= $entityManager->getRepository('Eccube\Entity\Shipping')->findAll();

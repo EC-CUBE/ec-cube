@@ -57,7 +57,7 @@ class ShippingEditControllerTest extends AbstractAdminWebTestCase
         $info = $crawler->filter('#page_admin_shipping_edit > div.c-container > div.c-contentsArea > div.alert.alert-primary')->text();
         $success = $crawler->filter('#page_admin_shipping_edit > div.c-container > div.c-contentsArea > div.alert.alert-success')->text();
         $this->assertContains('出荷情報を登録しました。', $success);
-        $this->assertContains('配送に関わる情報が変更されました：送料の変更が必要な場合は、受注管理より手動で変更してください。', $info);
+        $this->assertContains('出荷に関わる情報が変更されました：送料の変更が必要な場合は、受注管理より手動で変更してください。', $info);
     }
  
     public function testNewShippingEmptyShipment()

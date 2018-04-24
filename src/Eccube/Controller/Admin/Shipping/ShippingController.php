@@ -201,6 +201,7 @@ class ShippingController extends AbstractController
     {
         $this->isTokenValid();
 
+        $result = [];
         if ($Shipping->getShippingStatus()->getId() !== ShippingStatus::SHIPPED) {
             /** @var ShippingStatus $StatusShipped */
             $StatusShipped = $this->shippingStatusRepository->find(ShippingStatus::SHIPPED);
@@ -210,12 +211,20 @@ class ShippingController extends AbstractController
 
             if ($request->get('notificationMail')) {
                 $this->mailService->sendShippingNotifyMail($Shipping);
+                $result['mail'] = true;
+            } else {
+                $result['mail'] = false;
             }
 
             $this->entityManager->flush();
+            $result['shipped'] = true;
+            return new JsonResponse($result);
         }
 
-        return new JsonResponse(['success' => true]);
+        return new JsonResponse([
+            'shipped' => false,
+            'mail' => false
+        ]);
     }
 
     /**
@@ -227,6 +236,30 @@ class ShippingController extends AbstractController
     public function previewShippingNotifyMail(Shipping $Shipping)
     {
         return new Response($this->mailService->getShippingNotifyMailBody($Shipping, $Shipping->getOrders()->first()));
+    }
+
+    /**
+     * @Method("PUT")
+     * @Route("/%eccube_admin_route%/shipping/notify_mail/{id}", requirements={"id" = "\d+"}, name="admin_shipping_notify_mail")
+     * @param Request $request
+     * @param Shipping $Shipping
+     * @return JsonResponse
+     */
+    public function notifyMail(Shipping $Shipping)
+    {
+        $this->isTokenValid();
+
+        if ($Shipping->getShippingStatus()->getId() === ShippingStatus::SHIPPED) {
+            $this->mailService->sendShippingNotifyMail($Shipping);
+            return new JsonResponse([
+                'mail' => true,
+                'shipped' => false
+            ]);
+        }
+        return new JsonResponse([
+            'mail' => false,
+            'shipped' => false
+        ]);
     }
 
     /**

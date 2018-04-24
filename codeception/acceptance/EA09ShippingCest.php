@@ -181,7 +181,40 @@ class EA09ShippingCest
 
         $I->wait(5);
         $I->waitForElementVisible(['xpath' => '//*[@id="sentUpdateModal"]/div/div/div[2]/p']);
-        $I->see('処理完了', ['xpath' => '//*[@id="sentUpdateModal"]/div/div/div[2]/p']);
+        $I->see('処理完了。10件のメールを送信しました', ['xpath' => '//*[@id="sentUpdateModal"]/div/div/div[2]/p']);
+        $I->seeEmailCount(20);
+
+        $I->click(['id' => 'bulkChangeComplete']);
+    }
+
+    public function shipping一括発送済みメール送信(\AcceptanceTester $I)
+    {
+        $I->wantTo('EA0902-UC02-T01 一括発送済みメール送信');
+
+        // 一括操作用の受注を生成しておく
+        $createCustomer = Fixtures::get('createCustomer');
+        $createOrders = Fixtures::get('createOrders');
+        $createOrders($createCustomer(), 10, array());
+
+        $I->resetEmails();
+
+        $config = Fixtures::get('config');
+        // ステータスを出荷済みにリセット
+        $resetShippingStatusShipped = Fixtures::get('resetShippingStatusShipped'); // Closure
+        $resetShippingStatusShipped();
+
+        $TargetShippings = Fixtures::get('findShippings'); // Closure
+        $Shippings = $TargetShippings();
+        $ShippingListPage = ShippingManagePage::go($I);
+        $I->see('検索結果 : '.count($Shippings).' 件が該当しました', ShippingManagePage::$検索結果_メッセージ);
+
+        $ShippingListPage
+            ->一覧_全選択()
+            ->一括発送済みメール送信();
+
+        $I->wait(5);
+        $I->waitForElementVisible(['xpath' => '//*[@id="sentUpdateModal"]/div/div/div[2]/p']);
+        $I->see('処理完了。10件のメールを送信しました', ['xpath' => '//*[@id="sentUpdateModal"]/div/div/div[2]/p']);
         $I->seeEmailCount(20);
 
         $I->click(['id' => 'bulkChangeComplete']);
