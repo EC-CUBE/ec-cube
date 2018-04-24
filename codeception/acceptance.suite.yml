@@ -8,17 +8,10 @@ class_name: AcceptanceTester
 modules:
     enabled:
         - \Helper\Acceptance
-        - Db
         - WebDriver
         - Asserts
         - MailCatcher
     config:
-        Db:
-            user: '%ECCUBE_DB_USERNAME%'
-            password: '%ECCUBE_DB_PASSWORD%'
-            populate: true
-            cleanup: false
-            reconnect: true
         WebDriver:
             host: '%WEB_DRIVER_HOST%'
             port: '%WEB_DRIVER_PORT%'
@@ -38,23 +31,17 @@ env:
             config:
                 WebDriver:
                     browser: firefox
-                Db:
-                    dsn: 'pgsql:host=%ECCUBE_DB_HOST%;dbname=%ECCUBE_DB_DATABASE%'
 
     front: # Backward compatibility
         modules:
             config:
                 WebDriver:
                     browser: firefox
-                Db:
-                    dsn: 'pgsql:host=%ECCUBE_DB_HOST%;dbname=%ECCUBE_DB_DATABASE%'
     admin: # Backward compatibility
         modules:
             config:
                 WebDriver:
                     browser: firefox
-                Db:
-                    dsn: 'pgsql:host=%ECCUBE_DB_HOST%;dbname=%ECCUBE_DB_DATABASE%'
     firefox:
         modules:
             config:
@@ -76,13 +63,3 @@ env:
                     capabilities:
                       chromeOptions:
                         args: ["--headless", "--disable-gpu"]
-    mysql:
-        modules:
-            config:
-                Db:
-                    dsn: 'mysql:host=%ECCUBE_DB_HOST%;dbname=%ECCUBE_DB_DATABASE%;charset=utf8'
-    pgsql:
-        modules:
-            config:
-                Db:
-                    dsn: 'pgsql:host=%ECCUBE_DB_HOST%;dbname=%ECCUBE_DB_DATABASE%'
