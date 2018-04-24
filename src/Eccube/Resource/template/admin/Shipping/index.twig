@@ -134,6 +134,13 @@
                         notifierCompleteMessage = '{{ 'admin.shipping.index.837'|trans }}'.replace(/%count%/, mailCount);
                     }
                     $('.progress-bar', modal).css('width', (++currentCount / totalCount * 100) + '%');
+                    if (currentCount >= totalCount) {
+                        progress.resolve();
+                    }
+                }).done(function() {
+                    $('.progress', modal).hide();
+                    $('.modal-body > p', modal).text("{{ 'admin.shipping.index.828'|trans }}" + notifierCompleteMessage);
+                    $('#bulkChangeComplete').show();
                 });
 
                 var promises = updater.getPromises(progress);
@@ -143,13 +150,6 @@
                         $('<li><span class="badge badge-danger">ERROR</span> </li>')
                             .append($('<span></span>').text("{{ 'application.text.error.system'|trans }}"))
                             .appendTo('#bulkErrors');
-                    })
-                    .always(function() {
-                        setTimeout(function() {
-                            $('.progress', modal).hide();
-                            $('.modal-body > p', modal).text("{{ 'admin.shipping.index.828'|trans }}" + notifierCompleteMessage);
-                            $('#bulkChangeComplete').show();
-                        }, 1000);
                     });
             });
 
