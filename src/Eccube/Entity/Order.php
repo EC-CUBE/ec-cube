@@ -26,7 +26,6 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Service\Calculator\OrderItemCollection;
-use Eccube\Service\ItemValidateException;
 use Eccube\Service\PurchaseFlow\ItemCollection;
 
 /**
@@ -41,11 +40,6 @@ use Eccube\Service\PurchaseFlow\ItemCollection;
 class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, ItemHolderInterface
 {
     use PointTrait;
-
-    /**
-     * @var ItemValidateException[]
-     */
-    private $errors = [];
 
     /**
      * isMultiple
@@ -1705,23 +1699,6 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     public function getOrderStatus()
     {
         return $this->OrderStatus;
-    }
-
-    /**
-     * @param string $error
-     * @return void
-     */
-    public function addError($error)
-    {
-        $this->errors[] = $error;
-    }
-
-    /**
-     * @return ItemValidateException[]
-     */
-    public function getErrors()
-    {
-        return $this->errors;
     }
 
     /**

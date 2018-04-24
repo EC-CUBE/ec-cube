@@ -62,7 +62,7 @@ class ShippingItemType extends AbstractType
         $app = $this->app;
 
         $builder
-            ->addEventListener(FormEvents::PRE_SET_DATA, function ($event) use ($app) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function ($event) {
                 /** @var \Eccube\Entity\Shipping $data */
                 $data = $event->getData();
                 /** @var \Symfony\Component\Form\Form $form */

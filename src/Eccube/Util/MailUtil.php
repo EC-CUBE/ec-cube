@@ -23,6 +23,7 @@
 
 namespace Eccube\Util;
 
+use Eccube\Application;
 use Eccube\Common\EccubeConfig;
 
 class MailUtil
