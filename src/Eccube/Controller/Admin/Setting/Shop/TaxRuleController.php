@@ -98,7 +98,7 @@ class TaxRuleController extends AbstractController
         $mode = $request->get('mode');
         if ($mode != 'edit_inline') {
             $form->handleRequest($request);
-            if ($form->isSubmitted() && $this->isValid($form)) {
+            if ($form->isSubmitted() && $form->isValid()) {
                 $this->entityManager->persist($TargetTaxRule);
                 $this->entityManager->flush();
 
