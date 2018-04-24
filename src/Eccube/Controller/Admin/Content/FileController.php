@@ -39,6 +39,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\Validator\Constraints as Assert;
+use Eccube\Util\FilesystemUtil;
 
 class FileController extends AbstractController
 {
@@ -47,7 +48,11 @@ class FileController extends AbstractController
     private $errors = [];
     private $encode = '';
 
-    public function __construct() {
+    /**
+     * FileController constructor.
+     */
+    public function __construct()
+    {
         $this->encode = self::UTF;
         if ('\\' === DIRECTORY_SEPARATOR) {
             $this->encode = self::SJIS;
@@ -347,7 +352,7 @@ class FileController extends AbstractController
             $arrFileList[] = array(
                 'file_name' => $this->convertStrFromServer($dir->getFilename()),
                 'file_path' => $this->convertStrFromServer($this->getJailDir($this->normalizePath($dir->getRealPath()))),
-                'file_size' => $dir->getSize(),
+                'file_size' => FilesystemUtil::sizeToHumanReadable($dir->getSize()),
                 'file_time' => date("Y/m/d", $dir->getmTime()),
                 'is_dir' => true,
             );
@@ -356,7 +361,7 @@ class FileController extends AbstractController
             $arrFileList[] = array(
                 'file_name' => $this->convertStrFromServer($file->getFilename()),
                 'file_path' => $this->convertStrFromServer($this->getJailDir($this->normalizePath($file->getRealPath()))),
-                'file_size' => $file->getSize(),
+                'file_size' => FilesystemUtil::sizeToHumanReadable($file->getSize()),
                 'file_time' => date("Y/m/d", $file->getmTime()),
                 'is_dir' => false,
             );
