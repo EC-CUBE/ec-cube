@@ -323,11 +323,13 @@
                     <div>
                         <label class="col-form-label">{{ 'admin.shipping.index.762'|trans }}</label>
                         {{ form_widget(searchForm.multi) }}
+                        {{ form_errors(searchForm.multi) }}
                     </div>
                     <div class="form-row">
                         <div class="form-group col-12">
                             <p class="col-form-label">{{'admin.shipping.index.764'|trans}}</p>
                             {{ form_widget(searchForm.shipping_status, {'label_attr': {'class': 'checkbox-inline'}}) }}
+                            {{ form_errors(searchForm.shipping_status) }}
                         </div>
                     </div>
                     <div class="d-inline-block mb-3 collapsed" data-toggle="collapse" href="#searchDetail" aria-expanded="false" aria-controls="searchDetail"><a><i class="fa font-weight-bold mr-1 fa-plus-square-o"></i><span class="font-weight-bold">{{ 'admin.shipping.index.823'|trans }}</span></a></div>
@@ -339,6 +341,7 @@
                 <div class="col">
                     <label class="col-form-label">{{ 'admin.shipping.index.765'|trans }}</label>
                     {{ form_widget(searchForm.name) }}
+                    {{ form_errors(searchForm.name) }}
                 </div>
                 <div class="col">
                     <label class="col-form-label">{{ 'admin.shipping.index.766'|trans }}</label>
@@ -350,6 +353,7 @@
                 <div class="col">
                     <label class="col-form-label">{{ 'admin.shipping.index.767'|trans }}</label>
                     {{ form_widget(searchForm.order_name) }}
+                    {{ form_errors(searchForm.order_name) }}
                 </div>
                 <div class="col">
                     <label class="col-form-label">{{ 'admin.shipping.index.768'|trans }}</label>
@@ -447,6 +451,9 @@
             {% if pagination %}
             <span class="font-weight-bold ml-2">{{'admin.shipping.index.782'|trans({'%count%':pagination.totalItemCount})|raw}}</span>
             {% endif %}
+        </div>
+        <div class="c-outsideBlock__contents mb-5">
+            {{ include('@admin/search_items.twig', { 'form': searchForm }, ignore_missing = true) }}
         </div>
     </form>
 </div>

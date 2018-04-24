@@ -131,7 +131,14 @@ class OrderItemType extends AbstractType
                     )),
                 ),
             ))
-            ->add('product_name', HiddenType::class)
+            ->add('product_name', TextType::class, array(
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                    new Assert\Length(array(
+                        'max' => $this->eccubeConfig['eccube_mtext_len'],
+                    )),
+                ),
+            ))
             ->add('product_code', HiddenType::class)
             ->add('class_name1', HiddenType::class)
             ->add('class_name2', HiddenType::class)
@@ -246,23 +253,23 @@ class OrderItemType extends AbstractType
                     $data['class_category_name2'] = null;
                     switch ($data['order_item_type']) {
                         case OrderItemTypeMaster::DELIVERY_FEE:
-                            $data['product_name'] = 'orderitem.text.data.shipping_charge';
-                            $data['price'] = 0;
-                            $data['quantity'] = 1;
+                            // $data['product_name'] = trans('orderitem.text.data.shipping_charge');
+                            // $data['price'] = 0;
+                            // $data['quantity'] = 1;
                             $data['tax_type'] = TaxType::TAXATION;
                             $data['tax_display_type'] = TaxDisplayType::INCLUDED;
                             break;
                         case OrderItemTypeMaster::CHARGE:
-                            $data['product_name'] = 'orderitem.text.data.commision';
-                            $data['price'] = 0;
-                            $data['quantity'] = 1;
+                            // $data['product_name'] = trans('orderitem.text.data.commision');
+                            // $data['price'] = 0;
+                            // $data['quantity'] = 1;
                             $data['tax_type'] = TaxType::TAXATION;
                             $data['tax_display_type'] = TaxDisplayType::INCLUDED;
                             break;
                         case OrderItemTypeMaster::DISCOUNT:
-                            $data['product_name'] = 'orderitem.text.data.discount';
-                            $data['price'] = -0;
-                            $data['quantity'] = 1;
+                            // $data['product_name'] = trans('orderitem.text.data.discount');
+                            // $data['price'] = -0;
+                            // $data['quantity'] = 1;
                             $data['tax_type'] = TaxType::NON_TAXABLE;
                             $data['tax_display_type'] = TaxDisplayType::INCLUDED;
                             break;

@@ -7,9 +7,9 @@ namespace Page\Admin;
 class OrderEditPage extends AbstractAdminPageStyleGuide
 {
 
-    public static $姓_エラーメッセージ = '#ordererInfo > div > div:nth-child(2) > div.col > span > ul > p';
+    public static $姓_エラーメッセージ = '#ordererInfo > div > div:nth-child(2) > div.col > span > span > span.form-error-message';
 
-    public static $登録完了メッセージ = '#page_admin_order_edit > div > div.c-contentsArea > div.alert';
+    public static $登録完了メッセージ = 'div.c-container > div.c-contentsArea > div.alert.alert-success.alert-dismissible.fade.show.m-3 > span';
 
     /**
      * OrderRegisterPage constructor.

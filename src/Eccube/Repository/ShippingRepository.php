@@ -130,7 +130,7 @@ class ShippingRepository extends AbstractRepository
         if (isset($searchData['order_kana']) && StringUtil::isNotBlank($searchData['order_kana'])) {
             $qb
                 ->andWhere('CONCAT(o.kana01, s.kana02) LIKE :order_kana')
-                ->setParameter('kana', '%' . $searchData['order_kana'] . '%');
+                ->setParameter('order_kana', '%' . $searchData['order_kana'] . '%');
         }
 
         // order_email

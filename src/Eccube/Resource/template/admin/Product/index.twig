@@ -296,6 +296,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <span class="font-weight-bold ml-2">{{'admin.product.index.479'|trans({"%count%":pagination.totalItemCount})|raw}}</span>
                 {% endif %}
             </div>
+            <div class="c-outsideBlock__contents mb-5">
+                {{ include('@admin/search_items.twig', { 'form': searchForm }, ignore_missing = true) }}
+            </div>
         </form>
     </div>
     <div class="c-contentsArea__cols">
