@@ -16,11 +16,26 @@ use Doctrine\ORM\Mapping as ORM;
 class Layout extends AbstractEntity
 {
     /**
+     * トップページ用レイアウト
+     */
+    const DEFAULT_LAYOUT_TOP_PAGE = 1;
+
+    /**
+     * 下層ページ用レイアウト
+     */
+    const DEFAULT_LAYOUT_UNDERLAYER_PAGE = 2;
+
+    /**
      * @return string
      */
     public function __toString()
     {
         return (string) $this->name;
+    }
+
+    public function isDefault()
+    {
+        return in_array($this->id, [self::DEFAULT_LAYOUT_TOP_PAGE, self::DEFAULT_LAYOUT_UNDERLAYER_PAGE,]);
     }
 
     /**

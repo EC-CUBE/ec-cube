@@ -26,6 +26,7 @@ namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -56,20 +57,13 @@ class SearchOrderType extends AbstractType
         $builder
             // 受注ID・注文者名・注文者（フリガナ）・注文者会社名
             ->add('multi', TextType::class, array(
-                'label' => 'searchorder.label.customer_id', // TODO: the translate key is not relevant to purpose of input
+                'label' => 'searchorder.label.multi',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array('max' => $this->eccubeConfig['eccube_stext_len'])),
                 ),
             ))
-            ->add('order_id', NumberType::class, array(
-                'label' => 'searchorder.label.order_id',
-                'required' => false,
-            ))
             ->add('status', OrderStatusType::class, array(
-                'label' => 'searchorder.label.status',
-            ))
-            ->add('multi_status', OrderStatusType::class, array(
                 'label' => 'searchorder.label.status',
                 'expanded' => true,
                 'multiple' => true,
@@ -78,8 +72,29 @@ class SearchOrderType extends AbstractType
                 'label' => 'searchorder.label.name',
                 'required' => false,
             ))
+            ->add($builder
+                ->create('kana', TextType::class, array(
+                    'label' => 'searchorder.label.kana',
+                    'required' => false,
+                    'constraints' => array(
+                        new Assert\Regex(array(
+                            'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
+                            'message' => 'form.type.admin.notkanastyle',
+                        )),
+                    ),
+                ))
+                ->addEventSubscriber(new \Eccube\Form\EventListener\ConvertKanaListener('CV')
+            ))
+            ->add('company_name', TextType::class, array(
+                'label' => 'searchorder.label.company_name',
+                'required' => false,
+            ))
             ->add('email', TextType::class, array(
                 'label' => 'searchorder.label.email',
+                'required' => false,
+            ))
+            ->add('order_id', IntegerType::class, array(
+                'label' => 'searchorder.label.order_id',
                 'required' => false,
             ))
             ->add('tel', TextType::class, array(
@@ -180,25 +195,7 @@ class SearchOrderType extends AbstractType
                 'label' => 'searchorder.label.purchased_products',
                 'required' => false,
             ))
-            ->add('company_name', TextType::class, array(
-                'label' => 'searchorder.label.company_name',
-                'required' => false,
-            ));
-
-        $builder->add(
-            $builder
-                ->create('kana', TextType::class, array(
-                    'label' => 'searchorder.label.kana',
-                    'required' => false,
-                    'constraints' => array(
-                        new Assert\Regex(array(
-                            'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
-                            'message' => 'form.type.admin.notkanastyle',
-                        )),
-                    ),
-                ))
-                ->addEventSubscriber(new \Eccube\Form\EventListener\ConvertKanaListener('CV'))
-        );
+        ;
     }
 
     /**

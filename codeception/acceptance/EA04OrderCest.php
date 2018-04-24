@@ -1,10 +1,10 @@
 <?php
 
 use Codeception\Util\Fixtures;
-use Page\Admin\CsvSettingsPage;
-use Page\Admin\OrderManagePage;
-use Page\Admin\OrderEditPage;
 use Eccube\Entity\Master\OrderStatus;
+use Page\Admin\CsvSettingsPage;
+use Page\Admin\OrderEditPage;
+use Page\Admin\OrderManagePage;
 
 /**
  * @group admin
@@ -27,7 +27,7 @@ class EA04OrderCest
 
     public function order_受注検索(\AcceptanceTester $I)
     {
-        $I->wantTo('EA0401-UC01-T01(& UC01-T02) 受注検索');
+        $I->wantTo('EA0401-UC01-T01(& UC01-T02, UC01-T03) 受注検索');
 
         $findOrders = Fixtures::get('findOrders'); // Closure
         $TargetOrders = array_filter($findOrders(), function ($Order) {
@@ -38,6 +38,9 @@ class EA04OrderCest
 
         OrderManagePage::go($I)->検索('gege@gege.com');
         $I->see('検索結果：0件が該当しました', OrderManagePage::$検索結果_メッセージ);
+
+        OrderManagePage::go($I)->詳細検索_電話番号('あああ');
+        $I->see('検索条件に誤りがあります。', OrderManagePage::$検索結果_エラーメッセージ);
     }
 
     /**
@@ -81,14 +84,9 @@ class EA04OrderCest
         $I->assertEquals(3, $value);
     }
 
-    /**
-     * TODO: will fix when apply style guide for admin order edit
-     *
-     * @skip
-     */
     public function order_受注編集(\AcceptanceTester $I)
     {
-        $I->wantTo('EA0401-UC05-T01(& UC05-T02/UC06-T01) 受注編集');
+        $I->wantTo('EA0401-UC05-T01(& UC05-T02/UC05-T03/UC06-T01) 受注編集');
 
         $findOrders = Fixtures::get('findOrders'); // Closure
         $TargetOrders = array_filter($findOrders(), function ($Order) {
@@ -130,6 +128,21 @@ class EA04OrderCest
         $OrderRegisterPage
             ->入力_受注ステータス(['2' => '入金待ち'])
             ->受注情報登録();
+
+        $I->see('受注情報を保存しました。', OrderEditPage::$登録完了メッセージ);
+
+        /* 明細の削除 */
+        $itemName = $OrderRegisterPage->明細の項目名を取得(1);
+        $OrderRegisterPage->明細を削除(1)
+            ->acceptDeleteModal(1);
+        $I->wait(2);
+
+        // before submit
+        $I->dontSee($itemName, "#table-form-field");
+
+        // after submit
+        $OrderRegisterPage->受注情報登録();
+        $I->dontSee($itemName, "#table-form-field");
 
         $I->see('受注情報を保存しました。', OrderEditPage::$登録完了メッセージ);
     }

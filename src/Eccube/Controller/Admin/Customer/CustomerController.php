@@ -48,6 +48,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CustomerController extends AbstractController
 {
@@ -116,10 +117,6 @@ class CustomerController extends AbstractController
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_INDEX_INITIALIZE, $event);
 
         $searchForm = $builder->getForm();
-        $searchData = [];
-
-        //アコーディオンの制御初期化( デフォルトでは閉じる )
-        $active = false;
 
         $pageMaxis = $this->pageMaxRepository->findAll();
         $pageCount = $session->get('eccube.admin.customer.search.page_count', $this->eccubeConfig['eccube_default_page_count']);
@@ -142,6 +139,16 @@ class CustomerController extends AbstractController
 
                 $session->set('eccube.admin.customer.search', FormUtil::getViewData($searchForm));
                 $session->set('eccube.admin.customer.search.page_no', $page_no);
+            } else {
+                return [
+                    'searchForm' => $searchForm->createView(),
+                    'pagination' => [],
+                    'pageMaxis' => $pageMaxis,
+                    'page_no' => $page_no,
+                    'page_count' => $pageCount,
+                    'has_errors' => true,
+                ];
+
             }
         } else {
             if (null !== $page_no || $request->get('resume')) {
@@ -184,7 +191,7 @@ class CustomerController extends AbstractController
             'pageMaxis' => $pageMaxis,
             'page_no' => $page_no,
             'page_count' => $pageCount,
-            'active' => $active,
+            'has_errors' => false,
         ];
     }
 
@@ -202,7 +209,11 @@ class CustomerController extends AbstractController
             throw new NotFoundHttpException();
         }
 
-        $activateUrl = $this->generateUrl('entry_activate', array('secret_key' => $Customer->getSecretKey()));
+        $activateUrl = $this->generateUrl(
+            'entry_activate',
+            array('secret_key' => $Customer->getSecretKey()),
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
 
         // メール送信
         $this->mailService->sendAdminCustomerConfirmMail($Customer, $activateUrl);

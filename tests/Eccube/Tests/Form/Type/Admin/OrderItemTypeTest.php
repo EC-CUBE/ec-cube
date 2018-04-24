@@ -37,6 +37,7 @@ class OrderItemTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         'price' => '10000',
         'quantity'=> '10000',
         'tax_rate' => '10.0',
+        'product_name' => 'name1',
     );
 
     public function setUp()

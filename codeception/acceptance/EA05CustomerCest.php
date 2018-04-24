@@ -50,6 +50,16 @@ class EA05CustomerCest
         $I->see('検索条件に合致するデータが見つかりませんでした', CustomerManagePage::$検索結果_結果なしメッセージ);
     }
 
+    public function customer_検索エラー(\AcceptanceTester $I)
+    {
+        $I->wantTo('EA0501-UC01-T03 検索 エラー');
+
+        CustomerManagePage::go($I)
+            ->詳細検索_電話番号('あああ');
+
+        $I->see('検索条件に誤りがあります。', CustomerManagePage::$検索結果_エラーメッセージ);
+    }
+
     public function customer_会員登録(\AcceptanceTester $I)
     {
         $I->wantTo('EA0502-UC01-T02(& UC01-T02) 会員登録');
@@ -150,7 +160,6 @@ class EA05CustomerCest
 
     public function customer_会員削除(\AcceptanceTester $I)
     {
-        $I->getScenario()->incomplete('未実装：会員削除は未実装');
         $I->wantTo('EA0501-UC03-T01 会員削除');
 
         $createCustomer = Fixtures::get('createCustomer');
@@ -160,14 +169,12 @@ class EA05CustomerCest
             ->検索($customer->getEmail());
 
         $CustomerManagePage->一覧_削除(1);
-        $I->acceptPopup();
 
         $I->see('検索条件に合致するデータが見つかりませんでした', CustomerManagePage::$検索結果_結果なしメッセージ);
     }
 
     public function customer_会員削除キャンセル(\AcceptanceTester $I)
     {
-        $I->getScenario()->incomplete('未実装：会員削除は未実装');
         $I->wantTo('EA0501-UC03-T02 会員削除キャンセル');
 
         $createCustomer = Fixtures::get('createCustomer');
@@ -177,8 +184,7 @@ class EA05CustomerCest
             ->検索($customer->getEmail());
 
         $CustomerIdForNotDel = $CustomerManagePage->一覧_会員ID(1);
-        $CustomerManagePage->一覧_削除(1);
-        $I->cancelPopup();
+        $CustomerManagePage->一覧_削除(1, false);
 
         $I->assertEquals($CustomerIdForNotDel, $CustomerManagePage->一覧_会員ID(1));
     }
@@ -216,7 +222,6 @@ class EA05CustomerCest
 
     public function customer_仮会員メール再送(\AcceptanceTester $I)
     {
-        $I->getScenario()->incomplete('未実装：仮会員メール再送は未実装');
         $I->wantTo('EA0501-UC06-T01(& UC06-T02) 仮会員メール再送');
 
         $I->resetEmails();
@@ -228,8 +233,7 @@ class EA05CustomerCest
         CustomerManagePage::go($I)
             ->検索($customer->getEmail())
             ->一覧_仮会員メール再送(1);
-        $I->acceptPopup();
-        $I->wait(10);
+        $I->wait(5);
 
         $I->seeEmailCount(2);
         foreach (array($customer->getEmail(), $BaseInfo->getEmail01()) as $email) {

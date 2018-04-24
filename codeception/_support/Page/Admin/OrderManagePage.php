@@ -7,6 +7,8 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
 {
     public static $検索条件_受注ステータス = ['id' => 'admin_search_order_status'];
     public static $検索結果_メッセージ = '#search_form #search_total_count';
+    public static $検索結果_エラーメッセージ = '//*[@id="page_admin_order"]/div[1]/div[3]/div[3]/div/div/div[1]/div/div[1]';
+    public static $詳細検索ボタン = '//*[@id="search_form"]/div[1]/div/div/div[3]/a/i/span';
 
     /**
      * OrderListPage constructor.
@@ -31,6 +33,15 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
     public function 検索($value = '')
     {
         $this->tester->fillField(['id' => 'admin_search_order_multi'], $value);
+        $this->tester->click('#search_form #search_submit');
+        return $this;
+    }
+
+    public function 詳細検索_電話番号($value = '')
+    {
+        $this->tester->click(self::$詳細検索ボタン);
+        $this->tester->wait(1);
+        $this->tester->fillField(['id' => 'admin_search_order_tel'], $value);
         $this->tester->click('#search_form #search_submit');
         return $this;
     }
@@ -103,7 +114,7 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
 
     public function 受注ステータス検索($value = '')
     {
-        $this->tester->checkOption(['id' => 'admin_search_order_multi_status_' . $value]);
+        $this->tester->checkOption(['id' => 'admin_search_order_status_' . $value]);
         $this->tester->click('#search_form #search_submit');
         return $this;
     }

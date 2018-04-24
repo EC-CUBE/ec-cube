@@ -54,7 +54,7 @@ class SearchShippingType extends AbstractType
         $builder
             // 配送番号・お届け先名・お届け先（フリガナ）・お届け先会社名
             ->add('multi', TextType::class, array(
-                'label' => 'searchshipping.label.tracking_num',
+                'label' => 'searchshipping.label.multi',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array('max' => $this->eccubeConfig['eccube_stext_len'])),
@@ -72,37 +72,18 @@ class SearchShippingType extends AbstractType
             ))
             ->add('name', TextType::class, array(
                 'required' => false,
+                'label' => 'searchshipping.label.name',
             ))
             ->add('order_name', TextType::class, array(
                 'required' => false,
+                'label' => 'searchshipping.label.order_name',
             ))
-            ->add('email', TextType::class, array(
-                'required' => false,
-            ))
-            ->add('tel', TextType::class, array(
+            ->add('order_id', TextType::class, array(
+                'label' => 'searchshipping.label.order_id',
                 'required' => false,
                 'constraints' => array(
-                    new Assert\Regex(array(
-                        'pattern' => "/^[\d-]+$/u",
-                        'message' => 'form.type.admin.nottelstyle',
-                    )),
+                    new Assert\Length(array('max' => 10)),
                 ),
-            ))
-            ->add('order_date_start', DateType::class, array(
-                'label' => 'searchshipping.label.order_date_from',
-                'required' => false,
-                'input' => 'datetime',
-                'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
-                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
-            ))
-            ->add('order_date_end', DateType::class, array(
-                'label' => 'searchshipping.label.order_date_to',
-                'required' => false,
-                'input' => 'datetime',
-                'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
-                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('shipping_delivery_date_start', DateType::class, array(
                 'label' => 'searchshipping.label.delivery_date_from',
@@ -114,22 +95,6 @@ class SearchShippingType extends AbstractType
             ))
             ->add('shipping_delivery_date_end', DateType::class, array(
                 'label' => 'searchshipping.label.delivery_date_to',
-                'required' => false,
-                'input' => 'datetime',
-                'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
-                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
-            ))
-            ->add('shipping_date_start', DateType::class, array(
-                'label' => 'searchshipping.label.shipping_date_from',
-                'required' => false,
-                'input' => 'datetime',
-                'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
-                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
-            ))
-            ->add('shipping_date_end', DateType::class, array(
-                'label' => 'searchshipping.label.shipping_date_to',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -160,50 +125,93 @@ class SearchShippingType extends AbstractType
                 'label' => 'searchshipping.label.purchased_amount_max',
                 'required' => false,
             ))
+            ->add(
+                $builder
+                    ->create('kana', TextType::class, array(
+                        'label' => 'searchshipping.label.kana',
+                        'required' => false,
+                        'constraints' => array(
+                            new Assert\Regex(array(
+                                'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
+                                'message' => 'form.type.admin.notkanastyle',
+                            )),
+                        ),
+                    ))
+                    ->addEventSubscriber(new \Eccube\Form\EventListener\ConvertKanaListener('CV'))
+            )
+            ->add(
+                $builder
+                    ->create('order_kana', TextType::class, array(
+                        'label' => 'searchshipping.label.order_kana',
+                        'required' => false,
+                        'constraints' => array(
+                            new Assert\Regex(array(
+                                'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
+                                'message' => 'form.type.admin.notkanastyle',
+                            )),
+                        ),
+                    ))
+                    ->addEventSubscriber(new \Eccube\Form\EventListener\ConvertKanaListener('CV'))
+            )
+            ->add('tel', TextType::class, array(
+                'label' => 'searchshipping.label.tel',
+                'required' => false,
+                'constraints' => array(
+                    new Assert\Regex(array(
+                        'pattern' => "/^[\d-]+$/u",
+                        'message' => 'form.type.admin.nottelstyle',
+                    )),
+                ),
+            ))
+            ->add('shipping_date_start', DateType::class, array(
+                'label' => 'searchshipping.label.shipping_date_from',
+                'required' => false,
+                'input' => 'datetime',
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd',
+                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
+            ))
+            ->add('shipping_date_end', DateType::class, array(
+                'label' => 'searchshipping.label.shipping_date_to',
+                'required' => false,
+                'input' => 'datetime',
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd',
+                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
+            ))
             ->add('buy_product_name', TextType::class, array(
                 'label' => 'searchshipping.label.purchased_products',
                 'required' => false,
             ))
-            ->add('order_id', TextType::class, array(
-                'label' => 'searchshipping.label.order_id',
+
+            // FXIME 未使用
+            ->add('email', TextType::class, [
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array('max' => 10)),
-                ),
-            ))
+            ])
+            // FIXME 未使用
             ->add('order_code', TextType::class, array(
                 'label' => '注文コード',
                 'required' => false,
             ))
+            // FIXME 未使用
+            ->add('order_date_start', DateType::class, array(
+                'label' => 'searchshipping.label.order_date_from',
+                'required' => false,
+                'input' => 'datetime',
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd',
+                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
+            ))
+            // FIXME 未使用
+            ->add('order_date_end', DateType::class, array(
+                'label' => 'searchshipping.label.order_date_to',
+                'required' => false,
+                'input' => 'datetime',
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd',
+                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
+            ))
         ;
-
-        $builder->add(
-            $builder
-                ->create('kana', TextType::class, array(
-                    'required' => false,
-                    'constraints' => array(
-                        new Assert\Regex(array(
-                            'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
-                            'message' => 'form.type.admin.notkanastyle',
-                        )),
-                    ),
-                ))
-                ->addEventSubscriber(new \Eccube\Form\EventListener\ConvertKanaListener('CV'))
-        )
-
-        ->add(
-            $builder
-                ->create('order_kana', TextType::class, array(
-                    'required' => false,
-                    'constraints' => array(
-                        new Assert\Regex(array(
-                            'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
-                            'message' => 'form.type.admin.notkanastyle',
-                        )),
-                    ),
-                ))
-                ->addEventSubscriber(new \Eccube\Form\EventListener\ConvertKanaListener('CV'))
-        );
     }
 
     /**

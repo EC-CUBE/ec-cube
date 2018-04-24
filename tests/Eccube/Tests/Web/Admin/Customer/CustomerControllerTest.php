@@ -137,6 +137,28 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
+     * testIndexWithPostSearchByProductName
+     */
+    public function testIndexWithPostSearchByProductName()
+    {
+        $Customer = $this->container->get(CustomerRepository::class)->findOneBy([], array('id' => 'DESC'));
+        $Order = $this->createOrder($Customer);
+        $ProductName = $Order->getOrderItems()->filter(function ($OrderItems) {
+            return $OrderItems->isProduct();
+        })->first()->getProductName();
+
+        $crawler = $this->client->request(
+            'POST', $this->generateUrl('admin_customer'),
+            array('admin_search_customer' => array('_token' => 'dummy', 'buy_product_name' => $ProductName))
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $this->expected = '検索結果：1件が該当しました';
+        $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
+        $this->verify();
+    }
+
+    /**
      * testResend
      */
     public function testResend()

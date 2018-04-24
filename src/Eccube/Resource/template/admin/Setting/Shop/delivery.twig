@@ -34,43 +34,70 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <script>
         $(function() {
             var oldSortNos = [];
-            // 画面の中のsortNo一覧を保持
-            $('.list-group-item').each(function() {
+            $('.sortable-item').each(function () {
                 oldSortNos.push(this.dataset.sortNo);
             });
-            // rsort
-            oldSortNos.sort(function(a, b) {
+            oldSortNos.sort(function (a, b) {
                 return a - b;
             }).reverse();
-
-            $('.list-group').sortable({
-                items: '> .list-group-item',
-                cursor: 'move',
-                update: function(e, ui) {
-                    $('body').append($('<div class="modal-backdrop show"></div>'));
-                    updateSortNo();
-                }
-            });
-
-            var updateSortNo = function() {
-                // 並び替え後にsortNoを更新
+            // 並び替え後にsort noを更新
+            var updateSortNo = function () {
                 var newSortNos = {};
                 var i = 0;
-                $('.list-group-item').each(function() {
-                    newSortNos[this.dataset.deliveryId] = oldSortNos[i];
+                $('.sortable-item').each(function () {
+                    newSortNos[this.dataset.id] = oldSortNos[i];
                     i++;
                 });
-
                 $.ajax({
                     url: '{{ url('admin_setting_shop_delivery_sort_no_move') }}',
                     type: 'POST',
+                    headers: {
+                        'x-csrf-token': $('meta[name="x-csrf-token"]').attr('content')
+                    },
                     data: newSortNos
-                }).done(function() {
-                    $('.modal-backdrop').remove();
-                }).fail(function() {
-                    $('.modal-backdrop').remove();
+                }).always(function () {
+                    $(".modal-backdrop").remove();
                 });
             };
+            // 最初と最後の↑↓を再描画
+            var redrawDisableAllows = function () {
+                var items = $('.sortable-item');
+                items.find('a').removeClass('disabled');
+                items.first().find('a.action-up').addClass('disabled');
+                items.last().find('a.action-down').addClass('disabled');
+            };
+            // オーバレイ後, 表示順の更新を行う
+            var moveSortNo = function () {
+                $('body').append($('<div class="modal-backdrop show"></div>'));
+                updateSortNo();
+                redrawDisableAllows();
+            }
+            // Drag and Drop
+            $(".sortable-container").sortable({
+                items: '> .sortable-item',
+                cursor: 'move',
+                update: function (e, ui) {
+                    moveSortNo();
+                }
+            });
+            // Up
+            $(".sortable-item").on('click', 'a.action-up', function (e) {
+                e.preventDefault();
+                var current = $(this).parents("li");
+                if (current.prev().hasClass('sortable-item')) {
+                    current.prev().before(current);
+                    moveSortNo();
+                }
+            });
+            // Down
+            $(".sortable-item").on('click', 'a.action-down', function (e) {
+                e.preventDefault();
+                var current = $(this).parents("li");
+                if (current.next().hasClass('sortable-item')) {
+                    current.next().after(current);
+                    moveSortNo();
+                }
+            });
         });
     </script>
 {% endblock %}
@@ -83,10 +110,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div class="card rounded border-0 mb-4">
                         <div class="card-body p-0">
                             <div class="card rounded border-0 mb-2">
-                                <ul class="list-group list-group-flush">
+                                <ul class="list-group list-group-flush sortable-container">
                                     {% if Deliveries|length > 0 %}
                                         {% for Delivery in Deliveries %}
-                                            <li class="list-group-item" data-delivery-id="{{ Delivery.id }}" data-sort-no="{{ Delivery.sortNo }}">
+                                            <li class="list-group-item sortable-item" data-id="{{ Delivery.id }}" data-sort-no="{{ Delivery.sortNo }}">
                                                 <div class="row justify-content-around">
                                                     <div class="col-auto d-flex align-items-center"><i class="fa fa-bars text-ec-gray"></i></div>
                                                     <div class="col d-flex align-items-center">
@@ -95,11 +122,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                         </a>
                                                     </div>
                                                     <div class="col-auto text-right">
-                                                        {# TODO ドラッグドロップで変更後の「上へ」「下へ」リンクの制御が不十分 #}
-                                                        <a href="{{ url('admin_setting_shop_delivery_up', {id: Delivery.Id} ) }}" class="btn btn-ec-actionIcon mr-3 {% if loop.first %}disabled{% endif %}" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.label.move.up'|trans }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">
+                                                        <a href="#" class="btn btn-ec-actionIcon mr-3 action-up {% if loop.first %}disabled{% endif %}" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.label.move.up'|trans }}">
                                                             <i class="fa fa-arrow-up fa-lg text-secondary"></i>
                                                         </a>
-                                                        <a href="{{ url('admin_setting_shop_delivery_down', {id: Delivery.Id} ) }}" class="btn btn-ec-actionIcon mr-3 {% if loop.last %}disabled{% endif %}" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.label.move.down'|trans }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">
+                                                        <a href="#" class="btn btn-ec-actionIcon mr-3 action-down {% if loop.last %}disabled{% endif %}" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.label.move.down'|trans }}">
                                                             <i class="fa fa-arrow-down fa-lg text-secondary"></i>
                                                         </a>
                                                         <a href="{{ url('admin_setting_shop_delivery_delete', {id: Delivery.Id} ) }}" class="btn btn-ec-actionIcon mr-3" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.label.delete'|trans }}" {{ csrf_token_for_anchor() }} data-method="delete">

@@ -7,9 +7,9 @@ namespace Page\Admin;
 class OrderEditPage extends AbstractAdminPageStyleGuide
 {
 
-    public static $姓_エラーメッセージ = '#ordererInfo > div > div:nth-child(2) > div.col > span > ul > p';
+    public static $姓_エラーメッセージ = '#ordererInfo > div > div:nth-child(2) > div.col > span > span > span.form-error-message';
 
-    public static $登録完了メッセージ = '#page_admin_order_edit > div > div.c-contentsArea > div.alert';
+    public static $登録完了メッセージ = 'div.c-container > div.c-contentsArea > div.alert.alert-success.alert-dismissible.fade.show.m-3 > span';
 
     /**
      * OrderRegisterPage constructor.
@@ -147,6 +147,25 @@ class OrderEditPage extends AbstractAdminPageStyleGuide
     {
         $this->tester->click('#form1 > div.c-conversionArea > div > div > div:nth-child(2) > div > div > button');
         $this->tester->wait(5);
+        return $this;
+    }
+
+    public function 明細の項目名を取得($row)
+    {
+        return $this->tester->grabTextFrom("#table-form-field > tbody > tr:nth-child({$row}) > td.align-middle.w-25.pl-3");
+    }
+
+    public function 明細を削除($row)
+    {
+        $this->tester->scrollTo(['css' => '#order-product']);
+        $this->tester->click("#table-form-field > tbody > tr:nth-child({$row}) > td.align-middle.text-right.pr-3 > div > div > a");
+        $this->tester->waitForElementVisible("#table-form-field > tbody > tr:nth-child({$row}) > td.align-middle.text-right.pr-3 > div > div > div.modal");
+        return $this;
+    }
+
+    public function acceptDeleteModal($row)
+    {
+        $this->tester->click("#table-form-field > tbody > tr:nth-child({$row}) > td.align-middle.text-right.pr-3 div.modal a.delete");
         return $this;
     }
 }

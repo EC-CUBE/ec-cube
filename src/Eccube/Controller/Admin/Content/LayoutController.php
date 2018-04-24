@@ -86,7 +86,7 @@ class LayoutController extends AbstractController
      */
     public function index()
     {
-        $Layouts = $this->layoutRepository->findBy([], ['id' => 'DESC']);
+        $Layouts = $this->layoutRepository->findBy([], ['DeviceType' => 'DESC', 'id' => 'ASC']);
 
         return [
             'Layouts' => $Layouts,
@@ -187,18 +187,6 @@ class LayoutController extends AbstractController
         $form = $builder->getForm();
         $form->handleRequest($request);
 
-        if (is_null($id)) {     // admin_content_layout_new only
-            if ($deviceTypeId = $request->get('DeviceType')) {
-                if ($DeviceType = $this->entityManager->find(DeviceType::class, $deviceTypeId)) {
-                    $form['DeviceType']->setData($DeviceType);
-                } else {
-                    throw new BadRequestHttpException(trans('admin.content.layout.device_type.invalid'));
-                }
-            } else {
-                throw new BadRequestHttpException(trans('admin.content.layout.device_type.invalid'));
-            }
-        }
-
         if ($form->isSubmitted() && $form->isValid()) {
             // Layoutの更新
             $Layout = $form->getData();
@@ -250,43 +238,6 @@ class LayoutController extends AbstractController
             'Layout' => $Layout,
             'UnusedBlocks' => $UnusedBlocks,
         ];
-    }
-
-    /**
-     * @Method("POST")
-     * @Route("/%eccube_admin_route%/content/layout/sort_no/move", name="admin_content_layout_sort_no_move")
-     *
-     * @param Request $request
-     * @return Response
-     */
-    public function moveSortNo(Request $request)
-    {
-        if (!$request->isXmlHttpRequest()) {
-            throw new BadRequestHttpException();
-        }
-
-        if ($this->isTokenValid()) {
-            $sortNos = $request->request->get('newSortNos');
-            $targetLayoutId = $request->request->get('targetLayoutId');
-
-            foreach ($sortNos as $ids => $sortNo) {
-
-                $id = explode('-', $ids);
-                $pageId = $id[0];
-                $layoutId = $id[1];
-
-                /* @var $Item PageLayoutRepository */
-                $Item = $this->pageLayoutRepository
-                    ->findOneBy(['page_id' => $pageId, 'layout_id' => $layoutId]);
-
-                $Item->setLayoutId($targetLayoutId);
-                $Item->setSortNo($sortNo);
-                $this->entityManager->persist($Item);
-            }
-            $this->entityManager->flush();
-        }
-
-        return new Response();
     }
 
     /**

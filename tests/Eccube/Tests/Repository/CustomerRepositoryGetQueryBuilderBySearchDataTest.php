@@ -690,7 +690,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
     public function testBuyProductCode()
     {
         $this->searchData = array(
-            'buy_product_code' => '商品'
+            'buy_product_name' => '商品'
         );
 
         $this->scenario();

@@ -306,18 +306,13 @@ class OrderRepository extends AbstractRepository
 
         // status
         $filterStatus = false;
-        if (!empty($searchData['status']) && $searchData['status']) {
+        if (!empty($searchData['status']) && count($searchData['status'])) {
             $qb
-                ->andWhere('o.OrderStatus = :status')
+                ->andWhere($qb->expr()->in('o.OrderStatus', ':status'))
                 ->setParameter('status', $searchData['status']);
             $filterStatus = true;
         }
-        if (!empty($searchData['multi_status']) && count($searchData['multi_status'])) {
-            $qb
-                ->andWhere($qb->expr()->in('o.OrderStatus', ':multi_status'))
-                ->setParameter('multi_status', $searchData['multi_status']->toArray());
-            $filterStatus = true;
-        }
+
         if (!$filterStatus) {
             // 購入処理中は検索対象から除外
             $OrderStatuses = $this->getEntityManager()

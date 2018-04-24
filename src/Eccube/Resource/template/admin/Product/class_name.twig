@@ -27,6 +27,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block sub_title %}{{ 'admin.product.class_name.428'|trans }}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
+{% block stylesheet %}
+    <style type="text/css">
+        .list-group-item:hover {
+            z-index: inherit;
+        }
+    </style>
+{% endblock stylesheet %}
 
 {% block javascript %}
     <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.core.min.js', 'admin') }}"></script>
@@ -177,9 +184,42 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 <a class="btn btn-ec-actionIcon mr-3 action-edit" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.class_name.441'|trans }}">
                                                     <i class="fa fa-pencil fa-lg text-secondary"></i>
                                                 </a>
-                                                <a class="btn btn-ec-actionIcon mr-3 {% if ClassName.ClassCategories|length > 0 %}disabled{% endif %}" href="{{ url('admin_product_class_name_delete', {id: ClassName.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-toggle="tooltip" data-placement="top" title="{{ 'common.label.delete'|trans }}">
+                                                {% set classCategories = ClassName.ClassCategories|length %}
+                                                <a class="btn btn-ec-actionIcon mr-3 {% if classCategories > 0 %}disabled{% endif %}" data-tooltip="tooltip" data-placement="top" title="{{ 'common.label.delete'|trans }}"
+                                                   {% if classCategories == 0 %}data-toggle="modal" data-target="#delete_{{ ClassName.id }}"{% endif %}>
                                                     <i class="fa fa-close fa-lg text-secondary"></i>
                                                 </a>
+
+                                                {% if classCategories == 0 %}
+                                                <div class="modal fade" id="delete_{{ ClassName.id }}" tabindex="-1"
+                                                     role="dialog"
+                                                     aria-labelledby="delete_{{ ClassName.id }}" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title font-weight-bold">
+                                                                    {{ 'admin.class_name.modal.header'|trans }}</h5>
+                                                                <button class="close" type="button"
+                                                                        data-dismiss="modal"
+                                                                        aria-label="Close"><span
+                                                                            aria-hidden="true">×</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body text-left">
+                                                                <p class="text-left">
+                                                                    {{ 'admin.class_name.modal.body'|trans }}</p>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'common.label.cancel'|trans }}
+                                                                </button>
+                                                                <a class="btn btn-ec-delete" href="{{ url('admin_product_class_name_delete', {'id' : ClassName.id}) }}" {{ csrf_token_for_anchor() }}
+                                                                   data-method="delete" data-confirm="false">{{ 'common.label.delete'|trans }}</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {% endif %}
+
                                             </div>
                                         </div>
 

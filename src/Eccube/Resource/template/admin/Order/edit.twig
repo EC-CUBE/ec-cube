@@ -126,6 +126,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <form name="form1" id="form1" method="post" action="?" class="h-adr">
         <span class="p-country-name" style="display:none;">Japan</span>
         <input type="hidden" name="mode" value="">
+        <input type="hidden" name="modal" value="">
         {{ form_widget(form._token) }}
         <div class="c-contentsArea__cols">
             <div class="c-contentsArea__primaryCol">
@@ -236,7 +237,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>{{ 'admin.order.edit.customer_id'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                     </div>
                                     <div class="col">
-                                        <p id="order_CustomerId">{{ form.Customer.vars.value is empty ? 'admin.order.edit.256'|trans :  form.Customer.vars.value }}</p>
+                                        <p id="order_CustomerId">{% if form.Customer.vars.value is empty %}{{ 'admin.order.edit.256'|trans }}{% else %}<a href="{{ url('admin_customer_edit', {'id': form.Customer.vars.value}) }}">{{ form.Customer.vars.value }}</a>{% endif %}</p>
                                         {{ form_widget(form.Customer) }}
                                         {{ form_errors(form.Customer) }}
                                     </div>
@@ -408,8 +409,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                         {# TODO その他明細を追加できるようにする #}
                                                         <table class="table table-striped mb-3">
                                                             <thead class="table-active">
-                                                            <th class="pt-2 pb-2 pl-3">{{ 'admin.order.edit.label.add_item'|trans }}</th>
-                                                            <th class="pt-2 pb-2 pr-3"></th>
+                                                            <tr>
+                                                                <th class="pt-2 pb-2 pl-3">{{ 'admin.order.edit.label.add_item'|trans }}</th>
+                                                                <th class="pt-2 pb-2 pr-3"></th>
+                                                            </tr>
                                                             </thead>
                                                             <tbody>
                                                             <tr>
@@ -455,9 +458,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <tr>
                                         <th class="pt-2 pb-2 pl-3">{{ 'admin.order.edit.label.product_name_code'|trans }}</th>
                                         <th class="pt-2 pb-2">{{ 'admin.order.edit.246'|trans }}</th>
+                                        <th class="pt-2 pb-2">{{ 'admin.common.label.shipping_status'|trans }}</th>
                                         <th class="pt-2 pb-2">{{ 'admin.common.label.price02'|trans }}</th>
                                         <th class="pt-2 pb-2">{{ 'admin.common.label.quantity'|trans }}</th>
                                         <th class="pt-2 pb-2">{{ 'admin.common.label.tax'|trans }}</th>
+                                        <th class="pt-2 pb-2">{{ 'admin.common.label.tax_status'|trans }}</th>
                                         <th class="pt-2 pb-2">{{ 'admin.common.label.subtotal'|trans }}</th>
                                         <th class="pt-2 pb-2 pr-3"></th>
                                     </tr>
@@ -468,7 +473,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             {{ form_widget(orderItemForm.Order) }}
                                             <td class="align-middle w-25 pl-3">
                                                 <p class="mb-0 font-weight-bold">
-                                                    {{ orderItemForm.vars.value.product_name }}
+                                                    {% if orderItemForm.vars.value.OrderItemType.isProduct %}
+                                                        {{ orderItemForm.vars.value.product_name }}
+                                                        {{ form_widget(orderItemForm.product_name, {'attr': {'class': 'd-none'}}) }}
+                                                    {% else %}
+                                                        {{ form_widget(orderItemForm.product_name) }}
+                                                        {{ form_errors(orderItemForm.product_name) }}
+                                                    {% endif %}
+                                                </p>
+                                                <span>
+                                                    {{ orderItemForm.vars.value.product_code }}
                                                     {% if orderItemForm.vars.value.class_category_name1 is not empty %}
                                                         / (
                                                         {{ orderItemForm.vars.value.class_name1 }}：
@@ -480,11 +494,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                         {% endif %}
                                                         )
                                                     {% endif %}
-                                                </p><span>{{ orderItemForm.vars.value.product_code }}</span>
+                                                </span>
                                             </td>
                                             <td class="align-middle">
                                                 {% if orderItemForm.vars.value.Shipping %}
                                                     <a href="{{ url('admin_shipping_edit', { id : orderItemForm.vars.value.Shipping.id }) }}">{{ orderItemForm.vars.value.Shipping.id }}</a>
+                                                {% endif %}
+                                            </td>
+                                            <td class="align-middle">
+                                                {% if orderItemForm.vars.value.Shipping %}
+                                                    {{ orderItemForm.vars.value.Shipping.ShippingStatus }}
                                                 {% endif %}
                                             </td>
                                             <td class="align-middle">
@@ -501,8 +520,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             </td>
                                             <td class="align-middle">
                                                 <div class="col-8">
-                                                    {{ form_widget(orderItemForm.tax_rate) }}
+                                                    {{ orderItemForm.vars.value.tax_rate }}
+                                                    {{ form_widget(orderItemForm.tax_rate, {'attr': {'class': 'd-none'}}) }}
                                                     {{ form_errors(orderItemForm.tax_rate) }}
+                                                </div>
+                                            </td>
+                                            <td class="align-middle">
+                                                <div class="col-8">
+                                                    {{ orderItemForm.vars.value.tax_type }}
                                                 </div>
                                             </td>
                                             <td class="align-middle"><span>{{ orderItemForm.vars.value.total_price|price }}</span>

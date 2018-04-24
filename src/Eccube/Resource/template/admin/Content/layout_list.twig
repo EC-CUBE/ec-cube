@@ -25,121 +25,13 @@
 
 {% set menus = ['content', 'layout'] %}
 
-{% block title %}{{'admin.content.layout_list.46'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.content.layout_list.45'|trans}}{% endblock %}
+{% block title %}{{ 'admin.content.layout_list.46'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.content.layout_list.45'|trans }}{% endblock %}
 
 {% block javascript %}
-    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.core.min.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.widget.min.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.mouse.min.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.sortable.min.js', 'admin') }}"></script>
     <script>
         $(function () {
-            var update = [];
-            var confirmMove = $('#confirmMove');
-            var containerRows = $('div.sortables');
-            containerRows.each(function () {
-                updateSortNumber($(this));
-            });
-
-            confirmMove.on('click', 'button', function () {
-                if ($(this).hasClass('btn-ec-conversion')) {
-                    confirmMove.data('confirm', true);
-                } else {
-                    confirmMove.data('confirm', false);
-                }
-            });
-
-            function updateSortNumber(mainRows) {
-                var layoutId = mainRows.attr('data-layout-id');
-
-                mainRows.sortable({
-                    items: ' > div.card-body',
-                    connectWith: "div.ec-cardCollapse",
-                    cursor: 'move',
-                    start: function (ev, ui) {
-                        ui.item.prop('main', ui.item.parent());
-                        ui.item.prop('isUpdate', false);
-                        ui.item.prop('isOtherList', false);
-                    },
-                    beforeStop: function (ev, ui) {
-                        if (ui.item.prop('main').attr('id') != ui.item.parent().attr('id')) {
-                            ui.item.prop('isOtherList', true);
-                            confirmMove.modal('show');
-                            confirmMove.off('hidden.bs.modal');
-                            confirmMove.on('hidden.bs.modal', function () {
-                                if (confirmMove.data('confirm') == false) {
-                                    mainRows.sortable("cancel");
-                                }
-
-                                if (confirmMove.data('confirm') == true) {
-                                    if (ui.item.parent().find('[data-page-id="' + ui.item.data('page-id') + '"]').length > 1) {
-                                        $('#duplicateNotification').modal('show');
-                                        mainRows.sortable("cancel");
-                                    } else {
-                                        $.each(update, function (a, b) {
-                                            updateSortNo(b[0], b[1]);
-                                        });
-                                        update = [];
-                                    }
-                                }
-                            });
-                        }
-                    },
-                    update: function (e, ui) {
-                        if (ui.item.prop('isOtherList')) {
-                            update.push([mainRows, layoutId]);
-                        } else {
-                            updateSortNo(mainRows, layoutId);
-                        }
-                    }
-                });
-            }
-
-            function updateSortNo(mainRows, layoutId) {
-                $(".modal-backdrop").remove();
-                $("body").append($('<div class="modal-backdrop show"></div>'));
-                var items = $('div.card-body', mainRows);
-                if (items.length > 0) {
-                    var newSortNos = {};
-                    var i = 1;
-                    items.each(function () {
-                        if (this.dataset.pageId != undefined && this.dataset.layoutId != undefined) {
-                            newSortNos[this.dataset.pageId + '-' + this.dataset.layoutId] = i;
-                            i++;
-                        }
-                    });
-
-                    $.ajax({
-                        url: '{{ url('admin_content_layout_sort_no_move') }}',
-                        type: 'POST',
-                        data: {'newSortNos': newSortNos, 'targetLayoutId': layoutId}
-                    }).done(function (data) {
-                        $('div.empty-item', mainRows).hide();
-                        items.each(function () {
-                            $(this).attr('data-layout-id', layoutId);
-                        });
-                        $(".modal-backdrop").remove();
-
-                        {# TODO: JS logic should move to .js file #}
-                        $('[data-target="#layoutDelete"]').each(function() {
-                            var pageCount = $(this).closest('.card-header').next('.ec-cardCollapse').find('.card-body').length;
-                            if (!pageCount) {
-                                $(this).removeAttr('disabled');
-                            } else {
-                                $(this).attr('disabled', 'disabled');
-                            }
-                        });
-                    }).fail(function () {
-                        console.log('Failed');
-                        $(".modal-backdrop").remove();
-                    });
-                } else {
-                    $('div.empty-item', mainRows).show();
-                }
-            }
-
-            $('#layoutDelete').on('shown.bs.modal', function(event) {
+            $('#layoutDelete').on('shown.bs.modal', function (event) {
                 var target = $(event.relatedTarget);
                 $(this).find('[data-method="delete"]').attr('href', target.data('url'));
             });
@@ -147,232 +39,89 @@
     </script>
 {% endblock %}
 
-{% block stylesheet %}
-    <style>
-        .ec-cardCollapse{ min-height: 49px;}
-    </style>
-{% endblock stylesheet %}
-
 {% block main %}
-    <div class="c-outsideBlock">
-        <div class="c-outsideBlock__contents">
-            <div class="row">
-                <div class="col text-center">
-                    <div class="btn-group nav d-inline-flex" id="pills-tab" role="tablist">
-                        <a class="nav-link active btn btn-ec-tab py-2 pl-4 pr-4" id="pills-pc-tab" data-toggle="pill" href="#pills-pc" role="tab" aria-controls="pills-pc" aria-selected="true">{{ 'admin.content.layout_list.device_pc'|trans }}</a>
-                        <a class="nav-link btn btn-ec-tab py-2 pl-4 pr-4" id="pills-mobile-tab" data-toggle="pill" href="#pills-mobile" role="tab" aria-controls="pills-mobile" aria-selected="false">{{ 'admin.content.layout_list.device_mobile'|trans }}</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="c-contentsArea__cols">
         <div class="c-contentsArea__primaryCol">
             <div class="c-primaryCol">
-                <div class="tab-content" id="pills-tabContent">
-                    <div class="tab-pane fade show active" id="pills-pc" role="tabpanel" aria-labelledby="pills-pc-tab">
-                        <div class="d-block mb-3">
-                            <a class="btn btn-ec-regular" href="{{ url('admin_content_layout_new')}}?DeviceType={{ constant('\\Eccube\\Entity\\Master\\DeviceType::DEVICE_TYPE_PC') }}">{{ 'admin.content.layout_list.add_pc_layout'|trans }}</a>
-                        </div>
-                        <div class="card rounded border-0 mb-4">
-                            <div class="card-header">
-                                <div class="row">
-                                    <div class="col-8">
-                                        <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.content.layout_list.default_layout'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
-                                    </div>
-                                    <div class="col-4 text-right"><a data-toggle="collapse" href="#defaultLayout-pc" aria-expanded="false" aria-controls="defaultLayout-pc"><i class="fa fa-angle-up fa-lg"></i></a></div>
-                                </div>
-                            </div>
-                            <div class="collapse show ec-cardCollapse" id="defaultLayout-pc">
-                                <div class="card-body">
-                                    {# TODO デフォルトのレイアウトを選択して登録できるようにする #}
-                                    <div class="row">
-                                        <div class="col-3 pr-0">
-                                            <form>
-                                                <select class="form-control">
-                                                    {% for Layout in Layouts %}
-                                                        <option value="">{{ Layout.name }}</option>
-                                                    {% endfor %}
-                                                </select>
-                                            </form>
-                                        </div>
-                                        <div class="col">
-                                            <button class="btn btn-ec-regular" type="button">{{ 'common.label.save'|trans }}</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {# layouts #}
-                        {% for Layout in Layouts %}
-                            {% if Layout.devicetype.id == constant('\\Eccube\\Entity\\Master\\DeviceType::DEVICE_TYPE_PC') %}
-                                <div class="card rounded border-0 mb-4">
-                                    <div class="card-header">
-                                        <div class="row">
-                                            <div class="col-8"><a class="card-title align-middle" href="{{ url('admin_content_layout_edit', { id : Layout.id } ) }}">{{ Layout.name }}</a>
-                                                <button class="btn btn-ec-regular" type="button" data-toggle="modal" data-target="#addPage">{{ 'admin.content.layout_list.add_page'|trans }}</button>
-                                                <button class="btn btn-ec-sub" type="button"
-                                                        data-toggle="modal"
-                                                        data-target="#layoutDelete"
-                                                        data-url="{{ url('admin_content_layout_delete', {id: Layout.id}) }}"
-                                                        {{ not Layout.isDeletable() ? 'disabled' }}>
-                                                    {{ 'admin.content.layout_list.delete_layout'|trans }}
-                                                </button>
-                                            </div>
-                                            <div class="col-4 text-right"><a data-toggle="collapse" href="#topPageLayout-pc-{{ Layout.id }}" aria-expanded="false" aria-controls="topPageLayout-pc-{{ Layout.id }}"><i class="fa fa-angle-up fa-lg"></i></a></div>
-                                        </div>
-                                    </div>
-
-                                    {# Pages #}
-                                    {% if Layout.pages|length > 0 %}
-                                        <div class="collapse show ec-cardCollapse sortables"
-                                             data-layout-id="{{ Layout.id }}"
-                                             id="topPageLayout-pc-{{ Layout.id }}">
-                                            {% for Page in Layout.pages %}
-                                                <div class="card-body p-0"
-                                                     data-page-id="{{ Page.id }}"
-                                                     data-layout-id="{{ Layout.id }}"
-                                                     data-sort-no="{{ Page.getSortNo(Layout.id) }}">
-                                                    <div class="row justify-content-between p-3">
-                                                        <div class="col-auto">
-                                                            <i class="fa fa-bars text-ec-gray mr-3"></i><span>{{ Page.name }}</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            {% endfor %}
-                                        </div>
+                <div class="d-block mb-3">
+                    <a class="btn btn-ec-regular"
+                       href="{{ url('admin_content_layout_new') }}">{{ 'admin.content.layout_list.add_layout'|trans }}</a>
+                </div>
+                {# layouts #}
+                {% for Layout in Layouts %}
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-8">
+                                    {% if Layout.DeviceType.id == constant('Eccube\\Entity\\Master\\DeviceType::DEVICE_TYPE_PC') %}
+                                        {% set icon = 'fa-desktop' %}
                                     {% else %}
-                                        <div class="collapse show ec-cardCollapse sortables"
-                                             data-layout-id="{{ Layout.id }}"
-                                             id="topPageLayout-pc-{{ Layout.id }}">
-                                            <div class="p-0 empty-item">
-                                                <div class="d-block p-3">
-                                                    <span class="text-muted">{{ 'admin.content.layout_list.no_pages_message'|trans }}</span>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        {% set icon = 'fa-mobile' %}
+                                    {% endif %}
+                                    <i class="fa {{ icon }} fa-lg mr-2"></i>
+                                    <a class="card-title align-middle"
+                                       href="{{ url('admin_content_layout_edit', { id : Layout.id } ) }}">{{ Layout.name }}</a>
+                                    {% if Layout.isDefault() == false %}
+                                        <button class="btn btn-ec-sub" type="button"
+                                                data-toggle="modal"
+                                                data-target="#layoutDelete"
+                                                data-url="{{ url('admin_content_layout_delete', { id: Layout.id }) }}"
+                                                {{ Layout.isDeletable() ? '' : 'disabled' }}>
+                                            {{ 'admin.content.layout_list.delete_layout'|trans }}
+                                        </button>
                                     {% endif %}
                                 </div>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                    <div class="tab-pane fade" id="pills-mobile" role="tabpanel" aria-labelledby="pills-mobile-tab">
-                        <div class="d-block mb-3">
-                            <a class="btn btn-ec-regular" href="{{ url('admin_content_layout_new')}}?DeviceType={{ constant('\\Eccube\\Entity\\Master\\DeviceType::DEVICE_TYPE_SP') }}">{{ 'admin.content.layout_list.add_mobile_layout'|trans }}</a>
-                        </div>
-                        <div class="card rounded border-0 mb-4">
-                            <div class="card-header">
-                                <div class="row">
-                                    <div class="col-8">
-                                        <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.content.layout_list.default_layout'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
-                                    </div>
-                                    <div class="col-4 text-right"><a data-toggle="collapse" href="#defaultLayout-mobile" aria-expanded="false" aria-controls="defaultLayout-mobile"><i class="fa fa-angle-up fa-lg"></i></a></div>
-                                </div>
-                            </div>
-                            <div class="collapse show ec-cardCollapse" id="defaultLayout-mobile">
-                                <div class="card-body">
-                                    {# TODO デフォルトのレイアウトを選択して登録できるようにする #}
-                                    <div class="row">
-                                        <div class="col-3 pr-0">
-                                            <form>
-                                                <select class="form-control">
-                                                    {% for Layout in Layouts %}
-                                                        <option value="">{{ Layout.name }}</option>
-                                                    {% endfor %}
-                                                </select>
-                                            </form>
-                                        </div>
-                                        <div class="col">
-                                            <button class="btn btn-ec-regular" type="button">{{ 'common.label.save'|trans }}</button>
-                                        </div>
-                                    </div>
-                                </div>
+                                <div class="col-4 text-right"><a href="#layout-{{ Layout.id }}"
+                                                                 data-toggle="collapse"
+                                                                 aria-expanded="false"
+                                                                 aria-controls="layout-{{ Layout.id }}"><i
+                                                class="fa fa-angle-down fa-lg"></i></a></div>
                             </div>
                         </div>
-                        {# layouts #}
-                        {% for Layout in Layouts %}
-                            {% if Layout.devicetype.id == constant('\\Eccube\\Entity\\Master\\DeviceType::DEVICE_TYPE_SP') %}
-                                <div class="card rounded border-0 mb-4">
-                                    <div class="card-header">
-                                        <div class="row">
-                                            <div class="col-8"><a class="card-title align-middle" href="{{ url('admin_content_layout_edit', { id : Layout.id } ) }}">{{ Layout.name }}</a>
-                                                <button class="btn btn-ec-regular" type="button" data-toggle="modal" data-target="#addPage">{{ 'admin.content.layout_list.add_page'|trans }}</button>
-                                                <button class="btn btn-ec-sub" type="button"
-                                                        data-toggle="modal"
-                                                        data-target="#layoutDelete"
-                                                        data-url="{{ url('admin_content_layout_delete', {id: Layout.id}) }}"
-                                                        {{ not Layout.isDeletable() ? 'disabled' }}>
-                                                    {{ 'admin.content.layout_list.delete_layout'|trans }}
-                                                </button>
-                                            </div>
-                                            <div class="col-4 text-right">
-                                                <a data-toggle="collapse" href="#topPageLayout-mobile-{{ Layout.devicetype.id }}" aria-expanded="false" aria-controls="topPageLayout-mobile-{{ Layout.devicetype.id }}"><i class="fa fa-angle-up fa-lg"></i></a></div>
-                                        </div>
-                                    </div>
 
-                                    {# Pages #}
-                                    {% if Layout.pages|length > 0 %}
-                                        {# TODO ページをドラッグ＆ドロップで移動できるようにする #}
-                                        <div class="collapse show ec-cardCollapse" id="topPageLayout-mobile-{{ Layout.devicetype.id }}">
-                                            {% for Page in Layout.pages %}
-                                                <div class="card-body p-0">
-                                                    <div class="row justify-content-between p-3">
-                                                        <div class="col-auto"><i class="fa fa-bars text-ec-gray mr-3"></i><span>{{ Page.name }}</span></div>
-                                                    </div>
-                                                </div>
-                                            {% endfor %}
-                                        </div>
-                                    {% else %}
-                                        <div class="collapse show ec-cardCollapse" id="lpLayout-mobile">
-                                            <div class="card-body p-0">
-                                                <div class="d-block p-3"><span class="text-muted">{{ 'admin.content.layout_list.no_pages_message'|trans }}</span></div>
+                        {# Pages #}
+                        {% if Layout.pages|length > 0 %}
+                            <div class="collapse ec-cardCollapse" id="layout-{{ Layout.id }}">
+                                {% for Page in Layout.pages %}
+                                    <div class="card-body p-0">
+                                        <div class="row justify-content-between p-3">
+                                            <div class="col-auto">
+                                                <i class="fa fa-bars text-ec-gray mr-3"></i><a
+                                                        href="{{ url('admin_content_page_edit', { id: Page.id }) }}">{{ Page.name }}</a>
                                             </div>
                                         </div>
-                                    {% endif %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="collapse ec-cardCollapse" id="layout-{{ Layout.id }}">
+                                <div class="p-0 empty-item">
+                                    <div class="d-block p-3">
+                                        <span class="text-muted">{{ 'admin.content.layout_list.no_pages_message'|trans }}</span>
+                                    </div>
                                 </div>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                </div>
-                <div class="modal fade" id="addPage" tabindex="-1" role="dialog" aria-labelledby="addPage" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        {# TODO レイアウトにページを追加できるようにする #}
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">{{ 'admin.content.layout_list.add_page.title'|trans }}</h5>
-                                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                             </div>
-                            <div class="modal-body">
-                                <p>{{ 'admin.content.layout_list.add_page.confirm_message'|trans }}</p>
-                                <form>
-                                    <select class="form-control">
+                        {% endif %}
+                    </div>
+                {% endfor %}
 
-                                        <option>// TODO ページの一覧表示</option>
-                                        <option>...</option>
-                                    </select>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-ec-sub w-25" type="button" data-dismiss="modal">{{ 'admin.content.layout_list.add_page.cancel'|trans }}</button>
-                                <button class="btn btn-ec-conversion w-25" type="button" data-dismiss="modal">{{ 'admin.content.layout_list.add_page.add'|trans }}</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal fade" id="layoutDelete" tabindex="-1" role="dialog" aria-labelledby="layoutDelete" aria-hidden="true">
+                <div class="modal fade" id="layoutDelete" tabindex="-1" role="dialog" aria-labelledby="layoutDelete"
+                     aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title">{{ 'admin.content.layout_list.delete_layout.title'|trans }}</h5>
-                                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                                            aria-hidden="true">×</span></button>
                             </div>
                             <div class="modal-body">
                                 <p>{{ 'admin.content.layout_list.delete_layout.confirm_message'|trans }}</p>
                             </div>
                             <div class="modal-footer">
-                                <button class="btn btn-ec-sub w-25" type="button" data-dismiss="modal">{{ 'admin.content.layout_list.delete_layout.cancel'|trans }}</button>
-                                <a href="#" class="btn btn-ec-delete" {{ csrf_token_for_anchor() }} data-method="delete" data-confirm="false">
+                                <button class="btn btn-ec-sub w-25" type="button"
+                                        data-dismiss="modal">{{ 'admin.content.layout_list.delete_layout.cancel'|trans }}</button>
+                                <a href="#" class="btn btn-ec-delete" {{ csrf_token_for_anchor() }} data-method="delete"
+                                   data-confirm="false">
                                     {{ 'admin.content.layout_list.delete_layout.delete'|trans }}
                                 </a>
                             </div>
@@ -382,41 +131,4 @@
             </div>
         </div>
     </div>
-
-    <div class="modal fade" id="duplicateNotification" tabindex="-1" role="dialog" aria-labelledby="duplicateNotification" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title font-weight-bold">{{ 'admin.content.layout.popup.error'|trans }}</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body text-left">
-                    <p class="text-left">{{ 'admin.content.layout.popup.message'|trans }}</p>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-v-sub" type="button" data-dismiss="modal">{{ 'admin.content.layout.cancel'|trans }}</button>
-                </div>
-            </div>
-        </div>
-    </div><!-- /#duplicateNotification -->
-
-    <div class="modal fade" id="confirmMove" tabindex="-1" role="dialog" aria-labelledby="confirmMove" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title font-weight-bold">{{ 'admin.content.layout.popup.confirm.title'|trans }}</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body text-left">
-                    <p class="text-left">{{ 'admin.content.layout.popup.confirm.message'|trans|raw }}</p>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-v-sub" type="button" data-dismiss="modal">{{ 'admin.content.layout.cancel'|trans }}</button>
-                    <button class="btn btn-ec-conversion" type="button" data-dismiss="modal">{{ 'admin.content.layout.popup.button.move'|trans }}</button>
-                </div>
-            </div>
-        </div>
-    </div><!-- /#confirmMove -->
 {% endblock %}

@@ -1,0 +1,20 @@
+<ul class="list-inline">
+    {% for child in form.children if child.vars.name != '_token' and child.vars.data is not empty %}
+        <li class="list-inline-item"><span class="font-weight-bold">{{ child.vars.label|trans }}:</span>
+            {%- if child.vars.data is iterable -%}
+                {%- for value in child.vars.value -%}
+                    {%- for choice in child.vars.choices -%}
+                        {%- if choice is selectedchoice(value) -%}
+                            {{ choice.label|trans }}
+                        {%- endif %}
+                    {%- endfor -%}
+                    {{ not loop.last ? ','}}
+                {%- endfor -%}
+            {%- elseif php_is_a(child.vars.data, '\DateTime') -%}
+                {{ child.vars.data|date_day }}
+            {%- else -%}
+                {{ child.vars.data }}
+            {%- endif -%}
+        </li>
+    {% endfor %}
+</ul>

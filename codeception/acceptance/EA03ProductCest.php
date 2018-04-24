@@ -35,12 +35,41 @@ class EA03ProductCest
 
     public function product_商品検索(\AcceptanceTester $I)
     {
-        $I->wantTo('EA0301-UC01-T01 商品検索');
+        $I->wantTo('EA0301-UC01-T01 (& UC01-T02) 商品検索');
 
         ProductManagePage::go($I)->検索('フォーク');
 
         $I->see("検索結果：1件が該当しました", ProductManagePage::$検索結果_メッセージ);
         $I->see("ディナーフォーク", ProductManagePage::$検索結果_一覧);
+
+        ProductManagePage::go($I)->検索('gege@gege.com');
+        $I->see('検索結果：0件が該当しました', ProductManagePage::$検索結果_メッセージ);
+    }
+
+    public function product_商品検索エラー(\AcceptanceTester $I)
+    {
+        $I->wantTo('EA0301-UC01-T03 商品検索 エラー');
+
+        // バリデーションエラーが発生するフォーム項目がないため, ダミーのステータスを作っておく
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = Fixtures::get('entityManager');
+        $ProductStatus = new \Eccube\Entity\Master\ProductStatus();
+        $ProductStatus->setName('ダミー');
+        $ProductStatus->setSortNo(999);
+        $ProductStatus->setId(999);
+        $em->persist($ProductStatus);
+        $em->flush();
+
+        // 商品マスターを表示
+        $page = ProductManagePage::go($I);
+
+        // ダミーのステータスを削除する
+        $em->remove($ProductStatus);
+        $em->flush();
+
+        // 存在しないステータスで検索するため, `有効な値ではありません`のバリデーションエラーが発生するはず
+        $page->詳細検索_ステータス(999);
+        $I->see('検索条件に誤りがあります。', ProductManagePage::$検索結果_エラーメッセージ);
     }
 
     public function product_規格確認のポップアップ表示(\AcceptanceTester $I)
@@ -437,15 +466,25 @@ class EA03ProductCest
         $ProductClassPage->規格編集(2);
 
         $I->see('規格を保存しました。', ClassNameManagePage::$登録完了メッセージ);
+        // remove added class
+        ClassNameManagePage::go($I)->一覧_削除(1)
+            ->acceptModal(1);
     }
 
     public function product_規格削除(\AcceptanceTester $I)
     {
         $I->wantTo('EA0303-UC03-T01 規格削除');
 
-        ClassNameManagePage::go($I)->一覧_削除(1);
+        // Create a class name for test
+        ClassNameManagePage::go($I)
+            ->入力_管理名('backend test class1')
+            ->入力_表示名('display test class1')
+            ->規格作成();
 
-        $I->acceptPopup();
+        ClassNameManagePage::go($I)->一覧_削除(1)
+            ->acceptModal(1);
+
+        $I->see('規格を削除しました。', ClassNameManagePage::$登録完了メッセージ);
     }
 
     public function product_規格表示順の変更(\AcceptanceTester $I)
@@ -512,22 +551,27 @@ class EA03ProductCest
         $ProductClassPage->一覧_分類登録(1);
         $I->see('test class2', '#page_admin_product_class_category > div > div.c-contentsArea > div.c-contentsArea__cols > div > div.c-primaryCol > div:nth-child(1) > div.card-body > div:nth-child(2) > div:nth-child(2) > span');
 
+        // Create a class category
         $ProductClassCategoryPage = ClassCategoryManagePage::at($I)
             ->入力_分類名('test class2 category1')
             ->分類作成();
 
         $I->see('分類を保存しました。', ClassCategoryManagePage::$登録完了メッセージ);
+        $I->see('test class2 category1', $ProductClassCategoryPage->一覧_名称(1));
 
-        // TODO 編集機能を実装したらテスト
-//        $ProductClassCategoryPage->一覧_編集(1);
-//        $value = $I->grabValueFrom(ProductClassCategoryPage::$分類名);
-//        $I->assertEquals('test class2 category1', $value);
-//
-//        $ProductClassCategoryPage->分類作成();
-//        $I->see('分類を保存しました。', $ProductClassCategoryPage::$登録完了メッセージ);
+        // Edit class category 1
+        $ProductClassCategoryPage->一覧_編集(1)
+            ->一覧_入力_分類名(1, 'edit class category')
+            ->一覧_分類作成(1);
 
-        $ProductClassCategoryPage->一覧_削除(1);
-        $I->acceptPopup();
+        $I->see('分類を保存しました。', ClassCategoryManagePage::$登録完了メッセージ);
+        $I->see('edit class category', $ProductClassCategoryPage->一覧_名称(1));
+
+        // delete test
+        $ProductClassCategoryPage->一覧_削除(1)
+            ->acceptModal(1);
+
+        $I->see('分類を削除しました。', ClassCategoryManagePage::$登録完了メッセージ);
     }
 
     public function product_カテゴリ登録(\AcceptanceTester $I)
@@ -540,15 +584,14 @@ class EA03ProductCest
 
         $I->see('カテゴリを保存しました。', CategoryManagePage::$登録完了メッセージ);
 
-        $CategoryPage->一覧_編集(1);
+        $CategoryPage->一覧_編集(2);
 
-        $I->see('test category1', CategoryManagePage::$パンくず_1階層);
+        $I->seeElement('body > div > div.c-contentsArea > div.c-contentsArea__cols > div.c-contentsArea__primaryCol > div > div > div > div > ul > li:nth-child(2) > form.mode-edit');
 
-        $CategoryPage
-            ->入力_カテゴリ名('test category11')
-            ->カテゴリ作成();
+        $CategoryPage->一覧_インライン編集_カテゴリ名(2, 'test category11')
+            ->一覧_インライン編集_決定(2);
 
-        $I->see('カテゴリを保存しました。', $CategoryPage::$登録完了メッセージ);
+        $I->see('カテゴリを保存しました。', CategoryManagePage::$登録完了メッセージ);
 
         // csv EA0305-UC04-T01
         $CategoryPage
@@ -564,7 +607,7 @@ class EA03ProductCest
 
         // サブカテゴリ EA0305-UC01-03 & UC01-04
         $CategoryPage = CategoryManagePage::go($I)
-            ->一覧_選択(1);
+            ->一覧_選択(2);
 
         $I->see('test category11', CategoryManagePage::$パンくず_1階層);
 
@@ -573,8 +616,12 @@ class EA03ProductCest
             ->カテゴリ作成();
         $I->see('カテゴリを保存しました。', CategoryManagePage::$登録完了メッセージ);
 
-        // カテゴリ削除
-        $CategoryPage->一覧_削除(1);
+        // カテゴリ削除 (children)
+        $CategoryPage->一覧_削除(2);
+        $I->acceptPopup();
+
+        // Delete category root
+        CategoryManagePage::go($I)->一覧_削除(2);
         $I->acceptPopup();
     }
 
@@ -651,9 +698,10 @@ class EA03ProductCest
         $I->see('カテゴリ登録CSVファイルをアップロードしました', CategoryCsvUploadPage::$完了メッセージ);
 
         CategoryManagePage::go($I);
-        $I->seeElement(['xpath' => '//li[@class="list-group-item"]//a[contains(text(), "アップロードカテゴリ1")]']);
-        $I->seeElement(['xpath' => '//li[@class="list-group-item"]//a[contains(text(), "アップロードカテゴリ2")]']);
-        $I->seeElement(['xpath' => '//li[@class="list-group-item"]//a[contains(text(), "アップロードカテゴリ3")]']);
+
+        $I->seeElement(['xpath' => CategoryManagePage::XPathでタグを取得する('アップロードカテゴリ1')]);
+        $I->seeElement(['xpath' => CategoryManagePage::XPathでタグを取得する('アップロードカテゴリ2')]);
+        $I->seeElement(['xpath' => CategoryManagePage::XPathでタグを取得する('アップロードカテゴリ3')]);
     }
 
     /**

@@ -23,7 +23,7 @@ class ClassCategoryManagePage extends AbstractAdminPageStyleGuide
     public static function at($I)
     {
         $page = new ClassCategoryManagePage($I);
-        return $page->atPage('規格管理商品管理');;
+        return $page->atPage('規格管理商品管理');
     }
 
     public function 入力_分類名($value)
@@ -40,8 +40,22 @@ class ClassCategoryManagePage extends AbstractAdminPageStyleGuide
 
     public function 一覧_編集($rowNum)
     {
-        $this->一覧_オプション($rowNum);
-        $this->tester->click("#main .container-fluid .box .box-body .item_box:nth-child(${rowNum}) .icon_edit .dropdown ul li:nth-child(1) a");
+        $rowNum += 1;
+        $this->tester->click("ul.list-group > li:nth-child(${rowNum}) a:nth-child(3)");
+        return $this;
+    }
+
+    public function 一覧_入力_分類名($row, $value)
+    {
+        $row += 1;
+        $this->tester->fillField(['css' => "ul.list-group > li:nth-child(${row}) form input[type=text]"], $value);
+        return $this;
+    }
+
+    public function 一覧_分類作成($row)
+    {
+        $row += 1;
+        $this->tester->click("ul.list-group > li:nth-child(${row}) form button[type=submit]");
         return $this;
     }
 
@@ -52,9 +66,11 @@ class ClassCategoryManagePage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
-    private function 一覧_オプション($rowNum)
+    public function acceptModal($rowNum)
     {
-        $this->tester->click("#main .container-fluid .box .box-body .item_box:nth-child(${rowNum}) .icon_edit .dropdown a");
+        $rowNum += 1;
+        $this->tester->waitForElementVisible("ul.list-group > li:nth-child(${rowNum}) div.modal");
+        $this->tester->click("ul.list-group > li:nth-child(${rowNum}) div.modal a.btn-ec-delete");
         return $this;
     }
 
@@ -62,20 +78,20 @@ class ClassCategoryManagePage extends AbstractAdminPageStyleGuide
     {
 
         $rowNum += 1;
-        $this->tester->dragAndDropBy("ul.tableish > li:nth-child(${rowNum})", 0, -60);
+        $this->tester->dragAndDropBy("ul.list-group > li:nth-child(${rowNum})", 0, -60);
         return $this;
     }
 
     public function 一覧_下に($rowNum)
     {
         $rowNum += 1;
-        $this->tester->dragAndDropBy("ul.tableish > li:nth-child(${rowNum})", 0, 60);
+        $this->tester->dragAndDropBy("ul.list-group > li:nth-child(${rowNum})", 0, 60);
         return $this;
     }
 
     public function 一覧_名称($rowNum)
     {
         $rowNum += 1;
-        return "ul.tableish > li:nth-child(${rowNum}) > div > div.col.d-flex.align-items-center";
+        return "ul.list-group > li:nth-child(${rowNum}) > div > div.col.d-flex.align-items-center";
     }
 }

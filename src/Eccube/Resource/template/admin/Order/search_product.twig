@@ -137,8 +137,10 @@
         // モーダル閉じる.
         $('#searchProductModal').modal('hide');
 
+        // モーダルからのPOST時にのみ金額等をセットするため
+        $('input:hidden[name="modal"]').val('modal');
+
         // 再計算のためsubmit.
-        // setModeAndSubmit('modal');
         $('#form1').submit();
 
         return false;
