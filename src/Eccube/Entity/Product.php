@@ -121,6 +121,10 @@ class Product extends \Eccube\Entity\AbstractEntity
      */
     public function isEnable()
     {
+        if ($this->__isInitialized__ === false) {
+            return false;
+        }
+        
         return $this->getStatus()->getId() === \Eccube\Entity\Master\Disp::DISPLAY_SHOW ? true : false;
     }
 

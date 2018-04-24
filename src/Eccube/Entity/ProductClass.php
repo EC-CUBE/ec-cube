@@ -43,6 +43,10 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
      */
     public function isEnable()
     {
+        if ($this->getProduct()->__isInitialized__ === false) {
+            return false;
+        }
+        
         return $this->getProduct()->isEnable();
     }
 
