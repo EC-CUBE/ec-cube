@@ -298,15 +298,15 @@ class EA04OrderCest
         $I->see('検索結果：'.(count($DeliveredOrders) + count($NewOrders)).'件が該当しました', OrderManagePage::$検索結果_メッセージ);
     }
 
-    public function order_商品を削除(\AcceptanceTester $I)
+    public function order_受注編集_明細を削除(\AcceptanceTester $I)
     {
-        $I->wantTo('EA0405-UC01-T03 Order 商品を削除');
+        $I->wantTo('EA0405-UC01-T03 受注編集_明細を削除');
 
         $OrderRegisterPage = OrderEditPage::goEdit($I);
 
-        $productName = $OrderRegisterPage->製品名を取得(1);
+        $productName = $OrderRegisterPage->明細の項目名を取得(1);
         // delete
-        $OrderRegisterPage->商品を削除(1)
+        $OrderRegisterPage->明細を削除(1)
             ->acceptDeleteModal(1);
         $I->wait(5);
 
