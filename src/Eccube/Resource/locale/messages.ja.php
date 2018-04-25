@@ -2750,7 +2750,7 @@ return [
     'step3.text.message.ssl' => 'httpsからの接続でなければSSL制限を設定できません。',
     'step3.label.store_name' => 'あなたの店名',
     'step3.label.email' => 'メールアドレス（受注メールなどの宛先になります）',
-    'step3.label.login_id' => '管理画面ログインID（半角英数字%min_len%～%max_len%文字）'
+    'step3.label.login_id' => '管理画面ログインID（半角英数字%min_len%～%max_len%文字）',
     'step3.label.login_pass' => '管理画面パスワード（半角英数字%min_len%～%max_len%文字）',
     'step3.label.admin_dir' => '管理画面のディレクトリ名（半角英数字%min_len%～%max_len%文字）',
     'step3.placeholder.admin_dir' => 'セキュリティのため推測されにくいディレクトリ名を入力して下さい',
