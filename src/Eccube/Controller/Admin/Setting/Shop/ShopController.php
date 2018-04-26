@@ -29,6 +29,7 @@ use Eccube\Entity\BaseInfo;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\ShopMasterType;
+use Eccube\Util\CacheUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -71,7 +72,7 @@ class ShopController extends AbstractController
      * @param Request $request
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function index(Request $request)
+    public function index(Request $request, CacheUtil $cacheUtil)
     {
         $builder = $this->formFactory
             ->createBuilder(ShopMasterType::class, $this->BaseInfo);
@@ -107,6 +108,8 @@ class ShopController extends AbstractController
                   EccubeEvents::ADMIN_SETTING_SHOP_SHOP_INDEX_COMPLETE,
                   $event
                 );
+
+                $cacheUtil->clearCache();
 
                 $this->addSuccess('admin.flash.register_completed', 'admin');
 
