@@ -59,7 +59,7 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->flush();
         $test_class_name_id = $this->classNameRepository
             ->findOneBy(array(
-                'display_name' => $TestClassName->getDisplayName()
+                'name' => $TestClassName->getName()
             ))
             ->getId();
 
@@ -81,7 +81,7 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
 
         $test_class_name_id = $this->classNameRepository
             ->findOneBy(array(
-                'display_name' => $TestClassName->getDisplayName()
+                'name' => $TestClassName->getName()
             ))
             ->getId();
 
@@ -150,7 +150,7 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->flush();
         $test_class_name_id = $this->classNameRepository
             ->findOneBy(array(
-                'display_name' => $TestClassName->getDisplayName()
+                'name' => $TestClassName->getName()
             ))
             ->getId();
         $TestClassCategory = $this->newTestClassCategory($TestCreator, $TestClassName);
@@ -183,7 +183,7 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->flush();
         $test_class_name_id = $this->classNameRepository
             ->findOneBy(array(
-                'display_name' => $TestClassName->getDisplayName()
+                'name' => $TestClassName->getName()
             ))
             ->getId();
         $TestClassCategory = $this->newTestClassCategory($TestCreator, $TestClassName);
@@ -256,7 +256,7 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
     private function newTestClassName($TestCreator)
     {
         $TestClassName = new \Eccube\Entity\ClassName();
-        $TestClassName->setDisplayName('形状')
+        $TestClassName->setName('形状')
             ->setSortNo(100)
             ->setCreator($TestCreator);
 

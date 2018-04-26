@@ -640,13 +640,13 @@ class Generator
             ;
             if ($ProductClass->hasClassCategory1()) {
                 $OrderItem
-                    ->setClassName1($ProductClass->getClassCategory1()->getClassName()->getDisplayName())
+                    ->setClassName1($ProductClass->getClassCategory1()->getClassName()->getName())
                     ->setClassCategoryName1($ProductClass->getClassCategory1()->getName())
                 ;
             }
             if ($ProductClass->hasClassCategory2()) {
                 $OrderItem
-                    ->setClassName2($ProductClass->getClassCategory2()->getClassName()->getDisplayName())
+                    ->setClassName2($ProductClass->getClassCategory2()->getClassName()->getName())
                     ->setClassCategoryName2($ProductClass->getClassCategory2()->getName())
                 ;
             }
@@ -793,7 +793,7 @@ class Generator
         }
 
         $Prefs = $this->prefRepository->findAll();
-        
+
         foreach ($Prefs as $Pref) {
             $DeliveryFee = new DeliveryFee();
             $DeliveryFee

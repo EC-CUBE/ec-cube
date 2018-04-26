@@ -151,11 +151,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <ul class="list-group list-group-flush sortable-container">
                                 <li class="list-group-item">
                                     <form role="form" class="form-row" name="form1" id="form1" method="post" action="{{ url('admin_product_class_name') }}">
-                                        <div class="col-auto align-self-center"><span>{{ 'admin.common.label.display_name'|trans }}</span></div>
+                                        <div class="col-auto align-self-center"><span>{{ 'admin.common.label.name'|trans }}</span></div>
                                         <div class="col-3 mr-2">
                                             {{ form_widget(form._token) }}
-                                            {{ form_widget(form.display_name) }}
-                                            {{ form_errors(form.display_name) }}
+                                            {{ form_widget(form.name) }}
+                                            {{ form_errors(form.name) }}
                                         </div>
                                         <div class="col-auto align-self-center"><span>{{ 'admin.common.label.class_name'|trans }}</span></div>
                                         <div class="col-3">
@@ -172,7 +172,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <div class="row justify-content-around mode-view">
                                             <div class="col-auto d-flex align-items-center"><i class="fa fa-bars text-ec-gray"></i></div>
                                             <div class="col d-flex align-items-center">
-                                                <a href="{{ url('admin_product_class_category', {class_name_id : ClassName.id }) }}">{{ ClassName.display_name }}［管理名：{{ ClassName.backend_name }}］ ({{ ClassName.ClassCategories|length }})</a>
+                                                <a href="{{ url('admin_product_class_category', {class_name_id : ClassName.id }) }}">{{ ClassName.name }}［管理名：{{ ClassName.backend_name }}］ ({{ ClassName.ClassCategories|length }})</a>
                                             </div>
                                             <div class="col-auto text-right">
                                                 <a class="btn btn-ec-actionIcon mr-3 up {% if loop.first %}disabled{% endif %}" href="" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.class_name.439'|trans }}">
@@ -225,10 +225,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
                                         <form class="form-row d-none mode-edit" method="post" action="{{ url('admin_product_class_name') }}">
                                             {{ form_widget(forms[ClassName.id]._token) }}
-                                            <div class="col-auto align-self-center"><span>{{ 'admin.common.label.display_name'|trans }}</span></div>
+                                            <div class="col-auto align-self-center"><span>{{ 'admin.common.label.name'|trans }}</span></div>
                                             <div class="col-auto align-items-center">
-                                                {{ form_widget(forms[ClassName.id].display_name, {'attr': {'data-origin-value': forms[ClassName.id].display_name.vars.value}}) }}
-                                                {{ form_errors(forms[ClassName.id].display_name) }}
+                                                {{ form_widget(forms[ClassName.id].name, {'attr': {'data-origin-value': forms[ClassName.id].name.vars.value}}) }}
+                                                {{ form_errors(forms[ClassName.id].name) }}
                                             </div>
                                             <div class="col-auto align-self-center"><span>{{ 'admin.common.label.class_name'|trans }}</span></div>
                                             <div class="col-auto align-items-center">
