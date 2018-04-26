@@ -38,34 +38,36 @@ class EF01TopCest
         $minus1 = $today->sub(new DateInterval('P1D'));
         $minus2 = $today->sub(new DateInterval('P2D'));
 
-        $I->haveInDatabase('dtb_news', array('id' => rand(999, 9999), 'publish_date' => $minus1->format('Y-m-d 00:00:00'), 'title' => 'タイトル1', 'description' => 'コメント1', 'creator_id' => 1, 'sort_no' => 2, 'create_date' => $today->format('Y-m-d 00:00:00'), 'update_date' => $today->format('Y-m-d 00:00:00'), 'discriminator_type' => 'news'));
-        $I->haveInDatabase('dtb_news', array('id' => rand(999, 9999), 'publish_date' => $minus2->format('Y-m-d 00:00:00'), 'title' => 'タイトル2', 'description' => 'コメント2', 'creator_id' => 1, 'sort_no' => 3, 'create_date' => $today->format('Y-m-d 00:00:00'), 'update_date' => $today->format('Y-m-d 00:00:00'), 'discriminator_type' => 'news'));
+        $createNews = Fixtures::get('createNews');
+        $News1 = $createNews($minus1, 'タイトル1', 'コメント1');
+        $News2 = $createNews($minus2, 'タイトル2', 'コメント2');
+
         $I->reloadPage();
-        $news = Fixtures::get('news');
-        $newsset = array();
-        $newsset[] = array (
-            'date' => $news[0]->getPublishDate(),
-            'title' => $news[0]->getTitle(),
-            'comment' => $news[0]->getDescription(),
-        );
-        $newsset[] = array (
-            'date' => $minus1->format('Y-m-d 00:00:00'),
-            'title' => 'タイトル1',
-            'comment' => 'コメント1',
-        );
-        $newsset[] = array (
-            'date' => $minus2->format('Y-m-d 00:00:00'),
-            'title' => 'タイトル2',
-            'comment' => 'コメント2',
-        );
-        foreach ($newsset as $key => $news) {
-            $I->see($news['title'], 'div.ec-news .ec-news__item:nth-child('.(count($newsset) - $key).') .ec-newsline__title');
+
+        $findNews = Fixtures::get('findNews');
+        $newsAll = $findNews();
+        foreach ($newsAll as $index => $news) {
+            $rowNum = $index + 1;
+            $I->see($news['title'], 'div.ec-news .ec-news__item:nth-child('.$rowNum.') .ec-newsline__title');
+            // 5件を超えるとread moreが表示される.
+            if ($rowNum > 5) {
+                break;
+            }
         }
+
+        $em = Fixtures::get('entityManager');
+        $em->remove($News1);
+        $em->remove($News2);
+        $em->flush([$News1, $News2]);
     }
 
     public function topページ_新着情報(\AcceptanceTester $I)
     {
         $I->wantTo('EF0101-UC01-T02 TOPページ 新着情報');
+
+        $createNews = Fixtures::get('createNews');
+        $News = $createNews(new \DateTime(), 'タイトル1', 'コメント1', 'https://www.ec-cube.net');
+
         $topPage = TopPage::go($I);
 
         // 各新着情報の箇所を押下する
@@ -73,16 +75,16 @@ class EF01TopCest
         $topPage->新着情報選択(1);
 
         // 押下された新着情報のセクションが広がり、詳細情報、リンクが表示される
-        $I->assertContains('一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！', $topPage->新着情報詳細(1));
+        $I->assertContains('コメント1', $topPage->新着情報詳細(1));
 
         // 「詳しくはこちら」リンクを押下する
-        $today = new DateTime();
-        $I->haveInDatabase('dtb_news', array('id' => rand(999, 9999), 'publish_date' => $today->format('Y-m-d 00:00:00'), 'title' => 'タイトル1', 'description' => 'コメント1', 'creator_id' => 1, 'url' => 'http://www.ec-cube.net', 'sort_no' => 2, 'create_date' => $today->format('Y-m-d 00:00:00'), 'update_date' => $today->format('Y-m-d 00:00:00'), 'discriminator_type' => 'news'));
-        $I->reloadPage();
-        $topPage->新着情報選択(1);
         $I->assertContains('詳しくはこちら', $topPage->新着情報詳細(1));
         $topPage->新着情報リンククリック(1);
-        $I->seeInTitle('ECサイト構築・リニューアルは「ECオープンプラットフォームEC-CUBE」');
+        $I->amOnUrl($News->getUrl());
+
+        $em = Fixtures::get('entityManager');
+        $em->remove($News);
+        $em->flush($News);
     }
 
     public function topページ_カテゴリ検索(\AcceptanceTester $I)

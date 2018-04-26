@@ -1,7 +1,12 @@
 <?php
+
 use Codeception\Util\Fixtures;
-use Faker\Factory as Faker;
+use Eccube\Common\EccubeConfig;
+use Eccube\Entity\Customer;
+use Eccube\Entity\Master\CustomerStatus;
+use Eccube\Entity\Master\ShippingStatus;
 use Eccube\Kernel;
+use Faker\Factory as Faker;
 
 
 $config = parse_ini_file(__DIR__.'/config.ini',true);
@@ -27,12 +32,6 @@ Fixtures::add('entityManager', $entityManager);
 
 // // この Fixture は Cest ではできるだけ使用せず, 用途に応じた Fixture を使用すること
 // Fixtures::add('app', $app);
-
-use Eccube\Common\Constant;
-use Eccube\Entity\Customer;
-use Eccube\Common\EccubeConfig;
-use Eccube\Entity\Master\CustomerStatus;
-use Eccube\Entity\Master\ShippingStatus;
 
 $faker = Faker::create('ja_JP');
 Fixtures::add('faker', $faker);
@@ -182,14 +181,6 @@ $categories = $entityManager->getRepository('Eccube\Entity\Category')
 /** カテゴリ一覧の配列. */
 Fixtures::add('categories', $categories);
 
-$news = $entityManager->getRepository('Eccube\Entity\News')
-    ->createQueryBuilder('o')
-    ->orderBy('o.publish_date', 'DESC')
-    ->getQuery()
-    ->getResult();
-/** 新着情報一覧. */
-Fixtures::add('news', $news);
-
 $findOrders = function () use ($entityManager) {
     return $entityManager->getRepository('Eccube\Entity\Order')
     ->createQueryBuilder('o')
@@ -312,3 +303,27 @@ $findCustomers = function () use ($entityManager) {
 };
 /** 会員を検索するクロージャ */
 Fixtures::add('findCustomers', $findCustomers);
+
+/** 新着情報を検索するクロージャ */
+Fixtures::add('findNews', function () use ($entityManager) {
+    return $entityManager->getRepository(\Eccube\Entity\News::class)
+        ->findBy([], ['sort_no' => 'DESC']);
+});
+
+/** 新着情報を登録するクロージャ */
+Fixtures::add('createNews', function ($publishDate, $title, $description, $url = null) use ($entityManager) {
+    $TopNews = $entityManager->getRepository(\Eccube\Entity\News::class)
+        ->findOneBy([], ['sort_no' => 'DESC']);
+    $sortNo = $TopNews ? $TopNews->getSortNo() + 1 : 1;
+    $News = new \Eccube\Entity\News();
+    $News->setPublishDate($publishDate);
+    $News->setTitle($title);
+    $News->setDescription($description);
+    $News->setUrl($url);
+    $News->setSortNo($sortNo);
+
+    $entityManager->persist($News);
+    $entityManager->flush($News);
+
+    return $News;
+});
