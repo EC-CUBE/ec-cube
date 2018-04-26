@@ -26,6 +26,7 @@ namespace Eccube\Repository;
 
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Block;
+use Eccube\Entity\Master\DeviceType;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 

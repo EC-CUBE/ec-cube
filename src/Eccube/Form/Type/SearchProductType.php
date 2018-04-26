@@ -43,7 +43,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class SearchProductType extends AbstractType
 {
     /**
-     * @var CategoryRepositoryPr
+     * @var CategoryRepository
      */
     protected $categoryRepository;
 
