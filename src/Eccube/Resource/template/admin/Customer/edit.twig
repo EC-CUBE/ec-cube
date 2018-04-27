@@ -126,11 +126,11 @@
                                             <div class="row justify-content-start">
                                                 <div class="col-auto pr-0 align-self-center"><span>{{ 'admin.customer.edit.post'|trans }}</span></div>
                                                 <div class="col-2">
-                                                    {{ form_widget(form.zip.zip01, { attr : { placeholder : 'admin.customer.edit.zip_placeholder1'|trans}}) }}
+                                                    {{ form_widget(form.zip.zip01, { attr : { placeholder : 'admin.customer.edit.zip_placeholder1' }}) }}
                                                 </div>
                                                 <div class="col-auto p-0 align-self-center"><span>-</span></div>
                                                 <div class="col-2">
-                                                    {{ form_widget(form.zip.zip02, { attr : { placeholder : 'admin.customer.edit.zip_placeholder2'|trans}}) }}
+                                                    {{ form_widget(form.zip.zip02, { attr : { placeholder : 'admin.customer.edit.zip_placeholder2' }}) }}
                                                 </div>
                                                 {{ form_errors(form.zip) }}
                                                 {{ form_errors(form.zip.zip01) }}
@@ -146,9 +146,9 @@
                                             </div>
                                         </div>
                                         <div>
-                                            {{ form_widget(form.address.addr01, { attr : { placeholder : 'admin.customer.edit.97'|trans, 'class': 'mb-3'}} ) }}
+                                            {{ form_widget(form.address.addr01, { attr : { placeholder : 'admin.customer.edit.97', 'class': 'mb-3'}} ) }}
                                             {{ form_errors(form.address.addr01) }}
-                                            {{ form_widget(form.address.addr02, { attr : { placeholder : 'admin.customer.edit.98'|trans }}) }}
+                                            {{ form_widget(form.address.addr02, { attr : { placeholder : 'admin.customer.edit.98' }}) }}
                                             {{ form_errors(form.address.addr02) }}
                                         </div>
                                     </div>
@@ -193,7 +193,7 @@
                                     </div>
                                 </div>
                                 <div class="row mb-2">
-                                    <div class="col-3"><span>FAX番号</span></div>
+                                    <div class="col-3"><span>{{ 'admin.customer.edit.fax'|trans }}</span></div>
                                     <div class="col">
                                         <div class="row justify-content-start">
                                             <div class="col-2">

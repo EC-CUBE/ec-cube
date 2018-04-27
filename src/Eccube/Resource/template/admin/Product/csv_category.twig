@@ -119,7 +119,11 @@ $(function() {
                                             <span class="badge badge-primary ml-1">{{ 'admin.product.csv_category.required'|trans}}</span>
                                         {% endif %}
                                     </th>
-                                    <td class="align-middle">{{ key.description|trans|raw }}</td>
+                                    <td class="align-middle">
+                                        {% if key.description %}
+                                            {{ key.description|trans|raw }}
+                                        {% endif %}
+                                    </td>
                                 </tr>
                             {% endfor %}
                         </tbody>

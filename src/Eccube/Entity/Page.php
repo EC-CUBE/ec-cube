@@ -192,7 +192,7 @@ class Page extends \Eccube\Entity\AbstractEntity
      * Get BlocsByTargetId
      *
      * @param integer $target_id
-     * @return \Eccube\Entity\Bloc[]
+     * @return \Eccube\Entity\Block[]
      */
     public function getBlocksByTargetId($target_id)
     {
