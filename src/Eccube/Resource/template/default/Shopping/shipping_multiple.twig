@@ -30,20 +30,20 @@ $(function() {
         var itemIdx = 0;
         var item = $('#item' + idx);
         var row = $('#item' + idx + '-0');
-        
+
         // 既存のお届け先のrowをコピーして雛形とする
         var addrow = $(row).clone();
-        
+
         // 追加する要素のIndexを決定
         item.find('.shipping_item').each(function() {
             itemIdx = $(this).attr('data-itemidx');
         });
         itemIdx = 1 + parseInt(itemIdx);
-        
+
         // 行のID設定
         addrow.attr('id', 'item' + idx + '-' + itemIdx);
         addrow.attr('data-itemidx', itemIdx);
-        
+
         // お届け先セレクトボックスのIDとNAME設定
         addrow.find('select').attr('name', 'form[shipping_multiple][' + idx + '][shipping][' + itemIdx + '][customer_address]');
         addrow.find('select').attr('id', 'form_shipping_multiple_' + idx + '_shipping_' + itemIdx + '_customer_address');
@@ -61,7 +61,7 @@ $(function() {
             $(this).data('itemidx', idx + '-' + itemIdx);
             $(this).removeAttr('style');
         });
-        
+
         $(item).append($(addrow));
     });
 
@@ -107,11 +107,11 @@ $(function() {
                                             <dd id="multiple_list__product_class_category--{{ idx }}" class="item_pattern small">
                                                 <p>
                                                     {% if orderItem.productClass.classCategory1 %}
-                                                        {{ orderItem.productClass.classCategory1.className.display_name }}：{{ orderItem.productClass.classCategory1 }}
+                                                        {{ orderItem.productClass.classCategory1.className.name }}：{{ orderItem.productClass.classCategory1 }}
                                                         <br>
                                                     {% endif %}
                                                     {% if orderItem.productClass.classCategory2 %}
-                                                        {{ orderItem.productClass.classCategory2.className.display_name }}：{{ orderItem.productClass.classCategory2 }}
+                                                        {{ orderItem.productClass.classCategory2.className.name }}：{{ orderItem.productClass.classCategory2 }}
                                                         <br>
                                                     {% endif %}
                                                 </p>

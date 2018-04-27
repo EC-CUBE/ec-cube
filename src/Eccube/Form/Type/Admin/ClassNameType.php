@@ -55,7 +55,7 @@ class ClassNameType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('display_name', TextType::class, array(
+            ->add('name', TextType::class, array(
                 'label' => 'classname.label.group_name',
                 'constraints' => array(
                     new Assert\NotBlank(),

@@ -14,9 +14,9 @@ class ClassNameManagePage extends AbstractAdminPageStyleGuide
 
     public static $登録完了メッセージ = ['css' => '#page_admin_product_class_name > div > div.c-contentsArea > div.alert'];
     public static $管理名 = ['id' => 'admin_class_name_backend_name'];
-    public static $表示名 = ['id' => 'admin_class_name_display_name'];
+    public static $表示名 = ['id' => 'admin_class_name_name'];
     public static $管理名編集3 = ['id' => 'class_name_3_backend_name'];
-    public static $表示名編集3 = ['id' => 'class_name_3_display_name'];
+    public static $表示名編集3 = ['id' => 'class_name_3_name'];
 
     /**
      * ProductClassPage constructor.

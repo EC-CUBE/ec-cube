@@ -46,7 +46,7 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
         for ($i = 0; $i < 3; $i++) {
             $ClassName = new ClassName();
             $ClassName
-                ->setDisplayName('class-'.$i)
+                ->setName('class-'.$i)
                 ->setBackendName('class-'.$i)
                 ->setSortNo($i);
             for ($j = 0; $j < 3; $j++) {
@@ -142,7 +142,7 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
         $this->removeClass();    // 一旦全件削除
         $ClassName = new ClassName();
         $ClassName
-            ->setDisplayName('class-3')
+            ->setName('class-3')
             ->setBackendName('class-3');
         $this->classNameRepository->save($ClassName);
 
