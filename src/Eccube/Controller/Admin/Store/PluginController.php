@@ -25,7 +25,6 @@
 namespace Eccube\Controller\Admin\Store;
 
 use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
@@ -99,12 +98,28 @@ class PluginController extends AbstractController
      */
     protected $pluginRepository;
 
+    /**
+     * PluginController constructor.
+     * @param PluginRepository $pluginRepository
+     * @param PluginService $pluginService
+     * @param \Eccube\Log\Logger $logger
+     * @param BaseInfo $baseInfo
+     */
+    public function __construct(PluginRepository $pluginRepository, PluginService $pluginService, PluginEventHandlerRepository $eventHandlerRepository, \Eccube\Log\Logger $logger, BaseInfo $baseInfo)
+    {
+        $this->pluginRepository = $pluginRepository;
+        $this->pluginService = $pluginService;
+        $this->pluginEventHandlerRepository = $eventHandlerRepository;
+        $this->logger = $logger;
+        $this->BaseInfo = $baseInfo;
+    }
+
 
     /**
      * インストール済プラグイン画面
      *
      * @Route("/%eccube_admin_route%/store/plugin", name="admin_store_plugin")
-     * @Template("Store/plugin.twig")
+     * @Template("@admin/Store/plugin.twig")
      */
     public function index(Application $app, Request $request)
     {
@@ -119,7 +134,7 @@ class PluginController extends AbstractController
             try {
                 $code = $unregisterdPlugin['code'];
                 // プラグイン用設定画面があれば表示(プラグイン用のサービスプロバイダーに定義されているか)
-                $unregisterdPluginsConfigPages[$code] = $app->url('plugin_'.$code.'_config');
+                $unregisterdPluginsConfigPages[$code] = $this->generateUrl('plugin_'.$code.'_config');
             } catch (RouteNotFoundException $e) {
                 // プラグインで設定画面のルートが定義されていない場合は無視
             }
@@ -143,7 +158,7 @@ class PluginController extends AbstractController
 
             try {
                 // プラグイン用設定画面があれば表示(プラグイン用のサービスプロバイダーに定義されているか)
-                $configPages[$Plugin->getCode()] = $app->url('plugin_'.$Plugin->getCode().'_config');
+                $configPages[$Plugin->getCode()] = $this->generateUrl('plugin_'.$Plugin->getCode().'_config');
             } catch (\Exception $e) {
                 // プラグインで設定画面のルートが定義されていない場合は無視
             }
@@ -227,9 +242,9 @@ class PluginController extends AbstractController
                 $this->pluginService->update($Plugin, $tmpDir.'/'.$tmpFile);
                 $fs = new Filesystem();
                 $fs->remove($tmpDir);
-                $app->addSuccess('admin.plugin.update.complete', 'admin');
+                $this->addSuccess('admin.plugin.update.complete', 'admin');
 
-                return $app->redirect($app->url('admin_store_plugin'));
+                return $this->redirectToRoute('admin_store_plugin');
             } catch (PluginException $e) {
                 if (!empty($tmpDir) && file_exists($tmpDir)) {
                     $fs = new Filesystem();
@@ -252,9 +267,9 @@ class PluginController extends AbstractController
             }
         }
 
-        $app->addError($message, 'admin');
+        $this->addError($message, 'admin');
 
-        return $app->redirect($app->url('admin_store_plugin'));
+        return $this->redirectToRoute('admin_store_plugin');
     }
 
 
@@ -272,7 +287,7 @@ class PluginController extends AbstractController
         $this->isTokenValid($app);
 
         if ($Plugin->isEnabled()) {
-            $app->addError('admin.plugin.already.enable', 'admin');
+            $this->addError('admin.plugin.already.enable', 'admin');
         } else {
             $requires = $this->pluginService->findRequirePluginNeedEnable($Plugin->getCode());
             if (!empty($requires)) {
@@ -282,15 +297,15 @@ class PluginController extends AbstractController
                     $dependName = $DependPlugin->getName();
                 }
                 $message = trans('admin.plugin.enable.depend', ['%name%' => $Plugin->getName(), '%depend_name%' => $dependName]);
-                $app->addError($message, 'admin');
+                $this->addError($message, 'admin');
 
-                return $app->redirect($app->url('admin_store_plugin'));
+                return $this->redirectToRoute('admin_store_plugin');
             }
             $this->pluginService->enable($Plugin);
-            $app->addSuccess('admin.plugin.enable.complete', 'admin');
+            $this->addSuccess('admin.plugin.enable.complete', 'admin');
         }
 
-        return $app->redirect($app->url('admin_store_plugin'));
+        return $this->redirectToRoute('admin_store_plugin');
     }
 
     /**
@@ -315,18 +330,18 @@ class PluginController extends AbstractController
                     $dependName = $DependPlugin->getName();
                 }
                 $message = trans('admin.plugin.disable.depend', ['%name%' => $Plugin->getName(), '%depend_name%' => $dependName]);
-                $app->addError($message, 'admin');
+                $this->addError($message, 'admin');
 
-                return $app->redirect($app->url('admin_store_plugin'));
+                return $this->redirectToRoute('admin_store_plugin');
             }
 
             $this->pluginService->disable($Plugin);
-            $app->addSuccess('admin.plugin.disable.complete', 'admin');
+            $this->addSuccess('admin.plugin.disable.complete', 'admin');
         } else {
-            $app->addError('admin.plugin.already.disable', 'admin');
+            $this->addError('admin.plugin.already.disable', 'admin');
         }
 
-        return $app->redirect($app->url('admin_store_plugin'));
+        return $this->redirectToRoute('admin_store_plugin');
     }
 
     /**
@@ -343,9 +358,9 @@ class PluginController extends AbstractController
         $this->isTokenValid($app);
 
         if ($Plugin->isEnabled()) {
-            $app->addError('admin.plugin.uninstall.error.not_disable', 'admin');
+            $this->addError('admin.plugin.uninstall.error.not_disable', 'admin');
 
-            return $app->redirect($app->url('admin_store_plugin'));
+            return $this->redirectToRoute('admin_store_plugin');
         }
 
         // Check other plugin depend on it
@@ -358,20 +373,20 @@ class PluginController extends AbstractController
                 $dependName = $DependPlugin->getName();
             }
             $message = trans('admin.plugin.uninstall.depend', ['%name%' => $Plugin->getName(), '%depend_name%' => $dependName]);
-            $app->addError($message, 'admin');
+            $this->addError($message, 'admin');
 
-            return $app->redirect($app->url('admin_store_plugin'));
+            return $this->redirectToRoute('admin_store_plugin');
         }
 
         $this->pluginService->uninstall($Plugin);
-        $app->addSuccess('admin.plugin.uninstall.complete', 'admin');
+        $this->addSuccess('admin.plugin.uninstall.complete', 'admin');
 
-        return $app->redirect($app->url('admin_store_plugin'));
+        return $this->redirectToRoute('admin_store_plugin');
     }
 
     /**
      * @Route("/%eccube_admin_route%/store/plugin/handler", name="admin_store_plugin_handler")
-     * @Template("Store/plugin_handler.twig")
+     * @Template("@admin/Store/plugin_handler.twig")
      */
     public function handler(Application $app)
     {
@@ -396,7 +411,7 @@ class PluginController extends AbstractController
         $repo = $this->pluginEventHandlerRepository;
         $repo->upPriority($repo->find($Handler->getId()));
 
-        return $app->redirectToRoute('admin_store_plugin_handler');
+        return $this->redirectToRoute('admin_store_plugin_handler');
     }
 
     /**
@@ -407,14 +422,14 @@ class PluginController extends AbstractController
         $repo = $this->pluginEventHandlerRepository;
         $repo->upPriority($Handler, false);
 
-        return $app->redirectToRoute('admin_store_plugin_handler');
+        return $this->redirectToRoute('admin_store_plugin_handler');
     }
 
     /**
      * プラグインファイルアップロード画面
      *
      * @Route("/%eccube_admin_route%/store/plugin/install", name="admin_store_plugin_install")
-     * @Template("Store/plugin_install.twig")
+     * @Template("@admin/Store/plugin_install.twig")
      * @param Application $app
      * @param Request     $request
      * @return array|RedirectResponse
@@ -441,9 +456,9 @@ class PluginController extends AbstractController
                 // Remove tmp file
                 $fs = new Filesystem();
                 $fs->remove($tmpDir);
-                $app->addSuccess('admin.plugin.install.complete', 'admin');
+                $this->addSuccess('admin.plugin.install.complete', 'admin');
 
-                return $app->redirect($app->url('admin_store_plugin'));
+                return $this->redirectToRoute('admin_store_plugin');
             } catch (PluginException $e) {
                 if (!empty($tmpDir) && file_exists($tmpDir)) {
                     $fs = new Filesystem();
@@ -458,7 +473,7 @@ class PluginController extends AbstractController
                     $fs->remove($tmpDir);
                 }
                 $this->logger->error("plugin install failed.", array('original-message' => $er->getMessage()));
-                $app->addError('admin.plugin.install.fail', 'admin');
+                $this->addError('admin.plugin.install.fail', 'admin');
             }
         } else {
             foreach ($form->getErrors(true) as $error) {
@@ -501,7 +516,7 @@ class PluginController extends AbstractController
             $BaseInfo = $form->getData();
             $this->entityManager->flush($BaseInfo);
 
-            $app->addSuccess('admin.plugin.authentication.setting.complete', 'admin');
+            $this->addSuccess('admin.plugin.authentication.setting.complete', 'admin');
         }
 
         return [
@@ -545,7 +560,7 @@ class PluginController extends AbstractController
         $info['message'] = $message;
         curl_close($curl);
 
-        $app->log('http get_info', $info);
+        $this->logger->info('http get_info', $info);
 
         return array($result, $info);
     }
