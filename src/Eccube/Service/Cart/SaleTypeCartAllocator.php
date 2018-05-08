@@ -23,7 +23,7 @@
 
 namespace Eccube\Service\Cart;
 
-use Eccube\Entity\CartItem;
+use Eccube\Entity\OrderItem;
 
 /**
  * 販売種別ごとにカートを振り分けるCartItemAllocator
@@ -33,10 +33,10 @@ class SaleTypeCartAllocator implements CartItemAllocator
     /**
      * 商品の振り分け先となるカートの識別子を決定します。
      *
-     * @param CartItem $Item カート商品
+     * @param OrderItem $Item カート商品
      * @return string
      */
-    public function allocate(CartItem $Item)
+    public function allocate(OrderItem $Item)
     {
         $ProductClass = $Item->getProductClass();
         if ($ProductClass && $ProductClass->getSaleType()) {

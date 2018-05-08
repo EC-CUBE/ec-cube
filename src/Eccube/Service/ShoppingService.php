@@ -257,13 +257,14 @@ class ShoppingService
     {
 
         // 受注データを取得
-        $preOrderId = $this->cartService->getPreOrderId();
-        if (!$preOrderId) {
+        //$preOrderId = $this->cartService->getPreOrderId();
+        $preOrderIds = $this->session->get('preOrderIds', []); // TODO
+        if (!$preOrderIds) {
             return null;
         }
 
         $condition = array(
-            'pre_order_id' => $preOrderId,
+            'pre_order_id' => $preOrderIds,
         );
 
         if (!is_null($status)) {

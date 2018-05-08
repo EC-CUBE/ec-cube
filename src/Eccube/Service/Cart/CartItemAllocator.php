@@ -24,7 +24,7 @@
 namespace Eccube\Service\Cart;
 
 
-use Eccube\Entity\CartItem;
+use Eccube\Entity\OrderItem;
 
 /**
  * 商品をカートに振り分けるインターフェイス
@@ -34,8 +34,8 @@ interface CartItemAllocator
     /**
      * 商品の振り分け先となるカートの識別子を決定します。
      *
-     * @param CartItem $Item カート商品
+     * @param OrderItem $Item カート商品
      * @return string
      */
-    public function allocate(CartItem $Item);
+    public function allocate(OrderItem $Item);
 }

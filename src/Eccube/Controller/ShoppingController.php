@@ -631,20 +631,20 @@ class ShoppingController extends AbstractShoppingController
     public function checkToCart(Request $request)
     {
         // カートチェック
-        if (!$this->cartService->isLocked()) {
-            log_info('カートが存在しません');
+        // if (!$this->cartService->isLocked()) {
+        //     log_info('カートが存在しません');
 
-            // カートが存在しない、カートがロックされていない時はエラー
-            return $this->redirectToRoute('cart');
-        }
+        //     // カートが存在しない、カートがロックされていない時はエラー
+        //     return $this->redirectToRoute('cart');
+        // }
 
-        // カートチェック
-        if (count($this->cartService->getCart()->getCartItems()) <= 0) {
-            log_info('カートに商品が入っていないためショッピングカート画面にリダイレクト');
+        // // カートチェック
+        // if (count($this->cartService->getCart()->getItems()) <= 0) {
+        //     log_info('カートに商品が入っていないためショッピングカート画面にリダイレクト');
 
-            // カートが存在しない時はエラー
-            return $this->redirectToRoute('cart');
-        }
+        //     // カートが存在しない時はエラー
+        //     return $this->redirectToRoute('cart');
+        // }
 
         return new Response();
     }

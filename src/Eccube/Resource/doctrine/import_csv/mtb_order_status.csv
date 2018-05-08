@@ -7,3 +7,4 @@ id,name,sort_no,discriminator_type
 "4","取り寄せ中","5","orderstatus"
 "5","発送済み","6","orderstatus"
 "8","購入処理中","7","orderstatus"
+"9","カート","8","orderstatus"

@@ -24,7 +24,7 @@
 namespace Eccube\Service\Cart;
 
 
-use Eccube\Entity\CartItem;
+use Eccube\Entity\OrderItem;
 
 /**
  * カートに追加する明細(CartItem)同士が同じ明細になるかどうか判定するインターフェイス。
@@ -32,9 +32,9 @@ use Eccube\Entity\CartItem;
 interface CartItemComparator
 {
     /**
-     * @param CartItem $item1 明細1
-     * @param CartItem $item2 明細2
+     * @param OrderItem $item1 明細1
+     * @param OrderItem $item2 明細2
      * @return boolean 同じ明細になる場合はtrue
      */
-    public function compare(CartItem $item1, CartItem $item2);
+    public function compare(OrderItem $item1, OrderItem $item2);
 }

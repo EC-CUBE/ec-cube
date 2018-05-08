@@ -179,6 +179,26 @@ class OrderHelper
         return $Order;
     }
 
+    /**
+     * カートの受注データを生成する.
+     *
+     * @param Customer $Customer
+     * @return Order
+     */
+    public function createOrderInCart()
+    {
+        $OrderStatus = $this->orderStatusRepository->find(OrderStatus::CART);
+        $Order = new Order($OrderStatus);
+
+        // pre_order_idを生成
+        $Order->setPreOrderId($this->createPreOrderId());
+
+        $this->entityManager->persist($Order);
+        $this->entityManager->flush();
+
+        return $Order;
+    }
+
     public function createPreOrderId()
     {
         // ランダムなpre_order_idを作成
