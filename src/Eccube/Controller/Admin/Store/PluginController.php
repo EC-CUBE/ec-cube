@@ -430,11 +430,10 @@ class PluginController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/store/plugin/install", name="admin_store_plugin_install")
      * @Template("@admin/Store/plugin_install.twig")
-     * @param Application $app
      * @param Request     $request
      * @return array|RedirectResponse
      */
-    public function install(Application $app, Request $request)
+    public function install(Request $request)
     {
         $form = $this->formFactory
             ->createBuilder(PluginLocalInstallType::class)
