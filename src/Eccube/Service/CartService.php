@@ -24,6 +24,7 @@
 
 namespace Eccube\Service;
 
+use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
@@ -124,8 +125,8 @@ class CartService
         if (!$this->preOrderIds) {
             $this->carts = [];
         }
-        if (is_null($this->carts)) {
-            $Orders = $this->orderRepository->findBy(['pre_order_id' => $this->preOrderIds]);
+        if (empty($this->carts)) {
+            $Orders = $this->orderRepository->findBy(['pre_order_id' => $this->preOrderIds], ['id' => 'ASC']);
             $this->carts = $Orders;
         }
         return $this->carts;
@@ -136,14 +137,6 @@ class CartService
      */
     public function getCart()
     {
-        $Carts = $this->getCarts();
-        if (!$Carts) {
-            if (!$this->cart) {
-                $this->cart = $this->orderHelper->createOrderInCart();
-                $this->setPreOrderId($this->cart->getPreOrderId());
-            }
-            return $this->cart;
-        }
         return current($this->getCarts());
     }
 
@@ -197,12 +190,15 @@ class CartService
             if (isset($Carts[$cartId])) {
                 $Carts[$cartId]->addOrderItem($item);
             } else {
-                $Cart = $this->orderHelper->createOrderInCart();
+                $Cart = $this->getCart();
+                if (!$Cart) {
+                    $Cart = $this->orderHelper->createOrderInCart();
+                }
+                $this->carts[] = $Cart;
                 $this->setPreOrderId($Cart->getPreOrderId());
                 $Cart->addOrderItem($item);
                 $Carts[$cartId] = $Cart;
             }
-            $this->entityManager->persist($Carts[$cartId]);
             $this->entityManager->flush($Carts[$cartId]);
 
             $item->setOrder($Carts[$cartId]);
@@ -319,7 +315,6 @@ class CartService
      */
     public function setPreOrderId($pre_order_id)
     {
-        $this->getCart()->setPreOrderId($pre_order_id);
         $this->preOrderIds = $this->session->get('preOrderIds', []);
         $this->preOrderIds[] = $pre_order_id;
         $this->session->set('preOrderIds', $this->preOrderIds);
@@ -343,10 +338,8 @@ class CartService
         $removed = array_splice($Carts, 0, 1);
         if (!empty($removed)) {
             $removedCart = $removed[0];
-            $removedCart->setPreOrderId(null)
-                ->setLock(false)
-                ->setTotalPrice(0)
-                ->clearCartItems();
+            $this->entityManager->remove($removedCart);
+            $this->entityManager->flush($removedCart);
         }
         $this->carts = $Carts;
 
