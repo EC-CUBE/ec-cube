@@ -1320,6 +1320,4 @@ class ShoppingService
         $this->eventDispatcher->dispatch(EccubeEvents::SERVICE_SHOPPING_NOTIFY_COMPLETE, $event);
 
     }
-
-
 }

@@ -26,6 +26,9 @@ namespace Eccube\Service;
 
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Master\OrderItemType;
+use Eccube\Entity\Master\TaxDisplayType;
+use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\ItemHolderInterface;
@@ -238,11 +241,18 @@ class CartService
             return false;
         }
 
+        $ProductItemType = $this->entityManager->find(OrderItemType::class, OrderItemType::PRODUCT);
+        // TODO
+        $TaxExclude = $this->entityManager->getRepository(TaxDisplayType::class)->find(TaxDisplayType::EXCLUDED);
+        $Taxion = $this->entityManager->getRepository(TaxType::class)->find(TaxType::TAXATION);
         $newItem = new OrderItem();
         $newItem->setQuantity($quantity)
             ->setPrice($ProductClass->getPrice02IncTax())
             ->setProductClass($ProductClass)
-            ->setProductName($ProductClass->getProduct()->getName());
+            ->setProductName($ProductClass->getProduct()->getName())
+            ->setOrderItemType($ProductItemType)
+            ->setTaxDisplayType($TaxExclude)
+            ->setTaxType($Taxion);
 
         $allCartItems = $this->mergeAllCartItems([$newItem]);
         $this->restoreCarts($allCartItems);

@@ -179,6 +179,30 @@ class OrderHelper
         return $Order;
     }
 
+    public function createShippingsFromOrder(Order $Order, CustomerAddress $CustomerAddress)
+    {
+        $OrderItemsGroupBySaleType = array_reduce($Order->getItems()->toArray(), function ($result, $item) {
+            /* @var OrderItem $item */
+            $saleTypeId = $item->getProductClass()->getSaleType()->getId();
+            $result[$saleTypeId][] = $item;
+            return $result;
+        }, []);
+
+        $Shipping = $this->createShippingFromCustomerAddress($CustomerAddress);
+        foreach ($OrderItemsGroupBySaleType as $OrderItems) {
+            $this->addOrderItems($Order, $Shipping, $OrderItems);
+            $this->setDefaultDelivery($Shipping);
+            $this->entityManager->persist($Shipping);
+        }
+
+        $this->setDefaultPayment($Order);
+
+        $this->entityManager->persist($Order);
+        $this->entityManager->flush();
+
+        return $Shipping;
+    }
+
     /**
      * カートの受注データを生成する.
      *
@@ -231,6 +255,7 @@ class OrderHelper
                 'del_flg',
             ]
         );
+        $this->entityManager->flush($Order);
     }
 
     /**

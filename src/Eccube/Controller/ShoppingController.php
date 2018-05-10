@@ -660,46 +660,62 @@ class ShoppingController extends AbstractShoppingController
         // 購入処理中の受注情報を取得
         $Order = $this->shoppingService->getOrder(OrderStatus::PROCESSING);
 
+        // TODO CartService::lock で OrderStatus::PROCESSING の受注ができるので、ここは通らないはず
         // 初回アクセス(受注情報がない)の場合は, 受注情報を作成
-        if (is_null($Order)) {
-            // 未ログインの場合, ログイン画面へリダイレクト.
-            if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
-                // 非会員でも一度会員登録されていればショッピング画面へ遷移
-                $Customer = $this->shoppingService->getNonMember($this->sessionKey);
+        // if (is_null($Order)) {
+        //     // 未ログインの場合, ログイン画面へリダイレクト.
+        //     if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+        //         // 非会員でも一度会員登録されていればショッピング画面へ遷移
+        //         $Customer = $this->shoppingService->getNonMember($this->sessionKey);
 
-                if (is_null($Customer)) {
-                    log_info('未ログインのためログイン画面にリダイレクト');
+        //         if (is_null($Customer)) {
+        //             log_info('未ログインのためログイン画面にリダイレクト');
 
-                    return $this->redirectToRoute('shopping_login');
-                }
-            } else {
-                $Customer = $this->getUser();
+        //             return $this->redirectToRoute('shopping_login');
+        //         }
+        //     } else {
+        //         $Customer = $this->getUser();
+        //     }
+
+        //     try {
+        //         // 受注情報を作成
+        //         //$Order = $app['eccube.service.shopping']->createOrder($Customer);
+        //         $Order = $this->orderHelper->createProcessingOrder(
+        //             $Customer,
+        //             $Customer->getCustomerAddresses()->current(),
+        //             $this->cartService->getCart()->getCartItems()
+        //         );
+        //         $this->cartService->setPreOrderId($Order->getPreOrderId());
+        //         $this->cartService->save();
+        //     } catch (CartException $e) {
+        //         log_error('初回受注情報作成エラー', array($e->getMessage()));
+        //         $this->addRequestError($e->getMessage());
+
+        //         return $this->redirectToRoute('cart');
+        //     }
+
+        //     // セッション情報を削除
+        //     $this->session->remove($this->sessionOrderKey);
+        //     $this->session->remove($this->sessionMultipleKey);
+        // }
+
+        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            // 非会員でも一度会員登録されていればショッピング画面へ遷移
+            $Customer = $this->shoppingService->getNonMember($this->sessionKey);
+
+            if (is_null($Customer)) {
+                log_info('未ログインのためログイン画面にリダイレクト');
+
+                return $this->redirectToRoute('shopping_login');
             }
-
-            try {
-                // 受注情報を作成
-                //$Order = $app['eccube.service.shopping']->createOrder($Customer);
-                $Order = $this->orderHelper->createProcessingOrder(
-                    $Customer,
-                    $Customer->getCustomerAddresses()->current(),
-                    $this->cartService->getCart()->getCartItems()
-                );
-                $this->cartService->setPreOrderId($Order->getPreOrderId());
-                $this->cartService->save();
-            } catch (CartException $e) {
-                log_error('初回受注情報作成エラー', array($e->getMessage()));
-                $this->addRequestError($e->getMessage());
-
-                return $this->redirectToRoute('cart');
-            }
-
-            // セッション情報を削除
-            $this->session->remove($this->sessionOrderKey);
-            $this->session->remove($this->sessionMultipleKey);
+        } else {
+            $Customer = $this->getUser();
         }
+        $this->orderHelper->setCustomer($Order, $Customer);
 
-        // 受注関連情報を最新状態に更新
+        // 受注関連情報を最新状態に更新し、 Shipping を生成する
         $this->entityManager->refresh($Order);
+        $this->orderHelper->createShippingsFromOrder($Order, $Customer->getCustomerAddresses()->current());
 
         $this->parameterBag->set('Order', $Order);
 
@@ -931,9 +947,6 @@ class ShoppingController extends AbstractShoppingController
     {
         $form = $this->parameterBag->get(OrderType::class);
         $Order = $this->parameterBag->get('Order');
-
-        // カート削除
-        $this->cartService->clear()->save();
 
         $event = new EventArgs(
             array(
