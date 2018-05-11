@@ -85,6 +85,7 @@ class OwnerStoreController extends AbstractController
         $this->pluginService = $pluginService;
         $this->systemService = $systemService;
 
+        // TODO: Check the flow of the composer service below
         $memoryLimit = $this->systemService->getMemoryLimit();
         if($memoryLimit == -1 or $memoryLimit >= $this->eccubeConfig['eccube_composer_memory_limit']){
             $this->composerService = $composerApiService;
@@ -99,11 +100,10 @@ class OwnerStoreController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/search", name="admin_store_plugin_owners_search")
      * @Template("@admin/Store/plugin_search.twig")
-     * @param Application $app
      * @param Request     $request
      * @return array
      */
-    public function search(Application $app, Request $request)
+    public function search(Request $request)
     {
         // Acquire downloadable plug-in information from owners store
         $items = array();
@@ -180,12 +180,11 @@ class OwnerStoreController extends AbstractController
      *
      * @Route("/install/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_install_confirm")
      * @Template("Store/plugin_confirm.twig")
-     * @param Application $app
      * @param Request     $request
      * @param string      $id
      * @return array
      */
-    public function doConfirm(Application $app, Request $request, $id)
+    public function doConfirm(Request $request, $id)
     {
         // Owner's store communication
         $url = $this->eccubeConfig['package_repo_url'].'/search/packages.json';
@@ -221,14 +220,13 @@ class OwnerStoreController extends AbstractController
      *
      * @Route("/install/{pluginCode}/{eccubeVersion}/{version}" , name="admin_store_plugin_api_install")
      *
-     * @param Application $app
      * @param Request     $request
      * @param string      $pluginCode
      * @param string      $eccubeVersion
      * @param string      $version
      * @return RedirectResponse
      */
-    public function apiInstall(Application $app, Request $request, $pluginCode, $eccubeVersion, $version)
+    public function apiInstall(Request $request, $pluginCode, $eccubeVersion, $version)
     {
         // Check plugin code
         $url = $this->eccubeConfig['package_repo_url'].'/search/packages.json'.'?eccube_version='.$eccubeVersion.'&plugin_code='.$pluginCode.'&version='.$version;
@@ -306,11 +304,10 @@ class OwnerStoreController extends AbstractController
      *
      * @Route("/delete/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_delete_confirm")
      * @Template("Store/plugin_confirm_uninstall.twig")
-     * @param Application $app
      * @param Plugin      $Plugin
      * @return array|RedirectResponse
      */
-    public function deleteConfirm(Application $app, Plugin $Plugin)
+    public function deleteConfirm(Plugin $Plugin)
     {
         // Owner's store communication
         $url = $this->eccubeConfig['package_repo_url'].'/search/packages.json';
@@ -356,13 +353,12 @@ class OwnerStoreController extends AbstractController
      *
      * @Method("DELETE")
      * @Route("/delete/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_api_uninstall")
-     * @param Application $app
      * @param Plugin      $Plugin
      * @return RedirectResponse
      */
-    public function apiUninstall(Application $app, Plugin $Plugin)
+    public function apiUninstall(Plugin $Plugin)
     {
-        $this->isTokenValid($app);
+        $this->isTokenValid();
 
         if ($Plugin->isEnabled()) {
             $this->addError('admin.plugin.uninstall.error.not_disable', 'admin');
@@ -389,26 +385,23 @@ class OwnerStoreController extends AbstractController
      * @Method("PUT")
      * @Route("/upgrade/{pluginCode}/{version}", name="admin_store_plugin_api_upgrade")
      *
-     * @param Application $app
      * @param string      $pluginCode
      * @param string      $version
      * @return RedirectResponse
      */
-    public function apiUpgrade(Application $app, $pluginCode, $version)
+    public function apiUpgrade($pluginCode, $version)
     {
-        $this->isTokenValid($app);
+        $this->isTokenValid();
         // Run install plugin
         $this->forward($this->generateUrl('admin_store_plugin_api_install', ['pluginCode' => $pluginCode, 'eccubeVersion' => Constant::VERSION, 'version' => $version]));
 
-        /** @var Session $session */
-        $session = $app['session'];
-        if ($session->getFlashBag()->has('eccube.admin.error')) {
-            $session->getFlashBag()->clear();
+        if ($this->session->getFlashBag()->has('eccube.admin.error')) {
+            $this->session->getFlashBag()->clear();
             $this->addError('admin.plugin.update.error', 'admin');
 
             return $this->redirectToRoute('admin_store_plugin');
         }
-        $session->getFlashBag()->clear();
+        $this->session->getFlashBag()->clear();
         $this->addSuccess('admin.plugin.update.complete', 'admin');
 
         return $this->redirectToRoute('admin_store_plugin');
@@ -419,11 +412,10 @@ class OwnerStoreController extends AbstractController
      *
      * @Route("/upgrade/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_update_confirm")
      * @Template("Store/plugin_confirm.twig")
-     * @param Application $app
      * @param Plugin      $plugin
      * @return Response
      */
-    public function doUpdateConfirm(Application $app, Plugin $plugin)
+    public function doUpdateConfirm(Plugin $plugin)
     {
         $source = $plugin->getSource();
         $url = $this->generateUrl('admin_store_plugin_install_confirm', ['id' => $source, 'is_update' => true]);
