@@ -159,7 +159,7 @@ class PurchaseFlow
         $total = $itemHolder->getItems()
             ->getDiscounts()
             ->reduce(function ($sum, ItemInterface $item) {
-                $sum += $item->getPriceIncTax() * $item->getQuantity();
+                $sum += $item->getPrice() * $item->getQuantity();
 
                 return $sum;
             }, 0);
