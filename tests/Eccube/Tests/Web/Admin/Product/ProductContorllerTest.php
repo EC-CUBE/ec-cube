@@ -34,6 +34,8 @@ use Eccube\Repository\ProductRepository;
 use Eccube\Entity\BaseInfo;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Repository\Master\ProductStatusRepository;
+use Eccube\Entity\Product;
+use Symfony\Component\HttpFoundation\Response;
 
 class ProductControllerTest extends AbstractAdminWebTestCase
 {
@@ -146,7 +148,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'create_date_end' => '',
                 'update_date_start' => '',
                 'update_date_end' => '',
-                'link_status' => '',
             ]
         ];
 
@@ -200,7 +201,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'create_date_end' => '',
                 'update_date_start' => '',
                 'update_date_end' => '',
-                'link_status' => '',
             ]
         ];
 
@@ -249,7 +249,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'create_date_end' => '',
                 'update_date_start' => '',
                 'update_date_end' => '',
-                'link_status' => '',
             ]
         ];
 
@@ -299,7 +298,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'create_date_end' => '',
                 'update_date_start' => '',
                 'update_date_end' => '',
-                'link_status' => '',
             ]
         ];
 
@@ -322,7 +320,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'create_date_end' => '',
                 'update_date_start' => '',
                 'update_date_end' => '',
-                'link_status' => '',
             ]
         ];
 
@@ -359,9 +356,50 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $rUrl = $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()]);
         $this->assertTrue($this->client->getResponse()->isRedirect($rUrl));
 
+        $formData['return_link'] = $this->generateUrl('admin_product_category');
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()]),
+            ['admin_product' => $formData]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($formData['return_link']));
+
         $EditedProduct = $this->productRepository->find($Product->getId());
         $this->expected = $formData['name'];
         $this->actual = $EditedProduct->getName();
+        $this->verify();
+    }
+
+    public function testDisplayProduct()
+    {
+        $productClassNum = 0;
+        $Product = $this->createProduct('Test', $productClassNum);
+        $crawler = $this->client->request(
+            'GET',
+            $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()])
+        );
+
+        // Only have 1 div button
+        $this->expected = 1;
+        $this->actual = $crawler->filter('#standardConfig > div > div')->count();
+        $this->verify();
+    }
+
+    public function testDisplayProductHasClass()
+    {
+        $productClassNum = 3;
+        $Product = $this->createProduct('Test', $productClassNum);
+        $crawler = $this->client->request(
+            'GET',
+            $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()])
+        );
+
+        $expected = 'この商品の規格';
+        $actual = $crawler->filter('#standardConfig > div > div.d-inline-block')->text();
+        $this->assertContains($expected, $actual);
+        
+        $this->expected = $productClassNum;
+        $this->actual = $crawler->filter('#standardConfig > div > table > tbody > tr')->count();
         $this->verify();
     }
 
@@ -683,6 +721,67 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
+     * Test for bulk action update product status
+     */
+    public function testProductBulkProductStatus()
+    {
+        // case invalid method
+        $this->client->request(
+            'GET',
+            $this->generateUrl('admin_product_bulk_product_status', ['id' => ProductStatus::DISPLAY_SHOW]),
+            []
+        );
+        $this->assertEquals(405, $this->client->getResponse()->getStatusCode());
+
+        // case invalid product status id
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_product_bulk_product_status', ['id' => 0]),
+            []
+        );
+        $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
+
+        // case true
+        $productIds = [];
+        /** @var Product[] $Products */
+        $Products = $this->productRepository->findBy([], [], 5);
+        foreach ($Products as $Product) {
+            $productIds[] = $Product->getId();
+        }
+
+        $productStatuses = [
+            ProductStatus::DISPLAY_SHOW,
+            ProductStatus::DISPLAY_HIDE,
+            ProductStatus::DISPLAY_ABOLISHED
+        ];
+        foreach ($productStatuses as $productStatusId) {
+            $ProductStatus = $this->productStatusRepository->find($productStatusId);
+            $this->client->request(
+                'POST',
+                $this->generateUrl('admin_product_bulk_product_status', ['id' => $productStatusId]),
+                ['ids' => $productIds]
+            );
+            $result = $this->productRepository->findBy(['id' => $productIds, 'Status' => $ProductStatus]);
+            $this->assertEquals(count($productIds), count($result));
+        }
+    }
+
+    public function testLoadProductClass()
+    {
+        $this->client->request(
+            'GET',
+            $this->generateUrl('admin_product_classes_load', ['id' => 1]),
+            array(),
+            array(),
+            array(
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            )
+        );
+
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+    }
+
+    /**
      * 個別税率編集時のテストデータ
      * 更新前の税率 / POST値 / 期待値の配列を返す
      *
@@ -716,7 +815,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             'create_date_end' => '',
             'update_date_start' => '',
             'update_date_end' => '',
-            'link_status' => '',
         ];
 
         return $post;

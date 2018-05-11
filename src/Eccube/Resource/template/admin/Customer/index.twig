@@ -19,17 +19,17 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends '@admin/default_frame.twig' %}
+{% extends '@admin/styleguide_frame.twig' %}
 
 {% set menus = ['customer', 'customer_master'] %}
 
-{% block title %}{{'admin.customer.index.110'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.customer.index.111'|trans}}{% endblock %}
+{% block title %}{{'admin.customer.index.111'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.customer.index.110'|trans}}{% endblock %}
 
-{% form_theme searchForm '@admin/Form/bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme searchForm '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block stylesheet %}
-<link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datetimepicker.min.css', 'admin') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datetimepicker.min.css', 'admin') }}">
 {% endblock stylesheet %}
 
 {% block javascript %}
@@ -112,215 +112,352 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% endblock javascript %}
 
 {% block main %}
-<form name="search_form" id="search_form" method="post" action="">
-  {{ form_widget(searchForm._token) }}
-  <!--検索条件設定テーブルここから-->
-  <div id="search_wrap" class="search-box">
-    <div id="search_box" class="row">
-      <div id="search_box_main" class="col-md-12 accordion">
-
-        {{ form_widget(searchForm.multi, { attr: { placeholder: 'admin.customer.index.112'|trans, class : 'input_search' } } ) }}
-
-        <a id="search_box_main__toggle" href="#" class="toggle{% if active %} active{% endif %}"><svg class="cb cb-minus"> <use xlink:href="#cb-minus"/></svg> <svg class="cb cb-minus"> <use xlink:href="#cb-minus"/></svg></a>
-        <div id="search_box_main__body" class="search-box-inner accpanel" {% if active %} style="display: block;"{% endif %}>
-          <div class="row">
-            <div id="search_box_main__body_inner" class="col-sm-12 col-lg-10 col-lg-offset-1 search">
-
-              <div class="col-xs-6 col-md-4">
-                <div id="search_box_main__customer_status" class="form-group">
-                  <label>{{'admin.customer.index.113'|trans}}</label>
-                  {{ form_widget(searchForm.customer_status) }}
+    <form name="search_form" id="search_form" method="post" action="">
+        {{ form_widget(searchForm._token) }}
+        <div class="c-outsideBlock">
+            <div class="c-outsideBlock__contents">
+                <div class="row justify-content-start">
+                    <div class="col-6">
+                        <div class="mb-2">
+                            <label class="col-form-label">{{ 'admin.customer.index.112'|trans }}</label>
+                            {{ form_widget(searchForm.multi) }}
+                            {{ form_errors(searchForm.multi) }}
+                        </div>
+                        <div class="d-inline-block mb-3 collapsed" data-toggle="collapse" href="#searchDetail" aria-expanded="false" aria-controls="searchDetail"><a><i class="fa font-weight-bold mr-1 fa-plus-square-o"></i><span class="font-weight-bold">{{ 'admin.customer.index.detailed_search'|trans }}</span></a></div>
+                    </div>
                 </div>
-              </div>
-              <div class="col-xs-6 col-md-4">
-                <div id="search_box_main__sex" class="form-group">
-                  <label>{{'admin.customer.index.114'|trans}}</label>
-                  {{ form_widget(searchForm.sex) }}
-                </div>
-              </div>
-              <div class="col-xs-12 col-md-4">
-                <div id="search_box_main__birth_month" class="form-group">
-                  <label>{{'admin.customer.index.115'|trans}}</label>
-                  {{ form_widget(searchForm.birth_month) }}
-                </div>
-              </div>
-              <div id="search_box_main__birth" class="col-xs-12 col-sm-12 col-md-6">
-                <label>{{'admin.customer.index.116'|trans}}</label>
-                <div class="form-group range">
-                  {{ form_widget(searchForm.birth_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.birth_end, {'attr': {'class': 'input_cal'}}) }}
-                </div>
-              </div>
-              <div class="col-xs-6">
-                <div id="search_box_main__pref" class="form-group">
-                  <label>{{'admin.customer.index.118'|trans}}</label>
-                  {{ form_widget(searchForm.pref) }}
-                </div>
-              </div>
-              <div class="col-xs-6 col-sm-6">
-                <div id="search_box_main__tel" class="form-group">
-                  <label>{{'admin.customer.index.119'|trans}}</label>
-                  {{ form_widget(searchForm.tel) }}
-                  {{ form_errors(searchForm.tel) }}
-                </div>
-              </div>
-              <div id="search_box_main__crate_date" class="col-xs-12 col-sm-6">
-                <label>{{'admin.customer.index.120'|trans}}</label>
-                <div class="form-group range">
-                  {{ form_widget(searchForm.create_date_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.create_date_end, {'attr': {'class': 'input_cal'}}) }}
-                </div>
-              </div>
-              <div id="search_box_main__update_date" class="col-xs-12 col-sm-6">
-                <label>{{'admin.customer.index.122'|trans}}</label>
-                <div class="form-group range">
-                  {{ form_widget(searchForm.update_date_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.update_date_end, {'attr': {'class': 'input_cal'}}) }}
-                </div>
-              </div>
-              <div class="col-xs-12 col-sm-6">
-                <div id="search_box_main__buy_total" class="form-group range">
-                  <label>{{'admin.customer.index.124'|trans}}</label>
-                  {{ form_widget(searchForm.buy_total_start) }} ～ {{ form_widget(searchForm.buy_total_end) }}
-                </div>
-              </div>
-              <div class="col-xs-12 col-sm-6">
-                <div id="search_box_main__buy_times" class="form-group range">
-                  <label>{{'admin.customer.index.126'|trans}}</label>
-                  {{ form_widget(searchForm.buy_times_start) }} ～ {{ form_widget(searchForm.buy_times_end) }}
-                </div>
-              </div>
-              {#
-              <div class="col-xs-12 col-sm-12 col-md-6">
-                <div class="form-group">
-                  <label>{{'admin.customer.index.128'|trans}}</label>
-                  {{ form_widget(searchForm.buy_category) }}
-                </select>
-              </div>
             </div>
-            #}
-            <div class="col-xs-12 col-sm-12 col-md-6">
-              <div id="search_box_main__buy_product_code" class="form-group">
-                <label>{{'admin.customer.index.129'|trans}}</label>
-                {{ form_widget(searchForm.buy_product_code) }}
-              </div>
-            </div>
-            <div id="search_box_main__last_buy" class="col-xs-12 col-sm-12 col-md-6">
-              <label>{{'admin.customer.index.130'|trans}}</label>
-              <div class="form-group range">
-                {{ form_widget(searchForm.last_buy_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.last_buy_end, {'attr': {'class': 'input_cal'}}) }}
-              </div>
-            </div>
-                <div class="extra-form col-xs-12 col-sm-12">
-                    {% for f in searchForm.getIterator %}
-                        {% if f.vars.name matches '[^plg*]' %}
-                            <div class="form-group">
-                            {{ form_label(f) }}
-                            {{ form_widget(f) }}
-                            {{ form_errors(f) }}
+            <div class="c-subContents ec-collapse collapse{{ has_errors ? ' show' }}" id="searchDetail">
+                <div class="row mb-2">
+                    <div class="col">
+                        <div class="form-row">
+                            <div class="col-12">
+                                <p class="col-form-label">{{ 'admin.customer.index.113'|trans }}</p>
+                                {{ form_widget(searchForm.customer_status, { 'label_attr': { 'class': 'checkbox-inline'}}) }}
+                                {{ form_errors(searchForm.customer_status) }}
                             </div>
-                        {% endif %}
-                    {% endfor %}
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div>
+                            <label>{{ 'admin.customer.index.129'|trans }}</label>
+                            {{ form_widget(searchForm.buy_product_name) }}
+                            {{ form_errors(searchForm.buy_product_name) }}
+                        </div>
+                    </div>
                 </div>
-            <div id="search_box_main__clear" class="col-xs-12 col-sm-12">
-              <p class="text-center"><a href="#" class="search-clear">{{'admin.customer.index.132'|trans}}</a></p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- /.col -->
-  </div>
-  <div id="search_box_footer" class="row btn_area">
-    <div id="search_box_footer__button_area" class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center">
-      <button type="submit" class="btn btn-primary btn-block btn-lg">
-        {{'admin.customer.index.133'|trans}} <svg class="cb cb-angle-right"><use xlink:href="#cb-angle-right"></svg>
-      </button>
-    </div>
-    <!-- /.col -->
-  </div>
-</div>
-<!--検索条件設定テーブルここまで-->
-{% if pagination %}
-<div id="result_list" class="row">
-  <div class="col-md-12">
-    <div id="result_list_main" class="box">
-      {% if pagination and pagination.totalItemCount > 0 %}
-      <div id="result_list_main__header" class="box-header with-arrow">
-        <h3 class="box-title">{{'admin.customer.index.134'|trans({'%count%':pagination.totalItemCount})|raw}}</h3>
-      </div><!-- /.box-header -->
-      <div id="result_list_main__body" class="box-body">
-        <div id="result_list_main__menu" class="row">
-          <div class="col-md-12">
-            <ul class="sort-dd">
-              <li id="result_list_main__pagemax_menu" class="dropdown">
-                {% for pageMax in pageMaxis if pageMax.name == page_count %}
-                  <a class="dropdown-toggle" data-toggle="dropdown">{{'admin.customer.index.135'|trans({'%count%':pageMax.name})|e}}<svg class="cb cb-angle-down icon_down"><use xlink:href="#cb-angle-down"></svg></a>
-                  <ul class="dropdown-menu">
-                {% endfor %}
-                  {% for pageMax in pageMaxis if pageMax.name != page_count %}
-                    <li><a href="{{ path('admin_customer_page', {'page_no': 1, 'page_count': pageMax.name}) }}">{{pageMax.name|e}}</a></li>
-                  {% endfor %}
-                  </ul>
-              </li>
-              <li id="result_list_main__csv_menu" class="dropdown">
-              <a class="dropdown-toggle" data-toggle="dropdown">{{'admin.customer.index.137'|trans}}<svg class="cb cb-angle-down icon_down"><use xlink:href="#cb-angle-down"></svg></a>
-              <ul class="dropdown-menu">
-                <li><a href="{{ url('admin_customer_export') }}">{{'admin.customer.index.138'|trans}}</a></li>
-                <li><a href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_CUSTOMER') }) }}">{{'admin.product.index.486'|trans}}</a></li>
-              </ul>
-              </li>
-            </ul>
-          </div>
-        </div>
-        {% for Customer in pagination %}
-            <div id="result_list_main__list" class="table_list">
-                <div class="table-responsive with-border">
-                    <table class="table table-striped">
-                        <thead>
-                        <tr id="result_list_main__header">
-                            <th id="result_list_main__header_id">{{'admin.customer.index.140'|trans}}</th>
-                            <th id="result_list_main__header_name">{{'admin.customer.index.141'|trans}}</th>
-                            <th id="result_list_main__header_tel">{{'admin.customer.index.142'|trans}}</th>
-                            <th id="result_list_main__header_mail">{{'admin.customer.index.143'|trans}}</th>
-                            <th id="result_list_main__header_menu_box">&nbsp;</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for Customer in pagination %}
-                        <tr id="result_list_main__item--{{ Customer.id }}">
-                            <td id="result_list_main__id--{{ Customer.id }}" class="member_id">{{ Customer.id }}</td>
-                            <td id="result_list_main__name--{{ Customer.id }}" class="member_name"><a href="{{ url('admin_customer_edit', { 'id': Customer.id}) }}">{{ Customer.name01 }}&nbsp;{{ Customer.name02 }}</a></td>
-                            <td id="result_list_main__tel--{{ Customer.id }}" class="member_tel">{{ Customer.tel01 }}-{{ Customer.tel02 }}-{{ Customer.tel03 }}</td>
-                            <td id="result_list_main__mail--{{ Customer.id }}" class="member_mail">{{ Customer.email }}</td>
-                            <td id="result_list_main__menu_box--{{ Customer.id }}" class="icon_edit">
-                                <div id="result_list_main__menu_box_toggle--{{ Customer.id }}" class="dropdown">
-                                    <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
-                                    <ul id="result_list_main__menu--{{ Customer.id }}" class="dropdown-menu dropdown-menu-right">
-                                        <li><a href="{{ url('admin_customer_edit', { 'id': Customer.id}) }}">{{'admin.customer.index.144'|trans}}</a></li>
-                                        <li><a href="{{ url('admin_customer_delete', { 'id': Customer.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="{{'admin.customer.index.145'|trans}}">{{'common.label.delete'|trans}}</a></li>
-                                        {% if Customer.Status.id == 1 %}
-                                        <li><a href="{{ url('admin_customer_resend', { 'id': Customer.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-message="{{'admin.customer.index.146'|trans}}">{{'admin.customer.index.label.resend_registmail'|trans}}</a></li>
-                                        {% endif %}
-                                    </ul>
+                <div class="row mb-2">
+                    <div class="col">
+                        <div class="form-row">
+                            <div class="col-12">
+                                <p class="col-form-label">{{ 'admin.customer.index.114'|trans }}</p>
+                                {{ form_widget(searchForm.sex, { 'label_attr': { 'class': 'checkbox-inline'}}) }}
+                                {{ form_errors(searchForm.sex) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div>
+                            <label>{{ 'admin.customer.index.124'|trans }}</label>
+                            <div class="form-row align-items-center">
+                                <div class="col">
+                                    {{ form_widget(searchForm.buy_total_start) }}
+                                    {{ form_errors(searchForm.buy_total_start) }}
                                 </div>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
+                                <div class="col-auto text-center"><span>〜</span></div>
+                                <div class="col">
+                                    {{ form_widget(searchForm.buy_total_end) }}
+                                    {{ form_errors(searchForm.buy_total_end) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col">
+                        <div>
+                            <label>{{ 'admin.customer.index.115'|trans }}</label>
+                            <div class="row">
+                                <div class="col-5">
+                                    {{ form_widget(searchForm.birth_month) }}
+                                    {{ form_errors(searchForm.birth_month) }}
+                                </div>
+                                <div class="col-7"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div>
+                            <label>{{ 'admin.customer.index.126'|trans }}</label>
+                            <div class="form-row align-items-center">
+                                <div class="col">
+                                    {{ form_widget(searchForm.buy_times_start) }}
+                                    {{ form_errors(searchForm.buy_times_start) }}
+                                </div>
+                                <div class="col-auto text-center"><span>〜</span></div>
+                                <div class="col">
+                                    {{ form_widget(searchForm.buy_times_end) }}
+                                    {{ form_errors(searchForm.buy_times_end) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col">
+                        <div>
+                            <label>{{ 'admin.customer.index.116'|trans }}</label>
+                            <div class="form-row align-items-center">
+                                <div class="col">
+                                    {{ form_widget(searchForm.birth_start) }}
+                                    {{ form_errors(searchForm.birth_start) }}
+                                </div>
+                                <div class="col-auto text-center"><span>〜</span></div>
+                                <div class="col">
+                                    {{ form_widget(searchForm.birth_end) }}
+                                    {{ form_errors(searchForm.birth_end) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div>
+                            <label>{{ 'admin.customer.index.120'|trans }}</label>
+                            <div class="form-row align-items-center">
+                                <div class="col">
+                                    {{ form_widget(searchForm.create_date_start) }}
+                                    {{ form_errors(searchForm.create_date_start) }}
+                                </div>
+                                <div class="col-auto text-center"><span>〜</span></div>
+                                <div class="col">
+                                    {{ form_widget(searchForm.create_date_end) }}
+                                    {{ form_errors(searchForm.create_date_end) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col">
+                        <div>
+                            <label>{{ 'admin.customer.index.118'|trans }}</label>
+                            <div class="row">
+                                <div class="col-5">
+                                    {{ form_widget(searchForm.pref) }}
+                                    {{ form_errors(searchForm.pref) }}
+                                </div>
+                                <div class="col-7"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div>
+                            <label>{{ 'admin.customer.index.122'|trans }}</label>
+                            <div class="form-row align-items-center">
+                                <div class="col">
+                                    {{ form_widget(searchForm.update_date_start) }}
+                                    {{ form_errors(searchForm.update_date_start) }}
+                                </div>
+                                <div class="col-auto text-center"><span>〜</span></div>
+                                <div class="col">
+                                    {{ form_widget(searchForm.update_date_end) }}
+                                    {{ form_errors(searchForm.update_date_end) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col">
+                        <div class="mb-3">
+                            <label>{{ 'admin.customer.index.119'|trans }}</label>
+                            {{ form_widget(searchForm.tel) }}
+                            {{ form_errors(searchForm.tel) }}
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div>
+                            <label>{{ 'admin.customer.index.130'|trans }}</label>
+                            <div class="form-row align-items-center">
+                                <div class="col">
+                                    {{ form_widget(searchForm.last_buy_start) }}
+                                    {{ form_errors(searchForm.last_buy_start) }}
+                                </div>
+                                <div class="col-auto text-center"><span>〜</span></div>
+                                <div class="col">
+                                    {{ form_widget(searchForm.last_buy_end) }}
+                                    {{ form_errors(searchForm.last_buy_end) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-block text-center">
+                    <button class="btn btn-ec-regular" type="reset">{{ 'admin.customer.index.132'|trans }}</button>
                 </div>
             </div>
-        {% endfor %}
-      </div><!-- /.box-body -->
-      {% if pagination.totalItemCount > 0 %}
-      {% include "pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_customer_page' } %}
-      {% endif %}
-      {% else %}
-      <div id="result_list_main__header" class="box-header with-arrow">
-        <h3 class="box-title">{{'admin.customer.index.147'|trans}}</h3>
-      </div><!-- /.box-header -->
-      {% endif %}
-    </div><!-- /.box -->
-  </div><!-- /.col -->
-</div>
-{% endif %}
-</form>
+        </div>
+        <div class="c-outsideBlock__contents mb-5">
+            <button type="submit" class="btn btn-ec-conversion px-5">{{ 'admin.customer.index.133'|trans }}</button>
+            {% if pagination %}
+                <span class="font-weight-bold ml-2">{{ 'admin.customer.index.134'|trans({'%count%':pagination.totalItemCount}) }}</span>
+            {% endif %}
+        </div>
+        <div class="c-outsideBlock__contents mb-5">
+            {{ include('@admin/search_items.twig', { 'form': searchForm }, ignore_missing = true) }}
+        </div>
+        <div class="c-contentsArea__cols">
+            <div class="c-contentsArea__primaryCol">
+                <div class="c-primaryCol">
+                    {% if pagination and pagination.totalItemCount %}
+                            <div class="row justify-content-between mb-2">
+                                <div class="col-6"></div>
+
+                                <div class="col-5 text-right">
+                                    {#Dropdown page count#}
+                                    <div class="d-inline-block mr-2">
+                                        <select class="custom-select" onchange="location = this.value;">
+                                            {% for pageMax in pageMaxis %}
+                                                <option {% if pageMax.name == page_count%} selected {% endif %}
+                                                        value="{{ path('admin_customer_page', {'page_no': 1, 'page_count': pageMax.name}) }}">
+                                                    {{ pageMax.name|e }}{{ 'common.label.num'|trans }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+
+                                    <div class="d-inline-block">
+                                        <div class="btn-group" role="group">
+                                            {# TODO CSVダウンロード・項目設定 #}
+                                            <button class="btn btn-ec-regular" type="button" onclick='location.href="{{ url('admin_customer_export') }}"'><i class="fa fa-cloud-download mr-1 text-secondary"></i><span>{{ 'admin.customer.index.137'|trans }}</span></button>
+                                            <button class="btn btn-ec-regular" type="button" onclick='location.href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_CUSTOMER') }) }}"'><i class="fa fa-cog mr-1 text-secondary"></i><span>{{ 'admin.customer.index.139'|trans }}</span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card rounded border-0 mb-4">
+                                <div class="card-body p-0">
+                                    <table class="table">
+                                        <thead>
+                                            <tr><th class="border-top-0 pt-2 pb-3 pl-3">{{ 'admin.customer.index.140'|trans }}</th>
+                                                <th class="border-top-0 pt-2 pb-3">{{ 'admin.customer.index.141'|trans }}</th>
+                                                <th class="border-top-0 pt-2 pb-3">{{ 'admin.customer.index.142'|trans }}</th>
+                                                <th class="border-top-0 pt-2 pb-3">{{ 'admin.customer.index.143'|trans  }}</th>
+                                                <th class="border-top-0 pt-2 pb-3">&nbsp;</th>
+                                                <th class="border-top-0 pt-2 pb-3 pr-3">&nbsp;</th>
+                                            </tr></thead>
+                                        <tbody>
+                                            {% for Customer in pagination %}
+                                                <tr>
+                                                    <td class="align-middle pl-3">{{ Customer.id }}</td>
+                                                    <td class="align-middle"><a href="{{ url('admin_customer_edit', { 'id': Customer.id}) }}">{{ Customer.name01 }}&nbsp;{{ Customer.name02 }}</a></td>
+                                                    <td class="align-middle">{{ Customer.tel01 }}-{{ Customer.tel02 }}-{{ Customer.tel03 }}</td>
+                                                    <td class="align-middle">{{ Customer.email }}</td>
+                                                    <td class="align-middle"></td>
+                                                    <td class="align-middle pr-3">
+                                                        <div class="row justify-content-end">
+                                                            {% if Customer.Status.id == constant('Eccube\\Entity\\Master\\CustomerStatus::PROVISIONAL') %}
+                                                                <div class="col-auto text-center" data-toggle="tooltip" data-placement="top" title="{{ 'admin.customer.index.label.resend_registmail'|trans }}">
+                                                                    <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#discontinuance_cus_{{ Customer.id }}">
+                                                                        <i class="fa fa-send fa-lg text-secondary" aria-hidden="true"></i>
+                                                                    </a>
+                                                                    <div class="modal fade" id="discontinuance_cus_{{ Customer.id }}" tabindex="-1" role="dialog" aria-labelledby="discontinuance" aria-hidden="true">
+                                                                        <div class="modal-dialog" role="document">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    <h5 class="modal-title font-weight-bold">{{ 'admin.customer.index.label.resend_registmail'|trans }}</h5>
+                                                                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                                                        <span aria-hidden="true">×</span>
+                                                                                    </button>
+                                                                                </div>
+                                                                                <div class="modal-body text-left">
+                                                                                    <p class="text-left">{{ 'admin.customer.index.label.resend_registmail_content'|trans }}</p>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.customer.index.cancel'|trans }}</button>
+                                                                                    {# TODO: CSSの変更は別タスクでやります #}
+                                                                                    <a class="btn btn-ec-delete" href="{{ url('admin_customer_resend', {'id' : Customer.id}) }}" {{ csrf_token_for_anchor() }} data-method="get" data-confirm="false">
+                                                                                        {{ 'admin.customer.index.send'|trans }}
+                                                                                    </a>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            {% endif %}
+                                                            <div class="col-auto text-center" data-toggle="tooltip"
+                                                                 data-placement="top"
+                                                                 title="{{ 'admin.customer.index.delete'|trans }}">
+                                                                <a class="btn btn-ec-actionIcon" data-toggle="modal"
+                                                                   data-target="#discontinuance-{{ Customer.id }}"><i
+                                                                            class="fa fa-close fa-lg text-secondary"
+                                                                            aria-hidden="true"></i></a>
+                                                                <div class="modal fade"
+                                                                     id="discontinuance-{{ Customer.id }}" tabindex="-1"
+                                                                     role="dialog"
+                                                                     aria-labelledby="discontinuance"
+                                                                     aria-hidden="true">
+                                                                    <div class="modal-dialog" role="document">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title font-weight-bold">
+                                                                                    {{ 'admin.customer.delete.confirm.title'|trans }}</h5>
+                                                                                <button class="close" type="button"
+                                                                                        data-dismiss="modal"
+                                                                                        aria-label="Close"><span
+                                                                                            aria-hidden="true">×</span>
+                                                                                </button>
+                                                                            </div>
+                                                                            <div class="modal-body text-left">
+                                                                                <p class="text-left">
+                                                                                    {{ 'admin.customer.delete.confirm.message'|trans }}</p>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button class="btn btn-ec-sub"
+                                                                                        type="button"
+                                                                                        data-dismiss="modal">{{ 'admin.product.index.cancel'|trans }}
+                                                                                </button>
+                                                                                <a href="{{ url('admin_customer_delete', {'id' : Customer.id}) }}"
+                                                                                        class="btn btn-ec-delete"
+                                                                                        {{ csrf_token_for_anchor() }}
+                                                                                        data-method="delete"
+                                                                                        data-confirm="false">
+                                                                                    {{ 'admin.product.index.delete'|trans }}
+                                                                                </a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div><!-- /.justify-content-end -->
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody></table>
+                                    <div class="row justify-content-md-center mb-4">
+                                        {% if pagination.totalItemCount > 0 %}
+                                            {% include "@admin/styleguide_pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_customer_page' } %}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                    {% elseif has_errors %}
+                            <div class="card rounded border-0">
+                                <div class="card-body p-4">
+                                    <div class="text-center text-muted mb-4 h5">{{ 'admin.customer.index.invalid_search_data'|trans }}</div>
+                                    <div class="text-center text-muted">{{ 'admin.customer.index.text06'|trans }}</div>
+                                </div>
+                            </div>
+                    {% else %}
+                        <div class="card rounded border-0">
+                            <div class="card-body p-4">
+                                <div class="text-center text-muted mb-4 h5">{{ 'admin.customer.index.147'|trans }}</div>
+                                <div class="text-center text-muted">{{ 'admin.customer.index.text06'|trans }}</div>
+                                <div class="text-center text-muted">{{ 'admin.customer.index.text07'|trans }}</div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </form>
 {% endblock %}

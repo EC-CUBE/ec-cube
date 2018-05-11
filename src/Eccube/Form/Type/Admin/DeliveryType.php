@@ -85,6 +85,9 @@ class DeliveryType extends AbstractType
                 'multiple' => true,
                 'required' => false,
                 'mapped' => false,
+                'constraints' => [
+                    new Assert\NotBlank(),
+                ],
             ))
             ->add('delivery_times', CollectionType::class, array(
                 'label' => 'delivery.label.delivery_time',
@@ -107,14 +110,6 @@ class DeliveryType extends AbstractType
                 'allow_delete' => true,
                 'prototype' => true,
             ))
-            ->addEventListener(FormEvents::POST_SUBMIT, function($event) {
-                $form = $event->getForm();
-                $payments = $form['payments']->getData();
-
-                if (empty($payments) || count($payments) < 1) {
-                    $form['payments']->addError(new FormError('delivery.text.error.select_payment_method'));
-                }
-            })
         ;
     }
 

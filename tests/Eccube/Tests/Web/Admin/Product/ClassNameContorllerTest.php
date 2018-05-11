@@ -68,6 +68,7 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
             $ClassName = new ClassName();
             $ClassName
                 ->setName('class-'.$i)
+                ->setBackendName('class-'.$i)
                 ->setCreator($this->Member)
                 ->setSortNo($i)
                 ;
@@ -117,6 +118,43 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('admin_product_class_name')));
     }
 
+    public function testIndexWithPostBackendName()
+    {
+        $client = $this->client;
+        $client->request(
+            'POST',
+            $this->generateUrl('admin_product_class_name'),
+            array(
+                'admin_class_name' => array(
+                    'backend_name' => '規格1',
+                    'name' => '表示規格1',
+                    Constant::TOKEN_NAME => 'dummy',
+                ))
+        );
+        $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('admin_product_class_name')));
+    }
+
+
+    public function testRoutingAdminProductClassBackendNameEdit()
+    {
+        // before
+        $TestCreator = $this->Member;
+        $TestClassName = $this->newTestClassName($TestCreator);
+        $this->entityManager->persist($TestClassName);
+        $this->entityManager->flush();
+        $test_class_name_id = $this->classNameRepo
+            ->findOneBy(array(
+                'backend_name' => $TestClassName->getBackendName()
+            ))
+            ->getId();
+
+        // main
+        $this->client->request('GET',
+            $this->generateUrl('admin_product_class_name_edit', array('id' => $test_class_name_id))
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
     public function testRoutingAdminProductClassNameEdit()
     {
         // before
@@ -146,7 +184,7 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->flush();
         $test_class_name_id = $this->classNameRepo
             ->findOneBy(array(
-                'name' => $TestClassName->getName()
+                'backend_name' => $TestClassName->getBackendName()
             ))
             ->getId();
 
@@ -164,7 +202,7 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
 
     public function testMoveSortNo()
     {
-        $ClassName = $this->classNameRepo->findOneBy(array('name' => 'class-1'));
+        $ClassName = $this->classNameRepo->findOneBy(array('backend_name' => 'class-1'));
 
         $this->client->request(
             'POST',
@@ -185,7 +223,8 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
     private function newTestClassName($TestCreator)
     {
         $TestClassName = new \Eccube\Entity\ClassName();
-        $TestClassName->setName('形状')
+        $TestClassName->setBackendName('形状')
+            ->setName('表示形状')
             ->setSortNo(100)
             ->setCreator($TestCreator);
 

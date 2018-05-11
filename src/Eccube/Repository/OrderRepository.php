@@ -274,6 +274,13 @@ class OrderRepository extends AbstractRepository
         $qb = $this->createQueryBuilder('o');
 
         // order_id_start
+        if (isset($searchData['order_id']) && StringUtil::isNotBlank($searchData['order_id'])) {
+            $qb
+                ->andWhere('o.id = :order_id')
+                ->setParameter('order_id', $searchData['order_id']);
+        }
+
+        // order_id_start
         if (isset($searchData['order_id_start']) && StringUtil::isNotBlank($searchData['order_id_start'])) {
             $qb
                 ->andWhere('o.id >= :order_id_start')
@@ -299,18 +306,13 @@ class OrderRepository extends AbstractRepository
 
         // status
         $filterStatus = false;
-        if (!empty($searchData['status']) && $searchData['status']) {
+        if (!empty($searchData['status']) && count($searchData['status'])) {
             $qb
-                ->andWhere('o.OrderStatus = :status')
+                ->andWhere($qb->expr()->in('o.OrderStatus', ':status'))
                 ->setParameter('status', $searchData['status']);
             $filterStatus = true;
         }
-        if (!empty($searchData['multi_status']) && count($searchData['multi_status'])) {
-            $qb
-                ->andWhere($qb->expr()->in('o.OrderStatus', ':multi_status'))
-                ->setParameter('multi_status', $searchData['multi_status']->toArray());
-            $filterStatus = true;
-        }
+
         if (!$filterStatus) {
             // 購入処理中は検索対象から除外
             $OrderStatuses = $this->getEntityManager()
@@ -318,6 +320,13 @@ class OrderRepository extends AbstractRepository
                 ->findNotContainsBy(array('id' => OrderStatus::PROCESSING));
             $qb->andWhere($qb->expr()->in('o.OrderStatus', ':status'))
                 ->setParameter('status', $OrderStatuses);
+        }
+
+        // company_name
+        if (isset($searchData['company_name']) && StringUtil::isNotBlank($searchData['company_name'])) {
+            $qb
+                ->andWhere('o.company_name LIKE :company_name')
+                ->setParameter('company_name', '%'.$searchData['company_name'].'%');
         }
 
         // name

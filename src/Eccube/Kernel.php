@@ -12,8 +12,10 @@
 namespace Eccube;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
+use Eccube\Common\EccubeNav;
 use Eccube\DependencyInjection\Compiler\AutoConfigurationTagPass;
 use Eccube\DependencyInjection\Compiler\LazyComponentPass;
+use Eccube\DependencyInjection\Compiler\NavCompilerPass;
 use Eccube\DependencyInjection\Compiler\PluginPass;
 use Eccube\DependencyInjection\Compiler\QueryCustomizerPass;
 use Eccube\DependencyInjection\Compiler\TemplateListenerPass;
@@ -22,6 +24,7 @@ use Eccube\DependencyInjection\Compiler\WebServerDocumentRootPass;
 use Eccube\DependencyInjection\EccubeExtension;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeType;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeTzType;
+use Eccube\Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Eccube\Doctrine\Query\QueryCustomizer;
 use Eccube\Plugin\ConfigManager;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
@@ -121,15 +124,13 @@ class Kernel extends BaseKernel
         $builder->setSchemes($scheme);
 
         // 有効なプラグインのルーティングをインポートする.
-        if ($container->hasParameter('eccube.plugins.enabled')) {
-            $plugins = $container->getParameter('eccube.plugins.enabled');
-            $pluginDir = $this->getProjectDir().'/app/Plugin';
-            foreach ($plugins as $plugin) {
-                $dir = $pluginDir.'/'.$plugin['code'].'/Controller';
-                if (file_exists($dir)) {
-                    $builder = $routes->import($dir, '/', 'annotation');
-                    $builder->setSchemes($scheme);
-                }
+        $plugins = $container->getParameter('eccube.plugins.enabled');
+        $pluginDir = $this->getProjectDir().'/app/Plugin';
+        foreach ($plugins as $plugin) {
+            $dir = $pluginDir.'/'.$plugin['code'].'/Controller';
+            if (file_exists($dir)) {
+                $builder = $routes->import($dir, '/', 'annotation');
+                $builder->setSchemes($scheme);
             }
         }
     }
@@ -167,28 +168,42 @@ class Kernel extends BaseKernel
         $container->registerForAutoconfiguration(QueryCustomizer::class)
             ->addTag(QueryCustomizerPass::QUERY_CUSTOMIZER_TAG);
         $container->addCompilerPass(new QueryCustomizerPass());
+
+        // 管理画面ナビの拡張
+        $container->registerForAutoconfiguration(EccubeNav::class)
+            ->addTag(NavCompilerPass::NAV_TAG);
+        $container->addCompilerPass(new NavCompilerPass());
     }
 
     protected function addEntityExtensionPass(ContainerBuilder $container)
     {
         $projectDir = $container->getParameter('kernel.project_dir');
 
-        $paths = ['%kernel.project_dir%/src/Eccube/Entity', '%kernel.project_dir%/app/Acme/Entity'];
-        $namespaces = ['Eccube\\Entity', 'Acme\\Entity'];
+        // Eccube
+        $paths = ['%kernel.project_dir%/src/Eccube/Entity'];
+        $namespaces = ['Eccube\\Entity'];
+        $reader = new Reference('annotation_reader');
+        $driver = new Definition(AnnotationDriver::class, array($reader, $paths));
+        $driver->addMethodCall('setTraitProxiesDirectory', [$projectDir.'/app/proxy/entity']);
+        $container->addCompilerPass(new DoctrineOrmMappingsPass($driver, $namespaces, []));
 
-        $pluginConfigs = ConfigManager::getPluginConfigAll(true);
+        // Acme
+        $container->addCompilerPass(DoctrineOrmMappingsPass::createAnnotationMappingDriver(
+            ['Acme\\Entity'],
+            ['%kernel.project_dir%/app/Acme/Entity']
+        ));
+
+        // Plugin
+        $pluginConfigs = ConfigManager::getPluginConfigAll($this->isDebug());
         foreach ($pluginConfigs as $config) {
             $code = $config['config']['code'];
             if (file_exists($projectDir.'/app/Plugin/'.$code.'/Entity')) {
-                $paths[] = '%kernel.project_dir%/app/Plugin/'.$code.'/Entity';
-                $namespaces[] = 'Plugin\\'.$code.'\\Entity';
+                $container->addCompilerPass(DoctrineOrmMappingsPass::createAnnotationMappingDriver(
+                    ['Plugin\\'.$code.'\\Entity'],
+                    ['%kernel.project_dir%/app/Plugin/'.$code.'/Entity']
+                ));
             }
         }
-
-        $reader = new Reference('annotation_reader');
-        $driver = new Definition('Eccube\\Doctrine\\ORM\\Mapping\\Driver\\AnnotationDriver', array($reader, $paths));
-        $driver->addMethodCall('setTraitProxiesDirectory', [$projectDir.'/app/proxy/entity']);
-        $container->addCompilerPass(new DoctrineOrmMappingsPass($driver, $namespaces, []));
     }
 
     protected function loadEntityProxies()

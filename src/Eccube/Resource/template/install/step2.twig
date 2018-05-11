@@ -28,16 +28,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <div class="main_inner">
             <div class="main_content">
                 <div class="page-header">
-                    <h1>権限チェック</h1>
+                    <h1>{{ 'step2.text.message.page_header'|trans }}</h1>
                 </div>
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-12">
                             <textarea class="form-control disp_area" name="disp_area">
                                 {% if protectedDirs|length == 0 %}
-                                    &gt;&gt;○：アクセス権限は正常です。
+                                    &gt;&gt;○：{{ 'step2.text.message.access_authority_true'|trans }}
                                 {% else %}
-                                    以下のディレクトリのアクセス制限を変更してください。
+                                    {{ 'step2.text.message.access_authority_false'|trans }}
                                     {% for dir in protectedDirs %}
                                         &gt;&gt;☓：{{ dir }}
                                     {% endfor %}
@@ -46,12 +46,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <ul class="btn_area">
                                 <li>
                                     {% if protectedDirs|length > 0 %}
-                                        <a href="{{ path('install_step2') }}" class="btn btn-primary btn-block btn-lg">更新する</a>
+                                        <a href="{{ path('install_step2') }}" class="btn btn-primary btn-block btn-lg">{{ 'install.update'|trans }}</a>
                                     {% else %}
-                                        <a href="{{ path('install_step3') }}" class="btn btn-primary btn-block btn-lg">次へ進む</a>
+                                        <a href="{{ path('install_step3') }}" class="btn btn-primary btn-block btn-lg">{{ 'install.next'|trans }}</a>
                                     {% endif %}
                                 </li>
-                                <li><a href="{{ path('install_step1') }}" class="btn btn-link btn-block btn-lg">前に戻る</a></li>
+                                <li><a href="{{ path('install_step1') }}" class="btn btn-link btn-block btn-lg">{{ 'install.back'|trans }}</a></li>
                             </ul>
                         </div><!-- /.col -->
                     </div>

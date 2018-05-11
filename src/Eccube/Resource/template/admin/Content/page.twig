@@ -21,80 +21,110 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 #}
-{% extends '@admin/default_frame.twig' %}
+{% extends '@admin/styleguide_frame.twig' %}
 
 {% set menus = ['content', 'page'] %}
 
-{% block title %}{{'admin.content.page.69'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.content.page.70'|trans}}{% endblock %}
+{% block title %}{{ 'admin.content.page.title'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.content.page.sub_title'|trans }}{% endblock %}
 
 {% block main %}
-<div id="page_wrap" class="container-fluid">
-    <div id="page_list" class="row">
-        <div id="page_list_box" class="col-md-12">
-            <div id="page_list__body" class="box">
-                <div id="page_list_box__header" class="box-header">
-                    <div class="box-title">
-                        {{'admin.content.page.71'|trans}}
+    <div class="c-contentsArea__cols">
+        <div class="c-contentsArea__primaryCol">
+            <div class="c-primaryCol">
+                <div class="row justify-content-between mb-2">
+                    <div class="col-9"><a class="btn btn-ec-regular py-2"
+                                          href="{{ url('admin_content_page_new') }}">{{ 'admin.content.page.create'|trans }}</a></div>
+                    <div class="col-3">
+                        <form class="mb-2">
+                            <div class="form-row">
+                                <div class="col">
+                                    <input class="form-control" type="search" placeholder="" aria-label="Search">
+                                </div>
+                                {# TODO 検索の実装 #}
+                                <div class="col-auto">
+                                    <button class="btn btn-ec-sub" type="submit"><i
+                                                class="fa fa-search fa-lg text-secondary"></i></button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
-                <div id="sortable_list_box" class="box-body no-padding no-border">
-                    <div id="sortable_list_box__list" class="sortable_list">
-                        <div class="tableish">
-                            <div class="item_box tr" style="background-color: #F9F9F9;">
-                                <div class="item_pattern td"><strong>{{'admin.content.page.72'|trans}}</strong></div>
-                                <div class="item_pattern td"><strong>{{'admin.content.page.73'|trans}}</strong></div>
-                                <div class="item_pattern td"></div>
-                            </div>
+                <div class="card rounded border-0 mb-4">
+                    <div class="card-body p-0">
+                        <table id="list_page_tbl" class="table table-sm">
+                            <thead>
+                            <th class="border-0 pt-2 pb-2 pl-3">{{ 'admin.content.page.page_name'|trans }}</th>
+                            <th class="border-0 pt-2 pb-2">{{ 'admin.content.page.layout_name'|trans }}</th>
+                            <th class="border-0 pt-2 pb-2 pr-3"></th>
+                            </thead>
                             {% for Page in Pages %}
-                                <div id="sortable_list_box__item--{{ Page.id }}" class="item_box tr">
-                                    <div id="sortable_list_box__name--{{ Page.id }}" class="item_pattern td">
-                                        <a href="{{ url('admin_content_page_edit', {id : Page.id } ) }}">{{ Page.name }}</a>
-                                    </div>
-                                    <div id="sortable_list_box__layout--{{ Page.id }}" class="td">
-                                        <ul class="">
+                                <tr>
+                                    <td class="align-middle pl-3"><a
+                                                href="{{ url('admin_content_page_edit', {id : Page.id } ) }}">{{ Page.name }}</a>
+                                    </td>
+                                    {# TODO レイアウトの数にかかわらず高さを揃えたい #}
+                                    <td class="align-middle{{ Page.layouts|length < 2 ? ' pb-4' }}">
                                         {% for Layout in Page.layouts %}
-                                            <li>{{ Layout.device_type.name }}：{{ Layout.name }}</li>
+                                            {% if Layout.device_type.id == constant('Eccube\\Entity\\Master\\DeviceType::DEVICE_TYPE_PC') %}
+                                                {% set icon = 'fa-desktop' %}
+                                            {% else %}
+                                                {% set icon = 'fa-mobile fa-2x' %}
+                                            {% endif %}
+                                            <div class="d-block"><i
+                                                        class="fa {{ icon }} mr-2"></i><span>{{ Layout.name }}</span>
+                                            </div>
                                         {% endfor %}
-                                        </ul>
-                                    </div>
-                                    <div id="sortable_list_box__menu_box--{{ Page.id }}" class="icon_edit td">
-                                        <div id="sortable_list_box__menu_box_toggle--{{ Page.id }}" class="dropdown">
-                                            <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
-                                            <ul id="sortable_list_box__menu--{{ Page.id }}" class="dropdown-menu dropdown-menu-right">
-                                                <li>
-                                                    {% if Page.filename|length >= 1 %}
-                                                        <a href="{{ url('admin_content_page_edit', {id : Page.id } ) }}">{{'admin.content.page.75'|trans}}</a>
-                                                    {% else %}
-                                                        <a>{{'admin.content.page.76'|trans}}</a>
-                                                    {% endif %}
-                                                </li>
-                                                <li>
-                                                    {% if Page.edit_type == constant('Eccube\\Entity\\Page::EDIT_TYPE_USER') %}
-                                                        <a href="{{ url('admin_content_page_delete', { 'id': Page.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="{{'admin.content.page.77'|trans}}">{{'common.label.delete'|trans}}</a>
-                                                    {% else %}
-                                                        <a>{{'admin.content.page.78'|trans}}</a>
-                                                    {% endif %}
-                                                </li>
-                                            </ul>
+                                    </td>
+                                    <td class="align-middle pr-3">
+                                        <div class="row justify-content-end">
+                                            <div class="col-auto text-center" data-toggle="tooltip" data-placement="top" title="{{ 'admin.content.page.delete'|trans }}">
+                                                {% if Page.edit_type == constant('Eccube\\Entity\\Page::EDIT_TYPE_USER') %}
+                                                    <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#delete_{{ Page.id }}">
+                                                        <i class="fa fa-close fa-lg text-secondary"
+                                                           aria-hidden="true"></i>
+                                                    </a>
+                                                    <div class="modal fade" id="delete_{{ Page.id }}" tabindex="-1"
+                                                         role="dialog"
+                                                         aria-labelledby="delete_{{ Page.id }}" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title font-weight-bold">
+                                                                        {{ 'admin.content.page.delete_message'|trans }}</h5>
+                                                                    <button class="close" type="button"
+                                                                            data-dismiss="modal"
+                                                                            aria-label="Close"><span
+                                                                                aria-hidden="true">×</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body text-left">
+                                                                    <p class="text-left">
+                                                                        {{ 'admin.content.page.delete_message'|trans }}</p>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button class="btn btn-ec-sub" type="button"
+                                                                            data-dismiss="modal">{{ 'common.label.cancel'|trans }}
+                                                                    </button>
+                                                                    <a class="btn btn-ec-delete"
+                                                                       href="{{ url('admin_content_page_delete', {'id' : Page.id}) }}" {{ csrf_token_for_anchor() }}
+                                                                       data-method="delete"
+                                                                       data-confirm="false">{{ 'common.label.delete'|trans }}</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
                                         </div>
-                                    </div>
-                                </div><!-- /.item_box -->
+                                    </td>
+                                </tr>
                             {% endfor %}
-
-                        </div>
+                        </table>
                     </div>
-                </div><!-- /.box-body -->
-            </div><!-- /.box -->
-            <!-- ▲ データがある時 ▲ -->
-        </div><!-- /.col -->
-
-        <div id="page_list__footer" class="row btn_area2">
-            <div id="page_list__insert_button" class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center">
-                <a class="btn btn-primary btn-block btn-lg" href="{{ url('admin_content_page_new')}}">{{'admin.content.page.79'|trans}}</a>
+                </div>
             </div>
         </div>
-
     </div>
-</div>
+
 {% endblock %}

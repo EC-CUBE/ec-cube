@@ -2,15 +2,16 @@
     // 商品規格情報. 規格2のプルダウンリストの設定に利用する,
     var productsClassCategories = {
         {% for Product in pagination %}
-        "{{ Product.id|escape('js') }}": {{ class_categories_as_json(Product)|raw }}{% if loop.last == false %}, {% endif %}
+        "{{ Product.id|escape('js') }}": {{ class_categories_as_json(Product, false)|raw }}{% if loop.last == false %}, {% endif %}
         {% endfor %}
     };
+
     // 規格1が選択された際に, 規格2のプルダウンリストを設定する,
     function fnSetClassCategory2(select, product_id) {
         // 規格1の要素を取得
         var $sele1 = $(select);
         // 規格2の要素を取得
-        var $sele2 = $sele1.parent().find('select[name=classcategory_id2]');
+        var $sele2 = $sele1.parents(".align-middle").find('select[name=classcategory_id2]');
 
         // 規格1の選択肢
         var classcat_id1 = $sele1.val() ? $sele1.val() : '';
@@ -32,9 +33,9 @@
             }
         }
     }
+
     // 受注明細行を追加する.
-    // 受注明細行のレコード数カウンタ(order_items_count)は, edit.twig側で定義している.
-    function fnAddOrderItem($row, product_id, type) {
+    function fnAddOrderItem($row, product_id, type, product_name) {
         // 規格1の要素を取得
         var $sele1 = $row.find('select[name=classcategory_id1]');
         // 規格2の要素を取得
@@ -44,7 +45,8 @@
         var price = null;
         var quantity = 1;
         var product_code = null;
-        var tax_rate = null;
+        var tax_rate = 8;
+        var tax_display_type = {{ constant('Eccube\\Entity\\Master\\TaxDisplayType::INCLUDED') }};
 
         type = type === undefined ? {{ constant('Eccube\\Entity\\Master\\OrderItemType::PRODUCT') }} : type;
 
@@ -58,6 +60,7 @@
                 break;
             default:
             case {{ constant('Eccube\\Entity\\Master\\OrderItemType::PRODUCT') }}:
+                tax_display_type = {{ constant('Eccube\\Entity\\Master\\TaxDisplayType::EXCLUDED') }};
                 // 規格なし商品の場合
                 if (!$sele1.length && !$sele2.length) {
                     var product = productsClassCategories[product_id]['__unselected2']['#'];
@@ -70,36 +73,38 @@
                         var class_category_id1 = $sele1.val();
                         var class_cateogry_id2 = $sele2.val();
                         if (class_category_id1 == '__unselected' || !class_cateogry_id2) {
-                            alert('admin.order.search_product.379'|trans)
+                            alert('{{'admin.order.search_product.379'|trans}}');
                             return;
                         }
                         var product = productsClassCategories[product_id][class_category_id1]['#' + class_cateogry_id2];
 
                         product_class_id = product['product_class_id'];
                         price = product['price02'];
+                        product_code = product['product_code'];
                     } else {
                         var class_category_id1 = $sele1.val();
                         if (class_category_id1 == '__unselected') {
-                            alert('admin.order.search_product.379'|trans)
+                            alert('{{ 'admin.order.search_product.379'|trans }}');
                             return;
                         }
                         var product = productsClassCategories[product_id][class_category_id1]['#'];
 
                         product_class_id = product['product_class_id'];
                         price = product['price02'];
+                        product_code = product['product_code'];
                     }
                 }
 
         }
 
         // 受注明細行を取得.
-        var list = $('#order_item_list');
+        var list = '#table-form-field';
         var orderDetailExists = false;
 
-        $('*[id^="product_info_list__item--"]').each(function () {
+        $(list + " tbody > tr").each(function() {
             var $inputs = $(this).find(':input');
 
-            if ($inputs.filter('[id$="_ProductClass"][value="'+product_class_id+'"]').length > 0) {
+            if ($inputs.filter('[id$="_ProductClass"][value="' + product_class_id + '"]').length > 0) {
                 var $quantity = $inputs.filter('[id$="_quantity"]');
                 var quantity = $quantity.val().trim();
                 if (quantity.match(/^\d+$/)) {
@@ -112,180 +117,115 @@
         });
 
         if (!orderDetailExists) {
+            var prototype = $collectionHolder.data('prototype');
+            index++;
+            var newForm = prototype.replace(/__name__/g, index);
+            $(list + ' tbody').append(newForm);
+            var $lastRow = $(list + ' tbody > tr:last');
 
-            // prototype templateを取得.
-            var newWidget = list.attr('data-prototype');
-            // レコード数カウンタで置換.
-            newWidget = newWidget.replace(/__name__/g, order_items_count);
-            // フォーム入力値をセットm
-            $newWidget = $(newWidget);
-            $newWidget.find('#order_OrderItems_' + order_items_count + '_Product').val(product_id);
-            $newWidget.find('#order_OrderItems_' + order_items_count + '_ProductClass').val(product_class_id);
-            $newWidget.find('#order_OrderItems_' + order_items_count + '_price').val(price);
-            $newWidget.find('#order_OrderItems_' + order_items_count + '_quantity').val(1); // コントローラ側で再取得するため、仮の値をセット
-            $newWidget.find('#order_OrderItems_' + order_items_count + '_tax_rate').val(8); // コントローラ側で再取得するため、仮の値をセット
-            $newWidget.find('#order_OrderItems_' + order_items_count + '_order_item_type').val(type);
-
-            // 明細行に追加.
-            list.append($newWidget);
-        }
-
-        if (orderDetailExists) {
-            // カウンタを更新.
-            order_items_count++;
+            $($lastRow).find('#order_OrderItems_' + index + '_Product').val(product_id);
+            $($lastRow).find('#order_OrderItems_' + index + '_ProductClass').val(product_class_id);
+            $($lastRow).find('#order_OrderItems_' + index + '_price').val(price);
+            $($lastRow).find('#order_OrderItems_' + index + '_quantity').val(quantity); // コントローラ側で再取得するため、仮の値をセット
+            $($lastRow).find('#order_OrderItems_' + index + '_tax_rate').val(tax_rate); // コントローラ側で再取得するため、仮の値をセット
+            $($lastRow).find('#order_OrderItems_' + index + '_order_item_type').val(type);
+            $($lastRow).find('#order_OrderItems_' + index + '_product_name').val(product_name);
+            $($lastRow).find('#order_OrderItems_' + index + '_product_code').val(product_code);
+            $($lastRow).find('#order_OrderItems_' + index + '_tax_display_type').val(tax_display_type);
         }
 
         // モーダル閉じる.
         $('#searchProductModal').modal('hide');
 
+        // モーダルからのPOST時にのみ金額等をセットするため
+        $('input:hidden[name="modal"]').val('modal');
+
         // 再計算のためsubmit.
-        setModeAndSubmit('modal');
+        $('#form1').submit();
 
         return false;
     }
 
     // 商品検索
     $('#product_pagination a').on('click', function(event) {
-        var list = $('#searchProductModalList');
-        list.children().remove();
+        if (!$(this).parent().is('.active')) {
+            var list = $('#searchProductModalList');
+            list.children().remove();
 
-        $.ajax({
-            type: 'GET',
-            dataType: 'html',
-            url: $(this).attr('href'),
-            success: function(data) {
+            $.ajax({
+                url: $(this).attr('href'),
+                type: 'GET',
+                dataType: 'html'
+            }).done(function(data) {
                 $('#searchProductModalList').html(data);
-            },
-            error: function() {
+            }).fail(function(data) {
                 alert('search product failed.');
-            }
-        });
+            });
+        }
+
         event.preventDefault();
     });
 </script>
-<div class="table-responsive">
-    <table class="table">
-        <tbody>
-            <form name="product_form_deliveryfee">
-                <tr>
-                    <td>
-                        -
-                    </td>
-                    <td>
-                        {{'admin.order.search_product.381'|trans}}
-                    </td>
-                    <td>
-                    </td>
-                    <div class="extra-form">
-                    </div>
-                    <td class="text-right">
-                        <button onclick="fnAddOrderItem($(this).parent().parent(), null, {{ constant('Eccube\\Entity\\Master\\OrderItemType::DELIVERY_FEE') }})" type="button" class="btn btn-default btn-sm" name="mode" value="modal">
-                            {{'admin.order.search_product.382'|trans}}
-                        </button>
-                    </td>
-                </tr>
-            </form>
-            <form name="product_form_charge">
-                <tr>
-                    <td>
-                        -
-                    </td>
-                    <td>
-                        {{'admin.order.search_product.383'|trans}}
-                    </td>
-                    <td>
-                    </td>
-                    <div class="extra-form">
-                    </div>
-                    <td class="text-right">
-                        <button onclick="fnAddOrderItem($(this).parent().parent(), null, {{ constant('Eccube\\Entity\\Master\\OrderItemType::CHARGE') }})" type="button" class="btn btn-default btn-sm" name="mode" value="modal">
-                            {{'admin.order.search_product.382'|trans}}
-                        </button>
-                    </td>
-                </tr>
-            </form>
-            <form name="product_form_discount">
-                <tr>
-                    <td>
-                        -
-                    </td>
-                    <td>
-                        {{'admin.order.search_product.385'|trans}}
-                    </td>
-                    <td>
-                    </td>
-                    <div class="extra-form">
-                    </div>
-                    <td class="text-right">
-                        <button onclick="fnAddOrderItem($(this).parent().parent(), null, {{ constant('Eccube\\Entity\\Master\\OrderItemType::DISCOUNT') }})" type="button" class="btn btn-default btn-sm" name="mode" value="modal">
-                            {{'admin.order.search_product.382'|trans}}
-                        </button>
-                    </td>
-                </tr>
-            </form>
-            <form name="product_form_blank">
-                <tr>
-                    <td>
-                        -
-                    </td>
-                    <td>
-                        {{'admin.order.search_product.387'|trans}}
-                    </td>
-                    <td>
-                    </td>
-                    <div class="extra-form">
-                    </div>
-                    <td class="text-right">
-                        <button onclick="alert('この機能は準備中です')" type="button" class="btn btn-default btn-sm" name="mode" value="modal">
-                            {{'admin.order.search_product.382'|trans}}
-                        </button>
-                    </td>
-                </tr>
-            </form>
-            {% for Product in pagination %}
-                <form name="product_form{{ Product.id }}">
-                    {% set form = forms[Product.id] %}
 
-                    <tr>
-                        <td>
-                            {{ Product.id }}
-                        </td>
-                        <td>
-                            {{ Product.name }}
-                            {% if Product.hasProductClass %}
-                                <span><br/>{{ Product.code_min }}～{{ Product.code_max }}</span>
-                            {% else %}
-                                <span><br/>{{ Product.code_min }}</span>
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if form.classcategory_id1 is defined %}
-                                {{ form_label(form.classcategory_id1) }}：{{ form_widget(form.classcategory_id1, { attr : { 'onchange' : "fnSetClassCategory2(this," ~ Product.id ~ ")" } } ) }}
-                                {% if form.classcategory_id2 is defined %}
-                                    <br/>{{ form_label(form.classcategory_id2) }}：{{ form_widget(form.classcategory_id2, {'id': ''}) }}
-                                {% endif %}
-                            {% endif %}
-                        </td>
-                        <div class="extra-form">
-                            {% for f in form.getIterator %}
-                                {% if f.vars.name matches '[^plg*]' %}
-                                    {{ form_label(f) }}
-                                    {{ form_widget(f) }}
-                                    {{ form_errors(f) }}
-                                {% endif %}
-                            {% endfor %}
+
+<table class="table table-striped table-sm mb-3">
+    <thead class="table-active">
+    <tr>
+        <th class="pt-2 pb-2 pl-3">{{ 'searchproduct.label.product_code'|trans }}</th>
+        <th class="pt-2 pb-2 pl-3">{{ 'admin.order.edit.label.product_name_code'|trans }}</th>
+        <th class="pt-2 pb-2">{{ 'admin.product.index.488'|trans }}</th>
+        <th class="pt-2 pb-2 pr-3"></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for Product in pagination %}
+        <form name="product_form{{ Product.id }}">
+            {% set form = forms[Product.id] %}
+            <tr>
+                <td class="align-middle pl-3">
+                    {{ Product.id }}
+                </td>
+                <td class="align-middle pl-3">
+                    <p class="m-0"> {{ Product.name }}</p>
+                    <span>
+                        {% if Product.hasProductClass %}
+                            {{ Product.code_min }}～{{ Product.code_max }}
+                        {% else %}
+                            {{ Product.code_min }}
+                        {% endif %}
+                    </span>
+                </td>
+                <td class="align-middle">
+                    {% if form.classcategory_id1 is defined %}
+                        <div class="row mb-2">
+                            <div class="col-4 pr-0"><span>{{ form_label(form.classcategory_id1) }}</span></div>
+                            <div class="col-8 text-left pl-0">
+                                {{ form_widget(form.classcategory_id1, { attr : { 'onchange' : "fnSetClassCategory2(this," ~ Product.id ~ ")" } } ) }}
+                            </div>
                         </div>
-                        <td class="text-right">
-                            <button onclick="fnAddOrderItem($(this).parent().parent(), {{ Product.id }}, {{ constant('Eccube\\Entity\\Master\\OrderItemType::PRODUCT') }})" type="button" class="btn btn-default btn-sm" name="mode" value="modal">
-                                {{'admin.order.search_product.382'|trans}}
-                            </button>
-                        </td>
-                    </tr>
-                </form>
-            {% endfor %}
-        </tbody>
-    </table>
-    {% if pagination.totalItemCount > 0 %}
-        {% include "pager.twig" with {'id': 'product_pagination', 'pages': pagination.paginationData, 'routes': 'admin_order_search_product_page'} %}
-    {% endif %}
-</div>
+                    {% endif %}
+                    {% if form.classcategory_id2 is defined %}
+                        <div class="row">
+                            <div class="col-4 pr-0"><span>{{ form_label(form.classcategory_id2) }}</span></div>
+                            <div class="col-8 text-left pl-0">
+                                {{ form_widget(form.classcategory_id2, {'id': ''}) }}
+                            </div>
+                        </div>
+                    {% endif %}
+                </td>
+                <td class="align-middle pr-3 text-right">
+                    <button type="button" class="btn btn-ec-actionIcon" onclick="fnAddOrderItem($(this).parent().parent(), {{ Product.id }}, {{ constant('Eccube\\Entity\\Master\\OrderItemType::PRODUCT') }}, '{{ Product.name }}')" name="mode" value="modal">
+                        <i class="fa fa-plus fa-lg font-weight-bold text-secondary"></i>
+                    </button>
+                </td>
+            </tr>
+        </form>
+    {% endfor %}
+    </tbody>
+</table>
+{% if pagination.totalItemCount > 0 %}
+    <div id="product_pagination" class="row justify-content-md-center mb-4">
+        {% include "@admin/styleguide_pager.twig" with {'pages': pagination.paginationData, 'routes': 'admin_order_search_product_page'} %}
+    </div>
+{% endif %}
+

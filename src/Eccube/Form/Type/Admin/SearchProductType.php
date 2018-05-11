@@ -24,28 +24,22 @@
 
 namespace Eccube\Form\Type\Admin;
 
-use Eccube\Annotation\FormType;
-use Eccube\Annotation\Inject;
 use Eccube\Entity\Master\ProductStatus;
+use Eccube\Entity\ProductStock;
 use Eccube\Form\Type\Master\CategoryType as MasterCategoryType;
 use Eccube\Form\Type\Master\ProductStatusType;
 use Eccube\Repository\Master\ProductStatusRepository;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-;
 
-/**
- * @FormType
- */
 class SearchProductType extends AbstractType
 {
-
     /**
-     * @Inject(ProductStatusRepository::class)
      * @var ProductStatusRepository
      */
     protected $productStatusRepository;
@@ -59,7 +53,6 @@ class SearchProductType extends AbstractType
         $this->productStatusRepository = $productStatusRepository;
     }
 
-
     /**
      * {@inheritdoc}
      */
@@ -67,19 +60,9 @@ class SearchProductType extends AbstractType
     {
         $builder
             ->add('id', TextType::class, array(
-                'label' => 'searchproduct.label.product_code',
+                'label' => 'searchproduct.label.multi',
                 'required' => false,
             ))
-            /*
-            ->add('code', 'text', array(
-                'label' => '商品コード',
-                'required' => false,
-            ))
-            ->add('name', 'text', array(
-                'label' => '商品名',
-                'required' => false,
-            ))
-             */
             ->add('category_id', MasterCategoryType::class, array(
                 'label' => 'searchproduct.label.category',
                 'placeholder' => 'searchproduct.placeholder.select',
@@ -89,10 +72,20 @@ class SearchProductType extends AbstractType
                 'label' => 'searchproduct.label.type',
                 'multiple'=> true,
                 'required' => false,
+                'expanded' => true,
                 'data' => $this->productStatusRepository->findBy(['id' => [
                     ProductStatus::DISPLAY_SHOW,
                     ProductStatus::DISPLAY_HIDE
                 ]])
+            ))
+            ->add('stock', ChoiceType::class, array(
+                'label' => 'searchproduct.label.stock',
+                'choices'  => array(
+                    'admin.product.index.filter_in_stock' => ProductStock::IN_STOCK,
+                    'admin.product.index.filter_out_of_stock' => ProductStock::OUT_OF_STOCK,
+                ),
+                'expanded' => true,
+                'multiple' => true,
             ))
             ->add('create_date_start', DateType::class, array(
                 'label' => 'searchproduct.label.registration_date_from',
@@ -111,7 +104,7 @@ class SearchProductType extends AbstractType
                 'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('update_date_start', DateType::class, array(
-                'label' => '更新日(FROM)',
+                'label' => 'searchproduct.label.updated_date_from',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -125,9 +118,6 @@ class SearchProductType extends AbstractType
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
-            ))
-            ->add('link_status', HiddenType::class, array(
-                'mapped' => false,
             ))
         ;
     }

@@ -16,11 +16,26 @@ use Doctrine\ORM\Mapping as ORM;
 class Layout extends AbstractEntity
 {
     /**
+     * トップページ用レイアウト
+     */
+    const DEFAULT_LAYOUT_TOP_PAGE = 1;
+
+    /**
+     * 下層ページ用レイアウト
+     */
+    const DEFAULT_LAYOUT_UNDERLAYER_PAGE = 2;
+
+    /**
      * @return string
      */
     public function __toString()
     {
         return (string) $this->name;
+    }
+
+    public function isDefault()
+    {
+        return in_array($this->id, [self::DEFAULT_LAYOUT_TOP_PAGE, self::DEFAULT_LAYOUT_UNDERLAYER_PAGE,]);
     }
 
     /**
@@ -116,6 +131,7 @@ class Layout extends AbstractEntity
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(targetEntity="Eccube\Entity\PageLayout", mappedBy="Layout", cascade={"persist","remove"})
+     * @ORM\OrderBy({"sort_no" = "ASC"})
      */
     private $PageLayouts;
 
@@ -310,5 +326,19 @@ class Layout extends AbstractEntity
     public function getDeviceType()
     {
         return $this->DeviceType;
+    }
+
+    /**
+     * Check layout can delete or not
+     *
+     * @return boolean
+     */
+    public function isDeletable()
+    {
+        if (!$this->getPageLayouts()->isEmpty()) {
+            return false;
+        }
+
+        return true;
     }
 }

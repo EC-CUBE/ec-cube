@@ -44,9 +44,13 @@ class MobileTemplatePathListener implements EventSubscriberInterface
         if (!$event->isMasterRequest()) {
             return;
         }
-
         // 管理画面の場合は実行しない.
         if ($this->context->isAdmin()) {
+            return;
+        }
+
+        // ディレクトリが作成されてない場合は実行しない.
+        if (!file_exists($this->eccubeConfig->get('eccube_theme_app_dir').'/smartphone')) {
             return;
         }
 
@@ -55,7 +59,7 @@ class MobileTemplatePathListener implements EventSubscriberInterface
         }
 
         $paths = [
-            $this->eccubeConfig->get('eccube_theme_front_dir').'/smartphone',
+            $this->eccubeConfig->get('eccube_theme_app_dir').'/smartphone'
         ];
 
         $loader = new \Twig_Loader_Chain(array(

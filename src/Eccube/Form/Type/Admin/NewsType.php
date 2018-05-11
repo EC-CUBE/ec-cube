@@ -75,7 +75,7 @@ class NewsType extends AbstractType
                 ),
             ))
             ->add('url', TextType::class, array(
-                'label' => 'URL',
+                'label' => 'news.label.url',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Url(),

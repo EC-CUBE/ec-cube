@@ -46,7 +46,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <div class="main_inner">
             <div class="main_content">
                 <div class="page-header">
-                    <h1>データベースの設定</h1>
+                    <h1>{{ 'step4.text.message.page_header'|trans }}</h1>
                 </div>
                 <div class="container-fluid">
                     <div class="row">
@@ -60,8 +60,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 {{ form_row(form.database_user) }}
                                 {{ form_row(form.database_password) }}
                                 <ul class="btn_area">
-                                    <li><button type="submit" class="btn btn-primary btn-block btn-lg">次へ進む</button></li>
-                                    <li><a href="{{ path('install_step3') }}" class="btn btn-link btn-block btn-lg">前に戻る</a></li>
+                                    <li><button type="submit" class="btn btn-primary btn-block btn-lg">{{ 'install.next'|trans }}</button></li>
+                                    <li><a href="{{ path('install_step3') }}" class="btn btn-link btn-block btn-lg">{{ 'install.back'|trans }}</a></li>
                                 </ul>
                             </form>
                         </div>

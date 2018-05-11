@@ -150,7 +150,9 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
         $this->entityManager->flush();
 
         $this->searchData = array(
-            'status' => OrderStatus::NEW
+            'status' => [
+                OrderStatus::NEW
+            ]
         );
         $this->scenario();
 

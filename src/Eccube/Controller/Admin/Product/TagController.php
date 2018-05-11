@@ -24,154 +24,159 @@
 
 namespace Eccube\Controller\Admin\Product;
 
-use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\Tag;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Form\Type\Admin\ProductTag;
+use Eccube\Repository\TagRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Eccube\Entity\Tag;
-use Eccube\Repository\TagRepository;
-use Eccube\Form\Type\Admin\TagType;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/**
- * @Route(service=TagController::class)
- */
 class TagController extends AbstractController
 {
-
     /**
-     * @Inject("orm.em")
-     * @var EntityManager
-     */
-    protected $entityManager;
-
-    /**
-     * @Inject("eccube.event.dispatcher")
-     * @var EventDispatcher
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @Inject("form.factory")
-     * @var FormFactory
-     */
-    protected $formFactory;
-    
-    /**
-     * @Inject(TagRepository::class)
      * @var TagRepository
      */
     protected $tagRepository;
 
-    /**
-     * @Route("/{_admin}/product/tag", name="admin_product_tag")
-     * @Route("/{_admin}/product/tag/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_tag_edit")
-     * @Template("Product/tag.twig")
-     */
-    public function index(Application $app, Request $request, Tag $TargetTag = null)
+    public function __construct(TagRepository $tagRepository)
     {
-        
-        if (is_null($TargetTag)) {
-            $TargetTag = new Tag();
-        }
-        
+        $this->tagRepository = $tagRepository;
+    }
+
+    /**
+     * @Route("/%eccube_admin_route%/product/tag", name="admin_product_tag")
+     * @Template("@admin/Product/tag.twig")
+     *
+     * @param Request $request
+     * @param Tag|null $Tag
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function index(Request $request)
+    {
+        $Tag = new Tag();
+        $Tags = $this->tagRepository->getList();
+
+        /**
+         * 新規登録用フォーム
+         **/
         $builder = $this->formFactory
-            ->createBuilder(TagType::class, $TargetTag);
+            ->createBuilder(ProductTag::class, $Tag);
 
         $event = new EventArgs(
             array(
                 'builder' => $builder,
-                'TargetTag' => $TargetTag,
+                'Tag' => $Tag,
             ),
             $request
         );
+
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_TAG_INDEX_INITIALIZE, $event);
 
         $form = $builder->getForm();
 
-        //
-        if ($request->getMethod() === 'POST') {
+        /**
+         * 編集用フォーム
+         */
+        $forms = [];
+        foreach ($Tags as $EditTag) {
+            $id = $EditTag->getId();
+            $forms[$id] = $this
+                ->formFactory
+                ->createNamed('tag_'.$id, ProductTag::class, $EditTag);
+        }
+
+        if ('POST' === $request->getMethod()) {
+            /**
+             * 登録処理
+             */
             $form->handleRequest($request);
-            if ($form->isValid()) {
-               
-                log_info('タグ登録開始', array($TargetTag->getId()));
-                
-                $this->tagRepository->save($TargetTag);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->tagRepository->save($form->getData());
 
-                log_info('タグ登録完了', array($TargetTag->getId()));
+                $this->dispatchComplete($request, $form, $form->getData());
 
-                $event = new EventArgs(
-                    array(
-                        'form' => $form,
-                        'TargetTag' => $TargetTag,
-                    ),
-                    $request
-                );
-                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_TAG_INDEX_COMPLETE, $event);
+                $this->addSuccess('admin.tag.save.complete', 'admin');
 
-                $app->addSuccess('admin.tag.save.complete', 'admin');
+                return $this->redirectToRoute('admin_product_tag');
+            }
+            /**
+             * 編集処理
+             */
+            foreach ($forms as $editForm) {
+                $editForm->handleRequest($request);
+                if ($editForm->isSubmitted() && $editForm->isValid()) {
+                    $this->tagRepository->save($editForm->getData());
 
-                return $app->redirect($app->url('admin_product_tag'));
+                    $this->dispatchComplete($request, $editForm, $editForm->getData());
+
+                    $this->addSuccess('admin.tag.save.complete', 'admin');
+
+                    return $this->redirectToRoute('admin_product_tag');
+                }
             }
         }
 
-        $Tags = $this->tagRepository->getList();
+        $formViews = [];
+        foreach ($forms as $key => $value) {
+            $formViews[$key] = $value->createView();
+        }
 
         return [
             'form' => $form->createView(),
+            'Tag' => $Tag,
             'Tags' => $Tags,
-            'TargetTag' => $TargetTag,
+            'forms' => $formViews,
         ];
     }
 
     /**
      * @Method("DELETE")
-     * @Route("/{_admin}/product/tag/{id}/delete", requirements={"id" = "\d+"}, name="admin_product_tag_delete")
+     * @Route("/%eccube_admin_route%/product/tag/{id}/delete", requirements={"id" = "\d+"}, name="admin_product_tag_delete")
      */
-    public function delete(Application $app, Request $request, Tag $TargetTag)
+    public function delete(Request $request, Tag $Tag)
     {
-        $this->isTokenValid($app);
+        $this->isTokenValid();
 
-        log_info('タグ削除開始', array($TargetTag->getId()));
+        log_info('タグ削除開始', array($Tag->getId()));
 
         try {
-            $this->tagRepository->delete($TargetTag);
+            $this->tagRepository->delete($Tag);
 
             $event = new EventArgs(
                 array(
-                    'TargetTag' => $TargetTag,
+                    'Tag' => $Tag,
                 ), $request
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_TAG_DELETE_COMPLETE, $event);
 
-            $app->addSuccess('admin.tag.delete.complete', 'admin');
+            $this->addSuccess('admin.tag.delete.complete', 'admin');
 
-            log_info('タグ削除完了', array($TargetTag->getId()));
+            log_info('タグ削除完了', array($Tag->getId()));
 
         } catch (\Exception $e) {
-            log_info('タグ削除エラー', [$TargetTag->getId(), $e]);
+            log_info('タグ削除エラー', [$Tag->getId(), $e]);
 
             $message = trans('admin.delete.failed.foreign_key', ['%name%' => trans('tag.text.name')]);
-            $app->addError($message, 'admin');
+            $this->addError($message, 'admin');
         }
 
-        return $app->redirect($app->url('admin_product_tag'));
+        return $this->redirectToRoute('admin_product_tag');
     }
 
     /**
      * @Method("POST")
-     * @Route("/{_admin}/product/tag/sort_no/move", name="admin_product_tag_sort_no_move")
+     * @Route("/%eccube_admin_route%/product/tag/sort_no/move", name="admin_product_tag_sort_no_move")
      */
-    public function moveSortNo(Application $app, Request $request)
+    public function moveSortNo(Request $request)
     {
-        if ($request->isXmlHttpRequest()) {
+        if ($request->isXmlHttpRequest() && $this->isTokenValid()) {
             $sortNos = $request->request->all();
             foreach ($sortNos as $tagId => $sortNo) {
                 /* @var $Tag \Eccube\Entity\Tag */
@@ -182,6 +187,20 @@ class TagController extends AbstractController
             }
             $this->entityManager->flush();
         }
-        return true;
+
+        return new Response();
+    }
+
+    protected function dispatchComplete(Request $request, FormInterface $form, Tag $Tag)
+    {
+        $event = new EventArgs(
+            array(
+                'form' => $form,
+                'Tag' => $Tag,
+            ),
+            $request
+        );
+
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_TAG_INDEX_COMPLETE, $event);
     }
 }

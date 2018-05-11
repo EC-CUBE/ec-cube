@@ -1,6 +1,10 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
+    # container parameters
+    container.dumper.inline_class_loader: true
+
+    # ec-cube parameters
     env(ECCUBE_LOCALE): 'ja'
     env(ECCUBE_TIMEZONE): 'Asia/Tokyo'
     env(ECCUBE_CURRENCY): 'JPY'
@@ -66,6 +70,14 @@ services:
     Plugin\:
         resource: '../../../app/Plugin/*'
         exclude: '../../../app/Plugin/*/{Entity,Resource,ServiceProvider,Tests}'
+
+    Acme\:
+        resource: '../../../app/Acme/*'
+        exclude: '../../../app/Acme/{Entity,Resource,Tests}'
+
+    Acme\Controller\:
+        resource: '../../../app/Acme/Controller'
+        tags: ['controller.service_arguments']
 
     twig.extension.stringloader:
         class: Twig_Extension_StringLoader

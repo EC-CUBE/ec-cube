@@ -19,132 +19,102 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends '@admin/default_frame.twig' %}
+{% extends '@admin/styleguide_frame.twig' %}
 
 {% set menus = ['product', 'product_csv_import'] %}
 
-{% block title %}{{'admin.product.csv_product.446'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.product.csv_product.447'|trans}}{% endblock %}
+{% block title %}{{'admin.product.csv_product.tile'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.product.csv_product.subtitle'|trans}}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block javascript %}
-<script src="{{ asset('assets/js/vendor/spin.min.js', 'admin') }}"></script>
-<script>
-$(function() {
+    <script src="{{ asset('assets/js/vendor/spin.min.js', 'admin') }}"></script>
+    <script>
+        $(function() {
+            var opts = {
+                lines: 13,
+                length: 30,
+                width: 2,
+                radius: 12,
+                corners: 1,
+                rotate: 0,
+                direction: 1,
+                color: '#BBB',
+                speed: 1,
+                trail: 67,
+                shadow: true,
+                hwaccel: false,
+                className: 'spinner',
+                zIndex: 2e9,
+                top: top
+            };
 
-    var opts = {
-        lines: 13,
-        length: 30,
-        width: 2,
-        radius: 12,
-        corners: 1,
-        rotate: 0,
-        direction: 1,
-        color: '#BBB',
-        speed: 1,
-        trail: 67,
-        shadow: true,
-        hwaccel: false,
-        className: 'spinner',
-        zIndex: 2e9,
-        top: top
-    };
+            ImageSpinner = new Spinner(opts).spin(document.getElementById('spinner'));
+            ImageSpinner.stop();
 
-    ImageSpinner = new Spinner(opts).spin(document.getElementById('spinner'));
-    ImageSpinner.stop();
-
-    $('#upload-form').submit(function() {
-        $('#upload-button').attr('disabled', 'disabled');
-        $('#download-button').attr('disabled', 'disabled');
-        ImageSpinner.spin(document.getElementById('spinner'));
-    });
-});
-</script>
+            $('#upload-form').submit(function() {
+                $('#upload-button').attr('disabled', 'disabled');
+                $('#download-button').attr('disabled', 'disabled');
+                ImageSpinner.spin(document.getElementById('spinner'));
+            });
+        });
+    </script>
 {% endblock javascript %}
 
 {% block main %}
-<div id="upload_wrap" class="row">
-    <div id="upload_file_box" class="col-md-12">
-        <form id="upload-form" class="form-inline" method="post" action="{{ url('admin_product_csv_import') }}" enctype="multipart/form-data">
-            {{ form_widget(form._token) }}
-            <div id="upload_file_box__body" class="box">
-                <div id="upload_file_box__header" class="box-header">
-                    <h3 class="box-title">{{'admin.product.csv_product.448'|trans}}</h3>
-                </div><!-- /.box-header -->
-                <div id="upload_file_box__body_inner" class="box-body">
-                    <div id="upload_file_box__upload_box" class="form-group">
-                        <label class="col-sm-5 control-label">{{'admin.product.csv_product.449'|trans}}</label>
-                        <div id="upload_file_box__import_file" class="col-sm-7">
-                            {{ form_widget(form.import_file, {'attr': {'accept': 'text/csv,text/tsv'}}) }}
-                            {{ form_errors(form.import_file) }}
-                        </div>
-                        {% for error in errors %}
-                            <div id="upload_file_box__upload_error--{{ loop.index }}" class="text-danger">{{ error.message }}</div>
-                        {% endfor %}
+    <div class="c-contentsArea__cols">
+        <div class="c-contentsArea__primaryCol">
+            <div class="c-primaryCol">
+                <div class="card rounded border-0 mb-4">
+                    <div class="card-header">
+                        <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.csv_product.upload_header.tooltip'|trans }}"><span>{{ 'admin.product.csv_product.upload_header'|trans }}</span><i class="fa fa-question-circle fa-lg fa-lg ml-1"></i></div>
                     </div>
-                    <div id="spinner"></div>
-                </div><!-- /.box-body -->
-                <div id="button_box__upload_button" class="box-footer text-center">
-                    <button id="upload-button" type="submit" class="btn btn-primary btn-sm">{{'admin.product.csv_product.450'|trans}}</button>
-                </div><!-- /.box-footer -->
-            </div><!-- /.box -->
-        </form>
-    </div><!-- /.col -->
-</div>
-
-<div id="file_format" class="row">
-    <div id="file_format_box" class="col-md-12">
-        <div id="file_format_box__body" class="box">
-            <div id="file_format_box__head" class="box-header">
-                <a href="{{ url('admin_product_csv_template', {'type': 'product'}) }}" id="download-button" class="btn btn-default pull-right btn-xs">{{'admin.product.csv_product.451'|trans}}</a>
-                <h3 class="box-title">{{'admin.product.csv_product.452'|trans}}</h3>
-            </div><!-- /.box-header -->
-            <div id="file_format_box__body_inner" class="box-body no-padding">
-                <div id="file_format_box__list_box" class="table_list">
-                    <div id="file_format_box__list_box_body" class="table-responsive no-border table-menu table-responsive-overflow">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr id="file_format_box__header" class="text-nowrap">
-                                    {% for header in headers|keys %}
-                                        <th id="file_format_box__header--{{ loop.index }}">{{ header }}</th>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-2"><span>{{ 'admin.product.csv_product.upload_label'|trans }}</span></div>
+                            <div class="col">
+                                <form enctype="multipart/form-data" id="upload-form" method="post" action="{{ url('admin_product_csv_import') }}">
+                                    {{ form_widget(form._token) }}
+                                    {#Todo: do js script#}
+                                    {{ form_widget(form.import_file, {'attr': {'accept': 'text/csv,text/tsv', 'class': 'mb-2'}}) }}
+                                    {{ form_errors(form.import_file) }}
+                                    {% for error in errors %}
+                                        <div id="upload_file_box__upload_error--{{ loop.index }}" class="text-danger">{{ error.message }}</div>
                                     {% endfor %}
-                                </tr>
-                            </thead>
+                                    <br/>
+                                    <button class="btn btn-ec-conversion" type="submit" id="upload-button">{{ 'admin.product.csv_product.upload_button'|trans }}</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card rounded border-0 mb-4">
+                    <div class="card-header">
+                        <div class="row justify-content-between">
+                            <div class="col-6">
+                                <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.csv_product.format_header.tooltip'|trans }}"><span class="align-middle">{{ 'admin.product.csv_product.format_header'|trans }}</span><i class="fa fa-question-circle fa-lg fa-lg ml-1"></i></div>
+                            </div>
+                            <div class="col-4 text-right">
+                                <a href="{{ url('admin_product_csv_template', {'type': 'product'}) }}" class="btn btn-ec-regular" id="download-button">{{ 'admin.product.csv_product.download_template_button'|trans }}</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped table-bordered">
                             <tbody>
-                                <tr id="file_format_box__list" class="text-nowrap">
-                                    <td id="file_format_box__id">{{'admin.product.csv_product.453'|trans}}</td>
-                                    <td id="file_format_box__status">{{'admin.product.csv_product.454'|trans}}</td>
-                                    <td id="file_format_box__name">{{'admin.product.csv_product.455'|trans}}</td>
-                                    <td id="file_format_box__shop_memo"></td>
-                                    <td id="file_format_box__info"></td>
-                                    <td id="file_format_box__detail"></td>
-                                    <td id="file_format_box__search_word"></td>
-                                    <td id="file_format_box__free"></td>
-                                    <td id="file_format_box__delete_flg">{{'admin.product.csv_product.456'|trans}}</td>
-                                    <td id="file_format_box__image">{{'admin.product.csv_product.457'|trans}}</td>
-                                    <td id="file_format_box__category">{{'admin.product.csv_product.458'|trans}}</td>
-                                    <td id="file_format_box__tag">{{'admin.product.csv_product.459'|trans}}</td>
-                                    <td id="file_format_box__type_id">{{'admin.product.csv_product.460'|trans}}</td>
-                                    <td id="file_format_box__class_1"></td>
-                                    <td id="file_format_box__class_2"></td>
-                                    <td id="file_format_box__date"></td>
-                                    <td id="file_format_box__code"></td>
-                                    <td id="file_format_box__stock">{{'admin.product.csv_product.461'|trans}}</td>
-                                    <td id="file_format_box__stock_nolimit_flg">{{'admin.product.csv_product.462'|trans}}</td>
-                                    <td id="file_format_box__limit">{{'admin.product.csv_product.463'|trans}}</td>
-                                    <td id="file_format_box__price_2">{{'admin.product.csv_product.464'|trans}}</td>
-                                    <td id="file_format_box__price_1">{{'admin.product.csv_product.465'|trans}}</td>
-                                    <td id="file_format_box__delivery_fee">{{'admin.product.csv_product.466'|trans}}</td>
-                                    <td id="file_format_box__category_delete_flg">{{'admin.product.csv_product.467'|trans}}</td>
+                            {% for key, item in headers %}
+                                <tr>
+                                    <th class="w-25 align-middle table-ec-lightGray">{{ key }}{% if item['required']  %}<span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span>{% endif %}</th>
+                                    {% set message = item['description'] %}
+                                    <td class="align-middle">{{ message|trans|raw }}</td>
                                 </tr>
+                            {% endfor %}
                             </tbody>
                         </table>
                     </div>
                 </div>
-            </div><!-- /.box-body -->
-        </div><!-- /.box -->
-    </div><!-- /.col -->
-</div>
-
+            </div>
+        </div>
+    </div>
 {% endblock %}

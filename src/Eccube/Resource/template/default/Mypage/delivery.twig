@@ -34,7 +34,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             {{ include('Mypage/navi.twig') }}
         </div>
         <div class="ec-mypageRole">
-            <p><span class="ec-font-bold">{{'mypage.delivery.text.results'|trans({'%num%':Customer.CustomerAddresses|length})}}</p>
+            <p class="ec-para-nomal">{{'mypage.delivery.text.results'|trans({'%num%':Customer.CustomerAddresses|length})|raw}}</p>
         </div>
         <div class="ec-mypageRole">
             <div class="ec-off1Grid">

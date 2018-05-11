@@ -615,7 +615,11 @@ class Generator
         $ItemDeliveryFee = $this->entityManager->find(OrderItemType::class, OrderItemType::DELIVERY_FEE);
         $ItemCharge = $this->entityManager->find(OrderItemType::class, OrderItemType::CHARGE);
         $ItemDiscount = $this->entityManager->find(OrderItemType::class, OrderItemType::DISCOUNT);
+        /** @var ProductClass $ProductClass */
         foreach ($ProductClasses as $ProductClass) {
+            if (!$ProductClass->isVisible()) {
+                continue;
+            }
             $Product = $ProductClass->getProduct();
             $TaxRule = $this->taxRuleRepository->getByRule(); // デフォルト課税規則
 
@@ -634,6 +638,18 @@ class Generator
                 ->setTaxDisplayType($TaxExclude) // 税別
                 ->setOrderItemType($ItemProduct) // 商品明細
             ;
+            if ($ProductClass->hasClassCategory1()) {
+                $OrderItem
+                    ->setClassName1($ProductClass->getClassCategory1()->getClassName()->getName())
+                    ->setClassCategoryName1($ProductClass->getClassCategory1()->getName())
+                ;
+            }
+            if ($ProductClass->hasClassCategory2()) {
+                $OrderItem
+                    ->setClassName2($ProductClass->getClassCategory2()->getClassName()->getName())
+                    ->setClassCategoryName2($ProductClass->getClassCategory2()->getName())
+                ;
+            }
             $Shipping->addOrderItem($OrderItem);
             $Order->addOrderItem($OrderItem);
             $this->entityManager->persist($OrderItem);
@@ -769,14 +785,15 @@ class Generator
             $DeliveryTime = new DeliveryTime();
             $DeliveryTime
                 ->setDelivery($Delivery)
-                ->setDeliveryTime($faker->word);
+                ->setDeliveryTime($faker->word)
+                ->setSortNo($i+1);
             $this->entityManager->persist($DeliveryTime);
             $this->entityManager->flush($DeliveryTime);
             $Delivery->addDeliveryTime($DeliveryTime);
         }
 
         $Prefs = $this->prefRepository->findAll();
-        
+
         foreach ($Prefs as $Pref) {
             $DeliveryFee = new DeliveryFee();
             $DeliveryFee

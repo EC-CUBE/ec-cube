@@ -114,22 +114,12 @@ jQuery(document).ready(function ($) {
 //	  }
 //	});
 
-    // マスク処理
-    $('.prevention-mask').on('click', function() {
-        $overlay = $('<div class="prevention-masked">');
-        $('body').append($overlay);
-    });
+/////////// 2重submit制御.
 
-    // ダブルクリック禁止
-    $('.prevention-btn').on('click', function() {
-        $(this).attr('disabled', 'disabled');
-        var $form = $(this).parents('form');
-        // マスク表示させるためsetTimeoutを使って処理を遅らせる
-        setTimeout(function(){
-            $form.submit();
-        }, 0);
-        return false;
-    });
+    // FIXME 管理画面UI移行完了後, このif文は削除.
+    if (typeof Ladda !== 'undefined') {
+        Ladda.bind('button[type=submit]');
+    }
 
 /////////// 検索条件をクリア
     $('.search-clear').click(function (event) {
@@ -222,7 +212,7 @@ $(function () {
 });
 
 // 入力チェックエラー発生時にエラー発生箇所までスクロールさせる
-$(window).load(function() {
+$(window).on('load', function() {
     var el = $('.errormsg');
     if (el.length) {
         // Open panel when has error

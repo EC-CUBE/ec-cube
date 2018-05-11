@@ -4,6 +4,8 @@ namespace Eccube\Tests\Service;
 
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
+use Eccube\Entity\Shipping;
+use Eccube\Repository\MailHistoryRepository;
 use Eccube\Service\MailService;
 
 /**
@@ -415,6 +417,31 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->actual = $message->getBody();
         $this->verify();
 
+    }
+
+    /**
+     * @throws \Twig_Error
+     */
+    public function testSendShippingNotifyMail()
+    {
+        $Order = $this->createOrder($this->Customer);
+        /** @var Shipping $Shipping */
+        $Shipping = $Order->getShippings()->first();
+
+        $this->mailService->sendShippingNotifyMail($Shipping);
+        $this->entityManager->flush();
+
+        $messages = $this->getMailCollector()->getMessages();
+        self::assertEquals(1, count($messages));
+
+        /** @var \Swift_Message $message */
+        $message = $messages[0];
+        self::assertEquals([$Order->getEmail() => 0], $message->getTo(), '受注者にメールが送られているはず');
+
+        /** @var MailHistoryRepository $mailHistoryRepository */
+        $mailHistoryRepository = $this->container->get(MailHistoryRepository::class);
+        $histories = $mailHistoryRepository->findBy(['Order' => $Order]);
+        self::assertEquals(1, count($histories), 'メール履歴が作成されているはず');
     }
 
     protected function verifyRegExp($Message, $errorMessage = null)

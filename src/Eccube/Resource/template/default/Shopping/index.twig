@@ -298,10 +298,10 @@ $(function() {
                                     <div class="ec-imageGrid__content">
                                         <p>{{ orderItem.productName }}</p>
                                         {% if orderItem.productClass is not null and orderItem.productClass.classCategory1 %}
-                                            <p>{{ orderItem.productClass.classCategory1.className }}：{{ orderItem.productClass.classCategory1 }}</p>
+                                            <p>{{ orderItem.productClass.classCategory1.className.name }}：{{ orderItem.productClass.classCategory1 }}</p>
                                         {% endif %}
                                         {% if orderItem.productClass is not null and orderItem.productClass.classCategory2 %}
-                                            <p>{{ orderItem.productClass.classCategory2.className }}：{{ orderItem.productClass.classCategory2 }}</p>
+                                            <p>{{ orderItem.productClass.classCategory2.className.name }}：{{ orderItem.productClass.classCategory2 }}</p>
                                         {% endif %}
                                         <p>{{ orderItem.priceIncTax|price }} × {{ orderItem.quantity|number_format }}<span>{{'shopping.label.subtotal'|trans}}：{{ orderItem.totalPrice|price }}</span></p>
                                     </div>
@@ -405,7 +405,7 @@ $(function() {
                 {% endif %}
                 <div class="ec-totalBox__total">{{'common.label.cart_total'|trans}}<span class="ec-totalBox__price">{{ Order.total|price }}</span><span class="ec-totalBox__taxLabel">{{'shopping.label.tax_incl'|trans}}</span></div>
                 <div class="ec-totalBox__btn">
-                    <button type="submit" class="ec-blockBtn--action">{{'shopping.label.btn.place_order'|trans}}</button>
+                    <button type="submit" class="ec-blockBtn--action">{{'shopping.label.btn.place_order_confirm'|trans}}</button>
                     <a href="{{ url("cart") }}" class="ec-blockBtn--cancel">カートに戻る</a> {# TODO 未翻訳 #}
                 </div>
             </div>

@@ -57,6 +57,13 @@ class ClassName extends \Eccube\Entity\AbstractEntity
     /**
      * @var string
      *
+     * @ORM\Column(name="backend_name", type="string", length=255, nullable=true)
+     */
+    private $backend_name;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
@@ -119,6 +126,30 @@ class ClassName extends \Eccube\Entity\AbstractEntity
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set backend_name.
+     *
+     * @param string $backend_name
+     *
+     * @return ClassName
+     */
+    public function setBackendName($backendName)
+    {
+        $this->backend_name = $backendName;
+
+        return $this;
+    }
+
+    /**
+     * Get backend_name.
+     *
+     * @return string
+     */
+    public function getBackendName()
+    {
+        return $this->backend_name;
     }
 
     /**

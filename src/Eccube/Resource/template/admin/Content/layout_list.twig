@@ -21,72 +21,114 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 #}
-{% extends '@admin/default_frame.twig' %}
+{% extends '@admin/styleguide_frame.twig' %}
 
 {% set menus = ['content', 'layout'] %}
 
-{% block title %}{{'admin.content.layout_list.45'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.content.layout_list.46'|trans}}{% endblock %}
+{% block title %}{{ 'admin.content.layout_list.46'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.content.layout_list.45'|trans }}{% endblock %}
+
+{% block javascript %}
+    <script>
+        $(function () {
+            $('#layoutDelete').on('shown.bs.modal', function (event) {
+                var target = $(event.relatedTarget);
+                $(this).find('[data-method="delete"]').attr('href', target.data('url'));
+            });
+        });
+    </script>
+{% endblock %}
 
 {% block main %}
-    <div id="page_wrap" class="container-fluid">
-        <div id="layout_list" class="row">
-            <div id="layout_list_box" class="col-md-12">
-                <div id="layout_list__body" class="box">
-                    <div id="layout_list_box__header" class="box-header">
-                        <div class="box-title">
-                            {{'admin.content.layout_list.47'|trans}}
-                        </div>
-                    </div>
-                    <div id="sortable_list_box" class="box-body no-padding no-border">
-                        <div id="sortable_list_box__list" class="sortable_list">
-                            <div class="tableish">
-                                <div class="item_box tr" style="background-color: #F9F9F9;">
-                                    <div class="item_pattern td"><strong>ID</strong></div>
-                                    <div class="item_pattern td"><strong>{{'admin.content.layout_list.48'|trans}}</strong></div>
-                                    <div class="item_pattern td"><strong>{{'admin.content.layout_list.49'|trans}}</strong></div>
-                                    <div class="item_pattern td"></div>
+    <div class="c-contentsArea__cols">
+        <div class="c-contentsArea__primaryCol">
+            <div class="c-primaryCol">
+                <div class="d-block mb-3">
+                    <a class="btn btn-ec-regular"
+                       href="{{ url('admin_content_layout_new') }}">{{ 'admin.content.layout_list.add_layout'|trans }}</a>
+                </div>
+                {# layouts #}
+                {% for Layout in Layouts %}
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-8">
+                                    {% if Layout.DeviceType.id == constant('Eccube\\Entity\\Master\\DeviceType::DEVICE_TYPE_PC') %}
+                                        {% set icon = 'fa-desktop' %}
+                                    {% else %}
+                                        {% set icon = 'fa-mobile' %}
+                                    {% endif %}
+                                    <i class="fa {{ icon }} fa-lg mr-2"></i>
+                                    <a class="card-title align-middle"
+                                       href="{{ url('admin_content_layout_edit', { id : Layout.id } ) }}">{{ Layout.name }}</a>
+                                    {% if Layout.isDefault() == false %}
+                                        <button class="btn btn-ec-sub" type="button"
+                                                data-toggle="modal"
+                                                data-target="#layoutDelete"
+                                                data-url="{{ url('admin_content_layout_delete', { id: Layout.id }) }}"
+                                                {{ Layout.isDeletable() ? '' : 'disabled' }}>
+                                            {{ 'admin.content.layout_list.delete_layout'|trans }}
+                                        </button>
+                                    {% endif %}
                                 </div>
-                                {% for Layout in Layouts %}
-                                    <div id="sortable_list_box__item--{{ Layout.id }}" class="item_box tr">
-                                        <div id="sortable_list_box__id--{{ Layout.id }}" class="item_pattern td">
-                                            {{ Layout.id }}
-                                        </div>
-                                        <div id="sortable_list_box__name--{{ Layout.id }}" class="item_pattern td">
-                                            {{ Layout.name }}
-                                        </div>
-                                        <div id="sortable_list_box__device--{{ Layout.id }}" class="td">
-                                            {{ Layout.device_type }}
-                                        </div>
-                                        <div id="sortable_list_box__menu_box--{{ Layout.id }}" class="icon_edit td">
-                                            <div id="sortable_list_box__menu_box_toggle--{{ Layout.id }}" class="dropdown">
-                                                <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
-                                                <ul id="sortable_list_box__menu--{{ Layout.id }}" class="dropdown-menu dropdown-menu-right">
-                                                    <li>
-                                                        <a href="{{ url('admin_content_layout_edit', { id : Layout.id } ) }}" >{{'admin.content.layout_list.50'|trans}}</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="{{ url('admin_content_layout_delete', { 'id': Layout.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="{{'admin.content.layout_list.51'|trans}}">{{'common.label.delete'|trans}}</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div><!-- /.item_box -->
-                                {% endfor %}
-
+                                <div class="col-4 text-right"><a href="#layout-{{ Layout.id }}"
+                                                                 data-toggle="collapse"
+                                                                 aria-expanded="false"
+                                                                 aria-controls="layout-{{ Layout.id }}"><i
+                                                class="fa fa-angle-down fa-lg"></i></a></div>
                             </div>
                         </div>
-                    </div><!-- /.box-body -->
-                </div><!-- /.box -->
-                <!-- ▲ データがある時 ▲ -->
-            </div><!-- /.col -->
 
-            <div id="layout_list__footer" class="row btn_area2">
-                <div id="layout_list__insert_button" class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center">
-                    <a class="btn btn-primary btn-block btn-lg" href="{{ url('admin_content_layout_new')}}">{{'admin.content.layout_list.52'|trans}}</a>
+                        {# Pages #}
+                        {% if Layout.pages|length > 0 %}
+                            <div class="collapse ec-cardCollapse" id="layout-{{ Layout.id }}">
+                                {% for Page in Layout.pages %}
+                                    <div class="card-body p-0">
+                                        <div class="row justify-content-between p-3">
+                                            <div class="col-auto">
+                                                <i class="fa fa-bars text-ec-gray mr-3"></i><a
+                                                        href="{{ url('admin_content_page_edit', { id: Page.id }) }}">{{ Page.name }}</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="collapse ec-cardCollapse" id="layout-{{ Layout.id }}">
+                                <div class="p-0 empty-item">
+                                    <div class="d-block p-3">
+                                        <span class="text-muted">{{ 'admin.content.layout_list.no_pages_message'|trans }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                <div class="modal fade" id="layoutDelete" tabindex="-1" role="dialog" aria-labelledby="layoutDelete"
+                     aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">{{ 'admin.content.layout_list.delete_layout.title'|trans }}</h5>
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                                            aria-hidden="true">×</span></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>{{ 'admin.content.layout_list.delete_layout.confirm_message'|trans }}</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-ec-sub w-25" type="button"
+                                        data-dismiss="modal">{{ 'admin.content.layout_list.delete_layout.cancel'|trans }}</button>
+                                <a href="#" class="btn btn-ec-delete" {{ csrf_token_for_anchor() }} data-method="delete"
+                                   data-confirm="false">
+                                    {{ 'admin.content.layout_list.delete_layout.delete'|trans }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-
         </div>
     </div>
 {% endblock %}

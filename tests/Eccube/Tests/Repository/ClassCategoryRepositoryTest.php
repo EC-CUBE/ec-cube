@@ -47,6 +47,7 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
             $ClassName = new ClassName();
             $ClassName
                 ->setName('class-'.$i)
+                ->setBackendName('class-'.$i)
                 ->setSortNo($i);
             for ($j = 0; $j < 3; $j++) {
                 $ClassCategory = new ClassCategory();
@@ -100,7 +101,7 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
     public function testGetListWithParams()
     {
         $ClassName = $this->classNameRepository->findOneBy(
-            array('name' => 'class-1')
+            array('backend_name' => 'class-1')
         );
 
         $ClassCategories = $this->classCategoryRepository->getList($ClassName);
@@ -121,7 +122,7 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
     {
         $faker = $this->getFaker();
         $ClassName = $this->classNameRepository->findOneBy(
-            array('name' => 'class-1')
+            array('backend_name' => 'class-1')
         );
 
         $ClassCategory = new ClassCategory();
@@ -141,7 +142,8 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
         $this->removeClass();    // 一旦全件削除
         $ClassName = new ClassName();
         $ClassName
-            ->setName('class-3');
+            ->setName('class-3')
+            ->setBackendName('class-3');
         $this->classNameRepository->save($ClassName);
 
         $faker = $this->getFaker();

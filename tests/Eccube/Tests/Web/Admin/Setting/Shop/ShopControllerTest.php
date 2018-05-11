@@ -47,6 +47,7 @@ class ShopControllerTest extends AbstractAdminWebTestCase
      * @param bool $isSuccess
      * @param bool $expected
      * @dataProvider dataSubmitProvider
+     * @group cache-clear
      */
     public function testSubmit($isSuccess, $expected)
     {

@@ -24,16 +24,18 @@
 
 namespace Eccube\Form\Type\Admin;
 
-use Eccube\Common\EccubeConfig;
-use Eccube\Form\Type\Master\OrderStatusType;
-use Eccube\Form\Type\Master\PaymentType;
-use Eccube\Form\Type\Master\SexType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Eccube\Common\EccubeConfig;
+use Eccube\Form\Type\PriceType;
+use Eccube\Form\Type\Master\OrderStatusType;
+use Eccube\Form\Type\Master\PaymentType;
+use Eccube\Form\Type\Master\SexType;
 
 class SearchOrderType extends AbstractType
 {
@@ -55,7 +57,7 @@ class SearchOrderType extends AbstractType
         $builder
             // 受注ID・注文者名・注文者（フリガナ）・注文者会社名
             ->add('multi', TextType::class, array(
-                'label' => 'searchorder.label.customer_id',
+                'label' => 'searchorder.label.multi',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array('max' => $this->eccubeConfig['eccube_stext_len'])),
@@ -63,19 +65,40 @@ class SearchOrderType extends AbstractType
             ))
             ->add('status', OrderStatusType::class, array(
                 'label' => 'searchorder.label.status',
-            ))
-            ->add('multi_status', OrderStatusType::class, array(
-                'label' => 'searchorder.label.status',
                 'expanded' => true,
                 'multiple' => true,
             ))
             ->add('name', TextType::class, array(
+                'label' => 'searchorder.label.name',
+                'required' => false,
+            ))
+            ->add($builder
+                ->create('kana', TextType::class, array(
+                    'label' => 'searchorder.label.kana',
+                    'required' => false,
+                    'constraints' => array(
+                        new Assert\Regex(array(
+                            'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
+                            'message' => 'form.type.admin.notkanastyle',
+                        )),
+                    ),
+                ))
+                ->addEventSubscriber(new \Eccube\Form\EventListener\ConvertKanaListener('CV')
+            ))
+            ->add('company_name', TextType::class, array(
+                'label' => 'searchorder.label.company_name',
                 'required' => false,
             ))
             ->add('email', TextType::class, array(
+                'label' => 'searchorder.label.email',
+                'required' => false,
+            ))
+            ->add('order_id', IntegerType::class, array(
+                'label' => 'searchorder.label.order_id',
                 'required' => false,
             ))
             ->add('tel', TextType::class, array(
+                'label' => 'common.label.phone_number',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Regex(array(
@@ -160,32 +183,19 @@ class SearchOrderType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
-            ->add('payment_total_start', IntegerType::class, array(
+            ->add('payment_total_start', PriceType::class, array(
                 'label' => 'searchorder.label.purchased_amount_min',
                 'required' => false,
             ))
-            ->add('payment_total_end', IntegerType::class, array(
+            ->add('payment_total_end', PriceType::class, array(
                 'label' => 'searchorder.label.purchased_amount_max',
                 'required' => false,
             ))
             ->add('buy_product_name', TextType::class, array(
                 'label' => 'searchorder.label.purchased_products',
                 'required' => false,
-            ));
-
-        $builder->add(
-            $builder
-                ->create('kana', TextType::class, array(
-                    'required' => false,
-                    'constraints' => array(
-                        new Assert\Regex(array(
-                            'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
-                            'message' => 'form.type.admin.notkanastyle',
-                        )),
-                    ),
-                ))
-                ->addEventSubscriber(new \Eccube\Form\EventListener\ConvertKanaListener('CV'))
-        );
+            ))
+        ;
     }
 
     /**

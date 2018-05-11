@@ -38,6 +38,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class PaymentController
@@ -121,35 +122,39 @@ class PaymentController extends AbstractController
         $oldPaymentImage = $Payment->getPaymentImage();
 
         // 登録ボタン押下
-        if ($form->isSubmitted() && $form->isValid()) {
-            $Payment = $form->getData();
+        if ($form->isSubmitted() ) {
+            if ($form->isValid()) {
+                $Payment = $form->getData();
 
-            // ファイルアップロード
-            $file = $form['payment_image']->getData();
-            $fs = new Filesystem();
-            if ($file && $fs->exists($this->getParameter('eccube_temp_image_dir').'/'.$file)) {
-                $fs->rename(
-                    $this->getParameter('eccube_temp_image_dir').'/'.$file,
-                    $this->getParameter('eccube_save_image_dir').'/'.$file
+                // ファイルアップロード
+                $file = $form['payment_image']->getData();
+                $fs = new Filesystem();
+                if ($file && $fs->exists($this->getParameter('eccube_temp_image_dir') . '/' . $file)) {
+                    $fs->rename(
+                        $this->getParameter('eccube_temp_image_dir') . '/' . $file,
+                        $this->getParameter('eccube_save_image_dir') . '/' . $file
+                    );
+                }
+
+                $Payment->setVisible(true);
+                $this->entityManager->persist($Payment);
+                $this->entityManager->flush();
+
+                $event = new EventArgs(
+                    array(
+                        'form' => $form,
+                        'Payment' => $Payment,
+                    ),
+                    $request
                 );
+                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_EDIT_COMPLETE, $event);
+
+                $this->addSuccess('admin.register.complete', 'admin');
+
+                return $this->redirectToRoute('admin_setting_shop_payment');
+            } else {
+                $this->addError('admin.register.failed', 'admin');
             }
-
-            $Payment->setVisible(true);
-            $this->entityManager->persist($Payment);
-            $this->entityManager->flush();
-
-            $event = new EventArgs(
-                array(
-                    'form' => $form,
-                    'Payment' => $Payment,
-                ),
-                $request
-            );
-            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_EDIT_COMPLETE, $event);
-
-            $this->addSuccess('admin.register.complete', 'admin');
-
-            return $this->redirectToRoute('admin_setting_shop_payment');
         }
 
         return [
@@ -309,5 +314,30 @@ class PaymentController extends AbstractController
         }
 
         return $this->redirectToRoute('admin_setting_shop_payment');
+    }
+
+    /**
+     * @Method("POST")
+     * @Route("/%eccube_admin_route%/setting/shop/payment/sort_no/move", name="admin_setting_shop_payment_sort_no_move")
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function moveSortNo(Request $request)
+    {
+        if ($request->isXmlHttpRequest()) {
+            $this->isTokenValid();
+            $sortNos = $request->request->all();
+            foreach ($sortNos as $paymentId => $sortNo) {
+                /** @var Payment $Payment */
+                $Payment = $this->paymentRepository
+                    ->find($paymentId);
+                $Payment->setSortNo($sortNo);
+                $this->entityManager->persist($Payment);
+            }
+            $this->entityManager->flush();
+        }
+
+        return new Response();
     }
 }

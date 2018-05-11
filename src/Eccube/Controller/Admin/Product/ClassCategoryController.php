@@ -83,7 +83,6 @@ class ClassCategoryController extends AbstractController
      */
     public function index(Request $request, $class_name_id, $id = null)
     {
-        //
         $ClassName = $this->classNameRepository->find($class_name_id);
         if (!$ClassName) {
             throw new NotFoundHttpException(trans('classcategory.text.error.no_option'));
@@ -98,7 +97,6 @@ class ClassCategoryController extends AbstractController
             $TargetClassCategory->setClassName($ClassName);
         }
 
-        //
         $builder = $this->formFactory
             ->createBuilder(ClassCategoryType::class, $TargetClassCategory);
 
@@ -111,6 +109,14 @@ class ClassCategoryController extends AbstractController
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_CATEGORY_INDEX_INITIALIZE, $event);
+
+        $ClassCategories = $this->classCategoryRepository->getList($ClassName);
+
+        $forms = [];
+        foreach ($ClassCategories as $ClassCategory) {
+            $id = $ClassCategory->getId();
+            $forms[$id] = $this->formFactory->createNamed('class_category_'.$id, ClassCategoryType::class, $ClassCategory);
+        }
 
         $form = $builder->getForm();
 
@@ -137,15 +143,29 @@ class ClassCategoryController extends AbstractController
 
                 return $this->redirectToRoute('admin_product_class_category', array('class_name_id' => $ClassName->getId()));
             }
-        }
 
-        $ClassCategories = $this->classCategoryRepository->getList($ClassName);
+            foreach ($forms as $editForm) {
+                $editForm->handleRequest($request);
+                if ($editForm->isSubmitted() && $editForm->isValid()) {
+                    $this->classCategoryRepository->save($editForm->getData());
+                    $this->addSuccess('admin.class_category.save.complete', 'admin');
+
+                    return $this->redirectToRoute('admin_product_class_category', array('class_name_id' => $ClassName->getId()));
+                }
+            }
+        }
+        
+        $formViews = [];
+        foreach ($forms as $key => $value) {
+            $formViews[$key] = $value->createView();
+        }
 
         return [
             'form' => $form->createView(),
             'ClassName' => $ClassName,
             'ClassCategories' => $ClassCategories,
             'TargetClassCategory' => $TargetClassCategory,
+            'forms' => $formViews,
         ];
     }
 

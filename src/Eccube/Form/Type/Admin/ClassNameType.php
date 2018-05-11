@@ -64,6 +64,15 @@ class ClassNameType extends AbstractType
                     )),
                 ),
             ))
+            ->add('backend_name', TextType::class, array(
+                'label' => 'classname.label.backend_name',
+                'required' => false,
+                'constraints' => array(
+                    new Assert\Length(array(
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
+                    )),
+                ),
+            ))
         ;
     }
 

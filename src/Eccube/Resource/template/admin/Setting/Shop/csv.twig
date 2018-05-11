@@ -19,18 +19,18 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends '@admin/default_frame.twig' %}
+{% extends '@admin/styleguide_frame.twig' %}
 
 {% set menus = ['setting', 'shop', 'shop_csv'] %}
 
-{% block title %}{{'admin.setting.shop.csv.555'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.setting.shop.csv.556'|trans}}{% endblock %}
+{% block title %}{{ 'admin.setting.shop.csv.556'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.setting.shop.csv.555'|trans }}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block javascript %}
     <script>
-        $(function() {
+        $(function () {
 
             function add(event) {
                 $('#' + event.data.from + ' option:selected')
@@ -39,7 +39,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             }
 
             function addAll(event) {
-                $('#' + event.data.from + ' option').each(function() {
+                $('#' + event.data.from + ' option').each(function () {
                     $(this).appendTo($('#' + event.data.to));
                     $(this).prop('selected', false);// 選択状態の解除
                 });
@@ -50,30 +50,30 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             $('#remove').on('click', {from: 'csv-output', to: 'csv-not-output'}, add);
             $('#remove-all').on('click', {from: 'csv-output', to: 'csv-not-output'}, addAll);
 
-            $('.move').click(function() {
+            $('.move').click(function () {
                 var $op = $('#csv-output option:selected');
-                var val = $(this).val();
+                var val = $(this).data('value');
                 if ($op.length) {
                     val == 'up' ? $op.first().prev().before($op) : $op.last().next().after($op);
                 }
             });
 
-            $('.move-most').click(function() {
+            $('.move-most').click(function () {
                 var $op = $('#csv-output option:selected');
-                var val = $(this).val();
+                var val = $(this).data('value');
                 if ($op.length) {
                     val == 'top' ? $op.prependTo('#csv-output') : $op.appendTo('#csv-output');
                 }
             });
 
-            $('#csv-type').on('change', function() {
+            $('#csv-type').on('change', function () {
                 var id = $(this).val();
                 var href = '{{ url('admin_setting_shop_csv') }}' + '/' + id;
                 location.href = href;
                 return false;
             });
 
-            $('#csv-form').submit(function() {
+            $('#csv-form').submit(function () {
                 $('#csv-not-output').children().prop('selected', true);
                 $('#csv-output').children().prop('selected', true);
             })
@@ -82,77 +82,135 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% endblock javascript %}
 
 {% block main %}
-<div class="row" id="aside_wrap">
     <form id="csv-form" method="post" action="{{ url('admin_setting_shop_csv', {'id': id}) }}">
         {{ form_widget(form._token) }}
-            <div id="csv_edit_box" class="col-md-9">
-                <div id="csv_edit_box__body" class="box">
-                    <div id="csv_edit_box__header" class="box-header">
-                        {{ form_widget(form.csv_type, {'id': 'csv-type'}) }}
-                    </div>
-                    <div id="csv_edit_box__body_inner" class="box-body no-border row">
-                        <div id="csv_edit_box__csv_not_output" class="col-md-4 col-xs-4">
-                            <p>{{'admin.setting.shop.csv.557'|trans}}</p>
-                            {{ form_widget(form.csv_not_output, {'id': 'csv-not-output', 'attr': {'size': '30'}}) }}
-                        </div><!-- /.col -->
-                        <div id="csv_edit_box__button_menu" class="col-md-2 col-xs-2">
-                            <div id="csv_edit_box__button_area" class="text-center" style="padding-top: 230px;">
-                                <p>
-                                    <button type="button" id="add" class="btn btn-default"><span class="glyphicon glyphicon-step-forward"></span></button>
-                                </p>
-                                <p>
-                                    <button type="button" id="add-all" class="btn btn-default"><span class="glyphicon glyphicon-fast-forward"></span></button>
-                                </p>
-                                <p>
-                                    <button type="button" id="remove" class="btn btn-default"><span class="glyphicon glyphicon-step-backward"></span></button>
-                                </p>
-                                <p>
-                                    <button type="button" id="remove-all" class="btn btn-default"><span class="glyphicon glyphicon-fast-backward"></span></button>
-                                </p>
+        <div class="c-contentsArea__cols">
+            <div class="c-contentsArea__primaryCol">
+                <div class="c-primaryCol">
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header"><span>{{ 'admin.setting.shop.csv.565'|trans }}</span></div>
+                        <div class="card-body">
+                            <div class="row mb-4 justify-content-between">
+                                <div class="col-2"><span>{{ 'admin.setting.shop.csv.566'|trans }}</span></div>
+                                <div class="col-6">
+                                    {{ form_widget(form.csv_type, {'id': 'csv-type'}) }}
+                                </div>
+                                <div class="col"></div>
                             </div>
-                        </div><!-- /.col -->
-                        <div id="csv_edit_output_box" class="col-md-4 col-xs-4">
-                            <p>{{'admin.setting.shop.csv.558'|trans}}</p>
-                            {{ form_widget(form.csv_output, {'id': 'csv-output', 'attr': {'size': '30'}}) }}
-                        </div><!-- /.col -->
-                        <div id="csv_edit_output_box__button_menu" class="col-md-2 col-xs-2">
-                            <div style="padding-top: 200px;">
-                                <div id="csv_edit_output_box__button_area" class="well well-sm text-center">
-                                    <p>{{'admin.setting.shop.csv.559'|trans}}</p>
-                                    <p><button type="button" class="btn btn-default move" value="up">{{'admin.setting.shop.csv.560'|trans}}</button></p>
-                                    <p><button type="button" class="btn btn-default move" value="down">{{'admin.setting.shop.csv.561'|trans}}</button></p>
-                                    <p><button type="button" class="btn btn-default move-most" value="top">{{'admin.setting.shop.csv.562'|trans}}</button></p>
-                                    <p><button type="button" class="btn btn-default move-most" value="bottom">{{'admin.setting.shop.csv.563'|trans}}</button></p>
+                            <div class="row mb-2">
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label for="FormControlSelect1">{{ 'admin.setting.shop.csv.557'|trans }}</label>
+                                        {{ form_widget(form.csv_not_output, {'id': 'csv-not-output', 'attr': {'size': '30'}}) }}
+                                    </div>
+                                </div>
+                                <div class="col-2 align-self-center">
+                                    <div class="row mb-2">
+                                        <div class="col text-center"><span>{{ 'admin.setting.shop.csv.567'|trans }}</span></div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col text-center">
+                                            <div class="btn btn-ec-regular btn-block" id="add"><i class="fa fa-arrow-right"
+                                                                                         aria-hidden="true"></i><span>&nbsp;{{ 'admin.setting.shop.csv.568'|trans }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col text-center">
+                                            <div class="btn btn-ec-regular btn-block" id="remove"><i class="fa fa-arrow-left"
+                                                                                         aria-hidden="true"><span>&nbsp;{{ 'admin.setting.shop.csv.569'|trans }}</span></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col text-center">
+                                            <div class="btn btn-ec-regular btn-block" id="add-all"><i
+                                                        class="fa fa-arrow-circle-right" aria-hidden="true"><span>&nbsp;{{ 'admin.setting.shop.csv.570'|trans }}</span></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col text-center">
+                                            <div class="btn btn-ec-regular btn-block" id="remove-all"><i class="fa fa-arrow-circle-left"
+                                                                                         aria-hidden="true"><span>&nbsp;{{ 'admin.setting.shop.csv.571'|trans }}</span></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label for="FormControlSelect2">{{ 'admin.setting.shop.csv.558'|trans }}</label>
+                                        {{ form_widget(form.csv_output, {'id': 'csv-output', 'attr': {'size': '30'}}) }}
+                                    </div>
+                                </div>
+                                <div class="col-2 align-self-center">
+                                    <div class="row mb-2">
+                                        <div class="col text-center"><span>{{ 'admin.setting.shop.csv.559'|trans }}</span></div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col text-center">
+                                            <div class="btn btn-ec-regular btn-block move" data-value="up"><i class="fa fa-arrow-up"
+                                                                                         aria-hidden="true"><span>&nbsp;{{ 'admin.setting.shop.csv.572'|trans }}</span></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col text-center">
+                                            <div class="btn btn-ec-regular btn-block move" data-value="down"><i class="fa fa-arrow-down"
+                                                                                         aria-hidden="true"><span>&nbsp;{{ 'admin.setting.shop.csv.573'|trans }}</span></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col text-center">
+                                            <div class="btn btn-ec-regular btn-block move-most" data-value="top"><i class="fa fa-arrow-circle-up"
+                                                                                         aria-hidden="true"><span>&nbsp;{{ 'admin.setting.shop.csv.574'|trans }}</span></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col text-center">
+                                            <div class="btn btn-ec-regular btn-block move-most" data-value="bottom"><i class="fa fa-arrow-circle-down"
+                                                                                         aria-hidden="true"><span>&nbsp;{{ 'admin.setting.shop.csv.574'|trans }}</span></i>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div><!-- /.col -->
-                    </div>
-                    <div class="extra-form row">
-                        {% for f in form.getIterator %}
-                            {% if f.vars.name matches '[^plg*]' %}
-                                <div class="col-md-12 form-group">
-                                    {{ form_row(f) }}
+                            <div class="mb-4 extra-form row">
+                                <div class="col-12">
+                                    {% for f in form.getIterator %}
+                                        {% if f.vars.name matches '[^plg*]' %}
+                                            <div class="col-md-12 form-group">
+                                                {{ form_row(f) }}
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
                                 </div>
-                            {% endif %}
-                        {% endfor %}
+                            </div>
+                            <p></p>
+                            {{ 'admin.setting.shop.csv.576'|trans|raw }}
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3" id="aside_column">
-                <div id="common_box" class="col_inner">
-                    <div id="common_button_box" class="box no-header">
-                        <div id="common_button_box__body" class="box-body">
-                            <div id="common_button_box__confirm_button" class="box-body">
-                                <div class="row text-center">
-                                    <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
-                                        <button class="btn btn-primary btn-block btn-lg" type="submit">{{'admin.setting.shop.csv.564'|trans}}</button>
-                                    </div>
-                                </div>
-                            </div><!-- /.box-body -->
-                        </div><!-- /.box -->
+        </div>
+        <div class="c-conversionArea">
+            <div class="c-conversionArea__container">
+                <div class="row justify-content-between align-items-center">
+                    <div class="col-6">
+                        <div class="c-conversionArea__leftBlockItem">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="row align-items-center justify-content-end">
+                            <div class="col-auto">
+                                <button class="btn btn-ec-conversion px-5" type="submit">{{ 'common.label.save'|trans }}</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div><!-- /.col -->
+            </div>
         </div>
     </form>
 {% endblock %}

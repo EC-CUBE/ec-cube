@@ -132,6 +132,7 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
         }
         $TestClassName = new ClassName();
         $TestClassName->setName($this->faker->word)
+            ->setBackendName($this->faker->word)
             ->setSortNo($this->faker->randomNumber(3))
             ->setCreator($Creator);
 

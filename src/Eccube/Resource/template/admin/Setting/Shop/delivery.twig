@@ -19,12 +19,12 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends '@admin/default_frame.twig' %}
+{% extends '@admin/styleguide_frame.twig' %}
 
 {% set menus = ['setting', 'shop', 'shop_delivery'] %}
 
-{% block title %}{{'admin.setting.shop.delivery.569'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.setting.shop.delivery.570'|trans}}{% endblock %}
+{% block title %}{{ 'admin.setting.shop.delivery.570'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.setting.shop.delivery.569'|trans }}{% endblock %}
 
 {% block javascript %}
     <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.core.min.js', 'admin') }}"></script>
@@ -34,116 +34,124 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <script>
         $(function() {
             var oldSortNos = [];
-            // 画面の中のsortNo一覧を保持
-            $("div.tableish > .item_box").each(function() {
+            $('.sortable-item').each(function () {
                 oldSortNos.push(this.dataset.sortNo);
             });
-            // rsort
-            oldSortNos.sort(function(a, b) {
+            oldSortNos.sort(function (a, b) {
                 return a - b;
             }).reverse();
-
-            $("div.tableish").sortable({
-                items: '> .item_box',
-                cursor: 'move',
-                update: function(e, ui) {
-                    $("body").append($('<div class="modal-backdrop in"></div>'));
-                    updateSortNo();
-                }
-            });
-
-            var updateSortNo = function() {
-                // 並び替え後にsortNoを更新
+            // 並び替え後にsort noを更新
+            var updateSortNo = function () {
                 var newSortNos = {};
                 var i = 0;
-                $("div.tableish > .item_box").each(function() {
-                    newSortNos[this.dataset.deliveryId] = oldSortNos[i];
+                $('.sortable-item').each(function () {
+                    newSortNos[this.dataset.id] = oldSortNos[i];
                     i++;
                 });
-
                 $.ajax({
                     url: '{{ url('admin_setting_shop_delivery_sort_no_move') }}',
                     type: 'POST',
+                    headers: {
+                        'x-csrf-token': $('meta[name="x-csrf-token"]').attr('content')
+                    },
                     data: newSortNos
-                }).done(function() {
-                    $(".modal-backdrop").remove();
-                }).fail(function() {
+                }).always(function () {
                     $(".modal-backdrop").remove();
                 });
             };
+            // 最初と最後の↑↓を再描画
+            var redrawDisableAllows = function () {
+                var items = $('.sortable-item');
+                items.find('a').removeClass('disabled');
+                items.first().find('a.action-up').addClass('disabled');
+                items.last().find('a.action-down').addClass('disabled');
+            };
+            // オーバレイ後, 表示順の更新を行う
+            var moveSortNo = function () {
+                $('body').append($('<div class="modal-backdrop show"></div>'));
+                updateSortNo();
+                redrawDisableAllows();
+            }
+            // Drag and Drop
+            $(".sortable-container").sortable({
+                items: '> .sortable-item',
+                cursor: 'move',
+                update: function (e, ui) {
+                    moveSortNo();
+                }
+            });
+            // Up
+            $(".sortable-item").on('click', 'a.action-up', function (e) {
+                e.preventDefault();
+                var current = $(this).parents("li");
+                if (current.prev().hasClass('sortable-item')) {
+                    current.prev().before(current);
+                    moveSortNo();
+                }
+            });
+            // Down
+            $(".sortable-item").on('click', 'a.action-down', function (e) {
+                e.preventDefault();
+                var current = $(this).parents("li");
+                if (current.next().hasClass('sortable-item')) {
+                    current.next().after(current);
+                    moveSortNo();
+                }
+            });
         });
     </script>
 {% endblock %}
 
 {% block main %}
     <form name="form1" method="post">
-        <div id="delivery_wrap" class="row">
-            <div id="delivery_list_box" class="col-md-12">
-                <div id="delivery_list__body" class="box">
-                    <div id="delivery_list__header" class="box-header">
-                        <h3 class="box-title">{{'admin.setting.shop.delivery.571'|trans}}</h3>
-                    </div>
-                    {% if Deliveries|length > 0 %}
-                        <div id="delivery_list__body_inner" class="box-body no-padding no-border">
-                            <div id="delivery_list__sortable_area" class="sortable_list">
-                                <div class="tableish">
-
-                                    {% for Delivery in Deliveries %}
-
-                                        <div id="delivery_list__item--{{ Delivery.id }}" class="item_box tr" data-delivery-id="{{ Delivery.id }}" data-sort-no="{{ Delivery.sortNo }}">
-                                            <div class="icon_sortable td">
-                                                <svg class="cb cb-ellipsis-v">
-                                                    <use xlink:href="#cb-ellipsis-v"/>
-                                                </svg>
-                                            </div>
-                                            <div id="delivery_list__name--{{ Delivery.id }}" class="item_pattern td">
-                                                <a href="{{ url('admin_setting_shop_delivery_edit', {id: Delivery.id} ) }}">
-                                                    {{ Delivery.name }} / {{ Delivery.service_name }}{{ Delivery.visible == false ? 'delivery.text.hidden'|trans }}
-                                                </a>
-                                            </div>
-                                            <div id="delivery_list__menu_box--{{ Delivery.id }}" class="icon_edit td">
-                                                <div id="delivery_list__menu_toggle--{{ Delivery.id }}" class="dropdown">
-                                                    <a class="dropdown-toggle" data-toggle="dropdown">
-                                                        <svg class="cb cb-ellipsis-h">
-                                                            <use xlink:href="#cb-ellipsis-h"/>
-                                                        </svg>
-                                                    </a>
-                                                    <ul id="delivery_list__menu--{{ Delivery.id }}" class="dropdown-menu dropdown-menu-right">
-                                                        <li><a href="{{ url('admin_setting_shop_delivery_edit', {id: Delivery.id} ) }}">編集</a></li>
-                                                        {% if Delivery.isVisible %}
-                                                            <li><a href="{{ url('admin_setting_shop_delivery_visibility', {id: Delivery.id} ) }}" {{ csrf_token_for_anchor() }} data-method="put" data-message="非表示に変更してもよろしいですか？">非表示</a></li>
-                                                        {% else %}
-                                                            <li><a href="{{ url('admin_setting_shop_delivery_visibility', {id: Delivery.id} ) }}" {{ csrf_token_for_anchor() }} data-method="put" data-message="表示に変更してもよろしいですか？">表示</a></li>
-                                                        {% endif %}
-                                                        <li><a href="{{ url('admin_setting_shop_delivery_delete', {id: Delivery.Id} ) }}" {{ csrf_token_for_anchor() }} data-method="delete">削除</a></li>
-                                                    </ul>
+        <div class="c-contentsArea__cols">
+            <div class="c-contentsArea__primaryCol">
+                <div class="c-primaryCol">
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-body p-0">
+                            <div class="card rounded border-0 mb-2">
+                                <ul class="list-group list-group-flush sortable-container">
+                                    {% if Deliveries|length > 0 %}
+                                        {% for Delivery in Deliveries %}
+                                            <li class="list-group-item sortable-item" data-id="{{ Delivery.id }}" data-sort-no="{{ Delivery.sortNo }}">
+                                                <div class="row justify-content-around">
+                                                    <div class="col-auto d-flex align-items-center"><i class="fa fa-bars text-ec-gray"></i></div>
+                                                    <div class="col d-flex align-items-center">
+                                                        <a href="{{ url('admin_setting_shop_delivery_edit', {id: Delivery.id} ) }}">
+                                                            {{ Delivery.name }} / {{ Delivery.service_name }}{{ Delivery.visible == false ? 'delivery.text.hidden'|trans }}
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-auto text-right">
+                                                        <a href="#" class="btn btn-ec-actionIcon mr-3 action-up {% if loop.first %}disabled{% endif %}" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.label.move.up'|trans }}">
+                                                            <i class="fa fa-arrow-up fa-lg text-secondary"></i>
+                                                        </a>
+                                                        <a href="#" class="btn btn-ec-actionIcon mr-3 action-down {% if loop.last %}disabled{% endif %}" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.label.move.down'|trans }}">
+                                                            <i class="fa fa-arrow-down fa-lg text-secondary"></i>
+                                                        </a>
+                                                        <a href="{{ url('admin_setting_shop_delivery_delete', {id: Delivery.Id} ) }}" class="btn btn-ec-actionIcon mr-3" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.label.delete'|trans }}" {{ csrf_token_for_anchor() }} data-method="delete">
+                                                            <i class="fa fa-close fa-lg text-secondary"></i>
+                                                        </a>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div><!-- /.item_box -->
-                                    {% endfor %}
-
-                                </div>
+                                            </li>
+                                        {% endfor %}
+                                    {% endif %}
+                                </ul>
                             </div>
-                        </div><!-- /.box-body -->
-                    {% else %}
-                        <div id="delivery_list__body_inner" class="box-body no-padding">
-                            <div class="data-empty">
-                                <svg class="cb cb-inbox">
-                                    <use xlink:href="#cb-inbox"/>
-                                </svg>
-                                <p>{{'admin.setting.shop.delivery.576'|trans}}</p></div>
-                        </div><!-- /.box-body -->
-                    {% endif %}
-                    <!-- ▲ データがある時 ▲ -->
-                </div><!-- /.box -->
-            </div><!-- /.col -->
+                        </div>
+                    </div>
+                    <p>{{ 'admin.common.label.move.message'|trans }}</p>
+                </div>
+                <div class="card rounded border-0">
+                    <div class="card-body p-4">
+                        <div class="text-center">
+                            {# TODO 新規作成ボタンのレイアウトについてデザイン調整が必要 #}
+                            <a href="{{ url('admin_setting_shop_delivery_new') }}" class="btn btn-ec-regular pl-4 pr-4">{{ 'admin.setting.shop.delivery.577'|trans }}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </form>
-
-    <div id="delivery_list_footer" class="row">
-        <div id="delivery_list_footer__button_area" class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center btn_area">
-            <a href="{{ url('admin_setting_shop_delivery_new') }}" class="btn btn-primary btn-block btn-lg">{{'admin.setting.shop.delivery.577'|trans}}</a>
-        </div>
-    </div>
 
 {% endblock %}

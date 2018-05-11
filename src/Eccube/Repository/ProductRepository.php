@@ -27,6 +27,7 @@ namespace Eccube\Repository;
 use Eccube\Common\EccubeConfig;
 use Eccube\Doctrine\Query\Queries;
 use Eccube\Entity\Product;
+use Eccube\Entity\ProductStock;
 use Eccube\Util\StringUtil;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -141,18 +142,14 @@ class ProductRepository extends AbstractRepository
             //@see http://doctrine-orm.readthedocs.org/en/latest/reference/dql-doctrine-query-language.html
             $qb->addSelect('MIN(pc.price02) as HIDDEN price02_min');
             $qb->innerJoin('p.ProductClasses', 'pc');
-            $qb->groupBy('p');
-            // postgres9.0以下は, groupBy('p.id')が利用できない
-            // mysqlおよびpostgresql9.1以上であればgroupBy('p.id')にすることで性能向上が期待できる.
-            // @see https://github.com/EC-CUBE/ec-cube/issues/1904
-            // $qb->groupBy('p.id');
+            $qb->groupBy('p.id');
             $qb->orderBy('price02_min', 'ASC');
             $qb->addOrderBy('p.id', 'DESC');
             // 価格高い順
         } else if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == $config['eccube_product_order_price_higher']) {
             $qb->addSelect('MAX(pc.price02) as HIDDEN price02_max');
             $qb->innerJoin('p.ProductClasses', 'pc');
-            $qb->groupBy('p');
+            $qb->groupBy('p.id');
             $qb->orderBy('price02_max', 'DESC');
             $qb->addOrderBy('p.id', 'DESC');
             // 新着順
@@ -248,6 +245,20 @@ class ProductRepository extends AbstractRepository
             $qb
                 ->andWhere('pc.stock_unlimited = :StockUnlimited AND pc.stock = 0')
                 ->setParameter('StockUnlimited', $searchData['stock_status']);
+        }
+
+        // stock status
+        if (isset($searchData['stock']) && !empty($searchData['stock'])) {
+            switch ($searchData['stock']) {
+                case [ProductStock::IN_STOCK]:
+                    $qb->andWhere('pc.stock_unlimited = true OR pc.stock > 0');
+                    break;
+                case [ProductStock::OUT_OF_STOCK]:
+                    $qb->andWhere('pc.stock_unlimited = false AND pc.stock <= 0');
+                    break;
+                default:
+                    // 共に選択された場合は全権該当するので検索条件に含めない
+            }
         }
 
         // crate_date

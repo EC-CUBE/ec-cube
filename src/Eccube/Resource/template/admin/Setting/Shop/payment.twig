@@ -19,105 +19,203 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends '@admin/default_frame.twig' %}
+{% extends '@admin/styleguide_frame.twig' %}
 
 {% set menus = ['setting', 'shop', 'shop_payment'] %}
 
-{% block title %}{{'admin.setting.shop.payment.595'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.setting.shop.payment.596'|trans}}{% endblock %}
+{% block title %}{{'admin.setting.shop.payment.596'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.setting.shop.payment.595'|trans}}{% endblock %}
+
+{% block stylesheet %}
+    <style type="text/css">
+        li.list-group-item {
+            z-index: inherit !important;
+        }
+    </style>
+{% endblock %}
+
+{% block javascript %}
+    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.core.min.js', 'admin') }}"></script>
+    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.widget.min.js', 'admin') }}"></script>
+    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.mouse.min.js', 'admin') }}"></script>
+    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.sortable.min.js', 'admin') }}"></script>
+    <script>
+        $(function () {
+            // 初期表示時のsort noを保持.
+            var oldSortNos = [];
+            $('.sortable-item').each(function () {
+                oldSortNos.push(this.dataset.sortNo);
+            });
+            oldSortNos.sort(function (a, b) {
+                return a - b;
+            }).reverse();
+
+            // 並び替え後にsort noを更新
+            var updateSortNo = function () {
+                var newSortNos = {};
+                var i = 0;
+                $('.sortable-item').each(function () {
+                    newSortNos[this.dataset.id] = oldSortNos[i];
+                    i++;
+                });
+
+                $.ajax({
+                    url: '{{ url('admin_setting_shop_payment_sort_no_move') }}',
+                    type: 'POST',
+                    data: newSortNos
+                }).always(function () {
+                    $(".modal-backdrop").remove();
+                });
+            };
+
+            // 最初と最後の↑↓を再描画
+            var redrawDisableAllows = function () {
+                var items = $('.sortable-item');
+                items.find('a').removeClass('disabled');
+                items.first().find('a.action-up').addClass('disabled');
+                items.last().find('a.action-down').addClass('disabled');
+            };
+
+            // オーバレイ後, 表示順の更新を行う
+            var moveSortNo = function () {
+                $('body').append($('<div class="modal-backdrop show"></div>'));
+                updateSortNo();
+                redrawDisableAllows();
+            }
+
+            // Drag and Drop
+            $(".sortable-container").sortable({
+                items: '> .sortable-item',
+                cursor: 'move',
+                update: function (e, ui) {
+                    moveSortNo();
+                }
+            });
+
+            // Up
+            $(".sortable-item").on('click', 'a.action-up', function (e) {
+                e.preventDefault();
+                var current = $(this).parents("li");
+
+                if (current.prev().hasClass('sortable-item')) {
+                    current.prev().before(current);
+                    moveSortNo();
+                }
+            });
+
+            // Down
+            $(".sortable-item").on('click', 'a.action-down', function (e) {
+                e.preventDefault();
+                var current = $(this).parents("li");
+
+                if (current.next().hasClass('sortable-item')) {
+                    current.next().after(current);
+                    moveSortNo();
+                }
+            });
+        });
+    </script>
+{% endblock %}
 
 {% block main %}
-    <div id="payment_wrap" class="row">
-        <div id="payment_list_box" class="col-md-12">
-            <div id="payment_list_box__body" class="box">
-                <div id="payment_list_box__header" class="box-header with-arrow">
-                    <h3 class="box-title">
-                        {{'admin.setting.shop.payment.597'|trans}}
-                    </h3>
-                </div><!-- /.box-header -->
-                <div id="payment_list_box__body_inner" class="box-body">
-                    <div id="payment_list__list" class="table_list">
-                        <div id="payment_list__list_body" class="table-responsive with-border">
-                            <table class="table table-striped">
-                                <thead>
-                                <tr id="payment_list__list_header">
-                                    <th id="payment_list__header_method">{{'admin.setting.shop.payment.597'|trans}}</th>
-                                    <th id="payment_list__header_charge">{{'admin.setting.shop.payment.599'|trans}}</th>
-                                    <th id="payment_list__header_rule">{{'admin.setting.shop.payment.600'|trans}}</th>
-                                    <th id="payment_list__header_menu_box">&nbsp;</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <form name="delete_form" id="delete_form" action="" method="post">
-                                </form>
-                                {% for Payment in Payments %}
-                                    <tr id="payment_list__item--{{ Payment.id }}">
-
-                                        <td id="payment_list__method--{{ Payment.id }}" class="member_name">{{ Payment.methodForAdmin }}</td>
-                                        <td id="payment_list__charge--{{ Payment.id }}" class="member_name">
-                                            {{eccube_config.currency}} {{ Payment.charge }}
-                                        </td>
-                                        <td id="payment_list__rule--{{ Payment.id }}" class="member_name">
-                                            {{eccube_config.currency}}
+    <div class="c-contentsArea__cols">
+        <div class="c-contentsArea__primaryCol">
+            <div class="c-primaryCol">
+                <div class="card rounded border-0 mb-4">
+                    <div class="card-body p-0">
+                        <ul class="list-group list-group-flush mb-4 sortable-container">
+                            <li class="list-group-item">
+                                <div class="row justify-content-around">
+                                    <div class="col-auto"><strong>&nbsp;</strong></div>
+                                    <div class="col-1"><strong>{{'admin.setting.shop.payment.597'|trans}}</strong></div>
+                                    <div class="col-1"><strong>{{'admin.setting.shop.payment.599'|trans}}</strong></div>
+                                    <div class="col"><strong>{{'admin.setting.shop.payment.600'|trans}}</strong></div>
+                                </div>
+                            </li>
+                            {% for Payment in Payments %}
+                            <li class="list-group-item sortable-item" data-id="{{ Payment.id }}" data-sort-no="{{ Payment.sortNo }}">
+                                <div class="row justify-content-around">
+                                    <div class="col-auto d-flex align-items-center"><i class="fa fa-bars text-ec-gray"></i></div>
+                                    <div class="col-1 d-flex align-items-center"><a href="{{ url('admin_setting_shop_payment_edit', { id: Payment.id}) }}">{{ Payment.methodForAdmin }}</a></div>
+                                    <div class="col-1 d-flex align-items-center"><span>{{ Payment.charge|price }}</span></div>
+                                    <div class="col d-flex align-items-center">
+                                        <span>
                                             {% if Payment.rule_min > 0 %}
-                                                {{ Payment.rule_min }}
+                                                {{ Payment.rule_min|price }}
                                             {% else %}
-                                                0
+                                                {{ 0|price }}
                                             {% endif %}
 
                                             {% if Payment.rule_max > 0 %}
-                                                ～{{eccube_config.currency}}{{ Payment.rule_max }}
+                                                ～{{ Payment.rule_max|price }}
                                             {% elseif Payment.rule_max is null %}
                                                 ～{{'admin.setting.shop.payment.603'|trans}}
                                             {% endif %}
-                                        </td>
-                                        <td id="payment_list__menu_box--{{ Payment.id }}" class="icon_edit">
-                                            <div id="payment_list__menu_toggle--{{ Payment.id }}" class="dropdown">
-                                                <a class="dropdown-toggle" data-toggle="dropdown">
-                                                    <svg class="cb cb-ellipsis-h">
-                                                        <use xlink:href="#cb-ellipsis-h"/>
-                                                    </svg>
-                                                </a>
-                                                <ul id="payment_list__menu--{{ Payment.id }}" class="dropdown-menu dropdown-menu-right">
-                                                    <li>
-                                                        <a href="{{ url('admin_setting_shop_payment_edit', { id: Payment.id}) }}">{{'admin.setting.shop.payment.604'|trans}}</a>
-                                                    </li>
-                                                    <li>
-                                                        {% if Payment.visible %}
-                                                            <a href="{{ url('admin_setting_shop_payment_visible', { id: Payment.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-message="{{'admin.setting.shop.payment.605'|trans}}">{{'common.label.disabled'|trans}}</a>
-                                                        {% else %}
-                                                            <a href="{{ url('admin_setting_shop_payment_visible', { id: Payment.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-message="{{'admin.setting.shop.payment.606'|trans}}">{{'common.label.enabled'|trans}}</a>
-                                                        {% endif %}
-                                                    </li>
-                                                    <li>
-                                                        <a href="{{ url('admin_setting_shop_payment_delete', { id: Payment.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete">{{'admin.setting.shop.payment.607'|trans}}</a>
-                                                    </li>
-                                                    <li>
-                                                        {% if loop.first == false %}
-                                                            <li><a href="{{ url('admin_setting_shop_payment_up', {id: Payment.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">{{'admin.setting.shop.payment.608'|trans}}</a></li>
-                                                        {% endif %}
-                                                        {% if loop.last == false %}
-                                                            <li><a href="{{ url('admin_setting_shop_payment_down', {id: Payment.id}) }}"  {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">{{'admin.setting.shop.payment.609'|trans}}</a></li>
-                                                        {% endif %}
-                                                    </li>
-                                                </ul>
+                                        </span>
+                                        </div>
+                                        <div class="col-3 text-right">
+                                            <div class="row">
+                                                <div class="col text-center" data-toggle="tooltip" data-placement="top" title="{{ 'admin.setting.shop.payment.608'|trans }}">
+                                                    <a class="btn btn-ec-actionIcon mr-3 action-up{{ loop.first ? ' disabled' }}" data-toggle="tooltip" data-placement="top" title="{{'admin.setting.shop.payment.608'|trans}}">
+                                                        <i class="fa fa-arrow-up fa-lg text-secondary"></i>
+                                                    </a>
+                                                </div>
+                                                <div class="col text-center" data-toggle="tooltip" data-placement="top" title="{{ 'admin.setting.shop.payment.609'|trans }}">
+                                                    <a class="btn btn-ec-actionIcon mr-3 action-down{{ loop.last ? ' disabled' }}"  data-toggle="tooltip" data-placement="top" title="{{'admin.setting.shop.payment.609'|trans}}">
+                                                        <i class="fa fa-arrow-down fa-lg text-secondary"></i>
+                                                    </a>
+                                                </div>
+                                                <div class="col text-center" data-toggle="tooltip" data-placement="top" title="{{'admin.setting.shop.payment.607'|trans}}">
+                                                    <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#delete_{{ Payment.id }}">
+                                                        <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
+                                                    </a>
+                                                    <div class="modal fade" id="delete_{{ Payment.id }}" tabindex="-1"
+                                                         role="dialog"
+                                                         aria-labelledby="delete_{{ Payment.id }}" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title font-weight-bold">
+                                                                        {{ 'admin.setting.shop.payment.modal.header'|trans }}</h5>
+                                                                    <button class="close" type="button"
+                                                                            data-dismiss="modal"
+                                                                            aria-label="Close"><span
+                                                                                aria-hidden="true">×</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body text-left">
+                                                                    <p class="text-left">
+                                                                        {{ 'admin.setting.shop.payment.modal.body'|trans }}</p>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'common.label.cancel'|trans }}
+                                                                    </button>
+                                                                    <a class="btn btn-ec-delete" href="{{ url('admin_setting_shop_payment_delete', {'id' : Payment.id}) }}" {{ csrf_token_for_anchor() }}
+                                                                       data-method="delete" data-confirm="false">{{ 'common.label.delete'|trans }}</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            {% endfor %}
+
+                        </ul>
                     </div>
-                </div><!-- /.box-body -->
-
-            </div><!-- /.box -->
-        </div><!-- /.col -->
-    </div>
-
-    <div id="payment_list__footer" class="row">
-        <div id="payment_list__insert_button" class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center btn_area">
-            <a href="{{ url('admin_setting_shop_payment_new') }}" class="btn btn-primary btn-block btn-lg">{{'admin.setting.shop.payment.610'|trans}}</a>
+                </div>
+                <p>{{'admin.setting.shop.payment.notice'|trans}}</p>
+            </div>
+            <div class="card rounded border-0">
+                <div class="card-body p-4">
+                    <div class="text-center">
+                        {# TODO 新規作成ボタンのレイアウトについてデザイン調整が必要 #}
+                        <a href="{{ url('admin_setting_shop_payment_new') }}" class="btn btn-ec-regular pl-4 pr-4">{{'admin.setting.shop.payment.610'|trans}}</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

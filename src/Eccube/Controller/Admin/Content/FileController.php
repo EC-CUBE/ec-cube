@@ -37,15 +37,22 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\Validator\Constraints as Assert;
+use Eccube\Util\FilesystemUtil;
 
 class FileController extends AbstractController
 {
     const SJIS = 'sjis-win';
     const UTF = 'UTF-8';
-    private $error = null;
+    private $errors = [];
     private $encode = '';
 
-    public function __construct(){
+    /**
+     * FileController constructor.
+     */
+    public function __construct()
+    {
         $this->encode = self::UTF;
         if ('\\' === DIRECTORY_SEPARATOR) {
             $this->encode = self::SJIS;
@@ -64,17 +71,19 @@ class FileController extends AbstractController
             ->getForm();
 
         // user_data_dir
-        $userDataDir = $this->getUserDataDir();
-        $topDir = $this->normalizePath($userDataDir);
+        // $userDataDir = $this->getUserDataDir();
+        // $topDir = $this->normalizePath($userDataDir);
+        $topDir = '/';
         // user_data_dirの親ディレクトリ
-        $htmlDir = $this->normalizePath($topDir.'/../');
+        $htmlDir = $this->normalizePath($this->getUserDataDir().'/../');
+
         // カレントディレクトリ
-        $nowDir = $this->checkDir($request->get('tree_select_file'), $topDir)
-            ? $this->normalizePath($request->get('tree_select_file'))
+        $nowDir = $this->checkDir($this->getUserDataDir($request->get('tree_select_file')), $this->getUserDataDir())
+            ? $this->normalizePath($this->getUserDataDir($request->get('tree_select_file')))
             : $topDir;
+
         // パンくず表示用データ
         $nowDirList = json_encode(explode('/', trim(str_replace($htmlDir, '', $nowDir), '/')));
-
         $isTopDir = ($topDir === $nowDir);
         $parentDir = substr($nowDir, 0, strrpos($nowDir, '/'));
 
@@ -91,24 +100,23 @@ class FileController extends AbstractController
             }
         }
 
-        $tree = $this->getTree($topDir, $request);
+        $tree = $this->getTree($this->getUserDataDir(), $request);
         $arrFileList = $this->getFileList($nowDir);
-
-        $javascript = $this->getJsArrayList($tree);
-        $onload = "eccube.fileManager.viewFileTree('tree', arrTree, '" . $nowDir . "', 'tree_select_file', 'tree_status', 'move');";
+        $paths = $this->getPathsToArray($tree);
+        $tree = $this->getTreeToArray($tree);
 
         return [
             'form' => $form->createView(),
-            'tpl_onload' => $onload,
-            'tpl_javascript' => $javascript,
-            'top_dir' => $topDir,
+            'tpl_javascript' => json_encode($tree),
+            'top_dir' => $this->getJailDir($topDir),
             'tpl_is_top_dir' => $isTopDir,
-            'tpl_now_dir' => $nowDir,
-            'html_dir' => $htmlDir,
+            'tpl_now_dir' => $this->getJailDir($nowDir),
+            'html_dir' => $this->getJailDir($htmlDir),
             'now_dir_list' => $nowDirList,
             'tpl_parent_dir' => $parentDir,
             'arrFileList' => $arrFileList,
-            'error' => $this->error,
+            'errors' => $this->errors,
+            'paths' => json_encode($paths)
         ];
     }
 
@@ -117,8 +125,7 @@ class FileController extends AbstractController
      */
     public function view(Request $request)
     {
-        $topDir = $this->getUserDataDir();
-        if ($this->checkDir($this->convertStrToServer($request->get('file')), $topDir)) {
+        if ($this->checkDir($this->convertStrToServer($request->get('file')), $this->getUserDataDir())) {
             $file = $this->convertStrToServer($request->get('file'));
             setlocale(LC_ALL, "ja_JP.UTF-8");
             return new BinaryFileResponse($file);
@@ -127,7 +134,6 @@ class FileController extends AbstractController
         throw new NotFoundHttpException();
     }
 
-    
     public function create(Request $request)
     {
 
@@ -146,14 +152,14 @@ class FileController extends AbstractController
             $pattern = "/[^[:alnum:]_.\\-]/";
             $pattern2 = "/^\.(.*)$/";
             if (empty($filename)) {
-                $this->error = array('message' => trans('file.text.error.folder_name'));
+                $this->errors[] = array('message' => trans('file.text.error.folder_name'));
             } elseif (strlen($filename) > 0 && preg_match($pattern, $filename)) {
-                $this->error = array('message' => trans('file.text.error.folder_symbol'));
+                $this->errors[] = array('message' => trans('file.text.error.folder_symbol'));
             } elseif (strlen($filename) > 0 && preg_match($pattern2, $filename)) {
-                $this->error = array('message' => trans('file.text.error.folder_period'));
+                $this->errors[] = array('message' => trans('file.text.error.folder_period'));
             } else {
                 $topDir = $this->getUserDataDir();
-                $nowDir = $this->checkDir($request->get('now_dir'), $topDir)
+                $nowDir = $this->checkDir($request->get('now_dir'), $this->getUserDataDir())
                     ? $this->normalizePath($request->get('now_dir'))
                     : $topDir;
                 $fs->mkdir($nowDir . '/' . $filename);
@@ -220,41 +226,66 @@ class FileController extends AbstractController
     public function upload(Request $request)
     {
         $form = $this->formFactory->createBuilder(FormType::class)
-            ->add('file', FileType::class)
+            ->add('file', FileType::class, [
+                'constraints' => [
+                    new Assert\NotBlank([
+                        'message' => 'file.text.error.file_not_selected'
+                    ])
+                ]
+            ])
             ->add('create_file', TextType::class)
             ->getForm();
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
-            $data = $form->getData();
-            if (empty($data['file'])) {
-                $this->error = array('message' => trans('file.text.error.file_not_selectedd.'));
-            } else {
-                $topDir = $this->getUserDataDir();
-                if ($this->checkDir($request->get('now_dir'), $topDir)) {
-                    $filename = $this->convertStrToServer($data['file']->getClientOriginalName());
-                    $data['file']->move($request->get('now_dir'), $filename);
-
-                    $this->addSuccess('admin.save.complete', 'admin');
-                }
+        if (!$form->isValid()) {
+            foreach ($form->getErrors(true) as $error) {
+                $this->errors[] = ['message' => $error->getMessage()];
             }
+            return;
+        }
+
+        $data = $form->getData();
+        $topDir = $this->getUserDataDir();
+        $nowDir = $this->getUserDataDir($request->get('now_dir'));
+        if (!$this->checkDir($nowDir, $topDir)) {
+            $this->errors[] = ['message' => 'file.text.error.invalid_upload_folder'];
+            return;
+        }
+
+        $filename = $this->convertStrToServer($data['file']->getClientOriginalName());
+        try {
+            $data['file']->move($nowDir, $filename);
+            $this->addSuccess('admin.content.file.upload_success', 'admin');
+        } catch (FileException $e) {
+            $this->errors[] = ['message' => $e->getMessage()];
         }
     }
 
-    private function getJsArrayList($tree)
+    private function getTreeToArray($tree)
     {
-        $str = "arrTree = new Array();\n";
+        $arrTree = [];
         foreach ($tree as $key => $val) {
-            $str .= 'arrTree[' . $key . "] = new Array(" . $key . ", '" . $val['type'] . "', '" . $val['path'] . "', " . $val['sort_no'] . ',';
-            if ($val['open']) {
-                $str .= "true);\n";
-            } else {
-                $str .= "false);\n";
-            }
+            $path = $this->getJailDir($val['path']);
+            $arrTree[$key] = [
+                $key,
+                $val['type'],
+                $path,
+                $val['depth'],
+                $val['open'] ? 'true' : 'false'
+            ];
+        }
+        return $arrTree;
+    }
+
+    private function getPathsToArray($tree)
+    {
+        $paths = [];
+        foreach ($tree as $val) {
+            $paths[] = $this->getJailDir($val['path']);
         }
 
-        return $str;
+        return $paths;
     }
 
     private function getTree($topDir, $request)
@@ -267,11 +298,11 @@ class FileController extends AbstractController
         $tree[] = array(
             'path' => $topDir,
             'type' => '_parent',
-            'sort_no' => 0,
+            'depth' => 0,
             'open' => true,
         );
 
-        $defaultSortNo = count(explode('/', $topDir));
+        $defaultDepth = count(explode('/', $topDir));
 
         $openDirs = array();
         if ($request->get('tree_status')) {
@@ -281,12 +312,11 @@ class FileController extends AbstractController
         foreach ($finder as $dirs) {
             $path = $this->normalizePath($dirs->getRealPath());
             $type = (iterator_count(Finder::create()->in($path)->directories())) ? '_parent' : '_child';
-            $sortNo = count(explode('/', $path)) - $defaultSortNo;
-
+            $depth = count(explode('/', $path)) - $defaultDepth;
             $tree[] = array(
                 'path' => $path,
                 'type' => $type,
-                'sort_no' => $sortNo,
+                'depth' => $depth,
                 'open' => (in_array($path, $openDirs)) ? true : false,
             );
         }
@@ -296,13 +326,12 @@ class FileController extends AbstractController
 
     private function getFileList($nowDir)
     {
-        $topDir = $this->getUserDataDir();
+        $topDir = $this->getuserDataDir();
         $filter = function (\SplFileInfo $file) use ($topDir) {
             $acceptPath = realpath($topDir);
             $targetPath = $file->getRealPath();
             return (strpos($targetPath, $acceptPath) === 0);
         };
-
         $dirFinder = Finder::create()
             ->filter($filter)
             ->in($nowDir)
@@ -322,8 +351,8 @@ class FileController extends AbstractController
         foreach ($dirs as $dir) {
             $arrFileList[] = array(
                 'file_name' => $this->convertStrFromServer($dir->getFilename()),
-                'file_path' => $this->convertStrFromServer($this->normalizePath($dir->getRealPath())),
-                'file_size' => $dir->getSize(),
+                'file_path' => $this->convertStrFromServer($this->getJailDir($this->normalizePath($dir->getRealPath()))),
+                'file_size' => FilesystemUtil::sizeToHumanReadable($dir->getSize()),
                 'file_time' => date("Y/m/d", $dir->getmTime()),
                 'is_dir' => true,
             );
@@ -331,8 +360,8 @@ class FileController extends AbstractController
         foreach ($files as $file) {
             $arrFileList[] = array(
                 'file_name' => $this->convertStrFromServer($file->getFilename()),
-                'file_path' => $this->convertStrFromServer($this->normalizePath($file->getRealPath())),
-                'file_size' => $file->getSize(),
+                'file_path' => $this->convertStrFromServer($this->getJailDir($this->normalizePath($file->getRealPath()))),
+                'file_size' => FilesystemUtil::sizeToHumanReadable($file->getSize()),
                 'file_time' => date("Y/m/d", $file->getmTime()),
                 'is_dir' => false,
             );
@@ -369,8 +398,15 @@ class FileController extends AbstractController
         return $target;
     }
 
-    private function getUserDataDir()
+    private function getUserDataDir($nowDir = null)
     {
-        return $this->getParameter('kernel.project_dir').'/html/user_data';
+        return rtrim($this->getParameter('kernel.project_dir').'/html/user_data'.$nowDir, '/');
+    }
+
+    private function getJailDir($path)
+    {
+        $realpath = realpath($path);
+        $jailPath = str_replace($this->getUserDataDir(), '', $realpath);
+        return $jailPath ? $jailPath : '/';
     }
 }

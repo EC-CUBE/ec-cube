@@ -1,197 +1,371 @@
 {#
-/*
- * This file is part of EC-CUBE
- *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
- *
- * http://www.lockon.co.jp/
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- */
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends '@admin/default_frame.twig' %}
+{% extends '@admin/styleguide_frame.twig' %}
 
 {% set menus = ['setting', 'shop', 'shop_index'] %}
 
-{% block title %}{{ 'admin_setting_shop_shop_master.label.title'|trans }}{% endblock %}
-{% block sub_title %}{{ 'admin_setting_shop_shop_master.label.sub_title'|trans }}{% endblock %}
+{% block title %}{{ 'admin_setting_shop_shop_master.label.sub_title'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin_setting_shop_shop_master.label.title'|trans }}{% endblock %}
 
-{% form_theme form '@admin/Form/bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
-{% block javascript %}
-    <script src="//yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
-{% endblock javascript %}
-
+{% block stylesheet %}
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datetimepicker.min.css', 'admin') }}">
+{% endblock stylesheet %}
 
 {% block main %}
+    <form name="form1" role="form" class="form-horizontal h-adr" id="point_form" method="post" action="">
+        <span class="p-country-name" style="display:none;">Japan</span>
 
-    <div class="row" id="aside_wrap">
-        <form name="form1" role="form" class="form-horizontal h-adr" id="point_form" method="post" action="">
-            <span class="p-country-name" style="display:none;">Japan</span>
         {{ form_widget(form._token) }}
 
-            <div id="detail_wrap" class="col-md-9">
-                <div id="detail_box" class="box">
-                    <div id="detail_box__header" class="box-header">
-                        <h3 class="box-title">{{ 'admin_setting_shop_shop_master.label.setting'|trans }}</h3>
-                    </div><!-- /.box-header -->
-                    <div id="detail_box__body" class="box-body">
-
-                        {{ form_row(form.company_name) }}
-                        {{ form_row(form.company_kana) }}
-                        {{ form_row(form.shop_name) }}
-                        {{ form_row(form.shop_kana) }}
-                        {{ form_row(form.shop_name_eng) }}
-
-                        {# 住所：郵便番号 #}
-                        <div id="detail_box__address" class="form-group {% if form.zip.zip01.vars.errors is not empty or form.zip.zip02.vars.errors is not empty %}has-error{% endif %}">
-                            {{ form_label(form.address) }}
-                            <div id="detail_box__zip" class="col-sm-9 col-lg-10 input_zip form-inline">
-                                {{'admin.setting.shop.shop_master.629'|trans}}{{ form_widget(form.zip.zip01) }}-{{ form_widget(form.zip.zip02) }}
-                                {{ form_errors(form.zip.zip01) }}
-                                {{ form_errors(form.zip.zip02) }}
-                            </div>
-                        </div>
-                        {# 住所：都道府県 #}
-                        <div id="detail_box__pref" class="form-group {% if form.address.pref.vars.errors is not empty %}has-error{% endif %}">
-                            <div class="col-sm-offset-2 col-sm-9 col-lg-10 form-inline">
-                                {{ form_widget(form.address.pref) }}
-                                {{ form_errors(form.address.pref) }}
-                            </div>
-                        </div>
-                        {# 住所：住所1 #}
-                        <div id="detail_box__addr01" class="form-group {% if form.address.addr02.vars.errors is not empty %}has-error{% endif %}">
-                            <div class="col-sm-offset-2 col-sm-9 col-lg-10">
-                                {{ form_widget(form.address.addr01, { attr : { placeholder : 'common.placeholder.address01'}} ) }}
-                                {{ form_errors(form.address.addr01) }}
-                            </div>
-                        </div>
-                        {# 住所：住所2 #}
-                        <div id="detail_box__addr02" class="form-group {% if form.address.addr02.vars.errors is not empty %}has-error{% endif %}">
-                            <div class="col-sm-offset-2 col-sm-9 col-lg-10">
-                                {{ form_widget(form.address.addr02, { attr : { placeholder : 'common.placeholder.address02' }}) }}
-                                {{ form_errors(form.address.addr02) }}
-                            </div>
-                        </div>
-                        {# 電話番号 #}
-                        <div id="detail_box__tel" class="form-group">
-                            {{ form_label(form.tel) }}
-                            <div class="col-sm-9 col-lg-10 input_tel form-inline {% if form.tel.tel01.vars.errors is not empty or form.tel.tel02.vars.errors is not empty or form.tel.tel03.vars.errors is not empty %}has-error{% endif %}">
-                                {{ form_widget(form.tel.tel01) }}-{{ form_widget(form.tel.tel02) }}-{{ form_widget(form.tel.tel03) }}
-                                {{ form_errors(form.tel.tel01) }}
-                                {{ form_errors(form.tel.tel02) }}
-                                {{ form_errors(form.tel.tel03) }}
-                            </div>
-                        </div>
-                        {# FAX番号 #}
-                        <div id="detail_box__fax" class="form-group">
-                            {{ form_label(form.fax) }}
-                            <div class="col-sm-9 col-lg-10 input_tel form-inline {% if form.fax.fax01.vars.errors is not empty or form.fax.fax02.vars.errors is not empty or form.fax.fax03.vars.errors is not empty %}has-error{% endif %}">
-                                {{ form_widget(form.fax.fax01) }}-{{ form_widget(form.fax.fax02) }}-{{ form_widget(form.fax.fax03) }}
-                                {{ form_errors(form.fax.fax01) }}
-                                {{ form_errors(form.fax.fax02) }}
-                                {{ form_errors(form.fax.fax03) }}
-                            </div>
-                        </div>
-
-                        {{ form_row(form.business_hour) }}
-                        {{ form_row(form.email01) }}
-                        {{ form_row(form.email02) }}
-                        {{ form_row(form.email03) }}
-                        {{ form_row(form.email04) }}
-                        {{ form_row(form.good_traded) }}
-                        {{ form_row(form.message) }}
-
-                        <div class="extra-form">
-                            {% for f in form.getIterator %}
-                                {% if f.vars.name matches '[^plg*]' %}
-                                    {{ form_row(f) }}
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-
-                    </div><!-- /.box-body -->
-                </div><!-- /.box -->
-
-                <div id="delivery_fee_box" class="box">
-                    <div id="delivery_fee_box__header" class="box-header">
-                        <h3 class="box-title">{{'admin.setting.shop.shop_master.632'|trans}}</h3>
-                    </div><!-- /.box-header -->
-                    <div id="delivery_fee_box__body" class="box-body">
-
-                        {{ form_row(form.delivery_free_amount) }}
-                        {{ form_row(form.delivery_free_quantity) }}
-                        {{ form_row(form.option_product_delivery_fee) }}
-                        {{ form_row(form.option_multiple_shipping) }}
-
-                    </div><!-- /.box-body -->
-                </div><!-- /.box -->
-
-                <div id="customer_box" class="box">
-                    <div id="customer_box__header" class="box-header">
-                        <h3 class="box-title">{{'admin.setting.shop.shop_master.633'|trans}}</h3>
-                    </div><!-- /.box-header -->
-                    <div id="customer_box__body" class="box-body">
-
-                        {{ form_row(form.option_customer_activate) }}
-                        {{ form_row(form.option_mypage_order_status_display) }}
-                        {{ form_row(form.option_favorite_product) }}
-                        {{ form_row(form.option_remember_me) }}
-
-                    </div><!-- /.box-body -->
-                </div><!-- /.box -->
-
-                <div id="product_box" class="box">
-                    <div id="product_box__header" class="box-header">
-                        <h3 class="box-title">{{'admin.setting.shop.shop_master.634'|trans}}</h3>
-                    </div><!-- /.box-header -->
-                    <div id="product_box__body" class="box-body">
-
-                        {{ form_row(form.option_nostock_hidden) }}
-
-                    </div><!-- /.box-body -->
-                </div><!-- /.box -->
-
-                <div id="point_box" class="box">
-                    <div id="point_box__header" class="box-header">
-                        <h3 class="box-title">ポイント設定</h3> {# TODO 未翻訳 #}
-                    </div><!-- /.box-header -->
-                    <div id="point_box__body" class="box-body">
-
-                        {{ form_row(form.option_point) }}
-                        {{ form_row(form.basic_point_rate) }}
-                        {{ form_row(form.point_conversion_rate) }}
-
-                    </div><!-- /.box-body -->
-                </div><!-- /.box -->
-            </div>
-            <div class="col-md-3" id="aside_column">
-                <div id="common_box" class="col_inner">
-                    <div id="common_button_box" class="box no-header">
-                        <div id="common_button_box__body" class="box-body">
-                            <div id="common_button_box__insert_button_area" class="row text-center">
-                                <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
-                                    <button class="btn btn-primary btn-block btn-lg" type="submit">{{'admin.setting.shop.shop_master.636'|trans}}</button>
+        <div class="c-contentsArea__cols">
+            <div class="c-contentsArea__primaryCol">
+                <div class="c-primaryCol">
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header"><span>{{ 'admin_setting_shop_shop_master.label.setting'|trans }}</span></div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-3"><span>{{ 'common.label.company_name'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.company_name) }}
+                                    {{ form_errors(form.company_name) }}
                                 </div>
                             </div>
-                        </div><!-- /.box-body -->
-                    </div><!-- /.box -->
+                            <div class="row">
+                                <div class="col-3"><span>{{ 'common.label.company_name_kana'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.company_kana) }}
+                                    {{ form_errors(form.company_kana) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3"><span>{{ 'common.label.shop_name'|trans }}</span><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.shop_name) }}
+                                    {{ form_errors(form.shop_name) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3"><span>{{ 'common.label.shop_name_kana'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.shop_kana) }}
+                                    {{ form_errors(form.shop_kana) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3"><span>{{ 'common.label.shop_name_en'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.shop_name_eng) }}
+                                    {{ form_errors(form.shop_name_eng) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3"><span>{{ 'common.label.address'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    <div class="mb-2">
+                                        <div class="row justify-content-start">
+                                            <div class="col-auto text-center pr-0"><span class="align-middle">{{ 'admin.setting.shop.shop_master.629'|trans }}</span></div>
+                                            <div class="col-2">
+                                                {{ form_widget(form.zip.zip01) }}
+                                            </div>
+                                            <div class="col-auto text-center p-0"><span class="align-middle">-</span></div>
+                                            <div class="col-2">
+                                                {{ form_widget(form.zip.zip02) }}
+                                            </div>
+                                            {{ form_errors(form.zip.zip01) }}
+                                            {{ form_errors(form.zip.zip02) }}
+                                        </div>
+                                    </div>
+                                    <div class="mb-2">
+                                        <div class="row justify-content-start">
+                                            <div class="col-3">
+                                                {{ form_widget(form.address.pref) }}
+                                                {{ form_errors(form.address.pref) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-2">
+                                        {{ form_widget(form.address.addr01, { attr : { placeholder : 'common.placeholder.address01'}} ) }}
+                                        {{ form_errors(form.address.addr01) }}
+                                    </div>
+                                    <div class="mb-2">
+                                        {{ form_widget(form.address.addr02, { attr : { placeholder : 'common.placeholder.address02' }}) }}
+                                        {{ form_errors(form.address.addr02) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-3"><span>{{ 'common.label.phone_number'|trans }}</span></div>
+                                <div class="col">
+                                    <div class="row justify-content-start">
+                                        <div class="col-2">
+                                            {{ form_widget(form.tel.tel01) }}
+                                        </div>
+                                        <div class="col-auto text-center p-0"><span class="align-middle">-</span></div>
+                                        <div class="col-2">
+                                            {{ form_widget(form.tel.tel02) }}
+                                        </div>
+                                        <div class="col-auto text-center p-0"><span class="align-middle">-</span></div>
+                                        <div class="col-2">
+                                            {{ form_widget(form.tel.tel03) }}
+                                        </div>
+                                        {{ form_errors(form.tel.tel01) }}
+                                        {{ form_errors(form.tel.tel02) }}
+                                        {{ form_errors(form.tel.tel03) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-3"><span>{{ 'common.label.fax_number'|trans }}</span></div>
+                                <div class="col">
+                                    <div class="row justify-content-start">
+                                        <div class="col-2">
+                                            {{ form_widget(form.fax.fax01) }}
+                                        </div>
+                                        <div class="col-auto text-center p-0"><span class="align-middle">-</span></div>
+                                        <div class="col-2">
+                                            {{ form_widget(form.fax.fax02) }}
+                                        </div>
+                                        <div class="col-auto text-center p-0"><span class="align-middle">-</span></div>
+                                        <div class="col-2">
+                                            {{ form_widget(form.fax.fax03) }}
+                                        </div>
+                                        {{ form_errors(form.fax.fax01) }}
+                                        {{ form_errors(form.fax.fax02) }}
+                                        {{ form_errors(form.fax.fax03) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-3"><span>{{ 'common.label.business_hour'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.business_hour) }}
+                                    {{ form_errors(form.business_hour) }}
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-3"><span>{{ 'common.label.email_from'|trans }}</span><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.email01) }}
+                                    {{ form_errors(form.email01) }}
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-3"><span>{{ 'common.label.email_for_inquiries'|trans }}</span><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.email02) }}
+                                    {{ form_errors(form.email02) }}
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-3"><span>{{ 'common.label.email_reply_to'|trans }}</span><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.email03) }}
+                                    {{ form_errors(form.email03) }}
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-3"><span>{{ 'common.label.email_return_path'|trans }}</span><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.email04) }}
+                                    {{ form_errors(form.email04) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3"><span>{{ 'common.label.good_traded'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.good_traded) }}
+                                    {{ form_errors(form.good_traded) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3"><span>{{ 'shopmaster.label.message'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.message) }}
+                                    {{ form_errors(form.message) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header"><span>{{ 'admin.setting.shop.shop_master.632'|trans }}</span></div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>{{ 'common.label.option_delivery_fee_free_amount'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                </div>
+                                <div class="col-4 mb-2">
+                                    {{ form_widget(form.delivery_free_amount) }}
+                                    {{ form_errors(form.delivery_free_amount) }}
+                                </div>
+                                <div class="col"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>{{ 'common.label.option_delivery_free_quantity'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                </div>
+                                <div class="col-4 mb-2">
+                                    {{ form_widget(form.delivery_free_quantity) }}
+                                    {{ form_errors(form.delivery_free_quantity) }}
+                                </div>
+                                <div class="col"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3"><span>{{ 'common.label.option_product_delivery_fee'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.option_product_delivery_fee) }}
+                                    {{ form_errors(form.option_product_delivery_fee) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>{{ 'common.label.option_multiple_shipping'|trans }}</span></div>
+                                </div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.option_multiple_shipping) }}
+                                    {{ form_errors(form.option_multiple_shipping) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header"><span>{{ 'admin.setting.shop.shop_master.633'|trans }}</span></div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-3"><span>{{ 'common.label.option_customer_activate'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.option_customer_activate) }}
+                                    {{ form_errors(form.option_customer_activate) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3"><span>{{ 'common.label.option_mypage_order_status_display'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.option_mypage_order_status_display) }}
+                                    {{ form_errors(form.option_mypage_order_status_display) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3"><span>{{ 'common.label.option_favorite_product'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.option_favorite_product) }}
+                                    {{ form_errors(form.option_favorite_product) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3"><span>{{ 'common.label.option_remember_me'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.option_remember_me) }}
+                                    {{ form_errors(form.option_remember_me) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header"><span>{{ 'admin.setting.shop.shop_master.634'|trans }}</span></div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-3"><span>{{ 'common.label.nostock_hidden'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.option_nostock_hidden) }}
+                                    {{ form_errors(form.option_nostock_hidden) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header"><span>{{ 'admin.setting.shop.tax_rule.639'|trans }}</span></div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>{{ 'shopmaster.label.option_product_tax_rule'|trans }}</span></div>
+                                </div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.option_product_tax_rule) }}
+                                    {{ form_errors(form.option_product_tax_rule) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header"><span>{{ 'shopmaster.title.option_point'|trans }}</span></div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-3"><span>{{ 'shopmaster.label.option_point'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.option_point) }}
+                                    {{ form_errors(form.option_point) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>{{ 'shopmaster.label.basic_point_rate'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                </div>
+                                <div class="col mb-2">
+                                    <div class="input-group col-4 pl-0">
+                                        <div class="input-group-prepend">
+                                            {{ form_widget(form.basic_point_rate) }}
+                                            {{ form_errors(form.basic_point_rate) }}
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>{{ 'shopmaster.label.point_conversion_rate'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                </div>
+                                <div class="col mb-2">
+                                    <div class="input-group col-4 pl-0">
+                                        <div class="input-group-prepend">
+                                            {{ form_widget(form.point_conversion_rate) }}
+                                            {{ form_errors(form.point_conversion_rate) }}
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div><!-- /.col -->
-
-        </form>
-    </div>
-
+            </div>
+        </div>
+        <div class="c-conversionArea">
+            <div class="c-conversionArea__container">
+                <div class="row justify-content-between align-items-center">
+                    <div class="col-6">
+                        <div class="c-conversionArea__leftBlockItem">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="row align-items-center justify-content-end">
+                            <div class="col-auto">
+                                <button class="btn btn-ec-conversion px-5" type="submit">{{ 'common.label.save'|trans }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
 {% endblock %}

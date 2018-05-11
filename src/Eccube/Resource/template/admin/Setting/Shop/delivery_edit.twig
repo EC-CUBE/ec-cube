@@ -19,153 +19,348 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends '@admin/default_frame.twig' %}
+{% extends '@admin/styleguide_frame.twig' %}
 
 {% set menus = ['setting', 'shop', 'shop_delivery'] %}
 
-{% block title %}{{'admin.setting.shop.delivery_edit.578'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.setting.shop.delivery_edit.579'|trans}}{% endblock %}
+{% block title %}{{ 'admin.setting.shop.delivery_edit.title'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.setting.shop.delivery_edit.sub_title'|trans }}{% endblock %}
 
-{% form_theme form '@admin/Form/bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
+
+{% block stylesheet %}
+    <style>
+        .list-group-item:hover {
+            z-index: inherit;
+        }
+    </style>
+{% endblock stylesheet %}
 
 {% block javascript %}
+    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.core.min.js', 'admin') }}"></script>
+    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.widget.min.js', 'admin') }}"></script>
+    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.mouse.min.js', 'admin') }}"></script>
+    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.sortable.min.js', 'admin') }}"></script>
     <script>
-        $(function() {
-            $("#set_fee_all").on("click", function() {
+        $(function () {
+            $("#set_fee_all").on("click", function () {
                 var fee = $("#{{ form.free_all.vars.id }}").val();
                 $("input[name$='[fee]']").val(fee);
+            });
+        });
+    </script>
+    <script>
+        // 降順にソートする
+        $(function(){
+            var $items_wrapper = $('.sortable-container');
+            var $items = $('.sortable-item');
+            $items.sort(function(a, b){
+                return parseInt($(a).find('.sort-no').val()) > parseInt($(b).find('.sort-no').val());
+            });
+            $items.each(function(){
+                $items_wrapper.append($(this).remove());
+            })
+        });
+
+        // 並び替え後にsort noを更新
+        function updateSortNo() {
+            var $items = $('.sortable-container').find('.sortable-item');
+            $items.each(function(){
+                $(this).find('.sort-no').val($items.index(this) + 1);
+            });
+        }
+
+        // 最初と最後の↑↓を再描画
+        function redrawDisableAllows() {
+            var items = $('.sortable-item');
+            items.find('a').removeClass('disabled');
+            items.first().find('a.action-up').addClass('disabled');
+            items.last().find('a.action-down').addClass('disabled');
+        }
+
+        // 表示順の更新を行う
+        function moveSortNo() {
+            updateSortNo();
+            redrawDisableAllows();
+        }
+
+        $(function() {
+
+            var $collectionHolder = $('#delivery-time-group');
+            var index = $collectionHolder.find('.delivery-time-item').length;
+
+            redrawDisableAllows();
+
+            // お届け時間設定の新規作成ボタンでお届け時間項目を追加する
+            $('#add-delivery-time-button').on('click', function (event) {
+
+                // 追加するお届け時間名を取得
+                var deliveryTimeName = $('#add-delivery-time-value').val();
+
+                if (deliveryTimeName == '') {
+                    return;
+                }
+
+                var prototype = $collectionHolder.data('prototype');
+
+                var newForm = prototype.replace(/__name__/g, index);
+                var newForm = newForm.replace(/__value__/g, deliveryTimeName);
+
+                // 要素を追加
+                var $lastRow = $('#delivery-time-group > li:last');
+                $lastRow.after(newForm);
+
+                // お届け時間名を入れる
+                var inputId = '#delivery_delivery_times_' + index + '_delivery_time';
+                $(inputId).val(deliveryTimeName);
+
+                // 入力欄を初期化
+                $('#add-delivery-time-value').val('');
+
+                // 要素数をインクリメント
+                index++;
+
+                moveSortNo();
+            });
+
+            // 明細行の削除
+            $('#delivery-time-group').on('click', '.remove-delivery-time-item', function (event) {
+                event.preventDefault();
+
+                $(this).tooltip('hide');
+
+                // 自身の行を削除.
+                $(event.target).parents('li').remove();
+
+                moveSortNo();
+            });
+
+            // Drag and Drop
+            $(".sortable-container").sortable({
+                items: '> .sortable-item',
+                cursor: 'move',
+                update: function (e, ui) {
+                    moveSortNo();
+                }
+            });
+            // Up
+            $('#delivery-time-group').on('click', 'a.action-up', function (e) {
+                e.preventDefault();
+                var current = $(this).parents("li");
+                if (current.prev().hasClass('sortable-item')) {
+                    current.prev().before(current);
+                    moveSortNo();
+                }
+            });
+            // Down
+            $('#delivery-time-group').on('click', 'a.action-down', function (e) {
+                e.preventDefault();
+                var current = $(this).parents("li");
+                if (current.next().hasClass('sortable-item')) {
+                    current.next().after(current);
+                    moveSortNo();
+                }
+            });
+
+            // 編集
+            $('#delivery-time-group').on('click', 'a.action-edit', function (e) {
+                e.preventDefault();
+                var current = $(this).parents("li");
+                current.find('.mode-view').addClass('d-none');
+                current.find('.mode-edit').removeClass('d-none');
+            });
+
+            // 編集決定
+            $('#delivery-time-group').on('click', 'button.action-edit-submit', function (e) {
+                e.preventDefault();
+                var current = $(this).parents("li");
+                var value = current.find('.form-control').val()
+                current.find('.display-label').text(value);
+                current.find('.mode-view').removeClass('d-none');
+                current.find('.mode-edit').addClass('d-none');
+            });
+            // 編集キャンセル
+            $('#delivery-time-group').on('click', 'button.action-edit-cancel', function (e) {
+                e.preventDefault();
+                var current = $(this).parents("li");
+                current.find('[data-origin-value]').each(function(e) {
+                    $(this).val($(this).attr('data-origin-value'));
+                });
+                var value = current.find('.form-control').val();
+                current.find('.display-label').text(value);
+                current.find('.mode-view').removeClass('d-none');
+                current.find('.mode-edit').addClass('d-none');
+            });
+            // 編集時, エラーがあれば入力欄を表示.
+            $('#delivery-time-group').find('.is-invalid').each(function (e) {
+                var current = $(this).parents("li");
+                current.find('.mode-view').addClass('d-none');
+                current.find('.mode-edit').removeClass('d-none');
             });
         });
     </script>
 {% endblock javascript %}
 
 {% block main %}
-    <div class="row" id="aside_wrap">
-        <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="">
-            {{ form_widget(form._token) }}
-            <div id="detail_wrap" class="col-md-9">
-                <div id="delivery_info_box" class="box">
-                    <div id="delivery_info_box__header" class="box-header">
-                        <h3 class="box-title">{{'admin.setting.shop.delivery_edit.580'|trans}}</h3>
-                    </div><!-- /.box-header -->
-                    <div id="delivery_info_box__body" class="box-body">
-
-                        {{ form_row(form.name) }}
-                        {{ form_row(form.service_name) }}
-                        {{ form_row(form.confirm_url) }}
-                        {{ form_row(form.sale_type, { attr : { class : 'form-inline' } }) }}
-
-                        <div class="extra-form">
-                            {% for f in form.getIterator %}
-                                {% if f.vars.name matches '[^plg*]' %}
-                                    {{ form_row(f) }}
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-
-                    </div><!-- /.box-body -->
-                </div><!-- /.box -->
-
-                <div id="payments_box" class="box">
-                    <div id="payments_box__header" class="box-header">
-                        <h3 class="box-title">{{'admin.setting.shop.delivery_edit.581'|trans}}</h3>
-                    </div><!-- /.box-header -->
-                    <div id="payments_box__body" class="box-body">
-                        {{ form_widget(form.payments) }}
-                        {{ form_errors(form.payments) }}
-                    </div>
-                </div>
-
-                <div id="delivery_times_box" class="box accordion clearfix">
-                    <div id="delivery_times_box__toggle" class="box-header toggle">
-                        <h3 class="box-title">{{'admin.setting.shop.delivery_edit.582'|trans}}
-                            <svg class="cb cb-angle-down icon_down">
-                                <use xlink:href="#cb-angle-down"/>
-                            </svg>
-                        </h3>
-                    </div><!-- /.box-header -->
-                    <div id="delivery_times_box__body" class="box-body accpanel">
-                        {% for child in form.delivery_times %}
-                            {% if loop.first %}
-                                <div id="delivery_times_box__body_inner" class="form-group">
-                            {% endif %}
-
-                            <label class="col-sm-2 control-label">
-                                {{'admin.setting.shop.delivery_edit.583'|trans}}{{ loop.index }}
-                            </label>
-                            <div id="delivery_times_box__delivery_times--{{ loop.index0 }}" class="col-sm-4">
-                                {{ form_widget(child) }}
-                            </div>
-
-                            {% if loop.last == true %}
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                </div>
-
-                <div id="delivery_pref_box" class="box accordion">
-                    <div id="delivery_pref_box__header" class="box-header">
-                        <h3 class="box-title">{{'admin.setting.shop.delivery_edit.584'|trans}}</h3>
-                    </div>
-                    <div id="delivery_pref_box__body" class="box-body">
-                        <div id="delivery_pref_box__free_all" class="form-inline fees_area">
-                            {{'admin.setting.shop.delivery_edit.585'|trans}}&nbsp; {{ form_widget(form.free_all) }}
-                            <a class="btn btn-normal btn-default btn-sm" href="javascript:;" id="set_fee_all">{{'admin.setting.shop.delivery_edit.586'|trans}}</a>
-                        </div>
-                    </div><!-- /.box-header -->
-                    <div id="delivery_pref_box__body_toggle" class="box-body toggle active" style="position:relative;">
-                        <h3 class="box-title">{{'admin.setting.shop.delivery_edit.587'|trans}}<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
-                    </div>
-                    <div id="delivery_pref_box__body_inner" class="box-body accpanel" style="display: block;">
-                        {% for child in form.delivery_fees %}
-                            {% if loop.first %}
-                                <div id="delivery_pref_box__item" class="form-group">
-                            {% endif %}
-
-                            <label id="delivery_pref_box__header_delivery_fee--{{ child.vars.name }}" class="col-sm-2 control-label">
-                                {{ child.vars.data.pref|default('') }}
-                            </label>
-                            <div id="delivery_pref_box__delivery_fee--{{ child.vars.name }}" class="col-sm-4 fees_area">
-                                {{ form_widget(child) }}
-                            </div>
-
-                            {% if loop.last == true %}
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                </div>
-
-                <div id="detail__back_button" class="row hidden-xs hidden-sm">
-                    <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
-                        <p><a href="{{ url('admin_setting_shop_delivery') }}">{{'admin.setting.shop.delivery_edit.588'|trans}}</a></p>
-                    </div>
-                </div>
-
-            </div><!-- /.col -->
-            <div class="col-md-3" id="aside_column">
-                <div id="common_box" class="col_inner">
-                    <div id="common_button_box" class="box no-header">
-                        <div id="common_button_box__body" class="box-body">
-                            <div id="common_button_box__insert_button" class="row text-center">
-                                <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
-                                    <button class="btn btn-primary btn-block btn-lg" type="submit">{{'admin.setting.shop.delivery_edit.589'|trans}}</button>
+    <form method="post"
+          action="{{ delivery_id ? url('admin_setting_shop_delivery_edit', {'id': delivery_id}) : url('admin_setting_shop_delivery_new') }}">
+        {{ form_widget(form._token) }}
+        <div class="c-contentsArea__cols">
+            <div class="c-contentsArea__primaryCol">
+                <div class="c-primaryCol">
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header"><span>{{ 'admin.setting.shop.delivery_edit.basic'|trans }}</span></div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-3"><span>{{ 'admin.setting.shop.delivery_edit.delivery_name'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.name)}}
+                                    {{ form_errors(form.name) }}
                                 </div>
                             </div>
-                        </div><!-- /.box-body -->
-                    </div><!-- /.box -->
-                    <div id="common_shop_note_box" class="box">
-                        <div id="common_shop_note_box__header" class="box-header">
-                            <h3 class="box-title">{{'admin.setting.shop.delivery_edit.590'|trans}}</h3>
-                        </div><!-- /.box-header -->
-                        <div id="common_shop_note_box__body" class="box-body">
-                            {{ form_widget(form.description) }}
+                            <div class="row">
+                                <div class="col-3"><span>{{ 'admin.setting.shop.delivery_edit.delivery_service_name'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.service_name)}}
+                                    {{ form_errors(form.service_name) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
+                                         title="Tooltip">
+                                        <span>{{ 'admin.setting.shop.delivery_edit.slip_number_url'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                </div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.confirm_url) }}
+                                    {{ form_errors(form.confirm_url) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3"><span>{{ 'admin.setting.shop.delivery_edit.sale_type'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.sale_type) }}
+                                    {{ form_errors(form.sale_type) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header"><span>{{ 'admin.setting.shop.delivery_edit.payments'|trans }}</span></div>
+                        <div class="card-body">
+                            <div>
+                                {{ form_widget(form.payments, {'label_attr': {'class': 'checkbox-inline'}}) }}
+                                {{ form_errors(form.payments) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card rounded border-0 mb-2">
+                        <div class="card-header"><span>{{ 'admin.setting.shop.delivery_edit.delivery_times'|trans }}</span></div>
+                        <div class="card-body p-0">
+                            <div class="card rounded border-0 mb-2">
+                                <ul id="delivery-time-group" class="list-group list-group-flush sortable-container"
+                                    data-prototype="{% filter escape %}{{ include('@admin/Setting/Shop/delivery_time_prototype.twig', {'form': form.delivery_times.vars.prototype}) }}{% endfilter %}">
+                                    <li class="list-group-item">
+                                        <div class="form-row">
+                                            <div class="col-auto d-flex align-items-center">
+                                                <input id="add-delivery-time-value" class="form-control" type="text">
+                                            </div>
+                                            <div class="col-auto d-flex align-items-center">
+                                                <button id="add-delivery-time-button" class="btn btn-ec-regular" type="button">{{ 'admin.setting.shop.delivery_edit.delivery_times_register'|trans }}</button>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    {% for child in form.delivery_times %}
+                                        {{ include('@admin/Setting/Shop/delivery_time_prototype.twig', {'form': child}) }}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="mb-4">{{ 'admin.setting.shop.delivery_edit.delivery_times_drag&drop'|trans }}</p>
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header"><span>{{ 'admin.setting.shop.delivery_edit.delivery_fees_by_pref'|trans }}</span></div>
+                        <div class="card-body p-0">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                    <div class="row justify-content-start">
+                                        <div class="col-2">
+                                            <div class="d-inline-block align-middle" data-toggle="tooltip"
+                                                 data-placement="top" title="Tooltip"><span
+                                                        class="card-title">{{ 'admin.setting.shop.delivery_edit.delivery_fees_all_pref'|trans }}</span><i
+                                                        class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                        </div>
+                                        <div class="col-3">
+                                            {{ form_widget(form.free_all) }}
+                                        </div>
+                                        <div class="col-auto">
+                                            <button id="set_fee_all" class="btn btn-ec-regular" type="button">{{ 'admin.setting.shop.delivery_edit.delivery_fees_apply'|trans }}</button>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    {% for child in form.delivery_fees %}
+                                        {% if loop.index % 2 != 0 %}<div class="row mb-2">{% endif %}
+                                        <div class="col{{ loop.last ? '-6' }}">
+                                            <div class="row">
+                                                <div class="col-2">
+                                                    <label>{{ child.vars.data.pref }}</label>
+                                                </div>
+                                                <div class="col pl-0">
+                                                    {{ form_widget(child.fee) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% if loop.index % 2 == 0 or loop.last %}</div>{% endif %}
+                                    {% endfor %}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-8">
+                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
+                                         title="Tooltip">
+                                    <span class="card-title">{{ 'admin.setting.shop.delivery_edit.note'|trans }}<i
+                                                class="fa fa-question-circle fa-lg ml-1"></i></span></div>
+                                </div>
+                                <div class="col-4 text-right"><a data-toggle="collapse" href="#freeArea"
+                                                                 aria-expanded="false" aria-controls="freeArea"><i
+                                                class="fa fa-angle-up fa-lg"></i></a></div>
+                            </div>
+                        </div>
+                        <div class="collapse show ec-cardCollapse" id="freeArea">
+                            <div class="card-body">
+                                <div>
+                                    {{ form_widget(form.description, {'attr': {'rows': 8}}) }}
+                                    {{ form_errors(form.description) }}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div><!-- /.col -->
-        </form>
-    </div>
-
+            </div>
+        </div>
+        <div class="c-conversionArea">
+            <div class="c-conversionArea__container">
+                <div class="row justify-content-between align-items-center">
+                    <div class="col-6">
+                        <div class="c-conversionArea__leftBlockItem"><a class="c-beseLink"
+                                                                        href="{{ url('admin_setting_shop_delivery') }}"><i
+                                        class="fa fa-backward" aria-hidden="true"></i><span>{{ 'admin.setting.shop.delivery_edit.delivery_list'|trans }}</span></a>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="row align-items-center justify-content-end">
+                            <div class="col-auto">
+                                <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.setting.shop.delivery_edit.register'|trans }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
 {% endblock %}

@@ -1,10 +1,75 @@
-<div style="display: none">
-    {{ form_widget(orderItemForm.new) }}
+{#<div style="display: none">#}
+    {#{{ form_widget(orderItemForm.new) }}#}
+    {#{{ form_widget(orderItemForm.Order) }}#}
+    {#{{ form_widget(orderItemForm.Product) }}#}
+    {#{{ form_widget(orderItemForm.ProductClass) }}#}
+    {#{{ form_widget(orderItemForm.price) }}#}
+    {#{{ form_widget(orderItemForm.quantity, {'type': 'hidden'}) }}#}
+    {#{{ form_widget(orderItemForm.tax_rate, {'type': 'hidden'}) }}#}
+    {#{{ form_widget(orderItemForm.order_item_type, {'type': 'hidden'}) }}#}
+{#</div>#}
+
+
+<tr>
+    <td class="align-middle w-25 pl-3">
+        <p class="mb-0 font-weight-bold">
+            {#{{ orderItemForm.vars.value.product_name }}#}
+            {#{% if orderItemForm.vars.value.class_category_name1 is not empty %}#}
+                {#/ (#}
+                {#{{ orderItemForm.vars.value.class_name1 }}：#}
+                {#{{ orderItemForm.vars.value.class_category_name1 }}#}
+                {#{% if orderItemForm.vars.value.class_category_name2 is not empty %}#}
+                    {#/#}
+                    {#{{ orderItemForm.vars.value.class_name2 }}：#}
+                    {#{{ orderItemForm.vars.value.class_category_name2 }}#}
+                {#{% endif %}#}
+                {#)#}
+            {#{% endif %}#}
+        </p>
+        {#<span>{{ orderItemForm.vars.value.product_code }}</span>#}
+    </td>
+    <td class="align-middle">
+        {#<a href="{{ url('admin_shipping_edit', { id : orderItemForm.vars.value.Shipping.id }) }}">{{ orderItemForm.vars.value.Shipping.id }}</a>#}
+    </td>
+    <td class="align-middle">
+        <div class="col-8">
+            {{ form_widget(orderItemForm.price, {'attr': {'class': 'input-price'}}) }}
+            {{ form_errors(orderItemForm.price) }}
+        </div>
+    </td>
+    <td class="align-middle">
+        <div class="col-6">
+            {{ form_widget(orderItemForm.quantity) }}
+            {{ form_errors(orderItemForm.quantity) }}
+        </div>
+    </td>
+    <td class="align-middle">
+        <div class="col-8">
+            {{ form_widget(orderItemForm.tax_rate) }}
+            {{ form_errors(orderItemForm.tax_rate) }}
+        </div>
+    </td>
+    <td class="align-middle">
+        {#<span>{{ orderItemForm.vars.value.total_price|price }}</span>#}
+        <small>（{{ 'admin.common.label.taxinc'|trans }}）</small>
+    </td>
+    <td class="align-middle text-right pr-3">
+        <div class="row justify-content-end">
+            <div class="col-auto text-center"><a class="btn btn-ec-actionIcon delete" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.label.delete'|trans }}"><i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a></div>
+        </div>
+    </td>
     {{ form_widget(orderItemForm.Order) }}
+    {{ form_widget(orderItemForm.Shipping) }}
     {{ form_widget(orderItemForm.Product) }}
     {{ form_widget(orderItemForm.ProductClass) }}
-    {{ form_widget(orderItemForm.price) }}
-    {{ form_widget(orderItemForm.quantity, {'type': 'hidden'}) }}
-    {{ form_widget(orderItemForm.tax_rate, {'type': 'hidden'}) }}
-    {{ form_widget(orderItemForm.order_item_type, {'type': 'hidden'}) }}
-</div>
+    {{ form_widget(orderItemForm.product_name) }}
+    {{ form_widget(orderItemForm.product_code) }}
+    {{ form_widget(orderItemForm.class_name1) }}
+    {{ form_widget(orderItemForm.class_name2) }}
+    {{ form_widget(orderItemForm.class_category_name1) }}
+    {{ form_widget(orderItemForm.class_category_name2) }}
+    {{ form_widget(orderItemForm.tax_rule) }}
+    {{ form_widget(orderItemForm.tax_type) }}
+    {{ form_widget(orderItemForm.tax_display_type) }}
+    {{ form_widget(orderItemForm.order_item_type) }}
+</tr>

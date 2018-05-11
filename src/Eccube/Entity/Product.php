@@ -411,6 +411,9 @@ class Product extends \Eccube\Entity\AbstractEntity
     public function hasProductClass()
     {
         foreach ($this->ProductClasses as $ProductClass) {
+            if (!$ProductClass->isVisible()) {
+                continue;
+            }
             if (!is_null($ProductClass->getClassCategory1())) {
                 return true;
             }
@@ -943,25 +946,25 @@ class Product extends \Eccube\Entity\AbstractEntity
     {
         return $this->ProductTag;
     }
-    
+
     /**
      * Get Tag
      * フロント側タグsort_no順の配列を作成する
-     * 
+     *
      * @return []Tag
      */
     public function getTags()
     {
         $tags = array();
-        
+
         foreach ($this->getProductTag() as $productTag) {
             $tags[] = $productTag->getTag();
         }
-        
+
         usort($tags, function(Tag $tag1, Tag $tag2) {
             return $tag1->getSortNo() < $tag2->getSortNo();
         });
-        
+
         return $tags;
     }
 

@@ -90,7 +90,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
         file_put_contents($filepath, $contents);
 
         $file = new UploadedFile(
-            $filepath,          // file path
+            realpath($filepath),          // file path
             'aaa.html',         // original name
             'text/html',        // mimeType
             null,               // file size
@@ -107,7 +107,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
                     'file' => $file
                 ),
                 'mode' => 'upload',
-                'now_dir' => $this->getUserDataDir()
+                'now_dir' => '/'
             ),
             array('file' => $file)
         );

@@ -113,7 +113,7 @@ class CustomerType extends AbstractType
                 'required' => false,
                 'input' => 'datetime',
                 'years' => range(date('Y'), date('Y') - $this->eccubeConfig['eccube_birth_max']),
-                'widget' => 'choice',
+                'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
                 'constraints' => array(

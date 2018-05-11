@@ -1,55 +1,28 @@
 {%- extends 'bootstrap_4_horizontal_layout.html.twig' -%}
 
-{% block form_errors -%}
-    {% if errors|length > 0 -%}
-    {% if form.parent %}<span class="help-block">{% else %}<div class="alert">{% endif %}
-    <ul class="list-unstyled">
-        {%- for error in errors -%}
-            <p class="errormsg text-danger">{{ error.message |trans }}</p>
-        {%- endfor -%}
-    </ul>
-    {% if form.parent %}</span>{% else %}</div>{% endif %}
-    {%- endif %}
-{%- endblock form_errors %}
-
-{%- block tel_widget -%}
-    <div class="form-group range">
-        {%- for child in form %}
-            {{- form_widget(child, {'attr': {'style': 'ime-mode: disabled;'}} ) -}}
-            {%- if loop.last == false%}&nbsp;-&nbsp;{% endif -%}
-        {% endfor -%}
+{%- block toggle_switch_widget -%}
+    <div class="c-toggleSwitch">
+        <div class="c-toggleSwitch__btn">
+            <input type="checkbox"
+                   id="{{ form.vars.id }}"
+                   name="{{ form.vars.full_name }}"
+                   value="{{ form.vars.value }}"{{ form.vars.data ? ' checked' }}>
+            <label for="{{ form.vars.id }}"></label>
+        </div>
+        <div class="c-toggleSwitch__label">
+            <span class="{{ form.vars.id }}-on text-dark {{ form.vars.data ? '' : 'd-none' }}">{{ form.vars.label_on|trans }}</span>
+            <span class="{{ form.vars.id }}-off text-dark {{ form.vars.data ? 'd-none' : '' }}">{{ form.vars.label_off|trans }}</span>
+        </div>
+        <script>
+            $('#{{ form.vars.id }}').on('change', function (e) {
+                if ($(this).prop('checked')) {
+                    $('.{{ form.vars.id }}-on').removeClass('d-none');
+                    $('.{{ form.vars.id }}-off').addClass('d-none');
+                } else {
+                    $('.{{ form.vars.id }}-on').addClass('d-none');
+                    $('.{{ form.vars.id }}-off').removeClass('d-none');
+                }
+            });
+        </script>
     </div>
-{%- endblock tel_widget -%}
-
-{%- block zip_widget -%}
-    <div class="form-group range">
-        {%- for child in form %}
-            {{- form_widget(child, {'attr': {'style': 'ime-mode: disabled;'}} ) -}}
-            {%- if loop.last == false%}&nbsp;-&nbsp;{% endif -%}
-        {% endfor -%}
-    </div>
-{%- endblock zip_widget -%}
-
-{% block radio_widget -%}
-    <div class="radio-inline">
-        {{ parent() }}
-    </div>
-{%- endblock radio_widget %}
-
-{% block checkbox_widget -%}
-    <div class="checkbox-inline">
-        {{ parent() }}
-    </div>
-{%- endblock checkbox_widget %}
-
-{% block money_widget -%}
-    {% set attr = attr|merge({class: attr.class|default('')}) %}
-    {% if attr.class == 'notmoney' %}
-    <div class="input-group">
-        {{- block('form_widget_simple') -}}
-    </div>
-    {% else %}
-        {{ parent() }}
-    {% endif %}
-{%- endblock money_widget %}
-
+{%- endblock -%}

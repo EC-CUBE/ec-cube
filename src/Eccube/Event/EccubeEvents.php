@@ -196,6 +196,12 @@ final class EccubeEvents
     // exportShipping
     const ADMIN_ORDER_CSV_EXPORT_SHIPPING = 'admin.order.csv.export.shipping';
 
+    /**
+     * Admin/Shipping/ShippingController
+     */
+    // index
+    const ADMIN_SHIPPING_INDEX_INITIALIZE = 'admin.shipping.index.initialize';
+    const ADMIN_SHIPPING_INDEX_SEARCH = 'admin.shipping.index.search';
 
     /**
      * Admin/Product/CategoryController
