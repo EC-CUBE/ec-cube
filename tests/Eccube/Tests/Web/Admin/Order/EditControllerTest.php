@@ -399,7 +399,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
             if ($orderItem['order_item_type'] == OrderItemType::PRODUCT) {
                 // Todo don't use TaxRuleService::calcTax
 //                $tax = $this->container->get(TaxRuleService::class)->calcTax($orderItem['price'], $orderItem['tax_rate'], $orderItem['tax_rule']);
-                $tax = $orderItem['price'] * $orderItem['tax_rate'] / 100;
+                $tax = (int) $orderItem['price'] * $orderItem['tax_rate'] / 100;
                 $totalTax += $tax * $formDataForEdit['OrderItems'][$indx]['quantity'];
             }
         }
@@ -416,7 +416,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $EditedOrderafterEdit = $this->orderRepository->find($Order->getId());
 
         //確認する「トータル税金」
-        $this->expected = $totalTax;
+        $this->expected = round($totalTax, 2);
         $this->actual = $EditedOrderafterEdit->getTax();
         $this->verify();
     }
