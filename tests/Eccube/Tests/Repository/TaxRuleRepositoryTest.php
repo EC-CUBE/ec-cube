@@ -3,6 +3,7 @@
 namespace Eccube\Tests\Repository;
 
 use Eccube\Entity\Master\RoundingType;
+use Eccube\Entity\OrderItem;
 use Eccube\Entity\TaxRule;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Entity\BaseInfo;
@@ -320,10 +321,13 @@ class TaxRuleRepositoryTest extends EccubeTestCase
         foreach ($Shippings as $Shipping) {
             $OrderItems = $Shipping->getOrderItems();
 
+            /** @var OrderItem $Shipment */
             foreach ($OrderItems as $Shipment) {
-                $this->expected = round($Shipment->getPrice() + $Shipment->getPrice() * $this->TaxRule1->getTaxRate() / 100, 0);
-                $this->actual = $Shipment->getPriceIncTax();
-                $this->verify('OrderItem で TaxRuleEventSubscriber が正常にコールされるか');
+                if ($Shipment->isProduct()) {
+                    $this->expected = round($Shipment->getPrice() + $Shipment->getPrice() * $this->TaxRule1->getTaxRate() / 100, 0);
+                    $this->actual = $Shipment->getPriceIncTax();
+                    $this->verify('OrderItem で TaxRuleEventSubscriber が正常にコールされるか');
+                }
             }
         }
     }

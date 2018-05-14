@@ -3,7 +3,11 @@
 namespace Eccube\Tests\Web\Admin\Order;
 
 use Eccube\Entity\Customer;
+use Eccube\Entity\Master\OrderItemType;
+use Eccube\Entity\Master\TaxDisplayType;
+use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Order;
+use Eccube\Entity\OrderItem;
 use Eccube\Entity\Product;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
@@ -41,8 +45,11 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
                 'quantity' => $faker->numberBetween(1, 999),
                 'tax_rate' => 8, // XXX ハードコーディング
                 'tax_rule' => 1,
+                'tax_type' => TaxType::TAXATION,
                 'product_name' => $Product->getName(),
                 'product_code' => $ProductClasses[0]->getCode(),
+                'tax_display_type' => TaxDisplayType::EXCLUDED,
+                'order_item_type' => OrderItemType::PRODUCT,
             );
         }
 
@@ -103,7 +110,9 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
         //受注アイテム
         $orderItem = array();
         $OrderItemColl = $Order->getOrderItems();
+        /** @var OrderItem $OrderItem */
         foreach ($OrderItemColl as $OrderItem) {
+            /** @var Product $Product */
             $Product = $OrderItem->getProduct();
             $ProductClass = $OrderItem->getProductClass();
             $orderItem[] = array(
@@ -115,6 +124,8 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
                 'tax_rule' => $OrderItem->getTaxRule(),
                 'product_name' => is_object($Product) ? $Product->getName() : '送料', // XXX v3.1 より 送料等, Product の無い明細が追加される
                 'product_code' => is_object($ProductClass) ? $ProductClass->getCode() : null,
+                'order_item_type' => $OrderItem->getOrderItemTypeId(),
+                'tax_display_type' => is_object($OrderItem->getTaxDisplayType()) ? $OrderItem->getTaxDisplayType()->getId() : null,
             );
         }
         $Customer = $Order->getCustomer();
