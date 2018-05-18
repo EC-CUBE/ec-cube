@@ -41,6 +41,6 @@ class BlockPositionRepository extends AbstractRepository
 {
     public function __construct(RegistryInterface $registry)
     {
-        parent::__construct($registry, Page::class);
+        parent::__construct($registry, BlockPosition::class);
     }
 }
