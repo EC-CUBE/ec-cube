@@ -7,7 +7,6 @@ use Eccube\Util\FilesystemUtil;
 
 class FilesystemUtilTest extends TestCase
 {
-
     public function testSizeToHumanReadable()
     {
         $asserts = [

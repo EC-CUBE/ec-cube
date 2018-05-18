@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type;
 
 use Eccube\Annotation\FormType;
@@ -37,44 +36,41 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class ShoppingType extends AbstractType
 {
-
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         $payments = $options['payments'];
         $payment = $options['payment'];
         $message = $options['message'];
 
         $builder
-            ->add('payment', EntityType::class, array(
+            ->add('payment', EntityType::class, [
                 'class' => 'Eccube\Entity\Payment',
                 'choice_label' => 'method',
                 'choices' => $payments,
                 'data' => $payment,
                 'expanded' => true,
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                ),
-            ))
-            ->add('message', TextareaType::class, array(
+                ],
+            ])
+            ->add('message', TextareaType::class, [
                 'required' => false,
                 'data' => $message,
-                'constraints' => array(
-                    new Assert\Length(array('min' => 0, 'max' => 3000))),
-            ));
-
+                'constraints' => [
+                    new Assert\Length(['min' => 0, 'max' => 3000]), ],
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'payments' => array(),
+        $resolver->setDefaults([
+            'payments' => [],
             'payment' => null,
             'message' => null,
-        ));
+        ]);
     }
 
     /**

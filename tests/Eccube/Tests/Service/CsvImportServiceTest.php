@@ -27,7 +27,7 @@ use Eccube\Service\CsvImportService;
  *
  * CsvReaserTest より移植
  *
- * @link https://github.com/ddeboer/data-import/blob/master/tests/Reader/CsvReaderTest.php
+ * @see https://github.com/ddeboer/data-import/blob/master/tests/Reader/CsvReaderTest.php
  */
 class CsvImportServiceTest extends AbstractServiceTestCase
 {
@@ -37,7 +37,7 @@ class CsvImportServiceTest extends AbstractServiceTestCase
         $CsvImportService = new CsvImportService($file);
         $CsvImportService->setHeaderRowNumber(0);
 
-        $this->assertEquals(['id', 'number', 'description'],  $CsvImportService->getFields());
+        $this->assertEquals(['id', 'number', 'description'], $CsvImportService->getFields());
 
         foreach ($CsvImportService as $row) {
             $this->assertNotNull($row['id']);
@@ -47,9 +47,9 @@ class CsvImportServiceTest extends AbstractServiceTestCase
 
         $this->assertEquals(
             [
-                'id'        => 6,
-                'number'    => '456',
-                'description' => 'Another description'
+                'id' => 6,
+                'number' => '456',
+                'description' => 'Another description',
             ],
             $CsvImportService->getRow(2)
         );
@@ -133,10 +133,10 @@ class CsvImportServiceTest extends AbstractServiceTestCase
         $this->assertCount(4, $reader->getColumnHeaders());
 
         $expected = [
-            'id'          => '50',
+            'id' => '50',
             'description' => ['First', 'Second', 'Third'],
-            'details'     => ['Details1', 'Details2'],
-            'last'        => 'Last one'
+            'details' => ['Details1', 'Details2'],
+            'last' => 'Last one',
         ];
         $this->assertEquals($expected, $current);
     }

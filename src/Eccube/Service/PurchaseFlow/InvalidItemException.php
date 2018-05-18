@@ -50,10 +50,10 @@ class InvalidItemException extends \Exception
     {
         $productName = $ProductClass->getProduct()->getName();
         if ($ProductClass->hasClassCategory1()) {
-            $productName .= " - ".$ProductClass->getClassCategory1()->getName();
+            $productName .= ' - '.$ProductClass->getClassCategory1()->getName();
         }
         if ($ProductClass->hasClassCategory2()) {
-            $productName .= " - ".$ProductClass->getClassCategory2()->getName();
+            $productName .= ' - '.$ProductClass->getClassCategory2()->getName();
         }
 
         return new self($errorMessage, ['%product%' => $productName]);

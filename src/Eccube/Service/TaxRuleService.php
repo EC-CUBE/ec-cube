@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Service;
 
 use Eccube\Annotation\Service;
@@ -50,6 +49,7 @@ class TaxRuleService
      * @param  int|null|\Eccube\Entity\ProductClass   $productClass 商品規格
      * @param  int|null|\Eccube\Entity\Master\Pref    $pref         都道府県
      * @param  int|null|\Eccube\Entity\Master\Country $country      国
+     *
      * @return double                                 税金付与した金額
      */
     public function getTax($price, $product = null, $productClass = null, $pref = null, $country = null)
@@ -68,6 +68,7 @@ class TaxRuleService
      * @param  int|null|\Eccube\Entity\ProductClass   $productClass 商品規格
      * @param  int|null|\Eccube\Entity\Master\Pref    $pref         都道府県
      * @param  int|null|\Eccube\Entity\Master\Country $country      国
+     *
      * @return int
      */
     public function getPriceIncTax($price, $product = null, $productClass = null, $pref = null, $country = null)
@@ -82,6 +83,7 @@ class TaxRuleService
      * @param  int    $taxRate   税率(%単位)
      * @param  int    $RoundingType  端数処理
      * @param  int    $taxAdjust 調整額
+     *
      * @return double 税金額
      */
     public function calcTax($price, $taxRate, $RoundingType, $taxAdjust = 0)
@@ -97,6 +99,7 @@ class TaxRuleService
      *
      * @param  float|integer $value    端数処理を行う数値
      * @param  integer       $calcRule 課税規則
+     *
      * @return double        端数処理後の数値
      */
     public function roundByRoundingType($value, $RoundingType)

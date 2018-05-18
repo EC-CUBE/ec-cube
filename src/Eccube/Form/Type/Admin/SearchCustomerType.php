@@ -21,12 +21,10 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type\Admin;
 
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Master\CustomerStatus;
-use Eccube\Form\Type\Master\CategoryType as MasterCategoryType;
 use Eccube\Form\Type\Master\CustomerStatusType;
 use Eccube\Form\Type\Master\PrefType;
 use Eccube\Form\Type\PriceType;
@@ -92,8 +90,8 @@ class SearchCustomerType extends AbstractType
                     'id' => [
                         CustomerStatus::PROVISIONAL,
                         CustomerStatus::REGULAR,
-                    ]
-                ])
+                    ],
+                ]),
             ])
             ->add('sex', SexType::class, [
                 'label' => 'searchcustomer.label.sex',

@@ -53,7 +53,7 @@ class ValidatableItemProcessorTest extends EccubeTestCase
     public function testValidateCartFail()
     {
         // TODO: FIXME
-        $this->markTestIncomplete(__METHOD__ . 'may be not implement');
+        $this->markTestIncomplete(__METHOD__.'may be not implement');
 
         $validator = new ValidatableItemProcessorTest_FailValidator();
         $item = new CartItem();

@@ -8,8 +8,7 @@ function env($key, $default = null)
         return $default;
     }
 
-    switch (strtolower($value))
-    {
+    switch (strtolower($value)) {
         case 'true':
             return true;
         case 'false':

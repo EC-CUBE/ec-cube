@@ -131,7 +131,7 @@ class TimeZoneTest extends EccubeTestCase
             'name' => '商品名',
             'create_date' => $createDate,
             'update_date' => $updateDate,
-            'discriminator_type' => 'product'
+            'discriminator_type' => 'product',
         ], [
             'update_date' => 'datetimetz',
             'create_date' => 'datetimetz',
@@ -147,5 +147,4 @@ class TimeZoneTest extends EccubeTestCase
 
         $this->assertEquals($expected, $actual->format('Y-m-d H:i:s'));
     }
-
 }

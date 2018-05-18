@@ -2,7 +2,6 @@
 
 namespace Eccube\Twig\Extension;
 
-
 use Doctrine\ORM\EntityManagerInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;

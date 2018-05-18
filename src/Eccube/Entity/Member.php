@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -42,10 +41,10 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
 {
     public static function loadValidatorMetadata(ClassMetadata $metadata)
     {
-        $metadata->addConstraint(new UniqueEntity(array(
-            'fields'  => 'login_id',
-            'message' => 'member.text.error.login_id_registered'
-        )));
+        $metadata->addConstraint(new UniqueEntity([
+            'fields' => 'login_id',
+            'message' => 'member.text.error.login_id_registered',
+        ]));
     }
 
     /**
@@ -61,7 +60,7 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
      */
     public function getRoles()
     {
-        return array('ROLE_ADMIN');
+        return ['ROLE_ADMIN'];
     }
 
     /**
@@ -180,7 +179,6 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
      * })
      */
     private $Creator;
-
 
     /**
      * Get id.
@@ -412,6 +410,7 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
      * Set Work
      *
      * @param \Eccube\Entity\Master\Work
+     *
      * @return Member
      */
     public function setWork(\Eccube\Entity\Master\Work $work = null)

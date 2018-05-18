@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Web\Mypage;
 
 use Eccube\Entity\Customer;
@@ -49,37 +48,38 @@ class DeliveryControllerTest extends AbstractWebTestCase
         $email = $faker->safeEmail;
         $password = $faker->lexify('????????');
 
-        $form = array(
-            'name' => array(
+        $form = [
+            'name' => [
                 'name01' => $faker->lastName,
                 'name02' => $faker->firstName,
-            ),
-            'kana' => array(
+            ],
+            'kana' => [
                 'kana01' => $faker->lastKanaName,
                 'kana02' => $faker->firstKanaName,
-            ),
+            ],
             'company_name' => $faker->company,
-            'zip' => array(
+            'zip' => [
                 'zip01' => $faker->postcode1(),
                 'zip02' => $faker->postcode2(),
-            ),
-            'address' => array(
+            ],
+            'address' => [
                 'pref' => '5',
                 'addr01' => $faker->city,
                 'addr02' => $faker->streetAddress,
-            ),
-            'tel' => array(
+            ],
+            'tel' => [
                 'tel01' => $tel[0],
                 'tel02' => $tel[1],
                 'tel03' => $tel[2],
-            ),
-            'fax' => array(
+            ],
+            'fax' => [
                 'fax01' => $tel[0],
                 'fax02' => $tel[1],
                 'fax03' => $tel[2],
-            ),
-            '_token' => 'dummy'
-        );
+            ],
+            '_token' => 'dummy',
+        ];
+
         return $form;
     }
 
@@ -116,7 +116,7 @@ class DeliveryControllerTest extends AbstractWebTestCase
         $crawler = $client->request(
             'POST',
             $this->generateUrl('mypage_delivery_new'),
-            array('customer_address' => $form)
+            ['customer_address' => $form]
         );
 
         $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('mypage_delivery')));
@@ -128,12 +128,12 @@ class DeliveryControllerTest extends AbstractWebTestCase
         $client = $this->client;
 
         $CustomerAddress = $this->container->get(CustomerAddressRepository::class)->findOneBy(
-            array('Customer' => $this->Customer)
+            ['Customer' => $this->Customer]
         );
 
         $crawler = $client->request(
             'GET',
-            $this->generateUrl('mypage_delivery_edit', array('id' => $CustomerAddress->getId()))
+            $this->generateUrl('mypage_delivery_edit', ['id' => $CustomerAddress->getId()])
         );
 
         $this->assertTrue($client->getResponse()->isSuccessful());
@@ -144,14 +144,14 @@ class DeliveryControllerTest extends AbstractWebTestCase
         $this->logInTo($this->Customer);
 
         $CustomerAddress = $this->container->get(CustomerAddressRepository::class)->findOneBy(
-            array('Customer' => $this->Customer)
+            ['Customer' => $this->Customer]
         );
 
         $form = $this->createFormData();
         $crawler = $this->client->request(
             'POST',
-            $this->generateUrl('mypage_delivery_edit', array('id' => $CustomerAddress->getId())),
-            array('customer_address' => $form)
+            $this->generateUrl('mypage_delivery_edit', ['id' => $CustomerAddress->getId()]),
+            ['customer_address' => $form]
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('mypage_delivery')));
@@ -166,14 +166,14 @@ class DeliveryControllerTest extends AbstractWebTestCase
         $this->logInTo($this->Customer);
 
         $CustomerAddress = $this->container->get(CustomerAddressRepository::class)->findOneBy(
-            array('Customer' => $this->Customer)
+            ['Customer' => $this->Customer]
         );
         $id = $CustomerAddress->getId();
 
         $form = $this->createFormData();
         $crawler = $this->client->request(
             'DELETE',
-            $this->generateUrl('mypage_delivery_delete', array('id' => $id))
+            $this->generateUrl('mypage_delivery_delete', ['id' => $id])
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('mypage_delivery')));
@@ -181,7 +181,7 @@ class DeliveryControllerTest extends AbstractWebTestCase
         $CustomerAddress = $this->container->get(CustomerAddressRepository::class)->find($id);
         $this->assertNull($CustomerAddress);
 
-        $this->expected = array('mypage.address.delete.complete');
+        $this->expected = ['mypage.address.delete.complete'];
         $this->actual = $this->container->get('session')->getFlashBag()->get('eccube.front.success');
         $this->verify();
     }
@@ -192,7 +192,7 @@ class DeliveryControllerTest extends AbstractWebTestCase
 
         $crawler = $this->client->request(
             'DELETE',
-            $this->generateUrl('mypage_delivery_delete', array('id' => 999999999))
+            $this->generateUrl('mypage_delivery_delete', ['id' => 999999999])
         );
 
         $this->expected = 404;

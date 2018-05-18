@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type\Front;
 
 use Eccube\Common\EccubeConfig;
@@ -51,6 +50,7 @@ class EntryType extends AbstractType
 
     /**
      * EntryType constructor.
+     *
      * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
@@ -58,68 +58,67 @@ class EntryType extends AbstractType
         $this->eccubeConfig = $eccubeConfig;
     }
 
-
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', NameType::class, array(
+            ->add('name', NameType::class, [
                 'required' => true,
-            ))
-            ->add('kana', KanaType::class, array())
-            ->add('company_name', TextType::class, array(
+            ])
+            ->add('kana', KanaType::class, [])
+            ->add('company_name', TextType::class, [
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array(
+                'constraints' => [
+                    new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_stext_len'],
-                    )),
-                ),
-            ))
+                    ]),
+                ],
+            ])
             ->add('zip', ZipType::class)
             ->add('address', AddressType::class)
-            ->add('tel', TelType::class, array(
+            ->add('tel', TelType::class, [
                 'required' => true,
-            ))
-            ->add('fax', TelType::class, array(
+            ])
+            ->add('fax', TelType::class, [
                 'required' => false,
-            ))
+            ])
             ->add('email', RepeatedEmailType::class)
             ->add('password', RepeatedPasswordType::class)
-            ->add('birth', BirthdayType::class, array(
+            ->add('birth', BirthdayType::class, [
                 'required' => false,
                 'input' => 'datetime',
                 'years' => range(date('Y'), date('Y') - $this->eccubeConfig['eccube_birth_max']),
                 'widget' => 'choice',
                 'format' => 'yyyy/MM/dd',
-                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
-                'constraints' => array(
-                    new Assert\LessThanOrEqual(array(
+                'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'constraints' => [
+                    new Assert\LessThanOrEqual([
                         'value' => date('Y-m-d'),
                         'message' => 'form.type.select.selectisfuturedate',
-                    )),
-                ),
-            ))
-            ->add('sex', SexType::class, array(
+                    ]),
+                ],
+            ])
+            ->add('sex', SexType::class, [
                 'required' => false,
-            ))
-            ->add('job', JobType::class, array(
+            ])
+            ->add('job', JobType::class, [
                 'required' => false,
-            ))
+            ])
             ->add(
                 'point',
                 NumberType::class,
                 [
                     'required' => false,
                     'label' => 'ポイント', // TODO 未翻訳
-                    'constraints' => array(
-                        new Assert\Regex(array(
+                    'constraints' => [
+                        new Assert\Regex([
                             'pattern' => "/^\d+$/u",
-                            'message' => 'form.type.numeric.invalid'
-                        )),
-                    ),
-                    'mapped' => false
+                            'message' => 'form.type.numeric.invalid',
+                        ]),
+                    ],
+                    'mapped' => false,
                 ]
             );
     }
@@ -129,9 +128,9 @@ class EntryType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'Eccube\Entity\Customer',
-        ));
+        ]);
     }
 
     /**

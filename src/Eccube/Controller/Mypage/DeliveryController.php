@@ -21,10 +21,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Controller\Mypage;
 
-use Eccube\Annotation\Inject;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\CustomerAddress;
@@ -101,10 +99,10 @@ class DeliveryController extends AbstractController
         $parentPage = $request->get('parent_page', null);
 
         // 正しい遷移かをチェック
-        $allowdParents = array(
+        $allowdParents = [
             $this->generateUrl('mypage_delivery'),
             $this->generateUrl('shopping_redirect_to'),
-        );
+        ];
 
         // 遷移が正しくない場合、デフォルトであるマイページの配送先追加の画面を設定する
         if (!in_array($parentPage, $allowdParents)) {
@@ -116,11 +114,11 @@ class DeliveryController extends AbstractController
             ->createBuilder(CustomerAddressType::class, $CustomerAddress);
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
                 'Customer' => $Customer,
                 'CustomerAddress' => $CustomerAddress,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_DELIVERY_EDIT_INITIALIZE, $event);
@@ -129,19 +127,19 @@ class DeliveryController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            log_info('お届け先登録開始', array($id));
+            log_info('お届け先登録開始', [$id]);
 
             $this->entityManager->persist($CustomerAddress);
             $this->entityManager->flush();
 
-            log_info('お届け先登録完了', array($id));
+            log_info('お届け先登録完了', [$id]);
 
             $event = new EventArgs(
-                array(
+                [
                     'form' => $form,
                     'Customer' => $Customer,
                     'CustomerAddress' => $CustomerAddress,
-                ),
+                ],
                 $request
             );
             $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_DELIVERY_EDIT_COMPLETE, $event);
@@ -168,7 +166,7 @@ class DeliveryController extends AbstractController
     {
         $this->isTokenValid();
 
-        log_info('お届け先削除開始', array($CustomerAddress->getId()));
+        log_info('お届け先削除開始', [$CustomerAddress->getId()]);
 
         $Customer = $this->getUser();
 
@@ -179,16 +177,16 @@ class DeliveryController extends AbstractController
         $this->customerAddressRepository->delete($CustomerAddress);
 
         $event = new EventArgs(
-            array(
+            [
                 'Customer' => $Customer,
-                'CustomerAddress' => $CustomerAddress
-            ), $request
+                'CustomerAddress' => $CustomerAddress,
+            ], $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_DELIVERY_DELETE_COMPLETE, $event);
 
         $this->addSuccess('mypage.address.delete.complete');
 
-        log_info('お届け先削除完了', array($CustomerAddress->getId()));
+        log_info('お届け先削除完了', [$CustomerAddress->getId()]);
 
         return $this->redirect($this->generateUrl('mypage_delivery'));
     }

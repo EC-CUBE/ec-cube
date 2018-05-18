@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Entity\Master;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -36,24 +35,27 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="Eccube\Repository\Master\TaxTypeRepository")
  * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
  *
- * @link https://www.nta.go.jp/taxanswer/shohi/6209.htm
+ * @see https://www.nta.go.jp/taxanswer/shohi/6209.htm
  */
 class TaxType extends \Eccube\Entity\Master\AbstractMasterEntity
 {
     /**
      * 課税.
+     *
      * @var integer
      */
     const TAXATION = 1;
 
     /**
      * 不課税.
+     *
      * @var integer
      */
     const NON_TAXABLE = 2;
 
     /**
      * 非課税.
+     *
      * @var integer
      */
     const TAX_EXEMPT = 2;

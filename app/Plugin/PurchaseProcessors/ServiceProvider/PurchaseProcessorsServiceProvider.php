@@ -17,6 +17,7 @@ class PurchaseProcessorsServiceProvider implements ServiceProviderInterface
             function (ArrayCollection $processors, Container $app) {
                 $processors[] = new EmptyProcessor();
                 $processors[] = new ValidatableEmptyProcessor();
+
                 return $processors;
             }
         );

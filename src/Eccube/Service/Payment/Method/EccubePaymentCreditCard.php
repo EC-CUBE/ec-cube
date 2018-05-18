@@ -2,7 +2,6 @@
 
 namespace Eccube\Service\Payment\Method;
 
-use Eccube\Service\Payment\PaymentMethod;
 use Eccube\Service\Payment\PaymentResult;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -35,6 +34,7 @@ class EccubePaymentCreditCard extends CreditCard
         // return $this->app->handle($subRequest, HttpKernelInterface::SUB_REQUEST, false);
         return false;
     }
+
     public function setFormType($form)
     {
         // nothing

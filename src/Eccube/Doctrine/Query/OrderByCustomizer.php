@@ -23,25 +23,21 @@
 
 namespace Eccube\Doctrine\Query;
 
-
 use Doctrine\ORM\QueryBuilder;
 
 /**
  * ORDER BY句をカスタマイズするクラス。
- *
- * @package Eccube\Doctrine\Query
  */
 abstract class OrderByCustomizer implements QueryCustomizer
 {
-
     /**
      * @param QueryBuilder $builder
      * @param array $params
      * @param string $queryKey
      */
-    public final function customize(QueryBuilder $builder, $params, $queryKey)
+    final public function customize(QueryBuilder $builder, $params, $queryKey)
     {
-        foreach ($this->createStatements($params, $queryKey) as $index=>$orderByClause) {
+        foreach ($this->createStatements($params, $queryKey) as $index => $orderByClause) {
             if ($index === 0) {
                 $builder->orderBy($orderByClause->getSort(), $orderByClause->getOrder());
             } else {
@@ -56,7 +52,8 @@ abstract class OrderByCustomizer implements QueryCustomizer
      *
      * @param array $params
      * @param $queryKey
+     *
      * @return OrderByClause[]
      */
-    protected abstract function createStatements($params, $queryKey);
+    abstract protected function createStatements($params, $queryKey);
 }

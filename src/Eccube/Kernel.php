@@ -14,7 +14,6 @@ namespace Eccube;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Eccube\Common\EccubeNav;
 use Eccube\DependencyInjection\Compiler\AutoConfigurationTagPass;
-use Eccube\DependencyInjection\Compiler\LazyComponentPass;
 use Eccube\DependencyInjection\Compiler\NavCompilerPass;
 use Eccube\DependencyInjection\Compiler\PluginPass;
 use Eccube\DependencyInjection\Compiler\QueryCustomizerPass;
@@ -64,6 +63,7 @@ class Kernel extends BaseKernel
 
     /**
      * {@inheritdoc}
+     *
      * @see \Symfony\Component\HttpKernel\Kernel::boot()
      */
     public function boot()
@@ -183,7 +183,7 @@ class Kernel extends BaseKernel
         $paths = ['%kernel.project_dir%/src/Eccube/Entity'];
         $namespaces = ['Eccube\\Entity'];
         $reader = new Reference('annotation_reader');
-        $driver = new Definition(AnnotationDriver::class, array($reader, $paths));
+        $driver = new Definition(AnnotationDriver::class, [$reader, $paths]);
         $driver->addMethodCall('setTraitProxiesDirectory', [$projectDir.'/app/proxy/entity']);
         $container->addCompilerPass(new DoctrineOrmMappingsPass($driver, $namespaces, []));
 
@@ -208,7 +208,7 @@ class Kernel extends BaseKernel
 
     protected function loadEntityProxies()
     {
-        foreach (glob(__DIR__ . '/../../app/proxy/entity/*.php') as $file) {
+        foreach (glob(__DIR__.'/../../app/proxy/entity/*.php') as $file) {
             require_once $file;
         }
     }

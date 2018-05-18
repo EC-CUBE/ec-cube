@@ -148,6 +148,6 @@ EOF
             }
         }
         $output->writeln('');
-        $output->writeln(sprintf("%s <info>success</info>", 'eccube:fixtures:generate'));
+        $output->writeln(sprintf('%s <info>success</info>', 'eccube:fixtures:generate'));
     }
 }

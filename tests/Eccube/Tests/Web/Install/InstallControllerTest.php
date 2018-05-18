@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Web\Install;
 
 use Eccube\Common\Constant;
@@ -40,7 +39,6 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
  */
 class InstallControllerTest extends AbstractWebTestCase
 {
-
     /**
      * @var InstallController
      */
@@ -120,7 +118,7 @@ class InstallControllerTest extends AbstractWebTestCase
         $this->session->set('eccube.session.install',
                             [
                                 'authmagic' => 'secret',
-                                'admin_allow_hosts' => "127.0.0.1\r\n192.168.0.1"
+                                'admin_allow_hosts' => "127.0.0.1\r\n192.168.0.1",
                             ]);
         $this->actual = $this->controller->complete($this->request);
         $this->assertArrayHasKey('admin_url', $this->actual);
@@ -130,7 +128,7 @@ class InstallControllerTest extends AbstractWebTestCase
     {
         $params = [
             'database' => 'pdo_sqlite',
-            'database_name' => '/foo/bar/eccube.db'
+            'database_name' => '/foo/bar/eccube.db',
         ];
         $this->expected = 'sqlite:///foo/bar/eccube.db';
         $this->actual = $this->controller->createDatabaseUrl($params);
@@ -139,7 +137,7 @@ class InstallControllerTest extends AbstractWebTestCase
         $params = [
             'database' => 'pdo_mysql',
             'database_name' => 'cube4_dev',
-            'database_host' => 'localhost'
+            'database_host' => 'localhost',
         ];
         $this->expected = 'mysql://localhost/cube4_dev';
         $this->actual = $this->controller->createDatabaseUrl($params);
@@ -149,7 +147,7 @@ class InstallControllerTest extends AbstractWebTestCase
             'database' => 'pdo_pgsql',
             'database_name' => 'cube4_dev',
             'database_host' => 'localhost',
-            'database_port' => '5432'
+            'database_port' => '5432',
         ];
         $this->expected = 'pgsql://localhost:5432/cube4_dev';
         $this->actual = $this->controller->createDatabaseUrl($params);
@@ -160,7 +158,7 @@ class InstallControllerTest extends AbstractWebTestCase
             'database_name' => 'cube4_dev',
             'database_host' => 'localhost',
             'database_port' => '5432',
-            'database_user' => 'postgres'
+            'database_user' => 'postgres',
         ];
         $this->expected = 'pgsql://postgres@localhost:5432/cube4_dev';
         $this->actual = $this->controller->createDatabaseUrl($params);
@@ -172,7 +170,7 @@ class InstallControllerTest extends AbstractWebTestCase
             'database_host' => 'localhost',
             'database_port' => '3306',
             'database_user' => 'root',
-            'database_password' => 'password'
+            'database_password' => 'password',
         ];
         $this->expected = 'mysql://root:password@localhost:3306/cube4_dev';
         $this->actual = $this->controller->createDatabaseUrl($params);
@@ -184,7 +182,7 @@ class InstallControllerTest extends AbstractWebTestCase
         $url = 'sqlite:///foo/bar/eccube.db';
         $this->expected = [
             'database' => 'pdo_sqlite',
-            'database_name' => '/foo/bar/eccube.db'
+            'database_name' => '/foo/bar/eccube.db',
         ];
         $this->actual = $this->controller->extractDatabaseUrl($url);
         $this->verify();
@@ -197,7 +195,7 @@ class InstallControllerTest extends AbstractWebTestCase
             'database_host' => 'localhost',
             'database_port' => '3306',
             'database_user' => 'root',
-            'database_password' => 'password'
+            'database_password' => 'password',
         ];
         $this->verify();
 
@@ -209,7 +207,7 @@ class InstallControllerTest extends AbstractWebTestCase
             'database_host' => 'localhost',
             'database_port' => null,
             'database_user' => 'root',
-            'database_password' => 'password'
+            'database_password' => 'password',
         ];
         $this->verify();
 
@@ -221,7 +219,7 @@ class InstallControllerTest extends AbstractWebTestCase
             'database_host' => 'localhost',
             'database_port' => null,
             'database_user' => 'root',
-            'database_password' => null
+            'database_password' => null,
         ];
         $this->verify();
 
@@ -233,7 +231,7 @@ class InstallControllerTest extends AbstractWebTestCase
             'database_host' => 'localhost',
             'database_port' => null,
             'database_user' => null,
-            'database_password' => null
+            'database_password' => null,
         ];
         $this->verify();
     }
@@ -241,7 +239,7 @@ class InstallControllerTest extends AbstractWebTestCase
     public function testCreateMailerUrl()
     {
         $params = [
-            'smtp_host' => 'localhost'
+            'smtp_host' => 'localhost',
         ];
         $this->expected = 'smtp://localhost';
         $this->actual = $this->controller->createMailerUrl($params);
@@ -249,7 +247,7 @@ class InstallControllerTest extends AbstractWebTestCase
 
         $params = [
             'smtp_host' => 'localhost',
-            'smtp_port' => 587
+            'smtp_port' => 587,
         ];
         $this->expected = 'smtp://localhost:587';
         $this->actual = $this->controller->createMailerUrl($params);
@@ -259,7 +257,7 @@ class InstallControllerTest extends AbstractWebTestCase
             'smtp_host' => 'localhost',
             'smtp_port' => 587,
             'smtp_password' => 'password',
-            'smtp_username' => 'username'
+            'smtp_username' => 'username',
         ];
         $this->expected = 'smtp://username:password@localhost:587?auth_mode=plain';
         $this->actual = $this->controller->createMailerUrl($params);
@@ -270,7 +268,7 @@ class InstallControllerTest extends AbstractWebTestCase
             'smtp_port' => 587,
             'smtp_password' => 'password',
             'auth_mode' => 'login',
-            'smtp_username' => 'username'
+            'smtp_username' => 'username',
         ];
         $this->expected = 'smtp://username:password@localhost:587?auth_mode=login';
         $this->actual = $this->controller->createMailerUrl($params);
@@ -282,7 +280,7 @@ class InstallControllerTest extends AbstractWebTestCase
             'smtp_password' => 'password',
             'auth_mode' => 'login',
             'encryption' => 'ssl',
-            'smtp_username' => 'username'
+            'smtp_username' => 'username',
         ];
         $this->expected = 'smtp://username:password@localhost:465?auth_mode=login&encryption=ssl';
         $this->actual = $this->controller->createMailerUrl($params);
@@ -290,7 +288,7 @@ class InstallControllerTest extends AbstractWebTestCase
 
         $params = [
             'smtp_host' => 'localhost',
-            'encryption' => 'ssl'
+            'encryption' => 'ssl',
         ];
         $this->expected = 'smtp://localhost:465?encryption=ssl';
         $this->actual = $this->controller->createMailerUrl($params);
@@ -302,7 +300,7 @@ class InstallControllerTest extends AbstractWebTestCase
             'encryption' => 'ssl',
             'auth_mode' => 'login',
             'smtp_password' => 'password',
-            'smtp_username' => 'username@gmail.com'
+            'smtp_username' => 'username@gmail.com',
         ];
         $this->expected = 'gmail://username@gmail.com:password@smtp.gmail.com:465?auth_mode=login&encryption=ssl';
         $this->actual = $this->controller->createMailerUrl($params);
@@ -320,7 +318,7 @@ class InstallControllerTest extends AbstractWebTestCase
             'smtp_port' => 25,
             'encryption' => null,
             'auth_mode' => null,
-            'smtp_username' => null
+            'smtp_username' => null,
         ];
         $this->verify();
 
@@ -346,7 +344,7 @@ class InstallControllerTest extends AbstractWebTestCase
             'smtp_host' => 'localhost',
             'smtp_port' => 587,
             'encryption' => null,
-            'auth_mode' => 'plain'
+            'auth_mode' => 'plain',
         ];
         $this->verify();
 
@@ -359,7 +357,7 @@ class InstallControllerTest extends AbstractWebTestCase
             'smtp_host' => 'localhost',
             'smtp_port' => 587,
             'encryption' => null,
-            'auth_mode' => 'login'
+            'auth_mode' => 'login',
         ];
         $this->verify();
 
@@ -372,7 +370,7 @@ class InstallControllerTest extends AbstractWebTestCase
             'smtp_host' => 'localhost',
             'smtp_port' => 587,
             'encryption' => 'tls',
-            'auth_mode' => 'plain'
+            'auth_mode' => 'plain',
         ];
         $this->verify();
 
@@ -385,7 +383,7 @@ class InstallControllerTest extends AbstractWebTestCase
             'smtp_host' => 'smtp.gmail.com',
             'smtp_port' => 465,
             'encryption' => 'ssl',
-            'auth_mode' => 'login'
+            'auth_mode' => 'login',
         ];
         $this->verify();
     }
@@ -400,7 +398,7 @@ class InstallControllerTest extends AbstractWebTestCase
     {
         $params = [
             'http_url' => 'http://example.com',
-            'shop_name' => 'example shop'
+            'shop_name' => 'example shop',
         ];
         $appData = $this->controller->createAppData($params, $this->entityManager);
 

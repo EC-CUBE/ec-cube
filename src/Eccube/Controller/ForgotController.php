@@ -64,6 +64,7 @@ class ForgotController extends AbstractController
 
     /**
      * ForgotController constructor.
+     *
      * @param ValidatorInterface $recursiveValidator
      * @param MailService $mailService
      * @param CustomerRepository $customerRepository
@@ -74,14 +75,12 @@ class ForgotController extends AbstractController
         MailService $mailService,
         CustomerRepository $customerRepository,
         EncoderFactoryInterface $encoderFactory
-    )
-    {
+    ) {
         $this->recursiveValidator = $recursiveValidator;
         $this->mailService = $mailService;
         $this->customerRepository = $customerRepository;
         $this->encoderFactory = $encoderFactory;
     }
-
 
     /**
      * パスワードリマインダ.
@@ -95,9 +94,9 @@ class ForgotController extends AbstractController
             ->createNamedBuilder('', ForgotType::class);
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_FORGOT_INDEX_INITIALIZE, $event);
@@ -120,16 +119,16 @@ class ForgotController extends AbstractController
                 $this->entityManager->flush();
 
                 $event = new EventArgs(
-                    array(
+                    [
                         'form' => $form,
                         'Customer' => $Customer,
-                    ),
+                    ],
                     $request
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::FRONT_FORGOT_INDEX_COMPLETE, $event);
 
                 // 完了URLの生成
-                $reset_url = $this->generateUrl('forgot_reset', array('reset_key' => $Customer->getResetKey()),UrlGeneratorInterface::ABSOLUTE_URL);
+                $reset_url = $this->generateUrl('forgot_reset', ['reset_key' => $Customer->getResetKey()], UrlGeneratorInterface::ABSOLUTE_URL);
 
                 // メール送信
                 $this->mailService->sendPasswordResetNotificationMail($Customer, $reset_url);
@@ -139,7 +138,7 @@ class ForgotController extends AbstractController
             } else {
                 log_warning(
                     'Un active customer try send reset password email: ',
-                    array('Enter email' => $form->get('login_email')->getData())
+                    ['Enter email' => $form->get('login_email')->getData()]
                 );
             }
 
@@ -172,20 +171,19 @@ class ForgotController extends AbstractController
     {
         $errors = $this->recursiveValidator->validate(
             $reset_key,
-            array(
+            [
                 new Assert\NotBlank(),
                 new Assert\Regex(
-                    array(
+                    [
                         'pattern' => '/^[a-zA-Z0-9]+$/',
-                    )
+                    ]
                 ),
-            )
+            ]
         );
 
         if ('GET' === $request->getMethod()
             && count($errors) === 0
         ) {
-
             $Customer = $this->customerRepository
                 ->getRegularCustomerByResetKey($reset_key);
             if (is_null($Customer)) {
@@ -211,9 +209,9 @@ class ForgotController extends AbstractController
             $this->entityManager->flush();
 
             $event = new EventArgs(
-                array(
+                [
                     'Customer' => $Customer,
-                ),
+                ],
                 $request
             );
             $this->eventDispatcher->dispatch(EccubeEvents::FRONT_FORGOT_RESET_COMPLETE, $event);
@@ -228,5 +226,4 @@ class ForgotController extends AbstractController
 
         return [];
     }
-
 }

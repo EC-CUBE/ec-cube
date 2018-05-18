@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Form\Type\Master;
 
 use Eccube\Form\Type\Master\ProductStatusType;
@@ -33,7 +32,7 @@ class ProductStatusTypeTest extends AbstractTypeTestCase
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 
-    /** @var  ProductStatusRepository */
+    /** @var ProductStatusRepository */
     protected $productStatusRepo;
 
     public function setUp()
@@ -43,9 +42,9 @@ class ProductStatusTypeTest extends AbstractTypeTestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
-            ->createBuilder(ProductStatusType::class, null, array(
+            ->createBuilder(ProductStatusType::class, null, [
                 'csrf_protection' => false,
-            ))
+            ])
             ->getForm();
     }
 
@@ -61,7 +60,7 @@ class ProductStatusTypeTest extends AbstractTypeTestCase
         $view = $this->form->createView();
         $choices = $view->vars['choices'];
 
-        $data = array();
+        $data = [];
         foreach ($choices as $choice) {
             $data[] = $choice->data;
         }
@@ -72,6 +71,7 @@ class ProductStatusTypeTest extends AbstractTypeTestCase
         // order by されているか
         $this->assertEquals($data, $pref);
     }
+
     /**
      * 範囲外の値のテスト
      */
@@ -80,6 +80,7 @@ class ProductStatusTypeTest extends AbstractTypeTestCase
         $this->form->submit(50);
         $this->assertFalse($this->form->isValid());
     }
+
     /**
      * 範囲外の値のテスト
      */

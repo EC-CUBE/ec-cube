@@ -59,7 +59,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $this->customerRepository = $this->container->get(CustomerRepository::class);
 
         // FIXME: Should remove exist data before generate data for test
-        $this->deleteAllRows(array('dtb_order'));
+        $this->deleteAllRows(['dtb_order']);
 
         $Sex = $this->sexRepository->find(1);
         $Payment = $this->paymentRepository->find(1);
@@ -119,15 +119,15 @@ class OrderControllerTest extends AbstractAdminWebTestCase
 
     public function testSearchOrderById()
     {
-        $Order = $this->orderRepository->findOneBy(array());
+        $Order = $this->orderRepository->findOneBy([]);
 
         $crawler = $this->client->request(
-            'POST', $this->generateUrl('admin_order'), array(
-            'admin_search_order' => array(
+            'POST', $this->generateUrl('admin_order'), [
+            'admin_search_order' => [
                 '_token' => 'dummy',
                 'multi' => $Order->getId(),
-            )
-            )
+            ],
+            ]
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
@@ -136,12 +136,12 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $this->verify();
 
         $crawler = $this->client->request(
-            'POST', $this->generateUrl('admin_order'), array(
-                'admin_search_order' => array(
+            'POST', $this->generateUrl('admin_order'), [
+                'admin_search_order' => [
                     '_token' => 'dummy',
                     'order_id' => $Order->getId(),
-                )
-            )
+                ],
+            ]
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
@@ -152,32 +152,32 @@ class OrderControllerTest extends AbstractAdminWebTestCase
 
     public function testSearchOrderByName()
     {
-        $Order = $this->orderRepository->findOneBy(array());
+        $Order = $this->orderRepository->findOneBy([]);
         $companyName = $Order->getCompanyName();
-        $OrderList = $this->orderRepository->findBy(array('company_name' => $companyName));
+        $OrderList = $this->orderRepository->findBy(['company_name' => $companyName]);
         $cnt = count($OrderList);
 
         $crawler = $this->client->request(
-            'POST', $this->generateUrl('admin_order'), array(
-            'admin_search_order' => array(
+            'POST', $this->generateUrl('admin_order'), [
+            'admin_search_order' => [
                 '_token' => 'dummy',
                 'multi' => $companyName,
-            )
-            )
+            ],
+            ]
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $this->expected = '検索結果：' . $cnt . '件が該当しました';
+        $this->expected = '検索結果：'.$cnt.'件が該当しました';
         $this->actual = $crawler->filter('#search_form #search_total_count')->text();
         $this->verify();
 
         $crawler = $this->client->request(
-            'POST', $this->generateUrl('admin_order'), array(
-                'admin_search_order' => array(
+            'POST', $this->generateUrl('admin_order'), [
+                'admin_search_order' => [
                     '_token' => 'dummy',
                     'company_name' => $companyName,
-                )
-            )
+                ],
+            ]
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
@@ -191,11 +191,11 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_order'),
-            array(
-                'admin_search_order' => array(
-                    '_token' => 'dummy'
-                )
-            )
+            [
+                'admin_search_order' => [
+                    '_token' => 'dummy',
+                ],
+            ]
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
@@ -209,20 +209,20 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_order').'?page_count=3',
-            array(
-                'admin_search_order' => array(
+            [
+                'admin_search_order' => [
                     '_token' => 'dummy',
                     'status' => 1,
-                    'sex' => array('1', '2'),
-                    'payment' => array('1', '2', '3', '4')
-                )
-            )
+                    'sex' => ['1', '2'],
+                    'payment' => ['1', '2', '3', '4'],
+                ],
+            ]
         );
 
         // 次のページへ遷移
         $crawler = $this->client->request(
             'GET',
-            $this->generateUrl('admin_order_page', array('page_no' => 2))
+            $this->generateUrl('admin_order_page', ['page_no' => 2])
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
@@ -264,12 +264,12 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_order'),
-            array(
-                'admin_search_order' => array(
+            [
+                'admin_search_order' => [
                     '_token' => 'dummy',
-                    'email' => 'user-'
-                )
-            )
+                    'email' => 'user-',
+                ],
+            ]
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
         $this->expected = '検索結果：10件が該当しました';
@@ -286,21 +286,22 @@ class OrderControllerTest extends AbstractAdminWebTestCase
 
     /**
      * Test for issue 1995
-     * @link https://github.com/EC-CUBE/ec-cube/issues/1995
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/1995
      */
     public function testSearchWithEmail()
     {
-        $form = array(
+        $form = [
             '_token' => 'dummy',
             'email' => 'user-1',
-        );
+        ];
         /* @var $crawler Crawler */
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_order'),
-            array(
+            [
                 'admin_search_order' => $form,
-            )
+            ]
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
@@ -309,7 +310,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $this->verify();
 
         /* @var $customer \Eccube\Entity\Customer */
-        $customer = $this->customerRepository->findOneBy(array('email' => 'user-1@example.com'));
+        $customer = $this->customerRepository->findOneBy(['email' => 'user-1@example.com']);
 
         $this->assertContains($customer->getName01(), $crawler->filter('table#search_result')->html());
     }
@@ -338,7 +339,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             $this->generateUrl('admin_order_bulk_order_status', ['id' => $orderStatusId]),
             [
                 'ids' => $orderIds,
-                Constant::TOKEN_NAME => 'dummy'
+                Constant::TOKEN_NAME => 'dummy',
             ]
         );
 
@@ -365,7 +366,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
     {
         return [
             [OrderStatus::PAID],
-            [OrderStatus::DELIVERED]
+            [OrderStatus::DELIVERED],
         ];
     }
 
@@ -375,7 +376,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             'GET',
             $this->generateUrl('admin_order_bulk_order_status', ['id' => OrderStatus::NEW]),
             [
-                Constant::TOKEN_NAME => 'dummy'
+                Constant::TOKEN_NAME => 'dummy',
             ]
         );
         $this->assertEquals(405, $this->client->getResponse()->getStatusCode());
@@ -387,7 +388,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             'POST',
             $this->generateUrl('admin_order_bulk_order_status', ['id' => 0]),
             [
-                Constant::TOKEN_NAME => 'dummy'
+                Constant::TOKEN_NAME => 'dummy',
             ]
         );
         $this->assertEquals(404, $this->client->getResponse()->getStatusCode());

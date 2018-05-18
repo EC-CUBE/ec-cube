@@ -38,9 +38,9 @@ class RoundingTypeTypeTest extends AbstractTypeTestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
-            ->createBuilder(RoundingTypeType::class, null, array(
+            ->createBuilder(RoundingTypeType::class, null, [
                 'csrf_protection' => false,
-            ))
+            ])
             ->getForm();
     }
 

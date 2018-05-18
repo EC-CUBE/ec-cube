@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type\Admin;
 
 use Eccube\Common\EccubeConfig;
@@ -39,6 +38,7 @@ class ProductTag extends AbstractType
 
     /**
      * CategoryType constructor.
+     *
      * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
@@ -52,14 +52,14 @@ class ProductTag extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class, array(
-                'constraints' => array(
+            ->add('name', TextType::class, [
+                'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(array(
+                    new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_stext_len'],
-                    )),
-                ),
-            ));
+                    ]),
+                ],
+            ]);
     }
 
     /**

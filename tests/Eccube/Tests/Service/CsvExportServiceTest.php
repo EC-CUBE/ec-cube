@@ -76,8 +76,8 @@ class CsvExportServiceTest extends AbstractServiceTestCase
     {
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
-        $Order->setMessage("aaaa".PHP_EOL."bbbb");
-        $Order->setNote("bbb".PHP_EOL."bbb");
+        $Order->setMessage('aaaa'.PHP_EOL.'bbbb');
+        $Order->setNote('bbb'.PHP_EOL.'bbb');
         $this->createOrder($Customer);
         $this->createOrder($Customer);
         $this->entityManager->flush();
@@ -93,12 +93,11 @@ class CsvExportServiceTest extends AbstractServiceTestCase
         $this->csvExportService->setExportQueryBuilder($qb);
 
         $this->csvExportService->exportData(function ($entity, $csvService) {
-
             $Csvs = $csvService->getCsvs();
 
             /** @var $Order \Eccube\Entity\Order */
             $Order = $entity;
-            $row = array();
+            $row = [];
             // CSV出力項目と合致するデータを取得.
             foreach ($Csvs as $Csv) {
                 $row[] = $csvService->getData($Csv, $Order);
@@ -109,7 +108,7 @@ class CsvExportServiceTest extends AbstractServiceTestCase
 
         $Result = $qb->getQuery()->getResult();
         $fp = fopen($this->url, 'r');
-        $File = array();
+        $File = [];
         if ($fp !== false) {
             while (($data = fgetcsv($fp)) !== false) {
                 $File[] = $data;

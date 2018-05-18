@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Repository;
 
 use Eccube\Annotation\Repository;
@@ -50,10 +49,11 @@ class PluginRepository extends AbstractRepository
 
     /**
      * @param $code プラグインコード
+     *
      * @return Plugin
      */
     public function findByCode($code)
     {
-        return $this->findOneBy(array('code' => $code));
+        return $this->findOneBy(['code' => $code]);
     }
 }

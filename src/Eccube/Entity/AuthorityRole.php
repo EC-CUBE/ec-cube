@@ -65,7 +65,6 @@ class AuthorityRole extends \Eccube\Entity\AbstractEntity
      */
     private $Creator;
 
-
     /**
      * Get id.
      *

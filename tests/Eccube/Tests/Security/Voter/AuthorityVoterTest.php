@@ -35,7 +35,6 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class AuthorityVoterTest extends EccubeTestCase
 {
-
     /**
      * @var AuthorityRoleRepository
      */

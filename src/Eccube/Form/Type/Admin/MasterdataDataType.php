@@ -34,7 +34,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class MasterdataDataType
- * @package Eccube\Form\Type\Admin
  */
 class MasterdataDataType extends AbstractType
 {
@@ -45,6 +44,7 @@ class MasterdataDataType extends AbstractType
 
     /**
      * MasterdataDataType constructor.
+     *
      * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
@@ -52,28 +52,27 @@ class MasterdataDataType extends AbstractType
         $this->eccubeConfig = $eccubeConfig;
     }
 
-
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('id', TextType::class, array(
+            ->add('id', TextType::class, [
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array(
+                'constraints' => [
+                    new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_int_len'],
-                    )),
-                    new Assert\Regex(array(
+                    ]),
+                    new Assert\Regex([
                         'pattern' => '/^\d+$/u',
                         'message' => trans('form.type.numeric.invalid'),
-                    )),
-                ),
-            ))
-            ->add('name', TextType::class, array(
+                    ]),
+                ],
+            ])
+            ->add('name', TextType::class, [
                 'required' => false,
-            ))
+            ])
         ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
             $form = $event->getForm();
             $data = $form->getData();

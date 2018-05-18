@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -74,7 +73,6 @@ class ClassName extends \Eccube\Entity\AbstractEntity
      * @ORM\Column(name="sort_no", type="integer")
      */
     private $sort_no;
-
 
     /**
      * @var \DateTime

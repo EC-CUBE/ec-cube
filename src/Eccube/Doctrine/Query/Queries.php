@@ -1,11 +1,8 @@
 <?php
 
-
 namespace Eccube\Doctrine\Query;
 
-
 use Doctrine\ORM\QueryBuilder;
-use Eccube\Annotation\QueryExtension;
 
 class Queries
 {

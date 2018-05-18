@@ -21,13 +21,11 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Controller\Admin;
 
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
-use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\ProductStock;
@@ -67,15 +65,14 @@ class AdminController extends AbstractController
      */
     protected $memberRepository;
 
-
     /**
      * @var EncoderFactoryInterface
      */
     protected $encoderFactory;
 
-
     /**
      * AdminController constructor.
+     *
      * @param AuthorizationCheckerInterface $authorizationChecker
      * @param AuthenticationUtils $helper
      * @param MemberRepository $memberRepository
@@ -107,9 +104,9 @@ class AdminController extends AbstractController
         $builder = $this->formFactory->createNamedBuilder('', LoginType::class);
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ADMIM_LOGIN_INITIALIZE, $event);
@@ -130,31 +127,31 @@ class AdminController extends AbstractController
     {
         // install.phpのチェック.
         if (isset($this->eccubeConfig['eccube_install']) && $this->eccubeConfig['eccube_install'] == 1) {
-            $file = $this->eccubeConfig['root_dir'] . '/html/install.php';
+            $file = $this->eccubeConfig['root_dir'].'/html/install.php';
             if (file_exists($file)) {
-                $message = trans('admin.install.warning', array('installphpPath' => 'html/install.php'));
+                $message = trans('admin.install.warning', ['installphpPath' => 'html/install.php']);
                 $this->addWarning($message, 'admin');
             }
-            $fileOnRoot = $this->eccubeConfig['root_dir'] . '/install.php';
+            $fileOnRoot = $this->eccubeConfig['root_dir'].'/install.php';
             if (file_exists($fileOnRoot)) {
-                $message = trans('admin.install.warning', array('installphpPath' => 'install.php'));
+                $message = trans('admin.install.warning', ['installphpPath' => 'install.php']);
                 $this->addWarning($message, 'admin');
             }
         }
 
         // 受注マスター検索用フォーム
-        $searchOrderBuilder =$this->formFactory->createBuilder(SearchOrderType::class);
+        $searchOrderBuilder = $this->formFactory->createBuilder(SearchOrderType::class);
         // 商品マスター検索用フォーム
         $searchProductBuilder = $this->formFactory->createBuilder(SearchProductType::class);
         // 会員マスター検索用フォーム
         $searchCustomerBuilder = $this->formFactory->createBuilder(SearchCustomerType::class);
 
         $event = new EventArgs(
-            array(
+            [
                 'searchOrderBuilder' => $searchOrderBuilder,
                 'searchProductBuilder' => $searchProductBuilder,
                 'searchCustomerBuilder' => $searchCustomerBuilder,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ADMIM_INDEX_INITIALIZE, $event);
@@ -171,16 +168,16 @@ class AdminController extends AbstractController
         /**
          * 受注状況.
          */
-        $excludes = array();
+        $excludes = [];
         $excludes[] = OrderStatus::PENDING;
         $excludes[] = OrderStatus::PROCESSING;
         $excludes[] = OrderStatus::CANCEL;
         $excludes[] = OrderStatus::DELIVERED;
 
         $event = new EventArgs(
-            array(
+            [
                 'excludes' => $excludes,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ADMIM_INDEX_ORDER, $event);
@@ -194,15 +191,15 @@ class AdminController extends AbstractController
         /**
          * 売り上げ状況
          */
-        $excludes = array();
+        $excludes = [];
         $excludes[] = OrderStatus::PROCESSING;
         $excludes[] = OrderStatus::CANCEL;
         $excludes[] = OrderStatus::PENDING;
 
         $event = new EventArgs(
-            array(
+            [
                 'excludes' => $excludes,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ADMIM_INDEX_SALES, $event);
@@ -224,7 +221,7 @@ class AdminController extends AbstractController
         $countCustomers = $this->countCustomers($this->entityManager);
 
         $event = new EventArgs(
-            array(
+            [
                 'Orders' => $Orders,
                 'OrderStatuses' => $OrderStatuses,
                 'salesThisMonth' => $salesThisMonth,
@@ -232,7 +229,7 @@ class AdminController extends AbstractController
                 'salesYesterday' => $salesYesterday,
                 'countNonStockProducts' => $countNonStockProducts,
                 'countCustomers' => $countCustomers,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ADMIM_INDEX_COMPLETE, $event);
@@ -258,6 +255,7 @@ class AdminController extends AbstractController
      * @Template("@admin/change_password.twig")
      *
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|array
      */
     public function changePassword(Request $request)
@@ -266,9 +264,9 @@ class AdminController extends AbstractController
             ->createBuilder(ChangePasswordType::class);
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ADMIM_CHANGE_PASSWORD_INITIALIZE, $event);
@@ -297,10 +295,10 @@ class AdminController extends AbstractController
             $this->memberRepository->save($Member);
 
             $event = new EventArgs(
-                array(
+                [
                     'form' => $form,
-                    'Member' => $Member
-                ),
+                    'Member' => $Member,
+                ],
                 $request
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ADMIN_CHANGE_PASSWORD_COMPLETE, $event);
@@ -321,6 +319,7 @@ class AdminController extends AbstractController
      * @Route("/%eccube_admin_route%/nonstock", name="admin_homepage_nonstock")
      *
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function searchNonStockProducts(Request $request)
@@ -334,21 +333,23 @@ class AdminController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             // 在庫なし商品の検索条件をセッションに付与し, 商品マスタへリダイレクトする.
-            $searchData = array();
+            $searchData = [];
             $searchData['stock'] = [ProductStock::OUT_OF_STOCK];
             $session = $request->getSession();
             $session->set('eccube.admin.product.search', $searchData);
 
-            return $this->redirectToRoute('admin_product_page', array(
+            return $this->redirectToRoute('admin_product_page', [
                 'page_no' => 1,
-                'status' => $this->eccubeConfig['eccube_admin_product_stock_status']));
+                'status' => $this->eccubeConfig['eccube_admin_product_stock_status'], ]);
         }
+
         return $this->redirectToRoute('admin_homepage');
     }
 
     /**
      * @param $em
      * @param array $excludes
+     *
      * @return array
      */
     protected function findOrderStatus($em, array $excludes)
@@ -368,6 +369,7 @@ class AdminController extends AbstractController
     /**
      * @param $em
      * @param array $excludes
+     *
      * @return array
      */
     protected function getOrderEachStatus($em, array $excludes)
@@ -383,13 +385,13 @@ class AdminController extends AbstractController
                     t1.order_status_id
                 ORDER BY
                     t1.order_status_id';
-        $rsm = new ResultSetMapping();;
+        $rsm = new ResultSetMapping();
         $rsm->addScalarResult('status', 'status');
         $rsm->addScalarResult('count', 'count');
         $query = $em->createNativeQuery($sql, $rsm);
-        $query->setParameters(array(':excludes' => $excludes));
+        $query->setParameters([':excludes' => $excludes]);
         $result = $query->getResult();
-        $orderArray = array();
+        $orderArray = [];
         foreach ($result as $row) {
             $orderArray[$row['status']] = $row['count'];
         }
@@ -401,6 +403,7 @@ class AdminController extends AbstractController
      * @param $em
      * @param $dateTime
      * @param array $excludes
+     *
      * @return array
      */
     protected function getSalesByMonth($em, $dateTime, array $excludes)
@@ -424,12 +427,13 @@ class AdminController extends AbstractController
             ->setParameter(':excludes', $excludes)
             ->setParameter(':targetDate', $dateTime);
 
-        $result = array();
+        $result = [];
         try {
             $result = $q->getSingleResult();
         } catch (NoResultException $e) {
             // 結果がない場合は空の配列を返す.
         }
+
         return $result;
     }
 
@@ -437,6 +441,7 @@ class AdminController extends AbstractController
      * @param $em
      * @param $dateTime
      * @param array $excludes
+     *
      * @return array
      */
     protected function getSalesByDay($em, $dateTime, array $excludes)
@@ -460,18 +465,21 @@ class AdminController extends AbstractController
             ->setParameter(':excludes', $excludes)
             ->setParameter(':targetDate', $dateTime);
 
-        $result = array();
+        $result = [];
         try {
             $result = $q->getSingleResult();
         } catch (NoResultException $e) {
             // 結果がない場合は空の配列を返す.
         }
+
         return $result;
     }
 
     /**
      * @param $em
+     *
      * @return mixed
+     *
      * @throws NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
@@ -492,7 +500,9 @@ class AdminController extends AbstractController
 
     /**
      * @param $em
+     *
      * @return mixed
+     *
      * @throws NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */

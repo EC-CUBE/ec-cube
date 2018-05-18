@@ -21,19 +21,14 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type;
 
 use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
-use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\Master\CustomerStatusType;
 use Eccube\Form\Type\Master\JobType;
 use Eccube\Form\Type\Master\SexType;
-use Eccube\Form\Type\NameType;
-use Eccube\Form\Type\TelType;
-use Eccube\Form\Type\ZipType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
@@ -53,12 +48,13 @@ class CustomerType extends AbstractType
 {
     /**
      * @Inject("config")
+     *
      * @var array
      */
     protected $eccubeConfig;
 
     /**
-     * @var \Eccube\Application $app
+     * @var \Eccube\Application
      * @Inject(Application::class)
      */
     protected $app;
@@ -75,86 +71,86 @@ class CustomerType extends AbstractType
         $app = $this->app;
 
         $builder
-            ->add('name', NameType::class, array(
-                'options' => array(
-                    'attr' => array(
+            ->add('name', NameType::class, [
+                'options' => [
+                    'attr' => [
                         'maxlength' => $this->eccubeConfig['eccube_stext_len'],
-                    ),
-                    'constraints' => array(
+                    ],
+                    'constraints' => [
                         new Assert\NotBlank(),
-                        new Assert\Length(array('max' => $this->eccubeConfig['eccube_stext_len'])),
-                    ),
-                ),
-            ))
-            ->add('kana', NameType::class, array(
-                'options' => array(
-                    'attr' => array(
+                        new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
+                    ],
+                ],
+            ])
+            ->add('kana', NameType::class, [
+                'options' => [
+                    'attr' => [
                         'maxlength' => $this->eccubeConfig['eccube_stext_len'],
-                    ),
-                    'constraints' => array(
+                    ],
+                    'constraints' => [
                         new Assert\NotBlank(),
-                        new Assert\Length(array('max' => $this->eccubeConfig['eccube_stext_len'])),
-                        new Assert\Regex(array(
-                            'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
-                        )),
-                    ),
-                ),
-            ))
-            ->add('company_name', TextType::class, array(
+                        new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
+                        new Assert\Regex([
+                            'pattern' => '/^[ァ-ヶｦ-ﾟー]+$/u',
+                        ]),
+                    ],
+                ],
+            ])
+            ->add('company_name', TextType::class, [
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array(
+                'constraints' => [
+                    new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ))
-                ),
-            ))
-            ->add('zip', ZipType::class, array(
+                    ]),
+                ],
+            ])
+            ->add('zip', ZipType::class, [
                 'required' => false,
-            ))
-            ->add('address', AddressType::class, array(
+            ])
+            ->add('address', AddressType::class, [
                 'help' => 'form.contact.address.help',
                 'required' => false,
-            ))
-            ->add('tel', TelType::class, array(
+            ])
+            ->add('tel', TelType::class, [
                 'required' => false,
-            ))
-            ->add('fax', TelType::class, array(
+            ])
+            ->add('fax', TelType::class, [
                 'required' => false,
-            ))
-            ->add('email', EmailType::class, array(
-                'constraints' => array(
+            ])
+            ->add('email', EmailType::class, [
+                'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Email(array('strict' => true)),
-                )
-            ))
-            ->add('sex', SexType::class, array(
+                    new Assert\Email(['strict' => true]),
+                ],
+            ])
+            ->add('sex', SexType::class, [
                 'required' => false,
-            ))
-            ->add('job', JobType::class, array(
+            ])
+            ->add('job', JobType::class, [
                 'required' => false,
-            ))
-            ->add('birth', BirthdayType::class, array(
+            ])
+            ->add('birth', BirthdayType::class, [
                 'required' => false,
                 'input' => 'datetime',
                 'years' => range(date('Y'), date('Y') - $this->eccubeConfig['eccube_birth_max']),
                 'widget' => 'choice',
                 'format' => 'yyyy-MM-dd',
-                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
-                'constraints' => array(
-                    new Assert\LessThanOrEqual(array(
+                'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'constraints' => [
+                    new Assert\LessThanOrEqual([
                         'value' => date('Y-m-d'),
                         'message' => 'form.type.select.selectisfuturedate',
-                    )),
-                ),
-            ))
+                    ]),
+                ],
+            ])
             ->add('password', RepeatedType::class)
-            ->add('status', CustomerStatusType::class, array(
+            ->add('status', CustomerStatusType::class, [
                 'required' => false,
-            ))
-            ->add('note', TextareaType::class, array(
+            ])
+            ->add('note', TextareaType::class, [
                 'required' => false,
-            ))
-            ->add('save', SubmitType::class, array('label' => 'この内容で登録する'));
+            ])
+            ->add('save', SubmitType::class, ['label' => 'この内容で登録する']);
     }
 
     /**

@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type;
 
 use Eccube\Common\EccubeConfig;
@@ -75,10 +74,10 @@ class NameType extends AbstractType
         }
 
         if (empty($options['lastname_name'])) {
-            $options['lastname_name'] = $builder->getName() . '01';
+            $options['lastname_name'] = $builder->getName().'01';
         }
         if (empty($options['firstname_name'])) {
-            $options['firstname_name'] = $builder->getName() . '02';
+            $options['firstname_name'] = $builder->getName().'02';
         }
 
         $builder
@@ -105,42 +104,42 @@ class NameType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'options' => array(),
-            'lastname_options' => array(
-                'attr' => array(
+        $resolver->setDefaults([
+            'options' => [],
+            'lastname_options' => [
+                'attr' => [
                     'placeholder' => 'Name01',
-                ),
-                'constraints' => array(
-                    new Assert\Length(array(
+                ],
+                'constraints' => [
+                    new Assert\Length([
                          'max' => $this->eccubeConfig['eccube_name_len'],
-                    )),
-                    new Assert\Regex(array(
+                    ]),
+                    new Assert\Regex([
                         'pattern' => '/^[^\s ]+$/u',
-                        'message' => 'form.type.name.firstname.nothasspace'
-                    ))
-                ),
-            ),
-            'firstname_options' => array(
-                'attr' => array(
+                        'message' => 'form.type.name.firstname.nothasspace',
+                    ]),
+                ],
+            ],
+            'firstname_options' => [
+                'attr' => [
                     'placeholder' => 'Name02',
-                ),
-                'constraints' => array(
-                    new Assert\Length(array(
+                ],
+                'constraints' => [
+                    new Assert\Length([
                          'max' => $this->eccubeConfig['eccube_name_len'],
-                    )),
-                    new Assert\Regex(array(
+                    ]),
+                    new Assert\Regex([
                         'pattern' => '/^[^\s ]+$/u',
-                        'message' => 'form.type.name.lastname.nothasspace'
-                    ))
-                ),
-            ),
+                        'message' => 'form.type.name.lastname.nothasspace',
+                    ]),
+                ],
+            ],
             'lastname_name' => '',
             'firstname_name' => '',
             'error_bubbling' => false,
             'inherit_data' => true,
             'trim' => true,
-        ));
+        ]);
     }
 
     /**

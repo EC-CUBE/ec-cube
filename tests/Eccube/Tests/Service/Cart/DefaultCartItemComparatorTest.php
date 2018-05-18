@@ -30,7 +30,6 @@ use Eccube\Tests\EccubeTestCase;
 
 class DefaultCartItemComparatorTest extends EccubeTestCase
 {
-
     /**
      * @var ProductClassComparator
      */
@@ -73,6 +72,7 @@ class DefaultCartItemComparatorTest extends EccubeTestCase
     {
         $result = new CartItem();
         $result->setProductClass($ProductClass);
+
         return $result;
     }
 }

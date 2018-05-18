@@ -9,11 +9,9 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 /**
  * Class CustomerEditControllerTest
- * @package Eccube\Tests\Web\Admin\Customer
  */
 class CustomerEditControllerTest extends AbstractAdminWebTestCase
 {
-
     protected $Customer;
 
     /**
@@ -27,6 +25,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
 
     /**
      * createFormData
+     *
      * @return array
      */
     protected function createFormData()
@@ -38,23 +37,23 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
         $password = $faker->lexify('????????');
         $birth = $faker->dateTimeBetween;
 
-        $form = array(
-            'name' => array('name01' => $faker->lastName, 'name02' => $faker->firstName),
-            'kana' => array('kana01' => $faker->lastKanaName, 'kana02' => $faker->firstKanaName),
+        $form = [
+            'name' => ['name01' => $faker->lastName, 'name02' => $faker->firstName],
+            'kana' => ['kana01' => $faker->lastKanaName, 'kana02' => $faker->firstKanaName],
             'company_name' => $faker->company,
-            'zip' => array('zip01' => $faker->postcode1(), 'zip02' => $faker->postcode2()),
-            'address' => array('pref' => '5', 'addr01' => $faker->city, 'addr02' => $faker->streetAddress),
-            'tel' => array('tel01' => $tel[0], 'tel02' => $tel[1], 'tel03' => $tel[2]),
-            'fax' => array('fax01' => $tel[0], 'fax02' => $tel[1], 'fax03' => $tel[2]),
+            'zip' => ['zip01' => $faker->postcode1(), 'zip02' => $faker->postcode2()],
+            'address' => ['pref' => '5', 'addr01' => $faker->city, 'addr02' => $faker->streetAddress],
+            'tel' => ['tel01' => $tel[0], 'tel02' => $tel[1], 'tel03' => $tel[2]],
+            'fax' => ['fax01' => $tel[0], 'fax02' => $tel[1], 'fax03' => $tel[2]],
             'email' => $email,
-            'password' => array('first' => $password, 'second' => $password),
-            'birth' => $birth->format('Y') . '-' . $birth->format('n') . '-' . $birth->format('j'),
+            'password' => ['first' => $password, 'second' => $password],
+            'birth' => $birth->format('Y').'-'.$birth->format('n').'-'.$birth->format('j'),
             'sex' => 1,
             'job' => 1,
             'status' => 1,
             'point' => 0,
             '_token' => 'dummy',
-        );
+        ];
 
         return $form;
     }
@@ -66,7 +65,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
     {
         $this->client->request(
             'GET',
-            $this->generateUrl('admin_customer_edit', array('id' => $this->Customer->getId()))
+            $this->generateUrl('admin_customer_edit', ['id' => $this->Customer->getId()])
         );
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -79,7 +78,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
     {
         $crawler = $this->client->request(
             'GET',
-            $this->generateUrl('admin_customer_edit', array('id' => $this->Customer->getId()))
+            $this->generateUrl('admin_customer_edit', ['id' => $this->Customer->getId()])
         );
 
         $this->expected = '会員マスター';
@@ -95,13 +94,13 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
         $form = $this->createFormData();
         $this->client->request(
             'POST',
-            $this->generateUrl('admin_customer_edit', array('id' => $this->Customer->getId())),
-            array('admin_customer' => $form)
+            $this->generateUrl('admin_customer_edit', ['id' => $this->Customer->getId()]),
+            ['admin_customer' => $form]
         );
         $this->assertTrue($this->client->getResponse()->isRedirect(
             $this->generateUrl(
                 'admin_customer_edit',
-                array('id' => $this->Customer->getId())
+                ['id' => $this->Customer->getId()]
             )
         ));
         $EditedCustomer = $this->container->get(CustomerRepository::class)->find($this->Customer->getId());
@@ -133,10 +132,10 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
         $this->client->request(
             'POST',
             $this->generateUrl('admin_customer_new'),
-            array('admin_customer' => $form)
+            ['admin_customer' => $form]
         );
 
-        $NewCustomer = $this->container->get(CustomerRepository::class)->findOneBy(array('email' => $form['email']));
+        $NewCustomer = $this->container->get(CustomerRepository::class)->findOneBy(['email' => $form['email']]);
         $this->assertNotNull($NewCustomer);
         $this->assertTrue($form['email'] == $NewCustomer->getEmail());
     }
@@ -158,11 +157,11 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
 
         $crawler = $this->client->request(
             'GET',
-            $this->generateUrl('admin_customer_edit', array('id' => $id))
+            $this->generateUrl('admin_customer_edit', ['id' => $id])
         );
 
         $orderListing = $crawler->filter('#orderHistory > div')->text();
-        $this->assertRegexp('/' . $Order->getId() . '/', $orderListing);
+        $this->assertRegexp('/'.$Order->getId().'/', $orderListing);
     }
 
     public function testNotShowProcessingOrder()
@@ -182,11 +181,10 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
 
         $crawler = $this->client->request(
             'GET',
-            $this->generateUrl('admin_customer_edit', array('id' => $id))
+            $this->generateUrl('admin_customer_edit', ['id' => $id])
         );
 
         $orderListing = $crawler->filter('#history_box')->text();
         $this->assertContains('データはありません', $orderListing);
     }
-
 }
