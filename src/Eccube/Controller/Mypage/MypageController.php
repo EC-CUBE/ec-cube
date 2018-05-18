@@ -80,15 +80,28 @@ class MypageController extends AbstractController
      */
     protected $orderRepository;
 
+    /**
+     * MypageController constructor.
+     * @param ProductRepository $productRepository
+     * @param CustomerFavoriteProductRepository $customerFavoriteProductRepository
+     * @param BaseInfo $BaseInfo
+     * @param CartService $cartService
+     * @param OrderRepository $orderRepository
+     */
     public function __construct(
-        OrderRepository $orderRepository,
+        ProductRepository $productRepository,
         CustomerFavoriteProductRepository $customerFavoriteProductRepository,
-        BaseInfo $baseInfo
-    ) {
-        $this->orderRepository = $orderRepository;
+        BaseInfo $BaseInfo,
+        CartService $cartService,
+        OrderRepository $orderRepository
+    ){
+        $this->productRepository = $productRepository;
         $this->customerFavoriteProductRepository = $customerFavoriteProductRepository;
-        $this->BaseInfo = $baseInfo;
+        $this->BaseInfo = $BaseInfo;
+        $this->cartService = $cartService;
+        $this->orderRepository = $orderRepository;
     }
+
 
     /**
      * ログイン画面.
@@ -248,7 +261,8 @@ class MypageController extends AbstractController
                     $this->cartService->addProduct(
                         $OrderItem->getProductClass()->getId(),
                         $OrderItem->getQuantity()
-                    )->save();
+                    );
+                    $this->cartService->save();
                 } else {
                     log_info(trans('cart.product.delete'), array($id));
                     $this->addRequestError('cart.product.delete');
