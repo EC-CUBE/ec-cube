@@ -59,17 +59,9 @@ class MailType extends AbstractType
             ))
             ->add('mail_header', TextareaType::class, array(
                 'label' => 'mailtype.label.headers',
-                'required' => true,
-                'constraints' => array(
-                    new Assert\NotBlank(),
-                ),
             ))
             ->add('mail_footer', TextareaType::class, array(
                 'label' => 'mailtype.label.footers',
-                'required' => true,
-                'constraints' => array(
-                    new Assert\NotBlank(),
-                ),
             ))
             ->add('tpl_data', TextareaType::class, array(
                 'label' => false,
