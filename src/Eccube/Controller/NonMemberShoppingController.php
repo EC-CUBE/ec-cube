@@ -351,85 +351,80 @@ class NonMemberShoppingController extends AbstractShoppingController
      */
     public function customer(Request $request)
     {
-        if ($request->isXmlHttpRequest()) {
-            try {
-                log_info('非会員お客様情報変更処理開始');
+        if (!$request->isXmlHttpRequest()) {
+            $response = new Response(json_encode(['status' => 'NG']), 400);
+            $response->headers->set('Content-Type', 'application/json');
 
-                $data = $request->request->all();
-
-                // 入力チェック
-                $errors = $this->customerValidation($data);
-
-                foreach ($errors as $error) {
-                    if ($error->count() != 0) {
-                        log_info('非会員お客様情報変更入力チェックエラー');
-                        $response = new Response(json_encode('NG'), 400);
-                        $response->headers->set('Content-Type', 'application/json');
-
-                        return $response;
-                    }
-                }
-
-                $pref = $this->prefRepository->findOneBy(['name' => $data['customer_pref']]);
-                if (!$pref) {
+            return $response;
+        }
+        try {
+            log_info('非会員お客様情報変更処理開始');
+            $data = $request->request->all();
+            // 入力チェック
+            $errors = $this->customerValidation($data);
+            foreach ($errors as $error) {
+                if ($error->count() != 0) {
                     log_info('非会員お客様情報変更入力チェックエラー');
                     $response = new Response(json_encode('NG'), 400);
                     $response->headers->set('Content-Type', 'application/json');
 
                     return $response;
                 }
-
-                $Order = $this->shoppingService->getOrder(OrderStatus::PROCESSING);
-                if (!$Order) {
-                    log_info('カートが存在しません');
-                    $this->addError('front.shopping.order.error');
-
-                    return $this->redirectToRoute('shopping_error');
-                }
-
-                $Order
-                    ->setName01($data['customer_name01'])
-                    ->setName02($data['customer_name02'])
-                    ->setCompanyName($data['customer_company_name'])
-                    ->setTel01($data['customer_tel01'])
-                    ->setTel02($data['customer_tel02'])
-                    ->setTel03($data['customer_tel03'])
-                    ->setZip01($data['customer_zip01'])
-                    ->setZip02($data['customer_zip02'])
-                    ->setZipCode($data['customer_zip01'].$data['customer_zip02'])
-                    ->setPref($pref)
-                    ->setAddr01($data['customer_addr01'])
-                    ->setAddr02($data['customer_addr02'])
-                    ->setEmail($data['customer_email']);
-
-                // 配送先を更新
-                $this->entityManager->flush();
-
-                // 受注関連情報を最新状態に更新
-                $this->entityManager->refresh($Order);
-
-                $event = new EventArgs(
-                    [
-                        'Order' => $Order,
-                        'data' => $data,
-                    ],
-                    $request
-                );
-                $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_CUSTOMER_INITIALIZE, $event);
-
-                log_info('非会員お客様情報変更処理完了', [$Order->getId()]);
-                $response = new Response(json_encode('OK'));
-                $response->headers->set('Content-Type', 'application/json');
-            } catch (\Exception $e) {
-                log_error('予期しないエラー', [$e->getMessage()]);
-                log_error($e);
-
-                $response = new Response(json_encode('NG'), 500);
-                $response->headers->set('Content-Type', 'application/json');
             }
+            $pref = $this->prefRepository->findOneBy(['name' => $data['customer_pref']]);
+            if (!$pref) {
+                log_info('非会員お客様情報変更入力チェックエラー');
+                $response = new Response(json_encode('NG'), 400);
+                $response->headers->set('Content-Type', 'application/json');
 
-            return $response;
+                return $response;
+            }
+            $Order = $this->shoppingService->getOrder(OrderStatus::PROCESSING);
+            if (!$Order) {
+                log_info('カートが存在しません');
+                $this->addError('front.shopping.order.error');
+
+                return $this->redirectToRoute('shopping_error');
+            }
+            $Order
+                ->setName01($data['customer_name01'])
+                ->setName02($data['customer_name02'])
+                ->setKana01($data['customer_kana01'])
+                ->setKana02($data['customer_kana02'])
+                ->setCompanyName($data['customer_company_name'])
+                ->setTel01($data['customer_tel01'])
+                ->setTel02($data['customer_tel02'])
+                ->setTel03($data['customer_tel03'])
+                ->setZip01($data['customer_zip01'])
+                ->setZip02($data['customer_zip02'])
+                ->setZipCode($data['customer_zip01'].$data['customer_zip02'])
+                ->setPref($pref)
+                ->setAddr01($data['customer_addr01'])
+                ->setAddr02($data['customer_addr02'])
+                ->setEmail($data['customer_email']);
+            // 配送先を更新
+            $this->entityManager->flush();
+            // 受注関連情報を最新状態に更新
+            $this->entityManager->refresh($Order);
+            $event = new EventArgs(
+                [
+                    'Order' => $Order,
+                    'data' => $data,
+                ],
+                $request
+            );
+            $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_CUSTOMER_INITIALIZE, $event);
+            log_info('非会員お客様情報変更処理完了', [$Order->getId()]);
+            $message = ['status' => 'OK', 'kana01' => $data['customer_kana01'], 'kana02' => $data['customer_kana02']];
+            $response = new Response(json_encode($message));
+            $response->headers->set('Content-Type', 'application/json');
+        } catch (\Exception $e) {
+            log_error('予期しないエラー', [$e->getMessage()]);
+            $response = new Response(json_encode(['status' => 'NG']), 500);
+            $response->headers->set('Content-Type', 'application/json');
         }
+
+        return $response;
     }
 
     /**
@@ -439,7 +434,7 @@ class NonMemberShoppingController extends AbstractShoppingController
      *
      * @return array
      */
-    protected function customerValidation(array $data)
+    protected function customerValidation(array &$data)
     {
         // 入力チェック
         $errors = [];
@@ -465,6 +460,24 @@ class NonMemberShoppingController extends AbstractShoppingController
                 ),
             ]
         );
+
+        $data['customer_kana01'] = mb_convert_kana($data['customer_kana01'], 'CV', 'utf-8');
+        $errors[] = $this->validator->validate(
+            $data['customer_kana01'],
+            [
+                new Assert\NotBlank(),
+                new Assert\Length(['max' => $this->eccubeConfig['eccube_kana_len']]),
+                new Assert\Regex(['pattern' => '/^[ァ-ヶｦ-ﾟー]+$/u']),
+            ]
+        );
+        $data['customer_kana02'] = mb_convert_kana($data['customer_kana02'], 'CV', 'utf-8');
+        $errors[] = $this->validator->validate(
+            $data['customer_kana02'],
+            [
+                new Assert\NotBlank(),
+                new Assert\Length(['max' => $this->eccubeConfig['eccube_kana_len']]),
+                new Assert\Regex(['pattern' => '/^[ァ-ヶｦ-ﾟー]+$/u']),
+        ]);
 
         $errors[] = $this->validator->validate(
             $data['customer_company_name'],

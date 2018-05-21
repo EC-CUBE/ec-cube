@@ -24,7 +24,6 @@
 namespace Eccube\Repository;
 
 use Eccube\Annotation\Repository;
-use Eccube\Entity\Page;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
