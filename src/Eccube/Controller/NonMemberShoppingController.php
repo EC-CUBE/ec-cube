@@ -352,8 +352,9 @@ class NonMemberShoppingController extends AbstractShoppingController
     public function customer(Request $request)
     {
         if (!$request->isXmlHttpRequest()) {
-            $response = new Response(json_encode(array('status' => 'NG')), 400);
+            $response = new Response(json_encode(['status' => 'NG']), 400);
             $response->headers->set('Content-Type', 'application/json');
+
             return $response;
         }
         try {
@@ -366,20 +367,23 @@ class NonMemberShoppingController extends AbstractShoppingController
                     log_info('非会員お客様情報変更入力チェックエラー');
                     $response = new Response(json_encode('NG'), 400);
                     $response->headers->set('Content-Type', 'application/json');
+
                     return $response;
                 }
             }
-            $pref = $this->prefRepository->findOneBy(array('name' => $data['customer_pref']));
+            $pref = $this->prefRepository->findOneBy(['name' => $data['customer_pref']]);
             if (!$pref) {
                 log_info('非会員お客様情報変更入力チェックエラー');
                 $response = new Response(json_encode('NG'), 400);
                 $response->headers->set('Content-Type', 'application/json');
+
                 return $response;
             }
             $Order = $this->shoppingService->getOrder(OrderStatus::PROCESSING);
             if (!$Order) {
                 log_info('カートが存在しません');
                 $this->addError('front.shopping.order.error');
+
                 return $this->redirectToRoute('shopping_error');
             }
             $Order
@@ -403,22 +407,23 @@ class NonMemberShoppingController extends AbstractShoppingController
             // 受注関連情報を最新状態に更新
             $this->entityManager->refresh($Order);
             $event = new EventArgs(
-                array(
+                [
                     'Order' => $Order,
                     'data' => $data,
-                ),
+                ],
                 $request
             );
             $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_CUSTOMER_INITIALIZE, $event);
-            log_info('非会員お客様情報変更処理完了', array($Order->getId()));
-            $message = array('status' => 'OK', 'kana01' => $data['customer_kana01'], 'kana02' => $data['customer_kana02']);
+            log_info('非会員お客様情報変更処理完了', [$Order->getId()]);
+            $message = ['status' => 'OK', 'kana01' => $data['customer_kana01'], 'kana02' => $data['customer_kana02']];
             $response = new Response(json_encode($message));
             $response->headers->set('Content-Type', 'application/json');
         } catch (\Exception $e) {
-            log_error('予期しないエラー', array($e->getMessage()));
-            $response = new Response(json_encode(array('status' => 'NG')), 500);
+            log_error('予期しないエラー', [$e->getMessage()]);
+            $response = new Response(json_encode(['status' => 'NG']), 500);
             $response->headers->set('Content-Type', 'application/json');
         }
+
         return $response;
     }
 
@@ -459,20 +464,20 @@ class NonMemberShoppingController extends AbstractShoppingController
         $data['customer_kana01'] = mb_convert_kana($data['customer_kana01'], 'CV', 'utf-8');
         $errors[] = $this->validator->validate(
             $data['customer_kana01'],
-            array(
+            [
                 new Assert\NotBlank(),
-                new Assert\Length(array('max' => $this->eccubeConfig['eccube_kana_len'],)),
-                new Assert\Regex(array('pattern' => '/^[ァ-ヶｦ-ﾟー]+$/u'))
-            )
+                new Assert\Length(['max' => $this->eccubeConfig['eccube_kana_len']]),
+                new Assert\Regex(['pattern' => '/^[ァ-ヶｦ-ﾟー]+$/u']),
+            ]
         );
         $data['customer_kana02'] = mb_convert_kana($data['customer_kana02'], 'CV', 'utf-8');
         $errors[] = $this->validator->validate(
             $data['customer_kana02'],
-            array(
+            [
                 new Assert\NotBlank(),
-                new Assert\Length(array('max' => $this->eccubeConfig['eccube_kana_len'],)),
-                new Assert\Regex(array('pattern' => '/^[ァ-ヶｦ-ﾟー]+$/u'))
-        ));
+                new Assert\Length(['max' => $this->eccubeConfig['eccube_kana_len']]),
+                new Assert\Regex(['pattern' => '/^[ァ-ヶｦ-ﾟー]+$/u']),
+        ]);
 
         $errors[] = $this->validator->validate(
             $data['customer_company_name'],
