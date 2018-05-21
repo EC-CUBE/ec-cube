@@ -214,4 +214,26 @@ class AbstractController extends Controller
 
         return true;
     }
+
+    /**
+     * 指定したルーティングを遷移してきたかどうかをチェックします。
+     *
+     * @param $routes 判定対象のルーティング名
+     *
+     * @return bool
+     */
+    protected function isPreviousRouteValid(array $routes)
+    {
+        $lastRoute = $this->session->get('last_route');
+
+        if (!empty($lastRoute)) {
+            foreach ($routes as $route) {
+                if ($route === $lastRoute['name']) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
 }

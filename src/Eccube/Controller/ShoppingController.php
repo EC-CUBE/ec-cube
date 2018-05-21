@@ -318,6 +318,10 @@ class ShoppingController extends AbstractShoppingController
      */
     public function complete(Request $request)
     {
+        if (!$this->isPreviousRouteValid(['shopping_order'])) {
+            return $this->redirectToRoute('homepage');
+        }
+
         // 受注IDを取得
         $orderId = $this->session->get($this->sessionOrderKey);
 

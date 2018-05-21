@@ -141,6 +141,10 @@ class ContactController extends AbstractController
      */
     public function complete()
     {
+        if (!$this->isPreviousRouteValid(['contact'])) {
+            return $this->redirectToRoute('homepage');
+        }
+
         return [];
     }
 }
