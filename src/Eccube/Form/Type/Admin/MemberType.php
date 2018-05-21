@@ -70,7 +70,6 @@ class MemberType extends AbstractType
                 ),
             ))
             ->add('department', TextType::class, array(
-                'required' => false,
                 'label' => 'member.label.organization',
                 'constraints' => array(
                     new Assert\NotBlank(array('message' => $this->blankMessage)),
