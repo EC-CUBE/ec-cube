@@ -19,85 +19,144 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends '@admin/default_frame.twig' %}
+{% extends '@admin/styleguide_frame.twig' %}
 
 {% set menus = ['setting', 'system', 'security'] %}
 
 {% block title %}{{'admin.setting.system.security.702'|trans}}{% endblock %}
 {% block sub_title %}{{'admin.setting.system.security.703'|trans}}{% endblock %}
 
-{% form_theme form '@admin/Form/bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
+
+{% block stylesheet %}
+    <style type="text/css">
+        .col-sm-2 {
+            max-width: none;
+        }
+        label {
+            display: inline;
+        }
+    </style>
+{% endblock %}
 
 {% block main %}
-<div class="row" id="aside_wrap">
     <form method="post" action="{{ url('admin_setting_system_security') }}">
-    {{ form_widget(form._token) }}
-        <div  id="security_wrap" class="col-md-9">
-            <div id="security_box" class="box">
-                <div id="security_box__header" class="box-header">
-                    <h3 class="box-title">{{'admin.setting.system.security.704'|trans}}</h3>
-                </div><!-- /.box-header -->
-                <div id="security_box__body" class="box-body form-horizontal">
-                        <div id="security_dir_box" class="form-group">
-                            <label class="col-sm-3 col-lg-2 control-label">{{'admin.setting.system.security.705'|trans}}</label>
-                            <div id="security_box__route_dir" class="col-sm-3 col-lg-3">
-                                {{ form_widget(form.admin_route_dir) }}
-                                {{ form_errors(form.admin_route_dir) }}
+        {{ form_widget(form._token) }}
+        <div class="c-contentsArea__cols">
+            <div class="c-contentsArea__primaryCol">
+                <div class="c-primaryCol">
+                    {#basic config#}
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-8">
+                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip">
+                                        <span class="card-title">{{'admin.setting.system.security.704'|trans}}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                                    </div>
+                                </div>
+                                <div class="col-4 text-right">
+                                    <a data-toggle="collapse" href="#basicConfig" aria-expanded="false" aria-controls="basicConfig"><i class="fa fa-angle-up fa-lg"></i></a>
+                                </div>
                             </div>
                         </div>
-                        <div id="security_ip_box" class="form-group">
-                            <label class="col-sm-3 col-lg-2 control-label">{{'admin.setting.system.security.706'|trans}}</label>
-                            <div id="security_box__allow_host" class="col-sm-9 col-lg-10">
-                                {{ form_widget(form.admin_allow_hosts, {'attr': {'rows': '7', 'aria-describedby': 'helpBlock'}}) }}
-                                {{ form_errors(form.admin_allow_hosts) }}
-                                <span id="helpBlock" class="help-block">{{'admin.setting.system.security.707'|trans}}
-                                    {{'admin.setting.system.security.708'|trans}}</span>
+                        <div class="collapse show ec-cardCollapse" id="basicConfig">
+                            <div class="card-body">
+                                <div class="row mb-2">
+                                    <div class="col-3">
+                                        <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip">
+                                            <span>{{ form_label(form.admin_route_dir) }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        {{ form_widget(form.admin_route_dir) }}
+                                        {{ form_errors(form.admin_route_dir) }}
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-3">
+                                        <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip">
+                                            <span>{{ form_label(form.admin_allow_hosts) }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        {{ form_widget(form.admin_allow_hosts, {'attr': {'rows': '7', 'aria-describedby': 'helpBlock'}}) }}
+                                        {{ form_errors(form.admin_allow_hosts) }}
+                                        <span id="helpBlock" class="help-block">{{'admin.setting.system.security.707'|trans}}
+                                            {{'admin.setting.system.security.708'|trans}}</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                </div><!-- /.box-body --> 
-            </div><!-- /.box -->
-            <div id="site_security_box" class="box">
-                <div id="site_security_box__header" class="box-header">
-                    <h3 class="box-title">{{'admin.setting.system.security.709'|trans}}</h3>
-                </div><!-- /.box-header -->
-                <div id="site_security_box__body" class="box-body form-horizontal">
-                    <div id="site_security_box__force_ssl" class="form-group">
-                        <label class="col-sm-3 col-lg-2 form-inline">{{'admin.setting.system.security.710'|trans}}</label>
-                        <div class="col-sm-9 col-lg-10">
-                            {% if app.request.secure %}
-                                {{ form_widget(form.force_ssl) }}
-                                {{ form_errors(form.force_ssl) }}
-                            {% else %}
-                                {{ form_widget(form.force_ssl, {'attr': {'disabled': 'disabled'}}) }}
-                                <p class="text-danger">{{'admin.setting.system.security.711'|trans}}</p>
-                            {% endif %}
+                    </div><!-- /.card -->
+
+                    {#force ssl config#}
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header">
+                            <div class="row mb-2">
+                                <div class="col-8">
+                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip">
+                                        <span class="card-title">{{'admin.setting.system.security.709'|trans}}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                                    </div>
+                                </div>
+                                <div class="col-4 text-right">
+                                    <a data-toggle="collapse" href="#sslConfig" aria-expanded="false" aria-controls="sslConfig"><i class="fa fa-angle-up fa-lg"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="collapse show ec-cardCollapse" id="sslConfig">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip">
+                                            <span><label class="col-form-label col-sm-2 form-control-label">{{ form.force_ssl.vars.label|trans }}</label></span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        {% if app.request.secure %}
+                                            {{ form_widget(form.force_ssl) }}
+                                            {{ form_errors(form.force_ssl) }}
+                                        {% else %}
+                                            {{ form_widget(form.force_ssl, {'attr': {'disabled': 'disabled'}}) }}
+                                            <p class="text-danger">{{'admin.setting.system.security.711'|trans}}</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="extra-form">
+                                        {% for f in form.getIterator %}
+                                            {% if f.vars.name matches '[^plg*]' %}
+                                                <div class="col-3">{{ form_label(f) }}</div>
+                                                <div class="col">
+                                                    {{ form_widget(f) }}
+                                                    {{ form_errors(f) }}
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            {# Submit bar#}
+            <div class="c-conversionArea">
+                <div class="c-conversionArea__container">
+                    <div class="row justify-content-between align-items-center">
+                        <div class="col-6"><div class="c-conversionArea__leftBlockItem"></div></div>
+                        <div class="col-6">
+                            <div class="row align-items-center justify-content-end">
+                                <div class="col-auto">
+                                    <button type="submit" class="btn btn-ec-conversion px-5 ladda-button" name="mode" value="register" data-style="expand-right"><span class="ladda-label">{{'admin.setting.system.security.712'|trans}}</span><span class="ladda-spinner"></span></button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div><!-- /.col -->
-        <div class="extra-form">
-            {% for f in form.getIterator %}
-                {% if f.vars.name matches '[^plg*]' %}
-                    {{ form_label(f) }}
-                    {{ form_widget(f) }}
-                    {{ form_errors(f) }}
-                {% endif %}
-            {% endfor %}
+
         </div>
-        <div class="col-md-3" id="aside_column">
-            <div id="common_box" class="col_inner">
-                <div id="common_button_box" class="box no-header">
-                    <div id="common_button_box__body" class="box-body">
-                        <div id="common_button_box__edit_button" class="row text-center">
-                            <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
-                                <button class="btn btn-primary btn-block btn-lg" type="submit">{{'admin.setting.system.security.712'|trans}}</button>
-                            </div>
-                        </div>
-                    </div><!-- /.box-body -->
-                </div><!-- /.box -->
-            </div>
-        </div><!-- /.col --> 
     </form>
-</div>
 {% endblock %}

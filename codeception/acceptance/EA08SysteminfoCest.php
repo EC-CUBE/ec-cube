@@ -250,8 +250,8 @@ class EA08SysteminfoCest
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/security');
-        $I->see('システム設定セキュリティ管理', '#main .page-header');
-        $I->see('セキュリティ機能設定', '#main .container-fluid div:nth-child(1) .box-header .box-title');
+        $I->see('システム設定セキュリティ管理', '#page_admin_setting_system_security .c-pageTitle__titles');
+        $I->see('セキュリティ機能設定', '#page_admin_setting_system_security > div.c-container > div.c-contentsArea div.c-contentsArea__primaryCol > div.c-primaryCol > div:nth-child(1) > div.card-header > div > div.col-8 > div');
     }
 
     public function systeminfo_セキュリティ管理ディレクトリ名(\AcceptanceTester $I)
@@ -261,15 +261,15 @@ class EA08SysteminfoCest
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/security');
-        $I->see('システム設定セキュリティ管理', '#main .page-header');
+        $I->see('システム設定セキュリティ管理', '#page_admin_setting_system_security .c-pageTitle__titles');
 
         $I->fillField(['id' => 'admin_security_admin_route_dir'], 'admin2');
-        $I->click('#aside_column div div div div div button');
+        $I->click('#page_admin_setting_system_security form div.c-contentsArea__cols > div.c-conversionArea > div > div > div:nth-child(2) > div > div > button');
         $I->loginAsAdmin('', '', 'admin2');
 
         $I->amOnPage('/admin2/setting/system/security');
         $I->fillField(['id' => 'admin_security_admin_route_dir'], $config['eccube_admin_route']);
-        $I->click('#aside_column div div div div div button');
+        $I->click('#page_admin_setting_system_security form div.c-contentsArea__cols > div.c-conversionArea > div > div > div:nth-child(2) > div > div > button');
         $I->loginAsAdmin();
     }
 
@@ -287,7 +287,7 @@ class EA08SysteminfoCest
         $httpsBaseUrl = str_replace('http://', 'https://', $httpBaseUrl);
         $I->amOnUrl($httpsBaseUrl.$config['eccube_admin_route'].'/setting/system/security');
         $I->checkOption(['id' => 'admin_security_force_ssl']);
-        $I->click('#aside_column div div div div div button');
+        $I->click('#page_admin_setting_system_security form div.c-contentsArea__cols > div.c-conversionArea > div > div > div:nth-child(2) > div > div > button');
 
         // httpでアクセスしたらhttpsにリダイレクトされる
         $I->amOnUrl($httpBaseUrl);
@@ -296,7 +296,7 @@ class EA08SysteminfoCest
         // 後続テストのために戻しておく
         $I->amOnUrl($httpsBaseUrl.$config['eccube_admin_route'].'/setting/system/security');
         $I->uncheckOption(['id' => 'admin_security_force_ssl']);
-        $I->click('#aside_column div div div div div button');
+        $I->click('#page_admin_setting_system_security form div.c-contentsArea__cols > div.c-conversionArea > div > div > div:nth-child(2) > div > div > button');
     }
 
     public function systeminfo_権限管理追加(\AcceptanceTester $I)
