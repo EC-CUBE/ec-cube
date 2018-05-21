@@ -28,7 +28,6 @@ use Doctrine\ORM\Proxy\Proxy;
 
 class EntityUtil
 {
-
     /**
      * LAZY loading したエンティティの有無をチェックする.
      *
@@ -40,7 +39,9 @@ class EntityUtil
      * EntityNotFoundException がスローされてしまう.
      *
      * @param $entity LAZY loading したエンティティ
+     *
      * @return bool エンティティが削除済みの場合 true
+     *
      * @see https://github.com/EC-CUBE/ec-cube/pull/602#issuecomment-125431246
      */
     public static function isEmpty($entity)
@@ -51,6 +52,7 @@ class EntityUtil
             } catch (EntityNotFoundException $e) {
                 return true;
             }
+
             return false;
         } else {
             return empty($entity);
@@ -63,7 +65,9 @@ class EntityUtil
      * EntityUtil::isEmpty() の逆の結果を返します.
      *
      * @param $entity
+     *
      * @return bool
+     *
      * @see EntityUtil::isEmpty()
      */
     public static function isNotEmpty($entity)
@@ -79,19 +83,21 @@ class EntityUtil
      * プロパティの値がオブジェクトの場合は、クラス名を出力する.
      *
      * @param object $entity 対象のエンティティ
+     *
      * @return array エンティティのプロパティの配列
      */
     public static function dumpToArray($entity)
     {
         $objReflect = new \ReflectionClass($entity);
         $arrProperties = $objReflect->getProperties();
-        $arrResults = array();
+        $arrResults = [];
         foreach ($arrProperties as $objProperty) {
             $objProperty->setAccessible(true);
             $name = $objProperty->getName();
             $value = $objProperty->getValue($entity);
             $arrResults[$name] = is_object($value) ? get_class($value) : $value;
         }
+
         return $arrResults;
     }
 }

@@ -16,7 +16,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Tag extends \Eccube\Entity\AbstractEntity
 {
-    
     /**
      * @return string
      */
@@ -24,7 +23,7 @@ class Tag extends \Eccube\Entity\AbstractEntity
     {
         return (string) $this->getName();
     }
-    
+
     /**
      * @var int
      *
@@ -33,21 +32,21 @@ class Tag extends \Eccube\Entity\AbstractEntity
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     protected $id;
-    
+
     /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
      */
     protected $name;
-    
+
     /**
      * @var int
      *
      * @ORM\Column(name="sort_no", type="smallint", options={"unsigned":true})
      */
     protected $sort_no;
-    
+
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
@@ -62,7 +61,7 @@ class Tag extends \Eccube\Entity\AbstractEntity
     {
         $this->ProductTag = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * Set id.
      *
@@ -73,10 +72,10 @@ class Tag extends \Eccube\Entity\AbstractEntity
     public function setId($id)
     {
         $this->id = $id;
-    
+
         return $this;
     }
-    
+
     /**
      * Get id.
      *
@@ -86,7 +85,7 @@ class Tag extends \Eccube\Entity\AbstractEntity
     {
         return $this->id;
     }
-    
+
     /**
      * Set name.
      *
@@ -97,10 +96,10 @@ class Tag extends \Eccube\Entity\AbstractEntity
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
-    
+
     /**
      * Get name.
      *
@@ -110,7 +109,7 @@ class Tag extends \Eccube\Entity\AbstractEntity
     {
         return $this->name;
     }
-    
+
     /**
      * Set sort_no.
      *
@@ -121,10 +120,10 @@ class Tag extends \Eccube\Entity\AbstractEntity
     public function setSortNo($sort_no)
     {
         $this->sort_no = $sort_no;
-    
+
         return $this;
     }
-    
+
     /**
      * Get sort_no.
      *

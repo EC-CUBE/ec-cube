@@ -23,9 +23,6 @@
 
 namespace Eccube\Form\Type\Admin;
 
-use Eccube\Annotation\FormType;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\News;
 use Symfony\Component\Form\AbstractType;
@@ -55,45 +52,45 @@ class NewsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('publish_date', DateType::class, array(
+            ->add('publish_date', DateType::class, [
                 'label' => 'news.label.date',
                 'required' => true,
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
-                'constraints' => array(
+                'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'constraints' => [
                     new Assert\NotBlank(),
-                ),
-            ))
-            ->add('title', TextType::class, array(
+                ],
+            ])
+            ->add('title', TextType::class, [
                 'label' => 'news.label.title',
                 'required' => true,
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(array('max' => $this->eccubeConfig['eccube_mtext_len'])),
-                ),
-            ))
-            ->add('url', TextType::class, array(
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_mtext_len']]),
+                ],
+            ])
+            ->add('url', TextType::class, [
                 'label' => 'news.label.url',
                 'required' => false,
-                'constraints' => array(
+                'constraints' => [
                     new Assert\Url(),
-                    new Assert\Length(array('max' => $this->eccubeConfig['eccube_mtext_len'])),
-                ),
-            ))
-            ->add('link_method', CheckboxType::class, array(
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_mtext_len']]),
+                ],
+            ])
+            ->add('link_method', CheckboxType::class, [
                 'required' => false,
                 'label' => 'news.label.new_window',
                 'value' => '1',
-            ))
-            ->add('description', TextareaType::class, array(
+            ])
+            ->add('description', TextareaType::class, [
                 'label' => 'news.label.text_body',
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array('max' => $this->eccubeConfig['eccube_ltext_len'])),
-                ),
-            ));
+                'constraints' => [
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_ltext_len']]),
+                ],
+            ]);
     }
 
     /**
@@ -101,9 +98,9 @@ class NewsType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => News::class
-        ));
+        $resolver->setDefaults([
+            'data_class' => News::class,
+        ]);
     }
 
     /**

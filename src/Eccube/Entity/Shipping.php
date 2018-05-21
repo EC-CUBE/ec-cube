@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -327,6 +326,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
      * CustomerAddress から個人情報を設定.
      *
      * @param \Eccube\Entity\CustomerAddress $CustomerAddress
+     *
      * @return \Eccube\Entity\Shipping
      */
     public function setFromCustomerAddress(CustomerAddress $CustomerAddress)
@@ -345,7 +345,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
             ->setFax03($CustomerAddress->getFax03())
             ->setZip01($CustomerAddress->getZip01())
             ->setZip02($CustomerAddress->getZip02())
-            ->setZipCode($CustomerAddress->getZip01() . $CustomerAddress->getZip02())
+            ->setZipCode($CustomerAddress->getZip01().$CustomerAddress->getZip02())
             ->setPref($CustomerAddress->getPref())
             ->setAddr01($CustomerAddress->getAddr01())
             ->setAddr02($CustomerAddress->getAddr02());
@@ -1006,11 +1006,13 @@ class Shipping extends \Eccube\Entity\AbstractEntity
 
     /**
      * 商品の受注明細を取得
+     *
      * @return OrderItem[]
      */
     public function getProductOrderItems()
     {
         $sio = new OrderItemCollection($this->OrderItems->toArray());
+
         return $sio->getProductClasses()->toArray();
     }
 
@@ -1088,6 +1090,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
 
     /**
      * Product class of shipment item (temp)
+     *
      * @return \Eccube\Entity\ProductClass
      */
     public function getProductClassOfTemp()
@@ -1097,7 +1100,9 @@ class Shipping extends \Eccube\Entity\AbstractEntity
 
     /**
      * Product class of shipment item (temp)
+     *
      * @param \Eccube\Entity\ProductClass $ProductClassOfTemp
+     *
      * @return $this
      */
     public function setProductClassOfTemp(\Eccube\Entity\ProductClass $ProductClassOfTemp)
@@ -1126,6 +1131,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
         foreach ($Orders as $Order) {
             $Result->add($Order);
         }
+
         return $Result;
         // XXX 以下のロジックだと何故か空の Collection になってしまう場合がある
         // return new \Doctrine\Common\Collections\ArrayCollection(array_values($Orders));
@@ -1183,6 +1189,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
      * Set ShippingStatus.
      *
      * @param ShippingStatus $ShippingStatus
+     *
      * @return $this
      */
     public function setShippingStatus(ShippingStatus $ShippingStatus)
@@ -1194,6 +1201,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
 
     /**
      * Get ShippingStatus
+     *
      * @return ShippingStatus
      */
     public function getShippingStatus()
@@ -1248,7 +1256,6 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     {
         return $this->fee_id;
     }
-
 
     /**
      * Set creator.

@@ -39,9 +39,10 @@ class Application extends \Pimple
 
     /**
      * @param array $values
+     *
      * @return Application
      */
-    public static function getInstance(array $values = array())
+    public static function getInstance(array $values = [])
     {
         if (!is_object(self::$instance)) {
             self::$instance = new Application($values);
@@ -60,7 +61,7 @@ class Application extends \Pimple
         throw new \Exception('Clone is not allowed against '.get_class($this));
     }
 
-    public function __construct(array $values = array())
+    public function __construct(array $values = [])
     {
         parent::__construct($values);
 
@@ -98,15 +99,17 @@ class Application extends \Pimple
      * @param array                    $values   An array of values that customizes the provider
      *
      * @return Application
+     *
      * @see https://github.com/silexphp/Silex/blob/1.3/src/Silex/Application.php#L174
      */
-    public function register(ServiceProviderInterface $provider, array $values = array())
+    public function register(ServiceProviderInterface $provider, array $values = [])
     {
         $this->providers[] = $provider;
         $provider->register($this);
         foreach ($values as $key => $value) {
             $this[$key] = $value;
         }
+
         return $this;
     }
 
@@ -115,6 +118,7 @@ class Application extends \Pimple
      *
      * This method is automatically called by handle(), but you can use it
      * to boot all service providers when not handling a request.
+     *
      * @see https://github.com/silexphp/Silex/blob/1.3/src/Silex/Application.php#L193
      */
     public function boot()

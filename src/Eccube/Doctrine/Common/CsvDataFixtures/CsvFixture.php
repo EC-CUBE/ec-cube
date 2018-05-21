@@ -36,7 +36,7 @@ class CsvFixture implements FixtureInterface
         // 日本語windowsの場合はインストール時にエラーとなるので英語のロケールをセット
         // ロケールがミスマッチしてSplFileObject::READ_CSVができないのを回避
         if ('\\' === DIRECTORY_SEPARATOR) {
-            setLocale(LC_ALL, 'English_United States.1252');
+            setlocale(LC_ALL, 'English_United States.1252');
         }
 
         // CSV Reader に設定
@@ -121,6 +121,7 @@ class CsvFixture implements FixtureInterface
      *
      * @param string $table_name テーブル名
      * @param array $headers カラム名の配列
+     *
      * @return string INSERT 文
      */
     public function getSql($table_name, array $headers)

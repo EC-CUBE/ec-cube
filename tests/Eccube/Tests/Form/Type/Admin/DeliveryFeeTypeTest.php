@@ -36,33 +36,32 @@ class DeliveryFeeTypeTest extends AbstractTypeTestCase
      *
      * 正常系のデータパターンを返す
      *
-     * @access public
      * @return array
      */
     public function getValidTestData()
     {
-        return array(
-            array(
-                'data' => array(
+        return [
+            [
+                'data' => [
                     'fee' => 0,
-                ),
-            ),
-            array(
-                'data' => array(
+                ],
+            ],
+            [
+                'data' => [
                     'fee' => 1,
-                ),
-            ),
-            array(
-                'data' => array(
+                ],
+            ],
+            [
+                'data' => [
                     'fee' => '0',
-                ),
-            ),
-            array(
-                'data' => array(
+                ],
+            ],
+            [
+                'data' => [
                     'fee' => '1',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     public function setUp()
@@ -71,9 +70,9 @@ class DeliveryFeeTypeTest extends AbstractTypeTestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
-            ->createBuilder(DeliveryFeeType::class, null, array(
+            ->createBuilder(DeliveryFeeType::class, null, [
                 'csrf_protection' => false,
-            ))
+            ])
             ->getForm();
     }
 
@@ -88,25 +87,25 @@ class DeliveryFeeTypeTest extends AbstractTypeTestCase
 
     public function testValidData_PriceLen()
     {
-        $this->form->submit(array('fee' => str_repeat('1', $this->eccubeConfig['eccube_price_len'])));
+        $this->form->submit(['fee' => str_repeat('1', $this->eccubeConfig['eccube_price_len'])]);
         $this->assertTrue($this->form->isValid());
     }
 
     public function testInvalidData_Blank()
     {
-        $this->form->submit(array('fee' => ''));
+        $this->form->submit(['fee' => '']);
         $this->assertFalse($this->form->isValid());
     }
 
     public function testInvalidData_Minus()
     {
-        $this->form->submit(array('fee' => '-1'));
+        $this->form->submit(['fee' => '-1']);
         $this->assertFalse($this->form->isValid());
     }
 
     public function testInvalidData_PriceLen()
     {
-        $this->form->submit(array('fee' => $this->eccubeConfig['eccube_price_max'] + 1));
+        $this->form->submit(['fee' => $this->eccubeConfig['eccube_price_max'] + 1]);
         $this->assertFalse($this->form->isValid());
     }
 }

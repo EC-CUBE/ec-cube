@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Eccube\ServiceProvider;
 
 use Eccube\Plugin\ConfigManager as PluginConfigManager;
@@ -15,11 +14,10 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-
 class EccubePluginServiceProvider implements ServiceProviderInterface, BootableProviderInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function register(Container $app)
     {
@@ -34,7 +32,7 @@ class EccubePluginServiceProvider implements ServiceProviderInterface, BootableP
         $enabledPlugins = $app['orm.em']->getRepository('Eccube\Entity\Plugin')->findAllEnabled();
 
         $app['eccube.routers.plugin'] = function ($app) use ($enabledPlugins) {
-            $pluginDirs = array_map(function($plugin) use ($app) {
+            $pluginDirs = array_map(function ($plugin) use ($app) {
                 return $app['config']['root_dir'].'/app/Plugin/'.$plugin->getCode();
             }, $enabledPlugins);
 
@@ -61,9 +59,10 @@ class EccubePluginServiceProvider implements ServiceProviderInterface, BootableP
 
             if (isset($config['const'])) {
                 $app->extend('config', function ($eccubeConfig) use ($config) {
-                    $eccubeConfig[$config['code']] = array(
+                    $eccubeConfig[$config['code']] = [
                         'const' => $config['const'],
-                    );
+                    ];
+
                     return $eccubeConfig;
                 });
             }
@@ -71,7 +70,7 @@ class EccubePluginServiceProvider implements ServiceProviderInterface, BootableP
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function boot(Application $app)
     {
@@ -132,7 +131,6 @@ class EccubePluginServiceProvider implements ServiceProviderInterface, BootableP
 
         // Request Event
         $app->on(\Symfony\Component\HttpKernel\KernelEvents::REQUEST, function (\Symfony\Component\HttpKernel\Event\GetResponseEvent $event) use ($app) {
-
             if (!$event->isMasterRequest()) {
                 return;
             }
@@ -158,12 +156,10 @@ class EccubePluginServiceProvider implements ServiceProviderInterface, BootableP
 
             // ルーティング単位
             $app['eccube.event.dispatcher']->dispatch("eccube.event.route.{$route}.request", $event);
-
         }, 30); // Routing(32)が解決し, 認証判定(8)が実行される前のタイミング.
 
         // Controller Event
         $app->on(\Symfony\Component\HttpKernel\KernelEvents::CONTROLLER, function (\Symfony\Component\HttpKernel\Event\FilterControllerEvent $event) use ($app) {
-
             if (!$event->isMasterRequest()) {
                 return;
             }
@@ -221,7 +217,6 @@ class EccubePluginServiceProvider implements ServiceProviderInterface, BootableP
 
         // Exception Event
         $app->on(\Symfony\Component\HttpKernel\KernelEvents::EXCEPTION, function (\Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent $event) use ($app) {
-
             if (!$event->isMasterRequest()) {
                 return;
             }
@@ -251,7 +246,6 @@ class EccubePluginServiceProvider implements ServiceProviderInterface, BootableP
 
         // Terminate Event
         $app->on(\Symfony\Component\HttpKernel\KernelEvents::TERMINATE, function (\Symfony\Component\HttpKernel\Event\PostResponseEvent $event) use ($app) {
-
             $route = $event->getRequest()->attributes->get('_route');
 
             if (is_null($route)) {
@@ -279,7 +273,7 @@ class EccubePluginServiceProvider implements ServiceProviderInterface, BootableP
     public function loadPlugin(Application $app)
     {
         // ハンドラ優先順位をdbから持ってきてハッシュテーブルを作成
-        $priorities = array();
+        $priorities = [];
         $pluginConfigs = PluginConfigManager::getPluginConfigAll($app['debug']);
 
         $handlers = $app['orm.em']
@@ -288,7 +282,6 @@ class EccubePluginServiceProvider implements ServiceProviderInterface, BootableP
 
         foreach ($handlers as $handler) {
             if ($handler->getPlugin()->isEnabled()) {
-
                 $priority = $handler->getPriority();
             } else {
                 // Pluginがdisable、削除済みの場合、EventHandlerのPriorityを全て0とみなす
@@ -305,17 +298,17 @@ class EccubePluginServiceProvider implements ServiceProviderInterface, BootableP
             try {
                 $app[PluginService::class]->checkPluginArchiveContent($path, $pluginConfig['config']);
             } catch (\Eccube\Exception\PluginException $e) {
-                $app['monolog']->warning("Configuration file config.yml for plugin {$code} not found or is invalid. Skipping loading.", array(
+                $app['monolog']->warning("Configuration file config.yml for plugin {$code} not found or is invalid. Skipping loading.", [
                     'path' => $path,
-                    'original-message' => $e->getMessage()
-                ));
+                    'original-message' => $e->getMessage(),
+                ]);
                 continue;
             }
             $config = $pluginConfig['config'];
 
             $plugin = $app['orm.em']
                 ->getRepository('Eccube\Entity\Plugin')
-                ->findOneBy(array('code' => $config['code']));
+                ->findOneBy(['code' => $config['code']]);
 
             // const
             if (is_null($plugin) || !$plugin->isEnabled()) {
@@ -329,14 +322,13 @@ class EccubePluginServiceProvider implements ServiceProviderInterface, BootableP
                 $eventExists = true;
 
                 if (!class_exists($class)) {
-                    $app['monolog']->warning("Event class for plugin {$code} not exists.", array(
+                    $app['monolog']->warning("Event class for plugin {$code} not exists.", [
                         'class' => $class,
-                    ));
+                    ]);
                     $eventExists = false;
                 }
 
                 if ($eventExists && isset($config['event'])) {
-
                     $subscriber = new $class($app);
 
                     foreach ($pluginConfig['event'] as $event => $handlers) {
@@ -348,7 +340,7 @@ class EccubePluginServiceProvider implements ServiceProviderInterface, BootableP
                             }
                             // 優先度が0のプラグインは登録しない
                             if (\Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_DISABLED != $priority) {
-                                $app['eccube.event.dispatcher']->addListener($event, array($subscriber, $handler[0]), $priority);
+                                $app['eccube.event.dispatcher']->addListener($event, [$subscriber, $handler[0]], $priority);
                             }
                         }
                     }
@@ -367,9 +359,9 @@ class EccubePluginServiceProvider implements ServiceProviderInterface, BootableP
             foreach ($config['service'] as $service) {
                 $class = '\\Plugin\\'.$code.'\\ServiceProvider\\'.$service;
                 if (!class_exists($class)) {
-                    $app['monolog']->warning("Service provider class for plugin {$code} not exists.", array(
+                    $app['monolog']->warning("Service provider class for plugin {$code} not exists.", [
                         'class' => $class,
-                    ));
+                    ]);
                     continue;
                 }
                 $app->register(new $class($app));

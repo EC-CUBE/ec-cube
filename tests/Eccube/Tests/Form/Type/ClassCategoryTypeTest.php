@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Form\Type;
 
 use Eccube\Form\Type\Admin\ClassCategoryType;
@@ -32,9 +31,9 @@ class ClassCategoryTypeTest extends AbstractTypeTestCase
     protected $form;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = array(
-        'name' => '立方体'
-    );
+    protected $formData = [
+        'name' => '立方体',
+    ];
 
     public function setUp()
     {
@@ -42,9 +41,9 @@ class ClassCategoryTypeTest extends AbstractTypeTestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
-            ->createBuilder(ClassCategoryType::class, null, array(
+            ->createBuilder(ClassCategoryType::class, null, [
                 'csrf_protection' => false,
-            ))
+            ])
             ->getForm();
     }
 
@@ -73,7 +72,7 @@ class ClassCategoryTypeTest extends AbstractTypeTestCase
 
     public function testInvalidName_MaxLengthInvalid()
     {
-        $name = str_repeat('S', $this->eccubeConfig['eccube_stext_len']) . 'S';
+        $name = str_repeat('S', $this->eccubeConfig['eccube_stext_len']).'S';
 
         $this->formData['name'] = $name;
         $this->form->submit($this->formData);
@@ -90,5 +89,4 @@ class ClassCategoryTypeTest extends AbstractTypeTestCase
 
         $this->assertTrue($this->form->isValid());
     }
-
 }

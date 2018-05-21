@@ -6,7 +6,6 @@ use Doctrine\Common\DataFixtures\FixtureInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 
-
 /**
  * CSVファイルのローダー.
  *
@@ -25,6 +24,7 @@ class Loader
      * 同一階層に, Fixture のロード順を定義した definition.yml が必要.
      *
      * @param string $dir
+     *
      * @return array fixtures.
      */
     public function loadFromDirectory($dir)
@@ -77,7 +77,8 @@ class Loader
     /**
      * Load fixtures from Iterator.
      *
-     * @param \Iterator $Iterator Iterator of \SplFileInfo 
+     * @param \Iterator $Iterator Iterator of \SplFileInfo
+     *
      * @return array fixtures.
      */
     public function loadFromIterator(\Iterator $Iterator)
@@ -89,6 +90,7 @@ class Loader
             $this->addFixture($CsvFixture);
             $fixtures[] = $CsvFixture;
         }
+
         return $fixtures;
     }
 

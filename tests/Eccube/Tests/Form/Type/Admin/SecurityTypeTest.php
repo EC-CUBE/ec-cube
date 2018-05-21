@@ -59,7 +59,7 @@ class SecurityTypeTest extends AbstractTypeTestCase
 
     public function testValidAdminAllowHost_OneLineIp()
     {
-        $this->formData['admin_allow_hosts'] = "127.0.0.1";
+        $this->formData['admin_allow_hosts'] = '127.0.0.1';
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
     }
@@ -73,7 +73,7 @@ class SecurityTypeTest extends AbstractTypeTestCase
 
     public function testValidAdminAllowHost_NotIp()
     {
-        $this->formData['admin_allow_hosts'] = "255.255.255,256";
+        $this->formData['admin_allow_hosts'] = '255.255.255,256';
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }

@@ -24,9 +24,6 @@
 
 namespace Eccube\Controller\Mypage;
 
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
-use Eccube\Annotation\Inject;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
@@ -43,8 +40,6 @@ use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -116,9 +111,9 @@ class MypageController extends AbstractController
         }
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_LOGIN_INITIALIZE, $event);
@@ -150,10 +145,10 @@ class MypageController extends AbstractController
         $qb = $this->orderRepository->getQueryBuilderByCustomer($Customer);
 
         $event = new EventArgs(
-            array(
+            [
                 'qb' => $qb,
                 'Customer' => $Customer,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_INDEX_SEARCH, $event);
@@ -179,16 +174,16 @@ class MypageController extends AbstractController
     {
         $this->entityManager->getFilters()->enable('incomplete_order_status_hidden');
         $Order = $this->orderRepository->findOneBy(
-            array(
+            [
                 'id' => $id,
                 'Customer' => $this->getUser(),
-            )
+            ]
         );
 
         $event = new EventArgs(
-            array(
+            [
                 'Order' => $Order,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_HISTORY_INITIALIZE, $event);
@@ -214,29 +209,29 @@ class MypageController extends AbstractController
     {
         $this->isTokenValid();
 
-        log_info('再注文開始', array($id));
+        log_info('再注文開始', [$id]);
 
         $Customer = $this->getUser();
 
         /* @var $Order \Eccube\Entity\Order */
         $Order = $this->orderRepository->findOneBy(
-            array(
+            [
                 'id' => $id,
                 'Customer' => $Customer,
-            )
+            ]
         );
 
         $event = new EventArgs(
-            array(
+            [
                 'Order' => $Order,
                 'Customer' => $Customer,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_ORDER_INITIALIZE, $event);
 
         if (!$Order) {
-            log_info('対象の注文が見つかりません', array($id));
+            log_info('対象の注文が見つかりません', [$id]);
             throw new NotFoundHttpException();
         }
 
@@ -250,20 +245,20 @@ class MypageController extends AbstractController
                         $OrderItem->getQuantity()
                     )->save();
                 } else {
-                    log_info(trans('cart.product.delete'), array($id));
+                    log_info(trans('cart.product.delete'), [$id]);
                     $this->addRequestError('cart.product.delete');
                 }
             } catch (CartException $e) {
-                log_info($e->getMessage(), array($id));
+                log_info($e->getMessage(), [$id]);
                 $this->addRequestError($e->getMessage());
             }
         }
 
         $event = new EventArgs(
-            array(
+            [
                 'Order' => $Order,
                 'Customer' => $Customer,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_ORDER_COMPLETE, $event);
@@ -272,7 +267,7 @@ class MypageController extends AbstractController
             return $event->getResponse();
         }
 
-        log_info('再注文完了', array($id));
+        log_info('再注文完了', [$id]);
 
         return $this->redirect($this->generateUrl('cart'));
     }
@@ -294,10 +289,10 @@ class MypageController extends AbstractController
         $qb = $this->customerFavoriteProductRepository->getQueryBuilderByCustomer($Customer);
 
         $event = new EventArgs(
-            array(
+            [
                 'qb' => $qb,
                 'Customer' => $Customer,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_FAVORITE_SEARCH, $event);
@@ -306,7 +301,7 @@ class MypageController extends AbstractController
             $qb,
             $request->get('pageno', 1),
             $this->eccubeConfig['eccube_search_pmax'],
-            array('wrap-queries' => true)
+            ['wrap-queries' => true]
         );
 
         return [
@@ -335,10 +330,10 @@ class MypageController extends AbstractController
         $this->customerFavoriteProductRepository->delete($CustomerFavoriteProduct);
 
         $event = new EventArgs(
-            array(
+            [
                 'Customer' => $Customer,
                 'CustomerFavoriteProduct' => $CustomerFavoriteProduct,
-            ), $request
+            ], $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_DELETE_COMPLETE, $event);
 

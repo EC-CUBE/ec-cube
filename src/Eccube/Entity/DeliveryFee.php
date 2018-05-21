@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -72,7 +71,6 @@ class DeliveryFee extends \Eccube\Entity\AbstractEntity
      * })
      */
     private $Pref;
-
 
     /**
      * Get id.

@@ -25,10 +25,8 @@ namespace Eccube\Form\Type\Front;
 
 use Eccube\Annotation\FormType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @FormType
@@ -47,9 +45,9 @@ class ShoppingShippingType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'Eccube\Entity\CustomerAddress',
-        ));
+        ]);
     }
 
     /**

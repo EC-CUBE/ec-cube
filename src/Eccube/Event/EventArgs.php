@@ -26,6 +26,7 @@ namespace Eccube\Event;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+
 class EventArgs extends GenericEvent
 {
     /**
@@ -36,16 +37,19 @@ class EventArgs extends GenericEvent
      * @var Response
      */
     private $response;
+
     /**
      * EventArgs constructor.
+     *
      * @param array $arguments
      * @param Request $request
      */
-    public function __construct(array $arguments = array(), Request $request = null)
+    public function __construct(array $arguments = [], Request $request = null)
     {
         parent::__construct(null, $arguments);
         $this->request = $request;
     }
+
     /**
      * @param Request $request
      */
@@ -53,6 +57,7 @@ class EventArgs extends GenericEvent
     {
         $this->request = $request;
     }
+
     /**
      * @return Request
      */
@@ -60,6 +65,7 @@ class EventArgs extends GenericEvent
     {
         return $this->request;
     }
+
     /**
      * @param Response $response
      */
@@ -67,6 +73,7 @@ class EventArgs extends GenericEvent
     {
         $this->response = $response;
     }
+
     /**
      * @return Response
      */
@@ -80,6 +87,6 @@ class EventArgs extends GenericEvent
      */
     public function hasResponse()
     {
-        return ($this->response instanceof Response);
+        return $this->response instanceof Response;
     }
 }

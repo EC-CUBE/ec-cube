@@ -21,11 +21,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Repository;
 
 use Eccube\Annotation\Repository;
-use Eccube\Repository\AbstractRepository;
 use Eccube\Entity\Tag;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -52,31 +50,32 @@ class TagRepository extends AbstractRepository
     public function save($tag)
     {
         if (!$tag->getId()) {
-            $sortNoTop = $this->findOneBy(array(), array('sort_no' => 'DESC'));
+            $sortNoTop = $this->findOneBy([], ['sort_no' => 'DESC']);
             $sort_no = 0;
             if (!is_null($sortNoTop)) {
                 $sort_no = $sortNoTop->getSortNo();
             }
-            
+
             $tag->setSortNo($sort_no + 1);
         }
-        
+
         $em = $this->getEntityManager();
         $em->persist($tag);
         $em->flush($tag);
     }
-    
+
     /**
      * タグ一覧を取得する.
-     * 
+     *
      * @return Tag[] タグの配列
      */
     public function getList()
     {
         $qb = $this->createQueryBuilder('t')->orderBy('t.sort_no', 'DESC');
+
         return $qb->getQuery()->getResult();
     }
-    
+
     /**
      * タグを削除する.
      *
@@ -86,9 +85,9 @@ class TagRepository extends AbstractRepository
     {
         $em = $this->getEntityManager();
         $em->beginTransaction();
-        
-        $em->createQuery("DELETE \Eccube\Entity\ProductTag pt WHERE pt.Tag = :tag")->execute(array("tag" => $Tag));
-        
+
+        $em->createQuery("DELETE \Eccube\Entity\ProductTag pt WHERE pt.Tag = :tag")->execute(['tag' => $Tag]);
+
         $this
             ->createQueryBuilder('t')
             ->update()
@@ -97,10 +96,10 @@ class TagRepository extends AbstractRepository
             ->setParameter('sort_no', $Tag->getSortNo())
             ->getQuery()
             ->execute();
-    
+
         $em->remove($Tag);
         $em->flush($Tag);
-        
+
         $em->commit();
     }
 }

@@ -21,11 +21,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Repository;
 
 use Eccube\Annotation\Repository;
-use Eccube\Entity\BlockPosition;
 use Eccube\Entity\Page;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 

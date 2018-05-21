@@ -46,7 +46,7 @@ class Template extends \Eccube\Entity\AbstractEntity
      */
     public function isDefaultTemplate()
     {
-        return (self::DEFAULT_TEMPLATE_CODE === $this->getCode());
+        return self::DEFAULT_TEMPLATE_CODE === $this->getCode();
     }
 
     /**
@@ -103,7 +103,6 @@ class Template extends \Eccube\Entity\AbstractEntity
      * })
      */
     private $DeviceType;
-
 
     /**
      * Get id.

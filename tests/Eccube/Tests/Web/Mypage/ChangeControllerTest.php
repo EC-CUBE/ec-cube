@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Web\Mypage;
 
 use Eccube\Entity\Customer;
@@ -49,53 +48,54 @@ class ChangeControllerTest extends AbstractWebTestCase
         $password = $faker->lexify('????????');
         $birth = $faker->dateTimeBetween;
 
-        $form = array(
-            'name' => array(
+        $form = [
+            'name' => [
                 'name01' => $faker->lastName,
                 'name02' => $faker->firstName,
-            ),
-            'kana' => array(
+            ],
+            'kana' => [
                 'kana01' => $faker->lastKanaName,
                 'kana02' => $faker->firstKanaName,
-            ),
+            ],
             'company_name' => $faker->company,
-            'zip' => array(
+            'zip' => [
                 'zip01' => $faker->postcode1(),
                 'zip02' => $faker->postcode2(),
-            ),
-            'address' => array(
+            ],
+            'address' => [
                 'pref' => '5',
                 'addr01' => $faker->city,
                 'addr02' => $faker->streetAddress,
-            ),
-            'tel' => array(
+            ],
+            'tel' => [
                 'tel01' => $tel[0],
                 'tel02' => $tel[1],
                 'tel03' => $tel[2],
-            ),
-            'fax' => array(
+            ],
+            'fax' => [
                 'fax01' => $tel[0],
                 'fax02' => $tel[1],
                 'fax03' => $tel[2],
-            ),
-            'email' => array(
+            ],
+            'email' => [
                 'first' => $email,
                 'second' => $email,
-            ),
-            'password' => array(
+            ],
+            'password' => [
                 'first' => $password,
                 'second' => $password,
-            ),
-            'birth' => array(
+            ],
+            'birth' => [
                 'year' => $birth->format('Y'),
                 'month' => $birth->format('n'),
                 'day' => $birth->format('j'),
-            ),
+            ],
             'sex' => 1,
             'job' => 1,
             'point' => 10,
-            '_token' => 'dummy'
-        );
+            '_token' => 'dummy',
+        ];
+
         return $form;
     }
 
@@ -118,7 +118,7 @@ class ChangeControllerTest extends AbstractWebTestCase
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('mypage_change'),
-            array('entry' => $form)
+            ['entry' => $form]
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('mypage_change_complete')));
@@ -133,14 +133,14 @@ class ChangeControllerTest extends AbstractWebTestCase
         $this->loginTo($this->Customer);
 
         $form = $this->createFormData();
-        $form['password'] = array(
+        $form['password'] = [
             'first' => $this->eccubeConfig['eccube_default_password'],
-            'second' => $this->eccubeConfig['eccube_default_password']
-        );
+            'second' => $this->eccubeConfig['eccube_default_password'],
+        ];
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('mypage_change'),
-            array('entry' => $form)
+            ['entry' => $form]
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('mypage_change_complete')));
@@ -153,7 +153,7 @@ class ChangeControllerTest extends AbstractWebTestCase
         $this->client->request(
             'POST',
             $this->generateUrl('mypage_change'),
-            array()
+            []
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }

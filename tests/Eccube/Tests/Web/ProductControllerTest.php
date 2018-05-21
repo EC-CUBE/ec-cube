@@ -21,26 +21,17 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Web;
 
-use Eccube\Controller\ProductController;
-use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\ClassCategoryRepository;
-use Eccube\Repository\CustomerFavoriteProductRepository;
-use Eccube\Repository\ProductRepository;
-use Eccube\Service\CartService;
-use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpKernel\Client;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class ProductControllerTest extends AbstractWebTestCase
 {
-
     /**
      * @var BaseInfoRepository
      */
@@ -58,7 +49,6 @@ class ProductControllerTest extends AbstractWebTestCase
         $this->classCategoryRepository = $this->container->get(ClassCategoryRepository::class);
     }
 
-
     public function testRoutingList()
     {
         $client = $this->client;
@@ -69,7 +59,7 @@ class ProductControllerTest extends AbstractWebTestCase
     public function testRoutingDetail()
     {
         $client = $this->client;
-        $client->request('GET', $this->generateUrl('product_detail', array('id' => '1')));
+        $client->request('GET', $this->generateUrl('product_detail', ['id' => '1']));
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 
@@ -81,7 +71,7 @@ class ProductControllerTest extends AbstractWebTestCase
 
         $client = $this->client;
         $client->request('POST',
-            $this->generateUrl('product_add_favorite', array('id' => '1'))
+            $this->generateUrl('product_add_favorite', ['id' => '1'])
         );
         $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('mypage_login')));
     }
@@ -93,7 +83,7 @@ class ProductControllerTest extends AbstractWebTestCase
     {
         $client = $this->client;
         $message = 'ご指定のカテゴリは存在しません';
-        $crawler = $client->request('GET', $this->generateUrl('product_list', array('category_id' => 'XXX')));
+        $crawler = $client->request('GET', $this->generateUrl('product_list', ['category_id' => 'XXX']));
         $this->assertContains($message, $crawler->html());
     }
 
@@ -104,7 +94,7 @@ class ProductControllerTest extends AbstractWebTestCase
     {
         $client = $this->client;
         $message = '商品が見つかりました';
-        $crawler = $client->request('GET', $this->generateUrl('product_list', array('category_id' => '6')));
+        $crawler = $client->request('GET', $this->generateUrl('product_list', ['category_id' => '6']));
         $this->assertContains($message, $crawler->html());
     }
 
@@ -115,22 +105,22 @@ class ProductControllerTest extends AbstractWebTestCase
     {
         /* @var $ClassCategory \Eccube\Entity\ClassCategory */
         //set 金 rank
-        $ClassCategory = $this->classCategoryRepository->findOneBy(array('name' => '金'));
+        $ClassCategory = $this->classCategoryRepository->findOneBy(['name' => '金']);
         $ClassCategory->setSortNo(3);
         $this->entityManager->persist($ClassCategory);
         $this->entityManager->flush($ClassCategory);
         //set 銀 rank
-        $ClassCategory = $this->classCategoryRepository->findOneBy(array('name' => '銀'));
+        $ClassCategory = $this->classCategoryRepository->findOneBy(['name' => '銀']);
         $ClassCategory->setSortNo(2);
         $this->entityManager->persist($ClassCategory);
         $this->entityManager->flush($ClassCategory);
         //set プラチナ rank
-        $ClassCategory = $this->classCategoryRepository->findOneBy(array('name' => 'プラチナ'));
+        $ClassCategory = $this->classCategoryRepository->findOneBy(['name' => 'プラチナ']);
         $ClassCategory->setSortNo(1);
         $this->entityManager->persist($ClassCategory);
         $this->entityManager->flush($ClassCategory);
         $client = $this->client;
-        $crawler = $client->request('GET', $this->generateUrl('product_detail', array('id' => '1')));
+        $crawler = $client->request('GET', $this->generateUrl('product_detail', ['id' => '1']));
         $this->assertTrue($client->getResponse()->isSuccessful());
         $classCategory = $crawler->filter('#classcategory_id1')->text();
         //選択してください, 金, 銀, プラチナ sort by rank setup above.
@@ -142,7 +132,7 @@ class ProductControllerTest extends AbstractWebTestCase
     /**
      * Test product can add favorite when out of stock.
      *
-     * @link https://github.com/EC-CUBE/ec-cube/issues/1637
+     * @see https://github.com/EC-CUBE/ec-cube/issues/1637
      */
     public function testProductFavoriteAddWhenOutOfStock()
     {
@@ -164,7 +154,7 @@ class ProductControllerTest extends AbstractWebTestCase
         /** @var $client Client */
         $client = $this->client;
         /** @var $crawler Crawler */
-        $crawler = $client->request('GET', $this->generateUrl('product_detail', array('id' => $id)));
+        $crawler = $client->request('GET', $this->generateUrl('product_detail', ['id' => $id]));
 
         $this->assertTrue($client->getResponse()->isSuccessful());
 
@@ -187,7 +177,7 @@ class ProductControllerTest extends AbstractWebTestCase
     /**
      * Test product can add favorite
      *
-     * @link https://github.com/EC-CUBE/ec-cube/issues/1637
+     * @see https://github.com/EC-CUBE/ec-cube/issues/1637
      */
     public function testProductFavoriteAdd()
     {
@@ -202,7 +192,7 @@ class ProductControllerTest extends AbstractWebTestCase
         /** @var $client Client */
         $client = $this->client;
         /** @var $crawler Crawler */
-        $crawler = $client->request('GET', $this->generateUrl('product_detail', array('id' => $id)));
+        $crawler = $client->request('GET', $this->generateUrl('product_detail', ['id' => $id]));
 
         $this->assertTrue($client->getResponse()->isSuccessful());
 

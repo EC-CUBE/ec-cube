@@ -59,7 +59,7 @@ class ShippingEditControllerTest extends AbstractAdminWebTestCase
         $this->assertContains('出荷情報を登録しました。', $success);
         $this->assertContains('出荷に関わる情報が変更されました：送料の変更が必要な場合は、受注管理より手動で変更してください。', $info);
     }
- 
+
     public function testNewShippingEmptyShipment()
     {
         $arrFormData = $this->createShippingForm();
@@ -67,9 +67,9 @@ class ShippingEditControllerTest extends AbstractAdminWebTestCase
         $this->client->request(
             'POST',
             $this->generateUrl('admin_shipping_new'),
-            array(
+            [
                 'shipping' => $arrFormData,
-            )
+            ]
         );
 
         $crawler = $this->client->followRedirect();
@@ -95,12 +95,11 @@ class ShippingEditControllerTest extends AbstractAdminWebTestCase
         $this->client->request(
             'POST',
             $this->generateUrl('admin_shipping_edit', ['id' => $Shipping->getId()]),
-            array(
-                'shipping' => $arrFormData
-            )
+            [
+                'shipping' => $arrFormData,
+            ]
         );
         $this->assertTrue($this->client->getResponse()->isRedirection());
-
 
         $Messages = $this->getMailCollector(false)->getMessages();
         self::assertEquals(0, count($Messages));
@@ -112,7 +111,6 @@ class ShippingEditControllerTest extends AbstractAdminWebTestCase
 
         $this->assertNotNull($Shipping->getShippingDate());
     }
-
 
     public function testEditShippingStatusShippedWithNotifyMail()
     {
@@ -132,12 +130,11 @@ class ShippingEditControllerTest extends AbstractAdminWebTestCase
         $this->client->request(
             'POST',
             $this->generateUrl('admin_shipping_edit', ['id' => $Shipping->getId()]),
-            array(
-                'shipping' => $arrFormData
-            )
+            [
+                'shipping' => $arrFormData,
+            ]
         );
         $this->assertTrue($this->client->getResponse()->isRedirection());
-
 
         $Messages = $this->getMailCollector(false)->getMessages();
         self::assertEquals(1, count($Messages));
@@ -171,9 +168,9 @@ class ShippingEditControllerTest extends AbstractAdminWebTestCase
         $this->client->request(
             'POST',
             $this->generateUrl('admin_shipping_edit', ['id' => $Shipping->getId()]),
-            array(
-                'shipping' => $arrFormData
-            )
+            [
+                'shipping' => $arrFormData,
+            ]
         );
         $crawler = $this->client->followRedirect();
 
@@ -202,7 +199,7 @@ class ShippingEditControllerTest extends AbstractAdminWebTestCase
                 ],
                 'kana' => [
                     'kana01' => $Shipping->getKana01(),
-                    'kana02' => $Shipping->getKana02()
+                    'kana02' => $Shipping->getKana02(),
                 ],
                 'company_name' => $Shipping->getCompanyName(),
                 'zip' => [
@@ -217,20 +214,20 @@ class ShippingEditControllerTest extends AbstractAdminWebTestCase
                 'tel' => [
                     'tel01' => $Shipping->getTel01(),
                     'tel02' => $Shipping->getTel02(),
-                    'tel03' => $Shipping->getTel03()
+                    'tel03' => $Shipping->getTel03(),
                 ],
                 'fax' => [
                     'fax01' => $Shipping->getFax01(),
                     'fax02' => $Shipping->getFax02(),
-                    'fax03' => $Shipping->getFax03()
+                    'fax03' => $Shipping->getFax03(),
                 ],
                 'Delivery' => $Shipping->getDelivery()->getId(),
                 'OrderItems' => [],
-                Constant::TOKEN_NAME => 'dummy'
+                Constant::TOKEN_NAME => 'dummy',
             ];
             /** @var OrderItem $OrderItem */
             foreach ($Shipping->getOrderItems() as $OrderItem) {
-                $arrFormData['OrderItems'][$OrderItem->getId()]['id'] =  $OrderItem->getId();
+                $arrFormData['OrderItems'][$OrderItem->getId()]['id'] = $OrderItem->getId();
             }
         } else {
             $arrFormData = [
@@ -263,7 +260,7 @@ class ShippingEditControllerTest extends AbstractAdminWebTestCase
                     'fax03' => $tel[2],
                 ],
                 'Delivery' => 1,
-                Constant::TOKEN_NAME => 'dummy'
+                Constant::TOKEN_NAME => 'dummy',
             ];
         }
 

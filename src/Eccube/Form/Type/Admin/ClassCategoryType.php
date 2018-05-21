@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type\Admin;
 
 use Eccube\Common\EccubeConfig;
@@ -49,15 +48,15 @@ class ClassCategoryType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class, array(
+            ->add('name', TextType::class, [
                 'label' => 'classcategory.label.category_name',
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(array(
+                    new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_stext_len'],
-                    )),
-                ),
-            ))
+                    ]),
+                ],
+            ])
         ;
     }
 
@@ -66,9 +65,9 @@ class ClassCategoryType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'Eccube\Entity\ClassCategory',
-        ));
+        ]);
     }
 
     /**

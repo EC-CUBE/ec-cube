@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Controller\Admin\Setting\Shop;
 
 use Eccube\Controller\AbstractController;
@@ -37,12 +36,9 @@ use Twig_Environment;
 
 /**
  * Class ShopController
- *
- * @package Eccube\Controller\Admin\Setting\Shop
  */
 class ShopController extends AbstractController
 {
-
     /**
      * @var Twig_Environment
      */
@@ -64,12 +60,12 @@ class ShopController extends AbstractController
         $this->twig = $twig;
     }
 
-
     /**
      * @Route("/%eccube_admin_route%/setting/shop", name="admin_setting_shop")
      * @Template("@admin/Setting/Shop/shop_master.twig")
      *
      * @param Request $request
+     *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function index(Request $request, CacheUtil $cacheUtil)
@@ -81,10 +77,10 @@ class ShopController extends AbstractController
         $this->entityManager->detach($CloneInfo);
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
                 'BaseInfo' => $this->BaseInfo,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_SHOP_INDEX_INITIALIZE, $event);
@@ -98,10 +94,10 @@ class ShopController extends AbstractController
                 $this->entityManager->flush();
 
                 $event = new EventArgs(
-                  array(
+                  [
                     'form' => $form,
                     'BaseInfo' => $this->BaseInfo,
-                  ),
+                  ],
                   $request
                 );
                 $this->eventDispatcher->dispatch(

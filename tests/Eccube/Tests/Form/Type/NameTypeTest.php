@@ -36,12 +36,12 @@ class NameTypeTest extends AbstractTypeTestCase
     protected $maxLength = 50;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = array(
-        'name' => array(
+    protected $formData = [
+        'name' => [
             'name01' => 'たかはし',
             'name02' => 'しんいち',
-        ),
-    );
+        ],
+    ];
 
     /**
      * {@inheritdoc}
@@ -69,11 +69,11 @@ class NameTypeTest extends AbstractTypeTestCase
 
     public function testInvalidData_Name01_MaxLength()
     {
-        $data = array(
-            'name' => array(
-                'name01' => str_repeat('ア', $this->maxLength+1),
+        $data = [
+            'name' => [
+                'name01' => str_repeat('ア', $this->maxLength + 1),
                 'name02' => 'にゅうりょく',
-            ));
+            ], ];
 
         $this->form->submit($data);
         $this->assertFalse($this->form->isValid());
@@ -81,11 +81,11 @@ class NameTypeTest extends AbstractTypeTestCase
 
     public function testInvalidData_Name02_MaxLength()
     {
-        $data = array(
-            'name' => array(
+        $data = [
+            'name' => [
                 'name01' => 'にゅうりょく',
-                'name02' => str_repeat('ア', $this->maxLength+1),
-            ));
+                'name02' => str_repeat('ア', $this->maxLength + 1),
+            ], ];
 
         $this->form->submit($data);
         $this->assertFalse($this->form->isValid());
@@ -93,11 +93,11 @@ class NameTypeTest extends AbstractTypeTestCase
 
     public function testInvalidData_Name01_HasWhiteSpaceEn()
     {
-        $data = array(
-            'name' => array(
+        $data = [
+            'name' => [
                 'name01' => 'hoge hoge',
                 'name02' => 'にゅうりょく',
-            ));
+            ], ];
 
         $this->form->submit($data);
         $this->assertFalse($this->form->isValid());
@@ -105,11 +105,11 @@ class NameTypeTest extends AbstractTypeTestCase
 
     public function testInvalidData_Name02_HasWhiteSpaceEn()
     {
-        $data = array(
-            'name' => array(
+        $data = [
+            'name' => [
                 'name01' => 'にゅうりょく',
                 'name02' => 'hoge hoge',
-            ));
+            ], ];
 
         $this->form->submit($data);
         $this->assertFalse($this->form->isValid());
@@ -117,11 +117,11 @@ class NameTypeTest extends AbstractTypeTestCase
 
     public function testInvalidData_Name01_HasWhiteSpaceJa()
     {
-        $data = array(
-            'name' => array(
+        $data = [
+            'name' => [
                 'name01' => 'hoge　hoge',
                 'name02' => 'にゅうりょく',
-            ));
+            ], ];
 
         $this->form->submit($data);
         $this->assertFalse($this->form->isValid());
@@ -129,11 +129,11 @@ class NameTypeTest extends AbstractTypeTestCase
 
     public function testInvalidData_Name02_HasWhiteSpaceJa()
     {
-        $data = array(
-            'name' => array(
+        $data = [
+            'name' => [
                 'name01' => 'にゅうりょく',
                 'name02' => 'hoge　hoge',
-            ));
+            ], ];
 
         $this->form->submit($data);
         $this->assertFalse($this->form->isValid());

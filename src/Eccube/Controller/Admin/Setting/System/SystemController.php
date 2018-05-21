@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Controller\Admin\Setting\System;
 
 use Eccube\Common\Constant;
@@ -43,13 +42,13 @@ class SystemController
 
     /**
      * SystemController constructor.
+     *
      * @param SystemService $systemService
      */
     public function __construct(SystemService $systemService)
     {
         $this->systemService = $systemService;
     }
-
 
     /**
      * @Route("/%eccube_admin_route%/setting/system/system", name="admin_setting_system_system")
@@ -61,7 +60,7 @@ class SystemController
         $info[] = ['title' => 'EC-CUBE', 'value' => Constant::VERSION];
         $info[] = ['title' => trans('system.label.server_os'), 'value' => php_uname()];
         $info[] = ['title' => trans('system.label.db_server'), 'value' => $this->systemService->getDbversion()];
-        $info[] = ['title' => trans('system.label.web_server'), 'value' => $request->server->get("SERVER_SOFTWARE")];
+        $info[] = ['title' => trans('system.label.web_server'), 'value' => $request->server->get('SERVER_SOFTWARE')];
 
         $value = phpversion().' ('.implode(', ', get_loaded_extensions()).')';
         $info[] = ['title' => 'PHP', 'value' => $value];
@@ -81,6 +80,7 @@ class SystemController
         phpinfo();
         $phpinfo = ob_get_contents();
         ob_end_clean();
+
         return new Response($phpinfo);
     }
 }

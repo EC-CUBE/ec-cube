@@ -23,7 +23,6 @@
 
 namespace Eccube\Tests\Service;
 
-
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\PluginService;
 use Eccube\Service\SchemaService;
@@ -95,6 +94,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
     public function deleteFile($path)
     {
         $f = new Filesystem();
+
         return $f->remove($path);
     }
 
@@ -125,7 +125,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
         // インストール
         $this->service->install($fileA);
 
-        $pluginA = $this->pluginRepository->findOneBy(array('code'=>$configA['code']));
+        $pluginA = $this->pluginRepository->findOneBy(['code' => $configA['code']]);
         $this->entityManager->detach($pluginA);
 
         // 有効化
@@ -147,7 +147,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
         // インストール
         $this->service->install($fileA);
 
-        $pluginA = $this->pluginRepository->findOneBy(array('code'=>$configA['code']));
+        $pluginA = $this->pluginRepository->findOneBy(['code' => $configA['code']]);
         $this->entityManager->detach($pluginA);
 
         // 有効化
@@ -172,7 +172,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
         // インストール
         $this->service->install($fileA);
 
-        $pluginA = $this->pluginRepository->findOneBy(array('code'=>$configA['code']));
+        $pluginA = $this->pluginRepository->findOneBy(['code' => $configA['code']]);
         $this->entityManager->detach($pluginA);
 
         // 有効化
@@ -203,7 +203,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
         // インストール
         $this->service->install($fileA);
 
-        $pluginA = $this->pluginRepository->findOneBy(array('code'=>$configA['code']));
+        $pluginA = $this->pluginRepository->findOneBy(['code' => $configA['code']]);
         $this->entityManager->detach($pluginA);
 
         // 有効化
@@ -233,20 +233,18 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
         $this->mockSchemaService->expects($this->exactly(2))->method('updateSchema');
 
         // プラグイン1はインストールのみ
-        {
-            $this->service->install($fileDisabled);
-        }
+
+        $this->service->install($fileDisabled);
 
         // プラグイン2をインストール&有効化
-        {
-            $this->service->install($fileEnabled);
 
-            $pluginEnabled = $this->pluginRepository->findOneBy(array('code'=>$configEnabled['code']));
-            $this->entityManager->detach($pluginEnabled);
+        $this->service->install($fileEnabled);
 
-            // 有効化
-            $this->service->enable($pluginEnabled);
-        }
+        $pluginEnabled = $this->pluginRepository->findOneBy(['code' => $configEnabled['code']]);
+        $this->entityManager->detach($pluginEnabled);
+
+        // 有効化
+        $this->service->enable($pluginEnabled);
 
         self::assertNotContainsTrait($this->container->getParameter('kernel.project_dir').'/app/proxy/entity/Customer.php',
             "Plugin\\${configDisabled['code']}\\Entity\\HogeTrait",
@@ -281,21 +279,23 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
     // テスト用のダミープラグインを配置する
     private function createTempDir()
     {
-        $t = sys_get_temp_dir()."/plugintest.".sha1(mt_rand());
-        if(!mkdir($t)){
+        $t = sys_get_temp_dir().'/plugintest.'.sha1(mt_rand());
+        if (!mkdir($t)) {
             throw new \Exception("$t ".$php_errormsg);
         }
+
         return $t;
     }
 
     private function createDummyPluginConfig()
     {
-        $tmpname="dummy".sha1(mt_rand());
-        $config=array();
-        $config['name'] = $tmpname."_name";
+        $tmpname = 'dummy'.sha1(mt_rand());
+        $config = [];
+        $config['name'] = $tmpname.'_name';
         $config['code'] = $tmpname;
         $config['version'] = $tmpname;
         $config['event'] = 'DummyEvent';
+
         return $config;
     }
 
@@ -309,7 +309,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
         $tmpfile = $tmpdir.'/plugin.tar';
 
         $tar = new \PharData($tmpfile);
-        $tar->addFromString('config.yml',Yaml::dump($config));
+        $tar->addFromString('config.yml', Yaml::dump($config));
         $tar->addFromString('Entity/HogeTrait.php', <<< EOT
 <?php
 
@@ -325,6 +325,7 @@ trait HogeTrait
 }
 EOT
         );
+
         return [$config, $tmpfile];
     }
 }

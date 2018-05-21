@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Form\Type\Install;
 
 use Eccube\Form\Type\Install\Step1Type;
@@ -39,7 +38,6 @@ class Step1TypeTest extends AbstractTypeTestCase
      *
      * 正常系のデータパターンを返す
      *
-     * @access public
      * @return array
      */
     public function getValidTestData()

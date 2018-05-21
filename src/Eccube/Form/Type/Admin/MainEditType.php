@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type\Admin;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -62,6 +61,7 @@ class MainEditType extends AbstractType
 
     /**
      * MainEditType constructor.
+     *
      * @param EntityManagerInterface $entityManager
      * @param DeviceTypeRepository $deviceTypeRepository
      * @param EccubeConfig $eccubeConfig
@@ -82,43 +82,43 @@ class MainEditType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class, array(
+            ->add('name', TextType::class, [
                 'label' => 'mainedit.label.name',
                 'required' => true,
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(array(
+                    new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_stext_len'],
-                    )),
-                ),
-            ))
-            ->add('url', TextType::class, array(
+                    ]),
+                ],
+            ])
+            ->add('url', TextType::class, [
                 'label' => 'URL',
                 'required' => true,
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(array(
+                    new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_stext_len'],
-                    )),
-                    new Assert\Regex(array(
+                    ]),
+                    new Assert\Regex([
                         'pattern' => '/^([0-9a-zA-Z_\-]+\/?)+(?<!\/)$/',
-                    )),
-                ),
-            ))
-            ->add('file_name', TextType::class, array(
+                    ]),
+                ],
+            ])
+            ->add('file_name', TextType::class, [
                 'label' => 'mainedit.label.file_name',
                 'required' => true,
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(array(
+                    new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_stext_len'],
-                    )),
-                    new Assert\Regex(array(
+                    ]),
+                    new Assert\Regex([
                         'pattern' => '/^([0-9a-zA-Z_\-]+\/?)+$/',
-                    )),
-                ),
-            ))
-            ->add('tpl_data', TextareaType::class, array(
+                    ]),
+                ],
+            ])
+            ->add('tpl_data', TextareaType::class, [
                 'label' => false,
                 'mapped' => false,
                 'required' => false,
@@ -126,51 +126,51 @@ class MainEditType extends AbstractType
                     new Assert\NotBlank(),
                     new TwigLint(),
                 ],
-            ))
-            ->add('author', TextType::class, array(
+            ])
+            ->add('author', TextType::class, [
                 'label' => 'author',
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array(
+                'constraints' => [
+                    new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_stext_len'],
-                    )),
-                ),
-            ))
-            ->add('description', TextType::class, array(
+                    ]),
+                ],
+            ])
+            ->add('description', TextType::class, [
                 'label' => 'description',
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array(
+                'constraints' => [
+                    new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_stext_len'],
-                    )),
-                ),
-            ))
-            ->add('keyword', TextType::class, array(
+                    ]),
+                ],
+            ])
+            ->add('keyword', TextType::class, [
                 'label' => 'keyword',
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array(
+                'constraints' => [
+                    new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_stext_len'],
-                    )),
-                ),
-            ))
-            ->add('meta_robots', TextType::class, array(
+                    ]),
+                ],
+            ])
+            ->add('meta_robots', TextType::class, [
                 'label' => 'robots',
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array(
+                'constraints' => [
+                    new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ))
-                )
-            ))->add('meta_tags', TextAreaType::class, array(
+                    ]),
+                ],
+            ])->add('meta_tags', TextAreaType::class, [
                 'label' => '追加metaタグ',
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array(
+                'constraints' => [
+                    new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_lltext_len'],
-                    ))
-                )
-            ))
+                    ]),
+                ],
+            ])
             ->add('PcLayout', EntityType::class, [
                 'mapped' => false,
                 'placeholder' => '---',
@@ -252,9 +252,9 @@ class MainEditType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => Page::class,
-        ));
+        ]);
     }
 
     /**

@@ -25,9 +25,6 @@ namespace Eccube\Doctrine\ORM\Mapping\Driver;
 
 use Doctrine\Common\Persistence\Mapping\MappingException;
 
-/**
- * @package Eccube\Doctrine\ORM\Mapping\Driver
- */
 class AnnotationDriver extends \Doctrine\ORM\Mapping\Driver\AnnotationDriver
 {
     protected $trait_proxies_directory;
@@ -38,7 +35,7 @@ class AnnotationDriver extends \Doctrine\ORM\Mapping\Driver\AnnotationDriver
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getAllClassNames()
     {
@@ -54,7 +51,7 @@ class AnnotationDriver extends \Doctrine\ORM\Mapping\Driver\AnnotationDriver
         $includedFiles = [];
 
         foreach ($this->paths as $path) {
-            if ( ! is_dir($path)) {
+            if (!is_dir($path)) {
                 throw MappingException::fileMappingDriversRequireConfiguredDirectoryPath($path);
             }
 
@@ -63,14 +60,14 @@ class AnnotationDriver extends \Doctrine\ORM\Mapping\Driver\AnnotationDriver
                     new \RecursiveDirectoryIterator($path, \FilesystemIterator::SKIP_DOTS),
                     \RecursiveIteratorIterator::LEAVES_ONLY
                 ),
-                '/^.+' . preg_quote($this->fileExtension) . '$/i',
+                '/^.+'.preg_quote($this->fileExtension).'$/i',
                 \RecursiveRegexIterator::GET_MATCH
             );
 
             foreach ($iterator as $file) {
                 $sourceFile = $file[0];
 
-                if ( ! preg_match('(^phar:)i', $sourceFile)) {
+                if (!preg_match('(^phar:)i', $sourceFile)) {
                     $sourceFile = realpath($sourceFile);
                 }
 
@@ -101,7 +98,7 @@ class AnnotationDriver extends \Doctrine\ORM\Mapping\Driver\AnnotationDriver
         foreach ($declared as $className) {
             $rc = new \ReflectionClass($className);
             $sourceFile = $rc->getFileName();
-            if (in_array($sourceFile, $includedFiles) && ! $this->isTransient($className)) {
+            if (in_array($sourceFile, $includedFiles) && !$this->isTransient($className)) {
                 $classes[] = $className;
             }
         }

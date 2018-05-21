@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Web;
 
 use Eccube\Entity\Master\OrderStatus;
@@ -111,15 +110,15 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $Messages = $mailCollector->getMessages();
         $Message = $Messages[0];
 
-        $this->expected = '[' . $BaseInfo->getShopName() . '] ご注文ありがとうございます';
+        $this->expected = '['.$BaseInfo->getShopName().'] ご注文ありがとうございます';
         $this->actual = $Message->getSubject();
         $this->verify();
 
         // 生成された受注のチェック
         $Order = $this->container->get(OrderRepository::class)->findOneBy(
-            array(
-                'Customer' => $Customer
-            )
+            [
+                'Customer' => $Customer,
+            ]
         );
 
         $OrderNew = $this->container->get(OrderStatusRepository::class)->find(OrderStatus::NEW);
@@ -149,7 +148,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $token = $this->getCsrfToken('_shopping_order');
         $this->scenarioRedirectTo($Customer, [
             'shopping_order_mode' => 'delivery',
-            '_token' => $token
+            '_token' => $token,
         ]);
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -175,14 +174,14 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
                 'Shippings' => [
                     0 => [
                         'Delivery' => 1,
-                        'DeliveryTime' => 1
+                        'DeliveryTime' => 1,
                     ],
                 ],
                 'Payment' => 1,
                 'message' => $this->getFaker()->realText(),
-                '_token' => $token
+                '_token' => $token,
             ],
-            ['shopping_order_mode' => 'delivery']
+            ['shopping_order_mode' => 'delivery'],
         ]);
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
@@ -208,14 +207,14 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
                 'Shippings' => [
                     0 => [
                         'Delivery' => 5, // delivery=5 は無効な値
-                        'DeliveryTime' => 1
+                        'DeliveryTime' => 1,
                     ],
                 ],
                 'Payment' => 1,
                 'message' => $this->getFaker()->realText(),
-                '_token' => $token
+                '_token' => $token,
             ],
-            ['shopping_order_mode' => 'delivery']
+            ['shopping_order_mode' => 'delivery'],
         ]);
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -244,14 +243,14 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
                 'Shippings' => [
                     0 => [
                         'Delivery' => 1,
-                        'DeliveryTime' => 1
+                        'DeliveryTime' => 1,
                     ],
                 ],
                 'Payment' => 1,
                 'message' => $this->getFaker()->realText(),
-                '_token' => $token
+                '_token' => $token,
             ],
-            ['shopping_order_mode' => 'payment']
+            ['shopping_order_mode' => 'payment'],
         ]);
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
@@ -277,19 +276,19 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $crawler = $client->request(
             'POST',
             $this->generateUrl('shopping_payment'),
-            array(
-                'shopping' => array(
-                    'shippings' => array(
-                        0 => array(
+            [
+                'shopping' => [
+                    'shippings' => [
+                        0 => [
                             'delivery' => 1,
-                            'deliveryTime' => 1
-                        ),
-                    ),
+                            'deliveryTime' => 1,
+                        ],
+                    ],
                     'payment' => 0,
                     'message' => $faker->text(),
-                    '_token' => 'dummy'
-                )
-            )
+                    '_token' => 'dummy',
+                ],
+            ]
         );
         // レイアウトヘッダーの部分確認
         $this->expected = 'header';
@@ -328,14 +327,14 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
                 'Shippings' => [
                     0 => [
                         'Delivery' => 1,
-                        'DeliveryTime' => 1
+                        'DeliveryTime' => 1,
                     ],
                 ],
                 'Payment' => 100, // payment=100 は無効な値
                 'message' => $this->getFaker()->realText(),
                 '_token' => $shoppingToken,
             ],
-            ['shopping_order_mode' => 'payment']
+            ['shopping_order_mode' => 'payment'],
         ]);
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -359,9 +358,9 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
         // 支払い方法のMINとMAXルール変更
         $PaymentColl = $this->paymentRepository->findAll();
-        foreach($PaymentColl as $Payment){
-                $Payment->setRuleMin(0);
-                $Payment->setRuleMax(0);
+        foreach ($PaymentColl as $Payment) {
+            $Payment->setRuleMin(0);
+            $Payment->setRuleMax(0);
         }
         // 確認画面
         $crawler = $this->scenarioConfirm($Customer);
@@ -369,7 +368,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $BaseInfo = $this->baseInfoRepository->get();
         $email02 = $BaseInfo->getEmail02();
         $this->assertTrue($client->getResponse()->isSuccessful());
-        $this->expected = '合計金額に対して可能な支払い方法がありません。' . $email02 . 'にお問い合わせ下さい。';
+        $this->expected = '合計金額に対して可能な支払い方法がありません。'.$email02.'にお問い合わせ下さい。';
         $this->actual = $crawler->filter('p.errormsg')->text();
         $this->verify();
     }
@@ -409,7 +408,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
         // お届け先指定画面
         //*[@id="shopping-form"]/div/div[1]/div[3]/div[2]/div/a
-        #shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div.ec-orderDelivery__title > div > a
+        //shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div.ec-orderDelivery__title > div > a
         $shipping_url = $crawler->filter('div.ec-orderDelivery__change > a')->attr('href');
         $crawler = $this->scenarioComplete($Customer, $shipping_url);
 
@@ -432,7 +431,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
     /**
      * 購入確認画面→お届け先の設定→お届け先追加→購入完了
      *
-     * @link https://github.com/EC-CUBE/ec-cube/issues/1305
+     * @see https://github.com/EC-CUBE/ec-cube/issues/1305
      */
     public function testShippingShippingPost()
     {
@@ -475,21 +474,21 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
         // お届け先設定画面へ遷移し POST 送信
         $formData = $this->createShippingFormData();
-        $formData['tel'] = array(
+        $formData['tel'] = [
             'tel01' => 222,
             'tel02' => 222,
             'tel03' => 222,
-        );
-        $formData['fax'] = array(
+        ];
+        $formData['fax'] = [
             'fax01' => 111,
             'fax02' => 111,
             'fax03' => 111,
-        );
+        ];
 
         $crawler = $client->request(
             'POST',
             $shipping_edit_url,
-            array('shopping_shipping' => $formData)
+            ['shopping_shipping' => $formData]
         );
 
         $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('shopping')));
@@ -507,7 +506,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
     }
 
     /**
-     * @link https://github.com/EC-CUBE/ec-cube/issues/1280
+     * @see https://github.com/EC-CUBE/ec-cube/issues/1280
      */
     public function testShippingEditTitle()
     {
@@ -518,7 +517,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $client = $this->client;
         $this->scenarioCartIn($Customer);
 
-        /** @var $crawler Crawler*/
+        /** @var $crawler Crawler */
         $crawler = $this->scenarioConfirm($Customer);
         $this->expected = 'ご注文内容のご確認';
         $this->actual = $crawler->filter('h1.page-heading')->text();

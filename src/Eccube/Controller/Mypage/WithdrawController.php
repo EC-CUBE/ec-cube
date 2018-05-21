@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Controller\Mypage;
 
 use Eccube\Controller\AbstractController;
@@ -77,9 +76,9 @@ class WithdrawController extends AbstractController
         $builder = $this->formFactory->createBuilder();
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_WITHDRAW_INDEX_INITIALIZE, $event);
@@ -95,9 +94,9 @@ class WithdrawController extends AbstractController
 
                     return $this->render(
                         'Mypage/withdraw_confirm.twig',
-                        array(
+                        [
                             'form' => $form->createView(),
-                        )
+                        ]
                     );
 
                 case 'complete':
@@ -116,10 +115,10 @@ class WithdrawController extends AbstractController
                     log_info('退会処理完了');
 
                     $event = new EventArgs(
-                        array(
+                        [
                             'form' => $form,
                             'Customer' => $Customer,
-                        ), $request
+                        ], $request
                     );
                     $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_WITHDRAW_INDEX_COMPLETE, $event);
 

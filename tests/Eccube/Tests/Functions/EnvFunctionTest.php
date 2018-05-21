@@ -26,7 +26,7 @@ class EnvFunctionTest extends TestCase
         self::assertSame([1], env('ECCUBE_ENV_TEST'));
 
         putenv('ECCUBE_ENV_TEST=[1,2,3]');
-        self::assertSame([1,2,3], env('ECCUBE_ENV_TEST'));
+        self::assertSame([1, 2, 3], env('ECCUBE_ENV_TEST'));
 
         putenv('ECCUBE_ENV_TEST={}');
         self::assertSame([], env('ECCUBE_ENV_TEST'));

@@ -35,7 +35,7 @@ class Layout extends AbstractEntity
 
     public function isDefault()
     {
-        return in_array($this->id, [self::DEFAULT_LAYOUT_TOP_PAGE, self::DEFAULT_LAYOUT_UNDERLAYER_PAGE,]);
+        return in_array($this->id, [self::DEFAULT_LAYOUT_TOP_PAGE, self::DEFAULT_LAYOUT_UNDERLAYER_PAGE]);
     }
 
     /**
@@ -44,8 +44,7 @@ class Layout extends AbstractEntity
     public function getPages()
     {
         $Pages = [];
-        foreach ($this->PageLayouts as $PageLayout)
-        {
+        foreach ($this->PageLayouts as $PageLayout) {
             $Pages[] = $PageLayout->getPage();
         }
 
@@ -54,6 +53,7 @@ class Layout extends AbstractEntity
 
     /**
      * @param integer|null $targetId
+     *
      * @return Block[]
      */
     public function getBlocks($targetId = null)
@@ -75,6 +75,7 @@ class Layout extends AbstractEntity
 
     /**
      * @param integer $targetId
+     *
      * @return BlockPosition[]
      */
     public function getBlockPositionsBy($targetId)

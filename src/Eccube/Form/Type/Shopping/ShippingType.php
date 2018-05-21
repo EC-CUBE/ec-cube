@@ -38,6 +38,7 @@ class ShippingType extends AbstractType
 
     /**
      * ShippingType constructor.
+     *
      * @param EccubeConfig $eccubeConfig
      * @param DeliveryRepository $deliveryRepository
      * @param DeliveryFeeRepository $deliveryFeeRepository
@@ -49,7 +50,6 @@ class ShippingType extends AbstractType
         $this->deliveryFeeRepository = $deliveryFeeRepository;
     }
 
-
     /**
      * {@inheritdoc}
      */
@@ -59,9 +59,9 @@ class ShippingType extends AbstractType
             ->add(
                 'OrderItems',
                 CollectionType::class,
-                array(
+                [
                     'entry_type' => OrderItemType::class,
-                )
+                ]
             );
 
         // 配送業者のプルダウンを生成
@@ -76,7 +76,7 @@ class ShippingType extends AbstractType
 
                 // 配送商品に含まれる販売種別を抽出.
                 $OrderItems = $Shipping->getProductOrderItems();
-                $SaleTypes = array();
+                $SaleTypes = [];
                 foreach ($OrderItems as $OrderItem) {
                     $ProductClass = $OrderItem->getProductClass();
                     $SaleType = $ProductClass->getSaleType();
@@ -91,17 +91,17 @@ class ShippingType extends AbstractType
                 $form->add(
                     'Delivery',
                     EntityType::class,
-                    array(
+                    [
                         'required' => false,
                         'label' => 'shipping.label.delivery_hour',
                         'class' => 'Eccube\Entity\Delivery',
                         'choice_label' => 'name',
                         'choices' => $Deliveries,
                         'placeholder' => null,
-                        'constraints' => array(
+                        'constraints' => [
                             new NotBlank(),
-                        ),
-                    )
+                        ],
+                    ]
                 );
             }
         );
@@ -143,11 +143,11 @@ class ShippingType extends AbstractType
                 }
 
                 // 配達最大日数期間を設定
-                $deliveryDurations = array();
+                $deliveryDurations = [];
 
                 // 配送日数が設定されている
                 if ($deliveryDurationFlag) {
-                    $period = new \DatePeriod (
+                    $period = new \DatePeriod(
                         new \DateTime($minDate.' day'),
                         new \DateInterval('P1D'),
                         new \DateTime($minDate + $this->eccubeConfig['eccube_deliv_date_end_max'].' day')
@@ -163,12 +163,12 @@ class ShippingType extends AbstractType
                     ->add(
                         'shipping_delivery_date',
                         ChoiceType::class,
-                        array(
+                        [
                             'choices' => array_flip($deliveryDurations),
                             'required' => false,
                             'placeholder' => '指定なし',
                             'mapped' => false,
-                        )
+                        ]
                     );
             }
         );
@@ -181,7 +181,7 @@ class ShippingType extends AbstractType
                     return;
                 }
 
-                $DeliveryTimes = array();
+                $DeliveryTimes = [];
                 $Delivery = $Shipping->getDelivery();
                 if ($Delivery) {
                     $DeliveryTimes = $Delivery->getDeliveryTimes();
@@ -191,30 +191,30 @@ class ShippingType extends AbstractType
                 $form->add(
                     'DeliveryTime',
                     EntityType::class,
-                    array(
+                    [
                         'label' => 'お届け時間',
                         'class' => 'Eccube\Entity\DeliveryTime',
                         'choice_label' => 'deliveryTime',
                         'choices' => $DeliveryTimes,
                         'required' => false,
                         'placeholder' => '指定なし',
-                        'mapped' => false
-                    )
+                        'mapped' => false,
+                    ]
                 );
             }
         );
 
         // POSTされないデータをエンティティにセットする.
         // TODO Calculatorで行うのが適切.
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
             $Shipping = $event->getData();
             $Delivery = $Shipping->getDelivery();
 
             if ($Delivery) {
-                $DeliveryFee = $this->deliveryFeeRepository->findOneBy(array(
+                $DeliveryFee = $this->deliveryFeeRepository->findOneBy([
                     'Delivery' => $Delivery,
-                    'Pref' => $Shipping->getPref()
-                ));
+                    'Pref' => $Shipping->getPref(),
+                ]);
 
                 $Shipping->setFeeId($DeliveryFee ? $DeliveryFee->getId() : null);
                 $Shipping->setShippingDeliveryFee($DeliveryFee->getFee());
@@ -232,9 +232,9 @@ class ShippingType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'data_class' => 'Eccube\Entity\Shipping',
-            )
+            ]
         );
     }
 

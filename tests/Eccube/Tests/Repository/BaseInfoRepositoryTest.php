@@ -6,7 +6,6 @@ use Eccube\Entity\BaseInfo;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Tests\EccubeTestCase;
 
-
 /**
  * BaseInfoRepository test cases.
  *

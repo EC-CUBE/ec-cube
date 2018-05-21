@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -38,7 +37,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class TopController extends AbstractController
 {
-
     /**
      * @Route("/", name="homepage")
      * @Template("index.twig")
@@ -51,10 +49,10 @@ class TopController extends AbstractController
         $application = $this->get('app');
         // orm.em も使える
         $Page = $application['orm.em']->find(\Eccube\Entity\Page::class, 1);
+
         return [
         ];
     }
-
 
     /**
      * ページネーションのサンプル
@@ -63,6 +61,7 @@ class TopController extends AbstractController
      *
      * @param Paginator $paginator
      * @param EntityManagerInterface $em
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function index2(Paginator $paginator, EntityManagerInterface $em)

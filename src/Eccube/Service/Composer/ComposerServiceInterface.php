@@ -20,11 +20,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
 namespace Eccube\Service\Composer;
 
 /**
  * Interface ComposerServiceInterface
- * @package Eccube\Service\Composer
  */
 interface ComposerServiceInterface
 {
@@ -32,7 +32,7 @@ interface ComposerServiceInterface
      * Run execute command
      *
      * @param string $packageName format foo/bar or foo/bar:1.0.0 or "foo/bar 1.0.0"
-     * @return void
+     *
      * @throws \Eccube\Exception\PluginException
      */
     public function execRequire($packageName);
@@ -41,7 +41,7 @@ interface ComposerServiceInterface
      * Run remove command
      *
      * @param string $packageName format foo/bar or foo/bar:1.0.0 or "foo/bar 1.0.0"
-     * @return void
+     *
      * @throws \Eccube\Exception\PluginException
      */
     public function execRemove($packageName);
@@ -50,18 +50,21 @@ interface ComposerServiceInterface
      * Run composer command
      *
      * @param array|string $commands
+     *
      * @return string|mixed
      */
     public function runCommand($commands);
 
     /**
      * Get version of composer
+     *
      * @return null|string
      */
     public function composerVersion();
 
     /**
      * Get mode
+     *
      * @return mixed|string
      */
     public function getMode();

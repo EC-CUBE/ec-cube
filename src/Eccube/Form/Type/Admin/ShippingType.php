@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type\Admin;
 
 use Doctrine\ORM\EntityRepository;
@@ -92,143 +91,142 @@ class ShippingType extends AbstractType
         $this->BaseInfo = $BaseInfo;
     }
 
-
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', NameType::class, array(
+            ->add('name', NameType::class, [
                 'required' => false,
-                'options' => array(
-                    'constraints' => array(
+                'options' => [
+                    'constraints' => [
                         new Assert\NotBlank(),
-                    ),
-                ),
-            ))
-            ->add('kana', KanaType::class, array(
+                    ],
+                ],
+            ])
+            ->add('kana', KanaType::class, [
                 'required' => false,
-                'options' => array(
-                    'constraints' => array(
+                'options' => [
+                    'constraints' => [
                         new Assert\NotBlank(),
-                    ),
-                ),
-            ))
-            ->add('company_name', TextType::class, array(
+                    ],
+                ],
+            ])
+            ->add('company_name', TextType::class, [
                 'label' => 'shipping.label.company_name',
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array(
+                'constraints' => [
+                    new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ))
-                ),
-            ))
-            ->add('zip', ZipType::class, array(
+                    ]),
+                ],
+            ])
+            ->add('zip', ZipType::class, [
                 'required' => false,
-                'options' => array(
-                    'constraints' => array(
+                'options' => [
+                    'constraints' => [
                         new Assert\NotBlank(),
-                    ),
-                    'attr' => array('class' => 'p-postal-code')
-                ),
-            ))
-            ->add('address', AddressType::class, array(
+                    ],
+                    'attr' => ['class' => 'p-postal-code'],
+                ],
+            ])
+            ->add('address', AddressType::class, [
                 'required' => false,
-                'pref_options' => array(
-                    'constraints' => array(
+                'pref_options' => [
+                    'constraints' => [
                         new Assert\NotBlank(),
-                    ),
-                    'attr' => array('class' => 'p-region-id')
-                ),
-                'addr01_options' => array(
-                    'constraints' => array(
+                    ],
+                    'attr' => ['class' => 'p-region-id'],
+                ],
+                'addr01_options' => [
+                    'constraints' => [
                         new Assert\NotBlank(),
-                        new Assert\Length(array(
+                        new Assert\Length([
                             'max' => $this->eccubeConfig['eccube_mtext_len'],
-                        )),
-                    ),
-                    'attr' => array('class' => 'p-locality p-street-address')
-                ),
-                'addr02_options' => array(
+                        ]),
+                    ],
+                    'attr' => ['class' => 'p-locality p-street-address'],
+                ],
+                'addr02_options' => [
                     'required' => false,
-                    'constraints' => array(
+                    'constraints' => [
                         new Assert\NotBlank(),
-                        new Assert\Length(array(
+                        new Assert\Length([
                             'max' => $this->eccubeConfig['eccube_mtext_len'],
-                        )),
-                    ),
-                    'attr' => array('class' => 'p-extended-address')
-                ),
-            ))
-            ->add('tel', TelType::class, array(
+                        ]),
+                    ],
+                    'attr' => ['class' => 'p-extended-address'],
+                ],
+            ])
+            ->add('tel', TelType::class, [
                 'required' => false,
-                'options' => array(
-                    'constraints' => array(
+                'options' => [
+                    'constraints' => [
                         new Assert\NotBlank(),
-                    ),
-                ),
-            ))
-            ->add('fax', TelType::class, array(
+                    ],
+                ],
+            ])
+            ->add('fax', TelType::class, [
                 'label' => 'shipping.label.fax',
                 'required' => false,
-            ))
-            ->add('Delivery', EntityType::class, array(
+            ])
+            ->add('Delivery', EntityType::class, [
                 'required' => false,
                 'label' => 'shipping.label.shipping_company',
                 'class' => 'Eccube\Entity\Delivery',
-                'choice_label' => function(Delivery $Delivery) {
+                'choice_label' => function (Delivery $Delivery) {
                     return $Delivery->isVisible()
                         ? $Delivery->getServiceName()
                         : $Delivery->getServiceName().trans('delivery.text.hidden');
                 },
                 'placeholder' => 'shipping.placeholder.please_select',
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                ),
-            ))
-            ->add('shipping_delivery_date', DateType::class, array(
+                ],
+            ])
+            ->add('shipping_delivery_date', DateType::class, [
                 'label' => 'shipping.label.delivery_date',
                 'placeholder' => '',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'required' => false,
-            ))
-            ->add('tracking_number', TextType::class, array(
+            ])
+            ->add('tracking_number', TextType::class, [
                 'label' => 'shipping.label.tracking_num',
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array(
+                'constraints' => [
+                    new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_mtext_len'],
-                    )),
-                ),
-            ))
-            ->add('note', TextareaType::class, array(
+                    ]),
+                ],
+            ])
+            ->add('note', TextareaType::class, [
                 'label' => 'shipping.label.memo',
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array(
+                'constraints' => [
+                    new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_ltext_len'],
-                    )),
-                ),
-            ))
-            ->add('OrderItems', CollectionType::class, array(
+                    ]),
+                ],
+            ])
+            ->add('OrderItems', CollectionType::class, [
                 'entry_type' => OrderItemForShippingRegistrationType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
-            ))
+            ])
             // 明細業のエラー表示用
             ->add('OrderItemsError', TextType::class, [
                 'mapped' => false,
             ])
             ->add('ShippingStatus', ShippingStatusType::class)
-            ->add('notify_email', CheckboxType::class, array(
+            ->add('notify_email', CheckboxType::class, [
                 'label' => 'admin.shipping.index.813',
                 'mapped' => false,
                 'required' => false,
-                'data' => true
-            ))
+                'data' => true,
+            ])
             ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
                 /** @var \Eccube\Entity\Shipping $data */
                 $data = $event->getData();
@@ -243,7 +241,7 @@ class ShippingType extends AbstractType
                 }
 
                 // お届け時間を配送業者で絞り込み
-                $form->add('DeliveryTime', EntityType::class, array(
+                $form->add('DeliveryTime', EntityType::class, [
                     'label' => 'shipping.label.delivery_hour',
                     'class' => 'Eccube\Entity\DeliveryTime',
                     'choice_label' => 'delivery_time',
@@ -257,10 +255,11 @@ class ShippingType extends AbstractType
                                 ->where('dt.Delivery = :Delivery')
                                 ->setParameter('Delivery', $Delivery);
                         }
+
                         return $qb;
                     },
                     'mapped' => false,
-                ));
+                ]);
             })
             ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
                 $data = $event->getData();
@@ -277,7 +276,7 @@ class ShippingType extends AbstractType
 
                 // お届け時間を配送業者で絞り込み
                 $form->remove('DeliveryTime');
-                $form->add('DeliveryTime', EntityType::class, array(
+                $form->add('DeliveryTime', EntityType::class, [
                     'label' => 'shipping.label.delivery_hour',
                     'class' => 'Eccube\Entity\DeliveryTime',
                     'choice_label' => 'delivery_time',
@@ -290,10 +289,11 @@ class ShippingType extends AbstractType
                                 ->where('dt.Delivery = :Delivery')
                                 ->setParameter('Delivery', $Delivery);
                         }
+
                         return $qb;
                     },
                     'mapped' => false,
-                ));
+                ]);
             })
             ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
                 $form = $event->getForm();
@@ -313,9 +313,9 @@ class ShippingType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'Eccube\Entity\Shipping',
-        ));
+        ]);
     }
 
     /**

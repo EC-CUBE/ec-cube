@@ -21,14 +21,13 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Web;
+
 use Eccube\Entity\BaseInfo;
 use Eccube\Service\CartService;
 
 /**
  * Class ShoppingControllerWithNonmemberTest
- * @package Eccube\Tests\Web
  */
 class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTestCase
 {
@@ -42,7 +41,6 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         parent::setUp();
         $this->BaseInfo = $this->container->get(BaseInfo::class);
     }
-
 
     public function testRoutingShoppingLogin()
     {
@@ -119,7 +117,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $Messages = $mailCollector->getMessages();
         $Message = $Messages[0];
 
-        $this->expected = '[' . $this->BaseInfo->getShopName() . '] ご注文ありがとうございます';
+        $this->expected = '['.$this->BaseInfo->getShopName().'] ご注文ありがとうございます';
         $this->actual = $Message->getSubject();
         $this->verify();
     }
@@ -196,21 +194,21 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $crawler = $client->request(
             'POST',
             $this->app->path('shopping_redirect_to'),
-            array(
-                '_shopping_order' => array(
-                    'Shippings' => array(
-                        0 => array(
+            [
+                '_shopping_order' => [
+                    'Shippings' => [
+                        0 => [
                             'Delivery' => 1,
-                            'DeliveryTime' => 1
-                        ),
-                    ),
+                            'DeliveryTime' => 1,
+                        ],
+                    ],
                     'Payment' => 1,
                     'message' => $faker->realText(),
                     '_token' => 'dummy',
                     'mode' => 'shipping_edit_change',
                     'param' => $matches[1],
-                )
-            )
+                ],
+            ]
         );
 
         // お届け先設定画面へリダイレクト.
@@ -253,21 +251,21 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $crawler = $client->request(
             'POST',
             $this->app->path('shopping_redirect_to'),
-            array(
-                '_shopping_order' => array(
-                    'Shippings' => array(
-                        0 => array(
+            [
+                '_shopping_order' => [
+                    'Shippings' => [
+                        0 => [
                             'Delivery' => 1,
-                            'DeliveryTime' => 1
-                        ),
-                    ),
+                            'DeliveryTime' => 1,
+                        ],
+                    ],
                     'Payment' => 1,
                     'message' => $faker->realText(),
                     '_token' => 'dummy',
                     'mode' => 'shipping_edit_change',
                     'param' => $matches[1],
-                )
-            )
+                ],
+            ]
         );
 
         // お届け先設定画面へリダイレクト.
@@ -284,17 +282,17 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
 
         // お届け先設定画面で、入力値を変更しPOST送信
         $formData = $this->createNonmemberFormData();
-        $formData['fax'] = array(
+        $formData['fax'] = [
             'fax01' => 111,
             'fax02' => 111,
             'fax03' => 111,
-        );
+        ];
         unset($formData['email']);
 
         $crawler = $client->request(
             'POST',
             $shipping_edit_url,
-            array('shopping_shipping' => $formData)
+            ['shopping_shipping' => $formData]
         );
 
         $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping')));
@@ -314,10 +312,11 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $faker = $this->getFaker();
         $email = $faker->safeEmail;
         $form = parent::createShippingFormData();
-        $form['email'] = array(
+        $form['email'] = [
             'first' => $email,
-            'second' => $email
-        );
+            'second' => $email,
+        ];
+
         return $form;
     }
 }

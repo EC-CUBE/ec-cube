@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -42,7 +41,7 @@ class Delivery extends \Eccube\Entity\AbstractEntity
      */
     public function __toString()
     {
-        return (string)$this->name;
+        return (string) $this->name;
     }
 
     /**

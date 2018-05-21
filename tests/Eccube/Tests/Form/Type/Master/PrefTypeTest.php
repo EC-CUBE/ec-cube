@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Form\Type\Master;
 
 use Eccube\Form\Type\Master\PrefType;
@@ -61,9 +60,9 @@ class PrefTypeTest extends AbstractTypeTestCase
         $choices = $view->vars['choices'];
 
         // placeholder
-         $this->assertEquals($view->vars['placeholder'], 'form.pref.empty_value');
+        $this->assertEquals($view->vars['placeholder'], 'form.pref.empty_value');
 
-        $data = array();
+        $data = [];
         // attrなど含まれているので
         foreach ($choices as $choice) {
             $data[] = $choice->data;

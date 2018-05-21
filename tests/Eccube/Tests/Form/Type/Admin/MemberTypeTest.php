@@ -21,31 +21,28 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Form\Type\Admin\MemberType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 
-
 class MemberTypeTest extends AbstractTypeTestCase
 {
-
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = array(
+    protected $formData = [
         'name' => 'タカハシ',
         'department' => 'EC-CUBE事業部',
         'login_id' => 'takahashi',
-        'password' => array(
+        'password' => [
             'first' => 'password',
             'second' => 'password',
-        ),
+        ],
         'Authority' => 1,
         'Work' => 1,
-    );
+    ];
 
     public function setUp()
     {
@@ -53,9 +50,9 @@ class MemberTypeTest extends AbstractTypeTestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
-            ->createBuilder(MemberType::class, null, array(
+            ->createBuilder(MemberType::class, null, [
                 'csrf_protection' => false,
-            ))
+            ])
             ->getForm();
     }
 
@@ -76,7 +73,7 @@ class MemberTypeTest extends AbstractTypeTestCase
 
     public function testInvalidName_MaxLengthInvalid()
     {
-        $name = str_repeat('S', $this->eccubeConfig['eccube_stext_len']) . 'S';
+        $name = str_repeat('S', $this->eccubeConfig['eccube_stext_len']).'S';
 
         $this->formData['name'] = $name;
         $this->form->submit($this->formData);
@@ -96,7 +93,7 @@ class MemberTypeTest extends AbstractTypeTestCase
 
     public function testInvalidDepartment_MaxLengthInvalid()
     {
-        $department = str_repeat('S', $this->eccubeConfig['eccube_stext_len']) . 'S';
+        $department = str_repeat('S', $this->eccubeConfig['eccube_stext_len']).'S';
 
         $this->formData['department'] = $department;
         $this->form->submit($this->formData);
@@ -168,7 +165,7 @@ class MemberTypeTest extends AbstractTypeTestCase
     public function testInvalidAuthority_Invalid()
     {
         $Authority = $this->entityManager->getRepository('Eccube\Entity\Master\Authority')
-            ->findOneBy(array(), array('id' => 'DESC'));
+            ->findOneBy([], ['id' => 'DESC']);
         $id = $Authority->getId() + 1;
 
         $this->formData['Authority'] = $id;
@@ -188,7 +185,7 @@ class MemberTypeTest extends AbstractTypeTestCase
     public function testInvalidWork_Invalid()
     {
         $Work = $this->entityManager->getRepository('Eccube\Entity\Master\Work')
-            ->findOneBy(array(), array('id' => 'DESC'));
+            ->findOneBy([], ['id' => 'DESC']);
         $id = $Work->getId() + 1;
 
         $this->formData['Work'] = $id;
