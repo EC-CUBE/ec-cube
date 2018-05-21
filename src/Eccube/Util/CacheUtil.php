@@ -43,6 +43,7 @@ class CacheUtil
 
     /**
      * CacheUtil constructor.
+     *
      * @param KernelInterface $kernel
      */
     public function __construct(KernelInterface $kernel)
@@ -75,7 +76,6 @@ class CacheUtil
         $console->run($input, $output);
 
         return $output->fetch();
-
     }
 
     /**
@@ -87,7 +87,9 @@ class CacheUtil
      * @param Application $app
      * @param boolean $isAll .gitkeep を残してすべてのファイル・ディレクトリを削除する場合 true, 各ディレクトリのみを削除する場合 false
      * @param boolean $isTwig Twigキャッシュファイルのみ削除する場合 true
+     *
      * @return boolean 削除に成功した場合 true
+     *
      * @deprecated CacheUtil::clearCacheを利用すること
      */
     public static function clear($app, $isAll, $isTwig = false)

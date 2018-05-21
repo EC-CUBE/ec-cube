@@ -27,7 +27,6 @@ use Doctrine\ORM\EntityRepository;
 use Eccube\Annotation\FormType;
 use Eccube\Form\Type\MasterType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -40,16 +39,16 @@ class PaymentType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'class' => 'Eccube\Entity\Payment',
             'choice_label' => 'method',
             'placeholder' => '-',
             // fixme 何故かここはDESC
-            'query_builder' => function(EntityRepository $er) {
+            'query_builder' => function (EntityRepository $er) {
                 return $er->createQueryBuilder('m')
                     ->orderBy('m.sort_no', 'DESC');
             },
-        ));
+        ]);
     }
 
     /**

@@ -4,7 +4,6 @@ namespace Eccube\Service\PurchaseFlow;
 
 class ProcessResult
 {
-
     const ERROR = 'ERROR';
     const WARNING = 'WARNING';
     const SUCCESS = 'SUCCESS';

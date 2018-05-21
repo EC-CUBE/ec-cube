@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Web;
 
 use Eccube\Entity\BaseInfo;
@@ -36,33 +35,33 @@ class ContactControllerTest extends AbstractWebTestCase
         $email = $faker->safeEmail;
         $password = $faker->lexify('????????');
 
-        $form = array(
-            'name' => array(
+        $form = [
+            'name' => [
                 'name01' => $faker->lastName,
                 'name02' => $faker->firstName,
-            ),
-            'kana' => array(
-                'kana01' => $faker->lastKanaName ,
+            ],
+            'kana' => [
+                'kana01' => $faker->lastKanaName,
                 'kana02' => $faker->firstKanaName,
-            ),
-            'zip' => array(
+            ],
+            'zip' => [
                 'zip01' => $faker->postcode1(),
                 'zip02' => $faker->postcode2(),
-            ),
-            'address' => array(
+            ],
+            'address' => [
                 'pref' => '5',
                 'addr01' => $faker->city,
                 'addr02' => $faker->streetAddress,
-            ),
-            'tel' => array(
+            ],
+            'tel' => [
                 'tel01' => $tel[0],
                 'tel02' => $tel[1],
                 'tel03' => $tel[2],
-            ),
+            ],
             'email' => $email,
             'contents' => $faker->realText(),
             '_token' => 'dummy',
-        );
+        ];
 
         return $form;
     }
@@ -79,8 +78,8 @@ class ContactControllerTest extends AbstractWebTestCase
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('contact'),
-            array('contact' => $this->createFormData(),
-                  'mode' => 'confirm')
+            ['contact' => $this->createFormData(),
+                  'mode' => 'confirm', ]
         );
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -98,8 +97,8 @@ class ContactControllerTest extends AbstractWebTestCase
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('contact'),
-            array('contact' => $this->createFormData(),
-                  'mode' => 'complete')
+            ['contact' => $this->createFormData(),
+                  'mode' => 'complete', ]
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('contact_complete')));
@@ -113,15 +112,15 @@ class ContactControllerTest extends AbstractWebTestCase
         /** @var \Swift_Message $Message */
         $Message = $collectedMessages[0];
 
-        $this->expected = '[' . $BaseInfo->getShopName() . '] お問い合わせを受け付けました。';
+        $this->expected = '['.$BaseInfo->getShopName().'] お問い合わせを受け付けました。';
         $this->actual = $Message->getSubject();
         $this->verify();
-
     }
 
     /**
      * 必須項目のみのテストケース
-     * @link https://github.com/EC-CUBE/ec-cube/issues/1314
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/1314
      */
     public function testCompleteWithRequired()
     {
@@ -141,8 +140,8 @@ class ContactControllerTest extends AbstractWebTestCase
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('contact'),
-            array('contact' => $formData,
-                  'mode' => 'complete')
+            ['contact' => $formData,
+                  'mode' => 'complete', ]
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('contact_complete')));
 
@@ -155,7 +154,7 @@ class ContactControllerTest extends AbstractWebTestCase
         /** @var \Swift_Message $Message */
         $Message = $collectedMessages[0];
 
-        $this->expected = '[' . $BaseInfo->getShopName() . '] お問い合わせを受け付けました。';
+        $this->expected = '['.$BaseInfo->getShopName().'] お問い合わせを受け付けました。';
         $this->actual = $Message->getSubject();
         $this->verify();
     }
@@ -172,8 +171,8 @@ class ContactControllerTest extends AbstractWebTestCase
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('contact'),
-            array('contact' => $formData,
-                  'mode' => 'complete')
+            ['contact' => $formData,
+                  'mode' => 'complete', ]
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('contact_complete')));
@@ -186,10 +185,9 @@ class ContactControllerTest extends AbstractWebTestCase
         $Message = $collectedMessages[0];
         $this->assertEquals(1, $mailCollector->getMessageCount());
 
-        $this->expected = '[' . $BaseInfo->getShopName() . '] お問い合わせを受け付けました。';
+        $this->expected = '['.$BaseInfo->getShopName().'] お問い合わせを受け付けました。';
         $this->actual = $Message->getSubject();
         $this->verify();
-
     }
 
     public function testRoutingComplete()

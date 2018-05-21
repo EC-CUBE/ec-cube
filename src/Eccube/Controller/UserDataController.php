@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Controller;
 
 use Eccube\Entity\Master\DeviceType;
@@ -69,11 +68,11 @@ class UserDataController extends AbstractController
             ->find(DeviceType::DEVICE_TYPE_PC);
 
         $Page = $this->pageRepository->findOneBy(
-            array(
+            [
                 'url' => $route,
                 'DeviceType' => $DeviceType,
                 'edit_type' => Page::EDIT_TYPE_USER,
-            )
+            ]
         );
 
         if (null === $Page) {
@@ -83,11 +82,11 @@ class UserDataController extends AbstractController
         $file = sprintf('@user_data/%s.twig', $Page->getFileName());
 
         $event = new EventArgs(
-            array(
+            [
                 'DeviceType' => $DeviceType,
                 'Page' => $Page,
                 'file' => $file,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_USER_DATA_INDEX_INITIALIZE, $event);

@@ -23,18 +23,14 @@
 
 namespace Eccube\Doctrine\Query;
 
-
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 
 /**
  * WHERE句を組み立てるクラス。
- *
- * @package Eccube\Doctrine\Query
  */
 class WhereClause
 {
-
     private $expr;
 
     /**
@@ -44,6 +40,7 @@ class WhereClause
 
     /**
      * WhereClause constructor.
+     *
      * @param $expr
      * @param array $params
      */
@@ -62,6 +59,7 @@ class WhereClause
                 return new WhereClause($expr, [$x => $y]);
             }
         }
+
         return new WhereClause($expr);
     }
 
@@ -75,6 +73,7 @@ class WhereClause
      * @param $x
      * @param $y
      * @param $param
+     *
      * @return WhereClause
      */
     public static function eq($x, $y, $param)
@@ -92,6 +91,7 @@ class WhereClause
      * @param $x
      * @param $y
      * @param $param
+     *
      * @return WhereClause
      */
     public static function neq($x, $y, $param)
@@ -106,6 +106,7 @@ class WhereClause
      *      WhereClause::isNull('name')
      *
      * @param $x
+     *
      * @return WhereClause
      */
     public static function isNull($x)
@@ -120,6 +121,7 @@ class WhereClause
      *      WhereClause::isNotNull('name')
      *
      * @param $x
+     *
      * @return WhereClause
      */
     public static function isNotNull($x)
@@ -137,6 +139,7 @@ class WhereClause
      * @param $x
      * @param $y
      * @param $param
+     *
      * @return WhereClause
      */
     public static function like($x, $y, $param)
@@ -154,6 +157,7 @@ class WhereClause
      * @param $x
      * @param $y
      * @param $param
+     *
      * @return WhereClause
      */
     public static function notLike($x, $y, $param)
@@ -171,6 +175,7 @@ class WhereClause
      * @param $x
      * @param $y
      * @param $param
+     *
      * @return WhereClause
      */
     public static function in($x, $y, $param)
@@ -193,6 +198,7 @@ class WhereClause
      * @param $x
      * @param $y
      * @param $param
+     *
      * @return WhereClause
      */
     public static function notIn($x, $y, $param)
@@ -211,6 +217,7 @@ class WhereClause
      * @param $x
      * @param $y
      * @param $params
+     *
      * @return WhereClause
      */
     public static function between($var, $x, $y, $params)
@@ -228,6 +235,7 @@ class WhereClause
      * @param $x
      * @param $y
      * @param $param
+     *
      * @return WhereClause
      */
     public static function gt($x, $y, $param)
@@ -245,6 +253,7 @@ class WhereClause
      * @param $x
      * @param $y
      * @param $param
+     *
      * @return WhereClause
      */
     public static function gte($x, $y, $param)
@@ -262,6 +271,7 @@ class WhereClause
      * @param $x
      * @param $y
      * @param $param
+     *
      * @return WhereClause
      */
     public static function lt($x, $y, $param)
@@ -279,6 +289,7 @@ class WhereClause
      * @param $x
      * @param $y
      * @param $param
+     *
      * @return WhereClause
      */
     public static function lte($x, $y, $param)
@@ -298,7 +309,7 @@ class WhereClause
     {
         $builder->andWhere($this->expr);
         if ($this->params) {
-            foreach ($this->params as $key=>$param) {
+            foreach ($this->params as $key => $param) {
                 $builder->setParameter($key, $param);
             }
         }

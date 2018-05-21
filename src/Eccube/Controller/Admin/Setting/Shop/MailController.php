@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Controller\Admin\Setting\Shop;
 
 use Eccube\Controller\AbstractController;
@@ -39,8 +38,6 @@ use Twig\Environment;
 
 /**
  * Class MailController
- *
- * @package Eccube\Controller\Admin\Setting\Shop
  */
 class MailController extends AbstractController
 {
@@ -70,17 +67,17 @@ class MailController extends AbstractController
             ->createBuilder(MailType::class, $Mail);
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
                 'Mail' => $Mail,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_MAIL_INDEX_INITIALIZE, $event);
 
         $form = $builder->getForm();
         $form['template']->setData($Mail);
-        
+
         // 更新時
         if (!is_null($Mail)) {
             // テンプレートファイルの取得
@@ -89,8 +86,8 @@ class MailController extends AbstractController
                 ->getCode();
 
             $form->get('tpl_data')->setData($source);
-        }   
-        
+        }
+
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
 
@@ -102,32 +99,31 @@ class MailController extends AbstractController
             }
 
             if ($form->isValid()) {
-
                 $this->entityManager->flush();
-                
+
                 // ファイル生成・更新
                 $templatePath = $this->getParameter('eccube_theme_front_dir');
                 $filePath = $templatePath.'/'.$Mail->getFileName();
-                
+
                 $fs = new Filesystem();
                 $mailData = $form->get('tpl_data')->getData();
                 $mailData = StringUtil::convertLineFeed($mailData);
                 $fs->dumpFile($filePath, $mailData);
 
                 $event = new EventArgs(
-                    array(
+                    [
                         'form' => $form,
                         'Mail' => $Mail,
                         'templatePath' => $templatePath,
                         'filePath' => $filePath,
-                    ),
+                    ],
                     $request
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_MAIL_INDEX_COMPLETE, $event);
 
                 $this->addSuccess('admin.shop.mail.save.complete', 'admin');
 
-                return $this->redirectToRoute('admin_setting_shop_mail_edit', array('id' => $Mail->getId()));
+                return $this->redirectToRoute('admin_setting_shop_mail_edit', ['id' => $Mail->getId()]);
             }
         }
 

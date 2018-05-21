@@ -32,7 +32,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 use Symfony\Component\Validator\Constraints as Assert;
 
-
 class ChangePasswordType extends AbstractType
 {
     /**
@@ -42,6 +41,7 @@ class ChangePasswordType extends AbstractType
 
     /**
      * ChangePasswordType constructor.
+     *
      * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
@@ -55,32 +55,32 @@ class ChangePasswordType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('current_password', PasswordType::class, array(
+            ->add('current_password', PasswordType::class, [
                 'label' => 'changepassword.label.current_pass',
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
                     new UserPassword(),
-                ),
-            ))
-            ->add('change_password', RepeatedType::class, array(
-                'first_options'  => array(
+                ],
+            ])
+            ->add('change_password', RepeatedType::class, [
+                'first_options' => [
                     'label' => 'changepassword.label.new_pass',
-                ),
-                'second_options' => array(
+                ],
+                'second_options' => [
                     'label' => 'changepassword.label.varify_pass',
-                ),
-                'constraints' => array(
+                ],
+                'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(array(
+                    new Assert\Length([
                         'min' => $this->eccubeConfig['eccube_password_min_len'],
                         'max' => $this->eccubeConfig['eccube_password_max_len'],
-                    )),
-                    new Assert\Regex(array(
+                    ]),
+                    new Assert\Regex([
                         'pattern' => '/^[[:graph:][:space:]]+$/i',
                         'message' => 'form.type.graph.invalid',
-                    )),
-                ),
-            ))
+                    ]),
+                ],
+            ])
         ;
     }
 

@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type\Master;
 
 use Eccube\Annotation\FormType;
@@ -64,9 +63,9 @@ class ProductListMaxType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'class' => 'Eccube\Entity\Master\ProductListMax',
-        ));
+        ]);
     }
 
     /**

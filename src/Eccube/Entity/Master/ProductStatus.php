@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Entity\Master;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -38,21 +37,23 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ProductStatus extends \Eccube\Entity\Master\AbstractMasterEntity
 {
-
     /**
      * 公開
+     *
      * @var integer
      */
     const DISPLAY_SHOW = 1;
 
     /**
      * 非公開
+     *
      * @var integer
      */
     const DISPLAY_HIDE = 2;
 
     /**
      * 廃止
+     *
      * @var integer
      */
     const DISPLAY_ABOLISHED = 3;

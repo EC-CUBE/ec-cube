@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Security\Voter;
 
 use Eccube\Common\EccubeConfig;
@@ -77,7 +76,7 @@ class AuthorityVoter implements VoterInterface
         $Member = $token->getUser();
         if ($Member instanceof Member) {
             // 管理者のロールをチェック
-            $AuthorityRoles = $this->authorityRoleRepository->findBy(array('Authority' => $Member->getAuthority()));
+            $AuthorityRoles = $this->authorityRoleRepository->findBy(['Authority' => $Member->getAuthority()]);
             $adminRoute = $this->eccubeConfig->get('eccube_admin_route');
 
             foreach ($AuthorityRoles as $AuthorityRole) {

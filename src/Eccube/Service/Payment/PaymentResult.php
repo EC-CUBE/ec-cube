@@ -1,4 +1,5 @@
 <?php
+
 namespace Eccube\Service\Payment;
 
 class PaymentResult

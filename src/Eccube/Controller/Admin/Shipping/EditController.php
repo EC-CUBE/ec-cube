@@ -97,7 +97,6 @@ class EditController extends AbstractController
         $this->serializer = $serializer;
     }
 
-
     /**
      * 出荷登録/編集画面.
      *
@@ -150,7 +149,7 @@ class EditController extends AbstractController
                 $taxtotal += $tax * $OrderItem->getQuantity();
             }
 
-            log_info('出荷登録開始', array($TargetShipping->getId()));
+            log_info('出荷登録開始', [$TargetShipping->getId()]);
             // TODO 在庫の有無や販売制限数のチェックなども行う必要があるため、完了処理もcaluclatorのように抽象化できないか検討する.
             // TODO 後続にある会員情報の更新のように、完了処理もcaluclatorのように抽象化できないか検討する.
             // 画面上で削除された明細をremove
@@ -201,18 +200,17 @@ class EditController extends AbstractController
 
                 $this->addSuccess('admin.shipping.edit.save.complete', 'admin');
                 $this->addInfo('admin.shipping.edit.save.info', 'admin');
-                log_info('出荷登録完了', array($TargetShipping->getId()));
+                log_info('出荷登録完了', [$TargetShipping->getId()]);
 
-                return $this->redirectToRoute('admin_shipping_edit', array('id' => $TargetShipping->getId()));
+                return $this->redirectToRoute('admin_shipping_edit', ['id' => $TargetShipping->getId()]);
             } catch (\Exception $e) {
                 log_error('出荷登録エラー', [$TargetShipping->getId(), $e]);
                 $this->addError('admin.flash.register_failed', 'admin');
             }
-
         }
 
         // 配送業者のお届け時間
-        $times = array();
+        $times = [];
         $deliveries = $this->deliveryRepository->findAll();
         foreach ($deliveries as $Delivery) {
             $deliveryTiems = $Delivery->getDeliveryTimes();
@@ -239,7 +237,7 @@ class EditController extends AbstractController
         }
 
         // FIXME: should use consistent param for pageno ? Other controller use page_no, but here use pageno, then I change from pageno to page_no
-        $page_no = (int)$request->get('page_no', 1);
+        $page_no = (int) $request->get('page_no', 1);
         $page_count = $this->eccubeConfig['eccube_default_page_count'];
 
         // TODO OrderItemRepository に移動
@@ -252,7 +250,7 @@ class EditController extends AbstractController
             $qb,
             $page_no,
             $page_count,
-            array('wrap-queries' => true)
+            ['wrap-queries' => true]
         );
 
         return [
@@ -270,7 +268,7 @@ class EditController extends AbstractController
             throw new BadRequestHttpException();
         }
 
-        $id = (int)$request->get('order-item-id');
+        $id = (int) $request->get('order-item-id');
         /** @var OrderItem $OrderItem */
         $OrderItem = $this->orderItemRepository->find($id);
         if (null === $OrderItem) {
@@ -282,5 +280,4 @@ class EditController extends AbstractController
             'OrderItem' => $OrderItem,
         ];
     }
-
 }

@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -37,7 +36,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class PluginEventHandler extends AbstractEntity
 {
-
     const EVENT_PRIORITY_LATEST = -500; // ハンドラテーブルに登録されていない場合の優先度
     const EVENT_PRIORITY_DISABLED = 0; // ハンドラを無効にする
 
@@ -121,7 +119,6 @@ class PluginEventHandler extends AbstractEntity
      * })
      */
     private $Plugin;
-
 
     /**
      * Get id.

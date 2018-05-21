@@ -21,21 +21,19 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Form\Type\Admin\CategoryType;
 
 class CategoryTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
-
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = array(
-        'name' => 'テスト家具'
-    );
+    protected $formData = [
+        'name' => 'テスト家具',
+    ];
 
     public function setUp()
     {
@@ -43,9 +41,9 @@ class CategoryTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
-            ->createBuilder(CategoryType::class, null, array(
+            ->createBuilder(CategoryType::class, null, [
                 'csrf_protection' => false,
-            ))
+            ])
             ->getForm();
     }
 
@@ -73,7 +71,7 @@ class CategoryTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidName_MaxLengthInvalid()
     {
-        $str = str_repeat('S', $this->eccubeConfig['eccube_stext_len']) . 'S';
+        $str = str_repeat('S', $this->eccubeConfig['eccube_stext_len']).'S';
 
         $this->formData['name'] = $str;
         $this->form->submit($this->formData);
@@ -90,5 +88,4 @@ class CategoryTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
         $this->assertTrue($this->form->isValid());
     }
-
 }

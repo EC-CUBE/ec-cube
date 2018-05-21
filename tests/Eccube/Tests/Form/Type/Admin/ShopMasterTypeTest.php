@@ -94,7 +94,7 @@ class ShopMasterTypeTest extends AbstractTypeTestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
-            ->createBuilder(ShopMasterType::class , null, ['csrf_protection' => false])
+            ->createBuilder(ShopMasterType::class, null, ['csrf_protection' => false])
             ->getForm();
     }
 

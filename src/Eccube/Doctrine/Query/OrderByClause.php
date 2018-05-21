@@ -23,24 +23,21 @@
 
 namespace Eccube\Doctrine\Query;
 
-
 /**
  * ORDER BY句を組み立てるクラス。
- *
- * @package Eccube\Doctrine\Query
  */
 class OrderByClause
 {
-
     private $sort;
     private $order;
 
     /**
      * OrderByClause constructor.
+     *
      * @param $sort
      * @param string $order
      */
-    function __construct($sort, $order = 'asc')
+    public function __construct($sort, $order = 'asc')
     {
         $this->sort = $sort;
         $this->order = $order;

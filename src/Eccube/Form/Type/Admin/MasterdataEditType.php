@@ -36,14 +36,13 @@ class MasterdataEditType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('data', CollectionType::class, array(
+            ->add('data', CollectionType::class, [
                 'entry_type' => MasterdataDataType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
-            ))
+            ])
             ->add('masterdata_name', HiddenType::class);
-        ;
     }
 
     /**

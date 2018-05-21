@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type\Admin;
 
 use Eccube\Form\Type\Master\MailTemplateType;
@@ -30,8 +29,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Eccube\Annotation\Inject;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Eccube\Form\Validator\TwigLint;
 
 class MailType extends AbstractType
@@ -42,35 +39,43 @@ class MailType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('template', MailTemplateType::class, array(
+            ->add('template', MailTemplateType::class, [
                 'label' => 'mailtype.label.tmpl',
                 'required' => true,
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                ),
+                ],
                 'mapped' => false,
-            ))
-            ->add('mail_subject', TextType::class, array(
+            ])
+            ->add('mail_subject', TextType::class, [
                 'label' => 'mailtype.label.titles',
                 'required' => true,
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                ),
-            ))
-            ->add('mail_header', TextareaType::class, array(
+                ],
+            ])
+            ->add('mail_header', TextareaType::class, [
                 'label' => 'mailtype.label.headers',
-            ))
-            ->add('mail_footer', TextareaType::class, array(
+                'required' => true,
+                'constraints' => [
+                    new Assert\NotBlank(),
+                ],
+            ])
+            ->add('mail_footer', TextareaType::class, [
                 'label' => 'mailtype.label.footers',
-            ))
-            ->add('tpl_data', TextareaType::class, array(
+                'required' => true,
+                'constraints' => [
+                    new Assert\NotBlank(),
+                ],
+            ])
+            ->add('tpl_data', TextareaType::class, [
                 'label' => false,
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [
                     new TwigLint(),
-                ]
-            ))
+                ],
+            ])
         ;
     }
 

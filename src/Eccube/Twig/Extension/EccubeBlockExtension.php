@@ -8,7 +8,6 @@
 
 namespace Eccube\Twig\Extension;
 
-
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;

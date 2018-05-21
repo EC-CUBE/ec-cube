@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Controller\Admin\Product;
 
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
@@ -170,9 +169,9 @@ class ProductController extends AbstractController
             ->createBuilder(SearchProductType::class);
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_INDEX_INITIALIZE, $event);
@@ -189,7 +188,7 @@ class ProductController extends AbstractController
         $page_count = $this->session->get('eccube.admin.order.search.page_count',
             $this->eccubeConfig->get('eccube_default_page_count'));
 
-        $page_count_param = (int)$request->get('page_count');
+        $page_count_param = (int) $request->get('page_count');
         $pageMaxis = $this->pageMaxRepository->findAll();
 
         if ($page_count_param) {
@@ -203,7 +202,6 @@ class ProductController extends AbstractController
         }
 
         if ('POST' === $request->getMethod()) {
-
             $searchForm->handleRequest($request);
 
             if ($searchForm->isValid()) {
@@ -230,12 +228,12 @@ class ProductController extends AbstractController
             }
         } else {
             if (null !== $page_no || $request->get('resume')) {
-                /**
+                /*
                  * ページ送りの場合または、他画面から戻ってきた場合は, セッションから検索条件を復旧する.
                  */
                 if ($page_no) {
                     // ページ送りで遷移した場合.
-                    $this->session->set('eccube.admin.product.search.page_no', (int)$page_no);
+                    $this->session->set('eccube.admin.product.search.page_no', (int) $page_no);
                 } else {
                     // 他画面から遷移した場合.
                     $page_no = $this->session->get('eccube.admin.product.search.page_no', 1);
@@ -283,15 +281,14 @@ class ProductController extends AbstractController
         ];
     }
 
-
     /**
      * @Method("GET")
      * @Route("/%eccube_admin_route%/product/classes/{id}/load", name="admin_product_classes_load", requirements={"id" = "\d+"})
      * @Template("@admin/Product/product_class_popup.twig")
      * @ParamConverter("Product")
      */
-    public function loadProductClasses(Request $request, Product $Product){
-
+    public function loadProductClasses(Request $request, Product $Product)
+    {
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException();
         }
@@ -312,7 +309,7 @@ class ProductController extends AbstractController
         }
 
         return [
-            'data' => $data
+            'data' => $data,
         ];
     }
 
@@ -339,7 +336,7 @@ class ProductController extends AbstractController
                     }
 
                     $extension = $image->getClientOriginalExtension();
-                    $filename = date('mdHis') . uniqid('_') . '.' . $extension;
+                    $filename = date('mdHis').uniqid('_').'.'.$extension;
                     $image->move($this->eccubeConfig['eccube_temp_image_dir'], $filename);
                     $files[] = $filename;
                 }
@@ -510,7 +507,7 @@ class ProductController extends AbstractController
                 $Categories = $form->get('Category')->getData();
                 $categoriesIdList = [];
                 foreach ($Categories as $Category) {
-                    foreach($Category->getPath() as $ParentCategory) {
+                    foreach ($Category->getPath() as $ParentCategory) {
                         if (!isset($categoriesIdList[$ParentCategory->getId()])) {
                             $ProductCategory = $this->createProductCategory($Product, $ParentCategory, $count);
                             $this->entityManager->persist($ProductCategory);
@@ -520,7 +517,7 @@ class ProductController extends AbstractController
                             $categoriesIdList[$ParentCategory->getId()] = true;
                         }
                     }
-                    if (!isset($categoriesIdList[$Category->getId()])){
+                    if (!isset($categoriesIdList[$Category->getId()])) {
                         $ProductCategory = $this->createProductCategory($Product, $Category, $count);
                         $this->entityManager->persist($ProductCategory);
                         $count++;
@@ -542,7 +539,7 @@ class ProductController extends AbstractController
                     $this->entityManager->persist($ProductImage);
 
                     // 移動
-                    $file = new File($this->eccubeConfig['eccube_temp_image_dir'] . '/' . $add_image);
+                    $file = new File($this->eccubeConfig['eccube_temp_image_dir'].'/'.$add_image);
                     $file->move($this->eccubeConfig['eccube_save_image_dir']);
                 }
 
@@ -661,7 +658,7 @@ class ProductController extends AbstractController
             'has_class' => $has_class,
             'id' => $id,
             'TopCategories' => $TopCategories,
-            'ChoicedCategoryIds' => $ChoicedCategoryIds
+            'ChoicedCategoryIds' => $ChoicedCategoryIds,
         ];
     }
 
@@ -684,10 +681,12 @@ class ProductController extends AbstractController
             if (!$Product) {
                 if ($request->isXmlHttpRequest()) {
                     $message = trans('admin.delete.warning');
+
                     return new JsonResponse(['success' => $success, 'message' => $message]);
                 } else {
                     $this->deleteMessage();
-                    $rUrl = $this->generateUrl('admin_product_page', ['page_no' => $page_no]) . '?resume=' . Constant::ENABLED;
+                    $rUrl = $this->generateUrl('admin_product_page', ['page_no' => $page_no]).'?resume='.Constant::ENABLED;
+
                     return $this->redirect($rUrl);
                 }
             }
@@ -717,7 +716,7 @@ class ProductController extends AbstractController
                     foreach ($deleteImages as $deleteImage) {
                         try {
                             $fs = new Filesystem();
-                            $fs->remove($this->eccubeConfig['eccube_save_image_dir'] . '/' . $deleteImage);
+                            $fs->remove($this->eccubeConfig['eccube_save_image_dir'].'/'.$deleteImage);
                         } catch (\Exception $e) {
                             // エラーが発生しても無視する
                         }
@@ -727,7 +726,6 @@ class ProductController extends AbstractController
 
                     $success = true;
                     $message = trans('admin.delete.complete');
-
                 } catch (ForeignKeyConstraintViolationException $e) {
                     log_info('商品削除エラー', [$id]);
                     $message = trans('admin.delete.failed.foreign_key', ['%name%' => $Product->getName()]);
@@ -742,11 +740,8 @@ class ProductController extends AbstractController
         }
 
         if ($request->isXmlHttpRequest()) {
-
             return new JsonResponse(['success' => $success, 'message' => $message]);
-
         } else {
-
             if ($success) {
                 $this->addSuccess($message, 'admin');
             } else {
@@ -754,6 +749,7 @@ class ProductController extends AbstractController
             }
 
             $rUrl = $this->generateUrl('admin_product_page', ['page_no' => $page_no]).'?resume='.Constant::ENABLED;
+
             return $this->redirect($rUrl);
         }
     }
@@ -810,7 +806,6 @@ class ProductController extends AbstractController
                 }
                 $Images = $CopyProduct->getProductImage();
                 foreach ($Images as $Image) {
-
                     // 画像ファイルを新規作成
                     $extension = pathinfo($Image->getFileName(), PATHINFO_EXTENSION);
                     $filename = date('mdHis').uniqid('_').'.'.$extension;
@@ -898,7 +893,6 @@ class ProductController extends AbstractController
 
         $response = new StreamedResponse();
         $response->setCallback(function () use ($request) {
-
             // CSV種別を元に初期化.
             $this->csvExportService->initCsvType(CsvType::CSV_TYPE_PRODUCT);
 
@@ -1042,7 +1036,7 @@ class ProductController extends AbstractController
                 $this->entityManager->flush();
                 $msg = $this->translator->trans('admin.product.index.bulk_product_status_success_count', [
                     '%count%' => $count,
-                    '%status%' => $ProductStatus->getName()
+                    '%status%' => $ProductStatus->getName(),
                 ]);
                 $this->addSuccess($msg, 'admin');
             }

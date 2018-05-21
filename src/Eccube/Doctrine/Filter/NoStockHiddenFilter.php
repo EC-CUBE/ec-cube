@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Doctrine\Filter;
 
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -32,9 +31,9 @@ class NoStockHiddenFilter extends SQLFilter
     public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias)
     {
         if ($targetEntity->reflClass->getName() === 'Eccube\Entity\ProductClass') {
-            return $targetTableAlias . '.stock >= 1 OR ' . $targetTableAlias . '.stock_unlimited = true';
+            return $targetTableAlias.'.stock >= 1 OR '.$targetTableAlias.'.stock_unlimited = true';
         } else {
-            return "";
+            return '';
         }
     }
 }

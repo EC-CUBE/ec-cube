@@ -21,14 +21,12 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type\Install;
 
 use Eccube\Common\EccubeConfig;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -63,107 +61,107 @@ class Step3Type extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('shop_name', TextType::class, array(
+            ->add('shop_name', TextType::class, [
                 'label' => trans('step3.label.store_name'),
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(array(
+                    new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_stext_len'],
-                    )),
-                ),
-            ))
-            ->add('email', EmailType::class, array(
+                    ]),
+                ],
+            ])
+            ->add('email', EmailType::class, [
                 'label' => trans('step3.label.email'),
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Email(array('strict' => true)),
-                ),
-            ))
-            ->add('login_id', TextType::class, array(
+                    new Assert\Email(['strict' => true]),
+                ],
+            ])
+            ->add('login_id', TextType::class, [
                 'label' => trans('step3.label.login_id', [
                     '%min_len%' => $this->eccubeConfig['eccube_id_min_len'],
-                    '%max_len%' => $this->eccubeConfig['eccube_id_max_len']
+                    '%max_len%' => $this->eccubeConfig['eccube_id_max_len'],
                 ]),
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(array(
+                    new Assert\Length([
                         'min' => $this->eccubeConfig['eccube_id_min_len'],
                         'max' => $this->eccubeConfig['eccube_id_max_len'],
-                    )),
-                    new Assert\Regex(array(
+                    ]),
+                    new Assert\Regex([
                         'pattern' => '/^[[:graph:][:space:]]+$/i',
                         'message' => 'form.type.graph.invalid',
-                    )),
-                ),
-            ))
-            ->add('login_pass', PasswordType::class, array(
+                    ]),
+                ],
+            ])
+            ->add('login_pass', PasswordType::class, [
                 'label' => trans('step3.label.login_pass', [
                     '%min_len%' => $this->eccubeConfig['eccube_password_min_len'],
-                    '%max_len%' => $this->eccubeConfig['eccube_password_max_len']
+                    '%max_len%' => $this->eccubeConfig['eccube_password_max_len'],
                 ]),
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(array(
+                    new Assert\Length([
                         'min' => $this->eccubeConfig['eccube_password_min_len'],
                         'max' => $this->eccubeConfig['eccube_password_max_len'],
-                    )),
-                    new Assert\Regex(array(
+                    ]),
+                    new Assert\Regex([
                         'pattern' => '/^[[:graph:][:space:]]+$/i',
                         'message' => 'form.type.graph.invalid',
-                    )),
-                ),
-            ))
-            ->add('admin_dir', TextType::class, array(
+                    ]),
+                ],
+            ])
+            ->add('admin_dir', TextType::class, [
                 'label' => trans('step3.label.admin_dir', [
                     '%min_len%' => $this->eccubeConfig['eccube_id_min_len'],
-                    '%max_len%' => $this->eccubeConfig['eccube_id_max_len']
+                    '%max_len%' => $this->eccubeConfig['eccube_id_max_len'],
                 ]),
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(array(
+                    new Assert\Length([
                         'min' => $this->eccubeConfig['eccube_id_min_len'],
                         'max' => $this->eccubeConfig['eccube_id_max_len'],
-                    )),
-                    new Assert\Regex(array('pattern' => '/\A\w+\z/')),
-                ),
-            ))
-            ->add('admin_force_ssl', CheckboxType::class, array(
+                    ]),
+                    new Assert\Regex(['pattern' => '/\A\w+\z/']),
+                ],
+            ])
+            ->add('admin_force_ssl', CheckboxType::class, [
                 'label' => trans('step3.label.ssl'),
                 'required' => false,
-            ))
-            ->add('admin_allow_hosts', TextareaType::class, array(
+            ])
+            ->add('admin_allow_hosts', TextareaType::class, [
                 'label' => trans('step3.label.ips'),
                 'required' => false,
-            ))
-            ->add('smtp_host', TextType::class, array(
+            ])
+            ->add('smtp_host', TextType::class, [
                 'label' => trans('step3.label.smtp_host'),
                 'required' => false,
-            ))
-            ->add('smtp_port', TextType::class, array(
+            ])
+            ->add('smtp_port', TextType::class, [
                 'label' => trans('step3.label.smtp_port'),
                 'required' => false,
-            ))
-            ->add('smtp_username', TextType::class, array(
+            ])
+            ->add('smtp_username', TextType::class, [
                 'label' => trans('step3.label.smtp_user'),
                 'required' => false,
-            ))
-            ->add('smtp_password', PasswordType::class, array(
+            ])
+            ->add('smtp_password', PasswordType::class, [
                 'label' => trans('step3.label.smtp_pass'),
                 'required' => false,
-            ))
+            ])
             ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
                 $form = $event->getForm();
                 $data = $form->getData();
 
                 $ips = preg_split("/\R/", $data['admin_allow_hosts'], null, PREG_SPLIT_NO_EMPTY);
 
-                foreach($ips as $ip) {
-                    $errors = $this->validator->validate($ip, array(
+                foreach ($ips as $ip) {
+                    $errors = $this->validator->validate($ip, [
                             new Assert\Ip(),
-                        )
+                        ]
                     );
                     if ($errors->count() != 0) {
-                        $form['admin_allow_hosts']->addError(new FormError($ip . trans('setp3.text.error.ips')));
+                        $form['admin_allow_hosts']->addError(new FormError($ip.trans('setp3.text.error.ips')));
                     }
                 }
             })

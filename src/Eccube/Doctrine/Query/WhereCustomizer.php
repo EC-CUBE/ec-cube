@@ -1,20 +1,17 @@
 <?php
 
-
 namespace Eccube\Doctrine\Query;
-
 
 use Doctrine\ORM\QueryBuilder;
 
 abstract class WhereCustomizer implements QueryCustomizer
 {
-
     /**
      * @param QueryBuilder $builder
      * @param array $params
      * @param string $queryKey
      */
-    public final function customize(QueryBuilder $builder, $params, $queryKey)
+    final public function customize(QueryBuilder $builder, $params, $queryKey)
     {
         foreach ($this->createStatements($params, $queryKey) as $whereClause) {
             $whereClause->build($builder);
@@ -24,7 +21,8 @@ abstract class WhereCustomizer implements QueryCustomizer
     /**
      * @param array $params
      * @param $queryKey
+     *
      * @return WhereClause[]
      */
-    protected abstract function createStatements($params, $queryKey);
+    abstract protected function createStatements($params, $queryKey);
 }

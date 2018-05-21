@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Form\Type\Admin\OrderType;
@@ -33,42 +32,42 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
     protected $form;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = array(
-        'name' => array(
+    protected $formData = [
+        'name' => [
             'name01' => 'たかはし',
             'name02' => 'しんいち',
-        ),
-        'kana'=> array(
+        ],
+        'kana' => [
             'kana01' => 'タカハシ',
             'kana02' => 'シンイチ',
-        ),
+        ],
         'company_name' => '株式会社テストショップ',
-        'zip' => array(
+        'zip' => [
             'zip01' => '530',
             'zip02' => '0001',
-        ),
-        'address' => array(
+        ],
+        'address' => [
             'pref' => '5',
             'addr01' => '北区',
             'addr02' => '梅田',
-        ),
-        'tel' => array(
+        ],
+        'tel' => [
             'tel01' => '012',
             'tel02' => '345',
             'tel03' => '6789',
-        ),
-        'fax' => array(
+        ],
+        'fax' => [
             'fax01' => '112',
             'fax02' => '345',
             'fax03' => '6789',
-        ),
+        ],
         'email' => 'default@example.com',
         'discount' => '1',
         'delivery_fee_total' => '1',
         'charge' => '1',
         'Payment' => '1', // dtb_payment?
-        'Shippings' => array(),
-    );
+        'Shippings' => [],
+    ];
 
     public function setUp()
     {
@@ -77,9 +76,9 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         // CSRF tokenを無効にしてFormを作成
         // 会員管理会員登録・編集
         $this->form = $this->formFactory
-            ->createBuilder(OrderType::class, null, array(
+            ->createBuilder(OrderType::class, null, [
                 'csrf_protection' => false,
-            ))
+            ])
             ->getForm();
         $this->container->get('request_stack')->push(new Request());
     }

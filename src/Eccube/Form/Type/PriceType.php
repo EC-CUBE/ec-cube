@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type;
 
 use Eccube\Common\EccubeConfig;
@@ -77,7 +76,7 @@ class PriceType extends AbstractType
             if (isset($options['accept_minus']) && true === $options['accept_minus']) {
                 $constraints[] = new Range([
                     'min' => $min,
-                    'max' => $max
+                    'max' => $max,
                 ]);
             } else {
                 $constraints[] = new Range(['min' => 0, 'max' => $max]);

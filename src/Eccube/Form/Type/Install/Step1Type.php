@@ -21,12 +21,11 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type\Install;
 
-use \Symfony\Component\Form\AbstractType;
-use \Symfony\Component\Form\Extension\Core\Type\CheckboxType;;
-use \Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\FormBuilderInterface;
 
 class Step1Type extends AbstractType
 {
@@ -36,12 +35,11 @@ class Step1Type extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('agree', CheckboxType::class, array(
+            ->add('agree', CheckboxType::class, [
                 'label' => trans('step1.label.confirm'),
                 'required' => false,
-            ))
+            ])
         ;
-
     }
 
     /**

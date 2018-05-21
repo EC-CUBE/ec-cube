@@ -8,7 +8,6 @@ use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\Master\PrefRepository;
 use Eccube\Tests\EccubeTestCase;
 
-
 /**
  * DeliveryFeeRepository test cases.
  *
@@ -52,12 +51,12 @@ class DeliveryFeeRepositoryTest extends EccubeTestCase
         $this->assertNotNull($Delivery);
 
         $DeliveryFee = $this->deliveryFeeRepo->findOrCreate(
-            array('Delivery' => $Delivery, 'Pref' => $Pref)
+            ['Delivery' => $Delivery, 'Pref' => $Pref]
         );
 
         $this->expected = 1000; // 配送料の初期設定
         $this->actual = $DeliveryFee->getFee();
-        $this->verify('配送料は'. $this->expected. 'ではありません');
+        $this->verify('配送料は'.$this->expected.'ではありません');
     }
 
     public function testFindOrCreateWithCreate()
@@ -73,12 +72,12 @@ class DeliveryFeeRepositoryTest extends EccubeTestCase
         $this->entityManager->flush();
 
         $DeliveryFee = $this->deliveryFeeRepo->findOrCreate(
-            array('Delivery' => $Delivery, 'Pref' => $Pref)
+            ['Delivery' => $Delivery, 'Pref' => $Pref]
         );
 
         $this->expected = 0;
         $this->actual = $DeliveryFee->getFee();
 
-        $this->verify('配送料は'. $this->expected.'ではありません');
+        $this->verify('配送料は'.$this->expected.'ではありません');
     }
 }

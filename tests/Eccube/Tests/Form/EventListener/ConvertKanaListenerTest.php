@@ -22,14 +22,14 @@ class ConvertKanaListenerTest extends TestCase
 
     public function testConvertKana_array()
     {
-        $data = array('１２３４５');
+        $data = ['１２３４５'];
         $form = $this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')->getMock();
         $event = new FormEvent($form, $data);
 
         $filter = new ConvertKanaListener();
         $filter->onPreSubmit($event);
 
-        $this->assertEquals(array('12345'), $event->getData());
+        $this->assertEquals(['12345'], $event->getData());
     }
 
     public function testConvertKana_HiraganaToKana()

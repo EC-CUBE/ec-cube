@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Controller;
 
 use Eccube\Entity\BaseInfo;
@@ -85,6 +84,7 @@ class EntryController extends AbstractController
 
     /**
      * EntryController constructor.
+     *
      * @param CustomerStatusRepository $customerStatusRepository
      * @param MailService $mailService
      * @param BaseInfo $BaseInfo
@@ -132,10 +132,10 @@ class EntryController extends AbstractController
         $builder = $this->formFactory->createBuilder(EntryType::class, $Customer);
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
                 'Customer' => $Customer,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_ENTRY_INDEX_INITIALIZE, $event);
@@ -153,9 +153,9 @@ class EntryController extends AbstractController
 
                     return $this->render(
                         'Entry/confirm.twig',
-                        array(
+                        [
                             'form' => $form->createView(),
-                        )
+                        ]
                     );
 
                 case 'complete':
@@ -183,16 +183,16 @@ class EntryController extends AbstractController
                     log_info('会員登録完了');
 
                     $event = new EventArgs(
-                        array(
+                        [
                             'form' => $form,
                             'Customer' => $Customer,
                             'CustomerAddress' => $CustomerAddress,
-                        ),
+                        ],
                         $request
                     );
                     $this->eventDispatcher->dispatch(EccubeEvents::FRONT_ENTRY_INDEX_COMPLETE, $event);
 
-                    $activateUrl = $this->generateUrl('entry_activate', array('secret_key' => $Customer->getSecretKey()));
+                    $activateUrl = $this->generateUrl('entry_activate', ['secret_key' => $Customer->getSecretKey()]);
 
                     $activateFlg = $this->BaseInfo->isOptionCustomerActivate();
 
@@ -208,7 +208,7 @@ class EntryController extends AbstractController
                         log_info('仮会員登録完了画面へリダイレクト');
 
                         return $this->redirectToRoute('entry_complete');
-                        // 仮会員設定が無効な場合は認証URLへ遷移させ、会員登録を完了させる.
+                    // 仮会員設定が無効な場合は認証URLへ遷移させ、会員登録を完了させる.
                     } else {
                         log_info('本会員登録画面へリダイレクト');
 
@@ -243,14 +243,14 @@ class EntryController extends AbstractController
     {
         $errors = $this->recursiveValidator->validate(
             $secret_key,
-            array(
+            [
                 new Assert\NotBlank(),
                 new Assert\Regex(
-                    array(
+                    [
                         'pattern' => '/^[a-zA-Z0-9]+$/',
-                    )
+                    ]
                 ),
-            )
+            ]
         );
 
         if ($request->getMethod() === 'GET' && count($errors) === 0) {
@@ -268,9 +268,9 @@ class EntryController extends AbstractController
             log_info('本会員登録完了');
 
             $event = new EventArgs(
-                array(
+                [
                     'Customer' => $Customer,
-                ),
+                ],
                 $request
             );
             $this->eventDispatcher->dispatch(EccubeEvents::FRONT_ENTRY_ACTIVATE_COMPLETE, $event);
@@ -279,10 +279,10 @@ class EntryController extends AbstractController
             $this->mailService->sendCustomerCompleteMail($Customer);
 
             // 本会員登録してログイン状態にする
-            $token = new UsernamePasswordToken($Customer, null, 'customer', array('ROLE_USER'));
+            $token = new UsernamePasswordToken($Customer, null, 'customer', ['ROLE_USER']);
             $this->tokenStorage->setToken($token);
 
-            log_info('ログイン済に変更', array($this->getUser()->getId()));
+            log_info('ログイン済に変更', [$this->getUser()->getId()]);
 
             return [];
         } else {
