@@ -1,11 +1,9 @@
 <?php
 
-$year = \date('Y');
-
 $header = <<<EOL
 This file is part of EC-CUBE
 
-Copyright(c) 2000-$year LOCKON CO.,LTD. All Rights Reserved.
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
 
 http://www.lockon.co.jp/
 
