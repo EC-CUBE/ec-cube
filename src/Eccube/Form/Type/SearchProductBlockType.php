@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type;
 
 use Eccube\Repository\CategoryRepository;
@@ -51,21 +50,21 @@ class SearchProductBlockType extends AbstractType
         $Categories = $this->categoryRepository
             ->getList(null, true);
 
-        $builder->add('category_id', EntityType::class, array(
+        $builder->add('category_id', EntityType::class, [
             'class' => 'Eccube\Entity\Category',
             'choice_label' => 'NameWithLevel',
             'choices' => $Categories,
             'placeholder' => 'searchproductblock.placeholder.all_products',
             'required' => false,
             'label' => 'searchproductblock.label.select_categories',
-        ));
-        $builder->add('name', SearchType::class, array(
+        ]);
+        $builder->add('name', SearchType::class, [
             'required' => false,
             'label' => 'searchproductblock.label.product_name',
-            'attr' => array(
+            'attr' => [
                 'maxlength' => 50,
-            ),
-        ));
+            ],
+        ]);
     }
 
     /**
@@ -73,10 +72,10 @@ class SearchProductBlockType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'csrf_protection' => false,
             'allow_extra_fields' => true,
-        ));
+        ]);
     }
 
     /**

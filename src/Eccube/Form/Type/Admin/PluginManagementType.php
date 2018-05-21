@@ -21,28 +21,23 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type\Admin;
 
 use Eccube\Annotation\FormType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
-
 /**
  * @FormType
  */
 class PluginManagementType extends AbstractType
 {
-
     public function __construct()
     {
-
     }
 
     /**
@@ -50,28 +45,27 @@ class PluginManagementType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         $plugin_id = $options['plugin_id'];
 
         $builder
-            ->add('plugin_id', HiddenType::class, array(
+            ->add('plugin_id', HiddenType::class, [
                 'data' => $plugin_id,
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                ),
-            ))
-            ->add('plugin_archive', FileType::class, array(
+                ],
+            ])
+            ->add('plugin_archive', FileType::class, [
                 'label' => false,
                 'mapped' => false,
                 'required' => false,
-                'constraints' => array(
-                    new Assert\NotBlank(array('message' => 'ファイルを選択してください。')),
-                    new Assert\File(array(
-                        'mimeTypes' => array('application/zip', 'application/x-tar', 'application/x-gzip'),
+                'constraints' => [
+                    new Assert\NotBlank(['message' => 'ファイルを選択してください。']),
+                    new Assert\File([
+                        'mimeTypes' => ['application/zip', 'application/x-tar', 'application/x-gzip'],
                         'mimeTypesMessage' => 'zipファイル、tarファイル、tar.gzファイルのいずれかをアップロードしてください。',
-                    )),
-                ),
-            ));
+                    ]),
+                ],
+            ]);
     }
 
     /**
@@ -87,7 +81,6 @@ class PluginManagementType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired(array('plugin_id'));
+        $resolver->setRequired(['plugin_id']);
     }
-
 }

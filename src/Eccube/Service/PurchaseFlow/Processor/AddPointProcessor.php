@@ -57,7 +57,6 @@ class AddPointProcessor implements ItemHolderProcessor
         $this->BaseInfo = $BaseInfo;
     }
 
-
     /**
      * @param ItemHolderInterface $itemHolder
      * @param PurchaseContext     $context
@@ -75,6 +74,7 @@ class AddPointProcessor implements ItemHolderProcessor
             $addPoint += $this->priceToAddPoint($rate, $item->getPriceIncTax(), $item->getQuantity());
         }
         $itemHolder->setAddPoint($addPoint);
+
         return ProcessResult::success();
     }
 
@@ -84,6 +84,7 @@ class AddPointProcessor implements ItemHolderProcessor
      * @param integer $pointRate ポイント付与率(%)
      * @param integer $price 単価
      * @param integer $quantity 数量
+     *
      * @return integer additional point
      */
     protected function priceToAddPoint($pointRate, $price, $quantity)

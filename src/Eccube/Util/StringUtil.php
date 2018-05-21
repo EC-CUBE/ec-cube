@@ -27,7 +27,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class StringUtil
 {
-
     /**
      * The MIT License (MIT)
      *
@@ -54,6 +53,7 @@ class StringUtil
      * Generate a more truly "random" alpha-numeric string.
      *
      * @param  int $length
+     *
      * @return string
      *
      * @throws \RuntimeException
@@ -67,7 +67,7 @@ class StringUtil
                 throw new \RuntimeException('Unable to generate random string.');
             }
 
-            return substr(str_replace(array('/', '+', '='), '', base64_encode($bytes)), 0, $length);
+            return substr(str_replace(['/', '+', '='], '', base64_encode($bytes)), 0, $length);
         }
 
         return static::quickRandom($length);
@@ -101,6 +101,7 @@ class StringUtil
      * Should not be considered sufficient for cryptography, etc.
      *
      * @param  int $length
+     *
      * @return string
      */
     public static function quickRandom($length = 16)
@@ -110,12 +111,12 @@ class StringUtil
         return substr(str_shuffle(str_repeat($pool, $length)), 0, $length);
     }
 
-
     /**
      * 改行コードの変換
      *
      * @param $value
      * @param string $lf
+     *
      * @return string
      */
     public static function convertLineFeed($value, $lf = "\n")
@@ -123,16 +124,18 @@ class StringUtil
         if (empty($value)) {
             return '';
         }
-        return strtr($value, array_fill_keys(array("\r\n", "\r", "\n"), $lf));
+
+        return strtr($value, array_fill_keys(["\r\n", "\r", "\n"], $lf));
     }
 
     /**
      * 文字コードの判定
      *
      * @param $value
+     *
      * @return string
      */
-    public static function characterEncoding($value, $encoding = array('UTF-8', 'SJIS', 'EUC-JP', 'ASCII', 'JIS', 'sjis-win'))
+    public static function characterEncoding($value, $encoding = ['UTF-8', 'SJIS', 'EUC-JP', 'ASCII', 'JIS', 'sjis-win'])
     {
         foreach ($encoding as $encode) {
             if (mb_check_encoding($value, $encode)) {
@@ -141,7 +144,6 @@ class StringUtil
         }
 
         return null;
-
     }
 
     /**
@@ -151,6 +153,7 @@ class StringUtil
      * @param string $value
      * @param int $length
      * @param string $end
+     *
      * @return string
      */
     public static function ellipsis($value, $length = 100, $end = '...')
@@ -159,14 +162,14 @@ class StringUtil
             return $value;
         }
 
-        return rtrim(mb_substr($value, 0, $length, 'UTF-8')) . $end;
+        return rtrim(mb_substr($value, 0, $length, 'UTF-8')).$end;
     }
-
 
     /**
      * 現在からの経過時間を書式化する.
      *
      * @param $date
+     *
      * @return string
      */
     public static function timeAgo($date)
@@ -182,22 +185,23 @@ class StringUtil
         $diff = $date->diff($now, true);
         if ($diff->y > 0) {
             // return $date->format("Y/m/d H:i");
-            return $date->format("Y/m/d");
+            return $date->format('Y/m/d');
         }
         if ($diff->m == 1 || $diff->days > 0) {
             if ($diff->days <= 31) {
-                return $diff->days . '日前';
+                return $diff->days.'日前';
             }
             // return $date->format("Y/m/d H:i");
-            return $date->format("Y/m/d");
+            return $date->format('Y/m/d');
         }
         if ($diff->h > 0) {
-            return $diff->h . "時間前";
+            return $diff->h.'時間前';
         }
         if ($diff->i > 0) {
-            return $diff->i . "分前";
+            return $diff->i.'分前';
         }
-        return $diff->s . "秒前";
+
+        return $diff->s.'秒前';
     }
 
     /**
@@ -223,6 +227,7 @@ class StringUtil
      *
      * @param string $value チェック対象の変数. 文字型以外も使用できるが、非推奨.
      * @param boolean $greedy '貧欲'にチェックを行う場合 true, デフォルト false
+     *
      * @return boolean $value が空白と判断された場合 true
      */
     public static function isBlank($value, $greedy = false)
@@ -242,6 +247,7 @@ class StringUtil
                 }
             }
             @trigger_error($deprecated, E_USER_DEPRECATED);
+
             return false;
         }
         if (is_array($value)) {
@@ -276,7 +282,6 @@ class StringUtil
 
         $value = trim($value);
         if (strlen($value) > 0) {
-
             return false;
         }
 
@@ -285,6 +290,7 @@ class StringUtil
 
     /**
      * @param $value
+     *
      * @return bool
      */
     public static function isNotBlank($value, $greedy = false)
@@ -296,6 +302,7 @@ class StringUtil
      * 両端にある全角スペース、半角スペースを取り除く
      *
      * @param $value
+     *
      * @return string
      */
     public static function trimAll($value)
@@ -309,6 +316,7 @@ class StringUtil
         if ($value == null) {
             return null;
         }
+
         return preg_replace('/(^\s+)|(\s+$)/u', '', $value);
     }
 
@@ -317,6 +325,7 @@ class StringUtil
      *
      * @param string $env
      * @param array $replacement
+     *
      * @return string
      */
     public static function replaceOrAddEnv($env, array $replacement)
@@ -332,5 +341,4 @@ class StringUtil
 
         return $env;
     }
-
 }

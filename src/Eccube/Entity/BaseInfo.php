@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -334,7 +333,6 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
      * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
      */
     private $Pref;
-
 
     /**
      * Get id.

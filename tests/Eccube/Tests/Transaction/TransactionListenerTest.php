@@ -3,7 +3,6 @@
 namespace Eccube\Tests\Transaction;
 
 use Eccube\Application;
-use Eccube\Tests\Mock\CsrfTokenMock;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
@@ -240,7 +239,6 @@ class TransactionListenerTest extends WebTestCase
      * </pre>
      * 初期値が設定される.
      */
-
     public function testTran9()
     {
         $client = $this->createClient();
@@ -266,7 +264,7 @@ class TransactionListenerTest extends WebTestCase
     public function createApplication()
     {
         $app = Application::getInstance([
-            'eccube.autoloader' => $GLOBALS['eccube.autoloader']
+            'eccube.autoloader' => $GLOBALS['eccube.autoloader'],
         ]);
         $app['debug'] = true;
 
@@ -278,7 +276,7 @@ class TransactionListenerTest extends WebTestCase
                 $config['log']['passthru_level'] = 'ERROR';
 
                 $channel = $config['log']['channel'];
-                foreach (array('monolog', 'front', 'admin') as $key) {
+                foreach (['monolog', 'front', 'admin'] as $key) {
                     $channel[$key]['log_level'] = 'ERROR';
                     $channel[$key]['action_level'] = 'ERROR';
                     $channel[$key]['passthru_level'] = 'ERROR';
@@ -311,12 +309,10 @@ class TransactionListenerTest extends WebTestCase
 
 class TransactionControllerMock
 {
-
     public function index(Application $app)
     {
         return $app->render('index.twig');
     }
-
 
     public function tran1(Application $app)
     {
@@ -341,7 +337,6 @@ class TransactionControllerMock
 
         // 1/2 は rollback.
         throw new \Exception();
-
         return $app->render('index.twig');
     }
 
@@ -354,7 +349,6 @@ class TransactionControllerMock
             $BaseInfo->setCompanyName('tran3');
             $app['orm.em']->flush($BaseInfo);
             $app['orm.em']->commit();
-
         } catch (\Exception $e) {
             $app['orm.em']->rollback();
         }
@@ -375,7 +369,6 @@ class TransactionControllerMock
 
             // update 1 は rollback
             throw new \Exception();
-
         } catch (\Exception $e) {
             $app['orm.em']->rollback();
         }
@@ -393,7 +386,6 @@ class TransactionControllerMock
             $BaseInfo->setCompanyName('tran5-1');
             $app['orm.em']->flush($BaseInfo);
             $app['orm.em']->commit();
-
         } catch (\Exception $e) {
             $app['orm.em']->rollback();
         }
@@ -406,14 +398,12 @@ class TransactionControllerMock
             $BaseInfo->setCompanyName('tran5-2');
             $app['orm.em']->flush($BaseInfo);
             $app['orm.em']->commit();
-
         } catch (\Exception $e) {
             $app['orm.em']->rollback();
         }
 
         // update1/2はrollback
         throw new \Exception();
-
         return $app->render('index.twig');
     }
 
@@ -427,7 +417,6 @@ class TransactionControllerMock
             $BaseInfo->setCompanyName('tran6-1');
             $app['orm.em']->flush($BaseInfo);
             $app['orm.em']->commit();
-
         } catch (\Exception $e) {
             $app['orm.em']->rollback();
         }
@@ -442,7 +431,6 @@ class TransactionControllerMock
 
         // update1/2/3 すべてrollback
         throw new \Exception();
-
         return $app->render('index.twig');
     }
 
@@ -459,7 +447,6 @@ class TransactionControllerMock
 
             // update 1がrollback
             throw new \Exception();
-
         } catch (\Exception $e) {
             // update 1がrollback
             $app['orm.em']->rollback();
@@ -490,7 +477,6 @@ class TransactionControllerMock
 
             // update 1がrollback
             throw new \Exception();
-
         } catch (\Exception $e) {
             // update 1がrollback
             $app['orm.em']->rollback();
@@ -506,7 +492,6 @@ class TransactionControllerMock
 
         // update2/3 は 暗黙のtransaction block内のため、2/3はrollbackされる
         throw new \Exception();
-
         return $app->render('index.twig');
     }
 
@@ -528,7 +513,6 @@ class TransactionControllerMock
 
             // プラグイン内部でエラー
             throw new \Exception();
-
         } catch (\Exception $e) {
             // update 1 / update 2 がrollbackされる.
             $app['orm.em']->rollback();

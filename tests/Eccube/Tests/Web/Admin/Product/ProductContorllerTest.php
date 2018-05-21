@@ -76,6 +76,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             $this->createProduct();
         }
     }
+
     public function createFormData()
     {
         $faker = $this->getFaker();
@@ -99,7 +100,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'stock_unlimited' => 0,
                 'code' => $faker->word,
                 'sale_limit' => null,
-                'delivery_duration' => ''
+                'delivery_duration' => '',
             ],
             'name' => $faker->word,
             'product_image' => [],
@@ -115,8 +116,9 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             'images' => null,
             'add_images' => null,
             'delete_images' => null,
-            Constant::TOKEN_NAME => 'dummy'
+            Constant::TOKEN_NAME => 'dummy',
         ];
+
         return $form;
     }
 
@@ -148,15 +150,15 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'create_date_end' => '',
                 'update_date_start' => '',
                 'update_date_end' => '',
-            ]
+            ],
         ];
 
         $crawler = $this->client->request('POST', $this->generateUrl('admin_product'), $post);
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->expected = '検索結果：' . $cnt . '件が該当しました';
+        $this->expected = '検索結果：'.$cnt.'件が該当しました';
         $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
-        $this->verify("検索結果件数の確認テスト");
+        $this->verify('検索結果件数の確認テスト');
 
         // デフォルトの表示件数確認テスト
         $this->expected = '10件';
@@ -167,19 +169,19 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->markTestIncomplete('表示件数のプルダウン実装後に修正');
 
         // 表示件数20件テスト
-        $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', array('page_no' => 1)), array('page_count' => 20));
+        $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', ['page_no' => 1]), ['page_count' => 20]);
         $this->expected = '20件';
         $this->actual = $crawler->filter('li#result_list__pagemax_menu a')->text();
         $this->verify('表示件数20件テスト');
 
         // 表示件数入力値は正しくない場合はデフォルトの表示件数になるテスト
-        $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', array('page_no' => 1)), array('page_count' => 999999));
+        $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', ['page_no' => 1]), ['page_count' => 999999]);
         $this->expected = '13 件';
         $this->actual = $crawler->filter('#result_list__header h3 strong')->text();
         $this->verify('表示件数入力値は正しくない場合はデフォルトの表示件数になるテスト');
 
         // 表示件数はSESSIONから取得するテスト
-        $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', array('page_no' => 1)), array('status' => 1));
+        $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', ['page_no' => 1]), ['status' => 1]);
         $this->expected = '20件';
         $this->actual = $crawler->filter('li#result_list__pagemax_menu a')->text();
         $this->verify('表示件数はSESSIONから取得するテスト');
@@ -201,7 +203,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'create_date_end' => '',
                 'update_date_start' => '',
                 'update_date_end' => '',
-            ]
+            ],
         ];
 
         $crawler = $this->client->request('POST', $this->generateUrl('admin_product'), $post);
@@ -218,19 +220,19 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->markTestIncomplete('表示件数のプルダウン実装後に修正');
 
         // 表示件数20件テスト
-        $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', array('page_no' => 1)), array('page_count' => 40));
+        $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', ['page_no' => 1]), ['page_count' => 40]);
         $this->expected = '40件';
         $this->actual = $crawler->filter('li#result_list__pagemax_menu a')->text();
         $this->verify('表示件数40件テスト');
 
         // 表示件数入力値は正しくない場合はデフォルトの表示件数になるテスト
-        $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', array('page_no' => 1)), array('page_count' => 999999));
+        $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', ['page_no' => 1]), ['page_count' => 999999]);
         $this->expected = '1 件';
         $this->actual = $crawler->filter('#result_list__header h3 strong')->text();
         $this->verify('表示件数入力値は正しくない場合はデフォルトの表示件数になるテスト');
 
         // 表示件数はSESSIONから取得するテスト
-        $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', array('page_no' => 1)), array('status' => 1));
+        $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', ['page_no' => 1]), ['status' => 1]);
         $this->expected = '40件';
         $this->actual = $crawler->filter('li#result_list__pagemax_menu a')->text();
         $this->verify('表示件数はSESSIONから取得するテスト');
@@ -249,13 +251,13 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'create_date_end' => '',
                 'update_date_start' => '',
                 'update_date_end' => '',
-            ]
+            ],
         ];
 
         $crawler = $this->client->request('POST', $this->generateUrl('admin_product'), $post);
         $this->expected = '検索結果：1件が該当しました';
         $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
-        $this->verify("検索結果件数の確認テスト");
+        $this->verify('検索結果件数の確認テスト');
 
         // デフォルトの表示件数確認テスト
         $this->expected = '10件';
@@ -266,19 +268,19 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->markTestIncomplete('表示件数のプルダウン実装後に修正');
 
         // 表示件数20件テスト
-        $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', array('page_no' => 1)), array('page_count' => 30));
+        $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', ['page_no' => 1]), ['page_count' => 30]);
         $this->expected = '30件';
         $this->actual = $crawler->filter('li#result_list__pagemax_menu a')->text();
         $this->verify();
 
         // 表示件数入力値は正しくない場合はデフォルトのの表示件数になるテスト
-        $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', array('page_no' => 1)), array('page_count' => 999999));
+        $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', ['page_no' => 1]), ['page_count' => 999999]);
         $this->expected = '1 件';
         $this->actual = $crawler->filter('#result_list__header h3 strong')->text();
         $this->verify();
 
         // 表示件数はSESSIONから取得するテスト
-        $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', array('page_no' => 1)), array('status' => 1));
+        $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', ['page_no' => 1]), ['status' => 1]);
 
         $this->expected = '30件';
         $this->actual = $crawler->filter('li#result_list__pagemax_menu a')->text();
@@ -298,7 +300,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'create_date_end' => '',
                 'update_date_start' => '',
                 'update_date_end' => '',
-            ]
+            ],
         ];
 
         $crawler = $this->client->request('POST', $this->generateUrl('admin_product'), $post);
@@ -320,7 +322,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'create_date_end' => '',
                 'update_date_start' => '',
                 'update_date_end' => '',
-            ]
+            ],
         ];
 
         $crawler = $this->client->request('POST', $this->generateUrl('admin_product'), $post);
@@ -397,7 +399,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $expected = 'この商品の規格';
         $actual = $crawler->filter('#standardConfig > div > div.d-inline-block')->text();
         $this->assertContains($expected, $actual);
-        
+
         $this->expected = $productClassNum;
         $this->actual = $crawler->filter('#standardConfig > div > table > tbody > tr')->count();
         $this->verify();
@@ -408,7 +410,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $Product = $this->createProduct();
         $params = [
             'id' => $Product->getId(),
-            Constant::TOKEN_NAME => 'dummy'
+            Constant::TOKEN_NAME => 'dummy',
         ];
 
         $this->client->request('DELETE', $this->generateUrl('admin_product_product_delete', $params));
@@ -426,7 +428,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $AllProducts = $this->productRepository->findAll();
         $params = [
             'id' => $Product->getId(),
-            Constant::TOKEN_NAME => 'dummy'
+            Constant::TOKEN_NAME => 'dummy',
         ];
 
         $this->client->request('POST', $this->generateUrl('admin_product_product_copy', $params));
@@ -462,11 +464,11 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirection());
 
         $arrTmp = explode('/', $this->client->getResponse()->getTargetUrl());
-        $productId = $arrTmp[count($arrTmp)-2];
+        $productId = $arrTmp[count($arrTmp) - 2];
         $Product = $this->productRepository->find($productId);
 
         $this->expected = $expected;
-        $Taxrule = $this->taxRuleRepository->findOneBy(array('Product' => $Product));
+        $Taxrule = $this->taxRuleRepository->findOneBy(['Product' => $Product]);
         $taxRate = is_null($taxRate) ? null : $Taxrule->getTaxRate();
         $this->actual = $taxRate;
         $this->assertTrue($this->actual === $this->expected);
@@ -480,7 +482,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->expectOutputRegex('/Product with stock 01/');
         $testProduct = $this->createProduct('Product with stock 01');
         $this->createProduct('Product with stock 02', 1);
-        /** @var $ProductClass ProductClass*/
+        /** @var $ProductClass ProductClass */
         $ProductClass = $testProduct->getProductClasses()->first();
         $ProductClass->setStock(0);
         $ProductClass->getProductStock()->setStock(0);
@@ -498,7 +500,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         );
         $this->expected = '検索結果：2件が該当しました';
         $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
-        $this->verify("検索結果件数の確認テスト");
+        $this->verify('検索結果件数の確認テスト');
 
         // TODO
         $this->markTestIncomplete('検索項目(公開・非公開・在庫内)の実装完了後に実施');
@@ -537,7 +539,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         );
         $this->expected = '検索結果：2件が該当しました';
         $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
-        $this->verify("検索結果件数の確認テスト");
+        $this->verify('検索結果件数の確認テスト');
 
         // TODO
         $this->markTestIncomplete('検索項目(公開・非公開・在庫内)の実装完了後に実施');
@@ -576,7 +578,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         );
         $this->expected = '検索結果：2件が該当しました';
         $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
-        $this->verify("検索結果件数の確認テスト");
+        $this->verify('検索結果件数の確認テスト');
 
         // TODO
         $this->markTestIncomplete('検索項目(公開・非公開・在庫内)の実装完了後に実施');
@@ -616,7 +618,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         );
         $this->expected = '検索結果：2件が該当しました';
         $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
-        $this->verify("検索結果件数の確認テスト");
+        $this->verify('検索結果件数の確認テスト');
 
         // TODO
         $this->markTestIncomplete('検索項目(公開・非公開・在庫内)の実装完了後に実施');
@@ -636,8 +638,8 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     {
         return [
             [null, null],
-            ["0", "0"],
-            ["1", "1"],
+            ['0', '0'],
+            ['1', '1'],
         ];
     }
 
@@ -646,6 +648,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      * 個別税率設定を有効にし、商品編集時に更新されることを確認する
      *
      * @see https://github.com/EC-CUBE/ec-cube/issues/1547
+     *
      * @param $before 更新前の税率
      * @param $after POST値
      * @param $expected 期待値
@@ -752,7 +755,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $productStatuses = [
             ProductStatus::DISPLAY_SHOW,
             ProductStatus::DISPLAY_HIDE,
-            ProductStatus::DISPLAY_ABOLISHED
+            ProductStatus::DISPLAY_ABOLISHED,
         ];
         foreach ($productStatuses as $productStatusId) {
             $ProductStatus = $this->productStatusRepository->find($productStatusId);
@@ -771,11 +774,11 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->client->request(
             'GET',
             $this->generateUrl('admin_product_classes_load', ['id' => 1]),
-            array(),
-            array(),
-            array(
+            [],
+            [],
+            [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
-            )
+            ]
         );
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());

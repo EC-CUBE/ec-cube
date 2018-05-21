@@ -14,13 +14,14 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
  */
 class MemberRepositoryTest extends EccubeTestCase
 {
-    /** @var  Member */
+    /** @var Member */
     protected $Member;
-    /** @var  MemberRepository */
+    /** @var MemberRepository */
     protected $memberRepo;
 
-    /** @var  EncoderFactoryInterface */
+    /** @var EncoderFactoryInterface */
     protected $encoderFactory;
+
     public function setUp()
     {
         parent::setUp();
@@ -106,7 +107,7 @@ class MemberRepositoryTest extends EccubeTestCase
         $this->memberRepo->save($Member);
 
         // verify
-        $member = $this->memberRepo->findOneBy(array('login_id' => 'member-100'));
+        $member = $this->memberRepo->findOneBy(['login_id' => 'member-100']);
         $this->actual = $member->getPassword();
         $this->expected = $Member->getPassword();
         $this->verify();

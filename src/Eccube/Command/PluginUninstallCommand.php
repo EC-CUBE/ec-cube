@@ -23,7 +23,6 @@
 
 namespace Eccube\Command;
 
-
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -58,6 +57,7 @@ class PluginUninstallCommand extends Command
         $plugin = $this->pluginRepository->findByCode($code);
         if (is_null($plugin)) {
             $io->error("Plugin `$code` is not installed.");
+
             return;
         }
 

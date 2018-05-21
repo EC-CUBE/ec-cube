@@ -23,16 +23,14 @@
 
 namespace Eccube\Service\PurchaseFlow;
 
-
 use Eccube\Entity\ProductClass;
-use Symfony\Component\Translation\Translator;
-use Symfony\Component\Translation\TranslatorInterface;
 
 trait ValidatorTrait
 {
     /**
      * @param ProductClass $ProductClass
      * @param $errorCode
+     *
      * @throws InvalidItemException
      */
     protected function throwInvalidItemException($errorCode, ProductClass $ProductClass = null)
@@ -40,10 +38,10 @@ trait ValidatorTrait
         if ($ProductClass) {
             $productName = $ProductClass->getProduct()->getName();
             if ($ProductClass->hasClassCategory1()) {
-                $productName .= " - ".$ProductClass->getClassCategory1()->getName();
+                $productName .= ' - '.$ProductClass->getClassCategory1()->getName();
             }
             if ($ProductClass->hasClassCategory2()) {
-                $productName .= " - ".$ProductClass->getClassCategory2()->getName();
+                $productName .= ' - '.$ProductClass->getClassCategory2()->getName();
             }
 
             throw new InvalidItemException(trans($errorCode, ['%product%' => $productName]));

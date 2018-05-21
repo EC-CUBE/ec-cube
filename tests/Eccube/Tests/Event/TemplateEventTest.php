@@ -30,11 +30,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class TemplateEventTest
- * @package Eccube\Tests\Event
  */
 class TemplateEventTest extends EccubeTestCase
 {
-
     /**
      * View test
      */
@@ -93,9 +91,9 @@ class TemplateEventTest extends EccubeTestCase
     public function testParameter()
     {
         $templateEvent = new TemplateEvent(null, null);
-        $this->assertSame(array(), $templateEvent->getParameters());
+        $this->assertSame([], $templateEvent->getParameters());
 
-        $parameter = array('id' => 1);
+        $parameter = ['id' => 1];
 
         // set parameter
         $templateEvent->setParameters($parameter);

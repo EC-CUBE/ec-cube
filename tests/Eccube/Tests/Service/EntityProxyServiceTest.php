@@ -121,7 +121,6 @@ class EntityProxyServiceTest extends EccubeTestCase
 
     public function testAddTrait()
     {
-
         $entityTokens = Tokens::fromCode(<<< EOT
 <?php
 class EntityProxyServiceTest_Entity extends \\Eccube\\Entity\\AbstractEntity
@@ -150,7 +149,6 @@ EOT
 
     public function testAddMoreTrait()
     {
-
         $entityTokens = Tokens::fromCode(<<< EOT
 <?php
 class EntityProxyServiceTest_Entity extends \\Eccube\\Entity\\AbstractEntity
@@ -211,7 +209,7 @@ EOT
             [T_STRING, 'Service'],
             [T_NS_SEPARATOR],
             [T_STRING, 'EntityProxyServiceTest_Trait'],
-            ';'
+            ';',
         ];
 
         self::assertNotNull($entityTokens->findSequence($traitTokens), 'Traitが削除されているはず');
@@ -233,7 +231,6 @@ EOT
 
         self::assertNull($entityTokens->getNextTokenOfKind(0, [CT::T_USE_TRAIT]), 'Traitのuse句が削除されているはず');
     }
-
 }
 
 /**

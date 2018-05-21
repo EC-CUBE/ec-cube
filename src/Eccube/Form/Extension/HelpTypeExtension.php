@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Extension;
 
 use Eccube\Annotation\FormExtension;
@@ -37,7 +36,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class HelpTypeExtension extends AbstractTypeExtension
 {
-
     /**
      * {@inheritdoc}
      */
@@ -59,9 +57,9 @@ class HelpTypeExtension extends AbstractTypeExtension
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'help' => null,
-        ));
+        ]);
     }
 
     public function getExtendedType()

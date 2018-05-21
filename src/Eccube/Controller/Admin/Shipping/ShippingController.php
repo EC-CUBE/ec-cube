@@ -11,7 +11,6 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\SearchShippingType;
 use Eccube\Repository\Master\PageMaxRepository;
-use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Repository\Master\ShippingStatusRepository;
 use Eccube\Repository\ShippingRepository;
 use Eccube\Service\MailService;
@@ -48,6 +47,7 @@ class ShippingController extends AbstractController
 
     /**
      * ShippingController constructor.
+     *
      * @param ShippingRepository $shippingRepository
      * @param PageMaxRepository $pageMaxRepository
      * @param ShippingStatusRepository $shippingStatusRepository
@@ -65,7 +65,6 @@ class ShippingController extends AbstractController
         $this->mailService = $mailService;
     }
 
-
     /**
      * @Route("/%eccube_admin_route%/shipping", name="admin_shipping")
      * @Route("/%eccube_admin_route%/shipping/page/{page_no}", name="admin_shipping_page")
@@ -77,9 +76,9 @@ class ShippingController extends AbstractController
             ->createBuilder(SearchShippingType::class);
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SHIPPING_INDEX_INITIALIZE, $event);
@@ -96,7 +95,7 @@ class ShippingController extends AbstractController
         $page_count = $this->session->get('eccube.admin.shipping.search.page_count',
             $this->eccubeConfig->get('eccube_default_page_count'));
 
-        $page_count_param = (int)$request->get('page_count');
+        $page_count_param = (int) $request->get('page_count');
         $pageMaxis = $this->pageMaxRepository->findAll();
 
         if ($page_count_param) {
@@ -110,7 +109,6 @@ class ShippingController extends AbstractController
         }
 
         if ('POST' === $request->getMethod()) {
-
             $searchForm->handleRequest($request);
 
             if ($searchForm->isValid()) {
@@ -136,12 +134,12 @@ class ShippingController extends AbstractController
             }
         } else {
             if (null !== $page_no || $request->get('resume')) {
-                /**
+                /*
                  * ページ送りの場合または、他画面から戻ってきた場合は, セッションから検索条件を復旧する.
                  */
                 if ($page_no) {
                     // ページ送りで遷移した場合.
-                    $this->session->set('eccube.admin.shipping.search.page_no', (int)$page_no);
+                    $this->session->set('eccube.admin.shipping.search.page_no', (int) $page_no);
                 } else {
                     // 他画面から遷移した場合.
                     $page_no = $this->session->get('eccube.admin.shipping.search.page_no', 1);
@@ -192,9 +190,12 @@ class ShippingController extends AbstractController
     /**
      * @Method("PUT")
      * @Route("/%eccube_admin_route%/shipping/mark_as_shipped/{id}", requirements={"id" = "\d+"}, name="admin_shipping_mark_as_shipped")
+     *
      * @param Request $request
      * @param Shipping $Shipping
+     *
      * @return JsonResponse
+     *
      * @throws \Twig_Error
      */
     public function markAsShipped(Request $request, Shipping $Shipping)
@@ -218,19 +219,23 @@ class ShippingController extends AbstractController
 
             $this->entityManager->flush();
             $result['shipped'] = true;
+
             return new JsonResponse($result);
         }
 
         return new JsonResponse([
             'shipped' => false,
-            'mail' => false
+            'mail' => false,
         ]);
     }
 
     /**
      * @Route("/%eccube_admin_route%/shipping/preview_notify_mail/{id}", requirements={"id" = "\d+"}, name="admin_shipping_preview_notify_mail")
+     *
      * @param Shipping $Shipping
+     *
      * @return Response
+     *
      * @throws \Twig_Error
      */
     public function previewShippingNotifyMail(Shipping $Shipping)
@@ -241,8 +246,10 @@ class ShippingController extends AbstractController
     /**
      * @Method("PUT")
      * @Route("/%eccube_admin_route%/shipping/notify_mail/{id}", requirements={"id" = "\d+"}, name="admin_shipping_notify_mail")
+     *
      * @param Request $request
      * @param Shipping $Shipping
+     *
      * @return JsonResponse
      */
     public function notifyMail(Shipping $Shipping)
@@ -251,14 +258,16 @@ class ShippingController extends AbstractController
 
         if ($Shipping->getShippingStatus()->getId() === ShippingStatus::SHIPPED) {
             $this->mailService->sendShippingNotifyMail($Shipping);
+
             return new JsonResponse([
                 'mail' => true,
-                'shipped' => false
+                'shipped' => false,
             ]);
         }
+
         return new JsonResponse([
             'mail' => false,
-            'shipped' => false
+            'shipped' => false,
         ]);
     }
 
@@ -281,7 +290,7 @@ class ShippingController extends AbstractController
                     $OrderItem->setShipping(null);
                 }
                 $this->entityManager->remove($Shipping);
-                log_info('出荷削除', array($Shipping->getId()));
+                log_info('出荷削除', [$Shipping->getId()]);
             }
         }
         $this->entityManager->flush();

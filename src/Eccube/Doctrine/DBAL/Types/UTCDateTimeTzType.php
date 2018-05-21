@@ -25,7 +25,6 @@ namespace Eccube\Doctrine\DBAL\Types;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
-use Doctrine\DBAL\Types\DateTimeType;
 use Doctrine\DBAL\Types\DateTimeTzType;
 
 class UTCDateTimeTzType extends DateTimeTzType
@@ -35,14 +34,14 @@ class UTCDateTimeTzType extends DateTimeTzType
      *
      * @var \DateTimeZone
      */
-    static protected $utc;
+    protected static $utc;
 
     /**
      * アプリケーションのタイムゾーン
      *
      * @var \DateTimeZone
      */
-    static protected $timezone;
+    protected static $timezone;
 
     /**
      * {@inheritdoc}

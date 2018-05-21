@@ -48,8 +48,6 @@ use Doctrine\ORM\Query\SqlWalker;
  *  source:
  *      日付/時刻データ型、もしくは日付/時刻を表す文字列
  *      文字列の場合はtypeが必須
- *
- * @package Eccube\Doctrine\ORM\Query
  */
 class Extract extends FunctionNode
 {
@@ -57,21 +55,21 @@ class Extract extends FunctionNode
     protected $type;
     protected $source;
 
-    protected $formats = array(
-        'YEAR'      => '%Y',
-        'MONTH'     => '%m',
-        'DAY'       => '%d',
-        'HOUR'      => '%H',
-        'MINUTE'    => '%M',
-        'SECOND'    => '%S',
-        'WEEK'      => '%W',
-    );
+    protected $formats = [
+        'YEAR' => '%Y',
+        'MONTH' => '%m',
+        'DAY' => '%d',
+        'HOUR' => '%H',
+        'MINUTE' => '%M',
+        'SECOND' => '%S',
+        'WEEK' => '%W',
+    ];
 
-    protected $dateTimeTypes = array(
+    protected $dateTimeTypes = [
         'TIMESTAMP',
         'DATE',
         'TIME',
-    );
+    ];
 
     public function parse(Parser $parser)
     {
@@ -121,14 +119,14 @@ class Extract extends FunctionNode
                 $sql = sprintf(
                     "EXTRACT(%s FROM %s %s $op INTERVAL '$second SECONDS')",
                     $this->field,
-                    (string)$this->type,
+                    (string) $this->type,
                     $this->source->dispatch($sqlWalker));
                 break;
             default:
                 $sql = sprintf(
                     "EXTRACT(%s FROM %s %s $op INTERVAL $second SECOND)",
                     $this->field,
-                    (string)$this->type,
+                    (string) $this->type,
                     $this->source->dispatch($sqlWalker));
         }
 

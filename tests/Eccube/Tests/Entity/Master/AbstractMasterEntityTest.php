@@ -72,5 +72,5 @@ class TestSexDecorator extends Sex
 
 trait TestSexTrait
 {
-    static $TEST_FEMALE = 2;
+    public static $TEST_FEMALE = 2;
 }

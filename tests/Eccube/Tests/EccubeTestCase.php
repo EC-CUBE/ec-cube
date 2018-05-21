@@ -70,13 +70,14 @@ abstract class EccubeTestCase extends WebTestCase
         $this->cleanUpProperties();
     }
 
-
     /**
      * Faker を生成する.
      *
      * @param string $locale ロケールを指定する. デフォルト ja_JP
+     *
      * @return \Faker\Generator
-     * @link https://github.com/fzaninotto/Faker
+     *
+     * @see https://github.com/fzaninotto/Faker
      */
     public function getFaker($locale = 'ja_JP')
     {
@@ -87,7 +88,8 @@ abstract class EccubeTestCase extends WebTestCase
      * Expected と Actual を比較する.
      *
      * @param string $message エラーメッセージ
-     * @link http://objectclub.jp/community/memorial/homepage3.nifty.com/masarl/article/junit/scenario-based-testcase.html#verify%20%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89
+     *
+     * @see http://objectclub.jp/community/memorial/homepage3.nifty.com/masarl/article/junit/scenario-based-testcase.html#verify%20%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89
      */
     public function verify($message = '')
     {
@@ -98,6 +100,7 @@ abstract class EccubeTestCase extends WebTestCase
      * Member オブジェクトを生成して返す.
      *
      * @param string $username . null の場合は, ランダムなユーザーIDが生成される.
+     *
      * @return \Eccube\Entity\Member
      */
     public function createMember($username = null)
@@ -109,6 +112,7 @@ abstract class EccubeTestCase extends WebTestCase
      * Customer オブジェクトを生成して返す.
      *
      * @param string $email メールアドレス. null の場合は, ランダムなメールアドレスが生成される.
+     *
      * @return \Eccube\Entity\Customer
      */
     public function createCustomer($email = null)
@@ -121,6 +125,7 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @param Customer $Customer 対象の Customer インスタンス
      * @param boolean $is_nonmember 非会員の場合 true
+     *
      * @return \Eccube\Entity\CustomerAddress
      */
     public function createCustomerAddress(Customer $Customer, $is_nonmember = false)
@@ -132,6 +137,7 @@ abstract class EccubeTestCase extends WebTestCase
      * 非会員の Customer オブジェクトを生成して返す.
      *
      * @param string $email メールアドレス. null の場合は, ランダムなメールアドレスが生成される.
+     *
      * @return \Eccube\Entity\Customer
      */
     public function createNonMember($email = null)
@@ -144,6 +150,7 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @param string $product_name 商品名. null の場合はランダムな文字列が生成される.
      * @param integer $product_class_num 商品規格の生成数
+     *
      * @return \Eccube\Entity\Product
      */
     public function createProduct($product_name = null, $product_class_num = 3)
@@ -155,6 +162,7 @@ abstract class EccubeTestCase extends WebTestCase
      * Order オブジェクトを生成して返す.
      *
      * @param \Eccube\Entity\Customer $Customer Customer インスタンス
+     *
      * @return \Eccube\Entity\Order
      */
     public function createOrder(Customer $Customer)
@@ -163,7 +171,7 @@ abstract class EccubeTestCase extends WebTestCase
         $ProductClasses = $Product->getProductClasses();
 
         // 後方互換のため最初の1つのみ渡す
-        return $this->container->get(Generator::class)->createOrder($Customer, array($ProductClasses[0]));
+        return $this->container->get(Generator::class)->createOrder($Customer, [$ProductClasses[0]]);
     }
 
     /**
@@ -174,6 +182,7 @@ abstract class EccubeTestCase extends WebTestCase
      * @param integer $charge 手数料
      * @param integer $rule_min 下限金額
      * @param integer $rule_max 上限金額
+     *
      * @return \Eccube\Entity\Payment
      */
     public function createPayment(\Eccube\Entity\Delivery $Delivery, $method, $charge = 0, $rule_min = 0, $rule_max = 999999999)
@@ -225,7 +234,7 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * このメソッドは、PHPUnit のメモリリーク解消のため、 tearDown() メソッドでコールされる.
      *
-     * @link http://stackoverflow.com/questions/13537545/clear-memory-being-used-by-php
+     * @see http://stackoverflow.com/questions/13537545/clear-memory-being-used-by-php
      */
     protected function cleanUpProperties()
     {
@@ -246,7 +255,7 @@ abstract class EccubeTestCase extends WebTestCase
      * MailCatcher については \Eccube\Tests\Service\MailServiceTest のコメントを参照してください
      *
      * @see \Eccube\Tests\Service\MailServiceTest
-     * @link http://mailcatcher.me/
+     * @see http://mailcatcher.me/
      * @deprecated
      */
     protected function initializeMailCatcher()
@@ -258,6 +267,7 @@ abstract class EccubeTestCase extends WebTestCase
      * MailCatcher の起動状態をチェックする.
      *
      * MailCatcher が起動していない場合は, テストをスキップする.
+     *
      * @deprecated
      */
     protected function checkMailCatcherStatus()
@@ -280,6 +290,7 @@ abstract class EccubeTestCase extends WebTestCase
 
     /**
      * MailCatcher のメッセージをすべて削除する.
+     *
      * @deprecated
      */
     protected function cleanUpMailCatcherMessages()
@@ -296,12 +307,14 @@ abstract class EccubeTestCase extends WebTestCase
      * MailCatcher のメッセージをすべて取得する.
      *
      * @return array MailCatcher のメッセージの配列
+     *
      * @deprecated
      */
     protected function getMailCatcherMessages()
     {
         $httpClient = new HttpClient();
         $response = $httpClient->get(self::MAILCATCHER_URL.'messages');
+
         return json_decode($response->getBody(true));
     }
 
@@ -309,13 +322,16 @@ abstract class EccubeTestCase extends WebTestCase
      * MailCatcher のメッセージを ID を指定して取得する.
      *
      * @param integer $id メッセージの ID
+     *
      * @return object MailCatcher のメッセージ
+     *
      * @deprecated
      */
     protected function getMailCatcherMessage($id)
     {
         $httpClient = new HttpClient();
         $response = $httpClient->get(self::MAILCATCHER_URL.'messages/'.$id.'.json');
+
         return json_decode($response->getBody(true));
     }
 
@@ -323,7 +339,9 @@ abstract class EccubeTestCase extends WebTestCase
      * MailCatcher のメッセージソースをデコードする.
      *
      * @param object $Message MailCatcher のメッセージ
+     *
      * @return string デコードされた eml 形式のソース
+     *
      * @deprecated
      */
     protected function parseMailCatcherSource($Message)
@@ -335,6 +353,7 @@ abstract class EccubeTestCase extends WebTestCase
      * Get the MailCollector
      *
      * @param boolean $sendRequest True to send requests internally.
+     *
      * @return MessageDataCollector
      */
     protected function getMailCollector($sendRequest = true)
@@ -343,6 +362,7 @@ abstract class EccubeTestCase extends WebTestCase
             $this->client->enableProfiler();
             $this->client->request('POST', '/');
         }
+
         return $this->client->getProfile()->getCollector('swiftmailer');
     }
 
@@ -358,7 +378,7 @@ abstract class EccubeTestCase extends WebTestCase
      * @see UrlGeneratorInterface
      * @see \Symfony\Bundle\FrameworkBundle\Controller\ControllerTrait::generateUrl
      */
-    protected function generateUrl($route, $parameters = array(), $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
+    protected function generateUrl($route, $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
         return $this->container->get('router')->generate($route, $parameters, $referenceType);
     }
@@ -372,6 +392,7 @@ abstract class EccubeTestCase extends WebTestCase
      * @param string $csrfTokenId The token ID (e.g. `authenticate`, `<FormTypeBlockPrefix>`)
      *
      * @return CsrfToken The CSRF token
+     *
      * @see \Symfony\Component\Security\Csrf\CsrfTokenManagerInterface
      * @see https://stackoverflow.com/a/38661340/4956633
      */

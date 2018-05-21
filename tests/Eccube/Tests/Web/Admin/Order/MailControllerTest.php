@@ -55,14 +55,14 @@ class MailControllerTest extends AbstractAdminWebTestCase
     public function createFormData()
     {
         $faker = $this->getFaker();
-        $form = array(
+        $form = [
             'template' => 1,
             'mail_subject' => $faker->word,
             'mail_header' => $faker->paragraph,
             'mail_footer' => $faker->paragraph,
             'tpl_data' => $faker->text,
             '_token' => 'dummy',
-        );
+        ];
 
         return $form;
     }
@@ -71,7 +71,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
     {
         $this->client->request(
             'GET',
-            $this->generateUrl('admin_order_mail', array('id' => $this->Order->getId()))
+            $this->generateUrl('admin_order_mail', ['id' => $this->Order->getId()])
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
@@ -82,11 +82,11 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $form = $this->createFormData();
         $crawler = $this->client->request(
             'POST',
-            $this->generateUrl('admin_order_mail', array('id' => $this->Order->getId())),
-            array(
+            $this->generateUrl('admin_order_mail', ['id' => $this->Order->getId()]),
+            [
                 'mail' => $form,
                 'mode' => 'complete',
-            )
+            ]
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_page', ['page_no' => 1])));
 
@@ -108,14 +108,14 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_order_mail_view'),
-            array(
+            [
                 'id' => $this->MailHistories[0]->getId(),
-            ),
-            array(),
-            array(
+            ],
+            [],
+            [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
                 'CONTENT_TYPE' => 'application/json',
-            )
+            ]
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
@@ -134,7 +134,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
     {
         $this->client->enableProfiler();
 
-        $ids = array();
+        $ids = [];
         for ($i = 0; $i < 5; $i++) {
             $Order = $this->createOrder($this->Customer);
             $ids[] = $Order->getId();
@@ -144,11 +144,11 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_order_mail_all'),
-            array(
+            [
                 'mail' => $form,
                 'mode' => 'complete',
                 'ids' => implode(',', $ids),
-            )
+            ]
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_page', ['page_no' => 1])));
 

@@ -60,7 +60,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
         $id = $Product->getId();
 
         $this->searchData = [
-            'id' => $id
+            'id' => $id,
         ];
         $this->scenario();
 
@@ -87,7 +87,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
         $this->entityManager->flush();
 
         $this->searchData = [
-            'id' => 'dessert-'
+            'id' => 'dessert-',
         ];
         $this->scenario();
 
@@ -107,7 +107,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
         $this->entityManager->flush();
 
         $this->searchData = [
-            'id' => 'お'
+            'id' => 'お',
         ];
         $this->scenario();
 
@@ -125,7 +125,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
 
         $Status = new ArrayCollection([$ProductStatus]);
         $this->searchData = [
-            'status' => $Status
+            'status' => $Status,
         ];
         $this->scenario();
 
@@ -141,9 +141,9 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
         $Product->setStatus($ProductStatus);
         $this->entityManager->flush();
 
-        $this->searchData = array(
-            'link_status' => ProductStatus::DISPLAY_HIDE
-        );
+        $this->searchData = [
+            'link_status' => ProductStatus::DISPLAY_HIDE,
+        ];
         $this->scenario();
 
         $this->expected = 1;
@@ -174,9 +174,9 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
         }
         $this->entityManager->flush();
 
-        $this->searchData = array(
-            'stock' => [ProductStock::OUT_OF_STOCK]
-        );
+        $this->searchData = [
+            'stock' => [ProductStock::OUT_OF_STOCK],
+        ];
         $this->scenario();
 
         $this->expected = 1;
@@ -207,9 +207,9 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
         }
         $this->entityManager->flush();
 
-        $this->searchData = array(
-            'stock' => [ProductStock::IN_STOCK]
-        );
+        $this->searchData = [
+            'stock' => [ProductStock::IN_STOCK],
+        ];
         $this->scenario();
 
         $this->expected = 1;
@@ -220,7 +220,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
     public function testCreateDateStart()
     {
         $this->searchData = [
-            'create_date_start' => new \DateTime('- 1 days')
+            'create_date_start' => new \DateTime('- 1 days'),
         ];
 
         $this->scenario();
@@ -233,7 +233,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
     public function testCreateDateEnd()
     {
         $this->searchData = [
-            'create_date_end' => new \DateTime('+ 1 days')
+            'create_date_end' => new \DateTime('+ 1 days'),
         ];
 
         $this->scenario();
@@ -246,7 +246,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
     public function testUpdateDateStart()
     {
         $this->searchData = [
-            'update_date_start' => new \DateTime('- 1 days')
+            'update_date_start' => new \DateTime('- 1 days'),
         ];
 
         $this->scenario();
@@ -259,7 +259,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
     public function testUpdateDateEnd()
     {
         $this->searchData = [
-            'update_date_end' => new \DateTime('+ 1 days')
+            'update_date_end' => new \DateTime('+ 1 days'),
         ];
 
         $this->scenario();
@@ -273,7 +273,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
     {
         $Categories = $this->categoryRepository->findAll();
         $this->searchData = [
-            'category_id' => $Categories[0]
+            'category_id' => $Categories[0],
         ];
         $this->scenario();
 
@@ -295,7 +295,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
         $this->entityManager->flush();
 
         $this->searchData = [
-            'category_id' => $Category
+            'category_id' => $Category,
         ];
         $this->scenario();
 

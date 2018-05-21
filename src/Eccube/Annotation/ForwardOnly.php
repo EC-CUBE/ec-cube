@@ -6,7 +6,6 @@ use Doctrine\Common\Annotations\Annotation\Target;
 use Doctrine\ORM\Mapping\Annotation;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ConfigurationInterface;
 
-
 /**
  * @Annotation
  * @Target("METHOD")

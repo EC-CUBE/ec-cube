@@ -21,14 +21,12 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Web\Admin\Content;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class BlockControllerTest extends AbstractAdminWebTestCase
 {
-
     public function test_routing_AdminContentBlock_index()
     {
         $this->client->request('GET', $this->generateUrl('admin_content_block'));
@@ -40,7 +38,7 @@ class BlockControllerTest extends AbstractAdminWebTestCase
         $this->client->request('GET',
             $this->generateUrl(
                 'admin_content_block_edit',
-                array('id' => 1)
+                ['id' => 1]
             )
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -50,20 +48,20 @@ class BlockControllerTest extends AbstractAdminWebTestCase
     {
         $this->client->request(
             'POST',
-            $this->generateUrl('admin_content_block_edit', array('id' => 1)),
-            array(
-                'block' => array(
+            $this->generateUrl('admin_content_block_edit', ['id' => 1]),
+            [
+                'block' => [
                     'name' => 'newblock',
                     'file_name' => 'file_name',
                     'block_html' => '<p>test</p>',
                     'DeviceType' => 1,
                     'id' => 1,
                     '_token' => 'dummy',
-                ),
-            )
+                ],
+            ]
         );
         $this->assertTrue($this->client->getResponse()->isRedirect(
-            $this->generateUrl('admin_content_block_edit', array('id' => 1))
+            $this->generateUrl('admin_content_block_edit', ['id' => 1])
         ));
 
         $dir = sprintf('%s/app/template/%s/Block',
@@ -87,12 +85,11 @@ class BlockControllerTest extends AbstractAdminWebTestCase
         $redirectUrl = $this->generateUrl('admin_content_block');
 
         $this->client->request('DELETE',
-            $this->generateUrl('admin_content_block_delete', ['id' => 1,])
+            $this->generateUrl('admin_content_block_delete', ['id' => 1])
         );
 
         $actual = $this->client->getResponse()->isRedirect($redirectUrl);
 
         $this->assertSame(true, $actual);
     }
-
 }

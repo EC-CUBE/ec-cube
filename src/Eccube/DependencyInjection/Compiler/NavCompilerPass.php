@@ -2,7 +2,6 @@
 
 namespace Eccube\DependencyInjection\Compiler;
 
-
 use Eccube\Common\EccubeNav;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -26,7 +25,7 @@ class NavCompilerPass implements CompilerPassInterface
 
             /** @var $class EccubeNav */
             $addNav = $class::getNav();
-            foreach ($nav as $index => $value)  {
+            foreach ($nav as $index => $value) {
                 foreach ($addNav as $target => $add) {
                     if ($target === $value['id']) {
                         $nav[$index]['child'][] = $add;

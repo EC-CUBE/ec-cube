@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type\Admin;
 
 use Eccube\Common\EccubeConfig;
@@ -53,164 +52,164 @@ class SearchShippingType extends AbstractType
     {
         $builder
             // 配送番号・お届け先名・お届け先（フリガナ）・お届け先会社名
-            ->add('multi', TextType::class, array(
+            ->add('multi', TextType::class, [
                 'label' => 'searchshipping.label.multi',
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array('max' => $this->eccubeConfig['eccube_stext_len'])),
-                ),
-            ))
-            ->add('order_status', OrderStatusType::class, array(
+                'constraints' => [
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
+                ],
+            ])
+            ->add('order_status', OrderStatusType::class, [
                 'label' => 'searchshipping.label.order_status',
                 'expanded' => true,
                 'multiple' => true,
-            ))
-            ->add('shipping_status', ShippingStatusType::class, array(
+            ])
+            ->add('shipping_status', ShippingStatusType::class, [
                 'label' => 'searchshipping.label.shipping_status',
                 'expanded' => true,
                 'multiple' => true,
-            ))
-            ->add('name', TextType::class, array(
+            ])
+            ->add('name', TextType::class, [
                 'required' => false,
                 'label' => 'searchshipping.label.name',
-            ))
-            ->add('order_name', TextType::class, array(
+            ])
+            ->add('order_name', TextType::class, [
                 'required' => false,
                 'label' => 'searchshipping.label.order_name',
-            ))
-            ->add('order_id', TextType::class, array(
+            ])
+            ->add('order_id', TextType::class, [
                 'label' => 'searchshipping.label.order_id',
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array('max' => 10)),
-                ),
-            ))
-            ->add('shipping_delivery_date_start', DateType::class, array(
+                'constraints' => [
+                    new Assert\Length(['max' => 10]),
+                ],
+            ])
+            ->add('shipping_delivery_date_start', DateType::class, [
                 'label' => 'searchshipping.label.delivery_date_from',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
-            ))
-            ->add('shipping_delivery_date_end', DateType::class, array(
+                'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+            ])
+            ->add('shipping_delivery_date_end', DateType::class, [
                 'label' => 'searchshipping.label.delivery_date_to',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
-            ))
-            ->add('update_date_start', DateType::class, array(
+                'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+            ])
+            ->add('update_date_start', DateType::class, [
                 'label' => 'searchshipping.label.updated_date_from',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
-            ))
-            ->add('update_date_end', DateType::class, array(
+                'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+            ])
+            ->add('update_date_end', DateType::class, [
                 'label' => 'searchshipping.label.updated_date_to',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
-            ))
-            ->add('payment_total_start', IntegerType::class, array(
+                'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+            ])
+            ->add('payment_total_start', IntegerType::class, [
                 'label' => 'searchshipping.label.purchased_amount_min',
                 'required' => false,
-            ))
-            ->add('payment_total_end', IntegerType::class, array(
+            ])
+            ->add('payment_total_end', IntegerType::class, [
                 'label' => 'searchshipping.label.purchased_amount_max',
                 'required' => false,
-            ))
+            ])
             ->add(
                 $builder
-                    ->create('kana', TextType::class, array(
+                    ->create('kana', TextType::class, [
                         'label' => 'searchshipping.label.kana',
                         'required' => false,
-                        'constraints' => array(
-                            new Assert\Regex(array(
-                                'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
+                        'constraints' => [
+                            new Assert\Regex([
+                                'pattern' => '/^[ァ-ヶｦ-ﾟー]+$/u',
                                 'message' => 'form.type.admin.notkanastyle',
-                            )),
-                        ),
-                    ))
+                            ]),
+                        ],
+                    ])
                     ->addEventSubscriber(new \Eccube\Form\EventListener\ConvertKanaListener('CV'))
             )
             ->add(
                 $builder
-                    ->create('order_kana', TextType::class, array(
+                    ->create('order_kana', TextType::class, [
                         'label' => 'searchshipping.label.order_kana',
                         'required' => false,
-                        'constraints' => array(
-                            new Assert\Regex(array(
-                                'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
+                        'constraints' => [
+                            new Assert\Regex([
+                                'pattern' => '/^[ァ-ヶｦ-ﾟー]+$/u',
                                 'message' => 'form.type.admin.notkanastyle',
-                            )),
-                        ),
-                    ))
+                            ]),
+                        ],
+                    ])
                     ->addEventSubscriber(new \Eccube\Form\EventListener\ConvertKanaListener('CV'))
             )
-            ->add('tel', TextType::class, array(
+            ->add('tel', TextType::class, [
                 'label' => 'searchshipping.label.tel',
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Regex(array(
+                'constraints' => [
+                    new Assert\Regex([
                         'pattern' => "/^[\d-]+$/u",
                         'message' => 'form.type.admin.nottelstyle',
-                    )),
-                ),
-            ))
-            ->add('shipping_date_start', DateType::class, array(
+                    ]),
+                ],
+            ])
+            ->add('shipping_date_start', DateType::class, [
                 'label' => 'searchshipping.label.shipping_date_from',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
-            ))
-            ->add('shipping_date_end', DateType::class, array(
+                'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+            ])
+            ->add('shipping_date_end', DateType::class, [
                 'label' => 'searchshipping.label.shipping_date_to',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
-            ))
-            ->add('buy_product_name', TextType::class, array(
+                'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+            ])
+            ->add('buy_product_name', TextType::class, [
                 'label' => 'searchshipping.label.purchased_products',
                 'required' => false,
-            ))
+            ])
 
             // FXIME 未使用
             ->add('email', TextType::class, [
                 'required' => false,
             ])
             // FIXME 未使用
-            ->add('order_code', TextType::class, array(
+            ->add('order_code', TextType::class, [
                 'label' => '注文コード',
                 'required' => false,
-            ))
+            ])
             // FIXME 未使用
-            ->add('order_date_start', DateType::class, array(
+            ->add('order_date_start', DateType::class, [
                 'label' => 'searchshipping.label.order_date_from',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
-            ))
+                'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+            ])
             // FIXME 未使用
-            ->add('order_date_end', DateType::class, array(
+            ->add('order_date_end', DateType::class, [
                 'label' => 'searchshipping.label.order_date_to',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
-            ))
+                'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+            ])
         ;
     }
 

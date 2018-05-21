@@ -31,35 +31,35 @@ class NonMemberTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
     protected $form;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = array(
-        'name' => array(
+    protected $formData = [
+        'name' => [
             'name01' => 'たかはし',
             'name02' => 'しんいち',
-        ),
-        'kana' => array(
+        ],
+        'kana' => [
             'kana01' => 'タカハシ',
             'kana02' => 'シンイチ',
-        ),
+        ],
         'company_name' => '',
-        'zip' => array(
+        'zip' => [
             'zip01' => '530',
             'zip02' => '0001',
-        ),
-        'address' => array(
+        ],
+        'address' => [
             'pref' => '5',
             'addr01' => '北区',
             'addr02' => '梅田',
-        ),
-        'tel' => array(
+        ],
+        'tel' => [
             'tel01' => '03',
             'tel02' => '1111',
             'tel03' => '1111',
-        ),
-        'email' => array(
-            'first' =>'eccube@example.com',
-            'second' =>'eccube@example.com',
-        ),
-    );
+        ],
+        'email' => [
+            'first' => 'eccube@example.com',
+            'second' => 'eccube@example.com',
+        ],
+    ];
 
     public function setUp()
     {
@@ -67,9 +67,9 @@ class NonMemberTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
-            ->createBuilder(NonMemberType::class, null, array(
+            ->createBuilder(NonMemberType::class, null, [
                 'csrf_protection' => false,
-            ))
+            ])
             ->getForm();
     }
 
