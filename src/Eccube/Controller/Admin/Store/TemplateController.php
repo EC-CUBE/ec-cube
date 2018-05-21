@@ -74,6 +74,7 @@ class TemplateController extends AbstractController
      * @Template("@admin/Store/template.twig")
      *
      * @param Request $request
+     *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function index(Request $request, CacheUtil $cacheUtil)
@@ -144,7 +145,7 @@ class TemplateController extends AbstractController
 
         // 該当テンプレートを一時ディレクトリへコピーする.
         $fs = new Filesystem();
-        $fs->mkdir(array($appDir, $htmlDir));
+        $fs->mkdir([$appDir, $htmlDir]);
         $fs->mirror($targetRealDir, $appDir);
         $fs->mirror($targetHtmlRealDir, $htmlDir);
 
@@ -228,6 +229,7 @@ class TemplateController extends AbstractController
      * @Template("@admin/Store/template_add.twig")
      *
      * @param Request $request
+     *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function install(Request $request)

@@ -46,11 +46,11 @@ class SystemService
 
     /**
      * get DB version
+     *
      * @return string
      */
     public function getDbversion()
     {
-
         $rsm = new \Doctrine\ORM\Query\ResultSetMapping();
         $rsm->addScalarResult('v', 'v');
 
@@ -81,6 +81,7 @@ class SystemService
 
     /**
      * Get environment php command
+     *
      * @return string
      */
     public function getPHP()
@@ -90,7 +91,9 @@ class SystemService
 
     /**
      * Try to set new values memory_limit | return true
+     *
      * @param string $memory | EX: 1536M
+     *
      * @return bool
      */
     public function canSetMemoryLimit($memory)
@@ -106,6 +109,7 @@ class SystemService
 
     /**
      * Get memory_limit | Megabyte
+     *
      * @return float|int
      */
     public function getMemoryLimit()

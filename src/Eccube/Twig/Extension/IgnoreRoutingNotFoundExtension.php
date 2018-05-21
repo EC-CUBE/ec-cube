@@ -15,14 +15,14 @@ class IgnoreRoutingNotFoundExtension extends RoutingExtension
      * @param string $name
      * @param array $parameters
      * @param bool $relative
+     *
      * @return string
      */
-    public function getPath($name, $parameters = array(), $relative = false)
+    public function getPath($name, $parameters = [], $relative = false)
     {
         try {
             return parent::getPath($name, $parameters, $relative);
         } catch (RouteNotFoundException $e) {
-
             log_warning($e->getMessage(), ['exception' => $e]);
 
             return parent::getPath('homepage').'404?bind='.$name;
@@ -37,14 +37,14 @@ class IgnoreRoutingNotFoundExtension extends RoutingExtension
      * @param string $name
      * @param array $parameters
      * @param bool $schemeRelative
+     *
      * @return string
      */
-    public function getUrl($name, $parameters = array(), $schemeRelative = false)
+    public function getUrl($name, $parameters = [], $schemeRelative = false)
     {
         try {
             return parent::getUrl($name, $parameters, $schemeRelative);
         } catch (RouteNotFoundException $e) {
-
             log_warning($e->getMessage(), ['exception' => $e]);
 
             return parent::getUrl('homepage').'404?bind='.$name;

@@ -13,6 +13,7 @@ class AdminCustomerCustomizer extends WhereCustomizer
      *
      * @param array $params
      * @param $queryKey
+     *
      * @return WhereClause[]
      */
     protected function createStatements($params, $queryKey)

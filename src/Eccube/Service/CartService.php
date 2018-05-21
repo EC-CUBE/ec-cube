@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Service;
 
 use Eccube\Entity\Cart;
@@ -53,6 +52,7 @@ class CartService
 
     /**
      * @var ItemHolderInterface
+     *
      * @deprecated
      */
     protected $cart;
@@ -101,6 +101,7 @@ class CartService
             $this->carts = $this->session->get('carts', []);
             $this->loadItems();
         }
+
         return $this->carts;
     }
 
@@ -114,8 +115,10 @@ class CartService
             if (!$this->cart) {
                 $this->cart = new Cart();
             }
+
             return $this->cart;
         }
+
         return current($this->getCarts());
     }
 
@@ -133,6 +136,7 @@ class CartService
 
     /**
      * @param CartItem[] $cartItems
+     *
      * @return CartItem[]
      */
     protected function mergeAllCartItems($cartItems = [])
@@ -150,6 +154,7 @@ class CartService
     /**
      * @param $cartItems
      * @param $allCartItems
+     *
      * @return array
      */
     protected function mergeCartitems($cartItems, $allCartItems)
@@ -168,6 +173,7 @@ class CartService
                 $allCartItems[] = $item;
             }
         }
+
         return $allCartItems;
     }
 
@@ -194,8 +200,10 @@ class CartService
 
     /**
      * カートに商品を追加します.
+     *
      * @param $ProductClass ProductClass 商品規格
      * @param $quantity int 数量
+     *
      * @return bool 商品を追加できた場合はtrue
      */
     public function addProduct($ProductClass, $quantity = 1)
@@ -227,7 +235,6 @@ class CartService
         $allCartItems = $this->mergeAllCartItems([$newItem]);
         $this->restoreCarts($allCartItems);
 
-
         return true;
     }
 
@@ -249,7 +256,7 @@ class CartService
 
         $allCartItems = $this->mergeAllCartItems();
         $foundIndex = -1;
-        foreach ($allCartItems as $index=>$itemInCart) {
+        foreach ($allCartItems as $index => $itemInCart) {
             if ($this->cartItemComparator->compare($itemInCart, $removeItem)) {
                 $foundIndex = $index;
                 break;
@@ -290,6 +297,7 @@ class CartService
 
     /**
      * @param  string $pre_order_id
+     *
      * @return \Eccube\Service\CartService
      */
     public function setPreOrderId($pre_order_id)
@@ -336,6 +344,7 @@ class CartService
 
     /**
      * 指定したインデックスにあるカートを優先にする
+     *
      * @param int $index カートのインデックス
      */
     public function setPrimary($index = 0)

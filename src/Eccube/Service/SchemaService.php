@@ -22,6 +22,7 @@
  */
 
 namespace Eccube\Service;
+
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
@@ -34,7 +35,6 @@ use Eccube\Util\StringUtil;
  */
 class SchemaService
 {
-
     /**
      * @var EntityManagerInterface
      */
@@ -42,6 +42,7 @@ class SchemaService
 
     /**
      * SchemaService constructor.
+     *
      * @param EntityManagerInterface $entityManager
      */
     public function __construct(EntityManagerInterface $entityManager)
@@ -51,7 +52,7 @@ class SchemaService
 
     public function updateSchema($generatedFiles, $proxiesDirectory)
     {
-        $outputDir = sys_get_temp_dir() . '/proxy_' . StringUtil::random(12);
+        $outputDir = sys_get_temp_dir().'/proxy_'.StringUtil::random(12);
         mkdir($outputDir);
 
         try {
@@ -75,7 +76,6 @@ class SchemaService
             $tool = new SchemaTool($this->entityManager);
             $metaData = $this->entityManager->getMetadataFactory()->getAllMetadata();
             $tool->updateSchema($metaData, true);
-
         } finally {
             foreach (glob("${outputDir}/*") as  $f) {
                 unlink($f);

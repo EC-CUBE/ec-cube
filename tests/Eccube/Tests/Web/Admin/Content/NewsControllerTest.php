@@ -45,7 +45,7 @@ class NewsControllerTest extends AbstractAdminWebTestCase
         $News = $this->createNews($Member);
 
         $this->client->request('GET',
-            $this->generateUrl('admin_content_news_edit', array('id' => $News->getId()))
+            $this->generateUrl('admin_content_news_edit', ['id' => $News->getId()])
         );
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -61,7 +61,7 @@ class NewsControllerTest extends AbstractAdminWebTestCase
         $redirectUrl = $this->generateUrl('admin_content_news');
 
         $this->client->request('DELETE',
-            $this->generateUrl('admin_content_news_delete', array('id' => $News->getId()))
+            $this->generateUrl('admin_content_news_delete', ['id' => $News->getId()])
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
@@ -75,7 +75,7 @@ class NewsControllerTest extends AbstractAdminWebTestCase
 
         $redirectUrl = $this->generateUrl('admin_content_news');
         $this->client->request('PUT',
-            $this->generateUrl('admin_content_news_up', array('id' => $News1->getId()))
+            $this->generateUrl('admin_content_news_up', ['id' => $News1->getId()])
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
     }
@@ -88,7 +88,7 @@ class NewsControllerTest extends AbstractAdminWebTestCase
 
         $redirectUrl = $this->generateUrl('admin_content_news');
         $this->client->request('PUT',
-            $this->generateUrl('admin_content_news_down', array('id' => $News2->getId()))
+            $this->generateUrl('admin_content_news_down', ['id' => $News2->getId()])
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
     }

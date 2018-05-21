@@ -34,7 +34,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class MasterdataType
- * @package Eccube\Form\Type\Admin
  */
 class MasterdataType extends AbstractType
 {
@@ -45,6 +44,7 @@ class MasterdataType extends AbstractType
 
     /**
      * MasterdataType constructor.
+     *
      * @param EntityManagerInterface $entityManager
      */
     public function __construct(EntityManagerInterface $entityManager)
@@ -57,7 +57,7 @@ class MasterdataType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $masterdata = array();
+        $masterdata = [];
 
         /** @var MappingDriverChain $driverChain */
         $driverChain = $this->entityManager->getConfiguration()->getMetadataDriverImpl();
@@ -83,16 +83,15 @@ class MasterdataType extends AbstractType
         }
 
         $builder
-            ->add('masterdata', ChoiceType::class, array(
+            ->add('masterdata', ChoiceType::class, [
                 'choices' => array_flip($masterdata),
                 'expanded' => false,
                 'multiple' => false,
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                ),
-            ))
+                ],
+            ])
             ;
-
     }
 
     /**

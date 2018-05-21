@@ -31,37 +31,37 @@ class CategoryRepositoryTest extends EccubeTestCase
 
     public function createCategories()
     {
-        $categories = array(
-            array('name' => '親1', 'hierarchy' => 1, 'sort_no' => 1,
-                  'child' => array(
-                      array('name' => '子1', 'hierarchy' => 2, 'sort_no' => 4,
-                            'child' => array(
-                                array('name' => '孫1', 'hierarchy' => 3, 'sort_no' => 9)
-                            ),
-                      ),
-                  ),
-            ),
-            array('name' => '親2', 'hierarchy' => 1, 'sort_no' => 2,
-                  'child' => array(
-                      array('name' => '子2-0', 'hierarchy' => 2, 'sort_no' => 5,
-                            'child' => array(
-                                array('name' => '孫2', 'hierarchy' => 3, 'sort_no' => 10)
-                            )
-                      ),
-                      array('name' => '子2-1', 'hierarchy' => 2, 'sort_no' => 6),
-                      array('name' => '子2-2', 'hierarchy' => 2, 'sort_no' => 7)
-                  ),
-            ),
-            array('name' => '親3', 'hierarchy' => 1, 'sort_no' => 3,
-                  'child' => array(
-                      array('name' => '子3', 'hierarchy' => 2, 'sort_no' => 8,
-                            'child' => array(
-                                array('name' => '孫3', 'hierarchy' => 3, 'sort_no' => 11)
-                            )
-                      )
-                  ),
-            ),
-        );
+        $categories = [
+            ['name' => '親1', 'hierarchy' => 1, 'sort_no' => 1,
+                  'child' => [
+                      ['name' => '子1', 'hierarchy' => 2, 'sort_no' => 4,
+                            'child' => [
+                                ['name' => '孫1', 'hierarchy' => 3, 'sort_no' => 9],
+                            ],
+                      ],
+                  ],
+            ],
+            ['name' => '親2', 'hierarchy' => 1, 'sort_no' => 2,
+                  'child' => [
+                      ['name' => '子2-0', 'hierarchy' => 2, 'sort_no' => 5,
+                            'child' => [
+                                ['name' => '孫2', 'hierarchy' => 3, 'sort_no' => 10],
+                            ],
+                      ],
+                      ['name' => '子2-1', 'hierarchy' => 2, 'sort_no' => 6],
+                      ['name' => '子2-2', 'hierarchy' => 2, 'sort_no' => 7],
+                  ],
+            ],
+            ['name' => '親3', 'hierarchy' => 1, 'sort_no' => 3,
+                  'child' => [
+                      ['name' => '子3', 'hierarchy' => 2, 'sort_no' => 8,
+                            'child' => [
+                                ['name' => '孫3', 'hierarchy' => 3, 'sort_no' => 11],
+                            ],
+                      ],
+                  ],
+            ],
+        ];
 
         foreach ($categories as $category_array) {
             $Category = new Category();
@@ -105,10 +105,11 @@ class CategoryRepositoryTest extends EccubeTestCase
     /**
      * 既存のデータを削除しておく.
      */
-    public function remove() {
+    public function remove()
+    {
         $this->deleteAllRows([
             'dtb_product_category',
-            'dtb_category'
+            'dtb_category',
         ]);
     }
 
@@ -128,30 +129,30 @@ class CategoryRepositoryTest extends EccubeTestCase
         $this->actual = count($Categories);
         $this->verify('ルートカテゴリの合計数は'.$this->expected.'ではありません');
 
-        $this->actual = array();
+        $this->actual = [];
         foreach ($Categories as $Category) {
             $this->actual[] = $Category->getName();
         }
 
-        $this->expected = array('親3', '親2', '親1');
+        $this->expected = ['親3', '親2', '親1'];
         $this->verify('取得したカテゴリ名が正しくありません');
     }
 
     public function testGetListWithParent()
     {
-        $Parent1 = $this->categoryRepository->findOneBy(array('name' => '子1'));
+        $Parent1 = $this->categoryRepository->findOneBy(['name' => '子1']);
         $Categories = $this->categoryRepository->getList($Parent1);
 
         $this->expected = 1;
         $this->actual = count($Categories);
         $this->verify('ルートカテゴリの合計数は'.$this->expected.'ではありません');
 
-        $this->actual = array();
+        $this->actual = [];
         foreach ($Categories as $Category) {
             $this->actual[] = $Category->getName();
         }
 
-        $this->expected = array('孫1');
+        $this->expected = ['孫1'];
         $this->verify('取得したカテゴリ名が正しくありません');
     }
 
@@ -163,12 +164,12 @@ class CategoryRepositoryTest extends EccubeTestCase
         $this->actual = count($Categories);
         $this->verify('ルートカテゴリの合計数は'.$this->expected.'ではありません');
 
-        $this->actual = array();
+        $this->actual = [];
         foreach ($Categories as $Category) {
             $this->actual[] = $Category->getName();
         }
 
-        $this->expected = array('親3', '子3', '孫3', '親2', '子2-2', '子2-1', '子2-0', '孫2', '親1', '子1', '孫1');
+        $this->expected = ['親3', '子3', '孫3', '親2', '子2-2', '子2-1', '子2-0', '孫2', '親1', '子1', '孫1'];
         $this->verify('取得したカテゴリ名が正しくありません');
     }
 
@@ -190,7 +191,7 @@ class CategoryRepositoryTest extends EccubeTestCase
     {
         $faker = $this->getFaker();
         $name = $faker->name;
-        $Category = $this->categoryRepository->findOneBy(array('name' => '子2-1'));
+        $Category = $this->categoryRepository->findOneBy(['name' => '子2-1']);
         $Category->setName($name);
         $updateDate = $Category->getUpdateDate();
         sleep(1);
@@ -202,17 +203,17 @@ class CategoryRepositoryTest extends EccubeTestCase
         $this->assertNotEquals($this->expected, $this->actual);
 
         // 名前を変更したので null になっているはず
-        $Category = $this->categoryRepository->findOneBy(array('name' => '子2-1'));
+        $Category = $this->categoryRepository->findOneBy(['name' => '子2-1']);
         $this->assertNull($Category);
     }
 
     public function testDelete()
     {
-        $Category = $this->categoryRepository->findOneBy(array('name' => '孫2'));
+        $Category = $this->categoryRepository->findOneBy(['name' => '孫2']);
 
         $this->categoryRepository->delete($Category);
 
-        $Category = $this->categoryRepository->findOneBy(array('name' => '孫2'));
+        $Category = $this->categoryRepository->findOneBy(['name' => '孫2']);
         $this->assertNull($Category);
     }
 
@@ -220,7 +221,7 @@ class CategoryRepositoryTest extends EccubeTestCase
     {
         // 商品をカテゴリに紐付けて作成.
         $this->createProduct();
-        $Category = $this->categoryRepository->findOneBy(array('name' => '孫2'));
+        $Category = $this->categoryRepository->findOneBy(['name' => '孫2']);
 
         try {
             // 紐付いた商品が存在している場合は削除できない.

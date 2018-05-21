@@ -21,14 +21,12 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
 use Eccube\Annotation\FormType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -41,8 +39,8 @@ class MasterType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'multiple'=> false,
+        $resolver->setDefaults([
+            'multiple' => false,
             'expanded' => false,
             'required' => false,
             'placeholder' => false,
@@ -50,7 +48,7 @@ class MasterType extends AbstractType
                 return $er->createQueryBuilder('m')
                     ->orderBy('m.sort_no', 'ASC');
             },
-        ));
+        ]);
     }
 
     /**

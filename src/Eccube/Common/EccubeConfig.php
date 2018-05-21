@@ -18,6 +18,7 @@ class EccubeConfig implements \ArrayAccess
 
     /**
      * @param $key
+     *
      * @return mixed
      */
     public function get($key)
@@ -27,6 +28,7 @@ class EccubeConfig implements \ArrayAccess
 
     /**
      * @param $key
+     *
      * @return bool
      */
     public function has($key)
@@ -37,6 +39,7 @@ class EccubeConfig implements \ArrayAccess
     /**
      * @param $key
      * @param $value
+     *
      * @return mixed
      */
     public function set($key, $value)
@@ -46,6 +49,7 @@ class EccubeConfig implements \ArrayAccess
 
     /**
      * @param mixed $offset
+     *
      * @return bool
      */
     public function offsetExists($offset)
@@ -55,6 +59,7 @@ class EccubeConfig implements \ArrayAccess
 
     /**
      * @param mixed $offset
+     *
      * @return mixed
      */
     public function offsetGet($offset)
@@ -73,6 +78,7 @@ class EccubeConfig implements \ArrayAccess
 
     /**
      * @param mixed $offset
+     *
      * @throws \Exception
      */
     public function offsetUnset($offset)

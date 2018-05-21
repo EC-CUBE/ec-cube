@@ -57,6 +57,7 @@ class UsePointProcessor implements ItemHolderProcessor
 
             // XXX delete/insert ではなく, update/insert の方がいいかも
             $this->removePointDiscountItem($itemHolder);
+
             return $this->addPointDiscountItem($itemHolder);
         }
 
@@ -98,6 +99,7 @@ class UsePointProcessor implements ItemHolderProcessor
             ->setTaxType($Taxion)
             ->setOrder($itemHolder);
         $itemHolder->addItem($OrderItem);
+
         return ProcessResult::success();
     }
 
@@ -120,6 +122,7 @@ class UsePointProcessor implements ItemHolderProcessor
      * 利用ポイントを単価に換算する.
      *
      * @param integer $usePoint 利用ポイント
+     *
      * @return integer
      */
     protected function usePointToPrice($usePoint)

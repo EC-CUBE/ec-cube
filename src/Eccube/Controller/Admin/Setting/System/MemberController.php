@@ -84,10 +84,10 @@ class MemberController extends AbstractController
         $builder = $this->formFactory->createBuilder();
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
                 'Members' => $Members,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_INDEX_INITIALIZE, $event);
@@ -134,10 +134,10 @@ class MemberController extends AbstractController
             $this->memberRepository->save($Member);
 
             $event = new EventArgs(
-                array(
+                [
                     'form' => $form,
                     'Member' => $Member,
-                ),
+                ],
                 $request
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_EDIT_COMPLETE, $event);
@@ -171,10 +171,10 @@ class MemberController extends AbstractController
             ->createBuilder(MemberType::class, $Member);
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
                 'Member' => $Member,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_EDIT_INITIALIZE, $event);
@@ -204,10 +204,10 @@ class MemberController extends AbstractController
             $this->memberRepository->save($Member);
 
             $event = new EventArgs(
-                array(
+                [
                     'form' => $form,
                     'Member' => $Member,
-                ),
+                ],
                 $request
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_EDIT_COMPLETE, $event);
@@ -237,7 +237,6 @@ class MemberController extends AbstractController
             $this->memberRepository->up($Member);
 
             $this->addSuccess('admin.member.up.complete', 'admin');
-
         } catch (\Exception $e) {
             log_error('メンバー表示順更新エラー', [$Member->getId(), $e]);
 
@@ -292,7 +291,6 @@ class MemberController extends AbstractController
             $this->addSuccess('admin.member.delete.complete', 'admin');
 
             log_info('メンバー削除完了', [$Member->getId()]);
-
         } catch (\Exception $e) {
             log_info('メンバー削除エラー', [$Member->getId(), $e]);
 

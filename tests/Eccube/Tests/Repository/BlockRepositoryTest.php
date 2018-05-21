@@ -7,8 +7,6 @@ use Eccube\Entity\Master\DeviceType;
 use Eccube\Repository\BlockRepository;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Tests\EccubeTestCase;
-use Eccube\Util\ReflectionUtil;
-use org\bovigo\vfs\vfsStream;
 
 /**
  * BlockRepository test cases.

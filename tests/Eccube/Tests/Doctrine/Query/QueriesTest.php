@@ -9,7 +9,6 @@ use Eccube\Tests\EccubeTestCase;
 
 class QueriesTest extends EccubeTestCase
 {
-
     public function testCustomizerShouldBeCalled()
     {
         $customizer = new QueriesTest_Customizer();
@@ -40,12 +39,10 @@ class QueriesTest extends EccubeTestCase
         return $this->entityManager->createQueryBuilder()
             ->select('p')->from('Product', 'p');
     }
-
 }
 
 class QueriesTest_Customizer implements QueryCustomizer
 {
-
     public $customized = false;
 
     public function customize(QueryBuilder $builder, $params, $queryKey)
@@ -66,10 +63,12 @@ class QueriesTest_Customizer implements QueryCustomizer
 
 class QueriesTest_CustomizerWithoutAnnotation implements QueryCustomizer
 {
-    public function customize(QueryBuilder $builder, $params, $queryKey) {}
+    public function customize(QueryBuilder $builder, $params, $queryKey)
+    {
+    }
 
     public function getQueryKey()
     {
-        return ;
+        return;
     }
 }

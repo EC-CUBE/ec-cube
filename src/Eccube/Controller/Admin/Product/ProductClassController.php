@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Controller\Admin\Product;
 
 use Doctrine\ORM\NoResultException;
@@ -72,6 +71,7 @@ class ProductClassController extends AbstractController
 
     /**
      * ProductClassController constructor.
+     *
      * @param ProductClassRepository $productClassRepository
      * @param ClassCategoryRepository $classCategoryRepository
      */
@@ -109,8 +109,8 @@ class ProductClassController extends AbstractController
             // 規格ありの商品は編集画面を表示する.
             $ProductClasses = $Product->getProductClasses()
                 ->filter(function ($pc) {
-                return $pc->getClassCategory1() !== null;
-            });
+                    return $pc->getClassCategory1() !== null;
+                });
 
             // 設定されている規格名1, 2を取得(商品規格の規格分類には必ず同じ値がセットされている)
             $FirstProductClass = $ProductClasses->first();
@@ -227,6 +227,7 @@ class ProductClassController extends AbstractController
      *
      * @param ClassName $ClassName1
      * @param ClassName|null $ClassName2
+     *
      * @return array|ProductClass[]
      */
     protected function createProductClasses(ClassName $ClassName1, ClassName $ClassName2 = null)
@@ -263,6 +264,7 @@ class ProductClassController extends AbstractController
      *
      * @param $ProductClassessForMatrix
      * @param $ProductClasses
+     *
      * @return array|ProductClass[]
      */
     protected function mergeProductClassess($ProductClassessForMatrix, $ProductClasses)
@@ -349,7 +351,6 @@ class ProductClassController extends AbstractController
             $ProductStock->setStock($pc->isStockUnlimited() ? null : $pc->getStock());
 
             if ($this->baseInfoRepository->get()->isOptionProductTaxRule()) {
-
                 $rate = $pc->getTaxRate();
                 $TaxRule = $pc->getTaxRule();
                 if (is_numeric($rate)) {
@@ -396,6 +397,7 @@ class ProductClassController extends AbstractController
      * @param ClassName|null $ClassName1
      * @param ClassName|null $ClassName2
      * @param array $options
+     *
      * @return \Symfony\Component\Form\FormInterface
      */
     protected function createMatrixForm(
@@ -419,7 +421,9 @@ class ProductClassController extends AbstractController
      * 商品規格はvisible=trueのものだけを取得し, 規格分類はsort_no=DESCでソートされている.
      *
      * @param $id
+     *
      * @return Product|null
+     *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     protected function findProduct($id)

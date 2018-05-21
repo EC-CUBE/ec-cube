@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type\Master;
 
 use Eccube\Form\Type\MasterType;
@@ -30,7 +29,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class PrefType
- * @package Eccube\Form\Type\Master
  */
 class PrefType extends AbstractType
 {
@@ -39,10 +37,10 @@ class PrefType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'class' => 'Eccube\Entity\Master\Pref',
             'placeholder' => 'form.pref.empty_value',
-        ));
+        ]);
     }
 
     /**

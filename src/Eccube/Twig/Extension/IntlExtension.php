@@ -2,7 +2,6 @@
 
 namespace Eccube\Twig\Extension;
 
-
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
@@ -28,6 +27,7 @@ class IntlExtension extends AbstractExtension
      *
      * @param Environment $env
      * @param $date
+     *
      * @return bool|string
      */
     public function date_day(Environment $env, $date)
@@ -47,6 +47,7 @@ class IntlExtension extends AbstractExtension
      *
      * @param Environment $env
      * @param $date
+     *
      * @return bool|string
      */
     public function date_min(Environment $env, $date)

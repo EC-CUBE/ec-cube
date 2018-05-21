@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Controller\Admin\Order;
 
 use Eccube\Common\Constant;
@@ -164,9 +163,9 @@ class OrderController extends AbstractController
             ->createBuilder(SearchOrderType::class);
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_INITIALIZE, $event);
@@ -183,7 +182,7 @@ class OrderController extends AbstractController
         $page_count = $this->session->get('eccube.admin.order.search.page_count',
                 $this->eccubeConfig->get('eccube_default_page_count'));
 
-        $page_count_param = (int)$request->get('page_count');
+        $page_count_param = (int) $request->get('page_count');
         $pageMaxis = $this->pageMaxRepository->findAll();
 
         if ($page_count_param) {
@@ -197,7 +196,6 @@ class OrderController extends AbstractController
         }
 
         if ('POST' === $request->getMethod()) {
-
             $searchForm->handleRequest($request);
 
             if ($searchForm->isValid()) {
@@ -224,12 +222,12 @@ class OrderController extends AbstractController
             }
         } else {
             if (null !== $page_no || $request->get('resume')) {
-                /**
+                /*
                  * ページ送りの場合または、他画面から戻ってきた場合は, セッションから検索条件を復旧する.
                  */
                 if ($page_no) {
                     // ページ送りで遷移した場合.
-                    $this->session->set('eccube.admin.order.search.page_no', (int)$page_no);
+                    $this->session->set('eccube.admin.order.search.page_no', (int) $page_no);
                 } else {
                     // 他画面から遷移した場合.
                     $page_no = $this->session->get('eccube.admin.order.search.page_no', 1);
@@ -291,7 +289,7 @@ class OrderController extends AbstractController
                 ->find($order_id);
             if ($Order) {
                 $this->entityManager->remove($Order);
-                log_info('受注削除', array($Order->getId()));
+                log_info('受注削除', [$Order->getId()]);
             }
         }
 
@@ -308,11 +306,11 @@ class OrderController extends AbstractController
      * @Route("/%eccube_admin_route%/order/export/order", name="admin_order_export_order")
      *
      * @param Request $request
+     *
      * @return StreamedResponse
      */
     public function exportOrder(Request $request)
     {
-
         // タイムアウトを無効にする.
         set_time_limit(0);
 
@@ -322,7 +320,6 @@ class OrderController extends AbstractController
 
         $response = new StreamedResponse();
         $response->setCallback(function () use ($request) {
-
             // CSV種別を元に初期化.
             $this->csvExportService->initCsvType(CsvType::CSV_TYPE_ORDER);
 
@@ -336,7 +333,6 @@ class OrderController extends AbstractController
             // データ行の出力.
             $this->csvExportService->setExportQueryBuilder($qb);
             $this->csvExportService->exportData(function ($entity, $csvService) use ($request) {
-
                 $Csvs = $csvService->getCsvs();
 
                 $Order = $entity;
@@ -355,12 +351,12 @@ class OrderController extends AbstractController
                         }
 
                         $event = new EventArgs(
-                            array(
+                            [
                                 'csvService' => $csvService,
                                 'Csv' => $Csv,
                                 'OrderItem' => $OrderItem,
                                 'ExportCsvRow' => $ExportCsvRow,
-                            ),
+                            ],
                             $request
                         );
                         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_CSV_EXPORT_ORDER, $event);
@@ -381,7 +377,7 @@ class OrderController extends AbstractController
         $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
         $response->send();
 
-        log_info('受注CSV出力ファイル名', array($filename));
+        log_info('受注CSV出力ファイル名', [$filename]);
 
         return $response;
     }
@@ -392,6 +388,7 @@ class OrderController extends AbstractController
      * @Route("/%eccube_admin_route%/order/export/shipping", name="admin_order_export_shipping")
      *
      * @param Request $request
+     *
      * @return StreamedResponse
      */
     public function exportShipping(Request $request)
@@ -405,7 +402,6 @@ class OrderController extends AbstractController
 
         $response = new StreamedResponse();
         $response->setCallback(function () use ($request) {
-
             // CSV種別を元に初期化.
             $this->csvExportService->initCsvType(CsvType::CSV_TYPE_SHIPPING);
 
@@ -419,7 +415,6 @@ class OrderController extends AbstractController
             // データ行の出力.
             $this->csvExportService->setExportQueryBuilder($qb);
             $this->csvExportService->exportData(function ($entity, $csvService) use ($request) {
-
                 /** @var Csv[] $Csvs */
                 $Csvs = $csvService->getCsvs();
 
@@ -447,12 +442,12 @@ class OrderController extends AbstractController
                         }
 
                         $event = new EventArgs(
-                            array(
+                            [
                                 'csvService' => $csvService,
                                 'Csv' => $Csv,
                                 'OrderItem' => $OrderItem,
                                 'ExportCsvRow' => $ExportCsvRow,
-                            ),
+                            ],
                             $request
                         );
                         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_CSV_EXPORT_SHIPPING, $event);
@@ -463,7 +458,6 @@ class OrderController extends AbstractController
                     // 出力.
                     $csvService->fputcsv($ExportCsvRow->getRow());
                 }
-
             });
         });
 
@@ -473,7 +467,7 @@ class OrderController extends AbstractController
         $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
         $response->send();
 
-        log_info('出荷CSV出力ファイル名', array($filename));
+        log_info('出荷CSV出力ファイル名', [$filename]);
 
         return $response;
     }
@@ -512,7 +506,7 @@ class OrderController extends AbstractController
                     foreach ($flowResult->getWarning() as $warning) {
                         $msg = $this->translator->trans('admin.order.index.bulk_warning', [
                           '%orderId%' => $Order->getId(),
-                          '%message%' => $warning->getMessage()
+                          '%message%' => $warning->getMessage(),
                         ]);
                         $this->addWarning($msg, 'admin');
                     }
@@ -522,7 +516,7 @@ class OrderController extends AbstractController
                     foreach ($flowResult->getErrors() as $error) {
                         $msg = $this->translator->trans('admin.order.index.bulk_error', [
                           '%orderId%' => $Order->getId(),
-                          '%message%' => $error->getMessage()
+                          '%message%' => $error->getMessage(),
                         ]);
                         $this->addError($msg, 'admin');
                     }
@@ -534,7 +528,7 @@ class OrderController extends AbstractController
                 } catch (PurchaseException $e) {
                     $msg = $this->translator->trans('admin.order.index.bulk_error', [
                       '%orderId%' => $Order->getId(),
-                      '%message%' => $e->getMessage()
+                      '%message%' => $e->getMessage(),
                     ]);
                     $this->addError($msg, 'admin');
                     continue;
@@ -552,7 +546,7 @@ class OrderController extends AbstractController
                 $this->entityManager->flush();
                 $msg = $this->translator->trans('admin.order.index.bulk_order_status_success_count', [
                     '%count%' => $count,
-                    '%status%' => $OrderStatus->getName()
+                    '%status%' => $OrderStatus->getName(),
                 ]);
                 $this->addSuccess($msg, 'admin');
             }

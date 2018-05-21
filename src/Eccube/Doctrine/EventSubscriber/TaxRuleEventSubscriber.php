@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Doctrine\EventSubscriber;
 
 use Doctrine\Common\EventSubscriber;
@@ -30,9 +29,7 @@ use Doctrine\ORM\Events;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\ProductClass;
 use Eccube\Service\TaxRuleService;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\ServiceSubscriberInterface;
 
 class TaxRuleEventSubscriber implements EventSubscriber
 {
@@ -56,12 +53,12 @@ class TaxRuleEventSubscriber implements EventSubscriber
 
     public function getSubscribedEvents()
     {
-        return array(
+        return [
             Events::prePersist,
             Events::postLoad,
             Events::postPersist,
             Events::postUpdate,
-        );
+        ];
     }
 
     public function prePersist(LifecycleEventArgs $args)

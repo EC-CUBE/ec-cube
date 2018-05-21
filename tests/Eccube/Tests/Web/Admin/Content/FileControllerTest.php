@@ -3,8 +3,6 @@
 namespace Eccube\Tests\Web\Admin\Content;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FileControllerTest extends AbstractAdminWebTestCase
@@ -69,14 +67,14 @@ class FileControllerTest extends AbstractAdminWebTestCase
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_content_file'),
-            array(
-                'form' => array(
+            [
+                'form' => [
                     '_token' => 'dummy',
                     'create_file' => $folder,
-                    'file' => ''
-                ),
-                'mode' => 'create'
-            )
+                    'file' => '',
+                ],
+                'mode' => 'create',
+            ]
         );
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -100,16 +98,16 @@ class FileControllerTest extends AbstractAdminWebTestCase
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_content_file'),
-            array(
-                'form' => array(
+            [
+                'form' => [
                     '_token' => 'dummy',
                     'create_file' => '',
-                    'file' => $file
-                ),
+                    'file' => $file,
+                ],
                 'mode' => 'upload',
-                'now_dir' => '/'
-            ),
-            array('file' => $file)
+                'now_dir' => '/',
+            ],
+            ['file' => $file]
         );
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());

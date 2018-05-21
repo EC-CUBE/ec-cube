@@ -21,11 +21,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type\Admin;
 
 use Eccube\Annotation\FormType;
-use Eccube\Annotation\Inject;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -40,7 +38,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class LoginType extends AbstractType
 {
     /**
-     * @var SessionInterface $session
+     * @var SessionInterface
      */
     protected $session;
 
@@ -54,23 +52,23 @@ class LoginType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('login_id', TextType::class, array(
-            'attr' => array(
+        $builder->add('login_id', TextType::class, [
+            'attr' => [
                 'max_length' => 50,
-            ),
-            'constraints' => array(
+            ],
+            'constraints' => [
                 new Assert\NotBlank(),
-            ),
+            ],
             'data' => $this->session->get('_security.last_username'),
-        ));
-        $builder->add('password', PasswordType::class, array(
-            'attr' => array(
+        ]);
+        $builder->add('password', PasswordType::class, [
+            'attr' => [
                 'max_length' => 50,
-            ),
-            'constraints' => array(
+            ],
+            'constraints' => [
                 new Assert\NotBlank(),
-            ),
-        ));
+            ],
+        ]);
     }
 
     /**
@@ -78,9 +76,9 @@ class LoginType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'csrf_protection' => false,
-        ));
+        ]);
     }
 
     /**

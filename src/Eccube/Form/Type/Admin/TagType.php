@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type\Admin;
 
 use Eccube\Annotation\FormType;
@@ -40,13 +39,13 @@ class TagType extends AbstractType
 {
     /**
      * @Inject("config")
+     *
      * @var array
      */
     protected $eccubeConfig;
 
-
     /**
-     * @var \Eccube\Application $app
+     * @var \Eccube\Application
      * @Inject(Application::class)
      */
     protected $app;
@@ -61,15 +60,15 @@ class TagType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class, array(
+            ->add('name', TextType::class, [
                 'label' => 'cache.label.cache_dir', // FIXME キーが間違ってる？
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(array(
+                    new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_stext_len'],
-                    )),
-                ),
-            ))
+                    ]),
+                ],
+            ])
         ;
     }
 
@@ -78,9 +77,9 @@ class TagType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'Eccube\Entity\Tag',
-        ));
+        ]);
     }
 
     /**

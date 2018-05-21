@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Entity\Master;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -40,12 +39,14 @@ class TaxDisplayType extends \Eccube\Entity\Master\AbstractMasterEntity
 {
     /**
      * 税抜.
+     *
      * @var integer
      */
     const EXCLUDED = 1;
 
     /**
      * 税込.
+     *
      * @var integer
      */
     const INCLUDED = 2;

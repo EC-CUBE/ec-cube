@@ -21,14 +21,11 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type\Master;
 
-use Doctrine\ORM\EntityRepository;
 use Eccube\Annotation\FormType;
 use Eccube\Form\Type\MasterType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -38,10 +35,10 @@ class RoundingTypeType extends AbstractType
 {
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'class' => 'Eccube\Entity\Master\RoundingType',
             'expanded' => false,
-        ));
+        ]);
     }
 
     public function getParent()

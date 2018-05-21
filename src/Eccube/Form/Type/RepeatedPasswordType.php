@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type;
 
 use Eccube\Common\EccubeConfig;
@@ -33,7 +32,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class RepeatedPasswordType
- * @package Eccube\Form\Type
  */
 class RepeatedPasswordType extends AbstractType
 {
@@ -44,6 +42,7 @@ class RepeatedPasswordType extends AbstractType
 
     /**
      * RepeatedPasswordType constructor.
+     *
      * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
@@ -56,35 +55,35 @@ class RepeatedPasswordType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'entry_type' => TextType::class, // type password だと入力欄を空にされてしまうので、widgetで対応
             'required' => true,
             'error_bubbling' => false,
             'invalid_message' => 'form.member.password.invalid',
-            'options' => array(
-                'constraints' => array(
+            'options' => [
+                'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(array(
+                    new Assert\Length([
                         'min' => $this->eccubeConfig['eccube_password_min_len'],
                         'max' => $this->eccubeConfig['eccube_password_max_len'],
-                    )),
-                    new Assert\Regex(array(
+                    ]),
+                    new Assert\Regex([
                         'pattern' => '/^[[:graph:][:space:]]+$/i',
                         'message' => 'form.type.graph.invalid',
-                    )),
-                ),
-            ),
-            'first_options' => array(
-                'attr' => array(
+                    ]),
+                ],
+            ],
+            'first_options' => [
+                'attr' => [
                     'placeholder' => '半角英数字記号'.$this->eccubeConfig['eccube_password_min_len'].'～'.$this->eccubeConfig['eccube_password_max_len'].'文字',
-                ),
-            ),
-            'second_options' => array(
-                'attr' => array(
+                ],
+            ],
+            'second_options' => [
+                'attr' => [
                     'placeholder' => 'form.member.repeated.confirm',
-                ),
-            ),
-        ));
+                ],
+            ],
+        ]);
     }
 
     /**

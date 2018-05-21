@@ -5,7 +5,6 @@ namespace Eccube\Tests\Web\Admin\Content;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Repository\PageLayoutRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
-use Symfony\Component\HttpFoundation\Response;
 use Eccube\Repository\LayoutRepository;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Entity\Layout;
@@ -35,7 +34,6 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
      */
     protected $pageRepository;
 
-
     /**
      * {@inheritdoc}
      */
@@ -60,14 +58,14 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
             'POST',
             $this->generateUrl(
                 'admin_content_layout_edit',
-                array('id' => 1)
+                ['id' => 1]
             ),
-            array(
-                'form' => array(
+            [
+                'form' => [
                     '_token' => 'dummy',
                     'name' => 'テストレイアウト',
-                    'DeviceType' => DeviceType::DEVICE_TYPE_PC
-                ),
+                    'DeviceType' => DeviceType::DEVICE_TYPE_PC,
+                ],
                 'name_1' => 'カゴの中',
                 'block_id_1' => 2,
                 'section_1' => 2,
@@ -76,10 +74,10 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
                 'block_id_2' => 3,
                 'section_2' => 3,
                 'block_row_2' => 3,
-            )
+            ]
         );
         $this->assertTrue($this->client->getResponse()->isRedirect(
-            $this->generateUrl('admin_content_layout_edit', array('id' => 1))
+            $this->generateUrl('admin_content_layout_edit', ['id' => 1])
         ));
     }
 
@@ -103,12 +101,12 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
             'POST',
             $this->app->url(
                 'admin_content_layout_preview',
-                array('id' => 1)
+                ['id' => 1]
             ),
-            array(
-                'form' => array(
-                    '_token' => 'dummy'
-                ),
+            [
+                'form' => [
+                    '_token' => 'dummy',
+                ],
                 'name_1' => 'カゴの中',
                 'id_1' => 2,
                 'section_1' => 2,
@@ -117,7 +115,7 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
                 'id_2' => 3,
                 'section_2' => 3,
                 'top_2' => 3,
-            )
+            ]
         );
         $this->assertTrue($this->client->getResponse()->isRedirect(
             $this->app->url('homepage').'?preview=1'

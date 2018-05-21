@@ -23,7 +23,7 @@
  */
 
 if (!function_exists('log_emergency')) {
-    function log_emergency($message, array $context = array())
+    function log_emergency($message, array $context = [])
     {
         $app = \Eccube\Application::getInstance();
         if (isset($app['eccube.logger'])) {
@@ -33,7 +33,7 @@ if (!function_exists('log_emergency')) {
 }
 
 if (!function_exists('log_alert')) {
-    function log_alert($message, array $context = array())
+    function log_alert($message, array $context = [])
     {
         $app = \Eccube\Application::getInstance();
         if (isset($app['eccube.logger'])) {
@@ -43,7 +43,7 @@ if (!function_exists('log_alert')) {
 }
 
 if (!function_exists('log_critical')) {
-    function log_critical($message, array $context = array())
+    function log_critical($message, array $context = [])
     {
         $app = \Eccube\Application::getInstance();
         if (isset($app['eccube.logger'])) {
@@ -53,7 +53,7 @@ if (!function_exists('log_critical')) {
 }
 
 if (!function_exists('log_error')) {
-    function log_error($message, array $context = array())
+    function log_error($message, array $context = [])
     {
         $app = \Eccube\Application::getInstance();
         if (isset($app['eccube.logger'])) {
@@ -63,7 +63,7 @@ if (!function_exists('log_error')) {
 }
 
 if (!function_exists('log_warning')) {
-    function log_warning($message, array $context = array())
+    function log_warning($message, array $context = [])
     {
         $app = \Eccube\Application::getInstance();
         if (isset($app['eccube.logger'])) {
@@ -73,7 +73,7 @@ if (!function_exists('log_warning')) {
 }
 
 if (!function_exists('log_notice')) {
-    function log_notice($message, array $context = array())
+    function log_notice($message, array $context = [])
     {
         $app = \Eccube\Application::getInstance();
         if (isset($app['eccube.logger'])) {
@@ -83,7 +83,7 @@ if (!function_exists('log_notice')) {
 }
 
 if (!function_exists('log_info')) {
-    function log_info($message, array $context = array())
+    function log_info($message, array $context = [])
     {
         $app = \Eccube\Application::getInstance();
         if (isset($app['eccube.logger'])) {
@@ -93,7 +93,7 @@ if (!function_exists('log_info')) {
 }
 
 if (!function_exists('log_debug')) {
-    function log_debug($message, array $context = array())
+    function log_debug($message, array $context = [])
     {
         $app = \Eccube\Application::getInstance();
         if (isset($app['eccube.logger'])) {

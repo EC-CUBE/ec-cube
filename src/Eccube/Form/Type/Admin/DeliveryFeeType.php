@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type\Admin;
 
 use Eccube\Form\Type\PriceType;
@@ -37,9 +36,9 @@ class DeliveryFeeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('fee', PriceType::class, array(
+            ->add('fee', PriceType::class, [
                 'label' => false,
-            ))
+            ])
         ;
     }
 
@@ -48,9 +47,9 @@ class DeliveryFeeType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'Eccube\Entity\DeliveryFee',
-        ));
+        ]);
     }
 
     /**

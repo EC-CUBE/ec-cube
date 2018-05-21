@@ -50,16 +50,16 @@ class LogTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
             file_put_contents($this->logTest, 'Lorem Ipsum is simply dummy text ...');
         }
 
-        $this->formData = array(
+        $this->formData = [
             'files' => $this->fileName,
             'line_max' => '50',
-        );
+        ];
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
-            ->createBuilder(LogType::class, null, array(
+            ->createBuilder(LogType::class, null, [
                 'csrf_protection' => false,
-            ))
+            ])
             ->getForm();
     }
 
@@ -73,7 +73,7 @@ class LogTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testValidData()
     {
-        if(!file_exists($this->logTest)){
+        if (!file_exists($this->logTest)) {
             $this->markTestSkipped('テスト時には'.$this->fileName.'は存在しないのでテストできない');
         }
         $this->form->submit($this->formData);
@@ -82,14 +82,14 @@ class LogTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalid_NonexistentFile()
     {
-        $this->formData['files'] = "hogehogehogehoge";
+        $this->formData['files'] = 'hogehogehogehoge';
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
     public function testInvalid_NotNumber()
     {
-        $this->formData['line_max'] = "abcdefg";
+        $this->formData['line_max'] = 'abcdefg';
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }

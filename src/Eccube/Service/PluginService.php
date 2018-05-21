@@ -117,6 +117,7 @@ class PluginService
 
     /**
      * PluginService constructor.
+     *
      * @param PluginEventHandlerRepository $pluginEventHandlerRepository
      * @param EntityManagerInterface $entityManager
      * @param PluginRepository $pluginRepository
@@ -143,13 +144,14 @@ class PluginService
         $this->container = $container;
     }
 
-
     /**
      * ファイル指定してのプラグインインストール
      *
      * @param string $path   path to tar.gz/zip plugin file
      * @param int    $source
+     *
      * @return mixed
+     *
      * @throws PluginException
      * @throws \Exception
      */
@@ -194,11 +196,11 @@ class PluginService
             // リソースファイルをコピー
             $this->copyAssets($pluginBaseDir, $config['code']);
         } catch (PluginException $e) {
-            $this->deleteDirs(array($tmp, $pluginBaseDir));
+            $this->deleteDirs([$tmp, $pluginBaseDir]);
             throw $e;
         } catch (\Exception $e) {
             // インストーラがどんなExceptionを上げるかわからないので
-            $this->deleteDirs(array($tmp, $pluginBaseDir));
+            $this->deleteDirs([$tmp, $pluginBaseDir]);
             throw $e;
         }
 
@@ -218,7 +220,7 @@ class PluginService
     {
         // Proxyのクラスをロードせずにスキーマを更新するために、
         // インストール時には一時的なディレクトリにProxyを生成する
-        $tmpProxyOutputDir = sys_get_temp_dir() . '/proxy_' . StringUtil::random(12);
+        $tmpProxyOutputDir = sys_get_temp_dir().'/proxy_'.StringUtil::random(12);
         @mkdir($tmpProxyOutputDir);
 
         try {
@@ -290,13 +292,13 @@ class PluginService
         }
     }
 
-    public function checkPluginArchiveContent($dir, array $config_cache = array())
+    public function checkPluginArchiveContent($dir, array $config_cache = [])
     {
         try {
             if (!empty($config_cache)) {
                 $meta = $config_cache;
             } else {
-                $meta = $this->readYml($dir . '/config.yml');
+                $meta = $this->readYml($dir.'/config.yml');
             }
         } catch (\Symfony\Component\Yaml\Exception\ParseException $e) {
             throw new PluginException($e->getMessage(), $e->getCode(), $e);
@@ -356,7 +358,7 @@ class PluginService
 
     public function checkSamePlugin($code)
     {
-        $repo = $this->pluginRepository->findOneBy(array('code' => $code));
+        $repo = $this->pluginRepository->findOneBy(['code' => $code]);
         if ($repo) {
             throw new PluginException('plugin already installed.');
         }
@@ -462,6 +464,7 @@ class PluginService
         $this->schemaService->dropTable($namespace);
 
         ConfigManager::writePluginConfigCache();
+
         return true;
     }
 
@@ -486,9 +489,11 @@ class PluginService
 
     /**
      * Proxyを再生成します.
+     *
      * @param Plugin $plugin プラグイン
      * @param boolean $temporary プラグインが無効状態でも一時的に生成するかどうか
      * @param string|null $outputDir 出力先
+     *
      * @return array 生成されたファイルのパス
      */
     private function regenerateProxy(Plugin $plugin, $temporary, $outputDir = null)
@@ -499,7 +504,7 @@ class PluginService
         @mkdir($outputDir);
 
         $enabledPluginCodes = array_map(
-            function($p) { return $p->getCode(); },
+            function ($p) { return $p->getCode(); },
             $this->pluginRepository->findAllEnabled()
         );
 
@@ -510,11 +515,11 @@ class PluginService
             $index = array_search($plugin->getCode(), $enabledPluginCodes);
             if ($index >= 0) {
                 array_splice($enabledPluginCodes, $index, 1);
-                $excludes = [$this->projectRoot."/app/Plugin/".$plugin->getCode()."/Entity"];
+                $excludes = [$this->projectRoot.'/app/Plugin/'.$plugin->getCode().'/Entity'];
             }
         }
 
-        $enabledPluginEntityDirs = array_map(function($code) {
+        $enabledPluginEntityDirs = array_map(function ($code) {
             return $this->projectRoot."/app/Plugin/${code}/Entity";
         }, $enabledPluginCodes);
 
@@ -557,7 +562,9 @@ class PluginService
      *
      * @param Plugin $plugin
      * @param string $path
+     *
      * @return bool
+     *
      * @throws PluginException
      * @throws \Exception
      */
@@ -613,6 +620,7 @@ class PluginService
      * @param Plugin $plugin
      * @param array  $meta     Config data
      * @param array  $eventYml event data
+     *
      * @throws \Exception
      */
     public function updatePlugin(Plugin $plugin, $meta, $eventYml)
@@ -634,12 +642,12 @@ class PluginService
                         }
                         // updateで追加されたハンドラかどうか調べる
                         $peh = $rep->findBy(
-                            array(
+                            [
                             'plugin_id' => $plugin->getId(),
                             'event' => $event,
                             'handler' => $handler[0],
                             'handler_type' => $handler[1],
-                                )
+                                ]
                         );
 
                         // 新規にevent.ymlに定義されたハンドラなのでinsertする
@@ -658,7 +666,7 @@ class PluginService
 
                 // アップデート後のevent.ymlで削除されたハンドラをdtb_plugin_event_handlerから探して削除
                 /** @var PluginEventHandler $peh */
-                foreach ($rep->findBy(array('plugin_id' => $plugin->getId())) as $peh) {
+                foreach ($rep->findBy(['plugin_id' => $plugin->getId()]) as $peh) {
                     if (!isset($eventYml[$peh->getEvent()])) {
                         $em->remove($peh);
                         $em->flush();
@@ -693,9 +701,10 @@ class PluginService
      * @param array $plugins    get from api
      * @param array $plugin     format as plugin from api
      * @param array $dependents template output
+     *
      * @return array|mixed
      */
-    public function getDependency($plugins, $plugin, $dependents = array())
+    public function getDependency($plugins, $plugin, $dependents = [])
     {
         // Prevent infinity loop
         if (empty($dependents)) {
@@ -735,6 +744,7 @@ class PluginService
      *
      * @param array  $plugins    get from api
      * @param string $pluginCode
+     *
      * @return array|null
      */
     public function buildInfo($plugins, $pluginCode)
@@ -764,6 +774,7 @@ class PluginService
      *
      * @param array $plugins get from api
      * @param array $plugin  target plugin from api
+     *
      * @return mixed format [0 => ['name' => pluginName1, 'version' => pluginVersion1], 1 => ['name' => pluginName2, 'version' => pluginVersion2]]
      */
     public function getRequirePluginName($plugins, $plugin)
@@ -789,6 +800,7 @@ class PluginService
      * Check require plugin in enable
      *
      * @param string $pluginCode
+     *
      * @return array plugin code
      */
     public function findRequirePluginNeedEnable($pluginCode)
@@ -825,10 +837,12 @@ class PluginService
 
         return $requires;
     }
+
     /**
      * Find the dependent plugins that need to be disabled
      *
      * @param string $pluginCode
+     *
      * @return array plugin code
      */
     public function findDependentPluginNeedDisable($pluginCode)
@@ -842,6 +856,7 @@ class PluginService
      *
      * @param string $pluginCode
      * @param bool   $enableOnly
+     *
      * @return array plugin code
      */
     public function findDependentPlugin($pluginCode, $enableOnly = false)
@@ -852,7 +867,7 @@ class PluginService
             $criteria->andWhere(Criteria::expr()->eq('enabled', Constant::ENABLED));
         }
         /**
-         * @var Plugin[] $plugins
+         * @var Plugin[]
          */
         $plugins = $this->pluginRepository->matching($criteria);
         $dependents = [];
@@ -887,6 +902,7 @@ class PluginService
      *                      self::ECCUBE_LIBRARY only return library/plugin of eccube
      *                      self::OTHER_LIBRARY only return library/plugin of 3rd part ex: symfony, composer, ...
      *                      default : return all library/plugin
+     *
      * @return array format [packageName1 => version1, packageName2 => version2]
      */
     public function getDependentByCode($pluginCode, $libraryType = null)
@@ -925,6 +941,7 @@ class PluginService
      *
      * @param array $packages   format [packageName1 => version1, packageName2 => version2]
      * @param bool  $getVersion
+     *
      * @return string format if version=true: "packageName1:version1 packageName2:version2", if version=false: "packageName1 packageName2"
      */
     public function parseToComposerCommand(array $packages, $getVersion = true)
@@ -980,6 +997,7 @@ class PluginService
      *
      * @param string $pluginVersion
      * @param string $remoteVersion
+     *
      * @return mixed
      */
     public function isUpdate($pluginVersion, $remoteVersion)
@@ -992,6 +1010,7 @@ class PluginService
      *
      * @param array  $plugins    get from api
      * @param string $pluginCode
+     *
      * @return false|int|string
      */
     public function checkPluginExist($plugins, $pluginCode)
@@ -1007,13 +1026,14 @@ class PluginService
 
     /**
      * @param string $code
+     *
      * @return bool
      */
     private function isEnable($code)
     {
         $Plugin = $this->pluginRepository->findOneBy([
             'enabled' => Constant::ENABLED,
-            'code' => $code
+            'code' => $code,
         ]);
         if ($Plugin) {
             return true;

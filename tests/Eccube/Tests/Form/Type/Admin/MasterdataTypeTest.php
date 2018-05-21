@@ -28,9 +28,8 @@ use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 
 class MasterdataTypeTest extends AbstractTypeTestCase
 {
-
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = array();
+    protected $formData = [];
 
     public function setUp()
     {
@@ -38,9 +37,9 @@ class MasterdataTypeTest extends AbstractTypeTestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
-            ->createBuilder(MasterdataType::class, null, array(
+            ->createBuilder(MasterdataType::class, null, [
                 'csrf_protection' => false,
-            ))
+            ])
             ->getForm();
     }
 

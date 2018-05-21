@@ -21,11 +21,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Controller\Admin\Store;
 
 use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
@@ -99,7 +97,6 @@ class PluginController extends AbstractController
      */
     protected $pluginRepository;
 
-
     /**
      * インストール済プラグイン画面
      *
@@ -108,13 +105,13 @@ class PluginController extends AbstractController
      */
     public function index(Application $app, Request $request)
     {
-        $pluginForms = array();
-        $configPages = array();
-        $Plugins = $this->pluginRepository->findBy(array(), array('code' => 'ASC'));
+        $pluginForms = [];
+        $configPages = [];
+        $Plugins = $this->pluginRepository->findBy([], ['code' => 'ASC']);
 
         // ファイル設置プラグインの取得.
         $unregisterdPlugins = $this->getUnregisteredPlugins($Plugins, $app);
-        $unregisterdPluginsConfigPages = array();
+        $unregisterdPluginsConfigPages = [];
         foreach ($unregisterdPlugins as $unregisterdPlugin) {
             try {
                 $code = $unregisterdPlugin['code'];
@@ -125,8 +122,8 @@ class PluginController extends AbstractController
             }
         }
 
-        $officialPlugins = array();
-        $unofficialPlugins = array();
+        $officialPlugins = [];
+        $unofficialPlugins = [];
 
         foreach ($Plugins as $Plugin) {
             $form = $this->formFactory
@@ -134,9 +131,9 @@ class PluginController extends AbstractController
                     'form'.$Plugin->getId(),
                     PluginManagementType::class,
                     null,
-                    array(
+                    [
                         'plugin_id' => $Plugin->getId(),
-                    )
+                    ]
                 )
                 ->getForm();
             $pluginForms[$Plugin->getId()] = $form->createView();
@@ -197,9 +194,11 @@ class PluginController extends AbstractController
      *
      * @Method("POST")
      * @Route("/%eccube_admin_route%/store/plugin/{id}/update", requirements={"id" = "\d+"}, name="admin_store_plugin_update")
+     *
      * @param Application $app
      * @param Request     $request
      * @param Plugin      $Plugin
+     *
      * @return RedirectResponse
      */
     public function update(Application $app, Request $request, Plugin $Plugin)
@@ -209,9 +208,9 @@ class PluginController extends AbstractController
                 'form'.$Plugin->getId(),
                 PluginManagementType::class,
                 null,
-                array(
+                [
                     'plugin_id' => null, // placeHolder
-                )
+                ]
             )
             ->getForm();
 
@@ -242,7 +241,7 @@ class PluginController extends AbstractController
                     $fs = new Filesystem();
                     $fs->remove($tmpDir);
                 }
-                $this->logger->error("plugin install failed.", array('original-message' => $er->getMessage()));
+                $this->logger->error('plugin install failed.', ['original-message' => $er->getMessage()]);
                 $message = 'admin.plugin.install.fail';
             }
         } else {
@@ -257,14 +256,15 @@ class PluginController extends AbstractController
         return $app->redirect($app->url('admin_store_plugin'));
     }
 
-
     /**
      * 対象のプラグインを有効にします。
      *
      * @Method("PUT")
      * @Route("/%eccube_admin_route%/store/plugin/{id}/enable", requirements={"id" = "\d+"}, name="admin_store_plugin_enable")
+     *
      * @param Application $app
      * @param Plugin      $Plugin
+     *
      * @return RedirectResponse
      */
     public function enable(Application $app, Plugin $Plugin)
@@ -298,8 +298,10 @@ class PluginController extends AbstractController
      *
      * @Method("PUT")
      * @Route("/%eccube_admin_route%/store/plugin/{id}/disable", requirements={"id" = "\d+"}, name="admin_store_plugin_disable")
+     *
      * @param Application $app
      * @param Plugin      $Plugin
+     *
      * @return RedirectResponse
      */
     public function disable(Application $app, Plugin $Plugin)
@@ -334,8 +336,10 @@ class PluginController extends AbstractController
      *
      * @Method("DELETE")
      * @Route("/%eccube_admin_route%/store/plugin/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_uninstall")
+     *
      * @param Application $app
      * @param Plugin      $Plugin
+     *
      * @return RedirectResponse
      */
     public function uninstall(Application $app, Plugin $Plugin)
@@ -378,7 +382,7 @@ class PluginController extends AbstractController
         $handlers = $this->pluginEventHandlerRepository->getHandlers();
 
         // 一次元配列からイベント毎の二次元配列に変換する
-        $HandlersPerEvent = array();
+        $HandlersPerEvent = [];
         foreach ($handlers as $handler) {
             $HandlersPerEvent[$handler->getEvent()][$handler->getHandlerType()][] = $handler;
         }
@@ -415,8 +419,10 @@ class PluginController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/store/plugin/install", name="admin_store_plugin_install")
      * @Template("Store/plugin_install.twig")
+     *
      * @param Application $app
      * @param Request     $request
+     *
      * @return array|RedirectResponse
      */
     public function install(Application $app, Request $request)
@@ -424,7 +430,7 @@ class PluginController extends AbstractController
         $form = $this->formFactory
             ->createBuilder(PluginLocalInstallType::class)
             ->getForm();
-        $errors = array();
+        $errors = [];
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $tmpDir = null;
@@ -449,7 +455,7 @@ class PluginController extends AbstractController
                     $fs = new Filesystem();
                     $fs->remove($tmpDir);
                 }
-                $this->logger->error("plugin install failed.", array('original-message' => $e->getMessage()));
+                $this->logger->error('plugin install failed.', ['original-message' => $e->getMessage()]);
                 $errors[] = $e;
             } catch (\Exception $er) {
                 // Catch composer install error | Other error
@@ -457,7 +463,7 @@ class PluginController extends AbstractController
                     $fs = new Filesystem();
                     $fs->remove($tmpDir);
                 }
-                $this->logger->error("plugin install failed.", array('original-message' => $er->getMessage()));
+                $this->logger->error('plugin install failed.', ['original-message' => $er->getMessage()]);
                 $app->addError('admin.plugin.install.fail', 'admin');
             }
         } else {
@@ -488,7 +494,7 @@ class PluginController extends AbstractController
             [
                 'label' => trans('plugin.label.auth_key'),
                 'constraints' => [
-                    new Assert\Regex(['pattern' => "/^[0-9a-zA-Z]+$/",]),
+                    new Assert\Regex(['pattern' => '/^[0-9a-zA-Z]+$/']),
                 ],
             ]
         );
@@ -509,7 +515,6 @@ class PluginController extends AbstractController
         ];
     }
 
-
     /**
      * APIリクエスト処理
      *
@@ -517,25 +522,26 @@ class PluginController extends AbstractController
      * @param $authKey
      * @param string $url
      * @param Application $app
+     *
      * @return array
      */
     private function getRequestApi(Request $request, $authKey, $url, $app)
     {
         $curl = curl_init($url);
 
-        $options = array(           // オプション配列
+        $options = [           // オプション配列
             //HEADER
-            CURLOPT_HTTPHEADER => array(
+            CURLOPT_HTTPHEADER => [
                 'Authorization: '.base64_encode($authKey),
                 'x-eccube-store-url: '.base64_encode($request->getSchemeAndHttpHost().$request->getBasePath()),
                 'x-eccube-store-version: '.base64_encode(Constant::VERSION),
-            ),
+            ],
             CURLOPT_HTTPGET => true,
             CURLOPT_SSL_VERIFYPEER => true,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_FAILONERROR => true,
             CURLOPT_CAINFO => \Composer\CaBundle\CaBundle::getSystemCaRootBundlePath(),
-        );
+        ];
 
         curl_setopt_array($curl, $options); /// オプション値を設定
         $result = curl_exec($curl);
@@ -547,13 +553,14 @@ class PluginController extends AbstractController
 
         $app->log('http get_info', $info);
 
-        return array($result, $info);
+        return [$result, $info];
     }
 
     /**
      * レスポンスのチェック
      *
      * @param $info
+     *
      * @return string
      */
     private function getResponseErrorMessage($info)
@@ -563,7 +570,6 @@ class PluginController extends AbstractController
             $message = $info['message'];
 
             $message = $statusCode.' : '.$message;
-
         } else {
             $message = trans('plugin.text.error.timeout_or_invalid_url');
         }
@@ -571,18 +577,18 @@ class PluginController extends AbstractController
         return $message;
     }
 
-
     /**
      * フォルダ設置のみのプラグインを取得する.
      *
      * @param array $plugins
      * @param Application $app
+     *
      * @return array
      */
     protected function getUnregisteredPlugins(array $plugins, \Eccube\Application $app)
     {
         $finder = new Finder();
-        $pluginCodes = array();
+        $pluginCodes = [];
 
         // DB登録済みプラグインコードのみ取得
         foreach ($plugins as $key => $plugin) {
@@ -592,7 +598,7 @@ class PluginController extends AbstractController
         $dirs = $finder->in($this->eccubeConfig['plugin_realdir'])->depth(0)->directories();
 
         // プラグイン基本チェック
-        $unregisteredPlugins = array();
+        $unregisteredPlugins = [];
         foreach ($dirs as $dir) {
             $pluginCode = $dir->getBasename();
             if (in_array($pluginCode, $pluginCodes, true)) {
