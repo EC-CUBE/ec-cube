@@ -384,10 +384,10 @@ class EA08SysteminfoCest
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/security');
-        $I->see('システム設定セキュリティ管理', '#main .page-header');
+        $I->see('システム設定セキュリティ管理', '#page_admin_setting_system_security .c-pageTitle__titles');
 
         $I->fillField(['id' => 'admin_security_admin_allow_hosts'], '1.1.1.1');
-        $I->click('#aside_column div div div div div button');
+        $I->click('#page_admin_setting_system_security form div.c-contentsArea__cols > div.c-conversionArea > div > div > div:nth-child(2) > div > div > button');
 
         $I->amOnPage('/'.$config['eccube_admin_route']);
         $I->see('アクセスできません。', '.ec-layoutRole .ec-reportHeading');
