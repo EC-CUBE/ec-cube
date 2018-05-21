@@ -2,7 +2,6 @@
 
 namespace Eccube\Service\PurchaseFlow\Processor;
 
-use Eccube\Entity\CartItem;
 use Eccube\Entity\ItemInterface;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\ValidatableItemProcessor;
@@ -32,8 +31,6 @@ class DisplayStatusValidator extends ValidatableItemProcessor
      */
     protected function handle(ItemInterface $item, PurchaseContext $context)
     {
-        if ($item instanceof CartItem) {
-            $item->setQuantity(0);
-        }
+        $item->setQuantity(0);
     }
 }

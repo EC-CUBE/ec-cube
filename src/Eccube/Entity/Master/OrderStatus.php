@@ -54,4 +54,6 @@ class OrderStatus extends \Eccube\Entity\Master\AbstractMasterEntity
     const PENDING = 7;
     /** 購入処理中. */
     const PROCESSING = 8;
+    /** カート. */
+    const CART = 9;
 }

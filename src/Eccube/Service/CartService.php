@@ -24,18 +24,30 @@
 
 namespace Eccube\Service;
 
-use Eccube\Entity\Cart;
-use Eccube\Entity\CartItem;
+use Eccube\Entity\Customer;
+use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Master\OrderItemType;
+use Eccube\Entity\Master\TaxDisplayType;
+use Eccube\Entity\Master\TaxType;
+use Eccube\Entity\Order;
+use Eccube\Entity\OrderItem;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\ProductClass;
+use Eccube\Repository\OrderRepository;
 use Eccube\Repository\ProductClassRepository;
 use Eccube\Service\Cart\CartItemAllocator;
 use Eccube\Service\Cart\CartItemComparator;
+use Eccube\Service\OrderHelper;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 class CartService
 {
+    /**
+     * @var array
+     */
+    protected $preOrderIds;
+
     /**
      * @var Cart[]
      */
@@ -58,6 +70,11 @@ class CartService
     protected $cart;
 
     /**
+     * @var OrderRepository
+     */
+    protected $orderRepository;
+
+    /**
      * @var ProductClassRepository
      */
     protected $productClassRepository;
@@ -73,6 +90,11 @@ class CartService
     protected $cartItemAllocator;
 
     /**
+     * @var OrderHelper
+     */
+    protected $orderHelper;
+
+    /**
      * CartService constructor.
      *
      * @param SessionInterface $session
@@ -80,26 +102,35 @@ class CartService
      * @param ProductClassRepository $productClassRepository
      * @param CartItemComparator $cartItemComparator
      * @param CartItemAllocator $cartItemAllocator
+     * @param OrderHelper $orderHelper
      */
     public function __construct(
         SessionInterface $session,
         EntityManagerInterface $entityManager,
         ProductClassRepository $productClassRepository,
+        OrderRepository $orderRepository,
         CartItemComparator $cartItemComparator,
-        CartItemAllocator $cartItemAllocator
+        CartItemAllocator $cartItemAllocator,
+        OrderHelper $orderHelper
     ) {
         $this->session = $session;
         $this->entityManager = $entityManager;
         $this->productClassRepository = $productClassRepository;
+        $this->orderRepository = $orderRepository;
         $this->cartItemComparator = $cartItemComparator;
         $this->cartItemAllocator = $cartItemAllocator;
+        $this->orderHelper = $orderHelper;
     }
 
     public function getCarts()
     {
-        if (is_null($this->carts)) {
-            $this->carts = $this->session->get('carts', []);
-            $this->loadItems();
+        $this->preOrderIds = $this->session->get('preOrderIds', []);
+        if (!$this->preOrderIds) {
+            $this->carts = [];
+        }
+        if (empty($this->carts)) {
+            $Orders = $this->orderRepository->findBy(['pre_order_id' => $this->preOrderIds], ['id' => 'ASC']);
+            $this->carts = $Orders;
         }
         return $this->carts;
     }
@@ -109,26 +140,7 @@ class CartService
      */
     public function getCart()
     {
-        $Carts = $this->getCarts();
-        if (!$Carts) {
-            if (!$this->cart) {
-                $this->cart = new Cart();
-            }
-            return $this->cart;
-        }
         return current($this->getCarts());
-    }
-
-    protected function loadItems()
-    {
-        foreach ($this->getCarts() as $Cart) {
-            /** @var CartItem $item */
-            foreach ($Cart->getItems() as $item) {
-                /** @var ProductClass $ProductClass */
-                $ProductClass = $this->productClassRepository->find($item->getProductClassId());
-                $item->setProductClass($ProductClass);
-            }
-        }
     }
 
     /**
@@ -141,7 +153,7 @@ class CartService
         $allCartItems = [];
 
         foreach ($this->getCarts() as $Cart) {
-            $allCartItems = $this->mergeCartitems($Cart->getCartItems(), $allCartItems);
+            $allCartItems = $this->mergeCartitems($Cart->getItems(), $allCartItems);
         }
 
         return $this->mergeCartitems($cartItems, $allCartItems);
@@ -179,15 +191,24 @@ class CartService
         foreach ($cartItems as $item) {
             $cartId = $this->cartItemAllocator->allocate($item);
             if (isset($Carts[$cartId])) {
-                $Carts[$cartId]->addCartItem($item);
+                $Carts[$cartId]->addOrderItem($item);
             } else {
-                $Cart = new Cart();
-                $Cart->addCartItem($item);
+                $Cart = $this->getCart();
+                if (!$Cart) {
+                    $Cart = $this->orderHelper->createOrderInCart();
+                }
+                $this->carts[] = $Cart;
+                $this->setPreOrderId($Cart->getPreOrderId());
+                $Cart->addOrderItem($item);
                 $Carts[$cartId] = $Cart;
             }
+            $this->entityManager->flush($Carts[$cartId]);
+
+            $item->setOrder($Carts[$cartId]);
+            $this->entityManager->persist($item);
+            $this->entityManager->flush($item);
         }
 
-        $this->session->set('carts', $Carts);
         // 配列のkeyを0からにする
         $this->carts = array_values($Carts);
     }
@@ -196,9 +217,10 @@ class CartService
      * カートに商品を追加します.
      * @param $ProductClass ProductClass 商品規格
      * @param $quantity int 数量
+     * @param Customer $Customer
      * @return bool 商品を追加できた場合はtrue
      */
-    public function addProduct($ProductClass, $quantity = 1)
+    public function addProduct($ProductClass, $quantity = 1, Customer $Customer = null)
     {
         if (!$ProductClass instanceof ProductClass) {
             $ProductClassId = $ProductClass;
@@ -219,10 +241,18 @@ class CartService
             return false;
         }
 
-        $newItem = new CartItem();
-        $newItem->setQuantity($quantity);
-        $newItem->setPrice($ProductClass->getPrice02IncTax());
-        $newItem->setProductClass($ProductClass);
+        $ProductItemType = $this->entityManager->find(OrderItemType::class, OrderItemType::PRODUCT);
+        // TODO
+        $TaxExclude = $this->entityManager->getRepository(TaxDisplayType::class)->find(TaxDisplayType::EXCLUDED);
+        $Taxion = $this->entityManager->getRepository(TaxType::class)->find(TaxType::TAXATION);
+        $newItem = new OrderItem();
+        $newItem->setQuantity($quantity)
+            ->setPrice($ProductClass->getPrice02IncTax())
+            ->setProductClass($ProductClass)
+            ->setProductName($ProductClass->getProduct()->getName())
+            ->setOrderItemType($ProductItemType)
+            ->setTaxDisplayType($TaxExclude)
+            ->setTaxType($Taxion);
 
         $allCartItems = $this->mergeAllCartItems([$newItem]);
         $this->restoreCarts($allCartItems);
@@ -243,7 +273,7 @@ class CartService
             }
         }
 
-        $removeItem = new CartItem();
+        $removeItem = new OrderItem();
         $removeItem->setPrice($ProductClass->getPrice02IncTax());
         $removeItem->setProductClass($ProductClass);
 
@@ -268,16 +298,17 @@ class CartService
 
     public function unlock()
     {
+        $OrderStatus = $this->entityManager->find(OrderStatus::class, OrderStatus::CART);
         $this->getCart()
-            ->setLock(false)
-            ->setPreOrderId(null);
+            ->setOrderStatus($OrderStatus);
     }
 
     public function lock()
     {
+        $OrderStatus = $this->entityManager->find(OrderStatus::class, OrderStatus::PROCESSING);
         $this->getCart()
-            ->setLock(true)
-            ->setPreOrderId(null);
+            ->setOrderStatus($OrderStatus);
+        $this->entityManager->flush();
     }
 
     /**
@@ -285,7 +316,7 @@ class CartService
      */
     public function isLocked()
     {
-        return $this->getCart()->getLock();
+        return $this->getCart()->getOrderStatus()->getId() === OrderStatus::PROCESSING;
     }
 
     /**
@@ -294,8 +325,9 @@ class CartService
      */
     public function setPreOrderId($pre_order_id)
     {
-        $this->getCart()->setPreOrderId($pre_order_id);
-
+        $this->preOrderIds = $this->session->get('preOrderIds', []);
+        $this->preOrderIds[] = $pre_order_id;
+        $this->session->set('preOrderIds', $this->preOrderIds);
         return $this;
     }
 
@@ -316,10 +348,8 @@ class CartService
         $removed = array_splice($Carts, 0, 1);
         if (!empty($removed)) {
             $removedCart = $removed[0];
-            $removedCart->setPreOrderId(null)
-                ->setLock(false)
-                ->setTotalPrice(0)
-                ->clearCartItems();
+            $this->entityManager->remove($removedCart);
+            $this->entityManager->flush($removedCart);
         }
         $this->carts = $Carts;
 

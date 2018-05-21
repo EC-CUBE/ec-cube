@@ -179,6 +179,50 @@ class OrderHelper
         return $Order;
     }
 
+    public function createShippingsFromOrder(Order $Order, CustomerAddress $CustomerAddress)
+    {
+        $OrderItemsGroupBySaleType = array_reduce($Order->getItems()->toArray(), function ($result, $item) {
+            /* @var OrderItem $item */
+            $saleTypeId = $item->getProductClass()->getSaleType()->getId();
+            $result[$saleTypeId][] = $item;
+            return $result;
+        }, []);
+
+        $Shipping = $this->createShippingFromCustomerAddress($CustomerAddress);
+        foreach ($OrderItemsGroupBySaleType as $OrderItems) {
+            $this->addOrderItems($Order, $Shipping, $OrderItems);
+            $this->setDefaultDelivery($Shipping);
+            $this->entityManager->persist($Shipping);
+        }
+
+        $this->setDefaultPayment($Order);
+
+        $this->entityManager->persist($Order);
+        $this->entityManager->flush();
+
+        return $Shipping;
+    }
+
+    /**
+     * カートの受注データを生成する.
+     *
+     * @param Customer $Customer
+     * @return Order
+     */
+    public function createOrderInCart()
+    {
+        $OrderStatus = $this->orderStatusRepository->find(OrderStatus::CART);
+        $Order = new Order($OrderStatus);
+
+        // pre_order_idを生成
+        $Order->setPreOrderId($this->createPreOrderId());
+
+        $this->entityManager->persist($Order);
+        $this->entityManager->flush();
+
+        return $Order;
+    }
+
     public function createPreOrderId()
     {
         // ランダムなpre_order_idを作成
@@ -211,6 +255,7 @@ class OrderHelper
                 'del_flg',
             ]
         );
+        $this->entityManager->flush($Order);
     }
 
     /**

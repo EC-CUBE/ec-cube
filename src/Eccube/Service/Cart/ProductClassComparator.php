@@ -24,7 +24,7 @@
 namespace Eccube\Service\Cart;
 
 
-use Eccube\Entity\CartItem;
+use Eccube\Entity\OrderItem;
 
 /**
  * 商品規格で明細を比較するCartItemComparator
@@ -32,11 +32,11 @@ use Eccube\Entity\CartItem;
 class ProductClassComparator implements CartItemComparator
 {
     /**
-     * @param CartItem $Item1 明細1
-     * @param CartItem $Item2 明細2
+     * @param OrderItem $Item1 明細1
+     * @param OrderItem $Item2 明細2
      * @return boolean 同じ明細になる場合はtrue
      */
-    public function compare(CartItem $Item1, CartItem $Item2)
+    public function compare(OrderItem $Item1, OrderItem $Item2)
     {
         $ProductClass1 = $Item1->getProductClass();
         $ProductClass2 = $Item2->getProductClass();
