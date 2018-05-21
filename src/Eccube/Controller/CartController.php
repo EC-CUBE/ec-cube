@@ -37,9 +37,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @Route(service=CartController::class)
- */
 class CartController extends AbstractController
 {
     /**

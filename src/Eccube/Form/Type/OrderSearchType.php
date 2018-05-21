@@ -23,7 +23,6 @@
 
 namespace Eccube\Form\Type;
 
-use Eccube\Annotation\FormType;
 use Eccube\Form\Type\Master\OrderStatusType;
 use Eccube\Form\Type\Master\PaymentType;
 use Eccube\Form\Type\Master\SexType;
@@ -38,9 +37,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 // deprecated 3.1で削除予定
-/**
- * @FormType
- */
 class OrderSearchType extends AbstractType
 {
     public $app;

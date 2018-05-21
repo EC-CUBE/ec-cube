@@ -32,9 +32,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-/**
- * @Route(service=SecurityController::class)
- */
 class SecurityController extends AbstractController
 {
     /**

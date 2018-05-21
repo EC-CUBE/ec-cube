@@ -35,9 +35,6 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
-/**
- * @Route(service=ChangeController::class)
- */
 class ChangeController extends AbstractController
 {
     /**

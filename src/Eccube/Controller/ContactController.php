@@ -31,9 +31,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @Route(service=ContactController::class)
- */
 class ContactController extends AbstractController
 {
     /**

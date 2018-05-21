@@ -23,7 +23,6 @@
 
 namespace Eccube\Form\Type;
 
-use Eccube\Annotation\FormType;
 use Eccube\Application;
 use Eccube\Form\Type\Master\ProductListMaxType;
 use Eccube\Form\Type\Master\ProductListOrderByType;
@@ -35,9 +34,6 @@ use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * @FormType
- */
 class SearchProductType extends AbstractType
 {
     /**

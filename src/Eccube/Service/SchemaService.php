@@ -26,13 +26,9 @@ namespace Eccube\Service;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
-use Eccube\Annotation\Service;
 use Eccube\Doctrine\ORM\Mapping\Driver\ReloadSafeAnnotationDriver;
 use Eccube\Util\StringUtil;
 
-/**
- * @Service
- */
 class SchemaService
 {
     /**

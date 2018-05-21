@@ -2,14 +2,10 @@
 
 namespace Eccube\Form\Type\Shopping;
 
-use Eccube\Annotation\FormType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * @FormType
- */
 class OrderItemType extends AbstractType
 {
     public function __construct()

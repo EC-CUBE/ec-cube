@@ -24,8 +24,6 @@
 namespace Eccube\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
-use Eccube\Annotation\FormType;
-use Eccube\Annotation\Inject;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -36,21 +34,14 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @FormType
- */
 class ShippingMultipleItemType extends AbstractType
 {
     /**
-     * @Inject("config")
-     *
      * @var array
      */
     protected $eccubeConfig;
 
     /**
-     * @Inject("session")
-     *
      * @var Session
      */
     protected $session;

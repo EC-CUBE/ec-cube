@@ -65,9 +65,6 @@ use Eccube\Entity\ProductCategory;
 use Eccube\Entity\ExportCsvRow;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-/**
- * @Route(service=ProductController::class)
- */
 class ProductController extends AbstractController
 {
     /**

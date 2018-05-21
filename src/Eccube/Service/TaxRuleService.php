@@ -23,12 +23,8 @@
 
 namespace Eccube\Service;
 
-use Eccube\Annotation\Service;
 use Eccube\Repository\TaxRuleRepository;
 
-/**
- * @Service
- */
 class TaxRuleService
 {
     /**

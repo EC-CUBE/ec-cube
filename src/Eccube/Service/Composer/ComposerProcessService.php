@@ -24,14 +24,11 @@
 namespace Eccube\Service\Composer;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Eccube\Annotation\Service;
 use Eccube\Common\EccubeConfig;
 use Eccube\Exception\PluginException;
 
 /**
  * Class ComposerProcessService
- *
- * @Service
  */
 class ComposerProcessService implements ComposerServiceInterface
 {

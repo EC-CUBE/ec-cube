@@ -35,9 +35,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
-/**
- * @Route(service=CustomerEditController::class)
- */
 class CustomerEditController extends AbstractController
 {
     /**

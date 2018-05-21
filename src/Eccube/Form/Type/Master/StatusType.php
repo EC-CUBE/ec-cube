@@ -23,15 +23,11 @@
 
 namespace Eccube\Form\Type\Master;
 
-use Eccube\Annotation\FormType;
 use Eccube\Form\Type\MasterType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 // deprecated 3.1で削除予定
-/**
- * @FormType
- */
 class StatusType extends AbstractType
 {
     /**

@@ -5,8 +5,6 @@ namespace Eccube\Service;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Eccube\Annotation\Inject;
-use Eccube\Annotation\Service;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\Customer;
@@ -32,77 +30,55 @@ use Eccube\Util\StringUtil;
 /**
  * OrderやOrderに関連するエンティティを構築するクラス
  * namespaceやクラス名は要検討
- *
- * @Service
  */
 class OrderHelper
 {
     /**
-     * @Inject(OrderItemTypeRepository::class)
-     *
      * @var OrderItemTypeRepository
      */
     protected $orderItemTypeRepository;
 
     /**
-     * @Inject(OrderStatusRepository::class)
-     *
      * @var OrderStatusRepository
      */
     protected $orderStatusRepository;
 
     /**
-     * @Inject(TaxRuleRepository::class)
-     *
      * @var TaxRuleRepository
      */
     protected $taxRuleRepository;
 
     /**
-     * @Inject(DeliveryFeeRepository::class)
-     *
      * @var DeliveryFeeRepository
      */
     protected $deliveryFeeRepository;
 
     /**
-     * @Inject(DeliveryRepository::class)
-     *
      * @var DeliveryRepository
      */
     protected $deliveryRepository;
 
     /**
-     * @Inject(PaymentRepository::class)
-     *
      * @var PaymentRepository
      */
     protected $paymentRepository;
 
     /**
-     * @Inject(OrderRepository::class)
-     *
      * @var OrderRepository
      */
     protected $orderRepository;
 
     /**
-     * @Inject(ShippingStatusRepository::class)
-     *
      * @var ShippingStatusRepository
      */
     protected $shippingStatusRepository;
 
     /**
-     * @Inject("orm.em")
-     *
      * @var EntityManager
      */
     protected $entityManager;
 
     /**
-     * @Inject("config")
-     *
      * @var EccubeConfig
      */
     protected $eccubeConfig;

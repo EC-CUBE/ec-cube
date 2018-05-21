@@ -32,9 +32,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * @Route(service=TopController::class)
- */
 class TopController extends AbstractController
 {
     /**

@@ -24,7 +24,6 @@
 namespace Eccube\Controller\Admin\Store;
 
 use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
@@ -48,42 +47,31 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class OwnerStoreController extends AbstractController
 {
     /**
-     * @Inject("config")
-     *
      * @var array
      */
     protected $eccubeConfig;
 
     /**
-     * @Inject(PluginRepository::class)
-     *
      * @var PluginRepository
      */
     protected $pluginRepository;
 
     /**
-     * @Inject(PluginService::class)
-     *
      * @var PluginService
      */
     protected $pluginService;
 
     /**
-     * @Inject("eccube.service.composer")
-     *
      * @var ComposerServiceInterface
      */
     protected $composerService;
 
     /**
      * @var EntityManager
-     * @Inject("orm.em")
      */
     protected $em;
 
     /**
-     * @Inject(SystemService::class)
-     *
      * @var SystemService
      */
     protected $systemService;
