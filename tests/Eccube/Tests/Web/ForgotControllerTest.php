@@ -98,11 +98,7 @@ class ForgotControllerTest extends AbstractWebTestCase
         $client = $this->client;
         $crawler = $client->request('GET', $this->generateUrl('forgot_complete'));
 
-        $this->expected = 'パスワード発行メールの送信 完了';
-        $this->actual = $crawler->filter('div.ec-pageHeader > h1')->text();
-        $this->verify();
-
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('homepage')));
     }
 
     public function testResetWithDenied()

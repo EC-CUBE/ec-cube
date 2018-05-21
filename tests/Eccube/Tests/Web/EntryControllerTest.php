@@ -193,7 +193,7 @@ class EntryControllerTest extends AbstractWebTestCase
         $client = $this->client;
         $client->request('GET', $this->generateUrl('entry_complete'));
 
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('homepage')));
     }
 
     public function testActivate()

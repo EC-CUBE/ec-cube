@@ -194,6 +194,6 @@ class ContactControllerTest extends AbstractWebTestCase
     {
         $this->client = $this->createClient();
         $this->client->request('GET', $this->generateUrl('contact_complete'));
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('homepage')));
     }
 }

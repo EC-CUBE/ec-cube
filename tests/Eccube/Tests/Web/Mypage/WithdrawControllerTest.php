@@ -87,6 +87,6 @@ class WithdrawControllerTest extends AbstractWebTestCase
             'GET',
             $this->generateUrl('mypage_withdraw_complete')
         );
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('homepage')));
     }
 }
