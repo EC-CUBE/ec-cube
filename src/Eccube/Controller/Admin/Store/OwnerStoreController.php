@@ -178,7 +178,7 @@ class OwnerStoreController extends AbstractController
      * Do confirm page
      *
      * @Route("/install/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_install_confirm")
-     * @Template("Store/plugin_confirm.twig")
+     * @Template("@admin/Store/plugin_confirm.twig")
      * @param Request     $request
      * @param string      $id
      * @return array
@@ -410,7 +410,7 @@ class OwnerStoreController extends AbstractController
      * Do confirm update page
      *
      * @Route("/upgrade/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_update_confirm")
-     * @Template("Store/plugin_confirm.twig")
+     * @Template("@admin/Store/plugin_confirm.twig")
      * @param Plugin      $plugin
      * @return Response
      */
