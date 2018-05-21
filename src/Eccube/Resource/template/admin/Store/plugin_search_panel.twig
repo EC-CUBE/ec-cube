@@ -27,9 +27,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <div class="plugin-content-top">
         <div class="plugin-title">
             <span class="pull-right">
-                <a class="btn btn-xs searchPluginModal" href="#" data-id="{{ item.product_id }}">{{'admin.store.plugin_owners_search.869'|trans}</a>
+                <a class="btn btn-xs searchPluginModal" href="#" data-id="{{ item.product_id }}">{{'admin.store.plugin_owners_search.869'|trans}}</a>
                 {% if item.update_status == 2 or item.update_status == 3 %}
-                    <h4 id="plugin-id-{{ item.product_id }}" class="display-in-bl"><span class="label label-success">{{'admin.store.plugin_owners_search.870'|trans}</span></h4>
+                    <h4 id="plugin-id-{{ item.product_id }}" class="display-in-bl"><span class="label label-success">{{'admin.store.plugin_owners_search.870'|trans}}</span></h4>
                 {% elseif item.update_status == 4 %}
                     <a id="plugin-id-{{ item.product_id }}" class="btn btn-success btn-xs" href="{{ item.product_url }}" target="_blank">{{'admin.store.plugin_owners_search.872'|trans}}</a>
                 {% else %}

@@ -121,14 +121,14 @@ class PluginController extends AbstractController
      * @Route("/%eccube_admin_route%/store/plugin", name="admin_store_plugin")
      * @Template("@admin/Store/plugin.twig")
      */
-    public function index(Application $app, Request $request)
+    public function index(Request $request)
     {
         $pluginForms = array();
         $configPages = array();
         $Plugins = $this->pluginRepository->findBy(array(), array('code' => 'ASC'));
 
         // ファイル設置プラグインの取得.
-        $unregisterdPlugins = $this->getUnregisteredPlugins($Plugins, $app);
+        $unregisterdPlugins = $this->getUnregisteredPlugins($Plugins);
         $unregisterdPluginsConfigPages = array();
         foreach ($unregisterdPlugins as $unregisterdPlugin) {
             try {
@@ -175,7 +175,7 @@ class PluginController extends AbstractController
         $authKey = $this->BaseInfo->getAuthenticationKey();
         // オーナーズストア通信
         $url = $this->eccubeConfig['package_repo_url'].'/search/packages.json';
-        list($json, $info) = $this->getRequestApi($request, $authKey, $url, $app);
+        list($json, $info) = $this->getRequestApi($request, $authKey, $url);
 
         $officialPluginsDetail = [];
         if ($json) {
@@ -207,17 +207,17 @@ class PluginController extends AbstractController
         ];
     }
 
+
     /**
      * インストール済プラグインからのアップデート
      *
      * @Method("POST")
      * @Route("/%eccube_admin_route%/store/plugin/{id}/update", requirements={"id" = "\d+"}, name="admin_store_plugin_update")
-     * @param Application $app
      * @param Request     $request
      * @param Plugin      $Plugin
      * @return RedirectResponse
      */
-    public function update(Application $app, Request $request, Plugin $Plugin)
+    public function update(Request $request, Plugin $Plugin)
     {
         $form = $this->formFactory
             ->createNamedBuilder(
@@ -282,9 +282,9 @@ class PluginController extends AbstractController
      * @param Plugin      $Plugin
      * @return RedirectResponse
      */
-    public function enable(Application $app, Plugin $Plugin)
+    public function enable(Plugin $Plugin)
     {
-        $this->isTokenValid($app);
+        $this->isTokenValid();
 
         if ($Plugin->isEnabled()) {
             $this->addError('admin.plugin.already.enable', 'admin');
@@ -313,13 +313,12 @@ class PluginController extends AbstractController
      *
      * @Method("PUT")
      * @Route("/%eccube_admin_route%/store/plugin/{id}/disable", requirements={"id" = "\d+"}, name="admin_store_plugin_disable")
-     * @param Application $app
      * @param Plugin      $Plugin
      * @return RedirectResponse
      */
-    public function disable(Application $app, Plugin $Plugin)
+    public function disable(Plugin $Plugin)
     {
-        $this->isTokenValid($app);
+        $this->isTokenValid();
 
         if ($Plugin->isEnabled()) {
             $dependents = $this->pluginService->findDependentPluginNeedDisable($Plugin->getCode());
@@ -349,13 +348,12 @@ class PluginController extends AbstractController
      *
      * @Method("DELETE")
      * @Route("/%eccube_admin_route%/store/plugin/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_uninstall")
-     * @param Application $app
      * @param Plugin      $Plugin
      * @return RedirectResponse
      */
-    public function uninstall(Application $app, Plugin $Plugin)
+    public function uninstall(Plugin $Plugin)
     {
-        $this->isTokenValid($app);
+        $this->isTokenValid();
 
         if ($Plugin->isEnabled()) {
             $this->addError('admin.plugin.uninstall.error.not_disable', 'admin');
@@ -388,7 +386,7 @@ class PluginController extends AbstractController
      * @Route("/%eccube_admin_route%/store/plugin/handler", name="admin_store_plugin_handler")
      * @Template("@admin/Store/plugin_handler.twig")
      */
-    public function handler(Application $app)
+    public function handler()
     {
         $handlers = $this->pluginEventHandlerRepository->getHandlers();
 
@@ -406,7 +404,7 @@ class PluginController extends AbstractController
     /**
      * @Route("/%eccube_admin_route%/store/plugin/handler_up/{id}", requirements={"id" = "\d+"}, name="admin_store_plugin_handler_up")
      */
-    public function handler_up(Application $app, PluginEventHandler $Handler)
+    public function handler_up(PluginEventHandler $Handler)
     {
         $repo = $this->pluginEventHandlerRepository;
         $repo->upPriority($repo->find($Handler->getId()));
@@ -417,7 +415,7 @@ class PluginController extends AbstractController
     /**
      * @Route("/%eccube_admin_route%/store/plugin/handler_down/{id}", requirements={"id" = "\d+"}, name="admin_store_plugin_handler_down")
      */
-    public function handler_down(Application $app, PluginEventHandler $Handler)
+    public function handler_down(PluginEventHandler $Handler)
     {
         $repo = $this->pluginEventHandlerRepository;
         $repo->upPriority($Handler, false);
@@ -492,7 +490,7 @@ class PluginController extends AbstractController
      * @Route("/%eccube_admin_route%/store/plugin/authentication_setting", name="admin_store_authentication_setting")
      * @Template("Store/authentication_setting.twig")
      */
-    public function authenticationSetting(Application $app, Request $request)
+    public function authenticationSetting(Request $request)
     {
         $builder = $this->formFactory
             ->createBuilder(FormType::class, $this->BaseInfo);
@@ -530,10 +528,9 @@ class PluginController extends AbstractController
      * @param Request $request
      * @param $authKey
      * @param string $url
-     * @param Application $app
      * @return array
      */
-    private function getRequestApi(Request $request, $authKey, $url, $app)
+    private function getRequestApi(Request $request, $authKey, $url)
     {
         $curl = curl_init($url);
 
@@ -590,10 +587,9 @@ class PluginController extends AbstractController
      * フォルダ設置のみのプラグインを取得する.
      *
      * @param array $plugins
-     * @param Application $app
      * @return array
      */
-    protected function getUnregisteredPlugins(array $plugins, \Eccube\Application $app)
+    protected function getUnregisteredPlugins(array $plugins)
     {
         $finder = new Finder();
         $pluginCodes = array();

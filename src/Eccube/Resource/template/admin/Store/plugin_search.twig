@@ -20,7 +20,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 
-{% extends 'default_frame.twig' %}
+{% extends '@admin/styleguide_frame.twig' %}
 
 {% set menus = ['store', 'plugin', 'plugin_search'] %}
 
@@ -44,7 +44,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     type: 'GET',
                     dataType: 'jsonp',
                     crossDomain: true,
-                    url: '{{ app.config.package_repo_url }}/detail/' + id,
+                    url: '{{ package_repo_url }}/detail/' + id,
                     success: function (data) {
                         showPopup(obj, data, id);
                     },
@@ -89,14 +89,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <div class="row">
                                         {% for item in promotionItems %}
                                             <div class="col-xs-12">
-                                                {{ include('Store/plugin_search_panel.twig') }}
+                                                {{ include('@admin/Store/plugin_search_panel.twig') }}
                                             </div>
                                         {% endfor %}
                                     </div><!-- .row -->
                                     <div class="row grid">
                                         {% for item in items %}
                                             <div class="col-xs-12 grid-item">
-                                                {{ include('Store/plugin_search_panel.twig') }}
+                                                {{ include('@admin/Store/plugin_search_panel.twig') }}
                                             </div>
                                         {% endfor %}
                                     </div><!-- .row -->
@@ -110,9 +110,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             </div><!-- /.box -->
         </div><!-- /.col -->
     </div>
-{% endblock %}
 
-{% block modal %}
     <div class="modal fade" id="searchPluginModal" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg">
             <div id="search_plugin_modal_box" class="modal-content">
@@ -126,3 +124,4 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         </div>
     </div>
 {% endblock %}
+

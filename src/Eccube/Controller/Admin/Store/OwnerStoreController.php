@@ -170,6 +170,7 @@ class OwnerStoreController extends AbstractController
             'items' => $items,
             'promotionItems' => $promotionItems,
             'message' => $message,
+            'package_repo_url' => $this->eccubeConfig['package_repo_url'],
         ];
     }
 
