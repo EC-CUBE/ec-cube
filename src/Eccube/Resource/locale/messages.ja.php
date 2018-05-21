@@ -2064,6 +2064,8 @@ return [
     'admin.store.plugin_owners_confirm.846' => '最終更新日',
     'admin.store.plugin_owners_confirm.847' => 'EC-CUBE対応バージョン',
     'admin.store.plugin_owners_confirm.848' => 'ファイルサイズ<br>約 %size% KB',
+    'admin.store.plugin_owners_confirm.848.1' => 'ファイルサイズ',
+    'admin.store.plugin_owners_confirm.848.2' => '約',
     'admin.store.plugin_owners_confirm.849' => 'ライセンス',
     'admin.store.plugin_owners_confirm.850' => 'このプラグインはEC-CUBE %version%をサポートしていないため、正常に動作しない可能性があります。',
     'admin.store.plugin_owners_confirm.851' => '%dependency%が必要です。同時にインストールされます。',
@@ -2166,6 +2168,9 @@ return [
     'admin.store.unregisterd_plugin_table.948' => '詳細を表示',
     'admin.store.unregisterd_plugin_table.949' => '不明',
     'admin.store.unregisterd_plugin_table.950' => '設定',
+    'admin.store.install.label' => 'プラグイン (zip、tar、tar.gz形式)',
+
+
 
     //asdasdasdas
     'application.text.error.access' => '',

@@ -46,7 +46,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     {% if Plugin.code is defined %}
                         <td class="align-middle"><p>{{ Plugin.code }}</p>
                             {% if attribute(app.config[Plugin.code].const, 'readme') is defined %}
-                                <a href="#" class="view_readme" data-toggle="modal" data-target="#readmeModal" data-name="{{ Plugin.name }}" data-readme="{{ attribute(app.config[Plugin.code].const, 'readme')  }}">詳細を表示</a>
+                                <a href="#" class="view_readme" data-toggle="modal" data-target="#readmeModal" data-name="{{ Plugin.name }}" data-readme="{{ attribute(app.config[Plugin.code].const, 'readme')  }}">{{ 'admin.store.plugin_table.897'|trans }}</a>
                             {% endif %}
                         </td>
                     {% else %}

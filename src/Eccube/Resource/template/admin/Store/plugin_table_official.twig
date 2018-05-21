@@ -73,7 +73,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         {% if attribute(app.config[Plugin.code].const, 'readme') is defined %}
                             <a href="#" class="view_readme" data-toggle="modal" data-target="#readmeModal"
                                data-name="{{ Plugin.name }}"
-                               data-readme="{{ attribute(app.config[Plugin.code].const, 'readme') }}">詳細を表示</a>
+                               data-readme="{{ attribute(app.config[Plugin.code].const, 'readme') }}">{{ 'admin.store.unregisterd_plugin_table.948'|trans }}</a>
                         {% endif %}
                     </td>
                     <td class="align-middle">
@@ -82,10 +82,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <a class="btn btn-default btn-xs"
                                href="{{ url('admin_store_plugin_update_confirm', {'id': Plugin.id}) }}">{{ 'admin.store.plugin_table_official.916'|trans }}</a>
                             <ul class="plugin-meta dl-horizontal">
-                                <li class="plugin-version">プラグインバージョン : {{ pluginDetail.version }}</li>
-                                <li class="plugin-version">EC-CUBE対応バージョン
+                                <li class="plugin-version">{{ 'admin.store.plugin_owners_confirm.845'|trans }} : {{ pluginDetail.version }}</li>
+                                <li class="plugin-version">{{ 'admin.store.plugin_owners_confirm.847'|trans }}
                                     : {% for version in pluginDetail.eccube_version %}{{ version }} {%- if loop.last == false %}, {% endif -%}{% endfor %}</li>
-                                <li class="plugin-update">更新日 : {{ pluginDetail.last_update_date|time_ago }}</li>
+                                <li class="plugin-update">{{ 'admin.store.plugin_owners_panel.864'|trans }} : {{ pluginDetail.last_update_date|time_ago }}</li>
                             </ul>
                         {% else %}
                             <p>{{ 'admin.store.plugin_table_official.920'|trans }}。</p>

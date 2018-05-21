@@ -42,7 +42,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
                         <div class="card-body">
                             <div class="row">
-                                <label class="col-sm-3 control-label">プラグイン (zip、tar、tar.gz形式)</label>
+                                <label class="col-sm-3 control-label">{{ 'admin.store.install.label'|trans }}</label>
                                 <div class="col-sm-9">
                                     {{ form_widget(form.plugin_archive, {'attr': {'accept': 'application/zip,application/x-tar,application/x-gzip'}}) }}
                                     {% for error in errors %}
