@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Repository;
 
 use Doctrine\DBAL\Exception\DriverException;
@@ -52,6 +51,7 @@ class ClassCategoryRepository extends AbstractRepository
      * 規格カテゴリの一覧を取得します.
      *
      * @param \Eccube\Entity\ClassName $ClassName 検索対象の規格名オブジェクト. 指定しない場合は、すべての規格を対象に取得します.
+     *
      * @return array 規格カテゴリの配列
      */
     public function getList(\Eccube\Entity\ClassName $ClassName = null)

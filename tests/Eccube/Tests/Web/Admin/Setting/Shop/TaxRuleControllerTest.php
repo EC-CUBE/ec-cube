@@ -21,18 +21,14 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
 use Eccube\Entity\TaxRule;
-use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class TaxRuleControllerTest extends AbstractAdminWebTestCase
 {
-
     /**
      * @return TaxRule
      */
@@ -64,7 +60,7 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
 
         $this->client->request(
             'DELETE',
-            $this->generateUrl('admin_setting_shop_tax_delete', array('id' => 1))
+            $this->generateUrl('admin_setting_shop_tax_delete', ['id' => 1])
         );
 
         $actual = $this->client->getResponse()->isRedirect($redirectUrl);
@@ -77,24 +73,24 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
         $TaxRule = $this->createTaxRule();
         $tid = $TaxRule->getId();
         $now = new \DateTime();
-        $form = array(
+        $form = [
             '_token' => 'dummy',
             'tax_rate' => 10,
             'rounding_type' => rand(1, 3),
             'apply_date' => [
                 'date' => $now->format('Y-m-d'),
                 'time' => $now->format('H:i'),
-            ]
-        );
+            ],
+        ];
 
         $this->client->request(
             'POST',
             $this->generateUrl('admin_setting_shop_tax'),
-            array(
+            [
                 'tax_rule' => $form,
                 'tax_rule_id' => "$tid",
                 'mode' => 'edit_inline',
-            )
+            ]
         );
 
         $redirectUrl = $this->generateUrl('admin_setting_shop_tax');
@@ -114,7 +110,7 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
 
         $this->client->request(
             'DELETE',
-            $this->generateUrl('admin_setting_shop_tax_delete', array('id' => $TaxRule->getId()))
+            $this->generateUrl('admin_setting_shop_tax_delete', ['id' => $TaxRule->getId()])
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
@@ -127,7 +123,7 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
 
         $this->client->request(
             'DELETE',
-            $this->generateUrl('admin_setting_shop_tax_delete', array('id' => $tid))
+            $this->generateUrl('admin_setting_shop_tax_delete', ['id' => $tid])
         );
         $this->assertSame(404, $this->client->getResponse()->getStatusCode());
     }

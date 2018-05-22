@@ -21,12 +21,10 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type\Admin;
 
 use Eccube\Annotation\FormType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -36,26 +34,24 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class PluginLocalInstallType extends AbstractType
 {
-
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         $builder
-            ->add('plugin_archive', FileType::class, array(
+            ->add('plugin_archive', FileType::class, [
                 'label' => false,
                 'mapped' => false,
                 'required' => true,
-                'constraints' => array(
-                    new Assert\NotBlank(array('message' => 'pluginlocalinstall.text.message.select_file')),
-                    new Assert\File(array(
-                        'mimeTypes' => array('application/zip', 'application/x-tar', 'application/x-gzip'),
+                'constraints' => [
+                    new Assert\NotBlank(['message' => 'pluginlocalinstall.text.message.select_file']),
+                    new Assert\File([
+                        'mimeTypes' => ['application/zip', 'application/x-tar', 'application/x-gzip'],
                         'mimeTypesMessage' => 'pluginlocalinstall.text.message.allowed_format',
-                    )),
-                ),
-            ));
+                    ]),
+                ],
+            ]);
     }
 
     /**

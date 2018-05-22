@@ -54,19 +54,20 @@ class NewsController extends AbstractController
      * @Template("@admin/Content/news.twig")
      *
      * @param Request $request
+     *
      * @return array
      */
     public function index(Request $request)
     {
-        $NewsList = $this->newsRepository->findBy(array(), array('sort_no' => 'DESC'));
+        $NewsList = $this->newsRepository->findBy([], ['sort_no' => 'DESC']);
 
         $builder = $this->formFactory->createBuilder();
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
                 'NewsList' => $NewsList,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_NEWS_INDEX_INITIALIZE, $event);
@@ -88,6 +89,7 @@ class NewsController extends AbstractController
      *
      * @param Request $request
      * @param null $id
+     *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function edit(Request $request, $id = null)
@@ -105,10 +107,10 @@ class NewsController extends AbstractController
             ->createBuilder(NewsType::class, $News);
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
                 'News' => $News,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_NEWS_EDIT_INITIALIZE, $event);
@@ -123,10 +125,10 @@ class NewsController extends AbstractController
             $this->newsRepository->save($News);
 
             $event = new EventArgs(
-                array(
+                [
                     'form' => $form,
                     'News' => $News,
-                ),
+                ],
                 $request
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_NEWS_EDIT_COMPLETE, $event);
@@ -149,6 +151,7 @@ class NewsController extends AbstractController
      * @Route("/%eccube_admin_route%/content/news/{id}/up", requirements={"id" = "\d+"}, name="admin_content_news_up")
      *
      * @param News $News
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function up(News $News)
@@ -160,7 +163,6 @@ class NewsController extends AbstractController
 
             $this->addSuccess('admin.news.up.complete', 'admin');
         } catch (\Exception $e) {
-
             log_error('新着情報表示順更新エラー', [$News->getId(), $e]);
 
             $this->addError('admin.news.up.error', 'admin');
@@ -176,6 +178,7 @@ class NewsController extends AbstractController
      * @Route("/%eccube_admin_route%/content/news/{id}/down", requirements={"id" = "\d+"}, name="admin_content_news_down")
      *
      * @param News $News
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function down(News $News)
@@ -187,7 +190,6 @@ class NewsController extends AbstractController
 
             $this->addSuccess('admin.news.down.complete', 'admin');
         } catch (\Exception $e) {
-
             log_error('新着情報表示順更新エラー', [$News->getId(), $e]);
 
             $this->addError('admin.news.down.error', 'admin');
@@ -204,6 +206,7 @@ class NewsController extends AbstractController
      *
      * @param Request $request
      * @param News $News
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function delete(Request $request, News $News)
@@ -221,9 +224,7 @@ class NewsController extends AbstractController
             $this->addSuccess('admin.news.delete.complete', 'admin');
 
             log_info('新着情報削除完了', [$News->getId()]);
-
         } catch (\Exception $e) {
-
             $message = trans('admin.delete.failed.foreign_key', ['%name%' => trans('news.text.name')]);
             $this->addError($message, 'admin');
 

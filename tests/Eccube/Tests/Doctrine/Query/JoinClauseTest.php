@@ -56,6 +56,7 @@ class JoinClauseTest extends EccubeTestCase
     {
         $builder = $this->queryBuilder();
         $clause->build($builder);
+
         return preg_replace('/^SELECT p FROM Product p /', '', $builder->getDQL());
     }
 
@@ -63,6 +64,7 @@ class JoinClauseTest extends EccubeTestCase
     {
         $builder = $this->queryBuilder();
         $clause->build($builder);
+
         return $builder->getParameters()->toArray();
     }
 
@@ -74,5 +76,4 @@ class JoinClauseTest extends EccubeTestCase
         return $this->entityManager->createQueryBuilder()
             ->select('p')->from('Product', 'p');
     }
-
 }

@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type\Front;
 
 use Eccube\Common\EccubeConfig;
@@ -32,7 +31,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class ForgotType
- * @package Eccube\Form\Type\Front
  */
 class ForgotType extends AbstractType
 {
@@ -43,6 +41,7 @@ class ForgotType extends AbstractType
 
     /**
      * ForgotType constructor.
+     *
      * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
@@ -55,15 +54,15 @@ class ForgotType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('login_email', TextType::class, array(
-            'attr' => array(
-                'max_length' => $this->eccubeConfig['eccube_stext_len']
-            ),
-            'constraints' => array(
+        $builder->add('login_email', TextType::class, [
+            'attr' => [
+                'max_length' => $this->eccubeConfig['eccube_stext_len'],
+            ],
+            'constraints' => [
                 new Assert\NotBlank(),
-                new Assert\Email(array('strict' => true)),
-            ),
-        ));
+                new Assert\Email(['strict' => true]),
+            ],
+        ]);
     }
 
     /**

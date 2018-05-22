@@ -31,10 +31,10 @@ class DeliveryTimeTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
     protected $form;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = array(
+    protected $formData = [
         'delivery_time' => '午前中',
         'sort_no' => '1',
-    );
+    ];
 
     public function setUp()
     {
@@ -42,9 +42,9 @@ class DeliveryTimeTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
-            ->createBuilder(DeliveryTimeType::class, null, array(
+            ->createBuilder(DeliveryTimeType::class, null, [
                 'csrf_protection' => false,
-            ))
+            ])
             ->getForm();
     }
 

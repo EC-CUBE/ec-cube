@@ -23,7 +23,6 @@
 
 namespace Eccube\Service;
 
-
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Annotation\EntityExtension;
@@ -59,6 +58,7 @@ class EntityProxyService
      * @param array $excludeDirs Proxyから除外するTraitがあるディレクトリ一覧
      * @param string $outputDir 出力先
      * @param OutputInterface $output ログ出力
+     *
      * @return array 生成したファイルのリスト
      */
     public function generate($includesDirs, $excludeDirs, $outputDir, OutputInterface $output = null)
@@ -102,7 +102,9 @@ class EntityProxyService
 
     /**
      * 複数のディレクトリセットをスキャンしてディレクトリセットごとのEntityとTraitのマッピングを返します.
+     *
      * @param $dirSets array スキャン対象ディレクトリリストの配列
+     *
      * @return array ディレクトリセットごとのEntityとTraitのマッピング
      */
     private function scanTraits($dirSets)
@@ -132,11 +134,11 @@ class EntityProxyService
         }, get_declared_traits());
 
         // ディレクトリセットに含まれるTraitの一覧を作成
-        $traitSets = array_map(function() { return []; }, $dirSets);
+        $traitSets = array_map(function () { return []; }, $dirSets);
         foreach ($declaredTraits as $className) {
             $rc = new \ReflectionClass($className);
             $sourceFile = $rc->getFileName();
-            foreach ($includedFileSets as $index=>$includedFiles) {
+            foreach ($includedFileSets as $index => $includedFiles) {
                 if (in_array($sourceFile, $includedFiles)) {
                     $traitSets[$index][] = $className;
                 }
@@ -187,7 +189,7 @@ class EntityProxyService
                 [
                     new Token([T_WHITESPACE, PHP_EOL.'    ']),
                     new Token([CT::T_USE_TRAIT, 'use']),
-                    new Token([T_WHITESPACE, ' '])
+                    new Token([T_WHITESPACE, ' ']),
                 ],
                 $newTraitTokens,
                 [new Token(';'), new Token([T_WHITESPACE, PHP_EOL])]);
@@ -201,6 +203,7 @@ class EntityProxyService
 
     /**
      * EntityからTraitを削除.
+     *
      * @param $entityTokens Tokens Entityのトークン
      * @param $trait string 削除するTraitのFQCN
      */
@@ -212,9 +215,9 @@ class EntityProxyService
             $traitsTokens = array_slice($entityTokens->toArray(), $useTraitIndex + 1, $useTraitEndIndex - $useTraitIndex - 1);
 
             // Trait名の配列に変換
-            $traitNames = explode(',', implode(array_map(function($token) {
+            $traitNames = explode(',', implode(array_map(function ($token) {
                 return $token->getContent();
-            }, array_filter($traitsTokens, function($token) {
+            }, array_filter($traitsTokens, function ($token) {
                 return $token->getId() != T_WHITESPACE;
             }))));
 
@@ -240,6 +243,7 @@ class EntityProxyService
                 $result[] = new Token([T_STRING, $part]);
             }
         }
+
         return $result;
     }
 }

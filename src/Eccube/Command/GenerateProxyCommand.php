@@ -23,12 +23,10 @@
 
 namespace Eccube\Command;
 
-use Eccube\Entity\ProxyGenerator;
 use Eccube\Service\EntityProxyService;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-
 
 class GenerateProxyCommand extends ContainerAwareCommand
 {

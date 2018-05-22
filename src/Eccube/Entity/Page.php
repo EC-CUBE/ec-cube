@@ -77,11 +77,12 @@ class Page extends \Eccube\Entity\AbstractEntity
      * Get BlockPositionByTargetId
      *
      * @param integer $target_id
+     *
      * @return array
      */
     public function getBlocksPositionByTargetId($target_id)
     {
-        $BlockPositions = array();
+        $BlockPositions = [];
         foreach ($this->getBlockPositions() as $BlockPosition) {
             if ($BlockPosition->getSection() === $target_id) {
                 $BlockPositions[] = $BlockPosition;
@@ -192,16 +193,18 @@ class Page extends \Eccube\Entity\AbstractEntity
      * Get BlocsByTargetId
      *
      * @param integer $target_id
+     *
      * @return \Eccube\Entity\Block[]
      */
     public function getBlocksByTargetId($target_id)
     {
-        $Blocks = array();
+        $Blocks = [];
         foreach ($this->getBlockPositions() as $BlockPositions) {
             if ($BlockPositions->getTargetId() === $target_id) {
                 $Blocks[] = $BlockPositions->getBlock();
             }
         }
+
         return $Blocks;
     }
 
@@ -215,6 +218,13 @@ class Page extends \Eccube\Entity\AbstractEntity
         $Layout = current($this->getLayouts());
 
         return $Layout ? $Layout->getBlocks(self::TARGET_ID_HEAD) : [];
+    }
+
+    public function getBodyAfter()
+    {
+        $Layout = current($this->getLayouts());
+
+        return $Layout ? $Layout->getBlocks(self::TARGET_ID_BODY_AFTER) : [];
     }
 
     public function getHeader()
@@ -273,6 +283,19 @@ class Page extends \Eccube\Entity\AbstractEntity
         return $Layout ? $Layout->getBlocks(self::TARGET_ID_FOOTER) : [];
     }
 
+    public function getDrawer()
+    {
+        $Layout = current($this->getLayouts());
+
+        return $Layout ? $Layout->getBlocks(self::TARGET_ID_DRAWER) : [];
+    }
+
+    public function getCloseBodyBefore()
+    {
+        $Layout = current($this->getLayouts());
+
+        return $Layout ? $Layout->getBlocks(self::TARGET_ID_CLOSE_BODY_BEFORE) : [];
+    }
 
     /**
      * @var int
@@ -702,6 +725,7 @@ class Page extends \Eccube\Entity\AbstractEntity
      * Set meta_tags
      *
      * @param string $metaTags
+     *
      * @return Page
      */
     public function setMetaTags($metaTags)
@@ -841,6 +865,7 @@ class Page extends \Eccube\Entity\AbstractEntity
 
     /**
      * @param $layoutId
+     *
      * @return null|int
      */
     public function getSortNo($layoutId)
@@ -850,7 +875,6 @@ class Page extends \Eccube\Entity\AbstractEntity
         /** @var PageLayout $pageLayout */
         foreach ($pageLayouts as $pageLayout) {
             if ($pageLayout->getLayoutId() == $layoutId) {
-
                 return $pageLayout->getSortNo();
             }
         }

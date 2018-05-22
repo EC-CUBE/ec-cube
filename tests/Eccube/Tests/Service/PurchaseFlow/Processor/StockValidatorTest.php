@@ -71,7 +71,7 @@ class StockValidatorTest extends EccubeTestCase
     public function testValidStockOrder()
     {
         $Customer = $this->createCustomer();
-        $Order = $this->container->get(Generator::class)->createOrder($Customer, array($this->ProductClass));
+        $Order = $this->container->get(Generator::class)->createOrder($Customer, [$this->ProductClass]);
 
         self::assertEquals($Order->getOrderItems()[0]->getProductClass(), $this->ProductClass);
 

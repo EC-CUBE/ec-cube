@@ -21,11 +21,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type\Admin;
 
 use Eccube\Common\EccubeConfig;
-use Eccube\Util\StringUtil;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -56,6 +54,7 @@ class SecurityType extends AbstractType
 
     /**
      * SecurityType constructor.
+     *
      * @param EccubeConfig $eccubeConfig
      * @param ValidatorInterface $validator
      */
@@ -74,40 +73,40 @@ class SecurityType extends AbstractType
         $allowHosts = $this->eccubeConfig->get('eccube_admin_allow_hosts');
         $allowHosts = implode("\n", $allowHosts);
         $builder
-            ->add('admin_route_dir', TextType::class, array(
+            ->add('admin_route_dir', TextType::class, [
                 'label' => 'security.label.directory_name',
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(array('max' => $this->eccubeConfig['eccube_stext_len'])),
-                    new Assert\Regex(array(
-                       'pattern' => "/^[0-9a-zA-Z]+$/",
-                   )),
-                ),
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
+                    new Assert\Regex([
+                       'pattern' => '/^[0-9a-zA-Z]+$/',
+                   ]),
+                ],
                 'data' => $this->eccubeConfig->get('eccube_admin_route'),
-            ))
-            ->add('admin_allow_hosts', TextareaType::class, array(
+            ])
+            ->add('admin_allow_hosts', TextareaType::class, [
                 'required' => false,
                 'label' => 'security.label.ip_restriction',
-                'constraints' => array(
-                    new Assert\Length(array('max' => $this->eccubeConfig['eccube_ltext_len'])),
-                ),
+                'constraints' => [
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_ltext_len']]),
+                ],
                 'data' => $allowHosts,
-            ))
-            ->add('force_ssl', CheckboxType::class, array(
+            ])
+            ->add('force_ssl', CheckboxType::class, [
                 'label' => 'security.label.ssl_mandatory',
                 'required' => false,
                 'data' => $this->eccubeConfig->get('eccube_force_ssl'),
-            ))
+            ])
             ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
                 $form = $event->getForm();
                 $data = $form->getData();
 
                 $ips = preg_split("/\R/", $data['admin_allow_hosts'], null, PREG_SPLIT_NO_EMPTY);
 
-                foreach($ips as $ip) {
-                    $errors = $this->validator->validate($ip, array(
+                foreach ($ips as $ip) {
+                    $errors = $this->validator->validate($ip, [
                             new Assert\Ip(),
-                        )
+                        ]
                     );
                     if ($errors->count() != 0) {
                         $form['admin_allow_hosts']->addError(new FormError(trans('security.text.error.not_ipv4', array('%ip%' => $ip))));

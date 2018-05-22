@@ -8,7 +8,6 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class PluginDevelopEntityFromYamlTest extends AbstractCommandTest
 {
-
     private $testCase;
 
     public function setUp()
@@ -33,113 +32,112 @@ class PluginDevelopEntityFromYamlTest extends AbstractCommandTest
 
         $code = 'PluginUnittestSample';
 
-        $codePath = $this->app['config']['root_dir'] . '/app/Plugin/' . $code;
+        $codePath = $this->app['config']['root_dir'].'/app/Plugin/'.$code;
         $this->removePluginDir($codePath);
         $this->createPluginDir($codePath, $code);
 
-        $yamlName = 'Plugin.' . $code . '.Entity.' . ucfirst(strtolower($code)) . '.dcm.yml';
+        $yamlName = 'Plugin.'.$code.'.Entity.'.ucfirst(strtolower($code)).'.dcm.yml';
 
-        $testCase = array(
+        $testCase = [
             //プラグイン名
-            'entity' => array(
-                array(
-                    'input' => 'y'
-                )
-            ),
+            'entity' => [
+                [
+                    'input' => 'y',
+                ],
+            ],
             //プラグインコード
-            1 => array(
-                array(
+            1 => [
+                [
                     'input' => '',
                     'output' => 'Value cannot be empty',
-                ),
-                array(
+                ],
+                [
                     'input' => 'テストプラグイン名',
                     'output' => 'Please enter Plugin Code (First letter is uppercase alphabet only. alphabet and numbers are allowed.)',
-                ),
-                array(
+                ],
+                [
                     'input' => strtolower($code),
                     'output' => 'Please enter Plugin Code (First letter is uppercase alphabet only. alphabet and numbers are allowed.)',
-                ),
-                array(
+                ],
+                [
                     'input' => $code,
                     'output' => 'Table name:',
-                ),
-            ),
+                ],
+            ],
             //Table name:
-            2 => array(
-                array(
+            2 => [
+                [
                     'input' => $code,
-                    'output' => array(
+                    'output' => [
                         'No results have been found',
-                        $yamlName
-                    ),
-                ),
-                array(
+                        $yamlName,
+                    ],
+                ],
+                [
                     'input' => $yamlName,
-                    'output' => array(
+                    'output' => [
                         'your entry list',
-                        $yamlName
-                    ),
-                ),
-                array(
+                        $yamlName,
+                    ],
+                ],
+                [
                     'input' => '',
-                ),
-            ),
+                ],
+            ],
             //supportFlag
-            3 => array(
-                array(
+            3 => [
+                [
                     'input' => '',
                     'output' => 'Value cannot be empty',
-                ),
-                array(
+                ],
+                [
                     'input' => 'a',
                     'output' => 'No results have been found',
-                ),
-                array(
-                    'input' => 'y'
-                ),
-            ),
+                ],
+                [
+                    'input' => 'y',
+                ],
+            ],
             //確認
-            'confirm' => array(
-                array(
-                    'output' => array(
-                        $yamlName
-                    ),
-                ),
-                array(
-                    'input' => 'y'
-                ),
-            )
-        );
+            'confirm' => [
+                [
+                    'output' => [
+                        $yamlName,
+                    ],
+                ],
+                [
+                    'input' => 'y',
+                ],
+            ],
+        ];
         $this->setTestCase($testCase);
 
-        $commandArg = array(
+        $commandArg = [
             'command' => 'plugin:develop',
             'mode' => 'entity',
             '--no-ansi' => true,
-        );
+        ];
 
-        $this->executeTester(array($this, 'checkQuestion'), $commandArg);
+        $this->executeTester([$this, 'checkQuestion'], $commandArg);
 
         //ファイルとフォルダー作成確認
-        $ff = array(
+        $ff = [
             $codePath,
-            $codePath . '/Entity',
-            $codePath . '/Entity/' . ucfirst(strtolower($code)) . '.php',
-            $codePath . '/Repository',
-            $codePath . '/Repository/' . ucfirst(strtolower($code)) . 'Repository.php',
-            $codePath . '/Resource',
-            $codePath . '/Resource/doctrine',
-            $codePath . '/Resource/doctrine/Plugin.' . $code . '.Entity.' . ucfirst(strtolower($code)) . '.dcm.yml',
-            $codePath . '/Resource/doctrine/migration',
-        );
+            $codePath.'/Entity',
+            $codePath.'/Entity/'.ucfirst(strtolower($code)).'.php',
+            $codePath.'/Repository',
+            $codePath.'/Repository/'.ucfirst(strtolower($code)).'Repository.php',
+            $codePath.'/Resource',
+            $codePath.'/Resource/doctrine',
+            $codePath.'/Resource/doctrine/Plugin.'.$code.'.Entity.'.ucfirst(strtolower($code)).'.dcm.yml',
+            $codePath.'/Resource/doctrine/migration',
+        ];
         $this->checkFileAndFolder($ff);
         $this->removePluginDir($codePath);
     }
 
     public function checkQuestion($text, Question $question)
     {
-
         $output = $this->getLastContent();
         foreach ($this->testCase as $no => $row) {
             if (is_numeric($no)) {
@@ -157,7 +155,7 @@ class PluginDevelopEntityFromYamlTest extends AbstractCommandTest
                         if (is_array($case['output'])) {
                             $checkOutput = $case['output'];
                         } else {
-                            $checkOutput = array($case['output']);
+                            $checkOutput = [$case['output']];
                         }
                         foreach ($checkOutput as $node) {
                             $this->assertInOutput($output, $node);
@@ -172,17 +170,19 @@ class PluginDevelopEntityFromYamlTest extends AbstractCommandTest
             }
         }
 
-        throw new \Exception('Test case not set.' . PHP_EOL . ' output=' . $output);
+        throw new \Exception('Test case not set.'.PHP_EOL.' output='.$output);
     }
 
     protected function assertInOutput($output, $msg)
     {
         if (strpos($output, $msg) !== false) {
             $this->assertTrue(true);
+
             return true;
         }
-        $error = 'Input string not found in output.' . PHP_EOL . ' search=' . $msg . PHP_EOL . ' output=' . $output . '' . PHP_EOL;
+        $error = 'Input string not found in output.'.PHP_EOL.' search='.$msg.PHP_EOL.' output='.$output.''.PHP_EOL;
         $this->assertTrue(false, $error);
+
         return false;
     }
 
@@ -213,9 +213,8 @@ class PluginDevelopEntityFromYamlTest extends AbstractCommandTest
         if (!is_dir($codePath)) {
             mkdir($codePath);
         }
-        $yamlPath = $codePath . '/Plugin.' . $code . '.Entity.' . ucfirst(strtolower($code)) . '.dcm.yml';
+        $yamlPath = $codePath.'/Plugin.'.$code.'.Entity.'.ucfirst(strtolower($code)).'.dcm.yml';
         if (!is_file($yamlPath)) {
-            
         }
         if (!is_file($yamlPath)) {
             $body = $this->createYamlBody($code);
@@ -226,17 +225,17 @@ class PluginDevelopEntityFromYamlTest extends AbstractCommandTest
     protected function checkFileAndFolder($ff)
     {
         foreach ($ff as $path) {
-            $msg = 'fail assert that a file/path exists.(' . $path . ')';
+            $msg = 'fail assert that a file/path exists.('.$path.')';
             $this->assertTrue(file_exists($path), $msg);
         }
     }
 
     private function createYamlBody($code)
     {
-        $body = "Plugin\\" . $code . "\Entity\\" . ucfirst(strtolower($code)) . ":
+        $body = 'Plugin\\'.$code."\Entity\\".ucfirst(strtolower($code)).':
     type: entity
-    table: plg_" . strtolower($code) . "
-    repositoryClass: Plugin\\" . $code . "\Repository\\" . ucfirst(strtolower($code)) . "Repository
+    table: plg_'.strtolower($code).'
+    repositoryClass: Plugin\\'.$code."\Repository\\".ucfirst(strtolower($code))."Repository
     id:
         id:
             type: integer
@@ -303,6 +302,7 @@ class PluginDevelopEntityFromYamlTest extends AbstractCommandTest
             nullable: true
     lifecycleCallbacks: {  }
     ";
+
         return $body;
     }
 }

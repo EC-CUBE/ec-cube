@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Controller\Admin\Content;
 
 use Eccube\Controller\AbstractController;
@@ -46,7 +45,6 @@ class CacheController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $result = $cacheUtil->clearCache();
 
             $this->addSuccess('admin.content.cache.save.complete', 'admin');

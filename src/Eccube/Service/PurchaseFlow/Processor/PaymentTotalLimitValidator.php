@@ -51,6 +51,7 @@ class PaymentTotalLimitValidator extends ValidatableItemHolderProcessor
     /**
      * @param ItemHolderInterface $item
      * @param PurchaseContext $context
+     *
      * @throws \Eccube\Service\PurchaseFlow\InvalidItemException
      */
     protected function validate(ItemHolderInterface $item, PurchaseContext $context)

@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Form\Type\Admin\SearchOrderType;
@@ -37,17 +36,17 @@ class OrderSearchTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
-            ->createBuilder(SearchOrderType::class, null, array(
+            ->createBuilder(SearchOrderType::class, null, [
                 'csrf_protection' => false,
-            ))
+            ])
             ->getForm();
     }
 
     public function testTel_ValidData()
     {
-        $formData = array(
-            'tel' => '012345'
-        );
+        $formData = [
+            'tel' => '012345',
+        ];
 
         $this->form->submit($formData);
         $this->assertTrue($this->form->isValid());
@@ -55,18 +54,19 @@ class OrderSearchTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testTelWithHyphenMiddle_ValidData()
     {
-        $formData = array(
-            'tel' => '012-345'
-        );
+        $formData = [
+            'tel' => '012-345',
+        ];
 
         $this->form->submit($formData);
         $this->assertTrue($this->form->isValid());
     }
+
     public function testTelWithHyphenBefore_ValidData()
     {
-        $formData = array(
-            'tel' => '-345'
-        );
+        $formData = [
+            'tel' => '-345',
+        ];
 
         $this->form->submit($formData);
         $this->assertTrue($this->form->isValid());
@@ -74,9 +74,9 @@ class OrderSearchTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testTelWithHyphenAfter_ValidData()
     {
-        $formData = array(
-            'tel' => '012-'
-        );
+        $formData = [
+            'tel' => '012-',
+        ];
 
         $this->form->submit($formData);
         $this->assertTrue($this->form->isValid());
@@ -85,9 +85,9 @@ class OrderSearchTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
     public function testTel_NotValidData()
     {
         //意味あんだか良くわからんが一応書いとく
-        $formData = array(
-            'tel' => '+〇三=abcふれ'
-        );
+        $formData = [
+            'tel' => '+〇三=abcふれ',
+        ];
 
         $this->form->submit($formData);
         $this->assertFalse($this->form->isValid());
@@ -95,9 +95,9 @@ class OrderSearchTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testKana_NotValidData()
     {
-        $formData = array(
-            'kana' => 'a'
-        );
+        $formData = [
+            'kana' => 'a',
+        ];
 
         $this->form->submit($formData);
         $this->assertFalse($this->form->isValid());

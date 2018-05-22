@@ -8,7 +8,6 @@ use Eccube\Repository\Master\JobRepository;
 
 class CsvFixtureTest extends EccubeTestCase
 {
-
     /**
      * @var CsvFixture
      */
@@ -69,7 +68,7 @@ class CsvFixtureTest extends EccubeTestCase
 
         // ファイルのデータ行を取得しておく
         $rows = [];
-        while(!$this->file->eof()) {
+        while (!$this->file->eof()) {
             $rows[] = $this->file->current();
             $this->file->next();
         }

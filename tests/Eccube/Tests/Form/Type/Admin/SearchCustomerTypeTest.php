@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Form\Type\Admin\SearchCustomerType;
@@ -50,7 +49,7 @@ class SearchCustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCas
     public function testTel_NotValidData()
     {
         $formData = [
-            'tel' => str_repeat('A' , 55)
+            'tel' => str_repeat('A', 55),
         ];
 
         $this->form->submit($formData);
@@ -60,7 +59,7 @@ class SearchCustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCas
     public function testBuyProductName_NotValiedData()
     {
         $formData = [
-            'buy_product_name' => str_repeat('A' , $this->eccubeConfig['eccube_stext_len'] + 1)
+            'buy_product_name' => str_repeat('A', $this->eccubeConfig['eccube_stext_len'] + 1),
         ];
 
         $this->form->submit($formData);
@@ -69,9 +68,9 @@ class SearchCustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCas
 
     public function testBuyProductCode_NotValiedData()
     {
-        $formData = array(
-            'buy_product_code' => str_repeat('A' , $this->eccubeConfig['eccube_stext_len'] + 1)
-        );
+        $formData = [
+            'buy_product_code' => str_repeat('A', $this->eccubeConfig['eccube_stext_len'] + 1),
+        ];
 
         $this->form->submit($formData);
         $this->assertFalse($this->form->isValid());

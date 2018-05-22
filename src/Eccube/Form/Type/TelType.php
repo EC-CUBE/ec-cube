@@ -20,6 +20,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
 namespace Eccube\Form\Type;
 
 use Eccube\Common\EccubeConfig;
@@ -35,7 +36,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class TelType
- * @package Eccube\Form\Type
  */
 class TelType extends AbstractType
 {
@@ -46,13 +46,13 @@ class TelType extends AbstractType
 
     /**
      * TelType constructor.
+     *
      * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
     {
         $this->eccubeConfig = $eccubeConfig;
     }
-
 
     /**
      * {@inheritdoc}
@@ -64,9 +64,9 @@ class TelType extends AbstractType
         $options['tel03_options']['required'] = $options['required'];
         // required の場合は NotBlank も追加する
         if ($options['required']) {
-            $options['options']['constraints'] = array_merge(array(
-                new Assert\NotBlank(array()),
-            ), $options['options']['constraints']);
+            $options['options']['constraints'] = array_merge([
+                new Assert\NotBlank([]),
+            ], $options['options']['constraints']);
         }
 
         if (!isset($options['options']['error_bubbling'])) {
@@ -111,6 +111,7 @@ class TelType extends AbstractType
             }
         });
     }
+
     /**
      * {@inheritdoc}
      */
@@ -121,38 +122,39 @@ class TelType extends AbstractType
         $view->vars['tel02_name'] = $builder->getAttribute('tel02_name');
         $view->vars['tel03_name'] = $builder->getAttribute('tel03_name');
     }
+
     /**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'options' => array('constraints' => array()),
-            'tel01_options' => array(
-                'constraints' => array(
-                    new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')), //todo  messageは汎用的に出来ないものか?
-                    new Assert\Length(array('max' => $this->eccubeConfig['eccube_tel_len'], 'min' => $this->eccubeConfig['eccube_tel_len_min'])),
-                ),
-            ),
-            'tel02_options' => array(
-                'constraints' => array(
-                    new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
-                    new Assert\Length(array('max' => $this->eccubeConfig['eccube_tel_len'], 'min' => $this->eccubeConfig['eccube_tel_len_min'])),
-                ),
-            ),
-            'tel03_options' => array(
-                'constraints' => array(
-                    new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
-                    new Assert\Length(array('max' => $this->eccubeConfig['eccube_tel_len'], 'min' => $this->eccubeConfig['eccube_tel_len_min'])),
-                ),
-            ),
+        $resolver->setDefaults([
+            'options' => ['constraints' => []],
+            'tel01_options' => [
+                'constraints' => [
+                    new Assert\Type(['type' => 'numeric', 'message' => 'form.type.numeric.invalid']), //todo  messageは汎用的に出来ないものか?
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_tel_len'], 'min' => $this->eccubeConfig['eccube_tel_len_min']]),
+                ],
+            ],
+            'tel02_options' => [
+                'constraints' => [
+                    new Assert\Type(['type' => 'numeric', 'message' => 'form.type.numeric.invalid']),
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_tel_len'], 'min' => $this->eccubeConfig['eccube_tel_len_min']]),
+                ],
+            ],
+            'tel03_options' => [
+                'constraints' => [
+                    new Assert\Type(['type' => 'numeric', 'message' => 'form.type.numeric.invalid']),
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_tel_len'], 'min' => $this->eccubeConfig['eccube_tel_len_min']]),
+                ],
+            ],
             'tel01_name' => '',
             'tel02_name' => '',
             'tel03_name' => '',
             'error_bubbling' => false,
             'inherit_data' => true,
             'trim' => true,
-        ));
+        ]);
     }
 
     /**

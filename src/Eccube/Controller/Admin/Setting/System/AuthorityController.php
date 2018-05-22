@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Controller\Admin\Setting\System;
 
 use Eccube\Controller\AbstractController;
@@ -46,13 +45,13 @@ class AuthorityController extends AbstractController
 
     /**
      * AuthorityController constructor.
+     *
      * @param AuthorityRoleRepository $authorityRoleRepository
      */
     public function __construct(AuthorityRoleRepository $authorityRoleRepository)
     {
         $this->authorityRoleRepository = $authorityRoleRepository;
     }
-
 
     /**
      * @Route("/%eccube_admin_route%/setting/system/authority", name="admin_setting_system_authority")
@@ -67,20 +66,20 @@ class AuthorityController extends AbstractController
             ->add(
                 'AuthorityRoles',
                 CollectionType::class,
-                array(
+                [
                     'entry_type' => AuthorityRoleType::class,
                     'allow_add' => true,
                     'allow_delete' => true,
                     'prototype' => true,
                     'data' => $AuthorityRoles,
-                )
+                ]
             );
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
                 'AuthorityRoles' => $AuthorityRoles,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_AUTHORITY_INDEX_INITIALIZE, $event);
@@ -92,9 +91,7 @@ class AuthorityController extends AbstractController
             $form->get('AuthorityRoles')->add(uniqid(), AuthorityRoleType::class);
         }
 
-
         if ('POST' === $request->getMethod()) {
-
             $form->handleRequest($request);
 
             if ($form->isValid()) {
@@ -123,10 +120,10 @@ class AuthorityController extends AbstractController
                 $this->entityManager->flush();
 
                 $event = new EventArgs(
-                    array(
+                    [
                         'form' => $form,
                         'AuthorityRoles' => $AuthorityRoles,
-                    ),
+                    ],
                     $request
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_AUTHORITY_INDEX_COMPLETE, $event);
@@ -134,7 +131,6 @@ class AuthorityController extends AbstractController
                 $this->addSuccess('admin.system.authority.save.complete', 'admin');
 
                 return $this->redirectToRoute('admin_setting_system_authority');
-
             }
         }
 

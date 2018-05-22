@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Web\Admin\Product;
 
 use Eccube\Common\Constant;
@@ -109,11 +108,11 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
         $client->request(
             'POST',
             $this->generateUrl('admin_product_class_name'),
-            array(
-                'admin_class_name' => array(
+            [
+                'admin_class_name' => [
                 'name' => '規格1',
                 Constant::TOKEN_NAME => 'dummy',
-            ))
+            ], ]
         );
         $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('admin_product_class_name')));
     }
@@ -124,16 +123,15 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
         $client->request(
             'POST',
             $this->generateUrl('admin_product_class_name'),
-            array(
-                'admin_class_name' => array(
+            [
+                'admin_class_name' => [
                     'backend_name' => '規格1',
                     'name' => '表示規格1',
                     Constant::TOKEN_NAME => 'dummy',
-                ))
+                ], ]
         );
         $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('admin_product_class_name')));
     }
-
 
     public function testRoutingAdminProductClassBackendNameEdit()
     {
@@ -143,14 +141,14 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->persist($TestClassName);
         $this->entityManager->flush();
         $test_class_name_id = $this->classNameRepo
-            ->findOneBy(array(
-                'backend_name' => $TestClassName->getBackendName()
-            ))
+            ->findOneBy([
+                'backend_name' => $TestClassName->getBackendName(),
+            ])
             ->getId();
 
         // main
         $this->client->request('GET',
-            $this->generateUrl('admin_product_class_name_edit', array('id' => $test_class_name_id))
+            $this->generateUrl('admin_product_class_name_edit', ['id' => $test_class_name_id])
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
@@ -163,14 +161,14 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->persist($TestClassName);
         $this->entityManager->flush();
         $test_class_name_id = $this->classNameRepo
-            ->findOneBy(array(
-                'name' => $TestClassName->getName()
-            ))
+            ->findOneBy([
+                'name' => $TestClassName->getName(),
+            ])
             ->getId();
 
         // main
         $this->client->request('GET',
-            $this->generateUrl('admin_product_class_name_edit', array('id' => $test_class_name_id))
+            $this->generateUrl('admin_product_class_name_edit', ['id' => $test_class_name_id])
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
@@ -183,18 +181,18 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->persist($TestClassName);
         $this->entityManager->flush();
         $test_class_name_id = $this->classNameRepo
-            ->findOneBy(array(
-                'backend_name' => $TestClassName->getBackendName()
-            ))
+            ->findOneBy([
+                'backend_name' => $TestClassName->getBackendName(),
+            ])
             ->getId();
 
         // main
         $redirectUrl = $this->generateUrl('admin_product_class_name');
         $this->client->request('DELETE',
-            $this->generateUrl('admin_product_class_name_delete', array('id' => $test_class_name_id)),
-            array(
+            $this->generateUrl('admin_product_class_name_delete', ['id' => $test_class_name_id]),
+            [
                 Constant::TOKEN_NAME => 'dummy',
-            )
+            ]
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
@@ -202,17 +200,17 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
 
     public function testMoveSortNo()
     {
-        $ClassName = $this->classNameRepo->findOneBy(array('backend_name' => 'class-1'));
+        $ClassName = $this->classNameRepo->findOneBy(['backend_name' => 'class-1']);
 
         $this->client->request(
             'POST',
             $this->generateUrl('admin_product_class_name_sort_no_move'),
-            array($ClassName->getId() => 10),
-            array(),
-            array(
+            [$ClassName->getId() => 10],
+            [],
+            [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
                 'CONTENT_TYPE' => 'application/json',
-            )
+            ]
         );
         $MovedClassName = $this->classNameRepo->find($ClassName->getId());
         $this->expected = 10;

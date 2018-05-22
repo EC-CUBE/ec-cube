@@ -36,6 +36,7 @@ class PaymentTotalNegativeValidator extends ValidatableItemHolderProcessor
     /**
      * @param ItemHolderInterface $item
      * @param PurchaseContext $context
+     *
      * @throws InvalidItemException
      */
     protected function validate(ItemHolderInterface $item, PurchaseContext $context)

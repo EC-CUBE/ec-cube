@@ -32,10 +32,10 @@ class CustomerLoginTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
     protected $form;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = array(
+    protected $formData = [
         'login_email' => 'eccube@example.com',
         'login_pass' => '111111111',
-    );
+    ];
 
     public function setUp()
     {
@@ -46,9 +46,9 @@ class CustomerLoginTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
-            ->createBuilder(CustomerLoginType::class, null, array(
-                'csrf_protection' => false
-            ))
+            ->createBuilder(CustomerLoginType::class, null, [
+                'csrf_protection' => false,
+            ])
             ->getForm();
     }
 

@@ -9,7 +9,6 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 /**
  * Class CustomerControllerTest
- * @package Eccube\Tests\Web\Admin\Customer
  */
 class CustomerControllerTest extends AbstractAdminWebTestCase
 {
@@ -20,7 +19,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
     {
         parent::setUp();
         for ($i = 0; $i < 10; $i++) {
-            $this->createCustomer('user-' . $i . '@example.com');
+            $this->createCustomer('user-'.$i.'@example.com');
         }
         // sqlite では CsvType が生成されないので、ここで作る
         $CsvType = $this->entityManager->find(CsvType::class, 2);
@@ -60,12 +59,12 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
     public function testIndexPaging()
     {
         for ($i = 20; $i < 70; $i++) {
-            $this->createCustomer('user-' . $i . '@example.com');
+            $this->createCustomer('user-'.$i.'@example.com');
         }
 
         $this->client->request(
             'GET',
-            $this->generateUrl('admin_customer_page', array('page_no' => 2))
+            $this->generateUrl('admin_customer_page', ['page_no' => 2])
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
@@ -78,7 +77,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_customer'),
-            array('admin_search_customer' => array('_token' => 'dummy'))
+            ['admin_search_customer' => ['_token' => 'dummy']]
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
@@ -95,7 +94,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_customer'),
-            array('admin_search_customer' => array('_token' => 'dummy', 'sex' => 2))
+            ['admin_search_customer' => ['_token' => 'dummy', 'sex' => 2]]
         );
         $this->expected = '検索';
         $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
@@ -109,7 +108,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
     {
         $crawler = $this->client->request(
             'POST', $this->generateUrl('admin_customer'),
-            array('admin_search_customer' => array('_token' => 'dummy', 'multi' => 'ser-7'))
+            ['admin_search_customer' => ['_token' => 'dummy', 'multi' => 'ser-7']]
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
@@ -123,11 +122,11 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
      */
     public function testIndexWithPostSearchById()
     {
-        $Customer = $this->container->get(CustomerRepository::class)->findOneBy([], array('id' => 'DESC'));
+        $Customer = $this->container->get(CustomerRepository::class)->findOneBy([], ['id' => 'DESC']);
 
         $crawler = $this->client->request(
             'POST', $this->generateUrl('admin_customer'),
-            array('admin_search_customer' => array('_token' => 'dummy', 'multi' => $Customer->getId()))
+            ['admin_search_customer' => ['_token' => 'dummy', 'multi' => $Customer->getId()]]
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
@@ -141,7 +140,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
      */
     public function testIndexWithPostSearchByProductName()
     {
-        $Customer = $this->container->get(CustomerRepository::class)->findOneBy([], array('id' => 'DESC'));
+        $Customer = $this->container->get(CustomerRepository::class)->findOneBy([], ['id' => 'DESC']);
         $Order = $this->createOrder($Customer);
         $ProductName = $Order->getOrderItems()->filter(function ($OrderItems) {
             return $OrderItems->isProduct();
@@ -149,7 +148,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
 
         $crawler = $this->client->request(
             'POST', $this->generateUrl('admin_customer'),
-            array('admin_search_customer' => array('_token' => 'dummy', 'buy_product_name' => $ProductName))
+            ['admin_search_customer' => ['_token' => 'dummy', 'buy_product_name' => $ProductName]]
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
@@ -167,7 +166,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         $Customer = $this->createCustomer();
         $this->client->request(
             'PUT',
-            $this->generateUrl('admin_customer_resend', array('id' => $Customer->getId()))
+            $this->generateUrl('admin_customer_resend', ['id' => $Customer->getId()])
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_customer')));
 
@@ -176,7 +175,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         $Message = $Messages[0];
 
         $BaseInfo = $this->container->get(BaseInfoRepository::class)->get();
-        $this->expected = '[' . $BaseInfo->getShopName() . '] 会員登録のご確認';
+        $this->expected = '['.$BaseInfo->getShopName().'] 会員登録のご確認';
         $this->actual = $Message->getSubject();
         $this->verify();
 
@@ -193,10 +192,10 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         $id = $Customer->getId();
         $this->client->request(
             'DELETE',
-            $this->generateUrl('admin_customer_delete', array('id' => $Customer->getId()))
+            $this->generateUrl('admin_customer_delete', ['id' => $Customer->getId()])
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_customer_page',
-                array('page_no' => 1)) . '?resume=1'));
+                ['page_no' => 1]).'?resume=1'));
 
         $DeletedCustomer = $this->container->get(CustomerRepository::class)->find($id);
 
@@ -213,7 +212,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         $this->client->request(
             'POST',
             $this->generateUrl('admin_customer_export'),
-            array('admin_search_customer' => array('_token' => 'dummy'))
+            ['admin_search_customer' => ['_token' => 'dummy']]
         );
     }
 }

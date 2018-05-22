@@ -25,7 +25,6 @@ namespace Eccube\Service;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
@@ -178,6 +177,7 @@ class ShoppingService
 
     /**
      * ShoppingService constructor.
+     *
      * @param MailTemplateRepository $mailTemplateRepository
      * @param MailService $mailService
      * @param EventDispatcher $eventDispatcher
@@ -246,47 +246,45 @@ class ShoppingService
         $this->authorizationChecker = $authorizationChecker;
     }
 
-
     /**
      * セッションにセットされた受注情報を取得
      *
      * @param null $status
+     *
      * @return null|object
      */
     public function getOrder($status = null)
     {
-
         // 受注データを取得
         $preOrderId = $this->cartService->getPreOrderId();
         if (!$preOrderId) {
             return null;
         }
 
-        $condition = array(
+        $condition = [
             'pre_order_id' => $preOrderId,
-        );
+        ];
 
         if (!is_null($status)) {
-            $condition += array(
+            $condition += [
                 'OrderStatus' => $status,
-            );
+            ];
         }
 
         $Order = $this->orderRepository->findOneBy($condition);
 
         return $Order;
-
     }
 
     /**
      * 非会員情報を取得
      *
      * @param $sesisonKey
+     *
      * @return $Customer|null
      */
     public function getNonMember($sesisonKey)
     {
-
         // 非会員でも一度会員登録されていればショッピング画面へ遷移
         $nonMember = $this->session->get($sesisonKey);
         if (is_null($nonMember)) {
@@ -307,13 +305,13 @@ class ShoppingService
         }
 
         return $Customer;
-
     }
 
     /**
      * 受注情報を作成
      *
      * @param $Customer
+     *
      * @return \Eccube\Entity\Order
      */
     public function createOrder($Customer)
@@ -321,10 +319,10 @@ class ShoppingService
         // ランダムなpre_order_idを作成
         do {
             $preOrderId = sha1(StringUtil::random(32));
-            $Order = $this->orderRepository->findOneBy(array(
+            $Order = $this->orderRepository->findOneBy([
                 'pre_order_id' => $preOrderId,
                 'OrderStatus' => OrderStatus::PROCESSING,
-            ));
+            ]);
         } while ($Order);
 
         // 受注情報、受注明細情報、お届け先情報、配送商品情報を作成
@@ -343,13 +341,14 @@ class ShoppingService
      *
      * @param $Customer
      * @param $preOrderId
+     *
      * @return mixed
+     *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function registerPreOrder(Customer $Customer, $preOrderId)
     {
-
         $this->em = $this->entityManager;
 
         // 受注情報を作成
@@ -411,13 +410,13 @@ class ShoppingService
         $this->entityManager->flush();
 
         return $Order;
-
     }
 
     /**
      * 受注情報を作成
      *
      * @param $Customer
+     *
      * @return \Eccube\Entity\Order
      */
     public function getNewOrder(Customer $Customer)
@@ -427,7 +426,6 @@ class ShoppingService
 
         return $Order;
     }
-
 
     /**
      * 受注情報を作成
@@ -447,6 +445,7 @@ class ShoppingService
      *
      * @param \Eccube\Entity\Order $Order
      * @param \Eccube\Entity\Customer|null $Customer
+     *
      * @return \Eccube\Entity\Order
      */
     public function copyToOrderFromCustomer(Order $Order, Customer $Customer = null)
@@ -484,7 +483,6 @@ class ShoppingService
         return $Order;
     }
 
-
     /**
      * 配送業者情報を取得
      *
@@ -492,39 +490,36 @@ class ShoppingService
      */
     public function getDeliveriesCart()
     {
-
         // カートに保持されている販売種別を取得
         $saleTypes = $this->cartService->getSaleTypes();
 
         return $this->getDeliveries($saleTypes);
-
     }
 
     /**
      * 配送業者情報を取得
      *
      * @param Order $Order
+     *
      * @return array
      */
     public function getDeliveriesOrder(Order $Order)
     {
-
         // 受注情報から販売種別を取得
         $saleTypes = $this->orderService->getSaleTypes($Order);
 
         return $this->getDeliveries($saleTypes);
-
     }
 
     /**
      * 配送業者情報を取得
      *
      * @param $saleTypes
+     *
      * @return array
      */
     public function getDeliveries($saleTypes)
     {
-
         // 販売種別に紐づく配送業者を取得
         $deliveries = $this->deliveryRepository->getDeliveries($saleTypes);
 
@@ -538,13 +533,10 @@ class ShoppingService
                 // 販売種別が複数ある場合、配送対象となる配送業者を取得
                 $deliveries = $this->deliveryRepository->findAllowedDeliveries($saleTypes, $payments);
             }
-
         }
 
         return $deliveries;
-
     }
-
 
     /**
      * お届け先情報を作成
@@ -552,11 +544,12 @@ class ShoppingService
      * @param Order $Order
      * @param Customer $Customer
      * @param $deliveries
+     *
      * @return Order
      */
     public function getNewShipping(Order $Order, Customer $Customer, $deliveries)
     {
-        $saleTypes = array();
+        $saleTypes = [];
         foreach ($deliveries as $Delivery) {
             if (!in_array($Delivery->getSaleType()->getId(), $saleTypes)) {
                 $Shipping = new Shipping();
@@ -583,6 +576,7 @@ class ShoppingService
      *
      * @param \Eccube\Entity\Shipping $Shipping
      * @param \Eccube\Entity\Customer|null $Customer
+     *
      * @return \Eccube\Entity\Shipping
      */
     public function copyToShippingFromCustomer(Shipping $Shipping, Customer $Customer = null)
@@ -592,8 +586,8 @@ class ShoppingService
         }
 
         $CustomerAddress = $this->customerAddressRepository->findOneBy(
-            array('Customer' => $Customer),
-            array('id' => 'ASC')
+            ['Customer' => $Customer],
+            ['id' => 'ASC']
         );
 
         if (!is_null($CustomerAddress)) {
@@ -639,16 +633,15 @@ class ShoppingService
         return $Shipping;
     }
 
-
     /**
      * 受注明細情報、配送商品情報を作成
      *
      * @param Order $Order
+     *
      * @return Order
      */
     public function getNewDetails(Order $Order)
     {
-
         // 受注詳細, 配送商品
         foreach ($this->cartService->getCart()->getCartItems() as $item) {
             /* @var $ProductClass \Eccube\Entity\ProductClass */
@@ -663,7 +656,6 @@ class ShoppingService
         }
 
         return $Order;
-
     }
 
     /**
@@ -673,11 +665,11 @@ class ShoppingService
      * @param Product $Product
      * @param ProductClass $ProductClass
      * @param $quantity
+     *
      * @return \Eccube\Entity\OrderItem
      */
     public function getNewOrderItem(Order $Order, Product $Product, ProductClass $ProductClass, $quantity)
     {
-
         $OrderItem = new OrderItem();
         $shippings = $Order->getShippings();
 
@@ -727,13 +719,13 @@ class ShoppingService
         $this->entityManager->persist($OrderItem);
 
         return $OrderItem;
-
     }
 
     /**
      * お届け先ごとの送料合計を取得
      *
      * @param $shippings
+     *
      * @return int
      */
     public function getShippingDeliveryFeeTotal($shippings)
@@ -744,13 +736,13 @@ class ShoppingService
         }
 
         return $deliveryFeeTotal;
-
     }
 
     /**
      * 商品ごとの配送料を取得
      *
      * @param Shipping $Shipping
+     *
      * @return int
      */
     public function getProductDeliveryFee(Shipping $Shipping)
@@ -766,13 +758,15 @@ class ShoppingService
 
     /**
      * 住所などの情報が変更された時に金額の再計算を行う
+     *
      * @deprecated PurchaseFlowで行う
+     *
      * @param Order $Order
+     *
      * @return Order
      */
     public function getAmount(Order $Order)
     {
-
         // 初期選択の配送業者をセット
         $shippings = $Order->getShippings();
 
@@ -790,7 +784,6 @@ class ShoppingService
         $this->calculatePrice($Order);
 
         return $Order;
-
     }
 
     /**
@@ -805,7 +798,7 @@ class ShoppingService
         if (is_null($Delivery)) {
             $Delivery = $Shipping->getDelivery();
         }
-        $deliveryFee = $this->deliveryFeeRepository->findOneBy(array('Delivery' => $Delivery, 'Pref' => $Shipping->getPref()));
+        $deliveryFee = $this->deliveryFeeRepository->findOneBy(['Delivery' => $Delivery, 'Pref' => $Shipping->getPref()]);
         if ($deliveryFee) {
             $Shipping->setFeeId($deliveryFee->getId());
         }
@@ -883,10 +876,10 @@ class ShoppingService
         $shippings = $data['shippings'];
         foreach ($shippings as $Shipping) {
             $Delivery = $Shipping->getDelivery();
-            $deliveryFee = $this->deliveryFeeRepository->findOneBy(array(
+            $deliveryFee = $this->deliveryFeeRepository->findOneBy([
                 'Delivery' => $Delivery,
-                'Pref' => $Shipping->getPref()
-            ));
+                'Pref' => $Shipping->getPref(),
+            ]);
             $deliveryTime = $Shipping->getDeliveryTime();
             if (!empty($deliveryTime)) {
                 $Shipping->setShippingDeliveryTime($deliveryTime->getDeliveryTime());
@@ -907,7 +900,6 @@ class ShoppingService
         $this->setDeliveryFreeQuantity($Order);
     }
 
-
     /**
      * 受注情報の更新
      *
@@ -919,9 +911,7 @@ class ShoppingService
         $Order->setOrderDate(new \DateTime()); // XXX 後続の setOrderStatus でも時刻を更新している
         $OrderStatus = $this->orderStatusRepository->find(OrderStatus::NEW);
         $this->setOrderStatus($Order, $OrderStatus);
-
     }
-
 
     /**
      * 会員情報の更新
@@ -943,17 +933,17 @@ class ShoppingService
         $user->setBuyTotal($user->getBuyTotal() + $Order->getTotal());
     }
 
-
     /**
      * 支払方法選択の表示設定
      *
      * @param $payments 支払選択肢情報
      * @param $subTotal 小計
+     *
      * @return array
      */
     public function getPayments($payments, $subTotal)
     {
-        $pays = array();
+        $pays = [];
         foreach ($payments as $payment) {
             // 支払方法の制限値内であれば表示
             if (!is_null($payment)) {
@@ -967,18 +957,17 @@ class ShoppingService
         }
 
         return $pays;
-
     }
 
     /**
      * お届け日を取得
      *
      * @param Order $Order
+     *
      * @return array
      */
     public function getFormDeliveryDurations(Order $Order)
     {
-
         // お届け日の設定
         $minDate = 0;
         $deliveryDurationFlag = false;
@@ -1006,11 +995,11 @@ class ShoppingService
         }
 
         // 配達最大日数期間を設定
-        $deliveryDurations = array();
+        $deliveryDurations = [];
 
         // 配送日数が設定されている
         if ($deliveryDurationFlag) {
-            $period = new \DatePeriod (
+            $period = new \DatePeriod(
                 new \DateTime($minDate.' day'),
                 new \DateInterval('P1D'),
                 new \DateTime($minDate + $this->eccubeConfig['eccube_deliv_date_end_max'].' day')
@@ -1029,11 +1018,11 @@ class ShoppingService
      *
      * @param $deliveries
      * @param Order $Order
+     *
      * @return array
      */
     public function getFormPayments($deliveries, Order $Order)
     {
-
         $saleTypes = $this->orderService->getSaleTypes($Order);
         if ($this->BaseInfo->isOptionMultipleShipping() && count($saleTypes) > 1) {
             // 複数配送時の支払方法
@@ -1054,7 +1043,9 @@ class ShoppingService
      * お届け先ごとにFormを作成
      *
      * @param Order $Order
+     *
      * @return \Symfony\Component\Form\Form
+     *
      * @deprecated since 3.0, to be removed in 3.1
      */
     public function getShippingForm(Order $Order)
@@ -1066,28 +1057,28 @@ class ShoppingService
         // 配送業者の支払方法を取得
         $payments = $this->getFormPayments($deliveries, $Order);
 
-        $builder = $this->formFactory->createBuilder('shopping', null, array(
+        $builder = $this->formFactory->createBuilder('shopping', null, [
             'payments' => $payments,
             'payment' => $Order->getPayment(),
             'message' => $message,
-        ));
+        ]);
 
         $builder
-            ->add('shippings', CollectionType::class, array(
+            ->add('shippings', CollectionType::class, [
                 'entry_type' => ShippingItemType::class,
                 'data' => $Order->getShippings(),
-            ));
+            ]);
 
         $form = $builder->getForm();
 
         return $form;
-
     }
 
     /**
      * お届け先ごとにFormBuilderを作成
      *
      * @param Order $Order
+     *
      * @return \Symfony\Component\Form\FormBuilderInterface
      *
      * @deprecated 利用している箇所なし
@@ -1101,22 +1092,20 @@ class ShoppingService
         // 配送業者の支払方法を取得
         $payments = $this->getFormPayments($deliveries, $Order);
 
-        $builder = $this->formFactory->createBuilder('shopping', null, array(
+        $builder = $this->formFactory->createBuilder('shopping', null, [
             'payments' => $payments,
             'payment' => $Order->getPayment(),
             'message' => $message,
-        ));
+        ]);
 
         $builder
-            ->add('shippings', CollectionType::class, array(
+            ->add('shippings', CollectionType::class, [
                 'entry_type' => ShippingItemType::class,
                 'data' => $Order->getShippings(),
-            ));
+            ]);
 
         return $builder;
-
     }
-
 
     /**
      * フォームデータを更新
@@ -1128,14 +1117,12 @@ class ShoppingService
      */
     public function setFormData(Order $Order, array $data)
     {
-
         // お問い合わせ
         $Order->setMessage($data['message']);
 
         // お届け先情報を更新
         $shippings = $data['shippings'];
         foreach ($shippings as $Shipping) {
-
             $timeId = $Shipping->getTimeId();
             $deliveryTime = null;
             if ($timeId) {
@@ -1145,20 +1132,18 @@ class ShoppingService
                 $Shipping->setShippingDeliveryTime($deliveryTime->getDeliveryTime());
                 $Shipping->setTimeId($timeId);
             }
-
         }
-
     }
 
     /**
      * 配送料の合計金額を計算
      *
      * @param Order $Order
+     *
      * @return Order
      */
     public function calculateDeliveryFee(Order $Order)
     {
-
         // 配送業者を取得
         $shippings = $Order->getShippings();
 
@@ -1173,14 +1158,13 @@ class ShoppingService
         $this->setDeliveryFreeQuantity($Order);
 
         return $Order;
-
     }
-
 
     /**
      * 購入処理を行う
      *
      * @param Order $Order
+     *
      * @deprecated PurchaseFlow::purchase() を使用してください
      */
     public function processPurchase(Order $Order)
@@ -1194,24 +1178,22 @@ class ShoppingService
         }
     }
 
-
     /**
      * 値引き可能かチェック
      *
      * @param Order $Order
      * @param       $discount
+     *
      * @return bool
      */
     public function isDiscount(Order $Order, $discount)
     {
-
         if ($Order->getTotal() < $discount) {
             return false;
         }
 
         return true;
     }
-
 
     /**
      * 値引き金額をセット
@@ -1221,21 +1203,18 @@ class ShoppingService
      */
     public function setDiscount(Order $Order, $discount)
     {
-
         $Order->setDiscount($Order->getDiscount() + $discount);
-
     }
-
 
     /**
      * 合計金額を計算
      *
      * @param Order $Order
+     *
      * @return Order
      */
     public function calculatePrice(Order $Order)
     {
-
         $total = $Order->getTotalPrice();
 
         if ($total < 0) {
@@ -1247,7 +1226,6 @@ class ShoppingService
         $Order->setPaymentTotal($total);
 
         return $Order;
-
     }
 
     /**
@@ -1255,35 +1233,34 @@ class ShoppingService
      *
      * @param Order $Order
      * @param $status
+     *
      * @return Order
      */
     public function setOrderStatus(Order $Order, $status)
     {
-
         $Order->setOrderDate(new \DateTime());
         $Order->setOrderStatus($this->orderStatusRepository->find($status));
 
         $event = new EventArgs(
-            array(
+            [
                 'Order' => $Order,
-            ),
+            ],
             null
         );
         $this->eventDispatcher->dispatch(EccubeEvents::SERVICE_SHOPPING_ORDER_STATUS, $event);
 
         return $Order;
-
     }
 
     /**
      * 受注メール送信を行う
      *
      * @param Order $Order
+     *
      * @return MailHistory
      */
     public function sendOrderMail(Order $Order)
     {
-
         // メール送信
         $message = $this->mailService->sendOrderMail($Order);
 
@@ -1301,7 +1278,6 @@ class ShoppingService
         return $MailHistory;
     }
 
-
     /**
      * 受注処理完了通知
      *
@@ -1309,16 +1285,12 @@ class ShoppingService
      */
     public function notifyComplete(Order $Order)
     {
-
         $event = new EventArgs(
-            array(
+            [
                 'Order' => $Order,
-            ),
+            ],
             null
         );
         $this->eventDispatcher->dispatch(EccubeEvents::SERVICE_SHOPPING_NOTIFY_COMPLETE, $event);
-
     }
-
-
 }

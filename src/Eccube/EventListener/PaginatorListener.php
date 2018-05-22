@@ -51,8 +51,8 @@ class PaginatorListener implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        return array(
-            /**
+        return [
+            /*
              * Knp\Component\Pager\Event\Subscriber\Paginate\Doctrine\ORM\QuerySubscriber\UsesPaginator
              * よりも先に実行させるため, 優先度を1に設定.
              *
@@ -62,7 +62,7 @@ class PaginatorListener implements EventSubscriberInterface
              * の順に実行されるが,
              * 優先度を1に設定し, UsesPaginatorの代わりにPaginatorListenerが動作するようにする
              */
-            'knp_pager.items' => array('items', 1)
-        );
+            'knp_pager.items' => ['items', 1],
+        ];
     }
 }

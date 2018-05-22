@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -37,7 +36,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CustomerAddress extends AbstractEntity
 {
-
     /**
      * getShippingMultipleDefaultName
      *
@@ -45,13 +43,14 @@ class CustomerAddress extends AbstractEntity
      */
     public function getShippingMultipleDefaultName()
     {
-        return $this->getName01() . ' ' . $this->getPref()->getName() . ' ' . $this->getAddr01() . ' ' . $this->getAddr02();
+        return $this->getName01().' '.$this->getPref()->getName().' '.$this->getAddr01().' '.$this->getAddr02();
     }
 
     /**
      * Set from customer.
      *
      * @param \Eccube\Entity\Customer $Customer
+     *
      * @return \Eccube\Entity\CustomerAddress
      */
     public function setFromCustomer(Customer $Customer)
@@ -71,7 +70,7 @@ class CustomerAddress extends AbstractEntity
             ->setFax03($Customer->getFax03())
             ->setZip01($Customer->getZip01())
             ->setZip02($Customer->getZip02())
-            ->setZipCode($Customer->getZip01() . $Customer->getZip02())
+            ->setZipCode($Customer->getZip01().$Customer->getZip02())
             ->setPref($Customer->getPref())
             ->setAddr01($Customer->getAddr01())
             ->setAddr02($Customer->getAddr02());
@@ -83,6 +82,7 @@ class CustomerAddress extends AbstractEntity
      * Set from Shipping.
      *
      * @param \Eccube\Entity\Shipping $Shipping
+     *
      * @return \Eccube\Entity\CustomerAddress
      */
     public function setFromShipping(Shipping $Shipping)
@@ -101,7 +101,7 @@ class CustomerAddress extends AbstractEntity
             ->setFax03($Shipping->getFax03())
             ->setZip01($Shipping->getZip01())
             ->setZip02($Shipping->getZip02())
-            ->setZipCode($Shipping->getZip01() . $Shipping->getZip02())
+            ->setZipCode($Shipping->getZip01().$Shipping->getZip02())
             ->setPref($Shipping->getPref())
             ->setAddr01($Shipping->getAddr01())
             ->setAddr02($Shipping->getAddr02());
@@ -273,7 +273,6 @@ class CustomerAddress extends AbstractEntity
      * })
      */
     private $Pref;
-
 
     /**
      * Get id.

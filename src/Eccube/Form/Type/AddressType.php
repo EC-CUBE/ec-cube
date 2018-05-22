@@ -47,6 +47,7 @@ class AddressType extends AbstractType
      * {@inheritdoc}
      *
      * AddressType constructor.
+     *
      * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
@@ -65,17 +66,17 @@ class AddressType extends AbstractType
 
         // required の場合は NotBlank も追加する
         if ($options['required']) {
-            $options['pref_options']['constraints'] = array_merge(array(
-                new Assert\NotBlank(array()),
-            ), $options['pref_options']['constraints']);
+            $options['pref_options']['constraints'] = array_merge([
+                new Assert\NotBlank([]),
+            ], $options['pref_options']['constraints']);
 
-            $options['addr01_options']['constraints'] = array_merge(array(
-                new Assert\NotBlank(array()),
-            ), $options['addr01_options']['constraints']);
+            $options['addr01_options']['constraints'] = array_merge([
+                new Assert\NotBlank([]),
+            ], $options['addr01_options']['constraints']);
 
-            $options['addr02_options']['constraints'] = array_merge(array(
-                new Assert\NotBlank(array()),
-            ), $options['addr02_options']['constraints']);
+            $options['addr02_options']['constraints'] = array_merge([
+                new Assert\NotBlank([]),
+            ], $options['addr02_options']['constraints']);
         }
 
         if (!isset($options['options']['error_bubbling'])) {
@@ -109,29 +110,29 @@ class AddressType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'options' => array(),
+        $resolver->setDefaults([
+            'options' => [],
             'help' => 'form.contact.address.help',
-            'pref_options' => array('constraints' => array(), 'attr' => array('class' => 'p-region-id')),
-            'addr01_options' => array(
-                'constraints' => array(
-                    new Assert\Length(array('max' => $this->config['eccube_address1_len'])),
-                ),
-                'attr' => array('class' => 'p-locality p-street-address'),
-            ),
-            'addr02_options' => array(
-                'constraints' => array(
-                    new Assert\Length(array('max' => $this->config['eccube_address2_len'])),
-                ),
-                'attr' => array('class' => 'p-extended-address'),
-            ),
+            'pref_options' => ['constraints' => [], 'attr' => ['class' => 'p-region-id']],
+            'addr01_options' => [
+                'constraints' => [
+                    new Assert\Length(['max' => $this->config['eccube_address1_len']]),
+                ],
+                'attr' => ['class' => 'p-locality p-street-address'],
+            ],
+            'addr02_options' => [
+                'constraints' => [
+                    new Assert\Length(['max' => $this->config['eccube_address2_len']]),
+                ],
+                'attr' => ['class' => 'p-extended-address'],
+            ],
             'pref_name' => 'pref',
             'addr01_name' => 'addr01',
             'addr02_name' => 'addr02',
             'error_bubbling' => false,
             'inherit_data' => true,
             'trim' => true,
-        ));
+        ]);
     }
 
     public function getBlockPrefix()

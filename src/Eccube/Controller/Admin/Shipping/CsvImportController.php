@@ -41,21 +41,21 @@ class CsvImportController extends AbstractController
      * @var array
      */
     protected $headers = [
-        '商品ID'
+        '商品ID',
     ];
 
     /**
      * @var array
      */
     protected $descriptions = [
-        '項目は未決定'
+        '項目は未決定',
     ];
 
     /**
      * @var array
      */
     protected $columns = [
-        'id'
+        'id',
     ];
 
     /**
@@ -76,12 +76,11 @@ class CsvImportController extends AbstractController
 
             if (!empty($this->fileName)) {
                 $fs = new Filesystem();
-                $fs->remove($this->eccubeConfig['eccube_csv_temp_realdir'] . '/' . $this->fileName);
+                $fs->remove($this->eccubeConfig['eccube_csv_temp_realdir'].'/'.$this->fileName);
             }
         } catch (\Exception $e) {
             // エラーが発生しても無視する
         }
-
 
         if ($this->hasErrors()) {
             if ($this->entityManager) {
@@ -108,6 +107,7 @@ class CsvImportController extends AbstractController
         if (count($this->headers) != count($this->descriptions)) {
             throw new CsvImportException('Incorrect mapping csv header & description');
         }
+
         return array_combine($this->headers, $this->descriptions);
     }
 
@@ -120,7 +120,6 @@ class CsvImportController extends AbstractController
     }
 
     /**
-     *
      * @return boolean
      */
     protected function hasErrors()

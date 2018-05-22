@@ -26,9 +26,9 @@ class ConvertKanaListener implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        return array(
-            FormEvents::PRE_SUBMIT   => 'onPreSubmit',
-        );
+        return [
+            FormEvents::PRE_SUBMIT => 'onPreSubmit',
+        ];
     }
 
     public function onPreSubmit(FormEvent $event)

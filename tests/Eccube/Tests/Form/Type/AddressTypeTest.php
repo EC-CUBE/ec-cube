@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Form\Type;
 
 use Eccube\Form\Type\AddressType;
@@ -33,13 +32,13 @@ class AddressTypeTest extends AbstractTypeTestCase
     protected $form;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = array(
-        'address' => array(
+    protected $formData = [
+        'address' => [
             'pref' => '5',
             'addr01' => '北区',
             'addr02' => '梅田',
-        ),
-    );
+        ],
+    ];
 
     public function setUp()
     {
@@ -58,15 +57,14 @@ class AddressTypeTest extends AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-
     public function testInvalidData_Addr01_MaxLength()
     {
-        $data = array(
-            'address' => array(
+        $data = [
+            'address' => [
                 'pref' => '1',
-                'addr01' => str_repeat('ア', $this->eccubeConfig['eccube_address1_len']+1),
+                'addr01' => str_repeat('ア', $this->eccubeConfig['eccube_address1_len'] + 1),
                 'addr02' => 'にゅうりょく',
-            ));
+            ], ];
 
         $this->form->submit($data);
         $this->assertFalse($this->form->isValid());
@@ -74,12 +72,12 @@ class AddressTypeTest extends AbstractTypeTestCase
 
     public function testInvalidData_Addr02_MaxLength()
     {
-        $data = array(
-            'address' => array(
+        $data = [
+            'address' => [
                 'pref' => '1',
                 'addr01' => 'にゅうりょく',
-                'addr02' => str_repeat('ア', $this->eccubeConfig['eccube_address2_len']+1),
-            ));
+                'addr02' => str_repeat('ア', $this->eccubeConfig['eccube_address2_len'] + 1),
+            ], ];
 
         $this->form->submit($data);
         $this->assertFalse($this->form->isValid());
@@ -105,11 +103,10 @@ class AddressTypeTest extends AbstractTypeTestCase
     {
         $this->form = $this->formFactory
             ->createBuilder(FormType::class, null, ['csrf_protection' => false])
-            ->add('address', AddressType::class, array(
+            ->add('address', AddressType::class, [
                 'required' => true,
-            ))
+            ])
             ->getForm();
-
 
         $this->formData['address']['pref'] = '';
 
@@ -121,11 +118,10 @@ class AddressTypeTest extends AbstractTypeTestCase
     {
         $this->form = $this->formFactory
             ->createBuilder(FormType::class, null, ['csrf_protection' => false])
-            ->add('address', AddressType::class, array(
+            ->add('address', AddressType::class, [
                 'required' => true,
-            ))
+            ])
             ->getForm();
-
 
         $this->formData['address']['addr01'] = '';
 
@@ -137,11 +133,10 @@ class AddressTypeTest extends AbstractTypeTestCase
     {
         $this->form = $this->formFactory
             ->createBuilder(FormType::class, null, ['csrf_protection' => false])
-            ->add('address', AddressType::class, array(
+            ->add('address', AddressType::class, [
                 'required' => true,
-            ))
+            ])
             ->getForm();
-
 
         $this->formData['address']['addr02'] = '';
 
