@@ -40,10 +40,10 @@ class EA08SysteminfoCest
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
-        $I->see('システム設定メンバー管理', '#main .page-header');
+        $I->see('システム設定メンバー管理', '.c-pageTitle');
 
-        $I->see('メンバー管理', '#main .container-fluid div:nth-child(1) .box-header .box-title');
-        $I->see('新規登録', '#main .container-fluid .btn_area a');
+        $I->see('メンバー管理', '.c-contentsArea__primaryCol .card-header .card-title');
+        $I->see('新規登録', '.c-contentsArea__primaryCol .btn-area-bottom .btn-ec-regular');
     }
 
     public function systeminfo_メンバー管理登録実施(\AcceptanceTester $I)
@@ -53,9 +53,9 @@ class EA08SysteminfoCest
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
-        $I->see('システム設定メンバー管理', '#main .page-header');
+        $I->see('システム設定メンバー管理', '.c-pageTitle');
 
-        $I->click('#main .container-fluid .btn_area a');
+        $I->click('.c-contentsArea__primaryCol .card .btn-area-bottom .btn');
         $I->see('メンバー登録・編集', '#main .container-fluid div:nth-child(1) .box-header .box-title');
 
         $I->fillField(['id' => 'admin_member_name'], 'admintest');
@@ -66,10 +66,10 @@ class EA08SysteminfoCest
         $I->selectOption(['id' => 'admin_member_Authority'], 'システム管理者');
         $I->selectOption(['id' => 'admin_member_Work_1'], '稼働');
         $I->click('#aside_column button');
-        $I->see('メンバーを保存しました。', '#main .container-fluid div:nth-child(1) .alert-success');
+        $I->see('メンバーを保存しました。', '.c-contentsArea .alert-success');
 
-        $I->see('メンバー管理', '#main .container-fluid div:nth-child(1) .box-header .box-title');
-        $I->see('admintest', '#main .container-fluid .table_list .table tbody tr:nth-child(1) td:nth-child(1)');
+        $I->see('メンバー管理', '.c-contentsArea__primaryCol .card-header .card-title');
+        $I->see('admintest', '#search_result tbody tr:nth-child(1) td:nth-child(1)');
     }
 
     public function systeminfo_メンバー管理登録未実施(\AcceptanceTester $I)
@@ -79,9 +79,9 @@ class EA08SysteminfoCest
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
-        $I->see('システム設定メンバー管理', '#main .page-header');
+        $I->see('システム設定メンバー管理', '.c-pageTitle');
 
-        $I->click('#main .container-fluid .btn_area a');
+        $I->click('.c-contentsArea__primaryCol .card .btn-area-bottom .btn');
         $I->see('メンバー登録・編集', '#main .container-fluid div:nth-child(1) .box-header .box-title');
 
         $I->fillField(['id' => 'admin_member_name'], 'admintest2');
@@ -93,8 +93,8 @@ class EA08SysteminfoCest
         $I->selectOption(['id' => 'admin_member_Work_1'], '稼働');
         $I->click('#aside_wrap .btn_area a');
 
-        $I->see('メンバー管理', '#main .container-fluid div:nth-child(1) .box-header .box-title');
-        $I->dontSee('admintest2', '#main .container-fluid .table_list .table tbody tr:nth-child(1) td:nth-child(1)');
+        $I->see('メンバー管理', '.c-contentsArea__primaryCol .card-header .card-title');
+        $I->dontSee('admintest2', '#search_result tbody tr:nth-child(1) td:nth-child(1)');
     }
 
     public function systeminfo_メンバー管理登録異常(\AcceptanceTester $I)
@@ -104,9 +104,9 @@ class EA08SysteminfoCest
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
-        $I->see('システム設定メンバー管理', '#main .page-header');
+        $I->see('システム設定メンバー管理', '.c-pageTitle');
 
-        $I->click('#main .container-fluid .btn_area a');
+        $I->click('.c-contentsArea__primaryCol .card .btn-area-bottom .btn');
         $I->see('メンバー登録・編集', '#main .container-fluid div:nth-child(1) .box-header .box-title');
 
         $I->click('#aside_column button');
@@ -120,10 +120,9 @@ class EA08SysteminfoCest
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
-        $I->see('システム設定メンバー管理', '#main .page-header');
+        $I->see('システム設定メンバー管理', '.c-pageTitle');
 
-        $I->click('#main .container-fluid .table_list .table tbody tr:nth-child(1) td:nth-child(5) .dropdown a');
-        $I->click('#main .container-fluid .table_list .table tbody tr:nth-child(1) td:nth-child(5) .dropdown .dropdown-menu li:nth-child(1) a');
+        $I->click('#search_result tbody tr:nth-child(1) .action-edit');
         $I->see('メンバー登録・編集', '#main .container-fluid div:nth-child(1) .box-header .box-title');
 
         $I->fillField(['id' => 'admin_member_name'], 'administrator');
@@ -136,9 +135,9 @@ class EA08SysteminfoCest
         if ($Plugin) {
             $I->amGoingTo('EccubeApi プラグインを発見したため、不具合を回避しました。 詳細: https://github.com/EC-CUBE/eccube-api/pull/60');
         } else {
-            $I->see('メンバーを保存しました。', '#main .container-fluid div:nth-child(1) .alert-success');
-            $I->see('メンバー管理', '#main .container-fluid div:nth-child(1) .box-header .box-title');
-            $I->see('administrator', '#main .container-fluid .table_list .table tbody tr:nth-child(1) td:nth-child(1)');
+            $I->see('メンバーを保存しました。', '.c-contentsArea .alert-success');
+            $I->see('メンバー管理', '.c-contentsArea__primaryCol .card-header .card-title');
+            $I->see('administrator', '#search_result tbody tr:nth-child(1) td:nth-child(1)');
         }
     }
 
@@ -149,17 +148,16 @@ class EA08SysteminfoCest
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
-        $I->see('システム設定メンバー管理', '#main .page-header');
+        $I->see('システム設定メンバー管理', '.c-pageTitle');
 
-        $I->click('#main .container-fluid .table_list .table tbody tr:nth-child(1) td:nth-child(5) .dropdown a');
-        $I->click('#main .container-fluid .table_list .table tbody tr:nth-child(1) td:nth-child(5) .dropdown .dropdown-menu li:nth-child(1) a');
+        $I->click('#search_result tbody tr:nth-child(1) .action-edit');
         $I->see('メンバー登録・編集', '#main .container-fluid div:nth-child(1) .box-header .box-title');
 
         $I->fillField(['id' => 'admin_member_name'], 'administrator2');
         $I->click('#aside_wrap .btn_area a');
 
-        $I->see('メンバー管理', '#main .container-fluid div:nth-child(1) .box-header .box-title');
-        $I->dontSee('administrator2', '#main .container-fluid .table_list .table tbody tr:nth-child(1) td:nth-child(1)');
+        $I->see('メンバー管理', '.c-contentsArea__primaryCol .card-header .card-title');
+        $I->dontSee('administrator2', '#search_result tbody tr:nth-child(1) td:nth-child(1)');
     }
 
     public function systeminfo_メンバー管理編集異常(\AcceptanceTester $I)
@@ -169,10 +167,9 @@ class EA08SysteminfoCest
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
-        $I->see('システム設定メンバー管理', '#main .page-header');
+        $I->see('システム設定メンバー管理', '.c-pageTitle');
 
-        $I->click('#main .container-fluid .table_list .table tbody tr:nth-child(1) td:nth-child(5) .dropdown a');
-        $I->click('#main .container-fluid .table_list .table tbody tr:nth-child(1) td:nth-child(5) .dropdown .dropdown-menu li:nth-child(1) a');
+        $I->click('#search_result tbody tr:nth-child(1) .action-edit');
         $I->see('メンバー登録・編集', '#main .container-fluid div:nth-child(1) .box-header .box-title');
 
         $I->fillField(['id' => 'admin_member_name'], '');
@@ -188,12 +185,11 @@ class EA08SysteminfoCest
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
-        $I->see('システム設定メンバー管理', '#main .page-header');
+        $I->see('システム設定メンバー管理', '.c-pageTitle');
 
-        $I->click('#main .container-fluid .table_list .table tbody tr:nth-child(1) td:nth-child(5) .dropdown a');
-        $I->click('#main .container-fluid .table_list .table tbody tr:nth-child(1) td:nth-child(5) .dropdown .dropdown-menu li:nth-child(3) a');
+        $I->click('#search_result tbody tr:nth-child(1) .action-down');
 
-        $I->see('管理者', '#main .container-fluid .table_list .table tbody tr:nth-child(1) td:nth-child(1)');
+        $I->see('管理者', '#search_result tbody tr:nth-child(1) td:nth-child(1)');
     }
 
     public function systeminfo_メンバー管理登録上へ(\AcceptanceTester $I)
@@ -203,12 +199,11 @@ class EA08SysteminfoCest
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
-        $I->see('システム設定メンバー管理', '#main .page-header');
+        $I->see('システム設定メンバー管理', '.c-pageTitle');
 
-        $I->click('#main .container-fluid .table_list .table tbody tr:nth-child(2) td:nth-child(5) .dropdown a');
-        $I->click('#main .container-fluid .table_list .table tbody tr:nth-child(2) td:nth-child(5) .dropdown .dropdown-menu li:nth-child(3) a');
+        $I->click('#search_result tbody tr:nth-child(2) .action-up');
 
-        $I->see('管理者', '#main .container-fluid .table_list .table tbody tr:nth-child(2) td:nth-child(1)');
+        $I->see('管理者', '#search_result tbody tr:nth-child(2) td:nth-child(1)');
     }
 
     public function systeminfo_メンバー管理削除(\AcceptanceTester $I)
@@ -218,14 +213,13 @@ class EA08SysteminfoCest
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
-        $I->see('システム設定メンバー管理', '#main .page-header');
+        $I->see('システム設定メンバー管理', '.c-pageTitle');
 
-        $I->click('#main .container-fluid .table_list .table tbody tr:nth-child(1) td:nth-child(5) .dropdown a');
-        $I->click('#main .container-fluid .table_list .table tbody tr:nth-child(1) td:nth-child(5) .dropdown .dropdown-menu li:nth-child(2) a');
+        $I->click('#search_result tbody tr:nth-child(1) .action-delete');
         $I->acceptPopup();
 
-        $I->see('メンバーを削除しました。', '#main .container-fluid div:nth-child(1) .alert-success');
-        $I->see('管理者', '#main .container-fluid .table_list .table tbody tr:nth-child(1) td:nth-child(1)');
+        $I->see('メンバーを削除しました。', '.c-contentsArea .alert-success');
+        $I->see('管理者', '#search_result tbody tr:nth-child(1) td:nth-child(1)');
     }
 
     public function systeminfo_メンバー管理自ユーザー削除(\AcceptanceTester $I)
@@ -235,11 +229,9 @@ class EA08SysteminfoCest
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
-        $I->see('システム設定メンバー管理', '#main .page-header');
+        $I->see('システム設定メンバー管理', '.c-pageTitle');
 
-        $I->click('#main #member_list__menu_box--1 a');
-        $I->see('削除', '#main #member_list__menu--1 li:nth-child(2) a');
-        $href = $I->grabAttributeFrom('#main #member_list__menu--1 li:nth-child(2) a', 'href');
+        $href = $I->grabAttributeFrom('#member_list__menu_box--1 .action-delete', 'href');
         $I->assertEquals('', $href, $href.' が一致しません');
     }
 
