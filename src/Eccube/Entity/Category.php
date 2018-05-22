@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Entity;
 
 use Doctrine\Common\Collections\Criteria;
@@ -63,6 +62,7 @@ class Category extends \Eccube\Entity\AbstractEntity
     /**
      * @param  \Doctrine\ORM\EntityManager $em
      * @param  integer                     $SortNo
+     *
      * @return \Eccube\Entity\Category
      */
     public function calcChildrenSortNo(\Doctrine\ORM\EntityManager $em, $sortNo)
@@ -87,7 +87,7 @@ class Category extends \Eccube\Entity\AbstractEntity
 
     public function getPath()
     {
-        $path = array();
+        $path = [];
         $Category = $this;
 
         $max = 10;
@@ -105,12 +105,12 @@ class Category extends \Eccube\Entity\AbstractEntity
 
     public function getNameWithLevel()
     {
-        return str_repeat('　', $this->getHierarchy() - 1) . $this->getName();
+        return str_repeat('　', $this->getHierarchy() - 1).$this->getName();
     }
 
     public function getDescendants()
     {
-        $DescendantCategories = array();
+        $DescendantCategories = [];
 
         $max = 10;
         $ChildCategories = $this->getChildren();
@@ -127,8 +127,7 @@ class Category extends \Eccube\Entity\AbstractEntity
 
     public function getSelfAndDescendants()
     {
-        return array_merge(array($this), $this->getDescendants());
-
+        return array_merge([$this], $this->getDescendants());
     }
 
     /**
@@ -138,12 +137,13 @@ class Category extends \Eccube\Entity\AbstractEntity
      * COUNT自体が重いので, LIMIT 1で取得し存在チェックを行う.
      *
      * @see http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/working-with-associations.html#filtering-collections
+     *
      * @return bool
      */
     public function hasProductCategories()
     {
         $criteria = Criteria::create()
-            ->orderBy(array('category_id' => Criteria::ASC))
+            ->orderBy(['category_id' => Criteria::ASC])
             ->setFirstResult(0)
             ->setMaxResults(1);
 

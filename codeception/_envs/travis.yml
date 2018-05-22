@@ -1,0 +1,9 @@
+modules:
+    config:
+        WebDriver:
+            host: 'localhost'
+            port: 9515
+            url: 'http://localhost:8000'
+        MailCatcher:
+            url: 'localhost'
+            port: 1080

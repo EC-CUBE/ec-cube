@@ -21,12 +21,14 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Controller\Admin\Order;
 
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\Csv;
 use Eccube\Entity\Master\CsvType;
+use Eccube\Entity\OrderItem;
+use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\SearchOrderType;
@@ -38,15 +40,27 @@ use Eccube\Repository\Master\SexRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Service\CsvExportService;
-use Knp\Component\Pager\Paginator;
+use Eccube\Util\FormUtil;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Eccube\Entity\Master\OrderStatus;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Eccube\Entity\Order;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
+use Eccube\Service\PurchaseFlow\PurchaseFlow;
+use Eccube\Service\PurchaseFlow\PurchaseException;
 
 class OrderController extends AbstractController
 {
+    /**
+     * @var PurchaseFlow
+     */
+    protected $purchaseFlow;
+
     /**
      * @var CsvExportService
      */
@@ -89,6 +103,8 @@ class OrderController extends AbstractController
 
     /**
      * OrderController constructor.
+     *
+     * @param PurchaseFlow $orderPurchaseFlow
      * @param CsvExportService $csvExportService
      * @param CustomerRepository $customerRepository
      * @param PaymentRepository $paymentRepository
@@ -99,6 +115,7 @@ class OrderController extends AbstractController
      * @param OrderRepository $orderRepository
      */
     public function __construct(
+        PurchaseFlow $orderPurchaseFlow,
         CsvExportService $csvExportService,
         CustomerRepository $customerRepository,
         PaymentRepository $paymentRepository,
@@ -108,6 +125,7 @@ class OrderController extends AbstractController
         ProductStatusRepository $productStatusRepository,
         OrderRepository $orderRepository
     ) {
+        $this->purchaseFlow = $orderPurchaseFlow;
         $this->csvExportService = $csvExportService;
         $this->customerRepository = $customerRepository;
         $this->paymentRepository = $paymentRepository;
@@ -119,217 +137,168 @@ class OrderController extends AbstractController
     }
 
     /**
+     * 受注一覧画面.
+     *
+     * - 検索条件, ページ番号, 表示件数はセッションに保持されます.
+     * - クエリパラメータでresume=1が指定された場合、検索条件, ページ番号, 表示件数をセッションから復旧します.
+     * - 各データの, セッションに保持するアクションは以下の通りです.
+     *   - 検索ボタン押下時
+     *      - 検索条件をセッションに保存します
+     *      - ページ番号は1で初期化し、セッションに保存します。
+     *   - 表示件数変更時
+     *      - クエリパラメータpage_countをセッションに保存します。
+     *      - ただし, mtb_page_maxと一致しない場合, eccube_default_page_countが保存されます.
+     *   - ページング時
+     *      - URLパラメータpage_noをセッションに保存します.
+     *   - 初期表示
+     *      - 検索条件は空配列, ページ番号は1で初期化し, セッションに保存します.
+     *
      * @Route("/%eccube_admin_route%/order", name="admin_order")
      * @Route("/%eccube_admin_route%/order/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_order_page")
      * @Template("@admin/Order/index.twig")
      */
-    public function index(Request $request, $page_no = null, Paginator $paginator)
+    public function index(Request $request, $page_no = null, PaginatorInterface $paginator)
     {
         $builder = $this->formFactory
             ->createBuilder(SearchOrderType::class);
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_INITIALIZE, $event);
 
         $searchForm = $builder->getForm();
 
-        $pagination = array();
+        /**
+         * ページの表示件数は, 以下の順に優先される.
+         * - リクエストパラメータ
+         * - セッション
+         * - デフォルト値
+         * また, セッションに保存する際は mtb_page_maxと照合し, 一致した場合のみ保存する.
+         **/
+        $page_count = $this->session->get('eccube.admin.order.search.page_count',
+                $this->eccubeConfig->get('eccube_default_page_count'));
 
-        $ProductStatuses = $this->productStatusRepository->findAll();
+        $page_count_param = (int) $request->get('page_count');
         $pageMaxis = $this->pageMaxRepository->findAll();
-        $page_count = $this->eccubeConfig['eccube_default_page_count'];
-        $page_status = null;
-        $active = false;
 
-        if ('POST' === $request->getMethod()) {
-
-            $searchForm->handleRequest($request);
-
-            if ($searchForm->isValid()) {
-                $searchData = $searchForm->getData();
-
-                // paginator
-                $qb = $this->orderRepository->getQueryBuilderBySearchDataForAdmin($searchData);
-
-                $event = new EventArgs(
-                    array(
-                        'form' => $searchForm,
-                        'qb' => $qb,
-                    ),
-                    $request
-                );
-                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_SEARCH, $event);
-
-                $page_no = 1;
-                $pagination = $paginator->paginate(
-                    $qb,
-                    $page_no,
-                    $page_count
-                );
-
-                // sessionのデータ保持
-                $this->session->set('eccube.admin.order.search', $searchData);
-                $this->session->set('eccube.admin.order.search.page_no', $page_no);
-            }
-        } else {
-            if (is_null($page_no) && $request->get('resume') != Constant::ENABLED) {
-                // sessionを削除
-                $this->session->remove('eccube.admin.order.search');
-                $this->session->remove('eccube.admin.order.search.page_no');
-            } else {
-                // pagingなどの処理
-                $searchData = $this->session->get('eccube.admin.order.search');
-                if (is_null($page_no)) {
-                    $page_no = intval($this->session->get('eccube.admin.order.search.page_no'));
-                } else {
-                    $this->session->set('eccube.admin.order.search.page_no', $page_no);
-                }
-
-                if (!is_null($searchData)) {
-
-                    // 公開ステータス
-                    $status = $request->get('status');
-                    if (!empty($status)) {
-                        if ($status != $this->eccubeConfig['eccube_admin_product_stock_status']) {
-                            $searchData['status']->clear();
-                            $searchData['status']->add($status);
-                        } else {
-                            $searchData['stock_status'] = $this->eccubeConfig['disabled'];
-                        }
-                        $page_status = $status;
-                    }
-                    // 表示件数
-                    $pcount = $request->get('page_count');
-
-                    $page_count = empty($pcount) ? $page_count : $pcount;
-
-                    $qb = $this->orderRepository->getQueryBuilderBySearchDataForAdmin($searchData);
-
-                    $event = new EventArgs(
-                        array(
-                            'form' => $searchForm,
-                            'qb' => $qb,
-                        ),
-                        $request
-                    );
-                    $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_SEARCH, $event);
-
-                    $pagination = $paginator->paginate(
-                        $qb,
-                        $page_no,
-                        $page_count
-                    );
-
-                    // セッションから検索条件を復元
-                    if (!empty($searchData['status'])) {
-                        $searchData['status'] = $this->orderStatusRepository->find($searchData['status']);
-                    }
-                    if (count($searchData['multi_status']) > 0) {
-                        $statusIds = array();
-                        foreach ($searchData['multi_status'] as $Status) {
-                            $statusIds[] = $Status->getId();
-                        }
-                        $searchData['multi_status'] = $this->orderStatusRepository->findBy(array('id' => $statusIds));
-                    }
-                    if (count($searchData['sex']) > 0) {
-                        $sex_ids = array();
-                        foreach ($searchData['sex'] as $Sex) {
-                            $sex_ids[] = $Sex->getId();
-                        }
-                        $searchData['sex'] = $this->sexRepository->findBy(array('id' => $sex_ids));
-                    }
-                    if (count($searchData['payment']) > 0) {
-                        $payment_ids = array();
-                        foreach ($searchData['payment'] as $Payment) {
-                            $payment_ids[] = $Payment->getId();
-                        }
-                        $searchData['payment'] = $this->paymentRepository->findBy(array('id' => $payment_ids));
-                    }
-                    $searchForm->setData($searchData);
+        if ($page_count_param) {
+            foreach ($pageMaxis as $pageMax) {
+                if ($page_count_param == $pageMax->getName()) {
+                    $page_count = $pageMax->getName();
+                    $this->session->set('eccube.admin.order.search.page_count', $page_count);
+                    break;
                 }
             }
         }
+
+        if ('POST' === $request->getMethod()) {
+            $searchForm->handleRequest($request);
+
+            if ($searchForm->isValid()) {
+                /**
+                 * 検索が実行された場合は, セッションに検索条件を保存する.
+                 * ページ番号は最初のページ番号に初期化する.
+                 */
+                $page_no = 1;
+                $searchData = $searchForm->getData();
+
+                // 検索条件, ページ番号をセッションに保持.
+                $this->session->set('eccube.admin.order.search', FormUtil::getViewData($searchForm));
+                $this->session->set('eccube.admin.order.search.page_no', $page_no);
+            } else {
+                // 検索エラーの際は, 詳細検索枠を開いてエラー表示する.
+                return [
+                    'searchForm' => $searchForm->createView(),
+                    'pagination' => [],
+                    'pageMaxis' => $pageMaxis,
+                    'page_no' => $page_no,
+                    'page_count' => $page_count,
+                    'has_errors' => true,
+                ];
+            }
+        } else {
+            if (null !== $page_no || $request->get('resume')) {
+                /*
+                 * ページ送りの場合または、他画面から戻ってきた場合は, セッションから検索条件を復旧する.
+                 */
+                if ($page_no) {
+                    // ページ送りで遷移した場合.
+                    $this->session->set('eccube.admin.order.search.page_no', (int) $page_no);
+                } else {
+                    // 他画面から遷移した場合.
+                    $page_no = $this->session->get('eccube.admin.order.search.page_no', 1);
+                }
+                $viewData = $this->session->get('eccube.admin.order.search', []);
+                $searchData = FormUtil::submitAndGetData($searchForm, $viewData);
+            } else {
+                /**
+                 * 初期表示の場合.
+                 */
+                $page_no = 1;
+                $searchData = [];
+
+                // セッション中の検索条件, ページ番号を初期化.
+                $this->session->set('eccube.admin.order.search', $searchData);
+                $this->session->set('eccube.admin.order.search.page_no', $page_no);
+            }
+        }
+
+        $qb = $this->orderRepository->getQueryBuilderBySearchDataForAdmin($searchData);
+
+        $event = new EventArgs(
+            [
+                'qb' => $qb,
+                'searchData' => $searchData,
+            ],
+            $request
+        );
+
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_SEARCH, $event);
+
+        $pagination = $paginator->paginate(
+            $qb,
+            $page_no,
+            $page_count
+        );
 
         return [
             'searchForm' => $searchForm->createView(),
             'pagination' => $pagination,
-            'productStatuses' => $ProductStatuses,
             'pageMaxis' => $pageMaxis,
             'page_no' => $page_no,
-            'page_status' => $page_status,
             'page_count' => $page_count,
-            'active' => $active, //TODO: have not logic implement to set active
+            'has_errors' => false,
+            'OrderStatuses' => $this->orderStatusRepository->findBy([], ['sort_no' => 'ASC']),
         ];
     }
 
     /**
-     * @Method("DELETE")
-     * @Route("/%eccube_admin_route%/order/{id}/delete", requirements={"id" = "\d+"}, name="admin_order_delete")
+     * @Method("POST")
+     * @Route("/%eccube_admin_route%/order/bulk_delete", name="admin_order_bulk_delete")
      */
-    public function delete(Request $request, $id)
+    public function bulkDelete(Request $request)
     {
         $this->isTokenValid();
-        $page_no = intval($this->session->get('eccube.admin.order.search.page_no'));
-        $page_no = $page_no ? $page_no : Constant::ENABLED;
-
-        $Order = $this->orderRepository
-            ->find($id);
-
-        if (!$Order) {
-            $this->deleteMessage();
-
-            return $this->redirect($this->generateUrl('admin_order_page',
-                    array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
+        $ids = $request->get('ids');
+        foreach ($ids as $order_id) {
+            $Order = $this->orderRepository
+                ->find($order_id);
+            if ($Order) {
+                $this->entityManager->remove($Order);
+                log_info('受注削除', [$Order->getId()]);
+            }
         }
 
-        log_info('受注削除開始', array($Order->getId()));
-
-        // 出荷に紐付いている明細がある場合は削除できない.
-        $hasShipping = $Order->getItems()->exists(function ($k, $v) {
-            return false === is_null($v->getShipping());
-        });
-        if ($hasShipping) {
-            log_info('受注削除失敗', [$Order->getId()]);
-            $message = trans('admin.delete.failed.foreign_key', ['%name%' => trans('order.text.name')]);
-            $this->addError($message, 'admin');
-
-            return $this->redirect($this->generateUrl('admin_order_page',
-                    array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
-        }
-
-        $Customer = $Order->getCustomer();
-        $OrderStatusId = $Order->getOrderStatus()->getId();
-
-        $this->entityManager->remove($Order);
         $this->entityManager->flush();
-
-        if ($Customer) {
-            // FIXME 会員の場合、購入回数、購入金額などを更新
-            //$this->customerRepository->updateBuyData($app, $Customer, $OrderStatusId);
-        }
-
-        $event = new EventArgs(
-            array(
-                'Order' => $Order,
-                'Customer' => $Customer,
-            ),
-            $request
-        );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_DELETE_COMPLETE, $event);
 
         $this->addSuccess('admin.order.delete.complete', 'admin');
 
-        log_info('受注削除完了', array($Order->getId()));
-
-        return $this->redirect($this->generateUrl('admin_order_page',
-                array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
+        return $this->redirect($this->generateUrl('admin_order', ['resume' => Constant::ENABLED]));
     }
-
 
     /**
      * 受注CSVの出力.
@@ -337,11 +306,11 @@ class OrderController extends AbstractController
      * @Route("/%eccube_admin_route%/order/export/order", name="admin_order_export_order")
      *
      * @param Request $request
+     *
      * @return StreamedResponse
      */
     public function exportOrder(Request $request)
     {
-
         // タイムアウトを無効にする.
         set_time_limit(0);
 
@@ -351,7 +320,6 @@ class OrderController extends AbstractController
 
         $response = new StreamedResponse();
         $response->setCallback(function () use ($request) {
-
             // CSV種別を元に初期化.
             $this->csvExportService->initCsvType(CsvType::CSV_TYPE_ORDER);
 
@@ -365,7 +333,6 @@ class OrderController extends AbstractController
             // データ行の出力.
             $this->csvExportService->setExportQueryBuilder($qb);
             $this->csvExportService->exportData(function ($entity, $csvService) use ($request) {
-
                 $Csvs = $csvService->getCsvs();
 
                 $Order = $entity;
@@ -384,12 +351,12 @@ class OrderController extends AbstractController
                         }
 
                         $event = new EventArgs(
-                            array(
+                            [
                                 'csvService' => $csvService,
                                 'Csv' => $Csv,
                                 'OrderItem' => $OrderItem,
                                 'ExportCsvRow' => $ExportCsvRow,
-                            ),
+                            ],
                             $request
                         );
                         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_CSV_EXPORT_ORDER, $event);
@@ -410,7 +377,7 @@ class OrderController extends AbstractController
         $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
         $response->send();
 
-        log_info('受注CSV出力ファイル名', array($filename));
+        log_info('受注CSV出力ファイル名', [$filename]);
 
         return $response;
     }
@@ -421,6 +388,7 @@ class OrderController extends AbstractController
      * @Route("/%eccube_admin_route%/order/export/shipping", name="admin_order_export_shipping")
      *
      * @param Request $request
+     *
      * @return StreamedResponse
      */
     public function exportShipping(Request $request)
@@ -434,7 +402,6 @@ class OrderController extends AbstractController
 
         $response = new StreamedResponse();
         $response->setCallback(function () use ($request) {
-
             // CSV種別を元に初期化.
             $this->csvExportService->initCsvType(CsvType::CSV_TYPE_SHIPPING);
 
@@ -443,55 +410,53 @@ class OrderController extends AbstractController
 
             // 受注データ検索用のクエリビルダを取得.
             $qb = $this->csvExportService
-                ->getOrderQueryBuilder($request);
+                ->getShippingQueryBuilder($request);
 
             // データ行の出力.
             $this->csvExportService->setExportQueryBuilder($qb);
             $this->csvExportService->exportData(function ($entity, $csvService) use ($request) {
-
+                /** @var Csv[] $Csvs */
                 $Csvs = $csvService->getCsvs();
 
-                /** @var $Order \Eccube\Entity\Order */
-                $Order = $entity;
-                /** @var $Shippings \Eccube\Entity\Shipping[] */
-                $Shippings = $Order->getShippings();
+                /** @var Shipping $Shipping */
+                $Shipping = $entity;
+                /** @var OrderItem[] $OrderItems */
+                $OrderItems = $Shipping->getOrderItems();
 
-                foreach ($Shippings as $Shipping) {
-                    /** @var $OrderItems \Eccube\Entity\OrderItem */
-                    $OrderItems = $Shipping->getOrderItems();
-                    foreach ($OrderItems as $OrderItem) {
-                        $ExportCsvRow = new \Eccube\Entity\ExportCsvRow();
+                foreach ($OrderItems as $OrderItem) {
+                    $ExportCsvRow = new \Eccube\Entity\ExportCsvRow();
 
-                        // CSV出力項目と合致するデータを取得.
-                        foreach ($Csvs as $Csv) {
-                            // 受注データを検索.
-                            $ExportCsvRow->setData($csvService->getData($Csv, $Order));
-                            if ($ExportCsvRow->isDataNull()) {
-                                // 配送情報を検索.
-                                $ExportCsvRow->setData($csvService->getData($Csv, $Shipping));
-                            }
-                            if ($ExportCsvRow->isDataNull()) {
-                                // 配送商品を検索.
-                                $ExportCsvRow->setData($csvService->getData($Csv, $OrderItem));
-                            }
+                    $Order = $OrderItem->getOrder();
+                    // CSV出力項目と合致するデータを取得.
+                    foreach ($Csvs as $Csv) {
+                        // 受注データを検索.
+                        $ExportCsvRow->setData($csvService->getData($Csv, $Order));
 
-                            $event = new EventArgs(
-                                array(
-                                    'csvService' => $csvService,
-                                    'Csv' => $Csv,
-                                    'OrderItem' => $OrderItem,
-                                    'ExportCsvRow' => $ExportCsvRow,
-                                ),
-                                $request
-                            );
-                            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_CSV_EXPORT_SHIPPING, $event);
-
-                            $ExportCsvRow->pushData();
+                        if ($ExportCsvRow->isDataNull()) {
+                            // 受注データにない場合は, 出荷データを検索.
+                            $ExportCsvRow->setData($csvService->getData($Csv, $Shipping));
                         }
-                        //$row[] = number_format(memory_get_usage(true));
-                        // 出力.
-                        $csvService->fputcsv($ExportCsvRow->getRow());
+                        if ($ExportCsvRow->isDataNull()) {
+                            // 出荷データにない場合は, 出荷明細を検索.
+                            $ExportCsvRow->setData($csvService->getData($Csv, $OrderItem));
+                        }
+
+                        $event = new EventArgs(
+                            [
+                                'csvService' => $csvService,
+                                'Csv' => $Csv,
+                                'OrderItem' => $OrderItem,
+                                'ExportCsvRow' => $ExportCsvRow,
+                            ],
+                            $request
+                        );
+                        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_CSV_EXPORT_SHIPPING, $event);
+
+                        $ExportCsvRow->pushData();
                     }
+                    //$row[] = number_format(memory_get_usage(true));
+                    // 出力.
+                    $csvService->fputcsv($ExportCsvRow->getRow());
                 }
             });
         });
@@ -502,8 +467,94 @@ class OrderController extends AbstractController
         $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
         $response->send();
 
-        log_info('配送CSV出力ファイル名', array($filename));
+        log_info('出荷CSV出力ファイル名', [$filename]);
 
         return $response;
+    }
+
+    /**
+     * Bulk action to order status
+     *
+     * @Method("POST")
+     * @Route("/%eccube_admin_route%/order/bulk/order-status/{id}", requirements={"id" = "\d+"}, name="admin_order_bulk_order_status")
+     *
+     * @param Request $request
+     * @param OrderStatus $OrderStatus
+     *
+     * @return RedirectResponse
+     */
+    public function bulkOrderStatus(Request $request, OrderStatus $OrderStatus)
+    {
+        $this->isTokenValid();
+
+        /** @var Order[] $Orders */
+        $Orders = $this->orderRepository->findBy(['id' => $request->get('ids')]);
+
+        $count = 0;
+        foreach ($Orders as $Order) {
+            try {
+                // TODO: should support event for plugin customize
+                // 編集前の受注情報を保持
+                $OriginOrder = clone $Order;
+
+                $Order->setOrderStatus($OrderStatus);
+
+                $purchaseContext = new PurchaseContext($OriginOrder, $OriginOrder->getCustomer());
+
+                $flowResult = $this->purchaseFlow->calculate($Order, $purchaseContext);
+                if ($flowResult->hasWarning()) {
+                    foreach ($flowResult->getWarning() as $warning) {
+                        $msg = $this->translator->trans('admin.order.index.bulk_warning', [
+                          '%orderId%' => $Order->getId(),
+                          '%message%' => $warning->getMessage(),
+                        ]);
+                        $this->addWarning($msg, 'admin');
+                    }
+                }
+
+                if ($flowResult->hasError()) {
+                    foreach ($flowResult->getErrors() as $error) {
+                        $msg = $this->translator->trans('admin.order.index.bulk_error', [
+                          '%orderId%' => $Order->getId(),
+                          '%message%' => $error->getMessage(),
+                        ]);
+                        $this->addError($msg, 'admin');
+                    }
+                    continue;
+                }
+
+                try {
+                    $this->purchaseFlow->purchase($Order, $purchaseContext);
+                } catch (PurchaseException $e) {
+                    $msg = $this->translator->trans('admin.order.index.bulk_error', [
+                      '%orderId%' => $Order->getId(),
+                      '%message%' => $e->getMessage(),
+                    ]);
+                    $this->addError($msg, 'admin');
+                    continue;
+                }
+
+                $this->orderRepository->save($Order);
+
+                $count++;
+            } catch (\Exception $e) {
+                $this->addError('#'.$Order->getId().': '.$e->getMessage(), 'admin');
+            }
+        }
+        try {
+            if ($count) {
+                $this->entityManager->flush();
+                $msg = $this->translator->trans('admin.order.index.bulk_order_status_success_count', [
+                    '%count%' => $count,
+                    '%status%' => $OrderStatus->getName(),
+                ]);
+                $this->addSuccess($msg, 'admin');
+            }
+        } catch (\Exception $e) {
+            log_error('Bulk order status error', [$e]);
+            $this->addError('admin.flash.register_failed', 'admin');
+        }
+
+        return $this->redirectToRoute('admin_order', ['resume' => Constant::ENABLED]);
     }
 }

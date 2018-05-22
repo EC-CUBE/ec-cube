@@ -162,6 +162,7 @@ class Generator
      * Member オブジェクトを生成して返す.
      *
      * @param string $username. null の場合は, ランダムなユーザーIDが生成される.
+     *
      * @return \Eccube\Entity\Member
      */
     public function createMember($username = null)
@@ -188,6 +189,7 @@ class Generator
             ->setAuthority($Authority)
             ->setCreator($Creator);
         $this->memberRepository->save($Member);
+
         return $Member;
     }
 
@@ -195,6 +197,7 @@ class Generator
      * Customer オブジェクトを生成して返す.
      *
      * @param string $email メールアドレス. null の場合は, ランダムなメールアドレスが生成される.
+     *
      * @return \Eccube\Entity\Customer
      */
     public function createCustomer($email = null)
@@ -253,6 +256,7 @@ class Generator
 
         $Customer->addCustomerAddress($CustomerAddress);
         $this->entityManager->flush($Customer);
+
         return $Customer;
     }
 
@@ -261,6 +265,7 @@ class Generator
      *
      * @param Customer $Customer 対象の Customer インスタンス
      * @param boolean $is_nonmember 非会員の場合 true
+     *
      * @return CustomerAddress
      */
     public function createCustomerAddress(Customer $Customer, $is_nonmember = false)
@@ -295,7 +300,7 @@ class Generator
             $sessionCustomerAddressKey = 'eccube.front.shopping.nonmember.customeraddress';
             $customerAddresses = unserialize($this->session->get($sessionCustomerAddressKey));
             if (!is_array($customerAddresses)) {
-                $customerAddresses = array();
+                $customerAddresses = [];
             }
             $customerAddresses[] = $CustomerAddress;
             $this->session->set($sessionCustomerAddressKey, serialize($customerAddresses));
@@ -311,6 +316,7 @@ class Generator
      * 非会員の Customer オブジェクトを生成して返す.
      *
      * @param string $email メールアドレス. null の場合は, ランダムなメールアドレスが生成される.
+     *
      * @return \Eccube\Entity\Customer
      */
     public function createNonMember($email = null)
@@ -350,14 +356,15 @@ class Generator
         $CustomerAddress->copyProperties($Customer);
         $Customer->addCustomerAddress($CustomerAddress);
 
-        $nonMember = array();
+        $nonMember = [];
         $nonMember['customer'] = $Customer;
         $nonMember['pref'] = $Customer->getPref()->getId();
         $this->session->set($sessionKey, $nonMember);
 
-        $customerAddresses = array();
+        $customerAddresses = [];
         $customerAddresses[] = $CustomerAddress;
         $this->session->set($sessionCustomerAddressKey, serialize($customerAddresses));
+
         return $Customer;
     }
 
@@ -371,6 +378,7 @@ class Generator
      * @param string $image_type 生成する画像タイプ.
      *        abstract, animals, business, cats, city, food, night, life, fashion, people, nature, sports, technics, transport から選択可能
      *        null の場合は、画像を生成せずにファイル名のみを設定する.
+     *
      * @return \Eccube\Entity\Product
      */
     public function createProduct($product_name = null, $product_class_num = 3, $image_type = null)
@@ -393,7 +401,7 @@ class Generator
             ->setUpdateDate(new \DateTime())
             ->setDescriptionList($faker->paragraph())
             ->setDescriptionDetail($faker->realText());
-        $Product->extendedParameter = "aaaa";
+        $Product->extendedParameter = 'aaaa';
 
         $this->entityManager->persist($Product);
         $this->entityManager->flush($Product);
@@ -427,10 +435,10 @@ class Generator
         if ($ClassName1->getId() === $ClassName2->getId()) {
             $ClassName2 = null;
         }
-        $ClassCategories1 = $this->classCategoryRepository->findBy(array('ClassName' => $ClassName1));
-        $ClassCategories2 = array();
+        $ClassCategories1 = $this->classCategoryRepository->findBy(['ClassName' => $ClassName1]);
+        $ClassCategories2 = [];
         if (is_object($ClassName2)) {
-            $ClassCategories2 = $this->classCategoryRepository->findBy(array('ClassName' => $ClassName2));
+            $ClassCategories2 = $this->classCategoryRepository->findBy(['ClassName' => $ClassName2]);
         }
 
         for ($i = 0; $i < $product_class_num; $i++) {
@@ -527,6 +535,7 @@ class Generator
         }
 
         $this->entityManager->flush($Product);
+
         return $Product;
     }
 
@@ -539,9 +548,10 @@ class Generator
      * @param integer $add_charge Order に加算される手数料
      * @param integer $add_discount Order に加算される値引き額
      * @param integer $statusTypeId OrderStatus:id
+     *
      * @return \Eccube\Entity\Order
      */
-    public function createOrder(Customer $Customer, array $ProductClasses = array(), Delivery $Delivery = null, $add_charge = 0, $add_discount = 0, $statusTypeId = null)
+    public function createOrder(Customer $Customer, array $ProductClasses = [], Delivery $Delivery = null, $add_charge = 0, $add_discount = 0, $statusTypeId = null)
     {
         $faker = $this->getFaker();
         $quantity = $faker->randomNumber(2);
@@ -581,9 +591,9 @@ class Generator
             $this->entityManager->flush($Payment);
         }
         $DeliveryFee = $this->deliveryFeeRepository->findOneBy(
-            array(
-                'Delivery' => $Delivery, 'Pref' => $Pref
-            )
+            [
+                'Delivery' => $Delivery, 'Pref' => $Pref,
+            ]
         );
         $fee = 0;
         if (is_object($DeliveryFee)) {
@@ -615,7 +625,11 @@ class Generator
         $ItemDeliveryFee = $this->entityManager->find(OrderItemType::class, OrderItemType::DELIVERY_FEE);
         $ItemCharge = $this->entityManager->find(OrderItemType::class, OrderItemType::CHARGE);
         $ItemDiscount = $this->entityManager->find(OrderItemType::class, OrderItemType::DISCOUNT);
+        /** @var ProductClass $ProductClass */
         foreach ($ProductClasses as $ProductClass) {
+            if (!$ProductClass->isVisible()) {
+                continue;
+            }
             $Product = $ProductClass->getProduct();
             $TaxRule = $this->taxRuleRepository->getByRule(); // デフォルト課税規則
 
@@ -634,6 +648,18 @@ class Generator
                 ->setTaxDisplayType($TaxExclude) // 税別
                 ->setOrderItemType($ItemProduct) // 商品明細
             ;
+            if ($ProductClass->hasClassCategory1()) {
+                $OrderItem
+                    ->setClassName1($ProductClass->getClassCategory1()->getClassName()->getName())
+                    ->setClassCategoryName1($ProductClass->getClassCategory1()->getName())
+                ;
+            }
+            if ($ProductClass->hasClassCategory2()) {
+                $OrderItem
+                    ->setClassName2($ProductClass->getClassCategory2()->getClassName()->getName())
+                    ->setClassCategoryName2($ProductClass->getClassCategory2()->getName())
+                ;
+            }
             $Shipping->addOrderItem($OrderItem);
             $Order->addOrderItem($OrderItem);
             $this->entityManager->persist($OrderItem);
@@ -694,6 +720,7 @@ class Generator
 
         $this->entityManager->flush($Shipping);
         $this->entityManager->flush($Order);
+
         return $Order;
     }
 
@@ -705,6 +732,7 @@ class Generator
      * @param integer $charge 手数料
      * @param integer $rule_min 下限金額
      * @param integer $rule_max 上限金額
+     *
      * @return \Eccube\Entity\Payment
      */
     public function createPayment(Delivery $Delivery, $method, $charge = 0, $rule_min = 0, $rule_max = 999999999)
@@ -734,6 +762,7 @@ class Generator
 
         $Delivery->addPaymentOption($PaymentOption);
         $this->entityManager->flush($Delivery);
+
         return $Payment;
     }
 
@@ -741,6 +770,7 @@ class Generator
      * 配送方法を生成する.
      *
      * @param integer $delivery_time_max_pattern 配送時間の最大パターン数
+     *
      * @return Delivery
      */
     public function createDelivery($delivery_time_max_pattern = 5)
@@ -769,14 +799,15 @@ class Generator
             $DeliveryTime = new DeliveryTime();
             $DeliveryTime
                 ->setDelivery($Delivery)
-                ->setDeliveryTime($faker->word);
+                ->setDeliveryTime($faker->word)
+                ->setSortNo($i + 1);
             $this->entityManager->persist($DeliveryTime);
             $this->entityManager->flush($DeliveryTime);
             $Delivery->addDeliveryTime($DeliveryTime);
         }
 
         $Prefs = $this->prefRepository->findAll();
-        
+
         foreach ($Prefs as $Pref) {
             $DeliveryFee = new DeliveryFee();
             $DeliveryFee
@@ -789,6 +820,7 @@ class Generator
         }
 
         $this->entityManager->flush($Delivery);
+
         return $Delivery;
     }
 
@@ -811,10 +843,11 @@ class Generator
             ->setDescription($faker->word)
             ->setKeyword($faker->word)
             ->setMetaRobots($faker->word)
-            ->setMetaTags('<meta name="meta_tags_test" content="' . str_replace('\'', '', $faker->word) . '" />')
+            ->setMetaTags('<meta name="meta_tags_test" content="'.str_replace('\'', '', $faker->word).'" />')
         ;
         $this->entityManager->persist($Page);
         $this->entityManager->flush($Page);
+
         return $Page;
     }
 
@@ -822,7 +855,8 @@ class Generator
      * Faker を生成する.
      *
      * @return Faker\Generator
-     * @link https://github.com/fzaninotto/Faker
+     *
+     * @see https://github.com/fzaninotto/Faker
      */
     protected function getFaker()
     {

@@ -30,7 +30,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class MailTemplateType
- * @package Eccube\Form\Type\Master
  */
 class MailTemplateType extends AbstractType
 {
@@ -39,15 +38,15 @@ class MailTemplateType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'class' => 'Eccube\Entity\MailTemplate',
-            'placeholder' => trans('admin.setting.shop.mail.place_holder'),
+            'placeholder' => 'admin.setting.shop.mail.place_holder',
             // なぜかsortNoを持っていない
-            'query_builder' => function(EntityRepository $er) {
+            'query_builder' => function (EntityRepository $er) {
                 return $er->createQueryBuilder('mt')
                     ->orderBy('mt.id', 'ASC');
             },
-        ));
+        ]);
     }
 
     /**

@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Web\Admin\Content;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
@@ -58,5 +57,4 @@ class CacheControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($client->getResponse()->isSuccessful());
         $this->assertFalse(file_exists($cacheDir.'/twig/sample'), 'sampleは削除済');
     }
-
 }

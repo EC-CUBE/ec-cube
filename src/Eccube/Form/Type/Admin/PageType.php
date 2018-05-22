@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type\Admin;
 
 use Doctrine\ORM\EntityRepository;
@@ -29,7 +28,6 @@ use Eccube\Annotation\FormType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @FormType
@@ -42,7 +40,7 @@ class PageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('layout', EntityType::class, array(
+            ->add('layout', EntityType::class, [
                 'label' => false,
                 'class' => 'Eccube\Entity\Page',
                 'choice_label' => 'name',
@@ -52,7 +50,7 @@ class PageType extends AbstractType
                         ->where('l.id <> 0')
                         ->orderBy('l.id', 'ASC');
                 },
-            ));
+            ]);
     }
 
     /**

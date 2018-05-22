@@ -72,10 +72,8 @@ class StringUtilTest extends TestCase
         $this->assertTrue(preg_match('/[A-Za-z0-9]{'.$this->expected.'}/', $result) === 1);
     }
 
-
     public function testConvertLineFeed()
     {
-
         $this->expected = "aaaa\n";
 
         $param = "aaaa\r\n";
@@ -144,7 +142,7 @@ class StringUtilTest extends TestCase
 
         // 検出順序を変更してみる
         $this->expected = 'SJIS-win';
-        $this->actual = StringUtil::characterEncoding($text, array('SJIS-win', 'UTF-8', 'SJIS', 'EUC-JP', 'ASCII', 'JIS'));
+        $this->actual = StringUtil::characterEncoding($text, ['SJIS-win', 'UTF-8', 'SJIS', 'EUC-JP', 'ASCII', 'JIS']);
         $this->assertEquals($this->expected, $this->actual);
     }
 
@@ -171,7 +169,7 @@ class StringUtilTest extends TestCase
     {
         // 「〠」は UTF-8 固有の文字
         $text = mb_convert_encoding('〠', 'UTF-8', 'UTF-8');
-        $this->actual = StringUtil::characterEncoding($text, array('SJIS-win', 'eucJP-win', 'ASCII')); // UTF-8 は検出しない
+        $this->actual = StringUtil::characterEncoding($text, ['SJIS-win', 'eucJP-win', 'ASCII']); // UTF-8 は検出しない
         $this->assertNull($this->actual);
     }
 
@@ -343,7 +341,7 @@ class StringUtilTest extends TestCase
      */
     public function testIsBlankWithArray()
     {
-        $text = array();
+        $text = [];
         $this->actual = StringUtil::isBlank($text);
         // E_USER_DEPRECATED がスローされるのでテストできないが true になるはず
         $this->assertTrue($this->actual);
@@ -356,7 +354,7 @@ class StringUtilTest extends TestCase
     public function testIsBlankWithArrayGreedy()
     {
         // $greedy = true のテスト
-        $text = array(array('aa' => array('aa' => '')));
+        $text = [['aa' => ['aa' => '']]];
         $this->actual = StringUtil::isBlank($text, true);
         // E_USER_DEPRECATED がスローされるのでテストできないが true になるはず
         $this->assertTrue($this->actual);
@@ -369,7 +367,7 @@ class StringUtilTest extends TestCase
     public function testIsBlankWithArrayGreedy2()
     {
         // $greedy = true のテスト
-        $text = array();
+        $text = [];
         $this->actual = StringUtil::isBlank($text, true);
         // E_USER_DEPRECATED がスローされるのでテストできないが true になるはず
         $this->assertTrue($this->actual);
@@ -382,7 +380,7 @@ class StringUtilTest extends TestCase
     public function testIsBlankWithArrayGreedy3()
     {
         // $greedy = true のテスト
-        $text = array(array('aa' => array('aa' => 'a')));
+        $text = [['aa' => ['aa' => 'a']]];
         $this->actual = StringUtil::isBlank($text, true);
         // E_USER_DEPRECATED がスローされるのでテストできないが false になるはず
         $this->assertFalse($this->actual);
@@ -394,7 +392,7 @@ class StringUtilTest extends TestCase
      */
     public function testIsNotBlankWithArray()
     {
-        $text = array();
+        $text = [];
         $this->actual = StringUtil::isNotBlank($text);
         // E_USER_DEPRECATED がスローされるのでテストできないが false になるはず
         $this->assertFalse($this->actual);
@@ -418,7 +416,7 @@ class StringUtilTest extends TestCase
      */
     public function testIsBlankWithArrayCollectionNotEmpty()
     {
-        $value = new ArrayCollection(array('a'));
+        $value = new ArrayCollection(['a']);
         $this->actual = StringUtil::isBlank($value);
         // E_USER_DEPRECATED がスローされるのでテストできないが false になるはず
         $this->assertFalse($this->actual);

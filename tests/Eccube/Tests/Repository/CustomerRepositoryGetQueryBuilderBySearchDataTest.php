@@ -50,7 +50,6 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
     /**
      * @var CustomerRepository
      */
-
     protected $customerRepo;
 
     /**
@@ -115,9 +114,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         }
         $Customer = $this->createCustomer('customer@example.jp');
         $this->expected = $Customer->getId();
-        $this->searchData = array(
-            'multi' => $this->expected
-        );
+        $this->searchData = [
+            'multi' => $this->expected,
+        ];
 
         $this->scenario();
 
@@ -128,9 +127,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
     public function testMultiWithIdNotFound()
     {
-        $this->searchData = array(
-            'multi' => 99999
-        );
+        $this->searchData = [
+            'multi' => 99999,
+        ];
 
         $this->scenario();
 
@@ -141,9 +140,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
     public function testMultiWithEmail()
     {
-        $this->searchData = array(
-            'multi' => 'customer@example.com'
-        );
+        $this->searchData = [
+            'multi' => 'customer@example.com',
+        ];
 
         $this->scenario();
 
@@ -156,9 +155,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
     public function testMultiWithEmail2()
     {
-        $this->searchData = array(
-            'multi' => 'customer'
-        );
+        $this->searchData = [
+            'multi' => 'customer',
+        ];
 
         $this->scenario();
 
@@ -172,9 +171,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->Customer->setName01('姓');
         $this->entityManager->flush();
 
-        $this->searchData = array(
-            'multi' => '姓'
-        );
+        $this->searchData = [
+            'multi' => '姓',
+        ];
 
         $this->scenario();
 
@@ -183,7 +182,6 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->expected = '姓';
         $this->actual = $this->Results[0]->getName01();
         $this->verify();
-
     }
 
     public function testMultiWithNameHasSpaceEn()
@@ -192,9 +190,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->Customer->setName02('名');
         $this->entityManager->flush();
 
-        $this->searchData = array(
-            'multi' => '姓 名'
-        );
+        $this->searchData = [
+            'multi' => '姓 名',
+        ];
 
         $this->scenario();
 
@@ -206,7 +204,6 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->expected = '名';
         $this->actual = $this->Results[0]->getName02();
         $this->verify();
-
     }
 
     public function testMultiWithNameHasSpaceJa()
@@ -215,9 +212,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->Customer->setName02('名');
         $this->entityManager->flush();
 
-        $this->searchData = array(
-            'multi' => '姓　名'
-        );
+        $this->searchData = [
+            'multi' => '姓　名',
+        ];
 
         $this->scenario();
 
@@ -229,7 +226,6 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->expected = '名';
         $this->actual = $this->Results[0]->getName02();
         $this->verify();
-
     }
 
     public function testMultiWithKana()
@@ -238,9 +234,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
             ->setKana02('メイ');
         $this->entityManager->flush();
 
-        $this->searchData = array(
-            'multi' => 'メイ'
-        );
+        $this->searchData = [
+            'multi' => 'メイ',
+        ];
 
         $this->scenario();
 
@@ -257,9 +253,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
             ->setKana02('メイ');
         $this->entityManager->flush();
 
-        $this->searchData = array(
-            'multi' => 'セイ メイ'
-        );
+        $this->searchData = [
+            'multi' => 'セイ メイ',
+        ];
 
         $this->scenario();
 
@@ -279,9 +275,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
             ->setKana02('メイ');
         $this->entityManager->flush();
 
-        $this->searchData = array(
-            'multi' => 'セイ　メイ'
-        );
+        $this->searchData = [
+            'multi' => 'セイ　メイ',
+        ];
 
         $this->scenario();
 
@@ -306,9 +302,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->Customer3->setPref($Pref2);
         $this->entityManager->flush();
 
-        $this->searchData = array(
-            'pref' => $Pref
-        );
+        $this->searchData = [
+            'pref' => $Pref,
+        ];
 
         $this->scenario();
 
@@ -329,9 +325,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->Customer3->setSex(null);
         $this->entityManager->flush();
 
-        $this->searchData = array(
-            'sex' => array($Male, $Female)
-        );
+        $this->searchData = [
+            'sex' => [$Male, $Female],
+        ];
 
         $this->scenario();
 
@@ -348,9 +344,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->Customer3->setBirth(null);
         $this->entityManager->flush();
 
-        $this->searchData = array(
-            'birth_month' => 9
-        );
+        $this->searchData = [
+            'birth_month' => 9,
+        ];
 
         $this->scenario();
 
@@ -368,9 +364,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->Customer3->setBirth(null);
         $this->entityManager->flush();
 
-        $this->searchData = array(
-            'birth_start' => new \DateTime('2006-09-01')
-        );
+        $this->searchData = [
+            'birth_start' => new \DateTime('2006-09-01'),
+        ];
 
         $this->scenario();
 
@@ -388,9 +384,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->Customer3->setBirth(null);
         $this->entityManager->flush();
 
-        $this->searchData = array(
-            'birth_start' => new \DateTime('2006-09-02')
-        );
+        $this->searchData = [
+            'birth_start' => new \DateTime('2006-09-02'),
+        ];
 
         $this->scenario();
 
@@ -408,9 +404,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->Customer3->setBirth(null);
         $this->entityManager->flush();
 
-        $this->searchData = array(
-            'birth_end' => new \DateTime('2006-09-01')
-        );
+        $this->searchData = [
+            'birth_end' => new \DateTime('2006-09-01'),
+        ];
 
         $this->scenario();
 
@@ -428,9 +424,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->Customer3->setBirth(null);
         $this->entityManager->flush();
 
-        $this->searchData = array(
-            'birth_end' => new \DateTime('2006-08-31')
-        );
+        $this->searchData = [
+            'birth_end' => new \DateTime('2006-08-31'),
+        ];
 
         $this->scenario();
 
@@ -459,9 +455,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
             ->setTel03('000');
         $this->entityManager->flush();
 
-        $this->searchData = array(
-            'tel' => '999'
-        );
+        $this->searchData = [
+            'tel' => '999',
+        ];
 
         $this->scenario();
 
@@ -475,9 +471,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->Customer->setBuyTotal(1);
         $this->entityManager->flush();
 
-        $this->searchData = array(
-            'buy_total_start' => '1'
-        );
+        $this->searchData = [
+            'buy_total_start' => '1',
+        ];
 
         $this->scenario();
 
@@ -510,9 +506,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->Customer->setBuyTotal(1);
         $this->entityManager->flush();
 
-        $this->searchData = array(
+        $this->searchData = [
             'buy_total_end' => '1',
-        );
+        ];
 
         $this->scenario();
 
@@ -526,9 +522,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->Customer->setBuyTimes(1);
         $this->entityManager->flush();
 
-        $this->searchData = array(
-            'buy_times_start' => '1'
-        );
+        $this->searchData = [
+            'buy_times_start' => '1',
+        ];
 
         $this->scenario();
 
@@ -561,9 +557,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->Customer->setBuyTimes(1);
         $this->entityManager->flush();
 
-        $this->searchData = array(
+        $this->searchData = [
             'buy_times_end' => '1',
-        );
+        ];
 
         $this->scenario();
 
@@ -574,9 +570,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
     public function testCreateDateStart()
     {
-        $this->searchData = array(
-            'create_date_start' => new \DateTime('- 1 days')
-        );
+        $this->searchData = [
+            'create_date_start' => new \DateTime('- 1 days'),
+        ];
 
         $this->scenario();
 
@@ -587,9 +583,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
     public function testCreateDateEnd()
     {
-        $this->searchData = array(
-            'create_date_end' => new \DateTime('+ 1 days')
-        );
+        $this->searchData = [
+            'create_date_end' => new \DateTime('+ 1 days'),
+        ];
 
         $this->scenario();
         $this->expected = 4;
@@ -599,9 +595,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
     public function testUpdateDateStart()
     {
-        $this->searchData = array(
-            'update_date_start' => new \DateTime('- 1 days')
-        );
+        $this->searchData = [
+            'update_date_start' => new \DateTime('- 1 days'),
+        ];
 
         $this->scenario();
 
@@ -612,9 +608,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
     public function testUpdateDateEnd()
     {
-        $this->searchData = array(
-            'update_date_end' => new \DateTime('+ 1 days')
-        );
+        $this->searchData = [
+            'update_date_end' => new \DateTime('+ 1 days'),
+        ];
 
         $this->scenario();
         $this->expected = 4;
@@ -627,9 +623,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->Customer->setLastBuyDate(new \DateTime());
         $this->entityManager->flush();
 
-        $this->searchData = array(
-            'last_buy_start' => new \DateTime('- 1 days')
-        );
+        $this->searchData = [
+            'last_buy_start' => new \DateTime('- 1 days'),
+        ];
 
         $this->scenario();
         $this->expected = 1;
@@ -642,9 +638,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->Customer->setLastBuyDate(new \DateTime());
         $this->entityManager->flush();
 
-        $this->searchData = array(
-            'last_buy_end' => new \DateTime('+ 1 days')
-        );
+        $this->searchData = [
+            'last_buy_end' => new \DateTime('+ 1 days'),
+        ];
 
         $this->scenario();
         $this->expected = 1;
@@ -660,9 +656,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->Customer1->setStatus($NonActive);
         $this->entityManager->flush();
 
-        $this->searchData = array(
-            'customer_status' => array($Active, $NonActive)
-        );
+        $this->searchData = [
+            'customer_status' => [$Active, $NonActive],
+        ];
 
         $this->scenario();
         $this->expected = 4;
@@ -677,9 +673,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->Customer1->setStatus($NonActive);
         $this->entityManager->flush();
 
-        $this->searchData = array(
-            'customer_status' => array($NonActive)
-        );
+        $this->searchData = [
+            'customer_status' => [$NonActive],
+        ];
 
         $this->scenario();
         $this->expected = 2;
@@ -689,9 +685,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
     public function testBuyProductCode()
     {
-        $this->searchData = array(
-            'buy_product_code' => '商品'
-        );
+        $this->searchData = [
+            'buy_product_name' => '商品',
+        ];
 
         $this->scenario();
         // TODO OrderRepository のテストで正常パターンを作成する

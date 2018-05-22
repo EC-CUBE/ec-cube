@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Controller\Admin\Product;
 
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
@@ -40,15 +39,18 @@ use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Repository\ProductClassRepository;
 use Eccube\Repository\ProductImageRepository;
 use Eccube\Repository\ProductRepository;
+use Eccube\Repository\TagRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Service\CsvExportService;
 use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Eccube\Util\FormUtil;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -114,6 +116,11 @@ class ProductController extends AbstractController
     protected $productStatusRepository;
 
     /**
+     * @var TagRepository
+     */
+    protected $tagRepository;
+
+    /**
      * ProductController constructor.
      *
      * @param CsvExportService $csvExportService
@@ -125,6 +132,7 @@ class ProductController extends AbstractController
      * @param BaseInfo $BaseInfo
      * @param PageMaxRepository $pageMaxRepository
      * @param ProductStatusRepository $productStatusRepository
+     * @param TagRepository $tagRepository
      */
     public function __construct(
         CsvExportService $csvExportService,
@@ -135,7 +143,8 @@ class ProductController extends AbstractController
         ProductRepository $productRepository,
         BaseInfo $BaseInfo,
         PageMaxRepository $pageMaxRepository,
-        ProductStatusRepository $productStatusRepository
+        ProductStatusRepository $productStatusRepository,
+        TagRepository $tagRepository
     ) {
         $this->csvExportService = $csvExportService;
         $this->productClassRepository = $productClassRepository;
@@ -146,6 +155,7 @@ class ProductController extends AbstractController
         $this->BaseInfo = $BaseInfo;
         $this->pageMaxRepository = $pageMaxRepository;
         $this->productStatusRepository = $productStatusRepository;
+        $this->tagRepository = $tagRepository;
     }
 
     /**
@@ -155,9 +165,6 @@ class ProductController extends AbstractController
      */
     public function index(Request $request, $page_no = null, Paginator $paginator)
     {
-
-        $session = $this->session;
-
         $builder = $this->formFactory
             ->createBuilder(SearchProductType::class);
 
@@ -171,101 +178,138 @@ class ProductController extends AbstractController
 
         $searchForm = $builder->getForm();
 
-        $pagination = [];
+        /**
+         * ページの表示件数は, 以下の順に優先される.
+         * - リクエストパラメータ
+         * - セッション
+         * - デフォルト値
+         * また, セッションに保存する際は mtb_page_maxと照合し, 一致した場合のみ保存する.
+         **/
+        $page_count = $this->session->get('eccube.admin.order.search.page_count',
+            $this->eccubeConfig->get('eccube_default_page_count'));
 
-        $ProductStatuses = $this->productStatusRepository->findAll();
+        $page_count_param = (int) $request->get('page_count');
         $pageMaxis = $this->pageMaxRepository->findAll();
 
-        // 表示件数は順番で取得する、1.SESSION 2.設定ファイル
-        $page_count = $session->get('eccube.admin.product.search.page_count', $this->eccubeConfig['eccube_default_page_count']);
-        // 表示件数
-        $page_count_param = $request->get('page_count');
-        // 表示件数はURLパラメターから取得する
-        if ($page_count_param && is_numeric($page_count_param)) {
+        if ($page_count_param) {
             foreach ($pageMaxis as $pageMax) {
                 if ($page_count_param == $pageMax->getName()) {
                     $page_count = $pageMax->getName();
-                    // 表示件数入力値正し場合はSESSIONに保存する
-                    $session->set('eccube.admin.product.search.page_count', $page_count);
+                    $this->session->set('eccube.admin.order.search.page_count', $page_count);
                     break;
                 }
             }
         }
 
-        $page_status = null;
-        $active = false;
-
         if ('POST' === $request->getMethod()) {
-
             $searchForm->handleRequest($request);
 
             if ($searchForm->isValid()) {
+                /**
+                 * 検索が実行された場合は, セッションに検索条件を保存する.
+                 * ページ番号は最初のページ番号に初期化する.
+                 */
                 $page_no = 1;
                 $searchData = $searchForm->getData();
 
-                $pagination = $this->buildPagination($paginator, $request, $searchData, $page_no, $page_count);
-
-                // sessionに検索条件を保持
-                $viewData = FormUtil::getViewData($searchForm);
-                $session->set('eccube.admin.product.search', $viewData);
-                $session->set('eccube.admin.product.search.page_no', $page_no);
+                // 検索条件, ページ番号をセッションに保持.
+                $this->session->set('eccube.admin.product.search', FormUtil::getViewData($searchForm));
+                $this->session->set('eccube.admin.product.search.page_no', $page_no);
+            } else {
+                // 検索エラーの際は, 詳細検索枠を開いてエラー表示する.
+                return [
+                    'searchForm' => $searchForm->createView(),
+                    'pagination' => [],
+                    'pageMaxis' => $pageMaxis,
+                    'page_no' => $page_no,
+                    'page_count' => $page_count,
+                    'has_errors' => true,
+                ];
             }
         } else {
-            if (is_null($page_no) && $request->get('resume') != Constant::ENABLED) {
-                // sessionを削除
-                $session->remove('eccube.admin.product.search');
-                $session->remove('eccube.admin.product.search.page_no');
-                $session->remove('eccube.admin.product.search.page_count');
-
+            if (null !== $page_no || $request->get('resume')) {
+                /*
+                 * ページ送りの場合または、他画面から戻ってきた場合は, セッションから検索条件を復旧する.
+                 */
+                if ($page_no) {
+                    // ページ送りで遷移した場合.
+                    $this->session->set('eccube.admin.product.search.page_no', (int) $page_no);
+                } else {
+                    // 他画面から遷移した場合.
+                    $page_no = $this->session->get('eccube.admin.product.search.page_no', 1);
+                }
+                $viewData = $this->session->get('eccube.admin.product.search', []);
+                $searchData = FormUtil::submitAndGetData($searchForm, $viewData);
+            } else {
+                /**
+                 * 初期表示の場合.
+                 */
                 $page_no = 1;
                 $searchData = [];
 
-                $pagination = $this->buildPagination($paginator, $request, $searchData, $page_no, $page_count);
-            } else {
-                // pagingなどの処理
-                if (is_null($page_no)) {
-                    $page_no = intval($session->get('eccube.admin.product.search.page_no'));
-                } else {
-                    $session->set('eccube.admin.product.search.page_no', $page_no);
-                }
-                $viewData = $session->get('eccube.admin.product.search');
-                if (!is_null($viewData)) {
-                    // 表示件数
-                    $page_count = $request->get('page_count', $page_count);
-                    $searchData = FormUtil::submitAndGetData($searchForm, $viewData);
+                // セッション中の検索条件, ページ番号を初期化.
+                $this->session->set('eccube.admin.product.search', $searchData);
+                $this->session->set('eccube.admin.product.search.page_no', $page_no);
+            }
+        }
 
-                    $session->set('eccube.admin.product.search', $viewData);
+        $qb = $this->productRepository->getQueryBuilderBySearchDataForAdmin($searchData);
 
-                    $pagination = $this->buildPagination($paginator, $request, $searchData, $page_no, $page_count);
+        $event = new EventArgs(
+            [
+                'qb' => $qb,
+                'searchData' => $searchData,
+            ],
+            $request
+        );
 
-                    // セッションから検索条件を復元(カテゴリ)
-                    if (!empty($searchData['category_id'])) {
-                        $searchData['category_id'] = $this->categoryRepository->find($searchData['category_id']);
-                    }
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_INDEX_SEARCH, $event);
 
-                    // セッションから検索条件を復元(スーテタス)
-                    if (isset($searchData['status']) && count($searchData['status']) > 0) {
-                        $status_ids = [];
-                        foreach ($searchData['status'] as $Status) {
-                            $status_ids[] = $Status->getId();
-                        }
-                        $searchData['status'] = $this->productStatusRepository->findBy(['id' => $status_ids]);
-                    }
-                    $searchForm = $builder->getForm();
-                    $searchForm->setData($searchData);
+        $pagination = $paginator->paginate(
+            $qb,
+            $page_no,
+            $page_count
+        );
+
+        return [
+            'searchForm' => $searchForm->createView(),
+            'pagination' => $pagination,
+            'pageMaxis' => $pageMaxis,
+            'page_no' => $page_no,
+            'page_count' => $page_count,
+            'has_errors' => false,
+        ];
+    }
+
+    /**
+     * @Method("GET")
+     * @Route("/%eccube_admin_route%/product/classes/{id}/load", name="admin_product_classes_load", requirements={"id" = "\d+"})
+     * @Template("@admin/Product/product_class_popup.twig")
+     * @ParamConverter("Product")
+     */
+    public function loadProductClasses(Request $request, Product $Product)
+    {
+        if (!$request->isXmlHttpRequest()) {
+            throw new BadRequestHttpException();
+        }
+
+        $data = [];
+        /** @var $Product ProductRepository */
+        if (!$Product) {
+            throw new NotFoundHttpException();
+        }
+
+        if ($Product->hasProductClass()) {
+            $class = $Product->getProductClasses();
+            foreach ($class as $item) {
+                if ($item['visible']) {
+                    $data[] = $item;
                 }
             }
         }
 
         return [
-            'searchForm' => $searchForm->createView(),
-            'pagination' => $pagination,
-            'productStatuses' => $ProductStatuses,
-            'pageMaxis' => $pageMaxis,
-            'page_no' => $page_no,
-            'page_status' => $page_status,
-            'page_count' => $page_count,
-            'active' => $active,
+            'data' => $data,
         ];
     }
 
@@ -292,7 +336,7 @@ class ProductController extends AbstractController
                     }
 
                     $extension = $image->getClientOriginalExtension();
-                    $filename = date('mdHis') . uniqid('_') . '.' . $extension;
+                    $filename = date('mdHis').uniqid('_').'.'.$extension;
                     $image->move($this->eccubeConfig['eccube_temp_image_dir'], $filename);
                     $files[] = $filename;
                 }
@@ -339,11 +383,19 @@ class ProductController extends AbstractController
             if (!$Product) {
                 throw new NotFoundHttpException();
             }
-            // 規格あり商品か
+            // 規格無しの商品の場合は、デフォルト規格を表示用に取得する
             $has_class = $Product->hasProductClass();
             if (!$has_class) {
                 $ProductClasses = $Product->getProductClasses();
-                $ProductClass = $ProductClasses[0];
+                foreach ($ProductClasses as $pc) {
+                    if (!is_null($pc->getClassCategory1())) {
+                        continue;
+                    }
+                    if ($pc->isVisible()) {
+                        $ProductClass = $pc;
+                        break;
+                    }
+                }
                 if ($this->BaseInfo->isOptionProductTaxRule() && $ProductClass->getTaxRule()) {
                     $ProductClass->setTaxRate($ProductClass->getTaxRule()->getTaxRate());
                 }
@@ -455,8 +507,8 @@ class ProductController extends AbstractController
                 $Categories = $form->get('Category')->getData();
                 $categoriesIdList = [];
                 foreach ($Categories as $Category) {
-                    foreach($Category->getPath() as $ParentCategory){
-                        if (!isset($categoriesIdList[$ParentCategory->getId()])){
+                    foreach ($Category->getPath() as $ParentCategory) {
+                        if (!isset($categoriesIdList[$ParentCategory->getId()])) {
                             $ProductCategory = $this->createProductCategory($Product, $ParentCategory, $count);
                             $this->entityManager->persist($ProductCategory);
                             $count++;
@@ -465,7 +517,7 @@ class ProductController extends AbstractController
                             $categoriesIdList[$ParentCategory->getId()] = true;
                         }
                     }
-                    if (!isset($categoriesIdList[$Category->getId()])){
+                    if (!isset($categoriesIdList[$Category->getId()])) {
                         $ProductCategory = $this->createProductCategory($Product, $Category, $count);
                         $this->entityManager->persist($ProductCategory);
                         $count++;
@@ -487,7 +539,7 @@ class ProductController extends AbstractController
                     $this->entityManager->persist($ProductImage);
 
                     // 移動
-                    $file = new File($this->eccubeConfig['eccube_temp_image_dir'] . '/' . $add_image);
+                    $file = new File($this->eccubeConfig['eccube_temp_image_dir'].'/'.$add_image);
                     $file->move($this->eccubeConfig['eccube_save_image_dir']);
                 }
 
@@ -561,6 +613,10 @@ class ProductController extends AbstractController
 
                 $this->addSuccess('admin.register.complete', 'admin');
 
+                if ($returnLink = $form->get('return_link')->getData()) {
+                    return $this->redirect($returnLink);
+                }
+
                 return $this->redirectToRoute('admin_product_product_edit', ['id' => $Product->getId()]);
             }
         }
@@ -584,12 +640,25 @@ class ProductController extends AbstractController
             $searchForm->handleRequest($request);
         }
 
+        // Get Tags
+        $TagsList = $this->tagRepository->getList();
+
+        // ツリー表示のため、ルートからのカテゴリを取得
+        $TopCategories = $this->categoryRepository->getList(null);
+        $ChoicedCategoryIds = array_map(function ($Category) {
+            return $Category->getId();
+        }, $form->get('Category')->getData());
+
         return [
             'Product' => $Product,
+            'Tags' => $Tags,
+            'TagsList' => $TagsList,
             'form' => $form->createView(),
             'searchForm' => $searchForm->createView(),
             'has_class' => $has_class,
             'id' => $id,
+            'TopCategories' => $TopCategories,
+            'ChoicedCategoryIds' => $ChoicedCategoryIds,
         ];
     }
 
@@ -603,14 +672,23 @@ class ProductController extends AbstractController
         $session = $request->getSession();
         $page_no = intval($session->get('eccube.admin.product.search.page_no'));
         $page_no = $page_no ? $page_no : Constant::ENABLED;
+        $message = null;
+        $success = false;
 
         if (!is_null($id)) {
             /* @var $Product \Eccube\Entity\Product */
             $Product = $this->productRepository->find($id);
             if (!$Product) {
-                $this->deleteMessage();
-                $rUrl = $this->generateUrl('admin_product_page', ['page_no' => $page_no]) . '?resume=' . Constant::ENABLED;
-                return $this->redirect($rUrl);
+                if ($request->isXmlHttpRequest()) {
+                    $message = trans('admin.delete.warning');
+
+                    return new JsonResponse(['success' => $success, 'message' => $message]);
+                } else {
+                    $this->deleteMessage();
+                    $rUrl = $this->generateUrl('admin_product_page', ['page_no' => $page_no]).'?resume='.Constant::ENABLED;
+
+                    return $this->redirect($rUrl);
+                }
             }
 
             if ($Product instanceof Product) {
@@ -638,7 +716,7 @@ class ProductController extends AbstractController
                     foreach ($deleteImages as $deleteImage) {
                         try {
                             $fs = new Filesystem();
-                            $fs->remove($this->eccubeConfig['eccube_save_image_dir'] . '/' . $deleteImage);
+                            $fs->remove($this->eccubeConfig['eccube_save_image_dir'].'/'.$deleteImage);
                         } catch (\Exception $e) {
                             // エラーが発生しても無視する
                         }
@@ -646,25 +724,34 @@ class ProductController extends AbstractController
 
                     log_info('商品削除完了', [$id]);
 
-                    $this->addSuccess('admin.delete.complete', 'admin');
-
+                    $success = true;
+                    $message = trans('admin.delete.complete');
                 } catch (ForeignKeyConstraintViolationException $e) {
                     log_info('商品削除エラー', [$id]);
-                    $message = trans('admin.delete.failed.foreign_key', ['%name%' => trans('product.text.name')]);
-                    $this->addError($message, 'admin');
+                    $message = trans('admin.delete.failed.foreign_key', ['%name%' => $Product->getName()]);
                 }
             } else {
                 log_info('商品削除エラー', [$id]);
-                $this->addError('admin.delete.failed', 'admin');
+                $message = trans('admin.delete.failed');
             }
         } else {
             log_info('商品削除エラー', [$id]);
-            $this->addError('admin.delete.failed', 'admin');
+            $message = trans('admin.delete.failed');
         }
 
-        $rUrl = $this->generateUrl('admin_product_page', ['page_no' => $page_no]).'?resume='.Constant::ENABLED;
+        if ($request->isXmlHttpRequest()) {
+            return new JsonResponse(['success' => $success, 'message' => $message]);
+        } else {
+            if ($success) {
+                $this->addSuccess($message, 'admin');
+            } else {
+                $this->addError($message, 'admin');
+            }
 
-        return $this->redirect($rUrl);
+            $rUrl = $this->generateUrl('admin_product_page', ['page_no' => $page_no]).'?resume='.Constant::ENABLED;
+
+            return $this->redirect($rUrl);
+        }
     }
 
     /**
@@ -719,7 +806,6 @@ class ProductController extends AbstractController
                 }
                 $Images = $CopyProduct->getProductImage();
                 foreach ($Images as $Image) {
-
                     // 画像ファイルを新規作成
                     $extension = pathinfo($Image->getFileName(), PATHINFO_EXTENSION);
                     $filename = date('mdHis').uniqid('_').'.'.$extension;
@@ -807,7 +893,6 @@ class ProductController extends AbstractController
 
         $response = new StreamedResponse();
         $response->setCallback(function () use ($request) {
-
             // CSV種別を元に初期化.
             $this->csvExportService->initCsvType(CsvType::CSV_TYPE_PRODUCT);
 
@@ -920,39 +1005,6 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @param Paginator $paginator
-     * @param Request $request
-     * @param array $searchData
-     * @param integer $page_no
-     * @param integer $page_count
-     * @return Paginator
-     */
-    private function buildPagination(Paginator $paginator, Request $request, array &$searchData, $page_no, $page_count)
-    {
-        $qb = $this->productRepository->getQueryBuilderBySearchDataForAdmin($searchData);
-
-        $event = new EventArgs(
-            [
-                'qb' => $qb,
-                'searchData' => $searchData,
-            ],
-            $request
-        );
-
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_INDEX_SEARCH, $event);
-        $searchData = $event->getArgument('searchData');
-
-        $pagination = $paginator->paginate(
-            $qb,
-            $page_no,
-            $page_count,
-            ['wrap-queries' => true]
-        );
-
-        return $pagination;
-    }
-
-    /**
      * Bulk public action
      *
      * @Method("POST")
@@ -984,7 +1036,7 @@ class ProductController extends AbstractController
                 $this->entityManager->flush();
                 $msg = $this->translator->trans('admin.product.index.bulk_product_status_success_count', [
                     '%count%' => $count,
-                    '%status%' => $ProductStatus->getName()
+                    '%status%' => $ProductStatus->getName(),
                 ]);
                 $this->addSuccess($msg, 'admin');
             }

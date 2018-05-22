@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Twig\Extension;
 
 use Eccube\Common\EccubeConfig;
@@ -58,22 +57,21 @@ class EccubeExtension extends AbstractExtension
      */
     public function getFunctions()
     {
-        return array(
-            new TwigFunction('has_errors', array($this, 'hasErrors')),
-            new TwigFunction('is_object', array($this, 'isObject')),
-            new TwigFunction('calc_inc_tax', array($this, 'getCalcIncTax')),
-            new TwigFunction('active_menus', array($this, 'getActiveMenus')),
-            new TwigFunction('class_categories_as_json', array($this, 'getClassCategoriesAsJson')),
+        return [
+            new TwigFunction('has_errors', [$this, 'hasErrors']),
+            new TwigFunction('is_object', [$this, 'isObject']),
+            new TwigFunction('calc_inc_tax', [$this, 'getCalcIncTax']),
+            new TwigFunction('active_menus', [$this, 'getActiveMenus']),
+            new TwigFunction('class_categories_as_json', [$this, 'getClassCategoriesAsJson']),
             new TwigFunction('php_*', function () {
-                    $arg_list = func_get_args();
-                    $function = array_shift($arg_list);
-                    if (is_callable($function)) {
-                        return call_user_func_array($function, $arg_list);
-                    }
-                    trigger_error('Called to an undefined function : php_'. $function, E_USER_WARNING);
-
+                $arg_list = func_get_args();
+                $function = array_shift($arg_list);
+                if (is_callable($function)) {
+                    return call_user_func_array($function, $arg_list);
+                }
+                trigger_error('Called to an undefined function : php_'.$function, E_USER_WARNING);
             }, ['pre_escape' => 'html', 'is_safe' => ['html']]),
-        );
+        ];
     }
 
     /**
@@ -83,13 +81,13 @@ class EccubeExtension extends AbstractExtension
      */
     public function getFilters()
     {
-        return array(
-            new TwigFilter('no_image_product', array($this, 'getNoImageProduct')),
-            new TwigFilter('date_format', array($this, 'getDateFormatFilter')),
-            new TwigFilter('price', array($this, 'getPriceFilter')),
-            new TwigFilter('ellipsis', array($this, 'getEllipsis')),
-            new TwigFilter('time_ago', array($this, 'getTimeAgo')),
-        );
+        return [
+            new TwigFilter('no_image_product', [$this, 'getNoImageProduct']),
+            new TwigFilter('date_format', [$this, 'getDateFormatFilter']),
+            new TwigFilter('price', [$this, 'getPriceFilter']),
+            new TwigFilter('ellipsis', [$this, 'getEllipsis']),
+            new TwigFilter('time_ago', [$this, 'getTimeAgo']),
+        ];
     }
 
     /**
@@ -116,9 +114,10 @@ class EccubeExtension extends AbstractExtension
      * Name of this extension
      *
      * @param array $menus
+     *
      * @return array
      */
-    public function getActiveMenus($menus = array())
+    public function getActiveMenus($menus = [])
     {
         $count = count($menus);
         for ($i = $count; $i <= 2; $i++) {
@@ -190,6 +189,7 @@ class EccubeExtension extends AbstractExtension
      * Check if the value is object
      *
      * @param object $value
+     *
      * @return bool
      */
     public function isObject($value)
@@ -214,7 +214,7 @@ class EccubeExtension extends AbstractExtension
             if (count($view->vars['errors'])) {
                 $hasErrors = true;
                 break;
-            };
+            }
         }
 
         return $hasErrors;
@@ -226,6 +226,7 @@ class EccubeExtension extends AbstractExtension
      * デバッグ環境以外ではProductが取得できなくでもエラー画面は表示させず無視される。
      *
      * @param $id
+     *
      * @return Product|null
      */
     public function getProduct($id)
@@ -266,6 +267,7 @@ class EccubeExtension extends AbstractExtension
      * Get the ClassCategories as JSON.
      *
      * @param Product $Product
+     *
      * @return string
      */
     public function getClassCategoriesAsJson(Product $Product)
@@ -274,8 +276,8 @@ class EccubeExtension extends AbstractExtension
         $class_categories = [
             '__unselected' => [
                 '__unselected' => [
-                    'name'              => trans('product.text.please_select'),
-                    'product_class_id'  => '',
+                    'name' => trans('product.text.please_select'),
+                    'product_class_id' => '',
                 ],
             ],
         ];
@@ -290,21 +292,23 @@ class EccubeExtension extends AbstractExtension
             $class_category_id2 = $ClassCategory2 ? (string) $ClassCategory2->getId() : '';
             $class_category_name2 = $ClassCategory2 ? $ClassCategory2->getName().($ProductClass->getStockFind() ? '' : trans('product.text.out_of_stock')) : '';
 
-            $class_categories[$class_category_id1]['#'] = array(
+            $class_categories[$class_category_id1]['#'] = [
                 'classcategory_id2' => '',
-                'name'              => trans('product.text.please_select'),
-                'product_class_id'  => '',
-            );
-            $class_categories[$class_category_id1]['#'.$class_category_id2] = array(
+                'name' => trans('product.text.please_select'),
+                'product_class_id' => '',
+            ];
+            $class_categories[$class_category_id1]['#'.$class_category_id2] = [
                 'classcategory_id2' => $class_category_id2,
-                'name'              => $class_category_name2,
-                'stock_find'        => $ProductClass->getStockFind(),
-                'price01'           => $ProductClass->getPrice01() === null ? '' : number_format($ProductClass->getPrice01IncTax()),
-                'price02'           => number_format($ProductClass->getPrice02IncTax()),
-                'product_class_id'  => (string) $ProductClass->getId(),
-                'product_code'      => $ProductClass->getCode() === null ? '' : $ProductClass->getCode(),
-                'sale_type'      => (string) $ProductClass->getSaleType()->getId(),
-            );
+                'name' => $class_category_name2,
+                'stock_find' => $ProductClass->getStockFind(),
+                'price01' => $ProductClass->getPrice01() === null ? '' : number_format($ProductClass->getPrice01()),
+                'price02' => number_format($ProductClass->getPrice02()),
+                'price01_inc_tax' => $ProductClass->getPrice01() === null ? '' : number_format($ProductClass->getPrice01IncTax()),
+                'price02_inc_tax' => number_format($ProductClass->getPrice02IncTax()),
+                'product_class_id' => (string) $ProductClass->getId(),
+                'product_code' => $ProductClass->getCode() === null ? '' : $ProductClass->getCode(),
+                'sale_type' => (string) $ProductClass->getSaleType()->getId(),
+            ];
         }
 
         return json_encode($class_categories);

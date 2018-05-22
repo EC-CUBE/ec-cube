@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type\Admin;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -72,6 +71,7 @@ class OrderItemType extends AbstractType
 
     /**
      * OrderItemType constructor.
+     *
      * @param EntityManagerInterface $entityManager
      * @param EccubeConfig $eccubeConfig
      * @param ProductClassRepository $productClassRepository
@@ -92,46 +92,52 @@ class OrderItemType extends AbstractType
         $this->requestStack = $requestStack;
     }
 
-
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('new', HiddenType::class, array(
+            ->add('new', HiddenType::class, [
                 'required' => false,
                 'mapped' => false,
                 'data' => 1,
-            ))
-            ->add('id', HiddenType::class, array(
+            ])
+            ->add('id', HiddenType::class, [
                 'required' => false,
                 'mapped' => false,
-            ))
-            ->add('price', PriceType::class, array(
+            ])
+            ->add('price', PriceType::class, [
                 'accept_minus' => true,
-            ))
-            ->add('quantity', TextType::class, array(
-                'constraints' => array(
+            ])
+            ->add('quantity', TextType::class, [
+                'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(array(
+                    new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_int_len'],
-                    )),
-                ),
-            ))
-            ->add('tax_rate', TextType::class, array(
-                'constraints' => array(
+                    ]),
+                ],
+            ])
+            ->add('tax_rate', TextType::class, [
+                'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(array(
+                    new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_int_len'],
-                    )),
-                    new Assert\Regex(array(
+                    ]),
+                    new Assert\Regex([
                         'pattern' => "/^\d+(\.\d+)?$/u",
                         'message' => 'form.type.float.invalid',
-                    )),
-                ),
-            ))
-            ->add('product_name', HiddenType::class)
+                    ]),
+                ],
+            ])
+            ->add('product_name', TextType::class, [
+                'constraints' => [
+                    new Assert\NotBlank(),
+                    new Assert\Length([
+                        'max' => $this->eccubeConfig['eccube_mtext_len'],
+                    ]),
+                ],
+            ])
             ->add('product_code', HiddenType::class)
             ->add('class_name1', HiddenType::class)
             ->add('class_name2', HiddenType::class)
@@ -204,99 +210,96 @@ class OrderItemType extends AbstractType
             // モーダルからのPOST時に、金額等をセットする.
             if ('modal' === $this->requestStack->getCurrentRequest()->get('modal')) {
                 $data = $event->getData();
-                // 新規明細行の場合にセット.
-                if (isset($data['new'])) {
-                    // 受注済み明細の場合
-                    if (array_key_exists('id', $data) && isset($data['id'])) {
-                        /** @var \Eccube\Entity\OrderItem $OrderItem */
-                        $OrderItem = $this->orderItemRepository
-                            ->find($data['id']);
-                        $data = array_merge($data, $OrderItem->toArray([
-                            'Order',
-                            'Product',
-                            'ProductClass',
-                            'Shipping',
-                            'TaxType',
-                            'TaxDisplayType',
-                            'OrderItemType',
-                        ]));
+                // 受注済み明細の場合
+                if (array_key_exists('id', $data) && isset($data['id'])) {
+                    /** @var \Eccube\Entity\OrderItem $OrderItem */
+                    $OrderItem = $this->orderItemRepository
+                        ->find($data['id']);
+                    $data = array_merge($data, $OrderItem->toArray([
+                        'Order',
+                        'Product',
+                        'ProductClass',
+                        'Shipping',
+                        'TaxType',
+                        'TaxDisplayType',
+                        'OrderItemType',
+                    ]));
 
-                        if (is_object($OrderItem->getOrder())) {
-                            $data['Order'] = $OrderItem->getOrder()->getId();
-                        }
-                        if (is_object($OrderItem->getProduct())) {
-                            $data['Product'] = $OrderItem->getProduct()->getId();
-                        }
-                        if (is_object($OrderItem->getProduct())) {
-                            $data['ProductClass'] = $OrderItem->getProductClass()->getId();
-                        }
-                        if (is_object($OrderItem->getTaxType())) {
-                            $data['tax_type'] = $OrderItem->getTaxType()->getId();
-                        }
-                        if (is_object($OrderItem->getTaxDisplayType())) {
-                            $data['tax_display_type'] = $OrderItem->getTaxDisplayType()->getId();
-                        }
-                        if (is_object($OrderItem->getOrderItemType())) {
-                            $data['order_item_type'] = $OrderItem->getOrderItemType()->getId();
-                        }
-                    } else {
-                        // 新規受注登録時の場合
-                        $data['product_code'] = null;
-                        $data['class_name1'] = null;
-                        $data['class_name2'] = null;
-                        $data['class_category_name1'] = null;
-                        $data['class_category_name2'] = null;
-                        switch ($data['order_item_type']) {
-                            case OrderItemTypeMaster::DELIVERY_FEE:
-                                $data['product_name'] = 'orderitem.text.data.shipping_charge';
-                                $data['price'] = 0;
-                                $data['quantity'] = 1;
-                                $data['tax_type'] = TaxType::TAXATION;
-                                $data['tax_display_type'] = TaxDisplayType::INCLUDED;
-                                break;
-                            case OrderItemTypeMaster::CHARGE:
-                                $data['product_name'] = 'orderitem.text.data.commision';
-                                $data['price'] = 0;
-                                $data['quantity'] = 1;
-                                $data['tax_type'] = TaxType::TAXATION;
-                                $data['tax_display_type'] = TaxDisplayType::INCLUDED;
-                                break;
-                            case OrderItemTypeMaster::DISCOUNT:
-                                $data['product_name'] = 'orderitem.text.data.discount';
-                                $data['price'] = -0;
-                                $data['quantity'] = 1;
-                                $data['tax_type'] = TaxType::NON_TAXABLE;
-                                $data['tax_display_type'] = TaxDisplayType::INCLUDED;
-                                break;
-                            case OrderItemTypeMaster::PRODUCT:
-                            default:
-                                /** @var \Eccube\Entity\ProductClass $ProductClass */
-                                $ProductClass = $this->productClassRepository
-                                    ->find($data['ProductClass']);
-                                /** @var \Eccube\Entity\Product $Product */
-                                $Product = $ProductClass->getProduct();
-                                $data['product_name'] = $Product->getName();
-                                $data['product_code'] = $ProductClass->getCode();
-                                $data['class_name1'] = $ProductClass->hasClassCategory1() ?
-                                    $ProductClass->getClassCategory1()->getClassName() :
-                                    null;
-                                $data['class_name2'] = $ProductClass->hasClassCategory2() ?
-                                    $ProductClass->getClassCategory2()->getClassName() :
-                                    null;
-                                $data['class_category_name1'] = $ProductClass->hasClassCategory1() ?
-                                    $ProductClass->getClassCategory1()->getName() :
-                                    null;
-                                $data['class_category_name2'] = $ProductClass->hasClassCategory2() ?
-                                    $ProductClass->getClassCategory2()->getName() :
-                                    null;
-                                $data['price'] = $ProductClass->getPrice02();
-                                $data['quantity'] = empty($data['quantity']) ? 1 : $data['quantity'];
-                                $data['tax_type'] = TaxType::TAXATION;
-                                $data['tax_display_type'] = TaxDisplayType::EXCLUDED;
-                        }
+                    if (is_object($OrderItem->getOrder())) {
+                        $data['Order'] = $OrderItem->getOrder()->getId();
                     }
-                    $event->setData($data);
+                    if (is_object($OrderItem->getProduct())) {
+                        $data['Product'] = $OrderItem->getProduct()->getId();
+                    }
+                    if (is_object($OrderItem->getProduct())) {
+                        $data['ProductClass'] = $OrderItem->getProductClass()->getId();
+                    }
+                    if (is_object($OrderItem->getTaxType())) {
+                        $data['tax_type'] = $OrderItem->getTaxType()->getId();
+                    }
+                    if (is_object($OrderItem->getTaxDisplayType())) {
+                        $data['tax_display_type'] = $OrderItem->getTaxDisplayType()->getId();
+                    }
+                    if (is_object($OrderItem->getOrderItemType())) {
+                        $data['order_item_type'] = $OrderItem->getOrderItemType()->getId();
+                    }
+                } else {
+                    // 新規受注登録時の場合
+                    $data['product_code'] = null;
+                    $data['class_name1'] = null;
+                    $data['class_name2'] = null;
+                    $data['class_category_name1'] = null;
+                    $data['class_category_name2'] = null;
+                    switch ($data['order_item_type']) {
+                        case OrderItemTypeMaster::DELIVERY_FEE:
+                            // $data['product_name'] = trans('orderitem.text.data.shipping_charge');
+                            // $data['price'] = 0;
+                            // $data['quantity'] = 1;
+                            $data['tax_type'] = TaxType::TAXATION;
+                            $data['tax_display_type'] = TaxDisplayType::INCLUDED;
+                            break;
+                        case OrderItemTypeMaster::CHARGE:
+                            // $data['product_name'] = trans('orderitem.text.data.commision');
+                            // $data['price'] = 0;
+                            // $data['quantity'] = 1;
+                            $data['tax_type'] = TaxType::TAXATION;
+                            $data['tax_display_type'] = TaxDisplayType::INCLUDED;
+                            break;
+                        case OrderItemTypeMaster::DISCOUNT:
+                            // $data['product_name'] = trans('orderitem.text.data.discount');
+                            // $data['price'] = -0;
+                            // $data['quantity'] = 1;
+                            $data['tax_type'] = TaxType::NON_TAXABLE;
+                            $data['tax_display_type'] = TaxDisplayType::INCLUDED;
+                            break;
+                        case OrderItemTypeMaster::PRODUCT:
+                        default:
+                            /** @var \Eccube\Entity\ProductClass $ProductClass */
+                            $ProductClass = $this->productClassRepository
+                                ->find($data['ProductClass']);
+                            /** @var \Eccube\Entity\Product $Product */
+                            $Product = $ProductClass->getProduct();
+                            $data['product_name'] = $Product->getName();
+                            $data['product_code'] = $ProductClass->getCode();
+                            $data['class_name1'] = $ProductClass->hasClassCategory1() ?
+                                $ProductClass->getClassCategory1()->getClassName() :
+                                null;
+                            $data['class_name2'] = $ProductClass->hasClassCategory2() ?
+                                $ProductClass->getClassCategory2()->getClassName() :
+                                null;
+                            $data['class_category_name1'] = $ProductClass->hasClassCategory1() ?
+                                $ProductClass->getClassCategory1()->getName() :
+                                null;
+                            $data['class_category_name2'] = $ProductClass->hasClassCategory2() ?
+                                $ProductClass->getClassCategory2()->getName() :
+                                null;
+                            $data['price'] = $ProductClass->getPrice02();
+                            $data['quantity'] = empty($data['quantity']) ? 1 : $data['quantity'];
+                            $data['tax_type'] = TaxType::TAXATION;
+                            $data['tax_display_type'] = TaxDisplayType::EXCLUDED;
+                    }
                 }
+                $event->setData($data);
             }
         });
     }
@@ -306,9 +309,9 @@ class OrderItemType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'Eccube\Entity\OrderItem',
-        ));
+        ]);
     }
 
     /**

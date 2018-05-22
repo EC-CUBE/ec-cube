@@ -1,4 +1,5 @@
 <?php
+
 namespace Eccube\Tests\ServiceProvider;
 
 use Eccube\Application;
@@ -6,7 +7,6 @@ use Eccube\Tests\EccubeTestCase;
 
 class EccubeServiceProviderTest extends EccubeTestCase
 {
-
     /** @var Application $app */
     protected $app;
 

@@ -8,6 +8,7 @@ use Eccube\Application;
  * Interface that all Silex service providers must implement.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ *
  * @see https://github.com/silexphp/Silex/blob/1.3/src/Silex/ServiceProviderInterface.php
  */
 interface ServiceProviderInterface

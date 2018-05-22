@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Eccube\Repository;
-
 
 use Eccube\Annotation\Inject;
 use Eccube\Entity\AbstractEntity;
@@ -12,6 +10,7 @@ abstract class AbstractRepository extends ServiceEntityRepository
 {
     /**
      * @Inject("config")
+     *
      * @var array
      */
     protected $eccubeConfig;

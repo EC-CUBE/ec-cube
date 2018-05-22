@@ -21,16 +21,17 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Controller\Admin\Content;
 
 use Doctrine\ORM\NoResultException;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BlockPosition;
 use Eccube\Entity\Layout;
+use Eccube\Entity\Master\DeviceType;
 use Eccube\Form\Type\Master\DeviceTypeType;
 use Eccube\Repository\BlockRepository;
 use Eccube\Repository\LayoutRepository;
+use Eccube\Repository\PageLayoutRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -41,10 +42,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Twig\Environment as Twig;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 // todo プレビュー実装
 class LayoutController extends AbstractController
 {
+    const DUMMY_BLOCK_ID = 9999999999;
+
     /**
      * @var BlockRepository
      */
@@ -56,14 +61,22 @@ class LayoutController extends AbstractController
     protected $layoutRepository;
 
     /**
+     * @var PageLayoutRepository
+     */
+    protected $pageLayoutRepository;
+
+    /**
      * LayoutController constructor.
+     *
      * @param BlockRepository $blockRepository
      * @param LayoutRepository $layoutRepository
+     * @param PageLayoutRepository $pageLayoutRepository
      */
-    public function __construct(BlockRepository $blockRepository, LayoutRepository $layoutRepository)
+    public function __construct(BlockRepository $blockRepository, LayoutRepository $layoutRepository, PageLayoutRepository $pageLayoutRepository)
     {
         $this->blockRepository = $blockRepository;
         $this->layoutRepository = $layoutRepository;
+        $this->pageLayoutRepository = $pageLayoutRepository;
     }
 
     /**
@@ -72,7 +85,7 @@ class LayoutController extends AbstractController
      */
     public function index()
     {
-        $Layouts = $this->layoutRepository->findBy([], ['id' => 'DESC']);
+        $Layouts = $this->layoutRepository->findBy([], ['DeviceType' => 'DESC', 'id' => 'ASC']);
 
         return [
             'Layouts' => $Layouts,
@@ -82,13 +95,17 @@ class LayoutController extends AbstractController
     /**
      * @Method("DELETE")
      * @Route("/%eccube_admin_route%/content/layout/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_layout_delete")
+     *
+     * @param Layout $Layout
+     *
+     * @return RedirectResponse
      */
-    public function delete($id)
+    public function delete(Layout $Layout)
     {
         $this->isTokenValid();
 
-        $Layout = $this->layoutRepository->find($id);
-        if (!$Layout) {
+        /** @var Layout $Layout */
+        if (!$Layout->isDeletable()) {
             $this->deleteMessage();
 
             return $this->redirectToRoute('admin_content_layout');
@@ -212,7 +229,7 @@ class LayoutController extends AbstractController
 
             $this->addSuccess('admin.register.complete', 'admin');
 
-            return $this->redirectToRoute('admin_content_layout_edit', array('id' => $Layout->getId()));
+            return $this->redirectToRoute('admin_content_layout_edit', ['id' => $Layout->getId()]);
         }
 
         return [
@@ -223,10 +240,15 @@ class LayoutController extends AbstractController
     }
 
     /**
-     * @Method("POST")
+     * @Method("GET")
      * @Route("/%eccube_admin_route%/content/layout/view_block", name="admin_content_layout_view_block")
+     *
+     * @param Request $request
+     * @param Twig $twig
+     *
+     * @return JsonResponse
      */
-    public function viewBlock(Request $request)
+    public function viewBlock(Request $request, Twig $twig)
     {
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException();
@@ -241,13 +263,12 @@ class LayoutController extends AbstractController
         $Block = $this->blockRepository->find($id);
 
         if (null === $Block) {
-            return new JsonResponse('layout.text.error.not_found');
+            throw new NotFoundHttpException();
         }
 
-        // ブロックのソースコードの取得.
-        // FIXME twig loaderから取得するように修正.
-        $file = $this->blockRepository->getReadTemplateFile($Block->getFileName());
-        $source = $file['tpl_data'];
+        $source = $twig->getLoader()
+                ->getSourceContext('Block/'.$Block->getFileName().'.twig')
+                ->getCode();
 
         return new JsonResponse([
             'id' => $Block->getId(),

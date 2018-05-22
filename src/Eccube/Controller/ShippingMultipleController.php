@@ -23,13 +23,12 @@
 
 namespace Eccube\Controller;
 
-
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Entity\CustomerAddress;
-use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Master\OrderItemType;
+use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
@@ -47,46 +46,52 @@ class ShippingMultipleController extends AbstractShoppingController
 {
     /**
      * @Inject(PrefRepository::class)
+     *
      * @var PrefRepository
      */
     protected $prefRepository;
 
     /**
      * @Inject("session")
+     *
      * @var Session
      */
     protected $session;
 
     /**
      * @Inject(OrderItemTypeRepository::class)
+     *
      * @var OrderItemTypeRepository
      */
     protected $orderItemTypeRepository;
 
     /**
      * @Inject("orm.em")
+     *
      * @var EntityManager
      */
     protected $entityManager;
 
     /**
      * @Inject("eccube.event.dispatcher")
+     *
      * @var EventDispatcher
      */
     protected $eventDispatcher;
 
     /**
      * @Inject("config")
+     *
      * @var array
      */
     protected $eccubeConfig;
 
     /**
      * @Inject(ShoppingService::class)
+     *
      * @var ShoppingService
      */
     protected $shoppingService;
-
 
     /**
      * 複数配送処理
@@ -94,7 +99,7 @@ class ShippingMultipleController extends AbstractShoppingController
     public function index(Application $app, Request $request)
     {
         // カートチェック
-        $response = $app->forward($app->path("shopping_check_to_cart"));
+        $response = $app->forward($app->path('shopping_check_to_cart'));
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
@@ -104,11 +109,12 @@ class ShippingMultipleController extends AbstractShoppingController
         if (!$Order) {
             log_info('購入処理中の受注情報がないため購入エラー');
             $app->addError('front.shopping.order.error');
+
             return $app->redirect($app->url('shopping_error'));
         }
 
         // 処理しやすいようにすべてのShippingItemをまとめる
-        $OrderItems = array();
+        $OrderItems = [];
         foreach ($Order->getShippings() as $Shipping) {
             foreach ($Shipping->getProductOrderItems() as $OrderItem) {
                 $OrderItems[] = $OrderItem;
@@ -116,7 +122,7 @@ class ShippingMultipleController extends AbstractShoppingController
         }
 
         // Orderに含まれる商品ごとの数量を求める
-        $ItemQuantitiesByClassId = array();
+        $ItemQuantitiesByClassId = [];
         foreach ($OrderItems as $item) {
             $itemId = $item->getProductClass()->getId();
             $quantity = $item->getQuantity();
@@ -128,8 +134,8 @@ class ShippingMultipleController extends AbstractShoppingController
         }
 
         // FormBuilder用に商品ごとにShippingItemをまとめる
-        $OrderItemsForFormBuilder = array();
-        $tmpAddedClassIds = array();
+        $OrderItemsForFormBuilder = [];
+        $tmpAddedClassIds = [];
         foreach ($OrderItems as $item) {
             $itemId = $item->getProductClass()->getId();
             if (!in_array($itemId, $tmpAddedClassIds)) {
@@ -141,18 +147,18 @@ class ShippingMultipleController extends AbstractShoppingController
         // Form生成
         $builder = $app->form();
         $builder
-            ->add('shipping_multiple', CollectionType::class, array(
+            ->add('shipping_multiple', CollectionType::class, [
                 'entry_type' => ShippingMultipleType::class,
                 'data' => $OrderItemsForFormBuilder,
                 'allow_add' => true,
                 'allow_delete' => true,
-            ));
+            ]);
         // Event
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
                 'Order' => $Order,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_MULTIPLE_INITIALIZE, $event);
@@ -160,15 +166,14 @@ class ShippingMultipleController extends AbstractShoppingController
         $form = $builder->getForm();
         $form->handleRequest($request);
 
-        $errors = array();
+        $errors = [];
         if ($form->isSubmitted() && $form->isValid()) {
-
-            log_info('複数配送設定処理開始', array($Order->getId()));
+            log_info('複数配送設定処理開始', [$Order->getId()]);
 
             $data = $form['shipping_multiple'];
 
             // フォームの入力から、送り先ごとに商品の数量を集計する
-            $arrOrderItemTemp = array();
+            $arrOrderItemTemp = [];
             foreach ($data as $mulitples) {
                 $OrderItem = $mulitples->getData();
                 foreach ($mulitples as $items) {
@@ -187,7 +192,7 @@ class ShippingMultipleController extends AbstractShoppingController
             }
 
             // フォームの入力から、商品ごとの数量を集計する
-            $itemQuantities = array();
+            $itemQuantities = [];
             foreach ($arrOrderItemTemp as $FormItemByAddress) {
                 foreach ($FormItemByAddress as $itemId => $quantity) {
                     if (array_key_exists($itemId, $itemQuantities)) {
@@ -203,16 +208,17 @@ class ShippingMultipleController extends AbstractShoppingController
             foreach ($ItemQuantitiesByClassId as $key => $value) {
                 if (array_key_exists($key, $itemQuantities)) {
                     if ($itemQuantities[$key] != $value) {
-                        $errors[] = array('message' => trans('shopping.multiple.quantity.diff'));
+                        $errors[] = ['message' => trans('shopping.multiple.quantity.diff')];
 
                         // 対象がなければエラー
-                        log_info('複数配送設定入力チェックエラー', array($Order->getId()));
-                        return $app->render('Shopping/shipping_multiple.twig', array(
+                        log_info('複数配送設定入力チェックエラー', [$Order->getId()]);
+
+                        return $app->render('Shopping/shipping_multiple.twig', [
                             'form' => $form->createView(),
                             'OrderItems' => $OrderItemsForFormBuilder,
                             'compItemQuantities' => $ItemQuantitiesByClassId,
                             'errors' => $errors,
-                        ));
+                        ]);
                     }
                 }
             }
@@ -225,7 +231,7 @@ class ShippingMultipleController extends AbstractShoppingController
             }
 
             // お届け先のリストを作成する
-            $ShippingList = array();
+            $ShippingList = [];
             foreach ($data as $mulitples) {
                 $OrderItem = $mulitples->getData();
                 $ProductClass = $OrderItem->getProductClass();
@@ -327,29 +333,32 @@ class ShippingMultipleController extends AbstractShoppingController
             $this->entityManager->flush();
 
             $event = new EventArgs(
-                array(
+                [
                     'form' => $form,
                     'Order' => $Order,
-                ),
+                ],
                 $request
             );
             $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_MULTIPLE_COMPLETE, $event);
 
-            log_info('複数配送設定処理完了', array($Order->getId()));
+            log_info('複数配送設定処理完了', [$Order->getId()]);
+
             return $app->redirect($app->url('shopping'));
         }
 
-        return $app->render('Shopping/shipping_multiple.twig', array(
+        return $app->render('Shopping/shipping_multiple.twig', [
             'form' => $form->createView(),
             'OrderItems' => $OrderItemsForFormBuilder,
             'compItemQuantities' => $ItemQuantitiesByClassId,
             'errors' => $errors,
-        ));
+        ]);
     }
 
     /**
      * フォームの情報からお届け先のインデックスを返す
+     *
      * @param mixed $CustomerAddressData
+     *
      * @return int
      */
     private function getCustomerAddressId($CustomerAddressData)
@@ -366,6 +375,7 @@ class ShippingMultipleController extends AbstractShoppingController
      *
      * @param Application $app
      * @param mixed $CustomerAddressData
+     *
      * @return CustomerAddress
      */
     private function getCustomerAddress(Application $app, $CustomerAddressData)

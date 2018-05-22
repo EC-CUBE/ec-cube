@@ -57,6 +57,62 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 });
             }
 
+            $('#bulkDelete').on('click', function() {
+
+                var modal = $('#bulkDeleteModal');
+
+                // 削除中のUI変更処理
+                modal.find('button').attr('disabled', 'disabled');
+                $('.modal-body p', modal).text("{{ 'admin.product.index.496'|trans }}");
+                $('.progress', modal).show();
+
+                var checkedList = $('input[type=checkbox][data-delete-url]:checked');
+                var totalCount = checkedList.length;
+                var currentCount = 0;
+
+                var promises = checkedList.map(function() {
+                    return $.ajax({
+                        'url': $(this).data('delete-url'),
+                        'type': 'delete',
+                        'data': { '_token': $(this).attr('token-for-anchor') }
+                    }).always(function() {
+                        $('.progress-bar', modal).css('width', (++currentCount / totalCount * 100) + '%');
+                    });
+                });
+
+                var addError = function(errorMessage) {
+                    $('<li><span class="badge badge-danger">ERROR</span> </li>')
+                        .append($('<span></span>').text(errorMessage))
+                        .appendTo('#bulkErrors');
+                };
+
+                $.when.apply($, promises)
+                    .done(function() {
+                        // 削除できなかった場合はエラーメッセージを表示
+                        var args = promises.length === 1 ? [arguments[0]] : [].slice.call(arguments).map(function(result) {
+                            return result[0];
+                        });
+                        args.filter(function(result) {
+                            return result.success === false;
+                        }).forEach(function(result) {
+                            addError(result.message);
+                        });
+                    })
+                    .fail(function() {
+                        // システムエラー
+                        addError("{{ 'application.text.error.system'|trans }}");
+                    })
+                    .always(function() {
+                        $('.progress', modal).hide();
+                        $('.modal-body p', modal).text("{{ 'admin.product.index.498'|trans }}");
+                        modal.find('button').removeAttr('disabled').toggle();
+                    })
+            });
+
+            $('#bulkDeleteDone').on('click', function() {
+                location.reload(true);
+            });
+
             // フォーム値を確認し、アコーディオンを制御
             // 値あり : 開く / 値なし : 閉じる
             (function ($, f) {
@@ -110,6 +166,38 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 form.attr('action', $(this).data('action')).submit();
                 return false;
             });
+
+            var dataClass = [];
+            var modalClass = $('#productClassesModal');
+            $('form#form_bulk').on('click', 'table.table button[data-class-url]', function () {
+                var btnClass = $(this);
+                btnClass.attr('disabled', true);
+                var productId = btnClass.data('product-id');
+
+                if (dataClass[productId] != undefined) {
+                    renderClass(dataClass[productId], btnClass);
+                    return;
+                }
+
+                $.ajax({
+                    url: btnClass.data('class-load'),
+                    type: 'GET',
+                }).done(function (data) {
+                    dataClass[productId] = data;
+                    renderClass(dataClass[productId], btnClass);
+                }).fail(function () {
+                    alert('Failed');
+                });
+            });
+
+            // Append html and show popup
+            function renderClass(data, btnClass) {
+                $('div.modal-body', modalClass).html(data);
+                $('h5.modal-title', modalClass).html(btnClass.data('message'));
+                $('a.btn-ec-conversion', modalClass).attr('href', btnClass.data('class-url'));
+                modalClass.modal('show');
+                btnClass.attr('disabled', false);
+            }
         });
     </script>
 {% endblock javascript %}
@@ -125,6 +213,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="mb-2">
                             <label class="col-form-label">{{ 'admin.product.index.470'|trans }}</label>
                             {{ form_widget(searchForm.id) }}
+                            {{ form_errors(searchForm.id) }}
                         </div>
                         <div class="d-inline-block mb-3" data-toggle="collapse" href="#searchDetail"
                              aria-expanded="false" aria-controls="searchDetail"><a><i
@@ -134,19 +223,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     </div>
                 </div>
             </div>
-            <div class="c-subContents collapse ec-collapse" id="searchDetail">
+            <div class="c-subContents collapse ec-collapse{{ has_errors ? ' show' }}" id="searchDetail">
                 <div class="row mb-2">
                     <div class="col-6">
                         <div class="form-row mb-2">
                             <div class="col-6">
                                 <label class="col-form-label">{{ 'admin.product.index.471'|trans }}</label>
                                 {{ form_widget(searchForm.category_id) }}
+                                {{ form_errors(searchForm.category_id) }}
                             </div>
                         </div>
                         <div class="form-row mb-2">
                             <div class="col-12">
                                 <p class="col-form-label">{{ 'admin.product.index.filter'|trans }}</p>
                                 {{ form_widget(searchForm.status, {'label_attr': {'class': 'checkbox-inline'}}) }}
+                                {{ form_errors(searchForm.status, {'label_attr': {'class': 'checkbox-inline'}}) }}
                             </div>
                         </div>
                         <div class="form-row mb-2">
@@ -167,11 +258,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <div class="col">
                                     {# TODO: カレンダー表示の調整 #}
                                     {{ form_widget(searchForm.create_date_start) }}
+                                    {{ form_errors(searchForm.create_date_start) }}
                                 </div>
                                 <div class="col-auto text-center"><span>{{ 'admin.product.index.474'|trans }}</span>
                                 </div>
                                 <div class="col">
                                     {{ form_widget(searchForm.create_date_end) }}
+                                    {{ form_errors(searchForm.create_date_end) }}
                                 </div>
                             </div>
                         </div>
@@ -181,10 +274,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <div class="col">
                                     {# TODO: カレンダー表示の調整 #}
                                     {{ form_widget(searchForm.update_date_start) }}
+                                    {{ form_errors(searchForm.update_date_start) }}
                                 </div>
                                 <div class="col-auto"><span>{{ 'admin.product.index.474'|trans }}</span></div>
                                 <div class="col">
                                     {{ form_widget(searchForm.update_date_end) }}
+                                    {{ form_errors(searchForm.update_date_end) }}
                                 </div>
                             </div>
                         </div>
@@ -201,14 +296,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <span class="font-weight-bold ml-2">{{'admin.product.index.479'|trans({"%count%":pagination.totalItemCount})|raw}}</span>
                 {% endif %}
             </div>
+            <div class="c-outsideBlock__contents mb-5">
+                {{ include('@admin/search_items.twig', { 'form': searchForm }, ignore_missing = true) }}
+            </div>
         </form>
     </div>
     <div class="c-contentsArea__cols">
         <div class="c-contentsArea__primaryCol">
             <div class="c-primaryCol">
-                {# TODO 「商品が全く登録されていない場合の条件に変更 #}
-                {% if pagination %}
-                    {% if pagination|length > 0 %}
+                {% if pagination and pagination.totalItemCount %}
                         <form id="form_bulk" method="POST" action="">
                             <div class="row justify-content-between mb-2">
                                 <div class="col-6">
@@ -225,8 +321,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <button {{ csrf_token_for_anchor() }} data-action="{{ url('admin_product_bulk_product_status', {id: constant('Eccube\\Entity\\Master\\ProductStatus::DISPLAY_ABOLISHED')}) }}" class="btn btn-ec-regular mr-2 action-submit">
                                             {{ 'admin.product.index.abolition'|trans }}
                                         </button>
-                                        {# TODO: this button is not implemented yet #}
-                                        <button class="btn btn-ec-delete">{{ 'admin.product.index.permanently_delete'|trans }}</button>
+                                        <button type="button" data-toggle="modal" data-target="#bulkDeleteModal" class="btn btn-ec-delete">{{ 'admin.product.index.permanently_delete'|trans }}</button>
                                     </div>
                                 </div>
                                 <div class="col-5 text-right">
@@ -280,7 +375,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         {% for Product in pagination %}
                                             <tr>
                                                 <td class="align-middle pl-3">
-                                                    <input type="checkbox" name="ids[]" value="{{ Product.id }}" id="check_{{ Product.id }}">
+                                                    <input type="checkbox" name="ids[]" value="{{ Product.id }}" id="check_{{ Product.id }}" data-delete-url="{{ url('admin_product_product_delete', { id: Product.id }) }}">
                                                 </td>
                                                 <td class="align-middle">{{ Product.id }}</td>
                                                 {# TODO: 画像のサイズをベタ指定しているので、styleguide側を直す #}
@@ -305,62 +400,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 </td>
                                                 <td class="align-middle">
                                                     {% if Product.hasProductClass %}
-                                                        <button class="btn page-link text-dark d-inline-block" type="button"
-                                                                data-toggle="modal" data-target="#standardConfirm_{{ Product.id }}">{{ 'admin.product.index.standard_confirm'|trans }}
+                                                        <button type="button" class="btn page-link text-dark d-inline-block"
+                                                                data-product-id="{{ Product.id }}"
+                                                                data-message="{{ 'admin.product.index.standard.modal.header'|trans({'%name%': Product.name}) }}"
+                                                                data-class-load="{{ url('admin_product_classes_load', { 'id' : Product.id }) }}"
+                                                                data-class-url="{{ url('admin_product_product_class', { 'id' : Product.id }) }}">
+                                                            {{ 'admin.product.index.standard_confirm'|trans }}
                                                         </button>
-                                                        <div class="modal fade" id="standardConfirm_{{ Product.id }}" tabindex="-1"
-                                                             role="dialog"
-                                                             aria-labelledby="standardConfirm-{{ Product.id }}" aria-hidden="true"
-                                                             style="display: none;">
-                                                            <div class="modal-dialog" role="document">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title">{{ 'admin.product.index.standard.modal.header'|trans({'%name%': Product.name}) }}</h5>
-                                                                        <button class="close" type="button"
-                                                                                data-dismiss="modal"
-                                                                                aria-label="Close"><span aria-hidden="true">×</span>
-                                                                        </button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <table class="table table-striped">
-                                                                            <thead class="table-active">
-                                                                            <tr>
-                                                                                <th class="pt-2 pb-2 pl-2">{{ 'admin.product.index.standart.modal.col1'|trans }}</th>
-                                                                                <th class="pt-2 pb-2">{{ 'admin.product.index.standart.modal.col2'|trans }}</th>
-                                                                                <th class="pt-2 pb-2">{{ 'admin.product.index.standart.modal.col3'|trans }}</th>
-                                                                                <th class="pt-2 pb-2">{{ 'admin.product.index.standart.modal.col4'|trans }}</th>
-                                                                                <th class="pt-2 pb-2 pr-2">{{ 'admin.product.index.standart.modal.col5'|trans }}</th>
-                                                                            </tr>
-                                                                            </thead>
-                                                                            <tbody>
-                                                                            {% for Class in Product.ProductClasses %}
-                                                                                {% if Class.visible == 1 %}
-                                                                                    <tr>
-                                                                                        <td class="pl-3">{% if Class.hasClassCategory1 %}{{ Class.ClassCategory1.name }}{% endif %}</td>
-                                                                                        <td>{% if Class.hasClassCategory2 %}{{ Class.ClassCategory2.name }}{% endif %}</td>
-                                                                                        <td>{{ Class.code }}</td>
-                                                                                        <td>{% if Class.stock_unlimited %}{{ 'admin.product.index.standart.modal.unlimited'|trans }}{% else %}{{ Class.stock }}{% endif %}</td>
-                                                                                        <td class="pr-3">{{ Class.price02|price }}</td>
-                                                                                    </tr>
-                                                                                {% endif %}
-                                                                            {% endfor %}
-                                                                            </tbody>
-                                                                        </table>
-
-                                                                    <div class="modal-footer">
-                                                                    <button class="btn btn-v-sub" type="button"
-                                                                                data-dismiss="modal">
-                                                                            {{ 'admin.product.index.back'|trans }}
-                                                                        </button>
-                                                                        <a class="btn btn-ec-conversion"
-                                                                           href="{{ url('admin_product_product_class', { 'id' : Product.id }) }}">
-                                                                            {{ 'admin.product.index.standard_edit'|trans }}
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
                                                     {% else %}
                                                         {# 規格なし商品 は在庫数を表示 #}
                                                         {% if Product.stockunlimited_min %}
@@ -448,28 +494,72 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 </div>
                             </div>
                         </form>
-                    {% else %}
+                {% elseif has_errors %}
                         <div class="card rounded border-0">
                             <div class="card-body p-4">
-                                <div class="text-center text-muted mb-4 h5">{{ 'admin.product.index.text05'|trans }}</div>
+                                <div class="text-center text-muted mb-4 h5">{{ 'admin.product.index.invalid_search_data'|trans }}</div>
                                 <div class="text-center text-muted">{{ 'admin.product.index.text06'|trans }}</div>
-                                <div class="text-center text-muted">{{ 'admin.product.index.text07'|trans }}</div>
                             </div>
                         </div>
-                    {% endif %}
                 {% else %}
                     <div class="card rounded border-0">
                         <div class="card-body p-4">
-                            <div class="text-center text-muted mb-2 h5">{{ 'admin.product.index.text08'|trans }}</div>
-                            <div class="text-center mb-4"><a class="btn btn-ec-regular pl-4 pr-4"
-                                                             href="{{ url('admin_product_product_new') }}">{{ 'admin.product.index.text09'|trans }}</a>
-                            </div>
-                            <div class="text-center text-muted">{{ 'admin.product.index.text10'|trans }}</div>
+                            <div class="text-center text-muted mb-4 h5">{{ 'admin.product.index.text05'|trans }}</div>
+                            <div class="text-center text-muted">{{ 'admin.product.index.text06'|trans }}</div>
+                            <div class="text-center text-muted">{{ 'admin.product.index.text07'|trans }}</div>
                         </div>
                     </div>
                 {% endif %}
             </div>
+
+            <div class="modal fade" id="bulkDeleteModal" tabindex="-1" role="dialog" aria-labelledby="discontinuance" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title font-weight-bold">{{ 'admin.product.index.495'|trans }}</h5>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        </div>
+                        <div class="modal-body text-left">
+                            <p class="text-left">{{ 'admin.product.index.491'|trans }}</p>
+                            <ul id="bulkErrors"></ul>
+                            <div class="progress" style="display: none">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.product.index.cancel'|trans }}</button>
+                            <button class="btn btn-ec-delete" type="button" id="bulkDelete">{{ 'admin.product.index.permanently_delete' | trans }}</button>
+                            <button class="btn btn-ec-regular" id="bulkDeleteDone" style="display: none" type="button" data-dismiss="modal">{{ 'admin.product.index.497'|trans }}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
+
+    <div class="modal fade" id="productClassesModal" tabindex="-1" role="dialog" aria-labelledby="productClassesModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-bold">{# Title #}</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {# Append data list #}
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-v-sub" type="button" data-dismiss="modal">
+                        {{ 'admin.product.index.back'|trans }}
+                    </button>
+                    <a class="btn btn-ec-conversion"
+                       href="#">
+                        {{ 'admin.product.index.standard_edit'|trans }}
+                    </a>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /#productClassesModal -->
 {% endblock %}
 

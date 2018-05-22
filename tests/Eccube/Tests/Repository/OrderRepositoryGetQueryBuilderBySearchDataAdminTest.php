@@ -18,26 +18,27 @@ use Eccube\Tests\EccubeTestCase;
  */
 class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
 {
-    /** @var  Customer */
+    /** @var Customer */
     protected $Customer;
-    /** @var  Order */
+    /** @var Order */
     protected $Order;
-    /** @var  Order */
+    /** @var Order */
     protected $Order1;
-    /** @var  Order */
+    /** @var Order */
     protected $Order2;
-    /** @var  ArrayCollection */
+    /** @var ArrayCollection */
     protected $Results;
-    /** @var  ArrayCollection */
+    /** @var ArrayCollection */
     protected $searchData;
-    /** @var  OrderStatusRepository */
+    /** @var OrderStatusRepository */
     protected $orderStatusRepo;
-    /** @var  OrderRepository */
+    /** @var OrderRepository */
     protected $orderRepo;
-    /** @var  SexRepository */
+    /** @var SexRepository */
     protected $sexRepo;
 
-    public function setUp() {
+    public function setUp()
+    {
         parent::setUp();
         $this->createProduct();
         $this->orderStatusRepo = $this->container->get(OrderStatusRepository::class);
@@ -70,15 +71,14 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
 
     public function testOrderIdStart()
     {
-        $this->searchData = array(
-            'order_id_start' => $this->Order->getId()
-        );
+        $this->searchData = [
+            'order_id_start' => $this->Order->getId(),
+        ];
         $this->scenario();
 
         $this->expected = 2;
         $this->actual = count($this->Results);
         $this->verify();
-
     }
 
     public function testMultiWithName()
@@ -88,9 +88,9 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
             ->setName02('隊長');
         $this->entityManager->flush();
 
-        $this->searchData = array(
-            'multi' => '立方'
-        );
+        $this->searchData = [
+            'multi' => '立方',
+        ];
         $this->scenario();
 
         $this->expected = 1;
@@ -105,9 +105,9 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
             ->setKana02('タイチョウ');
         $this->entityManager->flush();
 
-        $this->searchData = array(
-            'multi' => 'タイチョウ'
-        );
+        $this->searchData = [
+            'multi' => 'タイチョウ',
+        ];
         $this->scenario();
 
         $this->expected = 1;
@@ -119,9 +119,9 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
     {
         $this->entityManager->flush();
 
-        $this->searchData = array(
-            'multi' => $this->Order2->getId()
-        );
+        $this->searchData = [
+            'multi' => $this->Order2->getId(),
+        ];
         $this->scenario();
 
         $this->expected = 1;
@@ -131,9 +131,9 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
 
     public function testOrderIdEnd()
     {
-        $this->searchData = array(
-            'order_id_end' => $this->Order->getId()
-        );
+        $this->searchData = [
+            'order_id_end' => $this->Order->getId(),
+        ];
         $this->scenario();
 
         // $this->Order は購入処理中なので 0 件になる
@@ -149,9 +149,11 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
         $this->Order2->setOrderStatus($NewStatus);
         $this->entityManager->flush();
 
-        $this->searchData = array(
-            'status' => OrderStatus::NEW
-        );
+        $this->searchData = [
+            'status' => [
+                OrderStatus::NEW,
+            ],
+        ];
         $this->scenario();
 
         $this->expected = 2;
@@ -165,14 +167,14 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
         $this->Order2->setOrderStatus($this->orderStatusRepo->find(OrderStatus::CANCEL));
         $this->entityManager->flush();
 
-        $Statuses = new ArrayCollection(array(
+        $Statuses = new ArrayCollection([
             OrderStatus::NEW,
             OrderStatus::CANCEL,
             OrderStatus::PENDING,
-        ));
-        $this->searchData = array(
+        ]);
+        $this->searchData = [
             'multi_status' => $Statuses,
-        );
+        ];
         $this->scenario();
 
         $this->expected = 2;
@@ -187,9 +189,9 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
             ->setName02('隊長');
         $this->entityManager->flush();
 
-        $this->searchData = array(
-            'name' => '立方隊長'
-        );
+        $this->searchData = [
+            'name' => '立方隊長',
+        ];
         $this->scenario();
 
         $this->expected = 1;
@@ -204,9 +206,9 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
             ->setKana02('メイ'); // XXX いずれかが NULL だと無視されてしまう
         $this->entityManager->flush();
 
-        $this->searchData = array(
-            'kana' => 'メ'
-        );
+        $this->searchData = [
+            'kana' => 'メ',
+        ];
         $this->scenario();
 
         $this->expected = 1;
@@ -216,9 +218,9 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
 
     public function testEmail()
     {
-        $this->searchData = array(
-            'email' => 'test@example.com'
-        );
+        $this->searchData = [
+            'email' => 'test@example.com',
+        ];
         $this->scenario();
 
         $this->expected = 1;
@@ -245,9 +247,9 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
             ->setTel03('8888');
         $this->entityManager->flush();
 
-        $this->searchData = array(
-            'tel' => '999'
-        );
+        $this->searchData = [
+            'tel' => '999',
+        ];
         $this->scenario();
 
         $this->expected = 1;
@@ -260,9 +262,9 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
         $this->Customer->setBirth(new \DateTime('2006-09-01'));
         $this->entityManager->flush();
 
-        $this->searchData = array(
-            'birth_start' => new \DateTime('2006-09-01')
-        );
+        $this->searchData = [
+            'birth_start' => new \DateTime('2006-09-01'),
+        ];
         $this->scenario();
 
         $this->expected = 2;
@@ -275,9 +277,9 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
         $this->Customer->setBirth(new \DateTime('2006-09-01'));
         $this->entityManager->flush();
 
-        $this->searchData = array(
-            'birth_end' => new \DateTime('2006-09-01')
-        );
+        $this->searchData = [
+            'birth_end' => new \DateTime('2006-09-01'),
+        ];
         $this->scenario();
 
         $this->expected = 2;
@@ -293,10 +295,10 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
         $this->Order2->setSex(null);
         $this->entityManager->flush();
 
-        $Sexs = new ArrayCollection(array($Male, $Female));
-        $this->searchData = array(
-            'sex' => $Sexs
-        );
+        $Sexs = new ArrayCollection([$Male, $Female]);
+        $this->searchData = [
+            'sex' => $Sexs,
+        ];
         $this->scenario();
 
         $this->expected = 1;
@@ -306,9 +308,9 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
 
     public function testOrderDateStart()
     {
-        $this->searchData = array(
-            'order_date_start' => new \DateTime('- 1 days')
-        );
+        $this->searchData = [
+            'order_date_start' => new \DateTime('- 1 days'),
+        ];
 
         $this->scenario();
 
@@ -319,9 +321,9 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
 
     public function testOrderDateEnd()
     {
-        $this->searchData = array(
-            'order_date_end' => new \DateTime('+ 1 days')
-        );
+        $this->searchData = [
+            'order_date_end' => new \DateTime('+ 1 days'),
+        ];
 
         $this->scenario();
 
@@ -332,9 +334,9 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
 
     public function testUpdateDateStart()
     {
-        $this->searchData = array(
-            'update_date_start' => new \DateTime('- 1 days')
-        );
+        $this->searchData = [
+            'update_date_start' => new \DateTime('- 1 days'),
+        ];
 
         $this->scenario();
 
@@ -345,9 +347,9 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
 
     public function testUpdateDateEnd()
     {
-        $this->searchData = array(
-            'update_date_end' => new \DateTime('+ 1 days')
-        );
+        $this->searchData = [
+            'update_date_end' => new \DateTime('+ 1 days'),
+        ];
 
         $this->scenario();
 
@@ -361,9 +363,9 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
         $Status = $this->orderStatusRepo->find(6);
         $this->orderRepo->changeStatus($this->Order2->getId(), $Status);
 
-        $this->searchData = array(
-            'payment_date_start' => new \DateTime('- 1 days')
-        );
+        $this->searchData = [
+            'payment_date_start' => new \DateTime('- 1 days'),
+        ];
 
         $this->scenario();
 
@@ -376,9 +378,9 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
     {
         $Status = $this->orderStatusRepo->find(6);
         $this->orderRepo->changeStatus($this->Order2->getId(), $Status);
-        $this->searchData = array(
-            'payment_date_end' => new \DateTime('+ 1 days')
-        );
+        $this->searchData = [
+            'payment_date_end' => new \DateTime('+ 1 days'),
+        ];
 
         $this->scenario();
 
@@ -392,9 +394,9 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
         $Status = $this->orderStatusRepo->find(5);
         $this->orderRepo->changeStatus($this->Order2->getId(), $Status);
 
-        $this->searchData = array(
-            'shipping_date_start' => new \DateTime('- 1 days')
-        );
+        $this->searchData = [
+            'shipping_date_start' => new \DateTime('- 1 days'),
+        ];
 
         $this->scenario();
 
@@ -407,9 +409,9 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
     {
         $Status = $this->orderStatusRepo->find(5);
         $this->orderRepo->changeStatus($this->Order2->getId(), $Status);
-        $this->searchData = array(
-            'shipping_date_end' => new \DateTime('+ 1 days')
-        );
+        $this->searchData = [
+            'shipping_date_end' => new \DateTime('+ 1 days'),
+        ];
 
         $this->scenario();
 
@@ -426,9 +428,9 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
         $this->entityManager->flush();
 
         // XXX 0 が無視されてしまう
-        $this->searchData = array(
-            'payment_total_start' => 100
-        );
+        $this->searchData = [
+            'payment_total_start' => 100,
+        ];
 
         $this->scenario();
 
@@ -444,9 +446,9 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
         $this->Order2->setPaymentTotal(101);
         $this->entityManager->flush();
 
-        $this->searchData = array(
-            'payment_total_end' => 100
-        );
+        $this->searchData = [
+            'payment_total_end' => 100,
+        ];
 
         $this->scenario();
 
@@ -465,9 +467,9 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
         }
         $this->entityManager->flush();
 
-        $this->searchData = array(
-            'buy_product_name' => 'アイス'
-        );
+        $this->searchData = [
+            'buy_product_name' => 'アイス',
+        ];
 
         $this->scenario();
 

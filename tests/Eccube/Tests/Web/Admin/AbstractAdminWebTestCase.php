@@ -21,12 +21,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Web\Admin;
 
 use Eccube\Tests\Web\AbstractWebTestCase;
-use Symfony\Component\BrowserKit\Cookie;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 abstract class AbstractAdminWebTestCase extends AbstractWebTestCase
 {
@@ -46,6 +43,7 @@ abstract class AbstractAdminWebTestCase extends AbstractWebTestCase
         }
 
         $this->loginTo($user);
+
         return $user;
     }
 }

@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
 use Eccube\Entity\Payment;
@@ -71,9 +70,9 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
 
         $crawler = $this->client->request('POST',
             $this->generateUrl('admin_setting_shop_payment_new'),
-            array(
-                'payment_register' => $formData
-            )
+            [
+                'payment_register' => $formData,
+            ]
         );
 
         $this->expected = $expected;
@@ -84,7 +83,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
     public function testRoutingEdit()
     {
         $Payment = $this->paymentRepository->find(1);
-        $this->client->request('GET', $this->generateUrl('admin_setting_shop_payment_edit', array('id' => $Payment->getId())));
+        $this->client->request('GET', $this->generateUrl('admin_setting_shop_payment_edit', ['id' => $Payment->getId()]));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -103,10 +102,10 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
         $Payment = $this->paymentRepository->find(1);
 
         $this->client->request('POST',
-            $this->generateUrl('admin_setting_shop_payment_edit', array('id' => $Payment->getId())),
-            array(
-                'payment_register' => $formData
-            )
+            $this->generateUrl('admin_setting_shop_payment_edit', ['id' => $Payment->getId()]),
+            [
+                'payment_register' => $formData,
+            ]
         );
         $this->expected = $expected;
         $this->actual = $this->client->getResponse()->isRedirection();
@@ -115,7 +114,6 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
 
     public function testDeleteSuccess()
     {
-
         $Member = $this->createMember();
         $Payment = new Payment();
         $Payment->setMethod('testDeleteSuccess')
@@ -130,7 +128,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
 
         $pid = $Payment->getId();
         $this->client->request('DELETE',
-            $this->generateUrl('admin_setting_shop_payment_delete', array('id' => $pid))
+            $this->generateUrl('admin_setting_shop_payment_delete', ['id' => $pid])
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirection());
@@ -144,10 +142,9 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
         $pid = 9999;
         $this->client->request(
             'DELETE',
-            $this->generateUrl('admin_setting_shop_payment_delete', array('id' => $pid))
+            $this->generateUrl('admin_setting_shop_payment_delete', ['id' => $pid])
         );
         $this->assertSame(404, $this->client->getResponse()->getStatusCode());
-
     }
 
     public function testUp()
@@ -156,7 +153,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
         $Payment = $this->paymentRepository->find($pid);
         $before = $Payment->getSortNo();
         $this->client->request('PUT',
-            $this->generateUrl('admin_setting_shop_payment_up', array('id' => $pid))
+            $this->generateUrl('admin_setting_shop_payment_up', ['id' => $pid])
         );
         $this->assertTrue($this->client->getResponse()->isRedirection());
 
@@ -172,7 +169,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
         $Payment = $this->paymentRepository->find($pid);
         $before = $Payment->getSortNo();
         $this->client->request('PUT',
-            $this->generateUrl('admin_setting_shop_payment_down', array('id' => $pid))
+            $this->generateUrl('admin_setting_shop_payment_down', ['id' => $pid])
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirection());
@@ -189,13 +186,13 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
 
         $this->client->request('POST',
             $this->generateUrl('admin_payment_image_add'),
-            array(
-                'payment_register' => $formData
-            ),
-            array(),
-            array(
+            [
+                'payment_register' => $formData,
+            ],
+            [],
+            [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
-            )
+            ]
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
@@ -206,14 +203,13 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
 
         $this->client->request('POST',
             $this->generateUrl('admin_payment_image_add'),
-            array(
-                'payment_register' => $formData
-            ),
-            array()
+            [
+                'payment_register' => $formData,
+            ],
+            []
         );
         $this->assertSame(400, $this->client->getResponse()->getStatusCode());
     }
-
 
     //    public function testAddImage_MineNotSupported()
     //    {
@@ -258,7 +254,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
             $this->generateUrl('admin_setting_shop_payment_sort_no_move'),
             $this->expected,
             [],
-            ['HTTP_X-Requested-With' => 'XMLHttpRequest',]
+            ['HTTP_X-Requested-With' => 'XMLHttpRequest']
         );
 
         $Payments = $this->paymentRepository->findBy([], ['sort_no' => 'DESC']);
@@ -284,7 +280,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
             $rule_max = number_format($rule_max);
         }
 
-        $form = array(
+        $form = [
             '_token' => 'dummy',
             'method' => 'Test',
             'charge' => $charge,
@@ -293,18 +289,19 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
             'payment_image' => 'abc.png',
             'payment_image_file' => 'abc.png',
             'fixed' => true,
-        );
+        ];
 
         return $form;
     }
 
     public function dataSubmitProvider()
     {
-        return array(
-            array(false, false),
-            array(true, true),
+        return [
+            [false, false],
+            [true, true],
             // To do implement
-        );
+        ];
     }
+
     //    TO DO : implement
 }

@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type\Admin;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -45,18 +44,18 @@ class AuthorityRoleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('Authority', EntityType::class, array(
+            ->add('Authority', EntityType::class, [
                 'label' => 'authorityrole.label.auth',
                 'class' => 'Eccube\Entity\Master\Authority',
                 'expanded' => false,
                 'multiple' => false,
                 'required' => false,
                 'placeholder' => 'form.empty_value',
-            ))
-            ->add('deny_url', TextType::class, array(
+            ])
+            ->add('deny_url', TextType::class, [
                 'label' => 'authorityrole.label.denied_url',
                 'required' => false,
-            ))
+            ])
             ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
                 $form = $event->getForm();
 
@@ -65,7 +64,7 @@ class AuthorityRoleType extends AbstractType
 
                 if (!$Authority && !empty($denyUrl)) {
                     $form['Authority']->addError(new FormError('権限が選択されていません。'));
-                } else if ($Authority && empty($denyUrl)) {
+                } elseif ($Authority && empty($denyUrl)) {
                     $form['deny_url']->addError(new FormError('拒否URLが入力されていません。'));
                 }
             })
@@ -77,9 +76,9 @@ class AuthorityRoleType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'Eccube\Entity\AuthorityRole',
-        ));
+        ]);
     }
 
     /**

@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -69,6 +68,7 @@ class CustomerRepository extends AbstractRepository
 
     /**
      * CustomerRepository constructor.
+     *
      * @param RegistryInterface $registry
      * @param Queries $queries
      * @param EntityManagerInterface $entityManager
@@ -92,7 +92,6 @@ class CustomerRepository extends AbstractRepository
         $this->encoderFactory = $encoderFactory;
         $this->eccubeConfig = $eccubeConfig;
     }
-
 
     public function newCustomer()
     {
@@ -132,7 +131,7 @@ class CustomerRepository extends AbstractRepository
 
         // sex
         if (!empty($searchData['sex']) && count($searchData['sex']) > 0) {
-            $sexs = array();
+            $sexs = [];
             foreach ($searchData['sex'] as $sex) {
                 $sexs[] = $sex->getId();
             }
@@ -243,13 +242,13 @@ class CustomerRepository extends AbstractRepository
                 ->setParameter('statuses', $searchData['customer_status']);
         }
 
-        // buy_product_name、buy_product_code
-        if (isset($searchData['buy_product_code']) && StringUtil::isNotBlank($searchData['buy_product_code'])) {
+        // buy_product_name
+        if (isset($searchData['buy_product_name']) && StringUtil::isNotBlank($searchData['buy_product_name'])) {
             $qb
                 ->leftJoin('c.Orders', 'o')
                 ->leftJoin('o.OrderItems', 'oi')
-                ->andWhere('oi.product_name LIKE :buy_product_name OR oi.product_code LIKE :buy_product_name')
-                ->setParameter('buy_product_name', '%'.$searchData['buy_product_code'].'%');
+                ->andWhere('oi.product_name LIKE :buy_product_name')
+                ->setParameter('buy_product_name', '%'.$searchData['buy_product_name'].'%');
         }
 
         // Order By
@@ -292,6 +291,7 @@ class CustomerRepository extends AbstractRepository
      * 仮会員をシークレットキーで検索する.
      *
      * @param $secretKey
+     *
      * @return null|Customer 見つからない場合はnullを返す.
      */
     public function getProvisionalCustomerBySecretKey($secretKey)
@@ -306,6 +306,7 @@ class CustomerRepository extends AbstractRepository
      * 本会員をemailで検索する.
      *
      * @param $email
+     *
      * @return null|Customer 見つからない場合はnullを返す.
      */
     public function getRegularCustomerByEmail($email)
@@ -320,6 +321,7 @@ class CustomerRepository extends AbstractRepository
      * 本会員をリセットキーで検索する.
      *
      * @param $resetKey
+     *
      * @return null|Customer 見つからない場合はnullを返す.
      */
     public function getRegularCustomerByResetKey($resetKey)
@@ -356,13 +358,13 @@ class CustomerRepository extends AbstractRepository
     {
         // 会員の場合、初回購入時間・購入時間・購入回数・購入金額を更新
 
-        $arr = array(
+        $arr = [
             OrderStatus::NEW,
             OrderStatus::PAY_WAIT,
             OrderStatus::BACK_ORDER,
             OrderStatus::DELIVERED,
             OrderStatus::PAID,
-        );
+        ];
 
         $result = $this->orderRepository->getCustomerCount($Customer, $arr);
 
@@ -387,7 +389,6 @@ class CustomerRepository extends AbstractRepository
 
             $Customer->setBuyTimes($data['buy_times']);
             $Customer->setBuyTotal($data['buy_total']);
-
         } else {
             // 受注データが存在しなければ初期化
             $Customer->setFirstBuyDate(null);
@@ -405,6 +406,7 @@ class CustomerRepository extends AbstractRepository
      * Eccube\Entity\CustomerのUniqueEntityバリデーションで使用しています.
      *
      * @param array $criteria
+     *
      * @return Customer[]
      */
     public function getNonWithdrawingCustomers(array $criteria = [])

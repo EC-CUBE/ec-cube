@@ -23,12 +23,11 @@
 
 namespace Eccube\Repository;
 
-
 final class QueryKey
 {
     const PRODUCT_SEARCH = 'Product.getQueryBuilderBySearchData';
     const PRODUCT_SEARCH_ADMIN = 'Product.getQueryBuilderBySearchDataForAdmin';
-    const PRODUCT_GET_FAVORITE  = 'Product.getFavoriteProductQueryBuilderByCustomer';
+    const PRODUCT_GET_FAVORITE = 'Product.getFavoriteProductQueryBuilderByCustomer';
 
     const CUSTOMER_SEARCH = 'Customer.getQueryBuilderBySearchData';
 

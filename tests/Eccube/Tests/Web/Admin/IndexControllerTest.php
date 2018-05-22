@@ -20,6 +20,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
 namespace Eccube\Tests\Web\Admin;
 
 use Eccube\Entity\Master\OrderStatus;
@@ -29,7 +30,7 @@ use Eccube\Repository\OrderRepository;
 
 class IndexControllerTest extends AbstractAdminWebTestCase
 {
-    /** @var  Member */
+    /** @var Member */
     protected $Member;
 
     /** @var OrderStatusRepository */
@@ -59,7 +60,7 @@ class IndexControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
-     * @link https://github.com/EC-CUBE/ec-cube/issues/1143
+     * @see https://github.com/EC-CUBE/ec-cube/issues/1143
      */
     public function testIndexWithSales()
     {
@@ -90,8 +91,8 @@ class IndexControllerTest extends AbstractAdminWebTestCase
         }
 
         // excludes
-        foreach (array($OrderCancel, $OrderPending, $OrderProcessing) as $OrderStatus) {
-            foreach (array($Today, $Yesterday) as $OrderDate) {
+        foreach ([$OrderCancel, $OrderPending, $OrderProcessing] as $OrderStatus) {
+            foreach ([$Today, $Yesterday] as $OrderDate) {
                 $Order = $this->createOrder($Customer);
                 $Order->setOrderStatus($OrderStatus);
                 $Order->setOrderDate($OrderDate);
@@ -178,7 +179,7 @@ class IndexControllerTest extends AbstractAdminWebTestCase
         $client->request(
             'POST',
             $this->generateUrl('admin_change_password'),
-            array('admin_change_password' => $form)
+            ['admin_change_password' => $form]
         );
 
         $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('admin_change_password')));
@@ -212,7 +213,7 @@ class IndexControllerTest extends AbstractAdminWebTestCase
         $client->request(
             'POST',
             $this->generateUrl('admin_change_password'),
-            array()
+            []
         );
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
@@ -223,14 +224,15 @@ class IndexControllerTest extends AbstractAdminWebTestCase
 
         $password = $faker->lexify('????????');
 
-        $form = array(
+        $form = [
             'current_password' => 'password',
-            'change_password' => array(
+            'change_password' => [
                 'first' => $password,
                 'second' => $password,
-            ),
-            '_token' => 'dummy'
-        );
+            ],
+            '_token' => 'dummy',
+        ];
+
         return $form;
     }
 }

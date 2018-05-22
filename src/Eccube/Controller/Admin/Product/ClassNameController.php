@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Controller\Admin\Product;
 
 use Eccube\Controller\AbstractController;
@@ -49,13 +48,13 @@ class ClassNameController extends AbstractController
 
     /**
      * ClassNameController constructor.
+     *
      * @param ClassNameRepository $classNameRepository
      */
     public function __construct(ClassNameRepository $classNameRepository)
     {
         $this->classNameRepository = $classNameRepository;
     }
-
 
     /**
      * @Route("/%eccube_admin_route%/product/class_name", name="admin_product_class_name")
@@ -77,44 +76,74 @@ class ClassNameController extends AbstractController
             ->createBuilder(ClassNameType::class, $TargetClassName);
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
                 'TargetClassName' => $TargetClassName,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_NAME_INDEX_INITIALIZE, $event);
+
+        $ClassNames = $this->classNameRepository->getList();
+
+        /**
+         * 編集用フォーム
+         */
+        $forms = [];
+        foreach ($ClassNames as $ClassName) {
+            $id = $ClassName->getId();
+            $forms[$id] = $this->formFactory->createNamed('class_name_'.$id, ClassNameType::class, $ClassName);
+        }
 
         $form = $builder->getForm();
 
         if ($request->getMethod() === 'POST') {
             $form->handleRequest($request);
-            if ($form->isValid()) {
-                log_info('商品規格登録開始', array($id));
+            if ($form->isSubmitted() && $form->isValid()) {
+                log_info('商品規格登録開始', [$id]);
 
                 $this->classNameRepository->save($TargetClassName);
 
-                log_info('商品規格登録完了', array($id));
+                log_info('商品規格登録完了', [$id]);
 
                 $event = new EventArgs(
-                    array(
+                    [
                         'form' => $form,
                         'TargetClassName' => $TargetClassName,
-                    ),
+                    ],
                     $request
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_NAME_INDEX_COMPLETE, $event);
 
                 $this->addSuccess('admin.class_name.save.complete', 'admin');
+
                 return $this->redirectToRoute('admin_product_class_name');
             }
+
+            /*
+             * 編集処理
+             */
+            foreach ($forms as $editForm) {
+                $editForm->handleRequest($request);
+                if ($editForm->isSubmitted() && $editForm->isValid()) {
+                    $this->classNameRepository->save($editForm->getData());
+
+                    $this->addSuccess('admin.class_name.save.complete', 'admin');
+
+                    return $this->redirectToRoute('admin_product_class_name');
+                }
+            }
         }
-        $ClassNames = $this->classNameRepository->getList();
+        $formViews = [];
+        foreach ($forms as $key => $value) {
+            $formViews[$key] = $value->createView();
+        }
 
         return [
             'form' => $form->createView(),
             'ClassNames' => $ClassNames,
             'TargetClassName' => $TargetClassName,
+            'forms' => $formViews,
         ];
     }
 
@@ -126,18 +155,17 @@ class ClassNameController extends AbstractController
     {
         $this->isTokenValid();
 
-        log_info('商品規格削除開始', array($ClassName->getId()));
+        log_info('商品規格削除開始', [$ClassName->getId()]);
 
         try {
             $this->classNameRepository->delete($ClassName);
 
-            $event = new EventArgs(['ClassName' => $ClassName,], $request);
+            $event = new EventArgs(['ClassName' => $ClassName], $request);
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_NAME_DELETE_COMPLETE, $event);
 
             $this->addSuccess('admin.class_name.delete.complete', 'admin');
 
-            log_info('商品規格削除完了', array($ClassName->getId()));
-
+            log_info('商品規格削除完了', [$ClassName->getId()]);
         } catch (\Exception $e) {
             $message = trans('admin.delete.failed.foreign_key', ['%name%' => trans('classname.text.name')]);
             $this->addError($message, 'admin');

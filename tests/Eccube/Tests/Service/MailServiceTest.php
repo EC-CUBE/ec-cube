@@ -4,6 +4,8 @@ namespace Eccube\Tests\Service;
 
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
+use Eccube\Entity\Shipping;
+use Eccube\Repository\MailHistoryRepository;
 use Eccube\Service\MailService;
 
 /**
@@ -150,7 +152,7 @@ class MailServiceTest extends AbstractServiceTestCase
         $tel02 = $tel[1];
         $tel03 = $tel[2];
 
-        $formData = array(
+        $formData = [
             'name01' => $name01,
             'name02' => $name02,
             'kana01' => $kana01,
@@ -164,8 +166,8 @@ class MailServiceTest extends AbstractServiceTestCase
             'tel02' => $tel02,
             'tel03' => $tel03,
             'email' => $email,
-            'contents' => 'お問い合わせ内容'
-        );
+            'contents' => 'お問い合わせ内容',
+        ];
 
         $this->mailService->sendContactMail($formData);
 
@@ -175,7 +177,6 @@ class MailServiceTest extends AbstractServiceTestCase
         $collectedMessages = $mailCollector->getMessages();
         /** @var \Swift_Message $Message */
         $Message = $collectedMessages[0];
-
 
         $this->expected = '['.$this->BaseInfo->getShopName().'] お問い合わせを受け付けました。';
         $this->actual = $Message->getSubject();
@@ -263,11 +264,11 @@ class MailServiceTest extends AbstractServiceTestCase
         $header = $faker->paragraph;
         $footer = $faker->paragraph;
         $subject = $faker->sentence;
-        $formData = array(
+        $formData = [
             'mail_header' => $header,
             'mail_footer' => $footer,
-            'mail_subject' => $subject
-        );
+            'mail_subject' => $subject,
+        ];
         $this->mailService->sendAdminOrderMail($Order, $formData);
 
         $mailCollector = $this->getMailCollector();
@@ -381,7 +382,6 @@ class MailServiceTest extends AbstractServiceTestCase
         $config = $this->app['config'];
         $config['mail']['charset_iso_2022_jp'] = false;
         $this->app['config'] = $config;
-
     }
 
     public function testConvertMessageUTF()
@@ -414,7 +414,31 @@ class MailServiceTest extends AbstractServiceTestCase
         MailUtil::setParameterForCharset($this->app, $message);
         $this->actual = $message->getBody();
         $this->verify();
+    }
 
+    /**
+     * @throws \Twig_Error
+     */
+    public function testSendShippingNotifyMail()
+    {
+        $Order = $this->createOrder($this->Customer);
+        /** @var Shipping $Shipping */
+        $Shipping = $Order->getShippings()->first();
+
+        $this->mailService->sendShippingNotifyMail($Shipping);
+        $this->entityManager->flush();
+
+        $messages = $this->getMailCollector()->getMessages();
+        self::assertEquals(1, count($messages));
+
+        /** @var \Swift_Message $message */
+        $message = $messages[0];
+        self::assertEquals([$Order->getEmail() => 0], $message->getTo(), '受注者にメールが送られているはず');
+
+        /** @var MailHistoryRepository $mailHistoryRepository */
+        $mailHistoryRepository = $this->container->get(MailHistoryRepository::class);
+        $histories = $mailHistoryRepository->findBy(['Order' => $Order]);
+        self::assertEquals(1, count($histories), 'メール履歴が作成されているはず');
     }
 
     protected function verifyRegExp($Message, $errorMessage = null)

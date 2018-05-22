@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type\Admin;
 
 use Eccube\Common\EccubeConfig;
@@ -29,9 +28,9 @@ use Eccube\Form\EventListener\ConvertKanaListener;
 use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\PriceType;
 use Eccube\Form\Type\TelType;
+use Eccube\Form\Type\ToggleSwitchType;
 use Eccube\Form\Type\ZipType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -43,8 +42,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class ShopMasterType
- *
- * @package Eccube\Form\Type\Admin
  */
 class ShopMasterType extends AbstractType
 {
@@ -55,6 +52,7 @@ class ShopMasterType extends AbstractType
 
     /**
      * ShopMasterType constructor.
+     *
      * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
@@ -75,7 +73,7 @@ class ShopMasterType extends AbstractType
                     new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_stext_len'],
                     ]),
-                ]
+                ],
             ])
             ->add('shop_name', TextType::class, [
                 'label' => 'common.label.shop_name',
@@ -85,7 +83,7 @@ class ShopMasterType extends AbstractType
                     new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_stext_len'],
                     ]),
-                ]
+                ],
             ])
             ->add('shop_name_eng', TextType::class, [
                 'label' => 'common.label.shop_name_en',
@@ -95,9 +93,9 @@ class ShopMasterType extends AbstractType
                         'max' => $this->eccubeConfig['eccube_mtext_len'],
                     ]),
                     new Assert\Regex([
-                        'pattern' => '/^[[:graph:][:space:]]+$/i'
+                        'pattern' => '/^[[:graph:][:space:]]+$/i',
                     ]),
-                ]
+                ],
             ])
             ->add('zip', ZipType::class, [
                 'required' => false,
@@ -120,8 +118,8 @@ class ShopMasterType extends AbstractType
                 'constraints' => [
                     new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ])
-                ]
+                    ]),
+                ],
             ])
             ->add('email01', EmailType::class, [
                 'label' => 'common.label.email_from',
@@ -173,108 +171,49 @@ class ShopMasterType extends AbstractType
                     ]),
                 ],
             ])
-
             // 送料設定
             ->add('delivery_free_amount', PriceType::class, [
                 'label' => 'common.label.option_delivery_fee_free_amount',
                 'required' => false,
             ])
+
             ->add('delivery_free_quantity', IntegerType::class, [
                 'label' => 'common.label.option_delivery_free_quantity',
                 'required' => false,
                 'constraints' => [
                     new Assert\Regex([
                         'pattern' => "/^\d+$/u",
-                        'message' => 'form.type.numeric.invalid'
+                        'message' => 'form.type.numeric.invalid',
                     ]),
                 ],
             ])
-            ->add('option_product_delivery_fee', ChoiceType::class, [
-                'label' => 'common.label.option_product_delivery_fee',
-                'choices' => array_flip([
-                    '0' => 'common.label.disabled',
-                    '1' => 'common.label.enabled',
-                ]),
-                'expanded' => true,
-                'multiple' => false,
-            ])
-            ->add('option_multiple_shipping', ChoiceType::class, [
-                'label' => 'common.label.option_multiple_shipping',
-                'choices' => array_flip([
-                    '0' => 'common.label.disabled',
-                    '1' => 'common.label.enabled',
-                ]),
-                'expanded' => true,
-                'multiple' => false,
-            ])
-
+            ->add('option_product_delivery_fee', ToggleSwitchType::class)
+            // 複数配送
+            ->add('option_multiple_shipping', ToggleSwitchType::class)
             // 会員設定
-            ->add('option_customer_activate', ChoiceType::class, [
-                'label' => 'common.label.option_customer_activate',
-                'choices' => array_flip([
-                    '0' => 'common.label.disabled',
-                    '1' => 'common.label.enabled',
-                ]),
-                'expanded' => true,
-                'multiple' => false,
+            ->add('option_customer_activate', ToggleSwitchType::class)
+            // マイページに注文状況を表示する
+            ->add('option_mypage_order_status_display', ToggleSwitchType::class)
+            // 自動ログイン
+            ->add('option_remember_me', ToggleSwitchType::class)
+            // お気に入り商品設定
+            ->add('option_favorite_product', ToggleSwitchType::class)
+            // 在庫切れ商品を非表示にする
+            ->add('option_nostock_hidden', ToggleSwitchType::class, [
+                'label_off' => 'common.label.display',
+                'label_on' => 'common.label.hide',
             ])
-            ->add('option_mypage_order_status_display', ChoiceType::class, [
-                'label' => 'common.label.option_mypage_order_status_display',
-                'choices' => array_flip([
-                    '0' => 'common.label.disabled',
-                    '1' => 'common.label.enabled',
-
-                ]),
-                'expanded' => true,
-                'multiple' => false,
-            ])
-            ->add('option_remember_me', ChoiceType::class, [
-                'label' => 'common.label.option_remember_me',
-                'choices' => array_flip([
-                    '0' => 'common.label.disabled',
-                    '1' => 'common.label.enabled',
-                ]),
-                'expanded' => true,
-                'multiple' => false,
-            ])
-            ->add('option_favorite_product', ChoiceType::class, [
-                'label' => 'common.label.option_favorite_product',
-                'choices' => array_flip([
-                    '0' => 'common.label.disabled',
-                    '1' => 'common.label.enabled',
-                ]),
-                'expanded' => true,
-                'multiple' => false,
-            ])
-
-            // 商品設定
-            ->add('option_nostock_hidden', ChoiceType::class, [
-                'label' => 'common.label.nostock_hidden',
-                'choices' => array_flip([
-                    '0' => 'common.label.disabled',
-                    '1' => 'common.label.enabled',
-
-                ]),
-                'expanded' => true,
-                'multiple' => false,
-            ])
+            // 個別税率設定
+            ->add('option_product_tax_rule', ToggleSwitchType::class)
             // ポイント設定
-            ->add('option_point', ChoiceType::class, [
-                'label' => 'common.label.option_point', // TODO 未翻訳
-                'choices' => array_flip([
-                    '0' => 'common.label.disabled',
-                    '1' => 'common.label.enabled',
-                ]),
-                'expanded' => true,
-                'multiple' => false,
-            ])
+            ->add('option_point', ToggleSwitchType::class)
             ->add('basic_point_rate', NumberType::class, [
                 'required' => false,
                 'label' => 'common.label.basic_point_rate', // TODO 未翻訳
                 'constraints' => [
                     new Assert\Regex([
                         'pattern' => "/^\d+$/u",
-                        'message' => 'form.type.numeric.invalid'
+                        'message' => 'form.type.numeric.invalid',
                     ]),
                     new Assert\Range([
                         'min' => 1,
@@ -288,7 +227,7 @@ class ShopMasterType extends AbstractType
                 'constraints' => [
                     new Assert\Regex([
                         'pattern' => "/^\d+$/u",
-                        'message' => 'form.type.numeric.invalid'
+                        'message' => 'form.type.numeric.invalid',
                     ]),
                     new Assert\Range([
                         'min' => 1,
@@ -305,7 +244,7 @@ class ShopMasterType extends AbstractType
                     'required' => false,
                     'constraints' => [
                         new Assert\Regex([
-                            'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
+                            'pattern' => '/^[ァ-ヶｦ-ﾟー]+$/u',
                         ]),
                         new Assert\Length([
                             'max' => $this->eccubeConfig['eccube_stext_len'],
@@ -325,9 +264,9 @@ class ShopMasterType extends AbstractType
                             'max' => $this->eccubeConfig['eccube_stext_len'],
                         ]),
                         new Assert\Regex([
-                            'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
+                            'pattern' => '/^[ァ-ヶｦ-ﾟー]+$/u',
                         ]),
-                    ]
+                    ],
                 ])
                 ->addEventSubscriber(new ConvertKanaListener('CV'))
         );

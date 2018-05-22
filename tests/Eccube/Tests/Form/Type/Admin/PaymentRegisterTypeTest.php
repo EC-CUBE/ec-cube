@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Form\Type\Admin\PaymentRegisterType;
@@ -33,12 +32,12 @@ class PaymentRegisterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
     protected $form;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = array(
+    protected $formData = [
         'method' => '1',
-        'charge'=> '10000',
+        'charge' => '10000',
         'rule_min' => '100',
-        'rule_max' => '10000'
-    );
+        'rule_max' => '10000',
+    ];
 
     public function setUp()
     {
@@ -47,9 +46,9 @@ class PaymentRegisterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
         // CSRF tokenを無効にしてFormを作成
         // 会員管理会員登録・編集
         $this->form = $this->formFactory
-            ->createBuilder(PaymentRegisterType::class, null, array(
+            ->createBuilder(PaymentRegisterType::class, null, [
                 'csrf_protection' => false,
-            ))
+            ])
             ->getForm();
         $this->container->get('request_stack')->push(new Request());
     }

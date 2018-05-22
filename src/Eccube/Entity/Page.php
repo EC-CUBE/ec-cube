@@ -19,14 +19,17 @@ class Page extends \Eccube\Entity\AbstractEntity
     /** 配置ID: 未使用 */
     const TARGET_ID_UNUSED = 0;
     const TARGET_ID_HEAD = 1;
-    const TARGET_ID_HEADER = 2;
-    const TARGET_ID_CONTENTS_TOP = 3;
-    const TARGET_ID_SIDE_LEFT = 4;
-    const TARGET_ID_MAIN_TOP = 5;
-    const TARGET_ID_MAIN_BOTTOM = 6;
-    const TARGET_ID_SIDE_RIGHT = 7;
-    const TARGET_ID_CONTENTS_BOTTOM = 8;
-    const TARGET_ID_FOOTER = 9;
+    const TARGET_ID_BODY_AFTER = 2;
+    const TARGET_ID_HEADER = 3;
+    const TARGET_ID_CONTENTS_TOP = 4;
+    const TARGET_ID_SIDE_LEFT = 5;
+    const TARGET_ID_MAIN_TOP = 6;
+    const TARGET_ID_MAIN_BOTTOM = 7;
+    const TARGET_ID_SIDE_RIGHT = 8;
+    const TARGET_ID_CONTENTS_BOTTOM = 9;
+    const TARGET_ID_FOOTER = 10;
+    const TARGET_ID_DRAWER = 11;
+    const TARGET_ID_CLOSE_BODY_BEFORE = 12;
 
     // 編集可能フラグ
     const EDIT_TYPE_USER = 0;
@@ -74,11 +77,12 @@ class Page extends \Eccube\Entity\AbstractEntity
      * Get BlockPositionByTargetId
      *
      * @param integer $target_id
+     *
      * @return array
      */
     public function getBlocksPositionByTargetId($target_id)
     {
-        $BlockPositions = array();
+        $BlockPositions = [];
         foreach ($this->getBlockPositions() as $BlockPosition) {
             if ($BlockPosition->getSection() === $target_id) {
                 $BlockPositions[] = $BlockPosition;
@@ -189,16 +193,18 @@ class Page extends \Eccube\Entity\AbstractEntity
      * Get BlocsByTargetId
      *
      * @param integer $target_id
-     * @return \Eccube\Entity\Bloc[]
+     *
+     * @return \Eccube\Entity\Block[]
      */
     public function getBlocksByTargetId($target_id)
     {
-        $Blocks = array();
+        $Blocks = [];
         foreach ($this->getBlockPositions() as $BlockPositions) {
             if ($BlockPositions->getTargetId() === $target_id) {
                 $Blocks[] = $BlockPositions->getBlock();
             }
         }
+
         return $Blocks;
     }
 
@@ -269,7 +275,6 @@ class Page extends \Eccube\Entity\AbstractEntity
 
         return $Layout ? $Layout->getBlocks(self::TARGET_ID_FOOTER) : [];
     }
-
 
     /**
      * @var int
@@ -699,6 +704,7 @@ class Page extends \Eccube\Entity\AbstractEntity
      * Set meta_tags
      *
      * @param string $metaTags
+     *
      * @return Page
      */
     public function setMetaTags($metaTags)
@@ -834,5 +840,24 @@ class Page extends \Eccube\Entity\AbstractEntity
     public function getMasterPage()
     {
         return $this->MasterPage;
+    }
+
+    /**
+     * @param $layoutId
+     *
+     * @return null|int
+     */
+    public function getSortNo($layoutId)
+    {
+        $pageLayouts = $this->getPageLayouts();
+
+        /** @var PageLayout $pageLayout */
+        foreach ($pageLayouts as $pageLayout) {
+            if ($pageLayout->getLayoutId() == $layoutId) {
+                return $pageLayout->getSortNo();
+            }
+        }
+
+        return null;
     }
 }

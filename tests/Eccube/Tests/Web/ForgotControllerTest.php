@@ -3,7 +3,6 @@
 namespace Eccube\Tests\Web;
 
 use Eccube\Common\Constant;
-use Eccube\Form\Type\Front\ForgotType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerRepository;
 
@@ -41,7 +40,7 @@ class ForgotControllerTest extends AbstractWebTestCase
 
     public function testIndexWithPostAndVerify()
     {
-        $this->markTestIncomplete("expected and actual is diff");
+        $this->markTestIncomplete('expected and actual is diff');
         $Customer = $this->createCustomer();
         $BaseInfo = $this->baseInfoRepository->get();
 
@@ -49,10 +48,10 @@ class ForgotControllerTest extends AbstractWebTestCase
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('forgot'),
-            array(
+            [
                 'login_email' => $Customer->getEmail(),
-                Constant::TOKEN_NAME => 'dummy'
-            )
+                Constant::TOKEN_NAME => 'dummy',
+            ]
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('forgot_complete')));
@@ -63,7 +62,7 @@ class ForgotControllerTest extends AbstractWebTestCase
         $Messages = $mailCollector->getMessages();
         /** @var \Swift_Message $Message */
         $Message = $Messages[0];
-        $this->expected = '[' . $BaseInfo->getShopName() . '] パスワード変更のご確認';
+        $this->expected = '['.$BaseInfo->getShopName().'] パスワード変更のご確認';
         $this->actual = $Message->getSubject();
         $this->verify();
 
@@ -86,7 +85,7 @@ class ForgotControllerTest extends AbstractWebTestCase
         $Messages = $mailCollector->getMessages();
         /** @var \Swift_Message $Message */
         $Message = $Messages[0];
-        $this->expected = '[' . $BaseInfo->getShopName() . '] パスワード変更のお知らせ';
+        $this->expected = '['.$BaseInfo->getShopName().'] パスワード変更のお知らせ';
         $this->actual = $Message->getSubject();
         $cleanContent = quoted_printable_decode($Message->getBody());
         $this->verify();
@@ -108,7 +107,6 @@ class ForgotControllerTest extends AbstractWebTestCase
 
     public function testResetWithDenied()
     {
-
         $client = $this->client;
         $client->request(
             'GET',

@@ -20,17 +20,17 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
     /**
      * @var  ProductClassRepository
      */
-    protected  $productClassRepository;
+    protected $productClassRepository;
 
     /**
      * @var  ClassCategoryRepository
      */
-    protected  $classCategoryRepository;
+    protected $classCategoryRepository;
 
     /**
      * @var  ClassNameRepository
      */
-    protected  $classNameRepository;
+    protected $classNameRepository;
 
     /**
      * {@inheritdoc}
@@ -47,6 +47,7 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
             $ClassName = new ClassName();
             $ClassName
                 ->setName('class-'.$i)
+                ->setBackendName('class-'.$i)
                 ->setSortNo($i);
             for ($j = 0; $j < 3; $j++) {
                 $ClassCategory = new ClassCategory();
@@ -89,18 +90,18 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
         $this->actual = count($ClassCategories);
         $this->verify('合計数は'.$this->expected.'ではありません');
 
-        $this->actual = array();
+        $this->actual = [];
         foreach ($ClassCategories as $ClassCategory) {
             $this->actual[] = $ClassCategory->getSortNo();
         }
-        $this->expected = array(2, 2, 2, 1, 1, 1, 0, 0, 0);
+        $this->expected = [2, 2, 2, 1, 1, 1, 0, 0, 0];
         $this->verify('ソート順が違います');
     }
 
     public function testGetListWithParams()
     {
         $ClassName = $this->classNameRepository->findOneBy(
-            array('name' => 'class-1')
+            ['backend_name' => 'class-1']
         );
 
         $ClassCategories = $this->classCategoryRepository->getList($ClassName);
@@ -109,11 +110,11 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
         $this->actual = count($ClassCategories);
         $this->verify('合計数は'.$this->expected.'ではありません');
 
-        $this->actual = array();
+        $this->actual = [];
         foreach ($ClassCategories as $ClassCategory) {
             $this->actual[] = $ClassCategory->getName();
         }
-        $this->expected = array('classcategory-1-2', 'classcategory-1-1', 'classcategory-1-0');
+        $this->expected = ['classcategory-1-2', 'classcategory-1-1', 'classcategory-1-0'];
         $this->verify('ソート順が違います');
     }
 
@@ -121,7 +122,7 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
     {
         $faker = $this->getFaker();
         $ClassName = $this->classNameRepository->findOneBy(
-            array('name' => 'class-1')
+            ['backend_name' => 'class-1']
         );
 
         $ClassCategory = new ClassCategory();
@@ -141,7 +142,8 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
         $this->removeClass();    // 一旦全件削除
         $ClassName = new ClassName();
         $ClassName
-            ->setName('class-3');
+            ->setName('class-3')
+            ->setBackendName('class-3');
         $this->classNameRepository->save($ClassName);
 
         $faker = $this->getFaker();
@@ -161,7 +163,7 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
     public function testDelete()
     {
         $ClassCategory = $this->classCategoryRepository->findOneBy(
-            array('name' => 'classcategory-1-0')
+            ['name' => 'classcategory-1-0']
         );
         $ClassCategoryId = $ClassCategory->getId();
         $this->classCategoryRepository->delete($ClassCategory);
@@ -192,7 +194,7 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
     public function testToggleVisibilityToHidden()
     {
         $ClassCategory = $this->classCategoryRepository->findOneBy(
-            array('name' => 'classcategory-1-0')
+            ['name' => 'classcategory-1-0']
         );
         $ClassCategoryId = $ClassCategory->getId();
         $this->classCategoryRepository->toggleVisibility($ClassCategory);
@@ -204,7 +206,7 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
     public function testToggleVisibilityToVisible()
     {
         $ClassCategory = $this->classCategoryRepository->findOneBy(
-            array('name' => 'classcategory-1-0')
+            ['name' => 'classcategory-1-0']
         );
         $ClassCategory->setVisible(false);
         $this->entityManager->flush($ClassCategory);

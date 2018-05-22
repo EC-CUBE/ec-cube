@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -358,7 +357,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
      */
     public function __toString()
     {
-        return (string) ($this->getName01() . ' ' . $this->getName02());
+        return (string) ($this->getName01().' '.$this->getName02());
     }
 
     /**
@@ -366,7 +365,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
      */
     public function getRoles()
     {
-        return array('ROLE_USER');
+        return ['ROLE_USER'];
     }
 
     /**
@@ -387,11 +386,11 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     // TODO: できればFormTypeで行いたい
     public static function loadValidatorMetadata(ClassMetadata $metadata)
     {
-        $metadata->addConstraint(new UniqueEntity(array(
-            'fields'  => 'email',
+        $metadata->addConstraint(new UniqueEntity([
+            'fields' => 'email',
             'message' => 'customer.text.error.email_registered',
-            'repositoryMethod' => 'getNonWithdrawingCustomers'
-        )));
+            'repositoryMethod' => 'getNonWithdrawingCustomers',
+        ]));
     }
 
     /**

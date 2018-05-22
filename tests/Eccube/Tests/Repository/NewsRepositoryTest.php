@@ -6,7 +6,6 @@ use Eccube\Entity\News;
 use Eccube\Repository\NewsRepository;
 use Eccube\Tests\EccubeTestCase;
 
-
 /**
  * NewsRepository test cases.
  *
@@ -16,7 +15,7 @@ class NewsRepositoryTest extends EccubeTestCase
 {
     protected $Member;
 
-    /** @var  NewsRepository */
+    /** @var NewsRepository */
     protected $newsRepo;
 
     public function setUp()
@@ -53,7 +52,7 @@ class NewsRepositoryTest extends EccubeTestCase
     {
         /** @var News $News */
         $News = $this->newsRepo->findOneBy(
-            array('title' => 'news-1')
+            ['title' => 'news-1']
         );
         $this->assertNotNull($News);
         $this->assertEquals(1, $News->getSortNo());
@@ -71,7 +70,7 @@ class NewsRepositoryTest extends EccubeTestCase
         $this->expectException(\Exception::class);
         /** @var News $News */
         $News = $this->newsRepo->findOneBy(
-            array('title' => 'news-2')
+            ['title' => 'news-2']
         );
 
         $this->newsRepo->up($News);
@@ -82,7 +81,7 @@ class NewsRepositoryTest extends EccubeTestCase
     {
         /** @var News $News */
         $News = $this->newsRepo->findOneBy(
-            array('title' => 'news-1')
+            ['title' => 'news-1']
         );
         $this->assertNotNull($News);
         $this->assertEquals(1, $News->getSortNo());
@@ -99,7 +98,7 @@ class NewsRepositoryTest extends EccubeTestCase
     {
         $this->expectException(\Exception::class);
         $News = $this->newsRepo->findOneBy(
-            array('title' => 'news-0')
+            ['title' => 'news-0']
         );
 
         $this->newsRepo->down($News);
@@ -143,7 +142,7 @@ class NewsRepositoryTest extends EccubeTestCase
     public function testDelete()
     {
         $News = $this->newsRepo->findOneBy(
-            array('title' => 'news-0')
+            ['title' => 'news-0']
         );
 
         $newsId = $News->getId();

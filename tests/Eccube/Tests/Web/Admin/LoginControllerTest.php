@@ -27,7 +27,6 @@ use Eccube\Tests\Web\AbstractWebTestCase;
 
 class LoginControllerTest extends AbstractWebTestCase
 {
-
     public function testRoutingAdminLogin()
     {
         $this->client->request('GET', $this->generateUrl('admin_login'));
@@ -37,7 +36,6 @@ class LoginControllerTest extends AbstractWebTestCase
             200,
             $this->client->getResponse()->getStatusCode()
         );
-
     }
 
     public function testRoutingAdminLoginCheck()
@@ -45,11 +43,11 @@ class LoginControllerTest extends AbstractWebTestCase
         // see https://stackoverflow.com/a/38661340/4956633
         $this->client->request(
             'POST', $this->generateUrl('admin_login'),
-            array(
+            [
                 'login_id' => 'admin',
                 'password' => 'password',
-                '_csrf_token' => 'dummy'
-            )
+                '_csrf_token' => 'dummy',
+            ]
         );
 
         $this->assertNotNull($this->container->get('security.token_storage')->getToken(), 'ログインしているかどうか');

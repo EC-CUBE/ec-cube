@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Controller\Admin\Order;
 
 use Eccube\Controller\AbstractController;
@@ -53,12 +52,14 @@ class MailController extends AbstractController
 
     /**
      * @Inject(OrderRepository::class)
+     *
      * @var OrderRepository
      */
     protected $orderRepository;
 
     /**
      * MailController constructor.
+     *
      * @param MailService $mailService
      * @param MailHistoryRepository $mailHistoryRepository
      * @param OrderRepository $orderRepository
@@ -79,16 +80,16 @@ class MailController extends AbstractController
      */
     public function index(Request $request, Order $Order)
     {
-        $MailHistories = $this->mailHistoryRepository->findBy(array('Order' => $Order));
+        $MailHistories = $this->mailHistoryRepository->findBy(['Order' => $Order]);
 
         $builder = $this->formFactory->createBuilder(MailType::class);
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
                 'Order' => $Order,
                 'MailHistories' => $MailHistories,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_MAIL_INDEX_INITIALIZE, $event);
@@ -96,7 +97,6 @@ class MailController extends AbstractController
         $form = $builder->getForm();
 
         if ('POST' === $request->getMethod()) {
-
             $form->handleRequest($request);
 
             $mode = $request->get('mode');
@@ -108,11 +108,11 @@ class MailController extends AbstractController
                     $MailTemplate = $form->get('template')->getData();
                     $form = $builder->getForm();
                     $event = new EventArgs(
-                        array(
+                        [
                             'form' => $form,
                             'Order' => $Order,
                             'MailTemplate' => $MailTemplate,
-                        ),
+                        ],
                         $request
                     );
                     $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_MAIL_INDEX_CHANGE, $event);
@@ -142,12 +142,12 @@ class MailController extends AbstractController
                     $this->entityManager->flush($MailHistory);
 
                     $event = new EventArgs(
-                        array(
+                        [
                             'form' => $form,
                             'Order' => $Order,
                             'MailTemplate' => $MailTemplate,
                             'MailHistory' => $MailHistory,
-                        ),
+                        ],
                         $request
                     );
                     $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_MAIL_INDEX_COMPLETE, $event);
@@ -157,10 +157,14 @@ class MailController extends AbstractController
             }
         }
 
+        // 本文確認用
+        $body = $this->createBody('', '', $Order);
+
         return [
             'form' => $form->createView(),
             'Order' => $Order,
             'MailHistories' => $MailHistories,
+            'body' => $body,
         ];
     }
 
@@ -182,9 +186,9 @@ class MailController extends AbstractController
         }
 
         $event = new EventArgs(
-            array(
+            [
                 'MailHistory' => $MailHistory,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_MAIL_VIEW_COMPLETE, $event);
@@ -201,13 +205,12 @@ class MailController extends AbstractController
      */
     public function mailAll(Request $request)
     {
-
         $builder = $this->formFactory->createBuilder(MailType::class);
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_MAIL_MAIL_ALL_INITIALIZE, $event);
@@ -216,7 +219,6 @@ class MailController extends AbstractController
 
         $ids = '';
         if ('POST' === $request->getMethod()) {
-
             $form->handleRequest($request);
 
             $mode = $request->get('mode');
@@ -231,10 +233,10 @@ class MailController extends AbstractController
                     $form = $builder->getForm();
 
                     $event = new EventArgs(
-                        array(
+                        [
                             'form' => $form,
                             'MailTemplate' => $MailTemplate,
-                        ),
+                        ],
                         $request
                     );
                     $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_MAIL_MAIL_ALL_CHANGE, $event);
@@ -251,7 +253,6 @@ class MailController extends AbstractController
                     $ids = explode(',', $ids);
 
                     foreach ($ids as $value) {
-
                         $Order = $this->orderRepository->find($value);
 
                         $body = $this->createBody($data['mail_header'], $data['mail_footer'], $Order);
@@ -272,10 +273,10 @@ class MailController extends AbstractController
                     $this->entityManager->flush($MailHistory);
 
                     $event = new EventArgs(
-                        array(
+                        [
                             'form' => $form,
                             'MailHistory' => $MailHistory,
-                        ),
+                        ],
                         $request
                     );
                     $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_MAIL_MAIL_ALL_COMPLETE, $event);
@@ -284,30 +285,30 @@ class MailController extends AbstractController
                 }
             }
         } else {
-            $filter = function ($v) {
-                return preg_match('/^ids\d+$/', $v);
-            };
-            $map = function ($v) {
-                return preg_replace('/[^\d+]/', '', $v);
-            };
-            $keys = array_keys($request->query->all());
-            $idArray = array_map($map, array_filter($keys, $filter));
-            $ids = implode(',', $idArray);
+            $ids = implode(',', (array) $request->get('ids'));
+        }
+
+        // 本文確認用
+        $body = '';
+        if ($ids != '') {
+            $idArray = explode(',', $ids);
+            $Order = $this->orderRepository->find($idArray[0]);
+            $body = $this->createBody('', '', $Order);
         }
 
         return [
             'form' => $form->createView(),
             'ids' => $ids,
+            'body' => $body,
         ];
     }
 
-
     private function createBody($header, $footer, $Order)
     {
-        return $this->renderView('@admin/Mail/order.twig', array(
+        return $this->renderView('@admin/Mail/order.twig', [
             'header' => $header,
             'footer' => $footer,
             'Order' => $Order,
-        ));
+        ]);
     }
 }

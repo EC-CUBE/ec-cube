@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -39,7 +38,6 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
 {
     private $price01_inc_tax = null;
     private $price02_inc_tax = null;
-    private $add = false;
     private $tax_rate = false;
 
     /**
@@ -56,6 +54,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
      * Set price01 IncTax
      *
      * @param  string       $price01_inc_tax
+     *
      * @return ProductClass
      */
     public function setPrice01IncTax($price01_inc_tax)
@@ -79,6 +78,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
      * Set price02 IncTax
      *
      * @param  string       $price02
+     *
      * @return ProductClass
      */
     public function setPrice02IncTax($price02_inc_tax)
@@ -113,33 +113,10 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set add
-     *
-     * @param  bool $add
-     * @return ProductClass
-     */
-    public function setAdd($add)
-    {
-        $this->add = $add;
-
-        return $this;
-    }
-
-    /**
-     * Get add
-     *
-     * @return bool
-     */
-    public function getAdd()
-    {
-        return $this->add;
-    }
-
-
-    /**
      * Set tax_rate
      *
      * @param  string $tax_rate
+     *
      * @return ProductClass
      */
     public function setTaxRate($tax_rate)
@@ -539,11 +516,13 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
 
     /**
      * @param boolean $visible
+     *
      * @return ProductClass
      */
     public function setVisible($visible)
     {
         $this->visible = $visible;
+
         return $this;
     }
 

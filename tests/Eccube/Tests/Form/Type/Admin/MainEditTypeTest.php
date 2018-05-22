@@ -28,12 +28,11 @@ use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 
 class MainEditTypeTest extends AbstractTypeTestCase
 {
-
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = array(
+    protected $formData = [
         'name' => 'テストページ',
         'url' => 'test',
         'file_name' => 'foo/bar/baz',
@@ -43,14 +42,14 @@ class MainEditTypeTest extends AbstractTypeTestCase
         'keyword' => '',
         'meta_robots' => '',
         'meta_tags' => '',
-    );
+    ];
 
     public function setUp()
     {
         parent::setUp();
-        $options = array(
+        $options = [
             'csrf_protection' => false,
-        );
+        ];
 
         $this->form = $this->formFactory
             ->createBuilder(MainEditType::class, $this->createPage(), $options)

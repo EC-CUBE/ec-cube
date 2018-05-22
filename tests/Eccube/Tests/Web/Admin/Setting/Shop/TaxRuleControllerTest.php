@@ -21,17 +21,14 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
 use Eccube\Entity\TaxRule;
-use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class TaxRuleControllerTest extends AbstractAdminWebTestCase
 {
-
     /**
      * @return TaxRule
      */
@@ -57,22 +54,13 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    public function testRoutingAdminBasisTaxEdit()
-    {
-        $this->client->request(
-            'GET',
-            $this->generateUrl('admin_setting_shop_tax_edit', array('id' => 1))
-        );
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
-    }
-
     public function testRoutingAdminBasisTaxDelete()
     {
         $redirectUrl = $this->generateUrl('admin_setting_shop_tax');
 
         $this->client->request(
             'DELETE',
-            $this->generateUrl('admin_setting_shop_tax_delete', array('id' => 1))
+            $this->generateUrl('admin_setting_shop_tax_delete', ['id' => 1])
         );
 
         $actual = $this->client->getResponse()->isRedirect($redirectUrl);
@@ -80,92 +68,29 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
         $this->assertSame(true, $actual);
     }
 
-    /**
-     * @group cache-clear
-     */
-    public function testRoutingEditParam()
-    {
-        $this->client->request(
-            'POST',
-            $this->generateUrl('admin_setting_shop_tax_edit_param', array('id' => 1))
-        );
-        $redirectUrl = $this->generateUrl('admin_setting_shop_tax');
-        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
-    }
-
-    /**
-     * @group cache-clear
-     */
-    public function testEditParam()
-    {
-        $BaseInfo = $this->container->get(BaseInfoRepository::class)->get();
-        $taxRule = $BaseInfo->isOptionProductTaxRule();
-        $newTaxRule = ($taxRule) ? 0 : 1;
-
-        $this->client->request(
-            'POST',
-            $this->generateUrl('admin_setting_shop_tax_edit_param', array('id' => 1)),
-            array(
-                'tax_rule' => array(
-                    '_token' => 'dummy',
-                    'option_product_tax_rule' => $newTaxRule
-                )
-            )
-        );
-
-        $redirectUrl = $this->generateUrl('admin_setting_shop_tax');
-        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
-
-        $this->expected = $newTaxRule;
-        $this->actual = $BaseInfo->isOptionProductTaxRule();
-        $this->verify();
-    }
-
-    /**
-     * @group cache-clear
-     */
-    public function testEditParamFail()
-    {
-        $BaseInfo = $this->container->get(BaseInfoRepository::class)->get();
-        $taxRule = $BaseInfo->isOptionProductTaxRule();
-
-        $this->client->request(
-            'POST',
-            $this->generateUrl('admin_setting_shop_tax_edit_param', array('id' => 1)),
-            array(
-                'tax_rule' => array(
-                    '_token' => 'dummy',
-                    'option_product_tax_rule' => 9999
-                )
-            )
-        );
-
-        $redirectUrl = $this->generateUrl('admin_setting_shop_tax');
-        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
-
-        $this->expected = $taxRule;
-        $this->actual = $BaseInfo->isOptionProductTaxRule();
-        $this->verify();
-    }
-
     public function testEdit()
     {
         $TaxRule = $this->createTaxRule();
         $tid = $TaxRule->getId();
         $now = new \DateTime();
-        $form = array(
+        $form = [
             '_token' => 'dummy',
             'tax_rate' => 10,
-            'calc_rule' => rand(1, 3),
-            'apply_date' => $now->format('Y-m-d H:i')
-        );
+            'rounding_type' => rand(1, 3),
+            'apply_date' => [
+                'date' => $now->format('Y-m-d'),
+                'time' => $now->format('H:i'),
+            ],
+        ];
 
         $this->client->request(
             'POST',
-            $this->generateUrl('admin_setting_shop_tax_edit', array('id' => $tid)),
-            array(
-                'tax_rule' => $form
-            )
+            $this->generateUrl('admin_setting_shop_tax'),
+            [
+                'tax_rule' => $form,
+                'tax_rule_id' => "$tid",
+                'mode' => 'edit_inline',
+            ]
         );
 
         $redirectUrl = $this->generateUrl('admin_setting_shop_tax');
@@ -174,25 +99,6 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
         $this->expected = $form['tax_rate'];
         $this->actual = $TaxRule->getTaxRate();
         $this->verify();
-    }
-
-    public function testEditException()
-    {
-        $tid = 99999;
-        $form = array(
-            '_token' => 'dummy',
-            'tax_rate' => 10,
-            'calc_rule' => rand(1, 3)
-        );
-
-        $this->client->request(
-            'POST',
-            $this->generateUrl('admin_setting_shop_tax_edit', array('id' => $tid)),
-            array(
-                'tax_rule' => $form
-            )
-        );
-        $this->assertSame(404, $this->client->getResponse()->getStatusCode());
     }
 
     public function testTaxDeleteSuccess()
@@ -204,7 +110,7 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
 
         $this->client->request(
             'DELETE',
-            $this->generateUrl('admin_setting_shop_tax_delete', array('id' => $TaxRule->getId()))
+            $this->generateUrl('admin_setting_shop_tax_delete', ['id' => $TaxRule->getId()])
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
@@ -217,7 +123,7 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
 
         $this->client->request(
             'DELETE',
-            $this->generateUrl('admin_setting_shop_tax_delete', array('id' => $tid))
+            $this->generateUrl('admin_setting_shop_tax_delete', ['id' => $tid])
         );
         $this->assertSame(404, $this->client->getResponse()->getStatusCode());
     }

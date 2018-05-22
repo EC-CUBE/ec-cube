@@ -23,16 +23,9 @@
 
 namespace Eccube\Service\PurchaseFlow\Processor;
 
-use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\ItemHolderInterface;
-use Eccube\Entity\Master\OrderItemType;
-use Eccube\Entity\Master\TaxDisplayType;
-use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Order;
-use Eccube\Entity\OrderItem;
-use Eccube\Entity\Shipping;
 use Eccube\Service\PurchaseFlow\ItemHolderProcessor;
 use Eccube\Service\PurchaseFlow\ProcessResult;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
@@ -70,6 +63,7 @@ class SubstractPointProcessor implements ItemHolderProcessor
         if ($Order->getUsePoint() > 0) {
             $Order->setAddPoint($this->substract($Order->getAddPoint(), $Order->getUsePoint(), $this->BaseInfo->getBasicPointRate()));
         }
+
         return ProcessResult::success();
     }
 
@@ -79,11 +73,13 @@ class SubstractPointProcessor implements ItemHolderProcessor
      * @param integer $totalPoint 合計ポイント
      * @param integer $usePoint 利用ポイント
      * @param integer $pointRate ポイント付与率(%)
+     *
      * @return integer Point after substraction
      */
     protected function substract($totalPoint, $usePoint, $pointRate)
     {
         $add_point = $totalPoint - intval($usePoint * ($pointRate / 100));
+
         return $add_point < 0 ? 0 : $add_point;
     }
 }

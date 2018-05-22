@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -47,7 +46,6 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
      */
     private $pre_order_id = null;
 
-
     /**
      * @var integer
      */
@@ -61,7 +59,7 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
     /**
      * @var array
      */
-    private $Payments = array();
+    private $Payments = [];
 
     /**
      * @var InvalidItemException[]
@@ -88,6 +86,7 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
 
     /**
      * @param  bool                $lock
+     *
      * @return \Eccube\Entity\Cart
      */
     public function setLock($lock)
@@ -107,6 +106,7 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
 
     /**
      * @param  integer             $pre_order_id
+     *
      * @return \Eccube\Entity\Cart
      */
     public function setPreOrderId($pre_order_id)
@@ -118,7 +118,9 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
 
     /**
      * @param  CartItem $AddCartItem
+     *
      * @return \Eccube\Entity\Cart
+     *
      * @deprecated CartService#addProductを使用
      */
     public function setCartItem(CartItem $AddCartItem)
@@ -142,6 +144,7 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
 
     /**
      * @param  CartItem            $CartItem
+     *
      * @return \Eccube\Entity\Cart
      */
     public function addCartItem(CartItem $CartItem)
@@ -154,7 +157,9 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
     /**
      * @param  string                  $class_name
      * @param  string                  $class_id
+     *
      * @return CartItem
+     *
      * @deprecated 削除予定
      */
     public function getCartItemByIdentifier($class_name, $class_id)
@@ -171,7 +176,9 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
     /**
      * @param $class_name
      * @param $class_id
+     *
      * @return $this
+     *
      * @deprecated CartService#removeProduct()を使用
      */
     public function removeCartItemByIdentifier($class_name, $class_id)
@@ -214,6 +221,7 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
 
     /**
      * @param  CartItem[]          $CartItems
+     *
      * @return \Eccube\Entity\Cart
      */
     public function setCartItems($CartItems)
@@ -236,6 +244,7 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
 
         return $this;
     }
+
     /**
      * @return integer
      */
@@ -287,6 +296,7 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
      * Set Payments
      *
      * @param $payments
+     *
      * @return Cart
      */
     public function setPayments($payments)
@@ -317,7 +327,8 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
     /**
      * {@inheritdoc}
      */
-    public function setDeliveryFeeTotal($total) {
+    public function setDeliveryFeeTotal($total)
+    {
         $this->delivery_fee_total = $total;
 
         return $this;
@@ -334,21 +345,24 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
     /**
      * {@inheritdoc}
      */
-    public function setDiscount($total) {
+    public function setDiscount($total)
+    {
         // TODO quiet
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setCharge($total) {
+    public function setCharge($total)
+    {
         // TODO quiet
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setTax($total) {
+    public function setTax($total)
+    {
         // TODO quiet
     }
 }

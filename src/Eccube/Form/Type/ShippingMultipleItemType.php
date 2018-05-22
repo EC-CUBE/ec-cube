@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
@@ -44,16 +43,17 @@ class ShippingMultipleItemType extends AbstractType
 {
     /**
      * @Inject("config")
+     *
      * @var array
      */
     protected $eccubeConfig;
 
     /**
      * @Inject("session")
+     *
      * @var Session
      */
     protected $session;
-
 
     public $app;
 
@@ -69,59 +69,58 @@ class ShippingMultipleItemType extends AbstractType
     {
         $app = $this->app;
 
-
         $builder
-            ->add('quantity', IntegerType::class, array(
-                'attr' => array(
+            ->add('quantity', IntegerType::class, [
+                'attr' => [
                     'min' => 1,
                     'maxlength' => $this->eccubeConfig['eccube_int_len'],
-                ),
-                'constraints' => array(
+                ],
+                'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\GreaterThanOrEqual(array(
+                    new Assert\GreaterThanOrEqual([
                         'value' => 1,
-                    )),
-                    new Assert\Regex(array('pattern' => '/^\d+$/')),
-                ),
-            ))
+                    ]),
+                    new Assert\Regex(['pattern' => '/^\d+$/']),
+                ],
+            ])
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($app) {
                 $form = $event->getForm();
 
                 if ($app->isGranted('IS_AUTHENTICATED_FULLY')) {
                     // 会員の場合、CustomerAddressを設定
                     $Customer = $app->user();
-                    $form->add('customer_address', EntityType::class, array(
+                    $form->add('customer_address', EntityType::class, [
                         'class' => 'Eccube\Entity\CustomerAddress',
                         'choice_label' => 'shippingMultipleDefaultName',
                         'query_builder' => function (EntityRepository $er) use ($Customer) {
                             return $er->createQueryBuilder('ca')
                                 ->where('ca.Customer = :Customer')
-                                ->orderBy("ca.id", "ASC")
+                                ->orderBy('ca.id', 'ASC')
                                 ->setParameter('Customer', $Customer);
                         },
-                        'constraints' => array(
+                        'constraints' => [
                             new Assert\NotBlank(),
-                        ),
-                    ));
+                        ],
+                    ]);
                 } else {
                     // 非会員の場合、セッションに設定されたCustomerAddressを設定
                     if ($this->session->has('eccube.front.shopping.nonmember.customeraddress')) {
                         $customerAddresses = $this->session->get('eccube.front.shopping.nonmember.customeraddress');
                         $customerAddresses = unserialize($customerAddresses);
 
-                        $addresses = array();
+                        $addresses = [];
                         $i = 0;
                         /** @var \Eccube\Entity\CustomerAddress $CustomerAddress */
                         foreach ($customerAddresses as $CustomerAddress) {
                             $addresses[$i] = $CustomerAddress->getShippingMultipleDefaultName();
                             $i++;
                         }
-                        $form->add('customer_address', ChoiceType::class, array(
+                        $form->add('customer_address', ChoiceType::class, [
                             'choices' => array_flip($addresses),
-                            'constraints' => array(
+                            'constraints' => [
                                 new Assert\NotBlank(),
-                            ),
-                        ));
+                            ],
+                        ]);
                     }
                 }
             })
@@ -144,9 +143,7 @@ class ShippingMultipleItemType extends AbstractType
                     }
                 }
                 $form['quantity']->setData($quantity);
-
             });
-
     }
 
     /**

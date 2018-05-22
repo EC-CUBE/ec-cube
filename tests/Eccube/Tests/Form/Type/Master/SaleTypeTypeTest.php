@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Form\Type\Master;
 
 use Eccube\Form\Type\Master\SaleTypeType;
@@ -33,7 +32,7 @@ class SaleTypeTypeTest extends AbstractTypeTestCase
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 
-    /** @var  SaleTypeRepository */
+    /** @var SaleTypeRepository */
     protected $saleTypeRepo;
 
     public function setUp()
@@ -43,9 +42,9 @@ class SaleTypeTypeTest extends AbstractTypeTestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
-            ->createBuilder(SaleTypeType::class, null, array(
+            ->createBuilder(SaleTypeType::class, null, [
                 'csrf_protection' => false,
-            ))
+            ])
             ->getForm();
     }
 
@@ -61,7 +60,7 @@ class SaleTypeTypeTest extends AbstractTypeTestCase
         $view = $this->form->createView();
         $choices = $view->vars['choices'];
 
-        $data = array();
+        $data = [];
         foreach ($choices as $choice) {
             $data[] = $choice->data;
         }

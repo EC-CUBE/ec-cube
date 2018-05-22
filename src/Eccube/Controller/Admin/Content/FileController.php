@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Controller\Admin\Content;
 
 use Eccube\Controller\AbstractController;
@@ -39,6 +38,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\Validator\Constraints as Assert;
+use Eccube\Util\FilesystemUtil;
 use Symfony\Component\Filesystem\Exception\IOException;
 
 class FileController extends AbstractController
@@ -48,7 +48,11 @@ class FileController extends AbstractController
     private $errors = [];
     private $encode = '';
 
-    public function __construct() {
+    /**
+     * FileController constructor.
+     */
+    public function __construct()
+    {
         $this->encode = self::UTF;
         if ('\\' === DIRECTORY_SEPARATOR) {
             $this->encode = self::SJIS;
@@ -112,7 +116,7 @@ class FileController extends AbstractController
             'tpl_parent_dir' => $parentDir,
             'arrFileList' => $arrFileList,
             'errors' => $this->errors,
-            'paths' => json_encode($paths)
+            'paths' => json_encode($paths),
         ];
     }
 
@@ -123,7 +127,8 @@ class FileController extends AbstractController
     {
         if ($this->checkDir($this->convertStrToServer($request->get('file')), $this->getUserDataDir())) {
             $file = $this->convertStrToServer($request->get('file'));
-            setlocale(LC_ALL, "ja_JP.UTF-8");
+            setlocale(LC_ALL, 'ja_JP.UTF-8');
+
             return new BinaryFileResponse($file);
         }
 
@@ -189,7 +194,6 @@ class FileController extends AbstractController
      */
     public function delete(Request $request)
     {
-
         $this->isTokenValid();
 
         $topDir = $this->getUserDataDir();
@@ -217,20 +221,20 @@ class FileController extends AbstractController
                 setlocale(LC_ALL, 'ja_JP.UTF-8');
                 $pathParts = pathinfo($file);
 
-                $patterns = array(
+                $patterns = [
                     '/[a-zA-Z0-9!"#$%&()=~^|@`:*;+{}]/',
                     '/[- ,.<>?_[\]\/\\\\]/',
                     "/['\r\n\t\v\f]/",
-                );
+                ];
 
                 $str = preg_replace($patterns, '', $pathParts['basename']);
                 if (strlen($str) === 0) {
                     return (new BinaryFileResponse($file))->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
                 } else {
-                    return new BinaryFileResponse($file, 200, array(
-                        "Content-Type" => "aplication/octet-stream;",
-                        "Content-Disposition" => "attachment; filename*=UTF-8\'\'".rawurlencode($this->convertStrFromServer($pathParts['basename']))
-                    ));
+                    return new BinaryFileResponse($file, 200, [
+                        'Content-Type' => 'aplication/octet-stream;',
+                        'Content-Disposition' => "attachment; filename*=UTF-8\'\'".rawurlencode($this->convertStrFromServer($pathParts['basename'])),
+                    ]);
                 }
             }
         }
@@ -243,9 +247,9 @@ class FileController extends AbstractController
             ->add('file', FileType::class, [
                 'constraints' => [
                     new Assert\NotBlank([
-                        'message' => 'file.text.error.file_not_selected'
-                    ])
-                ]
+                        'message' => 'file.text.error.file_not_selected',
+                    ]),
+                ],
             ])
             ->add('create_file', TextType::class)
             ->getForm();
@@ -256,6 +260,7 @@ class FileController extends AbstractController
             foreach ($form->getErrors(true) as $error) {
                 $this->errors[] = ['message' => $error->getMessage()];
             }
+
             return;
         }
 
@@ -264,6 +269,7 @@ class FileController extends AbstractController
         $nowDir = $this->getUserDataDir($request->get('now_dir'));
         if (!$this->checkDir($nowDir, $topDir)) {
             $this->errors[] = ['message' => 'file.text.error.invalid_upload_folder'];
+
             return;
         }
 
@@ -286,9 +292,10 @@ class FileController extends AbstractController
                 $val['type'],
                 $path,
                 $val['depth'],
-                $val['open'] ? 'true' : 'false'
+                $val['open'] ? 'true' : 'false',
             ];
         }
+
         return $arrTree;
     }
 
@@ -308,17 +315,17 @@ class FileController extends AbstractController
             ->directories()
             ->sortByName();
 
-        $tree = array();
-        $tree[] = array(
+        $tree = [];
+        $tree[] = [
             'path' => $topDir,
             'type' => '_parent',
             'depth' => 0,
             'open' => true,
-        );
+        ];
 
         $defaultDepth = count(explode('/', $topDir));
 
-        $openDirs = array();
+        $openDirs = [];
         if ($request->get('tree_status')) {
             $openDirs = explode('|', $request->get('tree_status'));
         }
@@ -327,12 +334,12 @@ class FileController extends AbstractController
             $path = $this->normalizePath($dirs->getRealPath());
             $type = (iterator_count(Finder::create()->in($path)->directories())) ? '_parent' : '_child';
             $depth = count(explode('/', $path)) - $defaultDepth;
-            $tree[] = array(
+            $tree[] = [
                 'path' => $path,
                 'type' => $type,
                 'depth' => $depth,
                 'open' => (in_array($path, $openDirs)) ? true : false,
-            );
+            ];
         }
 
         return $tree;
@@ -344,7 +351,8 @@ class FileController extends AbstractController
         $filter = function (\SplFileInfo $file) use ($topDir) {
             $acceptPath = realpath($topDir);
             $targetPath = $file->getRealPath();
-            return (strpos($targetPath, $acceptPath) === 0);
+
+            return strpos($targetPath, $acceptPath) === 0;
         };
         $dirFinder = Finder::create()
             ->filter($filter)
@@ -361,24 +369,24 @@ class FileController extends AbstractController
         $dirs = iterator_to_array($dirFinder);
         $files = iterator_to_array($fileFinder);
 
-        $arrFileList = array();
+        $arrFileList = [];
         foreach ($dirs as $dir) {
-            $arrFileList[] = array(
+            $arrFileList[] = [
                 'file_name' => $this->convertStrFromServer($dir->getFilename()),
                 'file_path' => $this->convertStrFromServer($this->getJailDir($this->normalizePath($dir->getRealPath()))),
-                'file_size' => $dir->getSize(),
-                'file_time' => date("Y/m/d", $dir->getmTime()),
+                'file_size' => FilesystemUtil::sizeToHumanReadable($dir->getSize()),
+                'file_time' => date('Y/m/d', $dir->getmTime()),
                 'is_dir' => true,
-            );
+            ];
         }
         foreach ($files as $file) {
-            $arrFileList[] = array(
+            $arrFileList[] = [
                 'file_name' => $this->convertStrFromServer($file->getFilename()),
                 'file_path' => $this->convertStrFromServer($this->getJailDir($this->normalizePath($file->getRealPath()))),
-                'file_size' => $file->getSize(),
-                'file_time' => date("Y/m/d", $file->getmTime()),
+                'file_size' => FilesystemUtil::sizeToHumanReadable($file->getSize()),
+                'file_time' => date('Y/m/d', $file->getmTime()),
                 'is_dir' => false,
-            );
+            ];
         }
 
         return $arrFileList;
@@ -393,7 +401,8 @@ class FileController extends AbstractController
     {
         $targetDir = realpath($targetDir);
         $topDir = realpath($topDir);
-        return (strpos($targetDir, $topDir) === 0);
+
+        return strpos($targetDir, $topDir) === 0;
     }
 
     private function convertStrFromServer($target)
@@ -401,6 +410,7 @@ class FileController extends AbstractController
         if ($this->encode == self::SJIS) {
             return mb_convert_encoding($target, self::UTF, self::SJIS);
         }
+
         return $target;
     }
 
@@ -409,6 +419,7 @@ class FileController extends AbstractController
         if ($this->encode == self::SJIS) {
             return mb_convert_encoding($target, self::SJIS, self::UTF);
         }
+
         return $target;
     }
 
@@ -421,6 +432,7 @@ class FileController extends AbstractController
     {
         $realpath = realpath($path);
         $jailPath = str_replace($this->getUserDataDir(), '', $realpath);
+
         return $jailPath ? $jailPath : '/';
     }
 }

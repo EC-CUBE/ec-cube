@@ -18,9 +18,9 @@ use Eccube\Tests\Fixture\Generator;
  */
 class OrderTest extends EccubeTestCase
 {
-    /** @var  Customer */
+    /** @var Customer */
     protected $Customer;
-    /** @var  Order */
+    /** @var Order */
     protected $Order;
     protected $rate;
 
@@ -96,7 +96,7 @@ class OrderTest extends EccubeTestCase
 
     public function testGetSaleTypes()
     {
-        $this->expected = array($this->container->get(SaleTypeRepository::class)->find(1));
+        $this->expected = [$this->container->get(SaleTypeRepository::class)->find(1)];
         $this->actual = $this->Order->getSaleTypes();
         $this->verify();
     }
@@ -107,7 +107,7 @@ class OrderTest extends EccubeTestCase
         /** @var Order $Order */
         $Order = $this->container->get(Generator::class)->createOrder(
             $this->Customer,
-            array(),
+            [],
             null,
             $faker->randomNumber(5),
             $faker->randomNumber(5)

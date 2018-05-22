@@ -78,6 +78,7 @@ class UpdateDatePurchaseProcessor implements PurchaseProcessor
             // 受注日時
             $TargetOrder->setOrderDate($dateTime);
         }
+
         return ProcessResult::success();
     }
 }

@@ -21,11 +21,11 @@ class FormUtilTest extends EccubeTestCase
      */
     protected $formFactory;
 
-    protected $formData = array(
+    protected $formData = [
         'pref' => '28',
         'name' => 'パーコレータ',
-        'date' => '2017-02-01'
-    );
+        'date' => '2017-02-01',
+    ];
 
     public function setUp()
     {
@@ -35,20 +35,20 @@ class FormUtilTest extends EccubeTestCase
             ->createBuilder(
                 FormType::class,
                 null,
-                array(
+                [
                     'csrf_protection' => false,
-                )
+                ]
             )
             ->add('pref', PrefType::class)
             ->add('name', TextType::class)
-            ->add('date', DateType::class, array(
+            ->add('date', DateType::class, [
                 'label' => '受注日(FROM)',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
-            ))
+                'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+            ])
             ->getForm();
     }
 
@@ -83,21 +83,21 @@ class FormUtilTest extends EccubeTestCase
      */
     public function testNestedFormType()
     {
-        $formData = array(
-            'address' => array(
+        $formData = [
+            'address' => [
                 'pref' => '27',
                 'addr01' => '北区',
-                'addr02' => '梅田'
-            )
-        );
+                'addr02' => '梅田',
+            ],
+        ];
 
         $form = $this->formFactory
             ->createBuilder(
                 FormType::class,
                 null,
-                array(
+                [
                     'csrf_protection' => false,
-                )
+                ]
             )
             ->add('address', AddressType::class)
             ->getForm();
@@ -112,17 +112,17 @@ class FormUtilTest extends EccubeTestCase
      */
     public function testChoiceType()
     {
-        $formData = array(
+        $formData = [
             'sex' => '1',
-        );
+        ];
 
         $form = $this->formFactory
             ->createBuilder(
                 FormType::class,
                 null,
-                array(
+                [
                     'csrf_protection' => false,
-                )
+                ]
             )
             ->add('sex', SexType::class)
             ->getForm();
@@ -132,32 +132,30 @@ class FormUtilTest extends EccubeTestCase
         $this->assertEquals($formData, $viewData);
     }
 
-
     /**
      * choice type(multiple)のテスト
      */
     public function testChoiceTypeMultiple()
     {
-        $formData = array(
-            'sex' => array('1', '2')
-        );
+        $formData = [
+            'sex' => ['1', '2'],
+        ];
 
         $form = $this->formFactory
             ->createBuilder(
                 FormType::class,
                 null,
-                array(
+                [
                     'csrf_protection' => false,
-                )
+                ]
             )
-            ->add('sex', SexType::class, array(
+            ->add('sex', SexType::class, [
                 'multiple' => true,
-            ))
+            ])
             ->getForm();
 
         $form->submit($formData);
         $viewData = FormUtil::getViewData($form);
         $this->assertEquals($formData, $viewData);
     }
-
 }

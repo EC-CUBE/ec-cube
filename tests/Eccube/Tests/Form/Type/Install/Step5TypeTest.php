@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Form\Type\Install;
 
 use Eccube\Form\Type\Install\Step5Type;
@@ -29,7 +28,6 @@ use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 
 class Step5TypeTest extends AbstractTypeTestCase
 {
-
     /**
      * @var \Symfony\Component\Form\FormInterface
      */
@@ -40,7 +38,6 @@ class Step5TypeTest extends AbstractTypeTestCase
      *
      * 正常系のデータパターンを返す
      *
-     * @access public
      * @return array
      */
     public function getValidTestData()

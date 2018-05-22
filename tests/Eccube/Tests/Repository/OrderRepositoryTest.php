@@ -15,17 +15,18 @@ use Eccube\Tests\EccubeTestCase;
  */
 class OrderRepositoryTest extends EccubeTestCase
 {
-    /** @var  Customer */
+    /** @var Customer */
     protected $Customer;
-    /** @var  Order */
+    /** @var Order */
     protected $Order;
 
-    /** @var  OrderStatusRepository */
+    /** @var OrderStatusRepository */
     protected $orderStatusRepo;
-    /** @var  OrderRepository */
+    /** @var OrderRepository */
     protected $orderRepo;
 
-    public function setUp() {
+    public function setUp()
+    {
         parent::setUp();
         $this->orderStatusRepo = $this->container->get(OrderStatusRepository::class);
         $this->orderRepo = $this->container->get(OrderRepository::class);

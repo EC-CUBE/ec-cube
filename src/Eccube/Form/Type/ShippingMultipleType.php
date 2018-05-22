@@ -21,18 +21,15 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type;
 
 use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
-use Eccube\Form\Type\ShippingMultipleItemType;
 use Eccube\Repository\ShippingRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @FormType
@@ -41,10 +38,10 @@ class ShippingMultipleType extends AbstractType
 {
     /**
      * @Inject(ShippingRepository::class)
+     *
      * @var ShippingRepository
      */
     protected $shippingRepository;
-
 
     public $app;
 
@@ -58,10 +55,8 @@ class ShippingMultipleType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $app = $this->app;
-
         $builder
-            ->addEventListener(FormEvents::POST_SET_DATA, function ($event) use ($app) {
+            ->addEventListener(FormEvents::POST_SET_DATA, function ($event) {
                 /** @var \Eccube\Entity\OrderItem $data */
                 $data = $event->getData();
                 /** @var \Symfony\Component\Form\Form $form */
@@ -79,12 +74,12 @@ class ShippingMultipleType extends AbstractType
                     $shippings[$key] = $shippingTmp;
                 }
                 $form
-                    ->add('shipping', CollectionType::class, array(
+                    ->add('shipping', CollectionType::class, [
                         'entry_type' => ShippingMultipleItemType::class,
                         'data' => $shippings,
                         'allow_add' => true,
                         'allow_delete' => true,
-                    ));
+                    ]);
             });
     }
 

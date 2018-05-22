@@ -9,9 +9,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class LoadDataFixturesEccubeCommand extends DoctrineCommand
 {
-
-
-
     protected function configure()
     {
         $this

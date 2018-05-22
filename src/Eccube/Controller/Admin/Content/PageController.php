@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Controller\Admin\Content;
 
 use Eccube\Controller\AbstractController;
@@ -33,6 +32,7 @@ use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\MainEditType;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\PageRepository;
+use Eccube\Repository\PageLayoutRepository;
 use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -50,6 +50,11 @@ class PageController extends AbstractController
     protected $pageRepository;
 
     /**
+     * @var PageLayoutRepository
+     */
+    protected $pageLayoutRepository;
+
+    /**
      * @var DeviceTypeRepository
      */
     protected $deviceTypeRepository;
@@ -62,9 +67,11 @@ class PageController extends AbstractController
      */
     public function __construct(
         PageRepository $pageRepository,
+        PageLayoutRepository $pageLayoutRepository,
         DeviceTypeRepository $deviceTypeRepository
     ) {
         $this->pageRepository = $pageRepository;
+        $this->pageLayoutRepository = $pageLayoutRepository;
         $this->deviceTypeRepository = $deviceTypeRepository;
     }
 
@@ -80,10 +87,10 @@ class PageController extends AbstractController
         $Pages = $this->pageRepository->getPageList($DeviceType);
 
         $event = new EventArgs(
-            array(
+            [
                 'DeviceType' => $DeviceType,
                 'Pages' => $Pages,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_PAGE_INDEX_COMPLETE, $event);
@@ -112,11 +119,11 @@ class PageController extends AbstractController
             ->createBuilder(MainEditType::class, $Page);
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
                 'DeviceType' => $DeviceType,
                 'Page' => $Page,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_PAGE_EDIT_INITIALIZE, $event);
@@ -146,7 +153,6 @@ class PageController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $Page = $form->getData();
 
             if (!$isUserDataPage) {
@@ -187,11 +193,15 @@ class PageController extends AbstractController
             }
 
             $Layout = $form['PcLayout']->getData();
+            $LastPageLayout = $this->pageLayoutRepository->findOneBy([], ['sort_no' => 'DESC']);
+            $sortNo = $LastPageLayout->getSortNo();
+
             if ($Layout) {
                 $PageLayout = new PageLayout();
                 $PageLayout->setLayoutId($Layout->getId());
                 $PageLayout->setLayout($Layout);
                 $PageLayout->setPageId($Page->getId());
+                $PageLayout->setSortNo($sortNo++);
                 $PageLayout->setPage($Page);
 
                 $this->entityManager->persist($PageLayout);
@@ -204,6 +214,7 @@ class PageController extends AbstractController
                 $PageLayout->setLayoutId($Layout->getId());
                 $PageLayout->setLayout($Layout);
                 $PageLayout->setPageId($Page->getId());
+                $PageLayout->setSortNo($sortNo++);
                 $PageLayout->setPage($Page);
 
                 $this->entityManager->persist($PageLayout);
@@ -211,12 +222,12 @@ class PageController extends AbstractController
             }
 
             $event = new EventArgs(
-                array(
+                [
                     'form' => $form,
                     'Page' => $Page,
                     'templatePath' => $templatePath,
                     'filePath' => $filePath,
-                ),
+                ],
                 $request
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_PAGE_EDIT_COMPLETE, $event);
@@ -227,7 +238,7 @@ class PageController extends AbstractController
             $cacheDir = $this->getParameter('kernel.cache_dir').'/twig';
             $fs->remove($cacheDir);
 
-            return $this->redirectToRoute('admin_content_page_edit', array('id' => $Page->getId()));
+            return $this->redirectToRoute('admin_content_page_edit', ['id' => $Page->getId()]);
         }
 
         if ($isUserDataPage) {
@@ -261,10 +272,10 @@ class PageController extends AbstractController
             ->find(DeviceType::DEVICE_TYPE_PC);
 
         $Page = $this->pageRepository
-            ->findOneBy(array(
+            ->findOneBy([
                 'id' => $id,
                 'DeviceType' => $DeviceType,
-            ));
+            ]);
 
         if (!$Page) {
             $this->deleteMessage();
@@ -284,10 +295,10 @@ class PageController extends AbstractController
             $this->entityManager->flush();
 
             $event = new EventArgs(
-                array(
+                [
                     'DeviceType' => $DeviceType,
                     'Page' => $Page,
-                ),
+                ],
                 $request
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_PAGE_DELETE_COMPLETE, $event);

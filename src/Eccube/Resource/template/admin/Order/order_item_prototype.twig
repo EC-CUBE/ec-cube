@@ -25,9 +25,12 @@
                 {#{% endif %}#}
                 {#)#}
             {#{% endif %}#}
-        {#</p><span>{{ orderItemForm.vars.value.product_code }}</span>#}
+        </p>
+        {#<span>{{ orderItemForm.vars.value.product_code }}</span>#}
     </td>
-    {#<td class="align-middle"><a href="{{ url('admin_shipping_edit', { id : orderItemForm.vars.value.Shipping.id }) }}">{{ orderItemForm.vars.value.Shipping.id }}</a></td>#}
+    <td class="align-middle">
+        {#<a href="{{ url('admin_shipping_edit', { id : orderItemForm.vars.value.Shipping.id }) }}">{{ orderItemForm.vars.value.Shipping.id }}</a>#}
+    </td>
     <td class="align-middle">
         <div class="col-8">
             {{ form_widget(orderItemForm.price, {'attr': {'class': 'input-price'}}) }}
@@ -46,12 +49,13 @@
             {{ form_errors(orderItemForm.tax_rate) }}
         </div>
     </td>
-    {#<td class="align-middle"><span>{{ orderItemForm.vars.value.total_price|price }}</span>#}
+    <td class="align-middle">
+        {#<span>{{ orderItemForm.vars.value.total_price|price }}</span>#}
         <small>（{{ 'admin.common.label.taxinc'|trans }}）</small>
     </td>
     <td class="align-middle text-right pr-3">
         <div class="row justify-content-end">
-            <div class="col-auto text-center"><a class="btn btn-ec-actionIcon delete" data-toggle="tooltip" data-placement="top" title="削除"><i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a></div>
+            <div class="col-auto text-center"><a class="btn btn-ec-actionIcon delete" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.label.delete'|trans }}"><i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a></div>
         </div>
     </td>
     {{ form_widget(orderItemForm.Order) }}

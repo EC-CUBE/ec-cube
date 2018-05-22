@@ -21,6 +21,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\SerializerInterface;
+use Eccube\Service\MailService;
 
 class EditController extends AbstractController
 {
@@ -50,28 +51,51 @@ class EditController extends AbstractController
     protected $shippingRepository;
 
     /**
+     * @var SerializerInterface
+     */
+    protected $serializer;
+
+    /**
      * @var ShippingStatusRepository
      */
-    protected $shippingStatusReposisotry;
+    protected $shippingStatusRepository;
 
+    /**
+     * @var \Eccube\Service\MailService
+     */
+    protected $mailService;
+
+    /**
+     * EditController constructor.
+     *
+     * @param MailService $mailService
+     * @param OrderItemRepository $orderItemRepository
+     * @param CategoryRepository $categoryRepository
+     * @param DeliveryRepository $deliveryRepository
+     * @param TaxRuleService $taxRuleService
+     * @param ShippingRepository $shippingRepository
+     * @param ShippingStatusRepository $shippingStatusRepository
+     * @param SerializerInterface $serializer
+     */
     public function __construct(
+        MailService $mailService,
         OrderItemRepository $orderItemRepository,
         CategoryRepository $categoryRepository,
         DeliveryRepository $deliveryRepository,
         TaxRuleService $taxRuleService,
         ShippingRepository $shippingRepository,
-        ShippingStatusRepository $shippingStatusReposisotry,
+        ShippingStatusRepository $shippingStatusRepository,
         SerializerInterface $serializer
     ) {
+        $this->mailService = $mailService;
         $this->orderItemRepository = $orderItemRepository;
         $this->categoryRepository = $categoryRepository;
         $this->deliveryRepository = $deliveryRepository;
         $this->taxRuleService = $taxRuleService;
         $this->shippingRepository = $shippingRepository;
-        $this->shippingStatusReposisotry = $shippingStatusReposisotry;
+        $this->shippingStatusRepository = $shippingStatusRepository;
         $this->serializer = $serializer;
     }
-
 
     /**
      * 出荷登録/編集画面.
@@ -110,7 +134,8 @@ class EditController extends AbstractController
         $form = $builder->getForm();
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
+            // TODO: Should move logic out of controller such as service, modal
 
             // FIXME 税額計算は CalculateService で処理する. ここはテストを通すための暫定処理
             // see EditControllerTest::testOrderProcessingWithTax
@@ -124,51 +149,68 @@ class EditController extends AbstractController
                 $taxtotal += $tax * $OrderItem->getQuantity();
             }
 
-            // 登録ボタン押下
-            switch ($request->get('mode')) {
-                case 'register_and_commit':
-                    if ($form->isValid()) {
-                        $ShippingStatus = $this->shippingStatusReposisotry->find(ShippingStatus::SHIPPED);
-                        $TargetShipping->setShippingStatus($ShippingStatus);
-                        $TargetShipping->setShippingDate(new \DateTime());
-                    }
-                // no break
-                case 'register':
+            log_info('出荷登録開始', [$TargetShipping->getId()]);
+            // TODO 在庫の有無や販売制限数のチェックなども行う必要があるため、完了処理もcaluclatorのように抽象化できないか検討する.
+            // TODO 後続にある会員情報の更新のように、完了処理もcaluclatorのように抽象化できないか検討する.
+            // 画面上で削除された明細をremove
+            foreach ($OriginalOrderItems as $OrderItem) {
+                if (false === $TargetShipping->getOrderItems()->contains($OrderItem)) {
+                    $OrderItem->setShipping(null);
+                }
+            }
 
-                    log_info('出荷登録開始', array($TargetShipping->getId()));
-                    // TODO 在庫の有無や販売制限数のチェックなども行う必要があるため、完了処理もcaluclatorのように抽象化できないか検討する.
-                    if ($form->isValid()) {
-                        // TODO 後続にある会員情報の更新のように、完了処理もcaluclatorのように抽象化できないか検討する.
+            foreach ($TargetShipping->getOrderItems() as $OrderItem) {
+                $OrderItem->setShipping($TargetShipping);
+            }
 
-                        // 画面上で削除された明細をremove
-                        foreach ($OriginalOrderItems as $OrderItem) {
-                            if (false === $TargetShipping->getOrderItems()->contains($OrderItem)) {
-                                $OrderItem->setShipping(null);
-                            }
+            $OriginShippingStatus = $OriginShipping->getShippingStatus();
+            $TargetShippingStatus = $TargetShipping->getShippingStatus();
+
+            // 出荷ステータス変更時の処理
+            if ($TargetShippingStatus !== null
+             && $TargetShippingStatus->getId() == ShippingStatus::SHIPPED) {
+                // 「出荷済み」にステータスが変更された場合
+                if ($OriginShippingStatus === null
+                 || $OriginShippingStatus->getId() != $TargetShippingStatus->getId()) {
+                    // 出荷日時を更新
+                    $TargetShipping->setShippingDate(new \DateTime());
+                    // 出荷メールを送信
+                    if ($form->get('notify_email')->getData()) {
+                        try {
+                            $this->mailService->sendShippingNotifyMail(
+                              $TargetShipping
+                            );
+                        } catch (\Exception $e) {
+                            log_error('メール通知エラー', [$TargetShipping->getId(), $e]);
+                            $this->addError(
+                              'admin.shipping.edit.shipped_mail_failed',
+                              'admin'
+                            );
                         }
-
-                        foreach ($TargetShipping->getOrderItems() as $OrderItem) {
-                            $OrderItem->setShipping($TargetShipping);
-                        }
-                        $this->entityManager->persist($TargetShipping);
-                        $this->entityManager->flush();
-
-                        $this->addSuccess('admin.shipping.edit.save.complete', 'admin');
-
-                        log_info('出荷登録完了', array($TargetShipping->getId()));
-
-                        return $this->redirectToRoute('admin_shipping_edit', array('id' => $TargetShipping->getId()));
                     }
+                }
+            } else {
+                // 「出荷済み」以外に変更した場合は、出荷日時をクリアする
+                $TargetShipping->setShippingDate(null);
+            }
 
-                    break;
+            try {
+                $this->entityManager->persist($TargetShipping);
+                $this->entityManager->flush();
 
-                default:
-                    break;
+                $this->addSuccess('admin.shipping.edit.save.complete', 'admin');
+                $this->addInfo('admin.shipping.edit.save.info', 'admin');
+                log_info('出荷登録完了', [$TargetShipping->getId()]);
+
+                return $this->redirectToRoute('admin_shipping_edit', ['id' => $TargetShipping->getId()]);
+            } catch (\Exception $e) {
+                log_error('出荷登録エラー', [$TargetShipping->getId(), $e]);
+                $this->addError('admin.flash.register_failed', 'admin');
             }
         }
 
         // 配送業者のお届け時間
-        $times = array();
+        $times = [];
         $deliveries = $this->deliveryRepository->findAll();
         foreach ($deliveries as $Delivery) {
             $deliveryTiems = $Delivery->getDeliveryTimes();
@@ -195,7 +237,7 @@ class EditController extends AbstractController
         }
 
         // FIXME: should use consistent param for pageno ? Other controller use page_no, but here use pageno, then I change from pageno to page_no
-        $page_no = (int)$request->get('page_no', 1);
+        $page_no = (int) $request->get('page_no', 1);
         $page_count = $this->eccubeConfig['eccube_default_page_count'];
 
         // TODO OrderItemRepository に移動
@@ -208,7 +250,7 @@ class EditController extends AbstractController
             $qb,
             $page_no,
             $page_count,
-            array('wrap-queries' => true)
+            ['wrap-queries' => true]
         );
 
         return [
@@ -226,7 +268,7 @@ class EditController extends AbstractController
             throw new BadRequestHttpException();
         }
 
-        $id = (int)$request->get('order-item-id');
+        $id = (int) $request->get('order-item-id');
         /** @var OrderItem $OrderItem */
         $OrderItem = $this->orderItemRepository->find($id);
         if (null === $OrderItem) {
@@ -238,5 +280,4 @@ class EditController extends AbstractController
             'OrderItem' => $OrderItem,
         ];
     }
-
 }

@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
 use Eccube\Entity\Delivery;
@@ -34,8 +33,6 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 /**
  * Class DeliveryControllerTest
- *
- * @package Eccube\Tests\Web\Admin\Setting\Shop
  */
 class DeliveryControllerTest extends AbstractAdminWebTestCase
 {
@@ -56,10 +53,10 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
 
         foreach ($Prefs as $Pref) {
             $DeliveryFee = $this->container->get(DeliveryFeeRepository::class)
-                ->findOrCreate(array(
+                ->findOrCreate([
                     'Delivery' => $Delivery,
                     'Pref' => $Pref,
-                ));
+                ]);
             $DeliveryFee->setFee($faker->randomNumber(3));
 
             $this->entityManager->persist($DeliveryFee);
@@ -121,9 +118,9 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
         $this->client->request(
             'POST',
             $this->generateUrl('admin_setting_shop_delivery_new'),
-            array(
+            [
                 'delivery' => $formData,
-            )
+            ]
         );
 
         $this->expected = $expected;
@@ -137,7 +134,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
     public function testRoutingEdit()
     {
         $Delivery = $this->createDelivery();
-        $this->client->request('GET', $this->generateUrl('admin_setting_shop_delivery_edit', array('id' => $Delivery->getId())));
+        $this->client->request('GET', $this->generateUrl('admin_setting_shop_delivery_edit', ['id' => $Delivery->getId()]));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -158,10 +155,10 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
         $Delivery = $this->createDelivery();
 
         $this->client->request('POST',
-            $this->generateUrl('admin_setting_shop_delivery_edit', array('id' => $Delivery->getId())),
-            array(
-                'delivery' => $formData
-            )
+            $this->generateUrl('admin_setting_shop_delivery_edit', ['id' => $Delivery->getId()]),
+            [
+                'delivery' => $formData,
+            ]
         );
 
         $this->expected = $expected;
@@ -178,7 +175,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
         $pid = $Delivery->getId();
         $this->client->request(
             'DELETE',
-            $this->generateUrl('admin_setting_shop_delivery_delete', array('id' => $pid))
+            $this->generateUrl('admin_setting_shop_delivery_delete', ['id' => $pid])
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirection());
@@ -194,7 +191,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
         $pid = 9999;
         $this->client->request(
             'DELETE',
-            $this->generateUrl('admin_setting_shop_delivery_delete', array('id' => $pid))
+            $this->generateUrl('admin_setting_shop_delivery_delete', ['id' => $pid])
         );
         $this->assertSame(404, $this->client->getResponse()->getStatusCode());
     }
@@ -206,20 +203,20 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
         $DeliveryTwo = $this->createDelivery();
         $newSortNo = $DeliveryTwo->getSortNo();
 
-        $request = array(
+        $request = [
             $DeliveryOne->getId() => $newSortNo,
-            $DeliveryTwo->getId() => $oldSortNo
-        );
+            $DeliveryTwo->getId() => $oldSortNo,
+        ];
 
         $this->client->request(
             'POST',
             $this->generateUrl('admin_setting_shop_delivery_sort_no_move'),
             $request,
-            array(),
-            array(
+            [],
+            [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
                 'CONTENT_TYPE' => 'application/json',
-            )
+            ]
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
@@ -232,56 +229,57 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
     {
         $faker = $this->getFaker();
 
-        $deliveryFree = array();
+        $deliveryFree = [];
         // 47 93 ?
         for ($i = 48; $i <= 93; $i++) {
             $tmpFee = $faker->randomNumber(5);
             if (mt_rand(0, 1)) {
                 $tmpFee = number_format($tmpFee);
             }
-            $deliveryFree[$i] = array('fee' => $tmpFee);
+            $deliveryFree[$i] = ['fee' => $tmpFee];
         }
 
-        $form = array(
+        $i = 0;
+        $form = [
             '_token' => 'dummy',
             'name' => $faker->word,
             'service_name' => $faker->word,
             'description' => $faker->word,
             'confirm_url' => $faker->url,
             'sale_type' => rand(1, 2),
-            'payments' => array('1'),
-            'delivery_times' => array(
-                array('delivery_time' => 'AM'),
-                array('delivery_time' => 'PM'),
-                array('delivery_time' => $faker->word),
-                array('delivery_time' => $faker->word),
-                array('delivery_time' => $faker->word),
-                array('delivery_time' => $faker->word),
-                array('delivery_time' => $faker->word),
-                array('delivery_time' => $faker->word),
-                array('delivery_time' => $faker->word),
-                array('delivery_time' => $faker->word),
-                array('delivery_time' => $faker->word),
-                array('delivery_time' => $faker->word),
-                array('delivery_time' => $faker->word),
-                array('delivery_time' => $faker->word),
-                array('delivery_time' => $faker->word),
-                array('delivery_time' => null),
-            ),
+            'payments' => ['1'],
+            'delivery_times' => [
+                ['delivery_time' => 'AM', 'sort_no' => $i++],
+                ['delivery_time' => 'PM', 'sort_no' => $i++],
+                ['delivery_time' => $faker->word, 'sort_no' => $i++],
+                ['delivery_time' => $faker->word, 'sort_no' => $i++],
+                ['delivery_time' => $faker->word, 'sort_no' => $i++],
+                ['delivery_time' => $faker->word, 'sort_no' => $i++],
+                ['delivery_time' => $faker->word, 'sort_no' => $i++],
+                ['delivery_time' => $faker->word, 'sort_no' => $i++],
+                ['delivery_time' => $faker->word, 'sort_no' => $i++],
+                ['delivery_time' => $faker->word, 'sort_no' => $i++],
+                ['delivery_time' => $faker->word, 'sort_no' => $i++],
+                ['delivery_time' => $faker->word, 'sort_no' => $i++],
+                ['delivery_time' => $faker->word, 'sort_no' => $i++],
+                ['delivery_time' => $faker->word, 'sort_no' => $i++],
+                ['delivery_time' => $faker->word, 'sort_no' => $i++],
+            ],
             'free_all' => $faker->randomNumber(5),
-            'delivery_fees' => $deliveryFree
-        );
+            'delivery_fees' => $deliveryFree,
+        ];
 
         return $form;
     }
 
     public function dataSubmitProvider()
     {
-        return array(
-            array(false, false),
-            array(true, true),
+        return [
+            [false, false],
+            [true, true],
             // To do implement
-        );
+        ];
     }
+
     //    TO DO : implement
 }

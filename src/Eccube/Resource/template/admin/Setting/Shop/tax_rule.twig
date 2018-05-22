@@ -52,7 +52,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             var inputDate = document.createElement('input');
             inputDate.setAttribute('type', 'date');
             if (inputDate.type !== 'date') {
-                $('input[name$="apply_date]"]').datetimepicker({
+                $('input[name$="tax_rule[apply_date][date]"]').datetimepicker({
                     locale: 'ja',
                     format: 'YYYY-MM-DD',
                     useCurrent: false,
@@ -111,7 +111,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <td class="align-middle pl-3"></td>
                                     <td class="align-middle" style="width:230px;">
                                         <div class="form-inline justify-content-end">
-                                            {{ form_widget(form.tax_rate, {attr: {class: 'col-auto text-right', max: '100'}}) }}<span class="pl-1 col-auto">%</span>
+                                            {{ form_widget(form.tax_rate, {attr: {class: 'col-auto text-right'}}) }}<span class="pl-1 col-auto">%</span>
                                             {{ form_errors(form.tax_rate) }}
                                         </div>
                                     </td>
@@ -120,12 +120,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         {{ form_errors(form.rounding_type) }}
                                     </td>
                                     <td class="align-middle">
-                                        {% if TargetTaxRule.default_tax_rule %}
-                                            {{ 'admin.setting.shop.tax_rule.tax_rule_default'|trans }}
-                                        {% else %}
-                                            {{ form_widget(form.apply_date) }}
-                                            {{ form_errors(form.apply_date) }}
-                                        {% endif %}
+                                        {{ form_widget(form.apply_date.date) }}
+                                        {{ form_widget(form.apply_date.time, { 'attr': { 'placeholder': '--:--' }}) }}
+                                        {{ form_errors(form.apply_date) }}
                                     </td>
                                     <td class="align-middle"></td>
                                     <td class="align-middle pr-5">
@@ -145,7 +142,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <td class="align-middle pl-3"><span>{{ TaxRule.id }}</span></td>
                                         <td class="align-middle text-right" style="width:230px;">
                                             <div class="edit form-inline justify-content-end">
-                                                {{ form_widget(forms[TaxRule.id].tax_rate, {attr: {class: 'col-auto text-right', max: '100'}}) }}<span class="pl-1 col-auto">%</span>
+                                                {{ form_widget(forms[TaxRule.id].tax_rate, {attr: {class: 'col-auto text-right'}}) }}<span class="pl-1 col-auto">%</span>
                                                 {{ form_errors(forms[TaxRule.id].tax_rate) }}
                                             </div>
                                             <div class="list">
@@ -165,7 +162,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 {% if TaxRule.default_tax_rule %}
                                                     {{ 'admin.setting.shop.tax_rule.tax_rule_default'|trans }}
                                                 {% else %}
-                                                    {{ form_widget(forms[TaxRule.id].apply_date) }}
+                                                    {{ form_widget(forms[TaxRule.id].apply_date.date) }}
+                                                    {{ form_widget(forms[TaxRule.id].apply_date.time, { 'attr': { 'placeholder': '--:--' }}) }}
+                                                    {{ form_errors(forms[TaxRule.id].apply_date) }}
                                                 {% endif %}
                                             </div>
                                             <div class="list">

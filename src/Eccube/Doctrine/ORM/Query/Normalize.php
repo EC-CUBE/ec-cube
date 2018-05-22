@@ -28,14 +28,11 @@ use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\SqlWalker;
 
-/**
- * @package Eccube\Doctrine\ORM\Query
- */
 class Normalize extends FunctionNode
 {
     protected $string;
     const FROM = 'あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをんがぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽぁぃぅぇぉっゃゅょわいえー';
-    const TO   = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポァィゥェォッャュョヮヰヱー';
+    const TO = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポァィゥェォッャュョヮヰヱー';
 
     public function parse(Parser $parser)
     {
@@ -58,6 +55,7 @@ class Normalize extends FunctionNode
                 $sql = sprintf('LOWER(%s)', $this->string->dispatch($sqlWalker));
                 break;
         }
+
         return $sql;
     }
 }

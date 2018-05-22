@@ -48,14 +48,12 @@ class EccubeConfigTest extends TestCase
     {
         $this->eccubeConfig->set('hoge.fuga', true);
         self::assertSame(true, $this->eccubeConfig->offsetGet('hoge.fuga'));
-
     }
 
     public function testOffsetGetNotFound()
     {
         $this->expectException(ParameterNotFoundException::class);
         $this->eccubeConfig->offsetGet('hoge.fuga');
-
     }
 
     public function testOffsetExist()
@@ -63,14 +61,12 @@ class EccubeConfigTest extends TestCase
         self::assertFalse($this->eccubeConfig->offsetExists('hoge.fuga'));
         $this->eccubeConfig->set('hoge.fuga', true);
         self::assertTrue($this->eccubeConfig->offsetExists('hoge.fuga'));
-
     }
 
     public function testOffsetSet()
     {
         $this->eccubeConfig->offsetSet('hoge.fuga', true);
         self::assertSame(true, $this->eccubeConfig->offsetGet('hoge.fuga'));
-
     }
 
     public function testOffsetUnset()

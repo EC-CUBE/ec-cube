@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Event;
 
 use Symfony\Component\EventDispatcher\Event;
@@ -29,11 +28,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class TemplateEvent
- * @package Eccube\Event
  */
 class TemplateEvent extends Event
 {
-
     /**
      * @var string
      */
@@ -62,7 +59,7 @@ class TemplateEvent extends Event
      * @param array $parameters
      * @param Response|null $response
      */
-    public function __construct($view, $source, array $parameters = array(), Response $response = null)
+    public function __construct($view, $source, array $parameters = [], Response $response = null)
     {
         $this->view = $view;
         $this->source = $source;
@@ -104,6 +101,7 @@ class TemplateEvent extends Event
 
     /**
      * @param $key
+     *
      * @return mixed
      */
     public function getParameter($key)
@@ -122,6 +120,7 @@ class TemplateEvent extends Event
 
     /**
      * @param $key
+     *
      * @return bool
      */
     public function hasParameter($key)
@@ -160,5 +159,4 @@ class TemplateEvent extends Event
     {
         $this->response = $response;
     }
-
 }

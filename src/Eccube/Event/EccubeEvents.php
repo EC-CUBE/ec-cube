@@ -21,13 +21,10 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Event;
-
 
 final class EccubeEvents
 {
-
     /**
      * Admin/AdminContoller
      */
@@ -72,14 +69,12 @@ final class EccubeEvents
 
     // upload
 
-
     /**
      * Admin/Content/LayoutController
      */
     // index
     const ADMIN_CONTENT_LAYOUT_INDEX_INITIALIZE = 'admin.content.layout.index.initialize';
     const ADMIN_CONTENT_LAYOUT_INDEX_COMPLETE = 'admin.content.layout.index.complete';
-
 
     /**
      * Admin/Content/NewsController
@@ -93,7 +88,6 @@ final class EccubeEvents
 
     // delete
     const ADMIN_CONTENT_NEWS_DELETE_COMPLETE = 'admin.content.news.delete.complete';
-
 
     /**
      * Admin/Content/PageController
@@ -120,12 +114,11 @@ final class EccubeEvents
 
     // delete
     const ADMIN_CUSTOMER_DELETE_COMPLETE = 'admin.customer.delete.complete';
-    
+
     const ADMIN_CUSTOMER_DELIVERY_DELETE_COMPLETE = 'admin.customer.delivery.delete.complete';
 
     // export
     const ADMIN_CUSTOMER_CSV_EXPORT = 'admin.customer.csv.export';
-
 
     /**
      * Admin/Customer/CustomerEditController
@@ -133,11 +126,11 @@ final class EccubeEvents
     // index
     const ADMIN_CUSTOMER_EDIT_INDEX_INITIALIZE = 'admin.customer.edit.index.initialize';
     const ADMIN_CUSTOMER_EDIT_INDEX_COMPLETE = 'admin.customer.edit.index.complete';
-    
+
     // index
     const ADMIN_CUSTOMER_DELIVERY_EDIT_INDEX_INITIALIZE = 'admin.customer.delivery.edit.index.initialize';
     const ADMIN_CUSTOMER_DELIVERY_EDIT_INDEX_COMPLETE = 'admin.customer.delivery.edit.index.complete';
-    
+
     /**
      * Admin/Order/EditController
      */
@@ -160,7 +153,6 @@ final class EccubeEvents
     const ADMIN_ORDER_EDIT_SEARCH_PRODUCT_SEARCH = 'admin.order.edit.search.product.search';
     const ADMIN_ORDER_EDIT_SEARCH_PRODUCT_COMPLETE = 'admin.order.edit.search.product.complete';
 
-
     /**
      * Admin/Order/MailController
      */
@@ -179,7 +171,6 @@ final class EccubeEvents
     const ADMIN_ORDER_MAIL_MAIL_ALL_CONFIRM = 'admin.order.mail.mail.all.confirm';
     const ADMIN_ORDER_MAIL_MAIL_ALL_COMPLETE = 'admin.order.mail.mail.all.complete';
 
-
     /**
      * Admin/Order/OrderController
      */
@@ -196,6 +187,12 @@ final class EccubeEvents
     // exportShipping
     const ADMIN_ORDER_CSV_EXPORT_SHIPPING = 'admin.order.csv.export.shipping';
 
+    /**
+     * Admin/Shipping/ShippingController
+     */
+    // index
+    const ADMIN_SHIPPING_INDEX_INITIALIZE = 'admin.shipping.index.initialize';
+    const ADMIN_SHIPPING_INDEX_SEARCH = 'admin.shipping.index.search';
 
     /**
      * Admin/Product/CategoryController
@@ -209,7 +206,7 @@ final class EccubeEvents
 
     // export
     const ADMIN_PRODUCT_CATEGORY_CSV_EXPORT = 'admin.product.category.csv.export';
-    
+
     /**
      * Admin/Product/TagController
      */
@@ -230,7 +227,6 @@ final class EccubeEvents
     // delete
     const ADMIN_PRODUCT_CLASS_CATEGORY_DELETE_COMPLETE = 'admin.product.class.category.delete.complete';
 
-
     /**
      * Admin/Product/ClassNameController
      */
@@ -241,7 +237,6 @@ final class EccubeEvents
     // delete
     const ADMIN_PRODUCT_CLASS_NAME_DELETE_COMPLETE = 'admin.product.class.name.delete.complete';
 
-
     /**
      * Admin/Product/CsvImportController
      */
@@ -250,7 +245,6 @@ final class EccubeEvents
     // csvCatgory
 
     // csvTemplate
-
 
     /**
      * Admin/Product/ProductClassController
@@ -264,7 +258,6 @@ final class EccubeEvents
     const ADMIN_PRODUCT_PRODUCT_CLASS_EDIT_COMPLETE = 'admin.product.product.class.edit.complete';
     const ADMIN_PRODUCT_PRODUCT_CLASS_EDIT_UPDATE = 'admin.product.product.class.edit.update';
     const ADMIN_PRODUCT_PRODUCT_CLASS_EDIT_DELETE = 'admin.product.product.class.edit.delete';
-
 
     /**
      * Admin/Product/ProductController
@@ -292,7 +285,6 @@ final class EccubeEvents
 
     // export
     const ADMIN_PRODUCT_CSV_EXPORT = 'admin.product.csv.export';
-
 
     /**
      * Admin/Setting/Shop/CsvController
@@ -360,14 +352,12 @@ final class EccubeEvents
     const ADMIN_SETTING_SYSTEM_AUTHORITY_INDEX_INITIALIZE = 'admin.setting.system.authority.index.initialize';
     const ADMIN_SETTING_SYSTEM_AUTHORITY_INDEX_COMPLETE = 'admin.setting.system.authority.index.complete';
 
-
     /**
      * Admin/Setting/System/LogController
      */
     // index
     const ADMIN_SETTING_SYSTEM_LOG_INDEX_INITIALIZE = 'admin.setting.system.log.index.initialize';
     const ADMIN_SETTING_SYSTEM_LOG_INDEX_COMPLETE = 'admin.setting.system.log.index.complete';
-
 
     /**
      * Admin/Setting/System/MasterdataController
@@ -382,7 +372,6 @@ final class EccubeEvents
     const ADMIN_SETTING_SYSTEM_MASTERDATA_EDIT_FORM_INITIALIZE = 'admin.setting.system.masterdata.edit.form.initialize';
     const ADMIN_SETTING_SYSTEM_MASTERDATA_EDIT_COMPLETE = 'admin.setting.system.masterdata.edit.complete';
 
-
     /**
      * Admin/Setting/System/MemberController
      */
@@ -396,7 +385,6 @@ final class EccubeEvents
     // delete
     const ADMIN_SETTING_SYSTEM_MEMBER_DELETE_INITIALIZE = 'admin.setting.system.member.delete.initialize';
     const ADMIN_SETTING_SYSTEM_MEMBER_DELETE_COMPLETE = 'admin.setting.system.member.delete.complete';
-
 
     /**
      * Block/SearchProductController
@@ -479,7 +467,6 @@ final class EccubeEvents
     // buystep
     const FRONT_CART_BUYSTEP_INITIALIZE = 'front.cart.buystep.initialize';
     const FRONT_CART_BUYSTEP_COMPLETE = 'front.cart.buystep.complete';
-
 
     /**
      * ContactController
@@ -586,13 +573,11 @@ final class EccubeEvents
     // shippingError
     const FRONT_SHOPPING_SHIPPING_ERROR_COMPLETE = 'front.shopping.shipping.error.complete';
 
-
     /**
      * UserDataController
      */
     // index
     const FRONT_USER_DATA_INDEX_INITIALIZE = 'front.user.data.index.initialize';
-
 
     /**
      * MailService
@@ -612,5 +597,4 @@ final class EccubeEvents
      */
     const SERVICE_SHOPPING_ORDER_STATUS = 'service.shopping.order.status';
     const SERVICE_SHOPPING_NOTIFY_COMPLETE = 'service.shopping.notify.complete';
-
 }

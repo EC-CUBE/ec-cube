@@ -30,7 +30,7 @@ class Environment extends \Twig_Environment
         $this->requestContext = $context;
     }
 
-    public function render($name, array $context = array())
+    public function render($name, array $context = [])
     {
         // twigファイルのソースコードを読み込み文字列化する.
         $source = $this->twig->getLoader()

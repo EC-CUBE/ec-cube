@@ -9,11 +9,10 @@ use Eccube\Tests\EccubeTestCase;
 
 class WhereCustomizerTest extends EccubeTestCase
 {
-
     public function testCustomizeNOP()
     {
         $builder = $this->createQueryBuilder();
-        $customizer = new WhereCustomizerTest_Customizer(function() { return []; });
+        $customizer = new WhereCustomizerTest_Customizer(function () { return []; });
         $customizer->customize($builder, null, '');
 
         self::assertEquals('SELECT p FROM Product p', $builder->getDQL());
@@ -22,7 +21,7 @@ class WhereCustomizerTest extends EccubeTestCase
     public function testCustomizeAddWhereClause()
     {
         $builder = $this->createQueryBuilder();
-        $customizer = new WhereCustomizerTest_Customizer(function() { return [WhereClause::eq('name', ':Name', 'hoge')]; });
+        $customizer = new WhereCustomizerTest_Customizer(function () { return [WhereClause::eq('name', ':Name', 'hoge')]; });
         $customizer->customize($builder, null, '');
 
         self::assertEquals('SELECT p FROM Product p WHERE name = :Name', $builder->getDQL());
@@ -31,10 +30,12 @@ class WhereCustomizerTest extends EccubeTestCase
     public function testCustomizeAddMultipleWhereClause()
     {
         $builder = $this->createQueryBuilder();
-        $customizer = new WhereCustomizerTest_Customizer(function() { return [
+        $customizer = new WhereCustomizerTest_Customizer(function () {
+            return [
             WhereClause::eq('name', ':Name', 'hoge'),
-            WhereClause::eq('delFlg', ':DelFlg', 0)
-        ]; });
+            WhereClause::eq('delFlg', ':DelFlg', 0),
+        ];
+        });
         $customizer->customize($builder, null, '');
 
         self::assertEquals('SELECT p FROM Product p WHERE name = :Name AND delFlg = :DelFlg', $builder->getDQL());
@@ -54,11 +55,11 @@ class WhereCustomizerTest extends EccubeTestCase
 class WhereCustomizerTest_Customizer extends WhereCustomizer
 {
     /**
-     * @var callable $callback
+     * @var callable
      */
     private $callback;
 
-    function __construct($callback)
+    public function __construct($callback)
     {
         $this->callback = $callback;
     }
@@ -66,11 +67,13 @@ class WhereCustomizerTest_Customizer extends WhereCustomizer
     /**
      * @param array $params
      * @param $queryKey
+     *
      * @return WhereClause[]
      */
     protected function createStatements($params, $queryKey)
     {
         $callback = $this->callback;
+
         return $callback($params);
     }
 

@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -68,6 +67,12 @@ class DeliveryTime extends \Eccube\Entity\AbstractEntity
      */
     private $Delivery;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="sort_no", type="smallint", options={"unsigned":true})
+     */
+    protected $sort_no;
 
     /**
      * Get id.
@@ -125,5 +130,29 @@ class DeliveryTime extends \Eccube\Entity\AbstractEntity
     public function getDelivery()
     {
         return $this->Delivery;
+    }
+
+    /**
+     * Set sort_no.
+     *
+     * @param int $sort_no
+     *
+     * @return $this
+     */
+    public function setSortNo($sort_no)
+    {
+        $this->sort_no = $sort_no;
+
+        return $this;
+    }
+
+    /**
+     * Get sort_no.
+     *
+     * @return int
+     */
+    public function getSortNo()
+    {
+        return $this->sort_no;
     }
 }

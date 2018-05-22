@@ -23,7 +23,6 @@
 
 namespace Eccube\Command;
 
-
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\PluginService;
 use Symfony\Component\Console\Command\Command;
@@ -67,7 +66,7 @@ trait PluginCommandTrait
             $command = $this->getApplication()->get('cache:clear');
             $command->run(new ArrayInput([
                 'command' => 'cache:clear',
-                '--no-warmup' => true
+                '--no-warmup' => true,
             ]), $io);
         } catch (\Exception $e) {
             $io->error($e->getMessage());

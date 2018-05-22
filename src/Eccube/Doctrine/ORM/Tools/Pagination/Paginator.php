@@ -67,7 +67,7 @@ class Paginator implements \Countable, \IteratorAggregate
         }
 
         $this->query = $query;
-        $this->fetchJoinCollection = (Boolean) $fetchJoinCollection;
+        $this->fetchJoinCollection = (bool) $fetchJoinCollection;
     }
 
     /**
@@ -110,6 +110,7 @@ class Paginator implements \Countable, \IteratorAggregate
     public function setUseOutputWalkers($useOutputWalkers)
     {
         $this->useOutputWalkers = $useOutputWalkers;
+
         return $this;
     }
 
@@ -121,7 +122,7 @@ class Paginator implements \Countable, \IteratorAggregate
         if ($this->count === null) {
             try {
                 $this->count = array_sum(array_map('current', $this->getCountQuery()->getScalarResult()));
-            } catch(NoResultException $e) {
+            } catch (NoResultException $e) {
                 $this->count = 0;
             }
         }
@@ -153,7 +154,7 @@ class Paginator implements \Countable, \IteratorAggregate
             $whereInQuery = $this->cloneQuery($this->query);
             // don't do this for an empty id array
             if (count($ids) == 0) {
-                return new \ArrayIterator(array());
+                return new \ArrayIterator([]);
             }
 
             $this->appendTreeWalker($whereInQuery, 'Eccube\Doctrine\ORM\Tools\Pagination\WhereInWalker');
@@ -207,7 +208,7 @@ class Paginator implements \Countable, \IteratorAggregate
     private function useOutputWalker(Query $query)
     {
         if ($this->useOutputWalkers === null) {
-            return (Boolean) $query->getHint(Query::HINT_CUSTOM_OUTPUT_WALKER) == false;
+            return (bool) $query->getHint(Query::HINT_CUSTOM_OUTPUT_WALKER) == false;
         }
 
         return $this->useOutputWalkers;
@@ -224,7 +225,7 @@ class Paginator implements \Countable, \IteratorAggregate
         $hints = $query->getHint(Query::HINT_CUSTOM_TREE_WALKERS);
 
         if ($hints === false) {
-            $hints = array();
+            $hints = [];
         }
 
         $hints[] = $walkerClass;
@@ -241,7 +242,7 @@ class Paginator implements \Countable, \IteratorAggregate
         /* @var $countQuery Query */
         $countQuery = $this->cloneQuery($this->query);
 
-        if ( ! $countQuery->hasHint(CountWalker::HINT_DISTINCT)) {
+        if (!$countQuery->hasHint(CountWalker::HINT_DISTINCT)) {
             $countQuery->setHint(CountWalker::HINT_DISTINCT, true);
         }
 
@@ -259,15 +260,15 @@ class Paginator implements \Countable, \IteratorAggregate
 
         $countQuery->setFirstResult(null)->setMaxResults(null);
 
-        $parser            = new Parser($countQuery);
+        $parser = new Parser($countQuery);
         $parameterMappings = $parser->parse()->getParameterMappings();
         /* @var $parameters \Doctrine\Common\Collections\Collection|\Doctrine\ORM\Query\Parameter[] */
-        $parameters        = $countQuery->getParameters();
+        $parameters = $countQuery->getParameters();
 
         foreach ($parameters as $key => $parameter) {
             $parameterName = $parameter->getName();
 
-            if( ! (isset($parameterMappings[$parameterName]) || array_key_exists($parameterName, $parameterMappings))) {
+            if (!(isset($parameterMappings[$parameterName]) || array_key_exists($parameterName, $parameterMappings))) {
                 unset($parameters[$key]);
             }
         }

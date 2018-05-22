@@ -21,13 +21,11 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Repository;
 
 use Eccube\Annotation\Repository;
 use Eccube\Entity\MailTemplate;
 use Symfony\Bridge\Doctrine\RegistryInterface;
-use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * MailTemplateRepository
@@ -46,7 +44,9 @@ class MailTemplateRepository extends AbstractRepository
 
     /**
      * @deprecated 呼び出し元で制御する
+     *
      * @param $id
+     *
      * @return MailTemplate|null|object
      */
     public function findOrCreate($id)

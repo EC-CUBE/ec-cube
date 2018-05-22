@@ -23,7 +23,6 @@
 
 namespace Eccube\Service\PurchaseFlow\Processor;
 
-
 use Eccube\Entity\ItemInterface;
 use Eccube\Entity\Master\ProductStatus;
 use Eccube\Service\PurchaseFlow\InvalidItemException;
@@ -38,6 +37,7 @@ class ProductStatusValidator extends ValidatableItemProcessor
     /**
      * @param ItemInterface $item
      * @param PurchaseContext $context
+     *
      * @throws InvalidItemException
      */
     protected function validate(ItemInterface $item, PurchaseContext $context)

@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Entity\Master;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -40,12 +39,14 @@ class CustomerStatus extends \Eccube\Entity\Master\AbstractMasterEntity
 {
     /**
      * 仮会員.
+     *
      * @deprecated
      */
     const NONACTIVE = 1;
 
     /**
      * 本会員.
+     *
      * @deprecated
      */
     const ACTIVE = 2;

@@ -34,7 +34,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class ZipType
- * @package Eccube\Form\Type
  */
 class ZipType extends AbstractType
 {
@@ -45,13 +44,13 @@ class ZipType extends AbstractType
 
     /**
      * ZipType constructor.
+     *
      * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
     {
         $this->eccubeConfig = $eccubeConfig;
     }
-
 
     /**
      * {@inheritdoc}
@@ -63,9 +62,9 @@ class ZipType extends AbstractType
 
         // required の場合は NotBlank も追加する
         if ($options['required']) {
-            $options['options']['constraints'] = array_merge(array(
-                new Assert\NotBlank(array()),
-            ), $options['options']['constraints']);
+            $options['options']['constraints'] = array_merge([
+                new Assert\NotBlank([]),
+            ], $options['options']['constraints']);
         }
 
         if (!isset($options['options']['error_bubbling'])) {
@@ -103,26 +102,32 @@ class ZipType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'options' => array('constraints' => array(), 'attr' => array('class' => 'p-postal-code')),
-            'zip01_options' => array(
-                'constraints' => array(
-                    new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
-                    new Assert\Length(array('min' => $this->eccubeConfig['eccube_zip01_len'], 'max' => $this->eccubeConfig['eccube_zip01_len'])),
-                ),
-            ),
-            'zip02_options' => array(
-                'constraints' => array(
-                    new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
-                    new Assert\Length(array('min' => $this->eccubeConfig['eccube_zip02_len'], 'max' => $this->eccubeConfig['eccube_zip02_len'])),
-                ),
-            ),
+        $resolver->setDefaults([
+            'options' => ['constraints' => [], 'attr' => ['class' => 'p-postal-code']],
+            'zip01_options' => [
+                'attr' => [
+                    'placeholder' => 'Zip01',
+                ],
+                'constraints' => [
+                    new Assert\Type(['type' => 'numeric', 'message' => 'form.type.numeric.invalid']),
+                    new Assert\Length(['min' => $this->eccubeConfig['eccube_zip01_len'], 'max' => $this->eccubeConfig['eccube_zip01_len']]),
+                ],
+            ],
+            'zip02_options' => [
+                'attr' => [
+                    'placeholder' => 'Zip02',
+                ],
+                'constraints' => [
+                    new Assert\Type(['type' => 'numeric', 'message' => 'form.type.numeric.invalid']),
+                    new Assert\Length(['min' => $this->eccubeConfig['eccube_zip02_len'], 'max' => $this->eccubeConfig['eccube_zip02_len']]),
+                ],
+            ],
             'zip01_name' => '',
             'zip02_name' => '',
             'error_bubbling' => false,
             'inherit_data' => true,
             'trim' => true,
-        ));
+        ]);
     }
 
     /**

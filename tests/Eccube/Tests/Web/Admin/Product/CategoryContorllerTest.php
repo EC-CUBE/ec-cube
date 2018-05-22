@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Web\Admin\Product;
 
 use Eccube\Entity\Category;
@@ -47,37 +46,37 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
 
     public function createCategories()
     {
-        $categories = array(
-            array('name' => '親1', 'hierarchy' => 1, 'sort_no' => 1,
-                  'child' => array(
-                      array('name' => '子1', 'hierarchy' => 2, 'sort_no' => 4,
-                            'child' => array(
-                                array('name' => '孫1', 'hierarchy' => 3, 'sort_no' => 9)
-                            ),
-                      ),
-                  ),
-            ),
-            array('name' => '親2', 'hierarchy' => 1, 'sort_no' => 2,
-                  'child' => array(
-                      array('name' => '子2-0', 'hierarchy' => 2, 'sort_no' => 5,
-                            'child' => array(
-                                array('name' => '孫2', 'hierarchy' => 3, 'sort_no' => 10)
-                            )
-                      ),
-                      array('name' => '子2-1', 'hierarchy' => 2, 'sort_no' => 6),
-                      array('name' => '子2-2', 'hierarchy' => 2, 'sort_no' => 7)
-                  ),
-            ),
-            array('name' => '親3', 'hierarchy' => 1, 'sort_no' => 3,
-                  'child' => array(
-                      array('name' => '子3', 'hierarchy' => 2, 'sort_no' => 8,
-                            'child' => array(
-                                array('name' => '孫3', 'hierarchy' => 3, 'sort_no' => 11)
-                            )
-                      )
-                  ),
-            ),
-        );
+        $categories = [
+            ['name' => '親1', 'hierarchy' => 1, 'sort_no' => 1,
+                  'child' => [
+                      ['name' => '子1', 'hierarchy' => 2, 'sort_no' => 4,
+                            'child' => [
+                                ['name' => '孫1', 'hierarchy' => 3, 'sort_no' => 9],
+                            ],
+                      ],
+                  ],
+            ],
+            ['name' => '親2', 'hierarchy' => 1, 'sort_no' => 2,
+                  'child' => [
+                      ['name' => '子2-0', 'hierarchy' => 2, 'sort_no' => 5,
+                            'child' => [
+                                ['name' => '孫2', 'hierarchy' => 3, 'sort_no' => 10],
+                            ],
+                      ],
+                      ['name' => '子2-1', 'hierarchy' => 2, 'sort_no' => 6],
+                      ['name' => '子2-2', 'hierarchy' => 2, 'sort_no' => 7],
+                  ],
+            ],
+            ['name' => '親3', 'hierarchy' => 1, 'sort_no' => 3,
+                  'child' => [
+                      ['name' => '子3', 'hierarchy' => 2, 'sort_no' => 8,
+                            'child' => [
+                                ['name' => '孫3', 'hierarchy' => 3, 'sort_no' => 11],
+                            ],
+                      ],
+                  ],
+            ],
+        ];
 
         foreach ($categories as $category_array) {
             $Category = new Category();
@@ -122,10 +121,11 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
     /**
      * 既存のデータを削除しておく.
      */
-    public function remove() {
+    public function remove()
+    {
         $this->deleteAllRows([
             'dtb_product_category',
-            'dtb_category'
+            'dtb_category',
         ]);
     }
 
@@ -140,33 +140,80 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
 
     public function testIndexWithPost()
     {
-        $params = array(
+        $params = [
             '_token' => 'dummy',
-            'name' => 'テストカテゴリ'
-        );
+            'name' => 'テストカテゴリ',
+        ];
 
         $this->client->request(
             'POST',
             $this->generateUrl('admin_product_category'),
-            array('admin_category' => $params)
+            ['admin_category' => $params]
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_product_category')));
     }
 
-    public function testIndexWithPostParent()
+    public function testInlineEdit()
     {
-        $params = array(
-            '_token' => 'dummy',
-            'name' => 'テストカテゴリ'
-        );
-        $Parent = $this->categoryRepository->findOneBy(array('name' => '子1'));
+        /** @var Category $Category */
+        $Category = $this->categoryRepository->findOneBy(['name' => '親1']);
+        $params = [
+            'category_'.$Category->getId() => [
+                '_token' => 'dummy',
+                'name' => '親0',
+            ],
+        ];
+
         $this->client->request(
             'POST',
-            $this->generateUrl('admin_product_category_show', array('parent_id' => $Parent->getId())),
-            array('admin_category' => $params)
+            $this->generateUrl('admin_product_category'),
+            $params
         );
-        $url = $this->generateUrl('admin_product_category_show', array('parent_id' => $Parent->getId()));
+
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_product_category')));
+        $this->assertEquals('親0', $Category->getName());
+    }
+
+    public function testInlineEditWithParent()
+    {
+        /** @var Category $Parent */
+        $Parent = $this->categoryRepository->findOneBy(['name' => '親1']);
+
+        /** @var Category $Category */
+        $Category = $Parent->getChildren()->current();
+
+        $params = [
+            'category_'.$Category->getId() => [
+                '_token' => 'dummy',
+                'name' => '子0',
+            ],
+        ];
+
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_product_category_show', ['parent_id' => $Parent->getId()]),
+            $params
+        );
+
+        $rUrl = $this->generateUrl('admin_product_category_show', ['parent_id' => $Parent->getId()]);
+        $this->assertTrue($this->client->getResponse()->isRedirect($rUrl));
+        $this->assertEquals('子0', $Category->getName());
+    }
+
+    public function testIndexWithPostParent()
+    {
+        $params = [
+            '_token' => 'dummy',
+            'name' => 'テストカテゴリ',
+        ];
+        $Parent = $this->categoryRepository->findOneBy(['name' => '子1']);
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_product_category_show', ['parent_id' => $Parent->getId()]),
+            ['admin_category' => $params]
+        );
+        $url = $this->generateUrl('admin_product_category_show', ['parent_id' => $Parent->getId()]);
         $this->assertTrue($this->client->getResponse()->isRedirect($url));
     }
 
@@ -182,15 +229,15 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->flush();
 
         $test_parent_category_id = $this->categoryRepository
-            ->findOneBy(array(
-                'name' => $TestParentCategory->getName()
-            ))
+            ->findOneBy([
+                'name' => $TestParentCategory->getName(),
+            ])
             ->getId();
 
         // main
         $this->client->request('GET',
             $this->generateUrl('admin_product_category_show',
-                array('parent_id' => $test_parent_category_id))
+                ['parent_id' => $test_parent_category_id])
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
@@ -203,15 +250,15 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->persist($TestCategory);
         $this->entityManager->flush();
         $test_category_id = $this->categoryRepository
-            ->findOneBy(array(
-                'name' => $TestCategory->getName()
-            ))
+            ->findOneBy([
+                'name' => $TestCategory->getName(),
+            ])
             ->getId();
 
         // main
         $this->client->request('GET',
             $this->generateUrl('admin_product_category_edit',
-                array('id' => $test_category_id))
+                ['id' => $test_category_id])
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
@@ -224,17 +271,17 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->persist($TestCategory);
         $this->entityManager->flush();
         $test_category_id = $this->categoryRepository
-            ->findOneBy(array(
-                'name' => $TestCategory->getName()
-            ))
+            ->findOneBy([
+                'name' => $TestCategory->getName(),
+            ])
             ->getId();
 
         // main
         $redirectUrl = $this->generateUrl('admin_product_category');
         $this->client->request('DELETE',
             $this->generateUrl('admin_product_category_delete',
-                array('id' => $test_category_id)),
-            array('_token' => 'dummy')
+                ['id' => $test_category_id]),
+            ['_token' => 'dummy']
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
@@ -242,17 +289,17 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
 
     public function testMoveSortNo()
     {
-        $Category = $this->categoryRepository->findOneBy(array('name' => '子1'));
+        $Category = $this->categoryRepository->findOneBy(['name' => '子1']);
 
         $this->client->request(
             'POST',
             $this->generateUrl('admin_product_category_sort_no_move'),
-            array($Category->getId() => 10),
-            array(),
-            array(
+            [$Category->getId() => 10],
+            [],
+            [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
                 'CONTENT_TYPE' => 'application/json',
-            )
+            ]
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
@@ -283,7 +330,7 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
                 ->setParent($TestParentCategory)
                 ->setCreator($TestCreator);
         } else {
-            $TestCategory->setName($TestParentCategory->getName() . '_c')
+            $TestCategory->setName($TestParentCategory->getName().'_c')
                 ->setSortNo($TestParentCategory->getSortNo() + 1)
                 ->setHierarchy($TestParentCategory->getHierarchy() + 1)
                 ->setParent($TestParentCategory)
@@ -296,23 +343,23 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
     public function testMoveSortNoAndShow()
     {
         // Give
-        $Category = $this->categoryRepository->findOneBy(array('name' => '親1'));
-        $Category2 = $this->categoryRepository->findOneBy(array('name' => '親2'));
-        $newSortNos = array(
+        $Category = $this->categoryRepository->findOneBy(['name' => '親1']);
+        $Category2 = $this->categoryRepository->findOneBy(['name' => '親2']);
+        $newSortNos = [
             $Category->getId() => $Category2->getSortNo(),
-            $Category2->getId() => $Category->getSortNo()
-        );
+            $Category2->getId() => $Category->getSortNo(),
+        ];
 
         // When
         $this->client->request(
             'POST',
             $this->generateUrl('admin_product_category_sort_no_move'),
             $newSortNos,
-            array(),
-            array(
+            [],
+            [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
                 'CONTENT_TYPE' => 'application/json',
-            )
+            ]
         );
 
         // Then
@@ -326,9 +373,9 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
             $this->generateUrl('admin_product_product_new')
         );
 
-        $CategoryLast = $this->categoryRepository->findOneBy(array('name' => '子2-2'));
-        $categoryNameLastElement = $crawler->filter('#admin_product_Category option')->last()->text();
-        $this->expected = $CategoryLast->getNameWithLevel();
+        $CategoryLast = $this->categoryRepository->findOneBy(['name' => '子2-2']);
+        $categoryNameLastElement = $crawler->filter('.c-directoryTree--register label')->last()->text();
+        $this->expected = $CategoryLast->getName();
         $this->actual = $categoryNameLastElement;
         $this->verify();
     }

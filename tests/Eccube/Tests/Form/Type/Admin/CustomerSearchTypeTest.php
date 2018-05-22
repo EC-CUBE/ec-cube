@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Form\Type\Admin\SearchCustomerType;
@@ -37,28 +36,28 @@ class CustomerSearchTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCas
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
-            ->createBuilder(SearchCustomerType::class, null, array(
+            ->createBuilder(SearchCustomerType::class, null, [
                 'csrf_protection' => false,
-            ))
+            ])
             ->getForm();
     }
 
     public function testTel_ValidData()
     {
-        $formData = array(
-            'tel' => '12345'
-        );
+        $formData = [
+            'tel' => '12345',
+        ];
 
         $this->form->submit($formData);
         $this->assertTrue($this->form->isValid());
     }
-    
+
     public function testTel_NotValidData()
     {
         //意味あんだか良くわからんが一応書いとく
-        $formData = array(
-            'tel' => '+〇三=abcふれ'
-        );
+        $formData = [
+            'tel' => '+〇三=abcふれ',
+        ];
 
         $this->form->submit($formData);
         $this->assertFalse($this->form->isValid());

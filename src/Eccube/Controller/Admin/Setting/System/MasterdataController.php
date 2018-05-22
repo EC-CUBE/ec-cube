@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Controller\Admin\Setting\System;
 
 use Doctrine\Common\Persistence\Mapping\MappingException;
@@ -46,14 +45,14 @@ class MasterdataController extends AbstractController
      */
     public function index(Request $request, $entity = null)
     {
-        $data = array();
+        $data = [];
 
         $builder = $this->formFactory->createBuilder(MasterdataType::class);
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_INDEX_INITIALIZE, $event);
@@ -64,9 +63,9 @@ class MasterdataController extends AbstractController
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $event = new EventArgs(
-                    array(
+                    [
                         'form' => $form,
-                    ),
+                    ],
                     $request
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_INDEX_COMPLETE, $event);
@@ -76,28 +75,28 @@ class MasterdataController extends AbstractController
                 }
 
                 return $this->redirectToRoute(
-                    'admin_setting_system_masterdata_view', array('entity' => $form['masterdata']->getData())
+                    'admin_setting_system_masterdata_view', ['entity' => $form['masterdata']->getData()]
                 );
             }
         } elseif (!is_null($entity)) {
-            $form->submit(array('masterdata' => $entity));
+            $form->submit(['masterdata' => $entity]);
             if ($form['masterdata']->isValid()) {
                 $entityName = str_replace('-', '\\', $entity);
                 try {
                     $masterdata = $this->entityManager->getRepository($entityName)->findBy(
-                        array(),
-                        array('sort_no' => 'ASC')
+                        [],
+                        ['sort_no' => 'ASC']
                     );
-                    $data['data'] = array();
+                    $data['data'] = [];
                     $data['masterdata_name'] = $entity;
                     foreach ($masterdata as $value) {
                         $data['data'][$value['id']]['id'] = $value['id'];
                         $data['data'][$value['id']]['name'] = $value['name'];
                     }
-                    $data['data'][] = array(
+                    $data['data'][] = [
                         'id' => '',
                         'name' => '',
-                    );
+                    ];
                 } catch (MappingException $e) {
                 }
             }
@@ -106,9 +105,9 @@ class MasterdataController extends AbstractController
         $builder2 = $this->formFactory->createBuilder(MasterdataEditType::class, $data);
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder2,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_INDEX_FORM2_INITIALIZE, $event);
@@ -130,9 +129,9 @@ class MasterdataController extends AbstractController
         $builder2 = $this->formFactory->createBuilder(MasterdataEditType::class);
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder2,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_EDIT_INITIALIZE, $event);
@@ -173,9 +172,9 @@ class MasterdataController extends AbstractController
                     $this->entityManager->flush();
 
                     $event = new EventArgs(
-                        array(
+                        [
                             'form' => $form2,
-                        ),
+                        ],
                         $request
                     );
                     $this->eventDispatcher->dispatch(
@@ -190,7 +189,7 @@ class MasterdataController extends AbstractController
                 }
 
                 return $this->redirectToRoute(
-                    'admin_setting_system_masterdata_view', array('entity' => $data['masterdata_name'])
+                    'admin_setting_system_masterdata_view', ['entity' => $data['masterdata_name']]
                 );
             }
         }
@@ -198,15 +197,15 @@ class MasterdataController extends AbstractController
         $builder = $this->formFactory->createBuilder(MasterdataType::class);
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_EDIT_FORM_INITIALIZE, $event);
 
         $form = $builder->getForm();
-        $parameter = array_merge($request->request->all(), array('masterdata' => $form2['masterdata_name']->getData()));
+        $parameter = array_merge($request->request->all(), ['masterdata' => $form2['masterdata_name']->getData()]);
         $form->submit($parameter);
 
         return [

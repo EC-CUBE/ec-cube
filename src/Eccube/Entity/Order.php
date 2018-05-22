@@ -21,12 +21,10 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Service\Calculator\OrderItemCollection;
-use Eccube\Service\ItemValidateException;
 use Eccube\Service\PurchaseFlow\ItemCollection;
 
 /**
@@ -43,13 +41,8 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     use PointTrait;
 
     /**
-     * @var ItemValidateException[]
-     */
-    private $errors = [];
-
-    /**
      * isMultiple
-     * 
+     *
      * @return boolean
      */
     public function isMultiple()
@@ -59,8 +52,9 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
 
     /**
      * 対象となるお届け先情報を取得
-     * 
+     *
      * @param integer $shippingId
+     *
      * @return \Eccube\Entity\Shipping|null
      */
     public function findShipping($shippingId)
@@ -81,7 +75,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
      */
     public function getSaleTypes()
     {
-        $saleTypes = array();
+        $saleTypes = [];
         foreach ($this->getOrderItems() as $OrderItem) {
             /* @var $ProductClass \Eccube\Entity\ProductClass */
             $ProductClass = $OrderItem->getProductClass();
@@ -93,20 +87,20 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
         return array_unique($saleTypes);
     }
 
-
     /**
      * 合計金額を計算
      *
      * @return string
+     *
      * @deprecated
      */
-    public function getTotalPrice() {
-
+    public function getTotalPrice()
+    {
         @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
-         return $this->getSubtotal() + $this->getCharge() + $this->getDeliveryFeeTotal() - $this->getDiscount();
+
+        return $this->getSubtotal() + $this->getCharge() + $this->getDeliveryFeeTotal() - $this->getDiscount();
 //        return $this->getSubtotal() + $this->getCharge() - $this->getDiscount();
     }
-
 
     /**
      * @var integer
@@ -123,7 +117,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
      * @ORM\Column(name="pre_order_id", type="string", length=255, nullable=true)
      */
     private $pre_order_id;
-    
+
     /**
      * @var string|null
      *
@@ -379,7 +373,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Eccube\Entity\MailHistory", mappedBy="Order")
+     * @ORM\OneToMany(targetEntity="Eccube\Entity\MailHistory", mappedBy="Order", cascade={"remove"})
      * @ORM\OrderBy({
      *     "send_date"="DESC"
      * })
@@ -528,25 +522,25 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     {
         return $this->pre_order_id;
     }
-    
+
     /**
      * Set code
-     * 
+     *
      * @param string|null $code
-     * 
+     *
      * @return Order
      */
-    public function setCode($code = NULL) 
+    public function setCode($code = null)
     {
         $this->code = $code;
-        
+
         return $this;
     }
-    
+
     /**
      * Get code
-     * 
-     * @return string|NULL
+     *
+     * @return string|null
      */
     public function getCode()
     {
@@ -1371,12 +1365,14 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
 
     /**
      * 商品の受注明細を取得
+     *
      * @return OrderItem[]
      */
     public function getProductOrderItems()
     {
         $sio = new OrderItemCollection($this->OrderItems->toArray());
-        return $sio->getProductClasses()->toArray();
+
+        return array_values($sio->getProductClasses()->toArray());
     }
 
     /**
@@ -1444,6 +1440,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
         foreach ($Shippings as $Shipping) {
             $Result->add($Shipping);
         }
+
         return $Result;
         // XXX 以下のロジックだと何故か空の Collection になってしまう場合がある
         // return new \Doctrine\Common\Collections\ArrayCollection(array_values($Shippings));
@@ -1708,23 +1705,6 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     }
 
     /**
-     * @param string $error
-     * @return void
-     */
-    public function addError($error)
-    {
-        $this->errors[] = $error;
-    }
-
-    /**
-     * @return ItemValidateException[]
-     */
-    public function getErrors()
-    {
-        return $this->errors;
-    }
-
-    /**
      * @param ItemInterface $item
      */
     public function addItem(ItemInterface $item)
@@ -1735,11 +1715,10 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     public function getQuantity()
     {
         $quantity = 0;
-        foreach($this->getItems() as $item) {
+        foreach ($this->getItems() as $item) {
             $quantity += $item->getQuantity();
         }
 
         return $quantity;
     }
-
 }

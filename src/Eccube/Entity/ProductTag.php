@@ -23,9 +23,10 @@ class ProductTag extends \Eccube\Entity\AbstractEntity
      */
     public function getTagId()
     {
-        if (empty($this->Tag)){
+        if (empty($this->Tag)) {
             return null;
         }
+
         return $this->Tag->getId();
     }
 
@@ -74,7 +75,6 @@ class ProductTag extends \Eccube\Entity\AbstractEntity
      * })
      */
     private $Creator;
-
 
     /**
      * Get id.
