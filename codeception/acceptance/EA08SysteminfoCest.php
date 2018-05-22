@@ -91,9 +91,7 @@ class EA08SysteminfoCest
         $I->fillField(['id' => 'admin_member_password_second'], 'password');
         $I->selectOption(['id' => 'admin_member_Authority'], 'システム管理者');
         $I->selectOption(['id' => 'admin_member_Work_1'], '稼働');
-        $I->click('#member_form .c-conversionArea__container button');
-
-        $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
+        $I->click('#member_form .c-conversionArea__container .c-conversionArea__leftBlockItem a');
 
         $I->see('メンバー管理', '#main .container-fluid div:nth-child(1) .box-header .box-title');
         $I->dontSee('admintest2', '#main .container-fluid .table_list .table tbody tr:nth-child(1) td:nth-child(1)');
@@ -158,10 +156,10 @@ class EA08SysteminfoCest
         $I->see('メンバー登録・編集', '#member_form .c-contentsArea__primaryCol .card-header .card-title');
 
         $I->fillField(['id' => 'admin_member_name'], 'administrator2');
-        $I->click('#member_form .c-conversionArea__container button');
+        $I->click('#member_form .c-conversionArea__container .c-conversionArea__leftBlockItem a');
 
         $I->see('メンバー管理', '#main .container-fluid div:nth-child(1) .box-header .box-title');
-        $I->dontSee('administrator', '#main .container-fluid .table_list .table tbody tr:nth-child(1) td:nth-child(1)');
+        $I->dontSee('administrator2', '#main .container-fluid .table_list .table tbody tr:nth-child(1) td:nth-child(1)');
     }
 
     public function systeminfo_メンバー管理編集異常(\AcceptanceTester $I)
