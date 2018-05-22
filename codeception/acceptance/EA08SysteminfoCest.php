@@ -216,7 +216,8 @@ class EA08SysteminfoCest
         $I->see('システム設定メンバー管理', '.c-pageTitle');
 
         $I->click('#search_result tbody tr:nth-child(1) .action-delete');
-        $I->acceptPopup();
+        $I->waitForElementVisible(['css' => '#search_result tbody tr:nth-child(1) .modal']);
+        $I->click('#search_result tbody tr:nth-child(1) .modal .btn-ec-delete');
 
         $I->see('メンバーを削除しました。', '.c-contentsArea .alert-success');
         $I->see('管理者', '#search_result tbody tr:nth-child(1) td:nth-child(1)');
