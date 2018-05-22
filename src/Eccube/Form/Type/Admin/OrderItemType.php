@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type\Admin;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -72,6 +71,7 @@ class OrderItemType extends AbstractType
 
     /**
      * OrderItemType constructor.
+     *
      * @param EntityManagerInterface $entityManager
      * @param EccubeConfig $eccubeConfig
      * @param ProductClassRepository $productClassRepository
@@ -92,53 +92,52 @@ class OrderItemType extends AbstractType
         $this->requestStack = $requestStack;
     }
 
-
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('new', HiddenType::class, array(
+            ->add('new', HiddenType::class, [
                 'required' => false,
                 'mapped' => false,
                 'data' => 1,
-            ))
-            ->add('id', HiddenType::class, array(
+            ])
+            ->add('id', HiddenType::class, [
                 'required' => false,
                 'mapped' => false,
-            ))
-            ->add('price', PriceType::class, array(
+            ])
+            ->add('price', PriceType::class, [
                 'accept_minus' => true,
-            ))
-            ->add('quantity', TextType::class, array(
-                'constraints' => array(
+            ])
+            ->add('quantity', TextType::class, [
+                'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(array(
+                    new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_int_len'],
-                    )),
-                ),
-            ))
-            ->add('tax_rate', TextType::class, array(
-                'constraints' => array(
+                    ]),
+                ],
+            ])
+            ->add('tax_rate', TextType::class, [
+                'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(array(
+                    new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_int_len'],
-                    )),
-                    new Assert\Regex(array(
+                    ]),
+                    new Assert\Regex([
                         'pattern' => "/^\d+(\.\d+)?$/u",
                         'message' => 'form.type.float.invalid',
-                    )),
-                ),
-            ))
-            ->add('product_name', TextType::class, array(
-                'constraints' => array(
+                    ]),
+                ],
+            ])
+            ->add('product_name', TextType::class, [
+                'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(array(
+                    new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_mtext_len'],
-                    )),
-                ),
-            ))
+                    ]),
+                ],
+            ])
             ->add('product_code', HiddenType::class)
             ->add('class_name1', HiddenType::class)
             ->add('class_name2', HiddenType::class)
@@ -310,9 +309,9 @@ class OrderItemType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'Eccube\Entity\OrderItem',
-        ));
+        ]);
     }
 
     /**

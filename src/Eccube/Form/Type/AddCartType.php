@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -103,20 +102,20 @@ class AddCartType extends AbstractType
 
         if ($Product->getStockFind()) {
             $builder
-                ->add('quantity', IntegerType::class, array(
+                ->add('quantity', IntegerType::class, [
                     'data' => 1,
-                    'attr' => array(
+                    'attr' => [
                         'min' => 1,
                         'maxlength' => $this->config['eccube_int_len'],
-                    ),
-                    'constraints' => array(
+                    ],
+                    'constraints' => [
                         new Assert\NotBlank(),
-                        new Assert\GreaterThanOrEqual(array(
+                        new Assert\GreaterThanOrEqual([
                             'value' => 1,
-                        )),
-                        new Assert\Regex(array('pattern' => '/^\d+$/')),
-                    ),
-                ))
+                        ]),
+                        new Assert\Regex(['pattern' => '/^\d+$/']),
+                    ],
+                ])
             ;
             if ($Product && $Product->getProductClasses()) {
                 if (!is_null($Product->getClassName1())) {
@@ -170,13 +169,13 @@ class AddCartType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired('product');
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => CartItem::class,
             'id_add_product_id' => true,
-            'constraints' => array(
+            'constraints' => [
                 // FIXME new Assert\Callback(array($this, 'validate')),
-            ),
-        ));
+            ],
+        ]);
     }
 
     /*
@@ -207,27 +206,27 @@ class AddCartType extends AbstractType
      */
     public function validate($data, ExecutionContext $context)
     {
-        $context->getValidator()->validate($data['product_class_id'], array(
+        $context->getValidator()->validate($data['product_class_id'], [
             new Assert\NotBlank(),
-        ), '[product_class_id]');
+        ], '[product_class_id]');
         if ($this->Product->getClassName1()) {
-            $context->validateValue($data['classcategory_id1'], array(
+            $context->validateValue($data['classcategory_id1'], [
                 new Assert\NotBlank(),
-                new Assert\NotEqualTo(array(
+                new Assert\NotEqualTo([
                     'value' => '__unselected',
-                    'message' => 'form.type.select.notselect'
-                )),
-            ), '[classcategory_id1]');
+                    'message' => 'form.type.select.notselect',
+                ]),
+            ], '[classcategory_id1]');
         }
         //商品規格2初期状態(未選択)の場合の返却値は「NULL」で「__unselected」ではない
         if ($this->Product->getClassName2()) {
-            $context->getValidator()->validate($data['classcategory_id2'], array(
+            $context->getValidator()->validate($data['classcategory_id2'], [
                 new Assert\NotBlank(),
-                new Assert\NotEqualTo(array(
+                new Assert\NotEqualTo([
                     'value' => '__unselected',
-                    'message' => 'form.type.select.notselect'
-                )),
-            ), '[classcategory_id2]');
+                    'message' => 'form.type.select.notselect',
+                ]),
+            ], '[classcategory_id2]');
         }
     }
 }

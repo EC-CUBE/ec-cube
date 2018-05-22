@@ -2,9 +2,7 @@
 
 namespace Acme\Controller;
 
-
 use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Repository\BaseInfoRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
@@ -21,6 +19,7 @@ class CleanAppController
 
     /**
      * @Route(path="/")
+     *
      * @return string
      */
     public function index()

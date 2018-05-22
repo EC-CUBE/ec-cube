@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Controller\Mypage;
 
 use Eccube\Controller\AbstractController;
@@ -85,10 +84,10 @@ class ChangeController extends AbstractController
         $builder = $this->formFactory->createBuilder(EntryType::class, $Customer);
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
                 'Customer' => $Customer,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_CHANGE_INDEX_INITIALIZE, $event);
@@ -98,7 +97,6 @@ class ChangeController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             log_info('会員編集開始');
 
             if ($Customer->getPassword() === $this->eccubeConfig['eccube_default_password']) {
@@ -117,10 +115,10 @@ class ChangeController extends AbstractController
             log_info('会員編集完了');
 
             $event = new EventArgs(
-                array(
+                [
                     'form' => $form,
                     'Customer' => $Customer,
-                ),
+                ],
                 $request
             );
             $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_CHANGE_INDEX_COMPLETE, $event);

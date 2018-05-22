@@ -38,7 +38,6 @@ class PriceTypeTest extends AbstractTypeTestCase
      *
      * 正常系のデータパターンを返す
      *
-     * @access public
      * @return array
      */
     public function getValidTestData()
@@ -96,9 +95,9 @@ class PriceTypeTest extends AbstractTypeTestCase
     {
         $form = $this->formFactory
             ->createBuilder(FormType::class, null, ['csrf_protection' => false])
-            ->add('price', PriceType::class, array(
+            ->add('price', PriceType::class, [
                 'required' => false,
-            ))
+            ])
             ->getForm();
 
         $form->submit(['price' => '']);

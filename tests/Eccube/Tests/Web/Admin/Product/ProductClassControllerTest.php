@@ -20,6 +20,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
 namespace Eccube\Tests\Web\Admin\Product;
 
 use Eccube\Entity\BaseInfo;
@@ -152,7 +153,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
     public function testProductClassNewWhenProductTaxRuleEnableAndEditTaxRuleIsEmpty()
     {
         // GIVE
-        /**
+        /*
          * @var BaseInfo $baseInfo
          */
         $this->BaseInfo->setOptionProductTaxRule(true);
@@ -340,7 +341,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         /* @var Crawler $crawler */
         $crawler = $this->client->request(
             'GET',
-            $this->generateUrl('admin_product_product_class', array('id' => $id))
+            $this->generateUrl('admin_product_product_class', ['id' => $id])
         );
 
         // edit class category with tax = 0
@@ -361,7 +362,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // check database
         $product = $this->productRepository->find($id);
         /* @var TaxRule $taxRule */
-        $taxRule = $this->taxRuleRepository->findOneBy(array('Product' => $product));
+        $taxRule = $this->taxRuleRepository->findOneBy(['Product' => $product]);
         $this->assertEquals(0, $taxRule->getTaxRate());
     }
 
@@ -380,7 +381,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         /* @var Crawler $crawler */
         $crawler = $this->client->request(
             'GET',
-            $this->generateUrl('admin_product_product_class', array('id' => $id))
+            $this->generateUrl('admin_product_product_class', ['id' => $id])
         );
 
         // edit class category without tax
@@ -401,7 +402,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // check database
         $product = $this->productRepository->find($id);
         /* @var TaxRule $taxRule */
-        $taxRule = $this->taxRuleRepository->findOneBy(array('Product' => $product));
+        $taxRule = $this->taxRuleRepository->findOneBy(['Product' => $product]);
         $this->assertNull($taxRule);
     }
 
@@ -420,7 +421,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         /* @var Crawler $crawler */
         $crawler = $this->client->request(
             'GET',
-            $this->generateUrl('admin_product_product_class', array('id' => $id))
+            $this->generateUrl('admin_product_product_class', ['id' => $id])
         );
 
         /* @var Form $form */
@@ -440,7 +441,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // check database
         $product = $this->productRepository->find($id);
         /* @var TaxRule $taxRule */
-        $taxRule = $this->taxRuleRepository->findOneBy(array('Product' => $product));
+        $taxRule = $this->taxRuleRepository->findOneBy(['Product' => $product]);
         $this->assertNotNull($taxRule);
     }
 
@@ -451,7 +452,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
     public function testProductClassEditWhenProductTaxRuleEnableAndAddNewClass()
     {
         // GIVE
-        /**
+        /*
          * @var BaseInfo $baseInfo
          */
         $this->BaseInfo->setOptionProductTaxRule(true);
@@ -475,7 +476,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         /* @var Crawler $crawler */
         $crawler = $this->client->request(
             'GET',
-            $this->generateUrl('admin_product_product_class', array('id' => $product->getId()))
+            $this->generateUrl('admin_product_product_class', ['id' => $product->getId()])
         );
 
         // edit class category with tax
@@ -497,7 +498,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
 
         // check database
         /* @var TaxRule $taxRule */
-        $taxRule = $this->taxRuleRepository->findBy(array('Product' => $product));
+        $taxRule = $this->taxRuleRepository->findBy(['Product' => $product]);
         $this->assertCount(2, $taxRule);
     }
 
@@ -516,7 +517,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         /* @var Crawler $crawler */
         $crawler = $this->client->request(
             'GET',
-            $this->generateUrl('admin_product_product_class', array('id' => $id))
+            $this->generateUrl('admin_product_product_class', ['id' => $id])
         );
 
         // edit class category with tax
@@ -534,7 +535,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // check database
         $product = $this->productRepository->find($id);
         /* @var TaxRule $taxRule */
-        $taxRule = $this->taxRuleRepository->findBy(array('Product' => $product));
+        $taxRule = $this->taxRuleRepository->findBy(['Product' => $product]);
         $this->assertCount(0, $taxRule);
     }
 
@@ -552,22 +553,22 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
     {
         /* @var $ClassCategory \Eccube\Entity\ClassCategory */
         //set 金 rank
-        $ClassCategory = $this->classCategoryRepository->findOneBy(array('name' => '金'));
+        $ClassCategory = $this->classCategoryRepository->findOneBy(['name' => '金']);
         $ClassCategory->setSortNo(3);
         $this->entityManager->persist($ClassCategory);
         $this->entityManager->flush($ClassCategory);
         //set 銀 rank
-        $ClassCategory = $this->classCategoryRepository->findOneBy(array('name' => '銀'));
+        $ClassCategory = $this->classCategoryRepository->findOneBy(['name' => '銀']);
         $ClassCategory->setSortNo(2);
         $this->entityManager->persist($ClassCategory);
         $this->entityManager->flush($ClassCategory);
         //set プラチナ rank
-        $ClassCategory = $this->classCategoryRepository->findOneBy(array('name' => 'プラチナ'));
+        $ClassCategory = $this->classCategoryRepository->findOneBy(['name' => 'プラチナ']);
         $ClassCategory->setSortNo(1);
         $this->entityManager->persist($ClassCategory);
         $this->entityManager->flush($ClassCategory);
         $client = $this->client;
-        $crawler = $client->request('GET', $this->generateUrl('admin_product_product_class', array('id' => 1)));
+        $crawler = $client->request('GET', $this->generateUrl('admin_product_product_class', ['id' => 1]));
         $this->assertTrue($client->getResponse()->isSuccessful());
 
         $classCategories = [];
@@ -583,12 +584,12 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         //金, 銀, プラチナ sort by rank setup above.
         $this->expected = '金';
         $this->actual = $classCategories[1];
-        $this->assertContains( $this->expected, $this->actual);
+        $this->assertContains($this->expected, $this->actual);
         $this->expected = '銀';
         $this->actual = $classCategories[4];
-        $this->assertContains( $this->expected, $this->actual);
+        $this->assertContains($this->expected, $this->actual);
         $this->expected = 'プラチナ';
         $this->actual = $classCategories[7];
-        $this->assertContains( $this->expected, $this->actual);
+        $this->assertContains($this->expected, $this->actual);
     }
 }

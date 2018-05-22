@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Controller\Admin\Setting\Shop;
 
 use Eccube\Controller\AbstractController;
@@ -31,19 +30,14 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\TaxRuleType;
 use Eccube\Repository\TaxRuleRepository;
-use Eccube\Util\CacheUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class TaxRuleController
- *
- * @package Eccube\Controller\Admin\Setting\Shop
  */
 class TaxRuleController extends AbstractController
 {
@@ -69,7 +63,6 @@ class TaxRuleController extends AbstractController
         $this->taxRuleRepository = $taxRuleRepository;
     }
 
-
     /**
      * 税率設定の初期表示・登録
      *
@@ -84,11 +77,11 @@ class TaxRuleController extends AbstractController
             ->createBuilder(TaxRuleType::class, $TargetTaxRule);
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
                 'BaseInfo' => $this->BaseInfo,
                 'TargetTaxRule' => $TargetTaxRule,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_TAX_RULE_INDEX_INITIALIZE, $event);
@@ -103,11 +96,11 @@ class TaxRuleController extends AbstractController
                 $this->entityManager->flush();
 
                 $event = new EventArgs(
-                    array(
+                    [
                         'form' => $form,
                         'BaseInfo' => $this->BaseInfo,
                         'TargetTaxRule' => $TargetTaxRule,
-                    ),
+                    ],
                     $request
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_TAX_RULE_INDEX_COMPLETE, $event);
@@ -122,8 +115,8 @@ class TaxRuleController extends AbstractController
         $TaxRules = $this->taxRuleRepository->getList();
 
         // edit tax rule form
-        $forms = array();
-        $errors = array();
+        $forms = [];
+        $errors = [];
         /** @var TaxRule $TaxRule */
         foreach ($TaxRules as $TaxRule) {
             /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
@@ -136,7 +129,7 @@ class TaxRuleController extends AbstractController
             $error = 0;
             if ($mode == 'edit_inline'
                 && $request->getMethod() === 'POST'
-                && (string)$TaxRule->getId() === $request->get('tax_rule_id')
+                && (string) $TaxRule->getId() === $request->get('tax_rule_id')
                 ) {
                 $editTaxRuleForm->handleRequest($request);
                 if ($editTaxRuleForm->isValid()) {
@@ -146,6 +139,7 @@ class TaxRuleController extends AbstractController
                     $this->entityManager->flush();
 
                     $this->addSuccess('admin.shop.tax.save.complete', 'admin');
+
                     return $this->redirectToRoute('admin_setting_shop_tax');
                 }
                 $error = count($editTaxRuleForm->getErrors(true));
@@ -160,7 +154,7 @@ class TaxRuleController extends AbstractController
             'TaxRules' => $TaxRules,
             'form' => $form->createView(),
             'forms' => $forms,
-            'errors' => $errors
+            'errors' => $errors,
         ];
     }
 
@@ -178,9 +172,9 @@ class TaxRuleController extends AbstractController
             $this->taxRuleRepository->delete($TaxRule);
 
             $event = new EventArgs(
-                array(
+                [
                     'TargetTaxRule' => $TaxRule,
-                ),
+                ],
                 $request
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_TAX_RULE_DELETE_COMPLETE, $event);

@@ -36,12 +36,12 @@ class RepeatedEmailTypeTest extends AbstractTypeTestCase
     /**
      * @var array デフォルト値（正常系）を設定
      */
-    protected $formData = array(
-        'email' => array(
-            'first' =>'eccube@example.com',
-            'second' =>'eccube@example.com',
-        ),
-    );
+    protected $formData = [
+        'email' => [
+            'first' => 'eccube@example.com',
+            'second' => 'eccube@example.com',
+        ],
+    ];
 
     /**
      * {@inheritdoc}
@@ -52,8 +52,8 @@ class RepeatedEmailTypeTest extends AbstractTypeTestCase
 
         $this->form = $this->formFactory
             ->createBuilder(FormType::class, null, ['csrf_protection' => false])
-            ->add('email', RepeatedEmailType::class, array(
-            ))
+            ->add('email', RepeatedEmailType::class, [
+            ])
             ->getForm();
     }
 

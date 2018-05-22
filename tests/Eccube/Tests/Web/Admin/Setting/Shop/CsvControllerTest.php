@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
 use Eccube\Common\Constant;
@@ -35,8 +34,7 @@ class CsvControllerTest extends AbstractAdminWebTestCase
 {
     public function testRoutingCsv()
     {
-
-        $this->client->request('GET', $this->generateUrl('admin_setting_shop_csv', array('id' => 1)));
+        $this->client->request('GET', $this->generateUrl('admin_setting_shop_csv', ['id' => 1]));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -45,10 +43,9 @@ class CsvControllerTest extends AbstractAdminWebTestCase
         $CsvType = $this->container->get(CsvTypeRepository::class)->find(1);
         $this->assertNotEmpty($CsvType);
 
-        $Csv = $this->container->get(CsvRepository::class)->findBy(array('CsvType' => $CsvType, 'enabled' => true), array('sort_no' => 'ASC'));
+        $Csv = $this->container->get(CsvRepository::class)->findBy(['CsvType' => $CsvType, 'enabled' => true], ['sort_no' => 'ASC']);
         $this->assertNotEmpty($Csv);
     }
-
 
     public function testSetCsv()
     {
@@ -68,7 +65,7 @@ class CsvControllerTest extends AbstractAdminWebTestCase
 
     public function testRoutingCsvFail()
     {
-        $this->client->request('GET', $this->generateUrl('admin_setting_shop_csv', array('id' => 9999)));
+        $this->client->request('GET', $this->generateUrl('admin_setting_shop_csv', ['id' => 9999]));
 
         $this->assertSame(404, $this->client->getResponse()->getStatusCode());
     }
@@ -79,28 +76,28 @@ class CsvControllerTest extends AbstractAdminWebTestCase
         $CsvOut = $this->createCsv($csvType);
         $CsvNotOut = $this->createCsv($csvType);
 
-        $form = array(
+        $form = [
             '_token' => 'dummy',
             'csv_type' => $csvType,
-            'csv_not_output' => array(
+            'csv_not_output' => [
                 $CsvOut->getId(),
-            ),
-            'csv_output' => array(
+            ],
+            'csv_output' => [
                 $CsvNotOut->getId(),
-            ),
-        );
+            ],
+        ];
 
         $this->client->request(
             'POST',
-            $this->generateUrl('admin_setting_shop_csv', array('id' => $csvType)),
-            array('form' => $form)
+            $this->generateUrl('admin_setting_shop_csv', ['id' => $csvType]),
+            ['form' => $form]
         );
 
-        $redirectUrl = $this->generateUrl('admin_setting_shop_csv', array('id' => $csvType));
+        $redirectUrl = $this->generateUrl('admin_setting_shop_csv', ['id' => $csvType]);
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
-        $this->actual = array($CsvNotOut->isEnabled(), $CsvOut->isEnabled());
-        $this->expected = array(Constant::ENABLED, Constant::DISABLED);
+        $this->actual = [$CsvNotOut->isEnabled(), $CsvOut->isEnabled()];
+        $this->expected = [Constant::ENABLED, Constant::DISABLED];
         $this->verify();
     }
 
@@ -109,7 +106,7 @@ class CsvControllerTest extends AbstractAdminWebTestCase
         $CsvType = $this->container->get(CsvTypeRepository::class)->find($csvType);
         $Creator = $this->createMember();
 
-        $csv = $this->container->get(CsvRepository::class)->findOneBy(array('CsvType' => $CsvType), array('sort_no' => 'DESC'));
+        $csv = $this->container->get(CsvRepository::class)->findOneBy(['CsvType' => $CsvType], ['sort_no' => 'DESC']);
         $sortNo = 1;
         if ($csv) {
             $sortNo = $csv->getSortNo() + 1;

@@ -43,6 +43,7 @@ class ConfigManager
      * プラグイン設定情報のキャッシュを書き込む.
      *
      * @param string $cacheFile
+     *
      * @return int|boolean file_put_contents() の結果
      */
     public static function writePluginConfigCache($cacheFile = null)
@@ -55,6 +56,7 @@ class ConfigManager
         if (!file_exists($temp_dir)) {
             @mkdir($temp_dir);
         }
+
         return file_put_contents($cacheFile, sprintf('<?php return %s', var_export($pluginConfigs, true)).';');
     }
 
@@ -69,6 +71,7 @@ class ConfigManager
         if (file_exists($cacheFile)) {
             return unlink($cacheFile);
         }
+
         return false;
     }
 
@@ -102,14 +105,13 @@ class ConfigManager
      */
     public static function parsePluginConfigs()
     {
-
         $finder = Finder::create()
             ->in(self::getPluginRealDir())
             ->directories()
             ->depth(0);
         $finder->sortByName();
 
-        $pluginConfigs = array();
+        $pluginConfigs = [];
         foreach ($finder as $dir) {
             $code = $dir->getBaseName();
             if (!$code) {
@@ -132,10 +134,10 @@ class ConfigManager
                 $event = Yaml::parse(file_get_contents($file));
             }
             if (!is_null($config)) {
-                $pluginConfigs[$code] = array(
+                $pluginConfigs[$code] = [
                     'config' => $config,
-                    'event' => $event
-                );
+                    'event' => $event,
+                ];
             }
         }
 

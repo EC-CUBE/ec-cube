@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
 use Eccube\Repository\MailTemplateRepository;
@@ -29,8 +28,6 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 /**
  * Class MailControllerTest
- *
- * @package Eccube\Tests\Web\Admin\Setting\Shop
  */
 class MailControllerTest extends AbstractAdminWebTestCase
 {
@@ -69,7 +66,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
     {
         $MailTemplate = $this->createMail();
         $this->client->request('GET',
-            $this->generateUrl('admin_setting_shop_mail_edit', array('id' => $MailTemplate->getId()))
+            $this->generateUrl('admin_setting_shop_mail_edit', ['id' => $MailTemplate->getId()])
         );
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -81,21 +78,21 @@ class MailControllerTest extends AbstractAdminWebTestCase
     public function testEdit()
     {
         $MailTemplate = $this->createMail();
-        $form = array(
+        $form = [
             '_token' => 'dummy',
             'template' => $MailTemplate->getId(),
             'mail_subject' => 'Test Subject',
             'mail_header' => 'Test Header',
             'mail_footer' => 'Test Footer',
-            'tpl_data' => 'Test TPL Data'
-        );
+            'tpl_data' => 'Test TPL Data',
+        ];
         $this->client->request(
             'POST',
-            $this->generateUrl('admin_setting_shop_mail_edit', array('id' => $MailTemplate->getId())),
-            array('mail' => $form)
+            $this->generateUrl('admin_setting_shop_mail_edit', ['id' => $MailTemplate->getId()]),
+            ['mail' => $form]
         );
 
-        $redirectUrl = $this->generateUrl('admin_setting_shop_mail_edit', array('id' => $MailTemplate->getId()));
+        $redirectUrl = $this->generateUrl('admin_setting_shop_mail_edit', ['id' => $MailTemplate->getId()]);
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
         $this->actual = $form['mail_subject'];
@@ -106,17 +103,17 @@ class MailControllerTest extends AbstractAdminWebTestCase
     public function testEditFail()
     {
         $mid = 99999;
-        $form = array(
+        $form = [
             '_token' => 'dummy',
             'template' => $mid,
             'mail_subject' => 'Test Subject',
             'mail_header' => 'Test Header',
             'mail_footer' => 'Test Footer',
-        );
+        ];
         $this->client->request(
             'POST',
-            $this->generateUrl('admin_setting_shop_mail_edit', array('id' => $mid)),
-            array('mail' => $form)
+            $this->generateUrl('admin_setting_shop_mail_edit', ['id' => $mid]),
+            ['mail' => $form]
         );
 
         $redirectUrl = $this->generateUrl('admin_setting_shop_mail');
@@ -133,17 +130,17 @@ class MailControllerTest extends AbstractAdminWebTestCase
      */
     public function testCreateFail()
     {
-        $form = array(
+        $form = [
             '_token' => 'dummy',
             'template' => null,
             'mail_subject' => null,
             'mail_header' => null,
             'mail_footer' => null,
-        );
+        ];
         $this->client->request(
             'POST',
             $this->generateUrl('admin_setting_shop_mail'),
-            array('mail' => $form)
+            ['mail' => $form]
         );
 
         $redirectUrl = $this->generateUrl('admin_setting_shop_mail');

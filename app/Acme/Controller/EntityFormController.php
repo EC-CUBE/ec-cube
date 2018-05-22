@@ -1,4 +1,5 @@
 <?php
+
 namespace Acme\Controller;
 
 use Eccube\Application;
@@ -31,11 +32,11 @@ class EntityFormController
             // do stuff.
         }
 
-        $template = "
+        $template = '
             {{ form_start(form) }}
             {{ form_row(form) }}
             {{ form_end(form) }}
-        ";
+        ';
 
         $params = ['form' => $form->createView()];
 

@@ -7,7 +7,6 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class CsvLoaderCommandTest extends AbstractCommandTest
 {
-
     /** @var $file \SplFileObject */
     protected $file;
 
@@ -37,11 +36,10 @@ class CsvLoaderCommandTest extends AbstractCommandTest
 
     public function testExecute()
     {
-
-        $commandArg = array(
+        $commandArg = [
             'command' => 'csv-loader',
             '--file' => $this->file->getRealPath(),
-        );
+        ];
 
         $command = $this->app['console']->find($this->command->getName());
         $this->expected = $commandArg['command'];
@@ -54,14 +52,13 @@ class CsvLoaderCommandTest extends AbstractCommandTest
         $output = $CommandTester->getDisplay();
         $this->assertContains('CSV Loader complete.', $output);
 
-
         $this->file->setFlags(\SplFileObject::READ_CSV | \SplFileObject::READ_AHEAD | \SplFileObject::SKIP_EMPTY);
         $this->file->rewind();
         $this->file->next();
 
         // ファイルのデータ行を取得しておく
-        $rows = array();
-        while(!$this->file->eof()) {
+        $rows = [];
+        while (!$this->file->eof()) {
             $rows[] = $this->file->current();
             $this->file->next();
         }
@@ -77,8 +74,5 @@ class CsvLoaderCommandTest extends AbstractCommandTest
             $this->actual = $Job->getId().', '.$Job->getName().', '.$Job->getRank();
             $this->verify($key.'行目のデータは一致するか？');
         }
-
     }
-
 }
-

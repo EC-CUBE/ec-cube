@@ -15,6 +15,7 @@ class SaleLimitValidator extends ValidatableItemProcessor
     /**
      * @param ItemInterface $item
      * @param PurchaseContext $context
+     *
      * @throws InvalidItemException
      */
     protected function validate(ItemInterface $item, PurchaseContext $context)

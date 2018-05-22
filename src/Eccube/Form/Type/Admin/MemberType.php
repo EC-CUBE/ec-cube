@@ -62,67 +62,68 @@ class MemberType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class, array(
+            ->add('name', TextType::class, [
                 'label' => 'member.label.name',
-                'constraints' => array(
-                    new Assert\NotBlank(array('message' => $this->blankMessage)),
-                    new Assert\Length(array('max' => $this->eccubeConfig['eccube_stext_len'])),
-                ),
-            ))
-            ->add('department', TextType::class, array(
+                'constraints' => [
+                    new Assert\NotBlank(['message' => $this->blankMessage]),
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
+                ],
+            ])
+            ->add('department', TextType::class, [
+                'required' => false,
                 'label' => 'member.label.organization',
-                'constraints' => array(
-                    new Assert\NotBlank(array('message' => $this->blankMessage)),
-                    new Assert\Length(array('max' => $this->eccubeConfig['eccube_stext_len'])),
-                ),
-            ))
-            ->add('login_id', TextType::class, array(
+                'constraints' => [
+                    new Assert\NotBlank(['message' => $this->blankMessage]),
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
+                ],
+            ])
+            ->add('login_id', TextType::class, [
                 'label' => 'member.label.login_id',
-                'constraints' => array(
-                    new Assert\NotBlank(array('message' => $this->blankMessage)),
-                    new Assert\Length(array(
+                'constraints' => [
+                    new Assert\NotBlank(['message' => $this->blankMessage]),
+                    new Assert\Length([
                         'min' => $this->eccubeConfig['eccube_id_min_len'],
                         'max' => $this->eccubeConfig['eccube_id_max_len'],
-                    )),
-                    new Assert\Regex(array('pattern' => '/^[[:graph:][:space:]]+$/i')),
-                ),
-            ))
-            ->add('password', RepeatedType::class, array(
+                    ]),
+                    new Assert\Regex(['pattern' => '/^[[:graph:][:space:]]+$/i']),
+                ],
+            ])
+            ->add('password', RepeatedType::class, [
                 // 'type' => 'password',
-                'first_options'  => array(
+                'first_options' => [
                     'label' => 'member.label.pass',
-                ),
-                'second_options' => array(
+                ],
+                'second_options' => [
                     'label' => 'member.label.varify_pass',
-                ),
-                'constraints' => array(
-                    new Assert\NotBlank(array('message' => $this->blankMessage)),
-                    new Assert\Length(array(
+                ],
+                'constraints' => [
+                    new Assert\NotBlank(['message' => $this->blankMessage]),
+                    new Assert\Length([
                         'min' => $this->eccubeConfig['eccube_id_min_len'],
                         'max' => $this->eccubeConfig['eccube_id_max_len'],
-                    )),
-                    new Assert\Regex(array('pattern' => '/^[[:graph:][:space:]]+$/i')),
-                ),
-            ))
-            ->add('Authority', EntityType::class, array(
+                    ]),
+                    new Assert\Regex(['pattern' => '/^[[:graph:][:space:]]+$/i']),
+                ],
+            ])
+            ->add('Authority', EntityType::class, [
                 'label' => 'admin.setting.system.member.689',
                 'class' => 'Eccube\Entity\Master\Authority',
                 'expanded' => false,
                 'multiple' => false,
                 'placeholder' => 'form.empty_value',
-                'constraints' => array(
-                    new Assert\NotBlank(array('message' => $this->blankMessage)),
-                ),
-            ))
-            ->add('Work', EntityType::class, array(
+                'constraints' => [
+                    new Assert\NotBlank(['message' => $this->blankMessage]),
+                ],
+            ])
+            ->add('Work', EntityType::class, [
                 'label' => 'admin.setting.system.member.690',
                 'class' => 'Eccube\Entity\Master\Work',
                 'expanded' => true,
                 'multiple' => false,
-                'constraints' => array(
-                    new Assert\NotBlank(array('message' => $this->blankMessage)),
-                ),
-            ))
+                'constraints' => [
+                    new Assert\NotBlank(['message' => $this->blankMessage]),
+                ],
+            ])
         ;
     }
 
@@ -131,9 +132,9 @@ class MemberType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'Eccube\Entity\Member',
-        ));
+        ]);
     }
 
     /**

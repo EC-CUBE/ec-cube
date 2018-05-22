@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Repository;
 
 use Eccube\Annotation\Repository;
@@ -38,7 +37,6 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class AuthorityRoleRepository extends AbstractRepository
 {
-
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, AuthorityRole::class);
@@ -51,6 +49,6 @@ class AuthorityRoleRepository extends AbstractRepository
      */
     public function findAllSort()
     {
-        return $this->findBy(array(), array('Authority' => 'ASC', 'deny_url' => 'ASC'));
+        return $this->findBy([], ['Authority' => 'ASC', 'deny_url' => 'ASC']);
     }
 }

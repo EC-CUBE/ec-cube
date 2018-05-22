@@ -23,7 +23,6 @@
 
 namespace Eccube\Controller;
 
-
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
@@ -72,6 +71,7 @@ class AbstractShoppingController extends AbstractController
 
     /**
      * @param ItemHolderInterface $itemHolder
+     *
      * @return PurchaseFlowResult
      */
     protected function executePurchaseFlow(ItemHolderInterface $itemHolder)
@@ -84,7 +84,7 @@ class AbstractShoppingController extends AbstractController
         foreach ($flowResult->getErrors() as $error) {
             $this->addRequestError($error);
         }
+
         return $flowResult;
     }
-
 }

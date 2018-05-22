@@ -21,13 +21,10 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\Constant;
-use Eccube\Common\Translatable;
-use Eccube\Common\TranslatableTrait;
 use Eccube\Common\EccubeConfig;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -190,6 +187,7 @@ class AbstractController extends Controller
         if (!$Route) {
             throw new RouteNotFoundException(sprintf('The named route "%s" as such route does not exist.', $route));
         }
+
         return $this->forward($Route->getDefault('_controller'), $path, $query);
     }
 
@@ -199,6 +197,7 @@ class AbstractController extends Controller
      * if token is invalid, throws AccessDeniedHttpException.
      *
      * @return bool
+     *
      * @throws AccessDeniedHttpException
      */
     protected function isTokenValid()

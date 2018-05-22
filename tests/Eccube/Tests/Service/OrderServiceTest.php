@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Service;
 
 class OrderServiceTest extends AbstractServiceTestCase
@@ -67,7 +66,7 @@ class OrderServiceTest extends AbstractServiceTestCase
 
     public function testGetSaleTypes()
     {
-        $this->expected = array($this->app['eccube.repository.master.sale_type']->find(1));
+        $this->expected = [$this->app['eccube.repository.master.sale_type']->find(1)];
         $this->actual = $this->app['eccube.service.order']->getSaleTypes($this->Order);
         $this->verify();
     }

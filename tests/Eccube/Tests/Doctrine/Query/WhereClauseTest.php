@@ -165,6 +165,7 @@ class WhereClauseTest extends EccubeTestCase
         /** @var QueryBuilder $builder */
         $builder = $this->entityManager->createQueryBuilder();
         $clause->build($builder);
+
         return preg_replace('/^SELECT WHERE /', '', $builder->getDQL());
     }
 
@@ -173,6 +174,7 @@ class WhereClauseTest extends EccubeTestCase
         /** @var QueryBuilder $builder */
         $builder = $this->entityManager->createQueryBuilder();
         $clause->build($builder);
+
         return $builder->getParameters()->toArray();
     }
 }

@@ -40,6 +40,7 @@ class OrderType extends AbstractType
 
     /**
      * OrderType constructor.
+     *
      * @param OrderRepository $orderRepository
      * @param DeliveryRepository $deliveryRepository
      * @param PaymentRepository $paymentRepository
@@ -76,12 +77,12 @@ class OrderType extends AbstractType
                 [
                     'required' => false,
                     'label' => '利用ポイント',
-                    'constraints' => array(
-                        new Regex(array(
+                    'constraints' => [
+                        new Regex([
                             'pattern' => "/^\d+$/u",
-                            'message' => 'form.type.numeric.invalid'
-                        )),
-                    ),
+                            'message' => 'form.type.numeric.invalid',
+                        ]),
+                    ],
                 ]
             )
             ->add(
@@ -89,7 +90,7 @@ class OrderType extends AbstractType
                 CollectionType::class,
                 [
                     'entry_type' => ShippingType::class,
-                    'by_reference' => false
+                    'by_reference' => false,
                 ]
             )->add(
                 'mode',
@@ -116,13 +117,14 @@ class OrderType extends AbstractType
                 }
 
                 // 受注明細に含まれる販売種別を抽出.
-                $SaleTypes = array_reduce($Order->getOrderItems()->toArray(), function($results, $OrderItem) {
+                $SaleTypes = array_reduce($Order->getOrderItems()->toArray(), function ($results, $OrderItem) {
                     /* @var OrderItem $OrderItem */
                     $ProductClass = $OrderItem->getProductClass();
                     if (!is_null($ProductClass)) {
                         $SaleType = $ProductClass->getSaleType();
                         $results[$SaleType->getId()] = $SaleType;
                     }
+
                     return $results;
                 }, []);
 
@@ -137,7 +139,7 @@ class OrderType extends AbstractType
                     EntityType::class,
                     [
                         'class' => 'Eccube\Entity\Payment',
-                        'choice_label' => function($Payment) {
+                        'choice_label' => function ($Payment) {
                             return $Payment->getMethod();
                         },
                         'expanded' => true,

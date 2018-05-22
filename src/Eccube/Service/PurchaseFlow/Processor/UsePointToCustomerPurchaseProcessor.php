@@ -26,6 +26,7 @@ class UsePointToCustomerPurchaseProcessor implements PurchaseProcessor
             return ProcessResult::error('利用ポイントが所有ポイントを上回っています.');
         }
         $Customer->setPoint($Customer->getPoint() + $Order->getUsePoint() * -1);
+
         return ProcessResult::success();
     }
 }

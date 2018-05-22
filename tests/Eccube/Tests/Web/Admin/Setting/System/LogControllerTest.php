@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Web\Admin\Setting\System;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
@@ -30,7 +29,6 @@ use Symfony\Component\DomCrawler\Crawler;
 
 /**
  * Class LogControllerTest
- * @package Eccube\Tests\Web\Admin\Setting\System
  */
 class LogControllerTest extends AbstractAdminWebTestCase
 {
@@ -44,11 +42,11 @@ class LogControllerTest extends AbstractAdminWebTestCase
     {
         parent::setUp();
 
-        $this->formData = array(
+        $this->formData = [
             '_token' => 'dummy',
             'files' => 'site_'.date('Y-m-d').'.log',
             'line_max' => '50',
-        );
+        ];
 
         $logDir = $this->container->getParameter('kernel.logs_dir');
 
@@ -57,7 +55,6 @@ class LogControllerTest extends AbstractAdminWebTestCase
         if (!file_exists($this->logTest)) {
             file_put_contents($this->logTest, 'test');
         }
-
     }
 
     /**
@@ -91,7 +88,7 @@ class LogControllerTest extends AbstractAdminWebTestCase
         $this->client->request(
             'POST',
             $this->generateUrl('admin_setting_system_log'),
-            array('admin_system_log' => $this->formData)
+            ['admin_system_log' => $this->formData]
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
@@ -110,15 +107,15 @@ class LogControllerTest extends AbstractAdminWebTestCase
 
         $this->formData['line_max'] = $value;
 
-        /** @var $crawler Crawler*/
+        /** @var $crawler Crawler */
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_setting_system_log'),
-            array('admin_system_log' => $this->formData)
+            ['admin_system_log' => $this->formData]
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        list($this->actual) = $crawler->filter('#line-max')->extract(array('style'));
+        list($this->actual) = $crawler->filter('#line-max')->extract(['style']);
         $this->expected = $expected;
         $this->verify();
         if ($message) {
@@ -131,15 +128,15 @@ class LogControllerTest extends AbstractAdminWebTestCase
      */
     public function dataProvider()
     {
-        return array(
-            array('', '', '入力されていません。'),
-            array('a', '', '有効な数字ではありません。'),
-            array(-1, '', '0以上でなければなりません。'),
-            array(0, '', ''),
-            array(50000, '', ''),
-            array(1.1, '', ''),
-            array(100001, '', '50000以下でなければなりません。'),
-        );
+        return [
+            ['', '', '入力されていません。'],
+            ['a', '', '有効な数字ではありません。'],
+            [-1, '', '0以上でなければなりません。'],
+            [0, '', ''],
+            [50000, '', ''],
+            [1.1, '', ''],
+            [100001, '', '50000以下でなければなりません。'],
+        ];
     }
 
     private function createTestFile($number)

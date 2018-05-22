@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type\Admin;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -67,6 +66,7 @@ class OrderType extends AbstractType
 
     /**
      * OrderType constructor.
+     *
      * @param EntityManagerInterface $entityManager
      * @param EccubeConfig $eccubeConfig
      * @param BaseInfo $BaseInfo
@@ -78,156 +78,155 @@ class OrderType extends AbstractType
         $this->BaseInfo = $BaseInfo;
     }
 
-
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', NameType::class, array(
+            ->add('name', NameType::class, [
                 'required' => false,
-                'options' => array(
-                    'constraints' => array(
+                'options' => [
+                    'constraints' => [
                         new Assert\NotBlank(),
-                    ),
-                ),
-            ))
-            ->add('kana', KanaType::class, array(
+                    ],
+                ],
+            ])
+            ->add('kana', KanaType::class, [
                 'required' => false,
-                'options' => array(
-                    'constraints' => array(
+                'options' => [
+                    'constraints' => [
                         new Assert\NotBlank(),
-                    ),
-                ),
-            ))
-            ->add('company_name', TextType::class, array(
+                    ],
+                ],
+            ])
+            ->add('company_name', TextType::class, [
                 'label' => 'order.label.company_name',
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array(
+                'constraints' => [
+                    new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_stext_len'],
-                    )),
-                ),
-            ))
-            ->add('zip', ZipType::class, array(
+                    ]),
+                ],
+            ])
+            ->add('zip', ZipType::class, [
                 'required' => false,
-                'options' => array(
-                    'constraints' => array(
+                'options' => [
+                    'constraints' => [
                         new Assert\NotBlank(),
-                    ),
-                    'attr' => array('class' => 'p-postal-code'),
-                ),
-            ))
-            ->add('address', AddressType::class, array(
+                    ],
+                    'attr' => ['class' => 'p-postal-code'],
+                ],
+            ])
+            ->add('address', AddressType::class, [
                 'required' => false,
-                'pref_options' => array(
-                    'constraints' => array(
+                'pref_options' => [
+                    'constraints' => [
                         new Assert\NotBlank(),
-                    ),
-                    'attr' => array('class' => 'p-region-id'),
-                ),
-                'addr01_options' => array(
-                    'constraints' => array(
+                    ],
+                    'attr' => ['class' => 'p-region-id'],
+                ],
+                'addr01_options' => [
+                    'constraints' => [
                         new Assert\NotBlank(),
-                        new Assert\Length(array(
+                        new Assert\Length([
                             'max' => $this->eccubeConfig['eccube_mtext_len'],
-                        )),
-                    ),
-                    'attr' => array('class' => 'p-locality p-street-address'),
-                ),
-                'addr02_options' => array(
+                        ]),
+                    ],
+                    'attr' => ['class' => 'p-locality p-street-address'],
+                ],
+                'addr02_options' => [
                     'required' => false,
-                    'constraints' => array(
+                    'constraints' => [
                         new Assert\NotBlank(),
-                        new Assert\Length(array(
+                        new Assert\Length([
                             'max' => $this->eccubeConfig['eccube_mtext_len'],
-                        )),
-                    ),
-                    'attr' => array('class' => 'p-extended-address'),
-                ),
-            ))
-            ->add('email', EmailType::class, array(
+                        ]),
+                    ],
+                    'attr' => ['class' => 'p-extended-address'],
+                ],
+            ])
+            ->add('email', EmailType::class, [
                 'required' => false,
                 'label' => 'order.label.email',
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Email(array('strict' => true)),
-                ),
-            ))
-            ->add('tel', TelType::class, array(
+                    new Assert\Email(['strict' => true]),
+                ],
+            ])
+            ->add('tel', TelType::class, [
                 'required' => false,
-                'options' => array(
-                    'constraints' => array(
+                'options' => [
+                    'constraints' => [
                         new Assert\NotBlank(),
-                    ),
-                ),
-            ))
-            ->add('fax', TelType::class, array(
+                    ],
+                ],
+            ])
+            ->add('fax', TelType::class, [
                 'label' => 'order.label.fax_number',
                 'required' => false,
-            ))
-            ->add('company_name', TextType::class, array(
+            ])
+            ->add('company_name', TextType::class, [
                 'label' => 'order.label.company_name',
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array(
+                'constraints' => [
+                    new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_stext_len'],
-                    )),
-                ),
-            ))
-            ->add('message', TextareaType::class, array(
+                    ]),
+                ],
+            ])
+            ->add('message', TextareaType::class, [
                 'label' => 'order.label.inquiry',
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array(
+                'constraints' => [
+                    new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_ltext_len'],
-                    )),
-                ),
-            ))
-            ->add('discount', PriceType::class, array(
+                    ]),
+                ],
+            ])
+            ->add('discount', PriceType::class, [
                 'required' => false,
                 'label' => 'order.label.discount',
-            ))
-            ->add('delivery_fee_total', PriceType::class, array(
+            ])
+            ->add('delivery_fee_total', PriceType::class, [
                 'required' => false,
                 'label' => 'order.label.shipping_charge',
-            ))
-            ->add('charge', PriceType::class, array(
+            ])
+            ->add('charge', PriceType::class, [
                 'required' => false,
                 'label' => 'order.label.commision',
-            ))
-            ->add('add_point', NumberType::class, array(
+            ])
+            ->add('add_point', NumberType::class, [
                 'required' => false,
                 'label' => '加算ポイント', // TODO 未翻訳
-                'constraints' => array(
-                    new Assert\Regex(array(
+                'constraints' => [
+                    new Assert\Regex([
                         'pattern' => "/^\d+$/u",
                         'message' => 'form.type.numeric.invalid',
-                    )),
-                ),
-                'attr' => array('readonly' => true),
-            ))
-            ->add('use_point', NumberType::class, array(
+                    ]),
+                ],
+                'attr' => ['readonly' => true],
+            ])
+            ->add('use_point', NumberType::class, [
                 'required' => false,
                 'label' => '利用ポイント', // TODO 未翻訳
-                'constraints' => array(
-                    new Assert\Regex(array(
+                'constraints' => [
+                    new Assert\Regex([
                         'pattern' => "/^\d+$/u",
                         'message' => 'form.type.numeric.invalid',
-                    )),
-                ),
-            ))
-            ->add('note', TextareaType::class, array(
+                    ]),
+                ],
+            ])
+            ->add('note', TextareaType::class, [
                 'label' => 'order.label.owner_note',
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array(
+                'constraints' => [
+                    new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_ltext_len'],
-                    )),
-                ),
-            ))
-            ->add('OrderStatus', EntityType::class, array(
+                    ]),
+                ],
+            ])
+            ->add('OrderStatus', EntityType::class, [
                 'class' => 'Eccube\Entity\Master\OrderStatus',
                 'choice_label' => 'name',
                 'placeholder' => 'order.placeholder.select',
@@ -235,26 +234,26 @@ class OrderType extends AbstractType
                     return $er->createQueryBuilder('o')
                         ->orderBy('o.sort_no', 'ASC');
                 },
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                ),
-            ))
-            ->add('Payment', EntityType::class, array(
+                ],
+            ])
+            ->add('Payment', EntityType::class, [
                 'required' => false,
                 'class' => 'Eccube\Entity\Payment',
                 'choice_label' => 'method',
                 'placeholder' => 'order.placeholder.select',
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                ),
-            ))
-            ->add('OrderItems', CollectionType::class, array(
+                ],
+            ])
+            ->add('OrderItems', CollectionType::class, [
                 'entry_type' => OrderItemType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
                 'data' => $options['SortedItems'],
-            ))
+            ])
             ->add('OrderItemsErrors', TextType::class, [
                 'mapped' => false,
             ]);
@@ -291,11 +290,11 @@ class OrderType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'Eccube\Entity\Order',
             'orign_order' => null,
             'SortedItems' => null,
-        ));
+        ]);
     }
 
     /**

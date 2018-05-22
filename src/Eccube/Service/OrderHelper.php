@@ -33,73 +33,83 @@ use Eccube\Util\StringUtil;
  * OrderやOrderに関連するエンティティを構築するクラス
  * namespaceやクラス名は要検討
  *
- * @package Eccube\Service
  * @Service
  */
 class OrderHelper
 {
     /**
      * @Inject(OrderItemTypeRepository::class)
+     *
      * @var OrderItemTypeRepository
      */
     protected $orderItemTypeRepository;
 
     /**
      * @Inject(OrderStatusRepository::class)
+     *
      * @var OrderStatusRepository
      */
     protected $orderStatusRepository;
 
     /**
      * @Inject(TaxRuleRepository::class)
+     *
      * @var TaxRuleRepository
      */
     protected $taxRuleRepository;
 
     /**
      * @Inject(DeliveryFeeRepository::class)
+     *
      * @var DeliveryFeeRepository
      */
     protected $deliveryFeeRepository;
 
     /**
      * @Inject(DeliveryRepository::class)
+     *
      * @var DeliveryRepository
      */
     protected $deliveryRepository;
 
     /**
      * @Inject(PaymentRepository::class)
+     *
      * @var PaymentRepository
      */
     protected $paymentRepository;
 
     /**
      * @Inject(OrderRepository::class)
+     *
      * @var OrderRepository
      */
     protected $orderRepository;
 
     /**
      * @Inject(ShippingStatusRepository::class)
+     *
      * @var ShippingStatusRepository
      */
     protected $shippingStatusRepository;
 
     /**
      * @Inject("orm.em")
+     *
      * @var EntityManager
      */
     protected $entityManager;
 
     /**
      * @Inject("config")
+     *
      * @var EccubeConfig
      */
     protected $eccubeConfig;
 
     /**
      * OrderHelper constructor.
+     *
      * @param OrderItemTypeRepository $orderItemTypeRepository
      * @param OrderStatusRepository $orderStatusRepository
      * @param TaxRuleRepository $taxRuleRepository
@@ -135,13 +145,13 @@ class OrderHelper
         $this->eccubeConfig = $eccubeConfig;
     }
 
-
     /**
      * 購入処理中の受注データを生成する.
      *
      * @param Customer $Customer
      * @param CustomerAddress $CustomerAddress
      * @param array $CartItems
+     *
      * @return Order
      */
     public function createProcessingOrder(Customer $Customer, CustomerAddress $CustomerAddress, $CartItems)
@@ -157,10 +167,11 @@ class OrderHelper
 
         // 明細情報の設定
         $OrderItems = $this->createOrderItemsFromCartItems($CartItems);
-        $OrderItemsGroupBySaleType = array_reduce($OrderItems, function($result, $item) {
+        $OrderItemsGroupBySaleType = array_reduce($OrderItems, function ($result, $item) {
             /* @var OrderItem $item */
             $saleTypeId = $item->getProductClass()->getSaleType()->getId();
             $result[$saleTypeId][] = $item;
+
             return $result;
         }, []);
 
@@ -215,6 +226,7 @@ class OrderHelper
 
     /**
      * @param ArrayCollection $CartItems
+     *
      * @return OrderItem[]
      */
     private function createOrderItemsFromCartItems($CartItems)
@@ -224,7 +236,7 @@ class OrderHelper
         $TaxExclude = $this->entityManager->getRepository(TaxDisplayType::class)->find(TaxDisplayType::EXCLUDED);
         $Taxion = $this->entityManager->getRepository(TaxType::class)->find(TaxType::TAXATION);
 
-        return array_map(function($item) use ($ProductItemType, $TaxExclude, $Taxion) {
+        return array_map(function ($item) use ($ProductItemType, $TaxExclude, $Taxion) {
             /* @var $item CartItem */
             /* @var $ProductClass \Eccube\Entity\ProductClass */
             $ProductClass = $item->getProductClass();
@@ -320,7 +332,7 @@ class OrderHelper
         $Shipping->setShippingDeliveryName($Delivery->getName());
 
         // TODO 配送料の取得方法はこれで良いか要検討
-        $deliveryFee = $this->deliveryFeeRepository->findOneBy(array('Delivery' => $Delivery, 'Pref' => $Shipping->getPref()));
+        $deliveryFee = $this->deliveryFeeRepository->findOneBy(['Delivery' => $Delivery, 'Pref' => $Shipping->getPref()]);
         if ($deliveryFee) {
             $Shipping->setShippingDeliveryFee($deliveryFee->getFee());
             $Shipping->setFeeId($deliveryFee->getId());
@@ -369,5 +381,4 @@ class OrderHelper
             $OrderItem->setShipping($Shipping);
         }
     }
-
 }

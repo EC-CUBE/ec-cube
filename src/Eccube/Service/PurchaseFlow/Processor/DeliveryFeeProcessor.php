@@ -47,13 +47,13 @@ class DeliveryFeeProcessor implements ItemHolderProcessor
 
     /**
      * DeliveryFeeProcessor constructor.
+     *
      * @param $entityManager
      */
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
     }
-
 
     /**
      * @param ItemHolderInterface $itemHolder

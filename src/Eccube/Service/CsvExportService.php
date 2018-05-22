@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Service;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -237,13 +236,13 @@ class CsvExportService
             $this->CsvType = $this->csvTypeRepository->find($CsvType);
         }
 
-        $criteria = array(
+        $criteria = [
             'CsvType' => $CsvType,
             'enabled' => true,
-        );
-        $orderBy = array(
-            'sort_no' => 'ASC'
-        );
+        ];
+        $orderBy = [
+            'sort_no' => 'ASC',
+        ];
         $this->Csvs = $this->csvRepository->findBy($criteria, $orderBy);
     }
 
@@ -265,7 +264,7 @@ class CsvExportService
             throw new \LogicException('init csv type incomplete.');
         }
 
-        $row = array();
+        $row = [];
         foreach ($this->Csvs as $Csv) {
             $row[] = $Csv->getDispName();
         }
@@ -305,6 +304,7 @@ class CsvExportService
      *
      * @param \Eccube\Entity\Csv $Csv
      * @param $entity
+     *
      * @return mixed|null|string|void
      */
     public function getData(Csv $Csv, $entity)
@@ -331,18 +331,17 @@ class CsvExportService
             }
         } elseif ($data instanceof \Doctrine\Common\Collections\Collection) {
             // one to manyの場合は, カンマ区切りに変換する.
-            $array = array();
+            $array = [];
             foreach ($data as $elem) {
                 if (EntityUtil::isNotEmpty($elem)) {
                     $array[] = $elem->offsetGet($Csv->getReferenceFieldName());
                 }
             }
-            return implode($this->eccubeConfig['eccube_csv_export_multidata_separator'], $array);
 
+            return implode($this->eccubeConfig['eccube_csv_export_multidata_separator'], $array);
         } elseif ($data instanceof \DateTime) {
             // datetimeの場合は文字列に変換する.
             return $data->format($this->eccubeConfig['eccube_csv_export_date_format']);
-
         } else {
             // スカラ値の場合はそのまま.
             return $data;
@@ -367,9 +366,6 @@ class CsvExportService
         };
     }
 
-    /**
-     *
-     */
     public function fopen()
     {
         if (is_null($this->fp) || $this->closed) {
@@ -390,9 +386,6 @@ class CsvExportService
         fputcsv($this->fp, array_map($this->convertEncodingCallBack, $row), $this->eccubeConfig['eccube_csv_export_separator']);
     }
 
-    /**
-     *
-     */
     public function fclose()
     {
         if (!$this->closed) {
@@ -405,6 +398,7 @@ class CsvExportService
      * 受注検索用のクエリビルダを返す.
      *
      * @param Request $request
+     *
      * @return \Doctrine\ORM\QueryBuilder
      */
     public function getOrderQueryBuilder(Request $request)
@@ -414,7 +408,7 @@ class CsvExportService
             $searchData = $session->get('eccube.admin.order.search');
             $this->findDeserializeObjects($searchData);
         } else {
-            $searchData = array();
+            $searchData = [];
         }
 
         // 受注データのクエリビルダを構築.
@@ -428,6 +422,7 @@ class CsvExportService
      * 出荷検索用のクエリビルダを返す.
      *
      * @param Request $request
+     *
      * @return \Doctrine\ORM\QueryBuilder
      */
     public function getShippingQueryBuilder(Request $request)
@@ -447,6 +442,7 @@ class CsvExportService
      * 会員検索用のクエリビルダを返す.
      *
      * @param Request $request
+     *
      * @return \Doctrine\ORM\QueryBuilder
      */
     public function getCustomerQueryBuilder(Request $request)
@@ -456,7 +452,7 @@ class CsvExportService
             $searchData = $session->get('eccube.admin.customer.search');
             $this->findDeserializeObjects($searchData);
         } else {
-            $searchData = array();
+            $searchData = [];
         }
 
         // 会員データのクエリビルダを構築.
@@ -470,6 +466,7 @@ class CsvExportService
      * 商品検索用のクエリビルダを返す.
      *
      * @param Request $request
+     *
      * @return \Doctrine\ORM\QueryBuilder
      */
     public function getProductQueryBuilder(Request $request)
@@ -479,7 +476,7 @@ class CsvExportService
             $searchData = $session->get('eccube.admin.product.search');
             $this->findDeserializeObjects($searchData);
         } else {
-            $searchData = array();
+            $searchData = [];
         }
         // 商品データのクエリビルダを構築.
         $qb = $this->productRepository

@@ -31,51 +31,51 @@ class EntryTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
     protected $form;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = array(
-        'name' => array(
+    protected $formData = [
+        'name' => [
             'name01' => 'たかはし',
             'name02' => 'しんいち',
-        ),
-        'kana' => array(
+        ],
+        'kana' => [
             'kana01' => 'タカハシ',
             'kana02' => 'シンイチ',
-        ),
+        ],
         'company_name' => '',
-        'zip' => array(
+        'zip' => [
             'zip01' => '530',
             'zip02' => '0001',
-        ),
-        'address' => array(
+        ],
+        'address' => [
             'pref' => '5',
             'addr01' => '北区',
             'addr02' => '梅田',
-        ),
-        'tel' => array(
+        ],
+        'tel' => [
             'tel01' => '03',
             'tel02' => '1111',
             'tel03' => '1111',
-        ),
-        'fax' => array(
+        ],
+        'fax' => [
             'fax01' => '03',
             'fax02' => '1111',
             'fax03' => '4444',
-        ),
-        'email' => array(
-            'first' =>'eccube@example.com',
-            'second' =>'eccube@example.com',
-        ),
-        'password' => array(
-            'first' =>'12345678',
-            'second' =>'12345678',
-        ),
-        'birth' => array(
+        ],
+        'email' => [
+            'first' => 'eccube@example.com',
+            'second' => 'eccube@example.com',
+        ],
+        'password' => [
+            'first' => '12345678',
+            'second' => '12345678',
+        ],
+        'birth' => [
             'year' => '1980',
             'month' => '1',
             'day' => '1',
-        ),
+        ],
         'sex' => 1,
         'job' => 1,
-    );
+    ];
 
     public function setUp()
     {
@@ -83,9 +83,9 @@ class EntryTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
-            ->createBuilder(EntryType::class, null, array(
+            ->createBuilder(EntryType::class, null, [
                 'csrf_protection' => false,
-            ))
+            ])
             ->getForm();
     }
 

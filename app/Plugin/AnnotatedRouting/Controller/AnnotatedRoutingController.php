@@ -22,6 +22,7 @@
  */
 
 namespace Plugin\AnnotatedRouting\Controller;
+
 use Eccube\Application;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;

@@ -1,4 +1,5 @@
 <?php
+
 namespace Eccube\Entity\Master;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -40,7 +41,6 @@ abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity
      * @ORM\Column(name="sort_no", type="smallint", options={"unsigned":true})
      */
     protected $sort_no;
-
 
     /**
      * Set id.
@@ -145,6 +145,7 @@ abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity
         // XXX $obj = new static(); とすると segmentation fault が発生するため, リフレクションで値を取得する
         $refProperty = $ref->getProperty($name);
         $refProperty->setAccessible(true);
-        return $refProperty->getValue(new $class);
+
+        return $refProperty->getValue(new $class());
     }
 }

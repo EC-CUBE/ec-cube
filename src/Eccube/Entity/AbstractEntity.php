@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Entity;
 
 use Doctrine\Common\Annotations\Reader;
@@ -33,7 +32,6 @@ use Doctrine\ORM\Proxy\Proxy;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 /** @MappedSuperclass */
 abstract class AbstractEntity implements \ArrayAccess
@@ -81,7 +79,7 @@ abstract class AbstractEntity implements \ArrayAccess
      * @param \ReflectionClass $parentClass 親のクラス. 本メソッドの内部的に使用します.
      * @param array $excludeAttribute 除外したいフィールド名の配列
      */
-    public function setPropertiesFromArray(array $arrProps, array $excludeAttribute = array(), \ReflectionClass $parentClass = null)
+    public function setPropertiesFromArray(array $arrProps, array $excludeAttribute = [], \ReflectionClass $parentClass = null)
     {
         $objReflect = null;
         if (is_object($parentClass)) {
@@ -114,6 +112,7 @@ abstract class AbstractEntity implements \ArrayAccess
      *
      * @param \ReflectionClass $parentClass parent class. Use internally of this method..
      * @param array $excludeAttribute Array of field names to exclusion.
+     *
      * @return array
      */
     public function toArray(array $excludeAttribute = ['__initializer__', '__cloner__', '__isInitialized__', 'AnnotationReader'], \ReflectionClass $parentClass = null)
@@ -125,7 +124,7 @@ abstract class AbstractEntity implements \ArrayAccess
             $objReflect = new \ReflectionClass($this);
         }
         $arrProperties = $objReflect->getProperties();
-        $arrResults = array();
+        $arrResults = [];
         foreach ($arrProperties as $objProperty) {
             $objProperty->setAccessible(true);
             $name = $objProperty->getName();
@@ -139,13 +138,14 @@ abstract class AbstractEntity implements \ArrayAccess
         if (is_object($parentClass)) {
             $arrParents = self::toArray($excludeAttribute, $parentClass);
             if (!is_array($arrParents)) {
-                $arrParents = array();
+                $arrParents = [];
             }
             if (!is_array($arrResults)) {
-                $arrResults = array();
+                $arrResults = [];
             }
             $arrResults = array_merge($arrParents, $arrResults);
         }
+
         return $arrResults;
     }
 
@@ -158,6 +158,7 @@ abstract class AbstractEntity implements \ArrayAccess
      * - PersistentCollection :: associative array of [[id => value], [id => value], ...]
      *
      * @param array $excludeAttribute Array of field names to exclusion.
+     *
      * @return array
      */
     public function toNormalizedArray(array $excludeAttribute = ['__initializer__', '__cloner__', '__isInitialized__', 'AnnotationReader'])
@@ -180,6 +181,7 @@ abstract class AbstractEntity implements \ArrayAccess
                 }
             }
         }
+
         return $arrResult;
     }
 
@@ -187,6 +189,7 @@ abstract class AbstractEntity implements \ArrayAccess
      * Convert to JSON.
      *
      * @param array $excludeAttribute Array of field names to exclusion.
+     *
      * @return string
      */
     public function toJSON(array $excludeAttribute = ['__initializer__', '__cloner__', '__isInitialized__', 'AnnotationReader'])
@@ -198,12 +201,14 @@ abstract class AbstractEntity implements \ArrayAccess
      * Convert to XML.
      *
      * @param array $excludeAttribute Array of field names to exclusion.
+     *
      * @return string
      */
     public function toXML(array $excludeAttribute = ['__initializer__', '__cloner__', '__isInitialized__', 'AnnotationReader'])
     {
         $ReflectionClass = new \ReflectionClass($this);
         $serializer = new Serializer([new PropertyNormalizer()], [new XmlEncoder($ReflectionClass->getShortName())]);
+
         return $serializer->serialize($this->toNormalizedArray($excludeAttribute), 'xml');
     }
 
@@ -212,11 +217,13 @@ abstract class AbstractEntity implements \ArrayAccess
      *
      * @param object $srcObject コピー元のオブジェクト
      * @param array $excludeAttribute 除外したいフィールド名の配列
+     *
      * @return object
      */
-    public function copyProperties($srcObject, array $excludeAttribute = array())
+    public function copyProperties($srcObject, array $excludeAttribute = [])
     {
         $this->setPropertiesFromArray($srcObject->toArray($excludeAttribute), $excludeAttribute);
+
         return $this;
     }
 
@@ -224,6 +231,7 @@ abstract class AbstractEntity implements \ArrayAccess
      * Set AnnotationReader.
      *
      * @param Reader $Reader
+     *
      * @return object
      */
     public function setAnnotationReader(Reader $Reader)
@@ -243,6 +251,7 @@ abstract class AbstractEntity implements \ArrayAccess
         if ($this->AnnotationReader) {
             return $this->AnnotationReader;
         }
+
         return new \Doctrine\Common\Annotations\AnnotationReader();
     }
 
@@ -250,6 +259,7 @@ abstract class AbstractEntity implements \ArrayAccess
      * Convert to Entity of Identity value to associative array.
      *
      * @param AbstractEntity $Entity
+     *
      * @return array associative array of [[id => value], [id => value], ...]
      */
     public function getEntityIdentifierAsArray(AbstractEntity $Entity)

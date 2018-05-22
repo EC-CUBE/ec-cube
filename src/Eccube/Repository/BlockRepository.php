@@ -21,13 +21,11 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Repository;
 
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Block;
 use Eccube\Entity\Master\DeviceType;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -61,19 +59,19 @@ class BlockRepository extends AbstractRepository
 
     /**
      * @deprecated 呼び出し元で制御する
+     *
      * @param $block_id
      * @param $DeviceType
+     *
      * @return array|\Eccube\Entity\Block
      */
     public function findOrCreate($block_id, $DeviceType)
     {
-
         if ($block_id == null) {
             return $this->newBlock($DeviceType);
         } else {
             return $this->getBlock($block_id, $DeviceType);
         }
-
     }
 
     public function newBlock($DeviceType)
@@ -92,7 +90,6 @@ class BlockRepository extends AbstractRepository
      */
     private function getNewBlockId($DeviceType)
     {
-
         $qb = $this->createQueryBuilder('b')
             ->select('max(b.id) +1 as block_id')
             ->where('b.DeviceType = :DeviceType')
@@ -100,23 +97,24 @@ class BlockRepository extends AbstractRepository
         $result = $qb->getQuery()->getSingleResult();
 
         return $result['block_id'];
-
     }
 
     /**
      * ブロックの情報を取得.
      *
      * @deprecated Use magic finder methods. BlockRepository::findOneByIdAndDeviceType()
+     *
      * @param  integer $block_id ブロックID
      * @param  \Eccube\Entity\Master\DeviceType $DeviceType
+     *
      * @return Block
      */
     public function getBlock($block_id, $DeviceType)
     {
-        $Block = $this->findOneBy(array(
+        $Block = $this->findOneBy([
             'id' => $block_id,
             'DeviceType' => $DeviceType,
-        ));
+        ]);
 
         return $Block;
     }
@@ -125,6 +123,7 @@ class BlockRepository extends AbstractRepository
      * ブロック一覧の取得.
      *
      * @param  \Eccube\Entity\Master\DeviceType $DeviceType
+     *
      * @return array
      */
     public function getList($DeviceType)
@@ -147,14 +146,15 @@ class BlockRepository extends AbstractRepository
      * この関数は, dtb_pagelayout の情報を検索する.
      * $deviceTypeId は必須. デフォルト値は DEVICE_TYPE_PC.
      *
-     * @access public
      * @param  DeviceType $DeviceType 端末種別ID
      * @param  string $where 追加の検索条件
      * @param  string[] $parameters 追加の検索パラメーター
+     *
      * @return array                             ページ属性の配列
+     *
      * @deprecated since 3.0.0, to be removed in 3.1
      */
-    public function getPageList(DeviceType $DeviceType, $where = null, $parameters = array())
+    public function getPageList(DeviceType $DeviceType, $where = null, $parameters = [])
     {
         $qb = $this->createQueryBuilder('l')
             ->orderBy('l.id', 'DESC')

@@ -57,11 +57,11 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
         $plugins = $stmt->fetchAll();
 
         $enabled = array_filter($plugins, function ($plugin) {
-            return true === (bool)$plugin['enabled'];
+            return true === (bool) $plugin['enabled'];
         });
 
         $disabled = array_filter($plugins, function ($plugin) {
-            return false === (bool)$plugin['enabled'];
+            return false === (bool) $plugin['enabled'];
         });
 
         // 他で使いまわすため, パラメータで保持しておく.

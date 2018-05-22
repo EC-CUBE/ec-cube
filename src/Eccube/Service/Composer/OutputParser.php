@@ -20,11 +20,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
 namespace Eccube\Service\Composer;
 
 /**
  * Class OutputParser
- * @package Eccube\Service\Composer
  */
 class OutputParser
 {
@@ -32,6 +32,7 @@ class OutputParser
      * Parse to array
      *
      * @param string $output
+     *
      * @return array
      */
     public static function parseRequire($output)
@@ -40,7 +41,7 @@ class OutputParser
         $installedLogs = array_filter(
             array_map(
                 function ($line) {
-                    $matches = array();
+                    $matches = [];
                     preg_match('/^  - Installing (.*?) \((.*?)\) .*/', $line, $matches);
 
                     return $matches;
@@ -50,20 +51,21 @@ class OutputParser
         );
 
         // 'package name' => 'version'
-        return array('installed' => array_column($installedLogs, 2, 1));
+        return ['installed' => array_column($installedLogs, 2, 1)];
     }
 
     /**
      * Parse to array
      *
      * @param string $output
+     *
      * @return array
      */
     public static function parseInfo($output)
     {
         $rowArray = explode(PHP_EOL, str_replace('\r\n', PHP_EOL, $output));
         $infoLogs = array_filter(array_map(function ($line) {
-            $matches = array();
+            $matches = [];
             preg_match('/^(name|descrip.|keywords|versions|type|license|source|dist|names)\s*:\s*(.*)$/', $line, $matches);
 
             return $matches;
@@ -81,6 +83,7 @@ class OutputParser
      * Parse to array
      *
      * @param string $output
+     *
      * @return array|mixed
      */
     public static function parseConfig($output)
@@ -90,20 +93,21 @@ class OutputParser
             return !preg_match('/^<warning>.*/', $line);
         });
 
-        return $rowArray ? json_decode(array_shift($rowArray), true) : array();
+        return $rowArray ? json_decode(array_shift($rowArray), true) : [];
     }
 
     /**
      * Parse to array
      *
      * @param string $output
+     *
      * @return array
      */
     public static function parseList($output)
     {
         $rowArray = explode(PHP_EOL, str_replace('\r\n', PHP_EOL, $output));
         $rawConfig = array_map(function ($line) {
-            $matches = array();
+            $matches = [];
             preg_match('/^\[(.*?)\]\s?(.*)$/', $line, $matches);
 
             return $matches;
@@ -111,7 +115,7 @@ class OutputParser
 
         $rawConfig = array_column($rawConfig, 2, 1);
 
-        $result = array();
+        $result = [];
 
         foreach ($rawConfig as $path => $value) {
             $arr = &$result;
@@ -128,11 +132,12 @@ class OutputParser
     /**
      * @param $rowArray
      * @param $key
+     *
      * @return array
      */
     private static function parseArrayInfoOutput($rowArray, $key)
     {
-        $result = array();
+        $result = [];
         $start = false;
         foreach ($rowArray as $line) {
             if ($line === $key) {
@@ -153,7 +158,9 @@ class OutputParser
 
     /**
      * Parse to composer version
+     *
      * @param string $output
+     *
      * @return array|mixed|string
      */
     public static function parseComposerVersion($output)
@@ -162,6 +169,7 @@ class OutputParser
         $rowArray = array_filter($rowArray, function ($line) {
             return preg_match('/^Composer */', $line);
         });
+
         return array_shift($rowArray);
     }
 }

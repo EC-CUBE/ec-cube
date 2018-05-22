@@ -23,8 +23,6 @@
 
 namespace Eccube\Doctrine\ORM\Mapping\Driver;
 
-
-
 use Doctrine\ORM\Mapping\MappingException;
 use Eccube\Util\StringUtil;
 use PhpCsFixer\Tokenizer\Token;
@@ -59,7 +57,7 @@ class ReloadSafeAnnotationDriver extends AnnotationDriver
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getAllClassNames()
     {
@@ -72,7 +70,7 @@ class ReloadSafeAnnotationDriver extends AnnotationDriver
         }
 
         foreach ($this->paths as $path) {
-            if ( ! is_dir($path)) {
+            if (!is_dir($path)) {
                 throw MappingException::fileMappingDriversRequireConfiguredDirectoryPath($path);
             }
 
@@ -81,14 +79,14 @@ class ReloadSafeAnnotationDriver extends AnnotationDriver
                     new \RecursiveDirectoryIterator($path, \FilesystemIterator::SKIP_DOTS),
                     \RecursiveIteratorIterator::LEAVES_ONLY
                 ),
-                '/^.+' . preg_quote($this->fileExtension) . '$/i',
+                '/^.+'.preg_quote($this->fileExtension).'$/i',
                 \RecursiveRegexIterator::GET_MATCH
             );
 
             foreach ($iterator as $file) {
                 $sourceFile = $file[0];
 
-                if ( ! preg_match('(^phar:)i', $sourceFile)) {
+                if (!preg_match('(^phar:)i', $sourceFile)) {
                     $sourceFile = realpath($sourceFile);
                 }
 
@@ -118,6 +116,7 @@ class ReloadSafeAnnotationDriver extends AnnotationDriver
      * 新しく生成されたProxyクラスの場合は、一時的にクラス名を変更したクラスを生成してロードします.
      *
      * @param $sourceFile string ソースファイル
+     *
      * @return array ソースファイルに含まれるクラス名のリスト
      */
     private function getClassNamesFromTokens($sourceFile)
@@ -133,15 +132,15 @@ class ReloadSafeAnnotationDriver extends AnnotationDriver
                     $namespaceEndIndex = $tokens->getNextTokenOfKind($namespaceIndex, [';']);
                     $namespace = $tokens->generatePartialCode($tokens->getNextMeaningfulToken($namespaceIndex), $tokens->getPrevMeaningfulToken($namespaceEndIndex));
                     $className = $tokens[$classNameTokenIndex]->getContent();
-                    $fqcn = $namespace . '\\' . $className;
-                    if (class_exists($fqcn) && ! $this->isTransient($fqcn)) {
+                    $fqcn = $namespace.'\\'.$className;
+                    if (class_exists($fqcn) && !$this->isTransient($fqcn)) {
                         if (in_array($sourceFile, $this->newProxyFiles)) {
-                            $newClassName = $className . StringUtil::random(12);
+                            $newClassName = $className.StringUtil::random(12);
                             $tokens[$classNameTokenIndex] = new Token([T_STRING, $newClassName]);
                             $newFilePath = $this->outputDir."${newClassName}.php";
                             file_put_contents($newFilePath, $tokens->generateCode());
                             require_once $newFilePath;
-                            $results[] = $namespace . "\\${newClassName}";
+                            $results[] = $namespace."\\${newClassName}";
                         } else {
                             $results[] = $fqcn;
                         }
@@ -150,6 +149,7 @@ class ReloadSafeAnnotationDriver extends AnnotationDriver
             }
             $currentIndex++;
         }
+
         return $results;
     }
 }

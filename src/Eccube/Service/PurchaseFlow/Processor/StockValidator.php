@@ -14,6 +14,7 @@ class StockValidator extends ValidatableItemProcessor
     /**
      * @param ItemInterface $item
      * @param PurchaseContext $context
+     *
      * @throws \Eccube\Service\PurchaseFlow\InvalidItemException
      */
     protected function validate(ItemInterface $item, PurchaseContext $context)

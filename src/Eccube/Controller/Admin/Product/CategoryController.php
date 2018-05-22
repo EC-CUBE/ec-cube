@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Controller\Admin\Product;
 
 use Eccube\Controller\AbstractController;
@@ -69,7 +68,6 @@ class CategoryController extends AbstractController
         $this->categoryRepository = $categoryRepository;
     }
 
-
     /**
      * @Route("/%eccube_admin_route%/product/category", name="admin_product_category")
      * @Route("/%eccube_admin_route%/product/category/{parent_id}", requirements={"parent_id" = "\d+"}, name="admin_product_category_show")
@@ -107,16 +105,15 @@ class CategoryController extends AbstractController
         // ツリー表示のため、ルートからのカテゴリを取得
         $TopCategories = $this->categoryRepository->getList(null);
 
-        //
         $builder = $this->formFactory
             ->createBuilder(CategoryType::class, $TargetCategory);
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
                 'Parent' => $Parent,
                 'TargetCategory' => $TargetCategory,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CATEGORY_INDEX_INITIALIZE, $event);
@@ -126,35 +123,34 @@ class CategoryController extends AbstractController
         $forms = [];
         foreach ($Categories as $Category) {
             $forms[$Category->getId()] = $this->formFactory
-                ->createNamed('category_' . $Category->getId(), CategoryType::class, $Category);
+                ->createNamed('category_'.$Category->getId(), CategoryType::class, $Category);
         }
 
-        //
         if ($request->getMethod() === 'POST') {
             $form->handleRequest($request);
             if ($form->isValid()) {
                 if ($this->eccubeConfig['eccube_category_nest_level'] < $TargetCategory->getHierarchy()) {
                     throw new BadRequestHttpException(trans('category.text.error.invalid_requesy'));
                 }
-                log_info('カテゴリ登録開始', array($id));
+                log_info('カテゴリ登録開始', [$id]);
 
                 $this->categoryRepository->save($TargetCategory);
 
-                log_info('カテゴリ登録完了', array($id));
+                log_info('カテゴリ登録完了', [$id]);
 
                 $event = new EventArgs(
-                    array(
+                    [
                         'form' => $form,
                         'Parent' => $Parent,
                         'TargetCategory' => $TargetCategory,
-                    ),
+                    ],
                     $request
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CATEGORY_INDEX_COMPLETE, $event);
 
                 $this->addSuccess('admin.category.save.complete', 'admin');
                 if ($Parent) {
-                    return $this->redirectToRoute('admin_product_category_show', array('parent_id' => $Parent->getId()));
+                    return $this->redirectToRoute('admin_product_category_show', ['parent_id' => $Parent->getId()]);
                 } else {
                     return $this->redirectToRoute('admin_product_category');
                 }
@@ -166,11 +162,11 @@ class CategoryController extends AbstractController
                     $this->categoryRepository->save($editForm->getData());
 
                     $event = new EventArgs(
-                        array(
+                        [
                             'form' => $form,
                             'Parent' => $Parent,
                             'TargetCategory' => $editForm->getData(),
-                        ),
+                        ],
                         $request
                     );
 
@@ -179,7 +175,7 @@ class CategoryController extends AbstractController
                     $this->addSuccess('admin.category.save.complete', 'admin');
 
                     if ($Parent) {
-                        return $this->redirectToRoute('admin_product_category_show', array('parent_id' => $Parent->getId()));
+                        return $this->redirectToRoute('admin_product_category_show', ['parent_id' => $Parent->getId()]);
                     } else {
                         return $this->redirectToRoute('admin_product_category');
                     }
@@ -198,7 +194,7 @@ class CategoryController extends AbstractController
             'Categories' => $Categories,
             'TopCategories' => $TopCategories,
             'TargetCategory' => $TargetCategory,
-            'forms' => $formViews
+            'forms' => $formViews,
         ];
     }
 
@@ -213,27 +209,27 @@ class CategoryController extends AbstractController
         $TargetCategory = $this->categoryRepository->find($id);
         if (!$TargetCategory) {
             $this->deleteMessage();
+
             return $this->redirectToRoute('admin_product_category');
         }
         $Parent = $TargetCategory->getParent();
 
-        log_info('カテゴリ削除開始', array($id));
+        log_info('カテゴリ削除開始', [$id]);
 
         try {
             $this->categoryRepository->delete($TargetCategory);
 
             $event = new EventArgs(
-                array(
+                [
                     'Parent' => $Parent,
                     'TargetCategory' => $TargetCategory,
-                ), $request
+                ], $request
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CATEGORY_DELETE_COMPLETE, $event);
 
             $this->addSuccess('admin.category.delete.complete', 'admin');
 
-            log_info('カテゴリ削除完了', array($id));
-
+            log_info('カテゴリ削除完了', [$id]);
         } catch (\Exception $e) {
             log_info('カテゴリ削除エラー', [$id, $e]);
 
@@ -242,7 +238,7 @@ class CategoryController extends AbstractController
         }
 
         if ($Parent) {
-            return $this->redirectToRoute('admin_product_category_show', array('parent_id' => $Parent->getId()));
+            return $this->redirectToRoute('admin_product_category_show', ['parent_id' => $Parent->getId()]);
         } else {
             return $this->redirectToRoute('admin_product_category');
         }
@@ -273,13 +269,13 @@ class CategoryController extends AbstractController
         }
     }
 
-
     /**
      * カテゴリCSVの出力.
      *
      * @Route("/%eccube_admin_route%/product/category/export", name="admin_product_category_export")
      *
      * @param Request $request
+     *
      * @return StreamedResponse
      */
     public function export(Request $request)
@@ -293,7 +289,6 @@ class CategoryController extends AbstractController
 
         $response = new StreamedResponse();
         $response->setCallback(function () use ($request) {
-
             // CSV種別を元に初期化.
             $this->csvExportService->initCsvType(CsvType::CSV_TYPE_CATEGORY);
 
@@ -307,7 +302,6 @@ class CategoryController extends AbstractController
             // データ行の出力.
             $this->csvExportService->setExportQueryBuilder($qb);
             $this->csvExportService->exportData(function ($entity, $csvService) use ($request) {
-
                 $Csvs = $csvService->getCsvs();
 
                 /** @var $Category \Eccube\Entity\Category */
@@ -319,12 +313,12 @@ class CategoryController extends AbstractController
                     $ExportCsvRow->setData($csvService->getData($Csv, $Category));
 
                     $event = new EventArgs(
-                        array(
+                        [
                             'csvService' => $csvService,
                             'Csv' => $Csv,
                             'Category' => $Category,
                             'ExportCsvRow' => $ExportCsvRow,
-                        ),
+                        ],
                         $request
                     );
                     $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CATEGORY_CSV_EXPORT, $event);
@@ -339,12 +333,12 @@ class CategoryController extends AbstractController
         });
 
         $now = new \DateTime();
-        $filename = 'category_' . $now->format('YmdHis') . '.csv';
+        $filename = 'category_'.$now->format('YmdHis').'.csv';
         $response->headers->set('Content-Type', 'application/octet-stream');
-        $response->headers->set('Content-Disposition', 'attachment; filename=' . $filename);
+        $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
         $response->send();
 
-        log_info('カテゴリCSV出力ファイル名', array($filename));
+        log_info('カテゴリCSV出力ファイル名', [$filename]);
 
         return $response;
     }

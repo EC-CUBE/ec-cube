@@ -8,7 +8,6 @@ use Symfony\Component\Console\Question\Question;
 
 class QuestionHelperMock extends QuestionHelper
 {
-
     public function setUp()
     {
         $this->markTestIncomplete(get_class($this).' は未実装です');
@@ -48,6 +47,7 @@ class QuestionHelperMock extends QuestionHelper
         }
 
         $output->writeln(print_r($response, true));
+
         return $response;
     }
 }

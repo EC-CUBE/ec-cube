@@ -32,19 +32,19 @@ class RepeatedPasswordTypeTest extends AbstractTypeTestCase
     protected $form;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = array(
-        'password' => array(
-            'first' =>'eccube@example.com',
-            'second' =>'eccube@example.com',
-        ),
-    );
+    protected $formData = [
+        'password' => [
+            'first' => 'eccube@example.com',
+            'second' => 'eccube@example.com',
+        ],
+    ];
 
     public function setUp()
     {
         parent::setUp();
         $this->form = $this->formFactory
             ->createBuilder(FormType::class, null, ['csrf_protection' => false])
-            ->add('password', RepeatedPasswordType::class, array())
+            ->add('password', RepeatedPasswordType::class, [])
             ->getForm();
     }
 
@@ -79,7 +79,7 @@ class RepeatedPasswordTypeTest extends AbstractTypeTestCase
 
     public function testInvalid_LengthMin()
     {
-        $password = str_repeat('1', $this->eccubeConfig['eccube_password_min_len']-1);
+        $password = str_repeat('1', $this->eccubeConfig['eccube_password_min_len'] - 1);
 
         $this->formData['password']['first'] = $password;
         $this->formData['password']['second'] = $password;
@@ -90,7 +90,7 @@ class RepeatedPasswordTypeTest extends AbstractTypeTestCase
 
     public function testInvalid_LengthMax()
     {
-        $password = str_repeat('1', $this->eccubeConfig['eccube_password_max_len']+1);
+        $password = str_repeat('1', $this->eccubeConfig['eccube_password_max_len'] + 1);
 
         $this->formData['password']['first'] = $password;
         $this->formData['password']['second'] = $password;

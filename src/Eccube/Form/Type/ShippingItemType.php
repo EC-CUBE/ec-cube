@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type;
 
 use Eccube\Annotation\FormType;
@@ -43,6 +42,7 @@ class ShippingItemType extends AbstractType
 {
     /**
      * @Inject(ShoppingService::class)
+     *
      * @var ShoppingService
      */
     protected $shoppingService;
@@ -75,7 +75,7 @@ class ShippingItemType extends AbstractType
                 // 販売種別に紐づく配送業者を取得
                 $delives = $this->shoppingService->getDeliveriesOrder($data->getOrder());
 
-                $deliveries = array();
+                $deliveries = [];
                 foreach ($delives as $Delivery) {
                     foreach ($data->getOrderItems() as $item) {
                         $saleType = $item->getProductClass()->getSaleType();
@@ -92,28 +92,28 @@ class ShippingItemType extends AbstractType
                 }
 
                 $form
-                    ->add('delivery', EntityType::class, array(
+                    ->add('delivery', EntityType::class, [
                         'class' => 'Eccube\Entity\Delivery',
                         'choice_label' => 'name',
                         'choices' => $deliveries,
                         'data' => $delivery,
-                        'constraints' => array(
+                        'constraints' => [
                             new Assert\NotBlank(),
-                        ),
-                    ))
-                    ->add('shippingDeliveryDuration', ChoiceType::class, array(
+                        ],
+                    ])
+                    ->add('shippingDeliveryDuration', ChoiceType::class, [
                         'choices' => array_flip($deliveryDurations),
                         'required' => false,
                         'placeholder' => 'shippingitem.placeholder.not_selected',
                         'mapped' => false,
-                    ))
-                    ->add('deliveryTime', EntityType::class, array(
+                    ])
+                    ->add('deliveryTime', EntityType::class, [
                         'class' => 'Eccube\Entity\DeliveryTime',
                         'choice_label' => 'deliveryTime',
                         'choices' => $deliveryTimes,
                         'required' => false,
                         'placeholder' => 'shippingitem.placeholder.not_selected',
-                    ));
+                    ]);
             })
             ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
                 /** @var \Eccube\Entity\Shipping $data */
@@ -129,9 +129,8 @@ class ShippingItemType extends AbstractType
                 if (!empty($shippingDeliveryDuration)) {
                     $form['shippingDeliveryDuration']->setData($shippingDeliveryDuration->format('Y/m/d'));
                 }
-
             })
-            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($app){
+            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($app) {
                 $data = $event->getData();
                 $form = $event->getForm();
                 if (!$data) {
@@ -164,7 +163,7 @@ class ShippingItemType extends AbstractType
                 if ($form->has('deliveryTime')) {
                     $form->remove('deliveryTime');
                 }
-                $form->add('deliveryTime', 'entity', array(
+                $form->add('deliveryTime', 'entity', [
                     'class' => 'Eccube\Entity\DeliveryTime',
                     'property' => 'delivery_time',
                     'choices' => $deliveryTimes,
@@ -172,7 +171,7 @@ class ShippingItemType extends AbstractType
                     'empty_value' => '指定なし',
                     'empty_data' => null,
                     'label' => 'お届け時間',
-                ));
+                ]);
             })
             ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
                 /** @var \Eccube\Entity\Shipping $data */
@@ -190,9 +189,9 @@ class ShippingItemType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'Eccube\Entity\Shipping',
-        ));
+        ]);
     }
 
     /**

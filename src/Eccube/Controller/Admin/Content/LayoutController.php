@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Controller\Admin\Content;
 
 use Doctrine\ORM\NoResultException;
@@ -40,7 +39,6 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -69,6 +67,7 @@ class LayoutController extends AbstractController
 
     /**
      * LayoutController constructor.
+     *
      * @param BlockRepository $blockRepository
      * @param LayoutRepository $layoutRepository
      * @param PageLayoutRepository $pageLayoutRepository
@@ -230,7 +229,7 @@ class LayoutController extends AbstractController
 
             $this->addSuccess('admin.register.complete', 'admin');
 
-            return $this->redirectToRoute('admin_content_layout_edit', array('id' => $Layout->getId()));
+            return $this->redirectToRoute('admin_content_layout_edit', ['id' => $Layout->getId()]);
         }
 
         return [
@@ -246,6 +245,7 @@ class LayoutController extends AbstractController
      *
      * @param Request $request
      * @param Twig $twig
+     *
      * @return JsonResponse
      */
     public function viewBlock(Request $request, Twig $twig)

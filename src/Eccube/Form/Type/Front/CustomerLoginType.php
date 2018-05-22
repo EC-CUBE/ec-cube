@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type\Front;
 
 use Eccube\Common\EccubeConfig;
@@ -35,7 +34,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class CustomerLoginType extends AbstractType
 {
-
     /**
      * @var EccubeConfig
      */
@@ -57,27 +55,27 @@ class CustomerLoginType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('login_email', EmailType::class, array(
-            'attr' => array(
+        $builder->add('login_email', EmailType::class, [
+            'attr' => [
                 'max_length' => $this->eccubeConfig['eccube_stext_len'],
-            ),
-            'constraints' => array(
+            ],
+            'constraints' => [
                 new Assert\NotBlank(),
-                new Assert\Email(array('strict' => true)),
-            ),
+                new Assert\Email(['strict' => true]),
+            ],
             'data' => $this->authenticationUtils->getLastUsername(),
-        ));
-        $builder->add('login_memory', CheckboxType::class, array(
+        ]);
+        $builder->add('login_memory', CheckboxType::class, [
             'required' => false,
-        ));
-        $builder->add('login_pass', PasswordType::class, array(
-            'attr' => array(
+        ]);
+        $builder->add('login_pass', PasswordType::class, [
+            'attr' => [
                 'max_length' => $this->eccubeConfig['eccube_stext_len'],
-            ),
-            'constraints' => array(
+            ],
+            'constraints' => [
                 new Assert\NotBlank(),
-            ),
-        ));
+            ],
+        ]);
     }
 
     /**

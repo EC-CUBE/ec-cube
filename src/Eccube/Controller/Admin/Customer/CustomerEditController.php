@@ -23,9 +23,6 @@
 
 namespace Eccube\Controller\Admin\Customer;
 
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
-use Eccube\Annotation\Inject;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Event\EccubeEvents;
@@ -34,8 +31,6 @@ use Eccube\Form\Type\Admin\CustomerType;
 use Eccube\Repository\CustomerRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
@@ -82,7 +77,7 @@ class CustomerEditController extends AbstractController
             // 編集用にデフォルトパスワードをセット
             $previous_password = $Customer->getPassword();
             $Customer->setPassword($this->eccubeConfig['eccube_default_password']);
-            // 新規登録
+        // 新規登録
         } else {
             $Customer = $this->customerRepository->newCustomer();
             $CustomerAddress = new CustomerAddress();
@@ -95,10 +90,10 @@ class CustomerEditController extends AbstractController
             ->createBuilder(CustomerType::class, $Customer);
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
                 'Customer' => $Customer,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_EDIT_INDEX_INITIALIZE, $event);
@@ -108,10 +103,8 @@ class CustomerEditController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
-
             if ($form->isValid()) {
-
-                log_info('会員登録開始', array($Customer->getId()));
+                log_info('会員登録開始', [$Customer->getId()]);
 
                 $encoder = $this->encoderFactory->getEncoder($Customer);
 
@@ -154,23 +147,22 @@ class CustomerEditController extends AbstractController
                 $this->entityManager->persist($Customer);
                 $this->entityManager->flush();
 
-                log_info('会員登録完了', array($Customer->getId()));
+                log_info('会員登録完了', [$Customer->getId()]);
 
                 $event = new EventArgs(
-                    array(
+                    [
                         'form' => $form,
                         'Customer' => $Customer,
-                    ),
+                    ],
                     $request
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_EDIT_INDEX_COMPLETE, $event);
 
                 $this->addSuccess('admin.customer.save.complete', 'admin');
 
-                return $this->redirectToRoute('admin_customer_edit', array(
+                return $this->redirectToRoute('admin_customer_edit', [
                     'id' => $Customer->getId(),
-                ));
-
+                ]);
             } else {
                 $this->addError('admin.customer.save.failed', 'admin');
             }

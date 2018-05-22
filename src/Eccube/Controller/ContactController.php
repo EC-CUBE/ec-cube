@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Controller;
 
 use Eccube\Event\EccubeEvents;
@@ -42,9 +41,9 @@ class ContactController extends AbstractController
      */
     protected $mailService;
 
-
     /**
      * ContactController constructor.
+     *
      * @param MailService $mailService
      */
     public function __construct(
@@ -66,7 +65,7 @@ class ContactController extends AbstractController
         if ($this->isGranted('ROLE_USER')) {
             $user = $this->getUser();
             $builder->setData(
-                array(
+                [
                     'name01' => $user->getName01(),
                     'name02' => $user->getName02(),
                     'kana01' => $user->getKana01(),
@@ -80,15 +79,15 @@ class ContactController extends AbstractController
                     'tel02' => $user->getTel02(),
                     'tel03' => $user->getTel03(),
                     'email' => $user->getEmail(),
-                )
+                ]
             );
         }
 
         // FRONT_CONTACT_INDEX_INITIALIZE
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_CONTACT_INDEX_INITIALIZE, $event);
@@ -103,19 +102,19 @@ class ContactController extends AbstractController
                     $form = $builder->getForm();
                     $form->handleRequest($request);
 
-                    return $this->render('Contact/confirm.twig', array(
+                    return $this->render('Contact/confirm.twig', [
                         'form' => $form->createView(),
-                    ));
+                    ]);
 
                 case 'complete':
 
                     $data = $form->getData();
 
                     $event = new EventArgs(
-                        array(
+                        [
                             'form' => $form,
                             'data' => $data,
-                        ),
+                        ],
                         $request
                     );
                     $this->eventDispatcher->dispatch(EccubeEvents::FRONT_CONTACT_INDEX_COMPLETE, $event);

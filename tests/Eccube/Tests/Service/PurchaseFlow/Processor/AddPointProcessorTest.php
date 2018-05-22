@@ -12,7 +12,6 @@ use Eccube\Tests\EccubeTestCase;
 
 class AddPointProcessorTest extends EccubeTestCase
 {
-
     /**
      * @var  Cart
      */
