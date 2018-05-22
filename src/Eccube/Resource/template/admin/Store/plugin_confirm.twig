@@ -19,9 +19,9 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'default_frame.twig' %}
+{% extends '@admin/styleguide_frame.twig' %}
 
-{% set menus = ['store', 'plugin', 'plugin_search'] %}
+{% set menus = ['store', 'plugin', 'plugin_list'] %}
 
 {% block title %}{{'admin.store.plugin_confirm.817'|trans}}{% endblock %}
 {% block sub_title %}{{'admin.store.plugin_confirm.818'|trans}}{% endblock %}
@@ -38,71 +38,106 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     </script>
 {% endblock javascript %}
 
+{% block stylesheet %}
+    <style type="text/css">
+        .plugin-panel {
+            border: 1px solid #dedede;
+            padding: 10px;
+            margin: 5px 0;
+        }
+        .plugin-meta {
+            padding: 0;
+            list-style: none;
+            margin: 0 0 15px;
+        }
+        .plugin-meta.dl-horizontal dt {
+            text-align: right;
+            padding-bottom: 0;
+            width: 180px;
+        }
+        .dl-horizontal dt {
+            text-align: left;
+            white-space: normal;
+            padding-bottom: 8px;
+            float: left;
+        }
+        .plugin-logo img {
+            width: 168px;
+            height: 126px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            float: left;
+        }
+        .plugin-meta.dl-horizontal dd {
+            padding-bottom: 0;
+            margin-left: 200px;
+        }
+        .plugin-block .grid{
+            padding: 10px 0;
+        }
+        #search_plugin_modal_box__body{
+            padding: 0 5px;
+        }
+    </style>
+{% endblock stylesheet %}
+
 {% block main %}
-    <div class="row">
-        <div class="col-md-12">
-            <div class="box">
-                <div class="box-header">
-                    <h3 class="box-title">{{'admin.store.plugin_confirm.819'|trans}}</h3>
-                </div><!-- /.box-header -->
-                <div class="box-body">
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="plugin-block">
-                                <div class="row grid">
-                                    <div class="col-xs-12 grid-item">
+    <div class="c-contentsArea__cols">
+        <div class="c-contentsArea__primaryCol">
+            <div class="c-primaryCol">
+                <div class="card rounded border-0 mb-4">
+                    <div class="card-header">
+                        <h4 class="box-title font-weight-bold">{{'admin.store.plugin_confirm.819'|trans}}</h4>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="plugin-block">
+                                    <div class="col-12">
                                         {{ include('@admin/Store/plugin_confirm_panel.twig') }}
                                     </div>
-                                </div><!-- .row -->
+                                </div><!-- .plugin-block -->
+                            </div><!-- .col-xs-12 -->
+                        </div><!-- .row -->
+                    </div><!-- /.box-body 1 -->
+                    {% if dependents is not empty %}
+
+                    <div class="box-header">
+                        <h4 class="col-12 box-title">
+                            {% if is_update %}
+                                {{ item.name }}をアップデートするために、以下のプラグインもアップデートします。 {# TODO 未翻訳 #}
+                            {% else %}
+                                {{ item.name }}をインストールするために、以下のプラグインもインストールします。 {# TODO 未翻訳 #}
+                            {% endif %}
+                        </h4>
+                    </div><!-- /.box-header -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="plugin-block">
+                                {% for plugin in dependents %}
+                                    <div class="col-12 grid-item">
+                                        {% include '@admin/Store/plugin_confirm_panel.twig' with {'item': plugin, 'is_update': is_update} only %}
+                                    </div>
+                                {% endfor %}
                             </div><!-- .plugin-block -->
                         </div><!-- .col-xs-12 -->
                     </div><!-- .row -->
-                </div><!-- /.box-body 1 -->
-
-                    {% if dependents is not empty %}
-            </div> <!-- end box 1 -->
-
-            <div class="box">
-                <div class="box-header">
-                    <h3 class="box-title">
-                        {% if is_update %}
-                            {{ item.name }}をアップデートするために、以下のプラグインもアップデートします。 {# TODO 未翻訳 #}
-                        {% else %}
-                            {{ item.name }}をインストールするために、以下のプラグインもインストールします。 {# TODO 未翻訳 #}
-                        {% endif %}
-                    </h3>
-                </div><!-- /.box-header -->
-                <div class="row">
-                    <div class="col-xs-12">
-                        <div class="plugin-block">
-                            <div class="row grid">
-                                {% for plugin in dependents %}
-                                <div class="col-xs-12 grid-item">
-                                    {% include '@admin/Store/plugin_confirm_panel.twig' with {'item': plugin, 'is_update': is_update} only %}
-                                </div>
-                                {% endfor %}
-                            </div><!-- .row -->
-                        </div><!-- .plugin-block -->
-                    </div><!-- .col-xs-12 -->
-                </div><!-- .row -->
                     {% endif %}
-                <div class="box-footer">
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <span class="pull-right">
+                    <div class="box-footer">
+                        <div class="col-12">
+                            <p class="pull-right">
                                 {% if is_update %}
                                     <a class="btn btn-warning btn-xs prevention-mask" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false" href="{{ url('admin_store_plugin_api_upgrade', {'pluginCode': item.product_code, 'version': item.version}) }}">アップデート</a> {# TODO 未翻訳 #}
                                 {% else %}
                                     <a class="btn btn-warning btn-xs prevention-mask" href="{{ url('admin_store_plugin_api_install', {'pluginCode': item.product_code, 'eccubeVersion': constant('Eccube\\Common\\Constant::VERSION'), 'version': item.version}) }}">インストール</a> {# TODO 未翻訳 #}
                                 {% endif %}
                                 <button class="btn btn-cancel btn-xs" type="button" onclick="return window.history.back()">戻る</button>
-                            </span>
+                            </p>
                         </div>
-                    </div>
-                </div><!-- /.box-footer -->
-
-            </div><!-- /.box 1 & 2-->
-
-        </div><!-- /.col -->
+                    </div><!-- /.box-footer -->
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}

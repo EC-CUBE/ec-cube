@@ -121,13 +121,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div class="card-body p-0">
                         {% if items|length > 0%}
                             <div class="plugin-block">
-                                <div class="">
-                                    {% for item in promotionItems %}
-                                        <div class="col-12">
-                                            {{ include('@admin/Store/plugin_search_panel.twig') }}
-                                        </div>
-                                    {% endfor %}
-                                </div><!-- .row -->
+                                {% for item in promotionItems %}
+                                    <div class="col-12">
+                                        {{ include('@admin/Store/plugin_search_panel.twig') }}
+                                    </div>
+                                {% endfor %}
+
                                 <div class="grid">
                                     {% for item in items %}
                                         <div class="col-12 col-md-12 grid-item">

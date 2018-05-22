@@ -59,11 +59,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 class PluginController extends AbstractController
 {
     /**
-     * @var EntityManager
-     */
-    protected $entityManager;
-
-    /**
      * @var Logger
      */
     protected $logger;
@@ -79,19 +74,9 @@ class PluginController extends AbstractController
     protected $pluginService;
 
     /**
-     * @var array
-     */
-    protected $eccubeConfig;
-
-    /**
      * @var BaseInfo
      */
     protected $BaseInfo;
-
-    /**
-     * @var FormFactory
-     */
-    protected $formFactory;
 
     /**
      * @var PluginRepository
@@ -102,15 +87,13 @@ class PluginController extends AbstractController
      * PluginController constructor.
      * @param PluginRepository $pluginRepository
      * @param PluginService $pluginService
-     * @param \Eccube\Log\Logger $logger
      * @param BaseInfo $baseInfo
      */
-    public function __construct(PluginRepository $pluginRepository, PluginService $pluginService, PluginEventHandlerRepository $eventHandlerRepository, \Eccube\Log\Logger $logger, BaseInfo $baseInfo)
+    public function __construct(PluginRepository $pluginRepository, PluginService $pluginService, PluginEventHandlerRepository $eventHandlerRepository, BaseInfo $baseInfo)
     {
         $this->pluginRepository = $pluginRepository;
         $this->pluginService = $pluginService;
         $this->pluginEventHandlerRepository = $eventHandlerRepository;
-        $this->logger = $logger;
         $this->BaseInfo = $baseInfo;
     }
 
@@ -257,7 +240,7 @@ class PluginController extends AbstractController
                     $fs = new Filesystem();
                     $fs->remove($tmpDir);
                 }
-                $this->logger->error("plugin install failed.", array('original-message' => $er->getMessage()));
+                log_error("plugin install failed.", array('original-message' => $er->getMessage()));
                 $message = 'admin.plugin.install.fail';
             }
         } else {
@@ -278,7 +261,6 @@ class PluginController extends AbstractController
      *
      * @Method("PUT")
      * @Route("/%eccube_admin_route%/store/plugin/{id}/enable", requirements={"id" = "\d+"}, name="admin_store_plugin_enable")
-     * @param Application $app
      * @param Plugin      $Plugin
      * @return RedirectResponse
      */
@@ -461,7 +443,7 @@ class PluginController extends AbstractController
                     $fs = new Filesystem();
                     $fs->remove($tmpDir);
                 }
-                $this->logger->error("plugin install failed.", array('original-message' => $e->getMessage()));
+                log_error("plugin install failed.", array('original-message' => $e->getMessage()));
                 $errors[] = $e;
             } catch (\Exception $er) {
                 // Catch composer install error | Other error
@@ -469,7 +451,7 @@ class PluginController extends AbstractController
                     $fs = new Filesystem();
                     $fs->remove($tmpDir);
                 }
-                $this->logger->error("plugin install failed.", array('original-message' => $er->getMessage()));
+                log_error("plugin install failed.", array('original-message' => $er->getMessage()));
                 $this->addError('admin.plugin.install.fail', 'admin');
             }
         } else {
@@ -612,7 +594,7 @@ class PluginController extends AbstractController
                 $this->pluginService->checkPluginArchiveContent($dir->getRealPath());
             } catch (\Eccube\Exception\PluginException $e) {
                 //config.yamlに不備があった際は全てスキップ
-                $this->logger->warning($e->getMessage());
+                log_warning($e->getMessage());
                 continue;
             }
             $config = $this->pluginService->readYml($dir->getRealPath().'/config.yml');
