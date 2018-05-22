@@ -138,7 +138,7 @@ class PaginationTest extends EccubeTestCase
     /**
      * wrap-queries' => true時に, PostgreSQLで正常にソート出来ない不具合が解消されているかどうかのテスト
      *
-     * @link https://github.com/EC-CUBE/ec-cube/issues/1618
+     * @see https://github.com/EC-CUBE/ec-cube/issues/1618
      */
     public function testSortWithWrapQueriesTrue()
     {
@@ -169,7 +169,7 @@ class PaginationTest extends EccubeTestCase
     /**
      * 外部のエンティティとJoinできるかどうかのテスト
      *
-     * @link https://github.com/EC-CUBE/ec-cube/issues/1916
+     * @see https://github.com/EC-CUBE/ec-cube/issues/1916
      */
     public function testSortWithJoinPluginEntity()
     {
@@ -184,7 +184,7 @@ class PaginationTest extends EccubeTestCase
             $em->flush($TestEntity);
         }
 
-        $qb = $this->productRepository->getQueryBuilderBySearchData(array());
+        $qb = $this->productRepository->getQueryBuilderBySearchData([]);
 
         // テスト用のエンティティとjoinし,ソートする.
         $qb
@@ -213,6 +213,7 @@ class PaginationTest extends EccubeTestCase
         } catch (\RuntimeException $e) {
             // \RuntimeExceptionは解消されているはず
             $this->fail($e->getMessage());
+
             return;
         }
 
@@ -306,7 +307,7 @@ class PaginationTest extends EccubeTestCase
             $qb->setParameter($parameter->getName(), $parameter->getValue());
         }
 
-        $expectedIds = array();
+        $expectedIds = [];
         $results = $qb->getQuery()->getResult();
         foreach ($results as $result) {
             $expectedIds[] = $result->getId();

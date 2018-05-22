@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Controller;
 
 use Eccube\Entity\BaseInfo;
@@ -88,6 +87,7 @@ class ProductController extends AbstractController
 
     /**
      * ProductController constructor.
+     *
      * @param PurchaseFlow $cartPurchaseFlow
      * @param CustomerFavoriteProductRepository $customerFavoriteProductRepository
      * @param CartService $cartService
@@ -117,7 +117,7 @@ class ProductController extends AbstractController
      * @Route("/products/list", name="product_list")
      * @Template("Product/list.twig")
      */
-    public function index( Request $request, Paginator $paginator)
+    public function index(Request $request, Paginator $paginator)
     {
         // Doctrine SQLFilter
         // if ($this->BaseInfo->isOptionNostockHidden()) {
@@ -139,9 +139,9 @@ class ProductController extends AbstractController
         }
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_PRODUCT_INDEX_INITIALIZE, $event);
@@ -156,10 +156,10 @@ class ProductController extends AbstractController
         $qb = $this->productRepository->getQueryBuilderBySearchData($searchData);
 
         $event = new EventArgs(
-            array(
+            [
                 'searchData' => $searchData,
                 'qb' => $qb,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_PRODUCT_INDEX_SEARCH, $event);
@@ -172,21 +172,21 @@ class ProductController extends AbstractController
         );
 
         // addCart form
-        $forms = array();
+        $forms = [];
         foreach ($pagination as $Product) {
             /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
             $builder = $this->formFactory->createNamedBuilder(
                 '',
                 AddCartType::class,
                 null,
-                array(
+                [
                     'product' => $Product,
                     'allow_extra_fields' => true,
-                )
+                ]
             );
             $addCartForm = $builder->getForm();
 
-            if ($request->getMethod() === 'POST' && (string)$Product->getId() === $request->get('product_id')) {
+            if ($request->getMethod() === 'POST' && (string) $Product->getId() === $request->get('product_id')) {
                 $addCartForm->handleRequest($request);
 
                 if ($addCartForm->isValid()) {
@@ -202,10 +202,10 @@ class ProductController extends AbstractController
                     }
 
                     $event = new EventArgs(
-                        array(
+                        [
                             'form' => $addCartForm,
                             'Product' => $Product,
-                        ),
+                        ],
                         $request
                     );
                     $this->eventDispatcher->dispatch(EccubeEvents::FRONT_PRODUCT_INDEX_COMPLETE, $event);
@@ -226,20 +226,20 @@ class ProductController extends AbstractController
             'disp_number',
             ProductListMaxType::class,
             null,
-            array(
+            [
                 'required' => false,
                 'label' => trans('productcontroller.label.result'),
                 'allow_extra_fields' => true,
-            )
+            ]
         );
         if ($request->getMethod() === 'GET') {
             $builder->setMethod('GET');
         }
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_PRODUCT_INDEX_DISP, $event);
@@ -253,20 +253,20 @@ class ProductController extends AbstractController
             'orderby',
             ProductListOrderByType::class,
             null,
-            array(
+            [
                 'required' => false,
                 'label' => trans('productcontroller.label.sort'),
                 'allow_extra_fields' => true,
-            )
+            ]
         );
         if ($request->getMethod() === 'GET') {
             $builder->setMethod('GET');
         }
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_PRODUCT_INDEX_ORDER, $event);
@@ -295,8 +295,10 @@ class ProductController extends AbstractController
      * @Route("/products/detail/{id}", name="product_detail", requirements={"id" = "\d+"})
      * @Template("Product/detail.twig")
      * @ParamConverter("Product", options={"repository_method" = "findWithSortedClassCategories"})
+     *
      * @param Request $request
      * @param Product $Product
+     *
      * @return array
      */
     public function detail(Request $request, Product $Product)
@@ -309,17 +311,17 @@ class ProductController extends AbstractController
             '',
             AddCartType::class,
             null,
-            array(
+            [
                 'product' => $Product,
                 'id_add_product_id' => false,
-            )
+            ]
         );
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
                 'Product' => $Product,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_PRODUCT_DETAIL_INITIALIZE, $event);
@@ -349,9 +351,9 @@ class ProductController extends AbstractController
         $this->checkVisibility($Product);
 
         $event = new EventArgs(
-            array(
+            [
                 'Product' => $Product,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_PRODUCT_FAVORITE_ADD_INITIALIZE, $event);
@@ -362,24 +364,24 @@ class ProductController extends AbstractController
             $this->session->getFlashBag()->set('product_detail.just_added_favorite', $Product->getId());
 
             $event = new EventArgs(
-                array(
+                [
                     'Product' => $Product,
-                ),
+                ],
                 $request
             );
             $this->eventDispatcher->dispatch(EccubeEvents::FRONT_PRODUCT_FAVORITE_ADD_COMPLETE, $event);
 
-            return $this->redirectToRoute('product_detail', array('id' => $Product->getId()));
+            return $this->redirectToRoute('product_detail', ['id' => $Product->getId()]);
         } else {
             // 非会員の場合、ログイン画面を表示
             //  ログイン後の画面遷移先を設定
-            $this->setLoginTargetPath($this->generateUrl('product_add_favorite', array('id' => $Product->getId())));
+            $this->setLoginTargetPath($this->generateUrl('product_add_favorite', ['id' => $Product->getId()]));
             $this->session->getFlashBag()->set('eccube.add.favorite', true);
 
             $event = new EventArgs(
-                array(
+                [
                     'Product' => $Product,
-                ),
+                ],
                 $request
             );
             $this->eventDispatcher->dispatch(EccubeEvents::FRONT_PRODUCT_FAVORITE_ADD_COMPLETE, $event);
@@ -397,7 +399,7 @@ class ProductController extends AbstractController
     public function addCart(Request $request, Product $Product)
     {
         // エラーメッセージの配列
-        $errorMessages = array();
+        $errorMessages = [];
         if (!$this->checkVisibility($Product)) {
             throw new NotFoundHttpException();
         }
@@ -406,17 +408,17 @@ class ProductController extends AbstractController
             '',
             AddCartType::class,
             null,
-            array(
+            [
                 'product' => $Product,
                 'id_add_product_id' => false,
-            )
+            ]
         );
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
                 'Product' => $Product,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_PRODUCT_CART_ADD_INITIALIZE, $event);
@@ -433,11 +435,11 @@ class ProductController extends AbstractController
 
         log_info(
             'カート追加処理開始',
-            array(
+            [
                 'product_id' => $Product->getId(),
                 'product_class_id' => $addCartData['product_class_id'],
                 'quantity' => $addCartData['quantity'],
-            )
+            ]
         );
 
         // カートへ追加
@@ -464,18 +466,18 @@ class ProductController extends AbstractController
 
         log_info(
             'カート追加処理完了',
-            array(
+            [
                 'product_id' => $Product->getId(),
                 'product_class_id' => $addCartData['product_class_id'],
                 'quantity' => $addCartData['quantity'],
-            )
+            ]
         );
 
         $event = new EventArgs(
-            array(
+            [
                 'form' => $form,
                 'Product' => $Product,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_PRODUCT_CART_ADD_COMPLETE, $event);
@@ -483,13 +485,13 @@ class ProductController extends AbstractController
         if ($event->getResponse() !== null) {
             return $event->getResponse();
         }
-        
+
         if ($request->isXmlHttpRequest()) {
             // ajaxでのリクエストの場合は結果をjson形式で返す。
-            
+
             // 初期化
             $done = null;
-            $messages = array();
+            $messages = [];
 
             if (empty($errorMessages)) {
                 // エラーが発生していない場合
@@ -501,8 +503,7 @@ class ProductController extends AbstractController
                 $messages = $errorMessages;
             }
 
-            return new JsonResponse(array('done' => $done, 'messages' => $messages));
-
+            return new JsonResponse(['done' => $done, 'messages' => $messages]);
         } else {
             // ajax以外でのリクエストの場合はカート画面へリダイレクト
             foreach ($errorMessages as $errorMessage) {
@@ -517,6 +518,7 @@ class ProductController extends AbstractController
      * ページタイトルの設定
      *
      * @param  null|array $searchData
+     *
      * @return str
      */
     private function getPageTitle($searchData)
@@ -532,7 +534,9 @@ class ProductController extends AbstractController
 
     /**
      * 閲覧可能な商品かどうかを判定
+     *
      * @param Product $Product
+     *
      * @return boolean 閲覧可能な場合はtrue
      */
     private function checkVisibility(Product $Product)
@@ -552,6 +556,7 @@ class ProductController extends AbstractController
                 return false;
             }
         }
+
         return true;
     }
 }

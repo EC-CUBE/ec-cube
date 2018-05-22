@@ -29,7 +29,6 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Annotation\FormAppend;
 use Eccube\Annotation\FormExtension;
-use Eccube\Annotation\Inject;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilderInterface;

@@ -20,6 +20,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
 namespace Eccube\Controller\Admin\Store;
 
 use Eccube\Common\Constant;
@@ -102,13 +103,14 @@ class OwnerStoreController extends AbstractController
      * @Route("/search", name="admin_store_plugin_owners_search")
      * @Template("@admin/Store/plugin_search.twig")
      * @param Request     $request
+     *
      * @return array
      */
     public function search(Request $request)
     {
         // Acquire downloadable plug-in information from owners store
-        $items = array();
-        $promotionItems = array();
+        $items = [];
+        $promotionItems = [];
         $message = '';
         // Owner's store communication
         $url = $this->eccubeConfig['package_repo_url'].'/search/packages.json';
@@ -183,6 +185,7 @@ class OwnerStoreController extends AbstractController
      * @Template("@admin/Store/plugin_confirm.twig")
      * @param Request     $request
      * @param string      $id
+     *
      * @return array
      */
     public function doConfirm(Request $request, $id)
@@ -225,6 +228,7 @@ class OwnerStoreController extends AbstractController
      * @param string      $pluginCode
      * @param string      $eccubeVersion
      * @param string      $version
+     *
      * @return RedirectResponse
      */
     public function apiInstall(Request $request, $pluginCode, $eccubeVersion, $version)
@@ -255,8 +259,8 @@ class OwnerStoreController extends AbstractController
         if (!empty($dependents)) {
             foreach ($dependents as $key => $item) {
                 $pluginItem = [
-                    "product_code" => $item['product_code'],
-                    "version" => $item['version'],
+                    'product_code' => $item['product_code'],
+                    'version' => $item['version'],
                 ];
                 array_push($dependentModifier, $pluginItem);
                 // Re-format plugin code
@@ -266,7 +270,7 @@ class OwnerStoreController extends AbstractController
             $packageNames = $this->pluginService->parseToComposerCommand($packages);
         }
         $packageNames .= ' '.self::$vendorName.'/'.$pluginCode.':'.$version;
-        $data = array(
+        $data = [
             'code' => $pluginCode,
             'version' => $version,
             'core_version' => $eccubeVersion,
@@ -274,16 +278,16 @@ class OwnerStoreController extends AbstractController
             'db_version' => $this->systemService->getDbversion(),
             'os' => php_uname('s').' '.php_uname('r').' '.php_uname('v'),
             'host' => $request->getHost(),
-            'web_server' => $request->server->get("SERVER_SOFTWARE"),
+            'web_server' => $request->server->get('SERVER_SOFTWARE'),
             'composer_version' => $this->composerService->composerVersion(),
             'composer_execute_mode' => $this->composerService->getMode(),
             'dependents' => json_encode($dependentModifier),
-        );
+        ];
 
         try {
             $this->composerService->execRequire($packageNames);
             // Do report to package repo
-            $url = $this->eccubeConfig['package_repo_url'] . '/report';
+            $url = $this->eccubeConfig['package_repo_url'].'/report';
             $this->postRequestApi($url, $data);
             $this->addSuccess('admin.plugin.install.complete', 'admin');
 
@@ -293,7 +297,7 @@ class OwnerStoreController extends AbstractController
         }
 
         // Do report to package repo
-        $url = $this->eccubeConfig['package_repo_url'] . '/report/fail';
+        $url = $this->eccubeConfig['package_repo_url'].'/report/fail';
         $this->postRequestApi($url, $data);
         $this->addError('admin.plugin.install.fail', 'admin');
 
@@ -306,6 +310,7 @@ class OwnerStoreController extends AbstractController
      * @Route("/delete/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_delete_confirm")
      * @Template("Store/plugin_confirm_uninstall.twig")
      * @param Plugin      $Plugin
+     *
      * @return array|RedirectResponse
      */
     public function deleteConfirm(Plugin $Plugin)
@@ -355,6 +360,7 @@ class OwnerStoreController extends AbstractController
      * @Method("DELETE")
      * @Route("/delete/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_api_uninstall")
      * @param Plugin      $Plugin
+     *
      * @return RedirectResponse
      */
     public function apiUninstall(Plugin $Plugin)
@@ -388,6 +394,7 @@ class OwnerStoreController extends AbstractController
      *
      * @param string      $pluginCode
      * @param string      $version
+     *
      * @return RedirectResponse
      */
     public function apiUpgrade($pluginCode, $version)
@@ -414,6 +421,7 @@ class OwnerStoreController extends AbstractController
      * @Route("/upgrade/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_update_confirm")
      * @Template("@admin/Store/plugin_confirm.twig")
      * @param Plugin      $plugin
+     *
      * @return Response
      */
     public function doUpdateConfirm(Plugin $plugin)
@@ -428,6 +436,7 @@ class OwnerStoreController extends AbstractController
      * API request processing
      *
      * @param string  $url
+     *
      * @return array
      */
     private function getRequestApi($url)
@@ -435,14 +444,14 @@ class OwnerStoreController extends AbstractController
         $curl = curl_init($url);
 
         // Option array
-        $options = array(
+        $options = [
             // HEADER
             CURLOPT_HTTPGET => true,
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_FAILONERROR => true,
             CURLOPT_CAINFO => \Composer\CaBundle\CaBundle::getSystemCaRootBundlePath(),
-        );
+        ];
 
         // Set option value
         curl_setopt_array($curl, $options);
@@ -454,7 +463,7 @@ class OwnerStoreController extends AbstractController
 
         log_info('http get_info', $info);
 
-        return array($result, $info);
+        return [$result, $info];
     }
 
     /**
@@ -462,6 +471,7 @@ class OwnerStoreController extends AbstractController
      *
      * @param string  $url
      * @param array $data
+     *
      * @return array
      */
     private function postRequestApi($url, $data)
@@ -478,13 +488,14 @@ class OwnerStoreController extends AbstractController
         curl_close($curl);
         log_info('http post_info', $info);
 
-        return array($result, $info);
+        return [$result, $info];
     }
 
     /**
      * Get message
      *
      * @param $info
+     *
      * @return string
      */
     private function getResponseErrorMessage($info)

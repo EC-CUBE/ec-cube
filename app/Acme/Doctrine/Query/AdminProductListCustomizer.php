@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Acme\Doctrine\Query;
-
 
 use Eccube\Doctrine\Query\OrderByClause;
 use Eccube\Doctrine\Query\OrderByCustomizer;
@@ -15,6 +13,7 @@ class AdminProductListCustomizer extends OrderByCustomizer
      *
      * @param array $params
      * @param $queryKey
+     *
      * @return OrderByClause[]
      */
     protected function createStatements($params, $queryKey)

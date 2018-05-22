@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Form\Type\Admin\CustomerType;
@@ -32,46 +31,46 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
     protected $form;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = array(
-        'name' => array(
+    protected $formData = [
+        'name' => [
             'name01' => 'たかはし',
             'name02' => 'しんいち',
-        ),
-        'kana'=> array(
+        ],
+        'kana' => [
             'kana01' => 'タカハシ',
             'kana02' => 'シンイチ',
-        ),
+        ],
         'company_name' => '株式会社テストショップ',
-        'zip' => array(
+        'zip' => [
             'zip01' => '530',
             'zip02' => '0001',
-        ),
-        'address' => array(
+        ],
+        'address' => [
             'pref' => '5',
             'addr01' => '北区',
             'addr02' => '梅田',
-        ),
-        'tel' => array(
+        ],
+        'tel' => [
             'tel01' => '012',
             'tel02' => '345',
             'tel03' => '6789',
-        ),
-        'fax' => array(
+        ],
+        'fax' => [
             'fax01' => '112',
             'fax02' => '345',
             'fax03' => '6789',
-        ),
+        ],
         'email' => 'default@example.com',
         'sex' => 1,
         'job' => 1,
         'birth' => '1983-2-14',
-        'password' => array(
+        'password' => [
             'first' => 'password',
             'second' => 'password',
-        ),
+        ],
         'status' => 1,
         'note' => 'note',
-    );
+    ];
 
     public function setUp()
     {
@@ -80,9 +79,9 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         // CSRF tokenを無効にしてFormを作成
         // 会員管理会員登録・編集
         $this->form = $this->formFactory
-            ->createBuilder(CustomerType::class, null, array(
+            ->createBuilder(CustomerType::class, null, [
                 'csrf_protection' => false,
-            ))
+            ])
             ->getForm();
     }
 
@@ -252,7 +251,7 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidPassword_MinLength()
     {
-        $this->formData['password']['first'] = str_repeat('a', $this->eccubeConfig['eccube_password_min_len']-1);
+        $this->formData['password']['first'] = str_repeat('a', $this->eccubeConfig['eccube_password_min_len'] - 1);
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -269,7 +268,7 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidPassword_MaxLength()
     {
-        $this->formData['password']['first'] = str_repeat('a', $this->eccubeConfig['eccube_password_max_len']+1);
+        $this->formData['password']['first'] = str_repeat('a', $this->eccubeConfig['eccube_password_max_len'] + 1);
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());

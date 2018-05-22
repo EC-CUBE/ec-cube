@@ -53,7 +53,6 @@ class DeliveryDuration extends \Eccube\Entity\AbstractEntity
      */
     private $sort_no;
 
-
     /**
      * Get id.
      *

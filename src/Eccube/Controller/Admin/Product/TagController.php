@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Controller\Admin\Product;
 
 use Eccube\Controller\AbstractController;
@@ -36,7 +35,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class TagController extends AbstractController
 {
@@ -56,6 +54,7 @@ class TagController extends AbstractController
      *
      * @param Request $request
      * @param Tag|null $Tag
+     *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function index(Request $request)
@@ -70,10 +69,10 @@ class TagController extends AbstractController
             ->createBuilder(ProductTag::class, $Tag);
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
                 'Tag' => $Tag,
-            ),
+            ],
             $request
         );
 
@@ -93,7 +92,7 @@ class TagController extends AbstractController
         }
 
         if ('POST' === $request->getMethod()) {
-            /**
+            /*
              * 登録処理
              */
             $form->handleRequest($request);
@@ -106,7 +105,7 @@ class TagController extends AbstractController
 
                 return $this->redirectToRoute('admin_product_tag');
             }
-            /**
+            /*
              * 編集処理
              */
             foreach ($forms as $editForm) {
@@ -144,22 +143,21 @@ class TagController extends AbstractController
     {
         $this->isTokenValid();
 
-        log_info('タグ削除開始', array($Tag->getId()));
+        log_info('タグ削除開始', [$Tag->getId()]);
 
         try {
             $this->tagRepository->delete($Tag);
 
             $event = new EventArgs(
-                array(
+                [
                     'Tag' => $Tag,
-                ), $request
+                ], $request
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_TAG_DELETE_COMPLETE, $event);
 
             $this->addSuccess('admin.tag.delete.complete', 'admin');
 
-            log_info('タグ削除完了', array($Tag->getId()));
-
+            log_info('タグ削除完了', [$Tag->getId()]);
         } catch (\Exception $e) {
             log_info('タグ削除エラー', [$Tag->getId(), $e]);
 
@@ -194,10 +192,10 @@ class TagController extends AbstractController
     protected function dispatchComplete(Request $request, FormInterface $form, Tag $Tag)
     {
         $event = new EventArgs(
-            array(
+            [
                 'form' => $form,
                 'Tag' => $Tag,
-            ),
+            ],
             $request
         );
 

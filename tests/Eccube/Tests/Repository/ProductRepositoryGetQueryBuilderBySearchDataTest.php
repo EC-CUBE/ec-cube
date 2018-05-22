@@ -64,7 +64,6 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
 
         $this->ProductListMax = new ProductListMax();
         $this->ProductListOrderBy = new ProductListOrderBy();
-
     }
 
     public function scenario()
@@ -78,7 +77,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
     {
         $Categories = $this->categoryRepository->findAll();
         $this->searchData = [
-            'category_id' => $Categories[0]
+            'category_id' => $Categories[0],
         ];
         $this->scenario();
 
@@ -100,7 +99,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
         $this->entityManager->flush();
 
         $this->searchData = [
-            'category_id' => $Category
+            'category_id' => $Category,
         ];
         $this->scenario();
 
@@ -120,7 +119,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
         $this->entityManager->flush();
 
         $this->searchData = [
-            'name' => 'お鍋　立方体'
+            'name' => 'お鍋　立方体',
         ];
         $this->scenario();
 
@@ -148,15 +147,15 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
 
         $ProductListOrderBy = $this->productListOrderByRepository->find(1);
         $this->searchData = [
-            'orderby' => $ProductListOrderBy
+            'orderby' => $ProductListOrderBy,
         ];
 
         $this->scenario();
 
-        $this->expected = array('りんご', 'アイス', 'お鍋');
-        $this->actual = array($this->Results[0]->getName(),
+        $this->expected = ['りんご', 'アイス', 'お鍋'];
+        $this->actual = [$this->Results[0]->getName(),
                               $this->Results[1]->getName(),
-                              $this->Results[2]->getName());
+                              $this->Results[2]->getName(), ];
         $this->verify();
     }
 
@@ -183,7 +182,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
         $ProductListOrderBy = $this->productListOrderByRepository
             ->find($this->eccubeConfig['eccube_product_order_price_higher']);
         $this->searchData = [
-            'orderby' => $ProductListOrderBy
+            'orderby' => $ProductListOrderBy,
         ];
 
         $this->scenario();
@@ -192,7 +191,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
         $this->actual = [
             $this->Results[0]->getName(),
             $this->Results[1]->getName(),
-            $this->Results[2]->getName()
+            $this->Results[2]->getName(),
         ];
         $this->verify();
     }
@@ -211,15 +210,15 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
         // 新着順
         $ProductListOrderBy = $this->productListOrderByRepository->find(2);
         $this->searchData = [
-            'orderby' => $ProductListOrderBy
+            'orderby' => $ProductListOrderBy,
         ];
 
         $this->scenario();
 
-        $this->expected = array('りんご', 'アイス', 'お鍋');
-        $this->actual = array($this->Results[0]->getName(),
+        $this->expected = ['りんご', 'アイス', 'お鍋'];
+        $this->actual = [$this->Results[0]->getName(),
                               $this->Results[1]->getName(),
-                              $this->Results[2]->getName());
+                              $this->Results[2]->getName(), ];
 
         $this->verify();
     }
@@ -227,7 +226,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
     public function testOrderByNewerSameCreateDate()
     {
         $date = new \DateTime();
-        $Products = $this->productRepository->findBy(array(), array('id' => 'DESC'));
+        $Products = $this->productRepository->findBy([], ['id' => 'DESC']);
         $Products[0]->setName('りんご');
         $Products[0]->setCreateDate($date);
         $Products[1]->setName('アイス');
@@ -238,16 +237,16 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
 
         // 新着順
         $ProductListOrderBy = $this->entityManager->find(ProductListOrderBy::class, 2);
-        $this->searchData = array(
-            'orderby' => $ProductListOrderBy
-        );
+        $this->searchData = [
+            'orderby' => $ProductListOrderBy,
+        ];
 
         $this->scenario();
 
-        $this->expected = array('りんご', 'アイス', 'お鍋');
-        $this->actual = array($this->Results[0]->getName(),
+        $this->expected = ['りんご', 'アイス', 'お鍋'];
+        $this->actual = [$this->Results[0]->getName(),
             $this->Results[1]->getName(),
-            $this->Results[2]->getName());
+            $this->Results[2]->getName(), ];
 
         $this->verify();
     }
@@ -283,14 +282,13 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
         $this->ProductListOrderBy->setName('価格順');
         $this->ProductListOrderBy->setSortNo(0);
 
-
         $this->searchData = [
-            'mode' => NULL,
-            'category_id' => NULL,
-            'name' => NULL,
+            'mode' => null,
+            'category_id' => null,
+            'name' => null,
             'pageno' => '1',
             'disp_number' => $this->ProductListMax,
-            'orderby' => $this->ProductListOrderBy
+            'orderby' => $this->ProductListOrderBy,
         ];
         $this->scenario();
 
@@ -316,14 +314,13 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
         $this->ProductListOrderBy->setName('新着順');
         $this->ProductListOrderBy->setSortNo(0);
 
-
         $this->searchData = [
-            'mode' => NULL,
-            'category_id' => NULL,
-            'name' => NULL,
+            'mode' => null,
+            'category_id' => null,
+            'name' => null,
             'pageno' => '1',
             'disp_number' => $this->ProductListMax,
-            'orderby' => $this->ProductListOrderBy
+            'orderby' => $this->ProductListOrderBy,
         ];
         $this->scenario();
 
@@ -341,18 +338,18 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
 
     public function test300ProductsList()
     {
-        $tables = array(
+        $tables = [
             'dtb_product_image',
             'dtb_product_stock',
             'dtb_product_class',
             'dtb_product_category',
-            'dtb_product'
-        );
+            'dtb_product',
+        ];
         $this->deleteAllRows($tables);
-        $productList = array();
+        $productList = [];
         for ($i = 0; $i <= 5; $i++) {
             $classNo = mt_rand(1, 3);
-            $productName = '商品-' . $i;
+            $productName = '商品-'.$i;
             $Product = $this->createProduct($productName, $classNo);
             $productList[] = $Product->getName();
         }
@@ -360,26 +357,26 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
 
         // 商品作成時間同じにする
         $QueryBuilder = $this->entityManager->createQueryBuilder();
-        $QueryBuilder->update('Eccube\Entity\Product','p');
-        $QueryBuilder->set('p.create_date',':createDate');
-        $QueryBuilder->setParameter(':createDate',new \DateTime());
+        $QueryBuilder->update('Eccube\Entity\Product', 'p');
+        $QueryBuilder->set('p.create_date', ':createDate');
+        $QueryBuilder->setParameter(':createDate', new \DateTime());
         $QueryBuilder->getQuery()->execute();
 
         // 新着順
         $ProductListOrderBy = $this->entityManager->find(ProductListOrderBy::class, 2);
-        $this->searchData = array(
+        $this->searchData = [
             'name' => '商品-',
-            'orderby' => $ProductListOrderBy
-        );
+            'orderby' => $ProductListOrderBy,
+        ];
 
         $this->scenario();
-        $this->expected = array();
-        foreach($productList as $productName){
+        $this->expected = [];
+        foreach ($productList as $productName) {
             $this->expected[] = $productName;
         }
 
-        $this->actual = array();
-        foreach($this->Results as $row){
+        $this->actual = [];
+        foreach ($this->Results as $row) {
             $this->actual[] = $row->getName();
         }
         $this->verify();

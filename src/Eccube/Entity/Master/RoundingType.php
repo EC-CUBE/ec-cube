@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Entity\Master;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -40,16 +39,19 @@ class RoundingType extends \Eccube\Entity\Master\AbstractMasterEntity
 {
     /**
      * 四捨五入.
+     *
      * @var integer
      */
     const ROUND = 1;
     /**
      * 切り捨て.
+     *
      * @var integer
      */
     const FLOOR = 2;
     /**
      * 切り上げ.
+     *
      * @var integer
      */
     const CEIL = 3;

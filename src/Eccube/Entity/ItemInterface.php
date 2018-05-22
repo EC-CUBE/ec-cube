@@ -1,6 +1,7 @@
 <?php
 
 namespace Eccube\Entity;
+
 interface ItemInterface
 {
     /**

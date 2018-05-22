@@ -73,7 +73,6 @@ class ProductImage extends \Eccube\Entity\AbstractEntity
      */
     private $Creator;
 
-
     /**
      * Get id.
      *

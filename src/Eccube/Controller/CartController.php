@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Controller;
 
 use Eccube\Entity\Cart;
@@ -60,6 +59,7 @@ class CartController extends AbstractController
 
     /**
      * CartController constructor.
+     *
      * @param ProductClassRepository $productClassRepository
      * @param CartService $cartService
      * @param PurchaseFlow $cartPurchaseFlow
@@ -68,13 +68,11 @@ class CartController extends AbstractController
         ProductClassRepository $productClassRepository,
         CartService $cartService,
         PurchaseFlow $cartPurchaseFlow
-    )
-    {
+    ) {
         $this->productClassRepository = $productClassRepository;
         $this->cartService = $cartService;
         $this->purchaseFlow = $cartPurchaseFlow;
     }
-
 
     /**
      * カート画面.
@@ -93,14 +91,16 @@ class CartController extends AbstractController
         $quantity = 0;
         $isDeliveryFree = false;
 
-        $totalQuantity = array_reduce($Carts, function($total, $Cart) {
-            /** @var Cart $Cart */
+        $totalQuantity = array_reduce($Carts, function ($total, $Cart) {
+            /* @var Cart $Cart */
             $total += $Cart->getQuantity();
+
             return $total;
         }, 0);
-        $totalPrice = array_reduce($Carts, function($total, $Cart) {
-            /** @var Cart $Cart */
+        $totalPrice = array_reduce($Carts, function ($total, $Cart) {
+            /* @var Cart $Cart */
             $total += $Cart->getTotalPrice();
+
             return $total;
         }, 0);
 
@@ -116,17 +116,17 @@ class CartController extends AbstractController
 
     /**
      * @param $Carts
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     protected function execPurchaseFlow($Carts)
     {
         /** @var PurchaseFlowResult[] $flowResults */
-        $flowResults = array_map(function($Cart) {
+        $flowResults = array_map(function ($Cart) {
             $purchaseContext = new PurchaseContext($Cart, $this->getUser());
 
             return $this->purchaseFlow->calculate($Cart, $purchaseContext);
         }, $Carts);
-
 
         // 復旧不可のエラーが発生した場合はカートをクリアして再描画
         $hasError = false;
@@ -141,6 +141,7 @@ class CartController extends AbstractController
         if ($hasError) {
             $this->cartService->clear();
             $this->cartService->save();
+
             return $this->redirectToRoute('cart');
         }
 
@@ -220,7 +221,7 @@ class CartController extends AbstractController
     {
         // FRONT_CART_BUYSTEP_INITIALIZE
         $event = new EventArgs(
-            array(),
+            [],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_CART_BUYSTEP_INITIALIZE, $event);
@@ -231,7 +232,7 @@ class CartController extends AbstractController
 
         // FRONT_CART_BUYSTEP_COMPLETE
         $event = new EventArgs(
-            array(),
+            [],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_CART_BUYSTEP_COMPLETE, $event);

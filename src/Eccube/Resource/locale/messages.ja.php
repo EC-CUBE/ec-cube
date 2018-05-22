@@ -1,6 +1,6 @@
 <?php
-return [
 
+return [
     //common
     'common.label.add' => '新規作成',
     'common.label.num' => '件',
@@ -378,7 +378,6 @@ return [
     'admin.header.last_login' => '最終ログイン',
     'admin.header.logout' => 'ログアウト',
 
-
     'admin.nav.product' => '商品管理',
     'admin.nav.product.product_master' => '商品マスター',
     'admin.nav.product.product_edit' => '商品登録',
@@ -441,20 +440,19 @@ return [
     'admin.nav.other' => 'その他',
     'admin.nav.styleguide' => 'スタイルガイド',
 
-
     'Login email' => 'メールアドレス',
     'Login pass' => 'パスワード',
     'Login memory' => '次回から自動的にログインする',
-    'Invalid credentials.' => 'ログインできませんでした。<br>入力内容に誤りがないかご確認ください。',// TODO: enとIDが違う
+    'Invalid credentials.' => 'ログインできませんでした。<br>入力内容に誤りがないかご確認ください。', // TODO: enとIDが違う
     'Invalid CSRF token.' => 'もう一度ログイン処理をしてください。',
     'Your session has timed out, or you have disabled cookies.' => 'もう一度ログイン処理をしてください。',
-    'The uploaded file was too large. Please try to upload a smaller file.' => 'ファイルサイズが大きすぎます。',// TODO: enとIDが違う
+    'The uploaded file was too large. Please try to upload a smaller file.' => 'ファイルサイズが大きすぎます。', // TODO: enとIDが違う
     'Name' => 'お名前',
-    'Name01' => '姓',// TODO: enとIDが違う
-    'Name02' => '名',// TODO: enとIDが違う
+    'Name01' => '姓', // TODO: enとIDが違う
+    'Name02' => '名', // TODO: enとIDが違う
     'Kana' => 'お名前(フリガナ)',
-    'Kana01' => 'セイ',// TODO: enとIDが違う
-    'Kana02' => 'メイ',// TODO: enとIDが違う
+    'Kana01' => 'セイ', // TODO: enとIDが違う
+    'Kana02' => 'メイ', // TODO: enとIDが違う
     'Zip' => '郵便番号',
     'Zip01' => '郵便番号1',
     'Zip02' => '郵便番号2',
@@ -508,7 +506,6 @@ return [
     'front.shopping.order.error' => '購入処理でエラーが発生しました。',
     'front.shopping.stock.error' => '選択された商品の在庫が不足しております。該当商品をカートから削除しました。',
     'front.shopping.system.error' => '購入処理でシステムエラーが発生しました。大変お手数ですが、サイト管理者までご連絡ください。',
-
 
     'admin.common.label.id' => 'ID',
     'admin.common.label.name' => 'お名前',
@@ -710,7 +707,7 @@ return [
     'form.address2.help' => '番地・ビル名 (例：1-3-5)',
     'This value should not be blank.' => '入力されていません。',
     'This value should be the user\'s current password.' => '現在のパスワードが正しくありません。',
-    'Invalid twig format. {{ error }}' => 'Twigのフォーマットが正しくありません。{{ error }}',// TODO: enとIDが違う
+    'Invalid twig format. {{ error }}' => 'Twigのフォーマットが正しくありません。{{ error }}', // TODO: enとIDが違う
     'admin.change_password.2' => 'パスワード変更',
     'admin.change_password.3' => 'パスワード変更',
     'admin.change_password.4' => '変更',
@@ -1027,7 +1024,6 @@ return [
     'admin.index.summary.shop.situation' => 'ショップ状況',
     'admin.index.summary.shop.items.stock' => '在庫切れ商品数',
     'admin.index.summary.shop.handled.product' => '取扱商品数',
-
 
     'admin.login.172' => 'ログインID',
     'admin.login.173' => 'パスワード',

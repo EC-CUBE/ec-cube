@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -54,13 +53,14 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
      */
     public function isDefaultTaxRule()
     {
-        return (self::DEFAULT_TAX_RULE_ID === $this->getId());
+        return self::DEFAULT_TAX_RULE_ID === $this->getId();
     }
 
     /**
      * Set sortNo
      *
      * @param  integer $sortNo
+     *
      * @return TaxRule
      */
     public function setSortNo($sortNo)
@@ -183,7 +183,6 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
      * })
      */
     private $RoundingType;
-
 
     /**
      * Get id.
@@ -474,6 +473,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
      * このメソッドは usort() 関数などで使用する.
      *
      * @param TaxRule $Target 比較対象の TaxRule
+     *
      * @return integer
      */
     public function compareTo(TaxRule $Target)

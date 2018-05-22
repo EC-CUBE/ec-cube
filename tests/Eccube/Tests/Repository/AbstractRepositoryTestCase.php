@@ -30,7 +30,6 @@ use Eccube\Application;
  */
 class AbstractRepositoryTestCase extends \PHPUnit_Framework_TestCase
 {
-
     public function setUp()
     {
         $this->markTestIncomplete(get_class($this).' は未実装です');

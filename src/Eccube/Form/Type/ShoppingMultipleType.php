@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type;
 
 use Eccube\Annotation\FormType;
@@ -36,47 +35,43 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ShoppingMultipleType extends AbstractType
 {
-
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         $deliveries = $options['deliveries'];
         $delivery = $options['delivery'];
         $deliveryDurations = $options['deliveryDurations'];
 
         $builder
-            ->add('delivery', EntityType::class, array(
+            ->add('delivery', EntityType::class, [
                 'class' => 'Eccube\Entity\Delivery',
                 'choice_label' => 'name',
                 'choices' => $deliveries,
                 'data' => $delivery,
-            ))
-            ->add('deliveryDuration', ChoiceType::class, array(
+            ])
+            ->add('deliveryDuration', ChoiceType::class, [
                 'choices' => array_flip($deliveryDurations),
                 'required' => false,
                 'placeholder' => 'shoppingmultiple.placeholder.not_selected',
-            ))
-            ->add('deliveryTime', EntityType::class, array(
+            ])
+            ->add('deliveryTime', EntityType::class, [
                 'class' => 'Eccube\Entity\DeliveryTime',
                 'choice_label' => 'deliveryTime',
                 'choices' => $delivery->getDeliveryTimes(),
                 'required' => false,
                 'placeholder' => 'shoppingmultiple.placeholder.not_selected',
-            ));
-
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'deliveries' => array(),
+        $resolver->setDefaults([
+            'deliveries' => [],
             'delivery' => null,
-            'deliveryDurations' => array(),
-        ));
-
+            'deliveryDurations' => [],
+        ]);
     }
 
     /**

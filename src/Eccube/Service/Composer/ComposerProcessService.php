@@ -20,6 +20,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
 namespace Eccube\Service\Composer;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -29,7 +30,7 @@ use Eccube\Service\SystemService;
 
 /**
  * Class ComposerProcessService
- * @package Eccube\Service\Composer
+ *
  * @Service
  */
 class ComposerProcessService implements ComposerServiceInterface
@@ -64,8 +65,9 @@ class ComposerProcessService implements ComposerServiceInterface
 
     /**
      * This function to install a plugin by composer require
+     *
      * @param string $packageName format "foo/bar foo/bar2:1.0.0"
-     * @return void
+     *
      * @throws PluginException
      */
     public function execRequire($packageName)
@@ -83,8 +85,9 @@ class ComposerProcessService implements ComposerServiceInterface
 
     /**
      * This function to remove a plugin by composer remove
+     *
      * @param string $packageName format "foo/bar foo/bar2"
-     * @return void
+     *
      * @throws PluginException
      */
     public function execRemove($packageName)
@@ -104,13 +107,14 @@ class ComposerProcessService implements ComposerServiceInterface
 
     /**
      * Run command
+     *
      * @throws PluginException
+     *
      * @param string $command
-     * @return void
      */
     public function runCommand($command)
     {
-        $output = array();
+        $output = [];
         try {
             // Execute command
             $returnValue = -1;
@@ -120,7 +124,7 @@ class ComposerProcessService implements ComposerServiceInterface
             if ($returnValue) {
                 throw new PluginException($outputString);
             }
-            log_info(PHP_EOL . $outputString . PHP_EOL);
+            log_info(PHP_EOL.$outputString.PHP_EOL);
         } catch (\Exception $exception) {
             throw new PluginException($exception->getMessage());
         }
@@ -128,6 +132,7 @@ class ComposerProcessService implements ComposerServiceInterface
 
     /**
      * Set working dir
+     *
      * @param string $workingDir
      */
     public function setWorkingDir($workingDir)
@@ -137,26 +142,29 @@ class ComposerProcessService implements ComposerServiceInterface
 
     /**
      * Set init
+     *
      * @throws PluginException
      */
     private function init()
     {
         if (!$this->isPhpCommandLine()) {
-            throw new PluginException("Php cli not found.");
+            throw new PluginException('Php cli not found.');
         }
 
         $composerMemory = $this->eccubeConfig['eccube_composer_memory_limit'];
         if (!$this->isSetCliMemoryLimit()) {
             $cliMemoryLimit = $this->getCliMemoryLimit();
             if ($cliMemoryLimit < $composerMemory && $cliMemoryLimit != -1) {
-                throw new PluginException("Not enough memory limit.");
+                throw new PluginException('Not enough memory limit.');
             }
         }
 
         /**
          * Mysql lock in transaction
-         * @link https://dev.mysql.com/doc/refman/5.7/en/lock-tables.html
-         * @var EntityManagerInterface $em
+         *
+         * @see https://dev.mysql.com/doc/refman/5.7/en/lock-tables.html
+         *
+         * @var EntityManagerInterface
          */
         $em = $this->entityManager;
         if ($em->getConnection()->isTransactionActive()) {
@@ -192,6 +200,7 @@ class ComposerProcessService implements ComposerServiceInterface
 
     /**
      * Get grep memory_limit | Megabyte
+     *
      * @return int|string
      */
     private function getCliMemoryLimit()
@@ -223,6 +232,7 @@ class ComposerProcessService implements ComposerServiceInterface
 
     /**
      * Check to set new value grep "memory_limit"
+     *
      * @return bool
      */
     private function isSetCliMemoryLimit()
@@ -252,6 +262,7 @@ class ComposerProcessService implements ComposerServiceInterface
 
     /**
      * Check php command line
+     *
      * @return bool
      */
     private function isPhpCommandLine()
@@ -268,17 +279,20 @@ class ComposerProcessService implements ComposerServiceInterface
 
     /**
      * Get version of composer
+     *
      * @return null|string
      */
     public function composerVersion()
     {
         $this->init();
-        $command = $this->pathPHP . ' ' . $this->composerFile . ' -V';
+        $command = $this->pathPHP.' '.$this->composerFile.' -V';
+
         return exec($command);
     }
 
     /**
      * Get mode
+     *
      * @return mixed|string
      */
     public function getMode()

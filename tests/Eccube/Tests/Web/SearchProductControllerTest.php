@@ -21,37 +21,37 @@ class SearchProductControllerTest extends AbstractWebTestCase
 
     public function createCategories()
     {
-        $categories = array(
-            array('name' => '親1', 'hierarchy' => 1, 'sort_no' => 1,
-                'child' => array(
-                    array('name' => '子1', 'hierarchy' => 2, 'sort_no' => 4,
-                        'child' => array(
-                            array('name' => '孫1', 'hierarchy' => 3, 'sort_no' => 9)
-                        ),
-                    ),
-                ),
-            ),
-            array('name' => '親2', 'hierarchy' => 1, 'sort_no' => 2,
-                'child' => array(
-                    array('name' => '子2-0', 'hierarchy' => 2, 'sort_no' => 5,
-                        'child' => array(
-                            array('name' => '孫2', 'hierarchy' => 3, 'sort_no' => 10)
-                        )
-                    ),
-                    array('name' => '子2-1', 'hierarchy' => 2, 'sort_no' => 6),
-                    array('name' => '子2-2', 'hierarchy' => 2, 'sort_no' => 7)
-                ),
-            ),
-            array('name' => '親3', 'hierarchy' => 1, 'sort_no' => 3,
-                'child' => array(
-                    array('name' => '子3', 'hierarchy' => 2, 'sort_no' => 8,
-                        'child' => array(
-                            array('name' => '孫3', 'hierarchy' => 3, 'sort_no' => 11)
-                        )
-                    )
-                ),
-            ),
-        );
+        $categories = [
+            ['name' => '親1', 'hierarchy' => 1, 'sort_no' => 1,
+                'child' => [
+                    ['name' => '子1', 'hierarchy' => 2, 'sort_no' => 4,
+                        'child' => [
+                            ['name' => '孫1', 'hierarchy' => 3, 'sort_no' => 9],
+                        ],
+                    ],
+                ],
+            ],
+            ['name' => '親2', 'hierarchy' => 1, 'sort_no' => 2,
+                'child' => [
+                    ['name' => '子2-0', 'hierarchy' => 2, 'sort_no' => 5,
+                        'child' => [
+                            ['name' => '孫2', 'hierarchy' => 3, 'sort_no' => 10],
+                        ],
+                    ],
+                    ['name' => '子2-1', 'hierarchy' => 2, 'sort_no' => 6],
+                    ['name' => '子2-2', 'hierarchy' => 2, 'sort_no' => 7],
+                ],
+            ],
+            ['name' => '親3', 'hierarchy' => 1, 'sort_no' => 3,
+                'child' => [
+                    ['name' => '子3', 'hierarchy' => 2, 'sort_no' => 8,
+                        'child' => [
+                            ['name' => '孫3', 'hierarchy' => 3, 'sort_no' => 11],
+                        ],
+                    ],
+                ],
+            ],
+        ];
 
         foreach ($categories as $category_array) {
             $Category = new Category();
@@ -95,10 +95,11 @@ class SearchProductControllerTest extends AbstractWebTestCase
     /**
      * 既存のデータを論理削除しておく.
      */
-    public function remove() {
+    public function remove()
+    {
         $this->deleteAllRows([
             'dtb_product_category',
-            'dtb_category'
+            'dtb_category',
         ]);
     }
 
@@ -111,7 +112,7 @@ class SearchProductControllerTest extends AbstractWebTestCase
     public function testCategory()
     {
         // Give
-        $Category = $this->categoryRepository->findOneBy(array('name' => '孫1'));
+        $Category = $this->categoryRepository->findOneBy(['name' => '孫1']);
 
         // When
         $crawler = $this->client->request('GET', $this->generateUrl('block_search_product'));

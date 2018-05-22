@@ -23,7 +23,6 @@
 
 namespace Eccube\Tests\Repository;
 
-use Eccube\Common\Constant;
 use Eccube\Entity\Delivery;
 use Eccube\Entity\Master\SaleType;
 use Eccube\Entity\PaymentOption;
@@ -63,7 +62,7 @@ class PaymentRepositoryTest extends EccubeTestCase
 
     public function test_findAllowedPaymentEmpty()
     {
-        $saleTypes = array(7, 6);
+        $saleTypes = [7, 6];
         $saleTypes = array_unique($saleTypes);
 
         // $paymentOption = $app['eccube.repository.payment_option']->getPaymentOption($saleTypes);
@@ -115,7 +114,7 @@ class PaymentRepositoryTest extends EccubeTestCase
     /**
      * 共通する支払い方法が存在しない場合.
      *
-     * @link https://github.com/EC-CUBE/ec-cube/issues/1162
+     * @see https://github.com/EC-CUBE/ec-cube/issues/1162
      */
     public function testFindAllowedPaymentWithExclusion()
     {
@@ -125,7 +124,7 @@ class PaymentRepositoryTest extends EccubeTestCase
         // SaleType 1 と 2 で, 共通する支払い方法を削除しておく
         $PaymentOption = $this->paymentOptionRepository->findOneBy([
             'delivery_id' => 1,
-            'payment_id' => 3
+            'payment_id' => 3,
         ]);
         $this->assertNotNull($PaymentOption);
         $this->entityManager->remove($PaymentOption);
@@ -143,7 +142,8 @@ class PaymentRepositoryTest extends EccubeTestCase
 
     /**
      * 同じ商品種別ならどの支払い方法でも選択可能
-     * @link https://github.com/EC-CUBE/ec-cube/pull/2325
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/pull/2325
      */
     public function testFindAllowedPayment_SameSaleType()
     {
@@ -156,29 +156,27 @@ class PaymentRepositoryTest extends EccubeTestCase
         $payment2 = $paymentRepository->find(2);
         $payment3 = $paymentRepository->find(3);
 
-        {
-            $delivery1 = $this->createDelivery('テスト配送1', $typeA, array($payment1, $payment2));
-            $delivery2 = $this->createDelivery('テスト配送2', $typeA, array($payment1));
+        $delivery1 = $this->createDelivery('テスト配送1', $typeA, [$payment1, $payment2]);
+        $delivery2 = $this->createDelivery('テスト配送2', $typeA, [$payment1]);
 
-            $actual = $paymentRepository->findAllowedPayments(array($delivery1, $delivery2));
+        $actual = $paymentRepository->findAllowedPayments([$delivery1, $delivery2]);
 
-            $actualIds = array_values(array_map(function($p) { return $p['id']; }, $actual));
-            self::assertEquals(array(1, 2), $actualIds);
-        }
-        {
-            $delivery1 = $this->createDelivery('テスト配送1', $typeA, array($payment1, $payment2));
-            $delivery2 = $this->createDelivery('テスト配送2', $typeA, array($payment3));
+        $actualIds = array_values(array_map(function ($p) { return $p['id']; }, $actual));
+        self::assertEquals([1, 2], $actualIds);
 
-            $actual = $paymentRepository->findAllowedPayments(array($delivery1, $delivery2));
+        $delivery1 = $this->createDelivery('テスト配送1', $typeA, [$payment1, $payment2]);
+        $delivery2 = $this->createDelivery('テスト配送2', $typeA, [$payment3]);
 
-            $actualIds = array_values(array_map(function($p) { return $p['id']; }, $actual));
-            self::assertEquals(array(1, 2, 3), $actualIds);
-        }
+        $actual = $paymentRepository->findAllowedPayments([$delivery1, $delivery2]);
+
+        $actualIds = array_values(array_map(function ($p) { return $p['id']; }, $actual));
+        self::assertEquals([1, 2, 3], $actualIds);
     }
 
     /**
      * 異なる商品種別なら共通する支払方法のみ選択可能
-     * @link https://github.com/EC-CUBE/ec-cube/pull/2325
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/pull/2325
      */
     public function testFindAllowedPayment_DifferentSaleType()
     {
@@ -193,26 +191,24 @@ class PaymentRepositoryTest extends EccubeTestCase
         $payment3 = $paymentRepository->find(3);
 
         // 共通する支払方法がある場合
-        {
-            $delivery1 = $this->createDelivery('テスト配送1', $typeA, array($payment1, $payment2));
-            $delivery2 = $this->createDelivery('テスト配送2', $typeB, array($payment1));
 
-            $actual = $paymentRepository->findAllowedPayments(array($delivery1, $delivery2));
+        $delivery1 = $this->createDelivery('テスト配送1', $typeA, [$payment1, $payment2]);
+        $delivery2 = $this->createDelivery('テスト配送2', $typeB, [$payment1]);
 
-            $actualIds = array_values(array_map(function($p) { return $p['id']; }, $actual));
-            self::assertEquals(array(1), $actualIds);
-        }
+        $actual = $paymentRepository->findAllowedPayments([$delivery1, $delivery2]);
+
+        $actualIds = array_values(array_map(function ($p) { return $p['id']; }, $actual));
+        self::assertEquals([1], $actualIds);
 
         // 共通する支払方法がない場合
-        {
-            $delivery1 = $this->createDelivery('テスト配送1', $typeA, array($payment1, $payment2));
-            $delivery2 = $this->createDelivery('テスト配送2', $typeB, array($payment3));
 
-            $actual = $paymentRepository->findAllowedPayments(array($delivery1, $delivery2));
+        $delivery1 = $this->createDelivery('テスト配送1', $typeA, [$payment1, $payment2]);
+        $delivery2 = $this->createDelivery('テスト配送2', $typeB, [$payment3]);
 
-            $actualIds = array_values(array_map(function($p) { return $p['id']; }, $actual));
-            self::assertEquals(array(), $actualIds);
-        }
+        $actual = $paymentRepository->findAllowedPayments([$delivery1, $delivery2]);
+
+        $actualIds = array_values(array_map(function ($p) { return $p['id']; }, $actual));
+        self::assertEquals([], $actualIds);
     }
 
     private function createSaleType($name, $id)
@@ -223,10 +219,11 @@ class PaymentRepositoryTest extends EccubeTestCase
         $SaleType->setSortNo($id);
         $this->entityManager->persist($SaleType);
         $this->entityManager->flush($SaleType);
+
         return $SaleType;
     }
 
-    private function createDelivery($name, SaleType $SaleType, $payments = array())
+    private function createDelivery($name, SaleType $SaleType, $payments = [])
     {
         $newDelivery = new Delivery();
         $newDelivery->setName($name);

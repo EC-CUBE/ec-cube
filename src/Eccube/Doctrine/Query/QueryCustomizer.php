@@ -23,17 +23,13 @@
 
 namespace Eccube\Doctrine\Query;
 
-
 use Doctrine\ORM\QueryBuilder;
 
 /**
  * クエリをカスタマイズするインターフェイス。
- *
- * @package Eccube\Doctrine\Query
  */
 interface QueryCustomizer
 {
-
     /**
      * クエリをカスタマイズします。
      *

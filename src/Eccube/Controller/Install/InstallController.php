@@ -118,7 +118,9 @@ class InstallController extends AbstractController
      *
      * @Route("/install/step1", name="install_step1")
      * @Template("step1.twig")
+     *
      * @param Request $request
+     *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function step1(Request $request)
@@ -183,7 +185,9 @@ class InstallController extends AbstractController
      * @Template("step3.twig")
      *
      * @param Request $request
+     *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     *
      * @throws \Doctrine\DBAL\DBALException
      * @throws \Exception
      */
@@ -195,7 +199,7 @@ class InstallController extends AbstractController
         if ($this->isInstalled()) {
             // ショップ名/メールアドレス
             $conn = $this->entityManager->getConnection();
-            $stmt = $conn->query("SELECT shop_name, email01 FROM dtb_base_info WHERE id = 1;");
+            $stmt = $conn->query('SELECT shop_name, email01 FROM dtb_base_info WHERE id = 1;');
             $row = $stmt->fetch();
             $sessionData['shop_name'] = $row['shop_name'];
             $sessionData['email'] = $row['email01'];
@@ -251,7 +255,9 @@ class InstallController extends AbstractController
      * @Template("step4.twig")
      *
      * @param Request $request
+     *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     *
      * @throws \Exception
      */
     public function step4(Request $request)
@@ -294,8 +300,11 @@ class InstallController extends AbstractController
      *
      * @Route("/install/step5", name="install_step5")
      * @Template("step5.twig")
+     *
      * @param Request $request
+     *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     *
      * @throws \Exception
      */
     public function step5(Request $request)
@@ -344,10 +353,10 @@ class InstallController extends AbstractController
             if (isset($sessionData['agree']) && $sessionData['agree']) {
                 $host = $request->getSchemeAndHttpHost();
                 $basePath = $request->getBasePath();
-                $params = array(
+                $params = [
                     'http_url' => $host.$basePath,
                     'shop_name' => $sessionData['shop_name'],
-                );
+                ];
                 $this->sendAppData($params, $em);
             }
             $version = $this->getDatabaseVersion($em);
@@ -363,6 +372,7 @@ class InstallController extends AbstractController
 
     /**
      * インストール完了
+     *
      * @Route("/install/complete", name="install_complete")
      * @Template("complete.twig")
      */
@@ -371,7 +381,7 @@ class InstallController extends AbstractController
         $sessionData = $this->getSessionData($this->session);
         $databaseUrl = $this->createDatabaseUrl($sessionData);
         $mailerUrl = $this->createMailerUrl($sessionData);
-        $forceSSL = isset($sessionData['admin_force_ssl']) ? (bool)$sessionData['admin_force_ssl'] : false;
+        $forceSSL = isset($sessionData['admin_force_ssl']) ? (bool) $sessionData['admin_force_ssl'] : false;
         if ($forceSSL === false) {
             $forceSSL = 'false';
         } elseif ($forceSSL === true) {
@@ -428,7 +438,7 @@ class InstallController extends AbstractController
     {
         foreach ($this->requiredModules as $module) {
             if (!extension_loaded($module)) {
-                $this->addDanger(trans('install.text.error.required_module_not_enable', array($module)), 'install');
+                $this->addDanger(trans('install.text.error.required_module_not_enable', [$module]), 'install');
             }
         }
         if (!extension_loaded('pdo_mysql') && !extension_loaded('pdo_pgsql')) {
@@ -441,7 +451,7 @@ class InstallController extends AbstractController
                     //http://php.net/manual/en/migration71.deprecated.php
                     continue;
                 }
-                $this->addInfo(trans('install.text.error.recommended_module_not_enable', array($module)), 'install');
+                $this->addInfo(trans('install.text.error.recommended_module_not_enable', [$module]), 'install');
             }
         }
         if ('\\' === DIRECTORY_SEPARATOR) { // for Windows
@@ -490,6 +500,7 @@ class InstallController extends AbstractController
 
     /**
      * @param array $params
+     *
      * @return string
      */
     public function createDatabaseUrl(array $params)
@@ -531,6 +542,7 @@ class InstallController extends AbstractController
 
     /**
      * @param string $url
+     *
      * @return array
      */
     public function extractDatabaseUrl($url)
@@ -560,7 +572,9 @@ class InstallController extends AbstractController
 
     /**
      * @param array $options
+     *
      * @return string
+     *
      * @see https://github.com/symfony/swiftmailer-bundle/blob/9728097df87e76e2db71fc41fd7d211c06daea3e/DependencyInjection/SwiftmailerTransportFactory.php#L80-L142
      */
     public function createMailerUrl(array $params)
@@ -619,6 +633,7 @@ class InstallController extends AbstractController
 
     /**
      * @param string $url
+     *
      * @return array
      */
     public function extractMailerUrl($url)
@@ -653,7 +668,7 @@ class InstallController extends AbstractController
             if (isset($parts['query'])) {
                 parse_str($parts['query'], $query);
                 foreach (array_keys($options) as $key) {
-                    if (isset($query[$key]) && $query[$key] != "") {
+                    if (isset($query[$key]) && $query[$key] != '') {
                         $options[$key] = $query[$key];
                     }
                 }
@@ -775,14 +790,14 @@ class InstallController extends AbstractController
         $conn->beginTransaction();
         try {
             $salt = StringUtil::random(32);
-            $stmt = $conn->prepare("SELECT id FROM dtb_member WHERE login_id = :login_id;");
+            $stmt = $conn->prepare('SELECT id FROM dtb_member WHERE login_id = :login_id;');
             $stmt->execute([':login_id' => $data['login_id']]);
             $row = $stmt->fetch();
             $this->encoder->setAuthMagic($data['auth_magic']);
             $password = $this->encoder->encodePassword($data['login_pass'], $salt);
             if ($row) {
                 // 同一の管理者IDであればパスワードのみ更新
-                $sth = $conn->prepare("UPDATE dtb_member set password = :password, salt = :salt, update_date = current_timestamp WHERE login_id = :login_id;");
+                $sth = $conn->prepare('UPDATE dtb_member set password = :password, salt = :salt, update_date = current_timestamp WHERE login_id = :login_id;');
                 $sth->execute([
                     ':password' => $password,
                     ':salt' => $salt,
@@ -805,10 +820,10 @@ class InstallController extends AbstractController
                 email04 = :admin_mail,
                 update_date = current_timestamp
             WHERE id = 1;');
-            $stmt->execute(array(
+            $stmt->execute([
                 ':shop_name' => $data['shop_name'],
                 ':admin_mail' => $data['email'],
-            ));
+            ]);
             $conn->commit();
         } catch (\Exception $e) {
             $conn->rollback();
@@ -822,13 +837,13 @@ class InstallController extends AbstractController
             // nullを渡すと最新バージョンまでマイグレートする
             $migration->migrate(null, false);
         } catch (MigrationException $e) {
-
         }
     }
 
     /**
      * @param array $params
      * @param EntityManager $em
+     *
      * @return array
      */
     public function createAppData($params, EntityManager $em)
@@ -854,18 +869,18 @@ class InstallController extends AbstractController
     public function sendAppData($params, EntityManager $em)
     {
         $query = http_build_query($this->createAppData($params, $em));
-        $header = array(
+        $header = [
             'Content-Type: application/x-www-form-urlencoded',
             'Content-Length: '.strlen($query),
-        );
+        ];
         $context = stream_context_create(
-            array(
-                'http' => array(
+            [
+                'http' => [
                     'method' => 'POST',
                     'header' => $header,
                     'content' => $query,
-                ),
-            )
+                ],
+            ]
         );
         file_get_contents('http://www.ec-cube.net/mall/use_site.php', false, $context);
 
@@ -874,6 +889,7 @@ class InstallController extends AbstractController
 
     /**
      * @param EntityManager $em
+     *
      * @return string
      */
     public function getDatabaseVersion(EntityManager $em)
@@ -904,6 +920,7 @@ class InstallController extends AbstractController
 
     /**
      * @param string
+     *
      * @return string
      */
     public function convertAdminAllowHosts($adminAllowHosts)

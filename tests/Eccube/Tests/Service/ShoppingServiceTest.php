@@ -9,7 +9,6 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class ShoppingServiceTest extends AbstractServiceTestCase
 {
-
     protected $Customer;
     protected $CartService;
     protected $SaleType1;
@@ -84,7 +83,7 @@ class ShoppingServiceTest extends AbstractServiceTestCase
         $NonMember = $this->createNonMember();
         $this->app['security.token_storage']->setToken(
             new UsernamePasswordToken(
-                $NonMember, null, 'Customer', array('IS_AUTHENTICATED_ANONYMOUSLY')
+                $NonMember, null, 'Customer', ['IS_AUTHENTICATED_ANONYMOUSLY']
             )
         );
 
@@ -119,7 +118,6 @@ class ShoppingServiceTest extends AbstractServiceTestCase
         $this->expected = $NewOrder->getPreOrderId();
         $this->actual = $Order->getPreOrderId();
         $this->verify();
-
     }
 
     public function testGetNonMemberIsNull()
@@ -160,7 +158,7 @@ class ShoppingServiceTest extends AbstractServiceTestCase
     public function testGetDeliveriesMultiple()
     {
         $Deliveries = $this->app['eccube.service.shopping']->getDeliveries(
-            array($this->SaleType1, $this->SaleType2));
+            [$this->SaleType1, $this->SaleType2]);
 
         $this->expected = 2;
         $this->actual = count($Deliveries);
@@ -226,7 +224,7 @@ class ShoppingServiceTest extends AbstractServiceTestCase
     }
 
     /**
-     * @link https://github.com/EC-CUBE/ec-cube/issues/1162
+     * @see https://github.com/EC-CUBE/ec-cube/issues/1162
      */
     public function testGetDeliveriesMultipleShipping()
     {
@@ -239,17 +237,17 @@ class ShoppingServiceTest extends AbstractServiceTestCase
             ->app['orm.em']
             ->getRepository('\Eccube\Entity\PaymentOption')
             ->findOneBy(
-                array(
+                [
                     'delivery_id' => 1,
-                    'payment_id' => 3
-                )
+                    'payment_id' => 3,
+                ]
             );
         $this->assertNotNull($PaymentOption);
         $this->app['orm.em']->remove($PaymentOption);
         $this->app['orm.em']->flush();
 
         $Deliveries = $this->app['eccube.service.shopping']->getDeliveries(
-            array($this->SaleType1, $this->SaleType2));
+            [$this->SaleType1, $this->SaleType2]);
 
         $this->expected = 0;
         $this->actual = count($Deliveries);
@@ -259,10 +257,10 @@ class ShoppingServiceTest extends AbstractServiceTestCase
     public function testSetOrderUpdate()
     {
         $Order = $this->createOrder($this->Customer);
-        $data = array(
+        $data = [
             'shippings' => $Order->getShippings(),
-            'message' => 'testtest'
-        );
+            'message' => 'testtest',
+        ];
 
         // $this->app['eccube.service.shopping']->setOrderUpdate($Order, $data);
         $this->app['eccube.service.shopping']->setFormData($Order, $data);
@@ -278,7 +276,6 @@ class ShoppingServiceTest extends AbstractServiceTestCase
 
         $this->assertNotNull($Order->getOrderDate());
     }
-
 
     public function testSetCustomerUpdate()
     {
@@ -298,9 +295,9 @@ class ShoppingServiceTest extends AbstractServiceTestCase
     public function testGetPayments()
     {
         $Payments = $this->app['eccube.repository.payment']->findAll();
-        $data = array();
+        $data = [];
         foreach ($Payments as $Payment) {
-            $data[] = array('id' => $Payment->getId());
+            $data[] = ['id' => $Payment->getId()];
         }
 
         // TODO 境界値チェック
@@ -332,7 +329,7 @@ class ShoppingServiceTest extends AbstractServiceTestCase
         $this->actual = count($DeliveryDurations);
         $this->verify();
 
-        $dates = array();
+        $dates = [];
         $today = new \DateTime();
         for ($i = 0; $i < $this->app['config']['eccube_deliv_date_end_max']; $i++) {
             $dates[$today->format('Y/m/d')] = $today->format('Y/m/d');
@@ -346,7 +343,8 @@ class ShoppingServiceTest extends AbstractServiceTestCase
 
     /**
      * #1732 のテストケース
-     * @link https://github.com/EC-CUBE/ec-cube/issues/1732
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/1732
      */
     public function testGetFormDeliveryDurationsWithStockPending()
     {
@@ -378,14 +376,15 @@ class ShoppingServiceTest extends AbstractServiceTestCase
 
     /**
      * #1238 のテストケース
-     * @link https://github.com/EC-CUBE/ec-cube/issues/1238
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/1238
      */
     public function testGetFormPayments()
     {
         self::markTestIncomplete('orderHelperで実行するためスキップ');
 
         $Delivery = $this->app['eccube.fixture.generator']->createDelivery();
-        $Order = $this->app['eccube.fixture.generator']->createOrder($this->Customer, array(), $Delivery);
+        $Order = $this->app['eccube.fixture.generator']->createOrder($this->Customer, [], $Delivery);
         $Order->setSubTotal(2500);
         $this->app['orm.em']->flush($Order);
 
@@ -396,7 +395,7 @@ class ShoppingServiceTest extends AbstractServiceTestCase
         $Payment5 = $this->createPayment($Delivery, '支払い方法5', 0);
         $Payment6 = $this->createPayment($Delivery, '支払い方法6', 0);
 
-        $Payments = $this->app['eccube.service.shopping']->getFormPayments(array($Delivery), $Order);
+        $Payments = $this->app['eccube.service.shopping']->getFormPayments([$Delivery], $Order);
 
         $this->expected = 5;
         $this->actual = count($Payments);
@@ -412,7 +411,7 @@ class ShoppingServiceTest extends AbstractServiceTestCase
         $BaseInfo->setOptionMultipleShipping(true);
 
         $Delivery = $this->app['eccube.fixture.generator']->createDelivery();
-        $Order = $this->app['eccube.fixture.generator']->createOrder($this->Customer, array(), $Delivery);
+        $Order = $this->app['eccube.fixture.generator']->createOrder($this->Customer, [], $Delivery);
         $Order->setSubTotal(2500);
         $this->app['orm.em']->flush($Order);
 
@@ -423,7 +422,7 @@ class ShoppingServiceTest extends AbstractServiceTestCase
         $Payment5 = $this->createPayment($Delivery, '支払い方法5', 0);
         $Payment6 = $this->createPayment($Delivery, '支払い方法6', 0);
 
-        $Payments = $this->app['eccube.service.shopping']->getFormPayments(array($Delivery), $Order);
+        $Payments = $this->app['eccube.service.shopping']->getFormPayments([$Delivery], $Order);
 
         $this->expected = 5;
         $this->actual = count($Payments);
@@ -432,7 +431,8 @@ class ShoppingServiceTest extends AbstractServiceTestCase
 
     /**
      * #2005のテストケース
-     * @link https://github.com/EC-CUBE/ec-cube/issues/2005
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/2005
      */
     public function testOrderItemForTaxRate()
     {
@@ -456,13 +456,11 @@ class ShoppingServiceTest extends AbstractServiceTestCase
 
         // 受注明細で設定された金額
         foreach ($Order->getOrderItems() as $OrderItem) {
-
             $this->expected = ($OrderItem->getPrice() + $this->app['eccube.service.tax_rule']->calcTax($OrderItem->getPrice(), $OrderItem->getTaxRate(), $OrderItem->getTaxRule())) * $OrderItem->getQuantity();
 
             $this->actual = ($OrderItem->getPrice() + $this->app['eccube.service.tax_rule']->calcTax($OrderItem->getPrice(), $OrderItem->getTaxRate(), $TaxRule->getRoundingType()->getId())) * $OrderItem->getQuantity();
 
             $this->verify();
         }
-
     }
 }

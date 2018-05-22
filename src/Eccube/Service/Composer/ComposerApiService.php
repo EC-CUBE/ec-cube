@@ -20,6 +20,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
 namespace Eccube\Service\Composer;
 
 use Composer\Console\Application;
@@ -30,19 +31,18 @@ use Symfony\Component\Console\Output\BufferedOutput;
 
 /**
  * Class ComposerApiService
- * @package Eccube\Service\Composer
+ *
  * @Service
  */
 class ComposerApiService implements ComposerServiceInterface
 {
-
     /**
      * @var EccubeConfig
      */
     protected $eccubeConfig;
 
     /**
-     * @var Application $consoleApplication
+     * @var Application
      */
     private $consoleApplication;
 
@@ -57,14 +57,15 @@ class ComposerApiService implements ComposerServiceInterface
      * Run get info command
      *
      * @param string $pluginName format foo/bar or foo/bar:1.0.0 or "foo/bar 1.0.0"
+     *
      * @return array
      */
     public function execInfo($pluginName)
     {
-        $output = $this->runCommand(array(
+        $output = $this->runCommand([
             'command' => 'info',
             'package' => $pluginName,
-        ));
+        ]);
 
         return OutputParser::parseInfo($output);
     }
@@ -73,13 +74,13 @@ class ComposerApiService implements ComposerServiceInterface
      * Run execute command
      *
      * @param string $packageName format "foo/bar foo/bar:1.0.0"
-     * @return void
+     *
      * @throws PluginException
      */
     public function execRequire($packageName)
     {
-        $packageName = explode(" ", trim($packageName));
-        $this->runCommand(array(
+        $packageName = explode(' ', trim($packageName));
+        $this->runCommand([
             'command' => 'require',
             'packages' => $packageName,
             '--no-interaction' => true,
@@ -87,26 +88,26 @@ class ComposerApiService implements ComposerServiceInterface
             '--prefer-dist' => true,
             '--ignore-platform-reqs' => true,
             '--update-with-dependencies' => true,
-        ));
+        ]);
     }
 
     /**
      * Run remove command
      *
      * @param string $packageName format "foo/bar foo/bar:1.0.0"
-     * @return void
+     *
      * @throws PluginException
      */
     public function execRemove($packageName)
     {
         $packageName = explode(' ', trim($packageName));
-        $this->runCommand(array(
+        $this->runCommand([
             'command' => 'remove',
             'packages' => $packageName,
             '--ignore-platform-reqs' => true,
             '--no-interaction' => true,
             '--profile' => true,
-        ));
+        ]);
     }
 
     /**
@@ -134,15 +135,16 @@ class ComposerApiService implements ComposerServiceInterface
      *
      * @param string $key
      * @param null   $value
+     *
      * @return array|mixed
      */
     public function execConfig($key, $value = null)
     {
-        $commands = array(
+        $commands = [
             'command' => 'config',
             'setting-key' => $key,
             'setting-value' => $value,
-        );
+        ];
         if ($value) {
             $commands['setting-value'] = $value;
         }
@@ -158,10 +160,10 @@ class ComposerApiService implements ComposerServiceInterface
      */
     public function getConfig()
     {
-        $output = $this->runCommand(array(
+        $output = $this->runCommand([
             'command' => 'config',
             '--list' => true,
-        ));
+        ]);
 
         return OutputParser::parseList($output);
     }
@@ -178,8 +180,11 @@ class ComposerApiService implements ComposerServiceInterface
 
     /**
      * Run composer command
+     *
      * @throws PluginException
+     *
      * @param array $commands
+     *
      * @return string
      */
     public function runCommand($commands)
@@ -220,20 +225,22 @@ class ComposerApiService implements ComposerServiceInterface
 
     /**
      * Get version of composer
+     *
      * @return null|string
      */
     public function composerVersion()
     {
         $this->init();
-        $output = $this->runCommand(array(
-            '--version' => true
-        ));
+        $output = $this->runCommand([
+            '--version' => true,
+        ]);
 
         return OutputParser::parseComposerVersion($output);
     }
 
     /**
      * Get mode
+     *
      * @return mixed|string
      */
     public function getMode()

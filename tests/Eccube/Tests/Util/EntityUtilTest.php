@@ -70,11 +70,11 @@ class EntityUtilTest extends EccubeTestCase
 
     public function testDumpToArray()
     {
-        $arrProps = array(
+        $arrProps = [
             'field1' => 1,
             'field2' => 2,
             'field3' => 3,
-        );
+        ];
 
         $entity = new TestEntity($arrProps);
 
@@ -94,7 +94,7 @@ class TestEntity extends AbstractEntity
     /** camel case */
     private $testField4;
 
-    public function __construct($arrProps = array())
+    public function __construct($arrProps = [])
     {
         $this->testField4 = new \Doctrine\Common\Collections\ArrayCollection();
         if (is_array($arrProps) && count($arrProps) > 0) {
@@ -106,26 +106,33 @@ class TestEntity extends AbstractEntity
     {
         return $this->field1;
     }
+
     public function setField1($field1)
     {
         $this->field1 = $field1;
+
         return $this;
     }
+
     public function getField2()
     {
         return $this->field2;
     }
+
     public function setField2($field2)
     {
         $this->field2 = $field2;
+
         return $this;
     }
 
     public function setTestField4($testField4)
     {
         $this->testField4 = $testField4;
+
         return $this;
     }
+
     public function getTestField4()
     {
         return $this->testField4;

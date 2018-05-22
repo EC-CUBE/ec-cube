@@ -11,7 +11,6 @@ use Eccube\Repository\MemberRepository;
 use Eccube\Repository\ProductClassRepository;
 use Eccube\Tests\EccubeTestCase;
 
-
 /**
  * ClassNameRepository test cases.
  *
@@ -27,17 +26,17 @@ class ClassNameRepositoryTest extends EccubeTestCase
     /**
      * @var  ProductClassRepository
      */
-    protected  $productClassRepository;
+    protected $productClassRepository;
 
     /**
      * @var  ClassCategoryRepository
      */
-    protected  $classCategoryRepository;
+    protected $classCategoryRepository;
 
     /**
      * @var  ClassNameRepository
      */
-    protected  $classNameRepository;
+    protected $classNameRepository;
 
     /**
      * {@inheritdoc}
@@ -91,11 +90,11 @@ class ClassNameRepositoryTest extends EccubeTestCase
         $this->actual = count($ClassNames);
         $this->verify('合計数は'.$this->expected.'ではありません');
 
-        $this->actual = array();
+        $this->actual = [];
         foreach ($ClassNames as $ClassName) {
             $this->actual[] = $ClassName->getSortNo();
         }
-        $this->expected = array(2, 1, 0);
+        $this->expected = [2, 1, 0];
         $this->verify('ソート順が違います');
     }
 
@@ -135,7 +134,7 @@ class ClassNameRepositoryTest extends EccubeTestCase
     public function testDelete()
     {
         $ClassName = $this->classNameRepository->findOneBy(
-            array('backend_name' => 'class-0')
+            ['backend_name' => 'class-0']
         );
         $ClassNameId = $ClassName->getId();
         $this->classNameRepository->delete($ClassName);

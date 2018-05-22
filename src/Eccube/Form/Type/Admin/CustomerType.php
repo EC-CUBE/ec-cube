@@ -52,6 +52,7 @@ class CustomerType extends AbstractType
 
     /**
      * CustomerType constructor.
+     *
      * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
@@ -65,102 +66,102 @@ class CustomerType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', NameType::class, array(
+            ->add('name', NameType::class, [
                 'required' => true,
-            ))
-            ->add('kana', KanaType::class, array(
+            ])
+            ->add('kana', KanaType::class, [
                 'required' => true,
-            ))
-            ->add('company_name', TextType::class, array(
+            ])
+            ->add('company_name', TextType::class, [
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array(
+                'constraints' => [
+                    new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ))
-                ),
-            ))
-            ->add('zip', ZipType::class, array(
+                    ]),
+                ],
+            ])
+            ->add('zip', ZipType::class, [
                 'required' => true,
-            ))
-            ->add('address', AddressType::class, array(
+            ])
+            ->add('address', AddressType::class, [
                 'required' => true,
-            ))
-            ->add('tel', TelType::class, array(
+            ])
+            ->add('tel', TelType::class, [
                 'required' => true,
-            ))
-            ->add('fax', TelType::class, array(
+            ])
+            ->add('fax', TelType::class, [
                 'required' => false,
-            ))
-            ->add('email', EmailType::class, array(
+            ])
+            ->add('email', EmailType::class, [
                 'required' => true,
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
                     // configでこの辺りは変えられる方が良さそう
-                    new Assert\Email(array('strict' => true)),
-                    new Assert\Regex(array(
+                    new Assert\Email(['strict' => true]),
+                    new Assert\Regex([
                         'pattern' => '/^[[:graph:][:space:]]+$/i',
                         'message' => 'form.type.graph.invalid',
-                    )),
-                ),
-            ))
-            ->add('sex', SexType::class, array(
+                    ]),
+                ],
+            ])
+            ->add('sex', SexType::class, [
                 'required' => false,
-            ))
-            ->add('job', JobType::class, array(
+            ])
+            ->add('job', JobType::class, [
                 'required' => false,
-            ))
-            ->add('birth', BirthdayType::class, array(
+            ])
+            ->add('birth', BirthdayType::class, [
                 'required' => false,
                 'input' => 'datetime',
                 'years' => range(date('Y'), date('Y') - $this->eccubeConfig['eccube_birth_max']),
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
-                'constraints' => array(
-                    new Assert\LessThanOrEqual(array(
+                'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'constraints' => [
+                    new Assert\LessThanOrEqual([
                         'value' => date('Y-m-d'),
                         'message' => 'form.type.select.selectisfuturedate',
-                    )),
-                ),
-            ))
-            ->add('password', RepeatedPasswordType::class, array(
+                    ]),
+                ],
+            ])
+            ->add('password', RepeatedPasswordType::class, [
                 // 'type' => 'password',
-                'first_options'  => array(
+                'first_options' => [
                     'label' => 'member.label.pass',
-                ),
-                'second_options' => array(
+                ],
+                'second_options' => [
                     'label' => 'member.label.varify_pass',
-                ),
-            ))
-            ->add('status', CustomerStatusType::class, array(
+                ],
+            ])
+            ->add('status', CustomerStatusType::class, [
                 'required' => true,
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                ),
-            ))
+                ],
+            ])
             ->add(
                 'point',
                 NumberType::class,
                 [
                     'required' => false,
                     'label' => '所有ポイント',
-                    'constraints' => array(
-                        new Assert\Regex(array(
+                    'constraints' => [
+                        new Assert\Regex([
                             'pattern' => "/^\d+$/u",
-                            'message' => 'form.type.numeric.invalid'
-                        )),
-                    ),
+                            'message' => 'form.type.numeric.invalid',
+                        ]),
+                    ],
                 ]
             )
-            ->add('note', TextareaType::class, array(
+            ->add('note', TextareaType::class, [
                 'label' => 'SHOP用メモ',
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array(
+                'constraints' => [
+                    new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_ltext_len'],
-                    )),
-                ),
-            ));
+                    ]),
+                ],
+            ]);
     }
 
     /**
@@ -168,9 +169,9 @@ class CustomerType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'Eccube\Entity\Customer',
-        ));
+        ]);
     }
 
     /**

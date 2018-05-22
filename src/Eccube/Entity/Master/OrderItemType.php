@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Entity\Master;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -72,7 +71,6 @@ class OrderItemType extends \Eccube\Entity\Master\AbstractMasterEntity
      * @var integer
      */
     const TAX = 5;
-
 
     /**
      * 商品かどうか

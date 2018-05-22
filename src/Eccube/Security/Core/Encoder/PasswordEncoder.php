@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Security\Core\Encoder;
 
 use Eccube\Common\EccubeConfig;
@@ -83,7 +82,7 @@ class PasswordEncoder implements PasswordEncoderInterface
         } else {
             // 旧バージョン(2.11未満)からの移行を考慮
             if (empty($salt)) {
-                $hash = sha1($raw . ':' . $this->auth_magic);
+                $hash = sha1($raw.':'.$this->auth_magic);
             } else {
                 $hash = $this->encodePassword($raw, $salt);
             }
@@ -112,7 +111,7 @@ class PasswordEncoder implements PasswordEncoderInterface
         if ($this->auth_type == 'PLAIN') {
             $res = $raw;
         } else {
-            $res = hash_hmac($this->password_hash_algos, $raw . ':' . $this->auth_magic, $salt);
+            $res = hash_hmac($this->password_hash_algos, $raw.':'.$this->auth_magic, $salt);
         }
 
         return $res;
@@ -122,6 +121,7 @@ class PasswordEncoder implements PasswordEncoderInterface
      * saltを生成する.
      *
      * @param int $length
+     *
      * @return string
      */
     public function createSalt($length = 5)

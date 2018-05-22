@@ -82,6 +82,7 @@ class PaymentTotalLimitValidatorTest extends EccubeTestCase
         $prop = $rc->getProperty('maxTotalFee');
         $prop->setAccessible(true);
         $prop->setValue($result, $maxTotalFee);
+
         return $result;
     }
 }

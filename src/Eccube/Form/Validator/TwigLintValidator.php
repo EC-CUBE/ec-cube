@@ -42,7 +42,6 @@ class TwigLintValidator extends ConstraintValidator
             $this->twig->setLoader($temporaryLoader);
             $nodeTree = $this->twig->parse($this->twig->tokenize(new Source($value, '')));
             $this->twig->compile($nodeTree);
-
         } catch (Error $e) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ error }}', $e->getMessage())

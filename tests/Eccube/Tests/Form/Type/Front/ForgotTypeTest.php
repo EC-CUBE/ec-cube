@@ -27,7 +27,7 @@ use Eccube\Form\Type\Front\ForgotType;
 
 class ForgotTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
-   /** @var \Symfony\Component\Form\FormInterface */
+    /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 
     protected $formData;
@@ -35,38 +35,37 @@ class ForgotTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
     /**
      * 異常系のデータパターンを返す
      *
-     * @access public
      * @return array
      */
     public function getInvalidTestData()
     {
-        return array(
-            array(
-                'data' => array(
-                    'login_email' => ''
-                ),
-            ),
-            array(
-                'data' => array(
-                    'login_email' => 'example'
-                ),
-            ),
-            array(
-                'data' => array(
-                    'login_email' => 'a..a@aa'
-                ),
-            ),
-            array(
-                'data' => array(
-                    'login_email' => 'aa.@aa'
-                ),
-            ),
-            array(
-                'data' => array(
-                    'login_email' => 'aa@adf@a.com'
-                ),
-            ),
-        );
+        return [
+            [
+                'data' => [
+                    'login_email' => '',
+                ],
+            ],
+            [
+                'data' => [
+                    'login_email' => 'example',
+                ],
+            ],
+            [
+                'data' => [
+                    'login_email' => 'a..a@aa',
+                ],
+            ],
+            [
+                'data' => [
+                    'login_email' => 'aa.@aa',
+                ],
+            ],
+            [
+                'data' => [
+                    'login_email' => 'aa@adf@a.com',
+                ],
+            ],
+        ];
     }
 
     public function setUp()
@@ -75,9 +74,9 @@ class ForgotTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
-            ->createBuilder(ForgotType::class, null, array(
+            ->createBuilder(ForgotType::class, null, [
                 'csrf_protection' => false,
-            ))
+            ])
             ->getForm();
     }
 

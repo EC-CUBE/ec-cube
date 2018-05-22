@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Controller\Block;
 
 use Eccube\Controller\AbstractController;
@@ -51,13 +50,13 @@ class CartController extends AbstractController
         $Carts = $this->cartService->getCarts();
 
         $totalQuantity = array_reduce($Carts, function ($total, $Cart) {
-            /** @var Cart $Cart */
+            /* @var Cart $Cart */
             $total += $Cart->getTotalQuantity();
 
             return $total;
         }, 0);
         $totalPrice = array_reduce($Carts, function ($total, $Cart) {
-            /** @var Cart $Cart */
+            /* @var Cart $Cart */
             $total += $Cart->getTotalPrice();
 
             return $total;

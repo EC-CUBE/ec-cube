@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type\Admin;
 
 use Doctrine\ORM\EntityRepository;
@@ -40,21 +39,21 @@ class DeliveryTimeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('delivery_time', TextType::class, array(
+            ->add('delivery_time', TextType::class, [
                 'label' => false,
-                'attr' => array(
+                'attr' => [
                     'placeholder' => '配送方法名を入力',
-                ),
-                'constraints' => array(
+                ],
+                'constraints' => [
                     new Assert\NotBlank(),
-                ),
-            ))
-            ->add('sort_no', HiddenType::class, array(
+                ],
+            ])
+            ->add('sort_no', HiddenType::class, [
                 'label' => false,
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                ),
-            ))
+                ],
+            ])
         ;
     }
 
@@ -63,14 +62,14 @@ class DeliveryTimeType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'Eccube\Entity\DeliveryTime',
-            'query_builder' => function(EntityRepository $er) {
+            'query_builder' => function (EntityRepository $er) {
                 return $er
                     ->createQueryBuilder('dt')
                     ->orderBy('dt.sort_no', 'ASC');
             },
-        ));
+        ]);
     }
 
     /**

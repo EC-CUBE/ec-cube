@@ -21,11 +21,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Controller\Admin\Setting\Shop;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Eccube\Annotation\Inject;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Delivery;
 use Eccube\Entity\DeliveryTime;
@@ -47,8 +45,6 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * Class DeliveryController
- *
- * @package Eccube\Controller\Admin\Setting\Shop
  */
 class DeliveryController extends AbstractController
 {
@@ -100,7 +96,6 @@ class DeliveryController extends AbstractController
         $this->saleTypeRepository = $saleTypeRepository;
     }
 
-
     /**
      * @Route("/%eccube_admin_route%/setting/shop/delivery", name="admin_setting_shop_delivery")
      * @Template("@admin/Setting/Shop/delivery.twig")
@@ -111,9 +106,9 @@ class DeliveryController extends AbstractController
             ->findBy([], ['sort_no' => 'DESC']);
 
         $event = new EventArgs(
-            array(
+            [
                 'Deliveries' => $Deliveries,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_INDEX_COMPLETE, $event);
@@ -130,10 +125,9 @@ class DeliveryController extends AbstractController
      */
     public function edit(Request $request, $id = null)
     {
-
         if (is_null($id)) {
-            $SaleType = $this->saleTypeRepository->findOneBy(array(), array('sort_no' => 'DESC'));
-            $Delivery = $this->deliveryRepository->findOneBy(array(), array('sort_no' => 'DESC'));
+            $SaleType = $this->saleTypeRepository->findOneBy([], ['sort_no' => 'DESC']);
+            $Delivery = $this->deliveryRepository->findOneBy([], ['sort_no' => 'DESC']);
 
             $sortNo = 1;
             if ($Delivery) {
@@ -162,10 +156,10 @@ class DeliveryController extends AbstractController
         foreach ($Prefs as $Pref) {
             $DeliveryFee = $this->deliveryFeeRepository
                 ->findOrCreate(
-                    array(
+                    [
                         'Delivery' => $Delivery,
                         'Pref' => $Pref,
-                    )
+                    ]
                 );
             if (!$DeliveryFee->getFee()) {
                 $Delivery->addDeliveryFee($DeliveryFee);
@@ -173,7 +167,7 @@ class DeliveryController extends AbstractController
         }
 
         $DeliveryFees = $Delivery->getDeliveryFees();
-        $DeliveryFeesIndex = array();
+        $DeliveryFeesIndex = [];
         foreach ($DeliveryFees as $DeliveryFee) {
             $Delivery->removeDeliveryFee($DeliveryFee);
             $DeliveryFeesIndex[$DeliveryFee->getPref()->getId()] = $DeliveryFee;
@@ -187,12 +181,12 @@ class DeliveryController extends AbstractController
             ->createBuilder(DeliveryType::class, $Delivery);
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
                 'Delivery' => $Delivery,
                 'Prefs' => $Prefs,
                 'DeliveryFees' => $DeliveryFees,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_EDIT_INITIALIZE, $event);
@@ -200,7 +194,7 @@ class DeliveryController extends AbstractController
         $form = $builder->getForm();
 
         // 支払方法をセット
-        $Payments = array();
+        $Payments = [];
         foreach ($Delivery->getPaymentOptions() as $PaymentOption) {
             $Payments[] = $PaymentOption->getPayment();
         }
@@ -228,7 +222,7 @@ class DeliveryController extends AbstractController
 
                 // お支払いの登録
                 $PaymentOptions = $this->paymentOptionRepository
-                    ->findBy(array('delivery_id' => $Delivery->getId()));
+                    ->findBy(['delivery_id' => $Delivery->getId()]);
                 // 消す
                 foreach ($PaymentOptions as $PaymentOption) {
                     $DeliveryData->removePaymentOption($PaymentOption);
@@ -255,12 +249,12 @@ class DeliveryController extends AbstractController
                 $this->entityManager->flush();
 
                 $event = new EventArgs(
-                    array(
+                    [
                         'form' => $form,
                         'Delivery' => $Delivery,
                         'Prefs' => $Prefs,
                         'DeliveryFees' => $DeliveryFees,
-                    ),
+                    ],
                     $request
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_EDIT_COMPLETE, $event);
@@ -302,10 +296,10 @@ class DeliveryController extends AbstractController
         $this->entityManager->flush();
 
         $event = new EventArgs(
-            array(
+            [
                 'Delivs' => $Delivs,
                 'Delivery' => $Delivery,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_DELETE_COMPLETE, $event);
@@ -336,9 +330,9 @@ class DeliveryController extends AbstractController
         $this->entityManager->flush();
 
         $event = new EventArgs(
-            array(
+            [
                 'Delivery' => $Delivery,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_VISIBILITY_COMPLETE, $event);

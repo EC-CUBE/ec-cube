@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type\Admin;
 
 use Eccube\Annotation\FormType;
@@ -33,8 +32,6 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormError;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -49,37 +46,37 @@ class DeliveryType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class, array(
+            ->add('name', TextType::class, [
                 'label' => 'delivery.label.shipping_company',
                 'required' => true,
-                'constraints' => array(
-                    new Assert\NotBlank,
-                ),
-            ))
-            ->add('service_name', TextType::class, array(
+                'constraints' => [
+                    new Assert\NotBlank(),
+                ],
+            ])
+            ->add('service_name', TextType::class, [
                 'label' => 'delivery.label.name',
                 'required' => true,
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                ),
-            ))
-            ->add('description', TextareaType::class, array(
+                ],
+            ])
+            ->add('description', TextareaType::class, [
                 'label' => 'delivery.label.owner_note',
                 'required' => false,
-            ))
-            ->add('confirm_url', TextType::class, array(
+            ])
+            ->add('confirm_url', TextType::class, [
                 'label' => 'delivery.label.tracking_num',
                 'required' => false,
-                'constraints' => array(
+                'constraints' => [
                     new Assert\Url(),
-                ),
-            ))
-            ->add('sale_type', SaleTypeType::class, array(
-                'constraints' => array(
+                ],
+            ])
+            ->add('sale_type', SaleTypeType::class, [
+                'constraints' => [
                     new Assert\NotBlank(),
-                ),
-            ))
-            ->add('payments', PaymentType::class, array(
+                ],
+            ])
+            ->add('payments', PaymentType::class, [
                 'label' => 'delivery.label.payment',
                 'expanded' => true,
                 'multiple' => true,
@@ -88,28 +85,28 @@ class DeliveryType extends AbstractType
                 'constraints' => [
                     new Assert\NotBlank(),
                 ],
-            ))
-            ->add('delivery_times', CollectionType::class, array(
+            ])
+            ->add('delivery_times', CollectionType::class, [
                 'label' => 'delivery.label.delivery_time',
                 'required' => false,
                 'entry_type' => DeliveryTimeType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
-            ))
-            ->add('free_all', PriceType::class, array(
+            ])
+            ->add('free_all', PriceType::class, [
                 'label' => false,
                 'required' => false,
-                'mapped' => false
-            ))
-            ->add('delivery_fees', CollectionType::class, array(
+                'mapped' => false,
+            ])
+            ->add('delivery_fees', CollectionType::class, [
                 'label' => 'delivery.label.pref_setting',
                 'required' => true,
                 'entry_type' => DeliveryFeeType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
-            ))
+            ])
         ;
     }
 
@@ -118,9 +115,9 @@ class DeliveryType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'Eccube\Entity\Delivery',
-        ));
+        ]);
     }
 
     /**

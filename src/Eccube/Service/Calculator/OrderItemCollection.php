@@ -26,7 +26,7 @@ class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection
     public function getProductClasses()
     {
         return $this->filter(
-            function(ItemInterface $OrderItem) {
+            function (ItemInterface $OrderItem) {
                 return $OrderItem->isProduct();
             });
     }
@@ -34,7 +34,7 @@ class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection
     public function getDeliveryFees()
     {
         return $this->filter(
-            function(ItemInterface $OrderItem) {
+            function (ItemInterface $OrderItem) {
                 return $OrderItem->isDeliveryFee();
             });
     }
@@ -42,7 +42,7 @@ class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection
     public function getCharges()
     {
         return $this->filter(
-            function(ItemInterface $OrderItem) {
+            function (ItemInterface $OrderItem) {
                 return $OrderItem->isCharge();
             });
     }
@@ -50,7 +50,7 @@ class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection
     public function getDiscounts()
     {
         return $this->filter(
-            function(ItemInterface $OrderItem) {
+            function (ItemInterface $OrderItem) {
                 return $OrderItem->isDiscount();
             });
     }
@@ -67,20 +67,24 @@ class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection
                 /* @var OrderItem $OrderItem */
                 return $OrderItem->getProductName() == $productName;
             });
+
         return !$OrderItems->isEmpty();
     }
 
     /**
      * 指定した受注明細区分の明細が存在するかどうか
+     *
      * @param OrderItemType $OrderItemType 受注区分
+     *
      * @return boolean
      */
     public function hasItemByOrderItemType($OrderItemType)
     {
-        $filteredItems = $this->filter(function(ItemInterface $OrderItem) use ($OrderItemType) {
+        $filteredItems = $this->filter(function (ItemInterface $OrderItem) use ($OrderItemType) {
             /* @var OrderItem $OrderItem */
             return $OrderItem->getOrderItemType() && $OrderItem->getOrderItemType()->getId() == $OrderItemType->getId();
         });
+
         return !$filteredItems->isEmpty();
     }
 

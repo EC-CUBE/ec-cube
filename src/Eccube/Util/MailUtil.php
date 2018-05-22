@@ -32,13 +32,13 @@ class MailUtil
      * メールの文字コード設定が ISO-2022-JP かどうかを返します。
      *
      * @param EccubeConfig $eccubeConfig
+     *
      * @return bool
      */
     public static function isISO2022JP(EccubeConfig $eccubeConfig)
     {
         if (isset($app['config']['mail']['charset_iso_2022_jp'])
             && is_bool($app['config']['mail']['charset_iso_2022_jp'])) {
-
             return $app['config']['mail']['charset_iso_2022_jp'] === true;
         }
 

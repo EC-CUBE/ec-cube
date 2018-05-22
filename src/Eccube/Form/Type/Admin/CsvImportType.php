@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type\Admin;
 
 use Eccube\Common\EccubeConfig;
@@ -39,6 +38,7 @@ class CsvImportType extends AbstractType
 
     /**
      * CsvImportType constructor.
+     *
      * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
@@ -46,25 +46,24 @@ class CsvImportType extends AbstractType
         $this->eccubeConfig = $eccubeConfig;
     }
 
-
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('import_file', FileType::class, array(
+            ->add('import_file', FileType::class, [
                 'label' => false,
                 'mapped' => false,
                 'required' => true,
-                'constraints' => array(
-                    new Assert\NotBlank(array('message' => 'ファイルを選択してください。')),
-                    new Assert\File(array(
-                        'maxSize' => $this->eccubeConfig['eccube_csv_size'] . 'M',
-                        'maxSizeMessage' => 'CSVファイルは' . $this->eccubeConfig['eccube_csv_size'] . 'M以下でアップロードしてください。',
-                    )),
-                ),
-            ));
+                'constraints' => [
+                    new Assert\NotBlank(['message' => 'ファイルを選択してください。']),
+                    new Assert\File([
+                        'maxSize' => $this->eccubeConfig['eccube_csv_size'].'M',
+                        'maxSizeMessage' => 'CSVファイルは'.$this->eccubeConfig['eccube_csv_size'].'M以下でアップロードしてください。',
+                    ]),
+                ],
+            ]);
     }
 
     /**

@@ -27,13 +27,16 @@ class ProductStock extends \Eccube\Entity\AbstractEntity
      * Set product_class_id
      *
      * @param integer $productClassId
+     *
      * @return ProductStock
      */
     public function setProductClassId($productClassId)
     {
         $this->product_class_id = $productClassId;
+
         return $this;
     }
+
     /**
      * Get product_class_id
      *
@@ -93,7 +96,6 @@ class ProductStock extends \Eccube\Entity\AbstractEntity
      * })
      */
     private $Creator;
-
 
     /**
      * Get id.

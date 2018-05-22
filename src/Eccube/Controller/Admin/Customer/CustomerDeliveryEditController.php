@@ -24,7 +24,6 @@
 namespace Eccube\Controller\Admin\Customer;
 
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
-use Eccube\Annotation\Inject;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Customer;
 use Eccube\Event\EccubeEvents;
@@ -84,11 +83,11 @@ class CustomerDeliveryEditController extends AbstractController
             ->createBuilder(CustomerAddressType::class, $CustomerAddress);
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
                 'Customer' => $Customer,
                 'CustomerAddress' => $CustomerAddress,
-            ),
+            ],
             $request
         );
 
@@ -99,29 +98,29 @@ class CustomerDeliveryEditController extends AbstractController
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                log_info('お届け先登録開始', array($did));
+                log_info('お届け先登録開始', [$did]);
 
                 $this->entityManager->persist($CustomerAddress);
                 $this->entityManager->flush();
 
-                log_info('お届け先登録完了', array($did));
+                log_info('お届け先登録完了', [$did]);
 
                 $event = new EventArgs(
-                    array(
+                    [
                         'form' => $form,
                         'Customer' => $Customer,
                         'CustomerAddress' => $CustomerAddress,
-                    ),
+                    ],
                     $request
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_DELIVERY_EDIT_INDEX_COMPLETE, $event);
 
                 $this->addSuccess('admin.customer.delivery.save.complete', 'admin');
 
-                return $this->redirect($this->generateUrl('admin_customer_delivery_edit', array(
+                return $this->redirect($this->generateUrl('admin_customer_delivery_edit', [
                     'id' => $Customer->getId(),
                     'did' => $CustomerAddress->getId(),
-                )));
+                ]));
             } else {
                 $this->addError('admin.customer.delivery.save.failed', 'admin');
             }
@@ -132,7 +131,6 @@ class CustomerDeliveryEditController extends AbstractController
             'Customer' => $Customer,
             'CustomerAddress' => $CustomerAddress,
         ];
-
     }
 
     /**
@@ -143,7 +141,7 @@ class CustomerDeliveryEditController extends AbstractController
     {
         $this->isTokenValid();
 
-        log_info('お届け先削除開始', array($did));
+        log_info('お届け先削除開始', [$did]);
 
         $CustomerAddress = $this->customerAddressRepository->find($did);
         if (is_null($CustomerAddress)) {
@@ -151,7 +149,8 @@ class CustomerDeliveryEditController extends AbstractController
         } else {
             if ($CustomerAddress->getCustomer()->getId() != $Customer->getId()) {
                 $this->deleteMessage();
-                return $this->redirect($this->generateUrl('admin_customer_edit', array('id' => $Customer->getId())));
+
+                return $this->redirect($this->generateUrl('admin_customer_edit', ['id' => $Customer->getId()]));
             }
         }
 
@@ -165,18 +164,17 @@ class CustomerDeliveryEditController extends AbstractController
             $this->addError($message, 'admin');
         }
 
-        log_info('お届け先削除完了', array($did));
+        log_info('お届け先削除完了', [$did]);
 
         $event = new EventArgs(
-            array(
+            [
                 'Customer' => $Customer,
                 'CustomerAddress' => $CustomerAddress,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_DELIVERY_DELETE_COMPLETE, $event);
 
-        return $this->redirect($this->generateUrl('admin_customer_edit', array('id' => $Customer->getId())));
+        return $this->redirect($this->generateUrl('admin_customer_edit', ['id' => $Customer->getId()]));
     }
-
 }

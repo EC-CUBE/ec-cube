@@ -53,6 +53,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     {% endif %}
 </head>
 <body id="page_{* { app.request_stack.currentrequest.get('_route') } *}" class="{{ body_class|default('other_page') }}">
+{# Layout: BODY_AFTER #}
+{% if Page.BodyAfter %}
+    {{ include('block.twig', {'Blocks': Page.BodyAfter}) }}
+{% endif %}
+
 <div class="ec-layoutRole">
     {# Layout: HEADER #}
     {% if Page.Header %}
@@ -126,7 +131,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 </div><!-- ec-layoutRole -->
 
 <div class="ec-overlayRole"></div>
-<div class="ec-drawerRole"></div>
+<div class="ec-drawerRole">
+    {# Layout: DRAWER #}
+    {% if Page.Drawer %}
+        {{ include('block.twig', {'Blocks': Page.Drawer}) }}
+    {% endif %}
+</div>
 <div class="ec-blockTopBtn"></div>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
@@ -134,5 +144,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 <script src="{{ asset('js/function.js') }}"></script>
 <script src="{{ asset('js/eccube.js') }}"></script>
 {% block javascript %}{% endblock %}
+
+{# Layout: CLOSE_BODY_BEFORE #}
+{% if Page.CloseBodyBefore %}
+    {{ include('block.twig', {'Blocks': Page.CloseBodyBefore}) }}
+{% endif %}
 </body>
 </html>

@@ -102,6 +102,7 @@ class EditController extends AbstractController
 
     /**
      * EditController constructor.
+     *
      * @param TaxRuleService $taxRuleService
      * @param DeviceTypeRepository $deviceTypeRepository
      * @param ProductRepository $productRepository
@@ -171,11 +172,11 @@ class EditController extends AbstractController
             );
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
                 'OriginOrder' => $OriginOrder,
                 'TargetOrder' => $TargetOrder,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_INDEX_INITIALIZE, $event);
@@ -186,12 +187,12 @@ class EditController extends AbstractController
 
         if ($form->isSubmitted()) {
             $event = new EventArgs(
-                array(
+                [
                     'builder' => $builder,
                     'OriginOrder' => $OriginOrder,
                     'TargetOrder' => $TargetOrder,
                     'PurchaseContext' => $purchaseContext,
-                ),
+                ],
                 $request
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_INDEX_PROGRESS, $event);
@@ -213,7 +214,7 @@ class EditController extends AbstractController
             // 登録ボタン押下
             switch ($request->get('mode')) {
                 case 'register':
-                    log_info('受注登録開始', array($TargetOrder->getId()));
+                    log_info('受注登録開始', [$TargetOrder->getId()]);
 
                     if ($flowResult->hasError() === false && $form->isValid()) {
                         try {
@@ -240,21 +241,21 @@ class EditController extends AbstractController
 //                        }
 
                         $event = new EventArgs(
-                            array(
+                            [
                                 'form' => $form,
                                 'OriginOrder' => $OriginOrder,
                                 'TargetOrder' => $TargetOrder,
                                 //'Customer' => $Customer,
-                            ),
+                            ],
                             $request
                         );
                         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_INDEX_COMPLETE, $event);
 
                         $this->addSuccess('admin.order.save.complete', 'admin');
 
-                        log_info('受注登録完了', array($TargetOrder->getId()));
+                        log_info('受注登録完了', [$TargetOrder->getId()]);
 
-                        return $this->redirectToRoute('admin_order_edit', array('id' => $TargetOrder->getId()));
+                        return $this->redirectToRoute('admin_order_edit', ['id' => $TargetOrder->getId()]);
                     }
 
                     break;
@@ -283,11 +284,11 @@ class EditController extends AbstractController
             ->createBuilder(SearchCustomerType::class);
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
                 'OriginOrder' => $OriginOrder,
                 'TargetOrder' => $TargetOrder,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_INITIALIZE, $event);
@@ -299,11 +300,11 @@ class EditController extends AbstractController
             ->createBuilder(SearchProductType::class);
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
                 'OriginOrder' => $OriginOrder,
                 'TargetOrder' => $TargetOrder,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_PRODUCT_INITIALIZE, $event);
@@ -311,7 +312,7 @@ class EditController extends AbstractController
         $searchProductModalForm = $builder->getForm();
 
         // 配送業者のお届け時間
-        $times = array();
+        $times = [];
         $deliveries = $this->deliveryRepository->findAll();
         foreach ($deliveries as $Delivery) {
             $deliveryTiems = $Delivery->getDeliveryTimes();
@@ -336,6 +337,7 @@ class EditController extends AbstractController
      * @Route("/%eccube_admin_route%/order/search/customer", name="admin_order_search_customer")
      *
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function searchCustomer(Request $request)
@@ -343,48 +345,47 @@ class EditController extends AbstractController
         if ($request->isXmlHttpRequest()) {
             log_debug('search customer start.');
 
-            $searchData = array(
+            $searchData = [
                 'multi' => $request->get('search_word'),
-            );
+            ];
 
             $qb = $this->customerRepository->getQueryBuilderBySearchData($searchData);
 
             $event = new EventArgs(
-                array(
+                [
                     'qb' => $qb,
                     'data' => $searchData,
-                ),
+                ],
                 $request
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_SEARCH, $event);
 
             $Customers = $qb->getQuery()->getResult();
 
-
             if (empty($Customers)) {
                 log_debug('search customer not found.');
             }
 
-            $data = array();
+            $data = [];
 
             $formatTel = '%s-%s-%s';
             $formatName = '%s%s(%s%s)';
             foreach ($Customers as $Customer) {
-                $data[] = array(
+                $data[] = [
                     'id' => $Customer->getId(),
                     'name' => sprintf($formatName, $Customer->getName01(), $Customer->getName02(),
                         $Customer->getKana01(),
                         $Customer->getKana02()),
                     'tel' => sprintf($formatTel, $Customer->getTel01(), $Customer->getTel02(), $Customer->getTel03()),
                     'email' => $Customer->getEmail(),
-                );
+                ];
             }
 
             $event = new EventArgs(
-                array(
+                [
                     'data' => $data,
                     'Customers' => $Customers,
-                ),
+                ],
                 $request
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_COMPLETE, $event);
@@ -403,6 +404,7 @@ class EditController extends AbstractController
      *
      * @param Request $request
      * @param integer $page_no
+     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function searchCustomerHtml(Request $request, $page_no = null, Paginator $paginator)
@@ -413,20 +415,19 @@ class EditController extends AbstractController
             $session = $this->session;
 
             if ('POST' === $request->getMethod()) {
-
                 $page_no = 1;
 
-                $searchData = array(
+                $searchData = [
                     'multi' => $request->get('search_word'),
                     'customer_status' => [
                         CustomerStatus::REGULAR,
                     ],
-                );
+                ];
 
                 $session->set('eccube.admin.order.customer.search', $searchData);
                 $session->set('eccube.admin.order.customer.search.page_no', $page_no);
             } else {
-                $searchData = (array)$session->get('eccube.admin.order.customer.search');
+                $searchData = (array) $session->get('eccube.admin.order.customer.search');
                 if (is_null($page_no)) {
                     $page_no = intval($session->get('eccube.admin.order.customer.search.page_no'));
                 } else {
@@ -437,10 +438,10 @@ class EditController extends AbstractController
             $qb = $this->customerRepository->getQueryBuilderBySearchData($searchData);
 
             $event = new EventArgs(
-                array(
+                [
                     'qb' => $qb,
                     'data' => $searchData,
-                ),
+                ],
                 $request
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_SEARCH, $event);
@@ -450,7 +451,7 @@ class EditController extends AbstractController
                 $qb,
                 $page_no,
                 $page_count,
-                array('wrap-queries' => true)
+                ['wrap-queries' => true]
             );
 
             /** @var $Customers \Eccube\Entity\Customer[] */
@@ -460,26 +461,26 @@ class EditController extends AbstractController
                 log_debug('search customer not found.');
             }
 
-            $data = array();
+            $data = [];
 
             $formatTel = '%s-%s-%s';
             $formatName = '%s%s(%s%s)';
             foreach ($Customers as $Customer) {
-                $data[] = array(
+                $data[] = [
                     'id' => $Customer->getId(),
                     'name' => sprintf($formatName, $Customer->getName01(), $Customer->getName02(),
                         $Customer->getKana01(),
                         $Customer->getKana02()),
                     'tel' => sprintf($formatTel, $Customer->getTel01(), $Customer->getTel02(), $Customer->getTel03()),
                     'email' => $Customer->getEmail(),
-                );
+                ];
             }
 
             $event = new EventArgs(
-                array(
+                [
                     'data' => $data,
                     'Customers' => $pagination,
-                ),
+                ],
                 $request
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_COMPLETE, $event);
@@ -499,6 +500,7 @@ class EditController extends AbstractController
      * @Route("/%eccube_admin_route%/order/search/customer/id", name="admin_order_search_customer_by_id")
      *
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function searchCustomerById(Request $request)
@@ -511,9 +513,9 @@ class EditController extends AbstractController
                 ->find($request->get('id'));
 
             $event = new EventArgs(
-                array(
+                [
                     'Customer' => $Customer,
-                ),
+                ],
                 $request
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_BY_ID_INITIALIZE, $event);
@@ -521,12 +523,12 @@ class EditController extends AbstractController
             if (is_null($Customer)) {
                 log_debug('search customer by id not found.');
 
-                return $this->json(array(), 404);
+                return $this->json([], 404);
             }
 
             log_debug('search customer by id found.');
 
-            $data = array(
+            $data = [
                 'id' => $Customer->getId(),
                 'name01' => $Customer->getName01(),
                 'name02' => $Customer->getName02(),
@@ -545,13 +547,13 @@ class EditController extends AbstractController
                 'fax02' => $Customer->getFax02(),
                 'fax03' => $Customer->getFax03(),
                 'company_name' => $Customer->getCompanyName(),
-            );
+            ];
 
             $event = new EventArgs(
-                array(
+                [
                     'data' => $data,
                     'Customer' => $Customer,
-                ),
+                ],
                 $request
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_BY_ID_COMPLETE, $event);
@@ -574,12 +576,11 @@ class EditController extends AbstractController
             $session = $this->session;
 
             if ('POST' === $request->getMethod()) {
-
                 $page_no = 1;
 
-                $searchData = array(
+                $searchData = [
                     'id' => $request->get('id'),
-                );
+                ];
 
                 if ($categoryId = $request->get('category_id')) {
                     $Category = $this->categoryRepository->find($categoryId);
@@ -589,7 +590,7 @@ class EditController extends AbstractController
                 $session->set('eccube.admin.order.product.search', $searchData);
                 $session->set('eccube.admin.order.product.search.page_no', $page_no);
             } else {
-                $searchData = (array)$session->get('eccube.admin.order.product.search');
+                $searchData = (array) $session->get('eccube.admin.order.product.search');
                 if (is_null($page_no)) {
                     $page_no = intval($session->get('eccube.admin.order.product.search.page_no'));
                 } else {
@@ -601,10 +602,10 @@ class EditController extends AbstractController
                 ->getQueryBuilderBySearchDataForAdmin($searchData);
 
             $event = new EventArgs(
-                array(
+                [
                     'qb' => $qb,
                     'searchData' => $searchData,
-                ),
+                ],
                 $request
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_PRODUCT_SEARCH, $event);
@@ -614,7 +615,7 @@ class EditController extends AbstractController
                 $qb,
                 $page_no,
                 $page_count,
-                array('wrap-queries' => true)
+                ['wrap-queries' => true]
             );
 
             /** @var $Products \Eccube\Entity\Product[] */
@@ -624,22 +625,22 @@ class EditController extends AbstractController
                 log_debug('search product not found.');
             }
 
-            $forms = array();
+            $forms = [];
             foreach ($Products as $Product) {
                 /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
-                $builder = $this->formFactory->createNamedBuilder('', AddCartType::class, null, array(
+                $builder = $this->formFactory->createNamedBuilder('', AddCartType::class, null, [
                     'product' => $Product,
-                ));
+                ]);
                 $addCartForm = $builder->getForm();
                 $forms[$Product->getId()] = $addCartForm->createView();
             }
 
             $event = new EventArgs(
-                array(
+                [
                     'forms' => $forms,
                     'Products' => $Products,
                     'pagination' => $pagination,
-                ),
+                ],
                 $request
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_PRODUCT_COMPLETE, $event);

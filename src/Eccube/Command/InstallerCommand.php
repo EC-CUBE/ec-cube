@@ -2,7 +2,6 @@
 
 namespace Eccube\Command;
 
-
 use Dotenv\Dotenv;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;

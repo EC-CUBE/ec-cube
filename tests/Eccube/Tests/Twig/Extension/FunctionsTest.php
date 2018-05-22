@@ -10,7 +10,7 @@ class FunctionsTest extends EccubeTestCase
     protected $templateDir;
     protected $blockTwigs = [
         'test_block.twig',
-        'test_block2.twig'
+        'test_block2.twig',
     ];
 
     /**

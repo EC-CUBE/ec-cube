@@ -21,18 +21,15 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Web\Admin\Setting\System;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 /**
  * Class SystemControllerTest
- * @package Eccube\Tests\Web\Admin\Setting\System
  */
 class SystemControllerTest extends AbstractAdminWebTestCase
 {
-
     /**
      * testRoutingAdminSettingSystemSystemIndex
      */
@@ -52,7 +49,7 @@ class SystemControllerTest extends AbstractAdminWebTestCase
     {
         $this->client->request(
             'GET',
-            $this->generateUrl('admin_setting_system_system', array('mode' => 'info'))
+            $this->generateUrl('admin_setting_system_system', ['mode' => 'info'])
         );
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());

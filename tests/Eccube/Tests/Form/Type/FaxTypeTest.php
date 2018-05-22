@@ -33,101 +33,100 @@ class FaxTypeTest extends AbstractTypeTestCase
     protected $form;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = array(
-        'tel' => array(
+    protected $formData = [
+        'tel' => [
             'tel01' => '012',
             'tel02' => '3456',
             'tel03' => '6789',
-        ),
-    );
+        ],
+    ];
 
     /**
      * getValidTestData
      *
      * 正常系のデータパターンを返す
      *
-     * @access public
      * @return array
      */
     public function getValidTestData()
     {
-        return array(
-            array(
-                'data' => array(
-                    'tel' => array(
+        return [
+            [
+                'data' => [
+                    'tel' => [
                         'tel01' => '01',
                         'tel02' => '2345',
                         'tel03' => '6789',
-                    ),
-                ),
-            ),
-            array(
-                'data' => array(
-                    'tel' => array(
+                    ],
+                ],
+            ],
+            [
+                'data' => [
+                    'tel' => [
                         'tel01' => '012',
                         'tel02' => '345',
                         'tel03' => '6789',
-                    ),
-                ),
-            ),
-            array(
-                'data' => array(
-                    'tel' => array(
+                    ],
+                ],
+            ],
+            [
+                'data' => [
+                    'tel' => [
                         'tel01' => '0124',
                         'tel02' => '56',
                         'tel03' => '7890',
-                    ),
-                ),
-            ),
-            array(
-                'data' => array(
-                    'tel' => array(
+                    ],
+                ],
+            ],
+            [
+                'data' => [
+                    'tel' => [
                         'tel01' => '01245',
                         'tel02' => '60',
                         'tel03' => '7890',
-                    ),
-                ),
-            ),
+                    ],
+                ],
+            ],
             // 携帯,PHS
-            array(
-                'data' => array(
-                    'tel' => array(
+            [
+                'data' => [
+                    'tel' => [
                         'tel01' => '090',
                         'tel02' => '1234',
                         'tel03' => '5678',
-                    ),
-                ),
-            ),
+                    ],
+                ],
+            ],
             // フリーダイヤル
-            array(
-                'data' => array(
-                    'tel' => array(
+            [
+                'data' => [
+                    'tel' => [
                         'tel01' => '0120',
                         'tel02' => '123',
                         'tel03' => '456',
-                    ),
-                ),
-            ),
-            array(
-                'data' => array(
-                    'tel' => array(
+                    ],
+                ],
+            ],
+            [
+                'data' => [
+                    'tel' => [
                         'tel01' => '０３',
                         'tel02' => '１２３４',
                         'tel03' => '５６７８',
-                    ),
-                ),
-            ),
+                    ],
+                ],
+            ],
             // 全部空はOK
-            array(
-                'data' => array(
-                    'tel' => array(
+            [
+                'data' => [
+                    'tel' => [
                         'tel01' => '',
                         'tel02' => '',
                         'tel03' => '',
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
     }
 
     public function setUp()
@@ -136,9 +135,9 @@ class FaxTypeTest extends AbstractTypeTestCase
 
         $this->form = $this->formFactory
             ->createBuilder(FormType::class, null, ['csrf_protection' => false])
-            ->add('tel', FaxType::class, array(
+            ->add('tel', FaxType::class, [
                 'required' => false,
-            ))
+            ])
             ->getForm();
     }
 
@@ -228,7 +227,6 @@ class FaxTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-
     public function testInvalidTel_BlankOne()
     {
         $this->formData['tel']['tel01'] = '';
@@ -239,18 +237,18 @@ class FaxTypeTest extends AbstractTypeTestCase
 
     public function testSubmitFromZenToHan()
     {
-        $input = array(
-            'tel' => array(
+        $input = [
+            'tel' => [
                 'tel01' => '１２３４５',
                 'tel02' => '１２３４５',
                 'tel03' => '６７８９０',
-            ));
+            ], ];
 
-        $output = array(
+        $output = [
             'tel01' => '12345',
             'tel02' => '12345',
             'tel03' => '67890',
-        );
+        ];
 
         $this->form->submit($input);
         $this->assertEquals($output, $this->form->getData());
@@ -258,10 +256,10 @@ class FaxTypeTest extends AbstractTypeTestCase
 
     public function testRequiredAddNotBlank_Tel01()
     {
-        $this->form = $this->formFactory->createBuilder(FormType::class, null, array('csrf_protection' => false))
-            ->add('tel', TelType::class, array(
+        $this->form = $this->formFactory->createBuilder(FormType::class, null, ['csrf_protection' => false])
+            ->add('tel', TelType::class, [
                 'required' => true,
-            ))
+            ])
             ->getForm();
 
         $this->formData['tel']['tel01'] = '';
@@ -272,10 +270,10 @@ class FaxTypeTest extends AbstractTypeTestCase
 
     public function testRequiredAddNotBlank_Tel02()
     {
-        $this->form = $this->formFactory->createBuilder(FormType::class, null, array('csrf_protection' => false))
-            ->add('tel', TelType::class, array(
+        $this->form = $this->formFactory->createBuilder(FormType::class, null, ['csrf_protection' => false])
+            ->add('tel', TelType::class, [
                 'required' => true,
-            ))
+            ])
             ->getForm();
 
         $this->formData['tel']['tel02'] = '';
@@ -286,10 +284,10 @@ class FaxTypeTest extends AbstractTypeTestCase
 
     public function testRequiredAddNotBlank_Tel03()
     {
-        $this->form = $this->formFactory->createBuilder(FormType::class, null, array('csrf_protection' => false))
-            ->add('tel', TelType::class, array(
+        $this->form = $this->formFactory->createBuilder(FormType::class, null, ['csrf_protection' => false])
+            ->add('tel', TelType::class, [
                 'required' => true,
-            ))
+            ])
             ->getForm();
 
         $this->formData['tel']['tel03'] = '';
