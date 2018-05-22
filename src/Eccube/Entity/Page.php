@@ -220,6 +220,13 @@ class Page extends \Eccube\Entity\AbstractEntity
         return $Layout ? $Layout->getBlocks(self::TARGET_ID_HEAD) : [];
     }
 
+    public function getBodyAfter()
+    {
+        $Layout = current($this->getLayouts());
+
+        return $Layout ? $Layout->getBlocks(self::TARGET_ID_BODY_AFTER) : [];
+    }
+
     public function getHeader()
     {
         $Layout = current($this->getLayouts());
@@ -274,6 +281,20 @@ class Page extends \Eccube\Entity\AbstractEntity
         $Layout = current($this->getLayouts());
 
         return $Layout ? $Layout->getBlocks(self::TARGET_ID_FOOTER) : [];
+    }
+
+    public function getDrawer()
+    {
+        $Layout = current($this->getLayouts());
+
+        return $Layout ? $Layout->getBlocks(self::TARGET_ID_DRAWER) : [];
+    }
+
+    public function getCloseBodyBefore()
+    {
+        $Layout = current($this->getLayouts());
+
+        return $Layout ? $Layout->getBlocks(self::TARGET_ID_CLOSE_BODY_BEFORE) : [];
     }
 
     /**
