@@ -23,11 +23,13 @@
 
 namespace Eccube\Controller\Admin\Product;
 
+use Ddeboer\DataImport\Reader\CsvReader;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\Constant;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Category;
+use Eccube\Entity\Csv;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductCategory;
 use Eccube\Entity\ProductClass;
@@ -43,7 +45,6 @@ use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Repository\Master\SaleTypeRepository;
 use Eccube\Repository\TagRepository;
 use Eccube\Repository\ProductRepository;
-use Eccube\Service\CsvImportService;
 use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -749,7 +750,7 @@ class CsvImportController
      *
      * @param UploadedFile $formFile
      *
-     * @return CsvImportService|bool
+     * @return CsvReader|bool
      */
     protected function getImportData($formFile)
     {
@@ -768,7 +769,7 @@ class CsvImportController
             }
         } else {
             // アップロードされたファイルがUTF-8以外は文字コード変換を行う
-            $encode = mb_detect_encoding($file);
+            $encode = mb_detect_encoding($file, null, true);
             if ($encode != 'UTF-8') {
                 $file = mb_convert_encoding($file, 'UTF-8', $encode);
             }
@@ -785,7 +786,7 @@ class CsvImportController
         set_time_limit(0);
 
         // アップロードされたCSVファイルを行ごとに取得
-        $data = new CsvImportService($file, $this->eccubeConfig['eccube_csv_import_delimiter'], $this->eccubeConfig['eccube_csv_import_enclosure']);
+        $data = new CsvReader($file, $this->eccubeConfig['eccube_csv_import_delimiter'], $this->eccubeConfig['eccube_csv_import_enclosure']);
 
         $ret = $data->setHeaderRowNumber(0);
 
@@ -916,7 +917,7 @@ class CsvImportController
      *
      * @param array $row
      * @param Product $Product
-     * @param CsvImportService $data
+     * @param CsvReader $data
      */
     protected function createProductTag($row, Product $Product, $data, $headerByKey)
     {

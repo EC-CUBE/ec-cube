@@ -35,6 +35,9 @@
             "ref": "56eaa387b5e48ebcc7c95a893b47dfa1ad51449c"
         }
     },
+    "ddeboer/data-import": {
+        "version": "0.20.0"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
