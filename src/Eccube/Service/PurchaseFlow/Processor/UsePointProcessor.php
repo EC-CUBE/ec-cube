@@ -91,7 +91,6 @@ class UsePointProcessor implements ItemHolderProcessor
         $OrderItem = new OrderItem();
         $OrderItem->setProductName('ポイント値引')
             ->setPrice($priceOfUsePoint)
-            ->setPriceIncTax($priceOfUsePoint)
             ->setTaxRate(8)
             ->setQuantity(1)
             ->setOrderItemType($DiscountType)

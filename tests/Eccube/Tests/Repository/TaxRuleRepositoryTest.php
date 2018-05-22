@@ -3,10 +3,12 @@
 namespace Eccube\Tests\Repository;
 
 use Eccube\Entity\Master\RoundingType;
+use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\TaxRule;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Repository\MemberRepository;
 use Eccube\Repository\Master\PrefRepository;
@@ -297,7 +299,7 @@ class TaxRuleRepositoryTest extends EccubeTestCase
     }
 
     /**
-     * TaxRuleEventSubscriber の確認用テストケース.
+     * $OrderItem->getPriceIncTax() の確認用テストケース.
      *
      * @see https://github.com/EC-CUBE/ec-cube/issues/1029
      */
@@ -321,13 +323,19 @@ class TaxRuleRepositoryTest extends EccubeTestCase
         foreach ($Shippings as $Shipping) {
             $OrderItems = $Shipping->getOrderItems();
 
-            /** @var OrderItem $Shipment */
-            foreach ($OrderItems as $Shipment) {
-                if ($Shipment->isProduct()) {
-                    $this->expected = round($Shipment->getPrice() + $Shipment->getPrice() * $this->TaxRule1->getTaxRate() / 100, 0);
-                    $this->actual = $Shipment->getPriceIncTax();
-                    $this->verify('OrderItem で TaxRuleEventSubscriber が正常にコールされるか');
+            /** @var OrderItem $OrderItem */
+            foreach ($OrderItems as $OrderItem) {
+                // 課税かつ外税の場合にのみ商品単価に消費税を足す。
+                if ($OrderItem->getTaxType()->getId() == TaxType::TAXATION && $OrderItem->getTaxDisplayType()->getId() == TaxDisplayType::EXCLUDED) {
+                    // 課税かつ外税の場合は商品単価に消費税を足す。
+                    $this->expected = round($OrderItem->getPrice() + $OrderItem->getPrice() * $this->TaxRule1->getTaxRate() / 100, 0);
+                } else {
+                    // （課税かつ外税）以外の場合は商品単価をそのまま。
+                    $this->expected = $OrderItem->getPrice();
                 }
+
+                $this->actual = $OrderItem->getPriceIncTax();
+                $this->verify('OrderItem で getPriceIncTax() が正常に動作するか');
             }
         }
     }

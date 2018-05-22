@@ -26,6 +26,7 @@ namespace Eccube\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\TaxDisplayType;
+use Eccube\Entity\Master\TaxType;
 
 /**
  * OrderItem
@@ -59,11 +60,23 @@ class OrderItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
     /**
      * Get price IncTax
      *
-     * @return string
+     * @return integer
      */
     public function getPriceIncTax()
     {
-        return $this->price_inc_tax;
+        $TaxDisplayType = $this->getTaxDisplayType();
+        if (is_object($TaxDisplayType)) {
+            // 課税かつ外税の場合にのみ商品単価に消費税を足した金額を返す
+            if ($this->getTaxType()->getId() == TaxType::TAXATION && $TaxDisplayType->getId() == TaxDisplayType::EXCLUDED) {
+                // 課税かつ外税の場合は商品単価に消費税を足して返す。
+                return round($this->getPrice() + $this->getPrice() * $this->getTaxRate() / 100, 0);
+            } else {
+                // （課税かつ外税）以外の場合は商品単価をそのまま返す。
+                return $this->getPrice();
+            }
+        }
+
+        return 0;
     }
 
     /**
@@ -71,25 +84,6 @@ class OrderItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
      */
     public function getTotalPrice()
     {
-        $TaxDisplayType = $this->getTaxDisplayType();
-        if (is_object($TaxDisplayType)) {
-            switch ($TaxDisplayType->getId()) {
-                // 税込価格
-                case TaxDisplayType::INCLUDED:
-                    $this->setPriceIncTax($this->getPrice());
-                    break;
-                    // 税別価格の場合は税額を加算する
-                case TaxDisplayType::EXCLUDED:
-                    // TODO 課税規則を考慮する
-                    if ($this->isProduct()) {
-                        $this->setPriceIncTax($this->getPrice() + $this->getPrice() * $this->getTaxRate() / 100);
-                    } else {
-                        $this->setPriceIncTax($this->getPrice());
-                    }
-                    break;
-            }
-        }
-
         return $this->getPriceIncTax() * $this->getQuantity();
     }
 
