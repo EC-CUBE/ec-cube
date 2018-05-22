@@ -64,29 +64,29 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         }
 
         $csv = [
-            '商品ID' => null,
-            '公開ステータス(ID)' => 1,
-            '商品名' => '商品名'.$faker->word.'商品名',
-            'ショップ用メモ欄' => 'ショップ用メモ欄'.$faker->paragraph.'ショップ用メモ欄',
-            '商品説明(一覧)' => '商品説明(一覧)'.$faker->paragraph.'商品説明(一覧)',
-            '商品説明(詳細)' => '商品説明(詳細)'.$faker->realText().'商品説明(詳細)',
-            '検索ワード' => '検索ワード'.$faker->word.'検索ワード',
-            'フリーエリア' => 'フリーエリア'.$faker->paragraph.'フリーエリア',
-            '商品削除フラグ' => 0,
-            '商品画像' => $faker->word.'.jpg,'.$faker->word.'.jpg',
-            '商品カテゴリ(ID)' => '5,6',
-            'タグ(ID)' => '1,2',
-            '販売種別(ID)' => 1,
-            '規格分類1(ID)' => 3,
-            '規格分類2(ID)' => 6,
-            '発送日目安(ID)' => 1,
-            '商品コード' => $faker->word,
-            '在庫数' => 100,
-            '在庫数無制限フラグ' => 0,
-            '販売制限数' => null,
-            '通常価格' => $price01,
-            '販売価格' => $price02,
-            '送料' => 0,
+            'id' => null,
+            'status' => 1,
+            'name' => '商品名'.$faker->word.'商品名',
+            'note' => 'ショップ用メモ欄'.$faker->paragraph.'ショップ用メモ欄',
+            'description_list' => '商品説明(一覧)'.$faker->paragraph.'商品説明(一覧)',
+            'description_detail' => '商品説明(詳細)'.$faker->realText().'商品説明(詳細)',
+            'search_word' => '検索ワード'.$faker->word.'検索ワード',
+            'free_area' => 'フリーエリア'.$faker->paragraph.'フリーエリア',
+            'product_del_flg' => 0,
+            'product_image' => $faker->word.'.jpg,'.$faker->word.'.jpg',
+            'product_category' => '5,6',
+            'product_tag' => '1,2',
+            'sale_type' => 1,
+            'class_category1' => 3,
+            'class_category2' => 6,
+            'delivery_date' => 1,
+            'product_code' => $faker->word,
+            'stock' => 100,
+            'stock_unlimited' => 0,
+            'sale_limit' => null,
+            'price01' => $price01,
+            'price02' => $price02,
+            'delivery_fee' => 0,
         ];
         $result = [];
         if ($has_header) {
@@ -593,7 +593,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         /** @var $faker Generator */
         $faker = $this->getFaker();
         // 1 product
-        $csv[] = ['公開ステータス(ID)', '商品名', '販売種別(ID)', '在庫数無制限フラグ', '販売価格'];
+        $csv[] = ['status', 'name', 'sale_type', 'stock_unlimited', 'price02'];
         $csv[] = [1,  '商品名'.$faker->word.'商品名', 1, 1, $faker->randomNumber(5)];
         $this->filepath = $this->createCsvFromArray($csv);
         $crawler = $this->scenario();
@@ -639,7 +639,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         /** @var $faker Generator */
         $faker = $this->getFaker();
         // 1 product
-        $csv[] = ['公開ステータス(ID)', '商品名', '販売種別(ID)', '在庫数無制限フラグ', '販売価格'];
+        $csv[] = ['status', 'name', 'sale_type', 'stock_unlimited', 'price02'];
         $csv[] = [$status, '商品名'.$faker->word.'商品名', 1, 1, $faker->randomNumber(5)];
         $this->filepath = $this->createCsvFromArray($csv);
         $crawler = $this->scenario();
@@ -655,8 +655,8 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
     public function dataProductIdProvider()
     {
         return [
-            [99999, '2行目の商品IDが存在しません。'],
-            ['abc', '2行目の商品IDが存在しません。'],
+            [99999, '2行目のidが存在しません。'],
+            ['abc', '2行目のidが存在しません。'],
         ];
     }
 
@@ -668,9 +668,9 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
     public function dataStatusProvider()
     {
         return [
-            [99, '2行目の公開ステータス\(ID\)が存在しません'],
-            ['abc', '2行目の公開ステータス\(ID\)が存在しません'],
-            ['', '2行目の公開ステータス\(ID\)が設定されていません'],
+            [99, '2行目のstatusが存在しません'],
+            ['abc', '2行目のstatusが存在しません'],
+            ['', '2行目のstatusが設定されていません'],
         ];
     }
 

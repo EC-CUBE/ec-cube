@@ -768,7 +768,7 @@ class CsvImportController
             }
         } else {
             // アップロードされたファイルがUTF-8以外は文字コード変換を行う
-            $encode = StringUtil::characterEncoding(substr($file, 0, 6));
+            $encode = mb_detect_encoding($file);
             if ($encode != 'UTF-8') {
                 $file = mb_convert_encoding($file, 'UTF-8', $encode);
             }
@@ -1300,117 +1300,117 @@ class CsvImportController
     private function getProductCsvHeader()
     {
         return [
-            trans('csvimport.label.product_id') => [
+            'id' => [
                 'id' => 'id',
                 'description' => 'admin.product.csv_product.id',
                 'required' => false,
             ],
-            trans('csvimport.label.public_status_id') => [
+            'status' => [
                 'id' => 'status',
                 'description' => 'admin.product.csv_product.status',
                 'required' => true,
             ],
-            trans('csvimport.label.product_name') => [
+            'name' => [
                 'id' => 'name',
                 'description' => 'admin.product.csv_product.name',
                 'required' => true,
             ],
-            trans('csvimport.label.note') => [
+            'note' => [
                 'id' => 'note',
                 'description' => 'admin.product.csv_product.note',
                 'required' => false,
             ],
-            trans('csvimport.label.description_list') => [
+            'description_list' => [
                 'id' => 'description_list',
                 'description' => 'admin.product.csv_product.description_list',
                 'required' => false,
             ],
-            trans('csvimport.label.description_detail') => [
+            'description_detail' => [
                 'id' => 'description_detail',
                 'description' => 'admin.product.csv_product.description_detail',
                 'required' => false,
             ],
-            trans('csvimport.label.search_word') => [
+            'search_word' => [
                 'id' => 'search_word',
                 'description' => 'admin.product.csv_product.search_word',
                 'required' => false,
             ],
-            trans('csvimport.label.free_area') => [
+            'free_area' => [
                 'id' => 'free_area',
                 'description' => 'admin.product.csv_product.free_area',
                 'required' => false,
             ],
-            trans('csvimport.label.product_del_flg') => [
+            'product_del_flg' => [
                 'id' => 'product_del_flg',
                 'description' => 'admin.product.csv_product.product_del_flg',
                 'required' => false,
             ],
-            trans('csvimport.label.product_image') => [
+            'product_image' => [
                 'id' => 'product_image',
                 'description' => 'admin.product.csv_product.product_image',
                 'required' => false,
             ],
-            trans('csvimport.label.product_category') => [
+            'product_category' => [
                 'id' => 'product_category',
                 'description' => 'admin.product.csv_product.product_category',
                 'required' => false,
             ],
-            trans('csvimport.label.product_tag') => [
+            'product_tag' => [
                 'id' => 'product_tag',
                 'description' => 'admin.product.csv_product.product_tag',
                 'required' => false,
             ],
-            trans('csvimport.label.product_type') => [
+            'sale_type' => [
                 'id' => 'sale_type',
                 'description' => 'admin.product.csv_product.sale_type',
                 'required' => true,
             ],
-            trans('csvimport.label.class_category1') => [
+            'class_category1' => [
                 'id' => 'class_category1',
                 'description' => 'admin.product.csv_product.class_category1',
                 'required' => false,
             ],
-            trans('csvimport.label.class_category2') => [
+            'class_category2' => [
                 'id' => 'class_category2',
                 'description' => 'admin.product.csv_product.class_category2',
                 'required' => false,
             ],
-            trans('csvimport.label.delivery_date') => [
+            'delivery_date' => [
                 'id' => 'delivery_date',
                 'description' => 'admin.product.csv_product.delivery_date',
                 'required' => false,
             ],
-            trans('csvimport.label.product_code') => [
+            'product_code' => [
                 'id' => 'product_code',
                 'description' => 'admin.product.csv_product.product_code',
                 'required' => false,
             ],
-            trans('csvimport.label.stock') => [
+            'stock' => [
                 'id' => 'stock',
                 'description' => 'admin.product.csv_product.stock',
                 'required' => false,
             ],
-            trans('csvimport.label.stock_unlimited') => [
+            'stock_unlimited' => [
                 'id' => 'stock_unlimited',
                 'description' => 'admin.product.csv_product.stock_unlimited',
                 'required' => true,
             ],
-            trans('csvimport.label.sale_limit') => [
+            'sale_limit' => [
                 'id' => 'sale_limit',
                 'description' => 'admin.product.csv_product.sale_limit',
                 'required' => false,
             ],
-            trans('csvimport.label.price01') => [
+            'price01' => [
                 'id' => 'price01',
                 'description' => 'admin.product.csv_product.price01',
                 'required' => false,
             ],
-            trans('csvimport.label.price02') => [
+            'price02' => [
                 'id' => 'price02',
                 'description' => 'admin.product.csv_product.price02',
                 'required' => true,
             ],
-            trans('csvimport.label.delivery_fee') => [
+            'delivery_fee' => [
                 'id' => 'delivery_fee',
                 'description' => 'admin.product.csv_product.delivery_fee',
                 'required' => false,
@@ -1424,22 +1424,22 @@ class CsvImportController
     private function getCategoryCsvHeader()
     {
         return [
-            trans('admin.product.csv_category.category_id') => [
+            'id' => [
                 'id' => 'id',
                 'description' => 'admin.product.csv_category.category_id_description',
                 'required' => false,
             ],
-            trans('admin.product.csv_category.category_name') => [
+            'category_name' => [
                 'id' => 'category_name',
                 'description' => '',
                 'required' => true,
             ],
-            trans('admin.product.csv_category.parent_category_id') => [
+            'parent_category_id' => [
                 'id' => 'parent_category_id',
                 'description' => '',
                 'required' => false,
             ],
-            trans('admin.product.csv_category.category_delete_flag') => [
+            'category_del_flg' => [
                 'id' => 'category_del_flg',
                 'description' => '',
                 'required' => false,
