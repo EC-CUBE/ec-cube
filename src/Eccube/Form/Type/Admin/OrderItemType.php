@@ -192,18 +192,6 @@ class OrderItemType extends AbstractType
             if (!$TaxDisplayType) {
                 return;
             }
-            switch ($TaxDisplayType->getId()) {
-                // 税込価格
-                case TaxDisplayType::INCLUDED:
-                    $OrderItem->setPriceIncTax($OrderItem->getPrice());
-                    break;
-                // 税別価格の場合は税額を加算する
-                case TaxDisplayType::EXCLUDED:
-                    // TODO 課税規則を考慮する
-                    $OrderItem->setPriceIncTax($OrderItem->getPrice() + $OrderItem->getPrice() * $OrderItem->getTaxRate() / 100);
-                    break;
-            }
-
             $event->setData($OrderItem);
         });
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {

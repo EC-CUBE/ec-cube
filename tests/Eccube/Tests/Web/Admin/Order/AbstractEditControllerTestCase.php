@@ -125,6 +125,7 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
                 'quantity' => $OrderItem->getQuantity(),
                 'tax_rate' => $OrderItem->getTaxRate(),
                 'tax_rule' => $OrderItem->getTaxRule(),
+                'tax_type' => TaxType::TAXATION,
                 'product_name' => is_object($Product) ? $Product->getName() : '送料', // XXX v3.1 より 送料等, Product の無い明細が追加される
                 'product_code' => is_object($ProductClass) ? $ProductClass->getCode() : null,
                 'order_item_type' => $OrderItem->getOrderItemTypeId(),

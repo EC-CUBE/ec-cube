@@ -58,5 +58,5 @@ class TaxType extends \Eccube\Entity\Master\AbstractMasterEntity
      *
      * @var integer
      */
-    const TAX_EXEMPT = 2;
+    const TAX_EXEMPT = 3;
 }

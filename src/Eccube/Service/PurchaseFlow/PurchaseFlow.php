@@ -104,11 +104,7 @@ class PurchaseFlow
     protected function calculateTotal(ItemHolderInterface $itemHolder)
     {
         $total = $itemHolder->getItems()->reduce(function ($sum, ItemInterface $item) {
-            if ($item->isProduct()) {
-                $sum += $item->getPriceIncTax() * $item->getQuantity();
-            } else {
-                $sum += $item->getPrice() * $item->getQuantity();
-            }
+            $sum += $item->getPriceIncTax() * $item->getQuantity();
 
             return $sum;
         }, 0);
@@ -144,7 +140,7 @@ class PurchaseFlow
         $total = $itemHolder->getItems()
             ->getDeliveryFees()
             ->reduce(function ($sum, ItemInterface $item) {
-                $sum += $item->getPrice() * $item->getQuantity();
+                $sum += $item->getPriceIncTax() * $item->getQuantity();
 
                 return $sum;
             }, 0);
@@ -159,7 +155,7 @@ class PurchaseFlow
         $total = $itemHolder->getItems()
             ->getDiscounts()
             ->reduce(function ($sum, ItemInterface $item) {
-                $sum += $item->getPrice() * $item->getQuantity();
+                $sum += $item->getPriceIncTax() * $item->getQuantity();
 
                 return $sum;
             }, 0);
@@ -187,6 +183,7 @@ class PurchaseFlow
      */
     protected function calculateTax(ItemHolderInterface $itemHolder)
     {
+        // FIXME: $item->getPrice()で税抜き価格が得られるとは限らないので以下の計算は必ずしも正確では無い
         $total = $itemHolder->getItems()
             ->reduce(function ($sum, ItemInterface $item) {
                 $sum += ($item->getPriceIncTax() - $item->getPrice()) * $item->getQuantity();
