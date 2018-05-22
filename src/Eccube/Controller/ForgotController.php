@@ -158,6 +158,10 @@ class ForgotController extends AbstractController
      */
     public function complete(Request $request)
     {
+        if (!$this->isPreviousRouteValid(['forgot'])) {
+            return $this->redirectToRoute('homepage');
+        }
+
         return [];
     }
 

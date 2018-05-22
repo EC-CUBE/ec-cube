@@ -230,6 +230,10 @@ class EntryController extends AbstractController
      */
     public function complete()
     {
+        if (!$this->isPreviousRouteValid(['entry'])) {
+            return $this->redirectToRoute('homepage');
+        }
+
         return [];
     }
 

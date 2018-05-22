@@ -147,6 +147,10 @@ class WithdrawController extends AbstractController
      */
     public function complete(Request $request)
     {
+        if (!$this->isPreviousRouteValid(['mypage_withdraw'])) {
+            return $this->redirectToRoute('homepage');
+        }
+
         return [];
     }
 }
