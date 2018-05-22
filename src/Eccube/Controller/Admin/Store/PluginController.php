@@ -23,8 +23,6 @@
 
 namespace Eccube\Controller\Admin\Store;
 
-use Doctrine\ORM\EntityManager;
-use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BaseInfo;
@@ -40,12 +38,10 @@ use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -57,11 +53,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class PluginController extends AbstractController
 {
-    /**
-     * @var Logger
-     */
-    protected $logger;
-
     /**
      * @var PluginEventHandlerRepository
      */
