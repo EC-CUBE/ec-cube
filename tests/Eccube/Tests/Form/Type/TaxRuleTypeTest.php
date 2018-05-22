@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Form\Type;
 
 use Eccube\Form\Type\Admin\TaxRuleType;
@@ -30,16 +29,16 @@ use Symfony\Component\Form\FormInterface;
 class TaxRuleTypeTest extends AbstractTypeTestCase
 {
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = array(
+    protected $formData = [
         'tax_rate' => 10,
         'calc_rule' => 1,
         'apply_date' => [
-            'date'  => '2014-04-01',
-            'time'  => '00:00',
+            'date' => '2014-04-01',
+            'time' => '00:00',
         ],
-    );
+    ];
 
-    /** @var  FormInterface */
+    /** @var FormInterface */
     protected $form;
 
     public function setUp()
@@ -48,9 +47,9 @@ class TaxRuleTypeTest extends AbstractTypeTestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
-            ->createBuilder(TaxRuleType::class, null, array(
+            ->createBuilder(TaxRuleType::class, null, [
                 'csrf_protection' => false,
-            ))
+            ])
             ->getForm();
     }
 

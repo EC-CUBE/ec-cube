@@ -42,10 +42,10 @@ class WithdrawControllerTest extends AbstractWebTestCase
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('mypage_withdraw'),
-            array(
-                'form' => array('_token' => 'dummy'),
-                'mode' => 'confirm'
-            )
+            [
+                'form' => ['_token' => 'dummy'],
+                'mode' => 'confirm',
+            ]
         );
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -63,10 +63,10 @@ class WithdrawControllerTest extends AbstractWebTestCase
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('mypage_withdraw'),
-            array(
-                'form' => array('_token' => 'dummy'),
-                'mode' => 'complete'
-            )
+            [
+                'form' => ['_token' => 'dummy'],
+                'mode' => 'complete',
+            ]
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('mypage_withdraw_complete')));
@@ -76,7 +76,7 @@ class WithdrawControllerTest extends AbstractWebTestCase
         $Message = $Messages[0];
 
         $BaseInfo = $this->container->get(BaseInfoRepository::class)->get();
-        $this->expected = '[' . $BaseInfo->getShopName() . '] 退会手続きのご完了';
+        $this->expected = '['.$BaseInfo->getShopName().'] 退会手続きのご完了';
         $this->actual = $Message->getSubject();
         $this->verify();
     }

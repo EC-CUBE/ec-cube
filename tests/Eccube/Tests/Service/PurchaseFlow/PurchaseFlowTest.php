@@ -47,7 +47,7 @@ class PurchaseFlowTest extends EccubeTestCase
     public function testAddProcesser()
     {
         // TODO: FIXME
-        $this->markTestIncomplete(__METHOD__ . 'may be not implement');
+        $this->markTestIncomplete(__METHOD__.'may be not implement');
         $processor = new PurchaseFlowTest_ItemHolderProcessor();
         $this->flow->addItemHolderProcessor($processor);
 

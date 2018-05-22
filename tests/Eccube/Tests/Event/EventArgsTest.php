@@ -33,7 +33,7 @@ class EventArgsrTest extends EccubeTestCase
 {
     public function testRequest()
     {
-        $event = new EventArgs(array());
+        $event = new EventArgs([]);
         $this->assertNull($event->getRequest());
 
         $request = new Request();
@@ -44,7 +44,7 @@ class EventArgsrTest extends EccubeTestCase
 
     public function testResponse()
     {
-        $event = new EventArgs(array());
+        $event = new EventArgs([]);
         $this->assertNull($event->getResponse());
         $this->assertFalse($event->hasResponse());
 

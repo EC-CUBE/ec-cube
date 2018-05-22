@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type\Admin;
 
 use Eccube\Common\EccubeConfig;
@@ -50,41 +49,41 @@ class TemplateType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('code', TextType::class, array(
+            ->add('code', TextType::class, [
                 'label' => 'template.label.tempalte_code',
                 'required' => true,
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Regex(array(
-                        'pattern' => "/^[0-9a-zA-Z]+$/",
-                    )),
-                    new Assert\Length(array(
+                    new Assert\Regex([
+                        'pattern' => '/^[0-9a-zA-Z]+$/',
+                    ]),
+                    new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_stext_len'],
-                    )),
-                ),
-            ))
-            ->add('name', TextType::class, array(
+                    ]),
+                ],
+            ])
+            ->add('name', TextType::class, [
                 'label' => 'template.label.template_name',
                 'required' => true,
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(array(
+                    new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_stext_len'],
-                    )),
-                ),
-            ))
-            ->add('file', FileType::class, array(
+                    ]),
+                ],
+            ])
+            ->add('file', FileType::class, [
                 'label' => 'template.label.template_file',
                 'mapped' => false,
                 'required' => true,
-                'constraints' => array(
-                    new Assert\NotBlank(array('message' => 'template.text.message.select_file')),
-                    new Assert\File(array(
-                        'mimeTypes' => array('application/zip', 'application/x-tar', 'application/x-gzip'),
+                'constraints' => [
+                    new Assert\NotBlank(['message' => 'template.text.message.select_file']),
+                    new Assert\File([
+                        'mimeTypes' => ['application/zip', 'application/x-tar', 'application/x-gzip'],
                         'mimeTypesMessage' => 'template.text.message.upload_files',
-                    )),
-                ),
-            ));
+                    ]),
+                ],
+            ]);
     }
 
     /**
@@ -92,9 +91,9 @@ class TemplateType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'Eccube\Entity\Template',
-        ));
+        ]);
     }
 
     /**

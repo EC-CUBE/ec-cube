@@ -9,9 +9,9 @@ use Eccube\Tests\EccubeTestCase;
 
 class UpdatePointEventSubscriberTest extends EccubeTestCase
 {
-    /** @var  Customer */
+    /** @var Customer */
     protected $Customer;
-    /** @var  Order */
+    /** @var Order */
     protected $Order;
 
     public function setUp()

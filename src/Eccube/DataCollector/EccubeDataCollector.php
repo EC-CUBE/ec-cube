@@ -17,7 +17,6 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
  */
 class EccubeDataCollector extends DataCollector
 {
-
     /**
      * @var ContainerInterface
      */
@@ -44,7 +43,7 @@ class EccubeDataCollector extends DataCollector
             'currency_code' => null,
             'default_locale_code' => null,
             'locale_code' => null,
-            'plugins' => []
+            'plugins' => [],
         ];
         $this->container = $container;
         $this->configManager = $configManager;

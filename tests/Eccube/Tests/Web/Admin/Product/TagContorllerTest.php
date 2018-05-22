@@ -59,11 +59,11 @@ class TagContorllerTest extends AbstractAdminWebTestCase
             'POST',
             $this->generateUrl('admin_product_tag_sort_no_move'),
             $idAndSortNo,
-            array(),
-            array(
+            [],
+            [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
                 'CONTENT_TYPE' => 'application/json',
-            )
+            ]
         );
 
         $this->expected = 6;
@@ -85,9 +85,9 @@ class TagContorllerTest extends AbstractAdminWebTestCase
 
         $this->client->request('POST',
             $this->generateUrl('admin_product_tag'),
-            array(
-                'admin_product_tag' => $formData
-            )
+            [
+                'admin_product_tag' => $formData,
+            ]
         );
 
         $this->expected = $expected;
@@ -103,9 +103,9 @@ class TagContorllerTest extends AbstractAdminWebTestCase
 
         $this->client->request('POST',
             $this->generateUrl('admin_product_tag'),
-            array(
-                'tag_'.$Item->getId() => $formData
-            )
+            [
+                'tag_'.$Item->getId() => $formData,
+            ]
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirection());
@@ -121,12 +121,12 @@ class TagContorllerTest extends AbstractAdminWebTestCase
 
         $crawler = $this->client->request('POST',
             $this->generateUrl('admin_product_tag'),
-            array(
+            [
                 'tag_'.$Item->getId() => [
                     '_token' => 'dummy',
-                    'name' => ''
+                    'name' => '',
                 ],
-            )
+            ]
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
         $this->assertContains('入力されていません', $crawler->html());
@@ -143,7 +143,7 @@ class TagContorllerTest extends AbstractAdminWebTestCase
 
         $TagId = $Item->getId();
         $this->client->request('DELETE',
-            $this->generateUrl('admin_product_tag_delete', array('id' => $TagId))
+            $this->generateUrl('admin_product_tag_delete', ['id' => $TagId])
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirection());
@@ -157,27 +157,26 @@ class TagContorllerTest extends AbstractAdminWebTestCase
         $tagId = 9999;
         $this->client->request(
             'DELETE',
-            $this->generateUrl('admin_product_tag_delete', array('id' => $tagId))
+            $this->generateUrl('admin_product_tag_delete', ['id' => $tagId])
         );
         $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
     }
 
     public function createFormData()
     {
-
-        $form = array(
+        $form = [
             '_token' => 'dummy',
             'name' => 'Tag-101',
-        );
+        ];
 
         return $form;
     }
 
     public function dataSubmitProvider()
     {
-        return array(
-            array(false, false),
-            array(true, true),
-        );
+        return [
+            [false, false],
+            [true, true],
+        ];
     }
 }

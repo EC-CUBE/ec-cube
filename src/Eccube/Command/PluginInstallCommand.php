@@ -23,7 +23,6 @@
 
 namespace Eccube\Command;
 
-
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -53,6 +52,7 @@ class PluginInstallCommand extends Command
         if ($path) {
             if ($this->pluginService->install($path)) {
                 $io->success('Installed.');
+
                 return;
             }
         }

@@ -61,16 +61,16 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
     {
         $this->markTestSkipped('新しい配送管理の実装が完了するまでスキップ');
 
-        $Shippings = array();
+        $Shippings = [];
         $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
         $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
         $crawler = $this->client->request(
             'POST',
             $this->app->url('admin_order_new'),
-            array(
+            [
                 'order' => $this->createFormDataForMultiple($this->Customer, $Shippings),
-                'mode' => 'register'
-            )
+                'mode' => 'register',
+            ]
         );
 
         $url = $crawler->filter('a')->text();
@@ -83,7 +83,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
 
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
-        $crawler = $this->client->request('GET', $this->app->url('admin_order_edit', array('id' => $Order->getId())));
+        $crawler = $this->client->request('GET', $this->app->url('admin_order_edit', ['id' => $Order->getId()]));
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
@@ -92,7 +92,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
     {
         $this->markTestSkipped('新しい配送管理の実装が完了するまでスキップ');
 
-        $Shippings = array();
+        $Shippings = [];
         $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
         $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
         $Customer = $this->createCustomer();
@@ -100,13 +100,13 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
         $formData = $this->createFormDataForMultiple($Customer, $Shippings);
         $this->client->request(
             'POST',
-            $this->app->url('admin_order_edit', array('id' => $Order->getId())),
-            array(
+            $this->app->url('admin_order_edit', ['id' => $Order->getId()]),
+            [
                 'order' => $formData,
-                'mode' => 'register'
-            )
+                'mode' => 'register',
+            ]
         );
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_order_edit', array('id' => $Order->getId()))));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_order_edit', ['id' => $Order->getId()])));
 
         $EditedOrder = $this->app['eccube.repository.order']->find($Order->getId());
         $this->expected = $formData['name']['name01'];
@@ -119,14 +119,14 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
         $crawler = $this->client->request(
             'POST',
             $this->app->url('admin_order_search_customer'),
-            array(
-                'search_word' => $this->Customer->getId()
-            ),
-            array(),
-            array(
+            [
+                'search_word' => $this->Customer->getId(),
+            ],
+            [],
+            [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
                 'CONTENT_TYPE' => 'application/json',
-            )
+            ]
         );
         $Result = json_decode($this->client->getResponse()->getContent(), true);
 
@@ -140,14 +140,14 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
         $crawler = $this->client->request(
             'POST',
             $this->app->url('admin_order_search_customer'),
-            array(
-                'search_word' => $this->Customer->getId()
-            ),
-            array(),
-            array(
+            [
+                'search_word' => $this->Customer->getId(),
+            ],
+            [],
+            [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
                 'CONTENT_TYPE' => 'application/json',
-            )
+            ]
         );
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -158,14 +158,14 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
         $crawler = $this->client->request(
             'POST',
             $this->app->url('admin_order_search_customer_by_id'),
-            array(
-                'id' => $this->Customer->getId()
-            ),
-            array(),
-            array(
+            [
+                'id' => $this->Customer->getId(),
+            ],
+            [],
+            [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
                 'CONTENT_TYPE' => 'application/json',
-            )
+            ]
         );
 
         $Result = json_decode($this->client->getResponse()->getContent(), true);
@@ -180,14 +180,14 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
         $crawler = $this->client->request(
             'POST',
             $this->app->url('admin_order_search_product'),
-            array(
-                'id' => $this->Product->getId()
-            ),
-            array(),
-            array(
+            [
+                'id' => $this->Product->getId(),
+            ],
+            [],
+            [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
                 'CONTENT_TYPE' => 'application/json',
-            )
+            ]
         );
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -196,7 +196,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
     /**
      * 管理画面から購入処理中で受注登録し, フロントを参照するテスト
      *
-     * @link https://github.com/EC-CUBE/ec-cube/issues/1452
+     * @see https://github.com/EC-CUBE/ec-cube/issues/1452
      */
     public function testOrderProcessingToFrontConfirm()
     {
@@ -205,7 +205,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
 
-        $Shippings = array();
+        $Shippings = [];
         $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
         $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
 
@@ -214,13 +214,13 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
         // 管理画面から受注登録
         $this->client->request(
             'POST',
-            $this->app->url('admin_order_edit', array('id' => $Order->getId())),
-            array(
+            $this->app->url('admin_order_edit', ['id' => $Order->getId()]),
+            [
                 'order' => $formData,
-                'mode' => 'register'
-            )
+                'mode' => 'register',
+            ]
         );
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_order_edit', array('id' => $Order->getId()))));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_order_edit', ['id' => $Order->getId()])));
 
         $EditedOrder = $this->app['eccube.repository.order']->find($Order->getId());
         $this->expected = $formData['OrderStatus'];
@@ -229,48 +229,48 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
 
         // フロント側から, product_class_id = 1 をカート投入
         $client = $this->createClient();
-        $crawler = $client->request('POST', '/cart/add', array('product_class_id' => 1));
+        $crawler = $client->request('POST', '/cart/add', ['product_class_id' => 1]);
         $this->app['eccube.service.cart']->lock();
 
         $faker = $this->getFaker();
         $tel = explode('-', $faker->phoneNumber);
         $email = $faker->safeEmail;
 
-        $clientFormData = array(
-            'name' => array(
+        $clientFormData = [
+            'name' => [
                 'name01' => $faker->lastName,
                 'name02' => $faker->firstName,
-            ),
-            'kana' => array(
+            ],
+            'kana' => [
                 'kana01' => $faker->lastKanaName,
                 'kana02' => $faker->firstKanaName,
-            ),
+            ],
             'company_name' => $faker->company,
-            'zip' => array(
+            'zip' => [
                 'zip01' => $faker->postcode1(),
                 'zip02' => $faker->postcode2(),
-            ),
-            'address' => array(
+            ],
+            'address' => [
                 'pref' => '5',
                 'addr01' => $faker->city,
                 'addr02' => $faker->streetAddress,
-            ),
-            'tel' => array(
+            ],
+            'tel' => [
                 'tel01' => $tel[0],
                 'tel02' => $tel[1],
                 'tel03' => $tel[2],
-            ),
-            'email' => array(
+            ],
+            'email' => [
                 'first' => $email,
                 'second' => $email,
-            ),
-            '_token' => 'dummy'
-        );
+            ],
+            '_token' => 'dummy',
+        ];
 
         $client->request(
             'POST',
             $this->app->path('shopping_nonmember'),
-            array('nonmember' => $clientFormData)
+            ['nonmember' => $clientFormData]
         );
         $this->app['eccube.service.cart']->lock();
 
@@ -286,7 +286,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
 
         $OrderItems = $EditedOrder->getOrderItems();
         foreach ($OrderItems as $OrderItem) {
-            if (is_Object($OrderItem->getProduct())
+            if (is_object($OrderItem->getProduct())
                 && $this->actual == $OrderItem->getProduct()->getName()) {
                 $this->fail('#1452 の不具合');
             }
@@ -298,13 +298,13 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
     /**
      * 受注編集時に、dtb_order.taxの値が正しく保存されているかどうかのテスト
      *
-     * @link https://github.com/EC-CUBE/ec-cube/issues/1606
+     * @see https://github.com/EC-CUBE/ec-cube/issues/1606
      */
     public function testOrderProcessingWithTax()
     {
         $this->markTestSkipped('新しい配送管理の実装が完了するまでスキップ');
 
-        $Shippings = array();
+        $Shippings = [];
         $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
         $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
 
@@ -313,12 +313,12 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
         $formData = $this->createFormDataForMultiple($Customer, $Shippings);
         // 管理画面から受注登録
         $this->client->request(
-            'POST', $this->app->url('admin_order_edit', array('id' => $Order->getId())), array(
+            'POST', $this->app->url('admin_order_edit', ['id' => $Order->getId()]), [
             'order' => $formData,
-            'mode' => 'register'
-            )
+            'mode' => 'register',
+            ]
         );
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_order_edit', array('id' => $Order->getId()))));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_order_edit', ['id' => $Order->getId()])));
 
         $EditedOrder = $this->app['eccube.repository.order']->find($Order->getId());
 
@@ -342,10 +342,10 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
 
         // 管理画面で受注編集する
         $this->client->request(
-            'POST', $this->app->url('admin_order_edit', array('id' => $Order->getId())), array(
+            'POST', $this->app->url('admin_order_edit', ['id' => $Order->getId()]), [
             'order' => $formDataForEdit,
-            'mode' => 'register'
-            )
+            'mode' => 'register',
+            ]
         );
         $EditedOrderafterEdit = $this->app['eccube.repository.order']->find($Order->getId());
 
@@ -359,7 +359,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
     {
         $this->markTestSkipped('新しい配送管理の実装が完了するまでスキップ');
 
-        $Shippings = array();
+        $Shippings = [];
         $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
         $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
         $Customer = $this->createCustomer();
@@ -368,12 +368,12 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
         $Shippings = $Order->getShippings();
 
         $this->client->request(
-            'POST', $this->app->url('admin_order_edit', array('id' => $Order->getId())), array(
+            'POST', $this->app->url('admin_order_edit', ['id' => $Order->getId()]), [
             'order' => $formData,
-            'mode' => 'register'
-            )
+            'mode' => 'register',
+            ]
         );
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_order_edit', array('id' => $Order->getId()))));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_order_edit', ['id' => $Order->getId()])));
 
         $EditedOrder = $this->app['eccube.repository.order']->find($Order->getId());
         $this->expected = $formData['name']['name01'];
@@ -381,7 +381,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
         $this->verify();
         $newFormData = parent::createFormDataForEdit($EditedOrder);
 
-        $productClassExpected = array();
+        $productClassExpected = [];
         foreach ($newFormData['Shippings'] as $idx => $Shippings) {
             $stopFlag = true;
             foreach ($Shippings['OrderItems'] as $subIsx => $OrderItem) {
@@ -394,16 +394,16 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
             }
         }
         $this->client->request(
-            'POST', $this->app->url('admin_order_edit', array('id' => $Order->getId())), array(
+            'POST', $this->app->url('admin_order_edit', ['id' => $Order->getId()]), [
             'order' => $newFormData,
-            'mode' => 'register'
-            )
+            'mode' => 'register',
+            ]
         );
 
         $EditedOrder = $this->app['eccube.repository.order']->find($Order->getId());
         $newFormData = parent::createFormDataForEdit($EditedOrder);
 
-        $productClassActual = array();
+        $productClassActual = [];
         foreach ($newFormData['Shippings'] as $idx => $Shippings) {
             foreach ($Shippings['OrderItems'] as $subIsx => $OrderItem) {
                 $productClassActual[$idx][$OrderItem['ProductClass']] = $OrderItem['ProductClass'];
@@ -419,7 +419,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
     {
         $this->markTestSkipped('新しい配送管理の実装が完了するまでスキップ');
 
-        $Shippings = array();
+        $Shippings = [];
         $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
         $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
         $Customer = $this->createCustomer();
@@ -428,12 +428,12 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
         $Shippings = $Order->getShippings();
 
         $this->client->request(
-            'POST', $this->app->url('admin_order_edit', array('id' => $Order->getId())), array(
+            'POST', $this->app->url('admin_order_edit', ['id' => $Order->getId()]), [
             'order' => $formData,
-            'mode' => 'register'
-            )
+            'mode' => 'register',
+            ]
         );
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_order_edit', array('id' => $Order->getId()))));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_order_edit', ['id' => $Order->getId()])));
 
         $EditedOrder = $this->app['eccube.repository.order']->find($Order->getId());
         $this->expected = $formData['name']['name01'];
@@ -441,7 +441,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
         $this->verify();
         $newFormData = parent::createFormDataForEdit($EditedOrder);
 
-        $productClassExpected = array();
+        $productClassExpected = [];
         $stopFlag = true;
         foreach ($newFormData['Shippings'] as $idx => $Shippings) {
             if ($stopFlag === true) {
@@ -452,16 +452,16 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
             $productClassExpected[] = $Shippings;
         }
         $this->client->request(
-            'POST', $this->app->url('admin_order_edit', array('id' => $Order->getId())), array(
+            'POST', $this->app->url('admin_order_edit', ['id' => $Order->getId()]), [
             'order' => $newFormData,
-            'mode' => 'register'
-            )
+            'mode' => 'register',
+            ]
         );
 
         $EditedOrder = $this->app['eccube.repository.order']->find($Order->getId());
         $newFormData = parent::createFormDataForEdit($EditedOrder);
 
-        $productClassActual = array();
+        $productClassActual = [];
         foreach ($newFormData['Shippings'] as $idx => $Shippings) {
             $productClassActual[] = $Shippings;
         }
@@ -479,17 +479,18 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
      *
      * @param Customer $Customer
      * @param array $Shippings お届け先情報の配列
+     *
      * @return array
      */
     public function createFormDataForMultiple(Customer $Customer, array $Shippings)
     {
         $formData = parent::createFormData($Customer, null);
         $formData['Shippings'] = $Shippings;
-        $OrderItems = array();
+        $OrderItems = [];
         foreach ($Shippings as $Shipping) {
             foreach ($Shipping['OrderItems'] as $Item) {
                 if (empty($OrderItems[$Item['ProductClass']])) {
-                    $OrderItems[$Item['ProductClass']] = array(
+                    $OrderItems[$Item['ProductClass']] = [
                         'Product' => $Item['Product'],
                         'ProductClass' => $Item['ProductClass'],
                         'price' => $Item['price'],
@@ -498,13 +499,14 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
                         'tax_rule' => 1,
                         'product_name' => $Item['product_name'],
                         'product_code' => $Item['product_code'],
-                    );
+                    ];
                 } else {
                     $OrderItems[$Item['ProductClass']]['quantity'] += $Item['quantity'];
                 }
             }
         }
         $formData['OrderItems'] = array_values($OrderItems);
+
         return $formData;
     }
 
@@ -514,6 +516,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
      * 引数に渡した商品規格のお届け商品明細が生成される.
      *
      * @param array $ProductClasses 商品規格の配列.
+     *
      * @return array
      */
     public function createShipping(array $ProductClasses)
@@ -522,58 +525,57 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
         $tel = explode('-', $faker->phoneNumber);
         $delivery_date = $faker->dateTimeBetween('now', '+ 5 days');
 
-        $ShippingItems = array();
+        $ShippingItems = [];
         foreach ($ProductClasses as $ProductClass) {
-            $ShippingItems[] = array(
+            $ShippingItems[] = [
                 'Product' => $ProductClass->getProduct()->getId(),
                 'ProductClass' => $ProductClass->getId(),
                 'price' => $ProductClass->getPrice02(),
                 'quantity' => $faker->numberBetween(1, 9),
                 'product_name' => $ProductClass->getProduct()->getName(),
                 'product_code' => $ProductClass->getCode(),
-            );
+            ];
         }
         $Shipping =
-            array (
+            [
                 'OrderItems' => $ShippingItems,
-                'name' => array(
+                'name' => [
                     'name01' => $faker->lastName,
                     'name02' => $faker->firstName,
-                ),
-                'kana' => array(
-                    'kana01' => $faker->lastKanaName ,
+                ],
+                'kana' => [
+                    'kana01' => $faker->lastKanaName,
                     'kana02' => $faker->firstKanaName,
-                ),
+                ],
                 'company_name' => $faker->company,
-                'zip' => array(
+                'zip' => [
                     'zip01' => $faker->postcode1(),
                     'zip02' => $faker->postcode2(),
-                ),
-                'address' => array(
+                ],
+                'address' => [
                     'pref' => $faker->numberBetween(1, 47),
                     'addr01' => $faker->city,
                     'addr02' => $faker->streetAddress,
-                ),
-                'tel' => array(
+                ],
+                'tel' => [
                     'tel01' => $tel[0],
                     'tel02' => $tel[1],
                     'tel03' => $tel[2],
-                ),
-                'fax' =>
-                array (
+                ],
+                'fax' => [
                     'fax01' => $tel[0],
                     'fax02' => $tel[1],
                     'fax03' => $tel[2],
-                ),
+                ],
                 'Delivery' => '1',
                 'DeliveryTime' => '1',
-                'shipping_delivery_date' =>
-                array (
+                'shipping_delivery_date' => [
                     'year' => $delivery_date->format('Y'),
                     'month' => $delivery_date->format('n'),
-                    'day' => $delivery_date->format('j')
-                ),
-            );
+                    'day' => $delivery_date->format('j'),
+                ],
+            ];
+
         return $Shipping;
     }
 }

@@ -100,7 +100,6 @@ class Csv extends \Eccube\Entity\AbstractEntity
      */
     private $Creator;
 
-
     /**
      * Get id.
      *

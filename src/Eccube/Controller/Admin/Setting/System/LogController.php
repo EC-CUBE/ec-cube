@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Controller\Admin\Setting\System;
 
 use Eccube\Controller\AbstractController;
@@ -35,17 +34,17 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * @Route(service=LogController::class)
  */
-class LogController extends  AbstractController
+class LogController extends AbstractController
 {
-
     /**
      * @Route("/%eccube_admin_route%/setting/system/log", name="admin_setting_system_log")
      * @Template("@admin/Setting/System/log.twig")
+     *
      * @return array
      */
     public function index(Request $request)
     {
-        $formData = array();
+        $formData = [];
         // default
         $formData['files'] = 'site_'.date('Y-m-d').'.log';
         $formData['line_max'] = '50';
@@ -54,10 +53,10 @@ class LogController extends  AbstractController
             ->createBuilder(LogType::class);
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
                 'data' => $formData,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_LOG_INDEX_INITIALIZE, $event);
@@ -71,9 +70,9 @@ class LogController extends  AbstractController
                 $formData = $form->getData();
             }
             $event = new EventArgs(
-                array(
+                [
                     'form' => $form,
-                ),
+                ],
                 $request
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_LOG_INDEX_COMPLETE, $event);
@@ -89,13 +88,15 @@ class LogController extends  AbstractController
 
     /**
      * parse log file
+     *
      * @param $logFile
      * @param $formData
+     *
      * @return array
      */
     private function parseLogFile($logFile, $formData)
     {
-        $log = array();
+        $log = [];
 
         if (!file_exists($logFile)) {
             return $log;

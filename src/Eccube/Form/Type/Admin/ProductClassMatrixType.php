@@ -2,7 +2,6 @@
 
 namespace Eccube\Form\Type\Admin;
 
-
 use Eccube\Entity\ClassName;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;

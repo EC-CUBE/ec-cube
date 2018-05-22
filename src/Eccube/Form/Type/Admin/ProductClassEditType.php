@@ -257,9 +257,8 @@ class ProductClassEditType extends AbstractType
                 new Assert\Range(['min' => 0, 'max' => 100]),
                 new Assert\Regex([
                     'pattern' => "/^\d+(\.\d+)?$/",
-                    'message' => 'form.type.float.invalid'
+                    'message' => 'form.type.float.invalid',
                 ]),
-
             ]);
             $this->addErrors('tax_rate', $form, $errors);
 

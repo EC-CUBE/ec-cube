@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type\Install;
 
 use Symfony\Component\Form\AbstractType;
@@ -58,7 +57,6 @@ class Step4Type extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         $database = [];
         if (extension_loaded('pdo_pgsql')) {
             $database['pdo_pgsql'] = 'step4.label.postgresql';
@@ -100,10 +98,10 @@ class Step4Type extends AbstractType
                     new Assert\Callback([$this, 'validate']),
                 ],
             ])
-            ->add('database_password', PasswordType::class, array(
+            ->add('database_password', PasswordType::class, [
                 'label' => trans('step4.label.pass'),
                 'required' => false,
-            ))
+            ])
             ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
                 $form = $event->getForm();
                 $data = $form->getData();
@@ -114,14 +112,14 @@ class Step4Type extends AbstractType
                 }
                 try {
                     $config = new \Doctrine\DBAL\Configuration();
-                    $connectionParams = array(
+                    $connectionParams = [
                         'dbname' => $data['database_name'],
                         'user' => $data['database_user'],
                         'password' => $data['database_password'],
                         'host' => $data['database_host'],
                         'driver' => $data['database'],
                         'port' => $data['database_port'],
-                    );
+                    ];
                     $conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
                     $conn->connect();
 
@@ -129,7 +127,7 @@ class Step4Type extends AbstractType
                     $conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
                     $conn->connect();
                 } catch (\Exception $e) {
-                    $form['database']->addError(new FormError(trans('setp4.text.error.database_connection') . $e->getMessage()));
+                    $form['database']->addError(new FormError(trans('setp4.text.error.database_connection').$e->getMessage()));
                 }
             });
     }
@@ -145,9 +143,9 @@ class Step4Type extends AbstractType
     public function validate($data, ExecutionContext $context, $param = null)
     {
         $parameters = $this->requestStack->getCurrentRequest()->get('install_step4');
-        if ($parameters['database'] != 'pdo_sqlite'){
+        if ($parameters['database'] != 'pdo_sqlite') {
             $context->getValidator()->validate($data, [
-                new Assert\NotBlank()
+                new Assert\NotBlank(),
             ]);
         }
     }

@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Web\Admin\Setting\System;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
@@ -151,7 +150,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         $this->client->request('POST',
             $this->generateUrl('admin_setting_system_member_new'),
             [
-                'admin_member' => $formData
+                'admin_member' => $formData,
             ]
         );
 
@@ -173,7 +172,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         $this->client->request('POST',
             $this->generateUrl('admin_setting_system_member_new'),
             [
-                'admin_member' => $formData
+                'admin_member' => $formData,
             ]
         );
 
@@ -184,10 +183,10 @@ class MemberControllerTest extends AbstractAdminWebTestCase
     {
         // before
         $formData = $this->createFormData();
-        $formData['password'] = array(
+        $formData['password'] = [
             'first' => '**********',
             'second' => '**********',
-        );
+        ];
         $Member = $this->createMember();
         $Member->setPassword('**********');
         $this->entityManager->persist($Member);
@@ -264,8 +263,8 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         $redirectUrl = $this->generateUrl('admin_setting_system_member');
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
-        $this->actual = array($MemberOne->getSortNo(), $MemberTwo->getSortNo());
-        $this->expected = array($newSortNo, $oldSortNo);
+        $this->actual = [$MemberOne->getSortNo(), $MemberTwo->getSortNo()];
+        $this->expected = [$newSortNo, $oldSortNo];
         $this->verify();
     }
 
@@ -324,8 +323,8 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         $redirectUrl = $this->generateUrl('admin_setting_system_member');
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
-        $this->actual = array($MemberOne->getSortNo(), $MemberTwo->getSortNo());
-        $this->expected = array($newSortNo, $oldSortNo);
+        $this->actual = [$MemberOne->getSortNo(), $MemberTwo->getSortNo()];
+        $this->expected = [$newSortNo, $oldSortNo];
         $this->verify();
     }
 
@@ -347,18 +346,18 @@ class MemberControllerTest extends AbstractAdminWebTestCase
     protected function createFormData()
     {
         $faker = $this->getFaker();
-        $formData = array(
+        $formData = [
             '_token' => 'dummy',
             'name' => $faker->word,
             'department' => $faker->word,
             'login_id' => 'logintest',
-            'password' => array(
+            'password' => [
                 'first' => 'password',
                 'second' => 'password',
-            ),
+            ],
             'Authority' => rand(0, 1),
             'Work' => rand(0, 1),
-        );
+        ];
 
         return $formData;
     }

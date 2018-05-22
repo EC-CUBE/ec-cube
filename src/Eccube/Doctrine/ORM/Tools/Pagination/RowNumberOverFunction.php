@@ -23,13 +23,13 @@ namespace Eccube\Doctrine\ORM\Tools\Pagination;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;
 
-
 /**
  * RowNumberOverFunction
  *
  * Provides ROW_NUMBER() OVER(ORDER BY...) construct for use in LimitSubqueryOutputWalker
  *
  * @since   2.5
+ *
  * @author  Bill Schaller <bill@zeroedin.com>
  */
 class RowNumberOverFunction extends FunctionNode
@@ -44,9 +44,9 @@ class RowNumberOverFunction extends FunctionNode
      */
     public function getSql(\Doctrine\ORM\Query\SqlWalker $sqlWalker)
     {
-        return 'ROW_NUMBER() OVER(' . trim($sqlWalker->walkOrderByClause(
+        return 'ROW_NUMBER() OVER('.trim($sqlWalker->walkOrderByClause(
             $this->orderByClause
-        )) . ')';
+        )).')';
     }
 
     /**
@@ -56,6 +56,6 @@ class RowNumberOverFunction extends FunctionNode
      */
     public function parse(\Doctrine\ORM\Query\Parser $parser)
     {
-        throw new ORMException("The RowNumberOverFunction is not intended for, nor is it enabled for use in DQL.");
+        throw new ORMException('The RowNumberOverFunction is not intended for, nor is it enabled for use in DQL.');
     }
 }

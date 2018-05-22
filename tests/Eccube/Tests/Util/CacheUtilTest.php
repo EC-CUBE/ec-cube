@@ -22,12 +22,12 @@ class CacheUtilTest extends TestCase
     {
         // 仮想ファイルを生成
         $this->root = vfsStream::setup('rootDir');
-        $this->dirs = array('doctrine', 'profiler', 'twig');
-        $this->app = array(
-            'config' => array(
-                'root_dir' => vfsStream::url('rootDir')
-            )
-        );
+        $this->dirs = ['doctrine', 'profiler', 'twig'];
+        $this->app = [
+            'config' => [
+                'root_dir' => vfsStream::url('rootDir'),
+            ],
+        ];
         mkdir($this->app['config']['root_dir'].'/app/cache', 0777, true);
         file_put_contents($this->app['config']['root_dir'].'/app/cache/.gitkeep', 'test');
         // ランダムなファイルを生成しておく

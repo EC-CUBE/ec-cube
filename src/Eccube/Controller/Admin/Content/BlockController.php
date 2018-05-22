@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Controller\Admin\Content;
 
 use Eccube\Controller\AbstractController;
@@ -74,10 +73,10 @@ class BlockController extends AbstractController
         $Blocks = $this->blockRepository->getList($DeviceType);
 
         $event = new EventArgs(
-            array(
+            [
                 'DeviceType' => $DeviceType,
                 'Blocks' => $Blocks,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_BLOCK_INDEX_COMPLETE, $event);
@@ -118,12 +117,12 @@ class BlockController extends AbstractController
         }
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
                 'DeviceType' => $DeviceType,
                 'Block' => $Block,
                 'html' => $html,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_BLOCK_EDIT_INITIALIZE, $event);
@@ -162,10 +161,10 @@ class BlockController extends AbstractController
             $fs->remove($cacheDir);
 
             $event = new EventArgs(
-                array(
+                [
                     'form' => $form,
                     'Block' => $Block,
-                ),
+                ],
                 $request
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_BLOCK_EDIT_COMPLETE, $event);
@@ -206,9 +205,9 @@ class BlockController extends AbstractController
             $this->entityManager->flush();
 
             $event = new EventArgs(
-                array(
+                [
                     'Block' => $Block,
-                ),
+                ],
                 $request
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_BLOCK_DELETE_COMPLETE, $event);

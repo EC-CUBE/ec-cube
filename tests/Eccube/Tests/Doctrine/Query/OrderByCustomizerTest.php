@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Eccube\Tests\Doctrine\Query;
 
 use Doctrine\ORM\QueryBuilder;
@@ -13,7 +12,7 @@ class OrderByCustomizerTest extends EccubeTestCase
     public function testCustomizeNop()
     {
         $builder = $this->createQueryBuilder();
-        $customizer = new OrderByCustomizerTest_Customizer(function() { return []; });
+        $customizer = new OrderByCustomizerTest_Customizer(function () { return []; });
         $customizer->customize($builder, null, '');
 
         self::assertEquals('SELECT p FROM Product p', $builder->getDQL());
@@ -23,7 +22,7 @@ class OrderByCustomizerTest extends EccubeTestCase
     {
         $builder = $this->createQueryBuilder()
             ->orderBy('name', 'desc');
-        $customizer = new OrderByCustomizerTest_Customizer(function() { return []; });
+        $customizer = new OrderByCustomizerTest_Customizer(function () { return []; });
         $customizer->customize($builder, null, '');
 
         self::assertEquals('SELECT p FROM Product p ORDER BY name desc', $builder->getDQL());
@@ -33,9 +32,11 @@ class OrderByCustomizerTest extends EccubeTestCase
     {
         $builder = $this->createQueryBuilder()
             ->orderBy('name', 'desc');
-        $customizer = new OrderByCustomizerTest_Customizer(function() { return [
-            new OrderByClause('productId')
-        ]; });
+        $customizer = new OrderByCustomizerTest_Customizer(function () {
+            return [
+            new OrderByClause('productId'),
+        ];
+        });
         $customizer->customize($builder, null, '');
 
         self::assertEquals('SELECT p FROM Product p ORDER BY productId asc', $builder->getDQL());
@@ -45,10 +46,12 @@ class OrderByCustomizerTest extends EccubeTestCase
     {
         $builder = $this->createQueryBuilder()
             ->orderBy('name', 'desc');
-        $customizer = new OrderByCustomizerTest_Customizer(function() { return [
+        $customizer = new OrderByCustomizerTest_Customizer(function () {
+            return [
             new OrderByClause('productId'),
-            new OrderByClause('name', 'desc')
-        ]; });
+            new OrderByClause('name', 'desc'),
+        ];
+        });
         $customizer->customize($builder, null, '');
 
         self::assertEquals('SELECT p FROM Product p ORDER BY productId asc, name desc', $builder->getDQL());
@@ -67,9 +70,8 @@ class OrderByCustomizerTest extends EccubeTestCase
 
 class OrderByCustomizerTest_Customizer extends OrderByCustomizer
 {
-
     /**
-     * @var callable $closure
+     * @var callable
      */
     private $closure;
 
@@ -78,7 +80,7 @@ class OrderByCustomizerTest_Customizer extends OrderByCustomizer
      *
      * @param $closure
      */
-    function __construct($closure)
+    public function __construct($closure)
     {
         $this->closure = $closure;
     }
@@ -86,11 +88,13 @@ class OrderByCustomizerTest_Customizer extends OrderByCustomizer
     /**
      * @param array $params
      * @param $queryKey
+     *
      * @return OrderByClause[]
      */
     public function createStatements($params, $queryKey)
     {
         $callback = $this->closure;
+
         return $callback($params);
     }
 

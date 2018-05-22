@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Entity;
 
 class CartItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
@@ -54,12 +53,14 @@ class CartItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
 
     public function __sleep()
     {
-        return array('product_class_id', 'price', 'quantity');
+        return ['product_class_id', 'price', 'quantity'];
     }
 
     /**
      * @param  string   $class_name
+     *
      * @return CartItem
+     *
      * @deprecated
      */
     public function setClassName($class_name)
@@ -71,6 +72,7 @@ class CartItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
 
     /**
      * @return string
+     *
      * @deprecated
      */
     public function getClassName()
@@ -80,7 +82,9 @@ class CartItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
 
     /**
      * @param  string   $class_id
+     *
      * @return CartItem
+     *
      * @deprecated
      */
     public function setClassId($class_id)
@@ -92,6 +96,7 @@ class CartItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
 
     /**
      * @return string
+     *
      * @deprecated
      */
     public function getClassId()
@@ -101,6 +106,7 @@ class CartItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
 
     /**
      * @param  integer  $price
+     *
      * @return CartItem
      */
     public function setPrice($price)
@@ -120,6 +126,7 @@ class CartItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
 
     /**
      * @param  integer  $quantity
+     *
      * @return CartItem
      */
     public function setQuantity($quantity)
@@ -147,7 +154,9 @@ class CartItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
 
     /**
      * @param  object   $object
+     *
      * @return CartItem
+     *
      * @deprecated
      */
     public function setObject($object)
@@ -159,6 +168,7 @@ class CartItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
 
     /**
      * @return object
+     *
      * @deprecated
      */
     public function getObject()
@@ -220,11 +230,13 @@ class CartItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
     {
         // TODO OrderItemType::PRODUCT
         $ItemType = new \Eccube\Entity\Master\OrderItemType();
+
         return $ItemType;
     }
 
     /**
      * @param ProductClass $ProductClass
+     *
      * @return $this
      */
     public function setProductClass(ProductClass $ProductClass)

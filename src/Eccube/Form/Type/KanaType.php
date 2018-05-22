@@ -38,6 +38,7 @@ class KanaType extends AbstractType
 
     /**
      * KanaType constructor.
+     *
      * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
@@ -60,34 +61,34 @@ class KanaType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'lastname_options' => array(
-                'attr' => array(
+        $resolver->setDefaults([
+            'lastname_options' => [
+                'attr' => [
                     'placeholder' => 'Kana01',
-                ),
-                'constraints' => array(
-                    new Assert\Regex(array(
-                        'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
-                    )),
-                    new Assert\Length(array(
+                ],
+                'constraints' => [
+                    new Assert\Regex([
+                        'pattern' => '/^[ァ-ヶｦ-ﾟー]+$/u',
+                    ]),
+                    new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_kana_len'],
-                    )),
-                ),
-            ),
-            'firstname_options' => array(
-                'attr' => array(
+                    ]),
+                ],
+            ],
+            'firstname_options' => [
+                'attr' => [
                     'placeholder' => 'Kana02',
-                ),
-                'constraints' => array(
-                    new Assert\Regex(array(
-                        'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
-                    )),
-                    new Assert\Length(array(
+                ],
+                'constraints' => [
+                    new Assert\Regex([
+                        'pattern' => '/^[ァ-ヶｦ-ﾟー]+$/u',
+                    ]),
+                    new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_kana_len'],
-                    )),
-                ),
-            ),
-        ));
+                    ]),
+                ],
+            ],
+        ]);
     }
 
     /**

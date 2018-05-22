@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Controller\Admin\Setting\System;
 
 use Eccube\Controller\AbstractController;
@@ -45,13 +44,13 @@ class SecurityController extends AbstractController
 
     /**
      * SecurityController constructor.
+     *
      * @param TokenStorageInterface $tokenStorage
      */
     public function __construct(TokenStorageInterface $tokenStorage)
     {
         $this->tokenStorage = $tokenStorage;
     }
-
 
     /**
      * @Route("/%eccube_admin_route%/setting/system/security", name="admin_setting_system_security")
@@ -69,7 +68,7 @@ class SecurityController extends AbstractController
             $env = file_get_contents($envFile);
 
             $adminAllowHosts = \json_encode(
-                array_filter(\explode("\n", StringUtil::convertLineFeed($data['admin_allow_hosts'])), function($str) {
+                array_filter(\explode("\n", StringUtil::convertLineFeed($data['admin_allow_hosts'])), function ($str) {
                     return StringUtil::isNotBlank($str);
                 })
             );
@@ -84,7 +83,6 @@ class SecurityController extends AbstractController
             // 管理画面URLの更新. 変更されている場合はログアウトし再ログインさせる.
             $adminRoot = $this->eccubeConfig['eccube_admin_route'];
             if ($adminRoot !== $data['admin_route_dir']) {
-
                 $env = StringUtil::replaceOrAddEnv($env, [
                     'ECCUBE_ADMIN_ROUTE' => $data['admin_route_dir'],
                 ]);

@@ -1,16 +1,14 @@
 <?php
+
 namespace Acme\Controller;
 
 use Eccube\Application;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\ParameterBag;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 /**
  * @Route("/test")
@@ -25,7 +23,7 @@ class TestController
      */
     public function testMethod(Application $app, Request $request, $id = 0)
     {
-        return new Response("test Method: ".$id);
+        return new Response('test Method: '.$id);
     }
 
     /**
@@ -36,6 +34,7 @@ class TestController
         dump('initialize');
         $t = new \Eccube\Entity\Csv();
         $t->getDispName($id);
+
         return $app->forward($app->path('test/new'), ['param_init' => $id]);
     }
 
@@ -51,6 +50,7 @@ class TestController
             ->forwardchain($app->path('test/new'), ['param_init' => $id], $response)
             ->forwardChain($app->path('test/new'), ['param_init' => $id], $response)
             ->forwardChain($app->path('test/new'), ['param_init' => $id], $response);
+
         return $response;
     }
 
@@ -63,6 +63,7 @@ class TestController
         dump('new');
         $t = $app['request_scope']->get('csv');
         dump($t);
+
         return ['id' => $t->getDispName()];
     }
 
@@ -74,6 +75,7 @@ class TestController
     {
         dump('post');
         $app->forward('/test/initialize/5');
+
         return ['id' => $app['request_scope']->get('csv')->getDispName()];
     }
 }

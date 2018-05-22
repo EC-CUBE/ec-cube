@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type;
 
 use Eccube\Annotation\FormType;
@@ -44,32 +43,32 @@ class OrderMailType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('template', MailTemplateType::class, array(
+            ->add('template', MailTemplateType::class, [
                 'label' => 'ordermail.label.templates',
                 'required' => true,
                 'mapped' => false,
-            ))
-            ->add('mail_subject', TextType::class, array(
+            ])
+            ->add('mail_subject', TextType::class, [
                 'label' => 'ordermail.label.titles',
                 'required' => true,
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                ),
-            ))
-            ->add('mail_header', TextareaType::class, array(
+                ],
+            ])
+            ->add('mail_header', TextareaType::class, [
                 'label' => 'ordermail.label.headers',
                 'required' => true,
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                ),
-            ))
-            ->add('mail_footer', TextareaType::class, array(
+                ],
+            ])
+            ->add('mail_footer', TextareaType::class, [
                 'label' => 'ordermail.label.footers',
                 'required' => true,
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                ),
-            ))
+                ],
+            ])
         ;
     }
 

@@ -47,8 +47,8 @@ class ForwardOnlyListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             KernelEvents::CONTROLLER => 'onController',
-        );
+        ];
     }
 }

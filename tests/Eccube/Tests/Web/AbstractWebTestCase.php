@@ -21,18 +21,15 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Web;
 
 use Eccube\Tests\EccubeTestCase;
-use Eccube\Tests\Mock\CsrfTokenMock;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 abstract class AbstractWebTestCase extends EccubeTestCase
 {
-
     public function setUp()
     {
         parent::setUp();
@@ -52,6 +49,7 @@ abstract class AbstractWebTestCase extends EccubeTestCase
             $user = $this->createCustomer();
         }
         $this->loginTo($user);
+
         return $user;
     }
 
@@ -61,22 +59,24 @@ abstract class AbstractWebTestCase extends EccubeTestCase
      * EccubeTestCase::getCsrfToken() を使用する場合は, この関数をコールする前に実行すること.
      *
      * @param UserInterface $User ログインさせる User
+     *
      * @return Symfony\Component\HttpKernel\Client
+     *
      * @see EccubeTestCase::getCsrfToken()
      */
     public function loginTo(UserInterface $User)
     {
         $firewall = 'admin';
-        $role = array('ROLE_ADMIN');
+        $role = ['ROLE_ADMIN'];
         if ($User instanceof \Eccube\Entity\Customer) {
             $firewall = 'customer';
-            $role = array('ROLE_USER');
+            $role = ['ROLE_USER'];
         }
         $token = new UsernamePasswordToken($User, null, $firewall, $role);
 
         $session = $this->container->get('session');
 
-        $session->set('_security_' . $firewall, serialize($token));
+        $session->set('_security_'.$firewall, serialize($token));
         $session->save();
         $cookie = new Cookie($session->getName(), $session->getId());
         $this->client->getCookieJar()->set($cookie);

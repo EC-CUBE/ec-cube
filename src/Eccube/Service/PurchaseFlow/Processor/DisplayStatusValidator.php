@@ -12,6 +12,7 @@ class DisplayStatusValidator extends ValidatableItemProcessor
     /**
      * @param ItemInterface $item
      * @param PurchaseContext $context
+     *
      * @throws \Eccube\Service\PurchaseFlow\InvalidItemException
      */
     protected function validate(ItemInterface $item, PurchaseContext $context)
@@ -27,6 +28,7 @@ class DisplayStatusValidator extends ValidatableItemProcessor
 
     /**
      * handle
+     *
      * @param ItemInterface $item
      * @param PurchaseContext $context
      */

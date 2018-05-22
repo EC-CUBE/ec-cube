@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
@@ -37,7 +36,7 @@ class RepeatedEmailType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'entry_type' => EmailType::class,
             'required' => true,
             'invalid_message' => 'form.member.email.invalid',
@@ -58,7 +57,7 @@ class RepeatedEmailType extends AbstractType
             ],
             'error_bubbling' => false,
             'trim' => true,
-        ));
+        ]);
     }
 
     /**

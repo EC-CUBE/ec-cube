@@ -22,9 +22,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type\Front;
-
 
 use Eccube\Common\EccubeConfig;
 use Eccube\Form\Type\AddressType;
@@ -62,28 +60,28 @@ class CustomerAddressType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', NameType::class, array(
+            ->add('name', NameType::class, [
                 'required' => true,
-            ))
-            ->add('kana', KanaType::class, array(
+            ])
+            ->add('kana', KanaType::class, [
                 'required' => true,
-            ))
-            ->add('company_name', TextType::class, array(
+            ])
+            ->add('company_name', TextType::class, [
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array(
+                'constraints' => [
+                    new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_stext_len'],
-                    )),
-                ),
-            ))
+                    ]),
+                ],
+            ])
             ->add('zip', ZipType::class)
             ->add('address', AddressType::class)
-            ->add('tel', TelType::class, array(
+            ->add('tel', TelType::class, [
                 'required' => true,
-            ))
-            ->add('fax', TelType::class, array(
+            ])
+            ->add('fax', TelType::class, [
                 'required' => false,
-            ));
+            ]);
     }
 
     /**
@@ -91,9 +89,9 @@ class CustomerAddressType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'Eccube\Entity\CustomerAddress',
-        ));
+        ]);
     }
 
     /**

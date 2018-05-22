@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Web\Admin\Setting\System;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
@@ -29,7 +28,6 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * Class MasterdataControllerTest
- * @package Eccube\Tests\Web\Admin\Setting\System
  */
 class MasterdataControllerTest extends AbstractAdminWebTestCase
 {
@@ -69,15 +67,15 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $this->client->request(
             'POST',
             $this->generateUrl('admin_setting_system_masterdata'),
-            array(
+            [
                 'admin_system_masterdata' => $formData,
-            )
+            ]
         );
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_setting_system_masterdata_view', array('entity' => $formData['masterdata']))));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_setting_system_masterdata_view', ['entity' => $formData['masterdata']])));
 
         $crawler = $this->client->request(
             'GET',
-            $this->generateUrl('admin_setting_system_masterdata_view', array('entity' => $formData['masterdata']))
+            $this->generateUrl('admin_setting_system_masterdata_view', ['entity' => $formData['masterdata']])
         );
         $entityName = str_replace('-', '\\', $formData['masterdata']);
         $this->actual = $crawler->filter('div#result_list__body_inner')->html();
@@ -100,7 +98,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
     /**
      * Edit name test
      *
-     * @link https://github.com/EC-CUBE/ec-cube/issues/1884
+     * @see https://github.com/EC-CUBE/ec-cube/issues/1884
      */
     public function testEditNameIsBlank()
     {
@@ -113,10 +111,10 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_setting_system_masterdata_edit'),
-            array(
+            [
                 'admin_system_masterdata' => $formData,
                 'admin_system_masterdata_edit' => $editForm,
-            )
+            ]
         );
         $html = $crawler->html();
         $this->assertContains('入力されていません。', $html);
@@ -130,7 +128,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
     /**
      * New id is null
      *
-     * @link https://github.com/EC-CUBE/ec-cube/issues/1884
+     * @see https://github.com/EC-CUBE/ec-cube/issues/1884
      */
     public function testNewIdIsNull()
     {
@@ -143,10 +141,10 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_setting_system_masterdata_edit'),
-            array(
+            [
                 'admin_system_masterdata' => $formData,
                 'admin_system_masterdata_edit' => $editForm,
-            )
+            ]
         );
         $html = $crawler->html();
         $this->assertContains('入力されていません。', $html);
@@ -160,7 +158,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
     /**
      * Add new name test
      *
-     * @link https://github.com/EC-CUBE/ec-cube/issues/1884
+     * @see https://github.com/EC-CUBE/ec-cube/issues/1884
      */
     public function testNewNameIsBlank()
     {
@@ -173,10 +171,10 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_setting_system_masterdata_edit'),
-            array(
+            [
                 'admin_system_masterdata' => $formData,
                 'admin_system_masterdata_edit' => $editForm,
-            )
+            ]
         );
         $html = $crawler->html();
         $this->assertContains('入力されていません。', $html);
@@ -190,7 +188,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
     /**
      * Edit id is null
      *
-     * @link https://github.com/EC-CUBE/ec-cube/issues/1884
+     * @see https://github.com/EC-CUBE/ec-cube/issues/1884
      */
     public function testEditIdIsNull()
     {
@@ -202,10 +200,10 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_setting_system_masterdata_edit'),
-            array(
+            [
                 'admin_system_masterdata' => $formData,
                 'admin_system_masterdata_edit' => $editForm,
-            )
+            ]
         );
         $html = $crawler->html();
         $this->assertContains('入力されていません。', $html);
@@ -218,7 +216,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
     /**
      * Edit id is zero
      *
-     * @link https://github.com/EC-CUBE/ec-cube/issues/1884
+     * @see https://github.com/EC-CUBE/ec-cube/issues/1884
      */
     public function testEditIdIsZero()
     {
@@ -230,12 +228,12 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $this->client->request(
             'POST',
             $this->generateUrl('admin_setting_system_masterdata_edit'),
-            array(
+            [
                 'admin_system_masterdata' => $formData,
                 'admin_system_masterdata_edit' => $editForm,
-            )
+            ]
         );
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_setting_system_masterdata_view', array('entity' => $formData['masterdata']))));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_setting_system_masterdata_view', ['entity' => $formData['masterdata']])));
 
         $this->expected = $editForm['data'][1]['name'];
 
@@ -253,7 +251,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
     /**
      * Add new name zero test
      *
-     * @link https://github.com/EC-CUBE/ec-cube/issues/1884
+     * @see https://github.com/EC-CUBE/ec-cube/issues/1884
      */
     public function testNewNameIsZero()
     {
@@ -266,12 +264,12 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $this->client->request(
             'POST',
             $this->generateUrl('admin_setting_system_masterdata_edit'),
-            array(
+            [
                 'admin_system_masterdata' => $formData,
                 'admin_system_masterdata_edit' => $editForm,
-            )
+            ]
         );
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_setting_system_masterdata_view', array('entity' => $formData['masterdata']))));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_setting_system_masterdata_view', ['entity' => $formData['masterdata']])));
 
         $data = end($editForm['data']);
         $this->expected = $data['name'];
@@ -298,12 +296,12 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $this->client->request(
             'POST',
             $this->generateUrl('admin_setting_system_masterdata_edit'),
-            array(
+            [
                 'admin_system_masterdata' => $formData,
                 'admin_system_masterdata_edit' => $editForm,
-            )
+            ]
         );
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_setting_system_masterdata_view', array('entity' => $formData['masterdata']))));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_setting_system_masterdata_view', ['entity' => $formData['masterdata']])));
 
         $data = end($editForm['data']);
         $this->expected = $data['name'];
@@ -332,12 +330,12 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $this->client->request(
             'POST',
             $this->generateUrl('admin_setting_system_masterdata_edit'),
-            array(
+            [
                 'admin_system_masterdata' => $formData,
                 'admin_system_masterdata_edit' => $editForm,
-            )
+            ]
         );
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_setting_system_masterdata_view', array('entity' => $formData['masterdata']))));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_setting_system_masterdata_view', ['entity' => $formData['masterdata']])));
 
         $data = end($editForm['data']);
         $this->expected = $data['name'];
@@ -355,27 +353,29 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
 
     /**
      * @param string $entity
+     *
      * @return array
      */
     protected function createFormData($entity = 'Eccube-Entity-Master-Sex')
     {
-        $formData = array(
+        $formData = [
             '_token' => 'dummy',
             'masterdata' => $entity,
-        );
+        ];
 
         return $formData;
     }
 
     /**
      * @param string $entity
+     *
      * @return array
      */
     protected function createFormDataEdit($entity = 'Eccube-Entity-Master-Sex')
     {
         $entityName = str_replace('-', '\\', $entity);
-        $masterData = $this->entityManager->getRepository($entityName)->findBy(array(), array('sort_no' => 'ASC'));
-        $data = array();
+        $masterData = $this->entityManager->getRepository($entityName)->findBy([], ['sort_no' => 'ASC']);
+        $data = [];
         $sortNo = 1;
         $id = 1;
         foreach ($masterData as $value) {
@@ -388,11 +388,11 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $data[$sortNo]['id'] = $id + 1;
         $data[$sortNo]['name'] = 'TestName';
 
-        $editForm = array(
+        $editForm = [
             '_token' => 'dummy',
             'data' => $data,
             'masterdata_name' => $entity,
-        );
+        ];
 
         return $editForm;
     }

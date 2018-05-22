@@ -21,26 +21,21 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Doctrine\Query;
-
 
 use Doctrine\ORM\QueryBuilder;
 
 /**
  * JOIN句をカスタマイズするクラス。
- *
- * @package Eccube\Doctrine\Query
  */
 abstract class JoinCustomizer implements QueryCustomizer
 {
-
     /**
      * @param QueryBuilder $builder
      * @param array $params
      * @param string $queryKey
      */
-    public final function customize(QueryBuilder $builder, $params, $queryKey)
+    final public function customize(QueryBuilder $builder, $params, $queryKey)
     {
         foreach ($this->createStatements($params, $queryKey) as $joinClause) {
             $joinClause->build($builder);
@@ -53,8 +48,8 @@ abstract class JoinCustomizer implements QueryCustomizer
      *
      * @param array $params
      * @param $queryKey
+     *
      * @return JoinClause[]
      */
-    public abstract function createStatements($params, $queryKey);
-
+    abstract public function createStatements($params, $queryKey);
 }

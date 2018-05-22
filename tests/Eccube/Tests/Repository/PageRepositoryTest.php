@@ -30,10 +30,10 @@ use Eccube\Tests\EccubeTestCase;
 
 class PageRepositoryTest extends EccubeTestCase
 {
-    /** @var  DeviceType */
+    /** @var DeviceType */
     protected $DeviceType;
 
-    /** @var  PageRepository */
+    /** @var PageRepository */
     protected $pageRepo;
 
     protected $userDataRealDir;
@@ -61,16 +61,16 @@ class PageRepositoryTest extends EccubeTestCase
 
     public function test_findOrCreate_findTopPage()
     {
-        $this->expected = array(
+        $this->expected = [
             'url' => 'homepage',
             'DeviceType' => DeviceType::DEVICE_TYPE_PC,
-        );
+        ];
 
         $Page = $this->pageRepo->findOrCreate(1, $this->DeviceType);
-        $this->actual = array(
+        $this->actual = [
             'url' => $Page->getUrl(),
             'DeviceType' => $Page->getDeviceType()->getId(),
-        );
+        ];
 
         $this->verify();
     }

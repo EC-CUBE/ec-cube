@@ -34,6 +34,7 @@ class TwigUserFuncController
 {
     /**
      * @Inject("twig")
+     *
      * @var \Twig_Environment
      */
     protected $twig;

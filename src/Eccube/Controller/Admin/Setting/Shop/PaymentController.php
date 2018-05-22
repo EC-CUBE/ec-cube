@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Controller\Admin\Setting\Shop;
 
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
@@ -42,8 +41,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class PaymentController
- *
- * @package Eccube\Controller\Admin\Setting\Shop
  */
 class PaymentController extends AbstractController
 {
@@ -62,7 +59,6 @@ class PaymentController extends AbstractController
         $this->paymentRepository = $paymentRepository;
     }
 
-
     /**
      * @Route("/%eccube_admin_route%/setting/shop/payment", name="admin_setting_shop_payment")
      * @Template("@admin/Setting/Shop/payment.twig")
@@ -71,14 +67,14 @@ class PaymentController extends AbstractController
     {
         $Payments = $this->paymentRepository
             ->findBy(
-                array(),
-                array('sort_no' => 'DESC')
+                [],
+                ['sort_no' => 'DESC']
             );
 
         $event = new EventArgs(
-            array(
+            [
                 'Payments' => $Payments,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_INDEX_COMPLETE, $event);
@@ -105,10 +101,10 @@ class PaymentController extends AbstractController
             ->createBuilder(PaymentRegisterType::class, $Payment);
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
                 'Payment' => $Payment,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_EDIT_INITIALIZE, $event);
@@ -122,17 +118,17 @@ class PaymentController extends AbstractController
         $oldPaymentImage = $Payment->getPaymentImage();
 
         // 登録ボタン押下
-        if ($form->isSubmitted() ) {
+        if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 $Payment = $form->getData();
 
                 // ファイルアップロード
                 $file = $form['payment_image']->getData();
                 $fs = new Filesystem();
-                if ($file && $fs->exists($this->getParameter('eccube_temp_image_dir') . '/' . $file)) {
+                if ($file && $fs->exists($this->getParameter('eccube_temp_image_dir').'/'.$file)) {
                     $fs->rename(
-                        $this->getParameter('eccube_temp_image_dir') . '/' . $file,
-                        $this->getParameter('eccube_save_image_dir') . '/' . $file
+                        $this->getParameter('eccube_temp_image_dir').'/'.$file,
+                        $this->getParameter('eccube_save_image_dir').'/'.$file
                     );
                 }
 
@@ -141,10 +137,10 @@ class PaymentController extends AbstractController
                 $this->entityManager->flush();
 
                 $event = new EventArgs(
-                    array(
+                    [
                         'form' => $form,
                         'Payment' => $Payment,
-                    ),
+                    ],
                     $request
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_EDIT_COMPLETE, $event);
@@ -190,16 +186,16 @@ class PaymentController extends AbstractController
             $image->move($this->getParameter('eccube_temp_image_dir'), $filename);
         }
         $event = new EventArgs(
-            array(
+            [
                 'images' => $images,
                 'filename' => $filename,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_IMAGE_ADD_COMPLETE, $event);
         $filename = $event->getArgument('filename');
 
-        return $this->json(array('filename' => $filename), 200);
+        return $this->json(['filename' => $filename], 200);
     }
 
     /**
@@ -208,6 +204,7 @@ class PaymentController extends AbstractController
      *
      * @param Request $request
      * @param Payment $TargetPayment
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function delete(Request $request, Payment $TargetPayment)
@@ -215,7 +212,7 @@ class PaymentController extends AbstractController
         $this->isTokenValid();
 
         $sortNo = 1;
-        $Payments = $this->paymentRepository->findBy(array(), array('sort_no' => 'ASC'));
+        $Payments = $this->paymentRepository->findBy([], ['sort_no' => 'ASC']);
         foreach ($Payments as $Payment) {
             $Payment->setSortNo($sortNo++);
         }
@@ -225,9 +222,9 @@ class PaymentController extends AbstractController
             $this->entityManager->flush();
 
             $event = new EventArgs(
-                array(
+                [
                     'Payment' => $TargetPayment,
-                ),
+                ],
                 $request
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_DELETE_COMPLETE, $event);
@@ -254,9 +251,9 @@ class PaymentController extends AbstractController
         $currentSortNo = $current->getSortNo();
         $targetSortNo = $currentSortNo + 1;
 
-        $target = $this->paymentRepository->findOneBy(array('sort_no' => $targetSortNo));
+        $target = $this->paymentRepository->findOneBy(['sort_no' => $targetSortNo]);
 
-        if($target) {
+        if ($target) {
             $this->entityManager->persist($target->setSortNo($currentSortNo));
             $this->entityManager->persist($current->setSortNo($targetSortNo));
             $this->entityManager->flush();
@@ -280,7 +277,7 @@ class PaymentController extends AbstractController
         $currentSortNo = $current->getSortNo();
         $targetSortNo = $currentSortNo - 1;
 
-        $target = $this->paymentRepository->findOneBy(array('sort_no' => $targetSortNo));
+        $target = $this->paymentRepository->findOneBy(['sort_no' => $targetSortNo]);
 
         if ($target) {
             $this->entityManager->persist($target->setSortNo($currentSortNo));
@@ -321,6 +318,7 @@ class PaymentController extends AbstractController
      * @Route("/%eccube_admin_route%/setting/shop/payment/sort_no/move", name="admin_setting_shop_payment_sort_no_move")
      *
      * @param Request $request
+     *
      * @return Response
      */
     public function moveSortNo(Request $request)

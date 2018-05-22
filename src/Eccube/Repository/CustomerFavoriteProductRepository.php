@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Repository;
 
 use Doctrine\ORM\QueryBuilder;
@@ -68,6 +67,7 @@ class CustomerFavoriteProductRepository extends AbstractRepository
     /**
      * @param  \Eccube\Entity\Customer $Customer
      * @param  \Eccube\Entity\Product  $Product
+     *
      * @return bool
      */
     public function isFavorite(\Eccube\Entity\Customer $Customer, \Eccube\Entity\Product $Product)
@@ -75,10 +75,10 @@ class CustomerFavoriteProductRepository extends AbstractRepository
         $qb = $this->createQueryBuilder('cf')
             ->select('COUNT(cf.Product)')
             ->andWhere('cf.Customer = :Customer AND cf.Product = :Product')
-            ->setParameters(array(
+            ->setParameters([
                 'Customer' => $Customer,
                 'Product' => $Product,
-            ));
+            ]);
         $count = $qb
             ->getQuery()
             ->getSingleScalarResult();
@@ -88,6 +88,7 @@ class CustomerFavoriteProductRepository extends AbstractRepository
 
     /**
      * @param  \Eccube\Entity\Customer $Customer
+     *
      * @return QueryBuilder
      */
     public function getQueryBuilderByCustomer(\Eccube\Entity\Customer $Customer)

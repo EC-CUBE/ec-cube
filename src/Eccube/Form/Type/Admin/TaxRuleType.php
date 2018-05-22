@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type\Admin;
 
 use Eccube\Entity\TaxRule;
@@ -39,7 +38,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class TaxRuleType
- * @package Eccube\Form\Type\Admin
  */
 class TaxRuleType extends AbstractType
 {
@@ -56,27 +54,27 @@ class TaxRuleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('tax_rate', IntegerType::class, array(
+            ->add('tax_rate', IntegerType::class, [
                 'required' => true,
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Range(array('min' => 0)),
-                    new Assert\Regex(array(
+                    new Assert\Range(['min' => 0]),
+                    new Assert\Regex([
                         'pattern' => "/^\d+(\.\d+)?$/u",
-                        'message' => 'form.type.float.invalid'
-                    )),
-                ),
-            ))
-            ->add('rounding_type', RoundingTypeType::class, array(
+                        'message' => 'form.type.float.invalid',
+                    ]),
+                ],
+            ])
+            ->add('rounding_type', RoundingTypeType::class, [
                 'required' => true,
-            ))
-            ->add('apply_date', DateTimeType::class, array(
+            ])
+            ->add('apply_date', DateTimeType::class, [
                 'date_widget' => 'single_text',
                 'time_widget' => 'single_text',
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                ),
-            ));
+                ],
+            ]);
 
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
             /** @var TaxRule $TaxRule */
@@ -106,9 +104,9 @@ class TaxRuleType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => TaxRule::class,
-        ));
+        ]);
     }
 
     /**

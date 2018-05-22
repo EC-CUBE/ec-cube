@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type\Admin;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -62,37 +61,36 @@ class BlockType extends AbstractType
         $this->eccubeConfig = $eccubeConfig;
     }
 
-
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class, array(
+            ->add('name', TextType::class, [
                 'label' => 'admin.content.block.form.label.block_name', // TODO form_label を使用しないのなら削除
                 'required' => true,
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(array(
+                    new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_stext_len'],
-                    )),
-                ),
-            ))
-            ->add('file_name', TextType::class, array(
+                    ]),
+                ],
+            ])
+            ->add('file_name', TextType::class, [
                 'label' => 'common.label.file_name', // TODO form_label を使用しないのなら削除
                 'required' => true,
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(array(
+                    new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_stext_len'],
-                    )),
-                    new Assert\Regex(array(
+                    ]),
+                    new Assert\Regex([
                         'pattern' => '/^[0-9a-zA-Z\/_]+$/',
-                    )),
-                ),
-            ))
-            ->add('block_html', HiddenType::class, array(
+                    ]),
+                ],
+            ])
+            ->add('block_html', HiddenType::class, [
                 'label' => 'block.label.block_type', // TODO form_label を使用しないのなら削除
                 'mapped' => false,
                 'required' => false,
@@ -100,11 +98,11 @@ class BlockType extends AbstractType
                     new Assert\NotBlank(),
                     new TwigLint(),
                 ],
-            ))
-            ->add('DeviceType', EntityType::class, array(
+            ])
+            ->add('DeviceType', EntityType::class, [
                 'class' => 'Eccube\Entity\Master\DeviceType',
                 'choice_label' => 'id',
-            ))
+            ])
             ->add('id', HiddenType::class)
             ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
                 $form = $event->getForm();

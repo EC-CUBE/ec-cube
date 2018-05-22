@@ -132,7 +132,6 @@ class CustomerRepositoryTest extends EccubeTestCase
         $this->expected = $this->Customer->getBuyTimes();
         $this->verify();
 
-
         $OrderStatus = $this->masterOrderStatusRepo->find(OrderStatus::CANCEL);
 
         $Order->setOrderStatus($OrderStatus);
@@ -143,7 +142,6 @@ class CustomerRepositoryTest extends EccubeTestCase
         $this->customerRepo->updateBuyData($this->Customer, OrderStatus::CANCEL);
         $this->expected = $this->Customer->getBuyTimes();
         $this->verify();
-
     }
 }
 
@@ -151,21 +149,24 @@ class DummyCustomer implements UserInterface
 {
     public function getRoles()
     {
-        return array('ROLE_USER');
+        return ['ROLE_USER'];
     }
 
     public function getPassword()
     {
         return 'password';
     }
+
     public function getSalt()
     {
         return 'salt';
     }
+
     public function getUsername()
     {
         return 'user';
     }
+
     public function eraseCredentials()
     {
         return;

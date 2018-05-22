@@ -152,7 +152,7 @@ class MailServiceTest extends AbstractServiceTestCase
         $tel02 = $tel[1];
         $tel03 = $tel[2];
 
-        $formData = array(
+        $formData = [
             'name01' => $name01,
             'name02' => $name02,
             'kana01' => $kana01,
@@ -166,8 +166,8 @@ class MailServiceTest extends AbstractServiceTestCase
             'tel02' => $tel02,
             'tel03' => $tel03,
             'email' => $email,
-            'contents' => 'お問い合わせ内容'
-        );
+            'contents' => 'お問い合わせ内容',
+        ];
 
         $this->mailService->sendContactMail($formData);
 
@@ -177,7 +177,6 @@ class MailServiceTest extends AbstractServiceTestCase
         $collectedMessages = $mailCollector->getMessages();
         /** @var \Swift_Message $Message */
         $Message = $collectedMessages[0];
-
 
         $this->expected = '['.$this->BaseInfo->getShopName().'] お問い合わせを受け付けました。';
         $this->actual = $Message->getSubject();
@@ -265,11 +264,11 @@ class MailServiceTest extends AbstractServiceTestCase
         $header = $faker->paragraph;
         $footer = $faker->paragraph;
         $subject = $faker->sentence;
-        $formData = array(
+        $formData = [
             'mail_header' => $header,
             'mail_footer' => $footer,
-            'mail_subject' => $subject
-        );
+            'mail_subject' => $subject,
+        ];
         $this->mailService->sendAdminOrderMail($Order, $formData);
 
         $mailCollector = $this->getMailCollector();
@@ -383,7 +382,6 @@ class MailServiceTest extends AbstractServiceTestCase
         $config = $this->app['config'];
         $config['mail']['charset_iso_2022_jp'] = false;
         $this->app['config'] = $config;
-
     }
 
     public function testConvertMessageUTF()
@@ -416,7 +414,6 @@ class MailServiceTest extends AbstractServiceTestCase
         MailUtil::setParameterForCharset($this->app, $message);
         $this->actual = $message->getBody();
         $this->verify();
-
     }
 
     /**

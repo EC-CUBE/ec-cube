@@ -199,7 +199,7 @@ class TaxRuleRepositoryTest extends EccubeTestCase
     {
         $Pref = $this->prefRepository->find(26);
         $oneDayBefore = new \DateTime('-1 days');
-        
+
         $this->TaxRule2->setApplyDate($oneDayBefore);
         $this->TaxRule3
             ->setApplyDate($oneDayBefore)
@@ -218,7 +218,7 @@ class TaxRuleRepositoryTest extends EccubeTestCase
     {
         $Country = $this->countryRepository->find(300);
         $oneDayBefore = new \DateTime('-1 days');
-        
+
         $this->TaxRule2->setApplyDate($oneDayBefore)->setCountry($Country);
         $this->TaxRule3->setApplyDate($oneDayBefore);
 
@@ -299,7 +299,7 @@ class TaxRuleRepositoryTest extends EccubeTestCase
     /**
      * TaxRuleEventSubscriber の確認用テストケース.
      *
-     * @link https://github.com/EC-CUBE/ec-cube/issues/1029
+     * @see https://github.com/EC-CUBE/ec-cube/issues/1029
      */
     public function testOrderItem()
     {

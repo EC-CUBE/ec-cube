@@ -2,7 +2,6 @@
 
 namespace Eccube\DependencyInjection\Compiler;
 
-
 use Eccube\Twig\Extension\IgnoreRoutingNotFoundExtension;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

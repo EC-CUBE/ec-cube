@@ -146,7 +146,7 @@ class TwigInitializeListener implements EventSubscriberInterface
         if ($Member instanceof Member) {
             $AuthorityRoles = $this->authorityRoleRepository->findBy(['Authority' => $this->requestContext->getCurrentUser()->getAuthority()]);
         }
-        $roles = array_map(function(AuthorityRole $AuthorityRole) use ($event) {
+        $roles = array_map(function (AuthorityRole $AuthorityRole) use ($event) {
             return $event->getRequest()->getBaseUrl().'/'.$this->eccubeConfig['eccube_admin_route'].$AuthorityRole->getDenyUrl();
         }, $AuthorityRoles);
         $this->twig->addGlobal('AuthorityRoles', $roles);

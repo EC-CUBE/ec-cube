@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -47,6 +46,7 @@ class OrderItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
      * Set price IncTax
      *
      * @param  string       $price_inc_tax
+     *
      * @return OrderItem
      */
     public function setPriceIncTax($price_inc_tax)
@@ -101,8 +101,10 @@ class OrderItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
         if (is_object($this->getOrderItemType())) {
             return $this->getOrderItemType()->getId();
         }
+
         return null;
     }
+
     /**
      * 商品明細かどうか.
      *
@@ -110,7 +112,7 @@ class OrderItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
      */
     public function isProduct()
     {
-        return ($this->getOrderItemTypeId() === OrderItemType::PRODUCT);
+        return $this->getOrderItemTypeId() === OrderItemType::PRODUCT;
     }
 
     /**
@@ -120,7 +122,7 @@ class OrderItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
      */
     public function isDeliveryFee()
     {
-        return ($this->getOrderItemTypeId() === OrderItemType::DELIVERY_FEE);
+        return $this->getOrderItemTypeId() === OrderItemType::DELIVERY_FEE;
     }
 
     /**
@@ -130,7 +132,7 @@ class OrderItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
      */
     public function isCharge()
     {
-        return ($this->getOrderItemTypeId() === OrderItemType::CHARGE);
+        return $this->getOrderItemTypeId() === OrderItemType::CHARGE;
     }
 
     /**
@@ -140,7 +142,7 @@ class OrderItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
      */
     public function isDiscount()
     {
-        return ($this->getOrderItemTypeId() === OrderItemType::DISCOUNT);
+        return $this->getOrderItemTypeId() === OrderItemType::DISCOUNT;
     }
 
     /**
@@ -150,7 +152,7 @@ class OrderItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
      */
     public function isTax()
     {
-        return ($this->getOrderItemTypeId() === OrderItemType::TAX);
+        return $this->getOrderItemTypeId() === OrderItemType::TAX;
     }
 
     /**
@@ -612,6 +614,7 @@ class OrderItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
         if (is_object($this->getOrder())) {
             return $this->getOrder()->getId();
         }
+
         return null;
     }
 
