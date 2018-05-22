@@ -556,7 +556,7 @@ class PluginController extends AbstractController
         $info['message'] = $message;
         curl_close($curl);
 
-        $this->logger->info('http get_info', $info);
+        log_info('http get_info', $info);
 
         return array($result, $info);
     }

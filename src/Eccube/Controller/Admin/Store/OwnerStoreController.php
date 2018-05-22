@@ -39,6 +39,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+/**
+ * @Route("/%eccube_admin_route%/store/plugin/api")
+ */
 class OwnerStoreController extends AbstractController
 {
 
@@ -96,7 +99,7 @@ class OwnerStoreController extends AbstractController
     /**
      * Owner's Store Plugin Installation Screen - Search function
      *
-     * @Route("/%eccube_admin_route%/search", name="admin_store_plugin_owners_search")
+     * @Route("/search", name="admin_store_plugin_owners_search")
      * @Template("@admin/Store/plugin_search.twig")
      * @param Request     $request
      * @return array
@@ -170,7 +173,6 @@ class OwnerStoreController extends AbstractController
             'items' => $items,
             'promotionItems' => $promotionItems,
             'message' => $message,
-            'package_repo_url' => $this->eccubeConfig['package_repo_url'],
         ];
     }
 
