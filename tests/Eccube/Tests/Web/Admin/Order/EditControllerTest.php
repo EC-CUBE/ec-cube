@@ -25,6 +25,7 @@ namespace Eccube\Tests\Web\Admin\Order;
 
 use Eccube\Common\Constant;
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\Master\OrderItemType;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\CartService;
@@ -392,9 +393,12 @@ class EditControllerTest extends AbstractEditControllerTestCase
         //税金計算
         $totalTax = 0;
         foreach ($formDataForEdit['OrderItems'] as $index => $orderItem) {
-            //商品数変更3個追加
-            $formDataForEdit['OrderItems'][$index]['quantity'] = $orderItem['quantity'] + 3;
-            $tax = (int) $this->container->get(TaxRuleService::class)->calcTax($orderItem['price'], $orderItem['tax_rate'], $orderItem['tax_rule']);
+            if ($orderItem['order_item_type'] == OrderItemType::PRODUCT) {
+                //商品数変更3個追加
+                $formDataForEdit['OrderItems'][$index]['quantity'] = $orderItem['quantity'] + 3;
+            }
+            $tax = (int)$this->container->get(TaxRuleService::class)->calcTax($orderItem['price'],
+                $orderItem['tax_rate'], $orderItem['tax_rule']);
             $totalTax += $tax * $formDataForEdit['OrderItems'][$index]['quantity'];
         }
 

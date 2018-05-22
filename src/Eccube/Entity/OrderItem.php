@@ -41,22 +41,6 @@ class OrderItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
 {
     use PointRateTrait;
 
-    private $price_inc_tax = null;
-
-    /**
-     * Set price IncTax
-     *
-     * @param  string       $price_inc_tax
-     *
-     * @return OrderItem
-     */
-    public function setPriceIncTax($price_inc_tax)
-    {
-        $this->price_inc_tax = $price_inc_tax;
-
-        return $this;
-    }
-
     /**
      * Get price IncTax
      *
@@ -64,10 +48,11 @@ class OrderItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
      */
     public function getPriceIncTax()
     {
+        $TaxType = $this->getTaxType();
         $TaxDisplayType = $this->getTaxDisplayType();
-        if (is_object($TaxDisplayType)) {
+        if (is_object($TaxType) && is_object($TaxDisplayType)) {
             // 課税かつ外税の場合にのみ商品単価に消費税を足した金額を返す
-            if ($this->getTaxType()->getId() == TaxType::TAXATION && $TaxDisplayType->getId() == TaxDisplayType::EXCLUDED) {
+            if ($TaxType->getId() == TaxType::TAXATION && $TaxDisplayType->getId() == TaxDisplayType::EXCLUDED) {
                 // 課税かつ外税の場合は商品単価に消費税を足して返す。
                 return round($this->getPrice() + $this->getPrice() * $this->getTaxRate() / 100, 0);
             } else {
@@ -76,7 +61,7 @@ class OrderItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
             }
         }
 
-        return 0;
+        return $this->getPrice();
     }
 
     /**
