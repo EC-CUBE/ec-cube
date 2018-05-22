@@ -4,7 +4,6 @@ namespace Eccube\Tests\Web;
 
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Page;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class UserDataControllerTest extends AbstractWebTestCase
 {
@@ -13,7 +12,7 @@ class UserDataControllerTest extends AbstractWebTestCase
     protected $fileName = 'example_page';
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setUp()
     {

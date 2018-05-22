@@ -21,10 +21,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Controller\Admin\Setting\Shop;
 
-use Eccube\Annotation\Inject;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Event\EccubeEvents;
@@ -39,8 +37,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class CsvController
- *
- * @package Eccube\Controller\Admin\Setting\Shop
  */
 class CsvController extends AbstractController
 {
@@ -81,58 +77,58 @@ class CsvController extends AbstractController
         $builder->add(
             'csv_type',
             \Eccube\Form\Type\Master\CsvType::class,
-            array(
+            [
                 'label' => 'CSV出力項目',
                 'required' => true,
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                ),
+                ],
                 'data' => $CsvType,
-            )
+            ]
         );
 
         $CsvNotOutput = $this->csvRepository->findBy(
-            array('CsvType' => $CsvType, 'enabled' => false),
-            array('sort_no' => 'ASC')
+            ['CsvType' => $CsvType, 'enabled' => false],
+            ['sort_no' => 'ASC']
         );
 
         $builder->add(
             'csv_not_output',
             EntityType::class,
-            array(
+            [
                 'class' => 'Eccube\Entity\Csv',
                 'choice_label' => 'disp_name',
                 'required' => false,
                 'expanded' => false,
                 'multiple' => true,
                 'choices' => $CsvNotOutput,
-            )
+            ]
         );
 
         $CsvOutput = $this->csvRepository->findBy(
-            array('CsvType' => $CsvType, 'enabled' => true),
-            array('sort_no' => 'ASC')
+            ['CsvType' => $CsvType, 'enabled' => true],
+            ['sort_no' => 'ASC']
         );
 
         $builder->add(
             'csv_output',
             EntityType::class,
-            array(
+            [
                 'class' => 'Eccube\Entity\Csv',
                 'choice_label' => 'disp_name',
                 'required' => false,
                 'expanded' => false,
                 'multiple' => true,
                 'choices' => $CsvOutput,
-            )
+            ]
         );
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
                 'CsvOutput' => $CsvOutput,
                 'CsvType' => $CsvType,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_CSV_INDEX_INITIALIZE, $event);
@@ -140,7 +136,6 @@ class CsvController extends AbstractController
         $form = $builder->getForm();
 
         if ('POST' === $request->getMethod()) {
-
             $data = $request->get('form');
             if (isset($data['csv_not_output'])) {
                 $Csvs = $data['csv_not_output'];
@@ -167,18 +162,18 @@ class CsvController extends AbstractController
             $this->entityManager->flush();
 
             $event = new EventArgs(
-                array(
+                [
                     'form' => $form,
                     'CsvOutput' => $CsvOutput,
                     'CsvType' => $CsvType,
-                ),
+                ],
                 $request
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_CSV_INDEX_COMPLETE, $event);
 
             $this->addSuccess('admin.shop.csv.save.complete', 'admin');
 
-            return $this->redirectToRoute('admin_setting_shop_csv', array('id' => $CsvType->getId()));
+            return $this->redirectToRoute('admin_setting_shop_csv', ['id' => $CsvType->getId()]);
         }
 
         return [

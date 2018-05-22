@@ -23,7 +23,6 @@
 
 namespace Eccube\Service;
 
-
 /**
  * Copyright (C) 2012-2014 David de Boer <david@ddeboer.nl>
  *
@@ -44,11 +43,9 @@ namespace Eccube\Service;
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- *
  */
 class CsvImportService implements \Iterator, \SeekableIterator, \Countable
 {
-
     const DUPLICATE_HEADERS_INCREMENT = 1;
     const DUPLICATE_HEADERS_MERGE = 2;
 
@@ -71,7 +68,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      *
      * @var array
      */
-    protected $columnHeaders = array();
+    protected $columnHeaders = [];
 
     /**
      * Number of column headers, stored and re-used for performance
@@ -94,7 +91,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      *
      * @var array
      */
-    protected $errors = array();
+    protected $errors = [];
 
     /**
      * How to handle duplicate headers
@@ -102,7 +99,6 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      * @var integer
      */
     protected $duplicateHeadersFlag;
-
 
     /**
      * @param \SplFileObject $file
@@ -160,8 +156,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
             } else {
                 return $line;
             }
-
-        };
+        }
 
         return null;
     }
@@ -198,6 +193,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      *                        - CsvReader::DUPLICATE_HEADERS_MERGE; merges
      *                        values for duplicate headers into an array
      *                        (dup => [value1, value2, value3])
+     *
      * @return boolean
      */
     public function setHeaderRowNumber($rowNumber, $duplicates = null)
@@ -210,6 +206,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
             return false;
         }
         $this->setColumnHeaders($headers);
+
         return true;
     }
 
@@ -330,7 +327,6 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      * @param integer $rowNumber Row number
      *
      * @return array
-     *
      */
     protected function readHeaderRow($rowNumber)
     {
@@ -356,12 +352,12 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      */
     protected function incrementHeaders(array $headers)
     {
-        $incrementedHeaders = array();
+        $incrementedHeaders = [];
         foreach (array_count_values($headers) as $header => $count) {
             if ($count > 1) {
                 $incrementedHeaders[] = $header;
                 for ($i = 1; $i < $count; $i++) {
-                    $incrementedHeaders[] = $header . $i;
+                    $incrementedHeaders[] = $header.$i;
                 }
             } else {
                 $incrementedHeaders[] = $header;
@@ -387,7 +383,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      */
     protected function mergeDuplicates(array $line)
     {
-        $values = array();
+        $values = [];
 
         $i = 0;
         foreach ($this->columnHeaders as $count) {
@@ -409,12 +405,14 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      * Windows 版 PHP7 環境では、ファイルエンコーディングが CP932 になるため UTF-8 に変換する.
      * それ以外の環境では何もしない。
      */
-    protected function convertEncodingRows($row) {
+    protected function convertEncodingRows($row)
+    {
         if ('\\' === DIRECTORY_SEPARATOR && PHP_VERSION_ID >= 70000) {
             foreach ($row as &$col) {
-                $col = mb_convert_encoding($col , 'UTF-8', 'SJIS-win');
+                $col = mb_convert_encoding($col, 'UTF-8', 'SJIS-win');
             }
         }
+
         return $row;
     }
 }

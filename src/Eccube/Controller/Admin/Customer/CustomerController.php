@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Controller\Admin\Customer;
 
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
@@ -109,9 +108,9 @@ class CustomerController extends AbstractController
         $builder = $this->formFactory->createBuilder(SearchCustomerType::class);
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_INDEX_INITIALIZE, $event);
@@ -148,7 +147,6 @@ class CustomerController extends AbstractController
                     'page_count' => $pageCount,
                     'has_errors' => true,
                 ];
-
             }
         } else {
             if (null !== $page_no || $request->get('resume')) {
@@ -171,10 +169,10 @@ class CustomerController extends AbstractController
         $qb = $this->customerRepository->getQueryBuilderBySearchData($searchData);
 
         $event = new EventArgs(
-            array(
+            [
                 'form' => $searchForm,
                 'qb' => $qb,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_INDEX_SEARCH, $event);
@@ -211,7 +209,7 @@ class CustomerController extends AbstractController
 
         $activateUrl = $this->generateUrl(
             'entry_activate',
-            array('secret_key' => $Customer->getSecretKey()),
+            ['secret_key' => $Customer->getSecretKey()],
             UrlGeneratorInterface::ABSOLUTE_URL
         );
 
@@ -219,10 +217,10 @@ class CustomerController extends AbstractController
         $this->mailService->sendAdminCustomerConfirmMail($Customer, $activateUrl);
 
         $event = new EventArgs(
-            array(
+            [
                 'Customer' => $Customer,
                 'activateUrl' => $activateUrl,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_RESEND_COMPLETE, $event);
@@ -240,7 +238,7 @@ class CustomerController extends AbstractController
     {
         $this->isTokenValid();
 
-        log_info('会員削除開始', array($id));
+        log_info('会員削除開始', [$id]);
 
         $page_no = intval($this->session->get('eccube.admin.customer.search.page_no'));
         $page_no = $page_no ? $page_no : Constant::ENABLED;
@@ -250,8 +248,9 @@ class CustomerController extends AbstractController
 
         if (!$Customer) {
             $this->deleteMessage();
+
             return $this->redirect($this->generateUrl('admin_customer_page',
-                    array('page_no' => $page_no)) . '?resume=' . Constant::ENABLED);
+                    ['page_no' => $page_no]).'?resume='.Constant::ENABLED);
         }
 
         try {
@@ -265,18 +264,18 @@ class CustomerController extends AbstractController
             $this->addError($message, 'admin');
         }
 
-        log_info('会員削除完了', array($id));
+        log_info('会員削除完了', [$id]);
 
         $event = new EventArgs(
-            array(
+            [
                 'Customer' => $Customer,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_DELETE_COMPLETE, $event);
 
         return $this->redirect($this->generateUrl('admin_customer_page',
-                array('page_no' => $page_no)) . '?resume=' . Constant::ENABLED);
+                ['page_no' => $page_no]).'?resume='.Constant::ENABLED);
     }
 
     /**
@@ -286,6 +285,7 @@ class CustomerController extends AbstractController
      *
      * @param Application $app
      * @param Request $request
+     *
      * @return StreamedResponse
      */
     public function export(Request $request)
@@ -299,7 +299,6 @@ class CustomerController extends AbstractController
 
         $response = new StreamedResponse();
         $response->setCallback(function () use ($request) {
-
             // CSV種別を元に初期化.
             $this->csvExportService->initCsvType(CsvType::CSV_TYPE_CUSTOMER);
 
@@ -313,7 +312,6 @@ class CustomerController extends AbstractController
             // データ行の出力.
             $this->csvExportService->setExportQueryBuilder($qb);
             $this->csvExportService->exportData(function ($entity, $csvService) use ($request) {
-
                 $Csvs = $csvService->getCsvs();
 
                 /** @var $Customer \Eccube\Entity\Customer */
@@ -327,12 +325,12 @@ class CustomerController extends AbstractController
                     $ExportCsvRow->setData($csvService->getData($Csv, $Customer));
 
                     $event = new EventArgs(
-                        array(
+                        [
                             'csvService' => $csvService,
                             'Csv' => $Csv,
                             'Customer' => $Customer,
                             'ExportCsvRow' => $ExportCsvRow,
-                        ),
+                        ],
                         $request
                     );
                     $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_CSV_EXPORT, $event);
@@ -347,13 +345,13 @@ class CustomerController extends AbstractController
         });
 
         $now = new \DateTime();
-        $filename = 'customer_' . $now->format('YmdHis') . '.csv';
+        $filename = 'customer_'.$now->format('YmdHis').'.csv';
         $response->headers->set('Content-Type', 'application/octet-stream');
-        $response->headers->set('Content-Disposition', 'attachment; filename=' . $filename);
+        $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
 
         $response->send();
 
-        log_info("会員CSVファイル名", array($filename));
+        log_info('会員CSVファイル名', [$filename]);
 
         return $response;
     }

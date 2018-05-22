@@ -12,7 +12,7 @@ class JoinCustomizerTest extends EccubeTestCase
     public function testCustomize()
     {
         $builder = $this->createQueryBuilder();
-        $customizer = new JoinCustomizerTest_Customizer(function() { return []; });
+        $customizer = new JoinCustomizerTest_Customizer(function () { return []; });
         $customizer->customize($builder, null, '');
         self::assertEquals($builder->getDQL(), 'SELECT p FROM Product p');
     }
@@ -20,9 +20,11 @@ class JoinCustomizerTest extends EccubeTestCase
     public function testCustomizeInnerJoin()
     {
         $builder = $this->createQueryBuilder();
-        $customizer = new JoinCustomizerTest_Customizer(function() { return [
-            JoinClause::innerJoin('p.ProductCategories', 'pct')
-        ]; });
+        $customizer = new JoinCustomizerTest_Customizer(function () {
+            return [
+            JoinClause::innerJoin('p.ProductCategories', 'pct'),
+        ];
+        });
         $customizer->customize($builder, null, '');
         self::assertEquals($builder->getDQL(), 'SELECT p FROM Product p INNER JOIN p.ProductCategories pct');
     }
@@ -30,10 +32,12 @@ class JoinCustomizerTest extends EccubeTestCase
     public function testCustomizeMultiInnerJoin()
     {
         $builder = $this->createQueryBuilder();
-        $customizer = new JoinCustomizerTest_Customizer(function() { return [
+        $customizer = new JoinCustomizerTest_Customizer(function () {
+            return [
             JoinClause::innerJoin('p.ProductCategories', 'pct'),
-            JoinClause::innerJoin('pct.Category', 'c')
-        ]; });
+            JoinClause::innerJoin('pct.Category', 'c'),
+        ];
+        });
         $customizer->customize($builder, null, '');
         self::assertEquals($builder->getDQL(), 'SELECT p FROM Product p INNER JOIN p.ProductCategories pct INNER JOIN pct.Category c');
     }
@@ -51,10 +55,9 @@ class JoinCustomizerTest extends EccubeTestCase
 
 class JoinCustomizerTest_Customizer extends JoinCustomizer
 {
-
     private $callback;
 
-    function __construct($callback)
+    public function __construct($callback)
     {
         $this->callback = $callback;
     }
@@ -62,11 +65,13 @@ class JoinCustomizerTest_Customizer extends JoinCustomizer
     /**
      * @param array $params
      * @param $queryKey
+     *
      * @return JoinClause[]
      */
     public function createStatements($params, $queryKey)
     {
         $callback = $this->callback;
+
         return $callback($params);
     }
 

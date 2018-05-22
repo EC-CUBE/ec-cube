@@ -1,10 +1,7 @@
 <?php
 
-
 namespace Eccube\ServiceProvider;
 
-
-use Eccube\Entity\Event\EntityEventDispatcher;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 

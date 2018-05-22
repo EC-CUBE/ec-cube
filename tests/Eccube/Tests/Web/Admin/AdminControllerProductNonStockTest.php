@@ -39,7 +39,7 @@ class AdminControllerProductNonStockTest extends AbstractAdminWebTestCase
     /**
      * Test count with search
      *
-     * @link https://github.com/EC-CUBE/ec-cube/issues/1898
+     * @see https://github.com/EC-CUBE/ec-cube/issues/1898
      */
     public function testAdminNonStockWithSearch()
     {
@@ -54,7 +54,7 @@ class AdminControllerProductNonStockTest extends AbstractAdminWebTestCase
         $this->expected = $showNumber = preg_replace('/\D/', '', $section);
 
         $client->request('POST', $this->generateUrl('admin_homepage_nonstock'),
-                array('admin_search_product' => array('_token' =>  'dummy')));
+                ['admin_search_product' => ['_token' => 'dummy']]);
 
         $crawler = $client->followRedirect();
         $this->actual = $crawler->filter('.table-sm > tbody > tr')->count();

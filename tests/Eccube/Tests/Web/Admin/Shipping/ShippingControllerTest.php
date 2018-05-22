@@ -17,12 +17,10 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class ShippingControllerTest extends AbstractAdminWebTestCase
 {
-
     /**
      * @var ShippingRepository
      */
     protected $shippingRepository;
-
 
     public function setUp()
     {
@@ -31,13 +29,13 @@ class ShippingControllerTest extends AbstractAdminWebTestCase
         $this->shippingRepository = $this->container->get(ShippingRepository::class);
 
         // FIXME: Should remove exist data before generate data for test
-        $this->deleteAllRows(array('dtb_order'));
+        $this->deleteAllRows(['dtb_order']);
 
         $Sex = $this->container->get(SexRepository::class)->find(1);
         $Payment = $this->container->get(PaymentRepository::class)->find(1);
         $OrderStatus = $this->container->get(OrderStatusRepository::class)->find(OrderStatus::NEW);
         for ($i = 0; $i < 10; $i++) {
-            $Customer = $this->createCustomer('user-' . $i . '@example.com');
+            $Customer = $this->createCustomer('user-'.$i.'@example.com');
             $Customer->setSex($Sex);
             $Order = $this->createOrder($Customer);
             $Order->setOrderStatus($OrderStatus);
@@ -75,7 +73,6 @@ class ShippingControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-
     public function testIndexInitial()
     {
         // 初期表示時検索条件テスト
@@ -90,41 +87,40 @@ class ShippingControllerTest extends AbstractAdminWebTestCase
         $this->verify();
     }
 
-
     public function testSearchOrderByName()
     {
         $faker = $this->getFaker();
         /** @var Shipping $Shipping */
-        $Shipping = $this->shippingRepository->findOneBy(array());
+        $Shipping = $this->shippingRepository->findOneBy([]);
         $name = $Shipping->getName01();
         $name .= $faker->realText(10);
         $Shipping->setName01($name);
         $this->entityManager->flush($Shipping);
 
-        $Shippings = $this->shippingRepository->findBy(array('name01' => $name));
+        $Shippings = $this->shippingRepository->findBy(['name01' => $name]);
         $cnt = count($Shippings);
 
         $crawler = $this->client->request(
-            'POST', $this->generateUrl('admin_shipping'), array(
-                'admin_search_shipping' => array(
+            'POST', $this->generateUrl('admin_shipping'), [
+                'admin_search_shipping' => [
                     '_token' => 'dummy',
                     'multi' => $name,
-                )
-            )
+                ],
+            ]
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $this->expected = '検索結果 : ' . $cnt . ' 件が該当しました';
+        $this->expected = '検索結果 : '.$cnt.' 件が該当しました';
         $this->actual = $crawler->filter('#search_form .c-outsideBlock__contents.mb-3 span')->text();
         $this->verify();
 
         $crawler = $this->client->request(
-            'POST', $this->generateUrl('admin_shipping'), array(
-                'admin_search_shipping' => array(
+            'POST', $this->generateUrl('admin_shipping'), [
+                'admin_search_shipping' => [
                     '_token' => 'dummy',
                     'name' => $name,
-                )
-            )
+                ],
+            ]
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
@@ -138,17 +134,17 @@ class ShippingControllerTest extends AbstractAdminWebTestCase
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_shipping').'?page_count=30',
-            array(
-                'admin_search_shipping' => array(
+            [
+                'admin_search_shipping' => [
                     '_token' => 'dummy',
-                )
-            )
+                ],
+            ]
         );
 
         // 次のページへ遷移
         $crawler = $this->client->request(
             'GET',
-            $this->generateUrl('admin_shipping_page', array('page_no' => 2))
+            $this->generateUrl('admin_shipping_page', ['page_no' => 2])
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
@@ -212,12 +208,12 @@ class ShippingControllerTest extends AbstractAdminWebTestCase
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_order'),
-            array(
-                'admin_search_order' => array(
+            [
+                'admin_search_order' => [
                     '_token' => 'dummy',
-                    'email' => 'user-'
-                )
-            )
+                    'email' => 'user-',
+                ],
+            ]
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
         $this->expected = '検索結果：10件が該当しました';

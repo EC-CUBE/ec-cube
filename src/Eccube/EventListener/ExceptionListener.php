@@ -23,7 +23,6 @@
 
 namespace Eccube\EventListener;
 
-
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
@@ -55,8 +54,7 @@ class ExceptionListener implements EventSubscriberInterface
 
         if ($exception instanceof HttpExceptionInterface) {
             $statusCode = $exception->getStatusCode();
-            switch ($statusCode)
-            {
+            switch ($statusCode) {
                 case 400:
                 case 401:
                 case 403:
@@ -111,7 +109,7 @@ class ExceptionListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            KernelEvents::EXCEPTION => ['onKernelException']
+            KernelEvents::EXCEPTION => ['onKernelException'],
         ];
     }
 }

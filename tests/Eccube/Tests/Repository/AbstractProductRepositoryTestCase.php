@@ -1,4 +1,5 @@
 <?php
+
 namespace Eccube\Tests\Repository;
 
 use Eccube\Entity\CustomerFavoriteProduct;
@@ -26,13 +27,13 @@ abstract class AbstractProductRepositoryTestCase extends EccubeTestCase
 
         $this->productRepository = $this->container->get(ProductRepository::class);
 
-        $tables = array(
+        $tables = [
             'dtb_product_image',
             'dtb_product_stock',
             'dtb_product_class',
             'dtb_product_category',
-            'dtb_product'
-        );
+            'dtb_product',
+        ];
         $this->deleteAllRows($tables);
         for ($i = 0; $i < 3; $i++) {
             $this->createProduct('商品-'.$i);

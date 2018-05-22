@@ -37,16 +37,18 @@ class OrderService
 {
     /**
      * @Inject(ShoppingService::class)
+     *
      * @var ShoppingService
      */
     protected $shoppingService;
-
 
     /**
      * 販売種別を取得
      *
      * @param Order $Order
+     *
      * @return array
+     *
      * @deprecated since 3.0.0, to be removed in 3.1
      */
     public function getSaleTypes(Order $Order)
@@ -60,7 +62,6 @@ class OrderService
      * @return Order
      *
      * @see ShoppingService::newOrder()
-     *
      * @deprecated since 3.0.0, to be removed in 3.1
      */
     public function newOrder()
@@ -74,10 +75,10 @@ class OrderService
      * @param $cartItems
      * @param Customer|null $Customer
      * @param $preOrderId
+     *
      * @return Order
      *
      * @see ShoppingService::createOrder()
-     *
      * @deprecated since 3.0.0, to be removed in 3.1
      */
     public function registerPreOrderFromCartItems($cartItems, Customer $Customer = null, $preOrderId)
@@ -90,10 +91,10 @@ class OrderService
      *
      * @param Order $Order
      * @param Cart $Cart
+     *
      * @return Order
      *
      * @see ShoppingService::getAmount()
-     *
      * @deprecated since 3.0.0, to be removed in 3.1
      */
     public function getAmount(Order $Order, Cart $Cart)
@@ -109,7 +110,6 @@ class OrderService
      * @param $formData フォームデータ
      *
      * @see ShoppingService::setOrderUpdate()
-     *
      * @deprecated since 3.0.0, to be removed in 3.1
      */
     public function setOrderUpdate($em, Order $Order, $formData)
@@ -125,13 +125,10 @@ class OrderService
      * @param Customer $user ログインユーザ
      *
      * @see ShoppingService::setCustomerUpdate()
-     *
      * @deprecated since 3.0.0, to be removed in 3.1
      */
     public function setCustomerUpdate($em, Order $Order, Customer $user)
     {
         $this->shoppingService->setCustomerUpdate($Order, $user);
     }
-
-
 }

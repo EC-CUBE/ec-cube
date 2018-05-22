@@ -1,6 +1,7 @@
 <?php
 
 namespace Eccube\Tests\Web;
+
 use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
 
@@ -28,32 +29,33 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
         $faker = $this->getFaker();
         $tel = explode('-', $faker->phoneNumber);
 
-        $form = array(
-            'name' => array(
+        $form = [
+            'name' => [
                 'name01' => $faker->lastName,
                 'name02' => $faker->firstName,
-            ),
-            'kana' => array(
-                'kana01' => $faker->lastKanaName ,
+            ],
+            'kana' => [
+                'kana01' => $faker->lastKanaName,
                 'kana02' => $faker->firstKanaName,
-            ),
+            ],
             'company_name' => $faker->company,
-            'zip' => array(
+            'zip' => [
                 'zip01' => $faker->postcode1(),
                 'zip02' => $faker->postcode2(),
-            ),
-            'address' => array(
+            ],
+            'address' => [
                 'pref' => '5',
                 'addr01' => $faker->city,
                 'addr02' => $faker->streetAddress,
-            ),
-            'tel' => array(
+            ],
+            'tel' => [
                 'tel01' => $tel[0],
                 'tel02' => $tel[1],
                 'tel03' => $tel[2],
-            ),
-            '_token' => 'dummy'
-        );
+            ],
+            '_token' => 'dummy',
+        ];
+
         return $form;
     }
 
@@ -93,6 +95,7 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
             $this->generateUrl('shopping_nonmember'),
             ['nonmember' => $formData]
         );
+
         return $crawler;
     }
 
@@ -102,6 +105,7 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
             $this->loginTo($Customer);
         }
         $crawler = $this->client->request('GET', $this->generateUrl('shopping'));
+
         return $crawler;
     }
 
@@ -110,6 +114,7 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
         if ($Cusotmer) {
             $this->loginTo($Cusotmer);
         }
+
         return $this->client->request(
             'POST',
             $this->generateUrl('shopping_redirect_to'),
@@ -117,7 +122,7 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
         );
     }
 
-    protected function scenarioComplete(Customer $Customer = null, $confirm_url, array $shippings = array())
+    protected function scenarioComplete(Customer $Customer = null, $confirm_url, array $shippings = [])
     {
         if ($Customer) {
             $this->loginTo($Customer);
@@ -125,12 +130,12 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
 
         $faker = $this->getFaker();
         if (count($shippings) < 1) {
-            $shippings = array(
-                array(
+            $shippings = [
+                [
                     'Delivery' => 1,
-                    'DeliveryTime' => 1
-                ),
-            );
+                    'DeliveryTime' => 1,
+                ],
+            ];
         }
 
         $this->client->enableProfiler();
@@ -138,14 +143,13 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
         $crawler = $this->client->request(
             'POST',
             $confirm_url,
-            array('_shopping_order' =>
-                  array(
+            ['_shopping_order' => [
                       'Shippings' => $shippings,
                       'Payment' => 3,
                       'message' => $faker->realText(),
-                      '_token' => 'dummy'
-                  )
-            )
+                      '_token' => 'dummy',
+                  ],
+            ]
         );
 
         return $crawler;

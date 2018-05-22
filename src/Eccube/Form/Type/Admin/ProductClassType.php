@@ -74,7 +74,7 @@ class ProductClassType extends AbstractType
                 'constraints' => [
                     new Assert\Regex([
                         'pattern' => "/^\d+$/u",
-                        'message' => 'form.type.numeric.invalid'
+                        'message' => 'form.type.numeric.invalid',
                     ]),
                 ],
             ])
@@ -95,7 +95,7 @@ class ProductClassType extends AbstractType
                     ]),
                     new Assert\Regex([
                         'pattern' => "/^\d+$/u",
-                        'message' => 'form.type.numeric.invalid'
+                        'message' => 'form.type.numeric.invalid',
                     ]),
                 ],
             ])
@@ -113,7 +113,7 @@ class ProductClassType extends AbstractType
                     new Assert\Range(['min' => 0, 'max' => 100]),
                     new Assert\Regex([
                         'pattern' => "/^\d+(\.\d+)?$/",
-                        'message' => 'form.type.float.invalid'
+                        'message' => 'form.type.float.invalid',
                     ]),
                 ],
             ])

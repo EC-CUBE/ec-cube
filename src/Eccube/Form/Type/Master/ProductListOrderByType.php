@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type\Master;
 
 use Eccube\Annotation\FormType;
@@ -42,21 +41,21 @@ class ProductListOrderByType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
-             $options = $event->getForm()->getConfig()->getOptions();
-             if (!$event->getData()) {
-                 $data = current(array_keys($options['choice_loader']->loadChoiceList()->getValues()));
-                 $event->setData($data);
-             }
-         });
-         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
-             $options = $event->getForm()->getConfig()->getOptions();
-             $values = $options['choice_loader']->loadChoiceList()->getValues();
-             if (!in_array($event->getData(), $values)) {
-                 $data = current($values);
-                 $event->setData($data);
-             }
-         });
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            $options = $event->getForm()->getConfig()->getOptions();
+            if (!$event->getData()) {
+                $data = current(array_keys($options['choice_loader']->loadChoiceList()->getValues()));
+                $event->setData($data);
+            }
+        });
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+            $options = $event->getForm()->getConfig()->getOptions();
+            $values = $options['choice_loader']->loadChoiceList()->getValues();
+            if (!in_array($event->getData(), $values)) {
+                $data = current($values);
+                $event->setData($data);
+            }
+        });
     }
 
     /**
@@ -64,9 +63,9 @@ class ProductListOrderByType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'class' => 'Eccube\Entity\Master\ProductListOrderBy',
-        ));
+        ]);
     }
 
     /**

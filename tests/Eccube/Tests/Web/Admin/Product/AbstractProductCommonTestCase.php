@@ -20,6 +20,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
 namespace Eccube\Tests\Web\Admin\Product;
 
 use Eccube\Entity\ClassCategory;
@@ -73,6 +74,7 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
 
     /**
      * @param Member $TestCreator
+     *
      * @return Product
      */
     protected function createTestProduct(Member $TestCreator = null)
@@ -123,6 +125,7 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
      * Create class name
      *
      * @param Member|null $Creator
+     *
      * @return ClassName
      */
     protected function createClassName(Member $Creator = null)
@@ -147,6 +150,7 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
      *
      * @param Member $Creator
      * @param ClassName $TestClassName
+     *
      * @return ClassCategory
      */
     protected function createClassCategory(Member $Creator, ClassName &$TestClassName)
@@ -176,6 +180,7 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
      * @param Product $TestProduct
      * @param ClassCategory $TestClassCategory1
      * @param ClassCategory $TestClassCategory2
+     *
      * @return ProductClass
      */
     protected function createProductClass(
@@ -226,6 +231,7 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
      *
      * @param Member $Creator
      * @param ProductClass $TestProductClass
+     *
      * @return ProductStock
      */
     protected function createProductStock(Member $Creator, ProductClass &$TestProductClass)

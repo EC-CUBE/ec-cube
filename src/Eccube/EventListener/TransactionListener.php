@@ -33,8 +33,6 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
  * トランザクション制御のためのListener
- *
- * @package Eccube\EventListener
  */
 class TransactionListener implements EventSubscriberInterface
 {
@@ -147,10 +145,10 @@ class TransactionListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             KernelEvents::REQUEST => 'onKernelRequest',
             KernelEvents::EXCEPTION => 'onKernelException',
             KernelEvents::TERMINATE => 'onKernelTerminate',
-        );
+        ];
     }
 }

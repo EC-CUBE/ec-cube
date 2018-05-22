@@ -34,14 +34,14 @@ class UTCDateTimeType extends DateTimeType
      *
      * @var \DateTimeZone
      */
-    static protected $utc;
+    protected static $utc;
 
     /**
      * アプリケーションのタイムゾーン
      *
      * @var \DateTimeZone
      */
-    static protected $timezone;
+    protected static $timezone;
 
     /**
      * {@inheritdoc}

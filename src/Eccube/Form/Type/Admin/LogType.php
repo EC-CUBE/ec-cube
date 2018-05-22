@@ -39,7 +39,6 @@ class LogType extends AbstractType
      */
     protected $eccubeConfig;
 
-
     /**
      * @var KernelInterface
      */
@@ -47,6 +46,7 @@ class LogType extends AbstractType
 
     /**
      * LogType constructor.
+     *
      * @param EccubeConfig $eccubeConfig
      * @param KernelInterface $kernel
      */
@@ -56,13 +56,12 @@ class LogType extends AbstractType
         $this->kernel = $kernel;
     }
 
-
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $files = array();
+        $files = [];
         $finder = new Finder();
         $finder->name('*.log')->depth('== 0');
         $dirs = $this->kernel->getLogDir().DIRECTORY_SEPARATOR.$this->kernel->getEnvironment();
@@ -71,27 +70,27 @@ class LogType extends AbstractType
         }
 
         $builder
-            ->add('files', ChoiceType::class, array(
+            ->add('files', ChoiceType::class, [
                 'label' => 'logtype.label.log_file',
                 'choices' => array_flip($files),
                 'data' => 'site_'.date('Y-m-d').'.log',
                 'expanded' => false,
                 'multiple' => false,
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                ),
-            ))
-            ->add('line_max', TextType::class, array(
+                ],
+            ])
+            ->add('line_max', TextType::class, [
                 'label' => 'logtype.label.number_of_rows',
                 'data' => '50',
-                'attr' => array(
+                'attr' => [
                     'maxlength' => 5,
-                ),
-                'constraints' => array(
+                ],
+                'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Range(array('min' => 0, 'max' => 50000)),
-                ),
-            ));
+                    new Assert\Range(['min' => 0, 'max' => 50000]),
+                ],
+            ]);
     }
 
     /**

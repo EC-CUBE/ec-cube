@@ -8,7 +8,6 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class PluginDevelopGenerateTest extends AbstractCommandTest
 {
-
     private $testCase;
 
     public function setUp()
@@ -33,173 +32,173 @@ class PluginDevelopGenerateTest extends AbstractCommandTest
 
         $code = 'PluginUnittestSample';
 
-        $codePath = $this->app['config']['root_dir'] . '/app/Plugin/' . $code;
+        $codePath = $this->app['config']['root_dir'].'/app/Plugin/'.$code;
         $this->removePluginDir($codePath);
         $this->removePluginDb($code);
 
-        $testCase = array(
+        $testCase = [
             //プラグイン名
-            1 => array(
-                array(
+            1 => [
+                [
                     'input' => '',
                     'output' => 'Value cannot be empty',
-                ),
-                array(
+                ],
+                [
                     'input' => 'Plugin Name',
                     'output' => 'Plugin Code:',
-                ),
-            ),
+                ],
+            ],
             //プラグインコード
-            2 => array(
-                array(
+            2 => [
+                [
                     'input' => '',
                     'output' => 'Value cannot be empty',
-                ),
-                array(
+                ],
+                [
                     'input' => 'Plugin Code',
                     'output' => 'Please enter Plugin Code (First letter is uppercase alphabet only. alphabet and numbers are allowed.)',
-                ),
-                array(
+                ],
+                [
                     'input' => strtolower($code),
                     'output' => 'Please enter Plugin Code (First letter is uppercase alphabet only. alphabet and numbers are allowed.',
-                ),
-                array(
+                ],
+                [
                     'input' => $code,
                     'output' => 'Version:',
-                ),
-            ),
+                ],
+            ],
             //バージョン
-            3 => array(
-                array(
+            3 => [
+                [
                     'input' => '',
                     'output' => 'Value cannot be empty',
-                ),
-                array(
+                ],
+                [
                     'input' => 'ひらがな',
                     'output' => 'correct format is x.y.z',
-                ),
-                array(
+                ],
+                [
                     'input' => 'alphabet',
                     'output' => 'correct format is x.y.z',
-                ),
-                array(
+                ],
+                [
                     'input' => '1.0.0',
                     'output' => 'Author:',
-                )
-            ),
+                ],
+            ],
             //バージョン
-            4 => array(
-                array(
+            4 => [
+                [
                     'input' => '',
                     'output' => 'Value cannot be empty',
-                ),
-                array(
+                ],
+                [
                     'input' => 'Author Name',
                     'output' => 'Old version support:',
-                ),
-            ),
+                ],
+            ],
             //サーポットバージョン
-            5 => array(
-                array(
+            5 => [
+                [
                     'input' => '',
                     'output' => 'Value cannot be empty',
-                ),
-                array(
+                ],
+                [
                     'input' => 'a',
                     'output' => 'No results have been found',
-                ),
-                array(
+                ],
+                [
                     'input' => 'y',
                     'output' => 'Site events:',
-                ),
-            ),
+                ],
+            ],
             //サイト共通イベント
-            6 => array(
-                array(
+            6 => [
+                [
                     'input' => 'entry',
-                    'output' => array(
+                    'output' => [
                         'there are more then one search result',
-                        'eccube.event.render.entry.before'
-                    ),
-                ),
-                array(
+                        'eccube.event.render.entry.before',
+                    ],
+                ],
+                [
                     'input' => 'eccube.event.render.entry.before',
-                    'output' => array(
+                    'output' => [
                         'your entry list',
-                        'eccube.event.render.entry.before'
-                    ),
-                ),
-                array(
+                        'eccube.event.render.entry.before',
+                    ],
+                ],
+                [
                     'input' => 'product_list',
-                    'output' => array(
+                    'output' => [
                         'there are more then one search result',
-                        'eccube.event.render.product_list.before'
-                    ),
-                ),
-                array(
+                        'eccube.event.render.product_list.before',
+                    ],
+                ],
+                [
                     'input' => 'eccube.event.render.product_list.before',
-                    'output' => array(
+                    'output' => [
                         'your entry list',
-                        'eccube.event.render.product_list.before'
-                    ),
-                ),
-                array(
+                        'eccube.event.render.product_list.before',
+                    ],
+                ],
+                [
                     'input' => '',
-                ),
-            ),
+                ],
+            ],
             //フックポイント
-            7 => array(
-                array(
+            7 => [
+                [
                     'input' => 'entry',
-                    'output' => array(
+                    'output' => [
                         'No results have been found',
-                        'front.entry.index.initialize'
-                    ),
-                ),
-                array(
+                        'front.entry.index.initialize',
+                    ],
+                ],
+                [
                     'input' => 'front.entry.index.initialize',
-                    'output' => array(
+                    'output' => [
                         'your entry list',
-                        'front.entry.index.initialize'
-                    ),
-                ),
-                array(
+                        'front.entry.index.initialize',
+                    ],
+                ],
+                [
                     'input' => 'change_password',
-                    'output' => array(
+                    'output' => [
                         'No results have been found',
-                        'admin.admin.change_password.complete'
-                    ),
-                ),
-                array(
+                        'admin.admin.change_password.complete',
+                    ],
+                ],
+                [
                     'input' => 'admin.admin.change_password.complete',
-                    'output' => array(
+                    'output' => [
                         'your entry list',
-                        'admin.admin.change_password.complete'
-                    ),
-                ),
-                array(
+                        'admin.admin.change_password.complete',
+                    ],
+                ],
+                [
                     'input' => '',
-                ),
-            ),
+                ],
+            ],
             //orm.path
-            8 => array(
-                array(
+            8 => [
+                [
                     'input' => '',
                     'output' => 'Value cannot be empty',
-                ),
-                array(
+                ],
+                [
                     'input' => 'a',
                     'output' => 'No results have been found',
-                ),
-                array(
+                ],
+                [
                     'input' => 'y',
                     'output' => 'Use orm.path:',
-                ),
-            ),
+                ],
+            ],
             //確認
-            'confirm' => array(
-                array(
-                    'output' => array(
+            'confirm' => [
+                [
+                    'output' => [
                         'Plugin Name',
                         $code,
                         '1.0.0',
@@ -210,43 +209,43 @@ class PluginDevelopGenerateTest extends AbstractCommandTest
                         'front.entry.index.initialize',
                         'admin.admin.change_password.complete',
                         'Yes',
-                    ),
-                ),
-                array(
+                    ],
+                ],
+                [
                     'input' => 'y',
                     'output' => '',
-                ),
-            )
-        );
+                ],
+            ],
+        ];
         $this->setTestCase($testCase);
 
-        $commandArg = array(
+        $commandArg = [
             'command' => 'plugin:develop',
             'mode' => 'generate',
             '--no-ansi' => true,
-        );
+        ];
 
-        $this->executeTester(array($this, 'checkQuestion'), $commandArg);
+        $this->executeTester([$this, 'checkQuestion'], $commandArg);
 
         //ファイルとフォルダー作成確認
-        $ff = array(
+        $ff = [
             $codePath,
-            $codePath . '/ServiceProvider',
-            $codePath . '/ServiceProvider/' . $code . 'ServiceProvider.php',
-            $codePath . '/Controller',
-            $codePath . '/Form/Type',
-            $codePath . '/Resource/template/admin',
-            $codePath . '/config.yml',
-            $codePath . '/PluginManager.php',
-            $codePath . '/Controller/ConfigController.php',
-            $codePath . '/Controller/' . $code . 'Controller.php',
-            $codePath . '/Form/Type/' . $code . 'ConfigType.php',
-            $codePath . '/Resource/template/admin/config.twig',
-            $codePath . '/Resource/template/index.twig',
-            $codePath . '/event.yml',
-            $codePath . '/' . $code . 'Event.php',
-            $codePath . '/LICENSE',
-        );
+            $codePath.'/ServiceProvider',
+            $codePath.'/ServiceProvider/'.$code.'ServiceProvider.php',
+            $codePath.'/Controller',
+            $codePath.'/Form/Type',
+            $codePath.'/Resource/template/admin',
+            $codePath.'/config.yml',
+            $codePath.'/PluginManager.php',
+            $codePath.'/Controller/ConfigController.php',
+            $codePath.'/Controller/'.$code.'Controller.php',
+            $codePath.'/Form/Type/'.$code.'ConfigType.php',
+            $codePath.'/Resource/template/admin/config.twig',
+            $codePath.'/Resource/template/index.twig',
+            $codePath.'/event.yml',
+            $codePath.'/'.$code.'Event.php',
+            $codePath.'/LICENSE',
+        ];
 
         $this->checkFileAndFolder($ff);
 
@@ -273,7 +272,7 @@ class PluginDevelopGenerateTest extends AbstractCommandTest
                         if (is_array($case['output'])) {
                             $checkOutput = $case['output'];
                         } else {
-                            $checkOutput = array($case['output']);
+                            $checkOutput = [$case['output']];
                         }
                         foreach ($checkOutput as $node) {
                             $this->assertInOutput($output, $node);
@@ -288,17 +287,19 @@ class PluginDevelopGenerateTest extends AbstractCommandTest
             }
         }
 
-        throw new \Exception('Test case not set.' . PHP_EOL . ' output=' . $output);
+        throw new \Exception('Test case not set.'.PHP_EOL.' output='.$output);
     }
 
     protected function assertInOutput($output, $msg)
     {
         if (strpos($output, $msg) !== false) {
             $this->assertTrue(true);
+
             return true;
         }
-        $error = 'Input string not found in output.' . PHP_EOL . ' search=' . $msg . PHP_EOL . ' output=' . $output . '' . PHP_EOL;
+        $error = 'Input string not found in output.'.PHP_EOL.' search='.$msg.PHP_EOL.' output='.$output.''.PHP_EOL;
         $this->assertTrue(false, $error);
+
         return false;
     }
 
@@ -321,10 +322,10 @@ class PluginDevelopGenerateTest extends AbstractCommandTest
         $entityManager = $this->app['orm.em'];
 
         $entityManager->clear();
-        $pluginList = $entityManager->getRepository('\Eccube\\Entity\Plugin')->findBy(array('code' => $code));
+        $pluginList = $entityManager->getRepository('\Eccube\\Entity\Plugin')->findBy(['code' => $code]);
         if ($pluginList) {
             foreach ($pluginList as $plugin) {
-                $pluginHandlerList = $entityManager->getRepository('\Eccube\Entity\PluginEventHandler')->findBy(array('plugin_id' => $plugin->getId()));
+                $pluginHandlerList = $entityManager->getRepository('\Eccube\Entity\PluginEventHandler')->findBy(['plugin_id' => $plugin->getId()]);
                 if ($pluginHandlerList) {
                     foreach ($pluginHandlerList as $pluginHandler) {
                         $entityManager->remove($pluginHandler);
@@ -339,7 +340,7 @@ class PluginDevelopGenerateTest extends AbstractCommandTest
     protected function checkFileAndFolder($ff)
     {
         foreach ($ff as $path) {
-            $msg = 'fail assert that a file/path exists.(' . $path . ')';
+            $msg = 'fail assert that a file/path exists.('.$path.')';
             $this->assertTrue(file_exists($path), $msg);
         }
     }

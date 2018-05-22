@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Extension;
 
 use Eccube\Annotation\FormExtension;
@@ -37,7 +36,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class FreezeTypeExtension extends AbstractTypeExtension
 {
-
     /**
      * {@inheritdoc}
      */
@@ -79,10 +77,10 @@ class FreezeTypeExtension extends AbstractTypeExtension
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'freeze' => false,
             'freeze_display_text' => true,
-        ));
+        ]);
     }
 
     public function getExtendedType()

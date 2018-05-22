@@ -31,7 +31,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-
 class CsvLoaderCommand extends Command
 {
     protected function configure()
@@ -65,10 +64,8 @@ EOF
             );
     }
 
-
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
         /** @var \Eccube\Application $app */
         $app = $this->getSilexApplication();
 
@@ -76,7 +73,7 @@ EOF
         $directory = $input->getOption('directory');
 
         if (!$file && !$directory) {
-            $output->writeln("<error>CSV File Name or Directory Name not set.</error>");
+            $output->writeln('<error>CSV File Name or Directory Name not set.</error>');
 
             return;
         }
@@ -89,7 +86,7 @@ EOF
                 $file = new \SplFileObject($file);
 
                 if ($file->isFile()) {
-                    $output->writeln(sprintf("<comment>CSV Load %s</comment>", $file->getFilename()));
+                    $output->writeln(sprintf('<comment>CSV Load %s</comment>', $file->getFilename()));
 
                     $loader = new Loader();
                     $CsvFixture = new CsvFixture($file->openFile());
@@ -99,31 +96,29 @@ EOF
                     $fixtures = $loader->getFixtures();
                     $Executor->execute($fixtures);
 
-                    $output->writeln("<info>CSV Loader complete.</info>");
+                    $output->writeln('<info>CSV Loader complete.</info>');
                 } else {
-                    $output->writeln("<error>CSV File Name not set.</error>");
+                    $output->writeln('<error>CSV File Name not set.</error>');
                 }
             } else {
-                $output->writeln("<error>CSV File Name not set.</error>");
+                $output->writeln('<error>CSV File Name not set.</error>');
             }
         }
 
         if ($directory) {
             // ディレクトリ名が指定された場合
             if (is_dir($directory)) {
-
-                $output->writeln(sprintf("<comment>CSV Load %s</comment>", $directory));
+                $output->writeln(sprintf('<comment>CSV Load %s</comment>', $directory));
                 $loader = new Loader();
                 $loader->loadFromDirectory($directory);
                 $Executor = new DbalExecutor($em);
                 $fixtures = $loader->getFixtures();
                 $Executor->execute($fixtures);
 
-                $output->writeln("<info>CSV Loader complete.</info>");
+                $output->writeln('<info>CSV Loader complete.</info>');
             } else {
-                $output->writeln("<error>CSV Directory Name not set.</error>");
+                $output->writeln('<error>CSV Directory Name not set.</error>');
             }
         }
-
     }
 }

@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
@@ -32,7 +31,6 @@ use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class SecurityControllerTest
- * @package Eccube\Tests\Web\Admin\Setting\Shop
  */
 class SecurityControllerTest extends AbstractAdminWebTestCase
 {
@@ -68,27 +66,24 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
             $this->markTestSkipped('Skip if not have config file');
         }
 
-        $structure = array(
-            'app' => array(
-                'config' => array(
-                    'eccube' => array(
-                        'packages' => array(
-                            'eccube.yaml' => file_get_contents($this->configFileReal)
-                        ),
-                        'services.yaml' => file_get_contents($this->pathFileReal)
-                    )
-                ),
-            ),
-        );
-
-
+        $structure = [
+            'app' => [
+                'config' => [
+                    'eccube' => [
+                        'packages' => [
+                            'eccube.yaml' => file_get_contents($this->configFileReal),
+                        ],
+                        'services.yaml' => file_get_contents($this->pathFileReal),
+                    ],
+                ],
+            ],
+        ];
 
         $config['root_dir'] = vfsStream::url('rootDir');
 
         // TODO: Can not overwrite new value config
         // $this->app->overwrite('config', $config);
         // $this->eccubeConfig['root_dir'] = $config['root_dir'];  // visualize like this
-
 
         // dump file
         $this->configFile = $rootDir.'/app/config/eccube/packages/eccube.yaml';
@@ -116,9 +111,9 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
         $this->client->request(
             'POST',
             $this->generateUrl('admin_setting_system_security'),
-            array(
+            [
                 'admin_security' => $formData,
-            )
+            ]
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirection());
@@ -154,13 +149,12 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
 
         $formData['admin_route_dir'] = $config['parameters']['eccube_admin_route'];
 
-
         $this->client->request(
             'POST',
             $this->generateUrl('admin_setting_system_security'),
-            array(
+            [
                 'admin_security' => $formData,
-            )
+            ]
         );
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -171,16 +165,17 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
 
     /**
      * Submit form
+     *
      * @return array
      */
     public function createFormData()
     {
-        $formData = array(
+        $formData = [
             '_token' => 'dummy',
             'admin_route_dir' => 'admintest',
             'admin_allow_hosts' => $this->ipTest,
             'force_ssl' => 1,
-        );
+        ];
 
         return $formData;
     }

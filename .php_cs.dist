@@ -1,0 +1,23 @@
+<?php
+
+$rules = [
+    '@Symfony' => true,
+    'array_syntax' => ['syntax' => 'short'],
+    'phpdoc_align' => false,
+    'phpdoc_summary' => false,
+    'phpdoc_scalar' => false,
+    'phpdoc_annotation_without_dot' => false,
+    'increment_style' => false,
+    'yoda_style' => false,
+];
+
+$finder = PhpCsFixer\Finder::create()
+    ->in(__DIR__.'/src')
+    ->in(__DIR__.'/tests')
+    ->in(__DIR__.'/app')
+    ->name('*.php')
+;
+return PhpCsFixer\Config::create()
+    ->setRules($rules)
+    ->setFinder($finder)
+    ;

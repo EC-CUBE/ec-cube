@@ -2,8 +2,6 @@
 
 namespace Eccube\Log\Processor;
 
-use Eccube\Entity\Customer;
-use Eccube\Entity\Member;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class TokenProcessor

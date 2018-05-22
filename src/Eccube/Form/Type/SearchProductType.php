@@ -21,11 +21,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type;
 
 use Eccube\Annotation\FormType;
-use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Form\Type\Master\ProductListMaxType;
 use Eccube\Form\Type\Master\ProductListOrderByType;
@@ -52,8 +50,7 @@ class SearchProductType extends AbstractType
      *
      * @param Application $app
      */
-
-    public function __construct( CategoryRepository $categoryRepository)
+    public function __construct(CategoryRepository $categoryRepository)
     {
         $this->categoryRepository = $categoryRepository;
     }
@@ -66,31 +63,31 @@ class SearchProductType extends AbstractType
         $Categories = $this->categoryRepository
             ->getList(null, true);
 
-        $builder->add('mode', HiddenType::class, array(
+        $builder->add('mode', HiddenType::class, [
             'data' => 'search',
-        ));
-        $builder->add('category_id', EntityType::class, array(
+        ]);
+        $builder->add('category_id', EntityType::class, [
             'class' => 'Eccube\Entity\Category',
             'choice_label' => 'NameWithLevel',
             'choices' => $Categories,
             'placeholder' => 'searchproduct.placeholder.all_products',
             'required' => false,
             'label' => 'searchproduct.label.select_categories',
-        ));
-        $builder->add('name', SearchType::class, array(
+        ]);
+        $builder->add('name', SearchType::class, [
             'required' => false,
             'label' => 'searchproduct.label.product_name',
-            'attr' => array(
+            'attr' => [
                 'maxlength' => 50,
-            ),
-        ));
-        $builder->add('pageno', HiddenType::class, array());
-        $builder->add('disp_number', ProductListMaxType::class, array(
+            ],
+        ]);
+        $builder->add('pageno', HiddenType::class, []);
+        $builder->add('disp_number', ProductListMaxType::class, [
             'label' => 'searchproduct.label.number_results',
-        ));
-        $builder->add('orderby', ProductListOrderByType::class, array(
+        ]);
+        $builder->add('orderby', ProductListOrderByType::class, [
             'label' => 'searchproduct.label.sort_by',
-        ));
+        ]);
     }
 
     /**
@@ -98,10 +95,10 @@ class SearchProductType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'csrf_protection' => false,
             'allow_extra_fields' => true,
-        ));
+        ]);
     }
 
     /**

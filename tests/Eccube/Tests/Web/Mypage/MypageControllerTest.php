@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Web\Mypage;
 
 use Eccube\Entity\Customer;
@@ -64,7 +63,7 @@ class MypageControllerTest extends AbstractWebTestCase
         // main
         $redirectUrl = $this->generateUrl('mypage_favorite');
         $this->client->request('DELETE',
-            $this->generateUrl('mypage_favorite_delete', array('id' => $TestFavorite->getId()))
+            $this->generateUrl('mypage_favorite_delete', ['id' => $TestFavorite->getId()])
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
@@ -72,7 +71,6 @@ class MypageControllerTest extends AbstractWebTestCase
         $this->entityManager->remove($TestFavorite);
         $this->entityManager->flush();
     }
-
 
     public function testRoutingOrder()
     {
@@ -84,7 +82,7 @@ class MypageControllerTest extends AbstractWebTestCase
         $Order = $this->createOrder($this->Customer);
 
         $client->request('PUT',
-            $this->generateUrl('mypage_order', array('id' => $Order->getId()))
+            $this->generateUrl('mypage_order', ['id' => $Order->getId()])
         );
 
         $this->assertTrue($client->getResponse()->isRedirection());
@@ -128,14 +126,14 @@ class MypageControllerTest extends AbstractWebTestCase
         $Product = $this->createProduct();
         $ProductClasses = $Product->getProductClasses();
         // 後方互換のため最初の1つのみ渡す
-        $Order = $this->container->get(Generator::class)->createOrder($this->Customer, array($ProductClasses[0]), null,
+        $Order = $this->container->get(Generator::class)->createOrder($this->Customer, [$ProductClasses[0]], null,
             0, 0, OrderStatus::NEW);
         $this->loginTo($this->Customer);
         $client = $this->client;
 
         $crawler = $client->request(
             'GET',
-            $this->generateUrl('mypage_history', array('id' => $Order->getId()))
+            $this->generateUrl('mypage_history', ['id' => $Order->getId()])
         );
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
@@ -145,13 +143,13 @@ class MypageControllerTest extends AbstractWebTestCase
         $Product = $this->createProduct();
         $ProductClasses = $Product->getProductClasses();
         // 後方互換のため最初の1つのみ渡す
-        $Order = $this->container->get(Generator::class)->createOrder($this->Customer, array($ProductClasses[0]), null,
+        $Order = $this->container->get(Generator::class)->createOrder($this->Customer, [$ProductClasses[0]], null,
             0, 0, OrderStatus::PROCESSING);
         $this->loginTo($this->Customer);
 
         $crawler = $this->client->request(
             'GET',
-            $this->generateUrl('mypage_history', array('id' => $Order->getId()))
+            $this->generateUrl('mypage_history', ['id' => $Order->getId()])
         );
 
         $this->expected = 404;
@@ -165,7 +163,7 @@ class MypageControllerTest extends AbstractWebTestCase
 
         $crawler = $this->client->request(
             'GET',
-            $this->generateUrl('mypage_history', array('id' => 999999999))
+            $this->generateUrl('mypage_history', ['id' => 999999999])
         );
 
         $this->expected = 404;
@@ -180,7 +178,7 @@ class MypageControllerTest extends AbstractWebTestCase
      */
     public function testFavoriteWithPaginator()
     {
-        $expectedIds = array();
+        $expectedIds = [];
         for ($i = 0; $i < 30; $i++) {
             $Product = $this->createProduct();
             $expectedIds[] = $Product->getId();
@@ -194,7 +192,7 @@ class MypageControllerTest extends AbstractWebTestCase
 
             // id とは 逆順に create_date を設定する.
             // 画面表示は create_date 降順なので, id 昇順にソートされるはず
-            $CustomerFavoriteProduct->setCreateDate(new \DateTime('-' . $i . ' days'));
+            $CustomerFavoriteProduct->setCreateDate(new \DateTime('-'.$i.' days'));
             $this->entityManager->flush();
         }
 
@@ -204,7 +202,7 @@ class MypageControllerTest extends AbstractWebTestCase
             $this->generateUrl('mypage_favorite')
         );
         // 最初の画面で表示されているお気に入りの ID を取得する
-        $actualIds = array();
+        $actualIds = [];
         $nodes = $crawler->filterXPath('//div[@class="product_item"]/a[1]');
         foreach ($nodes as $node) {
             $href = $node->getAttribute('href');
@@ -230,5 +228,4 @@ class MypageControllerTest extends AbstractWebTestCase
 
         return $CustomerFavoriteProduct;
     }
-
 }

@@ -139,6 +139,7 @@ class CartServiceTest extends AbstractServiceTestCase
         $this->cartService->addProduct(1);
         $quantity = $this->cartService->getCart()->getItems()->reduce(function ($q, $item) {
             $q += $item->getQuantity();
+
             return $q;
         });
         $this->assertEquals(1, $quantity);
@@ -148,6 +149,7 @@ class CartServiceTest extends AbstractServiceTestCase
         $this->cartService->addProduct(10, 6);
         $quantity = $this->cartService->getCart()->getItems()->reduce(function ($q, $item) {
             $q += $item->getQuantity();
+
             return $q;
         });
         // 明細の丸め処理はpurchaseFlowで実行されるため、販売制限数を超えてもカートには入る
@@ -159,6 +161,7 @@ class CartServiceTest extends AbstractServiceTestCase
         $this->cartService->addProduct(10, 6);
         $quantity = $this->cartService->getCart()->getItems()->reduce(function ($q, $item) {
             $q += $item->getQuantity();
+
             return $q;
         });
         // 明細の丸め処理はpurchaseFlowで実行されるため、販売制限数を超えてもカートには入る
@@ -170,28 +173,24 @@ class CartServiceTest extends AbstractServiceTestCase
         // 同じ商品規格で同じ数量なら同じ明細とみなすようにする
         $this->cartService->setCartItemComparator(new CartServiceTest_CartItemComparator());
 
-        {
-            $this->cartService->addProduct(1, 1);
-            $this->cartService->addProduct(1, 1);
+        $this->cartService->addProduct(1, 1);
+        $this->cartService->addProduct(1, 1);
 
-            /* @var \Eccube\Entity\CartItem[] $CartItems */
-            $CartItems = $this->cartService->getCart()->getCartItems();
-            self::assertEquals(1, count($CartItems));
-            self::assertEquals(1, $CartItems[0]->getProductClassId());
-            self::assertEquals(2, $CartItems[0]->getQuantity());
-        }
+        /* @var \Eccube\Entity\CartItem[] $CartItems */
+        $CartItems = $this->cartService->getCart()->getCartItems();
+        self::assertEquals(1, count($CartItems));
+        self::assertEquals(1, $CartItems[0]->getProductClassId());
+        self::assertEquals(2, $CartItems[0]->getQuantity());
 
-        {
-            $this->cartService->addProduct(1, 1);
+        $this->cartService->addProduct(1, 1);
 
-            /* @var \Eccube\Entity\CartItem[] $CartItems */
-            $CartItems = $this->cartService->getCart()->getCartItems();
-            self::assertEquals(2, count($CartItems));
-            self::assertEquals(1, $CartItems[0]->getProductClassId());
-            self::assertEquals(2, $CartItems[0]->getQuantity());
-            self::assertEquals(1, $CartItems[1]->getProductClassId());
-            self::assertEquals(1, $CartItems[1]->getQuantity());
-        }
+        /* @var \Eccube\Entity\CartItem[] $CartItems */
+        $CartItems = $this->cartService->getCart()->getCartItems();
+        self::assertEquals(2, count($CartItems));
+        self::assertEquals(1, $CartItems[0]->getProductClassId());
+        self::assertEquals(2, $CartItems[0]->getQuantity());
+        self::assertEquals(1, $CartItems[1]->getProductClassId());
+        self::assertEquals(1, $CartItems[1]->getQuantity());
     }
 
     public function testUpProductQuantity()
@@ -200,8 +199,9 @@ class CartServiceTest extends AbstractServiceTestCase
         $this->cartService->addProduct(10, 1);
         $this->cartService->addProduct(10, 1);
 
-        $quantity = $this->cartService->getCart()->getItems()->reduce(function($q, $item) {
+        $quantity = $this->cartService->getCart()->getItems()->reduce(function ($q, $item) {
             $q += $item->getQuantity();
+
             return $q;
         });
         $this->assertEquals(2, $quantity);
@@ -213,8 +213,9 @@ class CartServiceTest extends AbstractServiceTestCase
         $this->cartService->addProduct(10, 2);
         $this->cartService->addProduct(10, -1);
 
-        $quantity = $this->cartService->getCart()->getItems()->reduce(function($q, $item) {
+        $quantity = $this->cartService->getCart()->getItems()->reduce(function ($q, $item) {
             $q += $item->getQuantity();
+
             return $q;
         });
         $this->assertEquals(1, $quantity);
@@ -249,6 +250,7 @@ class CartServiceTest_CartItemComparator implements CartItemComparator
     /**
      * @param CartItem $item1 明細1
      * @param CartItem $item2 明細2
+     *
      * @return boolean 同じ明細になる場合はtrue
      */
     public function compare(CartItem $item1, CartItem $item2)

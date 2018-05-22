@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -39,16 +38,16 @@ use Doctrine\ORM\Mapping as ORM;
 class Product extends \Eccube\Entity\AbstractEntity
 {
     private $_calc = false;
-    private $stockFinds = array();
-    private $stocks = array();
-    private $stockUnlimiteds = array();
-    private $price01 = array();
-    private $price02 = array();
-    private $price01IncTaxs = array();
-    private $price02IncTaxs = array();
-    private $codes = array();
-    private $classCategories1 = array();
-    private $classCategories2 = array();
+    private $stockFinds = [];
+    private $stocks = [];
+    private $stockUnlimiteds = [];
+    private $price01 = [];
+    private $price02 = [];
+    private $price01IncTaxs = [];
+    private $price02IncTaxs = [];
+    private $codes = [];
+    private $classCategories1 = [];
+    private $classCategories2 = [];
     private $className1;
     private $className2;
 
@@ -172,6 +171,7 @@ class Product extends \Eccube\Entity\AbstractEntity
 
         return $this->classCategories1;
     }
+
     public function getClassCategories1AsFlip()
     {
         return array_flip($this->getClassCategories1());
@@ -186,8 +186,9 @@ class Product extends \Eccube\Entity\AbstractEntity
     {
         $this->_calc();
 
-        return isset($this->classCategories2[$class_category1]) ? $this->classCategories2[$class_category1] : array();
+        return isset($this->classCategories2[$class_category1]) ? $this->classCategories2[$class_category1] : [];
     }
+
     public function getClassCategories2AsFlip($class_category1)
     {
         return array_flip($this->getClassCategories2($class_category1));
@@ -366,12 +367,13 @@ class Product extends \Eccube\Entity\AbstractEntity
     {
         $this->_calc();
 
-        $codes = array();
+        $codes = [];
         foreach ($this->codes as $code) {
             if (!is_null($code)) {
                 $codes[] = $code;
             }
         }
+
         return count($codes) ? min($codes) : null;
     }
 
@@ -384,18 +386,20 @@ class Product extends \Eccube\Entity\AbstractEntity
     {
         $this->_calc();
 
-        $codes = array();
+        $codes = [];
         foreach ($this->codes as $code) {
             if (!is_null($code)) {
                 $codes[] = $code;
             }
         }
+
         return count($codes) ? max($codes) : null;
     }
 
     public function getMainListImage()
     {
         $ProductImages = $this->getProductImage();
+
         return empty($ProductImages) ? null : $ProductImages[0];
     }
 
@@ -418,6 +422,7 @@ class Product extends \Eccube\Entity\AbstractEntity
                 return true;
             }
         }
+
         return false;
     }
 
@@ -955,13 +960,13 @@ class Product extends \Eccube\Entity\AbstractEntity
      */
     public function getTags()
     {
-        $tags = array();
+        $tags = [];
 
         foreach ($this->getProductTag() as $productTag) {
             $tags[] = $productTag->getTag();
         }
 
-        usort($tags, function(Tag $tag1, Tag $tag2) {
+        usort($tags, function (Tag $tag1, Tag $tag2) {
             return $tag1->getSortNo() < $tag2->getSortNo();
         });
 

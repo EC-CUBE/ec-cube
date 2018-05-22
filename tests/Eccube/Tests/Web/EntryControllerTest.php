@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Web;
 
 use Eccube\Common\Constant;
@@ -45,53 +44,54 @@ class EntryControllerTest extends AbstractWebTestCase
         $password = $faker->lexify('????????');
         $birth = $faker->dateTimeBetween;
 
-        $form = array(
-            'name' => array(
+        $form = [
+            'name' => [
                 'name01' => $faker->lastName,
                 'name02' => $faker->firstName,
-            ),
-            'kana' => array(
-                'kana01' => $faker->lastKanaName ,
+            ],
+            'kana' => [
+                'kana01' => $faker->lastKanaName,
                 'kana02' => $faker->firstKanaName,
-            ),
+            ],
             'company_name' => $faker->company,
-            'zip' => array(
+            'zip' => [
                 'zip01' => $faker->postcode1(),
                 'zip02' => $faker->postcode2(),
-            ),
-            'address' => array(
+            ],
+            'address' => [
                 'pref' => '5',
                 'addr01' => $faker->city,
                 'addr02' => $faker->streetAddress,
-            ),
-            'tel' => array(
+            ],
+            'tel' => [
                 'tel01' => $tel[0],
                 'tel02' => $tel[1],
                 'tel03' => $tel[2],
-            ),
-            'fax' => array(
+            ],
+            'fax' => [
                 'fax01' => $tel[0],
                 'fax02' => $tel[1],
                 'fax03' => $tel[2],
-            ),
-            'email' => array(
+            ],
+            'email' => [
                 'first' => $email,
                 'second' => $email,
-            ),
-            'password' => array(
+            ],
+            'password' => [
                 'first' => $password,
                 'second' => $password,
-            ),
-            'birth' => array(
+            ],
+            'birth' => [
                 'year' => $birth->format('Y'),
                 'month' => $birth->format('n'),
                 'day' => $birth->format('j'),
-            ),
+            ],
             'sex' => 1,
             'job' => 1,
             'point' => 1,
-            Constant::TOKEN_NAME => 'dummy'
-        );
+            Constant::TOKEN_NAME => 'dummy',
+        ];
+
         return $form;
     }
 
@@ -111,10 +111,10 @@ class EntryControllerTest extends AbstractWebTestCase
     {
         $crawler = $this->client->request('POST',
             $this->generateUrl('entry'),
-            array(
+            [
                 'entry' => $this->createFormData(),
                 'mode' => 'confirm',
-            )
+            ]
         );
 
         $this->expected = '新規会員登録確認';
@@ -128,12 +128,12 @@ class EntryControllerTest extends AbstractWebTestCase
     {
         $crawler = $this->client->request('POST',
             $this->generateUrl('entry'),
-            array(
-                'entry' => array(
-                    Constant::TOKEN_NAME => 'dummy'
-                ),
-                'mode' => 'confirm'
-            )
+            [
+                'entry' => [
+                    Constant::TOKEN_NAME => 'dummy',
+                ],
+                'mode' => 'confirm',
+            ]
         );
 
         $this->expected = '新規会員登録';
@@ -149,10 +149,10 @@ class EntryControllerTest extends AbstractWebTestCase
 
         $crawler = $client->request('POST',
             $this->generateUrl('entry'),
-            array(
+            [
                 'entry' => $this->createFormData(),
-                'mode' => 'aaaaa'
-            )
+                'mode' => 'aaaaa',
+            ]
         );
 
         $this->expected = '新規会員登録';
@@ -171,10 +171,10 @@ class EntryControllerTest extends AbstractWebTestCase
         $client = $this->client;
         $crawler = $client->request('POST',
             $this->generateUrl('entry'),
-            array(
+            [
                 'entry' => $this->createFormData(),
-                'mode' => 'complete'
-            )
+                'mode' => 'complete',
+            ]
         );
 
         $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('entry_complete')));
@@ -183,7 +183,7 @@ class EntryControllerTest extends AbstractWebTestCase
         /** @var \Swift_Message $Message */
         $Message = $collectedMessages[0];
 
-        $this->expected = '[' . $BaseInfo->getShopName() . '] 会員登録のご確認';
+        $this->expected = '['.$BaseInfo->getShopName().'] 会員登録のご確認';
         $this->actual = $Message->getSubject();
         $this->verify();
     }
@@ -206,20 +206,20 @@ class EntryControllerTest extends AbstractWebTestCase
         $this->entityManager->flush();
 
         $client = $this->client;
-        $client->request('GET', $this->generateUrl('entry_activate', array('secret_key' => $secret_key)));
+        $client->request('GET', $this->generateUrl('entry_activate', ['secret_key' => $secret_key]));
 
         $this->assertTrue($client->getResponse()->isSuccessful());
         $collectedMessages = $this->getMailCollector(false)->getMessages();
         /** @var \Swift_Message $Message */
         $Message = $collectedMessages[0];
-        $this->expected = '[' . $BaseInfo->getShopName() . '] 会員登録が完了しました。';
+        $this->expected = '['.$BaseInfo->getShopName().'] 会員登録が完了しました。';
         $this->actual = $Message->getSubject();
         $this->verify();
     }
 
     public function testActivateWithNotFound()
     {
-        $this->client->request('GET', $this->generateUrl('entry_activate', array('secret_key' => 'aaaaa')));
+        $this->client->request('GET', $this->generateUrl('entry_activate', ['secret_key' => 'aaaaa']));
         $this->expected = 404;
         $this->actual = $this->client->getResponse()->getStatusCode();
         $this->verify();
@@ -227,7 +227,7 @@ class EntryControllerTest extends AbstractWebTestCase
 
     public function testActivateWithAbort()
     {
-        $this->client->request('GET', $this->generateUrl('entry_activate', array('secret_key' => '+++++++')));
+        $this->client->request('GET', $this->generateUrl('entry_activate', ['secret_key' => '+++++++']));
         $this->expected = 403;
         $this->actual = $this->client->getResponse()->getStatusCode();
         $this->verify();

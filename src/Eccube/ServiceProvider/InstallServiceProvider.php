@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\ServiceProvider;
 
 use Pimple\Container;
@@ -29,8 +28,7 @@ use Pimple\ServiceProviderInterface;
 use Silex\Api\BootableProviderInterface;
 use Silex\Application;
 
-
-class InstallServiceProvider  implements ServiceProviderInterface, BootableProviderInterface
+class InstallServiceProvider implements ServiceProviderInterface, BootableProviderInterface
 {
     /**
      * Registers services on the given app.
