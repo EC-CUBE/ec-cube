@@ -178,7 +178,7 @@ class EA08SysteminfoCest
         $I->see('入力されていません。', '#form1 div:nth-child(1) div');
     }
 
-    public function systeminfo_メンバー管理登録下へ(\AcceptanceTester $I)
+    public function systeminfo_m1(\AcceptanceTester $I)
     {
         $I->wantTo('EA0802-UC01-T02 メンバー管理 - 下へ');
 
@@ -189,10 +189,12 @@ class EA08SysteminfoCest
 
         $I->click('#search_result tbody tr:nth-child(1) .action-down');
 
+        $I->waitForElementNotVisible(['css' => '.modal-backdrop']);
+
         $I->see('管理者', '#search_result tbody tr:nth-child(1) td:nth-child(1)');
     }
 
-    public function systeminfo_メンバー管理登録上へ(\AcceptanceTester $I)
+    public function systeminfo_m2(\AcceptanceTester $I)
     {
         $I->wantTo('EA0802-UC01-T03 メンバー管理 - 上へ');
 
@@ -202,6 +204,8 @@ class EA08SysteminfoCest
         $I->see('システム設定メンバー管理', '.c-pageTitle');
 
         $I->click('#search_result tbody tr:nth-child(2) .action-up');
+
+        $I->waitForElementNotVisible(['css' => '.modal-backdrop']);
 
         $I->see('管理者', '#search_result tbody tr:nth-child(2) td:nth-child(1)');
     }
