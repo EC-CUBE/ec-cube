@@ -876,7 +876,7 @@ class ProductController extends AbstractController
     /**
      * 商品CSVの出力.
      *
-     * @Route("export", name="admin_product_export")
+     * @Route("/%eccube_admin_route%/export", name="admin_product_export")
      *
      * @param Request $request
      *
