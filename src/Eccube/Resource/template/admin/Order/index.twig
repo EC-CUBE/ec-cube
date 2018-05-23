@@ -132,7 +132,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         {{ form_widget(searchForm._token) }}
                         <div>
                             <label class="col-form-label">{{ 'admin.order.index.297'|trans }}</label>
-                            {{ form_widget(searchForm.multi,  {attr: { class : 'input_search' }}) }}
+                            {{ form_widget(searchForm.multi) }}
                             {{ form_errors(searchForm.multi) }}
                         </div>
                         <div class="form-row">
