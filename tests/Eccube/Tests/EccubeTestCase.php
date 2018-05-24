@@ -1,10 +1,22 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Eccube\Tests;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Customer;
+use Eccube\Entity\ProductClass;
 use Eccube\Tests\Fixture\Generator;
 use Faker\Factory as Faker;
 use GuzzleHttp\Client as HttpClient;
@@ -172,6 +184,19 @@ abstract class EccubeTestCase extends WebTestCase
 
         // 後方互換のため最初の1つのみ渡す
         return $this->container->get(Generator::class)->createOrder($Customer, [$ProductClasses[0]]);
+    }
+
+    /**
+     * Order オブジェクトを生成して返す.
+     *
+     * @param \Eccube\Entity\Customer $Customer Customer インスタンス
+     * @param ProductClass[] $ProductClasses
+     *
+     * @return \Eccube\Entity\Order
+     */
+    public function createOrderWithProductClasses(Customer $Customer, array $ProductClasses)
+    {
+        return $this->container->get(Generator::class)->createOrder($Customer, $ProductClasses);
     }
 
     /**

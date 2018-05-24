@@ -1,5 +1,16 @@
 <?php
 
+$header = <<<EOL
+This file is part of EC-CUBE
+
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+EOL;
+
 $rules = [
     '@Symfony' => true,
     'array_syntax' => ['syntax' => 'short'],
@@ -9,6 +20,7 @@ $rules = [
     'phpdoc_annotation_without_dot' => false,
     'increment_style' => false,
     'yoda_style' => false,
+    'header_comment' => ['header' => $header],
 ];
 
 $finder = PhpCsFixer\Finder::create()
