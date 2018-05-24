@@ -190,8 +190,8 @@ abstract class EccubeTestCase extends WebTestCase
      * Order オブジェクトを生成して返す.
      *
      * @param \Eccube\Entity\Customer $Customer Customer インスタンス
-     *
      * @param ProductClass[] $ProductClasses
+     *
      * @return \Eccube\Entity\Order
      */
     public function createOrderWithProductClasses(Customer $Customer, array $ProductClasses)

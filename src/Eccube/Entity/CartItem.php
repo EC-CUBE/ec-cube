@@ -23,6 +23,7 @@ class CartItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
 
     /**
      * sessionのシリアライズのために使われる
+     *
      * @var int
      */
     private $product_class_id;

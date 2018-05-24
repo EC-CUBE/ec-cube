@@ -144,8 +144,7 @@ class OrderHelper
         ShippingStatusRepository $shippingStatusRepository,
         EntityManagerInterface $entityManager,
         EccubeConfig $eccubeConfig
-    )
-    {
+    ) {
         $this->orderItemTypeRepository = $orderItemTypeRepository;
         $this->orderStatusRepository = $orderStatusRepository;
         $this->taxRuleRepository = $taxRuleRepository;
@@ -207,6 +206,7 @@ class OrderHelper
      * OrderをCartに変換します.
      *
      * @param Order $Order
+     *
      * @return Cart
      */
     public function convertToCart(Order $Order)
@@ -221,6 +221,7 @@ class OrderHelper
             $CartItem->setQuantity($OrderItem->getQuantity());
             $Cart->addCartItem($CartItem);
         }
+
         return $Cart;
     }
 
