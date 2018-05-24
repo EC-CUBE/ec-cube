@@ -13,8 +13,6 @@
 
 namespace Eccube\Form\Type;
 
-use Eccube\Annotation\FormType;
-use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Form\Type\Master\CustomerStatusType;
 use Eccube\Form\Type\Master\JobType;
@@ -31,21 +29,15 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 // deprecated 3.1で削除予定
-/**
- * @FormType
- */
 class CustomerType extends AbstractType
 {
     /**
-     * @Inject("config")
-     *
      * @var array
      */
     protected $eccubeConfig;
 
     /**
      * @var \Eccube\Application
-     * @Inject(Application::class)
      */
     protected $app;
 

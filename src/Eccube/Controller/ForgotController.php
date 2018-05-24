@@ -27,9 +27,6 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/**
- * @Route(service=ForgotController::class)
- */
 class ForgotController extends AbstractController
 {
     /**

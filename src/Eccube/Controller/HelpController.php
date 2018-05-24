@@ -16,9 +16,6 @@ namespace Eccube\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-/**
- * @Route(service=HelpController::class)
- */
 class HelpController extends AbstractController
 {
     /**

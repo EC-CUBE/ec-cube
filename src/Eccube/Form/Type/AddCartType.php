@@ -15,8 +15,6 @@ namespace Eccube\Form\Type;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\FormType;
-use Eccube\Annotation\Inject;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\ProductClass;
 use Eccube\Form\DataTransformer\EntityToIdTransformer;
@@ -34,20 +32,15 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContext;
 
-/**
- * @FormType
- */
 class AddCartType extends AbstractType
 {
     /**
      * @var array
-     * @Inject("config")
      */
     protected $config;
 
     /**
      * @var EntityManager
-     * @Inject("orm.em")
      */
     protected $em;
 
@@ -58,7 +51,6 @@ class AddCartType extends AbstractType
 
     /**
      * @var ProductClassRepository
-     * @Inject(ProductClassRepository::class)
      */
     protected $productClassRepository;
 

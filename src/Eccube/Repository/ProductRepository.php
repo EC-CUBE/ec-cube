@@ -34,8 +34,6 @@ class ProductRepository extends AbstractRepository
     protected $queries;
 
     /**
-     * @Inject("config")
-     *
      * @var EccubeConfig
      */
     protected $eccubeConfig;

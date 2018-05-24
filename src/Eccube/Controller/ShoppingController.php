@@ -41,9 +41,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-/**
- * @Route(service=ShoppingController::class)
- */
 class ShoppingController extends AbstractShoppingController
 {
     /**

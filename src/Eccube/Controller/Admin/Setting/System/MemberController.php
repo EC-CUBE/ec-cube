@@ -26,9 +26,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-/**
- * @Route(service=MemberController::class)
- */
 class MemberController extends AbstractController
 {
     /**

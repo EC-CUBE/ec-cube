@@ -13,22 +13,15 @@
 
 namespace Eccube\Form\Type;
 
-use Eccube\Annotation\FormType;
-use Eccube\Annotation\Inject;
 use Eccube\Repository\ShippingRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvents;
 
-/**
- * @FormType
- */
 class ShippingMultipleType extends AbstractType
 {
     /**
-     * @Inject(ShippingRepository::class)
-     *
      * @var ShippingRepository
      */
     protected $shippingRepository;

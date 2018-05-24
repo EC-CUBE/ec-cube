@@ -25,9 +25,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-/**
- * @Route(service=WithdrawController::class)
- */
 class WithdrawController extends AbstractController
 {
     /**

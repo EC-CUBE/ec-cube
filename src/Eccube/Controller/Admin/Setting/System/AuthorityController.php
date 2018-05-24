@@ -23,9 +23,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @Route(service=AuthorityController::class)
- */
 class AuthorityController extends AbstractController
 {
     /**

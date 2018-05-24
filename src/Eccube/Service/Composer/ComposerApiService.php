@@ -14,7 +14,6 @@
 namespace Eccube\Service\Composer;
 
 use Composer\Console\Application;
-use Eccube\Annotation\Service;
 use Eccube\Common\EccubeConfig;
 use Eccube\Exception\PluginException;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -22,8 +21,6 @@ use Symfony\Component\Console\Output\BufferedOutput;
 
 /**
  * Class ComposerApiService
- *
- * @Service
  */
 class ComposerApiService implements ComposerServiceInterface
 {

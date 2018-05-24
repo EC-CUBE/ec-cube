@@ -21,9 +21,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @Route(service=LogController::class)
- */
 class LogController extends AbstractController
 {
     /**

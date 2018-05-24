@@ -14,7 +14,6 @@
 namespace Eccube\Controller;
 
 use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Master\OrderItemType;
@@ -35,50 +34,36 @@ use Symfony\Component\HttpFoundation\Session\Session;
 class ShippingMultipleController extends AbstractShoppingController
 {
     /**
-     * @Inject(PrefRepository::class)
-     *
      * @var PrefRepository
      */
     protected $prefRepository;
 
     /**
-     * @Inject("session")
-     *
      * @var Session
      */
     protected $session;
 
     /**
-     * @Inject(OrderItemTypeRepository::class)
-     *
      * @var OrderItemTypeRepository
      */
     protected $orderItemTypeRepository;
 
     /**
-     * @Inject("orm.em")
-     *
      * @var EntityManager
      */
     protected $entityManager;
 
     /**
-     * @Inject("eccube.event.dispatcher")
-     *
      * @var EventDispatcher
      */
     protected $eventDispatcher;
 
     /**
-     * @Inject("config")
-     *
      * @var array
      */
     protected $eccubeConfig;
 
     /**
-     * @Inject(ShoppingService::class)
-     *
      * @var ShoppingService
      */
     protected $shoppingService;

@@ -41,8 +41,6 @@ class MailController extends AbstractController
     protected $mailHistoryRepository;
 
     /**
-     * @Inject(OrderRepository::class)
-     *
      * @var OrderRepository
      */
     protected $orderRepository;
