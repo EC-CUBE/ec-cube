@@ -218,7 +218,7 @@ class OrderHelper
         return $preOrderId;
     }
 
-    public function setCustomer(Order $Order, Customer $Customer)
+    private function setCustomer(Order $Order, Customer $Customer)
     {
         if ($Customer->getId()) {
             $Order->setCustomer($Customer);
