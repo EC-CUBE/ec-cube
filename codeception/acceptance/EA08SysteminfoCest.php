@@ -343,7 +343,7 @@ class EA08SysteminfoCest
         $I->dontSeeElement(['css' => '#main .container-fluid .box table tbody tr:nth-child(2)']);
     }
 
-    public function systeminfo_m1(\AcceptanceTester $I)
+    public function systeminfo_マスターデータ管理(\AcceptanceTester $I)
     {
         $I->wantTo('EA0807-UC01-T01 マスターデータ管理');
 
