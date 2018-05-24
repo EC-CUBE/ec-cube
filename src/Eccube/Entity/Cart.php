@@ -63,6 +63,7 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
 
     /**
      * @return bool
+     * @deprecated 使用しないので削除予定
      */
     public function getLock()
     {
@@ -73,6 +74,7 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
      * @param  bool                $lock
      *
      * @return \Eccube\Entity\Cart
+     * @deprecated 使用しないので削除予定
      */
     public function setLock($lock)
     {
