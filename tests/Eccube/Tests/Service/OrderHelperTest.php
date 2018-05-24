@@ -55,11 +55,15 @@ class OrderHelperTest extends EccubeTestCase
 
         /** @var OrderItem $OrderItem */
         $OrderItem = $Order->getOrderItems()->get(0);
-        $OrderItem->setQuantity(3);
 
         $actual = $this->helper->convertToCart($Order);
 
         $CartItems = $actual->getCartItems();
         self::assertCount(1, $CartItems);
+
+        $CartItem = $CartItems[0];
+        self::assertEquals($OrderItem->getProductClass(), $CartItem->getProductClass());
+        self::assertEquals($OrderItem->getPriceIncTax(), $CartItem->getPrice());
+        self::assertEquals($OrderItem->getQuantity(), $CartItem->getQuantity());
     }
 }
