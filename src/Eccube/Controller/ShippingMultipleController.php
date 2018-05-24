@@ -68,7 +68,7 @@ class ShippingMultipleController extends AbstractShoppingController
     /**
      * 複数配送処理
      *
-     * @Route("/shopping/shipping_multiple_change", name="shopping_shipping_multiple_change")
+     * @Route("/shopping/shipping_multiple", name="shopping_shipping_multiple")
      * @Template("Shopping/shipping_multiple.twig")
      */
     public function index(Request $request)
@@ -238,10 +238,11 @@ class ShippingMultipleController extends AbstractShoppingController
 
             // お届け先に、配送商品の情報(OrderItem)を関連付ける
             foreach ($data as $mulitples) {
+                /** @var OrderItem $OrderItem */
                 $OrderItem = $mulitples->getData();
                 $ProductClass = $OrderItem->getProductClass();
                 $Product = $OrderItem->getProduct();
-                $saleTypeId = $ProductClass->getProductType()->getId();
+                $saleTypeId = $ProductClass->getSaleType()->getId();
                 $productClassId = $ProductClass->getId();
 
                 foreach ($mulitples as $items) {
