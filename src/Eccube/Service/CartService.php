@@ -115,15 +115,11 @@ class CartService
     protected function loadItems()
     {
         foreach ($this->getCarts() as $Cart) {
-            if ($Cart->getPreOrderId()) {
-                // TODO OrderHelper::convertToCart() をコールする
-            } else {
-                /** @var CartItem $item */
-                foreach ($Cart->getItems() as $item) {
-                    /** @var ProductClass $ProductClass */
-                    $ProductClass = $this->productClassRepository->find($item->getProductClassId());
-                    $item->setProductClass($ProductClass);
-                }
+            /** @var CartItem $item */
+            foreach ($Cart->getItems() as $item) {
+                /** @var ProductClass $ProductClass */
+                $ProductClass = $this->productClassRepository->find($item->getProductClassId());
+                $item->setProductClass($ProductClass);
             }
         }
     }
