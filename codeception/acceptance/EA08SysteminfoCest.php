@@ -343,24 +343,24 @@ class EA08SysteminfoCest
         $I->dontSeeElement(['css' => '#main .container-fluid .box table tbody tr:nth-child(2)']);
     }
 
-    public function systeminfo_マスターデータ管理(\AcceptanceTester $I)
+    public function systeminfo_m1(\AcceptanceTester $I)
     {
         $I->wantTo('EA0807-UC01-T01 マスターデータ管理');
 
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/masterdata');
-        $I->see('システム設定マスターデータ管理', '#main .page-header');
+        $I->see('システム設定マスターデータ管理', '.c-pageTitle');
 
         $I->selectOption(['id' => 'admin_system_masterdata_masterdata'], ['Eccube-Entity-Master-Sex' => 'mtb_sex']);
         $I->click('#form1 button');
 
-        $I->fillField(['css' => '#form2 table tbody tr:nth-child(4) td:nth-child(1) input'], '3');
-        $I->fillField(['css' => '#form2 table tbody tr:nth-child(4) td:nth-child(2) input'], '無回答');
+        $I->fillField(['css' => '#form2 table tbody tr:nth-child(3) td:nth-child(1) input'], '3');
+        $I->fillField(['css' => '#form2 table tbody tr:nth-child(3) td:nth-child(2) input'], '無回答');
 
-        $I->click(['css' => '#form2 #aside_column button']);
+        $I->click(['css' => '#form2 .c-conversionArea .ladda-button']);
 
-        $I->see('登録が完了しました。', '#main .container-fluid div:nth-child(1) .alert-success');
+        $I->see('登録が完了しました。', '.c-contentsArea .alert-success');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/customer/new');
         $I->see('無回答', '#customer_form #admin_customer_sex');
     }
