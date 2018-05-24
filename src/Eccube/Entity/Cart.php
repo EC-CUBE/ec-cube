@@ -107,32 +107,6 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
     }
 
     /**
-     * @param  CartItem $AddCartItem
-     *
-     * @return \Eccube\Entity\Cart
-     *
-     * @deprecated CartService#addProductを使用
-     */
-    public function setCartItem(CartItem $AddCartItem)
-    {
-        $find = false;
-        foreach ($this->CartItems as $CartItem) {
-            if ($CartItem->getClassName() === $AddCartItem->getClassName() && $CartItem->getClassId() === $AddCartItem->getClassId()) {
-                $find = true;
-                $CartItem
-                    ->setPrice($AddCartItem->getPrice())
-                    ->setQuantity($AddCartItem->getQuantity());
-            }
-        }
-
-        if (!$find) {
-            $this->addCartItem($AddCartItem);
-        }
-
-        return $this;
-    }
-
-    /**
      * @param  CartItem            $CartItem
      *
      * @return \Eccube\Entity\Cart
@@ -161,26 +135,6 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
         }
 
         return null;
-    }
-
-    /**
-     * @param $class_name
-     * @param $class_id
-     *
-     * @return $this
-     *
-     * @deprecated CartService#removeProduct()を使用
-     */
-    public function removeCartItemByIdentifier($class_name, $class_id)
-    {
-        /* @var CartItem $CartItem */
-        foreach ($this->CartItems as $CartItem) {
-            if ($CartItem->getProductClassId() == $class_id) {
-                $this->CartItems->removeElement($CartItem);
-            }
-        }
-
-        return $this;
     }
 
     /**
