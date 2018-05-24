@@ -201,7 +201,7 @@ class OrderHelper
         return $Order;
     }
 
-    public function createPreOrderId()
+    private function createPreOrderId()
     {
         // ランダムなpre_order_idを作成
         do {
@@ -284,7 +284,7 @@ class OrderHelper
         }, $CartItems->toArray());
     }
 
-    public function createShippingFromCustomerAddress(CustomerAddress $CustomerAddress)
+    private function createShippingFromCustomerAddress(CustomerAddress $CustomerAddress)
     {
         $Shipping = new Shipping();
         $Shipping
@@ -312,17 +312,7 @@ class OrderHelper
         return $Shipping;
     }
 
-    /**
-     * @deprecated
-     */
-    public function addShipping(Order $Order, Shipping $Shipping)
-    {
-        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
-        $Order->addShipping($Shipping);
-        $Shipping->setOrder($Order);
-    }
-
-    public function setDefaultDelivery(Shipping $Shipping)
+    private function setDefaultDelivery(Shipping $Shipping)
     {
         // 配送商品に含まれる販売種別を抽出.
         $OrderItems = $Shipping->getOrderItems();
@@ -350,7 +340,7 @@ class OrderHelper
         }
     }
 
-    public function setDefaultPayment(Order $Order)
+    private function setDefaultPayment(Order $Order)
     {
         $OrderItems = $Order->getOrderItems();
 
@@ -383,7 +373,7 @@ class OrderHelper
         // $Order->setCharge($Payment->getCharge());
     }
 
-    public function addOrderItems(Order $Order, Shipping $Shipping, array $OrderItems)
+    private function addOrderItems(Order $Order, Shipping $Shipping, array $OrderItems)
     {
         foreach ($OrderItems as $OrderItem) {
             $Shipping->addOrderItem($OrderItem);
