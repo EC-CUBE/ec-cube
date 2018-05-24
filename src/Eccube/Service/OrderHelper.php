@@ -210,6 +210,7 @@ class OrderHelper
     public function convertToCart(Order $Order)
     {
         $Cart = new Cart();
+        $Cart->setPreOrderId($Order->getPreOrderId());
         /** @var OrderItem $OrderItem */
         foreach ($Order->getProductOrderItems() as $OrderItem) {
             $CartItem = new CartItem();
