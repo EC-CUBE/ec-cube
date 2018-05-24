@@ -204,6 +204,8 @@ class OrderHelper
     }
 
     /**
+     * OrderをCartに変換します.
+     *
      * @param Order $Order
      * @return Cart
      */
