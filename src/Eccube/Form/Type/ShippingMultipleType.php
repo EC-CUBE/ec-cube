@@ -26,11 +26,14 @@ class ShippingMultipleType extends AbstractType
      */
     protected $shippingRepository;
 
-    public $app;
-
-    public function __construct(\Eccube\Application $app)
+    /**
+     * ShippingMultipleType constructor.
+     *
+     * @param ShippingRepository $shippingRepository
+     */
+    public function __construct(ShippingRepository $shippingRepository)
     {
-        $this->app = $app;
+        $this->shippingRepository = $shippingRepository;
     }
 
     /**

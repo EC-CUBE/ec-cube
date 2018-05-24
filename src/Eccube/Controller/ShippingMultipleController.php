@@ -25,6 +25,8 @@ use Eccube\Form\Type\ShippingMultipleType;
 use Eccube\Repository\Master\OrderItemTypeRepository;
 use Eccube\Repository\Master\PrefRepository;
 use Eccube\Service\ShoppingService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -65,11 +67,14 @@ class ShippingMultipleController extends AbstractShoppingController
 
     /**
      * 複数配送処理
+     *
+     * @Route("/shopping/shipping_multiple_change", name="shopping_shipping_multiple_change")
+     * @Template("Shopping/shipping_multiple.twig")
      */
-    public function index(Application $app, Request $request)
+    public function index(Request $request)
     {
         // カートチェック
-        $response = $app->forward($app->path('shopping_check_to_cart'));
+        $response = $this->forwardToRoute('shopping_check_to_cart');
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
@@ -78,9 +83,9 @@ class ShippingMultipleController extends AbstractShoppingController
         $Order = $this->shoppingService->getOrder(OrderStatus::PROCESSING);
         if (!$Order) {
             log_info('購入処理中の受注情報がないため購入エラー');
-            $app->addError('front.shopping.order.error');
+            $this->addError('front.shopping.order.error');
 
-            return $app->redirect($app->url('shopping_error'));
+            return $this->redirectToRoute('shopping_error');
         }
 
         // 処理しやすいようにすべてのShippingItemをまとめる
@@ -115,7 +120,7 @@ class ShippingMultipleController extends AbstractShoppingController
         }
 
         // Form生成
-        $builder = $app->form();
+        $builder = $this->formFactory->createBuilder();
         $builder
             ->add('shipping_multiple', CollectionType::class, [
                 'entry_type' => ShippingMultipleType::class,
@@ -183,12 +188,12 @@ class ShippingMultipleController extends AbstractShoppingController
                         // 対象がなければエラー
                         log_info('複数配送設定入力チェックエラー', [$Order->getId()]);
 
-                        return $app->render('Shopping/shipping_multiple.twig', [
+                        return [
                             'form' => $form->createView(),
                             'OrderItems' => $OrderItemsForFormBuilder,
                             'compItemQuantities' => $ItemQuantitiesByClassId,
                             'errors' => $errors,
-                        ]);
+                        ];
                     }
                 }
             }
@@ -210,7 +215,7 @@ class ShippingMultipleController extends AbstractShoppingController
 
                 foreach ($mulitples as $items) {
                     foreach ($items as $item) {
-                        $CustomerAddress = $this->getCustomerAddress($app, $item['customer_address']->getData());
+                        $CustomerAddress = $this->getCustomerAddress($item['customer_address']->getData());
                         $cusAddId = $this->getCustomerAddressId($item['customer_address']->getData());
 
                         $Shipping = new Shipping();
@@ -294,9 +299,9 @@ class ShippingMultipleController extends AbstractShoppingController
             }
 
             // 合計金額の再計算
-            $flowResult = $this->executePurchaseFlow($app, $Order);
+            $flowResult = $this->executePurchaseFlow($Order);
             if ($flowResult->hasWarning() || $flowResult->hasError()) {
-                return $app->redirect($app->url('shopping_error'));
+                return $this->redirectToRoute('shopping_error');
             }
 
             // 配送先を更新
@@ -313,15 +318,15 @@ class ShippingMultipleController extends AbstractShoppingController
 
             log_info('複数配送設定処理完了', [$Order->getId()]);
 
-            return $app->redirect($app->url('shopping'));
+            return $this->redirectToRoute('shopping');
         }
 
-        return $app->render('Shopping/shipping_multiple.twig', [
+        return [
             'form' => $form->createView(),
             'OrderItems' => $OrderItemsForFormBuilder,
             'compItemQuantities' => $ItemQuantitiesByClassId,
             'errors' => $errors,
-        ]);
+        ];
     }
 
     /**
@@ -343,25 +348,24 @@ class ShippingMultipleController extends AbstractShoppingController
     /**
      * フォームの情報からお届け先のインスタンスを返す
      *
-     * @param Application $app
      * @param mixed $CustomerAddressData
      *
      * @return CustomerAddress
      */
-    private function getCustomerAddress(Application $app, $CustomerAddressData)
+    private function getCustomerAddress($CustomerAddressData)
     {
         if ($CustomerAddressData instanceof CustomerAddress) {
             return $CustomerAddressData;
-        } else {
-            $cusAddId = $CustomerAddressData;
-            $customerAddresses = $this->session->get($this->sessionCustomerAddressKey);
-            $customerAddresses = unserialize($customerAddresses);
-
-            $CustomerAddress = $customerAddresses[$cusAddId];
-            $pref = $this->prefRepository->find($CustomerAddress->getPref()->getId());
-            $CustomerAddress->setPref($pref);
-
-            return $CustomerAddress;
         }
+
+        $cusAddId = $CustomerAddressData;
+        $customerAddresses = $this->session->get($this->sessionCustomerAddressKey);
+        $customerAddresses = unserialize($customerAddresses);
+
+        $CustomerAddress = $customerAddresses[$cusAddId];
+        $pref = $this->prefRepository->find($CustomerAddress->getPref()->getId());
+        $CustomerAddress->setPref($pref);
+
+        return $CustomerAddress;
     }
 }

@@ -14,6 +14,7 @@
 namespace Eccube\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
+use Eccube\Common\EccubeConfig;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -22,6 +23,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class ShippingMultipleItemType extends AbstractType
@@ -36,11 +39,33 @@ class ShippingMultipleItemType extends AbstractType
      */
     protected $session;
 
-    public $app;
+    /**
+     * @var AuthorizationCheckerInterface
+     */
+    protected $authorizationChecker;
 
-    public function __construct(\Eccube\Application $app)
-    {
-        $this->app = $app;
+    /**
+     * @var TokenStorageInterface
+     */
+    protected $tokenStorage;
+
+    /**
+     * ShippingMultipleItemType constructor.
+     * @param array $eccubeConfig
+     * @param Session $session
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param TokenStorageInterface $tokenStorage
+     */
+    public function __construct(
+        EccubeConfig $eccubeConfig,
+        Session $session,
+        AuthorizationCheckerInterface $authorizationChecker,
+        TokenStorageInterface $tokenStorage
+    ) {
+        $this->eccubeConfig = $eccubeConfig;
+        $this->session = $session;
+        $this->authorizationChecker = $authorizationChecker;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -48,8 +73,6 @@ class ShippingMultipleItemType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $app = $this->app;
-
         $builder
             ->add('quantity', IntegerType::class, [
                 'attr' => [
@@ -64,12 +87,12 @@ class ShippingMultipleItemType extends AbstractType
                     new Assert\Regex(['pattern' => '/^\d+$/']),
                 ],
             ])
-            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($app) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 $form = $event->getForm();
 
-                if ($app->isGranted('IS_AUTHENTICATED_FULLY')) {
+                if ($this->authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
                     // 会員の場合、CustomerAddressを設定
-                    $Customer = $app->user();
+                    $Customer = $this->tokenStorage->getToken()->getUser();
                     $form->add('customer_address', EntityType::class, [
                         'class' => 'Eccube\Entity\CustomerAddress',
                         'choice_label' => 'shippingMultipleDefaultName',
