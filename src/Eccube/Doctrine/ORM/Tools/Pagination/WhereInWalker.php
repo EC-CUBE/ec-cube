@@ -1,18 +1,14 @@
 <?php
-/**
- * Doctrine ORM
+
+/*
+ * This file is part of EC-CUBE
  *
- * LICENSE
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE. This license can also be viewed
- * at http://hobodave.com/license.txt
+ * http://www.lockon.co.jp/
  *
- * @category    DoctrineExtensions
- *
- * @author      David Abdemoulaie <dave@hobodave.com>
- * @copyright   Copyright (c) 2010 David Abdemoulaie (http://hobodave.com/)
- * @license     http://hobodave.com/license.txt New BSD License
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Doctrine\ORM\Tools\Pagination;

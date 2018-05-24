@@ -1,61 +1,60 @@
 {#
 This file is part of EC-CUBE
 
-Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
 
 http://www.lockon.co.jp/
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
 #}
-{% extends '@admin/default_frame.twig' %}
+{% extends '@admin/styleguide_frame.twig' %}
 
 {% set menus = ['content', 'cache'] %}
 
-{% block title %}{{'admin.content.cache.17'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.content.cache.18'|trans}}{% endblock %}
+{% block title %}{{ 'admin.content.cache.18'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.content.cache.17'|trans }}{% endblock %}
 
-{% form_theme form '@admin/Form/bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block main %}
-<form name="form1" method="post" action="{{ url('admin_content_cache') }}">
-    {{ form_widget(form._token) }}
-    <div id="cache_wrap" class="row">
-        <div class="col-md-12">
-            <div id="cache_box" class="box">
-                <div id="cache_box__header" class="box-header">
-                    <h3 class="box-title">{{'admin.content.cache.19'|trans}}</h3>
-                    <div id="cache_box__message" style="margin-left: 10px;">
-                        <p class="text-danger">{{'admin.content.cache.20'|trans}}</p>
-                        <p>{{'admin.content.cache.21'|trans}}</p>
+    <form method="post" action="{{ url('admin_content_cache') }}">
+        {{ form_widget(form._token) }}
+        <div class="c-contentsArea__cols">
+            <div class="c-contentsArea__primaryCol">
+                <div class="c-primaryCol">
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col"><span class="card-title">{{ 'admin.content.cache.19'|trans }}</span></div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-2">
+                                <div class="col-auto">
+                                    <span>{{ 'admin.content.cache.20'|trans }}</span>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-auto">
+                                    <button type="submit" class="btn btn-ec-conversion">{{ 'admin.content.cache.22'|trans }}</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div id="cache_box__clear_button" class="box-body">
-                    <button type="submit" class="btn btn-primary">{{'admin.content.cache.22'|trans}}</button>
+                    {% if result is not empty %}
+                        <div class="card rounded border-0 mb-4">
+                            <div class="card-body">
+                                <div class="row mb-2">
+                                    <div class="col-auto">
+                                        <pre>{{ result }}</pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
-            {% if result is not empty %}
-            <div class="box">
-                <div class="box-header">
-                    <h3 class="box-title">{{'admin.content.cache.23'|trans}}</h3>
-                </div>
-                <div class="box-body">
-                    <pre>{{ result }}</pre>
-                </div>
-            </div>
-            {% endif %}
         </div>
-    </div>
-</form>
+    </form>
 {% endblock %}

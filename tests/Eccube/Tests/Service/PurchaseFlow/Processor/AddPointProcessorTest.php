@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Eccube\Tests\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\BaseInfo;
@@ -46,7 +57,7 @@ class AddPointProcessorTest extends EccubeTestCase
 
         foreach ($this->Product->getProductClasses() as $ProductClass) {
             $cartItem = new CartItem();
-            $cartItem->setObject($ProductClass);
+            $cartItem->setProductClass($ProductClass);
             $cartItem->setPrice($ProductClass->getPrice02IncTax());
             $cartItem->setQuantity(1);
             $this->Cart->addCartItem($cartItem);

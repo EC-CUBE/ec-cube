@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 return [
     //common
     'common.label.add' => '新規作成',
@@ -1823,6 +1834,8 @@ return [
     'admin.setting.system.member.694' => '上へ',
     'admin.setting.system.member.695' => '下へ',
     'admin.setting.system.member.696' => '新規登録',
+    'admin.setting.system.member.delete_modal_title' => '削除',
+    'admin.setting.system.member.delete_modal_body' => '削除してもよろしいですか?',
     'admin.setting.system.member_edit.697' => 'システム設定',
     'admin.setting.system.member_edit.698' => 'メンバー管理',
     'admin.setting.system.member_edit.699' => 'メンバー登録・編集',
