@@ -19,6 +19,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\Cart;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
@@ -143,7 +144,8 @@ class OrderHelper
         ShippingStatusRepository $shippingStatusRepository,
         EntityManagerInterface $entityManager,
         EccubeConfig $eccubeConfig
-    ) {
+    )
+    {
         $this->orderItemTypeRepository = $orderItemTypeRepository;
         $this->orderStatusRepository = $orderStatusRepository;
         $this->taxRuleRepository = $taxRuleRepository;
@@ -199,6 +201,24 @@ class OrderHelper
         $this->entityManager->flush();
 
         return $Order;
+    }
+
+    /**
+     * @param Order $Order
+     * @return Cart
+     */
+    public function convertToCart(Order $Order)
+    {
+        $Cart = new Cart();
+        /** @var OrderItem $OrderItem */
+        foreach ($Order->getProductOrderItems() as $OrderItem) {
+            $CartItem = new CartItem();
+            $CartItem->setProductClass($OrderItem->getProductClass());
+            $CartItem->setPrice($OrderItem->getPriceIncTax());
+            $CartItem->setQuantity($OrderItem->getQuantity());
+            $Cart->addCartItem($CartItem);
+        }
+        return $Cart;
     }
 
     private function createPreOrderId()
