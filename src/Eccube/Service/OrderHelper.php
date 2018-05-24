@@ -19,6 +19,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\Cart;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
@@ -201,7 +202,30 @@ class OrderHelper
         return $Order;
     }
 
-    public function createPreOrderId()
+    /**
+     * OrderをCartに変換します.
+     *
+     * @param Order $Order
+     *
+     * @return Cart
+     */
+    public function convertToCart(Order $Order)
+    {
+        $Cart = new Cart();
+        $Cart->setPreOrderId($Order->getPreOrderId());
+        /** @var OrderItem $OrderItem */
+        foreach ($Order->getProductOrderItems() as $OrderItem) {
+            $CartItem = new CartItem();
+            $CartItem->setProductClass($OrderItem->getProductClass());
+            $CartItem->setPrice($OrderItem->getPriceIncTax());
+            $CartItem->setQuantity($OrderItem->getQuantity());
+            $Cart->addCartItem($CartItem);
+        }
+
+        return $Cart;
+    }
+
+    private function createPreOrderId()
     {
         // ランダムなpre_order_idを作成
         do {
@@ -218,7 +242,7 @@ class OrderHelper
         return $preOrderId;
     }
 
-    public function setCustomer(Order $Order, Customer $Customer)
+    private function setCustomer(Order $Order, Customer $Customer)
     {
         if ($Customer->getId()) {
             $Order->setCustomer($Customer);
@@ -284,7 +308,7 @@ class OrderHelper
         }, $CartItems->toArray());
     }
 
-    public function createShippingFromCustomerAddress(CustomerAddress $CustomerAddress)
+    private function createShippingFromCustomerAddress(CustomerAddress $CustomerAddress)
     {
         $Shipping = new Shipping();
         $Shipping
@@ -312,17 +336,7 @@ class OrderHelper
         return $Shipping;
     }
 
-    /**
-     * @deprecated
-     */
-    public function addShipping(Order $Order, Shipping $Shipping)
-    {
-        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
-        $Order->addShipping($Shipping);
-        $Shipping->setOrder($Order);
-    }
-
-    public function setDefaultDelivery(Shipping $Shipping)
+    private function setDefaultDelivery(Shipping $Shipping)
     {
         // 配送商品に含まれる販売種別を抽出.
         $OrderItems = $Shipping->getOrderItems();
@@ -350,7 +364,7 @@ class OrderHelper
         }
     }
 
-    public function setDefaultPayment(Order $Order)
+    private function setDefaultPayment(Order $Order)
     {
         $OrderItems = $Order->getOrderItems();
 
@@ -383,7 +397,7 @@ class OrderHelper
         // $Order->setCharge($Payment->getCharge());
     }
 
-    public function addOrderItems(Order $Order, Shipping $Shipping, array $OrderItems)
+    private function addOrderItems(Order $Order, Shipping $Shipping, array $OrderItems)
     {
         foreach ($OrderItems as $OrderItem) {
             $Shipping->addOrderItem($OrderItem);

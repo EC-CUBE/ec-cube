@@ -57,7 +57,7 @@ class AddPointProcessorTest extends EccubeTestCase
 
         foreach ($this->Product->getProductClasses() as $ProductClass) {
             $cartItem = new CartItem();
-            $cartItem->setObject($ProductClass);
+            $cartItem->setProductClass($ProductClass);
             $cartItem->setPrice($ProductClass->getPrice02IncTax());
             $cartItem->setQuantity(1);
             $this->Cart->addCartItem($cartItem);
