@@ -13,7 +13,6 @@
 
 namespace Eccube\Controller;
 
-use Doctrine\ORM\EntityManager;
 use Eccube\Application;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Master\OrderItemType;
@@ -26,10 +25,8 @@ use Eccube\Form\Type\ShippingMultipleType;
 use Eccube\Repository\Master\OrderItemTypeRepository;
 use Eccube\Repository\Master\PrefRepository;
 use Eccube\Service\ShoppingService;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Session;
 
 class ShippingMultipleController extends AbstractShoppingController
 {
@@ -39,34 +36,32 @@ class ShippingMultipleController extends AbstractShoppingController
     protected $prefRepository;
 
     /**
-     * @var Session
-     */
-    protected $session;
-
-    /**
      * @var OrderItemTypeRepository
      */
     protected $orderItemTypeRepository;
 
     /**
-     * @var EntityManager
-     */
-    protected $entityManager;
-
-    /**
-     * @var EventDispatcher
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @var array
-     */
-    protected $eccubeConfig;
-
-    /**
      * @var ShoppingService
      */
     protected $shoppingService;
+
+    /**
+     * ShippingMultipleController constructor.
+     *
+     * @param PrefRepository $prefRepository
+     * @param OrderItemTypeRepository $orderItemTypeRepository
+     * @param ShoppingService $shoppingService
+     */
+    public function __construct(
+        PrefRepository $prefRepository,
+        OrderItemTypeRepository $orderItemTypeRepository,
+        ShoppingService $shoppingService
+    ) {
+        $this->prefRepository = $prefRepository;
+        $this->orderItemTypeRepository = $orderItemTypeRepository;
+        $this->shoppingService = $shoppingService;
+    }
+
 
     /**
      * 複数配送処理
