@@ -3,9 +3,9 @@
 
 namespace Page\Admin;
 
-class AuthorityManagePage extends AbstractAdminPage
+class AuthorityManagePage extends AbstractAdminPageStyleGuide
 {
-    public static $完了メッセージ = '#main .container-fluid div:nth-child(1) .alert-success';
+    public static $完了メッセージ = '.c-contentsArea .alert-success';
 
     public function __construct(\AcceptanceTester $I)
     {
@@ -38,7 +38,7 @@ class AuthorityManagePage extends AbstractAdminPage
 
     public function 登録()
     {
-        $this->tester->click('form #aside_column button');
+        $this->tester->click('form .c-conversionArea button');
         return $this;
     }
 }
