@@ -1834,6 +1834,8 @@ return [
     'admin.setting.system.member.694' => '上へ',
     'admin.setting.system.member.695' => '下へ',
     'admin.setting.system.member.696' => '新規登録',
+    'admin.setting.system.member.delete_modal_title' => '削除',
+    'admin.setting.system.member.delete_modal_body' => '削除してもよろしいですか?',
     'admin.setting.system.member_edit.697' => 'システム設定',
     'admin.setting.system.member_edit.698' => 'メンバー管理',
     'admin.setting.system.member_edit.699' => 'メンバー登録・編集',
