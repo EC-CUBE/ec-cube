@@ -20,78 +20,16 @@ class CartItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
     private $price;
     private $quantity;
     private $ProductClass;
+
+    /**
+     * sessionのシリアライズのために使われる
+     * @var int
+     */
     private $product_class_id;
-
-    /**
-     * @deprecated
-     */
-    private $class_name;
-
-    /**
-     * @deprecated
-     */
-    private $class_id;
-
-    /**
-     * @deprecated
-     */
-    private $object;
-
-    public function __construct()
-    {
-    }
 
     public function __sleep()
     {
         return ['product_class_id', 'price', 'quantity'];
-    }
-
-    /**
-     * @param  string   $class_name
-     *
-     * @return CartItem
-     *
-     * @deprecated
-     */
-    public function setClassName($class_name)
-    {
-        $this->class_name = $class_name;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     *
-     * @deprecated
-     */
-    public function getClassName()
-    {
-        return $this->class_name;
-    }
-
-    /**
-     * @param  string   $class_id
-     *
-     * @return CartItem
-     *
-     * @deprecated
-     */
-    public function setClassId($class_id)
-    {
-        $this->class_id = $class_id;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     *
-     * @deprecated
-     */
-    public function getClassId()
-    {
-        return $this->class_id;
     }
 
     /**
@@ -140,30 +78,6 @@ class CartItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
     public function getTotalPrice()
     {
         return $this->getPrice() * $this->getQuantity();
-    }
-
-    /**
-     * @param  object   $object
-     *
-     * @return CartItem
-     *
-     * @deprecated
-     */
-    public function setObject($object)
-    {
-        $this->object = $object;
-
-        return $this;
-    }
-
-    /**
-     * @return object
-     *
-     * @deprecated
-     */
-    public function getObject()
-    {
-        return $this->object;
     }
 
     /**
