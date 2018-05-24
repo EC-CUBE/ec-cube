@@ -332,7 +332,7 @@ class EA08SysteminfoCest
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/log');
-        $I->see('システム設定EC-CUBE ログ表示', '#main .page-header');
+        $I->see('システム設定EC-CUBE ログ表示', '.c-pageTitle');
 
         $option = $I->grabTextFrom('#admin_system_log_files option:nth-child(1)');
         $I->selectOption("#admin_system_log_files", $option);
@@ -340,7 +340,7 @@ class EA08SysteminfoCest
         $I->fillField(['id' => 'line-max'], '1');
         $I->click(['css' => '#form1 button']);
 
-        $I->dontSeeElement(['css' => '#main .container-fluid .box table tbody tr:nth-child(2)']);
+        $I->seeInField(['id' => 'line-max'], '1');
     }
 
     public function systeminfo_マスターデータ管理(\AcceptanceTester $I)
