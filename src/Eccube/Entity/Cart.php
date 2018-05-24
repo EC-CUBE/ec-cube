@@ -47,11 +47,6 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
     private $delivery_fee_total;
 
     /**
-     * @var array
-     */
-    private $Payments = [];
-
-    /**
      * @var InvalidItemException[]
      */
     private $errors = [];
@@ -116,25 +111,6 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
         $this->CartItems[] = $CartItem;
 
         return $this;
-    }
-
-    /**
-     * @param  string                  $class_name
-     * @param  string                  $class_id
-     *
-     * @return CartItem
-     *
-     * @deprecated 削除予定
-     */
-    public function getCartItemByIdentifier($class_name, $class_id)
-    {
-        foreach ($this->CartItems as $CartItem) {
-            if ($CartItem->getClassName() === $class_name && $CartItem->getClassId() == $class_id) {
-                return $CartItem;
-            }
-        }
-
-        return null;
     }
 
     /**
@@ -224,30 +200,6 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
         }
 
         return $totalQuantity;
-    }
-
-    /**
-     * Get Payments
-     *
-     * @return array
-     */
-    public function getPayments()
-    {
-        return $this->Payments;
-    }
-
-    /**
-     * Set Payments
-     *
-     * @param $payments
-     *
-     * @return Cart
-     */
-    public function setPayments($payments)
-    {
-        $this->Payments = $payments;
-
-        return $this;
     }
 
     /**
