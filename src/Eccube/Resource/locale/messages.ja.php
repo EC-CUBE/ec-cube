@@ -2018,7 +2018,7 @@ return [
     'admin.store.authentication_setting.804' => '認証キー設定',
     'admin.store.authentication_setting.805' => '認証キー設定',
     'admin.store.authentication_setting.806' => '認証キー',
-    'admin.store.authentication_setting.807' => '※認証キーは<a target="_blank" href="%owners_store_url%">EC-CUBEオーナーズストア</a>で取得できます。',
+    'admin.store.authentication_setting.807' => '※認証キーは<a target="_blank" href="owners_store_url">EC-CUBEオーナーズストア</a>で取得できます。',
     'admin.store.authentication_setting.808' => '設定',
     'admin.store.plugin.809' => 'オーナーズストア',
     'admin.store.plugin.810' => 'プラグイン一覧',

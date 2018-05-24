@@ -463,7 +463,7 @@ class PluginController extends AbstractController
      * 認証キー設定画面
      *
      * @Route("/%eccube_admin_route%/store/plugin/authentication_setting", name="admin_store_authentication_setting")
-     * @Template("Store/authentication_setting.twig")
+     * @Template("@admin/Store/authentication_setting.twig")
      */
     public function authenticationSetting(Request $request)
     {
@@ -485,8 +485,10 @@ class PluginController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             // 認証キーの登録
-            $BaseInfo = $form->getData();
-            $this->entityManager->flush($BaseInfo);
+            dump($this->BaseInfo);
+            $this->BaseInfo = $form->getData();
+            $this->entityManager->persist($this->BaseInfo);
+            $this->entityManager->flush();
 
             $this->addSuccess('admin.plugin.authentication.setting.complete', 'admin');
         }
