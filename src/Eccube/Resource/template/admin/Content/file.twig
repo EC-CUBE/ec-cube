@@ -86,7 +86,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <div class="col">
                                 <div class="form-row">
                                     <div class="col-3">
-                                        {{ form_widget(form.create_file) }}{# TODO ブレースホルダ #}
+                                        {{ form_widget(form.create_file, {attr: {placeholder: 'admin.content.file.create_dir_placeholder'}}) }}
                                     </div>
                                     <div class="col-auto">
                                         <a class="btn btn-ec-regular" href="javascript:" onclick="eccube.fileManager.setTreeStatus('tree_status');eccube.setModeAndSubmit('create','',''); return false;">{{'admin.content.file.28'|trans}}</a>
