@@ -481,6 +481,7 @@ class PluginService
         $this->unregisterPlugin($plugin);
 
         // スキーマを更新する
+        //FIXME: Update schema before no affect
         $this->schemaService->updateSchema([], $this->projectRoot.'/app/proxy/entity');
 
         // プラグインのネームスペースに含まれるEntityのテーブルを削除する
