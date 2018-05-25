@@ -201,9 +201,15 @@ class ShippingMultipleController extends AbstractShoppingController
             // -- ここから先がお届け先を再生成する処理 --
 
             // お届け先情報をすべて削除
+            /** @var Shipping $Shipping */
             foreach ($Order->getShippings() as $Shipping) {
+                foreach ($Shipping->getOrderItems() as $OrderItem) {
+                    $Shipping->removeOrderItem($OrderItem);
+                    $this->entityManager->remove($OrderItem);
+                }
                 $this->entityManager->remove($Shipping);
             }
+            $this->entityManager->flush();
 
             // お届け先のリストを作成する
             $ShippingList = [];
