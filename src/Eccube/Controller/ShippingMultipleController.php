@@ -89,12 +89,7 @@ class ShippingMultipleController extends AbstractShoppingController
         }
 
         // 処理しやすいようにすべてのShippingItemをまとめる
-        $OrderItems = [];
-        foreach ($Order->getShippings() as $Shipping) {
-            foreach ($Shipping->getProductOrderItems() as $OrderItem) {
-                $OrderItems[] = $OrderItem;
-            }
-        }
+        $OrderItems = $Order->getProductOrderItems();
 
         // Orderに含まれる商品ごとの数量を求める
         $ItemQuantitiesByClassId = [];
@@ -361,8 +356,11 @@ class ShippingMultipleController extends AbstractShoppingController
      */
     private function getCustomerAddress($CustomerAddressData)
     {
-        if ($CustomerAddressData instanceof CustomerAddress) {
-            return $CustomerAddressData;
+        if (is_int($CustomerAddressData)) {
+            $CustomerAddress = $this->entityManager->find(CustomerAddress::class, $CustomerAddressData);
+            if ($CustomerAddress) {
+                return $CustomerAddress;
+            }
         }
 
         $cusAddId = $CustomerAddressData;

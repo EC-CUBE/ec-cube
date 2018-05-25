@@ -13,9 +13,9 @@
 
 namespace Eccube\Form\Type;
 
-use Doctrine\ORM\EntityRepository;
 use Eccube\Common\EccubeConfig;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Eccube\Entity\Customer;
+use Eccube\Entity\CustomerAddress;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -92,16 +92,16 @@ class ShippingMultipleItemType extends AbstractType
 
                 if ($this->authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
                     // 会員の場合、CustomerAddressを設定
+                    /** @var Customer $Customer */
                     $Customer = $this->tokenStorage->getToken()->getUser();
-                    $form->add('customer_address', EntityType::class, [
-                        'class' => 'Eccube\Entity\CustomerAddress',
-                        'choice_label' => 'shippingMultipleDefaultName',
-                        'query_builder' => function (EntityRepository $er) use ($Customer) {
-                            return $er->createQueryBuilder('ca')
-                                ->where('ca.Customer = :Customer')
-                                ->orderBy('ca.id', 'ASC')
-                                ->setParameter('Customer', $Customer);
-                        },
+                    $CustomerAddresses = $Customer->getCustomerAddresses();
+                    $Addresses = [];
+                    /** @var CustomerAddress $CustomerAddress */
+                    foreach ($CustomerAddresses as $CustomerAddress) {
+                        $Addresses[$CustomerAddress->getShippingMultipleDefaultName()] = $CustomerAddress->getId();
+                    }
+                    $form->add('customer_address', ChoiceType::class, [
+                        'choices' => $Addresses,
                         'constraints' => [
                             new Assert\NotBlank(),
                         ],
@@ -136,6 +136,18 @@ class ShippingMultipleItemType extends AbstractType
 
                 if (is_null($data)) {
                     return;
+                }
+
+                $address = $data->getShippingMultipleDefaultName();
+                /** @var Customer $Customer */
+                $Customer = $this->tokenStorage->getToken()->getUser();
+                $CustomerAddresses = $Customer->getCustomerAddresses();
+                /** @var CustomerAddress $CustomerAddress */
+                foreach ($CustomerAddresses as $CustomerAddress) {
+                    if ($address === $CustomerAddress->getShippingMultipleDefaultName()) {
+                        $form['customer_address']->setData($CustomerAddress->getId());
+                        break;
+                    }
                 }
 
                 $quantity = 0;

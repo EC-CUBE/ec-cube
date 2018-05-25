@@ -35,32 +35,17 @@ file that was distributed with this source code.
                 $('#shopping_order_mode').val('shipping_change');
                 $('#shopping_order_param').val($(this).data('id'));
                 $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
-
-                $('#shopping-form').attr('action', '{{ url("shopping_confirm") }}');
-                $('#shopping_order_mode').val('');
-                $('#shopping_order_param').val('');
-                return false;
             });
 
             $('.btn-shipping-edit').click(function() {
                 $('#shopping_order_mode').val('shipping_edit_change');
                 $('#shopping_order_param').val($(this).data('id'));
                 $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
-
-                $('#shopping-form').attr('action', '{{ url("shopping_confirm") }}');
-                $('#shopping_order_mode').val('');
-                $('#shopping_order_param').val('');
-                return false;
             });
 
             $('.btn-shipping-multiple').click(function() {
                 $('#shopping_order_mode').val('shipping_multiple_change');
                 $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
-
-                $('#shopping-form').attr('action', '{{ url("shopping_confirm") }}');
-                $('#shopping_order_mode').val('');
-                $('#shopping_order_param').val('');
-                return false;
             });
 
             {% if is_granted('ROLE_USER') == false %}
@@ -283,9 +268,9 @@ file that was distributed with this source code.
                     <div class="ec-orderDelivery__title">{{'shopping.label.deliver_to'|trans}}{% if Order.multiple %}({{ loop.index }}){% endif %}
                         <div class="ec-orderDelivery__change">
                             {% if is_granted('ROLE_USER') %}
-                                <a href="{{ url('shopping_shipping', {'id': shipping.id}) }}" class="ec-inlineBtn btn-shipping" data-id="{{ shipping.id }}">{{'shopping.label.edit'|trans}}</a>
+                                <button class="ec-inlineBtn btn-shipping" data-id="{{ shipping.id }}">{{'shopping.label.edit'|trans}}</button>
                             {% else %}
-                                <a href="{{ url('shopping_shipping_edit_change', {'id': shipping.id}) }}" class="ec-inlineBtn btn-shipping-edit" data-id="{{ shipping.id }}">{{'shopping.label.edit'|trans}}</a>
+                                <button class="ec-inlineBtn btn-shipping-edit" data-id="{{ shipping.id }}">{{'shopping.label.edit'|trans}}</button>
                             {% endif %}
                         </div>
                     </div>
@@ -334,7 +319,7 @@ file that was distributed with this source code.
                     </div>
                 {% endfor %}
                 {% if BaseInfo.optionMultipleShipping %}
-                <div class="ec-orderDelivery__edit"><a class="ec-inlineBtn" href="{{ url('shopping_shipping_multiple') }}">{{'shopping.label.btn.delivery_address'|trans}}</a></div>
+                <div class="ec-orderDelivery__edit"><button class="ec-inlineBtn btn-shipping-multiple">{{'shopping.label.btn.delivery_address'|trans}}</button></div>
                 {% endif %}
             </div>
             <div class="ec-orderPayment">
