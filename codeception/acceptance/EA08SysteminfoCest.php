@@ -27,10 +27,10 @@ class EA08SysteminfoCest
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/system');
-        $I->see('システム設定システム情報', '#main .page-header');
+        $I->see('システム設定システム情報', '.c-pageTitle__titles');
 
-        $I->see('システム情報', '#main .container-fluid div:nth-child(1) .box-header .box-title');
-        $I->see('PHP情報', '#main .container-fluid div:nth-child(2) .box-header .box-title');
+        $I->see('システム情報', '#server_info_box__header .card-title');
+        $I->see('PHP情報', '#php_info_box__header .card-title');
     }
 
     public function systeminfo_メンバー管理表示(\AcceptanceTester $I)
