@@ -105,7 +105,7 @@ class OwnerStoreController extends AbstractController
         $promotionItems = [];
         $message = '';
         // Owner's store communication
-        $url = $this->eccubeConfig['package_repo_url'].'/search/packages.json';
+        $url = $this->eccubeConfig['eccube_package_repo_url'].'/search/packages.json';
         list($json, $info) = $this->getRequestApi($url);
         if ($json === false) {
             $message = $this->getResponseErrorMessage($info);
@@ -183,7 +183,7 @@ class OwnerStoreController extends AbstractController
     public function doConfirm(Request $request, $id)
     {
         // Owner's store communication
-        $url = $this->eccubeConfig['package_repo_url'].'/search/packages.json';
+        $url = $this->eccubeConfig['eccube_package_repo_url'].'/search/packages.json';
         list($json, $info) = $this->getRequestApi($url);
         $data = json_decode($json, true);
         $items = $data['item'];
@@ -226,7 +226,7 @@ class OwnerStoreController extends AbstractController
     public function apiInstall(Request $request, $pluginCode, $eccubeVersion, $version)
     {
         // Check plugin code
-        $url = $this->eccubeConfig['package_repo_url'].'/search/packages.json'.'?eccube_version='.$eccubeVersion.'&plugin_code='.$pluginCode.'&version='.$version;
+        $url = $this->eccubeConfig['eccube_package_repo_url'].'/search/packages.json'.'?eccube_version='.$eccubeVersion.'&plugin_code='.$pluginCode.'&version='.$version;
         list($json, $info) = $this->getRequestApi($url);
         $existFlg = false;
         $data = json_decode($json, true);
@@ -279,7 +279,7 @@ class OwnerStoreController extends AbstractController
         try {
             $this->composerService->execRequire($packageNames);
             // Do report to package repo
-            $url = $this->eccubeConfig['package_repo_url'].'/report';
+            $url = $this->eccubeConfig['eccube_package_repo_url'].'/report';
             $this->postRequestApi($url, $data);
             $this->addSuccess('admin.plugin.install.complete', 'admin');
 
@@ -289,7 +289,7 @@ class OwnerStoreController extends AbstractController
         }
 
         // Do report to package repo
-        $url = $this->eccubeConfig['package_repo_url'].'/report/fail';
+        $url = $this->eccubeConfig['eccube_package_repo_url'].'/report/fail';
         $this->postRequestApi($url, $data);
         $this->addError('admin.plugin.install.fail', 'admin');
 
@@ -308,7 +308,7 @@ class OwnerStoreController extends AbstractController
     public function deleteConfirm(Plugin $Plugin)
     {
         // Owner's store communication
-        $url = $this->eccubeConfig['package_repo_url'].'/search/packages.json';
+        $url = $this->eccubeConfig['eccube_package_repo_url'].'/search/packages.json';
         list($json, $info) = $this->getRequestApi($url);
         $data = json_decode($json, true);
         $items = $data['item'];

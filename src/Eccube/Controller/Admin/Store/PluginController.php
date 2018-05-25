@@ -134,7 +134,7 @@ class PluginController extends AbstractController
         // オーナーズストアからダウンロード可能プラグイン情報を取得
         $authKey = $this->BaseInfo->getAuthenticationKey();
         // オーナーズストア通信
-        $url = $this->eccubeConfig['package_repo_url'].'/search/packages.json';
+        $url = $this->eccubeConfig['eccube_package_repo_url'].'/search/packages.json';
         list($json, $info) = $this->getRequestApi($request, $authKey, $url);
 
         $officialPluginsDetail = [];
@@ -472,7 +472,6 @@ class PluginController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             // 認証キーの登録
-            dump($this->BaseInfo);
             $this->BaseInfo = $form->getData();
             $this->entityManager->persist($this->BaseInfo);
             $this->entityManager->flush();

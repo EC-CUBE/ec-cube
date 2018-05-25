@@ -33,7 +33,7 @@ file that was distributed with this source code.
                     type: 'GET',
                     dataType: 'jsonp',
                     crossDomain: true,
-                    url: '{{ eccube_config.package_repo_url }}/detail/' + id,
+                    url: '{{ eccube_config.eccube_package_repo_url }}/detail/' + id,
                     success: function (data) {
                         showPopup(obj, data, id);
                     },
