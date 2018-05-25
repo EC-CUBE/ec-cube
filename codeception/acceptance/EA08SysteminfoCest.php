@@ -56,7 +56,7 @@ class EA08SysteminfoCest
         $I->see('システム設定メンバー管理', '.c-pageTitle');
 
         $I->click('.c-contentsArea__primaryCol .card .btn-area-bottom .btn');
-        $I->see('メンバー登録・編集', '#main .container-fluid div:nth-child(1) .box-header .box-title');
+        $I->see('メンバー登録・編集', '#member_form .c-contentsArea__primaryCol .card-header .card-title');
 
         $I->fillField(['id' => 'admin_member_name'], 'admintest');
         $I->fillField(['id' => 'admin_member_department'], 'admintest department');
@@ -65,7 +65,7 @@ class EA08SysteminfoCest
         $I->fillField(['id' => 'admin_member_password_second'], 'password');
         $I->selectOption(['id' => 'admin_member_Authority'], 'システム管理者');
         $I->selectOption(['id' => 'admin_member_Work_1'], '稼働');
-        $I->click('#aside_column button');
+        $I->click('#member_form .c-conversionArea__container button');
         $I->see('メンバーを保存しました。', '.c-contentsArea .alert-success');
 
         $I->see('メンバー管理', '.c-contentsArea__primaryCol .card-header .card-title');
@@ -82,7 +82,7 @@ class EA08SysteminfoCest
         $I->see('システム設定メンバー管理', '.c-pageTitle');
 
         $I->click('.c-contentsArea__primaryCol .card .btn-area-bottom .btn');
-        $I->see('メンバー登録・編集', '#main .container-fluid div:nth-child(1) .box-header .box-title');
+        $I->see('メンバー登録・編集', '#member_form .c-contentsArea__primaryCol .card-header .card-title');
 
         $I->fillField(['id' => 'admin_member_name'], 'admintest2');
         $I->fillField(['id' => 'admin_member_department'], 'admintest department');
@@ -91,7 +91,7 @@ class EA08SysteminfoCest
         $I->fillField(['id' => 'admin_member_password_second'], 'password');
         $I->selectOption(['id' => 'admin_member_Authority'], 'システム管理者');
         $I->selectOption(['id' => 'admin_member_Work_1'], '稼働');
-        $I->click('#aside_wrap .btn_area a');
+        $I->click('#member_form .c-conversionArea__container .c-conversionArea__leftBlockItem a');
 
         $I->see('メンバー管理', '.c-contentsArea__primaryCol .card-header .card-title');
         $I->dontSee('admintest2', '#search_result tbody tr:nth-child(1) td:nth-child(1)');
@@ -107,10 +107,10 @@ class EA08SysteminfoCest
         $I->see('システム設定メンバー管理', '.c-pageTitle');
 
         $I->click('.c-contentsArea__primaryCol .card .btn-area-bottom .btn');
-        $I->see('メンバー登録・編集', '#main .container-fluid div:nth-child(1) .box-header .box-title');
+        $I->see('メンバー登録・編集', '#member_form .c-contentsArea__primaryCol .card-header .card-title');
 
-        $I->click('#aside_column button');
-        $I->see('入力されていません。', '#form1 div:nth-child(1) div');
+        $I->click('#member_form .c-conversionArea__container button');
+        $I->see('入力されていません。', '#member_form div:nth-child(1) div');
     }
 
     public function systeminfo_メンバー管理編集実施(\AcceptanceTester $I)
@@ -123,10 +123,10 @@ class EA08SysteminfoCest
         $I->see('システム設定メンバー管理', '.c-pageTitle');
 
         $I->click('#search_result tbody tr:nth-child(1) .action-edit');
-        $I->see('メンバー登録・編集', '#main .container-fluid div:nth-child(1) .box-header .box-title');
+        $I->see('メンバー登録・編集', '#member_form .c-contentsArea__primaryCol .card-header .card-title');
 
         $I->fillField(['id' => 'admin_member_name'], 'administrator');
-        $I->click('#aside_column button');
+        $I->click('#member_form .c-conversionArea__container button');
 
         // FIXME 以下の不具合のためシステムエラーが発生する
         // https://github.com/EC-CUBE/eccube-api/pull/60
@@ -151,10 +151,10 @@ class EA08SysteminfoCest
         $I->see('システム設定メンバー管理', '.c-pageTitle');
 
         $I->click('#search_result tbody tr:nth-child(1) .action-edit');
-        $I->see('メンバー登録・編集', '#main .container-fluid div:nth-child(1) .box-header .box-title');
+        $I->see('メンバー登録・編集', '#member_form .c-contentsArea__primaryCol .card-header .card-title');
 
         $I->fillField(['id' => 'admin_member_name'], 'administrator2');
-        $I->click('#aside_wrap .btn_area a');
+        $I->click('#member_form .c-conversionArea__container .c-conversionArea__leftBlockItem a');
 
         $I->see('メンバー管理', '.c-contentsArea__primaryCol .card-header .card-title');
         $I->dontSee('administrator2', '#search_result tbody tr:nth-child(1) td:nth-child(1)');
@@ -170,12 +170,12 @@ class EA08SysteminfoCest
         $I->see('システム設定メンバー管理', '.c-pageTitle');
 
         $I->click('#search_result tbody tr:nth-child(1) .action-edit');
-        $I->see('メンバー登録・編集', '#main .container-fluid div:nth-child(1) .box-header .box-title');
+        $I->see('メンバー登録・編集', '#member_form .c-contentsArea__primaryCol .card-header .card-title');
 
         $I->fillField(['id' => 'admin_member_name'], '');
-        $I->click('#aside_column button');
+        $I->click('#member_form .c-conversionArea__container button');
 
-        $I->see('入力されていません。', '#form1 div:nth-child(1) div');
+        $I->see('入力されていません。', '#member_form div:nth-child(1) div');
     }
 
     public function systeminfo_メンバー管理登録下へ(\AcceptanceTester $I)
