@@ -472,7 +472,6 @@ class PluginController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             // 認証キーの登録
-            dump($this->BaseInfo);
             $this->BaseInfo = $form->getData();
             $this->entityManager->persist($this->BaseInfo);
             $this->entityManager->flush();

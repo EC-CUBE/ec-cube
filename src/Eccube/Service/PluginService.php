@@ -210,7 +210,8 @@ class PluginService
     {
         // キャッシュの削除
         PluginConfigManager::removePluginConfigCache();
-        $this->cacheUtil->clearCache();
+        // FIXME: Please fix clearCache function (because it's clear all cache and this file just upload)
+//        $this->cacheUtil->clearCache();
     }
 
     // インストール事後処理
@@ -479,17 +480,17 @@ class PluginService
         $this->disable($plugin);
         $this->unregisterPlugin($plugin);
 
-        if ($force) {
-            $this->deleteFile($pluginDir);
-            $this->removeAssets($plugin->getCode());
-        }
-
         // スキーマを更新する
         $this->schemaService->updateSchema([], $this->projectRoot.'/app/proxy/entity');
 
         // プラグインのネームスペースに含まれるEntityのテーブルを削除する
         $namespace = 'Plugin\\'.$plugin->getCode().'\\Entity';
         $this->schemaService->dropTable($namespace);
+
+        if ($force) {
+            $this->deleteFile($pluginDir);
+            $this->removeAssets($plugin->getCode());
+        }
 
         ConfigManager::writePluginConfigCache();
 
