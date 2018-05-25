@@ -121,7 +121,7 @@ file that was distributed with this source code.
                         {{ form_widget(searchForm._token) }}
                         <div>
                             <label class="col-form-label">{{ 'admin.order.index.297'|trans }}</label>
-                            {{ form_widget(searchForm.multi,  {attr: { class : 'input_search' }}) }}
+                            {{ form_widget(searchForm.multi) }}
                             {{ form_errors(searchForm.multi) }}
                         </div>
                         <div class="form-row">
