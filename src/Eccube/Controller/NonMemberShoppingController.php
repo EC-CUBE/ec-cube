@@ -223,11 +223,14 @@ class NonMemberShoppingController extends AbstractShoppingController
 
     /**
      * 非会員用複数配送設定時の新規お届け先の設定
+     *
+     * @Route("/shopping/shipping_multiple_edit", name="shopping_shipping_multiple_edit")
+     * @Template("Shopping/shipping_multiple_edit.twig")
      */
     public function shippingMultipleEdit(Request $request)
     {
         // カートチェック
-        $response = $this->forwardToRoute('shopping_check_to_art');
+        $response = $this->forwardToRoute('shopping_check_to_cart');
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
@@ -276,12 +279,9 @@ class NonMemberShoppingController extends AbstractShoppingController
             return $this->redirectToRoute('shopping_shipping_multiple');
         }
 
-        return $this->render(
-            'Shopping/shipping_multiple_edit.twig',
-            [
-                'form' => $form->createView(),
-            ]
-        );
+        return [
+            'form' => $form->createView(),
+        ];
     }
 
     /**

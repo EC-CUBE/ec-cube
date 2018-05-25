@@ -138,14 +138,12 @@ class ShippingMultipleItemType extends AbstractType
                     return;
                 }
 
-                $address = $data->getShippingMultipleDefaultName();
-                /** @var Customer $Customer */
-                $Customer = $this->tokenStorage->getToken()->getUser();
-                $CustomerAddresses = $Customer->getCustomerAddresses();
+                $choices = $form['customer_address']->getConfig()->getOption('choices');
+
                 /** @var CustomerAddress $CustomerAddress */
-                foreach ($CustomerAddresses as $CustomerAddress) {
-                    if ($address === $CustomerAddress->getShippingMultipleDefaultName()) {
-                        $form['customer_address']->setData($CustomerAddress->getId());
+                foreach ($choices as $address => $id) {
+                    if ($address === $data->getShippingMultipleDefaultName()) {
+                        $form['customer_address']->setData($id);
                         break;
                     }
                 }
