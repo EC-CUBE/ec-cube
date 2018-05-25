@@ -36,7 +36,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="row" >
                             <div class="col-8" id="server_info_box__header">
                                 <span class="card-title ">{{'admin.setting.system.system.715'|trans}}</span>
-                                <i class="fa fa-info-circle fa-lg ml-1"></i>
+                                <i class="fa fa-question-circle fa-lg ml-1"></i>
                             </div>
                             <div class="col-4 text-right">
                                 <a data-toggle="collapse" href="#systemInfo"
@@ -50,7 +50,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="card-body" id="server_info_box__body_inner">
                             {% for key, item in info %}
                                 <div class="row mb-2">
-                                    <div class="col-3">
+                                    <div class="col-2">
                                         <span>{{item.title}}</span>
                                     </div>
                                     <div class="col">
@@ -73,11 +73,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="row">
                             <div class="col-8" id="php_info_box__header" >
                                 <span class="card-title">{{'admin.setting.system.system.716'|trans}}</span>
-                                <i class="fa fa-plus-circle fa-lg ml-1"></i>
+                                <i class="fa fa-question-circle fa-lg ml-1"></i>
                             </div>
                         </div>
                     </div>
-                    <div class="collapse show ec-cardCollapse" id="php_info_box__frame">
+                    <div id="php_info_box__frame">
                         <iframe name="php_info" src="{{ url('admin_setting_system_system_phpinfo') }}" height="500" frameborder="0" style="width: 100%;"></iframe>
                     </div>
 
