@@ -52,6 +52,7 @@ services:
             - #
                 - '@Eccube\Service\PurchaseFlow\Processor\PaymentTotalLimitValidator'
                 - '@Eccube\Service\PurchaseFlow\Processor\DeliveryFeeProcessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\DeliveryFeeFreeByShippingProcessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\PaymentTotalNegativeValidator'
                 - '@Eccube\Service\PurchaseFlow\Processor\UsePointProcessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\AddPointProcessor'
