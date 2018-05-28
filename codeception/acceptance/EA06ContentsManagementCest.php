@@ -110,6 +110,7 @@ class EA06ContentsManagementCest
         $I->amOnPage('/'.$config['eccube_admin_route'].'/content/file_manager');
         $I->see('ファイル管理コンテンツ管理', '.c-pageTitle');
 
+        // Todo: change to modal
         FileManagePage::go($I)
             ->一覧_削除(1);
         $I->acceptPopup();
