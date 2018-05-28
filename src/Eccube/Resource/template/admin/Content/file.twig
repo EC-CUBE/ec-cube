@@ -128,8 +128,7 @@ file that was distributed with this source code.
                                                         {% if file.is_dir %}
                                                             <i class="fa fa-folder-o fa-2x"></i>
                                                         {% else %}
-                                                            {# TODO ファイル種別の表示 #}
-                                                            <div class="d-inline-block p-3 bg-light"><i class="fa fa-file-pdf-o fa-2x"></i></div>
+                                                            <div class="d-inline-block p-3 bg-light"><i class="fa {{ file.extension|file_ext_css_class }} fa-2x"></i></div>
                                                         {% endif %}
                                                     </td>
                                                     <td class="align-middle">
