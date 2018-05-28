@@ -15,7 +15,7 @@ class AuthorityManagePage extends AbstractAdminPageStyleGuide
     public static function go(\AcceptanceTester $I)
     {
         $page = new self($I);
-        return $page->goPage('/setting/system/authority', 'システム設定権限管理');
+        return $page->goPage('/setting/system/authority', '権限管理システム設定');
     }
 
     public function 行追加()
