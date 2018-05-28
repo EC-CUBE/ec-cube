@@ -56,6 +56,7 @@ services:
                 - '@Eccube\Service\PurchaseFlow\Processor\UsePointProcessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\AddPointProcessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\SubstractPointProcessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\OrderCodeProcessor'
 
     eccube.purchase.flow.shopping.purchase:
         class: Doctrine\Common\Collections\ArrayCollection

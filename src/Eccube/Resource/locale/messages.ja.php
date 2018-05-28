@@ -366,7 +366,7 @@ return [
     'mypage.text.message.will_deleted' => '退会手続きが完了した時点で、現在保存されている購入履歴やお届け先等の情報は、すべて削除されますのでご注意ください。',
     'mypage.label.btn.not_cancel' => 'いいえ、退会しません',
     'mypage.label.btn.yes_cancel' => 'はい、退会します',
-    'mypage.history.label.order_id' => 'ご注文番号',
+    'mypage.history.label.order_code' => 'ご注文番号',
     'mypage.history.label.order_status' => 'ご注文状況',
 
     //Admin Panel Theme
@@ -2622,9 +2622,9 @@ return [
     'searchcustomer.label.purchased_product_name' => '購入商品名',
     'searchcustomer.label.purchased_product_code' => '購入商品コード',
     'searchcustomer.label.product_category' => '商品カテゴリ',
-    'searchorder.label.multi' => '受注ID・注文者名・注文者会社名・メールアドレス・電話番号',
+    'searchorder.label.multi' => '注文番号・注文者名・注文者会社名・メールアドレス・電話番号',
     'searchorder.label.company_name' => '注文者会社名',
-    'searchorder.label.order_id' => '受注ID',
+    'searchorder.label.order_code' => '注文番号',
     'searchorder.label.status' => '対応状況',
     'searchorder.label.sex' => '性別',
     'searchorder.label.payment_method' => '支払方法',

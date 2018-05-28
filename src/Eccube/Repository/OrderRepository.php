@@ -281,7 +281,7 @@ class OrderRepository extends AbstractRepository
             $qb
                 ->andWhere('o.id = :multi OR o.name01 LIKE :likemulti OR o.name02 LIKE :likemulti OR '.
                            'o.kana01 LIKE :likemulti OR o.kana02 LIKE :likemulti OR o.company_name LIKE :likemulti OR '.
-                           'o.code LIKE :likemulti')
+                           'o.oder_code LIKE :likemulti')
                 ->setParameter('multi', $multi)
                 ->setParameter('likemulti', '%'.$searchData['multi'].'%');
         }
