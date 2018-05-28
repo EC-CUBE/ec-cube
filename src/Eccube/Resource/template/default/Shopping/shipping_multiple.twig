@@ -76,10 +76,7 @@ $(function() {
                         <div class="text-danger">{{ error.message }}</div>
                     {% endfor %}
 
-                    {% if is_granted('ROLE_USER') %}
-                    {% else %}
-                        <p><a href="{{ url('shopping_shipping_multiple_edit') }}" class="btn btn-default btn-sm">{{'mypage.label.add_address'|trans}}</a></p>
-                    {% endif %}
+                    <p><a href="{{ url('shopping_shipping_multiple_edit') }}" class="btn btn-default btn-sm">{{'mypage.label.add_address'|trans}}</a></p>
 
                     {% for orderItem in OrderItems %}
                         {% set idx = loop.index0 %}
