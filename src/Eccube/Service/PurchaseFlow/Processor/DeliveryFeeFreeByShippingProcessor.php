@@ -88,10 +88,6 @@ class DeliveryFeeFreeByShippingProcessor implements ItemHolderProcessor
             }
         }
 
-        if ($itemHolder instanceof Cart) {
-
-        }
-
         return ProcessResult::success();
     }
 }
