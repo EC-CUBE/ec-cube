@@ -13,7 +13,6 @@
 
 namespace Eccube\Controller;
 
-use Eccube\Application;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\OrderStatus;
@@ -350,20 +349,19 @@ class ShippingMultipleController extends AbstractShoppingController
     /**
      * フォームの情報からお届け先のインスタンスを返す
      *
-     * @param mixed $CustomerAddressData
+     * @param int $customerAddressId お届け先ID。非会員の場合はセッションに登録されたお届け先リストのインデックス。
      *
      * @return CustomerAddress
      */
-    private function getCustomerAddress($CustomerAddressData)
+    private function getCustomerAddress($customerAddressId)
     {
-        if (is_int($CustomerAddressData)) {
-            $CustomerAddress = $this->entityManager->find(CustomerAddress::class, $CustomerAddressData);
-            if ($CustomerAddress) {
-                return $CustomerAddress;
-            }
+        // 会員の場合は登録されているお届け先を返す
+        if ($this->getUser()) {
+            return $this->entityManager->find(CustomerAddress::class, $customerAddressId);
         }
 
-        $cusAddId = $CustomerAddressData;
+        // 非会員の場合はセッション中のお届け先リストから返す
+        $cusAddId = $customerAddressId;
         $customerAddresses = $this->session->get($this->sessionCustomerAddressKey);
         $customerAddresses = unserialize($customerAddresses);
 
