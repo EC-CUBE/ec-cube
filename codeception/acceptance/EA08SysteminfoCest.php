@@ -27,7 +27,7 @@ class EA08SysteminfoCest
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/system');
-        $I->see('システム設定システム情報', '.c-pageTitle__titles');
+        $I->see('システム情報システム設定', '.c-pageTitle__titles');
 
         $I->see('システム情報', '#server_info_box__header .card-title');
         $I->see('PHP情報', '#php_info_box__header .card-title');
