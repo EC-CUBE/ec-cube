@@ -218,6 +218,8 @@ class EF03OrderCest
 
     public function order_ゲスト購入情報変更(\AcceptanceTester $I)
     {
+        $I->getScenario()->skip('非会員の購入情報変更未対応のためスキップ');
+
         $I->wantTo('EF0305-UC02-T01 ゲスト購入 情報変更'); // EF0305-UC04-T01も一緒にテスト
         $I->logoutAsMember();
 
