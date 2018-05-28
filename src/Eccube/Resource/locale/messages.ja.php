@@ -704,8 +704,6 @@ return [
     'admin.plugin.download.pem.error' => '証明書ファイルの設定ができませんでした。',
     'admin.store.plugin.popup.delete.confirm.title' => 'プラグインの削除を確認する',
     'admin.store.plugin.popup.delete.confirm.message' => 'このプラグインを削除してもよろしいですか？',
-    'admin.store.plugin.popup.delete.cancel' => 'キャンセル',
-    'admin.store.plugin.popup.delete.accept' => '削除',
     'admin.preview.register.complete' => 'プレビューを登録しました',
     'admin.change_password.save.complete' => 'パスワードを変更しました。',
     'admin.change_password.save.error' => 'パスワードを変更できませんでした。',

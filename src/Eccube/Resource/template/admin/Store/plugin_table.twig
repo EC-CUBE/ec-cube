@@ -46,8 +46,7 @@ file that was distributed with this source code.
                             {% else %}
                                 <a href="#"
                                    data-toggle="modal"
-                                   data-target="#confirmModal-{{ Plugin.id }}"
-                                   data-method="delete" data-message="{{ 'admin.store.plugin_table.895'|trans }}">
+                                   data-target="#confirmModal-{{ Plugin.id }}">
                                     {{ 'admin.store.plugin_table.896'|trans }}
                                 </a>
                             {% endif %}
@@ -71,14 +70,14 @@ file that was distributed with this source code.
                                         </div>
                                         <div class="modal-footer">
                                             <button class="btn btn-ec-sub" type="button"
-                                                    data-dismiss="modal">{{ 'admin.store.plugin.popup.delete.cancel'|trans }}
+                                                    data-dismiss="modal">{{ 'common.label.cancel'|trans }}
                                             </button>
                                             <a href="{{ url('admin_store_plugin_uninstall', { id : Plugin.id }) }}"
                                                     {{ csrf_token_for_anchor() }}
                                                     class="btn btn-ec-delete"
                                                     data-confirm="false"
                                                     data-method="delete">
-                                                {{ 'admin.store.plugin.popup.delete.accept'|trans }}
+                                                {{ 'common.label.delete'|trans }}
                                             </a>
                                         </div>
                                     </div>
