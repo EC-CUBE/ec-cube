@@ -332,7 +332,7 @@ class EA08SysteminfoCest
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/log');
-        $I->see('システム設定EC-CUBE ログ表示', '.c-pageTitle');
+        $I->see('EC-CUBE ログ表示システム設定', '.c-pageTitle');
 
         $option = $I->grabTextFrom('#admin_system_log_files option:nth-child(1)');
         $I->selectOption("#admin_system_log_files", $option);
