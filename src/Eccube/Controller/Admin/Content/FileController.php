@@ -73,7 +73,8 @@ class FileController extends AbstractController
 
         // パンくず表示用データ
         $nowDirList = json_encode(explode('/', trim(str_replace($htmlDir, '', $nowDir), '/')));
-        $isTopDir = ($topDir === $nowDir);
+        $jailNowDir = $this->getJailDir($nowDir);
+        $isTopDir = ($topDir === $jailNowDir);
         $parentDir = substr($nowDir, 0, strrpos($nowDir, '/'));
 
         if ('POST' === $request->getMethod()) {
@@ -99,10 +100,10 @@ class FileController extends AbstractController
             'tpl_javascript' => json_encode($tree),
             'top_dir' => $this->getJailDir($topDir),
             'tpl_is_top_dir' => $isTopDir,
-            'tpl_now_dir' => $this->getJailDir($nowDir),
+            'tpl_now_dir' => $jailNowDir,
             'html_dir' => $this->getJailDir($htmlDir),
             'now_dir_list' => $nowDirList,
-            'tpl_parent_dir' => $parentDir,
+            'tpl_parent_dir' => $this->getJailDir($parentDir),
             'arrFileList' => $arrFileList,
             'errors' => $this->errors,
             'paths' => json_encode($paths),
