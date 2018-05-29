@@ -214,7 +214,7 @@ class CartController extends AbstractController
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_CART_BUYSTEP_INITIALIZE, $event);
 
         $this->cartService->setPrimary($index);
-        $this->cartService->lock();
+        // $this->cartService->lock();
         $this->cartService->save();
 
         // FRONT_CART_BUYSTEP_COMPLETE

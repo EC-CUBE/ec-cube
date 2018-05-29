@@ -553,9 +553,9 @@ class ShoppingController extends AbstractShoppingController
      */
     public function login(Request $request, AuthenticationUtils $authenticationUtils)
     {
-        if (!$this->cartService->isLocked()) {
-            return $this->redirectToRoute('cart');
-        }
+        // if (!$this->cartService->isLocked()) {
+        //     return $this->redirectToRoute('cart');
+        // }
 
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $this->redirectToRoute('shopping');
@@ -617,12 +617,12 @@ class ShoppingController extends AbstractShoppingController
     public function checkToCart(Request $request)
     {
         // カートチェック
-        if (!$this->cartService->isLocked()) {
-            log_info('カートが存在しません');
+        // if (!$this->cartService->isLocked()) {
+        //     log_info('カートが存在しません');
 
-            // カートが存在しない、カートがロックされていない時はエラー
-            return $this->redirectToRoute('cart');
-        }
+        //     // カートが存在しない、カートがロックされていない時はエラー
+        //     return $this->redirectToRoute('cart');
+        // }
 
         // カートチェック
         if (count($this->cartService->getCart()->getCartItems()) <= 0) {
@@ -686,6 +686,12 @@ class ShoppingController extends AbstractShoppingController
 
         // 受注関連情報を最新状態に更新
         $this->entityManager->refresh($Order);
+
+        // 同一 preOrderId はカートの情報で Order を上書き
+        // preOrderId が異なる
+        // かつ 同一販売種別(CartAllocator にて判定できる？)
+        // かつ 同一会員の購入処理中 Order が存在する場合はマージする
+        // 明細は CartComparetor で比較する
 
         $this->parameterBag->set('Order', $Order);
 

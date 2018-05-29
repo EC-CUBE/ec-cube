@@ -18,8 +18,10 @@ use Eccube\Entity\CartItem;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\ProductClassRepository;
+use Eccube\Repository\OrderRepository;
 use Eccube\Service\Cart\CartItemAllocator;
 use Eccube\Service\Cart\CartItemComparator;
+use Eccube\Service\OrderHelper;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -63,6 +65,16 @@ class CartService
     protected $cartItemAllocator;
 
     /**
+     * @var OrderHelper
+     */
+    protected $orderHelper;
+
+    /**
+     * @var OrderRepository
+     */
+    protected $orderRepository;
+
+    /**
      * CartService constructor.
      *
      * @param SessionInterface $session
@@ -76,22 +88,39 @@ class CartService
         EntityManagerInterface $entityManager,
         ProductClassRepository $productClassRepository,
         CartItemComparator $cartItemComparator,
-        CartItemAllocator $cartItemAllocator
+        CartItemAllocator $cartItemAllocator,
+        OrderHelper $orderHelper,
+        OrderRepository $orderRepository
     ) {
         $this->session = $session;
         $this->entityManager = $entityManager;
         $this->productClassRepository = $productClassRepository;
         $this->cartItemComparator = $cartItemComparator;
         $this->cartItemAllocator = $cartItemAllocator;
+        $this->orderHelper = $orderHelper;
+        $this->orderRepository = $orderRepository;
     }
 
     public function getCarts()
     {
         if (is_null($this->carts)) {
             $this->carts = $this->session->get('carts', []);
-            $this->loadItems();
+            // $this->loadItems();
         }
 
+        // TODO
+        foreach ($this->carts as &$Cart) {
+            if ($Cart->getPreOrderId() && $Order = $this->orderRepository->findOneBy(['pre_order_id' => $Cart->getPreOrderId()])) {
+                $Cart = $this->orderHelper->convertToCart($Order);
+            } else {
+                /** @var CartItem $item */
+                foreach ($Cart->getItems() as $item) {
+                    /** @var ProductClass $ProductClass */
+                    $ProductClass = $this->productClassRepository->find($item->getProductClassId());
+                    $item->setProductClass($ProductClass);
+                }
+            }
+        }
         return $this->carts;
     }
 
@@ -114,12 +143,16 @@ class CartService
 
     protected function loadItems()
     {
-        foreach ($this->getCarts() as $Cart) {
-            /** @var CartItem $item */
-            foreach ($Cart->getItems() as $item) {
-                /** @var ProductClass $ProductClass */
-                $ProductClass = $this->productClassRepository->find($item->getProductClassId());
-                $item->setProductClass($ProductClass);
+        foreach ($this->getCarts() as &$Cart) {
+            if ($Cart->getPreOrderId() && $Order = $this->orderRepository->findOneBy(['pre_order_id' => $Cart->getPreOrderId()])) {
+                $Cart = $this->orderHelper->convertToCart($Order);
+            } else {
+                /** @var CartItem $item */
+                foreach ($Cart->getItems() as $item) {
+                    /** @var ProductClass $ProductClass */
+                    $ProductClass = $this->productClassRepository->find($item->getProductClassId());
+                    $item->setProductClass($ProductClass);
+                }
             }
         }
     }

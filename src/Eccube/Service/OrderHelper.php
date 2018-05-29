@@ -192,7 +192,9 @@ class OrderHelper
         /** @var OrderItem $OrderItem */
         foreach ($Order->getProductOrderItems() as $OrderItem) {
             $CartItem = new CartItem();
-            $CartItem->setProductClass($OrderItem->getProductClass());
+            $ProductClass = $OrderItem->getProductClass();
+            $this->entityManager->refresh($ProductClass);
+            $CartItem->setProductClass($ProductClass);
             $CartItem->setPrice($OrderItem->getPriceIncTax());
             $CartItem->setQuantity($OrderItem->getQuantity());
             $Cart->addCartItem($CartItem);
