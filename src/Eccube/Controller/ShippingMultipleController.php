@@ -173,26 +173,6 @@ class ShippingMultipleController extends AbstractShoppingController
                 }
             }
 
-            // 「Orderに含まれる商品ごとの数量」と「フォームに入力された商品ごとの数量」が一致しているかの確認
-            // 数量が異なっているならエラーを表示する
-            foreach ($ItemQuantitiesByClassId as $key => $value) {
-                if (array_key_exists($key, $itemQuantities)) {
-                    if ($itemQuantities[$key] != $value) {
-                        $errors[] = ['message' => trans('shopping.multiple.quantity.diff')];
-
-                        // 対象がなければエラー
-                        log_info('複数配送設定入力チェックエラー', [$Order->getId()]);
-
-                        return [
-                            'form' => $form->createView(),
-                            'OrderItems' => $OrderItemsForFormBuilder,
-                            'compItemQuantities' => $ItemQuantitiesByClassId,
-                            'errors' => $errors,
-                        ];
-                    }
-                }
-            }
-
             // -- ここから先がお届け先を再生成する処理 --
 
             // お届け先情報をすべて削除
