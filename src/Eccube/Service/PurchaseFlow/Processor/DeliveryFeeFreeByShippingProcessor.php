@@ -14,7 +14,6 @@
 namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\BaseInfo;
-use Eccube\Entity\Cart;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Order;
 use Eccube\Service\PurchaseFlow\ItemHolderProcessor;
