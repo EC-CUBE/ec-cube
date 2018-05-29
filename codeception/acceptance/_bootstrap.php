@@ -276,6 +276,7 @@ $createOrders = function ($Customer, $numberOfOrders = 5, $ProductClasses = arra
         $OrderDate = $faker->dateTimeThisYear();
         $Order->setOrderStatus($Status);
         $Order->setOrderDate($OrderDate);
+        $Order->setOrderCode(\Eccube\Util\StringUtil::random(6));
         $entityManager->flush($Order);
         $Orders[] = $Order;
     }
