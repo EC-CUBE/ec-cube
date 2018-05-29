@@ -9,9 +9,9 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
 
-{% extends 'default_frame.twig' %}
+{% extends '@admin/styleguide_frame.twig' %}
 
-{% set menus = ['store', 'plugin', 'plugin_search'] %}
+{% set menus = ['store', 'plugin', 'plugin_owners_search'] %}
 
 {% block title %}{{'admin.store.plugin_search.884'|trans}}{% endblock %}
 {% block sub_title %}{{'admin.store.plugin_search.885'|trans}}{% endblock %}
@@ -33,7 +33,7 @@ file that was distributed with this source code.
                     type: 'GET',
                     dataType: 'jsonp',
                     crossDomain: true,
-                    url: '{{ app.config.package_repo_url }}/detail/' + id,
+                    url: '{{ eccube_config.package_repo_url }}/detail/' + id,
                     success: function (data) {
                         showPopup(obj, data, id);
                     },
@@ -57,51 +57,82 @@ file that was distributed with this source code.
 
 {% block stylesheet %}
     <style type="text/css">
-        .display-in-bl {
-            display: inline-block;
+        .plugin-panel {
+            border: 1px solid #dedede;
+            padding: 10px;
+            margin: 5px 0;
+        }
+        .plugin-meta {
+            padding: 0;
+            list-style: none;
+            margin: 0 0 15px;
+        }
+        .plugin-meta.dl-horizontal dt {
+            text-align: right;
+            padding-bottom: 0;
+            width: 180px;
+        }
+        .dl-horizontal dt {
+            text-align: left;
+            white-space: normal;
+            padding-bottom: 8px;
+            float: left;
+        }
+        .plugin-logo img {
+            width: 168px;
+            height: 126px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            float: left;
+        }
+        .plugin-meta.dl-horizontal dd {
+            padding-bottom: 0;
+            margin-left: 200px;
+        }
+        .plugin-block .grid{
+            padding: 10px 0;
+        }
+        #search_plugin_modal_box__body{
+            padding: 0 5px;
         }
     </style>
 {% endblock stylesheet %}
 
 {% block main %}
-    <div class="row">
-        <div class="col-md-12">
-            <div class="box">
-                <div class="box-header">
-                    <h3 class="box-title">{{'admin.store.plugin_search.886'|trans}}</h3>
-                </div><!-- /.box-header -->
-                <div class="box-body">
-                    <div class="row">
-                        <div class="col-xs-12">
-                            {% if items|length > 0%}
-                                <div class="plugin-block">
-                                    <div class="row">
-                                        {% for item in promotionItems %}
-                                            <div class="col-xs-12">
-                                                {{ include('Store/plugin_search_panel.twig') }}
-                                            </div>
-                                        {% endfor %}
-                                    </div><!-- .row -->
-                                    <div class="row grid">
-                                        {% for item in items %}
-                                            <div class="col-xs-12 grid-item">
-                                                {{ include('Store/plugin_search_panel.twig') }}
-                                            </div>
-                                        {% endfor %}
-                                    </div><!-- .row -->
-                                </div><!-- .plugin-block -->
-                            {% else %}
-                                <p class="text-danger">{{ message }}</p>
-                            {% endif %}
-                        </div><!-- .col-xs-12 -->
-                    </div><!-- .row -->
-                </div><!-- /.box-body -->
-            </div><!-- /.box -->
-        </div><!-- /.col -->
-    </div>
-{% endblock %}
+    <div class="c-contentsArea__cols">
+        <div class="c-contentsArea__primaryCol">
+            <div class="c-primaryCol">
+                <div class="card rounded border-0 mb-4">
+                    <div class="card-header">
+                        <h4 class="box-title font-weight-bold">{{'admin.store.plugin_search.886'|trans}}</h4>
+                    </div>
+                    <div class="card-body p-0">
+                        {% if items|length > 0%}
+                            <div class="plugin-block">
+                                {% for item in promotionItems %}
+                                    <div class="col-12">
+                                        {{ include('@admin/Store/plugin_search_panel.twig') }}
+                                    </div>
+                                {% endfor %}
 
-{% block modal %}
+                                <div class="grid">
+                                    {% for item in items %}
+                                        <div class="col-12 col-md-12 grid-item">
+                                            {{ include('@admin/Store/plugin_search_panel.twig') }}
+                                        </div>
+                                    {% endfor %}
+                                </div><!-- .row -->
+                            </div><!-- .plugin-block -->
+                        {% else %}
+                            <p class="text-danger">{{ message }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="searchPluginModal" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg">
             <div id="search_plugin_modal_box" class="modal-content">
@@ -115,3 +146,4 @@ file that was distributed with this source code.
         </div>
     </div>
 {% endblock %}
+

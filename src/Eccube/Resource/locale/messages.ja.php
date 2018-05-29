@@ -704,6 +704,8 @@ return [
     'admin.plugin.install.complete' => 'プラグインをインストールしました。',
     'admin.plugin.download.pem.complete' => '証明書ファイルを設定しました。',
     'admin.plugin.download.pem.error' => '証明書ファイルの設定ができませんでした。',
+    'admin.store.plugin.popup.delete.confirm.title' => 'プラグインの削除を確認する',
+    'admin.store.plugin.popup.delete.confirm.message' => 'このプラグインを削除してもよろしいですか？',
     'admin.preview.register.complete' => 'プレビューを登録しました',
     'admin.change_password.save.complete' => 'パスワードを変更しました。',
     'admin.change_password.save.error' => 'パスワードを変更できませんでした。',
@@ -2033,10 +2035,10 @@ return [
     'admin.store.authentication_setting.804' => '認証キー設定',
     'admin.store.authentication_setting.805' => '認証キー設定',
     'admin.store.authentication_setting.806' => '認証キー',
-    'admin.store.authentication_setting.807' => '※認証キーは<a target="_blank" href="%owners_store_url%">EC-CUBEオーナーズストア</a>で取得できます。',
+    'admin.store.authentication_setting.807' => '※認証キーは<a target="_blank" href="owners_store_url">EC-CUBEオーナーズストア</a>で取得できます。',
     'admin.store.authentication_setting.808' => '設定',
-    'admin.store.plugin.809' => 'オーナーズストア',
-    'admin.store.plugin.810' => 'プラグイン一覧',
+    'admin.store.plugin.809' => 'プラグイン一覧',
+    'admin.store.plugin.810' => 'オーナーズストア',
     'admin.store.plugin.811' => 'プラグインの新規追加はこちら',
     'admin.store.plugin.812' => 'オーナーズストアプラグイン',
     'admin.store.plugin.813' => 'プラグインのアップロードはこちら',
@@ -2075,6 +2077,8 @@ return [
     'admin.store.plugin_owners_confirm.846' => '最終更新日',
     'admin.store.plugin_owners_confirm.847' => 'EC-CUBE対応バージョン',
     'admin.store.plugin_owners_confirm.848' => 'ファイルサイズ<br>約 %size% KB',
+    'admin.store.plugin_owners_confirm.848.1' => 'ファイルサイズ',
+    'admin.store.plugin_owners_confirm.848.2' => '約',
     'admin.store.plugin_owners_confirm.849' => 'ライセンス',
     'admin.store.plugin_owners_confirm.850' => 'このプラグインはEC-CUBE %version%をサポートしていないため、正常に動作しない可能性があります。',
     'admin.store.plugin_owners_confirm.851' => '%dependency%が必要です。同時にインストールされます。',
@@ -2177,6 +2181,9 @@ return [
     'admin.store.unregisterd_plugin_table.948' => '詳細を表示',
     'admin.store.unregisterd_plugin_table.949' => '不明',
     'admin.store.unregisterd_plugin_table.950' => '設定',
+    'admin.store.install.label' => 'プラグイン (zip、tar、tar.gz形式)',
+
+
 
     //asdasdasdas
     'application.text.error.access' => '',
