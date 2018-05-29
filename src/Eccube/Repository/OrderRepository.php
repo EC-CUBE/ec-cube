@@ -269,6 +269,13 @@ class OrderRepository extends AbstractRepository
                 ->setParameter('order_id', $searchData['order_id']);
         }
 
+        // order_code
+        if (isset($searchData['order_code']) && StringUtil::isNotBlank($searchData['order_code'])) {
+            $qb
+                ->andWhere('o.order_code = :order_code')
+                ->setParameter('order_code', $searchData['order_code']);
+        }
+
         // order_id_start
         if (isset($searchData['order_id_start']) && StringUtil::isNotBlank($searchData['order_id_start'])) {
             $qb
