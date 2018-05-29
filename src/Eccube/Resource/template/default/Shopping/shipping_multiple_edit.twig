@@ -19,6 +19,11 @@ file that was distributed with this source code.
 {% block main %}
     <h1 class="page-heading">お届け先の追加</h1>
     <div id="detail_wrap" class="container-fluid">
+        {% if error is defined %}
+            <div class="row">
+                <span>{{ error }}</span>
+            </div>
+        {% endif %}
         <div id="detail_box" class="row">
             <form method="post" action="{{ url('shopping_shipping_multiple_edit') }}" class="h-adr">
                 <span class="p-country-name" style="display:none;">Japan</span>
