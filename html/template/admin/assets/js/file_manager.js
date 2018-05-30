@@ -205,6 +205,39 @@
         eccube.fileManager.treeStatusHidden = treeHidden;
         eccube.fileManager.modeHidden = mode;
 
+        var tmp = [];
+        $.each(arrTree, function (key, value) {
+            arrTree[key]['path'] = value[2];
+            arrTree[key]['depth'] = value[3];
+            arrTree[key]['name'] = value['path'].split('/').slice(-1).pop();
+            arrTree[key]['name'] = arrTree[key]['name'] ? arrTree[key]['name'] : 'user_data';
+            arrTree[key]['children'] = [];
+            if (tmp[value['depth']] === undefined) {
+                tmp[value['depth']] = [value];
+            } else {
+                tmp[value['depth']].push(value);
+            }
+        });
+
+        var i = tmp.length - 1;
+        for (i; i>0; i--) {
+            var j = i - 1;
+            $.each(tmp[i], function (iKey, iValue) {
+                $.each(tmp[j], function (jKey, jValue) {
+                    if (iValue[2].indexOf(jValue[2]) === 0) {
+                        jValue['children'].push(iValue);
+                        return false;
+                    }
+                });
+            });
+            delete tmp[i];
+        }
+        var rootNode = tmp[0][0];
+        var li = eccube.fileManager.buildDirectoryNode(rootNode['name'], rootNode['path'], rootNode['children'], openFolder);
+        eccube.fileManager.tree = li.html();
+        $('#'+view_id).html(li);
+
+        /** FIXME: will be remove comment when solution accepted
         var id, level, old_id, old_level, tmp_level, sort_no_img, display, arrFileSplit, file_name, folder_img;
 
         for(var i = 0; i < arrTree.length; i++) {
@@ -282,6 +315,50 @@
 
         }
         document.getElementById(view_id).innerHTML = eccube.fileManager.tree;
+
+         */
+    };
+
+    // build directory node
+    eccube.fileManager.buildDirectoryNode = function(name, path, children, currentPath) {
+        var ul = $('<ul></ul>'),
+            li = $('<li></li>'),
+            label = $('<label></label>'),
+            a = $('<a href="#"></a>');
+
+        a.html(name);
+        a.on('click', function (e) {
+            eccube.fileManager.openFolder(path);
+            return e.preventDefault();
+        });
+        a.appendTo(label);
+
+        label.attr('data-toggle', 'collapse');
+        label.attr('href', '#' + path.replace('/', '_'));
+        label.attr('aria-expanded', false);
+        label.attr('aria-control', '');
+        label.appendTo(li);
+
+        if (path !== currentPath) {
+            label.addClass('collapsed')
+        }
+
+        if (children.length) {
+            if (path === currentPath) {
+                ul.addClass('collapsed');
+            } else {
+                ul.addClass('collapse');
+            }
+
+            ul.attr('id', path.replace('/', '_'));
+            $.each(children, function (k, v) {
+                var li = eccube.fileManager.buildDirectoryNode(v['name'], v['path'], v['children']);
+                li.appendTo(ul);
+            });
+            ul.appendTo(li);
+        }
+
+        return li;
     };
 
     // Tree状態をhiddenにセット
