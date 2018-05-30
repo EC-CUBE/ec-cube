@@ -104,13 +104,13 @@ file that was distributed with this source code.
             updateSortNo();
             // Delete of images
             var count_del = 0;
-            $("#thumb").on("click", 'span.delete-image', function () {
-                console.log($(this).html());
+            $("#thumb").on("click", '.delete-image', function () {
                 var $new_delete_image = $(proto_del.replace(/__name__/g, count_del));
-                var src = $(this).parents('div.c-form__fileUploadThumbnail').find('input').val();
+                var thumbnail = $(this).parents('div.c-form__fileUploadThumbnail');
+                var src = $(thumbnail).find('input').val();
                 $new_delete_image.val(src);
                 $("#thumb").append($new_delete_image);
-                $(this).parents('div.c-form__fileUploadThumbnail').remove();
+                $(thumbnail).remove();
                 hideSvg();
                 updateSortNo();
                 count_del++;
