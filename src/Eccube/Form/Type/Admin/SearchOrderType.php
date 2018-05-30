@@ -81,8 +81,8 @@ class SearchOrderType extends AbstractType
                 'label' => 'searchorder.label.email',
                 'required' => false,
             ])
-            ->add('order_id', IntegerType::class, [
-                'label' => 'searchorder.label.order_id',
+            ->add('order_code', TextType::class, [
+                'label' => 'searchorder.label.order_code',
                 'required' => false,
             ])
             ->add('tel', TextType::class, [
