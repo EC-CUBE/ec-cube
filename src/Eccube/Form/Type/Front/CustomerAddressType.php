@@ -51,12 +51,15 @@ class CustomerAddressType extends AbstractType
         $builder
             ->add('name', NameType::class, [
                 'required' => true,
+                'label' => 'abcddf',
             ])
             ->add('kana', KanaType::class, [
                 'required' => true,
+                'label' => 'kana',
             ])
             ->add('company_name', TextType::class, [
                 'required' => false,
+                'label' => 'company_name',
                 'constraints' => [
                     new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_stext_len'],
