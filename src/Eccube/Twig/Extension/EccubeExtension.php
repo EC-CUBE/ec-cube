@@ -77,7 +77,7 @@ class EccubeExtension extends AbstractExtension
             new TwigFilter('price', [$this, 'getPriceFilter']),
             new TwigFilter('ellipsis', [$this, 'getEllipsis']),
             new TwigFilter('time_ago', [$this, 'getTimeAgo']),
-            new TwigFilter('file_ext_css_class', [$this, 'getFileExtCssClass']),
+            new TwigFilter('file_ext_icon', [$this, 'getExtensionIcon'], ['is_safe' => ['html']]),
         ];
     }
 
@@ -306,15 +306,16 @@ class EccubeExtension extends AbstractExtension
     }
 
     /**
-     * Display css class icon for file ext
+     * Display file extension icon
      *
      * @param $ext
+     * @param $attr
      *
      * @return string
      */
-    public function getFileExtCssClass($ext)
+    public function getExtensionIcon($ext, $attr = [])
     {
-        $class = [
+        $classes = [
             'txt' => 'fa-file-text-o',
             'rtf' => 'fa-file-text-o',
             'pdf' => 'fa-file-pdf-o',
@@ -343,7 +344,16 @@ class EccubeExtension extends AbstractExtension
             'mov' => 'fa-file-video-o',
             'mkv' => 'fa-file-video-o',
         ];
+        $class = isset($classes[$ext]) ? $classes[$ext] : 'fa-file';
+        $attr['class'] = isset($attr['class'])
+            ? $attr['class']." fa {$class}"
+            : "fa {$class}";
 
-        return isset($class[$ext]) ? $class[$ext] : 'fa-file';
+        $html = "<i ";
+        foreach ($attr as $name => $value) {
+            $html .= "{$name}=\"$value\" ";
+        }
+        $html .= "></i>";
+        return $html;
     }
 }
