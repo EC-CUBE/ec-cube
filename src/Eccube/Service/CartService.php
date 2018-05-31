@@ -22,7 +22,11 @@ use Eccube\Repository\OrderRepository;
 use Eccube\Service\Cart\CartItemAllocator;
 use Eccube\Service\Cart\CartItemComparator;
 use Eccube\Service\OrderHelper;
+use Eccube\Util\StringUtil;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 
 class CartService
@@ -75,6 +79,16 @@ class CartService
     protected $orderRepository;
 
     /**
+     * @var TokenStorageInterface
+     */
+    protected $tokenStorage;
+
+    /**
+     * @var AuthorizationCheckerInterface
+     */
+    protected $authorizationChecker;
+
+    /**
      * CartService constructor.
      *
      * @param SessionInterface $session
@@ -82,6 +96,9 @@ class CartService
      * @param ProductClassRepository $productClassRepository
      * @param CartItemComparator $cartItemComparator
      * @param CartItemAllocator $cartItemAllocator
+     * @param OrderHelper $orderHelper
+     * @param TokenStorageInterface $tokenStorage
+     * @param AuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(
         SessionInterface $session,
@@ -90,7 +107,9 @@ class CartService
         CartItemComparator $cartItemComparator,
         CartItemAllocator $cartItemAllocator,
         OrderHelper $orderHelper,
-        OrderRepository $orderRepository
+        OrderRepository $orderRepository,
+        TokenStorageInterface $tokenStorage,
+        AuthorizationCheckerInterface $authorizationChecker
     ) {
         $this->session = $session;
         $this->entityManager = $entityManager;
@@ -99,29 +118,49 @@ class CartService
         $this->cartItemAllocator = $cartItemAllocator;
         $this->orderHelper = $orderHelper;
         $this->orderRepository = $orderRepository;
+        $this->tokenStorage = $tokenStorage;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     public function getCarts()
     {
         if (is_null($this->carts)) {
             $this->carts = $this->session->get('carts', []);
-            // $this->loadItems();
+            // $this->loadItems(); // TODO deprecated
         }
 
-        // TODO
+        // TODO loadItems() の代替
         foreach ($this->carts as &$Cart) {
-            if ($Cart->getPreOrderId() && $Order = $this->orderRepository->findOneBy(['pre_order_id' => $Cart->getPreOrderId()])) {
-                $Cart = $this->orderHelper->convertToCart($Order);
-            } else {
-                /** @var CartItem $item */
-                foreach ($Cart->getItems() as $item) {
-                    /** @var ProductClass $ProductClass */
-                    $ProductClass = $this->productClassRepository->find($item->getProductClassId());
-                    $item->setProductClass($ProductClass);
-                }
+
+            /** @var CartItem $item */
+            foreach ($Cart->getItems() as $item) {
+                /** @var ProductClass $ProductClass */
+                $ProductClass = $this->productClassRepository->find($item->getProductClassId());
+                $item->setProductClass($ProductClass);
             }
         }
+
         return $this->carts;
+    }
+
+    /**
+     * 会員が保持する購入処理中の受注と、カートをマージする.
+     *
+     * @return void
+     */
+    public function mergeFromOrders()
+    {
+        $Order = $this->orderRepository->getExistsOrdersByCustomer($this->tokenStorage->getToken()->getUser());
+
+        $Carts = $this->getCarts();
+        $ExistsCart = $this->orderHelper->convertToCart($Order);
+        $allCartItems = [];
+        foreach ($Carts as $Cart) {
+            $allCartItems = $this->mergeCartitems($Cart->getCartItems(), $allCartItems);
+        }
+
+        $CartItems = $this->mergeCartitems($ExistsCart->getItems(), $allCartItems);
+        $this->restoreCarts($CartItems);
     }
 
     /**
@@ -141,6 +180,9 @@ class CartService
         return current($this->getCarts());
     }
 
+    /**
+     * @deprecated
+     */
     protected function loadItems()
     {
         foreach ($this->getCarts() as &$Cart) {
@@ -212,6 +254,7 @@ class CartService
             } else {
                 $Cart = new Cart();
                 $Cart->addCartItem($item);
+                    //->setPreOrderId(sha1(StringUtil::random(32))); // TODO
                 $Carts[$cartId] = $Cart;
             }
         }
@@ -291,23 +334,26 @@ class CartService
         return true;
     }
 
-    public function save()
+    public function save($Carts = null)
     {
+        if ($Carts) {
+            $this->carts = $Carts;
+        }
         return $this->session->set('carts', $this->carts);
     }
 
     public function unlock()
     {
         $this->getCart()
-            ->setLock(false)
-            ->setPreOrderId(null);
+            ->setLock(false);
+            // ->setPreOrderId(null);
     }
 
     public function lock()
     {
         $this->getCart()
-            ->setLock(true)
-            ->setPreOrderId(null);
+            ->setLock(true);
+            // ->setPreOrderId(null);
     }
 
     /**
@@ -347,7 +393,8 @@ class CartService
         $removed = array_splice($Carts, 0, 1);
         if (!empty($removed)) {
             $removedCart = $removed[0];
-            $removedCart->setPreOrderId(null)
+            $removedCart
+                // ->setPreOrderId(null)
                 ->setLock(false)
                 ->setTotalPrice(0)
                 ->clearCartItems();

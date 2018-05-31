@@ -24,7 +24,10 @@ use Eccube\Event\EventArgs;
 use Eccube\Form\Type\ShippingMultipleType;
 use Eccube\Repository\Master\OrderItemTypeRepository;
 use Eccube\Repository\Master\PrefRepository;
+use Eccube\Repository\OrderRepository;
 use Eccube\Service\ShoppingService;
+use Eccube\Service\CartService;
+use Eccube\Service\OrderHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -48,20 +51,43 @@ class ShippingMultipleController extends AbstractShoppingController
     protected $shoppingService;
 
     /**
+     * @var CartService
+     */
+    protected $cartService;
+
+    /**
+     * @var OrderRepository
+     */
+    protected $orderRepository;
+
+    /**
+     * @var OrderHelper
+     */
+    protected $orderHelper;
+
+    /**
      * ShippingMultipleController constructor.
      *
      * @param PrefRepository $prefRepository
      * @param OrderItemTypeRepository $orderItemTypeRepository
      * @param ShoppingService $shoppingService
+     * @param CartService $cartService,
+     * @param OrderHelper $orderHelper
      */
     public function __construct(
         PrefRepository $prefRepository,
+        OrderRepository $orderRepository,
         OrderItemTypeRepository $orderItemTypeRepository,
-        ShoppingService $shoppingService
+        ShoppingService $shoppingService,
+        CartService $cartService,
+        OrderHelper $orderHelper
     ) {
         $this->prefRepository = $prefRepository;
+        $this->orderRepository = $orderRepository;
         $this->orderItemTypeRepository = $orderItemTypeRepository;
         $this->shoppingService = $shoppingService;
+        $this->cartService = $cartService;
+        $this->orderHelper = $orderHelper;
     }
 
 
@@ -299,6 +325,18 @@ class ShippingMultipleController extends AbstractShoppingController
             $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_MULTIPLE_COMPLETE, $event);
 
             log_info('複数配送設定処理完了', [$Order->getId()]);
+
+            $Carts = $this->cartService->getCarts();
+
+            foreach ($Carts as &$Cart) {
+                if ($Cart->getPreOrderId() && $Order = $this->orderRepository->findOneBy(['pre_order_id' => $Cart->getPreOrderId()])) {
+                    $this->entityManager->refresh($Order);
+                    $OrderItems = $Order->getOrderItems();
+                    $Cart = $this->orderHelper->convertToCart($Order);
+                }
+            }
+
+            $this->cartService->save($Carts);
 
             return $this->redirectToRoute('shopping');
         }
