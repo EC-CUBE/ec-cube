@@ -1823,6 +1823,8 @@ return [
     'admin.setting.system.masterdata.681' => '空のIDを登録すると、値は削除されます。',
     'admin.setting.system.masterdata.682' => '設定値によってはサイトが機能しなくなる場合もありますので、十分ご注意下さい。',
     'admin.setting.system.masterdata.683' => '登録',
+    'admin.setting.system.masterdata.th_id' => 'ID',
+    'admin.setting.system.masterdata.th_name' => 'Name',
     'admin.setting.system.member.684' => 'システム設定',
     'admin.setting.system.member.685' => 'メンバー管理',
     'admin.setting.system.member.686' => 'メンバー管理',
