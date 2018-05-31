@@ -114,6 +114,7 @@ class EA06ContentsManagementCest
         FileManagePage::go($I)
             ->一覧_削除(1);
         $I->acceptPopup();
+        // Todo: add test case to test the folder delete
     }
 
     public function contentsmanagement_ページ管理(\AcceptanceTester $I)
