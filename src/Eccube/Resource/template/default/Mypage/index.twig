@@ -33,11 +33,7 @@ file that was distributed with this source code.
                                 <p class="ec-historyListHeader__date">{{ Order.order_date|date("Y/m/d H:i:s") }}</p>
                                 <dl class="ec-definitions">
                                     <dt>{{'admin.mail.order.200'|trans}}</dt>
-                                    <dd>{{ Order.id }}</dd>
-                                </dl>
-                                <dl class="ec-definitions">
-                                    <dt>ご注文コード：</dt> {# TODO 未翻訳 #}
-                                    <dd>{{ Order.code }}</dd>
+                                    <dd>{{ Order.order_code }}</dd>
                                 </dl>
                                 <dl class="ec-definitions">
                                     <dt>{{  'mypage.history.label.order_status'|trans}}</dt>

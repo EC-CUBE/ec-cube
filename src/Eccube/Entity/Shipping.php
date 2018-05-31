@@ -28,6 +28,11 @@ use Eccube\Service\Calculator\OrderItemCollection;
  */
 class Shipping extends \Eccube\Entity\AbstractEntity
 {
+    public function getShippingMultipleDefaultName()
+    {
+        return $this->getName01().' '.$this->getPref()->getName().' '.$this->getAddr01().' '.$this->getAddr02();
+    }
+
     /**
      * @var int
      *
@@ -987,7 +992,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Get orderItems.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection|OrderItem[]
      */
     public function getOrderItems()
     {

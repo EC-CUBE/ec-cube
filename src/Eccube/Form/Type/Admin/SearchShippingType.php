@@ -177,9 +177,8 @@ class SearchShippingType extends AbstractType
             ->add('email', TextType::class, [
                 'required' => false,
             ])
-            // FIXME 未使用
             ->add('order_code', TextType::class, [
-                'label' => '注文コード',
+                'label' => '注文番号',
                 'required' => false,
             ])
             // FIXME 未使用

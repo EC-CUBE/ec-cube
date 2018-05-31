@@ -120,8 +120,8 @@ file that was distributed with this source code.
                 <div class="col-12">
                         {{ form_widget(searchForm._token) }}
                         <div>
-                            <label class="col-form-label">{{ 'admin.order.index.297'|trans }}</label>
-                            {{ form_widget(searchForm.multi,  {attr: { class : 'input_search' }}) }}
+                            <label class="col-form-label">{{ 'searchorder.label.multi'|trans }}</label>
+                            {{ form_widget(searchForm.multi) }}
                             {{ form_errors(searchForm.multi) }}
                         </div>
                         <div class="form-row">
@@ -223,9 +223,9 @@ file that was distributed with this source code.
             </div>
             <div class="row">
                 <div class="col">
-                    <label class="col-form-label">{{ 'admin.order.index.label_order_id'|trans }}</label>
-                    {{ form_widget(searchForm.order_id) }}
-                    {{ form_errors(searchForm.order_id) }}
+                    <label class="col-form-label">{{ 'searchorder.label.order_code'|trans }}</label>
+                    {{ form_widget(searchForm.order_code) }}
+                    {{ form_errors(searchForm.order_code) }}
                 </div>
                 <div class="col">
                     <label class="col-form-label">{{ 'admin.order.index.313'|trans }}</label>
@@ -429,7 +429,7 @@ file that was distributed with this source code.
                                             <input type="checkbox"  name="ids[]" id="check_{{ Order.id }}" value="{{ Order.id }}">
                                         </td>
                                         <td class="align-middle text-left" id="order_date--{{ Order.id }}">{{ Order.order_date|date_min }}</td>
-                                        <td class="align-middle text-center" id="id--{{ Order.id }}"><a class="action-edit" href="{{ url('admin_order_edit', { id : Order.id }) }}">{{ Order.id }}</a></td>
+                                        <td class="align-middle text-center" id="id--{{ Order.id }}"><a class="action-edit" href="{{ url('admin_order_edit', { id : Order.id }) }}">{{ Order.order_code }}</a></td>
                                         <td class="align-middle text-center" id="name--{{ Order.id }}">{{ Order.name01 }} {{ Order.name02 }}</td>
                                         <td class="align-middle text-center" id="payment_method--{{ Order.id }}">{{ Order.payment_method }}</td>
                                         <td class="align-middle text-right" id="payment_total--{{ Order.id }}">{{ Order.payment_total|price }}</td>

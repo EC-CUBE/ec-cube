@@ -90,8 +90,7 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
 
     public function 一覧_選択($rowNum)
     {
-        $targetOrderId = $this->一覧_注文番号($rowNum);
-        $this->tester->checkOption(['id' => 'check_'.$targetOrderId]);
+        $this->tester->checkOption(['css' => "#search_result > tbody > tr:nth-child(${rowNum}) > td > input[type=checkbox]"]);
         return $this;
     }
 
