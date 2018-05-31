@@ -307,8 +307,8 @@ class EA08SysteminfoCest
             ->登録();
 
         $I->see('権限設定を保存しました。', AuthorityManagePage::$完了メッセージ);
-        $I->dontSee('コンテンツ管理', '#side ul');
-        $I->dontSee('オーナーズストア', '#side ul');
+        $I->dontSee('コンテンツ管理', 'nav .c-mainNavArea__nav');
+        $I->dontSee('オーナーズストア', 'nav .c-mainNavArea__nav');
     }
 
     public function systeminfo_権限管理削除(\AcceptanceTester $I)
@@ -321,8 +321,8 @@ class EA08SysteminfoCest
             ->登録();
 
         $I->see('権限設定を保存しました。', AuthorityManagePage::$完了メッセージ);
-        $I->see('コンテンツ管理', '#side ul');
-        $I->see('オーナーズストア', '#side ul');
+        $I->see('コンテンツ管理', 'nav .c-mainNavArea__nav');
+        $I->see('オーナーズストア', 'nav .c-mainNavArea__nav');
     }
 
     public function systeminfo_ログ表示(\AcceptanceTester $I)
