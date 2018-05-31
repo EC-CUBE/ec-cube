@@ -344,7 +344,7 @@ class EccubeExtension extends AbstractExtension
             'mov' => 'fa-file-video-o',
             'mkv' => 'fa-file-video-o',
         ];
-        $class = isset($classes[$ext]) ? $classes[$ext] : 'fa-file';
+        $class = isset($classes[$ext]) ? $classes[$ext] : 'fa-file-o';
         $attr['class'] = isset($attr['class'])
             ? $attr['class']." fa {$class}"
             : "fa {$class}";
