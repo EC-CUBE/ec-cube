@@ -82,8 +82,6 @@ class EA06ContentsManagementCest
 
         $I->see('upload.txt', $FileManagePage->ファイル名(1));
 
-//        $I->getScenario()->incomplete('Incompleted caused by not implement download yet');
-
         $FileManagePage->一覧_ダウンロード(1);
         $UploadedFile = $I->getLastDownloadFile('/^upload\.txt$/');
         $I->assertEquals('This is uploaded file.', file_get_contents($UploadedFile));
@@ -103,7 +101,7 @@ class EA06ContentsManagementCest
 
         $I->see('folder1', $FileManagePage->ファイル名(1));
 
-        // Todo: check breadcrumbs
+        // Todo: breadcrumbs incomplete
 //        $FileManagePage->一覧_表示(1);
 //        $I->see('folder1', $FileManagePage->パンくず(1));
 

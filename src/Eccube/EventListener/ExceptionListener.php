@@ -66,6 +66,8 @@ class ExceptionListener implements EventSubscriberInterface
             }
         }
 
+        $message = $exception->getTraceAsString();
+
         try {
             $content = $this->twig->render('error.twig', [
                 'error_title' => $title,

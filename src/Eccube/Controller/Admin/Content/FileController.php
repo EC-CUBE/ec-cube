@@ -88,7 +88,6 @@ class FileController extends AbstractController
                     break;
             }
         }
-
         $tree = $this->getTree($this->getUserDataDir(), $request);
         $arrFileList = $this->getFileList($nowDir);
         $paths = $this->getPathsToArray($tree);
@@ -324,23 +323,20 @@ class FileController extends AbstractController
 
             return strpos($targetPath, $acceptPath) === 0;
         };
-        $dirFinder = Finder::create()
+
+        $finder = Finder::create()
             ->filter($filter)
             ->in($nowDir)
-            ->directories()
             ->sortByName()
             ->depth(0);
-        $fileFinder = Finder::create()
-            ->filter($filter)
-            ->in($nowDir)
-            ->files()
-            ->sortByName()
-            ->depth(0);
+        $dirFinder = $finder->directories();
         try {
             $dirs = $dirFinder->getIterator();
         } catch (\Exception $e) {
             $dirs = [];
         }
+
+        $fileFinder = $finder->files();
         try {
             $files = $fileFinder->getIterator();
         } catch (\Exception $e) {
@@ -349,7 +345,7 @@ class FileController extends AbstractController
 
         $arrFileList = [];
         foreach ($dirs as $dir) {
-            $dirPath = $this->getJailDir($this->normalizePath($dir->getRealPath()));
+            $dirPath = $this->normalizePath($dir->getRealPath());
             $childDir = Finder::create()
                 ->in($dirPath)
                 ->directories()
@@ -361,7 +357,7 @@ class FileController extends AbstractController
             $countNumber = $childDir->count() + $childFile->count();
             $arrFileList[] = [
                 'file_name' => $this->convertStrFromServer($dir->getFilename()),
-                'file_path' => $this->convertStrFromServer($dirPath),
+                'file_path' => $this->convertStrFromServer($this->getJailDir($dirPath)),
                 'file_size' => FilesystemUtil::sizeToHumanReadable($dir->getSize()),
                 'file_time' => date('Y/m/d', $dir->getmTime()),
                 'is_dir' => true,
