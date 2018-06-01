@@ -1376,7 +1376,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
 
         $orderItemArray = [];
 
-        /** @var ItemInterface $ProductOrderItem */
+        /** @var OrderItem $ProductOrderItem */
         foreach ($ProductOrderItems as $ProductOrderItem) {
             $productClassId = $ProductOrderItem->getProductClass()->getId();
             if (array_key_exists($productClassId, $orderItemArray)) {
@@ -1387,7 +1387,15 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
                 $OrderItem->setQuantity($quantity);
             } else {
                 // 新規規格の商品は新しく追加する
-                $orderItemArray[$productClassId] = $ProductOrderItem;
+                $OrderItem = new OrderItem();
+                $OrderItem
+                    ->setProduct($ProductOrderItem->getProduct())
+                    ->setProductName($ProductOrderItem->getProductName())
+                    ->setClassCategoryName1($ProductOrderItem->getClassCategoryName1())
+                    ->setClassCategoryName2($ProductOrderItem->getClassCategoryName2())
+                    ->setPriceIncTax($ProductOrderItem->getPriceIncTax())
+                    ->setQuantity($ProductOrderItem->getQuantity());
+                $orderItemArray[$productClassId] = $OrderItem;
             }
         }
 
