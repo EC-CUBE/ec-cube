@@ -346,22 +346,27 @@ class CartService
         return $this->session->set('carts', $this->carts);
     }
 
+    /**
+     * @deprecated
+     */
     public function unlock()
     {
         $this->getCart()
             ->setLock(false);
-            // ->setPreOrderId(null);
     }
 
+    /**
+     * @deprecated
+     */
     public function lock()
     {
         $this->getCart()
             ->setLock(true);
-            // ->setPreOrderId(null);
     }
 
     /**
      * @return bool
+     * @deprecated
      */
     public function isLocked()
     {

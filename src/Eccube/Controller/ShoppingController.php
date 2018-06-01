@@ -553,10 +553,6 @@ class ShoppingController extends AbstractShoppingController
      */
     public function login(Request $request, AuthenticationUtils $authenticationUtils)
     {
-        // if (!$this->cartService->isLocked()) {
-        //     return $this->redirectToRoute('cart');
-        // }
-
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $this->redirectToRoute('shopping');
         }
@@ -616,14 +612,6 @@ class ShoppingController extends AbstractShoppingController
      */
     public function checkToCart(Request $request)
     {
-        // カートチェック
-        // if (!$this->cartService->isLocked()) {
-        //     log_info('カートが存在しません');
-
-        //     // カートが存在しない、カートがロックされていない時はエラー
-        //     return $this->redirectToRoute('cart');
-        // }
-
         // カートチェック
         if (count($this->cartService->getCart()->getCartItems()) <= 0) {
             log_info('カートに商品が入っていないためショッピングカート画面にリダイレクト');
