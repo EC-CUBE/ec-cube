@@ -127,10 +127,8 @@ class CartService
     {
         if (is_null($this->carts)) {
             $this->carts = $this->session->get('carts', []);
-            // $this->loadItems(); // TODO deprecated
         }
 
-        // TODO loadItems() の代替
         foreach ($this->carts as &$Cart) {
 
             /** @var CartItem $item */
@@ -258,7 +256,6 @@ class CartService
             } else {
                 $Cart = new Cart();
                 $Cart->addCartItem($item);
-                    //->setPreOrderId(sha1(StringUtil::random(32))); // TODO
                 $Carts[$cartId] = $Cart;
             }
         }
@@ -403,7 +400,6 @@ class CartService
         if (!empty($removed)) {
             $removedCart = $removed[0];
             $removedCart
-                // ->setPreOrderId(null)
                 ->setLock(false)
                 ->setTotalPrice(0)
                 ->clearCartItems();

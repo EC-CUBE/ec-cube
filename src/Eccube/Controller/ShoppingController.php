@@ -675,12 +675,6 @@ class ShoppingController extends AbstractShoppingController
         // 受注関連情報を最新状態に更新
         $this->entityManager->refresh($Order);
 
-        // 同一 preOrderId はカートの情報で Order を上書き
-        // preOrderId が異なる
-        // かつ 同一販売種別(CartAllocator にて判定できる？)
-        // かつ 同一会員の購入処理中 Order が存在する場合はマージする
-        // 明細は CartComparetor で比較する
-
         $this->parameterBag->set('Order', $Order);
 
         return new Response();
