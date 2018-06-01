@@ -15,6 +15,7 @@ namespace Eccube\Service;
 
 use Eccube\Entity\Cart;
 use Eccube\Entity\CartItem;
+use Eccube\Entity\Customer;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\ProductClassRepository;
@@ -146,11 +147,12 @@ class CartService
     /**
      * 会員が保持する購入処理中の受注と、カートをマージする.
      *
+     * @param Customer $Customer
      * @return void
      */
-    public function mergeFromOrders()
+    public function mergeFromOrders(Customer $Customer)
     {
-        $Order = $this->orderRepository->getExistsOrdersByCustomer($this->tokenStorage->getToken()->getUser());
+        $Order = $this->orderRepository->getExistsOrdersByCustomer($Customer);
         if ($Order) {
             $Carts = $this->getCarts();
             $ExistsCart = $this->orderHelper->convertToCart($Order);
