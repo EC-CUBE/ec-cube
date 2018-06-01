@@ -41,9 +41,9 @@ file that was distributed with this source code.
                         </div>
                         <div class="card-body">
                             {% if CustomerAddress.id %}
-                                <div class="row mb-2 form-group">
+                                <div class="row mb-2">
                                     <div class="col-3">
-                                        <label class="col-sm-3 col-lg-2 control-label">{{ 'admin.customer.delivery_edit.113'|trans }}</label>
+                                        {{ 'admin.customer.delivery_edit.113'|trans }}
                                     </div>
                                     <div class="col">
                                         {{ CustomerAddress.id }}
@@ -102,7 +102,7 @@ file that was distributed with this source code.
                                     {{ form.zip.vars.label|trans }}
                                 </div>
                                 <div class="col form-inline">
-                                    〒{{ form_widget(form.zip.zip01) }}-{{ form_widget(form.zip.zip02) }}
+                                    〒&nbsp;&nbsp;{{ form_widget(form.zip.zip01) }}&nbsp;-&nbsp;{{ form_widget(form.zip.zip02) }}
                                     {{ form_errors(form.zip) }}
                                     {{ form_errors(form.zip.zip01) }}
                                     {{ form_errors(form.zip.zip02) }}
@@ -144,8 +144,9 @@ file that was distributed with this source code.
                                     {{ form.tel.vars.label|trans }}
                                 </div>
                                 <div class="col form-inline">
-                                    {{ form_widget(form.tel.tel01) }}-{{ form_widget(form.tel.tel02) }}
-                                    -{{ form_widget(form.tel.tel03) }}
+                                    {{ form_widget(form.tel.tel01) }}&nbsp;-&nbsp;
+                                    {{ form_widget(form.tel.tel02) }}&nbsp;-&nbsp;
+                                    {{ form_widget(form.tel.tel03) }}
                                     {{ form_errors(form.tel.tel01) }}
                                     {{ form_errors(form.tel.tel02) }}
                                     {{ form_errors(form.tel.tel03) }}
@@ -157,8 +158,9 @@ file that was distributed with this source code.
                                     {{ form.fax.vars.label|trans }}
                                 </div>
                                 <div class="col form-inline">
-                                    {{ form_widget(form.fax.fax01) }}-{{ form_widget(form.fax.fax02) }}
-                                    -{{ form_widget(form.fax.fax03) }}
+                                    {{ form_widget(form.fax.fax01) }}&nbsp;-&nbsp;
+                                    {{ form_widget(form.fax.fax02) }}&nbsp;-&nbsp;
+                                    {{ form_widget(form.fax.fax03) }}
                                     {{ form_errors(form.fax.fax01) }}
                                     {{ form_errors(form.fax.fax02) }}
                                     {{ form_errors(form.fax.fax03) }}
