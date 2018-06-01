@@ -1366,6 +1366,35 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     }
 
     /**
+     * 同じ規格の商品の個数をまとめた受注明細を取得
+     *
+     * @return OrderItem[]
+     */
+    public function getAggregatedProductOrderItems()
+    {
+        $ProductOrderItems = $this->getProductOrderItems();
+
+        $orderItemArray = [];
+
+        /** @var ItemInterface $ProductOrderItem */
+        foreach ($ProductOrderItems as $ProductOrderItem) {
+            $productClassId = $ProductOrderItem->getProductClass()->getId();
+            if (array_key_exists($productClassId, $orderItemArray)) {
+                // 同じ規格の商品がある場合は個数をまとめる
+                /** @var ItemInterface $OrderItem */
+                $OrderItem = $orderItemArray[$productClassId];
+                $quantity = $OrderItem->getQuantity() + $ProductOrderItem->getQuantity();
+                $OrderItem->setQuantity($quantity);
+            } else {
+                // 新規規格の商品は新しく追加する
+                $orderItemArray[$productClassId] = $ProductOrderItem;
+            }
+        }
+
+        return array_values($orderItemArray);
+    }
+
+    /**
      * Add orderItem.
      *
      * @param \Eccube\Entity\OrderItem $OrderItem
