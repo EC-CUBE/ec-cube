@@ -1370,7 +1370,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
      *
      * @return OrderItem[]
      */
-    public function getAggregatedProductOrderItems()
+    public function getMergedProductOrderItems()
     {
         $ProductOrderItems = $this->getProductOrderItems();
 

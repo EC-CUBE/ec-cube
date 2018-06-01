@@ -43,7 +43,7 @@ file that was distributed with this source code.
                             </div>
                         </div>
                         <div class="ec-historyRole__detail">
-                            {% for OrderItem in Order.AggregatedProductOrderItems %}
+                            {% for OrderItem in Order.MergedProductOrderItems %}
                                 <div class="ec-imageGrid">
                                     <div class="ec-imageGrid__img">
                                         {% if OrderItem.Product is null %}
