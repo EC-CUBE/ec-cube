@@ -44,7 +44,6 @@ return [
     'common.label.option_delivery_fee_free_amount' => '送料無料条件（金額）',
     'common.label.option_delivery_free_quantity' => '送料無料条件（数量）',
     'common.label.option_product_delivery_fee' => '商品ごとの送料設定',
-    'common.label.option_multiple_shipping' => '複数配送',
     'common.label.option_customer_activate' => '仮会員機能',
     'common.label.option_mypage_order_status_display' => 'マイページに注文状況を表示',
     'common.label.option_favorite_product' => 'お気に入り商品機能',

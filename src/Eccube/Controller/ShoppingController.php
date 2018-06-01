@@ -132,8 +132,6 @@ class ShoppingController extends AbstractShoppingController
             return $this->redirectToRoute('cart');
         }
 
-        // 複数配送の場合、エラーメッセージを一度だけ表示
-        $this->forwardToRoute('shopping_handle_multiple_errors');
         $form = $this->parameterBag->get(OrderType::class);
 
         return [
@@ -322,7 +320,6 @@ class ShoppingController extends AbstractShoppingController
 
         // 受注に関連するセッションを削除
         $this->session->remove($this->sessionOrderKey);
-        $this->session->remove($this->sessionMultipleKey);
 
         // 非会員用セッション情報を空の配列で上書きする(プラグイン互換性保持のために削除はしない)
         $this->session->set($this->sessionKey, []);
@@ -681,7 +678,6 @@ class ShoppingController extends AbstractShoppingController
 
             // セッション情報を削除
             $this->session->remove($this->sessionOrderKey);
-            $this->session->remove($this->sessionMultipleKey);
         }
 
         // 受注関連情報を最新状態に更新
@@ -758,34 +754,6 @@ class ShoppingController extends AbstractShoppingController
                 default:
                     return $this->redirectToRoute('shopping');
             }
-        }
-
-        return new Response();
-    }
-
-    /**
-     * 複数配送時のエラーを表示する
-     *
-     * @ForwardOnly
-     * @Route("/shopping/handle_multiple_errors", name="shopping_handle_multiple_errors")
-     */
-    public function handleMultipleErrors(Request $request)
-    {
-        $Order = $this->parameterBag->get('Order');
-
-        // 複数配送の場合、エラーメッセージを一度だけ表示
-        if (!$this->session->has($this->sessionMultipleKey)) {
-            if (count($Order->getShippings()) > 1) {
-                if (!$this->BaseInfo->isOptionMultipleShipping()) {
-                    // 複数配送に設定されていないのに複数配送先ができればエラー
-                    $this->addRequestError('cart.product.type.kind');
-
-                    return $this->redirectToRoute('cart');
-                }
-
-                $this->addError('shopping.multiple.delivery');
-            }
-            $this->session->set($this->sessionMultipleKey, 'multiple');
         }
 
         return new Response();
