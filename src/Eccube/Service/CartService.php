@@ -151,16 +151,18 @@ class CartService
     public function mergeFromOrders()
     {
         $Order = $this->orderRepository->getExistsOrdersByCustomer($this->tokenStorage->getToken()->getUser());
+        if ($Order) {
+            $Carts = $this->getCarts();
+            $ExistsCart = $this->orderHelper->convertToCart($Order);
 
-        $Carts = $this->getCarts();
-        $ExistsCart = $this->orderHelper->convertToCart($Order);
-        $allCartItems = [];
-        foreach ($Carts as $Cart) {
-            $allCartItems = $this->mergeCartitems($Cart->getCartItems(), $allCartItems);
+            $allCartItems = [];
+            foreach ($Carts as $Cart) {
+                $allCartItems = $this->mergeCartitems($Cart->getCartItems(), $allCartItems);
+            }
+
+            $CartItems = $this->mergeCartitems($ExistsCart->getItems(), $allCartItems);
+            $this->restoreCarts($CartItems);
         }
-
-        $CartItems = $this->mergeCartitems($ExistsCart->getItems(), $allCartItems);
-        $this->restoreCarts($CartItems);
     }
 
     /**
