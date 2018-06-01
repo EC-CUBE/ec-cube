@@ -60,9 +60,9 @@ class FileController extends AbstractController
             ->getForm();
 
         // user_data_dir
-        // $userDataDir = $this->getUserDataDir();
-        // $topDir = $this->normalizePath($userDataDir);
-        $topDir = '/';
+         $userDataDir = $this->getUserDataDir();
+         $topDir = $this->normalizePath($userDataDir);
+//        $topDir = '/';
         // user_data_dirの親ディレクトリ
         $htmlDir = $this->normalizePath($this->getUserDataDir().'/../');
 
@@ -235,7 +235,8 @@ class FileController extends AbstractController
 
         $data = $form->getData();
         $topDir = $this->getUserDataDir();
-        $nowDir = $this->getUserDataDir($request->get('now_dir'));
+        $nowDir = $request->get('now_dir');
+
         if (!$this->checkDir($nowDir, $topDir)) {
             $this->errors[] = ['message' => 'file.text.error.invalid_upload_folder'];
 
@@ -335,8 +336,16 @@ class FileController extends AbstractController
             ->files()
             ->sortByName()
             ->depth(0);
-        $dirs = iterator_to_array($dirFinder);
-        $files = iterator_to_array($fileFinder);
+        try {
+            $dirs = $dirFinder->getIterator();
+        } catch (\Exception $e) {
+            $dirs = [];
+        }
+        try {
+            $files = $fileFinder->getIterator();
+        } catch (\Exception $e) {
+            $files = [];
+        }
 
         $arrFileList = [];
         foreach ($dirs as $dir) {

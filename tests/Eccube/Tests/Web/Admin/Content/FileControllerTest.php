@@ -75,7 +75,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
     public function testIndexWithCreate()
     {
         $folder = 'create_folder';
-        $crawler = $this->client->request(
+        $this->client->request(
             'POST',
             $this->generateUrl('admin_content_file'),
             [
@@ -87,7 +87,6 @@ class FileControllerTest extends AbstractAdminWebTestCase
                 'mode' => 'create',
             ]
         );
-
         $this->assertTrue($this->client->getResponse()->isSuccessful());
         $this->assertTrue(is_dir($this->getUserDataDir().'/'.$folder));
     }

@@ -113,7 +113,7 @@ file that was distributed with this source code.
 
                                     <table class="table">
                                         <tbody>
-                                            {% if tpl_is_top_dir != false %}
+                                            {% if tpl_is_top_dir == false %}
                                                 <tr id="parent_dir">
                                                     <td class="align-middle text-center">&nbsp;</td>
                                                     <td class="align-middle"><a onclick="eccube.setValue('select_file', '{{ tpl_parent_dir }}', 'form1'); eccube.fileManager.selectFile('parent_dir', '#808080');" onDblClick="eccube.fileManager.setTreeStatus('tree_status');eccube.fileManager.doubleClick(arrTree, '{{ tpl_parent_dir }}', true, '{{ tpl_now_dir }}', true)">TODO 上の階層へ</a></td>
