@@ -1,3 +1,4 @@
 /_output/*
 /_support/_downloads/*
+!/_support/_downloads/.gitkeep
 /_support/_generated/*
