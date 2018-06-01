@@ -86,7 +86,7 @@ file that was distributed with this source code.
                                         {{ form_widget(form.create_file) }}{# TODO ブレースホルダ #}
                                     </div>
                                     <div class="col-auto">
-                                        <a class="btn btn-ec-regular" href="javascript:" onclick="eccube.fileManager.setTreeStatus('tree_status');eccube.setModeAndSubmit('create','',''); return false;">{{'admin.content.file.28'|trans}}</a>
+                                        <a class="btn btn-ec-regular action-create" href="javascript:" onclick="eccube.fileManager.setTreeStatus('tree_status');eccube.setModeAndSubmit('create','',''); return false;">{{'admin.content.file.28'|trans}}</a>
                                     </div>
                                 </div>
                             </div>
@@ -150,7 +150,7 @@ file that was distributed with this source code.
                                                             {% if file.is_empty %}
                                                                 <div class="row justify-content-end">
                                                                 <div class="col-auto text-center">
-                                                                    <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#confirmModal-{{ loop.index }}" data-tooltip="tooltip" data-placement="top" title="{{'admin.content.file.34'|trans}}" data-original-title="{{'admin.content.file.34'|trans}}"><i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a>
+                                                                    <a class="btn btn-ec-actionIcon action-delete" data-toggle="modal" data-target="#confirmModal-{{ loop.index }}" data-tooltip="tooltip" data-placement="top" title="{{'admin.content.file.34'|trans}}" data-original-title="{{'admin.content.file.34'|trans}}"><i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a>
                                                                     <div class="modal fade" id="confirmModal-{{ loop.index }}" tabindex="-1" role="dialog" aria-labelledby="confirmModal-{{ loop.index }}" aria-hidden="true">
                                                                         <div class="modal-dialog" role="document">
                                                                             <div class="modal-content">
@@ -179,15 +179,15 @@ file that was distributed with this source code.
                                                         <td class="align-middle text-right pr-3">
                                                             <div class="row justify-content-end">
                                                                 <div class="col-auto text-center">
-                                                                    <a href="{{ url('admin_content_file_view') }}?file={{ file.file_path|e('url') }}" class="btn btn-ec-actionIcon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{'admin.content.file.36'|trans}}" ><i class="fa fa-eye fa-lg text-secondary" aria-hidden="true"></i></a>
+                                                                    <a href="{{ url('admin_content_file_view') }}?file={{ file.file_path|e('url') }}" class="btn btn-ec-actionIcon action-view" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{'admin.content.file.36'|trans}}" ><i class="fa fa-eye fa-lg text-secondary" aria-hidden="true"></i></a>
                                                                 </div>
 
                                                                 <div class="col-auto text-center">
-                                                                    <a href="{{ url('admin_content_file_download') }}?select_file={{ file.file_path|e('url') }}" class="btn btn-ec-actionIcon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{'admin.content.file.37'|trans}}"><i class="fa fa-cloud-download fa-lg text-secondary" aria-hidden="true"></i></a>
+                                                                    <a href="{{ url('admin_content_file_download') }}?select_file={{ file.file_path|e('url') }}" class="btn btn-ec-actionIcon action-download" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{'admin.content.file.37'|trans}}"><i class="fa fa-cloud-download fa-lg text-secondary" aria-hidden="true"></i></a>
                                                                 </div>
 
                                                                 <div class="col-auto text-center">
-                                                                    <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#confirmModal-{{ loop.index }}" data-tooltip="tooltip" data-placement="top" title="{{'admin.content.file.34'|trans}}" data-original-title="{{'admin.content.file.34'|trans}}"><i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a>
+                                                                    <a class="btn btn-ec-actionIcon action-delete" data-toggle="modal" data-target="#confirmModal-{{ loop.index }}" data-tooltip="tooltip" data-placement="top" title="{{'admin.content.file.34'|trans}}" data-original-title="{{'admin.content.file.34'|trans}}"><i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a>
 
                                                                     <div class="modal fade" id="confirmModal-{{ loop.index }}" tabindex="-1" role="dialog" aria-labelledby="confirmModal-{{ loop.index }}" aria-hidden="true">
                                                                         <div class="modal-dialog" role="document">

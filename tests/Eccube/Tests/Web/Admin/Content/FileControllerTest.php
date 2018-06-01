@@ -85,6 +85,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
                     'file' => '',
                 ],
                 'mode' => 'create',
+                'now_dir' => $this->getUserDataDir(),
             ]
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -115,7 +116,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
                     'file' => $file,
                 ],
                 'mode' => 'upload',
-                'now_dir' => '/',
+                'now_dir' => $this->getUserDataDir(),
             ],
             ['file' => $file]
         );

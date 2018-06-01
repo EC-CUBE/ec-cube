@@ -82,7 +82,7 @@ class EA06ContentsManagementCest
 
         $I->see('upload.txt', $FileManagePage->ファイル名(1));
 
-        $I->getScenario()->incomplete('Incompleted caused by not implement download yet');
+//        $I->getScenario()->incomplete('Incompleted caused by not implement download yet');
 
         $FileManagePage->一覧_ダウンロード(1);
         $UploadedFile = $I->getLastDownloadFile('/^upload\.txt$/');
@@ -93,8 +93,8 @@ class EA06ContentsManagementCest
         $I->see('This is uploaded file.');
 
         FileManagePage::go($I)
-            ->一覧_削除(1);
-        $I->acceptPopup();
+            ->一覧_削除(1)
+            ->一覧_削除_accept(1);
         $I->dontSee('upload.txt', $FileManagePage->ファイル名(1));
 
         $FileManagePage = FileManagePage::go($I)
@@ -103,18 +103,17 @@ class EA06ContentsManagementCest
 
         $I->see('folder1', $FileManagePage->ファイル名(1));
 
-        $FileManagePage->一覧_表示(1);
-        $I->see('folder1', $FileManagePage->パンくず(1));
+        // Todo: check breadcrumbs
+//        $FileManagePage->一覧_表示(1);
+//        $I->see('folder1', $FileManagePage->パンくず(1));
 
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/content/file_manager');
         $I->see('ファイル管理コンテンツ管理', '.c-pageTitle');
 
-        // Todo: change to modal
         FileManagePage::go($I)
-            ->一覧_削除(1);
-        $I->acceptPopup();
-        // Todo: add test case to test the folder delete
+            ->一覧_削除(1)
+            ->一覧_削除_accept(1);
     }
 
     public function contentsmanagement_ページ管理(\AcceptanceTester $I)
