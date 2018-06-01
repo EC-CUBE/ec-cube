@@ -325,6 +325,7 @@
             li = $('<li></li>'),
             label = $('<label></label>'),
             a = $('<a href="#"></a>');
+        currentPath = currentPath || '';
 
         a.html(name);
         a.on('click', function (e) {
@@ -339,20 +340,20 @@
         label.attr('aria-control', '');
         label.appendTo(li);
 
-        if (path !== currentPath) {
+        if (currentPath.indexOf(path) !== 0) {
             label.addClass('collapsed')
         }
 
         if (children.length) {
-            if (path === currentPath) {
-                ul.addClass('collapsed');
-            } else {
+            if (currentPath.indexOf(path) !== 0) {
                 ul.addClass('collapse');
+            } else {
+                ul.addClass('collapsed');
             }
 
             ul.attr('id', path.replace('/', '_'));
             $.each(children, function (k, v) {
-                var li = eccube.fileManager.buildDirectoryNode(v['name'], v['path'], v['children']);
+                var li = eccube.fileManager.buildDirectoryNode(v['name'], v['path'], v['children'], currentPath);
                 li.appendTo(ul);
             });
             ul.appendTo(li);
