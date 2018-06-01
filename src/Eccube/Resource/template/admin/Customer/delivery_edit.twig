@@ -88,10 +88,10 @@ file that was distributed with this source code.
                             </div>
 
                             <div class="row mb-2">
-                                <div class="col-3">
+                                <div class="col-3 mb-2">
                                     {{ form.company_name.vars.label|trans }}
                                 </div>
-                                <div class="col">
+                                <div class="col mb-2">
                                     {{ form_widget(form.company_name) }}
                                     {{ form_errors(form.company_name) }}
                                 </div>
@@ -101,11 +101,20 @@ file that was distributed with this source code.
                                 <div class="col-3">
                                     {{ form.zip.vars.label|trans }}
                                 </div>
-                                <div class="col form-inline">
-                                    〒&nbsp;&nbsp;{{ form_widget(form.zip.zip01) }}&nbsp;-&nbsp;{{ form_widget(form.zip.zip02) }}
-                                    {{ form_errors(form.zip) }}
-                                    {{ form_errors(form.zip.zip01) }}
-                                    {{ form_errors(form.zip.zip02) }}
+                                <div class="col">
+                                    <div class="row mb-2">
+                                        <div class="col-auto pr-0 align-self-center"><span>{{ 'admin.customer.edit.post'|trans }}</span></div>
+                                        <div class="col-2">
+                                            {{ form_widget(form.zip.zip01) }}
+                                            {{ form_errors(form.zip) }}
+                                            {{ form_errors(form.zip.zip01) }}
+                                            {{ form_errors(form.zip.zip02) }}
+                                        </div>
+                                        <div class="col-auto p-0 align-self-center"><span>-</span></div>
+                                        <div class="col-2">
+                                            {{ form_widget(form.zip.zip02) }}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -113,7 +122,7 @@ file that was distributed with this source code.
                                 <div class="col-3">
                                     &nbsp;
                                 </div>
-                                <div class="col form-inline">
+                                <div class="col form-inline mb-2">
                                     {{ form_widget(form.address.pref) }}
                                     {{ form_errors(form.address.pref) }}
                                 </div>
@@ -123,7 +132,7 @@ file that was distributed with this source code.
                                 <div class="col-3">
                                     &nbsp;
                                 </div>
-                                <div class="col">
+                                <div class="col mb-2">
                                     {{ form_widget(form.address.addr01, { attr : { placeholder : 'admin.customer.delivery_edit.114'}} ) }}
                                     {{ form_errors(form.address.addr01) }}
                                 </div>
@@ -133,7 +142,7 @@ file that was distributed with this source code.
                                 <div class="col-3">
                                     &nbsp;
                                 </div>
-                                <div class="col">
+                                <div class="col mb-2">
                                     {{ form_widget(form.address.addr02, { attr : { placeholder : 'admin.customer.delivery_edit.115'}}) }}
                                     {{ form_errors(form.address.addr02) }}
                                 </div>
@@ -143,13 +152,23 @@ file that was distributed with this source code.
                                 <div class="col-3">
                                     {{ form.tel.vars.label|trans }}
                                 </div>
-                                <div class="col form-inline">
-                                    {{ form_widget(form.tel.tel01) }}&nbsp;-&nbsp;
-                                    {{ form_widget(form.tel.tel02) }}&nbsp;-&nbsp;
-                                    {{ form_widget(form.tel.tel03) }}
-                                    {{ form_errors(form.tel.tel01) }}
-                                    {{ form_errors(form.tel.tel02) }}
-                                    {{ form_errors(form.tel.tel03) }}
+                                <div class="col">
+                                    <div class="row mb-2 justify-content-start">
+                                        <div class="col-2">
+                                            {{ form_widget(form.tel.tel01) }}
+                                            {{ form_errors(form.tel.tel01) }}
+                                        </div>
+                                        <div class="col-auto text-center p-0"><span class="align-middle">-</span></div>
+                                        <div class="col-2">
+                                            {{ form_widget(form.tel.tel02) }}
+                                            {{ form_errors(form.tel.tel02) }}
+                                        </div>
+                                        <div class="col-auto text-center p-0"><span class="align-middle">-</span></div>
+                                        <div class="col-2">
+                                            {{ form_widget(form.tel.tel03) }}
+                                            {{ form_errors(form.tel.tel03) }}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -157,13 +176,23 @@ file that was distributed with this source code.
                                 <div class="col-3">
                                     {{ form.fax.vars.label|trans }}
                                 </div>
-                                <div class="col form-inline">
-                                    {{ form_widget(form.fax.fax01) }}&nbsp;-&nbsp;
-                                    {{ form_widget(form.fax.fax02) }}&nbsp;-&nbsp;
-                                    {{ form_widget(form.fax.fax03) }}
-                                    {{ form_errors(form.fax.fax01) }}
-                                    {{ form_errors(form.fax.fax02) }}
-                                    {{ form_errors(form.fax.fax03) }}
+                                <div class="col">
+                                    <div class="row mb-2 justify-content-start">
+                                        <div class="col-2">
+                                            {{ form_widget(form.fax.fax01) }}
+                                            {{ form_errors(form.fax.fax01) }}
+                                        </div>
+                                        <div class="col-auto text-center p-0"><span class="align-middle">-</span></div>
+                                        <div class="col-2">
+                                            {{ form_widget(form.fax.fax02) }}
+                                            {{ form_errors(form.fax.fax02) }}
+                                        </div>
+                                        <div class="col-auto text-center p-0"><span class="align-middle">-</span></div>
+                                        <div class="col-2">
+                                            {{ form_widget(form.fax.fax03) }}
+                                            {{ form_errors(form.fax.fax03) }}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
