@@ -15,7 +15,7 @@ namespace Eccube\Tests\Repository;
 
 use Eccube\Entity\Customer;
 use Eccube\Entity\Order;
-use Eccube\Repository\Master\OrderStatusRepository;
+use Eccube\Entity\Master\OrderStatus;
 use Eccube\Repository\OrderRepository;
 use Eccube\Tests\EccubeTestCase;
 
@@ -31,16 +31,13 @@ class OrderRepositoryTest extends EccubeTestCase
     /** @var Order */
     protected $Order;
 
-    /** @var OrderStatusRepository */
-    protected $orderStatusRepo;
     /** @var OrderRepository */
-    protected $orderRepo;
+    protected $orderRepository;
 
     public function setUp()
     {
         parent::setUp();
-        $this->orderStatusRepo = $this->container->get(OrderStatusRepository::class);
-        $this->orderRepo = $this->container->get(OrderRepository::class);
+        $this->orderRepository = $this->container->get(OrderRepository::class);
 
         $this->createProduct();
         $this->Customer = $this->createCustomer();
@@ -52,9 +49,9 @@ class OrderRepositoryTest extends EccubeTestCase
     public function testChangeStatusWithCommitted()
     {
         $orderId = $this->Order->getId();
-        $Status = $this->orderStatusRepo->find(5);
+        $Status = $this->entityManager->find(OrderStatus::class, OrderStatus::DELIVERED);
 
-        $this->orderRepo->changeStatus($orderId, $Status);
+        $this->orderRepository->changeStatus($orderId, $Status);
 
         $this->assertNotNull($this->Order->getShippingDate());
         $this->expected = 5;
@@ -65,9 +62,9 @@ class OrderRepositoryTest extends EccubeTestCase
     public function testChangeStatusWithPayment()
     {
         $orderId = $this->Order->getId();
-        $Status = $this->orderStatusRepo->find(6);
+        $Status = $this->entityManager->find(OrderStatus::class, OrderStatus::PAID);
 
-        $this->orderRepo->changeStatus($orderId, $Status);
+        $this->orderRepository->changeStatus($orderId, $Status);
 
         $this->assertNotNull($this->Order->getPaymentDate());
         $this->expected = 6;
@@ -78,9 +75,9 @@ class OrderRepositoryTest extends EccubeTestCase
     public function testChangeStatusWithOther()
     {
         $orderId = $this->Order->getId();
-        $Status = $this->orderStatusRepo->find(1);
+        $Status = $this->entityManager->find(OrderStatus::class, OrderStatus::NEW);
 
-        $this->orderRepo->changeStatus($orderId, $Status);
+        $this->orderRepository->changeStatus($orderId, $Status);
 
         $this->assertNull($this->Order->getShippingDate());
         $this->assertNull($this->Order->getPaymentDate());
@@ -92,7 +89,7 @@ class OrderRepositoryTest extends EccubeTestCase
         $this->createOrder($this->Customer);
         $this->createOrder($Customer2);
 
-        $qb = $this->orderRepo->getQueryBuilderByCustomer($this->Customer);
+        $qb = $this->orderRepository->getQueryBuilderByCustomer($this->Customer);
         $Orders = $qb->getQuery()->getResult();
 
         $this->expected = 2;
