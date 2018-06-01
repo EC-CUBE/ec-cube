@@ -259,8 +259,8 @@ class CartService
             }
         }
 
-        $this->session->set('carts', $Carts);
         // 配列のkeyを0からにする
+        $this->session->set('carts', array_values($Carts));
         $this->carts = array_values($Carts);
     }
 
