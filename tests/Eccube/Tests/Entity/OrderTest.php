@@ -14,8 +14,13 @@
 namespace Eccube\Tests\Entity;
 
 use Eccube\Entity\Customer;
+use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
+use Eccube\Entity\OrderItem;
+use Eccube\Entity\Product;
+use Eccube\Entity\ProductClass;
+use Eccube\Entity\Shipping;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\Master\SaleTypeRepository;
 use Eccube\Repository\TaxRuleRepository;
@@ -125,6 +130,43 @@ class OrderTest extends EccubeTestCase
         );
         $this->expected = $Order->getSubTotal() + $Order->getCharge() + $Order->getDeliveryFeeTotal() - $Order->getDiscount();
         $this->actual = $Order->getTotalPrice();
+        $this->verify();
+    }
+
+    public function testGetMergedProductOrderItems()
+    {
+        $quantity = '5';
+        $times = '2';
+
+        $Product = new Product();
+        $ProductClass = new ProductClass();
+        $Order = new Order();
+        $ItemProduct = $this->entityManager->find(OrderItemType::class, OrderItemType::PRODUCT);
+
+        foreach(range(1,$times) as $i){
+            $Shipping = new Shipping();
+
+            $OrderItem = new OrderItem();
+            $OrderItem->setShipping($Shipping)
+                ->setOrder($Order)
+                ->setProduct($Product)
+                ->setProductName('name')
+                ->setPriceIncTax('1000')
+                ->setQuantity($quantity)
+                ->setProductClass($ProductClass)
+                ->setClassCategoryName1('name1')
+                ->setClassCategoryName2('name2')
+                ->setOrderItemType($ItemProduct)
+            ;
+            $Shipping->addOrderItem($OrderItem);
+            $Order->addOrderItem($OrderItem);
+        }
+
+        $OrderItems = $Order->getMergedProductOrderItems();
+        $OrderItem = $OrderItems[0];
+
+        $this->expected = $quantity * $times;
+        $this->actual = $OrderItem->getQuantity();
         $this->verify();
     }
 }
