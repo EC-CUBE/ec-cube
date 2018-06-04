@@ -207,11 +207,11 @@ class ShippingMultipleController extends AbstractShoppingController
             foreach ($Order->getShippings() as $Shipping) {
                 foreach ($Shipping->getOrderItems() as $OrderItem) {
                     $Shipping->removeOrderItem($OrderItem);
+                    $Order->removeOrderItem($OrderItem);
                     $this->entityManager->remove($OrderItem);
                 }
                 $this->entityManager->remove($Shipping);
             }
-            $this->entityManager->flush();
 
             // お届け先のリストを作成する
             $ShippingList = [];
@@ -293,27 +293,28 @@ class ShippingMultipleController extends AbstractShoppingController
                             $OrderItem->setClassName2($ClassCategory2->getClassName()->getName());
                         }
                         $Shipping->addOrderItem($OrderItem);
+                        $Order->addOrderItem($OrderItem);
                         $this->entityManager->persist($OrderItem);
                     }
                 }
             }
 
-            // 送料を計算（お届け先ごと）
-            foreach ($ShippingList as $data) {
-                // data is product type => shipping
-                foreach ($data as $Shipping) {
-                    // 配送料金の設定
-                    $this->shoppingService->setShippingDeliveryFee($Shipping);
-                }
-            }
-
             // 合計金額の再計算
             $flowResult = $this->executePurchaseFlow($Order);
-            if ($flowResult->hasWarning() || $flowResult->hasError()) {
-                return $this->redirectToRoute('shopping_error');
+            if ($flowResult->hasWarning()) {
+
+                return [
+                    'form' => $form->createView(),
+                    'OrderItems' => $OrderItemsForFormBuilder,
+                    'compItemQuantities' => $ItemQuantitiesByClassId,
+                    'errors' => $errors,
+                ];
+            }
+            if ($flowResult->hasError()) {
+
+                return $this->redirectToRoute('cart');
             }
 
-            // 配送先を更新
             $this->entityManager->flush();
 
             $event = new EventArgs(
