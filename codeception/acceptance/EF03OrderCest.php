@@ -350,7 +350,6 @@ class EF03OrderCest
         // メール確認
         $I->seeEmailCount(2);
         foreach (array($customer->getEmail(), $BaseInfo->getEmail01()) as $email) {
-            // TODO 注文した商品の内容もチェックしたい
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
             $I->seeInLastEmailTo($email, $customer->getName01().' '.$customer->getName02().' 様');
             $I->seeInLastEmailTo($email, 'お名前　：'.$customer->getName01().' '.$customer->getName02().' 様');
