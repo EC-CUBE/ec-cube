@@ -394,7 +394,7 @@ class EF03OrderCest
 
         $I->resetEmails();
 
-        // お届け先追加
+        // -------- EF0305-UC05-T01_お届け先の追加 --------
         ShoppingPage::at($I)->お届け先追加();
 
         // 新規お届け先追加
@@ -416,6 +416,28 @@ class EF03OrderCest
 
         // 新規お届け先が追加されていることを確認
         $I->see($nameSei, '#form_shipping_multiple_0_shipping_0_customer_address > option:nth-child(2)');
+
+        // -------- EF0305-UC06-T01_複数配送 - 同じ商品種別（同一配送先） --------
+        // 複数配送設定
+        MultipleShippingPage::at($I)
+            ->お届け先追加()
+            ->入力_お届け先('0', '0', $customer->getName01())
+            ->入力_お届け先('0', '1', $customer->getName01())
+            ->入力_数量('0', '0', 2)
+            ->入力_数量('0', '1', 3)
+            ->選択したお届け先に送る()
+        ;
+
+        // 複数配送設定がされておらず、個数が１明細にまとめられていることを確認
+        $I->see('お届け先', '#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div:nth-child(2)');
+        $I->dontSee('お届け先(1)', '#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div:nth-child(2)');
+        $I->dontSee('お届け先(2)', '#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div:nth-child(6)');
+        $I->see(' × 5', '#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div:nth-child(3) > ul > li:nth-child(1) > div > div.ec-imageGrid__content > p:nth-child(2)');
+        $I->see($customer->getName01(), '#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div:nth-child(4) > p:nth-child(1)');
+
+        // -------- EF0305-UC06-T02_複数配送 - 同じ商品種別（別配送先） --------
+
+        ShoppingPage::at($I)->お届け先追加();
 
         // 複数配送設定
         MultipleShippingPage::at($I)
