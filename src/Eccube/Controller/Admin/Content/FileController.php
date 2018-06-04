@@ -113,8 +113,8 @@ class FileController extends AbstractController
      */
     public function view(Request $request)
     {
-        if ($this->checkDir($this->convertStrToServer($request->get('file')), $this->getUserDataDir())) {
-            $file = $this->convertStrToServer($request->get('file'));
+        $file = $this->convertStrToServer($this->getUserDataDir($request->get('file')));
+        if ($this->checkDir($file, $this->getUserDataDir())) {
             setlocale(LC_ALL, 'ja_JP.UTF-8');
 
             return new BinaryFileResponse($file);
@@ -146,8 +146,8 @@ class FileController extends AbstractController
                 $this->errors[] = ['message' => trans('file.text.error.folder_period')];
             } else {
                 $topDir = $this->getUserDataDir();
-                $nowDir = $this->checkDir($request->get('now_dir'), $this->getUserDataDir())
-                    ? $this->normalizePath($request->get('now_dir'))
+                $nowDir = $this->checkDir($this->getUserDataDir($request->get('now_dir')), $this->getUserDataDir())
+                    ? $this->normalizePath($this->getUserDataDir($request->get('now_dir')))
                     : $topDir;
                 $fs->mkdir($nowDir.'/'.$filename);
 
@@ -165,10 +165,11 @@ class FileController extends AbstractController
         $this->isTokenValid();
 
         $topDir = $this->getUserDataDir();
-        if ($this->checkDir($this->convertStrToServer($request->get('select_file')), $topDir)) {
+        $file = $this->convertStrToServer($this->getUserDataDir($request->get('select_file')));
+        if ($this->checkDir($file, $topDir)) {
             $fs = new Filesystem();
-            if ($fs->exists($this->convertStrToServer($request->get('select_file')))) {
-                $fs->remove($this->convertStrToServer($request->get('select_file')));
+            if ($fs->exists($file)) {
+                $fs->remove($file);
                 $this->addSuccess('admin.delete.complete', 'admin');
             }
         }
@@ -182,10 +183,9 @@ class FileController extends AbstractController
     public function download(Request $request)
     {
         $topDir = $this->getUserDataDir();
-        $file = $this->convertStrToServer($request->get('select_file'));
+        $file = $this->convertStrToServer($this->getUserDataDir($request->get('select_file')));
         if ($this->checkDir($file, $topDir)) {
             if (!is_dir($file)) {
-                $filename = $this->convertStrFromServer($file);
                 setlocale(LC_ALL, 'ja_JP.UTF-8');
                 $pathParts = pathinfo($file);
 
@@ -234,7 +234,7 @@ class FileController extends AbstractController
 
         $data = $form->getData();
         $topDir = $this->getUserDataDir();
-        $nowDir = $request->get('now_dir');
+        $nowDir = $this->getUserDataDir($request->get('now_dir'));
 
         if (!$this->checkDir($nowDir, $topDir)) {
             $this->errors[] = ['message' => 'file.text.error.invalid_upload_folder'];
@@ -417,7 +417,7 @@ class FileController extends AbstractController
     private function getJailDir($path)
     {
         $realpath = realpath($path);
-        $jailPath = str_replace($this->getUserDataDir(), '', $realpath);
+        $jailPath = str_replace(realpath($this->getUserDataDir()), '', $realpath);
 
         return $jailPath ? $jailPath : '/';
     }
