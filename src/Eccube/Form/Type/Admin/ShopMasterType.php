@@ -178,8 +178,6 @@ class ShopMasterType extends AbstractType
                 ],
             ])
             ->add('option_product_delivery_fee', ToggleSwitchType::class)
-            // 複数配送
-            ->add('option_multiple_shipping', ToggleSwitchType::class)
             // 会員設定
             ->add('option_customer_activate', ToggleSwitchType::class)
             // マイページに注文状況を表示する

@@ -221,13 +221,6 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * @var boolean
      *
-     * @ORM\Column(name="option_multiple_shipping", type="boolean", options={"default":false})
-     */
-    private $option_multiple_shipping = false;
-
-    /**
-     * @var boolean
-     *
      * @ORM\Column(name="option_mypage_order_status_display", type="boolean", options={"default":true})
      */
     private $option_mypage_order_status_display = true;
@@ -956,30 +949,6 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     public function getDeliveryFreeQuantity()
     {
         return $this->delivery_free_quantity;
-    }
-
-    /**
-     * Set optionMultipleShipping.
-     *
-     * @param boolean $optionMultipleShipping
-     *
-     * @return BaseInfo
-     */
-    public function setOptionMultipleShipping($optionMultipleShipping)
-    {
-        $this->option_multiple_shipping = $optionMultipleShipping;
-
-        return $this;
-    }
-
-    /**
-     * Get optionMultipleShipping.
-     *
-     * @return boolean
-     */
-    public function isOptionMultipleShipping()
-    {
-        return $this->option_multiple_shipping;
     }
 
     /**

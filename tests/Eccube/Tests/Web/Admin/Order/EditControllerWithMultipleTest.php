@@ -34,8 +34,6 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
         $this->Product = $this->createProduct();
 
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        // 複数配送を有効に
-        $BaseInfo->setOptionMultipleShipping(1);
         $this->app['orm.em']->flush($BaseInfo);
     }
 
