@@ -9,75 +9,84 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
 {% if Plugins|length > 0 %}
-    <div class="table_list plugin-table">
-        <div class="table-responsive with-border">
-            <table class="table table-hover table-condensed">
-                <thead>
-                <tr>
-                    <th>{{'admin.store.plugin_table.887'|trans}}</th>
-                    <th>{{'admin.store.plugin_table.888'|trans}}</th>
-                    <th>{{'admin.store.plugin_table.889'|trans}}</th>
-                    <th>{{'admin.store.plugin_table.890'|trans}}</th>
-                    <th>{{'admin.store.plugin_table.891'|trans}}</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for Plugin in Plugins %}
-                    {% set form = plugin_forms[Plugin.id] %}
-                    <form id="{{ form.vars.name }}" name="{{ form.vars.name }}" method="post" action="" enctype="multipart/form-data">
-                        <tr class="{% if Plugin.enabled == false %}active{% endif %}">
-                            <td class="tp">
-                                <strong>{{ Plugin.name }}</strong>{% if Plugin.enabled == 0 %}<span class="text-danger">{{'admin.store.plugin_table.892'|trans}}</span>{% endif %}<br>
-                                {% if Plugin.enabled %}
-                                    <a href="{{ url('admin_store_plugin_disable', { id : Plugin.id }) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">
-                                        {{'admin.store.plugin_table.893'|trans}}
-                                    </a>
-                                {% else %}
-                                    <a href="{{ url('admin_store_plugin_enable', { id : Plugin.id }) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">
-                                        {{'admin.store.plugin_table.894'|trans}}
-                                    </a>
-                                {% endif %}
-                                /
-                                {% if Plugin.enabled %}
-                                    {{'admin.store.plugin_table.896'|trans}}
-                                {% else %}
-                                    <a href="{{ url('admin_store_plugin_uninstall', { id : Plugin.id }) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="{{'admin.store.plugin_table.895'|trans}}">
-                                        {{'admin.store.plugin_table.896'|trans}}
-                                    </a>
-                                {% endif %}
-                            </td>
-                            <td class="tv text-center">{{ Plugin.version }}</td>
-                            <td class="tc"><p>{{ Plugin.code }}</p>
-                                {% if attribute(app.config[Plugin.code].const, 'readme') is defined %}
-                                    <a href="#" class="view_readme" data-toggle="modal" data-target="#readmeModal" data-name="{{ Plugin.name }}" data-readme="{{ attribute(app.config[Plugin.code].const, 'readme')  }}">詳細を表示</a>
-                                {% endif %}
-                            </td>
-                            <td class="tu">
+    <div class="card-body p-0">
+        <table class="table table-sm">
+            <thead>
+            <tr>
+                <th class="border-top-0 pl-3 pt-2 pb-2">{{ 'admin.store.plugin_table.887'|trans }}</th>
+                <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.plugin_table.888'|trans }}</th>
+                <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.plugin_table.889'|trans }}</th>
+                <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.plugin_table.890'|trans }}</th>
+                <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.plugin_table.891'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for Plugin in Plugins %}
+                {% set form = plugin_forms[Plugin.id] %}
+                <form id="{{ form.vars.name }}" name="{{ form.vars.name }}" method="post" action=""
+                      enctype="multipart/form-data">
+                    <tr class="{% if Plugin.enabled == false %}active{% endif %}">
+                        <td class="align-middle pl-3">
+                            <strong>{{ Plugin.name }}</strong>{% if Plugin.enabled == 0 %}<span
+                                    class="text-danger">{{ 'admin.store.plugin_table.892'|trans }}</span>{% endif %}<br>
+                            {% if Plugin.enabled %}
+                                <a href="{{ url('admin_store_plugin_disable', { id : Plugin.id }) }}" {{ csrf_token_for_anchor() }}
+                                   data-method="put" data-confirm="false">
+                                    {{ 'admin.store.plugin_table.893'|trans }}
+                                </a>
+                            {% else %}
+                                <a href="{{ url('admin_store_plugin_enable', { id : Plugin.id }) }}" {{ csrf_token_for_anchor() }}
+                                   data-method="put" data-confirm="false">
+                                    {{ 'admin.store.plugin_table.894'|trans }}
+                                </a>
+                            {% endif %}
+                            /
+                            {% if Plugin.enabled %}
+                                {{ 'admin.store.plugin_table.896'|trans }}
+                            {% else %}
+                                <a href="{{ url('admin_store_plugin_uninstall', { id : Plugin.id }) }}" {{ csrf_token_for_anchor() }}
+                                   data-method="delete" data-message="{{ 'admin.store.plugin_table.895'|trans }}">
+                                    {{ 'admin.store.plugin_table.896'|trans }}
+                                </a>
+                            {% endif %}
+                        </td>
+                        <td class="align-middle">{{ Plugin.version }}</td>
+                        <td class="align-middle">{{ Plugin.code }}
+                            {% if attribute(app.config[Plugin.code].const, 'readme') is defined %}
+                                <br>
+                                <a href="#" class="view_readme" data-toggle="modal" data-target="#readmeModal"
+                                   data-name="{{ Plugin.name }}"
+                                   data-readme="{{ attribute(app.config[Plugin.code].const, 'readme') }}">{{ 'admin.store.plugin_table.897'|trans }}</a>
+                            {% endif %}
+                        </td>
+                        <td class="align-middle">
                             {% if Plugin.source == 0 %}
                                 {{ form_widget(form._token) }}
                                 {{ form_widget(form.plugin_id) }}
                                 {{ form_widget(form.plugin_archive, {'attr': {'accept': 'application/zip,application/x-tar,application/x-gzip'}}) }}
                                 {{ form_errors(form.plugin_archive) }}
                                 <p></p>
-                                <a class="btn btn-primary btn-xs" href="#" onclick="changeActionSubmit('{{ url('admin_store_plugin_update', { id : Plugin.id }) }}', '{{ form.vars.name }}');">
-                                    {{'admin.store.plugin_table.898'|trans}}
-                                </a>
+                                <button class="btn btn-primary btn-xs"
+                                   onclick="changeActionSubmit('{{ url('admin_store_plugin_update', { id : Plugin.id }) }}', '{{ form.vars.name }}');">
+                                    {{ 'admin.store.plugin_table.898'|trans }}
+                                </button>
                             {% endif %}
-                            </td>
-                            <td class="ta text-center">
-                                {% if configPages[Plugin.code] is defined %}
-                                   <a href='{{configPages[Plugin.code]}}'>{{'admin.store.plugin_table.899'|trans}}</a>
-                                {% endif %}
-                            </td>
-                        </tr>
-                    </form>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
+                        </td>
+                        <td class="align-middle">
+                            {% if configPages[Plugin.code] is defined %}
+                                <a href='{{ configPages[Plugin.code] }}'>{{ 'admin.store.plugin_table.899'|trans }}</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                </form>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
 {% else %}
-    <div class="text-danger">
-        {{'admin.store.plugin_table.900'|trans}}
-    </div>
+    <div class="card-body">
+        <div class="text-danger">
+            {{ 'admin.store.plugin_table.900'|trans }}
+        </div>
+    </div><!-- /.col -->
 {% endif %}

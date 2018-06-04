@@ -50,7 +50,7 @@ parameters:
     eccube_mtext_len: 200
     plugin_html_realdir: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/plugin/
     plugin_html_urlpath: /plugin/ # asset 使う
-    plugin_realdir: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/user_data/plugins/
+    plugin_realdir: '%kernel.project_dir%/app/Plugin'
     plugin_temp_realdir: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/upload/temp_plugin/ # upload_tmp_dir に任せればよい？
     eccube_price_len: 8                                                    # 最大値で制御したい
     eccube_search_pmax: 10
@@ -99,3 +99,5 @@ parameters:
     eccube_forgot_mail_template_id: 6 #パスワードリセット
     eccube_reset_complete_mail_template_id: 7 #パスワードリマインダー
     eccube_shipping_notify_mail_template_id: 8 #出荷通知メール
+    eccube_package_repo_url: null
+    eccube_order_code_format: '${dd}${yyyy}${number,5}${mm}'

@@ -992,7 +992,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Get orderItems.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection|OrderItem[]
      */
     public function getOrderItems()
     {

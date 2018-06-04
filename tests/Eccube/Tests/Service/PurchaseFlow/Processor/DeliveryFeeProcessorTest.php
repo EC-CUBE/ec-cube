@@ -24,7 +24,7 @@ class DeliveryFeeProcessorTest extends EccubeTestCase
 {
     public function testProcess()
     {
-        $processor = new DeliveryFeeProcessor($this->entityManager);
+        $processor = $this->container->get(DeliveryFeeProcessor::class);
         $Order = $this->createOrder($this->createCustomer());
         /*
          * @var OrderItem
@@ -43,7 +43,7 @@ class DeliveryFeeProcessorTest extends EccubeTestCase
      */
     public function testProcessWithDeliveryFee()
     {
-        $processor = new DeliveryFeeProcessor($this->entityManager);
+        $processor = $this->container->get(DeliveryFeeProcessor::class);
         $Order = $this->createOrder($this->createCustomer());
         /*
          * @var OrderItem

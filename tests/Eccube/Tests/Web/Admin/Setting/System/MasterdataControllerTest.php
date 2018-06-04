@@ -68,7 +68,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
             $this->generateUrl('admin_setting_system_masterdata_view', ['entity' => $formData['masterdata']])
         );
         $entityName = str_replace('-', '\\', $formData['masterdata']);
-        $this->actual = $crawler->filter('div#result_list__body_inner')->html();
+        $this->actual = $crawler->filter('#result_list__list')->html();
         $this->expected = $this->entityManager->getRepository($entityName)->find(1)->getName();
         $this->assertContains($this->expected, $this->actual);
     }

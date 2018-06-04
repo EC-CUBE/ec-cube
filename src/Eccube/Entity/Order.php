@@ -111,9 +111,9 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="code", type="string", length=255, nullable=true)
+     * @ORM\Column(name="order_code", type="string", length=255, nullable=true)
      */
-    private $code;
+    private $order_code;
 
     /**
      * @var string|null
@@ -514,27 +514,27 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     }
 
     /**
-     * Set code
+     * Set orderCode
      *
-     * @param string|null $code
+     * @param string|null $orderCode
      *
      * @return Order
      */
-    public function setCode($code = null)
+    public function setOrderCode($orderCode = null)
     {
-        $this->code = $code;
+        $this->order_code = $orderCode;
 
         return $this;
     }
 
     /**
-     * Get code
+     * Get orderCode
      *
      * @return string|null
      */
-    public function getCode()
+    public function getOrderCode()
     {
-        return $this->code;
+        return $this->order_code;
     }
 
     /**
@@ -1366,6 +1366,43 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     }
 
     /**
+     * 同じ規格の商品の個数をまとめた受注明細を取得
+     *
+     * @return OrderItem[]
+     */
+    public function getMergedProductOrderItems()
+    {
+        $ProductOrderItems = $this->getProductOrderItems();
+
+        $orderItemArray = [];
+
+        /** @var OrderItem $ProductOrderItem */
+        foreach ($ProductOrderItems as $ProductOrderItem) {
+            $productClassId = $ProductOrderItem->getProductClass()->getId();
+            if (array_key_exists($productClassId, $orderItemArray)) {
+                // 同じ規格の商品がある場合は個数をまとめる
+                /** @var ItemInterface $OrderItem */
+                $OrderItem = $orderItemArray[$productClassId];
+                $quantity = $OrderItem->getQuantity() + $ProductOrderItem->getQuantity();
+                $OrderItem->setQuantity($quantity);
+            } else {
+                // 新規規格の商品は新しく追加する
+                $OrderItem = new OrderItem();
+                $OrderItem
+                    ->setProduct($ProductOrderItem->getProduct())
+                    ->setProductName($ProductOrderItem->getProductName())
+                    ->setClassCategoryName1($ProductOrderItem->getClassCategoryName1())
+                    ->setClassCategoryName2($ProductOrderItem->getClassCategoryName2())
+                    ->setPriceIncTax($ProductOrderItem->getPriceIncTax())
+                    ->setQuantity($ProductOrderItem->getQuantity());
+                $orderItemArray[$productClassId] = $OrderItem;
+            }
+        }
+
+        return array_values($orderItemArray);
+    }
+
+    /**
      * Add orderItem.
      *
      * @param \Eccube\Entity\OrderItem $OrderItem
@@ -1414,7 +1451,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     /**
      * Get shippings.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection|Shipping[]
      */
     public function getShippings()
     {

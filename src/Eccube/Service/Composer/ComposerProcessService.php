@@ -16,6 +16,7 @@ namespace Eccube\Service\Composer;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
 use Eccube\Exception\PluginException;
+use Eccube\Service\SystemService;
 
 /**
  * Class ComposerProcessService
@@ -39,16 +40,15 @@ class ComposerProcessService implements ComposerServiceInterface
 
     /**
      * ComposerProcessService constructor.
-     *
-     * @param EccubeConfig                  $eccubeConfig
+     * @param EccubeConfig $eccubeConfig
      * @param EntityManagerInterface $entityManager
-     * @param string                 $pathPHP
+     * @param SystemService $systemService
      */
-    public function __construct(EccubeConfig $eccubeConfig, $entityManager, $pathPHP)
+    public function __construct(EccubeConfig $eccubeConfig, EntityManagerInterface $entityManager, SystemService $systemService)
     {
         $this->eccubeConfig = $eccubeConfig;
         $this->entityManager = $entityManager;
-        $this->pathPHP = $pathPHP;
+        $this->pathPHP = $systemService->getPHP();
     }
 
     /**

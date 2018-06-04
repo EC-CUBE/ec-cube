@@ -13,6 +13,7 @@
 
 namespace Eccube\Controller;
 
+use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\OrderStatus;
@@ -20,6 +21,7 @@ use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Form\Type\Front\ShoppingShippingType;
 use Eccube\Form\Type\ShippingMultipleType;
 use Eccube\Repository\Master\OrderItemTypeRepository;
 use Eccube\Repository\Master\PrefRepository;
@@ -172,26 +174,6 @@ class ShippingMultipleController extends AbstractShoppingController
                 }
             }
 
-            // 「Orderに含まれる商品ごとの数量」と「フォームに入力された商品ごとの数量」が一致しているかの確認
-            // 数量が異なっているならエラーを表示する
-            foreach ($ItemQuantitiesByClassId as $key => $value) {
-                if (array_key_exists($key, $itemQuantities)) {
-                    if ($itemQuantities[$key] != $value) {
-                        $errors[] = ['message' => trans('shopping.multiple.quantity.diff')];
-
-                        // 対象がなければエラー
-                        log_info('複数配送設定入力チェックエラー', [$Order->getId()]);
-
-                        return [
-                            'form' => $form->createView(),
-                            'OrderItems' => $OrderItemsForFormBuilder,
-                            'compItemQuantities' => $ItemQuantitiesByClassId,
-                            'errors' => $errors,
-                        ];
-                    }
-                }
-            }
-
             // -- ここから先がお届け先を再生成する処理 --
 
             // お届け先情報をすべて削除
@@ -327,6 +309,82 @@ class ShippingMultipleController extends AbstractShoppingController
             'OrderItems' => $OrderItemsForFormBuilder,
             'compItemQuantities' => $ItemQuantitiesByClassId,
             'errors' => $errors,
+        ];
+    }
+
+    /**
+     * 複数配送設定時の新規お届け先の設定
+     *
+     * @Route("/shopping/shipping_multiple_edit", name="shopping_shipping_multiple_edit")
+     * @Template("Shopping/shipping_multiple_edit.twig")
+     */
+    public function shippingMultipleEdit(Request $request)
+    {
+        // カートチェック
+        $response = $this->forwardToRoute('shopping_check_to_cart');
+        if ($response->isRedirection() || $response->getContent()) {
+            return $response;
+        }
+
+        /** @var Customer $Customer */
+        $Customer = $this->getUser();
+        $CustomerAddress = new CustomerAddress();
+        $builder = $this->formFactory->createBuilder(ShoppingShippingType::class, $CustomerAddress);
+
+        $event = new EventArgs(
+            [
+                'builder' => $builder,
+                'Customer' => $Customer,
+            ],
+            $request
+        );
+        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_MULTIPLE_EDIT_INITIALIZE, $event);
+
+        $form = $builder->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            log_info('複数配送のお届け先追加処理開始');
+
+            if ($this->isGranted('ROLE_USER')) {
+                $CustomerAddresses = $Customer->getCustomerAddresses();
+
+                $count = count($CustomerAddresses);
+                if ($count >= $this->eccubeConfig['eccube_deliv_addr_max']) {
+                    return [
+                        'error' => trans('delivery.text.error.max_delivery_address'),
+                        'form' => $form->createView(),
+                    ];
+                }
+
+                $CustomerAddress->setCustomer($Customer);
+                $this->entityManager->persist($CustomerAddress);
+                $this->entityManager->flush($CustomerAddress);
+            } else {
+                // 非会員用のセッションに追加
+                $CustomerAddresses = $this->session->get($this->sessionCustomerAddressKey);
+                $CustomerAddresses = unserialize($CustomerAddresses);
+                $CustomerAddresses[] = $CustomerAddress;
+                $this->session->set($this->sessionCustomerAddressKey, serialize($CustomerAddresses));
+            }
+
+            $event = new EventArgs(
+                [
+                    'form' => $form,
+                    'CustomerAddresses' => $CustomerAddresses,
+                ],
+                $request
+            );
+            $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_MULTIPLE_EDIT_COMPLETE, $event);
+
+            log_info('複数配送のお届け先追加処理完了');
+
+            return $this->redirectToRoute('shopping_shipping_multiple');
+        }
+
+        return [
+            'form' => $form->createView(),
         ];
     }
 

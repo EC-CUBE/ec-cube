@@ -27,10 +27,10 @@ class EA08SysteminfoCest
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/system');
-        $I->see('システム設定システム情報', '#main .page-header');
+        $I->see('システム情報システム設定', '.c-pageTitle__titles');
 
-        $I->see('システム情報', '#main .container-fluid div:nth-child(1) .box-header .box-title');
-        $I->see('PHP情報', '#main .container-fluid div:nth-child(2) .box-header .box-title');
+        $I->see('システム情報', '#server_info_box__header .card-title');
+        $I->see('PHP情報', '#php_info_box__header .card-title');
     }
 
     public function systeminfo_メンバー管理表示(\AcceptanceTester $I)
@@ -307,8 +307,8 @@ class EA08SysteminfoCest
             ->登録();
 
         $I->see('権限設定を保存しました。', AuthorityManagePage::$完了メッセージ);
-        $I->dontSee('コンテンツ管理', '#side ul');
-        $I->dontSee('オーナーズストア', '#side ul');
+        $I->dontSee('コンテンツ管理', 'nav .c-mainNavArea__nav');
+        $I->dontSee('オーナーズストア', 'nav .c-mainNavArea__nav');
     }
 
     public function systeminfo_権限管理削除(\AcceptanceTester $I)
@@ -321,8 +321,8 @@ class EA08SysteminfoCest
             ->登録();
 
         $I->see('権限設定を保存しました。', AuthorityManagePage::$完了メッセージ);
-        $I->see('コンテンツ管理', '#side ul');
-        $I->see('オーナーズストア', '#side ul');
+        $I->see('コンテンツ管理', 'nav .c-mainNavArea__nav');
+        $I->see('オーナーズストア', 'nav .c-mainNavArea__nav');
     }
 
     public function systeminfo_ログ表示(\AcceptanceTester $I)
@@ -332,7 +332,7 @@ class EA08SysteminfoCest
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/log');
-        $I->see('システム設定EC-CUBE ログ表示', '#main .page-header');
+        $I->see('EC-CUBE ログ表示システム設定', '.c-pageTitle');
 
         $option = $I->grabTextFrom('#admin_system_log_files option:nth-child(1)');
         $I->selectOption("#admin_system_log_files", $option);
@@ -340,7 +340,7 @@ class EA08SysteminfoCest
         $I->fillField(['id' => 'line-max'], '1');
         $I->click(['css' => '#form1 button']);
 
-        $I->dontSeeElement(['css' => '#main .container-fluid .box table tbody tr:nth-child(2)']);
+        $I->seeInField(['id' => 'line-max'], '1');
     }
 
     public function systeminfo_マスターデータ管理(\AcceptanceTester $I)
@@ -350,17 +350,17 @@ class EA08SysteminfoCest
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/masterdata');
-        $I->see('システム設定マスターデータ管理', '#main .page-header');
+        $I->see('マスターデータ管理システム設定', '.c-pageTitle');
 
         $I->selectOption(['id' => 'admin_system_masterdata_masterdata'], ['Eccube-Entity-Master-Sex' => 'mtb_sex']);
         $I->click('#form1 button');
 
-        $I->fillField(['css' => '#form2 table tbody tr:nth-child(4) td:nth-child(1) input'], '3');
-        $I->fillField(['css' => '#form2 table tbody tr:nth-child(4) td:nth-child(2) input'], '無回答');
+        $I->fillField(['css' => '#form2 table tbody tr:nth-child(3) td:nth-child(1) input'], '3');
+        $I->fillField(['css' => '#form2 table tbody tr:nth-child(3) td:nth-child(2) input'], '無回答');
 
-        $I->click(['css' => '#form2 #aside_column button']);
+        $I->click(['css' => '#form2 .c-conversionArea .ladda-button']);
 
-        $I->see('登録が完了しました。', '#main .container-fluid div:nth-child(1) .alert-success');
+        $I->see('登録が完了しました。', '.c-contentsArea .alert-success');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/customer/new');
         $I->see('無回答', '#customer_form #admin_customer_sex');
     }
