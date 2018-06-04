@@ -51,32 +51,25 @@ class CustomerAddressType extends AbstractType
         $builder
             ->add('name', NameType::class, [
                 'required' => true,
-                'label' => 'admin.customer.delivery.label.001',
             ])
             ->add('kana', KanaType::class, [
                 'required' => true,
-                'label' => 'admin.customer.delivery.label.002',
             ])
             ->add('company_name', TextType::class, [
                 'required' => false,
-                'label' => 'admin.customer.delivery.label.003',
                 'constraints' => [
                     new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_stext_len'],
                     ]),
                 ],
             ])
-            ->add('zip', ZipType::class, [
-                'label' => 'admin.customer.delivery.label.004'
-            ])
+            ->add('zip', ZipType::class)
             ->add('address', AddressType::class)
             ->add('tel', TelType::class, [
                 'required' => true,
-                'label' => 'admin.customer.delivery.label.005',
             ])
             ->add('fax', TelType::class, [
                 'required' => false,
-                'label' => 'admin.customer.delivery.label.006',
             ]);
     }
 
