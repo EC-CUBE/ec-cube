@@ -135,9 +135,10 @@ class OrderTest extends EccubeTestCase
 
     public function testGetMergedProductOrderItems()
     {
-        $quantity = '5';
-        $times = '2';
+        $quantity = '5';    // 配送先あたりの商品の個数
+        $times = '2';       // 複数配送の配送先数
 
+        // テストデータの準備
         $Product = new Product();
         $ProductClass = new ProductClass();
         $Order = new Order();
@@ -162,11 +163,20 @@ class OrderTest extends EccubeTestCase
             $Order->addOrderItem($OrderItem);
         }
 
+        // 実行
         $OrderItems = $Order->getMergedProductOrderItems();
+
+        // 2個目の明細が1個にまとめられているか
+        $this->expected = 1;
+        $this->actual = count($OrderItems);
+        $this->verify();
+
+        // まとめられた明細の商品の個数が全配送先の合計になっているか
         $OrderItem = $OrderItems[0];
 
         $this->expected = $quantity * $times;
         $this->actual = $OrderItem->getQuantity();
         $this->verify();
+
     }
 }
