@@ -1053,15 +1053,17 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
             ],
         ];
 
-        $crawler = $this->client->request(
+        $this->client->request(
             'POST',
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => $multiForm]
         );
 
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
 
-        $this->assertContains('数量の合計が、カゴの中の数量と異なっています', $crawler->filter('div#multiple_list_box__body')->html());
+        $crawler = $this->client->request('GET', $this->generateUrl('shopping'));
+        $shipping = $crawler->filter('#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div.ec-orderDelivery__item > ul')->last()->text();
+        $this->assertContains('× 3', $shipping);
     }
 
     /**
@@ -1493,8 +1495,8 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
             [
                 // 配送先1
                 [
-                    'delivery' => 1,
-                    'deliveryTime' => 1,
+                    'Delivery' => 1,
+                    'DeliveryTime' => 1,
                 ],
             ]
         );
