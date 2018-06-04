@@ -34,12 +34,6 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         parent::setUp();
         $this->baseInfoRepository = $this->container->get(BaseInfoRepository::class);
         $this->orderRepository = $this->container->get(OrderRepository::class);
-
-        $BaseInfo = $this->baseInfoRepository->get();
-        // 複数配送を有効に
-        $BaseInfo->setOptionMultipleShipping(1);
-        $this->entityManager->flush($BaseInfo);
-
     }
 
     public function tearDown()

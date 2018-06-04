@@ -58,13 +58,6 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->baseInfoRepository = $this->container->get(BaseInfoRepository::class);
         $this->orderRepository = $this->container->get(OrderRepository::class);
         $this->orderStatusRepository = $this->container->get(OrderStatusRepository::class);
-
-        /** @var BaseInfo $BaseInfo */
-        $BaseInfo = $this->baseInfoRepository->get();
-        // 複数配送を有効に
-        $BaseInfo->setOptionMultipleShipping(1);
-        $this->entityManager->persist($BaseInfo);
-        $this->entityManager->flush();
     }
 
     /**
@@ -979,6 +972,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
      */
     public function testAddMultiShippingCartUnlock()
     {
+        $this->markTestIncomplete('カートのアンロック対応');
         $Customer = $this->createCustomer();
 
         $this->client->request('POST', '/cart/add', ['product_class_id' => 10, 'quantity' => 2]);
@@ -1277,7 +1271,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
 
         $crawler = $this->client->request('GET', $this->generateUrl('shopping'));
-        $shipping = $crawler->filter('#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div.ec-orderDelivery__item > ul')->last()->text();
+        $shipping = $crawler->filter('#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery')->text();
         $this->assertContains('× 2', $shipping);
     }
 
