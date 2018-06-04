@@ -38,7 +38,6 @@ return [
     'common.label.option_delivery_fee_free_amount' => 'Free shipping terms (amount)',
     'common.label.option_delivery_free_quantity' => 'Free shipping terms (quantity)',
     'common.label.option_product_delivery_fee' => 'Activate postage setting per item',
-    'common.label.option_multiple_shipping' => 'Enable multiple shipments',
     'common.label.option_customer_activate' => 'Activate temporary members',
     'common.label.option_mypage_order_status_display' => 'Show order status on my page',
     'common.label.option_favorite_product' => 'Use favorite product features',
