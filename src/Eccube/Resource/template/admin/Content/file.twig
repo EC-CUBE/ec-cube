@@ -143,7 +143,7 @@ file that was distributed with this source code.
                                                         {{ file.file_size }}
                                                     </td>
                                                     <td class="align-middle">
-                                                        {{ file.file_time }} {{ 'admin.content.file.31'|trans }} {# TODO 英語だとフォーマットが変わるかも #}
+                                                        {{ file.file_time|date_sec }} {{ 'admin.content.file.31'|trans }}
                                                     </td>
                                                     {% if file.is_dir %}
                                                         <td class="align-middle">

@@ -301,6 +301,73 @@ class EF03OrderCest
         $I->see('新着情報', '.ec-news__title');
     }
 
+    /**
+     * @see https://github.com/EC-CUBE/ec-cube/pull/3133
+     */
+    public function order_ログインしてカートをマージ(\AcceptanceTester $I)
+    {
+        $I->wantTo('EF0305-UC07-T01 ログインしてカートをマージ');
+        $I->logoutAsMember();
+        $createCustomer = Fixtures::get('createCustomer');
+        $customer = $createCustomer();
+        $BaseInfo = Fixtures::get('baseinfo');
+
+        // 商品詳細パーコレータ カートへ
+        ProductDetailPage::go($I, 2)
+            ->カートに入れる(1);
+
+        $I->acceptPopup();
+
+        CartPage::go($I)
+            ->レジに進む();
+
+        // ログイン
+        ShoppingLoginPage::at($I)->ログイン($customer->getEmail());
+
+        $I->resetEmails();
+
+        ShoppingPage::at($I)->確認する();
+        $I->logoutAsMember();
+
+        // 商品詳細フォーク カートへ
+        ProductDetailPage::go($I, 1)
+            ->規格選択(['プラチナ', '150cm'])
+            ->カートに入れる(1);
+
+        $I->acceptPopup();
+
+        CartPage::go($I)
+            ->レジに進む();
+
+        // ログイン
+        ShoppingLoginPage::at($I)->ログイン($customer->getEmail());
+
+        ShoppingPage::at($I)->確認する();
+        ShoppingConfirmPage::at($I)->注文する();
+
+        $I->wait(1);
+
+        // メール確認
+        $I->seeEmailCount(2);
+        foreach (array($customer->getEmail(), $BaseInfo->getEmail01()) as $email) {
+            $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
+            $I->seeInLastEmailTo($email, $customer->getName01().' '.$customer->getName02().' 様');
+            $I->seeInLastEmailTo($email, 'お名前　：'.$customer->getName01().' '.$customer->getName02().' 様');
+            $I->seeInLastEmailTo($email, 'お名前(フリガナ)：'.$customer->getKana01().' '.$customer->getKana02().' 様');
+            $I->seeInLastEmailTo($email, '郵便番号：〒'.$customer->getZip01().'-'.$customer->getZip02());
+            $I->seeInLastEmailTo($email, '住所　　：'.$customer->getPref()->getName().$customer->getAddr01().$customer->getAddr02());
+            $I->seeInLastEmailTo($email, '電話番号：'.$customer->getTel01().'-'.$customer->getTel02().'-'.$customer->getTel03());
+            $I->seeInLastEmailTo($email, 'メールアドレス：'.$customer->getEmail());
+
+            $I->seeInLastEmailTo($email, '商品名: パーコレーター');
+            $I->seeInLastEmailTo($email, '商品名: ディナーフォーク  プラチナ  150cm');
+        }
+
+        // 完了画面 -> topへ
+        ShoppingCompletePage::at($I)->TOPへ();
+        $I->see('新着情報', '.ec-news__title');
+    }
+
     public function order_ログインユーザ購入複数配送(\AcceptanceTester $I)
     {
         // チェック用変数

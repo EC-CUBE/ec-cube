@@ -344,7 +344,7 @@ class FileController extends AbstractController
                 'file_name' => $this->convertStrFromServer($dir->getFilename()),
                 'file_path' => $this->convertStrFromServer($this->getJailDir($this->normalizePath($dir->getRealPath()))),
                 'file_size' => FilesystemUtil::sizeToHumanReadable($dir->getSize()),
-                'file_time' => date('Y/m/d', $dir->getmTime()),
+                'file_time' => $dir->getmTime(),
                 'is_dir' => true,
             ];
         }
@@ -353,7 +353,7 @@ class FileController extends AbstractController
                 'file_name' => $this->convertStrFromServer($file->getFilename()),
                 'file_path' => $this->convertStrFromServer($this->getJailDir($this->normalizePath($file->getRealPath()))),
                 'file_size' => FilesystemUtil::sizeToHumanReadable($file->getSize()),
-                'file_time' => date('Y/m/d', $file->getmTime()),
+                'file_time' => $file->getmTime(),
                 'is_dir' => false,
             ];
         }

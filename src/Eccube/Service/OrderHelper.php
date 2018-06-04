@@ -142,13 +142,15 @@ class OrderHelper
      *
      * @return Order
      */
-    public function createProcessingOrder(Customer $Customer, CustomerAddress $CustomerAddress, $CartItems)
+    public function createProcessingOrder(Customer $Customer, CustomerAddress $CustomerAddress, $CartItems, $preOrderId = null)
     {
         $OrderStatus = $this->orderStatusRepository->find(OrderStatus::PROCESSING);
         $Order = new Order($OrderStatus);
 
-        // pre_order_idを生成
-        $Order->setPreOrderId($this->createPreOrderId());
+        if (!$preOrderId) {
+            // pre_order_idを生成
+            $Order->setPreOrderId($this->createPreOrderId());
+        }
 
         // 顧客情報の設定
         $this->setCustomer($Order, $Customer);
@@ -192,7 +194,9 @@ class OrderHelper
         /** @var OrderItem $OrderItem */
         foreach ($Order->getProductOrderItems() as $OrderItem) {
             $CartItem = new CartItem();
-            $CartItem->setProductClass($OrderItem->getProductClass());
+            $ProductClass = $OrderItem->getProductClass();
+            $this->entityManager->refresh($ProductClass);
+            $CartItem->setProductClass($ProductClass);
             $CartItem->setPrice($OrderItem->getPriceIncTax());
             $CartItem->setQuantity($OrderItem->getQuantity());
             $Cart->addCartItem($CartItem);

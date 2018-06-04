@@ -42,8 +42,10 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
     public function testRoutingShoppingLogin()
     {
-        $this->client->request('GET', '/shopping/login');
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('cart')));
+        $crawler = $this->client->request('GET', '/shopping/login');
+        $this->expected = 'ログイン';
+        $this->actual = $crawler->filter('.ec-pageHeader h1')->text();
+        $this->verify();
     }
 
     public function testShoppingIndexWithCartUnlock()

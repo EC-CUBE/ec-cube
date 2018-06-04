@@ -434,8 +434,6 @@ class CartValidationTest extends AbstractWebTestCase
     public function testProductInCartSaleType()
     {
         $this->markTestIncomplete('複数配送が実装されるまでスキップ');
-        // disable multi shipping
-        $this->BaseInfo->setOptionMultipleShipping(false);
         $this->entityManager->persist($this->BaseInfo);
         $this->entityManager->flush();
 
@@ -512,8 +510,6 @@ class CartValidationTest extends AbstractWebTestCase
     public function testProductInCartSaleTypeWithMultiShipping()
     {
         $this->markTestIncomplete('複数配送が実装されるまでスキップ');
-        // enable multi shipping
-        $this->BaseInfo->setOptionMultipleShipping(true);
         $this->entityManager->persist($this->BaseInfo);
         $this->entityManager->flush();
 
@@ -826,8 +822,6 @@ class CartValidationTest extends AbstractWebTestCase
     {
         $this->markTestIncomplete('複数配送が実装されるまでスキップ');
         // GIVE
-        // disable multi shipping
-        $this->BaseInfo->setOptionMultipleShipping(false);
         $this->entityManager->persist($this->BaseInfo);
         $this->entityManager->flush();
 
@@ -1072,8 +1066,6 @@ class CartValidationTest extends AbstractWebTestCase
     {
         $this->markTestIncomplete('複数配送対応するまでスキップ');
         // GIVE
-        // disable multi shipping
-        $this->BaseInfo->setOptionMultipleShipping(false);
         $this->entityManager->persist($this->BaseInfo);
         $this->entityManager->flush();
 
@@ -1129,9 +1121,7 @@ class CartValidationTest extends AbstractWebTestCase
     {
         $this->markTestIncomplete('複数配送対応するまでスキップ');
         // GIVE
-        // enable multi shipping
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(true);
         $this->entityManager->persist($BaseInfo);
         $this->entityManager->flush();
 
@@ -1369,9 +1359,7 @@ class CartValidationTest extends AbstractWebTestCase
     {
         $this->markTestIncomplete('複数配送対応するまでスキップ');
         // GIVE
-        // disable multi shipping
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(false);
         $this->entityManager->persist($BaseInfo);
         $this->entityManager->flush();
 
@@ -1426,9 +1414,7 @@ class CartValidationTest extends AbstractWebTestCase
     {
         $this->markTestIncomplete('複数配送対応するまでスキップ');
         // GIVE
-        // enable multi shipping
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(true);
         $this->entityManager->persist($BaseInfo);
         $this->entityManager->flush();
 
@@ -2440,9 +2426,7 @@ class CartValidationTest extends AbstractWebTestCase
     {
         $this->markTestIncomplete('マイページ対応するまでスキップ');
         // GIVE
-        // disable multi shipping
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(false);
         $this->entityManager->persist($BaseInfo);
         $this->entityManager->flush();
         $this->logIn();
@@ -2518,8 +2502,6 @@ class CartValidationTest extends AbstractWebTestCase
     {
         $this->markTestIncomplete('マイページ対応するまでスキップ');
         // GIVE
-        // enable multi shipping
-        $this->BaseInfo->setOptionMultipleShipping(true);
         $this->entityManager->persist($this->BaseInfo);
         $this->entityManager->flush();
         $this->logIn();

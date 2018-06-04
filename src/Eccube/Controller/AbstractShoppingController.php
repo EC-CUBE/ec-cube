@@ -41,11 +41,6 @@ class AbstractShoppingController extends AbstractController
     protected $sessionCustomerAddressKey = 'eccube.front.shopping.nonmember.customeraddress';
 
     /**
-     * @var string 複数配送警告メッセージ
-     */
-    protected $sessionMultipleKey = 'eccube.front.shopping.multiple';
-
-    /**
      * @var string 受注IDキー
      */
     protected $sessionOrderKey = 'eccube.front.shopping.order.id';

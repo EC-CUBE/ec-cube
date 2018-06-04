@@ -34,9 +34,10 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
 
     public function testRoutingShoppingLogin()
     {
-        $client = $this->client;
-        $client->request('GET', '/shopping/login');
-        $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('cart')));
+        $crawler = $this->client->request('GET', '/shopping/login');
+        $this->expected = 'ログイン';
+        $this->actual = $crawler->filter('.ec-pageHeader h1')->text();
+        $this->verify();
     }
 
     public function testIndexWithCartUnlock()
