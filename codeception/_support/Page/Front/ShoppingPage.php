@@ -75,7 +75,13 @@ class ShoppingPage extends AbstractFrontPage
 
     public function お届け先変更()
     {
-        $this->tester->click('div.ec-orderRole div.ec-orderDelivery__change a');
+        $this->tester->click('#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div.ec-orderDelivery__title > div > button');
+        return $this;
+    }
+
+    public function お届け先追加()
+    {
+        $this->tester->click('#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div.ec-orderDelivery__edit > button');
         return $this;
     }
 }

@@ -16,6 +16,7 @@ namespace Eccube\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\Master\ShippingStatus;
 use Eccube\Service\Calculator\OrderItemCollection;
+use Eccube\Service\PurchaseFlow\ItemCollection;
 
 /**
  * Shipping
@@ -992,11 +993,11 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Get orderItems.
      *
-     * @return \Doctrine\Common\Collections\Collection|OrderItem[]
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getOrderItems()
     {
-        return $this->OrderItems;
+        return (new ItemCollection($this->OrderItems))->sort();
     }
 
     /**
