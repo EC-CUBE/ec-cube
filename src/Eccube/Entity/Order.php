@@ -1451,16 +1451,21 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     /**
      * Get shippings.
      *
+     * 明細に紐づくShippingを, 重複をのぞいて取得する
+     *
      * @return \Doctrine\Common\Collections\Collection|Shipping[]
      */
     public function getShippings()
     {
         $Shippings = [];
         foreach ($this->getOrderItems() as $OrderItem) {
-            $Shipping = $OrderItem->getShipping();
-            if (is_object($Shipping)) {
-                $name = $Shipping->getName01(); // XXX lazy loading
-                $Shippings[$Shipping->getId()] = $Shipping;
+            if ($Shipping = $OrderItem->getShipping()) {
+                // 永続化される前のShippingが渡ってくる場合もあるため,
+                // Shipping::id()ではなくspl_object_id()を使用している
+                $id = \spl_object_id($Shipping);
+                if (!isset($Shippings[$id])) {
+                    $Shippings[$id] = $Shipping;
+                }
             }
         }
 
