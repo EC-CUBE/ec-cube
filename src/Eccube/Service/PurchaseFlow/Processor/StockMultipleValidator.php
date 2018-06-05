@@ -55,6 +55,9 @@ class StockMultipleValidator implements ItemHolderProcessor
 
         foreach ($OrderItemsByProductClass as $id => $Items) {
             $ProductClass = $this->productClassRepository->find($id);
+            if ($ProductClass->isStockUnlimited()) {
+                continue;
+            }
             $stock = $ProductClass->getStock();
             if ($stock === 0) {
                 return ProcessResult::error(trans('cart.zero.stock',
