@@ -1457,10 +1457,8 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     {
         $Shippings = [];
         foreach ($this->getOrderItems() as $OrderItem) {
-            $Shipping = $OrderItem->getShipping();
-            if (is_object($Shipping)) {
-                $name = $Shipping->getName01(); // XXX lazy loading
-                $Shippings[$Shipping->getId()] = $Shipping;
+            if ($Shipping = $OrderItem->getShipping()) {
+                $Shippings[\spl_object_id($Shipping)] = $Shipping;
             }
         }
         $Result = new \Doctrine\Common\Collections\ArrayCollection();
