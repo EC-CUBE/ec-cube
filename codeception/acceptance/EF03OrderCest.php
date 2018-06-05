@@ -371,7 +371,14 @@ class EF03OrderCest
     public function order_ログインユーザ購入複数配送(\AcceptanceTester $I)
     {
         // チェック用変数
+        // 追加するお届け作の名前
         $nameSei = '姓0302';
+        $nameMei = '名0302';
+        // カートへ入れる商品の数
+        $cart_quantity = 1;
+        // お届け先ごとに設定する商品の数
+        $shipping1_quantity = 2;
+        $shipping2_quantity = 3;
 
         $I->wantTo('EF0305-UC05-T01 お届け先の追加');
         $I->logoutAsMember();
@@ -382,7 +389,7 @@ class EF03OrderCest
 
         // 商品詳細パーコレータ カートへ
         ProductDetailPage::go($I, 2)
-            ->カートに入れる(1);
+            ->カートに入れる($cart_quantity);
 
         $I->acceptPopup();
 
@@ -401,7 +408,7 @@ class EF03OrderCest
         MultipleShippingPage::at($I)->新規お届け先を追加する();
         CustomerAddressAddPage::at($I)
             ->入力_姓($nameSei)
-            ->入力_名('名0302')
+            ->入力_名($nameMei)
             ->入力_セイ('セイ')
             ->入力_メイ('メイ')
             ->入力_郵便番号1('530')
@@ -423,16 +430,19 @@ class EF03OrderCest
             ->お届け先追加()
             ->入力_お届け先('0', '0', $customer->getName01())
             ->入力_お届け先('0', '1', $customer->getName01())
-            ->入力_数量('0', '0', 2)
-            ->入力_数量('0', '1', 3)
+            ->入力_数量('0', '0', $shipping1_quantity)
+            ->入力_数量('0', '1', $shipping2_quantity)
             ->選択したお届け先に送る()
         ;
+
+        // 配送先が１個なので数量をまとめる
+        $sum_quantity = $shipping1_quantity + $shipping2_quantity;
 
         // 複数配送設定がされておらず、個数が１明細にまとめられていることを確認
         $I->see('お届け先', '#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div:nth-child(2)');
         $I->dontSee('お届け先(1)', '#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div:nth-child(2)');
         $I->dontSee('お届け先(2)', '#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div:nth-child(6)');
-        $I->see(' × 5', '#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div:nth-child(3) > ul > li:nth-child(1) > div > div.ec-imageGrid__content > p:nth-child(2)');
+        $I->see(' × '.$sum_quantity, '#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div:nth-child(3) > ul > li:nth-child(1) > div > div.ec-imageGrid__content > p:nth-child(2)');
         $I->see($customer->getName01(), '#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div:nth-child(4) > p:nth-child(1)');
 
         // -------- EF0305-UC06-T02_複数配送 - 同じ商品種別（別配送先） --------
@@ -443,19 +453,37 @@ class EF03OrderCest
         MultipleShippingPage::at($I)
             ->お届け先追加()
             ->入力_お届け先('0', '0', $customer->getName01())
-            ->入力_お届け先('0', '1', '姓0302')
-            ->入力_数量('0', '0', 2)
-            ->入力_数量('0', '1', 3)
+            ->入力_お届け先('0', '1', $nameSei)
+            ->入力_数量('0', '0', $shipping1_quantity)
+            ->入力_数量('0', '1', $shipping2_quantity)
             ->選択したお届け先に送る()
         ;
 
-        // 複数配送設定ができていることを確認(お届け先入力時と上下逆になる)
+        // 名前を比較してお届け先が上下どちらに表示されるか判断
+        $compared = strnatcmp($customer->getName01(), $nameSei);
+        if($compared === 0) {
+            $compared = strnatcmp($customer->getName02(), $nameMei);
+        }
+        // 上下それぞれで名前、商品個数を設定
+        if($compared < 0) {
+            $quantity1 = $shipping1_quantity;
+            $quantity2 = $shipping2_quantity;
+            $name1 = $customer->getName01();
+            $name2 = $nameSei;
+        } else {
+            $quantity1 = $shipping2_quantity;
+            $quantity2 = $shipping1_quantity;
+            $name1 = $nameSei;
+            $name2 = $customer->getName01();
+        }
+
+        // 複数配送設定ができていることを確認
         $I->see('お届け先(1)', '#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div:nth-child(2)');
-        $I->see(' × 3', '#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div:nth-child(3) > ul > li:nth-child(1) > div > div.ec-imageGrid__content > p:nth-child(2)');
-        $I->see($nameSei, '#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div:nth-child(4) > p:nth-child(1)');
+        $I->see(' × '.$quantity1, '#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div:nth-child(3) > ul > li:nth-child(1) > div > div.ec-imageGrid__content > p:nth-child(2)');
+        $I->see($name1, '#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div:nth-child(4) > p:nth-child(1)');
         $I->see('お届け先(2)', '#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div:nth-child(6)');
-        $I->see(' × 2', '#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div:nth-child(7) > ul > li:nth-child(1) > div > div.ec-imageGrid__content > p:nth-child(2)');
-        $I->see($customer->getName01(), '#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div:nth-child(8) > p:nth-child(1)');
+        $I->see(' × '.$quantity2, '#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div:nth-child(7) > ul > li:nth-child(1) > div > div.ec-imageGrid__content > p:nth-child(2)');
+        $I->see($name2, '#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div:nth-child(8) > p:nth-child(1)');
 
         ShoppingPage::at($I)->確認する();
         ShoppingConfirmPage::at($I)->注文する();
