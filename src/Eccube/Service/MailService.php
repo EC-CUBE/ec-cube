@@ -390,7 +390,9 @@ class MailService
      * @param Order $Order 受注情報
      * @param $formData 入力内容
      * @param string $twig テンプレートファイル名
+     *
      * @return $this
+     *
      * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax

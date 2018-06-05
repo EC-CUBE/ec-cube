@@ -81,5 +81,4 @@ class CartController extends AbstractController
             return $this->purchaseFlow->calculate($Cart, $purchaseContext);
         }, $Carts);
     }
-
 }

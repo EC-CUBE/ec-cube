@@ -99,7 +99,7 @@ class SecurityType extends AbstractType
                         ]
                     );
                     if ($errors->count() != 0) {
-                        $form['admin_allow_hosts']->addError(new FormError(trans('security.text.error.not_ipv4', array('%ip%' => $ip))));
+                        $form['admin_allow_hosts']->addError(new FormError(trans('security.text.error.not_ipv4', ['%ip%' => $ip])));
                     }
                 }
 

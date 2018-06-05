@@ -91,7 +91,6 @@ class ShippingMultipleController extends AbstractShoppingController
         $this->orderHelper = $orderHelper;
     }
 
-
     /**
      * 複数配送処理
      *
@@ -302,7 +301,6 @@ class ShippingMultipleController extends AbstractShoppingController
             // 合計金額の再計算
             $flowResult = $this->executePurchaseFlow($Order);
             if ($flowResult->hasWarning()) {
-
                 return [
                     'form' => $form->createView(),
                     'OrderItems' => $OrderItemsForFormBuilder,
@@ -311,7 +309,6 @@ class ShippingMultipleController extends AbstractShoppingController
                 ];
             }
             if ($flowResult->hasError()) {
-
                 return $this->redirectToRoute('cart');
             }
 

@@ -12,6 +12,7 @@
  */
 
 namespace Eccube\Tests\Web;
+
 use Eccube\Entity\Order;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\OrderRepository;
@@ -1317,7 +1318,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         $this->client->request('POST', $this->generateUrl('product_add_cart', ['id' => '1']), [
             'ProductClass' => '1',
             'quantity' => $maxAddress,
-            '_token' => 'dummy'
+            '_token' => 'dummy',
         ]);
         $this->scenarioCartIn();
 
