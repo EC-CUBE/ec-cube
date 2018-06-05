@@ -1,24 +1,14 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2018 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Tests\Service\PurchaseFlow\Processor;
@@ -46,7 +36,6 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
         $this->DeliveryFeeType = $this->entityManager->find(OrderItemType::class, OrderItemType::DELIVERY_FEE);
     }
 
-
     /**
      * 送料無料条件が設定されていない場合
      */
@@ -69,6 +58,7 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
      * 送料無料条件(金額)が設定されている場合
      *
      * @dataProvider deliveryFreeAmountProvider
+     *
      * @param $amount int 受注金額
      * @param $expectedFee int 期待する送料
      */
@@ -101,6 +91,7 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
      * 送料無料条件(数量)が設定されている場合
      *
      * @dataProvider deliveryFreeQuantityProvider
+     *
      * @param $quantity int 数量
      * @param $expectedFee int 期待する送料
      */
@@ -184,6 +175,7 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
         $BaseInfo = new BaseInfo();
         $BaseInfo->setDeliveryFreeAmount($deliveryFeeAmount);
         $BaseInfo->setDeliveryFreeQuantity($deliveryFeeQuantity);
+
         return $BaseInfo;
     }
 
@@ -195,6 +187,7 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
         $prop->setAccessible(true);
         $prop->setValue($Shipping, $id);
         $Shipping->setName01("name_${id}");
+
         return $Shipping;
     }
 
@@ -206,6 +199,7 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
         $OrderItem->setQuantity($quantity);
         $OrderItem->setShipping($Shipping);
         $Shipping->addOrderItem($OrderItem);
+
         return $OrderItem;
     }
 
@@ -217,6 +211,7 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
         $OrderItem->setQuantity(1);
         $OrderItem->setShipping($Shipping);
         $Shipping->addOrderItem($OrderItem);
+
         return $OrderItem;
     }
 }

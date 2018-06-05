@@ -2188,8 +2188,6 @@ return [
     'admin.store.unregisterd_plugin_table.950' => '設定',
     'admin.store.install.label' => 'プラグイン (zip、tar、tar.gz形式)',
 
-
-
     //asdasdasdas
     'application.text.error.access' => '',
     'application.text.error.access.message' => 'お探しのページはアクセスができない状況にあるか、移動もしくは削除された可能性があります。',

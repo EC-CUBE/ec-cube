@@ -64,7 +64,6 @@ class DeliveryFeeProcessor implements ItemHolderProcessor
         $this->deliveryFeeRepository = $deliveryFeeRepository;
     }
 
-
     /**
      * @param ItemHolderInterface $itemHolder
      * @param PurchaseContext     $context

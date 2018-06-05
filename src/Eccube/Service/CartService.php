@@ -22,12 +22,9 @@ use Eccube\Repository\ProductClassRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\Cart\CartItemAllocator;
 use Eccube\Service\Cart\CartItemComparator;
-use Eccube\Service\OrderHelper;
-use Eccube\Util\StringUtil;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 
 class CartService
@@ -130,7 +127,6 @@ class CartService
         }
 
         foreach ($this->carts as &$Cart) {
-
             /** @var CartItem $item */
             foreach ($Cart->getItems() as $item) {
                 /** @var ProductClass $ProductClass */
@@ -146,7 +142,6 @@ class CartService
      * 会員が保持する購入処理中の受注と、カートをマージする.
      *
      * @param Customer $Customer
-     * @return void
      */
     public function mergeFromOrders(Customer $Customer)
     {
@@ -340,6 +335,7 @@ class CartService
         if ($Carts) {
             $this->carts = $Carts;
         }
+
         return $this->session->set('carts', $this->carts);
     }
 
@@ -363,6 +359,7 @@ class CartService
 
     /**
      * @return bool
+     *
      * @deprecated
      */
     public function isLocked()

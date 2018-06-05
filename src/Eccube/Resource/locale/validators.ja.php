@@ -16,6 +16,6 @@ return [
     'This value should be the user\'s current password.' => '現在のパスワードが正しくありません。',
     'Invalid twig format. {{ error }}' => 'Twigのフォーマットが正しくありません。{{ error }}',
     'form.type.float.invalid' => '数字と小数点のみ入力できます。',
-    'admin.system.member.form.not.blank'=> '入力されていません。',
+    'admin.system.member.form.not.blank' => '入力されていません。',
     'form.type.numeric.invalid' => '数字で入力してください。',
 ];

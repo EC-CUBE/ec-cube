@@ -508,6 +508,7 @@ class OrderRepository extends AbstractRepository
      * 会員が保持する最新の購入処理中の Order を取得する.
      *
      * @param Customer
+     *
      * @return Order
      */
     public function getExistsOrdersByCustomer(\Eccube\Entity\Customer $Customer)

@@ -144,7 +144,7 @@ class OrderTest extends EccubeTestCase
         $Order = new Order();
         $ItemProduct = $this->entityManager->find(OrderItemType::class, OrderItemType::PRODUCT);
 
-        foreach(range(1,$times) as $i){
+        foreach (range(1, $times) as $i) {
             $Shipping = new Shipping();
 
             $OrderItem = new OrderItem();
@@ -177,6 +177,5 @@ class OrderTest extends EccubeTestCase
         $this->expected = $quantity * $times;
         $this->actual = $OrderItem->getQuantity();
         $this->verify();
-
     }
 }

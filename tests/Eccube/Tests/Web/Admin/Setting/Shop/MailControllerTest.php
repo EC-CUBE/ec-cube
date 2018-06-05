@@ -24,8 +24,8 @@ class MailControllerTest extends AbstractAdminWebTestCase
     public function tearDown()
     {
         $themeDir = $this->container->getParameter('eccube_theme_front_dir');
-        if (file_exists($themeDir . '/Mail/order.twig')) {
-            unlink($themeDir . '/Mail/order.twig');
+        if (file_exists($themeDir.'/Mail/order.twig')) {
+            unlink($themeDir.'/Mail/order.twig');
         }
         parent::tearDown();
     }

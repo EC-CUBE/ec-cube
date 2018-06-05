@@ -62,6 +62,7 @@ class PluginController extends AbstractController
 
     /**
      * PluginController constructor.
+     *
      * @param PluginRepository $pluginRepository
      * @param PluginService $pluginService
      * @param BaseInfo $baseInfo
@@ -73,7 +74,6 @@ class PluginController extends AbstractController
         $this->pluginEventHandlerRepository = $eventHandlerRepository;
         $this->BaseInfo = $baseInfo;
     }
-
 
     /**
      * インストール済プラグイン画面
@@ -89,7 +89,7 @@ class PluginController extends AbstractController
 
         // ファイル設置プラグインの取得.
         $unregisterdPlugins = $this->getUnregisteredPlugins($Plugins);
-        $unregisterdPluginsConfigPages = array();
+        $unregisterdPluginsConfigPages = [];
         foreach ($unregisterdPlugins as $unregisterdPlugin) {
             try {
                 $code = $unregisterdPlugin['code'];
@@ -172,6 +172,7 @@ class PluginController extends AbstractController
      *
      * @Method("POST")
      * @Route("/%eccube_admin_route%/store/plugin/{id}/update", requirements={"id" = "\d+"}, name="admin_store_plugin_update")
+     *
      * @param Request     $request
      * @param Plugin      $Plugin
      *
@@ -217,7 +218,7 @@ class PluginController extends AbstractController
                     $fs = new Filesystem();
                     $fs->remove($tmpDir);
                 }
-                log_error("plugin install failed.", array('original-message' => $er->getMessage()));
+                log_error('plugin install failed.', ['original-message' => $er->getMessage()]);
                 $message = 'admin.plugin.install.fail';
             }
         } else {
@@ -237,6 +238,7 @@ class PluginController extends AbstractController
      *
      * @Method("PUT")
      * @Route("/%eccube_admin_route%/store/plugin/{id}/enable", requirements={"id" = "\d+"}, name="admin_store_plugin_enable")
+     *
      * @param Plugin      $Plugin
      *
      * @return RedirectResponse
@@ -272,6 +274,7 @@ class PluginController extends AbstractController
      *
      * @Method("PUT")
      * @Route("/%eccube_admin_route%/store/plugin/{id}/disable", requirements={"id" = "\d+"}, name="admin_store_plugin_disable")
+     *
      * @param Plugin      $Plugin
      *
      * @return RedirectResponse
@@ -308,6 +311,7 @@ class PluginController extends AbstractController
      *
      * @Method("DELETE")
      * @Route("/%eccube_admin_route%/store/plugin/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_uninstall")
+     *
      * @param Plugin      $Plugin
      *
      * @return RedirectResponse
@@ -389,6 +393,7 @@ class PluginController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/store/plugin/install", name="admin_store_plugin_install")
      * @Template("@admin/Store/plugin_install.twig")
+     *
      * @param Request     $request
      *
      * @return array|RedirectResponse

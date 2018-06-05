@@ -1471,7 +1471,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
 
         usort($Shippings, function (Shipping $a, Shipping $b) {
             $result = strnatcmp($a->getName01(), $b->getName01());
-            if($result === 0) {
+            if ($result === 0) {
                 return strnatcmp($a->getName02(), $b->getName02());
             } else {
                 return $result;

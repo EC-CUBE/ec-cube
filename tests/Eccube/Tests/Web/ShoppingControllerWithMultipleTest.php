@@ -13,7 +13,6 @@
 
 namespace Eccube\Tests\Web;
 
-use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
@@ -1573,7 +1572,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         );
 
         // FIXME ユニットテストではステータスが変わらない
-        /** @var OrderStatus $OrderNew */
+        /* @var OrderStatus $OrderNew */
 //        $OrderNew = $this->orderStatusRepository->find(OrderStatus::NEW);
 //        $this->expected = $OrderNew->getId();
 //        $this->actual = $Order->getOrderStatus()->getId();

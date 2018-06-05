@@ -100,7 +100,7 @@ class MailController extends AbstractController
                     $data = $form->getData();
 
                     $twig = $MailTemplate->getFileName();
-                    if (!$twig)  {
+                    if (!$twig) {
                         $twig = 'Mail/order.twig';
                     }
 
@@ -128,7 +128,7 @@ class MailController extends AbstractController
                     $MailTemplate = $form->get('template')->getData();
 
                     $twig = $MailTemplate->getFileName();
-                    if (!$twig)  {
+                    if (!$twig) {
                         $twig = 'Mail/order.twig';
                     }
 

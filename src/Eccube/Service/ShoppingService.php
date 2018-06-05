@@ -208,8 +208,7 @@ class ShoppingService
         OrderService $orderService,
         BaseInfo $BaseInfo,
         AuthorizationCheckerInterface $authorizationChecker
-    )
-    {
+    ) {
         $this->mailTemplateRepository = $mailTemplateRepository;
         $this->mailService = $mailService;
         $this->eventDispatcher = $eventDispatcher;
