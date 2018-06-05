@@ -380,6 +380,12 @@ file that was distributed with this source code.
                                         <div id="address_box" class="data-empty">
                                             <span>{{ 'admin.customer.edit.no_customer_address'|trans }}</span>
                                         </div>
+
+                                        <div class="d-block text-center">
+                                            <a href="{{ url('admin_customer_delivery_new', { id: Customer.id }) }}"
+                                               class="btn btn-ec-regular">{{ 'admin.customer.edit.sipping_add'|trans }}</a>
+                                        </div>
+
                                     </div>
                                 {% endif %}
                             </div>
