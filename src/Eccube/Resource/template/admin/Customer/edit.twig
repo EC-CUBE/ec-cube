@@ -365,24 +365,30 @@ file that was distributed with this source code.
                                             {% endfor %}
                                             </tbody>
                                         </table>
-                                    </div>
 
-                                    {# TODO: 新規追加ボタンと文言のデザインを整える #}
-                                    {% if Customer.CustomerAddresses|length < eccube_config.eccube_deliv_addr_max %}
-                                        <a href="{{ url('admin_customer_delivery_new', { id: Customer.id }) }}"
-                                           class="btn btn-default">{{ 'admin.customer.edit.sipping_add'|trans }}</a>
-                                    {% else %}
-                                        <span class="ec-errorMessage">
-                                            {{ 'admin.customer.edit.sipping_text01'|trans({"%eccube_deliv_addr_max%":eccube_config.eccube_deliv_addr_max}) }}
-                                        </span>
-                                    {% endif %}
+                                        {# TODO: 新規追加ボタンと文言のデザインを整える #}
+                                        {% if Customer.CustomerAddresses|length < eccube_config.eccube_deliv_addr_max %}
+                                            <div class="d-block text-center">
+                                                <a href="{{ url('admin_customer_delivery_new', { id: Customer.id }) }}"
+                                                    class="btn btn-ec-regular">{{ 'admin.customer.edit.sipping_add'|trans }}</a>
+                                            </div>
+                                        {% else %}
+                                            <span class="ec-errorMessage">
+                                                {{ 'admin.customer.edit.sipping_text01'|trans({"%eccube_deliv_addr_max%":eccube_config.eccube_deliv_addr_max}) }}
+                                            </span>
+                                        {% endif %}
+                                    </div>
                                 {% else %}
-                                    {# TODO: 受注が１軒もない場合の表示を整える #}
-                                    <div id="history_box__header" class="data-empty">
-                                        <svg class="cb cb-inbox">
-                                            <use xlink:href="#cb-inbox"/>
-                                        </svg>
-                                        <p>{{ 'admin.customer.edit.106'|trans }}</p>
+                                    <div class="card-body">
+                                        <div id="address_box" class="data-empty">
+                                            <span>{{ 'admin.customer.edit.no_customer_address'|trans }}</span>
+                                        </div>
+
+                                        <div class="d-block text-center">
+                                            <a href="{{ url('admin_customer_delivery_new', { id: Customer.id }) }}"
+                                               class="btn btn-ec-regular">{{ 'admin.customer.edit.sipping_add'|trans }}</a>
+                                        </div>
+
                                     </div>
                                 {% endif %}
                             </div>
@@ -441,13 +447,13 @@ file that was distributed with this source code.
                                         </table>
                                     </div>
                                 {% else %}
-                                    {# TODO: 受注が１軒もない場合の表示を整える #}
-                                    <div id="history_box__header" class="data-empty">
-                                        <svg class="cb cb-inbox">
-                                            <use xlink:href="#cb-inbox"/>
-                                        </svg>
-                                        <p>{{ 'admin.customer.edit.106'|trans }}</p>
+                                <div class="card-body">
+                                    <div id="history_box" class="data-empty">
+                                        <span>
+                                            {{ 'admin.customer.edit.no_purchase_history'|trans }}
+                                        </span>
                                     </div>
+                                </div>
                                 {% endif %}
                             </div>
                         </div>
