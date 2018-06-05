@@ -57,7 +57,7 @@ class StockMultipleValidator implements ItemHolderProcessor
             $ProductClass = $this->productClassRepository->find($id);
             $stock = $ProductClass->getStock();
             if ($stock === 0) {
-                return ProcessResult::warn(trans('cart.zero.stock',
+                return ProcessResult::error(trans('cart.zero.stock',
                     ['%product%' => $this->formatProductName($ProductClass)]));
             }
             $total = 0;
