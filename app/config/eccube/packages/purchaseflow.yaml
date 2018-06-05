@@ -41,15 +41,15 @@ services:
         arguments:
             - #
                 - '@Eccube\Service\PurchaseFlow\Processor\DisplayStatusValidator'
-                - '@Eccube\Service\PurchaseFlow\Processor\SaleLimitValidator'
                 - '@Eccube\Service\PurchaseFlow\Processor\DeliverySettingValidator'
-                - '@Eccube\Service\PurchaseFlow\Processor\StockValidator'
                 - '@Eccube\Service\PurchaseFlow\Processor\ProductStatusValidator'
 
     eccube.purchase.flow.shopping.holder_processors:
         class: Doctrine\Common\Collections\ArrayCollection
         arguments:
             - #
+                - '@Eccube\Service\PurchaseFlow\Processor\StockMultipleValidator'
+                - '@Eccube\Service\PurchaseFlow\Processor\SaleLimitMultipleValidator'
                 - '@Eccube\Service\PurchaseFlow\Processor\PaymentTotalLimitValidator'
                 - '@Eccube\Service\PurchaseFlow\Processor\DeliveryFeeProcessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\DeliveryFeeFreeByShippingProcessor'
