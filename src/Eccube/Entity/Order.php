@@ -1461,7 +1461,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
         foreach ($this->getOrderItems() as $OrderItem) {
             if ($Shipping = $OrderItem->getShipping()) {
                 // 永続化される前のShippingが渡ってくる場合もあるため,
-                // Shopping::id()ではなくspl_object_id()を使用している
+                // Shipping::id()ではなくspl_object_id()を使用している
                 $id = \spl_object_id($Shipping);
                 if (!isset($Shippings[$id])) {
                     $Shippings[$id] = $Shipping;
