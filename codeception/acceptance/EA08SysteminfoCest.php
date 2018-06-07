@@ -27,10 +27,10 @@ class EA08SysteminfoCest
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/system');
-        $I->see('システム設定システム情報', '#main .page-header');
+        $I->see('システム情報システム設定', '.c-pageTitle__titles');
 
-        $I->see('システム情報', '#main .container-fluid div:nth-child(1) .box-header .box-title');
-        $I->see('PHP情報', '#main .container-fluid div:nth-child(2) .box-header .box-title');
+        $I->see('システム情報', '#server_info_box__header .card-title');
+        $I->see('PHP情報', '#php_info_box__header .card-title');
     }
 
     public function systeminfo_メンバー管理表示(\AcceptanceTester $I)
@@ -56,7 +56,7 @@ class EA08SysteminfoCest
         $I->see('システム設定メンバー管理', '.c-pageTitle');
 
         $I->click('.c-contentsArea__primaryCol .card .btn-area-bottom .btn');
-        $I->see('メンバー登録・編集', '#main .container-fluid div:nth-child(1) .box-header .box-title');
+        $I->see('メンバー登録・編集', '#member_form .c-contentsArea__primaryCol .card-header .card-title');
 
         $I->fillField(['id' => 'admin_member_name'], 'admintest');
         $I->fillField(['id' => 'admin_member_department'], 'admintest department');
@@ -65,7 +65,7 @@ class EA08SysteminfoCest
         $I->fillField(['id' => 'admin_member_password_second'], 'password');
         $I->selectOption(['id' => 'admin_member_Authority'], 'システム管理者');
         $I->selectOption(['id' => 'admin_member_Work_1'], '稼働');
-        $I->click('#aside_column button');
+        $I->click('#member_form .c-conversionArea__container button');
         $I->see('メンバーを保存しました。', '.c-contentsArea .alert-success');
 
         $I->see('メンバー管理', '.c-contentsArea__primaryCol .card-header .card-title');
@@ -82,7 +82,7 @@ class EA08SysteminfoCest
         $I->see('システム設定メンバー管理', '.c-pageTitle');
 
         $I->click('.c-contentsArea__primaryCol .card .btn-area-bottom .btn');
-        $I->see('メンバー登録・編集', '#main .container-fluid div:nth-child(1) .box-header .box-title');
+        $I->see('メンバー登録・編集', '#member_form .c-contentsArea__primaryCol .card-header .card-title');
 
         $I->fillField(['id' => 'admin_member_name'], 'admintest2');
         $I->fillField(['id' => 'admin_member_department'], 'admintest department');
@@ -91,7 +91,7 @@ class EA08SysteminfoCest
         $I->fillField(['id' => 'admin_member_password_second'], 'password');
         $I->selectOption(['id' => 'admin_member_Authority'], 'システム管理者');
         $I->selectOption(['id' => 'admin_member_Work_1'], '稼働');
-        $I->click('#aside_wrap .btn_area a');
+        $I->click('#member_form .c-conversionArea__container .c-conversionArea__leftBlockItem a');
 
         $I->see('メンバー管理', '.c-contentsArea__primaryCol .card-header .card-title');
         $I->dontSee('admintest2', '#search_result tbody tr:nth-child(1) td:nth-child(1)');
@@ -107,10 +107,10 @@ class EA08SysteminfoCest
         $I->see('システム設定メンバー管理', '.c-pageTitle');
 
         $I->click('.c-contentsArea__primaryCol .card .btn-area-bottom .btn');
-        $I->see('メンバー登録・編集', '#main .container-fluid div:nth-child(1) .box-header .box-title');
+        $I->see('メンバー登録・編集', '#member_form .c-contentsArea__primaryCol .card-header .card-title');
 
-        $I->click('#aside_column button');
-        $I->see('入力されていません。', '#form1 div:nth-child(1) div');
+        $I->click('#member_form .c-conversionArea__container button');
+        $I->see('入力されていません。', '#member_form div:nth-child(1) div');
     }
 
     public function systeminfo_メンバー管理編集実施(\AcceptanceTester $I)
@@ -123,10 +123,10 @@ class EA08SysteminfoCest
         $I->see('システム設定メンバー管理', '.c-pageTitle');
 
         $I->click('#search_result tbody tr:nth-child(1) .action-edit');
-        $I->see('メンバー登録・編集', '#main .container-fluid div:nth-child(1) .box-header .box-title');
+        $I->see('メンバー登録・編集', '#member_form .c-contentsArea__primaryCol .card-header .card-title');
 
         $I->fillField(['id' => 'admin_member_name'], 'administrator');
-        $I->click('#aside_column button');
+        $I->click('#member_form .c-conversionArea__container button');
 
         // FIXME 以下の不具合のためシステムエラーが発生する
         // https://github.com/EC-CUBE/eccube-api/pull/60
@@ -151,10 +151,10 @@ class EA08SysteminfoCest
         $I->see('システム設定メンバー管理', '.c-pageTitle');
 
         $I->click('#search_result tbody tr:nth-child(1) .action-edit');
-        $I->see('メンバー登録・編集', '#main .container-fluid div:nth-child(1) .box-header .box-title');
+        $I->see('メンバー登録・編集', '#member_form .c-contentsArea__primaryCol .card-header .card-title');
 
         $I->fillField(['id' => 'admin_member_name'], 'administrator2');
-        $I->click('#aside_wrap .btn_area a');
+        $I->click('#member_form .c-conversionArea__container .c-conversionArea__leftBlockItem a');
 
         $I->see('メンバー管理', '.c-contentsArea__primaryCol .card-header .card-title');
         $I->dontSee('administrator2', '#search_result tbody tr:nth-child(1) td:nth-child(1)');
@@ -170,12 +170,12 @@ class EA08SysteminfoCest
         $I->see('システム設定メンバー管理', '.c-pageTitle');
 
         $I->click('#search_result tbody tr:nth-child(1) .action-edit');
-        $I->see('メンバー登録・編集', '#main .container-fluid div:nth-child(1) .box-header .box-title');
+        $I->see('メンバー登録・編集', '#member_form .c-contentsArea__primaryCol .card-header .card-title');
 
         $I->fillField(['id' => 'admin_member_name'], '');
-        $I->click('#aside_column button');
+        $I->click('#member_form .c-conversionArea__container button');
 
-        $I->see('入力されていません。', '#form1 div:nth-child(1) div');
+        $I->see('入力されていません。', '#member_form div:nth-child(1) div');
     }
 
     public function systeminfo_メンバー管理登録下へ(\AcceptanceTester $I)
@@ -247,8 +247,8 @@ class EA08SysteminfoCest
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/security');
-        $I->see('システム設定セキュリティ管理', '#main .page-header');
-        $I->see('セキュリティ機能設定', '#main .container-fluid div:nth-child(1) .box-header .box-title');
+        $I->see('システム設定セキュリティ管理', '#page_admin_setting_system_security .c-pageTitle__titles');
+        $I->see('セキュリティ機能設定', '#page_admin_setting_system_security > div.c-container > div.c-contentsArea div.c-contentsArea__primaryCol > div.c-primaryCol > div:nth-child(1) > div.card-header > div > div.col-8 > div');
     }
 
     public function systeminfo_セキュリティ管理ディレクトリ名(\AcceptanceTester $I)
@@ -258,15 +258,15 @@ class EA08SysteminfoCest
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/security');
-        $I->see('システム設定セキュリティ管理', '#main .page-header');
+        $I->see('システム設定セキュリティ管理', '#page_admin_setting_system_security .c-pageTitle__titles');
 
         $I->fillField(['id' => 'admin_security_admin_route_dir'], 'admin2');
-        $I->click('#aside_column div div div div div button');
+        $I->click('#page_admin_setting_system_security form div.c-contentsArea__cols > div.c-conversionArea > div > div > div:nth-child(2) > div > div > button');
         $I->loginAsAdmin('', '', 'admin2');
 
         $I->amOnPage('/admin2/setting/system/security');
         $I->fillField(['id' => 'admin_security_admin_route_dir'], $config['eccube_admin_route']);
-        $I->click('#aside_column div div div div div button');
+        $I->click('#page_admin_setting_system_security form div.c-contentsArea__cols > div.c-conversionArea > div > div > div:nth-child(2) > div > div > button');
         $I->loginAsAdmin();
     }
 
@@ -284,7 +284,7 @@ class EA08SysteminfoCest
         $httpsBaseUrl = str_replace('http://', 'https://', $httpBaseUrl);
         $I->amOnUrl($httpsBaseUrl.$config['eccube_admin_route'].'/setting/system/security');
         $I->checkOption(['id' => 'admin_security_force_ssl']);
-        $I->click('#aside_column div div div div div button');
+        $I->click('#page_admin_setting_system_security form div.c-contentsArea__cols > div.c-conversionArea > div > div > div:nth-child(2) > div > div > button');
 
         // httpでアクセスしたらhttpsにリダイレクトされる
         $I->amOnUrl($httpBaseUrl);
@@ -293,7 +293,7 @@ class EA08SysteminfoCest
         // 後続テストのために戻しておく
         $I->amOnUrl($httpsBaseUrl.$config['eccube_admin_route'].'/setting/system/security');
         $I->uncheckOption(['id' => 'admin_security_force_ssl']);
-        $I->click('#aside_column div div div div div button');
+        $I->click('#page_admin_setting_system_security form div.c-contentsArea__cols > div.c-conversionArea > div > div > div:nth-child(2) > div > div > button');
     }
 
     public function systeminfo_権限管理追加(\AcceptanceTester $I)
@@ -307,8 +307,8 @@ class EA08SysteminfoCest
             ->登録();
 
         $I->see('権限設定を保存しました。', AuthorityManagePage::$完了メッセージ);
-        $I->dontSee('コンテンツ管理', '#side ul');
-        $I->dontSee('オーナーズストア', '#side ul');
+        $I->dontSee('コンテンツ管理', 'nav .c-mainNavArea__nav');
+        $I->dontSee('オーナーズストア', 'nav .c-mainNavArea__nav');
     }
 
     public function systeminfo_権限管理削除(\AcceptanceTester $I)
@@ -321,8 +321,8 @@ class EA08SysteminfoCest
             ->登録();
 
         $I->see('権限設定を保存しました。', AuthorityManagePage::$完了メッセージ);
-        $I->see('コンテンツ管理', '#side ul');
-        $I->see('オーナーズストア', '#side ul');
+        $I->see('コンテンツ管理', 'nav .c-mainNavArea__nav');
+        $I->see('オーナーズストア', 'nav .c-mainNavArea__nav');
     }
 
     public function systeminfo_ログ表示(\AcceptanceTester $I)
@@ -332,7 +332,7 @@ class EA08SysteminfoCest
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/log');
-        $I->see('システム設定EC-CUBE ログ表示', '#main .page-header');
+        $I->see('EC-CUBE ログ表示システム設定', '.c-pageTitle');
 
         $option = $I->grabTextFrom('#admin_system_log_files option:nth-child(1)');
         $I->selectOption("#admin_system_log_files", $option);
@@ -340,7 +340,7 @@ class EA08SysteminfoCest
         $I->fillField(['id' => 'line-max'], '1');
         $I->click(['css' => '#form1 button']);
 
-        $I->dontSeeElement(['css' => '#main .container-fluid .box table tbody tr:nth-child(2)']);
+        $I->seeInField(['id' => 'line-max'], '1');
     }
 
     public function systeminfo_マスターデータ管理(\AcceptanceTester $I)
@@ -350,17 +350,17 @@ class EA08SysteminfoCest
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/masterdata');
-        $I->see('システム設定マスターデータ管理', '#main .page-header');
+        $I->see('マスターデータ管理システム設定', '.c-pageTitle');
 
         $I->selectOption(['id' => 'admin_system_masterdata_masterdata'], ['Eccube-Entity-Master-Sex' => 'mtb_sex']);
         $I->click('#form1 button');
 
-        $I->fillField(['css' => '#form2 table tbody tr:nth-child(4) td:nth-child(1) input'], '3');
-        $I->fillField(['css' => '#form2 table tbody tr:nth-child(4) td:nth-child(2) input'], '無回答');
+        $I->fillField(['css' => '#form2 table tbody tr:nth-child(3) td:nth-child(1) input'], '3');
+        $I->fillField(['css' => '#form2 table tbody tr:nth-child(3) td:nth-child(2) input'], '無回答');
 
-        $I->click(['css' => '#form2 #aside_column button']);
+        $I->click(['css' => '#form2 .c-conversionArea .ladda-button']);
 
-        $I->see('登録が完了しました。', '#main .container-fluid div:nth-child(1) .alert-success');
+        $I->see('登録が完了しました。', '.c-contentsArea .alert-success');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/customer/new');
         $I->see('無回答', '#customer_form #admin_customer_sex');
     }
@@ -381,10 +381,10 @@ class EA08SysteminfoCest
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/security');
-        $I->see('システム設定セキュリティ管理', '#main .page-header');
+        $I->see('システム設定セキュリティ管理', '#page_admin_setting_system_security .c-pageTitle__titles');
 
         $I->fillField(['id' => 'admin_security_admin_allow_hosts'], '1.1.1.1');
-        $I->click('#aside_column div div div div div button');
+        $I->click('#page_admin_setting_system_security form div.c-contentsArea__cols > div.c-conversionArea > div > div > div:nth-child(2) > div > div > button');
 
         $I->amOnPage('/'.$config['eccube_admin_route']);
         $I->see('アクセスできません。', '.ec-layoutRole .ec-reportHeading');

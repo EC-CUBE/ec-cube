@@ -40,6 +40,7 @@ class ComposerProcessService implements ComposerServiceInterface
 
     /**
      * ComposerProcessService constructor.
+     *
      * @param EccubeConfig $eccubeConfig
      * @param EntityManagerInterface $entityManager
      * @param SystemService $systemService

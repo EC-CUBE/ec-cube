@@ -33,11 +33,7 @@ file that was distributed with this source code.
                                 <p class="ec-historyListHeader__date">{{ Order.order_date|date("Y/m/d H:i:s") }}</p>
                                 <dl class="ec-definitions">
                                     <dt>{{'admin.mail.order.200'|trans}}</dt>
-                                    <dd>{{ Order.id }}</dd>
-                                </dl>
-                                <dl class="ec-definitions">
-                                    <dt>ご注文コード：</dt> {# TODO 未翻訳 #}
-                                    <dd>{{ Order.code }}</dd>
+                                    <dd>{{ Order.order_code }}</dd>
                                 </dl>
                                 <dl class="ec-definitions">
                                     <dt>{{  'mypage.history.label.order_status'|trans}}</dt>
@@ -47,7 +43,7 @@ file that was distributed with this source code.
                             </div>
                         </div>
                         <div class="ec-historyRole__detail">
-                            {% for OrderItem in Order.OrderItems %}
+                            {% for OrderItem in Order.MergedProductOrderItems %}
                                 <div class="ec-imageGrid">
                                     <div class="ec-imageGrid__img">
                                         {% if OrderItem.Product is null %}
@@ -64,7 +60,7 @@ file that was distributed with this source code.
                                         {% if OrderItem.class_category_name1 is not empty %}
                                             / {{ OrderItem.class_category_name2 }}
                                         {% endif %}
-                                        <p class="ec-historyRole__detailPrice">{{ OrderItem.price_inc_tax|price }} ×{{ OrderItem.quantity }}</p>
+                                        <p class="ec-historyRole__detailPrice">{{ OrderItem.price_inc_tax|price }} × {{ OrderItem.quantity }}</p>
                                     </div>
                                 </div>
                             {% endfor %}

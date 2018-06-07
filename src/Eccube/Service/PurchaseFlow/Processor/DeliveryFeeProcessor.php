@@ -21,6 +21,8 @@ use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
+use Eccube\Repository\DeliveryFeeRepository;
+use Eccube\Repository\TaxRuleRepository;
 use Eccube\Service\PurchaseFlow\ItemHolderProcessor;
 use Eccube\Service\PurchaseFlow\ProcessResult;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
@@ -36,13 +38,30 @@ class DeliveryFeeProcessor implements ItemHolderProcessor
     protected $entityManager;
 
     /**
+     * @var TaxRuleRepository
+     */
+    protected $taxRuleRepository;
+
+    /**
+     * @var DeliveryFeeRepository
+     */
+    protected $deliveryFeeRepository;
+
+    /**
      * DeliveryFeeProcessor constructor.
      *
-     * @param $entityManager
+     * @param EntityManagerInterface $entityManager
+     * @param TaxRuleRepository $taxRuleRepository
+     * @param DeliveryFeeRepository $deliveryFeeRepository
      */
-    public function __construct(EntityManagerInterface $entityManager)
-    {
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        TaxRuleRepository $taxRuleRepository,
+        DeliveryFeeRepository $deliveryFeeRepository
+    ) {
         $this->entityManager = $entityManager;
+        $this->taxRuleRepository = $taxRuleRepository;
+        $this->deliveryFeeRepository = $deliveryFeeRepository;
     }
 
     /**
@@ -85,21 +104,30 @@ class DeliveryFeeProcessor implements ItemHolderProcessor
     {
         $DeliveryFeeType = $this->entityManager
             ->find(OrderItemType::class, OrderItemType::DELIVERY_FEE);
-        // TODO
         $TaxInclude = $this->entityManager
             ->find(TaxDisplayType::class, TaxDisplayType::INCLUDED);
         $Taxion = $this->entityManager
             ->find(TaxType::class, TaxType::TAXATION);
+        $TaxRule = $this->taxRuleRepository->getByRule();
 
         /** @var Order $Order */
         $Order = $itemHolder;
         /* @var Shipping $Shipping */
         foreach ($Order->getShippings() as $Shipping) {
+            // 送料の計算
+            $DeliveryFee = $this->deliveryFeeRepository->findOneBy([
+                'Delivery' => $Shipping->getDelivery(),
+                'Pref' => $Shipping->getPref(),
+            ]);
+            $Shipping->setShippingDeliveryFee($DeliveryFee->getFee());
+            $Shipping->setFeeId($DeliveryFee->getId());
+
             $OrderItem = new OrderItem();
             $OrderItem->setProductName(trans('deliveryfeeprocessor.label.shippint_charge'))
                 ->setPrice($Shipping->getShippingDeliveryFee())
                 ->setPriceIncTax($Shipping->getShippingDeliveryFee())
-                ->setTaxRate(8)
+                ->setTaxRule($TaxRule->getId())
+                ->setTaxRate($TaxRule->getTaxRate())
                 ->setQuantity(1)
                 ->setOrderItemType($DeliveryFeeType)
                 ->setShipping($Shipping)

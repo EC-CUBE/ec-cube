@@ -95,7 +95,6 @@ class ShopControllerTest extends AbstractAdminWebTestCase
             'good_traded' => '取り扱い商品',
             'message' => 'メッセージ',
             'option_product_delivery_fee' => '0',
-            'option_multiple_shipping' => '0',
             'option_customer_activate' => '0',
             'option_mypage_order_status_display' => '0',
             'option_favorite_product' => 0,

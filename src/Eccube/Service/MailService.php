@@ -387,14 +387,21 @@ class MailService
     /**
      * Send admin order mail.
      *
-     * @param $Order 受注情報
+     * @param Order $Order 受注情報
      * @param $formData 入力内容
+     * @param string $twig テンプレートファイル名
+     *
+     * @return $this
+     *
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
      */
-    public function sendAdminOrderMail(\Eccube\Entity\Order $Order, $formData)
+    public function sendAdminOrderMail(Order $Order, $formData, $twig = '@admin/Mail/order.twig')
     {
         log_info('受注管理通知メール送信開始');
 
-        $body = $this->twig->render('Mail/order.twig', [
+        $body = $this->twig->render($twig, [
             'header' => $formData['mail_header'],
             'footer' => $formData['mail_footer'],
             'Order' => $Order,
@@ -424,7 +431,7 @@ class MailService
 
         log_info('受注管理通知メール送信完了', ['count' => $count]);
 
-        return $count;
+        return $message;
     }
 
     /**

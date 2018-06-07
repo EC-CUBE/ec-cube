@@ -15,7 +15,6 @@ namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -81,8 +80,8 @@ class SearchOrderType extends AbstractType
                 'label' => 'searchorder.label.email',
                 'required' => false,
             ])
-            ->add('order_id', IntegerType::class, [
-                'label' => 'searchorder.label.order_id',
+            ->add('order_code', TextType::class, [
+                'label' => 'searchorder.label.order_code',
                 'required' => false,
             ])
             ->add('tel', TextType::class, [

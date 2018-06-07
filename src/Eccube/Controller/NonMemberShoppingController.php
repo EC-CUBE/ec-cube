@@ -21,7 +21,6 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
 use Eccube\Form\Type\Front\NonMemberType;
-use Eccube\Form\Type\Front\ShoppingShippingType;
 use Eccube\Repository\Master\PrefRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\OrderHelper;
@@ -219,69 +218,6 @@ class NonMemberShoppingController extends AbstractShoppingController
         return [
             'form' => $form->createView(),
         ];
-    }
-
-    /**
-     * 非会員用複数配送設定時の新規お届け先の設定
-     */
-    public function shippingMultipleEdit(Request $request)
-    {
-        // カートチェック
-        $response = $this->forwardToRoute('shopping_check_to_art');
-        if ($response->isRedirection() || $response->getContent()) {
-            return $response;
-        }
-
-        // 非会員用Customerを取得
-        $Customer = $this->shoppingService->getNonMember($this->sessionKey);
-        $CustomerAddress = new CustomerAddress();
-        $CustomerAddress->setCustomer($Customer);
-        $Customer->addCustomerAddress($CustomerAddress);
-
-        $builder = $this->formFactory->createBuilder(ShoppingShippingType::class, $CustomerAddress);
-
-        $event = new EventArgs(
-            [
-                'builder' => $builder,
-                'Customer' => $Customer,
-            ],
-            $request
-        );
-        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_MULTIPLE_EDIT_INITIALIZE, $event);
-
-        $form = $builder->getForm();
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            log_info('非会員お届け先追加処理開始');
-
-            // 非会員用のセッションに追加
-            $customerAddresses = $this->session->get($this->sessionCustomerAddressKey);
-            $customerAddresses = unserialize($customerAddresses);
-            $customerAddresses[] = $CustomerAddress;
-            $this->session->set($this->sessionCustomerAddressKey, serialize($customerAddresses));
-
-            $event = new EventArgs(
-                [
-                    'form' => $form,
-                    'CustomerAddresses' => $customerAddresses,
-                ],
-                $request
-            );
-            $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_MULTIPLE_EDIT_COMPLETE, $event);
-
-            log_info('非会員お届け先追加処理完了');
-
-            return $this->redirectToRoute('shopping_shipping_multiple');
-        }
-
-        return $this->render(
-            'Shopping/shipping_multiple_edit.twig',
-            [
-                'form' => $form->createView(),
-            ]
-        );
     }
 
     /**

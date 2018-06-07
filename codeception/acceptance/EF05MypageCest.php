@@ -66,7 +66,7 @@ class EF05MypageCest
 
         HistoryPage::at($I);
 
-        $I->see('ご注文状況', 'div.ec-orderOrder div.ec-definitions:nth-child(4) dt');
+        $I->see('ご注文状況', 'div.ec-orderOrder div.ec-definitions:nth-child(3) dt');
         // $I->see('注文受付', '#main_middle .order_detail'); TODO 受注ステータスが可変するためテストが通らない場合がある
         $I->see('配送情報', 'div.ec-orderRole div.ec-orderDelivery div.ec-rectHeading h2');
         $I->see('お届け先', 'div.ec-orderRole div.ec-orderDelivery div.ec-orderDelivery__title');

@@ -16,6 +16,7 @@ namespace Eccube\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\Master\ShippingStatus;
 use Eccube\Service\Calculator\OrderItemCollection;
+use Eccube\Service\PurchaseFlow\ItemCollection;
 
 /**
  * Shipping
@@ -28,6 +29,11 @@ use Eccube\Service\Calculator\OrderItemCollection;
  */
 class Shipping extends \Eccube\Entity\AbstractEntity
 {
+    public function getShippingMultipleDefaultName()
+    {
+        return $this->getName01().' '.$this->getPref()->getName().' '.$this->getAddr01().' '.$this->getAddr02();
+    }
+
     /**
      * @var int
      *
@@ -240,7 +246,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Eccube\Entity\OrderItem", mappedBy="Shipping")
+     * @ORM\OneToMany(targetEntity="Eccube\Entity\OrderItem", mappedBy="Shipping", cascade={"persist"})
      */
     private $OrderItems;
 
@@ -991,7 +997,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
      */
     public function getOrderItems()
     {
-        return $this->OrderItems;
+        return (new ItemCollection($this->OrderItems))->sort();
     }
 
     /**

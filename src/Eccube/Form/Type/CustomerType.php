@@ -13,7 +13,6 @@
 
 namespace Eccube\Form\Type;
 
-use Eccube\Application;
 use Eccube\Form\Type\Master\CustomerStatusType;
 use Eccube\Form\Type\Master\JobType;
 use Eccube\Form\Type\Master\SexType;

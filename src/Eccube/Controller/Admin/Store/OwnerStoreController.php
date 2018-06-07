@@ -13,8 +13,6 @@
 
 namespace Eccube\Controller\Admin\Store;
 
-use Doctrine\ORM\EntityManager;
-use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Plugin;
@@ -37,7 +35,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class OwnerStoreController extends AbstractController
 {
-
     /**
      * @var PluginRepository
      */
@@ -62,6 +59,7 @@ class OwnerStoreController extends AbstractController
 
     /**
      * OwnerStoreController constructor.
+     *
      * @param PluginRepository $pluginRepository
      * @param PluginService $pluginService
      * @param ComposerProcessService $composerProcessService
@@ -81,19 +79,19 @@ class OwnerStoreController extends AbstractController
 
         // TODO: Check the flow of the composer service below
         $memoryLimit = $this->systemService->getMemoryLimit();
-        if($memoryLimit == -1 or $memoryLimit >= $this->eccubeConfig['eccube_composer_memory_limit']){
+        if ($memoryLimit == -1 or $memoryLimit >= $this->eccubeConfig['eccube_composer_memory_limit']) {
             $this->composerService = $composerApiService;
-        }else{
+        } else {
             $this->composerService = $composerProcessService;
         }
     }
-
 
     /**
      * Owner's Store Plugin Installation Screen - Search function
      *
      * @Route("/search", name="admin_store_plugin_owners_search")
      * @Template("@admin/Store/plugin_search.twig")
+     *
      * @param Request     $request
      *
      * @return array
@@ -105,7 +103,7 @@ class OwnerStoreController extends AbstractController
         $promotionItems = [];
         $message = '';
         // Owner's store communication
-        $url = $this->eccubeConfig['package_repo_url'].'/search/packages.json';
+        $url = $this->eccubeConfig['eccube_package_repo_url'].'/search/packages.json';
         list($json, $info) = $this->getRequestApi($url);
         if ($json === false) {
             $message = $this->getResponseErrorMessage($info);
@@ -175,6 +173,7 @@ class OwnerStoreController extends AbstractController
      *
      * @Route("/install/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_install_confirm")
      * @Template("@admin/Store/plugin_confirm.twig")
+     *
      * @param Request     $request
      * @param string      $id
      *
@@ -183,7 +182,7 @@ class OwnerStoreController extends AbstractController
     public function doConfirm(Request $request, $id)
     {
         // Owner's store communication
-        $url = $this->eccubeConfig['package_repo_url'].'/search/packages.json';
+        $url = $this->eccubeConfig['eccube_package_repo_url'].'/search/packages.json';
         list($json, $info) = $this->getRequestApi($url);
         $data = json_decode($json, true);
         $items = $data['item'];
@@ -226,7 +225,7 @@ class OwnerStoreController extends AbstractController
     public function apiInstall(Request $request, $pluginCode, $eccubeVersion, $version)
     {
         // Check plugin code
-        $url = $this->eccubeConfig['package_repo_url'].'/search/packages.json'.'?eccube_version='.$eccubeVersion.'&plugin_code='.$pluginCode.'&version='.$version;
+        $url = $this->eccubeConfig['eccube_package_repo_url'].'/search/packages.json'.'?eccube_version='.$eccubeVersion.'&plugin_code='.$pluginCode.'&version='.$version;
         list($json, $info) = $this->getRequestApi($url);
         $existFlg = false;
         $data = json_decode($json, true);
@@ -279,7 +278,7 @@ class OwnerStoreController extends AbstractController
         try {
             $this->composerService->execRequire($packageNames);
             // Do report to package repo
-            $url = $this->eccubeConfig['package_repo_url'].'/report';
+            $url = $this->eccubeConfig['eccube_package_repo_url'].'/report';
             $this->postRequestApi($url, $data);
             $this->addSuccess('admin.plugin.install.complete', 'admin');
 
@@ -289,7 +288,7 @@ class OwnerStoreController extends AbstractController
         }
 
         // Do report to package repo
-        $url = $this->eccubeConfig['package_repo_url'].'/report/fail';
+        $url = $this->eccubeConfig['eccube_package_repo_url'].'/report/fail';
         $this->postRequestApi($url, $data);
         $this->addError('admin.plugin.install.fail', 'admin');
 
@@ -301,6 +300,7 @@ class OwnerStoreController extends AbstractController
      *
      * @Route("/delete/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_delete_confirm")
      * @Template("Store/plugin_confirm_uninstall.twig")
+     *
      * @param Plugin      $Plugin
      *
      * @return array|RedirectResponse
@@ -308,7 +308,7 @@ class OwnerStoreController extends AbstractController
     public function deleteConfirm(Plugin $Plugin)
     {
         // Owner's store communication
-        $url = $this->eccubeConfig['package_repo_url'].'/search/packages.json';
+        $url = $this->eccubeConfig['eccube_package_repo_url'].'/search/packages.json';
         list($json, $info) = $this->getRequestApi($url);
         $data = json_decode($json, true);
         $items = $data['item'];
@@ -351,6 +351,7 @@ class OwnerStoreController extends AbstractController
      *
      * @Method("DELETE")
      * @Route("/delete/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_api_uninstall")
+     *
      * @param Plugin      $Plugin
      *
      * @return RedirectResponse
@@ -412,6 +413,7 @@ class OwnerStoreController extends AbstractController
      *
      * @Route("/upgrade/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_update_confirm")
      * @Template("@admin/Store/plugin_confirm.twig")
+     *
      * @param Plugin      $plugin
      *
      * @return Response

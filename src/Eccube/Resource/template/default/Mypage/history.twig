@@ -36,6 +36,8 @@ file that was distributed with this source code.
             {% include 'Mypage/navi.twig' %}
         </div>
 
+        {% set remessage = false %}
+
         <div class="ec-orderRole">
             <div class="ec-orderRole__detail">
                 <div class="ec-orderOrder">
@@ -44,12 +46,8 @@ file that was distributed with this source code.
                         <dd>{{ Order.create_date|date("Y/m/d H:i:s") }}</dd>
                     </div>
                     <div class="ec-definitions">
-                        <dt>{{ 'mypage.history.label.order_id'|trans}}</dt>
-                        <dd>{{ Order.id }}</dd>
-                    </div>
-                    <div class="ec-definitions">
-                        <dt>ご注文コード：</dt>
-                        <dd>{{ Order.code }}</dd>
+                        <dt>{{ 'mypage.history.label.order_code'|trans}}</dt>
+                        <dd>{{ Order.order_code }}</dd>
                     </div>
                     {% if BaseInfo.option_mypage_order_status_display %}
                         <div class="ec-definitions">
@@ -68,53 +66,14 @@ file that was distributed with this source code.
                         </div>
                     {% endif %}
 
-                    <div class="ec-orderOrder__items">
-                        {% set remessage = '' %}
-                        {% for OrderItem in Order.OrderItems %}
-                            <div class="ec-imageGrid">
-                                <div class="ec-imageGrid__img">
-                                    {% if OrderItem.Product is null %}
-                                        <img src="{{ asset(''|no_image_product, 'save_image') }}" />
-                                    {% else %}
-                                        <a href="{{ url('product_detail', { id : OrderItem.Product.id } ) }}">
-                                            <img src="{{ asset(OrderItem.Product.MainListImage|no_image_product, 'save_image') }}" />
-                                        </a>
-                                    {% endif %}
-                                </div>
-                                <div class="ec-imageGrid__content">
-                                    <p>
-                                        {% if OrderItem.Product is null %}
-                                            {{ OrderItem.product_name }}
-                                        {% else %}
-                                            <a href="{{ url('product_detail', {'id': OrderItem.Product.id}) }}">
-                                                {{ OrderItem.product_name }}
-                                            </a>
-                                        {% endif %}
-                                    </p>
-                                    {% if OrderItem.classcategory_name1 is not empty %}
-                                        {{ OrderItem.classcategory_name1 }}
-                                    {% endif %}
-                                    {% if OrderItem.classcategory_name2 is not empty %}
-                                        / {{ OrderItem.classcategory_name2 }}
-                                    {% endif %}
-                                    <p>{{ OrderItem.price_inc_tax|price }} × {{ OrderItem.quantity|number_format }}</p>
-                                    {% if OrderItem.product and OrderItem.price_inc_tax != OrderItem.productClass.price02IncTax %}
-                                        <p class="ec-color-accent">【現在価格】{{ OrderItem.productClass.price02IncTax|price }}</p>
-                                        {% set remessage = true %}
-                                    {% endif %}
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
                 </div>
                 <div class="ec-orderDelivery">
                     <div class="ec-rectHeading">
                         <h2>{{'mypage.history.detail.title.delivery'|trans}}</h2>
                     </div>
-                    {% set OrderItem = Order.OrderItems.0 %}
                     {% for Shipping in Order.Shippings %}
                         <div class="ec-orderDelivery__title">{{'mypage.history.detail.label.shipping'|trans}}{% if Order.multiple %}({{ loop.index }}){% endif %}</div>
-                        {% for orderItem in Shipping.orderItems %}
+                        {% for orderItem in Shipping.productOrderItems %}
                             <div class="ec-orderDelivery__item">
                                 <div class="ec-imageGrid">
                                     <div class="ec-imageGrid__img">
@@ -134,6 +93,12 @@ file that was distributed with this source code.
                                                 <br>{{ orderItem.productClass.classCategory2.className.name }}：{{ orderItem.productClass.classCategory2 }}
                                             {% endif %}
                                         {% endif %}
+                                        <p>{{ orderItem.price_inc_tax|price }} × {{ orderItem.quantity|number_format }}</p>
+                                        {% if orderItem.product and orderItem.price_inc_tax != orderItem.productClass.price02IncTax %}
+                                            <p class="ec-color-accent">【現在価格】{{ orderItem.productClass.price02IncTax|price }}</p>
+                                            {% set remessage = true %}
+                                        {% endif %}
+
                                     </div>
                                 </div>
                             </div>
@@ -156,9 +121,8 @@ file that was distributed with this source code.
                             <dt>{{'mypage.history.detail.label.shipping_time'|trans}} : </dt>
                             <dd>{{ Shipping.shipping_delivery_time|default('admin.shipping.edit.719'|trans) }}</dd>
                         </div>
-
-                </div>
                     {% endfor %}
+                </div>
                     <div class="ec-orderPayment">
                         <div class="ec-rectHeading">
                             <h2>{{'mypage.history.detail.title.payment'|trans}}</h2>

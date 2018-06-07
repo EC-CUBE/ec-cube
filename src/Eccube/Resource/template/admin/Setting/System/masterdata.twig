@@ -9,112 +9,109 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
 
-{% extends '@admin/default_frame.twig' %}
+{% extends '@admin/styleguide_frame.twig' %}
 
 {% set menus = ['setting', 'system', 'masterdata'] %}
 
-{% block title %}{{'admin.setting.system.masterdata.675'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.setting.system.masterdata.676'|trans}}{% endblock %}
+{% block title %}{{'admin.setting.system.masterdata.676'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.setting.system.masterdata.675'|trans}}{% endblock %}
 
 {% block main %}
-<form id="form1" name="form1" method="post" action="{{ url('admin_setting_system_masterdata') }}">
-<div class="row">
-    {{ form_widget(form._token) }}
-        <div id="master_edit" class="col-md-12">
-            <div id="master_edit_box" class="box">
-                <div id="master_edit_box__header" class="box-header">
-                    <h3 class="box-title">{{'admin.setting.system.masterdata.677'|trans}}</h3>
-                </div><!-- /.box-header -->
-                <div id="master_edit_box__body" class="box-body">
-                    <div id="master_edit_box__body_inner" class="form-inline form-group">
-                        <div id="master_edit_box__masterdata" class="form-group">
-                            {{ form_widget(form.masterdata, {'attr': {'class': 'form-control'}}) }}
-                            {{ form_errors(form.masterdata) }}
-                        </div>
-                        <div id="master_edit_box__confirm_button" class="form-group">
-                            <button class="btn btn-primary btn-block" type="submit">{{'admin.setting.system.masterdata.678'|trans}}</button>
-                        </div>
-                    </div>
-                    <div class="extra-form clearfix">
-                        {% for f in form.getIterator %}
-                            {% if f.vars.name matches '[^plg*]' %}
-                                <div class="form-group">
-                                    {{ form_label(f) }}
-                                    {{ form_widget(f) }}
-                                    {{ form_errors(f) }}
+    <div class="c-contentsArea__cols">
+        <div class="c-contentsArea__primaryCol">
+            <div class="c-primaryCol">
+                <form id="form1" name="form1" method="post" action="{{ url('admin_setting_system_masterdata') }}">
+                    {{ form_widget(form._token) }}
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header"><span>{{ 'admin.setting.system.masterdata.677'|trans }}</span></div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-3" id="master_edit_box__masterdata">
+                                    {{ form_widget(form.masterdata, {'attr': {'class': 'form-control'}}) }}
+                                    {{ form_errors(form.masterdata) }}
                                 </div>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                </div><!-- /.box-body -->
-            </div><!-- /.box -->
-        </div>
-    </div>
-</form>
-
-{% if form2.data is not empty %}
-<div class="row" id="aside_wrap">
-<form id="form2" name="form2" method="post" action="{{ url('admin_setting_system_masterdata_edit') }}">
-    {{ form_widget(form2.masterdata_name) }}
-    {{ form_widget(form2._token) }}
-        <div id="result_list_box" class="col-md-9">
-            <div id="result_list_box__body" class="box">
-                <div id="result_list_box__header" class="box-header">
-                    <div class="read">
-                        {{'admin.setting.system.masterdata.679'|trans}}<br />
-                        {{'admin.setting.system.masterdata.680'|trans}}<br />
-                        {{'admin.setting.system.masterdata.681'|trans}}<br />
-                        {{'admin.setting.system.masterdata.682'|trans}}
-                    </div>
-                </div>
-
-                <div id="result_list__body_inner" class="table-responsive">
-                    <table id="result_list__list" class="table table-bordered table-striped">
-                        <colgroup>
-                            <col width="50%">
-                            <col>
-                        </colgroup>
-                        <tr id="result_list__list_header">
-                            <th id="result_list__header_id">ID</th>
-                            <th id="result_list__header_name">Name</th>
-                            {#<th>SortNo</th>#}
-                        </tr>
-                        {% for data in form2.data %}
-                        <tr id="result_list__item--{{ data.vars.name }}">
-                            <td id="result_list__id--{{ data.vars.name }}">
-                                {{form_widget(data.id)}}
-                                {{form_errors(data.id)}}
-                            </td>
-                            <td id="result_list__name--{{ data.vars.name }}">
-                                {{form_widget(data.name)}}
-                                {{form_errors(data.name)}}
-                            </td>
-                            {#
-                            <td id="result_list__sortNo">
-                                {{form_widget(data.sortNo)}}
-                            </td>
-                            #}
-                        </tr>
-                        {% endfor %}
-                    </table>
-                </div>
-            </div><!-- /.box-body -->
-        </div>
-
-        <div class="col-md-3" id="aside_column">
-            <div id="common_box" class="col_inner">
-                <div id="common_button_box" class="box no-header">
-                    <div id="common_button_box__body" class="box-body">
-                        <div id="common_button_box__insert_button"  class="row text-center">
-                            <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
-                                <button class="btn btn-primary btn-block btn-lg" type="submit">{{'admin.setting.system.masterdata.683'|trans}}</button>
+                                <div class="col mb-2" id="master_edit_box__confirm_button">
+                                    <button class="btn btn-primary" type="submit">{{'admin.setting.system.masterdata.678'|trans}}</button>
+                                </div>
+                            </div>
+                            <div class="extra-form clearfix">
+                                {% for f in form.getIterator %}
+                                    {% if f.vars.name matches '[^plg*]' %}
+                                        <div class="row">
+                                            {{ form_label(f) }}
+                                            {{ form_widget(f) }}
+                                            {{ form_errors(f) }}
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
                             </div>
                         </div>
-                    </div><!-- /.box-body -->
-                </div><!-- /.box -->
+                    </div>
+                </form>
+
+                {% if form2.data is not empty %}
+                    <form id="form2" name="form2" method="post" action="{{ url('admin_setting_system_masterdata_edit') }}">
+                        {{ form_widget(form2.masterdata_name) }}
+                        {{ form_widget(form2._token) }}
+                        <div class="card rounded border-0 mb-4">
+                            <div class="card-header">
+                                <div class="read">
+                                    {{'admin.setting.system.masterdata.679'|trans}}<br />
+                                    {{'admin.setting.system.masterdata.680'|trans}}<br />
+                                    {{'admin.setting.system.masterdata.681'|trans}}<br />
+                                    {{'admin.setting.system.masterdata.682'|trans}}
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-sm" id="result_list__list">
+                                    <thead>
+                                        <tr>
+                                            <th class="border-top-0 pt-2 pb-2 text-center" id="result_list__header_id" style="width: 20%">
+                                                {{ 'admin.setting.system.masterdata.th_id'|trans }}
+                                            </th>
+                                            <th class="border-top-0 pt-2 pb-2 text-center" id="result_list__header_name">
+                                                {{ 'admin.setting.system.masterdata.th_name'|trans }}
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for data in form2.data %}
+                                            <tr id="result_list__item--{{ data.vars.name }}">
+                                                <td id="result_list__id--{{ data.vars.name }}" class="align-middle text-center pl-3">
+                                                    {{form_widget(data.id)}}
+                                                    {{form_errors(data.id)}}
+                                                </td>
+                                                <td id="result_list__name--{{ data.vars.name }}" class="align-middle text-center">
+                                                    {{form_widget(data.name)}}
+                                                    {{form_errors(data.name)}}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="c-conversionArea">
+                            <div class="c-conversionArea__container">
+                                <div class="row justify-content-between align-items-center">
+                                    <div class="col-6">
+                                        <div class="c-conversionArea__leftBlockItem">
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="row align-items-center justify-content-end">
+                                            <div class="col-auto">
+                                                <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.setting.system.masterdata.683'|trans }}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                {% endif %}
             </div>
-        </div><!-- /.col --> 
-</form>
-</div>
-{% endif %}
+        </div>
+    </div>
 {% endblock %}

@@ -19,6 +19,11 @@ file that was distributed with this source code.
 {% block main %}
     <h1 class="page-heading">お届け先の追加</h1>
     <div id="detail_wrap" class="container-fluid">
+        {% if error is defined %}
+            <div class="row">
+                <span>{{ error }}</span>
+            </div>
+        {% endif %}
         <div id="detail_box" class="row">
             <form method="post" action="{{ url('shopping_shipping_multiple_edit') }}" class="h-adr">
                 <span class="p-country-name" style="display:none;">Japan</span>
@@ -66,8 +71,12 @@ file that was distributed with this source code.
                             <dt>{{ form_label(form.tel) }}</dt>
                             <dd>
                                 <div class="form-inline form-group input_tel">
-                                    {{ form_widget(form.tel, {attr : {class : 'short'}}) }}
-                                    {{ form_errors(form.tel) }}
+                                    {{ form_widget(form.tel.tel01) }}<span>-</span>
+                                    {{ form_widget(form.tel.tel02) }}<span>-</span>
+                                    {{ form_widget(form.tel.tel03) }}
+                                    {{ form_errors(form.tel.tel01) }}
+                                    {{ form_errors(form.tel.tel02) }}
+                                    {{ form_errors(form.tel.tel03) }}
                                 </div>
                             </dd>
                         </dl>
@@ -75,8 +84,12 @@ file that was distributed with this source code.
                             <dt>{{ form_label(form.fax) }}</dt>
                             <dd>
                                 <div class="form-inline form-group input_tel">
-                                    {{ form_widget(form.fax, {attr : {class : 'short'}}) }}
-                                    {{ form_errors(form.fax) }}
+                                    {{ form_widget(form.fax.fax01) }}<span>-</span>
+                                    {{ form_widget(form.fax.fax02) }}<span>-</span>
+                                    {{ form_widget(form.fax.fax03) }}
+                                    {{ form_errors(form.fax.fax01) }}
+                                    {{ form_errors(form.fax.fax02) }}
+                                    {{ form_errors(form.fax.fax03) }}
                                 </div>
                             </dd>
                         </dl>

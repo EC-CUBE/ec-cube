@@ -8,6 +8,8 @@ use Page\Front\ShoppingCompletePage;
 use Page\Front\ShoppingConfirmPage;
 use Page\Front\ShoppingLoginPage;
 use Page\Front\ShoppingPage;
+use Page\Front\MultipleShippingPage;
+use Page\Front\CustomerAddressAddPage;
 
 /**
  * @group front
@@ -295,6 +297,218 @@ class EF03OrderCest
         }
 
         // topへ
+        ShoppingCompletePage::at($I)->TOPへ();
+        $I->see('新着情報', '.ec-news__title');
+    }
+
+    /**
+     * @see https://github.com/EC-CUBE/ec-cube/pull/3133
+     */
+    public function order_ログインしてカートをマージ(\AcceptanceTester $I)
+    {
+        $I->wantTo('EF0305-UC07-T01 ログインしてカートをマージ');
+        $I->logoutAsMember();
+        $createCustomer = Fixtures::get('createCustomer');
+        $customer = $createCustomer();
+        $BaseInfo = Fixtures::get('baseinfo');
+
+        // 商品詳細パーコレータ カートへ
+        ProductDetailPage::go($I, 2)
+            ->カートに入れる(1);
+
+        $I->acceptPopup();
+
+        CartPage::go($I)
+            ->レジに進む();
+
+        // ログイン
+        ShoppingLoginPage::at($I)->ログイン($customer->getEmail());
+
+        $I->resetEmails();
+
+        ShoppingPage::at($I)->確認する();
+        $I->logoutAsMember();
+
+        // 商品詳細フォーク カートへ
+        ProductDetailPage::go($I, 1)
+            ->規格選択(['プラチナ', '150cm'])
+            ->カートに入れる(1);
+
+        $I->acceptPopup();
+
+        CartPage::go($I)
+            ->レジに進む();
+
+        // ログイン
+        ShoppingLoginPage::at($I)->ログイン($customer->getEmail());
+
+        ShoppingPage::at($I)->確認する();
+        ShoppingConfirmPage::at($I)->注文する();
+
+        $I->wait(1);
+
+        // メール確認
+        $I->seeEmailCount(2);
+        foreach (array($customer->getEmail(), $BaseInfo->getEmail01()) as $email) {
+            $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
+            $I->seeInLastEmailTo($email, $customer->getName01().' '.$customer->getName02().' 様');
+            $I->seeInLastEmailTo($email, 'お名前　：'.$customer->getName01().' '.$customer->getName02().' 様');
+            $I->seeInLastEmailTo($email, 'お名前(フリガナ)：'.$customer->getKana01().' '.$customer->getKana02().' 様');
+            $I->seeInLastEmailTo($email, '郵便番号：〒'.$customer->getZip01().'-'.$customer->getZip02());
+            $I->seeInLastEmailTo($email, '住所　　：'.$customer->getPref()->getName().$customer->getAddr01().$customer->getAddr02());
+            $I->seeInLastEmailTo($email, '電話番号：'.$customer->getTel01().'-'.$customer->getTel02().'-'.$customer->getTel03());
+            $I->seeInLastEmailTo($email, 'メールアドレス：'.$customer->getEmail());
+
+            $I->seeInLastEmailTo($email, '商品名: パーコレーター');
+            $I->seeInLastEmailTo($email, '商品名: ディナーフォーク  プラチナ  150cm');
+        }
+
+        // 完了画面 -> topへ
+        ShoppingCompletePage::at($I)->TOPへ();
+        $I->see('新着情報', '.ec-news__title');
+    }
+
+    public function order_ログインユーザ購入複数配送(\AcceptanceTester $I)
+    {
+        // チェック用変数
+        // 追加するお届け作の名前
+        $nameSei = '姓0302';
+        $nameMei = '名0302';
+        // カートへ入れる商品の数
+        $cart_quantity = 1;
+        // お届け先ごとに設定する商品の数
+        $shipping1_quantity = 2;
+        $shipping2_quantity = 3;
+
+        $I->wantTo('EF0305-UC05-T01 お届け先の追加');
+        $I->logoutAsMember();
+        $createCustomer = Fixtures::get('createCustomer');
+        /** @var \Eccube\Entity\CustomerAddress $customer */
+        $customer = $createCustomer();
+        $BaseInfo = Fixtures::get('baseinfo');
+
+        // 商品詳細パーコレータ カートへ
+        ProductDetailPage::go($I, 2)
+            ->カートに入れる($cart_quantity);
+
+        $I->acceptPopup();
+
+        CartPage::go($I)
+            ->レジに進む();
+
+        // ログイン
+        ShoppingLoginPage::at($I)->ログイン($customer->getEmail());
+
+        $I->resetEmails();
+
+        // -------- EF0305-UC05-T01_お届け先の追加 --------
+        ShoppingPage::at($I)->お届け先追加();
+
+        // 新規お届け先追加
+        MultipleShippingPage::at($I)->新規お届け先を追加する();
+        CustomerAddressAddPage::at($I)
+            ->入力_姓($nameSei)
+            ->入力_名($nameMei)
+            ->入力_セイ('セイ')
+            ->入力_メイ('メイ')
+            ->入力_郵便番号1('530')
+            ->入力_郵便番号2('0001')
+            ->入力_都道府県(['value' => '27'])
+            ->入力_市区町村名('大阪市北区2')
+            ->入力_番地_ビル名('梅田2-4-9 ブリーゼタワー13F2')
+            ->入力_電話番号1('222')
+            ->入力_電話番号2('222')
+            ->入力_電話番号3('222')
+            ->登録する();
+
+        // 新規お届け先が追加されていることを確認
+        $I->see($nameSei, '#form_shipping_multiple_0_shipping_0_customer_address > option:nth-child(2)');
+
+        // -------- EF0305-UC06-T01_複数配送 - 同じ商品種別（同一配送先） --------
+        // 複数配送設定
+        MultipleShippingPage::at($I)
+            ->お届け先追加()
+            ->入力_お届け先('0', '0', $customer->getName01())
+            ->入力_お届け先('0', '1', $customer->getName01())
+            ->入力_数量('0', '0', $shipping1_quantity)
+            ->入力_数量('0', '1', $shipping2_quantity)
+            ->選択したお届け先に送る()
+        ;
+
+        // 配送先が１個なので数量をまとめる
+        $sum_quantity = $shipping1_quantity + $shipping2_quantity;
+
+        // 複数配送設定がされておらず、個数が１明細にまとめられていることを確認
+        $I->see('お届け先', '#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div:nth-child(2)');
+        $I->dontSee('お届け先(1)', '#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div:nth-child(2)');
+        $I->dontSee('お届け先(2)', '#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div:nth-child(6)');
+        $I->see(' × '.$sum_quantity, '#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div:nth-child(3) > ul > li:nth-child(1) > div > div.ec-imageGrid__content > p:nth-child(2)');
+        $I->see($customer->getName01(), '#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div:nth-child(4) > p:nth-child(1)');
+
+        // -------- EF0305-UC06-T02_複数配送 - 同じ商品種別（別配送先） --------
+
+        ShoppingPage::at($I)->お届け先追加();
+
+        // 複数配送設定
+        MultipleShippingPage::at($I)
+            ->お届け先追加()
+            ->入力_お届け先('0', '0', $customer->getName01())
+            ->入力_お届け先('0', '1', $nameSei)
+            ->入力_数量('0', '0', $shipping1_quantity)
+            ->入力_数量('0', '1', $shipping2_quantity)
+            ->選択したお届け先に送る()
+        ;
+
+        // 名前を比較してお届け先が上下どちらに表示されるか判断
+        $compared = strnatcmp($customer->getName01(), $nameSei);
+        if($compared === 0) {
+            $compared = strnatcmp($customer->getName02(), $nameMei);
+        }
+        // 上下それぞれで名前、商品個数を設定
+        if($compared < 0) {
+            $quantity1 = $shipping1_quantity;
+            $quantity2 = $shipping2_quantity;
+            $name1 = $customer->getName01();
+            $name2 = $nameSei;
+        } else {
+            $quantity1 = $shipping2_quantity;
+            $quantity2 = $shipping1_quantity;
+            $name1 = $nameSei;
+            $name2 = $customer->getName01();
+        }
+
+        // 複数配送設定ができていることを確認
+        $I->see('お届け先(1)', '#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div:nth-child(2)');
+        $I->see(' × '.$quantity1, '#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div:nth-child(3) > ul > li:nth-child(1) > div > div.ec-imageGrid__content > p:nth-child(2)');
+        $I->see($name1, '#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div:nth-child(4) > p:nth-child(1)');
+        $I->see('お届け先(2)', '#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div:nth-child(6)');
+        $I->see(' × '.$quantity2, '#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div:nth-child(7) > ul > li:nth-child(1) > div > div.ec-imageGrid__content > p:nth-child(2)');
+        $I->see($name2, '#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div:nth-child(8) > p:nth-child(1)');
+
+        ShoppingPage::at($I)->確認する();
+        ShoppingConfirmPage::at($I)->注文する();
+
+        $I->wait(1);
+
+        // メール確認
+        $I->seeEmailCount(2);
+        foreach (array($customer->getEmail(), $BaseInfo->getEmail01()) as $email) {
+            $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
+            $I->seeInLastEmailTo($email, $customer->getName01().' '.$customer->getName02().' 様');
+            $I->seeInLastEmailTo($email, 'お名前　：'.$customer->getName01().' '.$customer->getName02().' 様');
+            $I->seeInLastEmailTo($email, 'お名前(フリガナ)：'.$customer->getKana01().' '.$customer->getKana02().' 様');
+            $I->seeInLastEmailTo($email, '郵便番号：〒'.$customer->getZip01().'-'.$customer->getZip02());
+            $I->seeInLastEmailTo($email, '住所　　：'.$customer->getPref()->getName().$customer->getAddr01().$customer->getAddr02());
+            $I->seeInLastEmailTo($email, '電話番号：'.$customer->getTel01().'-'.$customer->getTel02().'-'.$customer->getTel03());
+            $I->seeInLastEmailTo($email, 'メールアドレス：'.$customer->getEmail());
+            $I->seeInLastEmailTo($email, '◎お届け先1');
+            $I->seeInLastEmailTo($email, 'お名前　：'.$nameSei);
+            $I->seeInLastEmailTo($email, '数量：3');
+            $I->seeInLastEmailTo($email, '◎お届け先2');
+            $I->seeInLastEmailTo($email, '数量：2');
+        }
+
+        // 完了画面 -> topへ
         ShoppingCompletePage::at($I)->TOPへ();
         $I->see('新着情報', '.ec-news__title');
     }
