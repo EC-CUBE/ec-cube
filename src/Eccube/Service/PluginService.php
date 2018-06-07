@@ -104,7 +104,7 @@ class PluginService
      */
     protected $container;
 
-    /** @var  CacheUtil */
+    /** @var CacheUtil */
     protected $cacheUtil;
 
     /**
@@ -185,7 +185,7 @@ class PluginService
             $dependents = $this->getDependentByCode($config['code'], self::OTHER_LIBRARY);
             if (!empty($dependents)) {
                 $package = $this->parseToComposerCommand($dependents);
-                 //FIXME: how to working with ComposerProcessService or ComposerApiService ?
+                //FIXME: how to working with ComposerProcessService or ComposerApiService ?
                 $this->composerService->execRequire($package);
             }
 
@@ -276,6 +276,7 @@ class PluginService
     /**
      * @param $archive
      * @param $dir
+     *
      * @throws PluginException
      */
     public function unpackPluginArchive($archive, $dir)
@@ -299,6 +300,7 @@ class PluginService
     /**
      * @param $dir
      * @param array $config_cache
+     *
      * @throws PluginException
      */
     public function checkPluginArchiveContent($dir, array $config_cache = [])
@@ -380,6 +382,7 @@ class PluginService
 
     /**
      * @param $d
+     *
      * @throws PluginException
      */
     public function createPluginDir($d)
@@ -394,7 +397,9 @@ class PluginService
      * @param $meta
      * @param $event_yml
      * @param int $source
+     *
      * @return Plugin
+     *
      * @throws PluginException
      */
     public function registerPlugin($meta, $event_yml, $source = 0)
@@ -468,6 +473,7 @@ class PluginService
     /**
      * @param Plugin $plugin
      * @param bool $force
+     *
      * @return bool
      */
     public function uninstall(\Eccube\Entity\Plugin $plugin, $force = true)
