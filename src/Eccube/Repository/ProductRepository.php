@@ -102,7 +102,7 @@ class ProductRepository extends EntityRepository
         // category
         $categoryJoin = false;
         if (!empty($searchData['category_id']) && $searchData['category_id']) {
-            $Categories = $searchData['category_id']->getSelfAndDescendants();
+            $Categories = array($searchData['category_id']);
             if ($Categories) {
                 $qb
                     ->innerJoin('p.ProductCategories', 'pct')
