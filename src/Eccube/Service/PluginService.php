@@ -182,12 +182,12 @@ class PluginService
 
             // Check dependent plugin
             // Don't install ec-cube library
-            $dependents = $this->getDependentByCode($config['code'], self::OTHER_LIBRARY);
-            if (!empty($dependents)) {
-                $package = $this->parseToComposerCommand($dependents);
-                //FIXME: how to working with ComposerProcessService or ComposerApiService ?
-                $this->composerService->execRequire($package);
-            }
+//            $dependents = $this->getDependentByCode($config['code'], self::OTHER_LIBRARY);
+//            if (!empty($dependents)) {
+//                $package = $this->parseToComposerCommand($dependents);
+            //FIXME: how to working with ComposerProcessService or ComposerApiService ?
+//                $this->composerService->execRequire($package);
+//            }
 
             // プラグイン配置後に実施する処理
             $this->postInstall($config, $event, $source);
@@ -571,7 +571,6 @@ class PluginService
         $em = $this->entityManager;
         try {
             PluginConfigManager::removePluginConfigCache();
-            CacheUtil::clear($this->app, false);
             $pluginDir = $this->calcPluginDir($plugin->getCode());
             $em->getConnection()->beginTransaction();
             $plugin->setEnabled($enable ? true : false);
@@ -610,7 +609,7 @@ class PluginService
         $tmp = null;
         try {
             PluginConfigManager::removePluginConfigCache();
-            CacheUtil::clear($this->app, false);
+            $this->cacheUtil->clearCache();
             $tmp = $this->createTempDir();
 
             $this->unpackPluginArchive($path, $tmp); //一旦テンポラリに展開
