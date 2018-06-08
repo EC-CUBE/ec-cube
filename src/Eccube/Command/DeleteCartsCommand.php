@@ -109,7 +109,7 @@ class DeleteCartsCommand extends Command
         $timestamp = $this->formatter->parse($dateStr);
         $dateTime = new \DateTime("@$timestamp", $this->timezone);
 
-        //$this->deleteCarts($dateTime);
+        $this->deleteCarts($dateTime);
 
         $this->io->success('Delete carts successful.');
     }
@@ -119,19 +119,25 @@ class DeleteCartsCommand extends Command
         $batchSize = 20;
         $i = 0;
 
-        $q = $this->entityManager->createQuery('SELECT c FROM Eccube\Entity\Cart c WHERE c.update_date <= :date');
-        $q->setParameter('date', $dateTime);
+        try {
+            $this->entityManager->beginTransaction();
+            $q = $this->entityManager->createQuery('SELECT c FROM Eccube\Entity\Cart c WHERE c.update_date <= :date');
+            $q->setParameter('date', $dateTime);
 
-        $iterableResult = $q->iterate();
-        while (($row = $iterableResult->next()) !== false) {
-            $this->entityManager->remove($row[0]);
-            if (($i % $batchSize) === 0) {
-                $this->flush(); // Executes all deletions.
-                $this->clear(); // Detaches all objects from Doctrine!
+            $iterableResult = $q->iterate();
+            while (($row = $iterableResult->next()) !== false) {
+                $this->entityManager->remove($row[0]);
+                if (($i % $batchSize) === 0) {
+                    $this->flush(); // Executes all deletions.
+                    $this->clear(); // Detaches all objects from Doctrine!
+                }
+                ++$i;
             }
-            ++$i;
+            $this->entityManager->flush();
+        } catch (\Exception $e) {
+            $this->io->error('Failed delete carts. Rollbacked.');
+            $this->entityManager->rollback();
         }
-        $this->entityManager->flush();
 
         return;
     }
