@@ -54,8 +54,21 @@ class SearchProductType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $Categories = $this->app['eccube.repository.category']
-            ->getList(null, true);
+        $Categories = array();
+        $AllCategories = $this->app['eccube.repository.category']
+            ->getList();
+        foreach ($AllCategories as $Category) {
+            $Parent = $Category->getParent();
+            if (!$Parent) {
+                $Categories[] = $Category;
+                continue;
+            }
+            $Parent = $Parent->getParent();
+            if (!$Parent) {
+                $Categories[] = $Category;
+                continue;
+            }
+        }
 
         $builder->add('mode', 'hidden', array(
             'data' => 'search',
