@@ -251,13 +251,10 @@ class CartService
             $cartId = $this->cartItemAllocator->allocate($item);
             if (isset($Carts[$cartId])) {
                 $Carts[$cartId]->addCartItem($item);
+                $item->setCart($Carts[$cartId]);
             } else {
-                // FIXME: session排他制御
-                $Cart = $this->cartRepository->findOneBy(['cartKey' => $cartId], ['id' => 'DESC']);
-                if ($Cart == null) {
-                    $Cart = new Cart();
-                    $Cart->setCartKey($cartId);
-                }
+                $Cart = new Cart();
+                $Cart->setCartKey(StringUtil::random());
                 $Cart->addCartItem($item);
                 $item->setCart($Cart);
                 $Carts[$cartId] = $Cart;
@@ -346,6 +343,10 @@ class CartService
         $cartIds = [];
         foreach ($this->carts as $Cart) {
             $this->entityManager->persist($Cart);
+            foreach ($Cart->getCartItems() as $item) {
+                $this->entityManager->persist($item);
+                $this->entityManager->flush($item);
+            }
             $this->entityManager->flush($Cart);
             $cartIds[] = $Cart->getCartKey();
         }
