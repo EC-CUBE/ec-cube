@@ -95,7 +95,7 @@ class ProductController
         $pagination = $app['paginator']()->paginate(
             $qb,
             !empty($searchData['pageno']) ? $searchData['pageno'] : 1,
-            $searchData['disp_number']->getId()
+            !empty($searchData['disp_number']) ? $searchData['disp_number']->getId() : 15
         );
 
         // addCart form
