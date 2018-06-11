@@ -294,6 +294,54 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
     }
 
     /**
+     * Set createDate.
+     *
+     * @param \DateTime $createDate
+     *
+     * @return Order
+     */
+    public function setCreateDate($createDate)
+    {
+        $this->create_date = $createDate;
+
+        return $this;
+    }
+
+    /**
+     * Get createDate.
+     *
+     * @return \DateTime
+     */
+    public function getCreateDate()
+    {
+        return $this->create_date;
+    }
+
+    /**
+     * Set updateDate.
+     *
+     * @param \DateTime $updateDate
+     *
+     * @return Order
+     */
+    public function setUpdateDate($updateDate)
+    {
+        $this->update_date = $updateDate;
+
+        return $this;
+    }
+
+    /**
+     * Get updateDate.
+     *
+     * @return \DateTime
+     */
+    public function getUpdateDate()
+    {
+        return $this->update_date;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function setDiscount($total)

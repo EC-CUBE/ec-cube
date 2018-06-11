@@ -336,6 +336,11 @@ class CartService
             $this->carts = $Carts;
         }
 
+        foreach ($this->carts as $Cart) {
+            $this->entityManager->persist($Cart);
+            $this->entityManager->flush($Cart);
+        }
+
         return $this->session->set('carts', $this->carts);
     }
 
