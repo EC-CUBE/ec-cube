@@ -136,11 +136,7 @@ class CartService
         }
 
         $cartIds = $this->session->get('cart_ids', []);
-        $this->carts = [];
-        foreach ($cartIds as $id) {
-            $Cart = $this->cartRepository->find($id);
-            $this->carts[] = $Cart;
-        }
+        $this->carts = $this->cartRepository->findBy(['cartKey' => $cartIds], ['id' => 'DESC']);
 
         return $this->carts;
     }
@@ -259,6 +255,7 @@ class CartService
                 $Cart = new Cart();
                 $Cart->setCartKey(StringUtil::random());
                 $Cart->addCartItem($item);
+                $item->setCart($Cart);
                 $Carts[$cartId] = $Cart;
             }
         }
@@ -357,7 +354,7 @@ class CartService
         foreach ($this->carts as $Cart) {
             $this->entityManager->persist($Cart);
             $this->entityManager->flush($Cart);
-            $cartIds[] = $Cart->getId();
+            $cartIds[] = $Cart->getCartKey();
         }
 
         $this->session->set('cart_ids', $cartIds);
