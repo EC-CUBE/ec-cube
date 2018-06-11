@@ -23,7 +23,6 @@ use Eccube\Repository\ProductClassRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\Cart\CartItemAllocator;
 use Eccube\Service\Cart\CartItemComparator;
-use Eccube\Util\StringUtil;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -135,8 +134,8 @@ class CartService
             return $this->carts;
         }
 
-        $cartIds = $this->session->get('cart_ids', []);
-        $this->carts = $this->cartRepository->findBy(['cartKey' => $cartIds], ['id' => 'DESC']);
+        $cartKeys = $this->session->get('cart_keys', []);
+        $this->carts = $this->cartRepository->findBy(['cart_key' => $cartKeys], ['id' => 'DESC']);
 
         return $this->carts;
     }
@@ -253,7 +252,7 @@ class CartService
                 $Carts[$cartId]->addCartItem($item);
             } else {
                 // FIXME: session排他制御
-                $Cart = $this->cartRepository->findOneBy(['cartKey' => $cartId], ['id' => 'DESC']);
+                $Cart = $this->cartRepository->findOneBy(['cart_key' => $cartId], ['id' => 'DESC']);
                 if ($Cart == null) {
                     $Cart = new Cart();
                     $Cart->setCartKey($cartId);
@@ -343,14 +342,14 @@ class CartService
             $this->carts = $Carts;
         }
 
-        $cartIds = [];
+        $cartKeys = [];
         foreach ($this->carts as $Cart) {
             $this->entityManager->persist($Cart);
             $this->entityManager->flush($Cart);
-            $cartIds[] = $Cart->getCartKey();
+            $cartKeys[] = $Cart->getCartKey();
         }
 
-        $this->session->set('cart_ids', $cartIds);
+        $this->session->set('cart_keys', $cartKeys);
 
         return;
     }

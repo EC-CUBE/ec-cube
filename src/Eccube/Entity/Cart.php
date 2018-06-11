@@ -46,7 +46,7 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
      * @ORM\Column(name="cart_key", type="string", options={"unsigned":true}, nullable=true)
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $cartKey;
+    private $cart_key;
 
     /**
      * @var \Eccube\Entity\Customer
@@ -131,9 +131,9 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
     /**
      * @return string
      */
-    public function getCartKey(): string
+    public function getCartKey()
     {
-        return $this->cartKey;
+        return $this->cart_key;
     }
 
     /**
@@ -141,7 +141,7 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
      */
     public function setCartKey(string $cartKey)
     {
-        $this->cartKey = $cartKey;
+        $this->cart_key = $cartKey;
     }
 
     /**
