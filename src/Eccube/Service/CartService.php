@@ -169,15 +169,15 @@ class CartService
     public function getCart()
     {
         $Carts = $this->getCarts();
-        if (!$Carts) {
-            if (!$this->cart) {
-                $this->cart = new Cart();
-            }
+//        if (!$Carts) {
+//            if (!$this->cart) {
+//                $this->cart = new Cart();
+//            }
+//
+//            return $this->cart;
+//        }
 
-            return $this->cart;
-        }
-
-        return current($this->getCarts());
+        return current($Carts);
     }
 
     /**
@@ -252,26 +252,19 @@ class CartService
             if (isset($Carts[$cartId])) {
                 $Carts[$cartId]->addCartItem($item);
             } else {
-                $Cart = new Cart();
-                $Cart->setCartKey(StringUtil::random());
+                // FIXME: session排他制御
+                $Cart = $this->cartRepository->findOneBy(['cartKey' => $cartId], ['id' => 'DESC']);
+                if ($Cart == null) {
+                    $Cart = new Cart();
+                    $Cart->setCartKey($cartId);
+                }
                 $Cart->addCartItem($item);
                 $item->setCart($Cart);
                 $Carts[$cartId] = $Cart;
             }
         }
 
-        $Carts = array_values($Carts);
-
-        $cartKeys = [];
-        /** @var Cart $Cart */
-        foreach ($Carts as $Cart) {
-            $cartKeys[] = $Cart->getCartKey();
-        }
-
-        // 配列のkeyを0からにする
-        $this->session->set('cart_ids', $cartKeys);
-        $this->session->set('carts', $Carts);
-        $this->carts = $Carts;
+        $this->carts = array_values($Carts);
     }
 
     /**
@@ -359,7 +352,7 @@ class CartService
 
         $this->session->set('cart_ids', $cartIds);
 
-        return $this->session->set('carts', $this->carts);
+        return;
     }
 
     /**
