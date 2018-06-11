@@ -41,6 +41,14 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
     private $id;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="cart_key", type="string", options={"unsigned":true})
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $cartKey;
+
+    /**
      * @var \Eccube\Entity\Customer
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Customer")
@@ -110,6 +118,30 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
     public function __construct()
     {
         $this->CartItems = new ArrayCollection();
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCartKey(): string
+    {
+        return $this->cartKey;
+    }
+
+    /**
+     * @param string $cartKey
+     */
+    public function setCartKey(string $cartKey)
+    {
+        $this->cartKey = $cartKey;
     }
 
     /**
@@ -291,6 +323,22 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
     public function getDeliveryFeeTotal()
     {
         return $this->delivery_fee_total;
+    }
+
+    /**
+     * @return Customer
+     */
+    public function getCustomer(): Customer
+    {
+        return $this->Customer;
+    }
+
+    /**
+     * @param Customer $Customer
+     */
+    public function setCustomer(Customer $Customer)
+    {
+        $this->Customer = $Customer;
     }
 
     /**
