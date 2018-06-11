@@ -13,12 +13,52 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * CartItem
+ *
+ * @ORM\Table(name="dtb_cart_item")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+ * @ORM\HasLifecycleCallbacks()
+ * @ORM\Entity(repositoryClass="Eccube\Repository\CartItemRepository")
+ */
 class CartItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
 {
     use PointRateTrait;
 
-    private $price;
-    private $quantity;
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="price", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
+     */
+    private $price = 0;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="quantity", type="decimal", precision=10, scale=0, options={"unsigned":true,"default":0})
+     */
+    private $quantity = 0;
+
+    /**
+     * @var \Eccube\Entity\ProductClass
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\ProductClass")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="product_class_id", referencedColumnName="id")
+     * })
+     */
     private $ProductClass;
 
     /**

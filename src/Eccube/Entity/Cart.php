@@ -13,13 +13,42 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\ItemCollection;
 
+/**
+ * Cart
+ *
+ * @ORM\Table(name="dtb_cart", indexes={@ORM\Index(name="dtb_cart_pre_order_id_idx", columns={"pre_order_id"}), @ORM\Index(name="dtb_cart_update_date_idx", columns={"update_date"})})
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+ * @ORM\HasLifecycleCallbacks()
+ * @ORM\Entity(repositoryClass="Eccube\Repository\CartRepository")
+ */
 class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterface
 {
     use PointTrait;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var \Eccube\Entity\Customer
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Customer")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
+     * })
+     */
+    private $Customer;
 
     /**
      * @var bool
@@ -27,24 +56,46 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
     private $lock = false;
 
     /**
-     * @var ArrayCollection
+     * @var \Doctrine\Common\Collections\Collection|CartItem[]
+     *
+     * @ORM\OneToMany(targetEntity="Eccube\Entity\CartItem", mappedBy="Cart", cascade={"persist","remove"})
      */
     private $CartItems;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="pre_order_id", type="string", length=255, nullable=true)
      */
     private $pre_order_id = null;
 
     /**
-     * @var integer
+     * @var string
+     *
+     * @ORM\Column(name="total_price", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
      */
     private $total_price;
 
     /**
-     * @var integer
+     * @var string
+     *
+     * @ORM\Column(name="delivery_fee_total", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
      */
     private $delivery_fee_total;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="create_date", type="datetimetz")
+     */
+    private $create_date;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="update_date", type="datetimetz")
+     */
+    private $update_date;
 
     /**
      * @var InvalidItemException[]
