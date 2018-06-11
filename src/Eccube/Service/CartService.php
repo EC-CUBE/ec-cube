@@ -18,6 +18,7 @@ use Eccube\Entity\CartItem;
 use Eccube\Entity\Customer;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\ProductClass;
+use Eccube\Repository\CartRepository;
 use Eccube\Repository\ProductClassRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\Cart\CartItemAllocator;
@@ -55,6 +56,11 @@ class CartService
      * @var ProductClassRepository
      */
     protected $productClassRepository;
+
+    /**
+     * @var CartRepository
+     */
+    protected $cartRepository;
 
     /**
      * @var CartItemComparator
@@ -102,6 +108,7 @@ class CartService
         SessionInterface $session,
         EntityManagerInterface $entityManager,
         ProductClassRepository $productClassRepository,
+        CartRepository $cartRepository,
         CartItemComparator $cartItemComparator,
         CartItemAllocator $cartItemAllocator,
         OrderHelper $orderHelper,
@@ -112,6 +119,7 @@ class CartService
         $this->session = $session;
         $this->entityManager = $entityManager;
         $this->productClassRepository = $productClassRepository;
+        $this->cartRepository = $cartRepository;
         $this->cartItemComparator = $cartItemComparator;
         $this->cartItemAllocator = $cartItemAllocator;
         $this->orderHelper = $orderHelper;
@@ -122,17 +130,11 @@ class CartService
 
     public function getCarts()
     {
-        if (is_null($this->carts)) {
-            $this->carts = $this->session->get('carts', []);
-        }
-
-        foreach ($this->carts as &$Cart) {
-            /** @var CartItem $item */
-            foreach ($Cart->getItems() as $item) {
-                /** @var ProductClass $ProductClass */
-                $ProductClass = $this->productClassRepository->find($item->getProductClassId());
-                $item->setProductClass($ProductClass);
-            }
+        $cartIds = $this->session->get('cart_ids', []);
+        $this->carts = [];
+        foreach ($cartIds as $id) {
+            $Cart = $this->cartRepository->find($id);
+            $this->carts[] = $Cart;
         }
 
         return $this->carts;
@@ -336,10 +338,14 @@ class CartService
             $this->carts = $Carts;
         }
 
+        $cartIds = [];
         foreach ($this->carts as $Cart) {
             $this->entityManager->persist($Cart);
             $this->entityManager->flush($Cart);
+            $cartIds[] = $Cart->getId();
         }
+
+        $this->session->set('cart_ids', $cartIds);
 
         return $this->session->set('carts', $this->carts);
     }
