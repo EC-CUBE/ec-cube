@@ -23,9 +23,9 @@
 
 namespace Eccube\Util;
 
+use Eccube\Application;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
-use Eccube\Application;
 
 /**
  * キャッシュ関連のユーティリティクラス.
@@ -74,6 +74,8 @@ class Cache
                 $finder = Finder::create()->in($cacheDir.'/translator');
                 $filesystem->remove($finder);
             }
+            // プラグインキャッシュファイルの削除
+            $app->removePluginConfigCache();
         }
 
         if (function_exists('opcache_reset')) {
