@@ -23,6 +23,7 @@ use Eccube\Repository\ProductClassRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\Cart\CartItemAllocator;
 use Eccube\Service\Cart\CartItemComparator;
+use Eccube\Util\StringUtil;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -130,6 +131,10 @@ class CartService
 
     public function getCarts()
     {
+        if (!empty($this->carts)) {
+            return $this->carts;
+        }
+
         $cartIds = $this->session->get('cart_ids', []);
         $this->carts = [];
         foreach ($cartIds as $id) {
@@ -252,14 +257,24 @@ class CartService
                 $Carts[$cartId]->addCartItem($item);
             } else {
                 $Cart = new Cart();
+                $Cart->setCartKey(StringUtil::random());
                 $Cart->addCartItem($item);
                 $Carts[$cartId] = $Cart;
             }
         }
 
+        $Carts = array_values($Carts);
+
+        $cartKeys = [];
+        /** @var Cart $Cart */
+        foreach ($Carts as $Cart) {
+            $cartKeys[] = $Cart->getCartKey();
+        }
+
         // 配列のkeyを0からにする
-        $this->session->set('carts', array_values($Carts));
-        $this->carts = array_values($Carts);
+        $this->session->set('cart_ids', $cartKeys);
+        $this->session->set('carts', $Carts);
+        $this->carts = $Carts;
     }
 
     /**

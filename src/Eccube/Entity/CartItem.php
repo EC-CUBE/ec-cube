@@ -62,6 +62,16 @@ class CartItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
     private $ProductClass;
 
     /**
+     * @var \Eccube\Entity\Cart
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Cart", inversedBy="CartItems")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="cart_id", referencedColumnName="id")
+     * })
+     */
+    private $Cart;
+
+    /**
      * sessionのシリアライズのために使われる
      *
      * @var int
@@ -215,5 +225,21 @@ class CartItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
     {
         // TODO ItemInterfaceに追加, Cart::priceは税込み金額が入っているので,フィールドを分ける必要がある
         return $this->price;
+    }
+
+    /**
+     * @return Cart
+     */
+    public function getCart()
+    {
+        return $this->Cart;
+    }
+
+    /**
+     * @param Cart $Cart
+     */
+    public function setCart(Cart $Cart)
+    {
+        $this->Cart = $Cart;
     }
 }

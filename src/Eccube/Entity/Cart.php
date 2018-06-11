@@ -43,7 +43,7 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
     /**
      * @var string
      *
-     * @ORM\Column(name="cart_key", type="string", options={"unsigned":true})
+     * @ORM\Column(name="cart_key", type="string", options={"unsigned":true}, nullable=true)
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $cartKey;
