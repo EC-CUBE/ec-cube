@@ -142,25 +142,22 @@ class CartService
     }
 
     /**
-     * 会員が保持する購入処理中の受注と、カートをマージする.
+     * 会員が保持する永続化されたカートと、非会員時のカートをマージする.
      *
      * @param Customer $Customer
      */
-    public function mergeFromOrders(Customer $Customer)
+    public function mergeFromPersistenceCart(Customer $Customer)
     {
-        $Order = $this->orderRepository->getExistsOrdersByCustomer($Customer);
-        if ($Order) {
-            $Carts = $this->getCarts();
-            $ExistsCart = $this->orderHelper->convertToCart($Order);
+        $Carts = $this->cartRepository->findBy(['Customer' => $Customer]);
 
-            $allCartItems = [];
-            foreach ($Carts as $Cart) {
-                $allCartItems = $this->mergeCartitems($Cart->getCartItems(), $allCartItems);
-            }
-
-            $CartItems = $this->mergeCartitems($ExistsCart->getItems(), $allCartItems);
-            $this->restoreCarts($CartItems);
+        $CartItems = [];
+        foreach ($Carts as $Cart) {
+            $CartItems = $this->mergeCartItems($Cart->getCartItems(), $CartItems);
         }
+
+        // セッションにある非会員カートとDBから取得した会員カートをマージする.
+        $CartItems = $this->mergeAllCartItems($CartItems);
+        $this->restoreCarts($CartItems);
     }
 
     /**
@@ -210,10 +207,10 @@ class CartService
         $allCartItems = [];
 
         foreach ($this->getCarts() as $Cart) {
-            $allCartItems = $this->mergeCartitems($Cart->getCartItems(), $allCartItems);
+            $allCartItems = $this->mergeCartItems($Cart->getCartItems(), $allCartItems);
         }
 
-        return $this->mergeCartitems($cartItems, $allCartItems);
+        return $this->mergeCartItems($cartItems, $allCartItems);
     }
 
     /**
@@ -222,7 +219,7 @@ class CartService
      *
      * @return array
      */
-    protected function mergeCartitems($cartItems, $allCartItems)
+    protected function mergeCartItems($cartItems, $allCartItems)
     {
         foreach ($cartItems as $item) {
             $itemExists = false;
@@ -244,20 +241,36 @@ class CartService
 
     protected function restoreCarts($cartItems)
     {
-        /** @var Cart $Carts */
+        if (empty($cartItems)) {
+            foreach ($this->getCarts() as $Cart) {
+                $this->entityManager->remove($Cart);
+                $this->entityManager->flush($Cart);
+            }
+            $this->carts = [];
+        }
+
+        /** @var Cart[] $Carts */
         $Carts = [];
 
         foreach ($cartItems as $item) {
-            $cartId = $this->cartItemAllocator->allocate($item);
-            if (isset($Carts[$cartId])) {
-                $Carts[$cartId]->addCartItem($item);
-                $item->setCart($Carts[$cartId]);
-            } else {
-                $Cart = new Cart();
-                $Cart->setCartKey(StringUtil::random());
+            $allocatedId = $this->cartItemAllocator->allocate($item);
+            $cartKey = $this->createCartKey($allocatedId, $this->getUser());
+
+            if (isset($Carts[$cartKey])) {
+                $Cart = $Carts[$cartKey];
                 $Cart->addCartItem($item);
                 $item->setCart($Cart);
-                $Carts[$cartId] = $Cart;
+            } else {
+                /** @var Cart $Cart */
+                $Cart = $this->cartRepository->findOneBy(['cart_key' => $cartKey]);
+                if ($Cart) {
+                    $this->entityManager->remove($Cart);
+                }
+                $Cart = new Cart();
+                $Cart->setCartKey($cartKey);
+                $Cart->addCartItem($item);
+                $item->setCart($Cart);
+                $Carts[$cartKey] = $Cart;
             }
         }
 
@@ -328,20 +341,18 @@ class CartService
                 break;
             }
         }
+
         array_splice($allCartItems, $foundIndex, 1);
         $this->restoreCarts($allCartItems);
 
         return true;
     }
 
-    public function save($Carts = null)
+    public function save()
     {
-        if ($Carts) {
-            $this->carts = $Carts;
-        }
-
         $cartKeys = [];
         foreach ($this->carts as $Cart) {
+            $Cart->setCustomer($this->getUser());
             $this->entityManager->persist($Cart);
             foreach ($Cart->getCartItems() as $item) {
                 $this->entityManager->persist($item);
@@ -412,13 +423,17 @@ class CartService
         $Carts = $this->getCarts();
         $removed = array_splice($Carts, 0, 1);
         if (!empty($removed)) {
-            $removedCart = $removed[0];
-            $removedCart
-                ->setLock(false)
-                ->setTotalPrice(0)
-                ->clearCartItems();
+            $this->entityManager->remove($removed[0]);
+            $this->entityManager->flush($removed);
         }
         $this->carts = $Carts;
+
+        $cartKeys = [];
+        foreach ($Carts as $Cart) {
+            $cartKeys[] = $Cart->getCartKey();
+        }
+
+        $this->session->set('cart_keys', $cartKeys);
 
         return $this;
     }
@@ -445,5 +460,34 @@ class CartService
         array_splice($Carts, $index, 1, [$prev]);
         $this->carts = $Carts;
         $this->save();
+    }
+
+    protected function getUser()
+    {
+        if (null === $token = $this->tokenStorage->getToken()) {
+            return;
+        }
+
+        if (!is_object($user = $token->getUser())) {
+            // e.g. anonymous authentication
+            return;
+        }
+
+        return $user;
+    }
+
+    protected function createCartKey($allocatedId, Customer $Customer = null)
+    {
+        if ($Customer instanceof Customer) {
+            return $Customer->getId().'_'.$allocatedId;
+        }
+
+        do {
+            $random = StringUtil::random(32);
+            $cartKey = $random.'_'.$allocatedId;
+            $Cart = $this->cartRepository->findOneBy(['cart_key' => $cartKey]);
+        } while ($Cart);
+
+        return $cartKey;
     }
 }
