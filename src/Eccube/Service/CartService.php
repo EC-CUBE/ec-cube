@@ -152,7 +152,7 @@ class CartService
 
         $CartItems = [];
         foreach ($Carts as $Cart) {
-            $CartItems = $this->mergeCartitems($Cart->getCartItems(), $CartItems);
+            $CartItems = $this->mergeCartItems($Cart->getCartItems(), $CartItems);
         }
 
         // セッションにある非会員カートとDBから取得した会員カートをマージする.
@@ -207,10 +207,10 @@ class CartService
         $allCartItems = [];
 
         foreach ($this->getCarts() as $Cart) {
-            $allCartItems = $this->mergeCartitems($Cart->getCartItems(), $allCartItems);
+            $allCartItems = $this->mergeCartItems($Cart->getCartItems(), $allCartItems);
         }
 
-        return $this->mergeCartitems($cartItems, $allCartItems);
+        return $this->mergeCartItems($cartItems, $allCartItems);
     }
 
     /**
@@ -219,7 +219,7 @@ class CartService
      *
      * @return array
      */
-    protected function mergeCartitems($cartItems, $allCartItems)
+    protected function mergeCartItems($cartItems, $allCartItems)
     {
         foreach ($cartItems as $item) {
             $itemExists = false;
@@ -250,21 +250,17 @@ class CartService
 
             if (isset($Carts[$cartKey])) {
                 $Cart = $Carts[$cartKey];
-                if (!$Cart->getCartItems()->contains($item)) {
-                    $Cart->addCartItem($item);
-                }
+                $Cart->addCartItem($item);
                 $item->setCart($Cart);
             } else {
                 /** @var Cart $Cart */
                 $Cart = $this->cartRepository->findOneBy(['cart_key' => $cartKey]);
-                if (null === $Cart) {
-                    $Cart = new Cart();
-                    $Cart->setCartKey($cartKey);
+                if ($Cart) {
+                    $this->entityManager->remove($Cart);
                 }
-                if (!$Cart->getCartItems()->contains($item)) {
-                    $Cart->addCartItem($item);
-                }
-
+                $Cart = new Cart();
+                $Cart->setCartKey($cartKey);
+                $Cart->addCartItem($item);
                 $item->setCart($Cart);
                 $Carts[$cartKey] = $Cart;
             }

@@ -325,17 +325,26 @@ class ShippingMultipleController extends AbstractShoppingController
 
             log_info('複数配送設定処理完了', [$Order->getId()]);
 
-            $Carts = $this->cartService->getCarts();
+            $this->entityManager->refresh($Order);
 
-            foreach ($Carts as &$Cart) {
-                if ($Cart->getPreOrderId() && $Order = $this->orderRepository->findOneBy(['pre_order_id' => $Cart->getPreOrderId()])) {
-                    $this->entityManager->refresh($Order);
-                    $OrderItems = $Order->getOrderItems();
-                    $Cart = $this->orderHelper->convertToCart($Order);
+            $quantityByProductClass = [];
+            foreach ($Order->getProductOrderItems() as $Item) {
+                $id = $Item->getProductClass()->getId();
+                if (isset($quantityByProductClass[$id])) {
+                    $quantityByProductClass[$id] += $Item->getQuantity();
+                } else {
+                    $quantityByProductClass[$id] = $Item->getQuantity();
+                }
+            }
+            $Cart = $this->cartService->getCart();
+            foreach ($Cart->getCartItems() as $CartItem) {
+                $id = $CartItem->getProductClass()->getId();
+                if (isset($quantityByProductClass[$id])) {
+                    $CartItem->setQuantity($quantityByProductClass[$id]);
                 }
             }
 
-            $this->cartService->save($Carts);
+            $this->cartService->save();
 
             return $this->redirectToRoute('shopping');
         }
