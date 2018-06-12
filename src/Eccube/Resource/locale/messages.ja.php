@@ -1858,7 +1858,7 @@ return [
     'admin.setting.system.security.706' => 'IP制限',
     'admin.setting.system.security.707' => '※管理機能へのアクセスを特定のIPアドレスからの接続のみに制限します。',
     'admin.setting.system.security.708' => 'アクセスを許可するIPアドレスを1行づつ入力してください。何も入力しない場合は全てを許可します。',
-    'admin.setting.system.security.709' => 'サイトセキュリティ設定<',
+    'admin.setting.system.security.709' => 'サイトセキュリティ設定',
     'admin.setting.system.security.710' => 'SSL制限',
     'admin.setting.system.security.711' => 'httpsからの接続でなければSSL制限を設定できません。',
     'admin.setting.system.security.712' => '設定',
