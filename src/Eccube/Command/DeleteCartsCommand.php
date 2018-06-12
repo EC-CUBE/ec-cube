@@ -128,8 +128,8 @@ class DeleteCartsCommand extends Command
             while (($row = $iterableResult->next()) !== false) {
                 $this->entityManager->remove($row[0]);
                 if (($i % $batchSize) === 0) {
-                    $this->flush(); // Executes all deletions.
-                    $this->clear(); // Detaches all objects from Doctrine!
+                    $this->entityManager->flush(); // Executes all deletions.
+                    $this->entityManager->clear(); // Detaches all objects from Doctrine!
                 }
                 ++$i;
             }
