@@ -3,11 +3,7 @@
 namespace Eccube\Tests\Repository;
 
 use Eccube\Tests\EccubeTestCase;
-use Eccube\Application;
-use Eccube\Common\Constant;
-use Eccube\Entity\Customer;
-use Eccube\Entity\CustomerAddress;
-use Eccube\Entity\Master\CustomerStatus;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * CustomerAddressRepository test cases.
@@ -54,9 +50,9 @@ class CustomerAddressRepositoryTest extends EccubeTestCase
         try {
             $CustomerAddress = $this->app['eccube.repository.customer_address']->findOrCreateByCustomerAndId($this->Customer, 9999);
             $this->fail();
-        } catch (\Doctrine\ORM\NoResultException $e) {
-            $this->expected = 'No result was found for query although at least one row was expected.';
-            $this->actual = $e->getMessage();
+        } catch (NotFoundHttpException $e) {
+            $this->expected = $e->getStatusCode();
+            $this->actual = '404';
             $this->verify();
         }
     }
