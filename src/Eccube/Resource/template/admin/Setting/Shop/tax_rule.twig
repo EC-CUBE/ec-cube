@@ -167,19 +167,17 @@ file that was distributed with this source code.
                                             </div>
                                         </td>
                                         <td class="align-middle action">
-                                            <div class="row justify-content-end pr-2">
-                                                <div class="col-auto text-center pr-0"><a class="btn btn-ec-actionIcon edit-button" data-toggle="tooltip" data-id="{{ TaxRule.id }}" data-placement="top" title="{{ 'common.label.edit'|trans }}"><i class="fa fa-pencil fa-lg text-secondary" aria-hidden="true"></i></a></div>
-                                                {% if TaxRule.default_tax_rule %}
-                                                    <div class="col-auto text-center">
-                                                        <a class="btn btn-ec-actionIcon">
-                                                            <i class="fa fa-times fa-lg text-secondary" aria-hidden="true"></i>
-                                                        </a>
+                                            <div class="col-12 col-sm-10 col-md-8 col-lg-6 pull-right">
+                                                <div class="row pr-2">
+                                                    <div class="col-6 text-center pr-0"><a class="btn btn-ec-actionIcon edit-button" data-toggle="tooltip" data-id="{{ TaxRule.id }}" data-placement="top" title="{{ 'common.label.edit'|trans }}"><i class="fa fa-pencil fa-lg text-secondary" aria-hidden="true"></i></a></div>
+
+                                                    <div class="col-6 text-center">
+                                                        {% if not TaxRule.default_tax_rule %}
+                                                            <a class="btn btn-ec-actionIcon" data-toggle="tooltip" data-placement="top" title="{{ 'common.label.delete'|trans }}" href="{{ url('admin_setting_shop_tax_delete', { id : TaxRule.id }) }}" {{ csrf_token_for_anchor() }} data-method="delete">
+                                                                <i class="fa fa-times fa-lg text-secondary" aria-hidden="true"></i></a>
+                                                        {% endif %}
                                                     </div>
-                                                {% else %}
-                                                    <div class="col-auto text-center">
-                                                        <a class="btn btn-ec-actionIcon" data-toggle="tooltip" data-placement="top" title="{{ 'common.label.delete'|trans }}" href="{{ url('admin_setting_shop_tax_delete', { id : TaxRule.id }) }}" {{ csrf_token_for_anchor() }} data-method="delete">
-                                                            <i class="fa fa-times fa-lg text-secondary" aria-hidden="true"></i></a></div>
-                                                {% endif %}
+                                                </div>
                                             </div>
                                         </td>
                                     </form>
