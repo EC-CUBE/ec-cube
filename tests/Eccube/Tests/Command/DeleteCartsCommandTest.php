@@ -32,8 +32,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class DeleteCartsCommandTest extends EccubeTestCase
 {
-
-    public function testDeleteCarts()
+    public function testShouldDeletePastCarts()
     {
         $Product = $this->createProduct();
         /** @var ProductClass $ProductClass */
@@ -65,5 +64,39 @@ class DeleteCartsCommandTest extends EccubeTestCase
         $this->entityManager->clear();
 
         self::assertNull($this->entityManager->find(Cart::class, $id));
+    }
+
+    public function testShouldNotDeleteFutureCarts()
+    {
+        $Product = $this->createProduct();
+        /** @var ProductClass $ProductClass */
+        $ProductClass = $Product->getProductClasses()[0];
+        $Cart = new Cart();
+        $Cart->setTotalPrice(1000);
+        $Cart->setDeliveryFeeTotal(0);
+
+        $CartItem = new CartItem();
+        $CartItem->setProductClass($ProductClass);
+        $CartItem->setQuantity(1);
+        $CartItem->setPrice(1000);
+        $Cart->addCartItem($CartItem);
+
+        $this->entityManager->persist($Cart);
+        $this->entityManager->flush();
+
+        $id = $Cart->getId();
+
+        self::assertNotNull($this->entityManager->find(Cart::class, $id));
+
+        /** @var DeleteCartsCommand $command */
+        $command = $this->container->get(DeleteCartsCommand::class);
+
+        $tester = new CommandTester($command);
+        $tomorrow = new \DateTime('yesterday');
+        $tester->execute(['date'=>$tomorrow->format('Y/m/d')]);
+
+        $this->entityManager->clear();
+
+        self::assertNotNull($this->entityManager->find(Cart::class, $id));
     }
 }
