@@ -211,7 +211,7 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
     }
 
     /**
-     * @return CartItem[]
+     * @return ArrayCollection|CartItem[]
      */
     public function getCartItems()
     {
@@ -336,7 +336,7 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
     /**
      * @param Customer $Customer
      */
-    public function setCustomer(Customer $Customer)
+    public function setCustomer(Customer $Customer = null)
     {
         $this->Customer = $Customer;
     }
