@@ -1788,7 +1788,7 @@ return [
     'admin.setting.shop.tax_rule.table_col_1' => 'ID',
     'admin.setting.shop.tax_rule.table_col_2' => '税率',
     'admin.setting.shop.tax_rule.table_col_3' => '課税規則',
-    'admin.setting.shop.tax_rule.table_col_4' => '適応日時',
+    'admin.setting.shop.tax_rule.table_col_4' => '適用日時',
     'admin.setting.shop.tax_rule.table_col_5' => '',
     'admin.setting.shop.tax_rule.table_col_6' => '',
     'admin.setting.shop.tax_rule.tax_rule_default' => '基本税率設定',
