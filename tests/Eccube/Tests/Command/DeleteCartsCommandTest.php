@@ -49,7 +49,7 @@ class DeleteCartsCommandTest extends EccubeTestCase
         $command = $this->container->get(DeleteCartsCommand::class);
 
         $tester = new CommandTester($command);
-        $tomorrow = new \DateTime('tomorrow');
+        $tomorrow = new \DateTime('+2day');
         $tester->execute(['date' => $tomorrow->format('Y/m/d')]);
 
         $this->entityManager->clear();
