@@ -13,6 +13,7 @@
 
 namespace Eccube\Service;
 
+use Doctrine\ORM\UnitOfWork;
 use Eccube\Entity\Cart;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\Customer;
@@ -373,8 +374,10 @@ class CartService
         $Carts = $this->getCarts();
         $removed = array_splice($Carts, 0, 1);
         if (!empty($removed)) {
-            $this->entityManager->remove($removed[0]);
-            $this->entityManager->flush($removed);
+            if (UnitOfWork::STATE_MANAGED === $this->entityManager->getUnitOfWork()->getEntityState($removed[0])) {
+                $this->entityManager->remove($removed[0]);
+                $this->entityManager->flush($removed[0]);
+            }
         }
         $this->carts = $Carts;
 
