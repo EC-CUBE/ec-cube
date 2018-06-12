@@ -18,7 +18,6 @@ use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\OrderRepository;
-use Eccube\Service\CartService;
 use Symfony\Component\DomCrawler\Crawler;
 
 class ShoppingControllerTest extends AbstractShoppingControllerTestCase
@@ -46,14 +45,6 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $this->expected = 'ログイン';
         $this->actual = $crawler->filter('.ec-pageHeader h1')->text();
         $this->verify();
-    }
-
-    public function testShoppingIndexWithCartUnlock()
-    {
-        $this->container->get(CartService::class)->unlock();
-        $this->client->request('GET', $this->generateUrl('shopping'));
-
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('cart')));
     }
 
     public function testComplete()
