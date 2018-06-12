@@ -166,34 +166,12 @@ class CartService
     public function getCart()
     {
         $Carts = $this->getCarts();
-//        if (!$Carts) {
-//            if (!$this->cart) {
-//                $this->cart = new Cart();
-//            }
-//
-//            return $this->cart;
-//        }
+
+        if (empty($Carts)) {
+            return null;
+        }
 
         return current($Carts);
-    }
-
-    /**
-     * @deprecated
-     */
-    protected function loadItems()
-    {
-        foreach ($this->getCarts() as &$Cart) {
-            if ($Cart->getPreOrderId() && $Order = $this->orderRepository->findOneBy(['pre_order_id' => $Cart->getPreOrderId()])) {
-                $Cart = $this->orderHelper->convertToCart($Order);
-            } else {
-                /** @var CartItem $item */
-                foreach ($Cart->getItems() as $item) {
-                    /** @var ProductClass $ProductClass */
-                    $ProductClass = $this->productClassRepository->find($item->getProductClassId());
-                    $item->setProductClass($ProductClass);
-                }
-            }
-        }
     }
 
     /**
@@ -365,34 +343,6 @@ class CartService
         $this->session->set('cart_keys', $cartKeys);
 
         return;
-    }
-
-    /**
-     * @deprecated
-     */
-    public function unlock()
-    {
-        $this->getCart()
-            ->setLock(false);
-    }
-
-    /**
-     * @deprecated
-     */
-    public function lock()
-    {
-        $this->getCart()
-            ->setLock(true);
-    }
-
-    /**
-     * @return bool
-     *
-     * @deprecated
-     */
-    public function isLocked()
-    {
-        return $this->getCart()->getLock();
     }
 
     /**
