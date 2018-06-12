@@ -26,6 +26,7 @@ namespace Eccube\Controller;
 use Eccube\Application;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception as HttpException;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -64,7 +65,7 @@ class ForgotController extends AbstractController
                 // リセットキーの発行・有効期限の設定
                 $Customer
                     ->setResetKey($app['eccube.repository.customer']->getUniqueResetKey($app))
-                    ->setResetExpire(new \DateTime('+' . $app['config']['customer_reset_expire'] .' min'));
+                    ->setResetExpire(new \DateTime('+'.$app['config']['customer_reset_expire'].' min'));
 
                 // リセットキーを更新
                 $app['orm.em']->persist($Customer);
@@ -87,13 +88,16 @@ class ForgotController extends AbstractController
 
                 // ログ出力
                 $app['monolog']->addInfo(
-                    'send reset password mail to:'  . "{$Customer->getId()} {$Customer->getEmail()} {$request->getClientIp()}"
+                    'send reset password mail to:'."{$Customer->getId()} {$Customer->getEmail()} {$request->getClientIp()}"
                 );
+
+                return $app->redirect($app->url('forgot_complete'));
+
             } else {
-                log_warning('Un active customer try send reset password email: ', array('Enter email' => $form->get('login_email')->getData()));
+                log_info('Un active customer try send reset password email: ', array('Enter email' => $form->get('login_email')->getData()));
+                $form['login_email']->addError(new FormError('該当する会員情報が見つかりませんでした。'));
             }
 
-            return $app->redirect($app->url('forgot_complete'));
         }
 
         return $app->render('Forgot/index.twig', array(
@@ -124,14 +128,14 @@ class ForgotController extends AbstractController
     public function reset(Application $app, Request $request, $reset_key)
     {
         $errors = $app['validator']->validateValue($reset_key, array(
-            new Assert\NotBlank(),
-            new Assert\Regex(array(
-                'pattern' => '/^[a-zA-Z0-9]+$/',
-            )))
+                new Assert\NotBlank(),
+                new Assert\Regex(array(
+                    'pattern' => '/^[a-zA-Z0-9]+$/',
+                )))
         );
 
         if ('GET' === $request->getMethod()
-                && count($errors) === 0) {
+            && count($errors) === 0) {
             try {
                 $Customer = $app['eccube.repository.customer']
                     ->getActiveCustomerByResetKey($reset_key);
@@ -169,7 +173,7 @@ class ForgotController extends AbstractController
 
             // ログ出力
             $app['monolog']->addInfo(
-                'reset password complete:' . "{$Customer->getId()} {$Customer->getEmail()} {$request->getClientIp()}"
+                'reset password complete:'."{$Customer->getId()} {$Customer->getEmail()} {$request->getClientIp()}"
             );
         } else {
             throw new HttpException\AccessDeniedHttpException('不正なアクセスです。');
