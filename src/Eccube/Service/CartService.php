@@ -241,7 +241,15 @@ class CartService
 
     protected function restoreCarts($cartItems)
     {
-        /** @var Cart $Carts */
+        if (empty($cartItems)) {
+            foreach ($this->getCarts() as $Cart) {
+                $this->entityManager->remove($Cart);
+                $this->entityManager->flush($Cart);
+            }
+            $this->carts = [];
+        }
+
+        /** @var Cart[] $Carts */
         $Carts = [];
 
         foreach ($cartItems as $item) {
@@ -333,6 +341,7 @@ class CartService
                 break;
             }
         }
+
         array_splice($allCartItems, $foundIndex, 1);
         $this->restoreCarts($allCartItems);
 
