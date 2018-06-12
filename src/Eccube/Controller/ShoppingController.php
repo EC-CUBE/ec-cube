@@ -609,15 +609,14 @@ class ShoppingController extends AbstractShoppingController
      */
     public function checkToCart(Request $request)
     {
-        // カートチェック
-        if (count($this->cartService->getCart()->getCartItems()) <= 0) {
-            log_info('カートに商品が入っていないためショッピングカート画面にリダイレクト');
-
-            // カートが存在しない時はエラー
-            return $this->redirectToRoute('cart');
+        $Cart = $this->cartService->getCart();
+        if ($Cart && count($Cart->getCartItems()) > 0) {
+            return new Response();
         }
+        log_info('カートに商品が入っていないためショッピングカート画面にリダイレクト');
 
-        return new Response();
+        // カートが存在しない時はエラー
+        return $this->redirectToRoute('cart');
     }
 
     /**

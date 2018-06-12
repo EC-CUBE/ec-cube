@@ -290,7 +290,6 @@ class EditControllerTest extends AbstractEditControllerTestCase
             ),
             [Constant::TOKEN_NAME => '_dummy']
         );
-        $this->container->get(CartService::class)->lock();
 
         $faker = $this->getFaker();
         $tel = explode('-', $faker->phoneNumber);
