@@ -14,6 +14,7 @@
 namespace Eccube\Command;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Eccube\Repository\CartRepository;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -54,13 +55,18 @@ class DeleteCartsCommand extends Command
      * @var EntityManagerInterface
      */
     protected $entityManager;
+    /**
+     * @var CartRepository
+     */
+    private $cartRepository;
 
-    public function __construct(ContainerInterface $container, EntityManagerInterface $entityManager)
+    public function __construct(ContainerInterface $container, EntityManagerInterface $entityManager, CartRepository $cartRepository)
     {
         parent::__construct();
 
         $this->container = $container;
         $this->entityManager = $entityManager;
+        $this->cartRepository = $cartRepository;
     }
 
     protected function configure()
@@ -116,24 +122,20 @@ class DeleteCartsCommand extends Command
 
     protected function deleteCarts(\DateTime $dateTime)
     {
-        $batchSize = 20;
-        $i = 0;
-
         try {
             $this->entityManager->beginTransaction();
-            $q = $this->entityManager->createQuery('SELECT c FROM Eccube\Entity\Cart c WHERE c.update_date <= :date');
-            $q->setParameter('date', $dateTime);
 
-            $iterableResult = $q->iterate();
-            while (($row = $iterableResult->next()) !== false) {
-                $this->entityManager->remove($row[0]);
-                if (($i % $batchSize) === 0) {
-                    $this->entityManager->flush(); // Executes all deletions.
-                    $this->entityManager->clear(); // Detaches all objects from Doctrine!
-                }
-                ++$i;
-            }
+            $qb = $this->cartRepository->createQueryBuilder('c')
+                ->delete()
+                ->where('c.update_date <= :date')
+                ->setParameter('date', $dateTime);
+
+            $deleteRows = $qb->getQuery()->getResult();
+
             $this->entityManager->flush();
+            $this->entityManager->commit();
+
+            $this->io->comment("Deleted ${deleteRows} carts.");
         } catch (\Exception $e) {
             $this->io->error('Failed delete carts. Rollbacked.');
             $this->entityManager->rollback();
