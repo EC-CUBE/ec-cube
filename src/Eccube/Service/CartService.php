@@ -135,8 +135,8 @@ class CartService
             return $this->carts;
         }
 
-        $cartIds = $this->session->get('cart_ids', []);
-        $this->carts = $this->cartRepository->findBy(['cartKey' => $cartIds], ['id' => 'DESC']);
+        $cartKeys = $this->session->get('cart_keys', []);
+        $this->carts = $this->cartRepository->findBy(['cart_key' => $cartKeys], ['id' => 'DESC']);
 
         return $this->carts;
     }
@@ -340,7 +340,7 @@ class CartService
             $this->carts = $Carts;
         }
 
-        $cartIds = [];
+        $cartKeys = [];
         foreach ($this->carts as $Cart) {
             $this->entityManager->persist($Cart);
             foreach ($Cart->getCartItems() as $item) {
@@ -348,10 +348,10 @@ class CartService
                 $this->entityManager->flush($item);
             }
             $this->entityManager->flush($Cart);
-            $cartIds[] = $Cart->getCartKey();
+            $cartKeys[] = $Cart->getCartKey();
         }
 
-        $this->session->set('cart_ids', $cartIds);
+        $this->session->set('cart_keys', $cartKeys);
 
         return;
     }
