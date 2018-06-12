@@ -14,7 +14,6 @@
 namespace Eccube\Repository;
 
 use Eccube\Entity\CartItem;
-use Eccube\Repository\AbstractRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**

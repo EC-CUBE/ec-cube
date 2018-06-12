@@ -18,7 +18,6 @@ use Eccube\Tests\EccubeTestCase;
 
 class CartRepositoryTest extends EccubeTestCase
 {
-
     public function test__construct()
     {
         /** @var CartRepository $CartRepository */
