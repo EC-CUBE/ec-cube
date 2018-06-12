@@ -435,11 +435,17 @@ class CartService
             return $Customer->getId().'_'.$allocatedId;
         }
 
+        if ($this->session->has('cart_key_prefix')) {
+            return $this->session->get('cart_key_prefix').'_'.$allocatedId;
+        }
+
         do {
             $random = StringUtil::random(32);
             $cartKey = $random.'_'.$allocatedId;
             $Cart = $this->cartRepository->findOneBy(['cart_key' => $cartKey]);
         } while ($Cart);
+
+        $this->session->set('cart_key_prefix', $random);
 
         return $cartKey;
     }
