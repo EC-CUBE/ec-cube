@@ -66,7 +66,7 @@ class CartItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Cart", inversedBy="CartItems")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="cart_id", referencedColumnName="id", onDelete="CASCADE")
+     *   @ORM\JoinColumn(name="cart_id", referencedColumnName="id")
      * })
      */
     private $Cart;

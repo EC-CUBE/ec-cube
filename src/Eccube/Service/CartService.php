@@ -147,7 +147,7 @@ class CartService
      *
      * @param Customer $Customer
      */
-    public function mergeFromPersistenceCart(Customer $Customer)
+    public function mergeFromPersistedCart(Customer $Customer)
     {
         $Carts = $this->cartRepository->findBy(['Customer' => $Customer]);
 
@@ -222,6 +222,10 @@ class CartService
     {
         if (empty($cartItems)) {
             foreach ($this->getCarts() as $Cart) {
+                foreach ($Cart->getCartItems() as $i) {
+                    $this->entityManager->remove($i);
+                    $this->entityManager->flush($i);
+                }
                 $this->entityManager->remove($Cart);
                 $this->entityManager->flush($Cart);
             }
@@ -243,7 +247,12 @@ class CartService
                 /** @var Cart $Cart */
                 $Cart = $this->cartRepository->findOneBy(['cart_key' => $cartKey]);
                 if ($Cart) {
+                    foreach ($Cart->getCartItems() as $i) {
+                        $this->entityManager->remove($i);
+                        $this->entityManager->flush($i);
+                    }
                     $this->entityManager->remove($Cart);
+                    $this->entityManager->flush($Cart);
                 }
                 $Cart = new Cart();
                 $Cart->setCartKey($cartKey);

@@ -153,8 +153,6 @@ class CartServiceTest extends AbstractServiceTestCase
 
     public function testAddProducts_WithCartItemComparator()
     {
-        self::markTestSkipped();
-
         // 同じ商品規格で同じ数量なら同じ明細とみなすようにする
         $this->cartService->setCartItemComparator(new CartServiceTest_CartItemComparator());
 
