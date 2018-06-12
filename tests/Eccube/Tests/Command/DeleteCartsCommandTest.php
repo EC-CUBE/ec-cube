@@ -45,6 +45,7 @@ class DeleteCartsCommandTest extends EccubeTestCase
         $CartItem->setProductClass($ProductClass);
         $CartItem->setQuantity(1);
         $CartItem->setPrice(1000);
+        $CartItem->setCart($Cart);
         $Cart->addCartItem($CartItem);
 
         $this->entityManager->persist($Cart);
@@ -79,6 +80,7 @@ class DeleteCartsCommandTest extends EccubeTestCase
         $CartItem->setProductClass($ProductClass);
         $CartItem->setQuantity(1);
         $CartItem->setPrice(1000);
+        $CartItem->setCart($Cart);
         $Cart->addCartItem($CartItem);
 
         $this->entityManager->persist($Cart);

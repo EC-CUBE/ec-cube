@@ -66,7 +66,7 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
     /**
      * @var \Doctrine\Common\Collections\Collection|CartItem[]
      *
-     * @ORM\OneToMany(targetEntity="Eccube\Entity\CartItem", mappedBy="Cart", cascade={"persist","remove"})
+     * @ORM\OneToMany(targetEntity="Eccube\Entity\CartItem", mappedBy="Cart", cascade={"persist"})
      */
     private $CartItems;
 
