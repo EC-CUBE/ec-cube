@@ -43,7 +43,7 @@ class PriceChangeValidator extends ValidatableItemProcessor
 
         $realPrice = $item->getProductClass()->getPrice02IncTax();
 
-        if ($price !== $realPrice) {
+        if ($price != $realPrice) {
             $this->throwInvalidItemException('cart.product.price.change', $item->getProductClass());
         }
     }
