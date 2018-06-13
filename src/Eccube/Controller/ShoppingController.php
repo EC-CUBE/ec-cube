@@ -611,6 +611,12 @@ class ShoppingController extends AbstractShoppingController
     {
         $Cart = $this->cartService->getCart();
         if ($Cart && count($Cart->getCartItems()) > 0) {
+            $divide = $request->getSession()->get('cart.divide');
+            if ($divide) {
+                log_info('種別が異なる商品がカートと結合されたためカート画面にリダイレクト');
+
+                return $this->redirectToRoute('cart');
+            }
             return new Response();
         }
         log_info('カートに商品が入っていないためショッピングカート画面にリダイレクト');
