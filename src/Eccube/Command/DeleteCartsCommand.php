@@ -73,7 +73,7 @@ class DeleteCartsCommand extends Command
     {
         $this
             ->setDescription('Delete Carts from the database')
-            ->addArgument('date', InputArgument::REQUIRED, '指定した日付以前のカート情報を削除します.');
+            ->addArgument('date', InputArgument::REQUIRED, 'Deletes the cart before the specified date');
     }
 
     protected function interact(InputInterface $input, OutputInterface $output)
@@ -82,12 +82,13 @@ class DeleteCartsCommand extends Command
             return;
         }
 
+        $pattern = $this->formatter->getPattern();
         $this->io->title('Delete Cart Command Interactive Wizard');
         $this->io->text([
             'If you prefer to not use this interactive wizard, provide the',
             'arguments required by this command as follows:',
             '',
-            ' $ php bin/console eccube:delete-cart yyyy/mm/dd',
+            ' $ php bin/console eccube:delete-cart <'.$pattern.'>',
             '',
             'Now we\'ll ask you for the value of all the missing command arguments.',
             '',
