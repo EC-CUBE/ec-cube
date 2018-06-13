@@ -18,7 +18,6 @@ use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\Product;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
-use Eccube\Exception\CartException;
 use Eccube\Form\Type\AddCartType;
 use Eccube\Form\Type\Master\ProductListMaxType;
 use Eccube\Form\Type\Master\ProductListOrderByType;
@@ -172,38 +171,6 @@ class ProductController extends AbstractController
                 ]
             );
             $addCartForm = $builder->getForm();
-
-            if ($request->getMethod() === 'POST' && (string) $Product->getId() === $request->get('product_id')) {
-                $addCartForm->handleRequest($request);
-
-                if ($addCartForm->isValid()) {
-                    $addCartData = $addCartForm->getData();
-
-                    try {
-                        $this->cartService->addProduct(
-                            $addCartData['product_class_id'],
-                            $addCartData['quantity']
-                        )->save();
-                    } catch (CartException $e) {
-                        $this->addRequestError($e->getMessage());
-                    }
-
-                    $event = new EventArgs(
-                        [
-                            'form' => $addCartForm,
-                            'Product' => $Product,
-                        ],
-                        $request
-                    );
-                    $this->eventDispatcher->dispatch(EccubeEvents::FRONT_PRODUCT_INDEX_COMPLETE, $event);
-
-                    if ($event->getResponse() !== null) {
-                        return $event->getResponse();
-                    }
-
-                    return $this->redirectToRoute('cart');
-                }
-            }
 
             $forms[$Product->getId()] = $addCartForm->createView();
         }

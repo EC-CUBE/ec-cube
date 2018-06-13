@@ -84,6 +84,7 @@ class CartValidationTest extends AbstractWebTestCase
         $form = [
             'ProductClass' => $ProductClass->getId(),
             'quantity' => 9999,
+            'product_id' => $Product->getId(),
             '_token' => 'dummy',
         ];
         if ($ProductClass->hasClassCategory1()) {
@@ -124,6 +125,7 @@ class CartValidationTest extends AbstractWebTestCase
         $arrForm = [
             'ProductClass' => $productClassId,
             'quantity' => 1,
+            'product_id' => $Product->getId(),
             '_token' => 'dummy',
         ];
 
@@ -160,6 +162,7 @@ class CartValidationTest extends AbstractWebTestCase
         $arrForm = [
             'ProductClass' => $productClassId,
             'quantity' => 1,
+            'product_id' => $Product->getId(),
             '_token' => 'dummy',
         ];
 
@@ -219,6 +222,7 @@ class CartValidationTest extends AbstractWebTestCase
         $arrForm = [
             'ProductClass' => $productClassId,
             'quantity' => 1,
+            'product_id' => $Product->getId(),
             '_token' => 'dummy',
         ];
 
@@ -269,6 +273,7 @@ class CartValidationTest extends AbstractWebTestCase
         $arrForm = [
             'ProductClass' => $productClassId,
             'quantity' => 1,
+            'product_id' => $Product->getId(),
             '_token' => 'dummy',
         ];
         if ($ProductClass->hasClassCategory1()) {
@@ -318,6 +323,7 @@ class CartValidationTest extends AbstractWebTestCase
         $arrForm = [
             'ProductClass' => $productClassId,
             'quantity' => $stock + 1,
+            'product_id' => $Product->getId(),
             '_token' => 'dummy',
         ];
         if ($ProductClass->hasClassCategory1()) {
@@ -370,6 +376,7 @@ class CartValidationTest extends AbstractWebTestCase
         $arrForm = [
             'ProductClass' => $ProductClass->getId(),
             'quantity' => 9,
+            'product_id' => $Product->getId(),
             '_token' => 'dummy',
         ];
         if ($ProductClass->hasClassCategory1()) {
@@ -402,6 +409,7 @@ class CartValidationTest extends AbstractWebTestCase
         $arrForm = [
             'ProductClass' => $ProductClass->getId(),
             'quantity' => $stock,
+            'product_id' => $Product->getId(),
             '_token' => 'dummy',
         ];
         if ($ProductClass->hasClassCategory1()) {
@@ -464,6 +472,7 @@ class CartValidationTest extends AbstractWebTestCase
         $arrForm = [
             'ProductClass' => $productClassId,
             'quantity' => 1,
+            'product_id' => $Product->getId(),
             '_token' => 'dummy',
         ];
         if ($ProductClass->hasClassCategory1()) {
@@ -618,6 +627,7 @@ class CartValidationTest extends AbstractWebTestCase
         $arrForm = [
             'ProductClass' => $productClassId,
             'quantity' => $limit + 1,
+            'product_id' => $Product->getId(),
             '_token' => 'dummy',
         ];
         if ($ProductClass->hasClassCategory1()) {
@@ -2585,6 +2595,7 @@ class CartValidationTest extends AbstractWebTestCase
             [
                 'ProductClass' => $ProductClass->getId(),
                 'quantity' => $num,
+                'product_id' => $ProductClass->getProduct()->getId(),
                 '_token' => 'dummy',
             ]
         );
