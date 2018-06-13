@@ -400,20 +400,19 @@ class ProductController extends AbstractController
         $this->cartService->addProduct($addCartData['product_class_id'], $addCartData['quantity']);
 
         // 明細の正規化
-        $flow = $this->purchaseFlow;
-        $Cart = $this->cartService->getCart();
-        $result = $flow->calculate($Cart, new PurchaseContext($Cart, $this->getUser()));
-
-        // 復旧不可のエラーが発生した場合は追加した明細を削除.
-        if ($result->hasError()) {
-            $this->cartService->removeProduct($addCartData['product_class_id']);
-            foreach ($result->getErrors() as $error) {
-                $errorMessages[] = $error->getMessage();
+        $Carts = $this->cartService->getCarts();
+        foreach ($Carts as $Cart) {
+            $result = $this->purchaseFlow->calculate($Cart, new PurchaseContext($Cart, $this->getUser()));
+            // 復旧不可のエラーが発生した場合は追加した明細を削除.
+            if ($result->hasError()) {
+                $this->cartService->removeProduct($addCartData['product_class_id']);
+                foreach ($result->getErrors() as $error) {
+                    $errorMessages[] = $error->getMessage();
+                }
             }
-        }
-
-        foreach ($result->getWarning() as $warning) {
-            $errorMessages[] = $warning->getMessage();
+            foreach ($result->getWarning() as $warning) {
+                $errorMessages[] = $warning->getMessage();
+            }
         }
 
         $this->cartService->save();
