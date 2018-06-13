@@ -73,7 +73,7 @@ class DeleteCartsCommand extends Command
     {
         $this
             ->setDescription('Delete Carts from the database')
-            ->addArgument('date', InputArgument::REQUIRED, 'Deletes the cart before the specified date');
+            ->addArgument('date', InputArgument::REQUIRED, 'Deletes carts before the specified date');
     }
 
     protected function interact(InputInterface $input, OutputInterface $output)
