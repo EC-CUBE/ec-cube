@@ -617,6 +617,7 @@ class ShoppingController extends AbstractShoppingController
 
                 return $this->redirectToRoute('cart');
             }
+
             return new Response();
         }
         log_info('カートに商品が入っていないためショッピングカート画面にリダイレクト');

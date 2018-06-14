@@ -512,4 +512,70 @@ class EF03OrderCest
         ShoppingCompletePage::at($I)->TOPへ();
         $I->see('新着情報', '.ec-news__title');
     }
+
+
+    public function order_ログイン後に複数カートになればカートに戻す(\AcceptanceTester $I)
+    {
+        $I->wantTo('EF0303-UC01-T01_購入フローでログインしたタイミングで複数カートになったらログイン後にカート画面に戻す');
+        $I->logoutAsMember();
+        $createCustomer = Fixtures::get('createCustomer');
+        $customer = $createCustomer();
+        $I->loginAsMember($customer->getEmail(), 'password');
+        $BaseInfo = Fixtures::get('baseinfo');
+
+        // 商品詳細パーコレータ カートへ
+        ProductDetailPage::go($I, 2)
+            ->カートに入れる(1);
+
+        $I->wait(3);
+
+        $I->acceptPopup();
+
+        CartPage::go($I)
+            ->レジに進む();
+
+        // ログアウト
+        $I->logoutAsMember();
+
+        $createProduct = Fixtures::get('createProduct');
+
+        $Product = $createProduct();
+
+        $entityManager = Fixtures::get('entityManager');
+
+        $SaleType = $entityManager->find(\Eccube\Entity\Master\SaleType::class, 2);
+
+        $Product->getProductClasses()[0]->setSaleType($SaleType);
+
+        $ProductClass = $Product->getProductClasses()[0];
+        $ProductClass->setSaleType($SaleType);
+
+        $entityManager->persist($ProductClass);
+        $entityManager->flush();
+
+        if ($ProductClass->getClassCategory2()) {
+            // 商品詳細
+            ProductDetailPage::go($I, $Product->getId())
+                ->規格選択([$ProductClass->getClassCategory1(), $ProductClass->getClassCategory2()])
+                ->カートに入れる(1);
+        } else {
+            ProductDetailPage::go($I, $Product->getId())
+                ->規格選択([$ProductClass->getClassCategory1()])
+                ->カートに入れる(1);
+        }
+
+        $I->wait(3);
+
+        $I->acceptPopup();
+
+        CartPage::go($I)
+            ->レジに進む();
+
+        // ログイン
+        ShoppingLoginPage::at($I)->ログイン($customer->getEmail());
+
+        $I->resetEmails();
+
+        $I->see('同時購入できない商品がカートに含まれています', '.ec-alert-warning__text');
+    }
 }
