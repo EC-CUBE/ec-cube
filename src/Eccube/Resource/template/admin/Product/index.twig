@@ -182,7 +182,7 @@ file that was distributed with this source code.
             // Append html and show popup
             function renderClass(data, btnClass) {
                 $('div.modal-body', modalClass).html(data);
-                $('h5.modal-title', modalClass).html(btnClass.data('message'));
+                $('h5.modal-title', modalClass).text(btnClass.data('message'));
                 $('a.btn-ec-conversion', modalClass).attr('href', btnClass.data('class-url'));
                 modalClass.modal('show');
                 btnClass.attr('disabled', false);
