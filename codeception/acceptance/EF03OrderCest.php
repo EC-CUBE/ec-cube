@@ -527,8 +527,6 @@ class EF03OrderCest
         ProductDetailPage::go($I, 2)
             ->カートに入れる(1);
 
-        $I->wait(3);
-
         $I->acceptPopup();
 
         CartPage::go($I)
@@ -563,8 +561,6 @@ class EF03OrderCest
                 ->規格選択([$ProductClass->getClassCategory1()])
                 ->カートに入れる(1);
         }
-
-        $I->wait(3);
 
         $I->acceptPopup();
 
