@@ -121,7 +121,7 @@ class ShippingMultipleItemType extends AbstractType
                         $CustomerAddress = new CustomerAddress();
                         $CustomerAddress->setFromCustomer($NonMember);
 
-                        if ($CustomerAddresses = $this->session->get('eccube.front.shopping.nonmember.customeraddress', [])) {
+                        if ($CustomerAddresses = $this->session->get('eccube.front.shopping.nonmember.customeraddress')) {
                             $CustomerAddresses = unserialize($CustomerAddresses);
                             $CustomerAddresses = array_merge([$CustomerAddress], $CustomerAddresses);
                             foreach ($CustomerAddresses as $Address) {
