@@ -166,11 +166,7 @@ class NonMemberShoppingController extends AbstractShoppingController
             }
 
             // 非会員用セッションを作成
-            $nonMember = [];
-            $nonMember['customer'] = $Customer;
-            $nonMember['pref'] = $Customer->getPref()->getId();
-            $this->session->set($this->sessionKey, $nonMember);
-
+            $this->session->set($this->sessionKey, $Customer);
             $this->session->set($this->sessionCustomerAddressKey, serialize([]));
 
             $event = new EventArgs(

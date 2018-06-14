@@ -324,7 +324,7 @@ class ShoppingController extends AbstractShoppingController
         $this->session->remove($this->sessionOrderKey);
 
         // 非会員用セッション情報を空の配列で上書きする(プラグイン互換性保持のために削除はしない)
-        $this->session->set($this->sessionKey, []);
+        $this->session->set($this->sessionKey, null);
         $this->session->set($this->sessionCustomerAddressKey, []);
 
         log_info('購入処理完了', [$orderId]);
