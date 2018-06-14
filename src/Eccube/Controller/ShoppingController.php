@@ -125,6 +125,9 @@ class ShoppingController extends AbstractShoppingController
         // 単価集計
         $flowResult = $this->executePurchaseFlow($Order);
 
+        // 明細が丸められる場合に, カートから注文画面へ遷移できなくなるため, 集計の結果を保存する
+        $this->entityManager->flush();
+
         // フォームを生成する
         $this->forwardToRoute('shopping_create_form');
 

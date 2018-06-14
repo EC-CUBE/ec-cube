@@ -15,42 +15,51 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\ItemInterface;
 use Eccube\Entity\OrderItem;
+use Eccube\Service\PurchaseFlow\ItemProcessor;
+use Eccube\Service\PurchaseFlow\ProcessResult;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
-use Eccube\Service\PurchaseFlow\ValidatableItemProcessor;
 
 /**
  * 販売価格の変更検知.
  */
-class PriceChangeValidator extends ValidatableItemProcessor
+class PriceChangeValidator implements ItemProcessor
 {
     /**
      * @param ItemInterface $item
      * @param PurchaseContext $context
      *
-     * @throws \Eccube\Service\PurchaseFlow\InvalidItemException
+     * @return ProcessResult
      */
-    protected function validate(ItemInterface $item, PurchaseContext $context)
+    public function process(ItemInterface $item, PurchaseContext $context)
     {
         if (!$item->isProduct()) {
-            return;
+            return ProcessResult::success();
         }
 
         if ($item instanceof OrderItem) {
             $price = $item->getPriceIncTax();
         } else {
+            // CartItem::priceは税込金額.
             $price = $item->getPrice();
         }
 
         $realPrice = $item->getProductClass()->getPrice02IncTax();
-
         if ($price != $realPrice) {
-            $this->throwInvalidItemException('cart.product.price.change', $item->getProductClass());
-        }
-    }
+            $message = trans('cart.product.price.change',
+                ['%product%' => $item->getProductClass()->formatProductName()]);
 
-    protected function handle(ItemInterface $item, PurchaseContext $context)
-    {
-        $price = $item->getProductClass()->getPrice02IncTax();
-        $item->setPrice($price);
+            if ($item instanceof OrderItem) {
+                $item->setPrice($item->getProductClass()->getPrice02());
+
+                return ProcessResult::error($message);
+            } else {
+                // CartItem::priceは税込金額.
+                $item->setPrice($realPrice);
+
+                return ProcessResult::warn($message);
+            }
+        }
+
+        return ProcessResult::success();
     }
 }

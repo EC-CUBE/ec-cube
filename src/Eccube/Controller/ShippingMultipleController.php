@@ -26,6 +26,8 @@ use Eccube\Form\Type\ShippingMultipleType;
 use Eccube\Repository\Master\OrderItemTypeRepository;
 use Eccube\Repository\Master\PrefRepository;
 use Eccube\Repository\OrderRepository;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
+use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\ShoppingService;
 use Eccube\Service\CartService;
 use Eccube\Service\OrderHelper;
@@ -57,6 +59,11 @@ class ShippingMultipleController extends AbstractShoppingController
     protected $cartService;
 
     /**
+     * @var PurchaseFlow
+     */
+    protected $cartPurchaseFlow;
+
+    /**
      * @var OrderRepository
      */
     protected $orderRepository;
@@ -81,7 +88,8 @@ class ShippingMultipleController extends AbstractShoppingController
         OrderItemTypeRepository $orderItemTypeRepository,
         ShoppingService $shoppingService,
         CartService $cartService,
-        OrderHelper $orderHelper
+        OrderHelper $orderHelper,
+        PurchaseFlow $cartPurchaseFlow
     ) {
         $this->prefRepository = $prefRepository;
         $this->orderRepository = $orderRepository;
@@ -89,6 +97,7 @@ class ShippingMultipleController extends AbstractShoppingController
         $this->shoppingService = $shoppingService;
         $this->cartService = $cartService;
         $this->orderHelper = $orderHelper;
+        $this->cartPurchaseFlow = $cartPurchaseFlow;
     }
 
     /**
@@ -344,6 +353,7 @@ class ShippingMultipleController extends AbstractShoppingController
                 }
             }
 
+            $this->cartPurchaseFlow->calculate($Cart, new PurchaseContext());
             $this->cartService->save();
 
             return $this->redirectToRoute('shopping');
