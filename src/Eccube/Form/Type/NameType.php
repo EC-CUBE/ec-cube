@@ -104,7 +104,7 @@ class NameType extends AbstractType
                     )),
                     new Assert\Regex(array(
                         'pattern' => '/^[^\s ]+$/u',
-                        'message' => 'form.type.name.firstname.nothasspace'
+                        'message' => 'form.type.name.lastname.nothasspace'
                     ))
                 ),
             ),
@@ -118,7 +118,7 @@ class NameType extends AbstractType
                     )),
                     new Assert\Regex(array(
                         'pattern' => '/^[^\s ]+$/u',
-                        'message' => 'form.type.name.lastname.nothasspace'
+                        'message' => 'form.type.name.firstname.nothasspace'
                     ))
                 ),
             ),
