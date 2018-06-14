@@ -156,7 +156,7 @@ class ShippingMultipleItemType extends AbstractType
 
                 /* @var CustomerAddress $CustomerAddress */
                 foreach ($choices as  $address) {
-                    if ($address === $data->getShippingMultipleDefaultName()) {
+                    if ($address->getShippingMultipleDefaultName() === $data->getShippingMultipleDefaultName()) {
                         $form['customer_address']->setData($address);
                         break;
                     }
