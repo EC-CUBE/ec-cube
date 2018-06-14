@@ -174,7 +174,9 @@ class ShippingMultipleController extends AbstractShoppingController
                 $OrderItem = $mulitples->getData();
                 foreach ($mulitples as $items) {
                     foreach ($items as $item) {
-                        $cusAddId = $this->getCustomerAddressId($item['customer_address']->getData());
+                        $CustomerAddress = $item['customer_address']->getData();
+                        $cusAddId = $CustomerAddress->getShippingMultipleDefaultName();
+
                         $itemId = $OrderItem->getProductClass()->getId();
                         $quantity = $item['quantity']->getData();
 
@@ -222,8 +224,8 @@ class ShippingMultipleController extends AbstractShoppingController
 
                 foreach ($mulitples as $items) {
                     foreach ($items as $item) {
-                        $CustomerAddress = $this->getCustomerAddress($item['customer_address']->getData());
-                        $cusAddId = $this->getCustomerAddressId($item['customer_address']->getData());
+                        $CustomerAddress = $item['customer_address']->getData();
+                        $cusAddId = $CustomerAddress->getShippingMultipleDefaultName();
 
                         $Shipping = new Shipping();
                         $Shipping
@@ -254,7 +256,8 @@ class ShippingMultipleController extends AbstractShoppingController
 
                 foreach ($mulitples as $items) {
                     foreach ($items as $item) {
-                        $cusAddId = $this->getCustomerAddressId($item['customer_address']->getData());
+                        $CustomerAddress = $item['customer_address']->getData();
+                        $cusAddId = $CustomerAddress->getShippingMultipleDefaultName();
 
                         // お届け先から商品の数量を取得
                         $quantity = 0;
@@ -431,47 +434,5 @@ class ShippingMultipleController extends AbstractShoppingController
         return [
             'form' => $form->createView(),
         ];
-    }
-
-    /**
-     * フォームの情報からお届け先のインデックスを返す
-     *
-     * @param mixed $CustomerAddressData
-     *
-     * @return int
-     */
-    private function getCustomerAddressId($CustomerAddressData)
-    {
-        if ($CustomerAddressData instanceof CustomerAddress) {
-            return $CustomerAddressData->getId();
-        } else {
-            return $CustomerAddressData;
-        }
-    }
-
-    /**
-     * フォームの情報からお届け先のインスタンスを返す
-     *
-     * @param int $customerAddressId お届け先ID。非会員の場合はセッションに登録されたお届け先リストのインデックス。
-     *
-     * @return CustomerAddress
-     */
-    private function getCustomerAddress($customerAddressId)
-    {
-        // 会員の場合は登録されているお届け先を返す
-        if ($this->getUser()) {
-            return $this->entityManager->find(CustomerAddress::class, $customerAddressId);
-        }
-
-        // 非会員の場合はセッション中のお届け先リストから返す
-        $cusAddId = $customerAddressId;
-        $customerAddresses = $this->session->get($this->sessionCustomerAddressKey);
-        $customerAddresses = unserialize($customerAddresses);
-
-        $CustomerAddress = $customerAddresses[$cusAddId];
-        $pref = $this->prefRepository->find($CustomerAddress->getPref()->getId());
-        $CustomerAddress->setPref($pref);
-
-        return $CustomerAddress;
     }
 }

@@ -95,15 +95,15 @@ class ShippingMultipleItemType extends AbstractType
                     // 会員の場合、CustomerAddressを設定
                     /** @var Customer $Customer */
                     $Customer = $this->tokenStorage->getToken()->getUser();
-                    $CustomerAddresses = $Customer->getCustomerAddresses();
-                    $Addresses = array_reduce($CustomerAddresses->toArray(), function (array $result, CustomerAddress $CustomerAddress) {
-                        $result[$CustomerAddress->getShippingMultipleDefaultName()] = $CustomerAddress->getId();
-
-                        return $result;
-                    }, []);
+                    $CustomerAddress = new CustomerAddress();
+                    $CustomerAddress->setFromCustomer($Customer);
+                    $CustomerAddresses = array_merge([$CustomerAddress], $Customer->getCustomerAddresses()->toArray());
 
                     $form->add('customer_address', ChoiceType::class, [
-                        'choices' => $Addresses,
+                        'choices' => $CustomerAddresses,
+                        'choice_label' => function ($Address, $key, $value) {
+                            return $Address->getShippingMultipleDefaultName();
+                        },
                         'constraints' => [
                             new Assert\NotBlank(),
                         ],
@@ -139,9 +139,9 @@ class ShippingMultipleItemType extends AbstractType
                 $choices = $form['customer_address']->getConfig()->getOption('choices');
 
                 /* @var CustomerAddress $CustomerAddress */
-                foreach ($choices as $address => $id) {
+                foreach ($choices as  $address) {
                     if ($address === $data->getShippingMultipleDefaultName()) {
-                        $form['customer_address']->setData($id);
+                        $form['customer_address']->setData($address);
                         break;
                     }
                 }
