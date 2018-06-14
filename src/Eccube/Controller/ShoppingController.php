@@ -651,7 +651,6 @@ class ShoppingController extends AbstractShoppingController
                 //$Order = $app['eccube.service.shopping']->createOrder($Customer);
                 $Order = $this->orderHelper->createProcessingOrder(
                     $Customer,
-                    $Customer->getCustomerAddresses()->current(),
                     $this->cartService->getCart()->getCartItems()
                 );
                 $this->cartService->setPreOrderId($Order->getPreOrderId());
