@@ -41,7 +41,7 @@ file that was distributed with this source code.
         {{ include('block.twig', {'Blocks': Page.Head}) }}
     {% endif %}
 </head>
-<body id="page_{* { app.request_stack.currentrequest.get('_route') } *}" class="{{ body_class|default('other_page') }}">
+<body id="page_{{ app.request.get('_route') }}" class="{{ body_class|default('other_page') }}">
 {# Layout: BODY_AFTER #}
 {% if Page.BodyAfter %}
     {{ include('block.twig', {'Blocks': Page.BodyAfter}) }}
@@ -129,6 +129,7 @@ file that was distributed with this source code.
 <div class="ec-blockTopBtn"></div>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.4/dist/loadingoverlay.min.js"></script>
 <script src="{{ asset('assets/js/script.js') }}"></script>
 <script src="{{ asset('js/function.js') }}"></script>
 <script src="{{ asset('js/eccube.js') }}"></script>
