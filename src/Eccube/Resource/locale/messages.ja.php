@@ -804,6 +804,7 @@ return [
     'admin.content.layout.block.context.movesection' => 'セクションに移動',
     'admin.content.layout.block.context.preview' => 'コードプレビュー',
     'admin.content.block.form.label.file_name' => '',
+    'admin.content.block.form.label.block_name' => 'ブロック名',
     'admin.content.layout_list.45' => 'コンテンツ管理',
     'admin.content.layout_list.46' => 'レイアウト管理',
     'admin.content.layout_list.device_pc' => 'PC',
