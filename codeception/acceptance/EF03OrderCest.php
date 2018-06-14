@@ -528,7 +528,7 @@ class EF03OrderCest
         $shipping1_quantity = 2;
         $shipping2_quantity = 3;
 
-        $I->wantTo('EF0305-UC05-T01 お届け先の追加');
+        $I->wantTo('EF0305-UC08-T01 購入確認画面からカートに戻る');
         $I->logoutAsMember();
         $createCustomer = Fixtures::get('createCustomer');
         /** @var \Eccube\Entity\CustomerAddress $customer */
@@ -688,7 +688,7 @@ class EF03OrderCest
         $shipping1_quantity = 1;
         $shipping2_quantity = 2;
 
-        $I->wantTo('EF0305-UC05-T01 お届け先の追加');
+        $I->wantTo('EF0305-UC08-T02 購入確認画面からカートに戻る(お届け先初期化)');
         $I->logoutAsMember();
         $createCustomer = Fixtures::get('createCustomer');
         /** @var \Eccube\Entity\CustomerAddress $customer */
