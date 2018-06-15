@@ -509,6 +509,8 @@ return [
     'cart.product.not.saletype' => '「%product%」はまだ配送の準備ができておりません。
 恐れ入りますがお問い合わせページよりお問い合わせください。',
     'cart.product.price.change' => '「%product%」の販売価格が変更されました。',
+    'cart.product.divide' => '同時購入できない商品がカートに含まれています。
+お手数ですが、個別に購入手続きをお願い致します。',
     'shopping.multiple.delivery' => '配送方法が異なる商品が含まれているため、お届け先は複数となります。',
     'shopping.multiple.quantity.diff' => '数量の合計が、カゴの中の数量と異なっています。',
     'shopping.delivery.not.saletype' => '配送の準備ができていない商品が含まれております。
@@ -765,6 +767,8 @@ return [
     'admin.content.file.title.lists' => 'このフォルダ内のファイル',
     'admin.content.file.title.folders' => 'フォルダ構成',
     'admin.content.file.upload_success' => 'ファイルを正常にアップロードしました。',
+    'admin.content.file.create_dir_success' => 'フォルダーを正常に作成しました。',
+    'admin.content.file.create_dir_placeholder' => 'フォルダ名',
     'admin.content.layout.39' => 'コンテンツ管理',
     'admin.content.layout.40' => 'レイアウト管理',
     'admin.content.layout.41' => '戻る',

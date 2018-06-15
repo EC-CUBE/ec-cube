@@ -29,6 +29,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\Validator\Constraints as Assert;
 use Eccube\Util\FilesystemUtil;
+use Symfony\Component\Filesystem\Exception\IOException;
 
 class FileController extends AbstractController
 {
@@ -73,7 +74,8 @@ class FileController extends AbstractController
 
         // パンくず表示用データ
         $nowDirList = json_encode(explode('/', trim(str_replace($htmlDir, '', $nowDir), '/')));
-        $isTopDir = ($topDir === $nowDir);
+        $jailNowDir = $this->getJailDir($nowDir);
+        $isTopDir = ($topDir === $jailNowDir);
         $parentDir = substr($nowDir, 0, strrpos($nowDir, '/'));
 
         if ('POST' === $request->getMethod()) {
@@ -99,10 +101,10 @@ class FileController extends AbstractController
             'tpl_javascript' => json_encode($tree),
             'top_dir' => $this->getJailDir($topDir),
             'tpl_is_top_dir' => $isTopDir,
-            'tpl_now_dir' => $this->getJailDir($nowDir),
+            'tpl_now_dir' => $jailNowDir,
             'html_dir' => $this->getJailDir($htmlDir),
             'now_dir_list' => $nowDirList,
-            'tpl_parent_dir' => $parentDir,
+            'tpl_parent_dir' => $this->getJailDir($parentDir),
             'arrFileList' => $arrFileList,
             'errors' => $this->errors,
             'paths' => json_encode($paths),
@@ -124,36 +126,56 @@ class FileController extends AbstractController
         throw new NotFoundHttpException();
     }
 
+    /**
+     * Create directory
+     *
+     * @param Request $request
+     */
     public function create(Request $request)
     {
         $form = $this->formFactory->createBuilder(FormType::class)
             ->add('file', FileType::class)
-            ->add('create_file', TextType::class)
+            ->add('create_file', TextType::class, [
+                'constraints' => [
+                    new Assert\NotBlank([
+                        'message' => 'file.text.error.folder_name'
+                    ]),
+                    new Assert\Regex([
+                        'pattern' => "/[^[:alnum:]_.\\-]/",
+                        'match' => false,
+                        'message' => 'file.text.error.folder_symbol'
+                    ]),
+                    new Assert\Regex([
+                        'pattern' => "/^\.(.*)$/",
+                        'match' => false,
+                        'message' => 'file.text.error.folder_period'
+                    ]),
+                ]
+            ])
             ->getForm();
 
         $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $fs = new Filesystem();
-            $filename = $form->get('create_file')->getData();
-
-            $pattern = '/[^[:alnum:]_.\\-]/';
-            $pattern2 = "/^\.(.*)$/";
-            if (empty($filename)) {
-                $this->errors[] = ['message' => trans('file.text.error.folder_name')];
-            } elseif (strlen($filename) > 0 && preg_match($pattern, $filename)) {
-                $this->errors[] = ['message' => trans('file.text.error.folder_symbol')];
-            } elseif (strlen($filename) > 0 && preg_match($pattern2, $filename)) {
-                $this->errors[] = ['message' => trans('file.text.error.folder_period')];
-            } else {
-                $topDir = $this->getUserDataDir();
-                $nowDir = $this->checkDir($request->get('now_dir'), $this->getUserDataDir())
-                    ? $this->normalizePath($request->get('now_dir'))
-                    : $topDir;
-                $fs->mkdir($nowDir.'/'.$filename);
-
-                $this->addSuccess('admin.create.complete', 'admin');
+        if (!$form->isValid()) {
+            foreach ($form->getErrors(true) as $error) {
+                $this->errors[] = ['message' => $error->getMessage()];
             }
+            return;
+        }
+
+        $fs = new Filesystem();
+        $filename = $form->get('create_file')->getData();
+
+        try {
+            $topDir = $this->getUserDataDir();
+            $nowDir = $this->getUserDataDir($request->get('now_dir'));
+            $nowDir = $this->checkDir($nowDir, $topDir)
+                ? $this->normalizePath($nowDir)
+                : $topDir;
+            $fs->mkdir($nowDir . '/' . $filename);
+
+            $this->addSuccess('admin.content.file.create_dir_success', 'admin');
+        } catch (IOException $e) {
+            $this->errors[] = ['message' => $e->getMessage()];
         }
     }
 
@@ -355,6 +377,7 @@ class FileController extends AbstractController
                 'file_size' => FilesystemUtil::sizeToHumanReadable($file->getSize()),
                 'file_time' => $file->getmTime(),
                 'is_dir' => false,
+                'extension' => $file->getExtension(),
             ];
         }
 
