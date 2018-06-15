@@ -26,6 +26,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Eccube\Entity\BaseInfo;
 
 class CartController extends AbstractController
 {
@@ -45,20 +46,28 @@ class CartController extends AbstractController
     protected $purchaseFlow;
 
     /**
+     * @var BaseInfo
+     */
+    protected $BaseInfo;
+
+    /**
      * CartController constructor.
      *
      * @param ProductClassRepository $productClassRepository
      * @param CartService $cartService
      * @param PurchaseFlow $cartPurchaseFlow
+     * @param BaseInfo $BaseInfo
      */
     public function __construct(
         ProductClassRepository $productClassRepository,
         CartService $cartService,
-        PurchaseFlow $cartPurchaseFlow
+        PurchaseFlow $cartPurchaseFlow,
+        BaseInfo $BaseInfo
     ) {
         $this->productClassRepository = $productClassRepository;
         $this->cartService = $cartService;
         $this->purchaseFlow = $cartPurchaseFlow;
+        $this->BaseInfo = $BaseInfo;
     }
 
     /**
@@ -74,9 +83,8 @@ class CartController extends AbstractController
         $this->execPurchaseFlow($Carts);
 
         // TODO itemHolderから取得できるように
-        $least = 0;
-        $quantity = 0;
-        $isDeliveryFree = false;
+        $least = $this->BaseInfo->getDeliveryFreeAmount();
+        $quantity = $this->BaseInfo->getDeliveryFreeQuantity();
 
         $totalQuantity = array_reduce($Carts, function ($total, $Cart) {
             /* @var Cart $Cart */
@@ -97,7 +105,6 @@ class CartController extends AbstractController
             'Carts' => $Carts,
             'least' => $least,
             'quantity' => $quantity,
-            'is_delivery_free' => $isDeliveryFree,
         ];
     }
 

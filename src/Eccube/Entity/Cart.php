@@ -92,6 +92,11 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
     private $delivery_fee_total;
 
     /**
+     * @var boolean
+     */
+    protected $is_delivery_free;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="create_date", type="datetimetz")
@@ -323,6 +328,30 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
     public function getDeliveryFeeTotal()
     {
         return $this->delivery_fee_total;
+    }
+
+    /**
+     *  Get is_delivery_free
+     *
+     * @return bool
+     */
+    public function getIsDeliveryFree()
+    {
+        return $this->is_delivery_free;
+    }
+
+    /**
+     * Set is_delivery_free
+     *
+     * @param $isDeliveryFree
+     *
+     * @return $this
+     */
+    public function setIsDeliveryFree($isDeliveryFree)
+    {
+        $this->is_delivery_free = $isDeliveryFree;
+
+        return $this;
     }
 
     /**

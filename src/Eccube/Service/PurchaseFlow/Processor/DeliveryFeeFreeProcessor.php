@@ -18,6 +18,7 @@ use Eccube\Entity\ItemHolderInterface;
 use Eccube\Service\PurchaseFlow\ItemHolderProcessor;
 use Eccube\Service\PurchaseFlow\ProcessResult;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
+use Eccube\Entity\Cart;
 
 /**
  * 送料無料条件.
@@ -65,6 +66,9 @@ class DeliveryFeeFreeProcessor implements ItemHolderProcessor
 
         // 送料無料条件に合致した場合は、送料明細の個数を0に設定
         if ($isDeliveryFree) {
+            if ($itemHolder instanceof Cart) {
+                $itemHolder->setIsDeliveryFree($isDeliveryFree);
+            }
             $items = $itemHolder->getItems();
             foreach ($items as $item) {
                 if ($item->isDeliveryFee()) {
