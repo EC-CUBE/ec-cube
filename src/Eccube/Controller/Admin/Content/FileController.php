@@ -356,6 +356,7 @@ class FileController extends AbstractController
                 'file_size' => FilesystemUtil::sizeToHumanReadable($file->getSize()),
                 'file_time' => $file->getmTime(),
                 'is_dir' => false,
+                'extension' => $file->getExtension(),
             ];
         }
 
