@@ -508,6 +508,8 @@ return [
     'cart.product.not.status' => '現時点で購入できない商品が含まれておりました。該当商品をカートから削除しました。',
     'cart.product.not.saletype' => '「%product%」はまだ配送の準備ができておりません。
 恐れ入りますがお問い合わせページよりお問い合わせください。',
+    'cart.product.divide' => '同時購入できない商品がカートに含まれています。
+お手数ですが、個別に購入手続きをお願い致します。',
     'shopping.multiple.delivery' => '配送方法が異なる商品が含まれているため、お届け先は複数となります。',
     'shopping.multiple.quantity.diff' => '数量の合計が、カゴの中の数量と異なっています。',
     'shopping.delivery.not.saletype' => '配送の準備ができていない商品が含まれております。
