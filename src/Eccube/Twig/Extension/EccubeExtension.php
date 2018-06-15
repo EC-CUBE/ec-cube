@@ -77,6 +77,7 @@ class EccubeExtension extends AbstractExtension
             new TwigFilter('price', [$this, 'getPriceFilter']),
             new TwigFilter('ellipsis', [$this, 'getEllipsis']),
             new TwigFilter('time_ago', [$this, 'getTimeAgo']),
+            new TwigFilter('file_ext_icon', [$this, 'getExtensionIcon'], ['is_safe' => ['html']]),
         ];
     }
 
@@ -302,5 +303,57 @@ class EccubeExtension extends AbstractExtension
         }
 
         return json_encode($class_categories);
+    }
+
+    /**
+     * Display file extension icon
+     *
+     * @param $ext
+     * @param $attr
+     *
+     * @return string
+     */
+    public function getExtensionIcon($ext, $attr = [])
+    {
+        $classes = [
+            'txt' => 'fa-file-text-o',
+            'rtf' => 'fa-file-text-o',
+            'pdf' => 'fa-file-pdf-o',
+            'doc' => 'fa-file-word-o',
+            'docx' => 'fa-file-word-o',
+            'csv' => 'fa-file-excel-o',
+            'xls' => 'fa-file-excel-o',
+            'xlsx' => 'fa-file-excel-o',
+            'ppt' => 'fa-file-powerpoint-o',
+            'pptx' => 'fa-file-powerpoint-o',
+            'png' => 'fa-file-image-o',
+            'jpg' => 'fa-file-image-o',
+            'jpeg' => 'fa-file-image-o',
+            'bmp' => 'fa-file-image-o',
+            'gif' => 'fa-file-image-o',
+            'zip' => 'fa-file-archive-o',
+            'tar' => 'fa-file-archive-o',
+            'gz' => 'fa-file-archive-o',
+            'rar' => 'fa-file-archive-o',
+            '7zip' => 'fa-file-archive-o',
+            'mp3' => 'fa-file-audio-o',
+            'm4a' => 'fa-file-audio-o',
+            'wav' => 'fa-file-audio-o',
+            'mp4' => 'fa-file-video-o',
+            'wmv' => 'fa-file-video-o',
+            'mov' => 'fa-file-video-o',
+            'mkv' => 'fa-file-video-o',
+        ];
+        $class = isset($classes[$ext]) ? $classes[$ext] : 'fa-file-o';
+        $attr['class'] = isset($attr['class'])
+            ? $attr['class']." fa {$class}"
+            : "fa {$class}";
+
+        $html = "<i ";
+        foreach ($attr as $name => $value) {
+            $html .= "{$name}=\"$value\" ";
+        }
+        $html .= "></i>";
+        return $html;
     }
 }

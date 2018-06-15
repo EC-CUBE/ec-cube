@@ -14,6 +14,7 @@
 namespace Eccube\Controller\Admin\Product;
 
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\Category;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -64,6 +65,7 @@ class CategoryController extends AbstractController
     public function index(Request $request, $parent_id = null, $id = null)
     {
         if ($parent_id) {
+            /** @var Category $Parent */
             $Parent = $this->categoryRepository->find($parent_id);
             if (!$Parent) {
                 throw new NotFoundHttpException(trans('category.text.error.no_parent_category'));
@@ -175,9 +177,18 @@ class CategoryController extends AbstractController
             $formViews[$key] = $value->createView();
         }
 
+        $Ids = [];
+        if($Parent && $Parent->getParents()){
+            foreach ($Parent->getParents() as $item){
+                $Ids[] = $item['id'];
+            }
+        }
+        $Ids[] = intval($parent_id);
+
         return [
             'form' => $form->createView(),
             'Parent' => $Parent,
+            'Ids' => $Ids,
             'Categories' => $Categories,
             'TopCategories' => $TopCategories,
             'TargetCategory' => $TargetCategory,
