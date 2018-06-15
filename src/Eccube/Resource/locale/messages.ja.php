@@ -766,6 +766,8 @@ return [
     'admin.content.file.title.lists' => 'このフォルダ内のファイル',
     'admin.content.file.title.folders' => 'フォルダ構成',
     'admin.content.file.upload_success' => 'ファイルを正常にアップロードしました。',
+    'admin.content.file.create_dir_success' => 'フォルダーを正常に作成しました。',
+    'admin.content.file.create_dir_placeholder' => 'フォルダ名',
     'admin.content.layout.39' => 'コンテンツ管理',
     'admin.content.layout.40' => 'レイアウト管理',
     'admin.content.layout.41' => '戻る',
