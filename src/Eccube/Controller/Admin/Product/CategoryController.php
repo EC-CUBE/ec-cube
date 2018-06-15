@@ -178,8 +178,8 @@ class CategoryController extends AbstractController
         }
 
         $Ids = [];
-        if($Parent && $Parent->getParents()){
-            foreach ($Parent->getParents() as $item){
+        if ($Parent && $Parent->getParents()) {
+            foreach ($Parent->getParents() as $item) {
                 $Ids[] = $item['id'];
             }
         }
