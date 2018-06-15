@@ -35,7 +35,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
      *
      * @return string
      */
-    public function formatProductName()
+    public function formatedProductName()
     {
         $productName = $this->getProduct()->getName();
         if ($this->hasClassCategory1()) {
