@@ -49,8 +49,9 @@ class CartController extends AbstractController
     public function index()
     {
         $Carts = $this->cartService->getCarts();
-        // TODO ここで集計しないほうがよい？
-        $this->execPurchaseFlow($Carts);
+
+        // 二重に実行され, 注文画面でのエラーハンドリングができないので
+        // ここではpurchaseFlowは実行しない
 
         $totalQuantity = array_reduce($Carts, function ($total, $Cart) {
             /* @var Cart $Cart */
