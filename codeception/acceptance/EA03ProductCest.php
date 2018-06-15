@@ -224,8 +224,9 @@ class EA03ProductCest
         ProductManagePage::go($I)
             ->検索($Product->getName())
             ->検索結果_複製(1)
-            ->wait(5)
-            ->Accept_削除(1);
+            ->Accept_重複する(1);
+
+        $I->see('商品を複製しました。', ProductEditPage::$登録結果メッセージ);
     }
 
     /**
