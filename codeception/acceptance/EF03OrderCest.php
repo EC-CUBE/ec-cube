@@ -521,11 +521,12 @@ class EF03OrderCest
         $createCustomer = Fixtures::get('createCustomer');
         $customer = $createCustomer();
         $I->loginAsMember($customer->getEmail(), 'password');
-        $BaseInfo = Fixtures::get('baseinfo');
 
         // 商品詳細パーコレータ カートへ
         ProductDetailPage::go($I, 2)
             ->カートに入れる(1);
+
+        $I->wait(3);
 
         $I->acceptPopup();
 
@@ -536,18 +537,13 @@ class EF03OrderCest
         $I->logoutAsMember();
 
         $createProduct = Fixtures::get('createProduct');
-
         $Product = $createProduct();
 
+
         $entityManager = Fixtures::get('entityManager');
-
-        $SaleType = $entityManager->find(\Eccube\Entity\Master\SaleType::class, 2);
-
-        $Product->getProductClasses()[0]->setSaleType($SaleType);
-
         $ProductClass = $Product->getProductClasses()[0];
+        $SaleType = $entityManager->find(\Eccube\Entity\Master\SaleType::class, 2);
         $ProductClass->setSaleType($SaleType);
-
         $entityManager->persist($ProductClass);
         $entityManager->flush();
 
@@ -562,6 +558,7 @@ class EF03OrderCest
                 ->カートに入れる(1);
         }
 
+        $I->wait(3);
         $I->acceptPopup();
 
         CartPage::go($I)
@@ -569,8 +566,6 @@ class EF03OrderCest
 
         // ログイン
         ShoppingLoginPage::at($I)->ログイン($customer->getEmail());
-
-        $I->resetEmails();
 
         $I->see('同時購入できない商品がカートに含まれています', '.ec-alert-warning__text');
     }

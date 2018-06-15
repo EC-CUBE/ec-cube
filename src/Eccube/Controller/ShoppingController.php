@@ -614,6 +614,7 @@ class ShoppingController extends AbstractShoppingController
             $divide = $request->getSession()->get('cart.divide');
             if ($divide) {
                 log_info('種別が異なる商品がカートと結合されたためカート画面にリダイレクト');
+                $request->getSession()->remove('cart.divide');
 
                 return $this->redirectToRoute('cart');
             }
