@@ -61,8 +61,8 @@ class FileController extends AbstractController
             ->getForm();
 
         // user_data_dir
-         $userDataDir = $this->getUserDataDir();
-         $topDir = $this->normalizePath($userDataDir);
+        $userDataDir = $this->getUserDataDir();
+        $topDir = $this->normalizePath($userDataDir);
 //        $topDir = '/';
         // user_data_dirの親ディレクトリ
         $htmlDir = $this->normalizePath($this->getUserDataDir().'/../');
@@ -137,19 +137,19 @@ class FileController extends AbstractController
             ->add('create_file', TextType::class, [
                 'constraints' => [
                     new Assert\NotBlank([
-                        'message' => 'file.text.error.folder_name'
+                        'message' => 'file.text.error.folder_name',
                     ]),
                     new Assert\Regex([
-                        'pattern' => "/[^[:alnum:]_.\\-]/",
+                        'pattern' => '/[^[:alnum:]_.\\-]/',
                         'match' => false,
-                        'message' => 'file.text.error.folder_symbol'
+                        'message' => 'file.text.error.folder_symbol',
                     ]),
                     new Assert\Regex([
                         'pattern' => "/^\.(.*)$/",
                         'match' => false,
-                        'message' => 'file.text.error.folder_period'
+                        'message' => 'file.text.error.folder_period',
                     ]),
-                ]
+                ],
             ])
             ->getForm();
 
@@ -158,6 +158,7 @@ class FileController extends AbstractController
             foreach ($form->getErrors(true) as $error) {
                 $this->errors[] = ['message' => $error->getMessage()];
             }
+
             return;
         }
 
@@ -170,7 +171,7 @@ class FileController extends AbstractController
             $nowDir = $this->checkDir($nowDir, $topDir)
                 ? $this->normalizePath($nowDir)
                 : $topDir;
-            $fs->mkdir($nowDir . '/' . $filename);
+            $fs->mkdir($nowDir.'/'.$filename);
 
             $this->addSuccess('admin.content.file.create_dir_success', 'admin');
         } catch (IOException $e) {
