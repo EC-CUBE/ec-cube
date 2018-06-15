@@ -88,7 +88,7 @@ return [
     'common.label.back_to_top' => 'トップページへ',
 
     'common.label.pager.first' => '最初へ',
-    'common.label.pager.Last' => '',
+    'common.label.pager.last' => '最新へ',
     'common.label.pager.prev' => '前へ',
     'common.label.pager.next' => '次へ',
 
