@@ -46,7 +46,7 @@ class PriceChangeValidator implements ItemProcessor
         $realPrice = $item->getProductClass()->getPrice02IncTax();
         if ($price != $realPrice) {
             $message = trans('cart.product.price.change',
-                ['%product%' => $item->getProductClass()->formatProductName()]);
+                ['%product%' => $item->getProductClass()->formatedProductName()]);
 
             if ($item instanceof OrderItem) {
                 $item->setPrice($item->getProductClass()->getPrice02());
