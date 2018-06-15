@@ -144,12 +144,12 @@ parameters:
         name: admin.nav.store.plugin
         has_child: true
         child:
+            - id: plugin_owners_search
+              name: admin.nav.store.plugin.plugin_owners_install
+              url: admin_store_plugin_owners_search
             - id: plugin_list
               name: admin.nav.store.plugin.plugin_list
               url: admin_store_plugin
-#            - id: plugin_owners_install
-#              name: admin.nav.store.plugin.plugin_owners_install
-#              url: admin_store_plugin_owners_install
             - id: plugin_handler
               name: admin.nav.store.plugin.plugin_handler
               url: admin_store_plugin_handler

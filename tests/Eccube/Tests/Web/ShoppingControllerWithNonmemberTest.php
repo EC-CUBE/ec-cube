@@ -14,7 +14,6 @@
 namespace Eccube\Tests\Web;
 
 use Eccube\Entity\BaseInfo;
-use Eccube\Service\CartService;
 
 /**
  * Class ShoppingControllerWithNonmemberTest
@@ -34,25 +33,14 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
 
     public function testRoutingShoppingLogin()
     {
-        $client = $this->client;
-        $client->request('GET', '/shopping/login');
-        $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('cart')));
-    }
-
-    public function testIndexWithCartUnlock()
-    {
-        $this->container->get(CartService::class)->unlock();
-
-        $client = $this->client;
-        $client->request('GET', '/shopping');
-
-        $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('cart')));
+        $crawler = $this->client->request('GET', '/shopping/login');
+        $this->expected = 'ログイン';
+        $this->actual = $crawler->filter('.ec-pageHeader h1')->text();
+        $this->verify();
     }
 
     public function testIndexWithCartNotFound()
     {
-        $this->container->get(CartService::class)->lock();
-
         $client = $this->createClient();
         $client->request('GET', '/shopping');
 

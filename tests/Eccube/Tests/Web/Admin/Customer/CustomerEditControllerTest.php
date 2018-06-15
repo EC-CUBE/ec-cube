@@ -196,6 +196,6 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
         );
 
         $orderListing = $crawler->filter('#history_box')->text();
-        $this->assertContains('データはありません', $orderListing);
+        $this->assertContains('この会員の購入履歴がありません', $orderListing);
     }
 }

@@ -69,18 +69,27 @@ class AddCartType extends AbstractType
         /* @var $Product \Eccube\Entity\Product */
         $Product = $options['product'];
         $this->Product = $Product;
-        $ProductClass = $Product->getProductClasses()->first();
+        $ProductClasses = $Product->getProductClasses();
 
         $builder
+            ->add('product_id', HiddenType::class, [
+                'data' => $Product->getId(),
+                'mapped' => false,
+                'constraints' => [
+                    new Assert\NotBlank(),
+                    new Assert\Regex(['pattern' => '/^\d+$/']),
+                ], ])
             ->add(
                 $builder
                     ->create('ProductClass', HiddenType::class, [
                         'data_class' => null,
-                        'data' => $ProductClass,
+                        'data' => count($ProductClasses) === 1 ? $ProductClasses->first() : null,
+                        'constraints' => [
+                            new Assert\NotBlank(),
+                        ],
                     ])
-                ->addModelTransformer(new EntityToIdTransformer($this->doctrine->getManager(), ProductClass::class))
-            )
-        ;
+                    ->addModelTransformer(new EntityToIdTransformer($this->doctrine->getManager(), ProductClass::class))
+            );
 
         if ($Product->getStockFind()) {
             $builder
@@ -97,8 +106,7 @@ class AddCartType extends AbstractType
                         ]),
                         new Assert\Regex(['pattern' => '/^\d+$/']),
                     ],
-                ])
-            ;
+                ]);
             if ($Product && $Product->getProductClasses()) {
                 if (!is_null($Product->getClassName1())) {
                     $builder->add('classcategory_id1', ChoiceType::class, [
@@ -138,8 +146,7 @@ class AddCartType extends AbstractType
                 if ($ProductClass) {
                     $CartItem
                         ->setProductClass($ProductClass)
-                        ->setPrice($ProductClass->getPrice02IncTax())
-                    ;
+                        ->setPrice($ProductClass->getPrice02IncTax());
                 }
             });
         }
@@ -183,7 +190,7 @@ class AddCartType extends AbstractType
     /**
      * validate
      *
-     * @param type             $data
+     * @param type $data
      * @param ExecutionContext $context
      */
     public function validate($data, ExecutionContext $context)

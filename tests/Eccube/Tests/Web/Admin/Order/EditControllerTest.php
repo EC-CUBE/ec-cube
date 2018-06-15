@@ -37,8 +37,6 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->orderRepository = $this->container->get(OrderRepository::class);
         $this->cartService = $this->container->get(CartService::class);
         $BaseInfo = $this->container->get(BaseInfo::class);
-        // 複数配送を無効に
-        $BaseInfo->setOptionMultipleShipping(0);
         $this->entityManager->flush($BaseInfo);
     }
 
@@ -292,7 +290,6 @@ class EditControllerTest extends AbstractEditControllerTestCase
             ),
             [Constant::TOKEN_NAME => '_dummy']
         );
-        $this->container->get(CartService::class)->lock();
 
         $faker = $this->getFaker();
         $tel = explode('-', $faker->phoneNumber);

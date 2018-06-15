@@ -117,6 +117,14 @@ file that was distributed with this source code.
     </script>
 {% endblock %}
 
+{% block stylesheet %}
+    {#TODO: Move to css file#}
+    <style>
+        .c-directoryTree ul>li>ul li:not(:last-of-type)>label:before,
+        .c-directoryTree ul>li>ul li:last-of-type>label:before{ margin-right: 1.6em;}
+    </style>
+{% endblock %}
+
 {% block main %}
     <div class="c-outsideBlock">
         <div class="c-outsideBlock__contents mb-2">
@@ -263,20 +271,23 @@ file that was distributed with this source code.
             </div>
         </div>
 
-        {# TODO: 選択中の項目をわかるように表示 #}
-        {% macro tree(Category, TargetId, level) %}
+        {% macro tree(Category, TargetId, level, Ids) %}
             {% import _self as selfMacro %}
             {% set level = level + 1 %}
             <li>
-                <label {% if Category.children|length > 0 %}class="collapsed" {% endif %}data-toggle="collapse"
-                       href="#directory_category{{ Category.id }}" aria-expanded="false"
-                       aria-controls="directory_category{{ Category.id }}"><span><a
-                                href="{{ url('admin_product_category_show', { parent_id : Category.id }) }}">{{ Category.name }}
-                            ({{ Category.children|length }})</a></span></label>
+                <label {% if (Category.children|length > 0) and (Category.id not in Ids) %}class="collapsed"
+                       {% endif %}data-toggle="collapse"
+                       href="#directory_category{{ Category.id }}"
+                       aria-expanded="{% if Category.id in Ids %}true{% endif %}"
+                       aria-controls="directory_category{{ Category.id }}"></label>
+                <span>
+                    <a href="{{ url('admin_product_category_show', { parent_id : Category.id }) }}">{{ Category.name }}
+                        ({{ Category.children|length }})</a></span>
                 {% if Category.children|length > 0 %}
-                    <ul class="collapse" id="directory_category{{ Category.id }}">
+                    <ul class="collapse {% if Category.id in Ids %}show{% endif %}"
+                        id="directory_category{{ Category.id }}">
                         {% for ChildCategory in Category.children %}
-                            {{ selfMacro.tree(ChildCategory, TargetId, level) }}
+                            {{ selfMacro.tree(ChildCategory, TargetId, level, Ids) }}
                         {% endfor %}
                     </ul>
                 {% endif %}
@@ -295,7 +306,7 @@ file that was distributed with this source code.
                             {% import _self as renderMacro %}
                             {% for TopCategory in TopCategories %}
                                 <ul>
-                                    {{ renderMacro.tree(TopCategory, TargetCategory.Parent.id | default(null), 0) }}
+                                    {{ renderMacro.tree(TopCategory, TargetCategory.Parent.id | default(null), 0, Ids) }}
                                 </ul>
                             {% endfor %}
                         </div>

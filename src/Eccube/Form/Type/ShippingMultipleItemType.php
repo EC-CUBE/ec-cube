@@ -51,6 +51,7 @@ class ShippingMultipleItemType extends AbstractType
 
     /**
      * ShippingMultipleItemType constructor.
+     *
      * @param array $eccubeConfig
      * @param Session $session
      * @param AuthorizationCheckerInterface $authorizationChecker
@@ -95,11 +96,12 @@ class ShippingMultipleItemType extends AbstractType
                     /** @var Customer $Customer */
                     $Customer = $this->tokenStorage->getToken()->getUser();
                     $CustomerAddresses = $Customer->getCustomerAddresses();
-                    $Addresses = [];
-                    /** @var CustomerAddress $CustomerAddress */
-                    foreach ($CustomerAddresses as $CustomerAddress) {
-                        $Addresses[$CustomerAddress->getShippingMultipleDefaultName()] = $CustomerAddress->getId();
-                    }
+                    $Addresses = array_reduce($CustomerAddresses->toArray(), function (array $result, CustomerAddress $CustomerAddress) {
+                        $result[$CustomerAddress->getShippingMultipleDefaultName()] = $CustomerAddress->getId();
+
+                        return $result;
+                    }, []);
+
                     $form->add('customer_address', ChoiceType::class, [
                         'choices' => $Addresses,
                         'constraints' => [
@@ -111,14 +113,10 @@ class ShippingMultipleItemType extends AbstractType
                     if ($this->session->has('eccube.front.shopping.nonmember.customeraddress')) {
                         $customerAddresses = $this->session->get('eccube.front.shopping.nonmember.customeraddress');
                         $customerAddresses = unserialize($customerAddresses);
+                        $addresses = array_map(function (CustomerAddress $CustomerAddress) {
+                            return $CustomerAddress->getShippingMultipleDefaultName();
+                        }, $customerAddresses);
 
-                        $addresses = [];
-                        $i = 0;
-                        /** @var \Eccube\Entity\CustomerAddress $CustomerAddress */
-                        foreach ($customerAddresses as $CustomerAddress) {
-                            $addresses[$i] = $CustomerAddress->getShippingMultipleDefaultName();
-                            $i++;
-                        }
                         $form->add('customer_address', ChoiceType::class, [
                             'choices' => array_flip($addresses),
                             'constraints' => [
@@ -140,7 +138,7 @@ class ShippingMultipleItemType extends AbstractType
 
                 $choices = $form['customer_address']->getConfig()->getOption('choices');
 
-                /** @var CustomerAddress $CustomerAddress */
+                /* @var CustomerAddress $CustomerAddress */
                 foreach ($choices as $address => $id) {
                     if ($address === $data->getShippingMultipleDefaultName()) {
                         $form['customer_address']->setData($id);

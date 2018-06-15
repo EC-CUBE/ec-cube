@@ -503,4 +503,30 @@ class OrderRepository extends AbstractRepository
 
         return $result;
     }
+
+    /**
+     * 会員が保持する最新の購入処理中の Order を取得する.
+     *
+     * @param Customer
+     *
+     * @return Order
+     */
+    public function getExistsOrdersByCustomer(\Eccube\Entity\Customer $Customer)
+    {
+        $qb = $this->createQueryBuilder('o');
+        $Order = $qb
+            ->select('o')
+            ->where('o.Customer = :Customer')
+            ->setParameter('Customer', $Customer)
+            ->orderBy('o.id', 'DESC')
+            ->getQuery()
+            ->setMaxResults(1)
+            ->getOneOrNullResult();
+
+        if ($Order && $Order->getOrderStatus()->getId() == OrderStatus::PROCESSING) {
+            return $Order;
+        }
+
+        return null;
+    }
 }

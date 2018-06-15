@@ -14,7 +14,11 @@
 namespace Eccube\EventListener;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Eccube\Entity\Customer;
 use Eccube\Entity\Member;
+use Eccube\Service\CartService;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
+use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
@@ -23,9 +27,18 @@ class SecurityListener implements EventSubscriberInterface
 {
     protected $em;
 
-    public function __construct(EntityManagerInterface $em)
-    {
+    protected $cartService;
+
+    protected $purchaseFlow;
+
+    public function __construct(
+        EntityManagerInterface $em,
+        CartService $cartService,
+        PurchaseFlow $cartPurchaseFlow
+    ) {
         $this->em = $em;
+        $this->cartService = $cartService;
+        $this->purchaseFlow = $cartPurchaseFlow;
     }
 
     /**
@@ -41,6 +54,16 @@ class SecurityListener implements EventSubscriberInterface
             $user->setLoginDate(new \DateTime());
             $this->em->persist($user);
             $this->em->flush();
+        } elseif ($user instanceof Customer) {
+            $this->cartService->mergeFromPersistedCart($user);
+            foreach ($this->cartService->getCarts() as $Cart) {
+                $this->purchaseFlow->calculate($Cart, new PurchaseContext($Cart, $user));
+            }
+            $this->cartService->save();
+            if (count($this->cartService->getCarts()) > 1) {
+                // カートが分割されていればメッセージを表示
+                $event->getRequest()->getSession()->set('cart.divide', true);
+            }
         }
     }
 

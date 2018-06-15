@@ -67,7 +67,7 @@ class CartController extends AbstractController
      * @Route("/cart", name="cart")
      * @Template("Cart/index.twig")
      */
-    public function index()
+    public function index(Request $request)
     {
         // カートを取得して明細の正規化を実行
         $Carts = $this->cartService->getCarts();
@@ -90,6 +90,9 @@ class CartController extends AbstractController
 
             return $total;
         }, 0);
+
+        // カートが分割された時のセッション情報を削除
+        $request->getSession()->remove('cart.divide');
 
         return [
             'totalPrice' => $totalPrice,
@@ -214,7 +217,6 @@ class CartController extends AbstractController
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_CART_BUYSTEP_INITIALIZE, $event);
 
         $this->cartService->setPrimary($index);
-        $this->cartService->lock();
         $this->cartService->save();
 
         // FRONT_CART_BUYSTEP_COMPLETE
