@@ -157,18 +157,25 @@ $(function() {
         }
     });
 
-    function loadingOverlay() {
-        $.LoadingOverlay('show', {
-            background: 'rgba(255, 255, 255, 0.4)',
-            image: ''
-        });
-
-        setTimeout(function() {
-            $.LoadingOverlay('hide');
-        }, 10000);
-    }
+    // submit処理についてはオーバーレイ処理を行う
+    $(document).on('click', 'input[type="submit"], button[type="submit"]', function() {
+        loadingOverlay();
+    });
 });
 
+/**
+ * オーバーレイ処理を行う関数
+ */
+function loadingOverlay() {
+    $.LoadingOverlay('show', {
+        background: 'rgba(255, 255, 255, 0.4)',
+        image: ''
+    });
+
+    setTimeout(function() {
+        $.LoadingOverlay('hide');
+    }, 10000);
+}
 
 /////////// ロールオーバー
 $.fn.rollover = function() {
@@ -375,6 +382,9 @@ $(function() {
                 return false;
             }
         }
+
+        // 削除時はオーバーレイ処理を入れる
+        loadingOverlay();
 
         var $form = createForm($this.attr('href'), {
             _token: $this.attr('token-for-anchor'),

@@ -169,7 +169,7 @@ file that was distributed with this source code.
                                         <div class="ec-cartRow__amountSP">数量：{{ CartItem.quantity|number_format }}</div>
                                         <div class="ec-cartRow__amountUpDown">
                                             {% if CartItem.quantity > 1 %}
-                                                <a href="{{ url('cart_handle_item', {'operation': 'down', 'productClassId': ProductClass.id}) }}" {{ csrf_token_for_anchor() }} class="ec-cartRow__amountDownButton" data-method="put" data-confirm="false">
+                                                <a href="{{ url('cart_handle_item', {'operation': 'down', 'productClassId': ProductClass.id}) }}" {{ csrf_token_for_anchor() }} class="ec-cartRow__amountDownButton load-overlay" data-method="put" data-confirm="false">
                                                     <span class="ec-cartRow__amountDownButton__icon"><img src="{{ asset('assets/icon/minus-dark.svg') }}" alt="reduce"></span>
                                                 </a>
                                             {% else %}
@@ -177,7 +177,7 @@ file that was distributed with this source code.
                                                     <span class="ec-cartRow__amountDownButton__icon"><img src="{{ asset('assets/icon/minus.svg') }}" alt="reduce"></span>
                                                 </div>
                                             {% endif %}
-                                            <a href="{{ url('cart_handle_item', {'operation': 'up', 'productClassId': ProductClass.id}) }}" {{ csrf_token_for_anchor() }} class="ec-cartRow__amountUpButton" data-method="put" data-confirm="false">
+                                            <a href="{{ url('cart_handle_item', {'operation': 'up', 'productClassId': ProductClass.id}) }}" {{ csrf_token_for_anchor() }} class="ec-cartRow__amountUpButton load-overlay" data-method="put" data-confirm="false">
                                                 <span class="ec-cartRow__amountUpButton__icon"><img src="{{ asset('assets/icon/plus-dark.svg') }}" alt="increase"></span>
                                             </a>
                                         </div>

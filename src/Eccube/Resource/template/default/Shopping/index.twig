@@ -17,33 +17,39 @@ file that was distributed with this source code.
         $(function() {
 
             $('.delivery').on('change', function() {
+                loadingOverlay();
                 $('#shopping_order_mode').val('delivery');
                 $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
             });
 
             $('.payment').on('change', function() {
+                loadingOverlay();
                 $('#shopping_order_mode').val('payment');
                 $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
             });
 
             $('.use_point').on('blur', function() {
+                loadingOverlay();
                 $('#shopping_order_mode').val('use_point');
                 $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
             });
 
             $('.btn-shipping').click(function() {
+                loadingOverlay();
                 $('#shopping_order_mode').val('shipping_change');
                 $('#shopping_order_param').val($(this).data('id'));
                 $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
             });
 
             $('.btn-shipping-edit').click(function() {
+                loadingOverlay();
                 $('#shopping_order_mode').val('shipping_edit_change');
                 $('#shopping_order_param').val($(this).data('id'));
                 $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
             });
 
             $('.btn-shipping-multiple').click(function() {
+                loadingOverlay();
                 $('#shopping_order_mode').val('shipping_multiple_change');
                 $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
             });
@@ -92,6 +98,11 @@ file that was distributed with this source code.
                     postData[$(this).attr('name')] = $(this).val();
                 });
 
+                $.LoadingOverlay('show', {
+                    background: 'rgba(255, 255, 255, 0.4)',
+                    image: ''
+                });
+
                 $.ajax({
                     url: "{{ url('shopping_customer') }}",
                     type: 'POST',
@@ -111,6 +122,9 @@ file that was distributed with this source code.
                         ref[index].empty().text(name[index]);
                         input[index].remove();
                     });
+                }).always(function(data) {
+                    // overlayを無効
+                    $.LoadingOverlay('hide');
                 });
 
                 $('#customer').prop("disabled", false);
@@ -336,7 +350,7 @@ file that was distributed with this source code.
                         {% for key, child in form.Payment %}
                             {% set Payment = form.Payment.vars.choices[key].data %}
                             {% if Payment.visible %}
-                                <label>{{ form_widget(child, {'attr': {'class': 'payment load-overlay' }}) }}<span>{{ child.vars.label }}</span></label>
+                                <label>{{ form_widget(child, {'attr': {'class': 'payment' }}) }}<span>{{ child.vars.label }}</span></label>
                                 {% if Payment.payment_image is not null %}
                                     <img src="{{ asset(Payment.payment_image, 'save_image') }}">
                                 {% endif %}
