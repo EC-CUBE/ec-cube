@@ -139,7 +139,9 @@ file that was distributed with this source code.
                                                         {% endif %}
                                                     </td>
                                                     <td class="align-middle">
-                                                        {{ file.file_size }}
+                                                        {% if not file.is_dir %}
+                                                            {{ file.file_size }}
+                                                        {% endif %}
                                                     </td>
                                                     <td class="align-middle">
                                                         {{ file.file_time|date_sec }} {{ 'admin.content.file.31'|trans }}
