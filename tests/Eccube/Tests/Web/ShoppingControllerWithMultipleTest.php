@@ -474,7 +474,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                             'quantity' => 2,
                         ],
                         [
-                            'customer_address' => 2,
+                            'customer_address' => 1,
                             'quantity' => 2,
                         ],
                     ],
@@ -557,7 +557,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                             'quantity' => 1,
                         ],
                         [
-                            'customer_address' => 2,
+                            'customer_address' => 1,
                             'quantity' => 1,
                         ],
                     ],
@@ -569,7 +569,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                             'quantity' => 1,
                         ],
                         [
-                            'customer_address' => 2,
+                            'customer_address' => 1,
                             'quantity' => 1,
                         ],
                     ],
@@ -764,11 +764,11 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                 [
                     'shipping' => [
                         [
-                            'customer_address' => 1,
+                            'customer_address' => 0,
                             'quantity' => 1,
                         ],
                         [
-                            'customer_address' => 2,
+                            'customer_address' => 1,
                             'quantity' => 1,
                         ],
                     ],
@@ -776,11 +776,11 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                 [
                     'shipping' => [
                         [
-                            'customer_address' => 1,
+                            'customer_address' => 0,
                             'quantity' => 1,
                         ],
                         [
-                            'customer_address' => 2,
+                            'customer_address' => 1,
                             'quantity' => 1,
                         ],
                     ],
@@ -788,7 +788,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                 [
                     'shipping' => [
                         [
-                            'customer_address' => 1,
+                            'customer_address' => 0,
                             'quantity' => 1,
                         ],
                     ],
@@ -877,11 +877,11 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                 [
                     'shipping' => [
                         [
-                            'customer_address' => 1,
+                            'customer_address' => 0,
                             'quantity' => 1,
                         ],
                         [
-                            'customer_address' => 2,
+                            'customer_address' => 1,
                             'quantity' => 1,
                         ],
                     ],
@@ -889,11 +889,11 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                 [
                     'shipping' => [
                         [
-                            'customer_address' => 1,
+                            'customer_address' => 0,
                             'quantity' => 1,
                         ],
                         [
-                            'customer_address' => 2,
+                            'customer_address' => 1,
                             'quantity' => 1,
                         ],
                     ],
@@ -901,7 +901,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                 [
                     'shipping' => [
                         [
-                            'customer_address' => 3,
+                            'customer_address' => 2,
                             'quantity' => 1,
                         ],
                     ],
@@ -1113,7 +1113,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                             'quantity' => 1,
                         ],
                         [
-                            'customer_address' => 2,
+                            'customer_address' => 1,
                             'quantity' => 1,
                         ],
                     ],
@@ -1125,7 +1125,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                             'quantity' => 1,
                         ],
                         [
-                            'customer_address' => 2,
+                            'customer_address' => 1,
                             'quantity' => 1,
                         ],
                     ],
@@ -1133,7 +1133,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                 [
                     'shipping' => [
                         [
-                            'customer_address' => 3,
+                            'customer_address' => 2,
                             'quantity' => 1,
                         ],
                     ],
@@ -1206,8 +1206,6 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->actual = $crawler->filter('div.ec-pageHeader h1')->text();
         $this->verify();
 
-        $arrCustomerAddress = $Customer->getCustomerAddresses();
-        $addressId = $arrCustomerAddress->first()->getId();
         // Before multi shipping
         // Only shipped to one address
         $multiForm = [
