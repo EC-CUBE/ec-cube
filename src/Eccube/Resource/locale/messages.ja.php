@@ -245,7 +245,7 @@ return [
     'signup.label.radio.accept' => '同意する',
     'signup.label.radio.decline' => '同意しない',
     'signup.label.review' => '新規会員登録確認',
-    'signup.text.message.submit_confirmation' => '下記の内容で送信してもよろしいでしょうか？',
+    'signup.text.message.submit_confirmation' => '下記の内容で登録してもよろしいでしょうか？',
     'signup.text.message.press_registration' => 'よろしければ、一番下の「会員登録をする」ボタンをクリックしてください。',
     'signup.label.btn.register' => '会員登録をする',
     'signup.label.btn.go_back' => '戻る',
