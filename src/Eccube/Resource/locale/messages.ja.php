@@ -427,7 +427,7 @@ return [
     'admin.nav.setting.shop.shop_mail' => 'メール設定',
     'admin.nav.setting.shop.shop_csv' => 'CSV出力項目設定',
 
-    'admin.nav.setting.system' => 'システム情報設定',
+    'admin.nav.setting.system' => 'システム設定',
     'admin.nav.setting.system.system_index' => 'システム情報',
     'admin.nav.setting.system.member' => 'メンバー管理',
     'admin.nav.setting.system.authority' => '権限管理',
@@ -2860,7 +2860,7 @@ return [
     'nav.label.tax_rates' => '税率設定',
     'nav.label.email' => 'メール設定',
     'nav.label.csv_export_settings' => 'CSV出力項目設定',
-    'nav.label.system_info_settings' => 'システム情報設定',
+    'nav.label.system_info_settings' => 'システム設定',
     'nav.label.system_info' => 'システム情報',
     'nav.label.member_management' => 'メンバー管理',
     'nav.label.authorizationgs' => '権限管理',
