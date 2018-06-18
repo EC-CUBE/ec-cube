@@ -1722,6 +1722,7 @@ return [
     'admin.setting.shop.delivery_edit.sale_type' => '販売種別',
     'admin.setting.shop.delivery_edit.payments' => '取り扱う支払方法',
     'admin.setting.shop.delivery_edit.delivery_times' => 'お届け時間設定',
+    'admin.setting.shop.delivery_edit.delivery_times_placeholder' => 'お届け時間を入力',
     'admin.setting.shop.delivery_edit.delivery_times_register' => '新規作成',
     'admin.setting.shop.delivery_edit.delivery_times_drag&drop' => '項目の順番はドラッグ＆ドロップでも変更可能です。',
     'admin.setting.shop.delivery_edit.delivery_time_up' => '上へ移動',
