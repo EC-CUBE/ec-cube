@@ -1812,7 +1812,7 @@ return [
     'admin.setting.system.authority.660' => '権限設定',
     'admin.setting.system.authority.661' => '%url%以降からのURLを拒否URLに入力してください。',
     'admin.setting.system.authority.662' => '拒否URL以降がアクセス拒否されます。(URLは前方一致)',
-    'admin.setting.system.authority.text.example' => '例) /setting <span class="text-danger">※「/」を必ず記入してください',
+    'admin.setting.system.authority.text.example' => '例) /setting',
     'admin.setting.system.authority.663' => '※「/」を必ず記入してください',
     'admin.setting.system.authority.664' => '権限',
     'admin.setting.system.authority.665' => '拒否URL',
