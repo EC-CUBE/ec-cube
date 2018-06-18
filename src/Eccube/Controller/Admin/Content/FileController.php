@@ -138,19 +138,19 @@ class FileController extends AbstractController
             ->add('create_file', TextType::class, [
                 'constraints' => [
                     new Assert\NotBlank([
-                        'message' => 'file.text.error.folder_name'
+                        'message' => 'file.text.error.folder_name',
                     ]),
                     new Assert\Regex([
-                        'pattern' => "/[^[:alnum:]_.\\-]/",
+                        'pattern' => '/[^[:alnum:]_.\\-]/',
                         'match' => false,
-                        'message' => 'file.text.error.folder_symbol'
+                        'message' => 'file.text.error.folder_symbol',
                     ]),
                     new Assert\Regex([
                         'pattern' => "/^\.(.*)$/",
                         'match' => false,
-                        'message' => 'file.text.error.folder_period'
+                        'message' => 'file.text.error.folder_period',
                     ]),
-                ]
+                ],
             ])
             ->getForm();
 
@@ -159,6 +159,7 @@ class FileController extends AbstractController
             foreach ($form->getErrors(true) as $error) {
                 $this->errors[] = ['message' => $error->getMessage()];
             }
+
             return;
         }
 
@@ -171,7 +172,7 @@ class FileController extends AbstractController
             $nowDir = $this->checkDir($nowDir, $topDir)
                 ? $this->normalizePath($nowDir)
                 : $topDir;
-            $fs->mkdir($nowDir . '/' . $filename);
+            $fs->mkdir($nowDir.'/'.$filename);
 
             $this->addSuccess('admin.content.file.create_dir_success', 'admin');
         } catch (IOException $e) {

@@ -349,11 +349,12 @@ class EccubeExtension extends AbstractExtension
             ? $attr['class']." fa {$class}"
             : "fa {$class}";
 
-        $html = "<i ";
+        $html = '<i ';
         foreach ($attr as $name => $value) {
             $html .= "{$name}=\"$value\" ";
         }
-        $html .= "></i>";
+        $html .= '></i>';
+
         return $html;
     }
 }
