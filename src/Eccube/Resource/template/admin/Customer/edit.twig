@@ -230,7 +230,7 @@ file that was distributed with this source code.
                                     </div>
                                     <div class="col">
                                         {# TODO: classを整える。ラジオボタンが横に並ぶよう表示する。 #}
-                                        {{ form_widget(form.sex) }}
+                                        {{ form_widget(form.sex,  {'label_attr': {'class': 'radio-inline'}}) }}
                                         {{ form_errors(form.sex) }}
                                         {#<div class="form-check form-check-inline">#}
                                             {#<label class="form-check-label" for="male">#}
