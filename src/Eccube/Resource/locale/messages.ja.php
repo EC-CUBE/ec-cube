@@ -706,6 +706,8 @@ return [
     'admin.plugin.install.complete' => 'プラグインをインストールしました。',
     'admin.plugin.download.pem.complete' => '証明書ファイルを設定しました。',
     'admin.plugin.download.pem.error' => '証明書ファイルの設定ができませんでした。',
+    'admin.store.plugin.popup.delete.confirm.title' => 'プラグインの削除を確認する',
+    'admin.store.plugin.popup.delete.confirm.message' => 'このプラグインを削除してもよろしいですか？',
     'admin.preview.register.complete' => 'プレビューを登録しました',
     'admin.change_password.save.complete' => 'パスワードを変更しました。',
     'admin.change_password.save.error' => 'パスワードを変更できませんでした。',
