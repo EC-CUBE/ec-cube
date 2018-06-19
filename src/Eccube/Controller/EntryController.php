@@ -14,7 +14,6 @@
 namespace Eccube\Controller;
 
 use Eccube\Entity\BaseInfo;
-use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -159,12 +158,7 @@ class EntryController extends AbstractController
                         ->setSecretKey($secretKey)
                         ->setPoint(0);
 
-                    $CustomerAddress = new CustomerAddress();
-                    $CustomerAddress
-                        ->setFromCustomer($Customer);
-
                     $this->entityManager->persist($Customer);
-                    $this->entityManager->persist($CustomerAddress);
                     $this->entityManager->flush();
 
                     log_info('会員登録完了');
@@ -173,7 +167,6 @@ class EntryController extends AbstractController
                         [
                             'form' => $form,
                             'Customer' => $Customer,
-                            'CustomerAddress' => $CustomerAddress,
                         ],
                         $request
                     );

@@ -271,26 +271,12 @@ class ShoppingService
      */
     public function getNonMember($sesisonKey)
     {
-        // 非会員でも一度会員登録されていればショッピング画面へ遷移
-        $nonMember = $this->session->get($sesisonKey);
-        if (is_null($nonMember)) {
-            return null;
-        }
-        if (!array_key_exists('customer', $nonMember) || !array_key_exists('pref', $nonMember)) {
-            return null;
-        }
+        if ($NonMember = $this->session->get($sesisonKey)) {
+            $Pref = $this->prefRepository->find($NonMember->getPref()->getId());
+            $NonMember->setPref($Pref);
 
-        $Customer = $nonMember['customer'];
-        $Customer->setPref($this->prefRepository->find($nonMember['pref']));
-
-        foreach ($Customer->getCustomerAddresses() as $CustomerAddress) {
-            $Pref = $CustomerAddress->getPref();
-            if ($Pref) {
-                $CustomerAddress->setPref($this->prefRepository->find($Pref->getId()));
-            }
+            return $NonMember;
         }
-
-        return $Customer;
     }
 
     /**
