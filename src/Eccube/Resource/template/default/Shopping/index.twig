@@ -105,7 +105,7 @@ file that was distributed with this source code.
                     type: 'POST',
                     data: postData,
                     dataType: 'json',
-                }).done(function() {
+                }).done(function(data) {
                     if (data.status == 'OK') {
                         // kana field
                         ref[2].empty().text(data.kana01);
