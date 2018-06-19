@@ -53,7 +53,7 @@ class TaxManagePage extends AbstractAdminPageStyleGuide
 
     public function 一覧_削除($rowNum)
     {
-        $this->tester->click("table tbody tr:nth-child(${rowNum}) > td.align-middle.action > div > div:nth-child(2) > a");
+        $this->tester->click("table tbody tr:nth-child(${rowNum}) > td.align-middle.action > div > div div:nth-child(2) > a");
         $this->tester->acceptPopup();
         return $this;
     }
