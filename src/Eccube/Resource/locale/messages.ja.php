@@ -1505,7 +1505,6 @@ return [
     'admin.product.index.display' => '表示',
     'admin.product.index.duplicate' => '複製',
     'admin.product.index.duplicate.confirm.title' => '製品を複製する',
-    'admin.product.index.duplicate.confirm.ok' => '同意する',
     'admin.product.index.cancel' => 'キャンセル',
     'admin.product.index.delete' => '削除',
     'admin.product.index.stop_handling' => '取扱を停止',
