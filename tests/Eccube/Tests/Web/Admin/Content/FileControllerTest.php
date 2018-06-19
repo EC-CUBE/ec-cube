@@ -32,7 +32,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
 
         $crawler = $this->client->request(
             'GET',
-            $this->generateUrl('admin_content_file_view').'?file='.$filepath
+            $this->generateUrl('admin_content_file_view').'?file='.$this->getJailDir($filepath)
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
@@ -49,7 +49,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
 
         $crawler = $this->client->request(
             'GET',
-            $this->generateUrl('admin_content_file_download').'?select_file='.$filepath
+            $this->generateUrl('admin_content_file_download').'?select_file='.$this->getJailDir($filepath)
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
@@ -66,7 +66,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
 
         $this->client->request(
             'DELETE',
-            $this->generateUrl('admin_content_file_delete').'?select_file='.$filepath
+            $this->generateUrl('admin_content_file_delete').'?select_file='.$this->getJailDir($filepath)
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_content_file')));
         $this->assertFalse(file_exists($filepath));
@@ -75,7 +75,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
     public function testIndexWithCreate()
     {
         $folder = 'create_folder';
-        $crawler = $this->client->request(
+        $this->client->request(
             'POST',
             $this->generateUrl('admin_content_file'),
             [
@@ -85,9 +85,9 @@ class FileControllerTest extends AbstractAdminWebTestCase
                     'file' => '',
                 ],
                 'mode' => 'create',
+                'now_dir' => $this->getUserDataDir(),
             ]
         );
-
         $this->assertTrue($this->client->getResponse()->isSuccessful());
         $this->assertTrue(is_dir($this->getUserDataDir().'/'.$folder));
     }
@@ -128,6 +128,14 @@ class FileControllerTest extends AbstractAdminWebTestCase
     protected function getUserDataDir()
     {
         return $this->container->getParameter('kernel.project_dir').'/html/user_data';
+    }
+
+    private function getJailDir($path)
+    {
+        $realpath = realpath($path);
+        $jailPath = str_replace(realpath($this->getUserDataDir()), '', $realpath);
+
+        return $jailPath ? $jailPath : '/';
     }
 
     public function tearDown()

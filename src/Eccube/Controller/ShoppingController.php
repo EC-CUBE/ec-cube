@@ -19,12 +19,14 @@ use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
+use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
 use Eccube\Exception\ShoppingException;
 use Eccube\Form\Type\Front\CustomerLoginType;
 use Eccube\Form\Type\Front\ShoppingShippingType;
+use Eccube\Form\Type\Shopping\CustomerAddressType;
 use Eccube\Form\Type\Shopping\OrderType;
 use Eccube\Repository\CustomerAddressRepository;
 use Eccube\Service\CartService;
@@ -124,6 +126,9 @@ class ShoppingController extends AbstractShoppingController
 
         // 単価集計
         $flowResult = $this->executePurchaseFlow($Order);
+
+        // 明細が丸められる場合に, カートから注文画面へ遷移できなくなるため, 集計の結果を保存する
+        $this->entityManager->flush();
 
         // フォームを生成する
         $this->forwardToRoute('shopping_create_form');
@@ -320,10 +325,8 @@ class ShoppingController extends AbstractShoppingController
 
         // 受注に関連するセッションを削除
         $this->session->remove($this->sessionOrderKey);
-
-        // 非会員用セッション情報を空の配列で上書きする(プラグイン互換性保持のために削除はしない)
-        $this->session->set($this->sessionKey, []);
-        $this->session->set($this->sessionCustomerAddressKey, []);
+        $this->session->remove($this->sessionKey);
+        $this->session->remove($this->sessionCustomerAddressKey);
 
         log_info('購入処理完了', [$orderId]);
 
@@ -341,7 +344,7 @@ class ShoppingController extends AbstractShoppingController
      * @Route("/shopping/shipping/{id}", name="shopping_shipping", requirements={"id" = "\d+"})
      * @Template("Shopping/shipping.twig")
      */
-    public function shipping(Request $request, $id)
+    public function shipping(Request $request, Shipping $Shipping)
     {
         // カートチェック
         $response = $this->forwardToRoute('shopping_check_to_cart');
@@ -349,52 +352,35 @@ class ShoppingController extends AbstractShoppingController
             return $response;
         }
 
-        if ('POST' === $request->getMethod()) {
-            $address = $request->get('address');
+        // 受注の存在チェック
+        $response = $this->forwardToRoute('shopping_exists_order');
+        if ($response->isRedirection() || $response->getContent()) {
+            return $response;
+        }
 
-            if (is_null($address)) {
-                // 選択されていなければエラー
-                log_info('お届け先入力チェックエラー');
+        // 受注に紐づくShippingかどうかのチェック.
+        /** @var Order $Order */
+        $Order = $this->parameterBag->get('Order');
+        if (!$Order->findShipping($Shipping->getId())) {
+            throw new NotFoundHttpException();
+        }
 
-                return [
-                    'Customer' => $this->getUser(),
-                    'shippingId' => $id,
-                    'error' => true,
-                ];
-            }
+        $builder = $this->formFactory->createBuilder(CustomerAddressType::class, null, [
+            'customer' => $this->getUser(),
+            'shipping' => $Shipping,
+        ]);
 
-            // 選択されたお届け先情報を取得
-            $CustomerAddress = $this->customerAddressRepository->findOneBy(
-                [
-                    'Customer' => $this->getUser(),
-                    'id' => $address,
-                ]
-            );
-            if (is_null($CustomerAddress)) {
-                throw new NotFoundHttpException(trans('shoppingcontroller.text.error.selected_address'));
-            }
+        $form = $builder->getForm();
+        $form->handleRequest($request);
 
-            /** @var Order $Order */
-            $Order = $this->shoppingService->getOrder(OrderStatus::PROCESSING);
-            if (!$Order) {
-                log_info('購入処理中の受注情報がないため購入エラー');
-                $this->addError('front.shopping.order.error');
-
-                return $this->redirectToRoute('shopping_error');
-            }
-
-            $Shipping = $Order->findShipping($id);
-            if (!$Shipping) {
-                throw new NotFoundHttpException(trans('shoppingcontroller.text.error.address'));
-            }
-
+        if ($form->isSubmitted() && $form->isValid()) {
             log_info('お届先情報更新開始', [$Shipping->getId()]);
+
+            /** @var CustomerAddress $CustomerAddress */
+            $CustomerAddress = $form['addresses']->getData();
 
             // お届け先情報を更新
             $Shipping->setFromCustomerAddress($CustomerAddress);
-
-            // 配送料金の設定
-            $this->shoppingService->setShippingDeliveryFee($Shipping);
 
             // 合計金額の再計算
             $flowResult = $this->executePurchaseFlow($Order);
@@ -408,7 +394,7 @@ class ShoppingController extends AbstractShoppingController
             $event = new EventArgs(
                 [
                     'Order' => $Order,
-                    'shippingId' => $id,
+                    'Shipping' => $Shipping,
                 ],
                 $request
             );
@@ -420,9 +406,9 @@ class ShoppingController extends AbstractShoppingController
         }
 
         return [
+            'form' => $form->createView(),
             'Customer' => $this->getUser(),
-            'shippingId' => $id,
-            'error' => false,
+            'shippingId' => $Shipping->getId(),
         ];
     }
 
@@ -611,6 +597,13 @@ class ShoppingController extends AbstractShoppingController
     {
         $Cart = $this->cartService->getCart();
         if ($Cart && count($Cart->getCartItems()) > 0) {
+            $divide = $request->getSession()->get('cart.divide');
+            if ($divide) {
+                log_info('種別が異なる商品がカートと結合されたためカート画面にリダイレクト');
+
+                return $this->redirectToRoute('cart');
+            }
+
             return new Response();
         }
         log_info('カートに商品が入っていないためショッピングカート画面にリダイレクト');
@@ -651,7 +644,6 @@ class ShoppingController extends AbstractShoppingController
                 //$Order = $app['eccube.service.shopping']->createOrder($Customer);
                 $Order = $this->orderHelper->createProcessingOrder(
                     $Customer,
-                    $Customer->getCustomerAddresses()->current(),
                     $this->cartService->getCart()->getCartItems()
                 );
                 $this->cartService->setPreOrderId($Order->getPreOrderId());

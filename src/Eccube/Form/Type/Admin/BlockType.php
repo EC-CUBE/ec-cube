@@ -20,6 +20,7 @@ use Eccube\Form\Validator\TwigLint;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
@@ -80,7 +81,7 @@ class BlockType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('block_html', HiddenType::class, [
+            ->add('block_html', TextareaType::class, [
                 'label' => 'block.label.block_type', // TODO form_label を使用しないのなら削除
                 'mapped' => false,
                 'required' => false,

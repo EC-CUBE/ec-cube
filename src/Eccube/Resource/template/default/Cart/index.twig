@@ -16,7 +16,7 @@ file that was distributed with this source code.
 
     <div class="ec-role">
         <div class="ec-pageHeader">
-            <h1>{{'shopping.label.cart'|trans}}</h1>
+            <h1>{{ 'shopping.label.cart'|trans }}</h1>
         </div>
     </div>
 
@@ -27,14 +27,14 @@ file that was distributed with this source code.
                 <li class="ec-progress__item is-complete">
                     <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
                     </div>
-                    <div class="ec-progress__label">{{'shopping.label.your_cart'|trans}}
+                    <div class="ec-progress__label">{{ 'shopping.label.your_cart'|trans }}
                     </div>
                 </li>
                 {% if is_granted('ROLE_USER') == false %}
                     <li class="ec-progress__item">
                         <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
                         </div>
-                        <div class="ec-progress__label">{{'shopping.label.customer_info'|trans}}
+                        <div class="ec-progress__label">{{ 'shopping.label.customer_info'|trans }}
                         </div>
                     </li>
                 {% endif %}
@@ -47,13 +47,13 @@ file that was distributed with this source code.
                 <li class="ec-progress__item">
                     <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
                     </div>
-                    <div class="ec-progress__label">{{'shopping.label.confirm_order'|trans}}
+                    <div class="ec-progress__label">{{ 'shopping.label.confirm_order'|trans }}
                     </div>
                 </li>
                 <li class="ec-progress__item">
                     <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
                     </div>
-                    <div class="ec-progress__label">{{'shopping.label.order_completed'|trans}}
+                    <div class="ec-progress__label">{{ 'shopping.label.order_completed'|trans }}
                     </div>
                 </li>
             </ul>
@@ -90,6 +90,15 @@ file that was distributed with this source code.
                     商品の合計金額は「<strong>{{ totalPrice|price }}</strong>」です。
                 </p>
             </div>
+            {% if Carts|length > 1 %}
+                <div class="ec-cartRole__error">
+                    <div class="ec-alert-warning">
+                        <div class="ec-alert-warning__text">
+                            {{ 'cart.product.divide'|trans|nl2br }}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
 
             <form name="form" id="form_cart" class="ec-cartRole" method="post" action="{{ url('cart') }}">
                 {% set freeShippingText = 'cart.shipping.free'|trans %}
@@ -141,13 +150,13 @@ file that was distributed with this source code.
                         </div>
                     {% endfor %}
 
-                <div class="ec-cartRole__cart">
-                    <div class="ec-cartTable">
-                        <ol class="ec-cartHeader">
-                            <li class="ec-cartHeader__label">{{'shopping.label.del'|trans}}</li>
-                            <li class="ec-cartHeader__label">{{'shopping.label.products'|trans}}</li>
-                            <li class="ec-cartHeader__label">{{'shopping.label.qty'|trans}}</li>
-                            <li class="ec-cartHeader__label">{{'shopping.label.subtotal'|trans}}</li>
+                    <div class="ec-cartRole__cart">
+                        <div class="ec-cartTable">
+                            <ol class="ec-cartHeader">
+                                <li class="ec-cartHeader__label">{{ 'shopping.label.del'|trans }}</li>
+                                <li class="ec-cartHeader__label">{{ 'shopping.label.products'|trans }}</li>
+                                <li class="ec-cartHeader__label">{{ 'shopping.label.qty'|trans }}</li>
+                                <li class="ec-cartHeader__label">{{ 'shopping.label.subtotal'|trans }}</li>
                             </ol>
                             {% for CartItem in Cart.CartItems %}
                                 {% set ProductClass = CartItem.ProductClass %}
@@ -201,35 +210,35 @@ file that was distributed with this source code.
                                     </li>
                                 </ul>
                             {% endfor %}
+                        </div>
                     </div>
-                </div>
-                <div class="ec-cartRole__actions">
-                    <div class="ec-cartRole__total">{{'shopping.label.total'|trans}}：<span class="ec-cartRole__totalAmount">{{ Cart.totalPrice|price }}</span>
+                    <div class="ec-cartRole__actions">
+                        <div class="ec-cartRole__total">{{ 'shopping.label.total'|trans }}：<span class="ec-cartRole__totalAmount">{{ Cart.totalPrice|price }}</span>
+                        </div>
+                        <a class="ec-blockBtn--action" href="{{ path('cart_buystep', {'index':loop.index0}) }}">{{ 'shopping.label.btn.checkout'|trans }}</a>
+                        {% if loop.last %}
+                            <a class="ec-blockBtn--cancel" href="{{ path('homepage') }}">{{ 'shopping.label.btn.continue'|trans }}</a>
+                        {% endif %}
                     </div>
-                    <a class="ec-blockBtn--action" href="{{ path('cart_buystep', {'index':loop.index0}) }}">{{'shopping.label.btn.checkout'|trans}}</a>
-                    {% if loop.last %}
-                        <a class="ec-blockBtn--cancel" href="{{ path('homepage') }}">{{'shopping.label.btn.continue'|trans}}</a>
-                    {% endif %}
-                </div>
                 {% endfor %}
             </form>
         {% else %}
             {% for error in app.session.flashbag.get('eccube.front.cart.0.request.error') %}
-                    <div class="ec-cartRole__error">
-                        <div class="ec-alert-warning">
-                            <div class="ec-alert-warning__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"></div>
-                            <div class="ec-alert-warning__text">
-                                {{ error|trans|nl2br }}
-                            </div>
+                <div class="ec-cartRole__error">
+                    <div class="ec-alert-warning">
+                        <div class="ec-alert-warning__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"></div>
+                        <div class="ec-alert-warning__text">
+                            {{ error|trans|nl2br }}
                         </div>
                     </div>
+                </div>
             {% endfor %}
             <div class="ec-role">
                 <div class="ec-off3Grid">
                     <div class="ec-off3Grid__cell">
                         <div class="ec-alert-warning">
                             <div class="ec-alert-warning__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"></div>
-                            <div class="ec-alert-warning__text">{{'shopping.text.error.no_item_in_cart'|trans}}</div>
+                            <div class="ec-alert-warning__text">{{ 'shopping.text.error.no_item_in_cart'|trans }}</div>
                         </div>
                     </div>
                 </div>
