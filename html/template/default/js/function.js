@@ -129,23 +129,6 @@ $(function() {
         return false;
     });
 
-    // マスク処理
-    $('.prevention-mask').on('click', function() {
-        $overlay = $('<div class="prevention-masked">');
-        $('body').append($overlay);
-    });
-
-    // ダブルクリック禁止
-    $('.prevention-btn').on('click', function() {
-        $(this).attr('disabled', 'disabled');
-        var $form = $(this).parents('form');
-        // マスク表示させるためsetTimeoutを使って処理を遅らせる
-        setTimeout(function() {
-            $form.submit();
-        }, 0);
-        return false;
-    });
-
     // イベント実行時のオーバーレイ処理
     // classに「load-overlay」が記述されていると画面がオーバーレイされる
     $('.load-overlay').on({
@@ -166,15 +149,18 @@ $(function() {
 /**
  * オーバーレイ処理を行う関数
  */
-function loadingOverlay() {
-    $.LoadingOverlay('show', {
-        background: 'rgba(255, 255, 255, 0.4)',
-        image: ''
-    });
+function loadingOverlay(action) {
+
+    if (action == 'hide') {
+        $('.bg-load-overlay').remove();
+    } else {
+        $overlay = $('<div class="bg-load-overlay">');
+        $('body').append($overlay);
+    }
 
     setTimeout(function() {
-        $.LoadingOverlay('hide');
-    }, 10000);
+        loadingOverlay('hide');
+    }, 5000);
 }
 
 /////////// ロールオーバー

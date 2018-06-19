@@ -98,10 +98,7 @@ file that was distributed with this source code.
                     postData[$(this).attr('name')] = $(this).val();
                 });
 
-                $.LoadingOverlay('show', {
-                    background: 'rgba(255, 255, 255, 0.4)',
-                    image: ''
-                });
+                loadingOverlay();
 
                 $.ajax({
                     url: "{{ url('shopping_customer') }}",
@@ -124,7 +121,7 @@ file that was distributed with this source code.
                     });
                 }).always(function(data) {
                     // overlayを無効
-                    $.LoadingOverlay('hide');
+                    loadingOverlay('hide');
                 });
 
                 $('#customer').prop("disabled", false);
