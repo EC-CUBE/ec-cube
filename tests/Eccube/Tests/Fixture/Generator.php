@@ -260,13 +260,6 @@ class Generator
         $this->entityManager->persist($Customer);
         $this->entityManager->flush($Customer);
 
-        $CustomerAddress = new CustomerAddress();
-        $CustomerAddress->setCustomer($Customer);
-        $CustomerAddress->copyProperties($Customer);
-        $this->entityManager->persist($CustomerAddress);
-        $this->entityManager->flush($CustomerAddress);
-
-        $Customer->addCustomerAddress($CustomerAddress);
         $this->entityManager->flush($Customer);
 
         return $Customer;
@@ -363,18 +356,12 @@ class Generator
             ->setFax02(isset($fax[1]) ? $fax[1] : null)
             ->setFax03(isset($fax[2]) ? $fax[2] : null);
 
-        $CustomerAddress = new CustomerAddress();
-        $CustomerAddress->setCustomer($Customer);
-        $CustomerAddress->copyProperties($Customer);
-        $Customer->addCustomerAddress($CustomerAddress);
-
         $nonMember = [];
         $nonMember['customer'] = $Customer;
         $nonMember['pref'] = $Customer->getPref()->getId();
         $this->session->set($sessionKey, $nonMember);
 
         $customerAddresses = [];
-        $customerAddresses[] = $CustomerAddress;
         $this->session->set($sessionCustomerAddressKey, serialize($customerAddresses));
 
         return $Customer;

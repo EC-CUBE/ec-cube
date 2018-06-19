@@ -175,15 +175,15 @@ class ShippingMultipleController extends AbstractShoppingController
                 foreach ($mulitples as $items) {
                     foreach ($items as $item) {
                         $CustomerAddress = $item['customer_address']->getData();
-                        $cusAddId = $CustomerAddress->getShippingMultipleDefaultName();
+                        $customerAddressName = $CustomerAddress->getShippingMultipleDefaultName();
 
                         $itemId = $OrderItem->getProductClass()->getId();
                         $quantity = $item['quantity']->getData();
 
-                        if (isset($arrOrderItemTemp[$cusAddId]) && array_key_exists($itemId, $arrOrderItemTemp[$cusAddId])) {
-                            $arrOrderItemTemp[$cusAddId][$itemId] = $arrOrderItemTemp[$cusAddId][$itemId] + $quantity;
+                        if (isset($arrOrderItemTemp[$customerAddressName]) && array_key_exists($itemId, $arrOrderItemTemp[$customerAddressName])) {
+                            $arrOrderItemTemp[$customerAddressName][$itemId] = $arrOrderItemTemp[$customerAddressName][$itemId] + $quantity;
                         } else {
-                            $arrOrderItemTemp[$cusAddId][$itemId] = $quantity;
+                            $arrOrderItemTemp[$customerAddressName][$itemId] = $quantity;
                         }
                     }
                 }
@@ -225,14 +225,14 @@ class ShippingMultipleController extends AbstractShoppingController
                 foreach ($mulitples as $items) {
                     foreach ($items as $item) {
                         $CustomerAddress = $item['customer_address']->getData();
-                        $cusAddId = $CustomerAddress->getShippingMultipleDefaultName();
+                        $customerAddressName = $CustomerAddress->getShippingMultipleDefaultName();
 
                         $Shipping = new Shipping();
                         $Shipping
                             ->setFromCustomerAddress($CustomerAddress)
                             ->setDelivery($Delivery);
 
-                        $ShippingList[$cusAddId][$saleTypeId] = $Shipping;
+                        $ShippingList[$customerAddressName][$saleTypeId] = $Shipping;
                     }
                 }
             }
@@ -257,20 +257,20 @@ class ShippingMultipleController extends AbstractShoppingController
                 foreach ($mulitples as $items) {
                     foreach ($items as $item) {
                         $CustomerAddress = $item['customer_address']->getData();
-                        $cusAddId = $CustomerAddress->getShippingMultipleDefaultName();
+                        $customerAddressName = $CustomerAddress->getShippingMultipleDefaultName();
 
                         // お届け先から商品の数量を取得
                         $quantity = 0;
-                        if (isset($arrOrderItemTemp[$cusAddId]) && array_key_exists($productClassId, $arrOrderItemTemp[$cusAddId])) {
-                            $quantity = $arrOrderItemTemp[$cusAddId][$productClassId];
-                            unset($arrOrderItemTemp[$cusAddId][$productClassId]);
+                        if (isset($arrOrderItemTemp[$customerAddressName]) && array_key_exists($productClassId, $arrOrderItemTemp[$customerAddressName])) {
+                            $quantity = $arrOrderItemTemp[$customerAddressName][$productClassId];
+                            unset($arrOrderItemTemp[$customerAddressName][$productClassId]);
                         } else {
                             // この配送先には送る商品がないのでスキップ（通常ありえない）
                             continue;
                         }
 
                         // 関連付けるお届け先のインスタンスを取得
-                        $Shipping = $ShippingList[$cusAddId][$saleTypeId];
+                        $Shipping = $ShippingList[$customerAddressName][$saleTypeId];
 
                         // インスタンスを生成して保存
                         $OrderItem = new OrderItem();

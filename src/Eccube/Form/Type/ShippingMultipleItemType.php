@@ -134,7 +134,7 @@ class ShippingMultipleItemType extends AbstractType
 
                 $form->add('customer_address', ChoiceType::class, [
                     'choices' => $CustomerAddresses,
-                    'choice_label' => function ($Address, $key, $value) {
+                    'choice_label' => function ($Address) {
                         return $Address->getShippingMultipleDefaultName();
                     },
                     'constraints' => [
