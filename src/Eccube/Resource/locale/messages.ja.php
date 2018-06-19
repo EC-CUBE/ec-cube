@@ -682,6 +682,8 @@ return [
     'admin.content.layout.popup.button.cancel' => 'キャンセル',
     'admin.content.file.delete.confirm.title' => 'ファイルを削除します。',
     'admin.content.file.delete.confirm.message' => '削除してもよろしいですか?',
+    'admin.content.folder.delete.confirm.title' => 'フォルダを削除します。',
+    'admin.content.folder.delete.confirm.message' => '削除してもよろしいですか?',
     'admin.system.security.save.complete' => 'セキュリティ設定を保存しました。',
     'admin.system.security.route.dir.complete' => '管理画面のURLを変更しましたので再ログインをしてください。',
     'admin.system.authority.save.complete' => '権限設定を保存しました。',
