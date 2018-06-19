@@ -247,7 +247,7 @@ class EA08SysteminfoCest
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/security');
-        $I->see('システム設定セキュリティ管理', '#page_admin_setting_system_security .c-pageTitle__titles');
+        $I->see('セキュリティ管理システム設定', '#page_admin_setting_system_security .c-pageTitle__titles');
         $I->see('セキュリティ機能設定', '#page_admin_setting_system_security > div.c-container > div.c-contentsArea div.c-contentsArea__primaryCol > div.c-primaryCol > div:nth-child(1) > div.card-header > div > div.col-8 > div');
     }
 
@@ -258,7 +258,7 @@ class EA08SysteminfoCest
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/security');
-        $I->see('システム設定セキュリティ管理', '#page_admin_setting_system_security .c-pageTitle__titles');
+        $I->see('セキュリティ管理システム設定', '#page_admin_setting_system_security .c-pageTitle__titles');
 
         $I->fillField(['id' => 'admin_security_admin_route_dir'], 'admin2');
         $I->click('#page_admin_setting_system_security form div.c-contentsArea__cols > div.c-conversionArea > div > div > div:nth-child(2) > div > div > button');
@@ -381,7 +381,7 @@ class EA08SysteminfoCest
         // 表示
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/security');
-        $I->see('システム設定セキュリティ管理', '#page_admin_setting_system_security .c-pageTitle__titles');
+        $I->see('セキュリティ管理システム設定', '#page_admin_setting_system_security .c-pageTitle__titles');
 
         $I->fillField(['id' => 'admin_security_admin_allow_hosts'], '1.1.1.1');
         $I->click('#page_admin_setting_system_security form div.c-contentsArea__cols > div.c-conversionArea > div > div > div:nth-child(2) > div > div > button');

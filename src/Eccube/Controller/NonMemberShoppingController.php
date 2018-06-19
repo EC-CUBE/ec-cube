@@ -14,7 +14,6 @@
 namespace Eccube\Controller;
 
 use Eccube\Entity\Customer;
-use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
 use Eccube\Event\EccubeEvents;
@@ -139,26 +138,6 @@ class NonMemberShoppingController extends AbstractShoppingController
                 ->setAddr01($data['addr01'])
                 ->setAddr02($data['addr02']);
 
-            // 非会員複数配送用
-            $CustomerAddress = new CustomerAddress();
-            $CustomerAddress
-                ->setCustomer($Customer)
-                ->setName01($data['name01'])
-                ->setName02($data['name02'])
-                ->setKana01($data['kana01'])
-                ->setKana02($data['kana02'])
-                ->setCompanyName($data['company_name'])
-                ->setTel01($data['tel01'])
-                ->setTel02($data['tel02'])
-                ->setTel03($data['tel03'])
-                ->setZip01($data['zip01'])
-                ->setZip02($data['zip02'])
-                ->setZipCode($data['zip01'].$data['zip02'])
-                ->setPref($data['pref'])
-                ->setAddr01($data['addr01'])
-                ->setAddr02($data['addr02']);
-            $Customer->addCustomerAddress($CustomerAddress);
-
             // 受注情報を取得
             /** @var Order $Order */
             $Order = $this->shoppingService->getOrder(OrderStatus::PROCESSING);
@@ -170,7 +149,6 @@ class NonMemberShoppingController extends AbstractShoppingController
                     // 受注情報を作成
                     $Order = $this->orderHelper->createProcessingOrder(
                         $Customer,
-                        $Customer->getCustomerAddresses()->current(),
                         $cartService->getCart()->getCartItems()
                     );
                     $cartService->setPreOrderId($Order->getPreOrderId());
@@ -188,14 +166,8 @@ class NonMemberShoppingController extends AbstractShoppingController
             }
 
             // 非会員用セッションを作成
-            $nonMember = [];
-            $nonMember['customer'] = $Customer;
-            $nonMember['pref'] = $Customer->getPref()->getId();
-            $this->session->set($this->sessionKey, $nonMember);
-
-            $customerAddresses = [];
-            $customerAddresses[] = $CustomerAddress;
-            $this->session->set($this->sessionCustomerAddressKey, serialize($customerAddresses));
+            $this->session->set($this->sessionKey, $Customer);
+            $this->session->set($this->sessionCustomerAddressKey, serialize([]));
 
             $event = new EventArgs(
                 [

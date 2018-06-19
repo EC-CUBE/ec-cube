@@ -35,10 +35,12 @@ file that was distributed with this source code.
                                     <dt>{{'admin.mail.order.200'|trans}}</dt>
                                     <dd>{{ Order.order_code }}</dd>
                                 </dl>
+                                {% if (BaseInfo.option_mypage_order_status_display) %}
                                 <dl class="ec-definitions">
                                     <dt>{{  'mypage.history.label.order_status'|trans}}</dt>
                                     <dd>{{ Order.CustomerOrderStatus }}</dd>
                                 </dl>
+                                {% endif %}
                                 <p class="ec-historyListHeader__action"><a class="ec-inlineBtn" href="{{ url('mypage_history', {'id': Order.id}) }}">{{'mypage.history.label.view_detail'|trans}}</a></p>
                             </div>
                         </div>
