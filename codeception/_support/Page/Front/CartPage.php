@@ -49,7 +49,7 @@ class CartPage extends AbstractFrontPage
 
     public function 商品数量増やす($index)
     {
-        $this->tester->click(["xpath" => "//div[@class='ec-cartRole']//ul[@class='ec-cartRow'][position()=${index}]//div[@class='ec-cartRow__amountUpDown']/a[contains(@class='ec-cartRow__amountUpButton')]"]);
+        $this->tester->click(["xpath" => "//div[@class='ec-cartRole']//ul[@class='ec-cartRow'][position()=${index}]//div[@class='ec-cartRow__amountUpDown']/a[contains(@class, 'ec-cartRow__amountUpButton')]"]);
         return $this;
     }
 
