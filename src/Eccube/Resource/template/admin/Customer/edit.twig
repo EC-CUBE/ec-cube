@@ -229,20 +229,8 @@ file that was distributed with this source code.
                                         <span>{{ 'admin.customer.edit.sex'|trans }}</span>
                                     </div>
                                     <div class="col">
-                                        {# TODO: classを整える。ラジオボタンが横に並ぶよう表示する。 #}
                                         {{ form_widget(form.sex,  {'label_attr': {'class': 'radio-inline'}}) }}
                                         {{ form_errors(form.sex) }}
-                                        {#<div class="form-check form-check-inline">#}
-                                            {#<label class="form-check-label" for="male">#}
-                                                {#<input class="form-check-input" id="male" type="radio" name="gender"> 男性#}
-                                            {#</label>#}
-                                        {#</div>#}
-                                        {#<div class="form-check form-check-inline">#}
-                                            {#<label class="form-check-label" for="female">#}
-                                                {#<input class="form-check-input" id="female" type="radio" name="gender">#}
-                                                {#女性#}
-                                            {#</label>#}
-                                        {#</div>#}
                                     </div>
                                 </div>
                                 <div class="row mb-2">
