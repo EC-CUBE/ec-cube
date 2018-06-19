@@ -1087,7 +1087,7 @@ return [
     'admin.mail.order.200' => 'ご注文番号：',
     'admin.mail.order.201' => 'お支払い合計：{{ Order.payment_total|price}}',
     'admin.mail.order.202' => 'お支払い方法：{{ Order.payment_method }}',
-    'admin.mail.order.203' => 'メッセージ：{{ Order.message }}',
+    'admin.mail.order.203' => 'メッセージ',
     'admin.mail.order.204' => 'ご注文商品明細',
     'admin.mail.order.205' => '商品コード: {{ OrderItem.product_code }}',
     'admin.mail.order.206' => '商品名: {{ OrderItem.product_name }} {{ OrderItem.classcategory_name1 }} {{ OrderItem.classcategory_name2 }}',
