@@ -25,19 +25,34 @@ file that was distributed with this source code.
                             <ul class="list-group list-group-flush">
                                 {% for Block in Blocks %}
                                     <li class="list-group-item">
-                                        <div class="row justify-content-around">
-                                            <div class="col d-flex align-items-center">
+                                        <div class="row">
+                                            <div class="col-7 col-md-10 d-flex align-items-center">
                                                 <a href="{{ url('admin_content_block_edit', {id: Block.id}) }}">
                                                     {{ Block.name }}
                                                 </a>
                                             </div>
-                                            <div class="col-auto text-right">
-                                                <a href="{{ url('admin_content_block_edit', {id: Block.id}) }}" class="btn btn-ec-actionIcon mr-3" data-toggle="tooltip" data-placement="top" title="{{ 'admin.content.block_edit.14'|trans }}">
-                                                    <i class="fa fa-pencil fa-lg text-secondary"></i>
-                                                </a>
-                                                <a href="{{ url('admin_content_block_delete', {id: Block.Id} ) }}" class="btn btn-ec-actionIcon mr-3 {% if not Block.deletable %}disabled{% endif %}" data-toggle="tooltip" data-placement="top" title="{{ 'admin.content.block_edit.17'|trans }}" {{ csrf_token_for_anchor() }} data-method="delete">
-                                                    <i class="fa fa-close fa-lg text-secondary"></i>
-                                                </a>
+                                            <div class="col-5 col-md-2">
+                                                <div class="row">
+                                                    <div class="col-6 text-right">
+                                                        <a href="{{ url('admin_content_block_edit', {id: Block.id}) }}"
+                                                           class="btn btn-ec-actionIcon mr-3" data-toggle="tooltip"
+                                                           data-placement="top"
+                                                           title="{{ 'admin.content.block_edit.14'|trans }}">
+                                                            <i class="fa fa-pencil fa-lg text-secondary"></i>
+                                                        </a>
+                                                    </div>
+                                                    {% if Block.deletable %}
+                                                        <div class="col-6">
+                                                            <a href="{{ url('admin_content_block_delete', {id: Block.Id} ) }}"
+                                                               class="btn btn-ec-actionIcon mr-3" data-toggle="tooltip"
+                                                               data-placement="top"
+                                                               title="{{ 'admin.content.block_edit.17'|trans }}" {{ csrf_token_for_anchor() }}
+                                                               data-method="delete">
+                                                                <i class="fa fa-close fa-lg text-secondary"></i>
+                                                            </a>
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
                                             </div>
                                         </div>
                                     </li>
