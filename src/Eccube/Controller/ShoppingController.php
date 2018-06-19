@@ -125,6 +125,9 @@ class ShoppingController extends AbstractShoppingController
         // 単価集計
         $flowResult = $this->executePurchaseFlow($Order);
 
+        // 明細が丸められる場合に, カートから注文画面へ遷移できなくなるため, 集計の結果を保存する
+        $this->entityManager->flush();
+
         // フォームを生成する
         $this->forwardToRoute('shopping_create_form');
 
@@ -611,6 +614,13 @@ class ShoppingController extends AbstractShoppingController
     {
         $Cart = $this->cartService->getCart();
         if ($Cart && count($Cart->getCartItems()) > 0) {
+            $divide = $request->getSession()->get('cart.divide');
+            if ($divide) {
+                log_info('種別が異なる商品がカートと結合されたためカート画面にリダイレクト');
+
+                return $this->redirectToRoute('cart');
+            }
+
             return new Response();
         }
         log_info('カートに商品が入っていないためショッピングカート画面にリダイレクト');

@@ -60,6 +60,10 @@ class SecurityListener implements EventSubscriberInterface
                 $this->purchaseFlow->calculate($Cart, new PurchaseContext($Cart, $user));
             }
             $this->cartService->save();
+            if (count($this->cartService->getCarts()) > 1) {
+                // カートが分割されていればメッセージを表示
+                $event->getRequest()->getSession()->set('cart.divide', true);
+            }
         }
     }
 

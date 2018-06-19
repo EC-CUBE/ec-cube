@@ -83,10 +83,10 @@ file that was distributed with this source code.
                             <div class="col">
                                 <div class="form-row">
                                     <div class="col-3">
-                                        {{ form_widget(form.create_file) }}{# TODO ブレースホルダ #}
+                                        {{ form_widget(form.create_file, {attr: {placeholder: 'admin.content.file.create_dir_placeholder'}}) }}
                                     </div>
                                     <div class="col-auto">
-                                        <a class="btn btn-ec-regular" href="javascript:" onclick="eccube.fileManager.setTreeStatus('tree_status');eccube.setModeAndSubmit('create','',''); return false;">{{'admin.content.file.28'|trans}}</a>
+                                        <a class="btn btn-ec-regular action-create" href="javascript:" onclick="eccube.fileManager.setTreeStatus('tree_status');eccube.setModeAndSubmit('create','',''); return false;">{{'admin.content.file.28'|trans}}</a>
                                     </div>
                                 </div>
                             </div>
@@ -115,8 +115,8 @@ file that was distributed with this source code.
                                         <tbody>
                                             {% if tpl_is_top_dir != false %}
                                                 <tr id="parent_dir">
-                                                    <td class="align-middle text-center">&nbsp;</td>
-                                                    <td class="align-middle"><a onclick="eccube.setValue('select_file', '{{ tpl_parent_dir }}', 'form1'); eccube.fileManager.selectFile('parent_dir', '#808080');" onDblClick="eccube.fileManager.setTreeStatus('tree_status');eccube.fileManager.doubleClick(arrTree, '{{ tpl_parent_dir }}', true, '{{ tpl_now_dir }}', true)">TODO 上の階層へ</a></td>
+                                                    <td class="align-middle text-center" style="width: 10%"><i class="fa fa-folder-o fa-2x"></i></td>
+                                                    <td class="align-middle"><a href="javascript:;" onclick="eccube.fileManager.openFolder('{{ tpl_parent_dir }}')"><i class="fa fa-reply"></i></a></td>
                                                     <td class="align-middle">&nbsp;</td>
                                                     <td class="align-middle">&nbsp;</td>
                                                     <td class="align-middle">&nbsp;</td>
@@ -128,8 +128,7 @@ file that was distributed with this source code.
                                                         {% if file.is_dir %}
                                                             <i class="fa fa-folder-o fa-2x"></i>
                                                         {% else %}
-                                                            {# TODO ファイル種別の表示 #}
-                                                            <div class="d-inline-block p-3 bg-light"><i class="fa fa-file-pdf-o fa-2x"></i></div>
+                                                            <div class="d-inline-block p-3 bg-light">{{ file.extension|file_ext_icon({class: "fa-2x"}) }} </div>
                                                         {% endif %}
                                                     </td>
                                                     <td class="align-middle">
@@ -140,27 +139,58 @@ file that was distributed with this source code.
                                                         {% endif %}
                                                     </td>
                                                     <td class="align-middle">
-                                                        {{ file.file_size }}
+                                                        {% if not file.is_dir %}
+                                                            {{ file.file_size }}
+                                                        {% endif %}
                                                     </td>
                                                     <td class="align-middle">
                                                         {{ file.file_time|date_sec }} {{ 'admin.content.file.31'|trans }}
                                                     </td>
                                                     {% if file.is_dir %}
-                                                        <td class="align-middle">
+                                                        <td class="align-middle text-right pr-3">
+                                                            <div class="row justify-content-end">
+                                                            <div class="col-auto text-center">
+                                                                <a class="btn btn-ec-actionIcon action-delete {% if file.is_empty == false %}disabled{% endif %}"
+                                                                   data-toggle="modal" data-target="#confirmModal-{{ loop.index }}"
+                                                                   data-tooltip="tooltip" data-placement="top" title="{{'admin.content.file.34'|trans}}"
+                                                                   data-original-title="{{'admin.content.file.34'|trans}}">
+                                                                    <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a>
+                                                                <div class="modal fade" id="confirmModal-{{ loop.index }}" tabindex="-1" role="dialog" aria-labelledby="confirmModal-{{ loop.index }}" aria-hidden="true">
+                                                                    <div class="modal-dialog" role="document">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title font-weight-bold">{{ 'admin.content.folder.delete.confirm.title'|trans }}</h5>
+                                                                                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                                            </div>
+                                                                            <div class="modal-body text-left">
+                                                                                <p class="text-left">{{ 'admin.content.folder.delete.confirm.message'|trans }}</p>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'common.label.cancel'|trans }}</button>
+                                                                                <a class="btn btn-ec-delete" data-confirm="false"
+                                                                                   href="{{ url('admin_content_file_delete', { 'select_file': file.file_path}) }}" {{ csrf_token_for_anchor() }} data-method="delete">
+                                                                                    {{ 'common.label.delete'|trans }}
+                                                                                </a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            </div>
                                                         </td>
                                                     {% else %}
                                                         <td class="align-middle text-right pr-3">
                                                             <div class="row justify-content-end">
                                                                 <div class="col-auto text-center">
-                                                                    <a href="{{ url('admin_content_file_view') }}?file={{ file.file_path|e('url') }}" target="_blank" class="btn btn-ec-actionIcon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{'admin.content.file.36'|trans}}" ><i class="fa fa-eye fa-lg text-secondary" aria-hidden="true"></i></a>
+                                                                    <a href="{{ url('admin_content_file_view') }}?file={{ file.file_path|e('url') }}" target="_blank" class="btn btn-ec-actionIcon action-view" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{'admin.content.file.36'|trans}}" ><i class="fa fa-eye fa-lg text-secondary" aria-hidden="true"></i></a>
                                                                 </div>
 
                                                                 <div class="col-auto text-center">
-                                                                    <a href="{{ url('admin_content_file_download') }}?select_file={{ file.file_path|e('url') }}" class="btn btn-ec-actionIcon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{'admin.content.file.37'|trans}}"><i class="fa fa-cloud-download fa-lg text-secondary" aria-hidden="true"></i></a>
+                                                                    <a href="{{ url('admin_content_file_download') }}?select_file={{ file.file_path|e('url') }}" class="btn btn-ec-actionIcon action-download" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{'admin.content.file.37'|trans}}"><i class="fa fa-cloud-download fa-lg text-secondary" aria-hidden="true"></i></a>
                                                                 </div>
 
                                                                 <div class="col-auto text-center">
-                                                                    <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#confirmModal-{{ loop.index }}" data-tooltip="tooltip" data-placement="top" title="{{'admin.content.file.34'|trans}}" data-original-title="{{'admin.content.file.34'|trans}}"><i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a>
+                                                                    <a class="btn btn-ec-actionIcon action-delete" data-toggle="modal" data-target="#confirmModal-{{ loop.index }}" data-tooltip="tooltip" data-placement="top" title="{{'admin.content.file.34'|trans}}" data-original-title="{{'admin.content.file.34'|trans}}"><i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a>
 
                                                                     <div class="modal fade" id="confirmModal-{{ loop.index }}" tabindex="-1" role="dialog" aria-labelledby="confirmModal-{{ loop.index }}" aria-hidden="true">
                                                                         <div class="modal-dialog" role="document">
