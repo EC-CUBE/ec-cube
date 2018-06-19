@@ -508,6 +508,11 @@ return [
     'cart.product.not.status' => '現時点で購入できない商品が含まれておりました。該当商品をカートから削除しました。',
     'cart.product.not.saletype' => '「%product%」はまだ配送の準備ができておりません。
 恐れ入りますがお問い合わせページよりお問い合わせください。',
+    'cart.shipping.free' => '送料無料',
+    'cart.shipping.free_applied' => '現在送料無料です',
+    'cart.shipping.free_if_amount_quantity' => 'あと「%amount%」または「%quantity%」のお買い上げで%free_text%になります。',
+    'cart.shipping.free_if_amount' => 'あと「%amount%」のお買い上げで%free_text%になります。',
+    'cart.shipping.free_if_quantity' => 'あと「%quantity%」のお買い上げで%free_text%になります。',
     'shopping.multiple.delivery' => '配送方法が異なる商品が含まれているため、お届け先は複数となります。',
     'shopping.multiple.quantity.diff' => '数量の合計が、カゴの中の数量と異なっています。',
     'shopping.delivery.not.saletype' => '配送の準備ができていない商品が含まれております。
