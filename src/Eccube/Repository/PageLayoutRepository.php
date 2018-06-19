@@ -71,7 +71,7 @@ class PageLayoutRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('p')
             ->select('p, bp, b')
-            ->leftJoin('p.BlockPositions', 'bp', 'WITH', 'p.id = bp.page_id')
+            ->leftJoin('p.BlockPositions', 'bp')
             ->leftJoin('bp.Block', 'b')
             ->andWhere('p.DeviceType = :DeviceType AND p.id = :pageId')
             ->addOrderBy('bp.target_id', 'ASC')
@@ -87,7 +87,7 @@ class PageLayoutRepository extends EntityRepository
 
         $qb = $this->createQueryBuilder('p')
             ->select('p, bp, b')
-            ->leftJoin('p.BlockPositions', 'bp', 'WITH', 'p.id = bp.page_id')
+            ->leftJoin('p.BlockPositions', 'bp')
             ->leftJoin('bp.Block', 'b')
             ->andWhere('p.DeviceType = :DeviceType AND bp.anywhere = 1')
             ->addOrderBy('bp.target_id', 'ASC')
@@ -121,7 +121,7 @@ class PageLayoutRepository extends EntityRepository
 
         $qb = $this->createQueryBuilder('p')
             ->select('p, bp, b')
-            ->leftJoin('p.BlockPositions', 'bp', 'WITH', 'p.id = bp.page_id')
+            ->leftJoin('p.BlockPositions', 'bp')
             ->leftJoin('bp.Block', 'b')
             ->andWhere('p.DeviceType = :DeviceType AND p.url = :url')
             ->addOrderBy('bp.target_id', 'ASC')
@@ -142,7 +142,7 @@ class PageLayoutRepository extends EntityRepository
 
         $qb = $this->createQueryBuilder('p')
             ->select('p, bp, b')
-            ->leftJoin('p.BlockPositions', 'bp', 'WITH', 'p.id = bp.page_id')
+            ->leftJoin('p.BlockPositions', 'bp')
             ->leftJoin('bp.Block', 'b')
             ->andWhere('p.DeviceType = :DeviceType AND bp.anywhere = 1')
             ->addOrderBy('bp.target_id', 'ASC')
