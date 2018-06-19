@@ -422,7 +422,7 @@ class EF03OrderCest
             ->登録する();
 
         // 新規お届け先が追加されていることを確認
-        $I->see($nameSei, '#form_shipping_multiple_0_shipping_0_customer_address > option:nth-child(3)');
+        $I->see($nameSei, '#form_shipping_multiple_0_shipping_0_customer_address > option:nth-child(2)');
 
         // -------- EF0305-UC06-T01_複数配送 - 同じ商品種別（同一配送先） --------
         // 複数配送設定
