@@ -146,6 +146,10 @@ $(function() {
     });
 });
 
+$(window).on('pageshow', function() {
+    loadingOverlay('hide');
+});
+
 /**
  * オーバーレイ処理を行う関数
  */
@@ -154,13 +158,10 @@ function loadingOverlay(action) {
     if (action == 'hide') {
         $('.bg-load-overlay').remove();
     } else {
-        $overlay = $('<div class="bg-load-overlay">');
+        // FIXME
+        $overlay = $('<div class="bg-load-overlay" style="background: rgba(255, 255, 255, 0.4); box-sizing: border-box; position: fixed; display: flex; flex-flow: column nowrap; align-items: center; justify-content: space-around; top: 0; left: 0; width: 100%; height: 100%; z-index: 2147483647; opacity: 1;">');
         $('body').append($overlay);
     }
-
-    setTimeout(function() {
-        loadingOverlay('hide');
-    }, 5000);
 }
 
 /////////// ロールオーバー
