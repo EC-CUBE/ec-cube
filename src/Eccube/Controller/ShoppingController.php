@@ -831,11 +831,11 @@ class ShoppingController extends AbstractShoppingController
                 ) { // $paymentMethod->apply() が Response を返した場合は画面遷移
                     return $dispatcher;                // 画面遷移したいパターンが複数ある場合はどうする？ 引数で制御？
                 }
-                $PaymentResult = $paymentService->doCheckout($paymentMethod); // 決済実行
-                if (!$PaymentResult->isSuccess()) {
-                    $this->entityManager->getConnection()->rollback();
 
-                    return $this->redirectToRoute('shopping_error');
+                // 決済実行
+                $response = $this->forwardToRoute('shopping_do_checkout_order');
+                if ($response->isRedirection() || $response->getContent()) {
+                    return $response;
                 }
 
                 $this->entityManager->flush();
@@ -862,6 +862,31 @@ class ShoppingController extends AbstractShoppingController
             }
 
             return $this->forwardToRoute('shopping_after_complete');
+        }
+
+        return new Response();
+    }
+
+    /**
+     * 決済完了処理
+     *
+     * @ForwardOnly
+     * @Route("/shopping/do_checkout_order", name="shopping_do_checkout_order")
+     */
+    public function doCheckoutOrder(Request $request)
+    {
+        $form = $this->parameterBag->get(OrderType::class);
+        $Order = $this->parameterBag->get('Order');
+
+        $paymentService = $this->createPaymentService($Order);
+        $paymentMethod = $this->createPaymentMethod($Order, $form);
+
+        // 決済実行
+        $PaymentResult = $paymentService->doCheckout($paymentMethod);
+        if (!$PaymentResult->isSuccess()) {
+            $this->entityManager->getConnection()->rollback();
+
+            $this->addError($PaymentResult->getErrors());
         }
 
         return new Response();
@@ -925,7 +950,7 @@ class ShoppingController extends AbstractShoppingController
     private function createPaymentService(Order $Order)
     {
         $serviceClass = $Order->getPayment()->getServiceClass();
-        $paymentService = new $serviceClass($this->container->get('request_stack'));
+        $paymentService = new $serviceClass($this->container->get('request_stack')); // コンテナから取得したい
 
         return $paymentService;
     }
@@ -933,7 +958,7 @@ class ShoppingController extends AbstractShoppingController
     private function createPaymentMethod(Order $Order, $form)
     {
         $methodClass = $Order->getPayment()->getMethodClass();
-        $PaymentMethod = new $methodClass();
+        $PaymentMethod = new $methodClass(); // コンテナから取得したい
         $PaymentMethod->setFormType($form);
         $PaymentMethod->setRequest($this->container->get('request_stack')->getCurrentRequest());
 

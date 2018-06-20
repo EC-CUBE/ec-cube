@@ -13,9 +13,16 @@
 
 namespace Eccube\Service;
 
+use Eccube\Service\Payment\PaymentDispatcher;
 use Eccube\Service\Payment\PaymentMethod;
+use Eccube\Service\Payment\PaymentResult;
 use Symfony\Component\HttpFoundation\RequestStack;
 
+/**
+ * PaymentService
+ *
+ * 必要に応じて決済代行会社ごとに継承して実装する
+ */
 class PaymentService
 {
     /**
@@ -33,6 +40,9 @@ class PaymentService
         $this->requestStack = $requestStack;
     }
 
+    /**
+     * @return PaymentDispatcher
+     */
     public function dispatch(PaymentMethod $method)
     {
         // PaymentMethod->apply に処理を移譲する
@@ -42,6 +52,9 @@ class PaymentService
         return $method->apply($request);
     }
 
+    /**
+     * @return PaymentResult
+     */
     public function doCheckout(PaymentMethod $method)
     {
         // ここに EventDispatcher を仕掛けておけば,いろいろできるけど,やりすぎないで.

@@ -13,13 +13,28 @@
 
 namespace Eccube\Service\Payment;
 
+use Symfony\Component\Form\FormTypeInterface;
+use Symfony\Component\HttpFoundation\Response;
+
+/**
+ * PaymentMethod
+ *
+ * 必要に応じて決済手段ごとに実装する
+ */
 interface PaymentMethod
 {
+    /**
+     * @return PaymentResult
+     */
     public function checkout();
 
+    /**
+     * @return PaymentDispatcher
+     */
     public function apply();
 
-    public function setFormType($form);
-
-    public function setApplication($app);
+    /**
+     * @param FormTypeInterface
+     */
+    public function setFormType(FormTypeInterface $form);
 }
