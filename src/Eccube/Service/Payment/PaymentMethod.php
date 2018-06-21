@@ -13,7 +13,9 @@
 
 namespace Eccube\Service\Payment;
 
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormTypeInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -34,7 +36,12 @@ interface PaymentMethod
     public function apply();
 
     /**
-     * @param FormTypeInterface
+     * @param FormInterface
      */
-    public function setFormType(FormTypeInterface $form);
+    public function setFormType(FormInterface $form);
+
+    /**
+     * @param Request $request
+     */
+    public function setRequest(Request $request);
 }
