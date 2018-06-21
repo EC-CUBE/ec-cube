@@ -45,10 +45,12 @@ class CreditCardExtention extends AbstractTypeExtension
 
             // 支払い方法が一致する場合
             if ($my_payment_id == $data->getPayment()->getId()) {
+                // TODO 確認画面以降は, Orderエンティティに保持されるため不要
+                // TODO 注文手続き画面か確認画面かわかるようにする
                 dump(222);
                 $form->add('sample_payment_token', HiddenType::class, [
-                    'constraints' => new NotBlank(),
                 ]);
+
                 $form->add('sample_payment_card_no', TextType::class, [
                     'required' => false,
                     'mapped' => false,
