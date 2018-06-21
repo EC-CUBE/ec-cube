@@ -452,8 +452,6 @@ class EditController extends AbstractController
             }
 
             $data = [];
-
-            $formatTel = '%s-%s-%s';
             $formatName = '%s%s(%s%s)';
             foreach ($Customers as $Customer) {
                 $data[] = [
@@ -461,7 +459,7 @@ class EditController extends AbstractController
                     'name' => sprintf($formatName, $Customer->getName01(), $Customer->getName02(),
                         $Customer->getKana01(),
                         $Customer->getKana02()),
-                    'tel' => sprintf($formatTel, $Customer->getTel01(), $Customer->getTel02(), $Customer->getTel03()),
+                    'phone_number' => $Customer->getPhonenumber(),
                     'email' => $Customer->getEmail(),
                 ];
             }
@@ -530,7 +528,7 @@ class EditController extends AbstractController
                 'addr01' => $Customer->getAddr01(),
                 'addr02' => $Customer->getAddr02(),
                 'email' => $Customer->getEmail(),
-                'tel01' => $Customer->getTel01(),
+                'tel01' => $Customer->getPhonenumber(),
                 'tel02' => $Customer->getTel02(),
                 'tel03' => $Customer->getTel03(),
                 'fax01' => $Customer->getFax01(),

@@ -104,44 +104,9 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * @var string|null
      *
-     * @ORM\Column(name="tel01", type="string", length=5, nullable=true)
+     * @ORM\Column(name="phone_number", type="string", length=14, nullable=true)
      */
-    private $tel01;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="tel02", type="string", length=4, nullable=true)
-     */
-    private $tel02;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="tel03", type="string", length=4, nullable=true)
-     */
-    private $tel03;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="fax01", type="string", length=5, nullable=true)
-     */
-    private $fax01;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="fax02", type="string", length=4, nullable=true)
-     */
-    private $fax02;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="fax03", type="string", length=4, nullable=true)
-     */
-    private $fax03;
+    private $phone_number;
 
     /**
      * @var \DateTime|null
@@ -596,147 +561,27 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set tel01.
+     * Set phone_number.
      *
-     * @param string|null $tel01
+     * @param string|null $phone_number
      *
      * @return Customer
      */
-    public function setTel01($tel01 = null)
+    public function setPhoneNumber($phone_number = null)
     {
-        $this->tel01 = $tel01;
+        $this->phone_number = $phone_number;
 
         return $this;
     }
 
     /**
-     * Get tel01.
+     * Get phone_number.
      *
      * @return string|null
      */
-    public function getTel01()
+    public function getPhoneNumber()
     {
-        return $this->tel01;
-    }
-
-    /**
-     * Set tel02.
-     *
-     * @param string|null $tel02
-     *
-     * @return Customer
-     */
-    public function setTel02($tel02 = null)
-    {
-        $this->tel02 = $tel02;
-
-        return $this;
-    }
-
-    /**
-     * Get tel02.
-     *
-     * @return string|null
-     */
-    public function getTel02()
-    {
-        return $this->tel02;
-    }
-
-    /**
-     * Set tel03.
-     *
-     * @param string|null $tel03
-     *
-     * @return Customer
-     */
-    public function setTel03($tel03 = null)
-    {
-        $this->tel03 = $tel03;
-
-        return $this;
-    }
-
-    /**
-     * Get tel03.
-     *
-     * @return string|null
-     */
-    public function getTel03()
-    {
-        return $this->tel03;
-    }
-
-    /**
-     * Set fax01.
-     *
-     * @param string|null $fax01
-     *
-     * @return Customer
-     */
-    public function setFax01($fax01 = null)
-    {
-        $this->fax01 = $fax01;
-
-        return $this;
-    }
-
-    /**
-     * Get fax01.
-     *
-     * @return string|null
-     */
-    public function getFax01()
-    {
-        return $this->fax01;
-    }
-
-    /**
-     * Set fax02.
-     *
-     * @param string|null $fax02
-     *
-     * @return Customer
-     */
-    public function setFax02($fax02 = null)
-    {
-        $this->fax02 = $fax02;
-
-        return $this;
-    }
-
-    /**
-     * Get fax02.
-     *
-     * @return string|null
-     */
-    public function getFax02()
-    {
-        return $this->fax02;
-    }
-
-    /**
-     * Set fax03.
-     *
-     * @param string|null $fax03
-     *
-     * @return Customer
-     */
-    public function setFax03($fax03 = null)
-    {
-        $this->fax03 = $fax03;
-
-        return $this;
-    }
-
-    /**
-     * Get fax03.
-     *
-     * @return string|null
-     */
-    public function getFax03()
-    {
-        return $this->fax03;
+        return $this->phone_number;
     }
 
     /**

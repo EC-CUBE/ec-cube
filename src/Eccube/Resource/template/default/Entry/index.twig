@@ -123,31 +123,12 @@ file that was distributed with this source code.
                         </dl>
                         <dl>
                             <dt>
-                                {{ form_label(form.tel, 'signup.label.tel_number', {'label_attr': {'class': 'ec-label'}}) }}
+                                {{ form_label(form.phone_number, 'signup.label.tel_number', {'label_attr': {'class': 'ec-label'}}) }}
                             </dt>
                             <dd>
-                                <div class="ec-telInput{{ has_errors(form.tel.tel01, form.tel.tel02, form.tel.tel03) ? ' error' }}">
-                                    {{ form_widget(form.tel.tel01) }}<span>-</span>
-                                    {{ form_widget(form.tel.tel02) }}<span>-</span>
-                                    {{ form_widget(form.tel.tel03) }}
-                                    {{ form_errors(form.tel.tel01) }}
-                                    {{ form_errors(form.tel.tel02) }}
-                                    {{ form_errors(form.tel.tel03) }}
-                                </div>
-                            </dd>
-                        </dl>
-                        <dl>
-                            <dt>
-                                {{ form_label(form.fax, 'signup.label.fax', {'label_attr': {'class': 'ec-label'}}) }}
-                            </dt>
-                            <dd>
-                                <div class="ec-telInput{{ has_errors(form.fax.fax01, form.fax.fax02, form.fax.fax03) ? ' error' }}">
-                                    {{ form_widget(form.fax.fax01) }}<span>-</span>
-                                    {{ form_widget(form.fax.fax02) }}<span>-</span>
-                                    {{ form_widget(form.fax.fax03) }}
-                                    {{ form_errors(form.fax.fax01) }}
-                                    {{ form_errors(form.fax.fax02) }}
-                                    {{ form_errors(form.fax.fax03) }}
+                                <div class="ec-telInput{{ has_errors(form.phone_number) ? ' error' }}">
+                                    {{ form_widget(form.phone_number) }}
+                                    {{ form_errors(form.phone_number) }}
                                 </div>
                             </dd>
                         </dl>

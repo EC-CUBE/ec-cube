@@ -21,7 +21,7 @@ use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\KanaType;
 use Eccube\Form\Type\NameType;
 use Eccube\Form\Type\PriceType;
-use Eccube\Form\Type\TelType;
+use Eccube\Form\Type\PhoneNumberType;
 use Eccube\Form\Type\PostalType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -144,7 +144,7 @@ class OrderType extends AbstractType
                     new Assert\Email(['strict' => true]),
                 ],
             ])
-            ->add('tel', TelType::class, [
+            ->add('tel', PhoneNumberType::class, [
                 'required' => false,
                 'options' => [
                     'constraints' => [
@@ -152,7 +152,7 @@ class OrderType extends AbstractType
                     ],
                 ],
             ])
-            ->add('fax', TelType::class, [
+            ->add('fax', PhoneNumberType::class, [
                 'label' => 'order.label.fax_number',
                 'required' => false,
             ])

@@ -17,7 +17,7 @@ use Eccube\Common\EccubeConfig;
 use Eccube\Form\EventListener\ConvertKanaListener;
 use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\PriceType;
-use Eccube\Form\Type\TelType;
+use Eccube\Form\Type\PhoneNumberType;
 use Eccube\Form\Type\ToggleSwitchType;
 use Eccube\Form\Type\PostalType;
 use Symfony\Component\Form\AbstractType;
@@ -94,11 +94,11 @@ class ShopMasterType extends AbstractType
                 'label' => 'common.label.address',
                 'required' => false,
             ])
-            ->add('tel', TelType::class, [
+            ->add('tel', PhoneNumberType::class, [
                 'label' => 'common.label.phone_number',
                 'required' => false,
             ])
-            ->add('fax', TelType::class, [
+            ->add('fax', PhoneNumberType::class, [
                 'label' => 'common.label.fax_number',
                 'required' => false,
             ])

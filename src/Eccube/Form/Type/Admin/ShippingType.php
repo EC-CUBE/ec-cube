@@ -21,7 +21,7 @@ use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\KanaType;
 use Eccube\Form\Type\Master\ShippingStatusType;
 use Eccube\Form\Type\NameType;
-use Eccube\Form\Type\TelType;
+use Eccube\Form\Type\PhoneNumberType;
 use Eccube\Form\Type\PostalType;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\DeliveryTimeRepository;
@@ -149,7 +149,7 @@ class ShippingType extends AbstractType
                     'attr' => ['class' => 'p-extended-address'],
                 ],
             ])
-            ->add('tel', TelType::class, [
+            ->add('tel', PhoneNumberType::class, [
                 'required' => false,
                 'options' => [
                     'constraints' => [
@@ -157,7 +157,7 @@ class ShippingType extends AbstractType
                     ],
                 ],
             ])
-            ->add('fax', TelType::class, [
+            ->add('fax', PhoneNumberType::class, [
                 'label' => 'shipping.label.fax',
                 'required' => false,
             ])
