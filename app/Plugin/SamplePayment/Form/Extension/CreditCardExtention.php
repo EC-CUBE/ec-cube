@@ -23,6 +23,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * 注文手続き画面のFormを拡張し、カード入力フォームを追加する.
@@ -45,11 +46,6 @@ class CreditCardExtention extends AbstractTypeExtension
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
-            // TODO
-            // - 自身の支払い方法IDを知る必要がある
-            // - インストール時に、支払い方法へ追加する際、そのIDをどこかに保持しておくか、なんかしらの識別子をdtb_paymentにもたせる
-            $my_payment_id = 1;
-
             /** @var Order $data */
             $data = $event->getData();
             $form = $event->getForm();
@@ -58,8 +54,13 @@ class CreditCardExtention extends AbstractTypeExtension
             if ($data->getPayment()->getMethodClass() === CreditCard::class) {
                 // TODO 確認画面以降は, Orderエンティティに保持されるため不要
                 // TODO 注文手続き画面か確認画面かわかるようにする
-                dump(222);
                 $form->add('sample_payment_token', HiddenType::class, [
+                    'required' => false,
+                    'mapped' => true, // Orderエンティティに追加したカラムなので、mappedはtrue
+                    // TODO 注文手続き画面の場合のみNotBlankを有効にしたい
+                    // 'constraints' => [
+                    //    new NotBlank()
+                    //]*/
                 ]);
 
                 $form->add('sample_payment_card_no', TextType::class, [
@@ -67,18 +68,18 @@ class CreditCardExtention extends AbstractTypeExtension
                     'mapped' => false,
                 ]);
 
-                // TODO
-                // 確認する or 注文するボタンもここで制御したい
-                // 属性追加やon click追加など
+                // 確認画面の表示用、submitは行わない(credit_confirm.twig参照)
+                // PaymentMethod::verifyで、取得した下4桁の番号をセットしている(予定)
+                $form->add('sample_payment_card_no_last4', HiddenType::class, [
+                    'required' => false,
+                    'mapped' => false,
+                ]);
+                // TODO 確認する or 注文するボタンもここで制御したい
+                // TODO 属性追加やon click追加など
             }
         });
 
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
-            // TODO
-            // - 自身の支払い方法IDを知る必要がある
-            // - インストール時に、支払い方法へ追加する際、そのIDをどこかに保持しておくか、なんかしらの識別子をdtb_paymentにもたせる
-            $my_payment_id = 1;
-
             $Payment = $this->paymentRepository->findOneBy(['method_class' => CreditCard::class]);
 
             /** @var Order $data */
@@ -89,6 +90,7 @@ class CreditCardExtention extends AbstractTypeExtension
             if ($Payment->getId() != $data['Payment']) {
                 $form->remove('sample_payment_token');
                 $form->remove('sample_payment_card_no');
+                $form->remove('sample_payment_card_no_last4');
             }
         });
     }
