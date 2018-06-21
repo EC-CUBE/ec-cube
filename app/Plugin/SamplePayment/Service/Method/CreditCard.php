@@ -94,7 +94,8 @@ class CreditCard implements PaymentMethod
         $this->Order->setSamplePaymentPaymentStatus($PaymentStatus);
 
         // TODO ここでの処理はcheckoutで実装しても実質的には問題ない
-        // TODO flushされるタイミングが読みづらいな...
+        // TODO 3Dセキュアのフローが見えてない
+        // TODO flushされるタイミングが読みづらいな->最後にflush
     }
 
     /**
@@ -109,6 +110,8 @@ class CreditCard implements PaymentMethod
         // TODO Orderエンティティにトークンが保持されているのでフォームは不要
         // TODO フォームよりOrderがほしい
         // TODO applyやcheckoutでOrderが渡ってきてほしい.
+        // TODO やっぱりFormはいる -> Orderには保持しないデータはFormで引き回す(確認画面とか). 画面に持っていくデータを詰められるオブジェクトがあればいいのかな
+
     }
 
     /**
