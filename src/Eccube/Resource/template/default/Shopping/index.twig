@@ -128,6 +128,23 @@ file that was distributed with this source code.
             });
             {% endif %}
 
+            $('#shopping-form > div > div.ec-orderRole__summary > div > div.ec-totalBox__btn > button').on('click', function(e) {
+                // TODO 他のイベントでも、カード番号はPOSTしないようにする必要あり
+
+                // トークン取得処理
+                var card_no = $('#shopping_order_sample_payment_card_no').val();
+                if (card_no == '') {
+                    alert('カード番号が入力されていません');
+                    return false;
+                }
+                // サーバ通信してトークン取得
+                var token = 'aaabbbccc123456';
+
+                // hiddenにトークンをセット
+                $('#shopping_order_sample_payment_token').val(token);
+                // カードをクリア
+                $('#shopping_order_sample_payment_card_no').val('');
+            });
         });
     </script>
 {% endblock javascript %}
@@ -349,6 +366,21 @@ file that was distributed with this source code.
             {% else %}
                 {{ form_widget(form.use_point, {'type': 'hidden'}) }}
             {% endif %}
+
+            {% if form.sample_payment_card_no is defined %}
+            <div class="ec-orderPayment">
+                <div class="ec-rectHeading">
+                    <h2>カード(暫定実装)</h2>
+                </div>
+                <div class="ec-input">
+                    {{ form_widget(form.sample_payment_card_no) }}
+                    {{ form_errors(form.sample_payment_card_no) }}
+                    {{ form_widget(form.sample_payment_token) }}
+                </div>
+            </div>
+            {% endif %}
+
+
             <div class="ec-orderConfirm">
                 <div class="ec-rectHeading">
                     <h2>{{'common.label.inquiry'|trans}}</h2>
