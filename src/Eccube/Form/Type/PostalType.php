@@ -52,24 +52,10 @@ class PostalType extends AbstractType
 
         // required の場合は NotBlank も追加する
         if ($options['required']) {
-            $options['options']['constraints'] = array_merge([
-                new Assert\NotBlank([]),
-            ], $options['options']['constraints']);
+            $options['options'] = array_merge([
+                new Assert\NotBlank(),
+            ], $options['options']);
         }
-
-        if (!isset($options['options']['error_bubbling'])) {
-            $options['options']['error_bubbling'] = $options['error_bubbling'];
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function buildView(FormView $view, FormInterface $form, array $options)
-    {
-        $builder = $form->getConfig();
-//        $view->vars['zip01_name'] = $builder->getAttribute('zip01_name');
-//        $view->vars['zip02_name'] = $builder->getAttribute('zip02_name');
     }
 
     /**
@@ -79,9 +65,9 @@ class PostalType extends AbstractType
     {
         $resolver->setDefaults([
             'options' => [
-                'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['eccube_postal_code']]),
-                ],
+            ],
+            'constraints' => [
+                new Assert\Length(['max' => $this->eccubeConfig['eccube_postal_code']]),
             ],
             'attr' => [
                 'class' => 'p-postal-code',
