@@ -15,6 +15,8 @@ namespace Plugin\SamplePayment\Form\Extension;
 
 use Eccube\Entity\Order;
 use Eccube\Form\Type\Shopping\OrderType;
+use Eccube\Repository\PaymentRepository;
+use Plugin\SamplePayment\Service\Method\CreditCard;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -30,6 +32,16 @@ use Symfony\Component\Form\FormEvents;
  */
 class CreditCardExtention extends AbstractTypeExtension
 {
+    /**
+     * @var PaymentRepository
+     */
+    protected $paymentRepository;
+
+    public function __construct(PaymentRepository $paymentRepository)
+    {
+        $this->paymentRepository = $paymentRepository;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
@@ -43,7 +55,7 @@ class CreditCardExtention extends AbstractTypeExtension
             $form = $event->getForm();
 
             // 支払い方法が一致する場合
-            if ($my_payment_id == $data->getPayment()->getId()) {
+            if ($data->getPayment()->getMethodClass() === CreditCard::class) {
                 // TODO 確認画面以降は, Orderエンティティに保持されるため不要
                 // TODO 注文手続き画面か確認画面かわかるようにする
                 dump(222);
@@ -67,12 +79,14 @@ class CreditCardExtention extends AbstractTypeExtension
             // - インストール時に、支払い方法へ追加する際、そのIDをどこかに保持しておくか、なんかしらの識別子をdtb_paymentにもたせる
             $my_payment_id = 1;
 
+            $Payment = $this->paymentRepository->findOneBy(['method_class' => CreditCard::class]);
+
             /** @var Order $data */
             $data = $event->getData();
             $form = $event->getForm();
 
             // 支払い方法が一致しなければremove
-            if ($my_payment_id != $data['Payment']) {
+            if ($Payment->getId() != $data['Payment']) {
                 $form->remove('sample_payment_token');
                 $form->remove('sample_payment_card_no');
             }

@@ -76,9 +76,9 @@ trait OrderTrait
     }
 
     /**
-     * @param PaymentStatus $SamplePaymentPaymentStatus
+     * @param PaymentStatus $SamplePaymentPaymentStatus|null
      */
-    public function setSamplePaymentPaymentStatus(PaymentStatus $SamplePaymentPaymentStatus)
+    public function setSamplePaymentPaymentStatus(PaymentStatus $SamplePaymentPaymentStatus = null)
     {
         $this->SamplePaymentPaymentStatus = $SamplePaymentPaymentStatus;
     }
