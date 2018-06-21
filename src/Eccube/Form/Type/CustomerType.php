@@ -85,7 +85,7 @@ class CustomerType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('zip', ZipType::class, [
+            ->add('zip', PostalType::class, [
                 'required' => false,
             ])
             ->add('address', AddressType::class, [

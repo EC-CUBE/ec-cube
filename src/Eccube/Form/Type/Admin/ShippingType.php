@@ -22,7 +22,7 @@ use Eccube\Form\Type\KanaType;
 use Eccube\Form\Type\Master\ShippingStatusType;
 use Eccube\Form\Type\NameType;
 use Eccube\Form\Type\TelType;
-use Eccube\Form\Type\ZipType;
+use Eccube\Form\Type\PostalType;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\DeliveryTimeRepository;
 use Eccube\Util\StringUtil;
@@ -112,7 +112,7 @@ class ShippingType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('zip', ZipType::class, [
+            ->add('zip', PostalType::class, [
                 'required' => false,
                 'options' => [
                     'constraints' => [

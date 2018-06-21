@@ -22,7 +22,7 @@ use Eccube\Form\Type\KanaType;
 use Eccube\Form\Type\NameType;
 use Eccube\Form\Type\PriceType;
 use Eccube\Form\Type\TelType;
-use Eccube\Form\Type\ZipType;
+use Eccube\Form\Type\PostalType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -99,7 +99,7 @@ class OrderType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('zip', ZipType::class, [
+            ->add('zip', PostalType::class, [
                 'required' => false,
                 'options' => [
                     'constraints' => [

@@ -25,7 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Class ZipType
  */
-class ZipType extends AbstractType
+class PostalType extends AbstractType
 {
     /**
      * @var EccubeConfig
@@ -47,8 +47,8 @@ class ZipType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $options['zip01_options']['required'] = $options['required'];
-        $options['zip02_options']['required'] = $options['required'];
+        $builder->addEventSubscriber(new \Eccube\Form\EventListener\ConvertZenToHanListener('as'));
+        $builder->addEventSubscriber(new \Eccube\Form\EventListener\ConvertPostalListener());
 
         // required の場合は NotBlank も追加する
         if ($options['required']) {
@@ -60,21 +60,6 @@ class ZipType extends AbstractType
         if (!isset($options['options']['error_bubbling'])) {
             $options['options']['error_bubbling'] = $options['error_bubbling'];
         }
-
-        if (empty($options['zip01_name'])) {
-            $options['zip01_name'] = $builder->getName().'01';
-        }
-        if (empty($options['zip02_name'])) {
-            $options['zip02_name'] = $builder->getName().'02';
-        }
-
-        $builder
-            ->add($options['zip01_name'], TextType::class, array_merge_recursive($options['options'], $options['zip01_options']))
-            ->add($options['zip02_name'], TextType::class, array_merge_recursive($options['options'], $options['zip02_options']))
-        ;
-
-        $builder->setAttribute('zip01_name', $options['zip01_name']);
-        $builder->setAttribute('zip02_name', $options['zip02_name']);
     }
 
     /**
@@ -83,8 +68,8 @@ class ZipType extends AbstractType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $builder = $form->getConfig();
-        $view->vars['zip01_name'] = $builder->getAttribute('zip01_name');
-        $view->vars['zip02_name'] = $builder->getAttribute('zip02_name');
+//        $view->vars['zip01_name'] = $builder->getAttribute('zip01_name');
+//        $view->vars['zip02_name'] = $builder->getAttribute('zip02_name');
     }
 
     /**
@@ -93,31 +78,24 @@ class ZipType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'options' => ['constraints' => [], 'attr' => ['class' => 'p-postal-code']],
-            'zip01_options' => [
-                'attr' => [
-                    'placeholder' => 'Zip01',
-                ],
+            'options' => [
                 'constraints' => [
-                    new Assert\Type(['type' => 'numeric', 'message' => 'form.type.numeric.invalid']),
-                    new Assert\Length(['min' => $this->eccubeConfig['eccube_zip01_len'], 'max' => $this->eccubeConfig['eccube_zip01_len']]),
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_postal_code']]),
                 ],
             ],
-            'zip02_options' => [
-                'attr' => [
-                    'placeholder' => 'Zip02',
-                ],
-                'constraints' => [
-                    new Assert\Type(['type' => 'numeric', 'message' => 'form.type.numeric.invalid']),
-                    new Assert\Length(['min' => $this->eccubeConfig['eccube_zip02_len'], 'max' => $this->eccubeConfig['eccube_zip02_len']]),
-                ],
+            'attr' => [
+                'class' => 'p-postal-code',
+                'placeholder' => 'Postal',
             ],
-            'zip01_name' => '',
-            'zip02_name' => '',
-            'error_bubbling' => false,
-            'inherit_data' => true,
+
+//            'error_bubbling' => false,
             'trim' => true,
         ]);
+    }
+
+    public function getParent()
+    {
+        return TextType::class;
     }
 
     /**
@@ -125,6 +103,6 @@ class ZipType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'zip';
+        return 'postal';
     }
 }

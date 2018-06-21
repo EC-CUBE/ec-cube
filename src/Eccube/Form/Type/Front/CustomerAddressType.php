@@ -18,7 +18,7 @@ use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\KanaType;
 use Eccube\Form\Type\NameType;
 use Eccube\Form\Type\TelType;
-use Eccube\Form\Type\ZipType;
+use Eccube\Form\Type\PostalType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -63,7 +63,7 @@ class CustomerAddressType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('zip', ZipType::class)
+            ->add('zip', PostalType::class)
             ->add('address', AddressType::class)
             ->add('tel', TelType::class, [
                 'required' => true,

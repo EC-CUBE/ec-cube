@@ -22,7 +22,7 @@ use Eccube\Form\Type\NameType;
 use Eccube\Form\Type\RepeatedEmailType;
 use Eccube\Form\Type\RepeatedPasswordType;
 use Eccube\Form\Type\TelType;
-use Eccube\Form\Type\ZipType;
+use Eccube\Form\Type\PostalType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -66,7 +66,7 @@ class EntryType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('zip', ZipType::class)
+            ->add('postal_code', PostalType::class)
             ->add('address', AddressType::class)
             ->add('tel', TelType::class, [
                 'required' => true,

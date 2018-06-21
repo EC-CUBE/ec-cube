@@ -17,7 +17,7 @@ use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\KanaType;
 use Eccube\Form\Type\NameType;
 use Eccube\Form\Type\TelType;
-use Eccube\Form\Type\ZipType;
+use Eccube\Form\Type\PostalType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -38,7 +38,7 @@ class ContactType extends AbstractType
             ->add('kana', KanaType::class, [
                 'required' => false,
             ])
-            ->add('zip', ZipType::class, [
+            ->add('zip', PostalType::class, [
                 'required' => false,
             ])
             ->add('address', AddressType::class, [

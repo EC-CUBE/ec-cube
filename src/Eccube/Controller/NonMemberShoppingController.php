@@ -131,9 +131,7 @@ class NonMemberShoppingController extends AbstractShoppingController
                 ->setTel01($data['tel01'])
                 ->setTel02($data['tel02'])
                 ->setTel03($data['tel03'])
-                ->setZip01($data['zip01'])
-                ->setZip02($data['zip02'])
-                ->setZipCode($data['zip01'].$data['zip02'])
+                ->setPostalcode($data['postal_code'])
                 ->setPref($data['pref'])
                 ->setAddr01($data['addr01'])
                 ->setAddr02($data['addr02']);

@@ -229,16 +229,15 @@ file that was distributed with this source code.
     {% endfor -%}
 {%- endblock fax_widget -%}
 
-{%- block zip_widget -%}
-    {%- if freeze -%}
-        {%- if freeze_display_text -%}〒&nbsp;{%- endif -%}{{ form_widget(form[form.vars.zip01_name]) }}{%- if freeze_display_text -%}&nbsp;-&nbsp;{%- endif -%}{{- form_widget(form[form.vars.zip02_name]) }}
-    {%- else -%}
-        〒{{- form_widget(form[form.vars.zip01_name], {'id': 'zip01', 'attr': {'style': 'ime-mode: disabled;', 'pattern': '\\d*'}}) }}-{{- form_widget(form[form.vars.zip02_name], {'id': 'zip02', 'attr': {'style': 'ime-mode: disabled;', 'pattern': '\\d*'}}) }} <span class="question-circle"><svg class="cb cb-question"><use xlink:href="#cb-question" /></svg></span> <a href="http://www.post.japanpost.jp/zipcode/" target="_blank">郵便番号検索</a>
-        {%- for child in form %}
-            {{- form_errors(child) -}}
-        {% endfor -%}
-    {%- endif -%}
-{%- endblock zip_widget -%}
+{#{%- block postal_widget -%}#}
+    {#aaaaa#}
+    {#{%- if freeze -%}#}
+        {#{%- if freeze_display_text -%}〒&nbsp;{%- endif -%}{{ form_widget(form[form.vars.postal_code]) }}#}
+    {#{%- else -%}#}
+        {#〒{{- form_widget(form[form.vars.postal_code], {'id': 'postal', 'attr': {'style': 'ime-mode: disabled;', 'pattern': '\\d*'}}) }} <span class="question-circle"><svg class="cb cb-question"><use xlink:href="#cb-question" /></svg></span> <a href="http://www.post.japanpost.jp/zipcode/" target="_blank">郵便番号検索</a>#}
+        {#{{- form_errors(form) -}}#}
+    {#{%- endif -%}#}
+{#{%- endblock postal_widget -%}#}
 
 {%- block address_widget -%}
     <div class="form-inline form-group input_zip">

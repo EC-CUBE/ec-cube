@@ -13,7 +13,7 @@
 
 namespace Eccube\Tests\Form\Type;
 
-use Eccube\Form\Type\ZipType;
+use Eccube\Form\Type\PostalType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 
 class ZipTypeTest extends AbstractTypeTestCase
@@ -34,7 +34,7 @@ class ZipTypeTest extends AbstractTypeTestCase
         parent::setUp();
         $this->form = $this->formFactory
             ->createBuilder(FormType::class, null, ['csrf_protection' => false])
-            ->add('zip', ZipType::class)
+            ->add('zip', PostalType::class)
             ->getForm();
     }
 
@@ -81,7 +81,7 @@ class ZipTypeTest extends AbstractTypeTestCase
     {
         $this->form = $this->formFactory
             ->createBuilder(FormType::class, null, ['csrf_protection' => false])
-            ->add('zip', ZipType::class, [
+            ->add('zip', PostalType::class, [
                 'required' => true,
             ])
             ->getForm();
@@ -96,7 +96,7 @@ class ZipTypeTest extends AbstractTypeTestCase
     {
         $this->form = $this->formFactory
             ->createBuilder(FormType::class, null, ['csrf_protection' => false])
-            ->add('zip', ZipType::class, [
+            ->add('zip', PostalType::class, [
                 'required' => true,
             ])
             ->getForm();

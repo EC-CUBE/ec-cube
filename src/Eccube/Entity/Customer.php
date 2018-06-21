@@ -76,23 +76,9 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * @var string|null
      *
-     * @ORM\Column(name="zip01", type="string", length=3, nullable=true)
+     * @ORM\Column(name="postal_code", type="string", length=8, nullable=true)
      */
-    private $zip01;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="zip02", type="string", length=4, nullable=true)
-     */
-    private $zip02;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="zipcode", type="string", length=7, nullable=true)
-     */
-    private $zipcode;
+    private $postal_code;
 
     /**
      * @var string|null
@@ -514,75 +500,27 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set zip01.
+     * Set postal_code.
      *
-     * @param string|null $zip01
+     * @param string|null $postal_code
      *
      * @return Customer
      */
-    public function setZip01($zip01 = null)
+    public function setPostalCode($postal_code = null)
     {
-        $this->zip01 = $zip01;
+        $this->postal_code = $postal_code;
 
         return $this;
     }
 
     /**
-     * Get zip01.
+     * Get postal_code.
      *
      * @return string|null
      */
-    public function getZip01()
+    public function getPostalCode()
     {
-        return $this->zip01;
-    }
-
-    /**
-     * Set zip02.
-     *
-     * @param string|null $zip02
-     *
-     * @return Customer
-     */
-    public function setZip02($zip02 = null)
-    {
-        $this->zip02 = $zip02;
-
-        return $this;
-    }
-
-    /**
-     * Get zip02.
-     *
-     * @return string|null
-     */
-    public function getZip02()
-    {
-        return $this->zip02;
-    }
-
-    /**
-     * Set zipcode.
-     *
-     * @param string|null $zipcode
-     *
-     * @return Customer
-     */
-    public function setZipcode($zipcode = null)
-    {
-        $this->zipcode = $zipcode;
-
-        return $this;
-    }
-
-    /**
-     * Get zipcode.
-     *
-     * @return string|null
-     */
-    public function getZipcode()
-    {
-        return $this->zipcode;
+        return $this->postal_code;
     }
 
     /**
