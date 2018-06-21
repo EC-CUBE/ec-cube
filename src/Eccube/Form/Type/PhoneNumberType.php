@@ -82,7 +82,7 @@ class PhoneNumberType extends AbstractType
             'options' => ['constraints' => []],
             'constraints' => $constraints,
             'attr' => [
-                'placeholder' => 'Tel',
+                'placeholder' => 'PhoneNumber',
             ],
             'trim' => true,
         ]);

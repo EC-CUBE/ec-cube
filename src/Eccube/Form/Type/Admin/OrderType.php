@@ -144,17 +144,13 @@ class OrderType extends AbstractType
                     new Assert\Email(['strict' => true]),
                 ],
             ])
-            ->add('tel', PhoneNumberType::class, [
+            ->add('phone_number', PhoneNumberType::class, [
                 'required' => false,
                 'options' => [
                     'constraints' => [
                         new Assert\NotBlank(),
                     ],
                 ],
-            ])
-            ->add('fax', PhoneNumberType::class, [
-                'label' => 'order.label.fax_number',
-                'required' => false,
             ])
             ->add('company_name', TextType::class, [
                 'label' => 'order.label.company_name',

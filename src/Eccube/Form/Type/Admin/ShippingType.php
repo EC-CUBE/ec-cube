@@ -149,17 +149,13 @@ class ShippingType extends AbstractType
                     'attr' => ['class' => 'p-extended-address'],
                 ],
             ])
-            ->add('tel', PhoneNumberType::class, [
+            ->add('phone_number', PhoneNumberType::class, [
                 'required' => false,
                 'options' => [
                     'constraints' => [
                         new Assert\NotBlank(),
                     ],
                 ],
-            ])
-            ->add('fax', PhoneNumberType::class, [
-                'label' => 'shipping.label.fax',
-                'required' => false,
             ])
             ->add('Delivery', EntityType::class, [
                 'required' => false,

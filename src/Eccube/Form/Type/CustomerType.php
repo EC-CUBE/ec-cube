@@ -92,10 +92,7 @@ class CustomerType extends AbstractType
                 'help' => 'form.contact.address.help',
                 'required' => false,
             ])
-            ->add('tel', PhoneNumberType::class, [
-                'required' => false,
-            ])
-            ->add('fax', PhoneNumberType::class, [
+            ->add('phone_number', PhoneNumberType::class, [
                 'required' => false,
             ])
             ->add('email', EmailType::class, [

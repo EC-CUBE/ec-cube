@@ -94,12 +94,8 @@ class ShopMasterType extends AbstractType
                 'label' => 'common.label.address',
                 'required' => false,
             ])
-            ->add('tel', PhoneNumberType::class, [
+            ->add('phone_number', PhoneNumberType::class, [
                 'label' => 'common.label.phone_number',
-                'required' => false,
-            ])
-            ->add('fax', PhoneNumberType::class, [
-                'label' => 'common.label.fax_number',
                 'required' => false,
             ])
             ->add('business_hour', TextType::class, [

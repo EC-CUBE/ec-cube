@@ -65,11 +65,8 @@ class CustomerAddressType extends AbstractType
             ])
             ->add('zip', PostalType::class)
             ->add('address', AddressType::class)
-            ->add('tel', PhoneNumberType::class, [
+            ->add('phone_number', PhoneNumberType::class, [
                 'required' => true,
-            ])
-            ->add('fax', PhoneNumberType::class, [
-                'required' => false,
             ]);
     }
 

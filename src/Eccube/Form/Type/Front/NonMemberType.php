@@ -68,7 +68,7 @@ class NonMemberType extends AbstractType
             ->add('address', AddressType::class, [
                 'required' => true,
             ])
-            ->add('tel', PhoneNumberType::class, [
+            ->add('phone_number', PhoneNumberType::class, [
                 'required' => true,
             ])
             ->add('email', RepeatedEmailType::class);

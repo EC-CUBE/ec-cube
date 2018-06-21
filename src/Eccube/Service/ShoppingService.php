@@ -18,6 +18,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
+use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Delivery;
 use Eccube\Entity\MailHistory;
 use Eccube\Entity\Master\DeviceType;
@@ -436,7 +437,7 @@ class ShoppingService
             ->setKana02($Customer->getKana02())
             ->setCompanyName($Customer->getCompanyName())
             ->setEmail($Customer->getEmail())
-            ->setTel01($Customer->getPhonenumber())
+            ->setPhoneNumber($Customer->getPhoneNumber())
             ->setZip01($Customer->getZip01())
             ->setZip02($Customer->getZip02())
             ->setZipCode($Customer->getZip01().$Customer->getZip02())
@@ -550,6 +551,7 @@ class ShoppingService
             return $Shipping;
         }
 
+        /** @var CustomerAddress $CustomerAddress */
         $CustomerAddress = $this->customerAddressRepository->findOneBy(
             ['Customer' => $Customer],
             ['id' => 'ASC']
@@ -562,12 +564,7 @@ class ShoppingService
                 ->setKana01($CustomerAddress->getKana01())
                 ->setKana02($CustomerAddress->getKana02())
                 ->setCompanyName($CustomerAddress->getCompanyName())
-                ->setTel01($CustomerAddress->getTel01())
-                ->setTel02($CustomerAddress->getTel02())
-                ->setTel03($CustomerAddress->getTel03())
-                ->setFax01($CustomerAddress->getFax01())
-                ->setFax02($CustomerAddress->getFax02())
-                ->setFax03($CustomerAddress->getFax03())
+                ->setPhoneNumber($CustomerAddress->getPhoneNumber())
                 ->setZip01($CustomerAddress->getZip01())
                 ->setZip02($CustomerAddress->getZip02())
                 ->setZipCode($CustomerAddress->getZip01().$CustomerAddress->getZip02())
@@ -581,12 +578,7 @@ class ShoppingService
                 ->setKana01($Customer->getKana01())
                 ->setKana02($Customer->getKana02())
                 ->setCompanyName($Customer->getCompanyName())
-                ->setTel01($Customer->getPhonenumber())
-                ->setTel02($Customer->getTel02())
-                ->setTel03($Customer->getTel03())
-                ->setFax01($Customer->getFax01())
-                ->setFax02($Customer->getFax02())
-                ->setFax03($Customer->getFax03())
+                ->setPhoneNumber($Customer->getPhoneNumber())
                 ->setZip01($Customer->getZip01())
                 ->setZip02($Customer->getZip02())
                 ->setZipCode($Customer->getZip01().$Customer->getZip02())

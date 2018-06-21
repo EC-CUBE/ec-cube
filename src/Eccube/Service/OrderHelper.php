@@ -295,7 +295,7 @@ class OrderHelper
             ->setKana01($Customer->getKana01())
             ->setKana02($Customer->getKana02())
             ->setCompanyName($Customer->getCompanyName())
-            ->setTel01($Customer->getPhonenumber())
+            ->setPhoneNumber($Customer->getPhoneNumber())
             ->setZip01($Customer->getZip01())
             ->setZip02($Customer->getZip02())
             ->setZipCode($Customer->getZip01().$Customer->getZip02())

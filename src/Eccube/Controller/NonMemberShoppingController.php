@@ -273,6 +273,7 @@ class NonMemberShoppingController extends AbstractShoppingController
 
                 return $response;
             }
+            /** @var Order $Order */
             $Order = $this->shoppingService->getOrder(OrderStatus::PROCESSING);
             if (!$Order) {
                 log_info('カートが存在しません');
@@ -286,9 +287,7 @@ class NonMemberShoppingController extends AbstractShoppingController
                 ->setKana01($data['customer_kana01'])
                 ->setKana02($data['customer_kana02'])
                 ->setCompanyName($data['customer_company_name'])
-                ->setTel01($data['customer_tel01'])
-                ->setTel02($data['customer_tel02'])
-                ->setTel03($data['customer_tel03'])
+                ->setPhoneNumber($data['customer_phone_number'])
                 ->setZip01($data['customer_zip01'])
                 ->setZip02($data['customer_zip02'])
                 ->setZipCode($data['customer_zip01'].$data['customer_zip02'])
@@ -381,34 +380,12 @@ class NonMemberShoppingController extends AbstractShoppingController
         );
 
         $errors[] = $this->validator->validate(
-            $data['customer_tel01'],
+            $data['customer_phone_number'],
             [
                 new Assert\NotBlank(),
                 new Assert\Type(['type' => 'numeric', 'message' => 'form.type.numeric.invalid']),
                 new Assert\Length(
-                    ['max' => $this->eccubeConfig['eccube_tel_len'], 'min' => $this->eccubeConfig['eccube_tel_len_min']]
-                ),
-            ]
-        );
-
-        $errors[] = $this->validator->validate(
-            $data['customer_tel02'],
-            [
-                new Assert\NotBlank(),
-                new Assert\Type(['type' => 'numeric', 'message' => 'form.type.numeric.invalid']),
-                new Assert\Length(
-                    ['max' => $this->eccubeConfig['eccube_tel_len'], 'min' => $this->eccubeConfig['eccube_tel_len_min']]
-                ),
-            ]
-        );
-
-        $errors[] = $this->validator->validate(
-            $data['customer_tel03'],
-            [
-                new Assert\NotBlank(),
-                new Assert\Type(['type' => 'numeric', 'message' => 'form.type.numeric.invalid']),
-                new Assert\Length(
-                    ['max' => $this->eccubeConfig['eccube_tel_len'], 'min' => $this->eccubeConfig['eccube_tel_len_min']]
+                    ['max' => $this->eccubeConfig['eccube_tel_len_max']]
                 ),
             ]
         );

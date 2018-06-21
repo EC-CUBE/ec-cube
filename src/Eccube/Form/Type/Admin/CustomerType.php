@@ -76,11 +76,8 @@ class CustomerType extends AbstractType
             ->add('address', AddressType::class, [
                 'required' => true,
             ])
-            ->add('tel', PhoneNumberType::class, [
+            ->add('phone_number', PhoneNumberType::class, [
                 'required' => true,
-            ])
-            ->add('fax', PhoneNumberType::class, [
-                'required' => false,
             ])
             ->add('email', EmailType::class, [
                 'required' => true,

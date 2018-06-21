@@ -44,7 +44,7 @@ class ContactType extends AbstractType
             ->add('address', AddressType::class, [
                 'required' => false,
             ])
-            ->add('tel', PhoneNumberType::class, [
+            ->add('phone_number', PhoneNumberType::class, [
                 'required' => false,
             ])
             ->add('email', EmailType::class, [

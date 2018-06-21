@@ -55,8 +55,7 @@ file that was distributed with this source code.
 {% endif %}
 {{'signup.label.postal_code'|trans}}：〒{{ Order.zip01 }}-{{ Order.zip02 }}
 {{'signup.label.address'|trans}}　　：{{ Order.Pref.name }}{{ Order.addr01 }}{{ Order.addr02 }}
-{{'signup.label.tel_number'|trans}}：{{ Order.tel01 }}-{{ Order.tel02 }}-{{ Order.tel03 }}
-{{'signup.label.fax'|trans}} ：{{ Order.fax01 }}-{{ Order.fax02 }}-{{ Order.fax03 }}
+{{'signup.label.tel_number'|trans}}：{{ Order.phone_number }}
 
 {{'signup.label.email'|trans}}：{{ Order.email }}
 
@@ -74,8 +73,7 @@ file that was distributed with this source code.
 {% endif %}
 {{'signup.label.postal_code'|trans}}：〒{{ Shipping.zip01 }}-{{ Shipping.zip02 }}
 {{'signup.label.address'|trans}}　　：{{ Shipping.Pref.name }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}
-{{'signup.label.tel_number'|trans}}：{{ Shipping.tel01 }}-{{ Shipping.tel02 }}-{{ Shipping.tel03 }}
-{{'signup.label.fax'|trans}} ：{{ Shipping.fax01 }}-{{ Shipping.fax02 }}-{{ Shipping.fax03 }}
+{{'signup.label.tel_number'|trans}}：{{ Shipping.phone_number }}
 
 {{'shopping.label.delivery_date'|trans}}：{{ Shipping.shipping_delivery_date is empty ? 'shopping.label.anytime' : Shipping.shipping_delivery_date|date_format }}
 {{'shopping.label.delivery_hours'|trans}}：{{ Shipping.shipping_delivery_time|default('shopping.label.anytime') }}

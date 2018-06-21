@@ -30,7 +30,7 @@ file that was distributed with this source code.
 ■{{'signup.label.postal_code'|trans}}：{% if data.zip01 and data.zip02 %}〒{{ data.zip01 }} - {{ data.zip02 }}{% endif %}
 
 ■{{'signup.label.address'|trans}}　　：{% if data.pref.name is defined %} {{ data.pref.name }}{% endif %}{{ data.addr01 }}{{ data.addr02 }}
-■{{'signup.label.tel_number'|trans}}：{{ data.tel01 }} - {{ data.tel02 }} - {{ data.tel03 }}
+■{{'signup.label.tel_number'|trans}}：{{ data.phone_number }}
 ■{{'signup.label.email'|trans}}：{{ data.email }}
 ■{{'common.label.inquiry_content'|trans}}
 
