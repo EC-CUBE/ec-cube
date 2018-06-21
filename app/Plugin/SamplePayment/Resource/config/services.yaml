@@ -1,0 +1,5 @@
+services:
+  # TODO 本体側でcontainer->get()で呼ばれるのでpublic: trueにしとく
+  Plugin\SamplePayment\Service\Method\CreditCard:
+    public: true
+    autowire: true
