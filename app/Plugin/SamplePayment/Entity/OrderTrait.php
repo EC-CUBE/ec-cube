@@ -35,6 +35,19 @@ trait OrderTrait
     private $sample_payment_token;
 
     /**
+     * 決済ステータスを保持するカラム.
+     *
+     * dtb_order.sample_payment_payment_status_id
+     *
+     * @var PaymentStatus
+     * @ORM\ManyToOne(targetEntity="Plugin\SamplePayment\Entity\PaymentStatus")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="sample_payment_payment_id", referencedColumnName="id")
+     * })
+     */
+    private $SamplePaymentPaymentStatus;
+
+    /**
      * @return string
      */
     public function getSamplePaymentToken()
@@ -52,5 +65,21 @@ trait OrderTrait
         $this->sample_payment_token = $sample_payment_token;
 
         return $this;
+    }
+
+    /**
+     * @return PaymentStatus
+     */
+    public function getSamplePaymentPaymentStatus()
+    {
+        return $this->SamplePaymentPaymentStatus;
+    }
+
+    /**
+     * @param PaymentStatus $SamplePaymentPaymentStatus
+     */
+    public function setSamplePaymentPaymentStatus(PaymentStatus $SamplePaymentPaymentStatus)
+    {
+        $this->SamplePaymentPaymentStatus = $SamplePaymentPaymentStatus;
     }
 }
