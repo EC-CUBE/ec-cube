@@ -217,6 +217,8 @@ class ShoppingController extends AbstractShoppingController
             return $this->redirectToRoute('shopping_error');
         }
 
+        $this->entityManager->flush();
+
         return [
             'form' => $form->createView(),
             'Order' => $Order,
