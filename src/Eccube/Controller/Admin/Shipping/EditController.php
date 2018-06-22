@@ -218,6 +218,8 @@ class EditController extends AbstractController
                 log_error('出荷登録エラー', [$TargetShipping->getId(), $e]);
                 $this->addError('admin.flash.register_failed', 'admin');
             }
+        } elseif ($form->isSubmitted() && $form->getErrors(true)) {
+            $this->addError('admin.flash.register_failed', 'admin');
         }
 
         // 配送業者のお届け時間
