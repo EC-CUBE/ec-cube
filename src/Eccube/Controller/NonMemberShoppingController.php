@@ -291,9 +291,7 @@ class NonMemberShoppingController extends AbstractShoppingController
                 ->setTel01($data['customer_tel01'])
                 ->setTel02($data['customer_tel02'])
                 ->setTel03($data['customer_tel03'])
-                ->setZip01($data['customer_zip01'])
-                ->setZip02($data['customer_zip02'])
-                ->setZipCode($data['customer_zip01'].$data['customer_zip02'])
+                ->setPostalCode($data['customer_postal_code'])
                 ->setPref($pref)
                 ->setAddr01($data['customer_addr01'])
                 ->setAddr02($data['customer_addr02'])
@@ -416,12 +414,12 @@ class NonMemberShoppingController extends AbstractShoppingController
         );
 
         $errors[] = $this->validator->validate(
-            $data['customer_zip01'],
+            $data['customer_postal_code'],
             [
                 new Assert\NotBlank(),
                 new Assert\Type(['type' => 'numeric', 'message' => 'form.type.numeric.invalid']),
                 new Assert\Length(
-                    ['min' => $this->eccubeConfig['eccube_zip01_len'], 'max' => $this->eccubeConfig['eccube_zip01_len']]
+                    ['max' => $this->eccubeConfig['eccube_postal_code']]
                 ),
             ]
         );

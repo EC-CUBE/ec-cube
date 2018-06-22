@@ -204,8 +204,8 @@ file that was distributed with this source code.
                                                     {{ form_errors(form.kana.kana02) }}
                                                     {{ form_widget(form.company_name) }}
                                                     {{ form_errors(form.company_name) }}
-                                                    {{ form_widget(form.zip.zip01) }}-{{ form_widget(form.zip.zip02) }}
-                                                    {{ form_errors(form.zip.zip01) }}{{ form_errors(form.zip.zip02) }}
+                                                    {{ form_widget(form.postal_code) }}
+                                                    {{ form_errors(form.postal_code) }}
                                                     {{ form_widget(form.address.pref) }}
                                                     {{ form_errors(form.address.pref) }}
                                                     {{ form_widget(form.address.addr01, {'attr':{'placeholder':'admin.shipping.edit.736'}}) }}
@@ -227,9 +227,8 @@ file that was distributed with this source code.
                                                 </div>
                                                 {% if Shipping.id %}
                                                     <label>{{ Shipping.name01 }} {{ Shipping.name02 }}（{{ Shipping.kana01 }} {{ Shipping.kana02 }}）<br>
-                                                        {{ 'admin.shipping.edit.zip'|trans({
-                                                            '%zip01%': Shipping.zip01,
-                                                            '%zip02%': Shipping.zip02
+                                                        {{ 'admin.shipping.edit.postal_code'|trans({
+                                                            '%postal_code%': Shipping.postal_code
                                                         }) }}<br>
                                                         {{ Shipping.pref ~ Shipping.addr01 ~ Shipping.addr02 }}<br><a
                                                                 href="#" id="edit-shipping-addr"><i
@@ -248,9 +247,8 @@ file that was distributed with this source code.
                                                     {% for Order in Shipping.Orders %}
                                                         <label>{{ Order.name01 }} {{ Order.name02 }}
                                                             ({{ Order.kana01 }} {{ Order.kana02 }})
-                                                            <br>{{ 'admin.shipping.edit.zip'|trans({
-                                                                '%zip01%': Order.zip01,
-                                                                '%zip02%': Order.zip02
+                                                            <br>{{ 'admin.shipping.edit.postal_code'|trans({
+                                                                '%postal_code%': Order.postal_code
                                                             }) }}
                                                             <br>{{ Order.pref.name ~ Order.addr01 ~ Order.addr02 }}
                                                         </label>

@@ -38,7 +38,7 @@ class ContactType extends AbstractType
             ->add('kana', KanaType::class, [
                 'required' => false,
             ])
-            ->add('zip', PostalType::class, [
+            ->add('postal_code', PostalType::class, [
                 'required' => false,
             ])
             ->add('address', AddressType::class, [

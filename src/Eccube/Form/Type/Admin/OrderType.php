@@ -99,7 +99,7 @@ class OrderType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('zip', PostalType::class, [
+            ->add('postal_code', PostalType::class, [
                 'required' => false,
                 'options' => [
                     'constraints' => [

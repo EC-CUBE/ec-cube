@@ -33,7 +33,7 @@ file that was distributed with this source code.
 {% if Shipping.company_name %}
     会社名　：{{ Shipping.company_name }}
 {% endif %}
-郵便番号：〒{{ Shipping.zip01 }}-{{ Shipping.zip02 }}
+郵便番号：〒{{ Shipping.postal_code }}
 住所　　：{{ Shipping.Pref.name }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}
 電話番号：{{ Shipping.tel01 }}-{{ Shipping.tel02 }}-{{ Shipping.tel03 }}
 FAX番号 ：{{ Shipping.fax01 }}-{{ Shipping.fax02 }}-{{ Shipping.fax03 }}
@@ -47,7 +47,7 @@ FAX番号 ：{{ Shipping.fax01 }}-{{ Shipping.fax02 }}-{{ Shipping.fax03 }}
 {% if Shipping.company_name %}
     会社名　：{{ Shipping.company_name }}
 {% endif %}
-郵便番号：〒{{ Shipping.zip01 }}-{{ Shipping.zip02 }}
+郵便番号：〒{{ Shipping.postal_code }}
 住所　　：{{ Shipping.Pref.name }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}
 電話番号：{{ Shipping.tel01 }}-{{ Shipping.tel02 }}-{{ Shipping.tel03 }}
 FAX番号 ：{{ Shipping.fax01 }}-{{ Shipping.fax02 }}-{{ Shipping.fax03 }}

@@ -53,7 +53,7 @@ file that was distributed with this source code.
 {% if Order.company_name %}
 {{'signup.label.company_name'|trans}}　：{{ Order.company_name }}
 {% endif %}
-{{'signup.label.postal_code'|trans}}：〒{{ Order.zip01 }}-{{ Order.zip02 }}
+{{'signup.label.postal_code'|trans}}：〒{{ Order.postal_code }}
 {{'signup.label.address'|trans}}　　：{{ Order.Pref.name }}{{ Order.addr01 }}{{ Order.addr02 }}
 {{'signup.label.tel_number'|trans}}：{{ Order.tel01 }}-{{ Order.tel02 }}-{{ Order.tel03 }}
 {{'signup.label.fax'|trans}} ：{{ Order.fax01 }}-{{ Order.fax02 }}-{{ Order.fax03 }}
@@ -72,7 +72,7 @@ file that was distributed with this source code.
 {% if Shipping.company_name %}
 {{'shipping.label.shipping_company'|trans}}　：{{ Shipping.company_name }}
 {% endif %}
-{{'signup.label.postal_code'|trans}}：〒{{ Shipping.zip01 }}-{{ Shipping.zip02 }}
+{{'signup.label.postal_code'|trans}}：〒{{ Shipping.postal_code }}
 {{'signup.label.address'|trans}}　　：{{ Shipping.Pref.name }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}
 {{'signup.label.tel_number'|trans}}：{{ Shipping.tel01 }}-{{ Shipping.tel02 }}-{{ Shipping.tel03 }}
 {{'signup.label.fax'|trans}} ：{{ Shipping.fax01 }}-{{ Shipping.fax02 }}-{{ Shipping.fax03 }}

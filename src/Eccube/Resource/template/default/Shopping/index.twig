@@ -230,7 +230,7 @@ file that was distributed with this source code.
                 <div class="ec-orderAccount__account">
                     <p class="ec-halfInput"><span class="customer-edit customer-name01">{{ Order.name01 }}</span> <span class="customer-edit customer-name02">{{ Order.name02 }}</span> 様</p>
                     <p class="ec-halfInput"><span class="customer-edit customer-kana01">{{ Order.kana01 }}</span> <span class="customer-edit customer-kana02">{{ Order.kana02 }}</span></p>
-                    <p class="ec-zipInput">〒<span class="customer-edit customer-zip01">{{ Order.zip01 }}</span>-<span class="customer-edit customer-zip02">{{ Order.zip02 }}</span></p>
+                    <p class="ec-zipInput">〒<span class="customer-edit customer-postal_code">{{ Order.postal_code }}</span></p>
                     <p class="ec-input"><span class="customer-edit customer-pref">{{ Order.pref }}</span><span class="customer-edit customer-addr01">{{ Order.addr01 }}</span><span class="customer-edit customer-addr02">{{ Order.addr02 }}</span></p>
                     <p class="ec-telInput"><span class="customer-edit customer-tel01">{{ Order.tel01 }}</span>-<span class="customer-edit customer-tel02">{{ Order.tel02 }}</span>-<span class="customer-edit customer-tel03">{{ Order.tel03 }}</span></p>
                 </div>
@@ -247,8 +247,7 @@ file that was distributed with this source code.
                 <input type="hidden" id="customer-name02" class="customer-in" name="customer_name02" value="{{ Order.name02 }}">
                 <input type="hidden" id="customer-kana01" class="customer-in" name="customer_kana01" value="{{ Order.kana01 }}">
                 <input type="hidden" id="customer-kana02" class="customer-in" name="customer_kana02" value="{{ Order.kana02 }}">
-                <input type="hidden" id="customer-zip01" class="customer-in" name="customer_zip01" value="{{ Order.zip01 }}">
-                <input type="hidden" id="customer-zip02" class="customer-in" name="customer_zip02" value="{{ Order.zip02 }}">
+                <input type="hidden" id="customer-postal_code" class="customer-in" name="customer_postal_code" value="{{ Order.postal_code }}">
                 <input type="hidden" id="customer-pref" class="customer-in" name="customer_pref" value="{{ Order.pref }}">
                 <input type="hidden" id="customer-addr01" class="customer-in" name="customer_addr01" value="{{ Order.addr01 }}">
                 <input type="hidden" id="customer-addr02" class="customer-in" name="customer_addr02" value="{{ Order.addr02 }}">
@@ -297,7 +296,7 @@ file that was distributed with this source code.
                     </div>
                     <div class="ec-orderDelivery__address">
                         <p>{{ shipping.name01 }} {{ shipping.name02 }} ({{ shipping.kana01 }} {{ shipping.kana02 }}) 様</p>
-                        <p>〒{{ shipping.zip01 }}-{{ shipping.zip02 }} {{ shipping.pref }}{{ shipping.addr01 }}{{ shipping.addr02 }}</p>
+                        <p>〒{{ shipping.postal_code }} {{ shipping.pref }}{{ shipping.addr01 }}{{ shipping.addr02 }}</p>
                         <p>{{ shipping.tel01 }}-{{ shipping.tel02 }}-{{ shipping.tel03 }}</p>
                     </div>
                     <div class="ec-orderDelivery__actions">

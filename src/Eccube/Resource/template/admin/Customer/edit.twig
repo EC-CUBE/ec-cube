@@ -113,15 +113,10 @@ file that was distributed with this source code.
                                             <div class="row justify-content-start">
                                                 <div class="col-auto pr-0 align-self-center"><span>{{ 'admin.customer.edit.post'|trans }}</span></div>
                                                 <div class="col-2">
-                                                    {{ form_widget(form.zip.zip01, { attr : { placeholder : 'admin.customer.edit.zip_placeholder1' }}) }}
+                                                    {{ form_widget(form.postal_code, { attr : { placeholder : 'admin.customer.edit.postal_code_placeholder' }}) }}
                                                 </div>
-                                                <div class="col-auto p-0 align-self-center"><span>-</span></div>
-                                                <div class="col-2">
-                                                    {{ form_widget(form.zip.zip02, { attr : { placeholder : 'admin.customer.edit.zip_placeholder2' }}) }}
-                                                </div>
-                                                {{ form_errors(form.zip) }}
-                                                {{ form_errors(form.zip.zip01) }}
-                                                {{ form_errors(form.zip.zip02) }}
+
+                                                {{ form_errors(form.postal_code) }}
                                             </div>
                                         </div>
 
@@ -334,7 +329,7 @@ file that was distributed with this source code.
                                                         {{ CustomerAddress.name01 }}&nbsp;{{ CustomerAddress.name02 }}
                                                     </td>
                                                     <td class="align-middle">
-                                                        〒{{ CustomerAddress.zip01 }}-{{ CustomerAddress.zip02 }}
+                                                        〒{{ CustomerAddress.postal_code }}
                                                         　{{ CustomerAddress.Pref }}{{ CustomerAddress.addr01 }}{{ CustomerAddress.addr02 }}
                                                     </td>
                                                     <td class="align-middle">

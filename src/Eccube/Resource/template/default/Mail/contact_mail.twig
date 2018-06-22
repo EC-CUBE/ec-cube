@@ -27,7 +27,7 @@ file that was distributed with this source code.
 確認次第ご連絡いたしますので、少々お待ちください。
 
 ■{{'signup.label.name_required'|trans}}　：{{ data.name01 }} {{ data.name02 }}{% if data.kana01 or data.kana02 %} ({{ data.kana01 }} {{ data.kana02 }}){% endif %} 様
-■{{'signup.label.postal_code'|trans}}：{% if data.zip01 and data.zip02 %}〒{{ data.zip01 }} - {{ data.zip02 }}{% endif %}
+■{{'signup.label.postal_code'|trans}}：{% if data.postal_code %}〒{{ data.postal_code }}{% endif %}
 
 ■{{'signup.label.address'|trans}}　　：{% if data.pref.name is defined %} {{ data.pref.name }}{% endif %}{{ data.addr01 }}{{ data.addr02 }}
 ■{{'signup.label.tel_number'|trans}}：{{ data.tel01 }} - {{ data.tel02 }} - {{ data.tel03 }}

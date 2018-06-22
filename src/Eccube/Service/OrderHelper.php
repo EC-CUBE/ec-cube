@@ -301,9 +301,7 @@ class OrderHelper
             ->setFax01($Customer->getFax01())
             ->setFax02($Customer->getFax02())
             ->setFax03($Customer->getFax03())
-            ->setZip01($Customer->getZip01())
-            ->setZip02($Customer->getZip02())
-            ->setZipCode($Customer->getZip01().$Customer->getZip02())
+            ->setPostalCode($Customer->getPostalCode())
             ->setPref($Customer->getPref())
             ->setAddr01($Customer->getAddr01())
             ->setAddr02($Customer->getAddr02());

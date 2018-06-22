@@ -32,10 +32,10 @@ file that was distributed with this source code.
                     </dl>
                 {% endif %}
 
-                {% if BaseInfo.zip01 is defined %}
+                {% if BaseInfo.postal_code is defined %}
                     <dl id="help_about_box__zip">
                         <dt>{{'common.label.address'|trans}}</dt>
-                        <dd>〒{{ BaseInfo.zip01 }}-{{ BaseInfo.zip02 }}<br />
+                        <dd>〒{{ BaseInfo.postal_code }}<br />
                             {{ BaseInfo.pref }}{{ BaseInfo.addr01 }}{{ BaseInfo.addr02 }}
                         </dd>
                     </dl>

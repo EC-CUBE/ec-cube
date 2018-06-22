@@ -59,7 +59,7 @@ file that was distributed with this source code.
                             <dt>{{ form_label(form.address) }}</dt>
                             <dd>
                                 <div id="detail_box__zip"
-                                     class="form-group form-inline input_zip {% if form.zip.zip01.vars.errors is not empty or form.zip.zip02.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.zip) }}</div>
+                                     class="form-group form-inline input_zip {% if form.postal_code.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.postal_code) }}</div>
                                 <div id="detail_box__pref"
                                      class="{% if form.address.pref.vars.errors is not empty or form.address.addr01.vars.errors is not empty or form.address.addr02.vars.errors is not empty %}has-error{% endif %}">
                                     {{ form_widget(form.address) }}

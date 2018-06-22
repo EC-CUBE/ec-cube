@@ -80,11 +80,9 @@ file that was distributed with this source code.
                                     {{ form_label(form.address) }}
                                 </dt>
                                 <dd>
-                                    <div class="ec-zipInput{{ has_errors(form.zip.zip01, form.zip.zip02) ? ' error' }}"><span>〒</span>
-                                        {{ form_widget(form.zip.zip01) }}<span>-</span>
-                                        {{ form_widget(form.zip.zip02) }}
-                                        {{ form_errors(form.zip.zip01) }}
-                                        {{ form_errors(form.zip.zip02) }}
+                                    <div class="ec-zipInput{{ has_errors(form.postal_code) ? ' error' }}"><span>〒</span>
+                                        {{ form_widget(form.postal_code) }}
+                                        {{ form_errors(form.postal_code) }}
                                     </div>
                                     <div class="ec-zipInputHelp"><a href="http://www.post.japanpost.jp/zipcode/"
                                                                     target="_blank">

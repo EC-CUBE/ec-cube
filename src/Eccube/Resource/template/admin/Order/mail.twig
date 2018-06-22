@@ -84,7 +84,7 @@ $(function() {
                         </div>
                         <div class="row mb-2">
                             <div class="col-2"><span>{{ 'admin.order.mail.352'|trans }}</span></div>
-                            <div class="col-4"><span>{{ Order.name01 }} {{ Order.name02 }}（{{ Order.kana01 }} {{ Order.kana02 }}）</span><br>〒{{ Order.zip01 }}-{{ Order.zip02 }}<br>{{ Order.pref }}{{ Order.addr01 }}{{ Order.addr02 }}</div>
+                            <div class="col-4"><span>{{ Order.name01 }} {{ Order.name02 }}（{{ Order.kana01 }} {{ Order.kana02 }}）</span><br>〒{{ Order.postal_code }}<br>{{ Order.pref }}{{ Order.addr01 }}{{ Order.addr02 }}</div>
                             <div class="col-2"><span>{{ 'admin.order.mail.353'|trans }}</span></div>
                             <div class="col-4"><span>
                             {% if Order.productOrderItems %}

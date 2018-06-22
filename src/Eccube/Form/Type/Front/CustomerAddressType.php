@@ -63,7 +63,7 @@ class CustomerAddressType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('zip', PostalType::class)
+            ->add('postal_code', PostalType::class)
             ->add('address', AddressType::class)
             ->add('tel', TelType::class, [
                 'required' => true,

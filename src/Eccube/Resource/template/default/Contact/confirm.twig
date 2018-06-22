@@ -51,9 +51,8 @@ file that was distributed with this source code.
                             </dt>
                             <dd>
                                 {# 郵便番号 #}
-                                <span>〒</span>{{ form.zip.zip01.vars.data }}<span>-</span>{{ form.zip.zip02.vars.data }}
-                                {{ form_widget(form.zip.zip01, { type : 'hidden' }) }}
-                                {{ form_widget(form.zip.zip02, { type : 'hidden' }) }}
+                                <span>〒</span>{{ form.postal_code.vars.data }}
+                                {{ form_widget(form.postal_code, { type : 'hidden' }) }}
                                 {# 都道府県・住所 #}
                                 {{ form.address.pref.vars.data }} {{ form.address.addr01.vars.data }} {{ form.address.addr02.vars.data }}
                                 {{ form_widget(form.address.pref, { type : 'hidden' }) }}

@@ -62,7 +62,7 @@ class NonMemberType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('zip', PostalType::class, [
+            ->add('postal_code', PostalType::class, [
                 'required' => true,
             ])
             ->add('address', AddressType::class, [
