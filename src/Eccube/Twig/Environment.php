@@ -14,7 +14,6 @@
 namespace Eccube\Twig;
 
 use Eccube\Event\TemplateEvent;
-use Eccube\Request\Context;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class Environment extends \Twig_Environment
@@ -29,16 +28,10 @@ class Environment extends \Twig_Environment
      */
     protected $eventDispatcher;
 
-    /**
-     * @var Context
-     */
-    protected $requestContext;
-
-    public function __construct(\Twig_Environment $twig, EventDispatcherInterface $eventDispatcher, Context $context)
+    public function __construct(\Twig_Environment $twig, EventDispatcherInterface $eventDispatcher)
     {
         $this->twig = $twig;
         $this->eventDispatcher = $eventDispatcher;
-        $this->requestContext = $context;
     }
 
     public function render($name, array $context = [])
