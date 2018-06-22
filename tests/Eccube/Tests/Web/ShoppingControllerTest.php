@@ -437,17 +437,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
         // お届け先設定画面へ遷移し POST 送信
         $formData = $this->createShippingFormData();
-        $formData['tel'] = [
-            'tel01' => 222,
-            'tel02' => 222,
-            'tel03' => 222,
-        ];
-        $formData['fax'] = [
-            'fax01' => 111,
-            'fax02' => 111,
-            'fax03' => 111,
-        ];
-
+        $formData['phone_number'] = $faker->phoneNumber;
         $crawler = $client->request(
             'POST',
             $shipping_edit_url,
@@ -464,7 +454,6 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $Message = $this->getMailCatcherMessage($Messages[0]->id);
 
         // https://github.com/EC-CUBE/ec-cube/issues/1305
-        $this->assertRegexp('/111-111-111/', $this->parseMailCatcherSource($Message), '変更した FAX 番号が一致するか');
         $this->assertRegexp('/222-222-222/', $this->parseMailCatcherSource($Message), '変更した 電話番号が一致するか');
     }
 
