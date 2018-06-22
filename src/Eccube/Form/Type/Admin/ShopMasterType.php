@@ -87,7 +87,7 @@ class ShopMasterType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('zip', PostalType::class, [
+            ->add('postal_code', PostalType::class, [
                 'required' => false,
             ])
             ->add('address', AddressType::class, [
