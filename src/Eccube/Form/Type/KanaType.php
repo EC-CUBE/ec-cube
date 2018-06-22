@@ -58,6 +58,7 @@ class KanaType extends AbstractType
                 'constraints' => array(
                     new Assert\Regex(array(
                         'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
+                        'message' => 'form.type.kana.lastname.nothasspace'
                     )),
                     new Assert\Length(array(
                         'max' => $this->config['kana_len'],
@@ -71,6 +72,7 @@ class KanaType extends AbstractType
                 'constraints' => array(
                     new Assert\Regex(array(
                         'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
+                        'message' => 'form.type.kana.firstname.nothasspace'
                     )),
                     new Assert\Length(array(
                         'max' => $this->config['kana_len'],
