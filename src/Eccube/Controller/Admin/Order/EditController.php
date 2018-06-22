@@ -15,6 +15,7 @@ namespace Eccube\Controller\Admin\Order;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Master\OrderStatus;
@@ -350,6 +351,7 @@ class EditController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_SEARCH, $event);
 
+            /** @var Customer[] $Customers */
             $Customers = $qb->getQuery()->getResult();
 
             if (empty($Customers)) {
@@ -357,8 +359,6 @@ class EditController extends AbstractController
             }
 
             $data = [];
-
-            $formatTel = '%s-%s-%s';
             $formatName = '%s%s(%s%s)';
             foreach ($Customers as $Customer) {
                 $data[] = [
@@ -366,7 +366,7 @@ class EditController extends AbstractController
                     'name' => sprintf($formatName, $Customer->getName01(), $Customer->getName02(),
                         $Customer->getKana01(),
                         $Customer->getKana02()),
-                    'tel' => sprintf($formatTel, $Customer->getTel01(), $Customer->getTel02(), $Customer->getTel03()),
+                    'phone_number' => $Customer->getPhoneNumber(),
                     'email' => $Customer->getEmail(),
                 ];
             }
@@ -452,8 +452,6 @@ class EditController extends AbstractController
             }
 
             $data = [];
-
-            $formatTel = '%s-%s-%s';
             $formatName = '%s%s(%s%s)';
             foreach ($Customers as $Customer) {
                 $data[] = [
@@ -461,7 +459,7 @@ class EditController extends AbstractController
                     'name' => sprintf($formatName, $Customer->getName01(), $Customer->getName02(),
                         $Customer->getKana01(),
                         $Customer->getKana02()),
-                    'tel' => sprintf($formatTel, $Customer->getTel01(), $Customer->getTel02(), $Customer->getTel03()),
+                    'phone_number' => $Customer->getPhoneNumber(),
                     'email' => $Customer->getEmail(),
                 ];
             }
@@ -529,12 +527,7 @@ class EditController extends AbstractController
                 'addr01' => $Customer->getAddr01(),
                 'addr02' => $Customer->getAddr02(),
                 'email' => $Customer->getEmail(),
-                'tel01' => $Customer->getTel01(),
-                'tel02' => $Customer->getTel02(),
-                'tel03' => $Customer->getTel03(),
-                'fax01' => $Customer->getFax01(),
-                'fax02' => $Customer->getFax02(),
-                'fax03' => $Customer->getFax03(),
+                'phone_number' => $Customer->getPhoneNumber(),
                 'company_name' => $Customer->getCompanyName(),
             ];
 

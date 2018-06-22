@@ -24,9 +24,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class ZipType
+ * Class PhoneNumberType
  */
-class PostalType extends AbstractType
+class PhoneNumberType extends AbstractType
 {
     /**
      * @var EccubeConfig
@@ -34,7 +34,7 @@ class PostalType extends AbstractType
     protected $eccubeConfig;
 
     /**
-     * ZipType constructor.
+     * TelType constructor.
      *
      * @param EccubeConfig $eccubeConfig
      */
@@ -48,6 +48,7 @@ class PostalType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        // 全角英数を事前に半角にする
         $builder->addEventSubscriber(new \Eccube\Form\EventListener\ConvertKanaListener());
         $builder->addEventSubscriber(new \Eccube\Form\EventListener\TruncateHyphenListener());
     }
@@ -66,7 +67,7 @@ class PostalType extends AbstractType
             }
 
             $constraints[] = new Assert\Length([
-                'max' => $eccubeConfig['eccube_postal_code'],
+                'max' => $eccubeConfig['eccube_tel_len_max'],
             ]);
 
             $constraints[] = new Assert\Type([
@@ -78,11 +79,10 @@ class PostalType extends AbstractType
         };
 
         $resolver->setDefaults([
-            'options' => [],
+            'options' => ['constraints' => []],
             'constraints' => $constraints,
             'attr' => [
-                'class' => 'p-postal-code',
-                'placeholder' => 'Postal',
+                'placeholder' => 'PhoneNumber',
             ],
             'trim' => true,
         ]);
@@ -101,6 +101,6 @@ class PostalType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'postal';
+        return 'phone_number';
     }
 }

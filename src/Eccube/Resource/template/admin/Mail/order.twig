@@ -58,8 +58,7 @@ file that was distributed with this source code.
 {% endif %}
 郵便番号：〒{{ Order.postal_code }}
 住所　　：{{ Order.Pref.name }}{{ Order.addr01 }}{{ Order.addr02 }}
-電話番号：{{ Order.tel01 }}-{{ Order.tel02 }}-{{ Order.tel03 }}
-FAX番号 ：{{ Order.fax01 }}-{{ Order.fax02 }}-{{ Order.fax03 }}
+電話番号：{{ Order.phone_number }}
 
 メールアドレス：{{ Order.email }}
 
@@ -77,8 +76,7 @@ FAX番号 ：{{ Order.fax01 }}-{{ Order.fax02 }}-{{ Order.fax03 }}
 {% endif %}
 郵便番号：〒{{ Shipping.postal_code }}
 住所　　：{{ Shipping.Pref.name }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}
-電話番号：{{ Shipping.tel01 }}-{{ Shipping.tel02 }}-{{ Shipping.tel03 }}
-FAX番号 ：{{ Shipping.fax01 }}-{{ Shipping.fax02 }}-{{ Shipping.fax03 }}
+電話番号：{{ Shipping.phone_number }}
 
 お届け日：{{ Shipping.shipping_delivery_date is empty ? '指定なし' : Shipping.shipping_delivery_date|date_format }}
 お届け時間：{{ Shipping.shipping_delivery_time|default('指定なし') }}

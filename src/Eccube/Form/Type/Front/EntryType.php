@@ -21,7 +21,7 @@ use Eccube\Form\Type\Master\SexType;
 use Eccube\Form\Type\NameType;
 use Eccube\Form\Type\RepeatedEmailType;
 use Eccube\Form\Type\RepeatedPasswordType;
-use Eccube\Form\Type\TelType;
+use Eccube\Form\Type\PhoneNumberType;
 use Eccube\Form\Type\PostalType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
@@ -68,11 +68,8 @@ class EntryType extends AbstractType
             ])
             ->add('postal_code', PostalType::class)
             ->add('address', AddressType::class)
-            ->add('tel', TelType::class, [
+            ->add('phone_number', PhoneNumberType::class, [
                 'required' => true,
-            ])
-            ->add('fax', TelType::class, [
-                'required' => false,
             ])
             ->add('email', RepeatedEmailType::class)
             ->add('password', RepeatedPasswordType::class)

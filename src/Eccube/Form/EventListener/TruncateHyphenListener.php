@@ -17,9 +17,12 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
-class ConvertPostalListener implements EventSubscriberInterface
+class TruncateHyphenListener implements EventSubscriberInterface
 {
 
+    /**
+     * @return array
+     */
     public static function getSubscribedEvents()
     {
         return [
@@ -27,6 +30,9 @@ class ConvertPostalListener implements EventSubscriberInterface
         ];
     }
 
+    /**
+     * @param FormEvent $event
+     */
     public function onPreSubmit(FormEvent $event)
     {
         $data = $event->getData();

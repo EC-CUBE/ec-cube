@@ -151,52 +151,10 @@ file that was distributed with this source code.
                                         <span class="badge badge-primary ml-1">{{ 'admin.customer.edit.required'|trans }}</span>
                                     </div>
                                     <div class="col">
-
                                         <div class="row justify-content-start">
-                                            <div class="col-2">
-                                                {{ form_widget(form.tel.tel01) }}
-                                            </div>
-                                            <div class="col-auto text-center p-0">
-                                                <span class="align-middle">-</span>
-                                            </div>
-                                            <div class="col-2">
-                                                {{ form_widget(form.tel.tel02) }}
-                                            </div>
-                                            <div class="col-auto text-center p-0">
-                                                <span class="align-middle">-</span>
-                                            </div>
-                                            <div class="col-2">
-                                                {{ form_widget(form.tel.tel03) }}
-                                            </div>
+                                            {{ form_widget(form.phone_number) }}
                                         </div>
-                                        {{ form_errors(form.tel.tel01) }}
-                                        {{ form_errors(form.tel.tel02) }}
-                                        {{ form_errors(form.tel.tel03) }}
-                                    </div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-3"><span>{{ 'admin.customer.edit.fax'|trans }}</span></div>
-                                    <div class="col">
-                                        <div class="row justify-content-start">
-                                            <div class="col-2">
-                                                {{ form_widget(form.fax.fax01) }}
-                                            </div>
-                                            <div class="col-auto text-center p-0">
-                                                <span class="align-middle">-</span>
-                                            </div>
-                                            <div class="col-2">
-                                                {{ form_widget(form.fax.fax02) }}
-                                            </div>
-                                            <div class="col-auto text-center p-0">
-                                                <span class="align-middle">-</span>
-                                            </div>
-                                            <div class="col-2">
-                                                {{ form_widget(form.fax.fax03) }}
-                                            </div>
-                                        </div>
-                                        {{ form_errors(form.fax.fax01) }}
-                                        {{ form_errors(form.fax.fax02) }}
-                                        {{ form_errors(form.fax.fax03) }}
+                                        {{ form_errors(form.phone_number) }}
                                     </div>
                                 </div>
                                 <div class="row mb-2">
@@ -333,8 +291,7 @@ file that was distributed with this source code.
                                                         　{{ CustomerAddress.Pref }}{{ CustomerAddress.addr01 }}{{ CustomerAddress.addr02 }}
                                                     </td>
                                                     <td class="align-middle">
-                                                        {{ CustomerAddress.tel01 }}-{{ CustomerAddress.tel02 }}
-                                                        -{{ CustomerAddress.tel03 }}
+                                                        {{ CustomerAddress.phone_number }}
                                                     </td>
                                                     {# TODO: メニューのデザインを整える #}
                                                     <td class="align-middle pr-3">

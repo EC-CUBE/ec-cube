@@ -45,7 +45,7 @@ file that was distributed with this source code.
                                     <div class="ec-addressList__address">
                                         <div>{{ CustomerAddress.name01 }}&nbsp;{{ CustomerAddress.name02 }}</div>
                                         <div>〒{{ CustomerAddress.postal_code }}　{{ CustomerAddress.Pref }}{{ CustomerAddress.addr01 }}{{ CustomerAddress.addr02 }}</div>
-                                        <div>{{ CustomerAddress.tel01 }}-{{ CustomerAddress.tel02 }}-{{ CustomerAddress.tel03 }}</div>
+                                        <div>{{ CustomerAddress.phone_number }}</div>
                                     </div>
                                     <div class="ec-addressList__action"><a class="ec-inlineBtn" href="{{ url('mypage_delivery_edit', { id : CustomerAddress.id }) }}">{{'mypage.label.btn.edit'|trans}}</a></div>
                                 </div>

@@ -21,7 +21,7 @@ use Eccube\Form\Type\Master\JobType;
 use Eccube\Form\Type\Master\SexType;
 use Eccube\Form\Type\NameType;
 use Eccube\Form\Type\RepeatedPasswordType;
-use Eccube\Form\Type\TelType;
+use Eccube\Form\Type\PhoneNumberType;
 use Eccube\Form\Type\PostalType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
@@ -76,11 +76,8 @@ class CustomerType extends AbstractType
             ->add('address', AddressType::class, [
                 'required' => true,
             ])
-            ->add('tel', TelType::class, [
+            ->add('phone_number', PhoneNumberType::class, [
                 'required' => true,
-            ])
-            ->add('fax', TelType::class, [
-                'required' => false,
             ])
             ->add('email', EmailType::class, [
                 'required' => true,

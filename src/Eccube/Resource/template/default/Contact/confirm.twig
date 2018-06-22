@@ -62,13 +62,10 @@ file that was distributed with this source code.
                         </dl>
                         <dl>
                             <dt>
-                                {{ form_label(form.tel, '電話番号', {'label_attr': {'class': 'ec-label'}}) }}
+                                {{ form_label(form.phone_number, 'signup.label.tel_number', {'label_attr': {'class': 'ec-label'}}) }}
                             </dt>
-                            <dd>{{ form.tel.tel01.vars.data }} - {{ form.tel.tel02.vars.data }}
-                                - {{ form.tel.tel03.vars.data }}
-                                {{ form_widget(form.tel.tel01, { type : 'hidden' }) }}
-                                {{ form_widget(form.tel.tel02, { type : 'hidden' }) }}
-                                {{ form_widget(form.tel.tel03, { type : 'hidden' }) }}
+                            <dd>{{ form.phone_number.vars.data }}
+                                {{ form_widget(form.phone_number, { type : 'hidden' }) }}
                             </dd>
                         </dl>
                         <dl>

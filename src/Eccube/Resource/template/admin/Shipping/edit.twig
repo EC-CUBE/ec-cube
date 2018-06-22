@@ -212,18 +212,8 @@ file that was distributed with this source code.
                                                     {{ form_errors(form.address.addr01) }}
                                                     {{ form_widget(form.address.addr02, {'attr':{'placeholder':'admin.shipping.edit.737'}}) }}
                                                     {{ form_errors(form.address.addr02) }}
-                                                    {{ form_widget(form.tel.tel01) }}
-                                                    {{ form_errors(form.tel.tel01) }}
-                                                    {{ form_widget(form.tel.tel02) }}
-                                                    {{ form_errors(form.tel.tel02) }}
-                                                    {{ form_widget(form.tel.tel03) }}
-                                                    {{ form_errors(form.tel.tel03) }}
-                                                    {{ form_widget(form.fax.fax01) }}
-                                                    {{ form_errors(form.fax.fax01) }}
-                                                    {{ form_widget(form.fax.fax02) }}
-                                                    {{ form_errors(form.fax.fax02) }}
-                                                    {{ form_widget(form.fax.fax03) }}
-                                                    {{ form_errors(form.fax.fax03) }}
+                                                    {{ form_widget(form.phone_number) }}
+                                                    {{ form_errors(form.phone_number) }}
                                                 </div>
                                                 {% if Shipping.id %}
                                                     <label>{{ Shipping.name01 }} {{ Shipping.name02 }}（{{ Shipping.kana01 }} {{ Shipping.kana02 }}）<br>

@@ -126,16 +126,12 @@ file that was distributed with this source code.
                 </dl>
                 <dl>
                     <dt>
-                        {{ form_label(form.tel, '電話番号', {'label_attr': {'class': 'ec-label'}}) }}
+                        {{ form_label(form.phone_number, '電話番号', {'label_attr': {'class': 'ec-label'}}) }}
                     </dt>
                     <dd>
-                        <div class="ec-telInput{{ has_errors(form.tel.tel01, form.tel.tel02, form.tel.tel03) ? ' error' }}">
-                            {{ form_widget(form.tel.tel01) }}<span>-</span>
-                            {{ form_widget(form.tel.tel02) }}<span>-</span>
-                            {{ form_widget(form.tel.tel03) }}
-                            {{ form_errors(form.tel.tel01) }}
-                            {{ form_errors(form.tel.tel02) }}
-                            {{ form_errors(form.tel.tel03) }}
+                        <div class="ec-telInput{{ has_errors(form.phone_number) ? ' error' }}">
+                            {{ form_widget(form.phone_number) }}
+                            {{ form_errors(form.phone_number) }}
                         </div>
                     </dd>
                 </dl>
