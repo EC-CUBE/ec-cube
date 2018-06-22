@@ -70,12 +70,6 @@ class OrderEditPage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
-    public function 入力_郵便番号2($value)
-    {
-        $this->tester->fillField(['id' => 'order_zip_zip02'], $value);
-        return $this;
-    }
-
     public function 入力_都道府県($value)
     {
         $this->tester->selectOption(['id' => 'order_address_pref'], $value);
