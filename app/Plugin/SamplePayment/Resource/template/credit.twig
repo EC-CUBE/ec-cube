@@ -26,9 +26,11 @@
             <h2>カード(暫定実装)</h2>
         </div>
         <div class="ec-input">
+            {# jsで取得したトークンをhiddenでサーバサイドへsubmitする. #}
             {{ form_widget(form.sample_payment_token) }}
-            {{ form_widget(form.sample_payment_card_no) }}
-            {{ form_errors(form.sample_payment_card_no) }}
+
+            {# カード番号をサーバサイドへPOSTしないよう, name属性は出力しない #}
+            <input type="text" id="{{ form.sample_payment_card_no.vars.id }}">
         </div>
     </div>
 {% endif %}
