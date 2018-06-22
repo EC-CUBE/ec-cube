@@ -34,7 +34,7 @@ class PhoneNumberType extends AbstractType
     protected $eccubeConfig;
 
     /**
-     * TelType constructor.
+     * PhoneNumberType constructor.
      *
      * @param EccubeConfig $eccubeConfig
      */
