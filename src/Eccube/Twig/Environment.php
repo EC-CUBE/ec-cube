@@ -51,14 +51,8 @@ class Environment extends \Twig_Environment
         // プラグインにはテンプレートファイル名, 文字列化されたtwigファイル, パラメータを渡す.
         $event = new TemplateEvent($name, $source, $context);
 
-        $eventName = $name;
-        if ($this->requestContext->isAdmin()) {
-            // 管理画面の場合, event名に`Admin/`を付ける.
-            $eventName = 'Admin/'.$name;
-        }
-
         // テンプレートフックポイントの実行.
-        $this->eventDispatcher->dispatch($eventName, $event);
+        $this->eventDispatcher->dispatch($name, $event);
 
         // プラグインで変更された文字列から, テンプレートオブジェクトを生成.
         $template = $this->twig->createTemplate($event->getSource());
