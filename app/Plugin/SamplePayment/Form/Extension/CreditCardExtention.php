@@ -63,11 +63,6 @@ class CreditCardExtention extends AbstractTypeExtension
                     //]*/
                 ]);
 
-                $form->add('sample_payment_card_no', TextType::class, [
-                    'required' => false,
-                    'mapped' => false,
-                ]);
-
                 // 確認画面の表示用、submitは行わない(credit_confirm.twig参照)
                 // PaymentMethod::verifyで、取得した下4桁の番号をセットしている(予定)
                 $form->add('sample_payment_card_no_last4', HiddenType::class, [
