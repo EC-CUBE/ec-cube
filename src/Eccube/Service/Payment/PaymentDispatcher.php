@@ -28,12 +28,12 @@ class PaymentDispatcher
     /**
      * @var array
      */
-    private $pathParameters;
+    private $pathParameters = [];
 
     /**
      * @var array
      */
-    private $queryParameters;
+    private $queryParameters = [];
 
     public function isForward()
     {

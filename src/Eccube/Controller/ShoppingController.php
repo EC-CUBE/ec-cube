@@ -31,6 +31,7 @@ use Eccube\Form\Type\Shopping\OrderType;
 use Eccube\Repository\CustomerAddressRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\OrderHelper;
+use Eccube\Service\Payment\PaymentDispatcher;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\ShoppingService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
