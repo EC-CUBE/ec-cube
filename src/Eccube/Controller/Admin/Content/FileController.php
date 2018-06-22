@@ -61,9 +61,9 @@ class FileController extends AbstractController
             ->getForm();
 
         // user_data_dir
-        // $userDataDir = $this->getUserDataDir();
-        // $topDir = $this->normalizePath($userDataDir);
-        $topDir = '/';
+        $userDataDir = $this->getUserDataDir();
+        $topDir = $this->normalizePath($userDataDir);
+//        $topDir = '/';
         // user_data_dirの親ディレクトリ
         $htmlDir = $this->normalizePath($this->getUserDataDir().'/../');
 
@@ -90,7 +90,6 @@ class FileController extends AbstractController
                     break;
             }
         }
-
         $tree = $this->getTree($this->getUserDataDir(), $request);
         $arrFileList = $this->getFileList($nowDir);
         $paths = $this->getPathsToArray($tree);
@@ -116,8 +115,8 @@ class FileController extends AbstractController
      */
     public function view(Request $request)
     {
-        if ($this->checkDir($this->convertStrToServer($request->get('file')), $this->getUserDataDir())) {
-            $file = $this->convertStrToServer($request->get('file'));
+        $file = $this->convertStrToServer($this->getUserDataDir($request->get('file')));
+        if ($this->checkDir($file, $this->getUserDataDir())) {
             setlocale(LC_ALL, 'ja_JP.UTF-8');
 
             return new BinaryFileResponse($file);
@@ -189,10 +188,11 @@ class FileController extends AbstractController
         $this->isTokenValid();
 
         $topDir = $this->getUserDataDir();
-        if ($this->checkDir($this->convertStrToServer($request->get('select_file')), $topDir)) {
+        $file = $this->convertStrToServer($this->getUserDataDir($request->get('select_file')));
+        if ($this->checkDir($file, $topDir)) {
             $fs = new Filesystem();
-            if ($fs->exists($this->convertStrToServer($request->get('select_file')))) {
-                $fs->remove($this->convertStrToServer($request->get('select_file')));
+            if ($fs->exists($file)) {
+                $fs->remove($file);
                 $this->addSuccess('admin.delete.complete', 'admin');
             }
         }
@@ -206,10 +206,9 @@ class FileController extends AbstractController
     public function download(Request $request)
     {
         $topDir = $this->getUserDataDir();
-        $file = $this->convertStrToServer($request->get('select_file'));
+        $file = $this->convertStrToServer($this->getUserDataDir($request->get('select_file')));
         if ($this->checkDir($file, $topDir)) {
             if (!is_dir($file)) {
-                $filename = $this->convertStrFromServer($file);
                 setlocale(LC_ALL, 'ja_JP.UTF-8');
                 $pathParts = pathinfo($file);
 
@@ -259,6 +258,7 @@ class FileController extends AbstractController
         $data = $form->getData();
         $topDir = $this->getUserDataDir();
         $nowDir = $this->getUserDataDir($request->get('now_dir'));
+
         if (!$this->checkDir($nowDir, $topDir)) {
             $this->errors[] = ['message' => 'file.text.error.invalid_upload_folder'];
 
@@ -346,29 +346,45 @@ class FileController extends AbstractController
 
             return strpos($targetPath, $acceptPath) === 0;
         };
-        $dirFinder = Finder::create()
+
+        $finder = Finder::create()
             ->filter($filter)
             ->in($nowDir)
-            ->directories()
             ->sortByName()
             ->depth(0);
-        $fileFinder = Finder::create()
-            ->filter($filter)
-            ->in($nowDir)
-            ->files()
-            ->sortByName()
-            ->depth(0);
-        $dirs = iterator_to_array($dirFinder);
-        $files = iterator_to_array($fileFinder);
+        $dirFinder = $finder->directories();
+        try {
+            $dirs = $dirFinder->getIterator();
+        } catch (\Exception $e) {
+            $dirs = [];
+        }
+
+        $fileFinder = $finder->files();
+        try {
+            $files = $fileFinder->getIterator();
+        } catch (\Exception $e) {
+            $files = [];
+        }
 
         $arrFileList = [];
         foreach ($dirs as $dir) {
+            $dirPath = $this->normalizePath($dir->getRealPath());
+            $childDir = Finder::create()
+                ->in($dirPath)
+                ->directories()
+                ->depth(0);
+            $childFile = Finder::create()
+                ->in($dirPath)
+                ->files()
+                ->depth(0);
+            $countNumber = $childDir->count() + $childFile->count();
             $arrFileList[] = [
                 'file_name' => $this->convertStrFromServer($dir->getFilename()),
-                'file_path' => $this->convertStrFromServer($this->getJailDir($this->normalizePath($dir->getRealPath()))),
+                'file_path' => $this->convertStrFromServer($this->getJailDir($dirPath)),
                 'file_size' => FilesystemUtil::sizeToHumanReadable($dir->getSize()),
                 'file_time' => $dir->getmTime(),
                 'is_dir' => true,
+                'is_empty' => $countNumber == 0 ? true : false,
             ];
         }
         foreach ($files as $file) {
@@ -378,6 +394,7 @@ class FileController extends AbstractController
                 'file_size' => FilesystemUtil::sizeToHumanReadable($file->getSize()),
                 'file_time' => $file->getmTime(),
                 'is_dir' => false,
+                'is_empty' => false,
                 'extension' => $file->getExtension(),
             ];
         }
@@ -424,7 +441,7 @@ class FileController extends AbstractController
     private function getJailDir($path)
     {
         $realpath = realpath($path);
-        $jailPath = str_replace($this->getUserDataDir(), '', $realpath);
+        $jailPath = str_replace(realpath($this->getUserDataDir()), '', $realpath);
 
         return $jailPath ? $jailPath : '/';
     }

@@ -139,7 +139,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $this->assertNotNull($this->container->get('session')->get('eccube.front.shopping.nonmember.customeraddress'));
 
         $this->expected = $formData['name']['name01'];
-        $this->actual = $Nonmember['customer']->getName01();
+        $this->actual = $Nonmember->getName01();
         $this->verify();
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));

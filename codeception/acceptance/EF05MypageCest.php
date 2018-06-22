@@ -171,13 +171,14 @@ class EF05MypageCest
         $I->see('お届け先編集', 'div.ec-pageHeader h1');
     }
 
-    public function mypage_お届け先編集作成(\AcceptanceTester $I)
+    public function mypage_お届け先編集作成変更(\AcceptanceTester $I)
     {
-        $I->wantTo('EF0506-UC01-T02 Mypage お届け先編集作成');
+        $I->wantTo('EF0506-UC01-T02 Mypage お届け先編集作成変更');
         $createCustomer = Fixtures::get('createCustomer');
         $customer = $createCustomer();
         $I->loginAsMember($customer->getEmail(), 'password');
 
+        // お届先作成
         // TOPページ>マイページ>お届け先編集
         MyPage::go($I)
             ->お届け先編集()
@@ -203,16 +204,9 @@ class EF05MypageCest
         CustomerAddressListPage::at($I);
 
         // 一覧に追加されている
-        $I->see('大阪市北区', 'div.ec-addressList div:nth-child(2) div.ec-addressList__address');
-    }
+        $I->see('大阪市北区', 'div.ec-addressList div:nth-child(1) div.ec-addressList__address');
 
-    public function mypage_お届け先編集変更(\AcceptanceTester $I)
-    {
-        $I->wantTo('EF0506-UC02-T01 Mypage お届け先編集変更');
-        $createCustomer = Fixtures::get('createCustomer');
-        $customer = $createCustomer();
-        $I->loginAsMember($customer->getEmail(), 'password');
-
+        // お届先編集
         // TOPページ>マイページ>お届け先編集
         MyPage::go($I)
             ->お届け先編集()
@@ -265,14 +259,13 @@ class EF05MypageCest
             ->入力_電話番号3('111')
             ->登録する();
 
-        $I->see('大阪市西区', 'div.ec-addressList div:nth-child(2) div.ec-addressList__address');
+        $I->see('大阪市西区', 'div.ec-addressList div:nth-child(1) div.ec-addressList__address');
 
         CustomerAddressListPage::at($I)
             ->削除(1);
 
         // 確認
-        $I->see('大阪市西区', 'div.ec-addressList div:nth-child(1) div.ec-addressList__address');
-        $I->dontSee($customer->getAddr01(), 'div.ec-addressList div:nth-child(1) div.ec-addressList__address');
+        $I->see('0 件', 'div.ec-layoutRole div.ec-layoutRole__contents p.ec-para-nomal strong');
     }
 
     public function mypage_退会手続き未実施(\AcceptanceTester $I)

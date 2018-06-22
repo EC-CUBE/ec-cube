@@ -13,9 +13,11 @@
 
 namespace Eccube\Form\Type;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
+use Eccube\Repository\Master\PrefRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -50,6 +52,16 @@ class ShippingMultipleItemType extends AbstractType
     protected $tokenStorage;
 
     /**
+     * @var PrefRepository
+     */
+    protected $prefRepository;
+
+    /**
+     * @var EntityManagerInterface
+     */
+    protected $entityManager;
+
+    /**
      * ShippingMultipleItemType constructor.
      *
      * @param array $eccubeConfig
@@ -61,12 +73,16 @@ class ShippingMultipleItemType extends AbstractType
         EccubeConfig $eccubeConfig,
         Session $session,
         AuthorizationCheckerInterface $authorizationChecker,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        PrefRepository $prefRepository,
+        EntityManagerInterface $entityManager
     ) {
         $this->eccubeConfig = $eccubeConfig;
         $this->session = $session;
         $this->authorizationChecker = $authorizationChecker;
         $this->tokenStorage = $tokenStorage;
+        $this->prefRepository = $prefRepository;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -92,39 +108,37 @@ class ShippingMultipleItemType extends AbstractType
                 $form = $event->getForm();
 
                 if ($this->authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
-                    // 会員の場合、CustomerAddressを設定
+                    // 会員の場合は、会員住所とお届け先住所をマージしてリストを作成
                     /** @var Customer $Customer */
                     $Customer = $this->tokenStorage->getToken()->getUser();
-                    $CustomerAddresses = $Customer->getCustomerAddresses();
-                    $Addresses = array_reduce($CustomerAddresses->toArray(), function (array $result, CustomerAddress $CustomerAddress) {
-                        $result[$CustomerAddress->getShippingMultipleDefaultName()] = $CustomerAddress->getId();
-
-                        return $result;
-                    }, []);
-
-                    $form->add('customer_address', ChoiceType::class, [
-                        'choices' => $Addresses,
-                        'constraints' => [
-                            new Assert\NotBlank(),
-                        ],
-                    ]);
+                    $CustomerAddress = new CustomerAddress();
+                    $CustomerAddress->setFromCustomer($Customer);
+                    $CustomerAddresses = array_merge([$CustomerAddress], $Customer->getCustomerAddresses()->toArray());
                 } else {
-                    // 非会員の場合、セッションに設定されたCustomerAddressを設定
-                    if ($this->session->has('eccube.front.shopping.nonmember.customeraddress')) {
-                        $customerAddresses = $this->session->get('eccube.front.shopping.nonmember.customeraddress');
-                        $customerAddresses = unserialize($customerAddresses);
-                        $addresses = array_map(function (CustomerAddress $CustomerAddress) {
-                            return $CustomerAddress->getShippingMultipleDefaultName();
-                        }, $customerAddresses);
+                    $CustomerAddresses = [];
+                    // 非会員の場合は、セッションに保持されている注文者住所とお届け先住所をマージしてリストを作成
+                    if ($NonMember = $this->session->get('eccube.front.shopping.nonmember')) {
+                        $CustomerAddress = new CustomerAddress();
+                        $CustomerAddress->setFromCustomer($NonMember);
 
-                        $form->add('customer_address', ChoiceType::class, [
-                            'choices' => array_flip($addresses),
-                            'constraints' => [
-                                new Assert\NotBlank(),
-                            ],
-                        ]);
+                        if ($CustomerAddresses = $this->session->get('eccube.front.shopping.nonmember.customeraddress')) {
+                            $CustomerAddresses = unserialize($CustomerAddresses);
+                            $CustomerAddresses = array_merge([$CustomerAddress], $CustomerAddresses);
+                            foreach ($CustomerAddresses as $Address) {
+                                $Pref = $this->prefRepository->find($Address->getPref()->getId());
+                                $Address->setPref($Pref);
+                            }
+                        }
                     }
                 }
+
+                $form->add('customer_address', ChoiceType::class, [
+                    'choices' => $CustomerAddresses,
+                    'choice_label' => 'shippingMultipleDefaultName',
+                    'constraints' => [
+                        new Assert\NotBlank(),
+                    ],
+                ]);
             })
             ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
                 /** @var \Eccube\Entity\Shipping $data */
@@ -139,9 +153,9 @@ class ShippingMultipleItemType extends AbstractType
                 $choices = $form['customer_address']->getConfig()->getOption('choices');
 
                 /* @var CustomerAddress $CustomerAddress */
-                foreach ($choices as $address => $id) {
-                    if ($address === $data->getShippingMultipleDefaultName()) {
-                        $form['customer_address']->setData($id);
+                foreach ($choices as  $address) {
+                    if ($address->getShippingMultipleDefaultName() === $data->getShippingMultipleDefaultName()) {
+                        $form['customer_address']->setData($address);
                         break;
                     }
                 }
