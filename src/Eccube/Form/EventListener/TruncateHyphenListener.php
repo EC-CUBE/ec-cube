@@ -19,7 +19,6 @@ use Symfony\Component\Form\FormEvents;
 
 class TruncateHyphenListener implements EventSubscriberInterface
 {
-
     /**
      * @return array
      */
