@@ -63,9 +63,10 @@ class OrderEditPage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
-    public function 入力_郵便番号1($value)
+    public function 入力_郵便番号($value)
     {
-        $this->tester->fillField(['id' => 'order_zip_zip01'], $value);
+        $this->tester->fillField(['id' => 'order_postal_code'], $value);
+
         return $this;
     }
 
@@ -93,21 +94,10 @@ class OrderEditPage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
-    public function 入力_電話番号1($value)
+    public function 入力_電話番号($value)
     {
-        $this->tester->fillField(['id' => 'order_tel_tel01'], $value);
-        return $this;
-    }
+        $this->tester->fillField(['id' => 'order_phone_number'], $value);
 
-    public function 入力_電話番号2($value)
-    {
-        $this->tester->fillField(['id' => 'order_tel_tel02'], $value);
-        return $this;
-    }
-
-    public function 入力_電話番号3($value)
-    {
-        $this->tester->fillField(['id' => 'order_tel_tel03'], $value);
         return $this;
     }
 

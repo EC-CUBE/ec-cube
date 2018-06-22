@@ -17,8 +17,6 @@ use Eccube\Common\EccubeConfig;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -72,7 +70,7 @@ class PhoneNumberType extends AbstractType
 
             $constraints[] = new Assert\Type([
                 'type' => 'numeric',
-                'message' => 'form.type.numeric.invalid'
+                'message' => 'form.type.numeric.invalid',
             ]);
 
             return $constraints;

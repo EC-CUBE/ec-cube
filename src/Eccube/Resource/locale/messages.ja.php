@@ -1923,7 +1923,7 @@ return [
     'admin.shipping.edit.description_title' => '出荷概要',
     'admin.shipping.edit.shipping_id' => '出荷番号',
     'admin.shipping.edit.shipping_address' => 'お届け先',
-    'admin.shipping.edit.zip' => '〒%zip01%-%zip02%',
+    'admin.shipping.edit.postal_code' => '〒%postal_code%',
     'admin.shipping.edit.edit_shipping_address' => 'お届け先の編集',
     'admin.shipping.edit.orderer' => '注文者',
     'admin.shipping.edit.slip_number' => '出荷伝票番号',
