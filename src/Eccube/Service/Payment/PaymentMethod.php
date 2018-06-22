@@ -13,8 +13,11 @@
 
 namespace Eccube\Service\Payment;
 
-use Symfony\Component\Form\FormTypeInterface;
-use Symfony\Component\HttpFoundation\Response;
+use Eccube\Entity\Order;
+use Eccube\Service\Payment\PaymentDispatcher;
+use Eccube\Service\Payment\PaymentMethod;
+use Eccube\Service\Payment\PaymentResult;
+use Symfony\Component\Form\FormInterface;
 
 /**
  * PaymentMethod
@@ -26,6 +29,11 @@ interface PaymentMethod
     /**
      * @return PaymentResult
      */
+    public function verify();
+
+    /**
+     * @return PaymentResult
+     */
     public function checkout();
 
     /**
@@ -34,7 +42,12 @@ interface PaymentMethod
     public function apply();
 
     /**
-     * @param FormTypeInterface
+     * @param FormInterface
      */
-    public function setFormType(FormTypeInterface $form);
+    public function setFormType(FormInterface $form);
+
+    /**
+     * @param Order
+     */
+    public function setOrder(Order $Order);
 }

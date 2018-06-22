@@ -47,11 +47,21 @@ class PaymentService
     {
         // PaymentMethod->apply に処理を移譲する
         // 別のコントローラに forward など
-        $request = $this->requestStack->getCurrentRequest();
 
-        return $method->apply($request);
+        return $method->apply(); // Order 渡す
     }
 
+    /**
+     * @return PaymentResult
+     */
+    public function doVerify(PaymentMethod $method)
+    {
+        // 注文入力画面→確認画面での入力チェックに利用する
+        // 主にカードの有効性チェック等を行なう
+        $PaymentResult = $method->verify();
+
+        return $PaymentResult;
+    }
     /**
      * @return PaymentResult
      */

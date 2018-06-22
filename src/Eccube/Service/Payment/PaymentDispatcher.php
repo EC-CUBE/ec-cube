@@ -28,7 +28,12 @@ class PaymentDispatcher
     /**
      * @var array
      */
-    private $parameters;
+    private $pathParameters;
+
+    /**
+     * @var array
+     */
+    private $queryParameters;
 
     public function isForward()
     {
@@ -52,14 +57,26 @@ class PaymentDispatcher
         return $this;
     }
 
-    public function getParameters()
+    public function getQueryParameters()
     {
-        return $this->parameters;
+        return $this->queryParameters;
     }
 
-    public function setParameters(array $parameters)
+    public function setQueryParameters(array $queryParameters)
     {
-        $this->parameters = $parameters;
+        $this->queryParameters = $queryParameters;
+
+        return $this;
+    }
+
+    public function getPathParameters()
+    {
+        return $this->pathParameters;
+    }
+
+    public function setPathParameters(array $pathParameters)
+    {
+        $this->pathParameters = $pathParameters;
 
         return $this;
     }
