@@ -44,8 +44,8 @@ class EF04CustomerCest
 
         // 入力した会員情報を確認する。
         $I->see('姓 名', '.ec-registerRole form .ec-borderedDefs dl:nth-child(1) dd');
-        $I->see('111 - 111 - 111', '.ec-registerRole form .ec-borderedDefs dl:nth-child(5) dd');
-        $I->see($new_email, '.ec-registerRole form .ec-borderedDefs dl:nth-child(7) dd');
+        $I->see('111111111', '.ec-registerRole form .ec-borderedDefs dl:nth-child(5) dd');
+        $I->see($new_email, '.ec-registerRole form .ec-borderedDefs dl:nth-child(6) dd');
 
         $I->resetEmails();
         // 「会員登録をする」ボタンを押下する
@@ -109,7 +109,7 @@ class EF04CustomerCest
         ], ['css' => 'button.ec-blockBtn--action']);
 
         // 入力した会員情報を確認する。
-        $I->see('既に利用されているメールアドレスです', '.ec-registerRole form .ec-borderedDefs dl:nth-child(7) dd');
+        $I->see('既に利用されているメールアドレスです', '.ec-registerRole form .ec-borderedDefs dl:nth-child(6) dd');
     }
 
     public function customer_会員登録異常2(\AcceptanceTester $I)

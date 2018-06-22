@@ -204,9 +204,9 @@ class EF03OrderCest
             $I->seeInLastEmailTo($email, '姓03 名03 様');
             $I->seeInLastEmailTo($email, 'お名前　：姓03 名03 様');
             $I->seeInLastEmailTo($email, 'お名前(フリガナ)：セイ メイ 様');
-            $I->seeInLastEmailTo($email, '郵便番号：〒530-0001');
+            $I->seeInLastEmailTo($email, '郵便番号：〒5300001');
             $I->seeInLastEmailTo($email, '住所　　：大阪府大阪市北区梅田2-4-9 ブリーゼタワー13F');
-            $I->seeInLastEmailTo($email, '電話番号：111-111-111');
+            $I->seeInLastEmailTo($email, '電話番号：111111111');
             $I->seeInLastEmailTo($email, 'メールアドレス：'.$new_email);
         }
 
@@ -284,9 +284,9 @@ class EF03OrderCest
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
             $I->seeInLastEmailTo($email, '姓0301 名03 様');
             $I->seeInLastEmailTo($email, 'お名前　：姓0302 名03 様', '変更後のお届け先');
-            $I->seeInLastEmailTo($email, '郵便番号：〒530-0001');
+            $I->seeInLastEmailTo($email, '郵便番号：〒5300001');
             $I->seeInLastEmailTo($email, '住所　　：大阪府大阪市北区梅田2-4-9 ブリーゼタワー13F');
-            $I->seeInLastEmailTo($email, '電話番号：111-111-111');
+            $I->seeInLastEmailTo($email, '電話番号：111111111');
             $I->seeInLastEmailTo($email, 'メールアドレス：'.$new_email);
         }
 
