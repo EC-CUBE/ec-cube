@@ -400,17 +400,6 @@ class NonMemberShoppingController extends AbstractShoppingController
         );
 
         $errors[] = $this->validator->validate(
-            $data['customer_zip02'],
-            [
-                new Assert\NotBlank(),
-                new Assert\Type(['type' => 'numeric', 'message' => 'form.type.numeric.invalid']),
-                new Assert\Length(
-                    ['min' => $this->eccubeConfig['eccube_zip02_len'], 'max' => $this->eccubeConfig['eccube_zip02_len']]
-                ),
-            ]
-        );
-
-        $errors[] = $this->validator->validate(
             $data['customer_addr01'],
             [
                 new Assert\NotBlank(),
