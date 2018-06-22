@@ -142,7 +142,21 @@ $(function() {
 
     // submit処理についてはオーバーレイ処理を行う
     $(document).on('click', 'input[type="submit"], button[type="submit"]', function() {
-        loadingOverlay();
+
+        // html5 validate対応
+        var valid = true;
+        var form = getAncestorOfTagType(this, 'FORM');
+
+        if (typeof form !== 'undefined' && !form.hasAttribute('novalidate')) {
+            // form validation
+            if (typeof form.checkValidity === 'function') {
+                valid = form.checkValidity();
+            }
+        }
+
+        if (valid) {
+            loadingOverlay();
+        }
     });
 });
 
@@ -158,10 +172,21 @@ function loadingOverlay(action) {
     if (action == 'hide') {
         $('.bg-load-overlay').remove();
     } else {
-        // FIXME
-        $overlay = $('<div class="bg-load-overlay" style="background: rgba(255, 255, 255, 0.4); box-sizing: border-box; position: fixed; display: flex; flex-flow: column nowrap; align-items: center; justify-content: space-around; top: 0; left: 0; width: 100%; height: 100%; z-index: 2147483647; opacity: 1;">');
+        $overlay = $('<div class="bg-load-overlay">');
         $('body').append($overlay);
     }
+}
+
+/**
+ *  要素FORMチェック
+ */
+function getAncestorOfTagType(elem, type) {
+
+    while (elem.parentNode && elem.tagName !== type) {
+        elem = elem.parentNode;
+    }
+
+    return (type === elem.tagName) ? elem : undefined;
 }
 
 /////////// ロールオーバー
