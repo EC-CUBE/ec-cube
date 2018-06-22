@@ -20,7 +20,6 @@ use Symfony\Component\Form\FormInterface;
 
 class Cash implements PaymentMethod
 {
-
     /**
      * {@inheritdoc}
      */

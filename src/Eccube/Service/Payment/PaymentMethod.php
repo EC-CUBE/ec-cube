@@ -14,9 +14,6 @@
 namespace Eccube\Service\Payment;
 
 use Eccube\Entity\Order;
-use Eccube\Service\Payment\PaymentDispatcher;
-use Eccube\Service\Payment\PaymentMethod;
-use Eccube\Service\Payment\PaymentResult;
 use Symfony\Component\Form\FormInterface;
 
 /**

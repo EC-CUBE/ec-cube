@@ -55,6 +55,7 @@ class PaymentResult
 
     /**
      * @param array $errors
+     *
      * @return PaymentResult
      */
     public function setErrors(array $errors)

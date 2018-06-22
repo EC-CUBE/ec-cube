@@ -13,9 +13,7 @@
 
 namespace Eccube\Service\Payment\Method;
 
-use Eccube\Entity\Order;
 use Eccube\Service\Payment\PaymentDispatcher;
-use Eccube\Service\Payment\PaymentMethod;
 use Eccube\Service\Payment\PaymentResult;
 use Symfony\Component\Form\FormInterface;
 
@@ -41,6 +39,7 @@ class EccubePaymentCreditCard extends CreditCard
         $dispatcher = new PaymentDispatcher();
         $dispatcher->setForward(true);
         $dispatcher->setRoute('shopping_***');
+
         return $dispatcher;
     }
 
