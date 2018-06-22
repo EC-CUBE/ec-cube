@@ -114,12 +114,6 @@ class ShippingType extends AbstractType
             ])
             ->add('postal_code', PostalType::class, [
                 'required' => false,
-                'options' => [
-                    'constraints' => [
-                        new Assert\NotBlank(),
-                    ],
-                    'attr' => ['class' => 'p-postal-code'],
-                ],
             ])
             ->add('address', AddressType::class, [
                 'required' => false,
@@ -151,11 +145,6 @@ class ShippingType extends AbstractType
             ])
             ->add('phone_number', PhoneNumberType::class, [
                 'required' => false,
-                'options' => [
-                    'constraints' => [
-                        new Assert\NotBlank(),
-                    ],
-                ],
             ])
             ->add('Delivery', EntityType::class, [
                 'required' => false,
