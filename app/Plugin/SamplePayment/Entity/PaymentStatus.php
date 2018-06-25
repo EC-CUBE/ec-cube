@@ -22,9 +22,7 @@ use Eccube\Entity\Master\AbstractMasterEntity;
  * TODO プラグインのテーブルで必要なアノテーションを精査
  *
  * @ORM\Table(name="plg_sample_payment_payment_status")
- * @ORM\HasLifecycleCallbacks()
  * @ORM\Entity(repositoryClass="Plugin\SamplePayment\Repository\PaymentStatusRepository")
- * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
  */
 class PaymentStatus extends AbstractMasterEntity
 {
