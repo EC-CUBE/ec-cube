@@ -42,7 +42,7 @@ $(function() {
 
     // スマホのドロワーメニュー内の下層カテゴリ表示
     // TODO FIXME スマホのカテゴリ表示方法
-    $('.ec-itemNav ul li span').click(function() {
+    $('.ec-itemNav ul a').click(function() {
         $(this).siblings().slideToggle();
     })
 });
