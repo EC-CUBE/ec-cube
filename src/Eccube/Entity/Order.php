@@ -174,7 +174,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="postal_code", type="string", length=7, nullable=true)
+     * @ORM\Column(name="postal_code", type="string", length=8, nullable=true)
      */
     private $postal_code;
 
