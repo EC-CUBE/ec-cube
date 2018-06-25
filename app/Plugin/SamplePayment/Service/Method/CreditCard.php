@@ -17,21 +17,16 @@ use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
 use Eccube\Repository\Master\OrderStatusRepository;
+use Eccube\Service\Payment\Method\CreditCard as BaseCreditCard;
 use Eccube\Service\Payment\PaymentDispatcher;
-use Eccube\Service\Payment\PaymentMethod;
 use Eccube\Service\Payment\PaymentResult;
 use Plugin\SamplePayment\Entity\PaymentStatus;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class CreditCard implements PaymentMethod
+class CreditCard extends BaseCreditCard
 {
-    /**
-     * @var Order
-     */
-    protected $Order;
-
     /**
      * @var OrderStatusRepository
      */
@@ -47,6 +42,9 @@ class CreditCard implements PaymentMethod
         $this->orderStatusRepository = $orderStatusRepository;
         $this->entityManager = $entityManager;
     }
+
+    public function verify()
+    {}
 
     /**
      * 決済サーバと通信して、決済処理を行う.
@@ -98,9 +96,7 @@ class CreditCard implements PaymentMethod
     }
 
     /**
-     * @param FormTypeInterface
-     *
-     * TODO FormTypeInterface -> FormInterface
+     * @param FormInterface
      */
     public function setFormType(FormInterface $form)
     {
@@ -110,13 +106,5 @@ class CreditCard implements PaymentMethod
         // TODO フォームよりOrderがほしい
         // TODO applyやcheckoutでOrderが渡ってきてほしい.
         // TODO やっぱりFormはいる -> Orderには保持しないデータはFormで引き回す(確認画面とか). 画面に持っていくデータを詰められるオブジェクトがあればいいのかな
-    }
-
-    /**
-     * @param Request $request
-     */
-    public function setRequest(Request $request)
-    {
-        // TODO コンテナから取得できるなら不要
     }
 }

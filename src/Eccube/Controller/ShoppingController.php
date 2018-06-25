@@ -225,12 +225,20 @@ class ShoppingController extends AbstractShoppingController
 
         $PaymentResult = $paymentService->doVerify($paymentMethod);
         // エラーの場合は注文入力画面に戻す？
-        if ($PaymentResult instanceof PaymentResult && !$PaymentResult->isSuccess()) {
-            $this->entityManager->getConnection()->rollback();
+        if ($PaymentResult instanceof PaymentResult) {
+            if (!$PaymentResult->isSuccess()) {
+                $this->entityManager->getConnection()->rollback();
 
-            $this->addError($PaymentResult->getErrors());
+                $this->addError($PaymentResult->getErrors());
+            }
+
+            $response = $PaymentResult->getResponse();
+            if ($response->isRedirection() || $response->getContent()) {
+                $this->entityManager->flush();
+
+                return $response;
+            }
         }
-
         $this->entityManager->flush();
 
         return [
@@ -818,6 +826,11 @@ class ShoppingController extends AbstractShoppingController
                 // 一旦、決済処理中になった後は、購入処理中に戻せない。キャンセル or 購入完了の仕様とする
                 // ステータス履歴も保持しておく？ 在庫引き当ての仕様もセットで。
                 if ($dispatcher instanceof PaymentDispatcher) {
+                    $response = $dispatcher->getResponse();
+                    if ($response->isRedirection() || $response->getContent()) {
+                        return $response;
+                    }
+
                     if ($dispatcher->isForward()) {
                         return $this->forwardToRoute($dispatcher->getRoute(), $dispatcher->getPathParameters(), $dispatcher->getQueryParameters());
                     } else {
@@ -876,6 +889,11 @@ class ShoppingController extends AbstractShoppingController
 
         // 決済実行
         $PaymentResult = $paymentService->doCheckout($paymentMethod);
+        $response = $PaymentResult->getResponse();
+        if ($response->isRedirection() || $response->getContent()) {
+            return $response;
+        }
+
         if (!$PaymentResult->isSuccess()) {
             $this->entityManager->getConnection()->rollback();
 

@@ -13,8 +13,15 @@
 
 namespace Eccube\Service\Payment;
 
+use Symfony\Component\HttpFoundation\Response;
+
 class PaymentDispatcher
 {
+    /**
+     * @var Response
+     */
+    private $response;
+
     /**
      * @var boolean
      */
@@ -79,5 +86,25 @@ class PaymentDispatcher
         $this->pathParameters = $pathParameters;
 
         return $this;
+    }
+
+    /**
+     * @param Response $response
+     *
+     * @return PaymentResult
+     */
+    public function setResponse(Response $response)
+    {
+        $this->response = $response;
+
+        return $this;
+    }
+
+    /**
+     * @return Response
+     */
+    public function getResponse()
+    {
+        return $this->response;
     }
 }

@@ -13,6 +13,8 @@
 
 namespace Eccube\Service\Payment;
 
+use Symfony\Component\HttpFoundation\Response;
+
 class PaymentResult
 {
     /**
@@ -24,6 +26,11 @@ class PaymentResult
      * @var boolean
      */
     private $success;
+
+    /**
+     * @var Response
+     */
+    private $response;
 
     /**
      * @param boolean $success
@@ -63,5 +70,25 @@ class PaymentResult
         $this->errors = $errors;
 
         return $this;
+    }
+
+    /**
+     * @param Response $response
+     *
+     * @return PaymentResult
+     */
+    public function setResponse(Response $response)
+    {
+        $this->response = $response;
+
+        return $this;
+    }
+
+    /**
+     * @return Response
+     */
+    public function getResponse()
+    {
+        return $this->response;
     }
 }
