@@ -15,11 +15,13 @@ namespace Eccube;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Eccube\Common\EccubeNav;
+use Eccube\Common\EccubeTwigBlock;
 use Eccube\DependencyInjection\Compiler\AutoConfigurationTagPass;
 use Eccube\DependencyInjection\Compiler\NavCompilerPass;
 use Eccube\DependencyInjection\Compiler\PluginPass;
 use Eccube\DependencyInjection\Compiler\QueryCustomizerPass;
 use Eccube\DependencyInjection\Compiler\TemplateListenerPass;
+use Eccube\DependencyInjection\Compiler\TwigBlockPass;
 use Eccube\DependencyInjection\Compiler\TwigExtensionPass;
 use Eccube\DependencyInjection\Compiler\WebServerDocumentRootPass;
 use Eccube\DependencyInjection\EccubeExtension;
@@ -175,6 +177,11 @@ class Kernel extends BaseKernel
         $container->registerForAutoconfiguration(EccubeNav::class)
             ->addTag(NavCompilerPass::NAV_TAG);
         $container->addCompilerPass(new NavCompilerPass());
+
+        // TwigBlockの拡張
+        $container->registerForAutoconfiguration(EccubeTwigBlock::class)
+            ->addTag(TwigBlockPass::TWIG_BLOCK_TAG);
+        $container->addCompilerPass(new TwigBlockPass());
     }
 
     protected function addEntityExtensionPass(ContainerBuilder $container)
