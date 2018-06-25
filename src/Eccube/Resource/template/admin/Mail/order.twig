@@ -91,4 +91,8 @@ FAX番号 ：{{ Shipping.fax01 }}-{{ Shipping.fax02 }}-{{ Shipping.fax03 }}
 {% endfor %}
 {% endfor %}
 
+{% if Order.complete_mail_message is not empty %}
+{{ Order.complete_mail_message }}
+{% endif %}
+
 {{ footer }}

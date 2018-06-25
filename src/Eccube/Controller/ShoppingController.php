@@ -29,6 +29,7 @@ use Eccube\Form\Type\Front\ShoppingShippingType;
 use Eccube\Form\Type\Shopping\CustomerAddressType;
 use Eccube\Form\Type\Shopping\OrderType;
 use Eccube\Repository\CustomerAddressRepository;
+use Eccube\Repository\OrderRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\OrderHelper;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
@@ -91,6 +92,7 @@ class ShoppingController extends AbstractShoppingController
         CartService $cartService,
         ShoppingService $shoppingService,
         CustomerAddressRepository $customerAddressRepository,
+        OrderRepository $orderRepository,
         ParameterBag $parameterBag
     ) {
         $this->BaseInfo = $BaseInfo;
@@ -98,6 +100,7 @@ class ShoppingController extends AbstractShoppingController
         $this->cartService = $cartService;
         $this->shoppingService = $shoppingService;
         $this->customerAddressRepository = $customerAddressRepository;
+        $this->orderRepository = $orderRepository;
         $this->parameterBag = $parameterBag;
     }
 
@@ -310,10 +313,15 @@ class ShoppingController extends AbstractShoppingController
     {
         // 受注IDを取得
         $orderId = $this->session->get($this->sessionOrderKey);
+        $Order = null;
+        if ($orderId) {
+            $Order = $this->orderRepository->find($orderId);
+        }
 
         $event = new EventArgs(
             [
                 'orderId' => $orderId,
+                'Order' => $Order,
             ],
             $request
         );
@@ -334,6 +342,7 @@ class ShoppingController extends AbstractShoppingController
 
         return [
             'orderId' => $orderId,
+            'Order' => $Order,
             'hasNextCart' => $hasNextCart,
         ];
     }
