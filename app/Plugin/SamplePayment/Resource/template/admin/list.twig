@@ -1,0 +1,279 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends '@admin/styleguide_frame.twig' %}
+
+{% set menus = ['order', 'admin_sample_payment_list'] %}
+
+{% block title %}決済状況一覧{% endblock %}
+{% block sub_title %}受注管理{% endblock %}
+
+{% form_theme searchForm '@admin/Form/bootstrap_4_layout.html.twig' %}
+
+{% block stylesheet %}
+{% endblock stylesheet %}
+
+{% block javascript %}
+    <script>
+        $(function () {
+            toggleBtnBulk('input[id^="check_"]', '.btn-bulk-wrapper');
+            $('input[id^="check_"]').on('change', function() {
+                toggleBtnBulk('input[id^="check_"]', '.btn-bulk-wrapper');
+            });
+
+            // 登録チェックボックス
+            $('#check_all').on('change', function() {
+                var checked = $(this).prop('checked');
+                if (checked) {
+                    $('input[id^="check_"]').prop('checked', true);
+                } else {
+                    $('input[id^="check_"]').prop('checked', false);
+                }
+                toggleBtnBulk('input[id^="check_"]', '.btn-bulk-wrapper');
+            });
+
+            $('#btn_bulk_status').on('bulk-submit', function (event) {
+                var value = $('#option_bulk_status').val();
+                if (!value) {
+                    $(this).data('cancel', true);
+                    alert("{{ 'admin.order.index.340'|trans }}");
+                    return false;
+                }
+                $(this).data('cancel', false);
+                $(this).data('url', value);
+            });
+            var bulkAction = function (form, modal) {
+                modal.find('[data-action="execute"]').on('click', function () {
+                    form.submit();
+                });
+                form.find('[data-submit="bulk"]').on('click', function (event) {
+                    event.preventDefault();
+
+                    if (!form.find('input:checkbox[name^="ids"]:checked').length) {
+                        alert("{{ 'admin.order.index.340'|trans }}");
+                        return false;
+                    }
+
+                    $(this).trigger('bulk-submit');
+                    if ($(this).data('cancel') === true) {
+                        return false;
+                    }
+
+                    form.attr('action', $(this).data('url'));
+                    form.attr('method', $(this).data('method') || 'POST');
+
+                    if ($(this).data('confirm')) {
+                        modal.modal('show');
+                    } else {
+                        form.submit();
+                    }
+
+                });
+            };
+            bulkAction($('#form_bulk'), $('#confirmBulkModal'));
+        });
+    </script>
+{% endblock javascript %}
+
+{% block main %}
+    <!--検索条件設定テーブルここから-->
+    <div class="c-outsideBlock">
+        <form name="search_form" method="POST" action="{{ url('admin_sample_payment_list') }}">
+            {{ form_widget(searchForm._token) }}
+            <div class="c-outsideBlock__contents">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-row">
+                            <div class="form-group col-12">
+                                <p class="col-form-label">支払方法</p>
+                                {{ form_widget(searchForm.Payments, {'label_attr': {'class': 'checkbox-inline'}}) }}
+                                {{ form_errors(searchForm.Payments) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-row">
+                            <div class="form-group col-12">
+                                <p class="col-form-label">注文状況</p>
+                                {{ form_widget(searchForm.OrderStatuses, {'label_attr': {'class': 'checkbox-inline'}}) }}
+                                {{ form_errors(searchForm.OrderStatuses) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-row">
+                            <div class="form-group col-12">
+                                <p class="col-form-label">決済状況</p>
+                                {{ form_widget(searchForm.PaymentStatuses, {'label_attr': {'class': 'checkbox-inline'}}) }}
+                                {{ form_errors(searchForm.PaymentStatuses) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="c-outsideBlock__contents">
+                <div class="row">
+                    <div class="mb-4">
+                        <div class="col-12">
+                            <button class="btn btn-ec-conversion px-5" type="submit">検索</button>
+                            {% if pagination %}
+                                <span class="font-weight-bold ml-2">検索結果：{{ pagination.totalItemCount }}件が該当しました</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!--検索条件設定テーブルここまで-->
+
+    <div class="c-contentsArea__cols">
+        <div class="c-contentsArea__primaryCol">
+            <div class="c-primaryCol">
+                {% if pagination and pagination.totalItemCount %}
+                    <div class="modal fade" id="confirmBulkModal" tabindex="-1" role="dialog"
+                         aria-labelledby="confirmModal" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">{{ 'admin.order.index.bulk_modal_title'|trans }}</h5>
+                                    <button class="close" type="button" data-dismiss="modal"
+                                            aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>{{ 'admin.order.index.bulk_modal_body'|trans }}</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-ec-conversion" data-action="execute" type="button"
+                                            data-dismiss="modal">
+                                        {{ 'common.label.execute'|trans }}
+                                    </button>
+                                    <button class="btn btn-ec-sub" data-action="cancel" type="button"
+                                            data-dismiss="modal">
+                                        {{ 'common.label.cancel'|trans }}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <form id="form_bulk" method="POST" action="">
+                        <input type="hidden" name="{{ constant('Eccube\\Common\\Constant::TOKEN_NAME') }}" value="{{ csrf_token(constant('Eccube\\Common\\Constant::TOKEN_NAME')) }}">
+                        <div class="row justify-content-between mb-2">
+                            <div class="col-6">
+                                <div class="row justify-content-between">
+                                    <div class="col-auto d-none btn-bulk-wrapper">
+                                        <label class="mr-2">一括操作</label>
+                                        <div class="d-inline-block mr-2">
+                                            <select class="custom-select" id="option_bulk_status">
+                                            <option value="" selected>{{ 'admin.order.index.option_bulk_change_status'|trans }}</option>
+                                            {% for action in bulkActions %}
+                                            <option value="{{ url('admin_sample_payment_bulk_action', {'id': action.id }) }}">{{ action.name }}</option>
+                                            {% endfor %}
+                                            </select>
+                                        </div>
+                                        <button id="btn_bulk_status" class="btn btn-ec-regular mr-2" data-submit="bulk" data-confirm="true">
+                                            {{ 'admin.order.index.btn_bulk_submit'|trans }}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-5 text-right">
+                                <div class="d-inline-block">
+                                    <select class="custom-select" onchange="location = this.value;">
+                                        {% for pageMax in pageMaxis %}
+                                            <option {% if pageMax.name == page_count%} selected {% endif %}
+                                                    value="{{ path('admin_sample_payment_list', {'page_no': 1, 'page_count': pageMax.name}) }}">
+                                                {{ pageMax.name|e }}{{ 'admin.order.index.num'|trans }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card rounded border-0 mb-4">
+                            <div class="card-body p-0">
+                                <table class="table table-sm" id="search_result">
+                                    <thead>
+                                    <tr>
+                                        <th class="border-top-0 pt-2 pb-2 text-center pl-3">
+                                            <input type="checkbox" id="check_all" name="filter" value="open">
+                                        </th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.328'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.329'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.330'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.331'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.332'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.334'|trans }}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% set cssClassStatus = {
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::NEW')): "badge-ec-blue",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::PAY_WAIT')): "badge-ec-red",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::BACK_ORDER')): "badge-ec-red",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::CANCEL')): "badge-ec-glay",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::DELIVERED')): "badge-ec-glay",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::PAID')): "badge-ec-green",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::PENDING')): "badge-ec-yellow",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::PROCESSING')): "badge-ec-yellow"
+                                    }
+                                    %}
+                                    {% for Order in pagination %}
+                                        <tr>
+                                            <td class="align-middle text-center pl-3">
+                                                <input type="checkbox"  name="ids[]" id="check_{{ Order.id }}" value="{{ Order.id }}">
+                                            </td>
+                                            <td class="align-middle text-left" id="order_date--{{ Order.id }}">{{ Order.order_date|date_min }}</td>
+                                            <td class="align-middle text-center" id="id--{{ Order.id }}"><a class="action-edit" href="{{ url('admin_order_edit', { id : Order.id }) }}">{{ Order.order_code }}</a></td>
+                                            <td class="align-middle text-center" id="name--{{ Order.id }}">{{ Order.name01 }} {{ Order.name02 }}</td>
+                                            <td class="align-middle text-center" id="payment_method--{{ Order.id }}">{{ Order.payment_method }}</td>
+                                            <td class="align-middle text-right" id="payment_total--{{ Order.id }}">{{ Order.payment_total|price }}</td>
+                                            <td class="align-middle text-center"  id="order_status--{{ Order.id }}">
+                                                <span class="badge {{ attribute(cssClassStatus, Order.OrderStatus.id) }}">{{ Order.OrderStatus }}</span>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                                <div class="row justify-content-md-center mb-4"></div>
+                            </div>
+                            <div class="row justify-content-md-center mb-4">
+                                {% if pagination.totalItemCount > 0 %}
+                                    {% include "@admin/styleguide_pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_order_page' } %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </form>
+                {# 検索条件エラー時 #}
+                {% elseif has_errors %}
+                    <div class="card rounded border-0">
+                        <div class="card-body p-4">
+                            <div class="text-center text-muted mb-4 h5">{{ 'admin.order.index.invalid_search_data'|trans }}</div>
+                            <div class="text-center text-muted">{{ 'admin.order.index.pls_change_search_criteria'|trans }}</div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="card rounded border-0">
+                        <div class="card-body p-4">
+                            <div class="text-center text-muted mb-4 h5">{{ 'admin.order.index.no_matching_search_data'|trans }}</div>
+                            <div class="text-center text-muted">{{ 'admin.order.index.pls_change_search_criteria'|trans }}</div>
+                            <div class="text-center text-muted">{{ 'admin.order.index.pls_try_advanced_search'|trans }}</div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
