@@ -18,8 +18,6 @@ use Eccube\Plugin\AbstractPluginManager;
 use Eccube\Repository\PaymentRepository;
 use Plugin\SamplePayment\Entity\Config;
 use Plugin\SamplePayment\Entity\PaymentStatus;
-use Plugin\SamplePayment\Repository\ConfigRepository;
-use Plugin\SamplePayment\Repository\PaymentStatusRepository;
 use Plugin\SamplePayment\Service\Method\CreditCard;
 use Plugin\SamplePayment\Service\PaymentService;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -47,8 +45,7 @@ class PluginManager extends AbstractPluginManager
         $entityManager->persist($Payment);
         $entityManager->flush($Payment);
 
-        $configRepository = $container->get(ConfigRepository::class);
-        $Config = $configRepository->get();
+        $Config = $entityManager->find(Config::class, 1);
         if (!$Config) {
             $Config = new Config();
             $Config->setApiId('api-id');
@@ -59,12 +56,6 @@ class PluginManager extends AbstractPluginManager
         $entityManager->persist($Config);
         $entityManager->flush($Config);
 
-        $paymentStatusRepository = $container->get(PaymentStatusRepository::class);
-        foreach ($paymentStatusRepository->findAll() as $Status) {
-            $entityManager->remove($Status);
-            $entityManager->flush($Status);
-        }
-
         $statuses = [
             1 => '未決済',
             2 => '有効性チェック済',
@@ -74,10 +65,15 @@ class PluginManager extends AbstractPluginManager
         ];
         $i = 0;
         foreach ($statuses as $id => $name) {
-            $PaymentStatus = new PaymentStatus();
+            $PaymentStatus = $entityManager->find(PaymentStatus::class, $id);
+            if (!$PaymentStatus) {
+                $PaymentStatus = new PaymentStatus();
+            }
             $PaymentStatus->setId($id);
             $PaymentStatus->setName($name);
             $PaymentStatus->setSortNo($i++);
+            $entityManager->persist($PaymentStatus);
+            $entityManager->flush($PaymentStatus);
         }
     }
 }
