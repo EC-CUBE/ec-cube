@@ -231,6 +231,8 @@ class ShoppingController extends AbstractShoppingController
             $this->addError($PaymentResult->getErrors());
         }
 
+        $this->entityManager->flush();
+
         return [
             'form' => $form->createView(),
             'Order' => $Order,
@@ -949,9 +951,12 @@ class ShoppingController extends AbstractShoppingController
     private function createPaymentMethod(Order $Order, $form)
     {
         $methodClass = $Order->getPayment()->getMethodClass();
-        $PaymentMethod = new $methodClass(); // コンテナから取得したい
+
+        // TODO Plugin/Xxx/Resouce/config/services.yamlでpublicにする必要がある
+        $PaymentMethod = $this->container->get($methodClass);
         $PaymentMethod->setOrder($Order);
         $PaymentMethod->setFormType($form);
+
 
         return $PaymentMethod;
     }

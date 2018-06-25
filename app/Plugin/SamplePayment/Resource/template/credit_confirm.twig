@@ -1,0 +1,12 @@
+{% if Order.Payment.method_class == 'Plugin\\SamplePayment\\Service\\Method\\CreditCard' %}
+    <div class="ec-orderPayment">
+        <div class="ec-rectHeading">
+            <h2>クレジットカード番号(下4桁)</h2>
+        </div>
+        <div class="ec-input">
+            {# TODO 画面ごとのフォーム制御ができれば, hiddenで引き回す必要はない #}
+            {{ form_widget(form.sample_payment_token) }}
+            {{ form.sample_payment_card_no_last4.vars.value }}
+        </div>
+    </div>
+{% endif %}

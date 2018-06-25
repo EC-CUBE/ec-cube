@@ -1,0 +1,36 @@
+{% if Order.Payment.getMethodClass == 'Plugin\\SamplePayment\\Service\\Method\\CreditCard' %}
+    <script>
+        $(function () {
+            $('#shopping-form > div > div.ec-orderRole__summary > div > div.ec-totalBox__btn > button').on('click', function (e) {
+                // TODO 他のイベントでも、カード番号はPOSTしないようにする必要あり
+
+                // トークン取得処理
+                var card_no = $('#shopping_order_sample_payment_card_no').val();
+                if (card_no == '') {
+                    alert('カード番号が入力されていません');
+                    return false;
+                }
+                // サーバ通信してトークン取得
+                var token = 'aaabbbccc123456';
+
+                // hiddenにトークンをセット
+                $('#shopping_order_sample_payment_token').val(token);
+                // カードをクリア
+                $('#shopping_order_sample_payment_card_no').val('');
+            });
+        });
+
+    </script>
+    <div class="ec-orderPayment">
+        <div class="ec-rectHeading">
+            <h2>カード(暫定実装)</h2>
+        </div>
+        <div class="ec-input">
+            {# jsで取得したトークンをhiddenでサーバサイドへsubmitする. #}
+            {{ form_widget(form.sample_payment_token) }}
+
+            {# カード番号をサーバサイドへPOSTしないよう, name属性は出力しない #}
+            <input type="text" id="{{ form.sample_payment_card_no.vars.id }}">
+        </div>
+    </div>
+{% endif %}

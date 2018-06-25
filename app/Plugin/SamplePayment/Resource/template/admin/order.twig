@@ -1,0 +1,64 @@
+{% if Order.id is not null %}
+    <div class="card rounded border-0 mb-4">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-8">
+                    <span class="card-title">決済情報</span>
+                </div>
+                <div class="col-4 text-right"><a data-toggle="collapse" href="#sample-payment-info"
+                                                 aria-expanded="false" aria-controls="sample-payment-info"><i
+                                class="fa fa-angle-up fa-lg"></i></a></div>
+            </div>
+        </div>
+        <script>
+            $(function () {
+                $('#sample-payment-cancel').on('click', function () {
+                    $('#sample-payment-info button').prop('disabled', true);
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ url('admin_sample_payment_order_cancel', { id: Order.id }) }}',
+                    }).always(function () {
+                        location.href = location.href;
+                    });
+                });
+
+                $('#sample-payment-change-price').on('click', function () {
+                    $('#sample-payment-info button').prop('disabled', true);
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ url('admin_sample_payment_order_change_price', { id: Order.id }) }}',
+                    }).always(function () {
+                        location.href = location.href;
+                    });
+                });
+
+            })
+        </script>
+        <div class="collapse show ec-cardCollapse" id="sample-payment-info">
+            <div class="card-body">
+                <div class="row mb-2">
+                    <div class="col-2"><span>決済種別</span></div>
+                    <div class="col">
+                        {{ Order.sample_payment_payment_status is not empty ? Order.sample_payment_payment_status.name }}
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-2"><span>決済操作</span></div>
+                    <div class="col">
+                        <ul class="list-inline">
+                            <li class="list-inline-item">
+                                <button id="sample-payment-cancel" type="button" class="btn btn-ec-regular px-5">取消実行
+                                </button>
+                            </li>
+                            <li class="list-inline-item">
+                                <button id="sample-payment-change-price" type="button" class="btn btn-ec-regular px-5">
+                                    金額変更
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
