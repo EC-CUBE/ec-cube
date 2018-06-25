@@ -957,7 +957,6 @@ class ShoppingController extends AbstractShoppingController
         $PaymentMethod->setOrder($Order);
         $PaymentMethod->setFormType($form);
 
-
         return $PaymentMethod;
     }
 

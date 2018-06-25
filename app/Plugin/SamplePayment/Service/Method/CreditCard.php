@@ -46,7 +46,6 @@ class CreditCard implements PaymentMethod
     {
         $this->orderStatusRepository = $orderStatusRepository;
         $this->entityManager = $entityManager;
-
     }
 
     /**
@@ -111,7 +110,6 @@ class CreditCard implements PaymentMethod
         // TODO フォームよりOrderがほしい
         // TODO applyやcheckoutでOrderが渡ってきてほしい.
         // TODO やっぱりFormはいる -> Orderには保持しないデータはFormで引き回す(確認画面とか). 画面に持っていくデータを詰められるオブジェクトがあればいいのかな
-
     }
 
     /**
