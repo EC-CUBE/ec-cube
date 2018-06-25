@@ -273,8 +273,8 @@ class PaymentController extends AbstractController
         }
 
         if (!empty($searchData['PaymentStatuses']) && count($searchData['PaymentStatuses']) > 0) {
-            $qb->andWhere($qb->expr()->in('o.SamplePaymentPaymentStatus', ':PaymentStatus'))
-                ->setParameter('PaymentStatus', $searchData['PaymentStatus']);
+            $qb->andWhere($qb->expr()->in('o.SamplePaymentPaymentStatus', ':PaymentStatuses'))
+                ->setParameter('PaymentStatuses', $searchData['PaymentStatuses']);
         }
 
         return $qb;
