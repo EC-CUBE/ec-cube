@@ -67,7 +67,7 @@ abstract class AbstractEntity implements \ArrayAccess
      *
      * @param array $arrProps プロパティの情報を格納した連想配列
      * @param \ReflectionClass $parentClass 親のクラス. 本メソッドの内部的に使用します.
-     * @param array $excludeAttribute 除外したいフィールド名の配列
+     * @param string[] $excludeAttribute 除外したいフィールド名の配列
      */
     public function setPropertiesFromArray(array $arrProps, array $excludeAttribute = [], \ReflectionClass $parentClass = null)
     {

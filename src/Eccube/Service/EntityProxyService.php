@@ -155,7 +155,7 @@ class EntityProxyService
     /**
      * EntityにTraitを追加.
      *
-     * @param $entityTokens Tokens Entityのトークン
+     * @param Tokens $entityTokens Tokens Entityのトークン
      * @param $trait string 追加するTraitのFQCN
      */
     private function addTrait($entityTokens, $trait)
