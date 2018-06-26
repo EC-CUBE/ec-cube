@@ -240,7 +240,7 @@ class PluginService
             $generatedFiles = $this->regenerateProxy($plugin, true, $tmpProxyOutputDir);
             $this->schemaService->updateSchema($generatedFiles, $tmpProxyOutputDir);
 
-            ConfigManager::writePluginConfigCache();
+            PluginConfigManager::writePluginConfigCache();
         } finally {
             foreach (glob("${tmpProxyOutputDir}/*") as  $f) {
                 unlink($f);
@@ -484,7 +484,7 @@ class PluginService
     public function uninstall(\Eccube\Entity\Plugin $plugin, $force = true)
     {
         $pluginDir = $this->calcPluginDir($plugin->getCode());
-        ConfigManager::removePluginConfigCache();
+        PluginConfigManager::removePluginConfigCache();
         $this->cacheUtil->clearCache();
         $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), 'disable');
         $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), 'uninstall');
@@ -504,7 +504,7 @@ class PluginService
             $this->removeAssets($plugin->getCode());
         }
 
-        ConfigManager::writePluginConfigCache();
+        PluginConfigManager::writePluginConfigCache();
 
         return true;
     }
