@@ -28,6 +28,7 @@ class DeliveryControllerTest extends AbstractWebTestCase
     {
         parent::setUp();
         $this->Customer = $this->createCustomer();
+        $this->createCustomerAddress($this->Customer);
     }
 
     protected function createFormData()
