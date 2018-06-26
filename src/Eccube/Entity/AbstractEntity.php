@@ -16,12 +16,12 @@ namespace Eccube\Entity;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Util\Inflector;
-use Doctrine\ORM\Mapping\MappedSuperclass;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\MappedSuperclass;
 use Doctrine\ORM\Proxy\Proxy;
-use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 /** @MappedSuperclass */
 abstract class AbstractEntity implements \ArrayAccess
@@ -206,9 +206,9 @@ abstract class AbstractEntity implements \ArrayAccess
      * コピー元のオブジェクトのフィールド名を指定して、同名のフィールドに値をコピー
      *
      * @param object $srcObject コピー元のオブジェクト
-     * @param array $excludeAttribute 除外したいフィールド名の配列
+     * @param string[] $excludeAttribute 除外したいフィールド名の配列
      *
-     * @return object
+     * @return AbstractEntity
      */
     public function copyProperties($srcObject, array $excludeAttribute = [])
     {
@@ -222,7 +222,7 @@ abstract class AbstractEntity implements \ArrayAccess
      *
      * @param Reader $Reader
      *
-     * @return object
+     * @return AbstractEntity
      */
     public function setAnnotationReader(Reader $Reader)
     {

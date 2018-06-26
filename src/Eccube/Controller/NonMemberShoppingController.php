@@ -330,7 +330,7 @@ class NonMemberShoppingController extends AbstractShoppingController
      *
      * @param array $data リクエストパラメータ
      *
-     * @return array
+     * @return \Symfony\Component\Validator\ConstraintViolationListInterface[]
      */
     protected function customerValidation(array &$data)
     {

@@ -680,12 +680,12 @@ class ShoppingController extends AbstractShoppingController
         $builder = $this->formFactory->createBuilder(OrderType::class, $Order);
 
         $event = new EventArgs(
-             [
-                 'builder' => $builder,
-                 'Order' => $Order,
-             ],
-             $request
-         );
+                [
+                    'builder' => $builder,
+                    'Order' => $Order,
+                ],
+                $request
+            );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_INDEX_INITIALIZE, $event);
 
         $form = $builder->getForm();
@@ -811,7 +811,7 @@ class ShoppingController extends AbstractShoppingController
                 if ($dispatcher instanceof Response
                     && ($dispatcher->isRedirection() || $dispatcher->getContent())
                 ) { // $paymentMethod->apply() が Response を返した場合は画面遷移
-                    return $dispatcher;                // 画面遷移したいパターンが複数ある場合はどうする？ 引数で制御？
+                    return $dispatcher; // 画面遷移したいパターンが複数ある場合はどうする？ 引数で制御？
                 }
                 $PaymentResult = $paymentService->doCheckout($paymentMethod); // 決済実行
                 if (!$PaymentResult->isSuccess()) {

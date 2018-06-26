@@ -51,7 +51,7 @@ class BlockRepository extends AbstractRepository
      * @param $block_id
      * @param $DeviceType
      *
-     * @return array|\Eccube\Entity\Block
+     * @return Block|null
      */
     public function findOrCreate($block_id, $DeviceType)
     {
@@ -112,7 +112,7 @@ class BlockRepository extends AbstractRepository
      *
      * @param  \Eccube\Entity\Master\DeviceType $DeviceType
      *
-     * @return array
+     * @return null|\Symfony\Component\HttpFoundation\Request
      */
     public function getList($DeviceType)
     {

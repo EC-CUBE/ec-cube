@@ -15,8 +15,8 @@ namespace Eccube\Repository;
 
 use Doctrine\ORM\QueryBuilder;
 use Eccube\Doctrine\Query\Queries;
-use Eccube\Entity\Order;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Order;
 use Eccube\Util\StringUtil;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -287,8 +287,8 @@ class OrderRepository extends AbstractRepository
             $multi = preg_match('/^\d{0,10}$/', $searchData['multi']) ? $searchData['multi'] : null;
             $qb
                 ->andWhere('o.id = :multi OR o.name01 LIKE :likemulti OR o.name02 LIKE :likemulti OR '.
-                           'o.kana01 LIKE :likemulti OR o.kana02 LIKE :likemulti OR o.company_name LIKE :likemulti OR '.
-                           'o.order_code LIKE :likemulti')
+                            'o.kana01 LIKE :likemulti OR o.kana02 LIKE :likemulti OR o.company_name LIKE :likemulti OR '.
+                            'o.order_code LIKE :likemulti')
                 ->setParameter('multi', $multi)
                 ->setParameter('likemulti', '%'.$searchData['multi'].'%');
         }

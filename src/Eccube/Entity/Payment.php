@@ -379,7 +379,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * @return boolean
+     * @return integer
      */
     public function isVisible()
     {

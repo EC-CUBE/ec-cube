@@ -1162,7 +1162,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
      *
      * @param string|null $note
      *
-     * @return Order
+     * @return Shipping
      */
     public function setNote($note = null)
     {
@@ -1258,7 +1258,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
      *
      * @param \Eccube\Entity\Member|null $creator
      *
-     * @return Member
+     * @return Shipping
      */
     public function setCreator(\Eccube\Entity\Member $creator = null)
     {

@@ -96,7 +96,7 @@ class CartItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
     }
 
     /**
-     * @return integer
+     * @return string
      */
     public function getPrice()
     {
@@ -116,7 +116,7 @@ class CartItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
     }
 
     /**
-     * @return integer
+     * @return string
      */
     public function getQuantity()
     {
@@ -199,8 +199,7 @@ class CartItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
         $this->ProductClass = $ProductClass;
 
         $this->product_class_id = is_object($ProductClass) ?
-            $ProductClass->getId() :
-            null;
+            $ProductClass->getId() : null;
 
         return $this;
     }

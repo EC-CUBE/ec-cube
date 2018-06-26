@@ -17,6 +17,8 @@ use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Csv;
 use Eccube\Entity\Master\CsvType;
+use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
@@ -30,19 +32,17 @@ use Eccube\Repository\Master\SexRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Service\CsvExportService;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
+use Eccube\Service\PurchaseFlow\PurchaseException;
+use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Util\FormUtil;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Eccube\Entity\Master\OrderStatus;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Eccube\Entity\Order;
-use Eccube\Service\PurchaseFlow\PurchaseContext;
-use Eccube\Service\PurchaseFlow\PurchaseFlow;
-use Eccube\Service\PurchaseFlow\PurchaseException;
 
 class OrderController extends AbstractController
 {
@@ -495,8 +495,8 @@ class OrderController extends AbstractController
                 if ($flowResult->hasWarning()) {
                     foreach ($flowResult->getWarning() as $warning) {
                         $msg = $this->translator->trans('admin.order.index.bulk_warning', [
-                          '%orderId%' => $Order->getId(),
-                          '%message%' => $warning->getMessage(),
+                            '%orderId%' => $Order->getId(),
+                            '%message%' => $warning->getMessage(),
                         ]);
                         $this->addWarning($msg, 'admin');
                     }
@@ -505,8 +505,8 @@ class OrderController extends AbstractController
                 if ($flowResult->hasError()) {
                     foreach ($flowResult->getErrors() as $error) {
                         $msg = $this->translator->trans('admin.order.index.bulk_error', [
-                          '%orderId%' => $Order->getId(),
-                          '%message%' => $error->getMessage(),
+                            '%orderId%' => $Order->getId(),
+                            '%message%' => $error->getMessage(),
                         ]);
                         $this->addError($msg, 'admin');
                     }
@@ -517,8 +517,8 @@ class OrderController extends AbstractController
                     $this->purchaseFlow->purchase($Order, $purchaseContext);
                 } catch (PurchaseException $e) {
                     $msg = $this->translator->trans('admin.order.index.bulk_error', [
-                      '%orderId%' => $Order->getId(),
-                      '%message%' => $e->getMessage(),
+                        '%orderId%' => $Order->getId(),
+                        '%message%' => $e->getMessage(),
                     ]);
                     $this->addError($msg, 'admin');
                     continue;

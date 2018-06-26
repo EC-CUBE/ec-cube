@@ -31,8 +31,8 @@ use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\DeliveryDurationRepository;
 use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Repository\Master\SaleTypeRepository;
-use Eccube\Repository\TagRepository;
 use Eccube\Repository\ProductRepository;
+use Eccube\Repository\TagRepository;
 use Eccube\Service\CsvImportService;
 use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -784,6 +784,7 @@ class CsvImportController
      *
      * @param $row
      * @param Product $Product
+     * @param CsvImportService $data
      */
     protected function createProductImage($row, Product $Product, $data, $headerByKey)
     {
@@ -830,7 +831,7 @@ class CsvImportController
      *
      * @param $row
      * @param Product $Product
-     * @param $data
+     * @param CsvImportService $data
      * @param $headerByKey
      */
     protected function createProductCategory($row, Product $Product, $data, $headerByKey)
@@ -950,7 +951,7 @@ class CsvImportController
      *
      * @param $row
      * @param Product $Product
-     * @param $data
+     * @param CsvImportService $data
      * @param $headerByKey
      * @param null $ClassCategory1
      * @param null $ClassCategory2
@@ -1102,7 +1103,7 @@ class CsvImportController
      * @param $row
      * @param Product $Product
      * @param ProductClass $ProductClass
-     * @param $data
+     * @param CsvImportService $data
      *
      * @return ProductClass
      */

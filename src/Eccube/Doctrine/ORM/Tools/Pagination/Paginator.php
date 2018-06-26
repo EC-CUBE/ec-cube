@@ -15,9 +15,9 @@ namespace Eccube\Doctrine\ORM\Tools\Pagination;
 
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\ResultSetMapping;
-use Doctrine\ORM\QueryBuilder;
 
 /**
  * The paginator can handle various complex scenarios with DQL.
@@ -51,7 +51,7 @@ class Paginator implements \Countable, \IteratorAggregate
     /**
      * Constructor.
      *
-     * @param Query|QueryBuilder $query               A Doctrine ORM query or query builder.
+     * @param Query $query               A Doctrine ORM query or query builder.
      * @param boolean            $fetchJoinCollection Whether the query joins a collection (true by default).
      */
     public function __construct($query, $fetchJoinCollection = true)

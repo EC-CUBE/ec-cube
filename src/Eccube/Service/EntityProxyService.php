@@ -194,7 +194,7 @@ class EntityProxyService
     /**
      * EntityからTraitを削除.
      *
-     * @param $entityTokens Tokens Entityのトークン
+     * @param Tokens $entityTokens Tokens Entityのトークン
      * @param $trait string 削除するTraitのFQCN
      */
     private function removeTrait($entityTokens, $trait)
