@@ -13,7 +13,6 @@
 
 namespace Eccube\Form\Type;
 
-use Eccube\Application;
 use Eccube\Form\Type\Master\ProductListMaxType;
 use Eccube\Form\Type\Master\ProductListOrderByType;
 use Eccube\Repository\CategoryRepository;
@@ -34,6 +33,7 @@ class SearchProductType extends AbstractType
     /**
      * SearchProductType constructor.
      *
+     * @param CategoryRepository $categoryRepository
      */
     public function __construct(CategoryRepository $categoryRepository)
     {
