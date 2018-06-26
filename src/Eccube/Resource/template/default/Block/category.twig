@@ -16,12 +16,12 @@ file that was distributed with this source code.
         {{ Category.name }}
     </a>
     {% if Category.children|length > 0 %}
-        <ul class="ec-itemNavAccordion">
-        {% for ChildCategory in Category.children %}
-            <li class="ec-itemNavAccordion__item">
-                {{ tree(ChildCategory) }}
-            </li>
-        {% endfor %}
+        <ul>
+            {% for ChildCategory in Category.children %}
+                <li>
+                    {{ tree(ChildCategory) }}
+                </li>
+            {% endfor %}
         </ul>
     {% endif %}
 {% endmacro %}
@@ -30,11 +30,13 @@ file that was distributed with this source code.
 {% from _self import tree %}
 
 <div class="ec-cateoryNaviRole is is_inDrawer">
-    <ul class="ec-itemNav">
-    {% for Category in Categories %}
-        <li class="ec-itemNav__item">
-        {{ tree(Category) }}
-        </li>
-    {% endfor %}
-    </ul>
+    <div class="ec-itemNav">
+        <ul class="ec-itemNav__nav">
+            {% for Category in Categories %}
+                <li>
+                    {{ tree(Category) }}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 </div>
