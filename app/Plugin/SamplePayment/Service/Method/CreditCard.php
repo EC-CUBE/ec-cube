@@ -15,15 +15,12 @@ namespace Plugin\SamplePayment\Service\Method;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\Master\OrderStatus;
-use Eccube\Entity\Order;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Service\Payment\Method\CreditCard as BaseCreditCard;
 use Eccube\Service\Payment\PaymentDispatcher;
 use Eccube\Service\Payment\PaymentResult;
 use Plugin\SamplePayment\Entity\PaymentStatus;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormTypeInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 class CreditCard extends BaseCreditCard
 {
@@ -44,7 +41,8 @@ class CreditCard extends BaseCreditCard
     }
 
     public function verify()
-    {}
+    {
+    }
 
     /**
      * 決済サーバと通信して、決済処理を行う.
