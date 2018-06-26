@@ -55,7 +55,7 @@ class TaxRuleService
      * @param  int|null|\Eccube\Entity\Master\Pref    $pref         都道府県
      * @param  int|null|\Eccube\Entity\Master\Country $country      国
      *
-     * @return int
+     * @return double
      */
     public function getPriceIncTax($price, $product = null, $productClass = null, $pref = null, $country = null)
     {
@@ -83,8 +83,8 @@ class TaxRuleService
     /**
      * 課税規則に応じて端数処理を行う
      *
-     * @param  float|integer $value    端数処理を行う数値
-     * @param  integer       $calcRule 課税規則
+     * @param  integer $value    端数処理を行う数値
+     * @param integer $RoundingType
      *
      * @return double        端数処理後の数値
      */

@@ -121,7 +121,7 @@ class StringUtil
     /**
      * 文字コードの判定
      *
-     * @param $value
+     * @param string $value
      *
      * @return string
      */

@@ -43,7 +43,7 @@ class EccubeExtension extends AbstractExtension
     /**
      * Returns a list of functions to add to the existing list.
      *
-     * @return array An array of functions
+     * @return TwigFunction[] An array of functions
      */
     public function getFunctions()
     {
@@ -67,7 +67,7 @@ class EccubeExtension extends AbstractExtension
     /**
      * Returns a list of filters.
      *
-     * @return array
+     * @return TwigFilter[]
      */
     public function getFilters()
     {
@@ -94,7 +94,7 @@ class EccubeExtension extends AbstractExtension
     /**
      * Name of this extension
      *
-     * @return string
+     * @return double
      */
     public function getCalcIncTax($price, $tax_rate, $tax_rule)
     {

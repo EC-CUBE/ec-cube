@@ -112,7 +112,7 @@ class TemplateController extends AbstractController
      * @param Request $request
      * @param \Eccube\Entity\Template $Template
      *
-     * @return mixed
+     * @return BinaryFileResponse
      */
     public function download(Request $request, \Eccube\Entity\Template $Template)
     {

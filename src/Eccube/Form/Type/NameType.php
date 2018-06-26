@@ -116,7 +116,7 @@ class NameType extends AbstractType
                 ],
                 'constraints' => [
                     new Assert\Length([
-                         'max' => $this->eccubeConfig['eccube_name_len'],
+                            'max' => $this->eccubeConfig['eccube_name_len'],
                     ]),
                     new Assert\Regex([
                         'pattern' => '/^[^\s ]+$/u',

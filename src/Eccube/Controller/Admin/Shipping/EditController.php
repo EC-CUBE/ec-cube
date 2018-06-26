@@ -24,6 +24,7 @@ use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\Master\ShippingStatusRepository;
 use Eccube\Repository\OrderItemRepository;
 use Eccube\Repository\ShippingRepository;
+use Eccube\Service\MailService;
 use Eccube\Service\TaxRuleService;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -32,7 +33,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\SerializerInterface;
-use Eccube\Service\MailService;
 
 class EditController extends AbstractController
 {
@@ -189,13 +189,13 @@ class EditController extends AbstractController
                     if ($form->get('notify_email')->getData()) {
                         try {
                             $this->mailService->sendShippingNotifyMail(
-                              $TargetShipping
+                                $TargetShipping
                             );
                         } catch (\Exception $e) {
                             log_error('メール通知エラー', [$TargetShipping->getId(), $e]);
                             $this->addError(
-                              'admin.shipping.edit.shipped_mail_failed',
-                              'admin'
+                                'admin.shipping.edit.shipped_mail_failed',
+                                'admin'
                             );
                         }
                     }

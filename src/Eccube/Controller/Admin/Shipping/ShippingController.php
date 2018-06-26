@@ -16,8 +16,8 @@ namespace Eccube\Controller\Admin\Shipping;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\ShippingStatus;
-use Eccube\Entity\Shipping;
 use Eccube\Entity\OrderItem;
+use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\SearchShippingType;
@@ -258,7 +258,6 @@ class ShippingController extends AbstractController
      * @Method("PUT")
      * @Route("/%eccube_admin_route%/shipping/notify_mail/{id}", requirements={"id" = "\d+"}, name="admin_shipping_notify_mail")
      *
-     * @param Request $request
      * @param Shipping $Shipping
      *
      * @return JsonResponse

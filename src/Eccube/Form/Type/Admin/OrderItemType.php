@@ -272,17 +272,13 @@ class OrderItemType extends AbstractType
                             $data['product_name'] = $Product->getName();
                             $data['product_code'] = $ProductClass->getCode();
                             $data['class_name1'] = $ProductClass->hasClassCategory1() ?
-                                $ProductClass->getClassCategory1()->getClassName() :
-                                null;
+                                $ProductClass->getClassCategory1()->getClassName() : null;
                             $data['class_name2'] = $ProductClass->hasClassCategory2() ?
-                                $ProductClass->getClassCategory2()->getClassName() :
-                                null;
+                                $ProductClass->getClassCategory2()->getClassName() : null;
                             $data['class_category_name1'] = $ProductClass->hasClassCategory1() ?
-                                $ProductClass->getClassCategory1()->getName() :
-                                null;
+                                $ProductClass->getClassCategory1()->getName() : null;
                             $data['class_category_name2'] = $ProductClass->hasClassCategory2() ?
-                                $ProductClass->getClassCategory2()->getName() :
-                                null;
+                                $ProductClass->getClassCategory2()->getName() : null;
                             $data['price'] = $ProductClass->getPrice02();
                             $data['quantity'] = empty($data['quantity']) ? 1 : $data['quantity'];
                             $data['tax_type'] = TaxType::TAXATION;

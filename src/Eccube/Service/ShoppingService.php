@@ -265,7 +265,7 @@ class ShoppingService
     /**
      * 非会員情報を取得
      *
-     * @param $sesisonKey
+     * @param string $sesisonKey
      *
      * @return $Customer|null
      */
@@ -282,7 +282,7 @@ class ShoppingService
     /**
      * 受注情報を作成
      *
-     * @param $Customer
+     * @param null|Customer $Customer
      *
      * @return \Eccube\Entity\Order
      */
@@ -312,9 +312,9 @@ class ShoppingService
      * 仮受注情報作成
      *
      * @param $Customer
-     * @param $preOrderId
+     * @param string $preOrderId
      *
-     * @return mixed
+     * @return Order
      *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException

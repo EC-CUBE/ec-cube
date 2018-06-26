@@ -75,7 +75,7 @@ class AddPointProcessor implements ItemHolderProcessor
      * @param integer $price 単価
      * @param integer $quantity 数量
      *
-     * @return integer additional point
+     * @return double additional point
      */
     protected function priceToAddPoint($pointRate, $price, $quantity)
     {

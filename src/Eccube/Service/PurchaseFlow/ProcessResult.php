@@ -23,6 +23,9 @@ class ProcessResult
 
     protected $message;
 
+    /**
+     * @param string $type
+     */
     private function __construct($type, $message)
     {
         $this->type = $type;
