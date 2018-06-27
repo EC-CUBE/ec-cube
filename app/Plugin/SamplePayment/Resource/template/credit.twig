@@ -30,7 +30,7 @@
             {{ form_widget(form.sample_payment_token) }}
 
             {# カード番号をサーバサイドへPOSTしないよう, name属性は出力しない #}
-            <input type="text" id="{{ form.sample_payment_card_no.vars.id }}">
+            <input type="text" id="shopping_order_sample_payment_card_no">
         </div>
     </div>
 {% endif %}

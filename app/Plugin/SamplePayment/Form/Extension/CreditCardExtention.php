@@ -83,7 +83,6 @@ class CreditCardExtention extends AbstractTypeExtension
             // 支払い方法が一致しなければremove
             if ($Payment->getId() != $data['Payment']) {
                 $form->remove('sample_payment_token');
-                $form->remove('sample_payment_card_no');
                 $form->remove('sample_payment_card_no_last4');
             }
         });
