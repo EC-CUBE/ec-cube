@@ -118,6 +118,7 @@ class PaymentRepository extends AbstractRepository
     public function findAllowedPayments($deliveries, $returnType = false)
     {
         $payments = [];
+        $isFirstLoop = true;
         foreach ($deliveries as $Delivery) {
             $paymentTmp = [];
             $p = $this->findPayments($Delivery, $returnType);
@@ -128,10 +129,15 @@ class PaymentRepository extends AbstractRepository
                 $paymentTmp[$payment['id']] = $payment;
             }
 
-            if (empty($payments)) {
+            if ($isFirstLoop) {
                 $payments = $paymentTmp;
+                $isFirstLoop = false;
             } else {
                 $payments = array_intersect_key($payments, $paymentTmp);
+
+                if (count($payments) == 0) {
+                    break;
+                }
             }
         }
 
