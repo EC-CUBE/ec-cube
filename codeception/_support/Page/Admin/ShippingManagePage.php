@@ -41,7 +41,7 @@ class ShippingManagePage extends AbstractAdminPageStyleGuide
     {
         $this->tester->click(self::$詳細検索ボタン);
         $this->tester->wait(1);
-        $this->tester->fillField(['id' => 'admin_search_shipping_tel'], $value);
+        $this->tester->fillField(['id' => 'admin_search_shipping_phone_number'], $value);
         $this->tester->click('#search_form > div.c-outsideBlock__contents.mb-3 > button');
         return $this;
     }

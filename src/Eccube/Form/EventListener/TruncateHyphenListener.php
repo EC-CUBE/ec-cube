@@ -11,14 +11,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Eccube\EventListener;
+namespace Eccube\Form\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
-class ConvertTelListener implements EventSubscriberInterface
+class TruncateHyphenListener implements EventSubscriberInterface
 {
+    /**
+     * @return array
+     */
     public static function getSubscribedEvents()
     {
         return [
@@ -26,11 +29,14 @@ class ConvertTelListener implements EventSubscriberInterface
         ];
     }
 
+    /**
+     * @param FormEvent $event
+     */
     public function onPreSubmit(FormEvent $event)
     {
         $data = $event->getData();
-        $data = mb_convert_kana($data, 'an', 'UTF-8');
         $data = str_replace('-', '', $data);
+
         $event->setData($data);
     }
 }

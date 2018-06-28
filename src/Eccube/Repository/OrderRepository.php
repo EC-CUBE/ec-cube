@@ -124,20 +124,10 @@ class OrderRepository extends AbstractRepository
         }
 
         // tel
-        if (isset($searchData['tel01']) && StringUtil::isNotBlank($searchData['tel01'])) {
+        if (isset($searchData['phone_number']) && StringUtil::isNotBlank($searchData['phone_number'])) {
             $qb
-                ->andWhere('o.tel01 = :tel01')
-                ->setParameter('tel01', $searchData['tel01']);
-        }
-        if (isset($searchData['tel02']) && StringUtil::isNotBlank($searchData['tel02'])) {
-            $qb
-                ->andWhere('o.tel02 = :tel02')
-                ->setParameter('tel02', $searchData['tel02']);
-        }
-        if (isset($searchData['tel03']) && StringUtil::isNotBlank($searchData['tel03'])) {
-            $qb
-                ->andWhere('o.tel03 = :tel03')
-                ->setParameter('tel03', $searchData['tel03']);
+                ->andWhere('o.phone_number = :phone_number')
+                ->setParameter('phone_number', $searchData['phone_number']);
         }
 
         // birth
@@ -347,11 +337,11 @@ class OrderRepository extends AbstractRepository
         }
 
         // tel
-        if (isset($searchData['tel']) && StringUtil::isNotBlank($searchData['tel'])) {
-            $tel = preg_replace('/[^0-9]/ ', '', $searchData['tel']);
+        if (isset($searchData['phone_number']) && StringUtil::isNotBlank($searchData['phone_number'])) {
+            $tel = preg_replace('/[^0-9]/ ', '', $searchData['phone_number']);
             $qb
-                ->andWhere('CONCAT(o.tel01, o.tel02, o.tel03) LIKE :tel')
-                ->setParameter('tel', '%'.$tel.'%');
+                ->andWhere('o.phone_number LIKE :phone_number')
+                ->setParameter('phone_number', '%'.$tel.'%');
         }
 
         // sex

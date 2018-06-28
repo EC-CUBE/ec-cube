@@ -260,8 +260,8 @@ file that was distributed with this source code.
                     <div class="col">
                         <div class="mb-3">
                             <label>{{ 'admin.customer.index.119'|trans }}</label>
-                            {{ form_widget(searchForm.tel) }}
-                            {{ form_errors(searchForm.tel) }}
+                            {{ form_widget(searchForm.phone_number) }}
+                            {{ form_errors(searchForm.phone_number) }}
                         </div>
                     </div>
                     <div class="col">
@@ -339,7 +339,7 @@ file that was distributed with this source code.
                                                 <tr>
                                                     <td class="align-middle pl-3">{{ Customer.id }}</td>
                                                     <td class="align-middle"><a href="{{ url('admin_customer_edit', { 'id': Customer.id}) }}">{{ Customer.name01 }}&nbsp;{{ Customer.name02 }}</a></td>
-                                                    <td class="align-middle">{{ Customer.tel01 }}-{{ Customer.tel02 }}-{{ Customer.tel03 }}</td>
+                                                    <td class="align-middle">{{ Customer.phone_number }}</td>
                                                     <td class="align-middle">{{ Customer.email }}</td>
                                                     <td class="align-middle"></td>
                                                     <td class="align-middle pr-3">

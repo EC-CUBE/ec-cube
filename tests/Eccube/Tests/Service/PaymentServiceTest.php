@@ -23,7 +23,7 @@ class PaymentServiceTest extends AbstractServiceTestCase
         $paymentService = $this->container->get($Order->getPayment()->getServiceClass());
         $this->assertInstanceOf(\Eccube\Service\PaymentService::class, $paymentService);
 
-        $form = new \Eccube\Form\Type\ShoppingType();
+        $form = $this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')->getMock();
         $paymentMethod = $this->container->get($Order->getPayment()->getMethodClass());
         $paymentMethod->setFormType($form);
         $this->assertInstanceOf(\Eccube\Service\Payment\Method\Cash::class, $paymentMethod);
