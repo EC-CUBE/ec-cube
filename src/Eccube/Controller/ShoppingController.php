@@ -313,14 +313,15 @@ class ShoppingController extends AbstractShoppingController
     {
         // 受注IDを取得
         $orderId = $this->session->get($this->sessionOrderKey);
-        $Order = null;
-        if ($orderId) {
-            $Order = $this->orderRepository->find($orderId);
+
+        if (empty($orderId)) {
+            return $this->redirectToRoute('homepage');
         }
+
+        $Order = $this->orderRepository->find($orderId);
 
         $event = new EventArgs(
             [
-                'orderId' => $orderId,
                 'Order' => $Order,
             ],
             $request
@@ -336,12 +337,11 @@ class ShoppingController extends AbstractShoppingController
         $this->session->remove($this->sessionKey);
         $this->session->remove($this->sessionCustomerAddressKey);
 
-        log_info('購入処理完了', [$orderId]);
+        log_info('購入処理完了', [$Order->getId()]);
 
         $hasNextCart = !empty($this->cartService->getCarts());
 
         return [
-            'orderId' => $orderId,
             'Order' => $Order,
             'hasNextCart' => $hasNextCart,
         ];
