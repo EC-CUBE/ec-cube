@@ -19,12 +19,12 @@ use Eccube\Entity\Master\SaleType;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
-use Eccube\Service\PurchaseFlow\ValidatableItemHolderProcessor;
+use Eccube\Service\PurchaseFlow\ItemHolderValidator;
 
 /**
  * 支払い方法が一致しない明細がないかどうか.
  */
-class PaymentProcessor extends ValidatableItemHolderProcessor
+class PaymentValidator extends ItemHolderValidator
 {
     /**
      * @var DeliveryRepository

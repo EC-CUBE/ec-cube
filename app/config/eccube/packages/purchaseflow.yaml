@@ -23,7 +23,7 @@ services:
         class: Doctrine\Common\Collections\ArrayCollection
         arguments:
             - #
-                - '@Eccube\Service\PurchaseFlow\Processor\PaymentProcessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\PaymentValidator'
                 - '@Eccube\Service\PurchaseFlow\Processor\PaymentTotalLimitValidator'
                 - '@Eccube\Service\PurchaseFlow\Processor\DeliveryFeeFreeProcessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\PaymentTotalNegativeValidator'

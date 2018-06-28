@@ -18,7 +18,7 @@ use Eccube\Entity\ItemInterface;
 use Eccube\Entity\OrderItem;
 use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
-use Eccube\Service\PurchaseFlow\ValidatableItemProcessor;
+use Eccube\Service\PurchaseFlow\ItemValidator;
 use Eccube\Tests\EccubeTestCase;
 
 class ValidatableItemProcessorTest extends EccubeTestCase
@@ -33,7 +33,7 @@ class ValidatableItemProcessorTest extends EccubeTestCase
      */
     public function testValidateCartSuccess()
     {
-        $validator = new ValidatableItemProcessorTest_NormalValidator();
+        $validator = new ItemValidatorTest_NormalValidator();
         $item = new CartItem();
 
         $validator->process($item, new PurchaseContext());
@@ -45,7 +45,7 @@ class ValidatableItemProcessorTest extends EccubeTestCase
         // TODO: FIXME
         $this->markTestIncomplete(__METHOD__.'may be not implement');
 
-        $validator = new ValidatableItemProcessorTest_FailValidator();
+        $validator = new ItemValidatorTest_FailValidator();
         $item = new CartItem();
 
         $validator->process($item, new PurchaseContext());
@@ -53,7 +53,7 @@ class ValidatableItemProcessorTest extends EccubeTestCase
 
     public function testValidateOrderSuccess()
     {
-        $validator = new ValidatableItemProcessorTest_NormalValidator();
+        $validator = new ItemValidatorTest_NormalValidator();
         $item = new OrderItem();
 
         $result = $validator->process($item, new PurchaseContext());
@@ -63,7 +63,7 @@ class ValidatableItemProcessorTest extends EccubeTestCase
 
     public function testValidateOrderFail()
     {
-        $validator = new ValidatableItemProcessorTest_FailValidator();
+        $validator = new ItemValidatorTest_FailValidator();
         $item = new OrderItem();
 
         $result = $validator->process($item, new PurchaseContext());
@@ -72,7 +72,7 @@ class ValidatableItemProcessorTest extends EccubeTestCase
     }
 }
 
-class ValidatableItemProcessorTest_NormalValidator extends ValidatableItemProcessor
+class ItemValidatorTest_NormalValidator extends ItemValidator
 {
     public $handleCalled = false;
 
@@ -86,7 +86,7 @@ class ValidatableItemProcessorTest_NormalValidator extends ValidatableItemProces
     }
 }
 
-class ValidatableItemProcessorTest_FailValidator extends ValidatableItemProcessor
+class ItemValidatorTest_FailValidator extends ItemValidator
 {
     public $handleCalled = false;
 

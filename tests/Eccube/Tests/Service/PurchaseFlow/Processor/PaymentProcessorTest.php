@@ -22,14 +22,14 @@ use Eccube\Entity\PaymentOption;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\DeliveryRepository;
-use Eccube\Service\PurchaseFlow\Processor\PaymentProcessor;
+use Eccube\Service\PurchaseFlow\Processor\PaymentValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
 class PaymentProcessorTest extends EccubeTestCase
 {
     /**
-     * @var PaymentProcessor
+     * @var PaymentValidator
      */
     protected $validator;
 
@@ -106,12 +106,12 @@ class PaymentProcessorTest extends EccubeTestCase
         $this->ProductClass3 = $this->Product->getProductClasses()[2];
         $this->ProductClass3->setSaleType($SaleType);
 
-        $this->validator = new PaymentProcessor($this->container->get(DeliveryRepository::class));
+        $this->validator = new PaymentValidator($this->container->get(DeliveryRepository::class));
     }
 
     public function testInstance()
     {
-        self::assertInstanceOf(PaymentProcessor::class, $this->validator);
+        self::assertInstanceOf(PaymentValidator::class, $this->validator);
     }
 
     public function testCartNoItems()

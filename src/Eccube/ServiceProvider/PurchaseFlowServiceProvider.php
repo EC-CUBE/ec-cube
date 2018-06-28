@@ -44,7 +44,7 @@ class PurchaseFlowServiceProvider implements ServiceProviderInterface
 
         $app['eccube.purchase.flow.cart.holder_processors'] = function (Container $app) {
             $processors = new ArrayCollection();
-            $processors[] = new Processor\PaymentProcessor($app[DeliveryRepository::class]);
+            $processors[] = new Processor\PaymentValidator($app[DeliveryRepository::class]);
             $processors[] = new Processor\PaymentTotalLimitValidator($app['config']['max_total_fee']);
             $processors[] = new Processor\DeliveryFeeFreeProcessor($app[BaseInfo::class]);
             $processors[] = new Processor\PaymentTotalNegativeValidator();

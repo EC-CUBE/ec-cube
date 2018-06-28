@@ -15,7 +15,7 @@ namespace Eccube\Service\PurchaseFlow;
 
 use Eccube\Entity\ItemHolderInterface;
 
-abstract class ValidatableItemHolderProcessor implements ItemHolderProcessor
+abstract class ItemHolderValidator implements ItemHolderProcessor
 {
     use ValidatorTrait;
 

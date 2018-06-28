@@ -25,8 +25,8 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\ProcessResult;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\PurchaseFlow\PurchaseFlowResult;
-use Eccube\Service\PurchaseFlow\ValidatableItemHolderProcessor;
-use Eccube\Service\PurchaseFlow\ValidatableItemProcessor;
+use Eccube\Service\PurchaseFlow\ItemHolderValidator;
+use Eccube\Service\PurchaseFlow\ItemValidator;
 use Eccube\Tests\EccubeTestCase;
 
 class PurchaseFlowTest extends EccubeTestCase
@@ -87,7 +87,7 @@ class PurchaseFlowTest extends EccubeTestCase
 
     public function testProcessItemHolderProcessor_validationErrors()
     {
-        $this->flow->addItemHolderProcessor(new PurchaseFlowTest_FailItemHolderProcessor('error 1'));
+        $this->flow->addItemHolderProcessor(new PurchaseFlowTest_FailItemHolderValidator('error 1'));
         $itemHolder = new Cart();
 
         $expected = new PurchaseFlowResult($itemHolder);
@@ -97,8 +97,8 @@ class PurchaseFlowTest extends EccubeTestCase
 
     public function testProcessItemProcessors_validationErrors()
     {
-        $this->flow->addItemProcessor(new PurchaseFlowTest_FailProcessor('error 1'));
-        $this->flow->addItemProcessor(new PurchaseFlowTest_FailProcessor('error 2'));
+        $this->flow->addItemProcessor(new PurchaseFlowTest_FailValidator('error 1'));
+        $this->flow->addItemProcessor(new PurchaseFlowTest_FailValidator('error 2'));
         $itemHolder = new Order();
         $itemHolder->addOrderItem(new OrderItem());
 
@@ -110,8 +110,8 @@ class PurchaseFlowTest extends EccubeTestCase
 
     public function testProcessItemProcessors_validationErrors_with_multi_items()
     {
-        $this->flow->addItemProcessor(new PurchaseFlowTest_FailProcessor('error 1'));
-        $this->flow->addItemProcessor(new PurchaseFlowTest_FailProcessor('error 2'));
+        $this->flow->addItemProcessor(new PurchaseFlowTest_FailValidator('error 1'));
+        $this->flow->addItemProcessor(new PurchaseFlowTest_FailValidator('error 2'));
         $itemHolder = new Order();
         $itemHolder->addOrderItem(new OrderItem());
         $itemHolder->addOrderItem(new OrderItem());
@@ -141,7 +141,7 @@ class PurchaseFlowTest_ItemProcessor implements ItemProcessor
     }
 }
 
-class PurchaseFlowTest_FailProcessor extends ValidatableItemProcessor
+class PurchaseFlowTest_FailValidator extends ItemValidator
 {
     private $errorMessage;
 
@@ -161,7 +161,7 @@ class PurchaseFlowTest_FailProcessor extends ValidatableItemProcessor
     }
 }
 
-class PurchaseFlowTest_FailItemHolderProcessor extends ValidatableItemHolderProcessor
+class PurchaseFlowTest_FailItemHolderValidator extends ItemHolderValidator
 {
     private $errorMessage;
 

@@ -16,9 +16,9 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\ItemInterface;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
-use Eccube\Service\PurchaseFlow\ValidatableItemProcessor;
+use Eccube\Service\PurchaseFlow\ItemValidator;
 
-class DisplayStatusValidator extends ValidatableItemProcessor
+class DisplayStatusValidator extends ItemValidator
 {
     /**
      * @param ItemInterface $item
