@@ -221,7 +221,6 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
         $this->app['eccube.service.cart']->lock();
 
         $faker = $this->getFaker();
-        $tel = explode('-', $faker->phoneNumber);
         $email = $faker->safeEmail;
 
         $clientFormData = [
@@ -234,20 +233,13 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
                 'kana02' => $faker->firstKanaName,
             ],
             'company_name' => $faker->company,
-            'zip' => [
-                'zip01' => $faker->postcode1(),
-                'zip02' => $faker->postcode2(),
-            ],
+            'postal_code' => $faker->postcode,
             'address' => [
                 'pref' => '5',
                 'addr01' => $faker->city,
                 'addr02' => $faker->streetAddress,
             ],
-            'tel' => [
-                'tel01' => $tel[0],
-                'tel02' => $tel[1],
-                'tel03' => $tel[2],
-            ],
+            'phone_number' => $faker->phoneNumber,
             'email' => [
                 'first' => $email,
                 'second' => $email,
@@ -510,7 +502,6 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
     public function createShipping(array $ProductClasses)
     {
         $faker = $this->getFaker();
-        $tel = explode('-', $faker->phoneNumber);
         $delivery_date = $faker->dateTimeBetween('now', '+ 5 days');
 
         $ShippingItems = [];
@@ -536,25 +527,13 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
                     'kana02' => $faker->firstKanaName,
                 ],
                 'company_name' => $faker->company,
-                'zip' => [
-                    'zip01' => $faker->postcode1(),
-                    'zip02' => $faker->postcode2(),
-                ],
+                'postal_code' => $faker->postcode,
                 'address' => [
                     'pref' => $faker->numberBetween(1, 47),
                     'addr01' => $faker->city,
                     'addr02' => $faker->streetAddress,
                 ],
-                'tel' => [
-                    'tel01' => $tel[0],
-                    'tel02' => $tel[1],
-                    'tel03' => $tel[2],
-                ],
-                'fax' => [
-                    'fax01' => $tel[0],
-                    'fax02' => $tel[1],
-                    'fax03' => $tel[2],
-                ],
+                'phone_number' => $faker->phoneNumber,
                 'Delivery' => '1',
                 'DeliveryTime' => '1',
                 'shipping_delivery_date' => [

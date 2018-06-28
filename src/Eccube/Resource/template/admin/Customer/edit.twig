@@ -23,9 +23,10 @@ file that was distributed with this source code.
 {% endblock javascript %}
 
 {% block main %}
-    <form name="customer_form" role="form" id="customer_form" method="post"
+    <form name="customer_form" role="form" id="customer_form" method="post" class="h-adr"
           action="{%- if Customer.id %}{{ url('admin_customer_edit', { id : Customer.id }) }}{% else %}{{ url('admin_customer_new') }}{% endif -%}"
           novalidate>
+        <span class="p-country-name" style="display:none;">Japan</span>
         {{ form_widget(form._token) }}
         <div class="c-contentsArea__cols">
             <div class="c-contentsArea__primaryCol">
@@ -108,20 +109,15 @@ file that was distributed with this source code.
                                     <div class="col-3"><span>{{ 'admin.customer.edit.address'|trans }}</span><span
                                                 class="badge badge-primary ml-1">{{ 'admin.customer.edit.required'|trans }}</span>
                                     </div>
-                                    <div class="col mb-3">
+                                    <div class="col">
                                         <div class="mb-3">
                                             <div class="row justify-content-start">
                                                 <div class="col-auto pr-0 align-self-center"><span>{{ 'admin.customer.edit.post'|trans }}</span></div>
                                                 <div class="col-2">
-                                                    {{ form_widget(form.zip.zip01, { attr : { placeholder : 'admin.customer.edit.zip_placeholder1' }}) }}
+                                                    {{ form_widget(form.postal_code) }}
                                                 </div>
-                                                <div class="col-auto p-0 align-self-center"><span>-</span></div>
-                                                <div class="col-2">
-                                                    {{ form_widget(form.zip.zip02, { attr : { placeholder : 'admin.customer.edit.zip_placeholder2' }}) }}
-                                                </div>
-                                                {{ form_errors(form.zip) }}
-                                                {{ form_errors(form.zip.zip01) }}
-                                                {{ form_errors(form.zip.zip02) }}
+
+                                                {{ form_errors(form.postal_code) }}
                                             </div>
                                         </div>
 
@@ -132,9 +128,11 @@ file that was distributed with this source code.
                                                 </div>
                                             </div>
                                         </div>
-                                        <div>
-                                            {{ form_widget(form.address.addr01, { attr : { placeholder : 'admin.customer.edit.97', 'class': 'mb-3'}} ) }}
+                                        <div class="mb-3">
+                                            {{ form_widget(form.address.addr01, { attr : { placeholder : 'admin.customer.edit.97' }} ) }}
                                             {{ form_errors(form.address.addr01) }}
+                                        </div>
+                                        <div class="mb-3">
                                             {{ form_widget(form.address.addr02, { attr : { placeholder : 'admin.customer.edit.98' }}) }}
                                             {{ form_errors(form.address.addr02) }}
                                         </div>
@@ -156,52 +154,8 @@ file that was distributed with this source code.
                                         <span class="badge badge-primary ml-1">{{ 'admin.customer.edit.required'|trans }}</span>
                                     </div>
                                     <div class="col">
-
-                                        <div class="row justify-content-start">
-                                            <div class="col-2">
-                                                {{ form_widget(form.tel.tel01) }}
-                                            </div>
-                                            <div class="col-auto text-center p-0">
-                                                <span class="align-middle">-</span>
-                                            </div>
-                                            <div class="col-2">
-                                                {{ form_widget(form.tel.tel02) }}
-                                            </div>
-                                            <div class="col-auto text-center p-0">
-                                                <span class="align-middle">-</span>
-                                            </div>
-                                            <div class="col-2">
-                                                {{ form_widget(form.tel.tel03) }}
-                                            </div>
-                                        </div>
-                                        {{ form_errors(form.tel.tel01) }}
-                                        {{ form_errors(form.tel.tel02) }}
-                                        {{ form_errors(form.tel.tel03) }}
-                                    </div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-3"><span>{{ 'admin.customer.edit.fax'|trans }}</span></div>
-                                    <div class="col">
-                                        <div class="row justify-content-start">
-                                            <div class="col-2">
-                                                {{ form_widget(form.fax.fax01) }}
-                                            </div>
-                                            <div class="col-auto text-center p-0">
-                                                <span class="align-middle">-</span>
-                                            </div>
-                                            <div class="col-2">
-                                                {{ form_widget(form.fax.fax02) }}
-                                            </div>
-                                            <div class="col-auto text-center p-0">
-                                                <span class="align-middle">-</span>
-                                            </div>
-                                            <div class="col-2">
-                                                {{ form_widget(form.fax.fax03) }}
-                                            </div>
-                                        </div>
-                                        {{ form_errors(form.fax.fax01) }}
-                                        {{ form_errors(form.fax.fax02) }}
-                                        {{ form_errors(form.fax.fax03) }}
+                                        {{ form_widget(form.phone_number) }}
+                                        {{ form_errors(form.phone_number) }}
                                     </div>
                                 </div>
                                 <div class="row mb-2">
@@ -334,12 +288,11 @@ file that was distributed with this source code.
                                                         {{ CustomerAddress.name01 }}&nbsp;{{ CustomerAddress.name02 }}
                                                     </td>
                                                     <td class="align-middle">
-                                                        〒{{ CustomerAddress.zip01 }}-{{ CustomerAddress.zip02 }}
+                                                        〒{{ CustomerAddress.postal_code }}
                                                         　{{ CustomerAddress.Pref }}{{ CustomerAddress.addr01 }}{{ CustomerAddress.addr02 }}
                                                     </td>
                                                     <td class="align-middle">
-                                                        {{ CustomerAddress.tel01 }}-{{ CustomerAddress.tel02 }}
-                                                        -{{ CustomerAddress.tel03 }}
+                                                        {{ CustomerAddress.phone_number }}
                                                     </td>
                                                     {# TODO: メニューのデザインを整える #}
                                                     <td class="align-middle pr-3">

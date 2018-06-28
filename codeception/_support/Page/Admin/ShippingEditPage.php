@@ -70,15 +70,10 @@ class ShippingEditPage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
-    public function 入力_郵便番号1($value)
+    public function 入力_郵便番号($value)
     {
-        $this->tester->fillField(['id' => 'shipping_zip_zip01'], $value);
-        return $this;
-    }
+        $this->tester->fillField(['id' => 'shipping_postal_code'], $value);
 
-    public function 入力_郵便番号2($value)
-    {
-        $this->tester->fillField(['id' => 'shipping_zip_zip02'], $value);
         return $this;
     }
 
@@ -100,21 +95,10 @@ class ShippingEditPage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
-    public function 入力_電話番号1($value)
+    public function 入力_電話番号($value)
     {
-        $this->tester->fillField(['id' => 'shipping_tel_tel01'], $value);
-        return $this;
-    }
+        $this->tester->fillField(['id' => 'shipping_phone_number'], $value);
 
-    public function 入力_電話番号2($value)
-    {
-        $this->tester->fillField(['id' => 'shipping_tel_tel02'], $value);
-        return $this;
-    }
-
-    public function 入力_電話番号3($value)
-    {
-        $this->tester->fillField(['id' => 'shipping_tel_tel03'], $value);
         return $this;
     }
 

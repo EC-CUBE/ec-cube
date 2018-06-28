@@ -23,18 +23,12 @@ file that was distributed with this source code.
             $('#order_name_name02').val(data['name02']);
             $('#order_kana_kana01').val(data['kana01']);
             $('#order_kana_kana02').val(data['kana02']);
-            $('#order_zip_zip01').val(data['zip01']);
-            $('#order_zip_zip02').val(data['zip02']);
+            $('#order_postal_code').val(data['postal_code']);
             $('#order_address_pref').val(data['pref']);
             $('#order_address_addr01').val(data['addr01']);
             $('#order_address_addr02').val(data['addr02']);
             $('#order_email').val(data['email']);
-            $('#order_tel_tel01').val(data['tel01']);
-            $('#order_tel_tel02').val(data['tel02']);
-            $('#order_tel_tel03').val(data['tel03']);
-            $('#order_fax_fax01').val(data['fax01']);
-            $('#order_fax_fax02').val(data['fax02']);
-            $('#order_fax_fax03').val(data['fax03']);
+            $('#order_phone_number').val(data['phone_number']);
             $('#order_company_name').val(data['company_name']);
             // モーダルを閉じる.
             $('#searchCustomerModal').modal('hide');
@@ -78,7 +72,7 @@ file that was distributed with this source code.
         <tr>
             <td class="text-center"><span>{{ Customer.id }}</span></td>
             <td><span>{{ Customer.name }}</span></td>
-            <td><span>{{ Customer.tel }}</span></td>
+            <td><span>{{ Customer.phone_number }}</span></td>
             <td><span>{{ Customer.email }}</span></td>
             <td>
                 <div class="row justify-content-end pr-2">

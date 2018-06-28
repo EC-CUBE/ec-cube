@@ -300,19 +300,13 @@
                 'shipping_kana01',
                 'shipping_kana02',
                 'shipping_pref',
-                'shipping_zip01',
-                'shipping_zip02',
+                'shipping_postal_code',
                 'shipping_addr01',
                 'shipping_addr02',
-                'shipping_tel01',
-                'shipping_tel02',
-                'shipping_tel03',
+                'shipping_phone_number',
                 'shipping_company_name',
                 'shipping_country_id',
                 'shipping_zipcode',
-                'shipping_fax01',
-                'shipping_fax02',
-                'shipping_fax03'
             ];
 
             if (!document.form1.deliv_check.checked) {

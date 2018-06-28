@@ -68,7 +68,7 @@ file that was distributed with this source code.
             <p class="ec-reportDescription">{{'shopping.text.message.sent_email'|trans}}<br>{{'shopping.text.message.in_case'|trans}}<br>{{'shopping.text.message.thank_you_with_us'|trans}}</p>
             <div class="ec-off4Grid">
                 {% if hasNextCart %}
-                    <div class="ec-off4Grid__cell"><a class="ec-blockBtn--primary" href="{{ url('cart') }}">購入を続ける</a></div> {# TODO 未翻訳 #}}
+                    <div class="ec-off4Grid__cell"><a class="ec-blockBtn--primary" href="{{ url('cart') }}">購入を続ける</a></div> {# TODO 未翻訳 #}
                 {% else %}
                     <div class="ec-off4Grid__cell"><a class="ec-blockBtn--cancel" href="{{ url('homepage') }}">{{'common.label.back_to_top'|trans}}</a></div>
                 {% endif %}

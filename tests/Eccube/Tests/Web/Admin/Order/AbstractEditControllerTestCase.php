@@ -38,8 +38,6 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
     public function createFormData(Customer $Customer, Product $Product = null)
     {
         $faker = $this->getFaker();
-        $tel = explode('-', $faker->phoneNumber);
-
         $email = $faker->safeEmail;
         $delivery_date = $faker->dateTimeBetween('now', '+ 5 days');
 
@@ -71,25 +69,13 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
                 'kana02' => $faker->firstKanaName,
             ],
             'company_name' => $faker->company,
-            'zip' => [
-                'zip01' => $faker->postcode1(),
-                'zip02' => $faker->postcode2(),
-            ],
+            'postal_code' => $faker->postcode,
             'address' => [
                 'pref' => '5',
                 'addr01' => $faker->city,
                 'addr02' => $faker->streetAddress,
             ],
-            'tel' => [
-                'tel01' => $tel[0],
-                'tel02' => $tel[1],
-                'tel03' => $tel[2],
-            ],
-            'fax' => [
-                'fax01' => $tel[0],
-                'fax02' => $tel[1],
-                'fax03' => $tel[2],
-            ],
+            'phone_number' => $faker->phoneNumber,
             'email' => $email,
             'message' => $faker->realText,
             'Payment' => 1,     // XXX ハードコーディング
@@ -149,26 +135,14 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
                 'kana01' => $Order->getKana01(),
                 'kana02' => $Order->getKana02(),
             ],
-            'zip' => [
-                'zip01' => $Order->getZip01(),
-                'zip02' => $Order->getZip02(),
-            ],
+            'postal_code' => $Order->getPostalCode(),
             'address' => [
                 'pref' => $Order->getPref()->getId(),
                 'addr01' => $Order->getAddr01(),
                 'addr02' => $Order->getAddr02(),
             ],
             'email' => $Order->getEmail(),
-            'tel' => [
-                'tel01' => $Order->getTel01(),
-                'tel02' => $Order->getTel02(),
-                'tel03' => $Order->getTel03(),
-            ],
-            'fax' => [
-                'fax01' => $Order->getFax01(),
-                'fax02' => $Order->getFax02(),
-                'fax03' => $Order->getFax03(),
-            ],
+            'phone_number' => $Order->getPhoneNumber(),
             'company_name' => $Order->getCompanyName(),
             'message' => $Order->getMessage(),
             'OrderItems' => $orderItem,
