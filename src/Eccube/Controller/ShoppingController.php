@@ -834,7 +834,7 @@ class ShoppingController extends AbstractShoppingController
                     if ($dispatcher->isForward()) {
                         return $this->forwardToRoute($dispatcher->getRoute(), $dispatcher->getPathParameters(), $dispatcher->getQueryParameters());
                     } else {
-                        return $this->redirectToRoute($dispatcher->getRoute(), $dispatcher->getQueryParameters());
+                        return $this->redirectToRoute($dispatcher->getRoute(), array_merge($dispatcher->getPathParameters(), $dispatcher->getQueryParameters()));
                     }
                 }
 

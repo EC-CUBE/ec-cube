@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 /**
  * PaymentService
  *
- * 必要に応じて決済代行会社ごとに継承して実装する
+ * 必要に応じて決済代行会社ごとに継承して実装すること
  */
 class PaymentService
 {
@@ -41,6 +41,11 @@ class PaymentService
     }
 
     /**
+     * 他のコントローラに処理を移譲する.
+     *
+     * 注文確認画面→完了画面で呼ばれます.
+     * このメソッドは, 内部で PaymentMethod::apply() をコールし, 処理を移譲します.
+     *
      * @return PaymentDispatcher
      */
     public function dispatch(PaymentMethod $method)
@@ -48,10 +53,16 @@ class PaymentService
         // PaymentMethod->apply に処理を移譲する
         // 別のコントローラに forward など
 
-        return $method->apply(); // Order 渡す
+        return $method->apply();
     }
 
     /**
+     * 決済の妥当性を検証する.
+     *
+     * 注文入力画面→確認画面での入力チェックに利用します.
+     * 主にクレジットカードの有効性チェックに利用します.
+     * このメソッドは, 内部で PaymentMethod::verify() をコールします.
+     *
      * @return PaymentResult
      */
     public function doVerify(PaymentMethod $method)
@@ -64,6 +75,11 @@ class PaymentService
     }
 
     /**
+     * 決済処理を実行します.
+     *
+     * 注文確認画面→完了画面で呼ばれます.
+     * このメソッドは, 内部で PeymentMethod::checkout() をコールします.
+     *
      * @return PaymentResult
      */
     public function doCheckout(PaymentMethod $method)
