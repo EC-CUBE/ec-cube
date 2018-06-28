@@ -56,7 +56,7 @@ class PurchaseFlow
         $this->purchaseProcessors = $processors;
     }
 
-    public function calculate(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         $this->calculateAll($itemHolder);
 

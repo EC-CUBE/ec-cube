@@ -491,7 +491,7 @@ class OrderController extends AbstractController
 
                 $purchaseContext = new PurchaseContext($OriginOrder, $OriginOrder->getCustomer());
 
-                $flowResult = $this->purchaseFlow->calculate($Order, $purchaseContext);
+                $flowResult = $this->purchaseFlow->validate($Order, $purchaseContext);
                 if ($flowResult->hasWarning()) {
                     foreach ($flowResult->getWarning() as $warning) {
                         $msg = $this->translator->trans('admin.order.index.bulk_warning', [

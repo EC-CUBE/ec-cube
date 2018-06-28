@@ -693,7 +693,7 @@ class Generator
         $this->entityManager->persist($OrderItemDiscount);
         $this->entityManager->flush($OrderItemDiscount);
 
-        $this->orderPurchaseFlow->calculate($Order, new PurchaseContext());
+        $this->orderPurchaseFlow->validate($Order, new PurchaseContext());
 
         $this->entityManager->flush($Shipping);
         $this->entityManager->flush($Order);

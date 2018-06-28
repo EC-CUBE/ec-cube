@@ -57,7 +57,7 @@ class SecurityListener implements EventSubscriberInterface
         } elseif ($user instanceof Customer) {
             $this->cartService->mergeFromPersistedCart($user);
             foreach ($this->cartService->getCarts() as $Cart) {
-                $this->purchaseFlow->calculate($Cart, new PurchaseContext($Cart, $user));
+                $this->purchaseFlow->validate($Cart, new PurchaseContext($Cart, $user));
             }
             $this->cartService->save();
             if (count($this->cartService->getCarts()) > 1) {

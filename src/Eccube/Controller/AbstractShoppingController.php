@@ -62,7 +62,7 @@ class AbstractShoppingController extends AbstractController
     protected function executePurchaseFlow(ItemHolderInterface $itemHolder)
     {
         /** @var PurchaseFlowResult $flowResult */
-        $flowResult = $this->purchaseFlow->calculate($itemHolder, new PurchaseContext($itemHolder, $itemHolder->getCustomer()));
+        $flowResult = $this->purchaseFlow->validate($itemHolder, new PurchaseContext($itemHolder, $itemHolder->getCustomer()));
         foreach ($flowResult->getWarning() as $warning) {
             $this->addRequestError($warning);
         }

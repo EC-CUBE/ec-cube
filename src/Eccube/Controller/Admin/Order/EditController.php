@@ -188,7 +188,7 @@ class EditController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_INDEX_PROGRESS, $event);
 
-            $flowResult = $this->purchaseFlow->calculate($TargetOrder, $purchaseContext);
+            $flowResult = $this->purchaseFlow->validate($TargetOrder, $purchaseContext);
             if ($flowResult->hasWarning()) {
                 foreach ($flowResult->getWarning() as $warning) {
                     // TODO Warning の場合の処理

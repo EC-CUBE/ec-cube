@@ -115,7 +115,7 @@ class CartController extends AbstractController
         $flowResults = array_map(function ($Cart) {
             $purchaseContext = new PurchaseContext($Cart, $this->getUser());
 
-            return $this->purchaseFlow->calculate($Cart, $purchaseContext);
+            return $this->purchaseFlow->validate($Cart, $purchaseContext);
         }, $Carts);
 
         // 復旧不可のエラーが発生した場合はカートをクリアして再描画
