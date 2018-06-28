@@ -16,7 +16,6 @@ namespace Eccube\Service;
 use Eccube\Service\Payment\PaymentDispatcher;
 use Eccube\Service\Payment\PaymentMethodInterface;
 use Eccube\Service\Payment\PaymentResult;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * PaymentService

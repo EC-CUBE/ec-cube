@@ -26,7 +26,6 @@ class PaymentServicePass implements CompilerPassInterface
         $ids = $container->findTaggedServiceIds(self::PAYMENT_TAG);
 
         foreach ($ids as $id => $tags) {
-
             $def = $container->getDefinition($id);
             $def->setPublic(true);
             $class = $container->getParameterBag()->resolveValue($def->getClass());

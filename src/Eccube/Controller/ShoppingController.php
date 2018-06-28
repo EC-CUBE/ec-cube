@@ -961,6 +961,7 @@ class ShoppingController extends AbstractShoppingController
     private function createPaymentService(Order $Order)
     {
         $serviceClass = $Order->getPayment()->getServiceClass();
+
         return $this->container->get($serviceClass);
     }
 
