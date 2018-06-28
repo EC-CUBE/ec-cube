@@ -41,7 +41,7 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
     {
         $this->tester->click(self::$詳細検索ボタン);
         $this->tester->wait(1);
-        $this->tester->fillField(['id' => 'admin_search_order_tel'], $value);
+        $this->tester->fillField(['id' => 'admin_search_order_phone_number'], $value);
         $this->tester->click('#search_form #search_submit');
         return $this;
     }

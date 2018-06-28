@@ -84,7 +84,7 @@ class SearchOrderType extends AbstractType
                 'label' => 'searchorder.label.order_no',
                 'required' => false,
             ])
-            ->add('tel', TextType::class, [
+            ->add('phone_number', TextType::class, [
                 'label' => 'common.label.phone_number',
                 'required' => false,
                 'constraints' => [

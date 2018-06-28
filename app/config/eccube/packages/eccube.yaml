@@ -83,10 +83,8 @@ parameters:
     eccube_product_order_newer: 2
     eccube_product_order_price_higher: 3
     eccube_price_max: 2147483647
-    eccube_tel_len: 5
-    eccube_tel_len_min: 1
-    eccube_zip01_len: 3
-    eccube_zip02_len: 4
+    eccube_tel_len_max: 14
+    eccube_postal_code: 8
     eccube_password_min_len: 8
     eccube_password_max_len: 32
     eccube_composer_memory_limit: 1536

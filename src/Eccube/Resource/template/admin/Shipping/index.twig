@@ -358,8 +358,8 @@ file that was distributed with this source code.
                 </div>
                 <div class="col">
                     <label class="col-form-label">{{ 'admin.shipping.index.770'|trans }}</label>
-                    {{ form_widget(searchForm.tel) }}
-                    {{ form_errors(searchForm.tel) }}
+                    {{ form_widget(searchForm.phone_number) }}
+                    {{ form_errors(searchForm.phone_number) }}
                 </div>
             </div>
             <div class="row">
@@ -532,7 +532,7 @@ file that was distributed with this source code.
                                     {% endfor %}
                                 </td>
                                 <td class="align-middle">
-                                    <label class="m-0">{{ Shipping.zip01 }}-{{ Shipping.zip02 }}<br>{{ Shipping.pref }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}<br>{{ Shipping.name01 }} {{ Shipping.name02 }}<br>{{ Shipping.tel01 }}-{{ Shipping.tel02 }}-{{ Shipping.tel03 }}</label>
+                                    <label class="m-0">{{ Shipping.postal_code }}<br>{{ Shipping.pref }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}<br>{{ Shipping.name01 }} {{ Shipping.name02 }}<br>{{ Shipping.phone_number }}</label>
                                 </td>
                                 <td class="align-middle">{{ Shipping.ShippingDeliveryName }}</td>
                                 <td class="align-middle">

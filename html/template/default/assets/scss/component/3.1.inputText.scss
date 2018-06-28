@@ -137,8 +137,6 @@ Markup:
 .ec-zipInput
   span 〒
   input(type="text")
-  span -
-  input(type="text")
 .ec-zipInputHelp
   a(href="http://www.post.japanpost.jp/zipcode/" target="_blank")
     .ec-zipInputHelp__icon
@@ -155,13 +153,9 @@ Styleguide 3.1.4
   display: inline-block;
   input{
     display: inline-block;
-    width: auto;
     text-align: right;
-    max-width: 4em;
+    width: auto;
     font-size: 16px;
-    @include media_desktop {
-      max-width: 5em;
-    }
   }
   span{
     display: inline-block;
@@ -218,26 +212,10 @@ ex [会員情報編集画面　電話番号部分](http://demo3.ec-cube.net/mypa
 Markup:
 .ec-telInput
   input(type="text")
-  span -
-  input(type="text")
-  span -
-  input(type="text")
 
 Styleguide 3.1.5
 */
 .ec-telInput{
   @extend .ec-input;
-  input{
-    display: inline-block;
-    width: auto;
-    font-size: 16px;
-    text-align: right;
-    max-width: 5em
-  }
-  span{
-    display: inline-block;
-    padding: 0 5px 0 3px;
-    margin-left:5px;
-  }
 }
 

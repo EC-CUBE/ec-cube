@@ -239,27 +239,21 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
         $this->verify();
     }
 
-    public function testTel()
+    public function testPhoneNumber()
     {
+        /** @var Order[] $Orders */
         $Orders = $this->orderRepo->findAll();
-        // 全受注の Tel を変更しておく
+        // 全受注の Phone Number を変更しておく
         foreach ($Orders as $Order) {
-            $Order
-                ->setTel01('111')
-                ->setTel02('2222')
-                ->setTel03('8888');
+            $Order->setPhoneNumber('9876543210');
         }
-        $this->entityManager->flush();
 
         // 1受注のみ検索対象とする
-        $this->Order1
-            ->setTel01('999')
-            ->setTel02('9999')
-            ->setTel03('8888');
+        $this->Order1->setPhoneNumber('0123456789');
         $this->entityManager->flush();
 
         $this->searchData = [
-            'tel' => '999',
+            'phone_number' => '0123456789',
         ];
         $this->scenario();
 

@@ -21,8 +21,8 @@ use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\KanaType;
 use Eccube\Form\Type\NameType;
 use Eccube\Form\Type\PriceType;
-use Eccube\Form\Type\TelType;
-use Eccube\Form\Type\ZipType;
+use Eccube\Form\Type\PhoneNumberType;
+use Eccube\Form\Type\PostalType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -99,7 +99,7 @@ class OrderType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('zip', ZipType::class, [
+            ->add('postal_code', PostalType::class, [
                 'required' => false,
                 'options' => [
                     'constraints' => [
@@ -144,17 +144,13 @@ class OrderType extends AbstractType
                     new Assert\Email(['strict' => true]),
                 ],
             ])
-            ->add('tel', TelType::class, [
+            ->add('phone_number', PhoneNumberType::class, [
                 'required' => false,
                 'options' => [
                     'constraints' => [
                         new Assert\NotBlank(),
                     ],
                 ],
-            ])
-            ->add('fax', TelType::class, [
-                'label' => 'order.label.fax_number',
-                'required' => false,
             ])
             ->add('company_name', TextType::class, [
                 'label' => 'order.label.company_name',
