@@ -112,6 +112,7 @@ class PaymentRepository extends AbstractRepository
      *
      * @param $deliveries
      * @param bool $returnType
+     *
      * @return array
      */
     public function findAllowedPayments($deliveries, $returnType = false)
