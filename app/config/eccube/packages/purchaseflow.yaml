@@ -5,15 +5,15 @@ services:
     eccube.purchase.flow.cart:
         class: Eccube\Service\PurchaseFlow\PurchaseFlow
         calls:
-            - [setItemHolderProcessors, ['@eccube.purchase.flow.cart.holder_processors']]
+            - [setItemHolderPreprocessors, ['@eccube.purchase.flow.cart.holder_preprocessors']]
             - [setItemValidators, ['@eccube.purchase.flow.cart.item_validators']]
             - [setItemHolderValidators, ['@eccube.purchase.flow.cart.holder_validators']]
 
-    eccube.purchase.flow.cart.holder_processors:
+    eccube.purchase.flow.cart.holder_preprocessors:
         class: Doctrine\Common\Collections\ArrayCollection
         arguments:
             - #
-                - '@Eccube\Service\PurchaseFlow\Processor\DeliveryFeeFreeProcessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\DeliveryFeeFreePreprocessor'
 
     eccube.purchase.flow.cart.item_validators:
         class: Doctrine\Common\Collections\ArrayCollection
@@ -39,20 +39,21 @@ services:
     eccube.purchase.flow.shopping:
         class: Eccube\Service\PurchaseFlow\PurchaseFlow
         calls:
-            - [setItemHolderProcessors, ['@eccube.purchase.flow.shopping.holder_processors']]
+            - [setItemHolderPreprocessors, ['@eccube.purchase.flow.shopping.holder_preprocessors']]
             - [setItemValidators, ['@eccube.purchase.flow.shopping.item_validators']]
             - [setItemHolderValidators, ['@eccube.purchase.flow.shopping.holder_validators']]
             - [setPurchaseProcessors, ['@eccube.purchase.flow.shopping.purchase']]
 
-    eccube.purchase.flow.shopping.holder_processors:
+
+    eccube.purchase.flow.shopping.holder_preprocessors:
         class: Doctrine\Common\Collections\ArrayCollection
         arguments:
             - #
-                - '@Eccube\Service\PurchaseFlow\Processor\DeliveryFeeProcessor'
-                - '@Eccube\Service\PurchaseFlow\Processor\DeliveryFeeFreeByShippingProcessor'
-                - '@Eccube\Service\PurchaseFlow\Processor\UsePointProcessor'
-                - '@Eccube\Service\PurchaseFlow\Processor\AddPointProcessor'
-                - '@Eccube\Service\PurchaseFlow\Processor\SubtractPointProcessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\DeliveryFeePreprocessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\DeliveryFeeFreeByShippingPreprocessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\UsePointPreprocessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\AddPointPreprocessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\SubtractPointPreprocessor'
 
     eccube.purchase.flow.shopping.item_validators:
         class: Doctrine\Common\Collections\ArrayCollection
@@ -84,19 +85,25 @@ services:
     eccube.purchase.flow.order:
         class: Eccube\Service\PurchaseFlow\PurchaseFlow
         calls:
+            - [setItemHolderPreprocessors, ['@eccube.purchase.flow.order.holder_preprocessors']]
             - [setItemHolderProcessors, ['@eccube.purchase.flow.order.holder_processors']]
             - [setItemValidators, ['@eccube.purchase.flow.order.item_validators']]
             - [setItemHolderValidators, ['@eccube.purchase.flow.order.holder_validators']]
             - [setPurchaseProcessors, ['@eccube.purchase.flow.order.purchase']]
+
+    eccube.purchase.flow.order.holder_preprocessors:
+        class: Doctrine\Common\Collections\ArrayCollection
+        arguments:
+            - #
+                - '@Eccube\Service\PurchaseFlow\Processor\UsePointPreprocessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\AddPointPreprocessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\SubtractPointPreprocessor'
 
     eccube.purchase.flow.order.holder_processors:
         class: Doctrine\Common\Collections\ArrayCollection
         arguments:
             - #
                 - '@Eccube\Service\PurchaseFlow\Processor\UpdateDatePurchaseProcessor'
-                - '@Eccube\Service\PurchaseFlow\Processor\UsePointProcessor'
-                - '@Eccube\Service\PurchaseFlow\Processor\AddPointProcessor'
-                - '@Eccube\Service\PurchaseFlow\Processor\SubtractPointProcessor'
 
     eccube.purchase.flow.order.item_validators:
         class: Doctrine\Common\Collections\ArrayCollection

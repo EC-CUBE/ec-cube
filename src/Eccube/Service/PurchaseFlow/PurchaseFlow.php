@@ -44,6 +44,16 @@ class PurchaseFlow
      */
     protected $itemHolderValidators;
 
+    /**
+     * @var ArrayCollection|ItemPreprocessor[]
+     */
+    protected $itemPreprocessors;
+
+    /**
+     * @var ArrayCollection|ItemHolderPreprocessor[]
+     */
+    protected $itemHolderPreprocessors;
+
     public function __construct()
     {
         $this->itemProcessors = new ArrayCollection();
@@ -51,6 +61,8 @@ class PurchaseFlow
         $this->purchaseProcessors = new ArrayCollection();
         $this->itemValidators = new ArrayCollection();
         $this->itemHolderValidators = new ArrayCollection();
+        $this->itemPreprocessors = new ArrayCollection();
+        $this->itemHolderPreprocessors = new ArrayCollection();
     }
 
     public function setItemProcessors(ArrayCollection $processors)
@@ -76,6 +88,16 @@ class PurchaseFlow
     public function setItemHolderValidators(ArrayCollection $itemHolderValidators)
     {
         $this->itemHolderValidators = $itemHolderValidators;
+    }
+
+    public function setItemPreprocessors(ArrayCollection $itemPreprocessors)
+    {
+        $this->itemPreprocessors = $itemPreprocessors;
+    }
+
+    public function setItemHolderPreprocessors(ArrayCollection $itemHolderPreprocessors)
+    {
+        $this->itemHolderPreprocessors = $itemHolderPreprocessors;
     }
 
     public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
