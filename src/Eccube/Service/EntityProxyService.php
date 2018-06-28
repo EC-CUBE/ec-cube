@@ -160,7 +160,7 @@ class EntityProxyService
      */
     private function addTrait($entityTokens, $trait)
     {
-        $newTraitTokens = $this->convertFQCNToTokens($trait);
+        $newTraitTokens = $this->convertTraitNameToTokens($trait);
 
         // Traitのuse句があるかどうか
         $useTraitIndex = $entityTokens->getNextTokenOfKind(0, [[CT::T_USE_TRAIT]]);
@@ -212,7 +212,11 @@ class EntityProxyService
             }))));
 
             // 削除対象を取り除く
-            array_splice($traitNames, array_search($trait, $traitNames), 1);
+            foreach ($traitNames as $i => $name) {
+                if ($name === $trait) {
+                    unset($traitNames[$i]);
+                }
+            }
 
             // use句をすべて削除
             $entityTokens->clearRange($useTraitIndex, $useTraitEndIndex + 1);
@@ -224,14 +228,31 @@ class EntityProxyService
         }
     }
 
-    private function convertFQCNToTokens($fqcn)
+    /**
+     * trait名をトークンに変換する
+     *
+     * trait名は以下の2形式で引数に渡される
+     * - プラグインのTrait -> \Plugin\Xxx\Entity\XxxTrait
+     * - 本体でuseされているTrait -> PointTrait
+     *
+     * @param $name
+     * @return array|Token[]
+     */
+    private function convertTraitNameToTokens($name)
     {
         $result = [];
-        foreach (explode('\\', $fqcn) as $part) {
+        $i = 0;
+        foreach (explode('\\', $name) as $part) {
+            // プラグインのtraitの場合は、0番目は空文字
+            // 本体でuseされているtraitは0番目にtrait名がくる
             if ($part) {
-                $result[] = new Token([T_NS_SEPARATOR, '\\']);
+                // プラグインのtraitの場合はFQCNにする
+                if ($i > 0) {
+                    $result[] = new Token([T_NS_SEPARATOR, '\\']);
+                }
                 $result[] = new Token([T_STRING, $part]);
             }
+            $i++;
         }
 
         return $result;
