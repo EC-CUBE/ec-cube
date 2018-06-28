@@ -890,7 +890,7 @@ class ShoppingController extends AbstractShoppingController
         // 決済実行
         $PaymentResult = $paymentService->doCheckout($paymentMethod);
         $response = $PaymentResult->getResponse();
-        if ($response->isRedirection() || $response->getContent()) {
+        if ($response && ($response->isRedirection() || $response->getContent())) {
             return $response;
         }
 
