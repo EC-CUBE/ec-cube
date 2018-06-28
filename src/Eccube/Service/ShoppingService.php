@@ -1278,7 +1278,11 @@ class ShoppingService
      */
     public function filterDeliveries(array $Deliveries)
     {
-        $Payments = $this->paymentRepository->findAllowedPayments($Deliveries, true);
+        if (empty($Deliveries)) {
+            return [];
+        }
+
+        $Payments = $this->paymentRepository->findAllowedPayments($Deliveries, true, $Order);
 
         if (count($Payments) == 0) {
             array_pop($Deliveries);
