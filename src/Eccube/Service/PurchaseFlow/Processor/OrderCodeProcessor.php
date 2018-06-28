@@ -16,11 +16,16 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\ItemHolderInterface;
-use Eccube\Service\PurchaseFlow\ProcessResult;
+use Eccube\Service\PurchaseFlow\ItemHolderPreprocessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
-use Eccube\Service\PurchaseFlow\PurchaseProcessor;
 
-class OrderCodeProcessor implements PurchaseProcessor
+/**
+ * 受注番号生成処理.
+ *
+ * Class OrderCodeProcessor
+ * @package Eccube\Service\PurchaseFlow\Processor
+ */
+class OrderCodeProcessor implements ItemHolderPreprocessor
 {
     /**
      * @var EccubeConfig
@@ -41,7 +46,6 @@ class OrderCodeProcessor implements PurchaseProcessor
     public function __construct(EntityManagerInterface $entityManager, EccubeConfig $eccubeConfig)
     {
         $this->entityManager = $entityManager;
-
         $this->eccubeConfig = $eccubeConfig;
     }
 
@@ -54,7 +58,7 @@ class OrderCodeProcessor implements PurchaseProcessor
 
         if ($Order instanceof \Eccube\Entity\Order) {
             if ($Order->getOrderCode()) {
-                return ProcessResult::success();
+                return;
             }
 
             $orderCode = preg_replace_callback('/\${(.*)}/U', function ($matches) use ($Order) {
@@ -81,7 +85,5 @@ class OrderCodeProcessor implements PurchaseProcessor
 
             $Order->setOrderCode($orderCode);
         }
-
-        return ProcessResult::success();
     }
 }

@@ -22,6 +22,10 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 /**
  * 利用ポイントに応じてポイントを減算する.
+ *
+ * 例) ポイント付与率10%で、1000円分購入したとき
+ * ポイント利用なし -> 1000円 * 10% = 100ポイント付与
+ * 500ポイント利用して購入 -> (1000円 - 500p) * 10% = 50ポイント付与
  */
 class SubtractPointPreprocessor implements ItemHolderPreprocessor
 {
@@ -33,7 +37,7 @@ class SubtractPointPreprocessor implements ItemHolderPreprocessor
     /**
      * SubstractPointProcessor constructor.
      *
-     * @param $app
+     * @param BaseInfo $BaseInfo
      */
     public function __construct(BaseInfo $BaseInfo)
     {
@@ -51,22 +55,22 @@ class SubtractPointPreprocessor implements ItemHolderPreprocessor
         /** @var Order $Order */
         $Order = $itemHolder;
         if ($Order->getUsePoint() > 0) {
-            $Order->setAddPoint($this->substract($Order->getAddPoint(), $Order->getUsePoint(), $this->BaseInfo->getBasicPointRate()));
+            $Order->setAddPoint($this->subtract($Order->getAddPoint(), $Order->getUsePoint(), $this->BaseInfo->getBasicPointRate()));
         }
 
         return ProcessResult::success();
     }
 
     /**
-     * Substract point.
+     * Subtract point.
      *
      * @param integer $totalPoint 合計ポイント
      * @param integer $usePoint 利用ポイント
      * @param integer $pointRate ポイント付与率(%)
      *
-     * @return integer Point after substraction
+     * @return integer Point after subtraction
      */
-    protected function substract($totalPoint, $usePoint, $pointRate)
+    protected function subtract($totalPoint, $usePoint, $pointRate)
     {
         $add_point = $totalPoint - intval($usePoint * ($pointRate / 100));
 

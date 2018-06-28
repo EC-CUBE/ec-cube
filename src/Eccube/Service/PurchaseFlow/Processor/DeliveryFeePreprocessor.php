@@ -24,7 +24,6 @@ use Eccube\Entity\Shipping;
 use Eccube\Repository\DeliveryFeeRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Service\PurchaseFlow\ItemHolderPreprocessor;
-use Eccube\Service\PurchaseFlow\ProcessResult;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 /**
@@ -66,17 +65,14 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
 
     /**
      * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext     $context
-     *
-     * @return ProcessResult
+     * @param PurchaseContext $context
+     * @throws \Doctrine\ORM\NoResultException
      */
     public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         if ($this->containsDeliveryFeeItem($itemHolder) == false) {
             $this->addDeliveryFeeItem($itemHolder);
         }
-
-        return ProcessResult::success();
     }
 
     /**
@@ -99,6 +95,7 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
      * TODO 送料無料計算.
      *
      * @param ItemHolderInterface $itemHolder
+     * @throws \Doctrine\ORM\NoResultException
      */
     private function addDeliveryFeeItem(ItemHolderInterface $itemHolder)
     {

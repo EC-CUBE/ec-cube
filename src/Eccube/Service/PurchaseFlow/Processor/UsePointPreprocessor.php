@@ -27,6 +27,9 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 /**
  * 使用ポイント値引明細追加.
+ * TODO ポイント明細追加処理はPreprocessorで行う
+ * TODO ポイント数チェックはValidatorで行う
+ * TODO ユーザのポイント減算/取り消し処理はPurchaseProcessorで行う
  */
 class UsePointPreprocessor implements ItemHolderPreprocessor
 {

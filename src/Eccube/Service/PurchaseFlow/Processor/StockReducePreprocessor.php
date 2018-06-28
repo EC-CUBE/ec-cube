@@ -23,6 +23,8 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 /**
  * 在庫制御.
+ * TODO 在庫減算処理はPurchaseProcessorで行う
+ * TODO 在庫チェックはValidatorで行う
  */
 class StockReducePreprocessor implements ItemPreprocessor
 {
