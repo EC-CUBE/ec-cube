@@ -14,7 +14,6 @@
 namespace Eccube\Form\Type\Shopping;
 
 use Eccube\Common\EccubeConfig;
-use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
 use Eccube\Repository\DeliveryFeeRepository;
 use Eccube\Repository\DeliveryRepository;
