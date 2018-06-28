@@ -37,7 +37,7 @@ class PluginPass implements CompilerPassInterface
             $class = $definition->getClass();
 
             foreach ($plugins as $plugin) {
-                $namespace = 'Plugin\\'.$plugin['code'];
+                $namespace = 'Plugin\\'.$plugin;
 
                 if (false !== \strpos($class, $namespace)) {
                     $definition->clearTags();
