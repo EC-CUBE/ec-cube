@@ -1282,7 +1282,7 @@ class ShoppingService
             return [];
         }
 
-        $Payments = $this->paymentRepository->findAllowedPayments($Deliveries, true, $Order);
+        $Payments = $this->paymentRepository->findAllowedPayments($Deliveries, true);
 
         if (count($Payments) == 0) {
             array_pop($Deliveries);
