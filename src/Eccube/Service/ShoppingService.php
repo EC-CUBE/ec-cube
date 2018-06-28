@@ -1268,4 +1268,24 @@ class ShoppingService
         );
         $this->eventDispatcher->dispatch(EccubeEvents::SERVICE_SHOPPING_NOTIFY_COMPLETE, $event);
     }
+
+    /**
+     * Filter deliveries match to multi shipping
+     *
+     * @param array $Deliveries
+     *
+     * @return array
+     */
+    public function filterDeliveries(array $Deliveries)
+    {
+        $Payments = $this->paymentRepository->findAllowedPayments($Deliveries, true);
+
+        if (count($Payments) == 0) {
+            array_pop($Deliveries);
+
+            return $this->filterDeliveries($Deliveries);
+        }
+
+        return $Deliveries;
+    }
 }

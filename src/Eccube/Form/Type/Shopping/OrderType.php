@@ -139,9 +139,14 @@ class OrderType extends AbstractType
 
                 $oldPayment = $Order->getPayment();
                 if (!$oldPayment || !array_key_exists($oldPayment->getId(), $Payments)) {
-                    $defaultPayment = current($Payments);
-                    $Order->setPayment($defaultPayment);
-                    $Order->setPaymentMethod($defaultPayment->getMethod());
+                    if (count($Payments)) {
+                        $defaultPayment = current($Payments);
+                        $Order->setPayment($defaultPayment);
+                        $Order->setPaymentMethod($defaultPayment->getMethod());
+                    } else {
+                        $Order->setPayment(null)
+                            ->setPaymentMethod(null);
+                    }
                 }
 
                 $form->add(

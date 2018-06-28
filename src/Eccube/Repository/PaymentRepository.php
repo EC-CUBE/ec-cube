@@ -117,6 +117,7 @@ class PaymentRepository extends AbstractRepository
      */
     public function findAllowedPayments($deliveries, $returnType = false)
     {
+        $deliveries = array_unique($deliveries);
         $payments = [];
         $isFirstLoop = true;
         foreach ($deliveries as $Delivery) {
