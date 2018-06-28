@@ -246,7 +246,6 @@ EOT
         ];
 
         self::assertNotNull($entityTokens->findSequence($traitTokens), 'PointTraitが残るはず');
-
     }
 }
 
