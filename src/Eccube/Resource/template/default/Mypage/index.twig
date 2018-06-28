@@ -33,7 +33,7 @@ file that was distributed with this source code.
                                 <p class="ec-historyListHeader__date">{{ Order.order_date|date("Y/m/d H:i:s") }}</p>
                                 <dl class="ec-definitions">
                                     <dt>{{'admin.mail.order.200'|trans}}</dt>
-                                    <dd>{{ Order.order_code }}</dd>
+                                    <dd>{{ Order.order_no }}</dd>
                                 </dl>
                                 {% if (BaseInfo.option_mypage_order_status_display) %}
                                 <dl class="ec-definitions">
@@ -41,7 +41,7 @@ file that was distributed with this source code.
                                     <dd>{{ Order.CustomerOrderStatus }}</dd>
                                 </dl>
                                 {% endif %}
-                                <p class="ec-historyListHeader__action"><a class="ec-inlineBtn" href="{{ url('mypage_history', {'id': Order.id}) }}">{{'mypage.history.label.view_detail'|trans}}</a></p>
+                                <p class="ec-historyListHeader__action"><a class="ec-inlineBtn" href="{{ url('mypage_history', {'order_no': Order.order_no}) }}">{{'mypage.history.label.view_detail'|trans}}</a></p>
                             </div>
                         </div>
                         <div class="ec-historyRole__detail">

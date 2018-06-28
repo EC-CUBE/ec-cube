@@ -527,7 +527,7 @@ file that was distributed with this source code.
                                     %}
                                     {% for Order in Shipping.Orders %}
                                         <div class="d-block">
-                                            <a href="{{ url('admin_order_edit', { id : Order.id }) }}">{{ Order.order_code }}</a>
+                                            <a href="{{ url('admin_order_edit', { id : Order.id }) }}">{{ Order.order_no }}</a>
                                             <span class="badge {{ attribute(cssClassStatus, Order.OrderStatus.id) }} ml-2 mb-2">{{ Order.OrderStatus }}</span></div>
                                     {% endfor %}
                                 </td>

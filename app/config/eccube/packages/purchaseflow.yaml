@@ -64,7 +64,7 @@ services:
         class: Doctrine\Common\Collections\ArrayCollection
         arguments:
             - #
-                - '@Eccube\Service\PurchaseFlow\Processor\OrderCodeProcessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\OrderNoProcessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\UsePointToCustomerPurchaseProcessor'
 
     # Purchase Flow for Order

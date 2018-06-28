@@ -111,9 +111,9 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="order_code", type="string", length=255, nullable=true)
+     * @ORM\Column(name="order_no", type="string", length=255, nullable=true)
      */
-    private $order_code;
+    private $order_no;
 
     /**
      * @var string|null
@@ -514,27 +514,27 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     }
 
     /**
-     * Set orderCode
+     * Set orderNo
      *
-     * @param string|null $orderCode
+     * @param string|null $orderNo
      *
      * @return Order
      */
-    public function setOrderCode($orderCode = null)
+    public function setOrderNo($orderNo = null)
     {
-        $this->order_code = $orderCode;
+        $this->order_no = $orderNo;
 
         return $this;
     }
 
     /**
-     * Get orderCode
+     * Get orderNo
      *
      * @return string|null
      */
-    public function getOrderCode()
+    public function getOrderNo()
     {
-        return $this->order_code;
+        return $this->order_no;
     }
 
     /**
