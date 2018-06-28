@@ -87,7 +87,7 @@ class PurchaseFlowTest extends EccubeTestCase
 
     public function testProcessItemHolderProcessor_validationErrors()
     {
-        $this->flow->addItemHolderProcessor(new PurchaseFlowTest_FailItemHolderValidator('error 1'));
+        $this->flow->addItemHolderValidator(new PurchaseFlowTest_FailItemHolderValidator('error 1'));
         $itemHolder = new Cart();
 
         $expected = new PurchaseFlowResult($itemHolder);
@@ -97,8 +97,8 @@ class PurchaseFlowTest extends EccubeTestCase
 
     public function testProcessItemProcessors_validationErrors()
     {
-        $this->flow->addItemProcessor(new PurchaseFlowTest_FailValidator('error 1'));
-        $this->flow->addItemProcessor(new PurchaseFlowTest_FailValidator('error 2'));
+        $this->flow->addItemValidator(new PurchaseFlowTest_FailValidator('error 1'));
+        $this->flow->addItemValidator(new PurchaseFlowTest_FailValidator('error 2'));
         $itemHolder = new Order();
         $itemHolder->addOrderItem(new OrderItem());
 
@@ -110,8 +110,8 @@ class PurchaseFlowTest extends EccubeTestCase
 
     public function testProcessItemProcessors_validationErrors_with_multi_items()
     {
-        $this->flow->addItemProcessor(new PurchaseFlowTest_FailValidator('error 1'));
-        $this->flow->addItemProcessor(new PurchaseFlowTest_FailValidator('error 2'));
+        $this->flow->addItemValidator(new PurchaseFlowTest_FailValidator('error 1'));
+        $this->flow->addItemValidator(new PurchaseFlowTest_FailValidator('error 2'));
         $itemHolder = new Order();
         $itemHolder->addOrderItem(new OrderItem());
         $itemHolder->addOrderItem(new OrderItem());

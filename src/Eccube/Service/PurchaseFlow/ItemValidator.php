@@ -16,8 +16,7 @@ namespace Eccube\Service\PurchaseFlow;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\ItemInterface;
 
-// TODO implements ItemProcessor
-abstract class ItemValidator implements ItemProcessor
+abstract class ItemValidator
 {
     use ValidatorTrait;
 

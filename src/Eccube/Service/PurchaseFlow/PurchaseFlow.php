@@ -147,6 +147,16 @@ class PurchaseFlow
         $this->itemProcessors[] = $prosessor;
     }
 
+    public function addItemValidator(ItemValidator $itemValidator)
+    {
+        $this->itemValidators[] = $itemValidator;
+    }
+
+    public function addItemHolderValidator(ItemHolderValidator $itemHolderValidator)
+    {
+        $this->itemHolderValidators[] = $itemHolderValidator;
+    }
+
     /**
      * @param ItemHolderInterface $itemHolder
      */
