@@ -131,7 +131,7 @@ class PaymentRepository extends AbstractRepository
             if (empty($payments)) {
                 $payments = $paymentTmp;
             } else {
-                $payments = array_intersect($payments, $paymentTmp);
+                $payments = array_intersect_key($payments, $paymentTmp);
             }
         }
 
