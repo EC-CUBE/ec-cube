@@ -71,7 +71,7 @@ file that was distributed with this source code.
                 </div>
             {% endfor %}
             <div class="ec-pagerRole">
-                {% include "pagination.twig" with {'pages': pagination.paginationData} %}
+                {% include "pager.twig" with {'pages': pagination.paginationData} %}
             </div>
         {% else %}
             <div class="text-center">{{'mypage.text.message.no_order_history'|trans}}</div>
