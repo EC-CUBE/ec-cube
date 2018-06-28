@@ -187,11 +187,6 @@ class Kernel extends BaseKernel
             ->addTag(TwigBlockPass::TWIG_BLOCK_TAG);
         $container->addCompilerPass(new TwigBlockPass());
 
-        // PaymentService の拡張
-        $container->registerForAutoconfiguration(PaymentServiceInterface::class)
-            ->addTag(PaymentServicePass::PAYMENT_TAG);
-        $container->addCompilerPass(new PaymentServicePass());
-
         // PaymentMethod の拡張
         $container->registerForAutoconfiguration(PaymentMethodInterface::class)
             ->addTag(PaymentMethodPass::PAYMENT_METHOD_TAG);

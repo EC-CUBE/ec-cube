@@ -38,6 +38,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -220,10 +221,9 @@ class ShoppingController extends AbstractShoppingController
             return $this->redirectToRoute('shopping_error');
         }
 
-        $paymentService = $this->createPaymentService($Order);
         $paymentMethod = $this->createPaymentMethod($Order, $form);
 
-        $PaymentResult = $paymentService->doVerify($paymentMethod);
+        $PaymentResult = $paymentMethod->verify();
         // エラーの場合は注文入力画面に戻す？
         if ($PaymentResult instanceof PaymentResult) {
             if (!$PaymentResult->isSuccess()) {
@@ -817,12 +817,10 @@ class ShoppingController extends AbstractShoppingController
                 // 購入処理
                 $this->shoppingService->processPurchase($Order); // XXX フロント画面に依存してるので管理画面では使えない
 
-                // Order も引数で渡すのがベスト??
-                $paymentService = $this->createPaymentService($Order);
                 $paymentMethod = $this->createPaymentMethod($Order, $form);
 
                 // 必要に応じて別のコントローラへ forward or redirect(移譲)
-                $dispatcher = $paymentService->dispatch($paymentMethod); // 決済処理中.
+                $dispatcher = $paymentMethod->apply(); // 決済処理中.
                 // 一旦、決済処理中になった後は、購入処理中に戻せない。キャンセル or 購入完了の仕様とする
                 // ステータス履歴も保持しておく？ 在庫引き当ての仕様もセットで。
                 if ($dispatcher instanceof PaymentDispatcher) {
@@ -884,11 +882,10 @@ class ShoppingController extends AbstractShoppingController
         $form = $this->parameterBag->get(OrderType::class);
         $Order = $this->parameterBag->get('Order');
 
-        $paymentService = $this->createPaymentService($Order);
         $paymentMethod = $this->createPaymentMethod($Order, $form);
 
         // 決済実行
-        $PaymentResult = $paymentService->doCheckout($paymentMethod);
+        $PaymentResult = $paymentMethod->checkout();
         $response = $PaymentResult->getResponse();
         if ($response && ($response->isRedirection() || $response->getContent())) {
             return $response;
@@ -958,14 +955,7 @@ class ShoppingController extends AbstractShoppingController
         return $this->redirectToRoute('shopping_complete');
     }
 
-    private function createPaymentService(Order $Order)
-    {
-        $serviceClass = $Order->getPayment()->getServiceClass();
-
-        return $this->container->get($serviceClass);
-    }
-
-    private function createPaymentMethod(Order $Order, $form)
+    private function createPaymentMethod(Order $Order, FormInterface $form)
     {
         $PaymentMethod = $this->container->get($Order->getPayment()->getMethodClass());
         $PaymentMethod->setOrder($Order);

@@ -27,14 +27,12 @@ class PaymentMethodPass implements CompilerPassInterface
 
         foreach ($ids as $id => $tags) {
             $def = $container->getDefinition($id);
-            $def->setPublic(true);
             $class = $container->getParameterBag()->resolveValue($def->getClass());
             if (!is_subclass_of($class, PaymentMethodInterface::class)) {
                 throw new \InvalidArgumentException(
                     sprintf('Service "%s" must implement interface "%s".', $id, PaymentMethodInterface::class));
             }
-
-            $container->setParameter($class, $class);
+            $def->setPublic(true);
         }
     }
 }

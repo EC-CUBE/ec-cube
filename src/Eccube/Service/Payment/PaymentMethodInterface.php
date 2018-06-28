@@ -44,7 +44,6 @@ interface PaymentMethodInterface
     /**
      * 注文に決済を適用します.
      *
-     * このメソッドは PaymentService::dispatch() でコールされます.
      * PaymentDispatcher に遷移先の情報を設定することで, 他のコントローラに処理を移譲できます.
      *
      * @return PaymentDispatcher
