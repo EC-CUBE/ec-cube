@@ -16,7 +16,7 @@ namespace Plugin\PurchaseProcessors\ServiceProvider;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use Plugin\PurchaseProcessors\Processor\EmptyProcessor;
+use Plugin\PurchaseProcessors\Processor\EmptyPreprocessor;
 use Plugin\PurchaseProcessors\Processor\EmptyValidator;
 
 class PurchaseProcessorsServiceProvider implements ServiceProviderInterface
@@ -26,7 +26,7 @@ class PurchaseProcessorsServiceProvider implements ServiceProviderInterface
         $app->extend(
             'eccube.purchase.flow.cart.item_processors',
             function (ArrayCollection $processors, Container $app) {
-                $processors[] = new EmptyProcessor();
+                $processors[] = new EmptyPreprocessor();
                 $processors[] = new EmptyValidator();
 
                 return $processors;

@@ -23,14 +23,14 @@ use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
 use Eccube\Repository\DeliveryFeeRepository;
 use Eccube\Repository\TaxRuleRepository;
-use Eccube\Service\PurchaseFlow\ItemHolderProcessor;
+use Eccube\Service\PurchaseFlow\ItemHolderPreprocessor;
 use Eccube\Service\PurchaseFlow\ProcessResult;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 /**
  * 送料明細追加.
  */
-class DeliveryFeeProcessor implements ItemHolderProcessor
+class DeliveryFeePreprocessor implements ItemHolderPreprocessor
 {
     /**
      * @var EntityManagerInterface

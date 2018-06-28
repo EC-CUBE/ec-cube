@@ -15,14 +15,14 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\ItemInterface;
 use Eccube\Entity\OrderItem;
-use Eccube\Service\PurchaseFlow\ItemProcessor;
+use Eccube\Service\PurchaseFlow\ItemPreprocessor;
 use Eccube\Service\PurchaseFlow\ProcessResult;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 /**
  * 販売価格の変更検知.
  */
-class PriceChangeValidator implements ItemProcessor
+class PriceChangeValidator implements ItemPreprocessor
 {
     /**
      * @param ItemInterface $item

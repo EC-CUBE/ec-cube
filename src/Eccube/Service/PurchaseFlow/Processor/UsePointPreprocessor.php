@@ -21,14 +21,14 @@ use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
-use Eccube\Service\PurchaseFlow\ItemHolderProcessor;
+use Eccube\Service\PurchaseFlow\ItemHolderPreprocessor;
 use Eccube\Service\PurchaseFlow\ProcessResult;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 /**
  * 使用ポイント値引明細追加.
  */
-class UsePointProcessor implements ItemHolderProcessor
+class UsePointPreprocessor implements ItemHolderPreprocessor
 {
     /**
      * @var EntityManagerInterface

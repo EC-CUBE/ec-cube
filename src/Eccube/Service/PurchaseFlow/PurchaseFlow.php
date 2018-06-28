@@ -20,12 +20,12 @@ use Eccube\Entity\ItemInterface;
 class PurchaseFlow
 {
     /**
-     * @var ArrayCollection|ItemHolderProcessor[]
+     * @var ArrayCollection|ItemHolderPreprocessor[]
      */
     protected $itemHolderProcessors;
 
     /**
-     * @var ArrayCollection|ItemProcessor[]
+     * @var ArrayCollection|ItemPreprocessor[]
      */
     protected $itemProcessors;
 
@@ -137,12 +137,12 @@ class PurchaseFlow
         $this->purchaseProcessors[] = $processor;
     }
 
-    public function addItemHolderProcessor(ItemHolderProcessor $prosessor)
+    public function addItemHolderProcessor(ItemHolderPreprocessor $prosessor)
     {
         $this->itemHolderProcessors[] = $prosessor;
     }
 
-    public function addItemProcessor(ItemProcessor $prosessor)
+    public function addItemProcessor(ItemPreprocessor $prosessor)
     {
         $this->itemProcessors[] = $prosessor;
     }

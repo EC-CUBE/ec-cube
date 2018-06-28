@@ -14,7 +14,7 @@
 namespace Eccube\Tests\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\BaseInfo;
-use Eccube\Service\PurchaseFlow\Processor\UsePointProcessor;
+use Eccube\Service\PurchaseFlow\Processor\UsePointPreprocessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Entity\Customer;
@@ -53,7 +53,7 @@ class UsePointProcessorTest extends EccubeTestCase
     {
         $this->Order->setUsePoint(10);
         $OriginalOrder = clone $this->Order;
-        $processor = new UsePointProcessor($this->entityManager, $this->BaseInfo);
+        $processor = new UsePointPreprocessor($this->entityManager, $this->BaseInfo);
         $processor->process($this->Order, new PurchaseContext($OriginalOrder, $this->Customer));
         $OrderItem = $this->Order->getOrderItems()->filter(
             function ($OrderItem) {
@@ -70,7 +70,7 @@ class UsePointProcessorTest extends EccubeTestCase
     {
         $this->Order->setUsePoint($this->Customer->getPoint() + 1);
         $OriginalOrder = clone $this->Order;
-        $processor = new UsePointProcessor($this->entityManager, $this->BaseInfo);
+        $processor = new UsePointPreprocessor($this->entityManager, $this->BaseInfo);
         $ProcessResult = $processor->process($this->Order, new PurchaseContext($OriginalOrder, $this->Customer));
 
         self::assertTrue($ProcessResult->isError());
@@ -88,7 +88,7 @@ class UsePointProcessorTest extends EccubeTestCase
         $this->Customer->setPoint(PHP_INT_MAX);
         $this->Order->setUsePoint($this->Order->getTotal() + 1);
         $OriginalOrder = clone $this->Order;
-        $processor = new UsePointProcessor($this->entityManager, $this->BaseInfo);
+        $processor = new UsePointPreprocessor($this->entityManager, $this->BaseInfo);
         $ProcessResult = $processor->process($this->Order, new PurchaseContext($OriginalOrder, $this->Customer));
 
         self::assertTrue($ProcessResult->isError());

@@ -16,14 +16,14 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\ItemHolderInterface;
-use Eccube\Service\PurchaseFlow\ItemHolderProcessor;
+use Eccube\Service\PurchaseFlow\ItemHolderPreprocessor;
 use Eccube\Service\PurchaseFlow\ProcessResult;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 /**
  * 加算ポイント.
  */
-class AddPointProcessor implements ItemHolderProcessor
+class AddPointPreprocessor implements ItemHolderPreprocessor
 {
     /**
      * @var EntityManagerInterface

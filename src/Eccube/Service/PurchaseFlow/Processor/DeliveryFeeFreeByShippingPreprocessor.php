@@ -16,7 +16,7 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Order;
-use Eccube\Service\PurchaseFlow\ItemHolderProcessor;
+use Eccube\Service\PurchaseFlow\ItemHolderPreprocessor;
 use Eccube\Service\PurchaseFlow\ProcessResult;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 
@@ -24,7 +24,7 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
  * 送料無料条件.
  * お届け先ごとに条件判定を行う.
  */
-class DeliveryFeeFreeByShippingProcessor implements ItemHolderProcessor
+class DeliveryFeeFreeByShippingPreprocessor implements ItemHolderPreprocessor
 {
     /**
      * @var BaseInfo

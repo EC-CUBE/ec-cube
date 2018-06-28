@@ -16,11 +16,11 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\ProductClassRepository;
-use Eccube\Service\PurchaseFlow\ItemHolderProcessor;
+use Eccube\Service\PurchaseFlow\ItemHolderPreprocessor;
 use Eccube\Service\PurchaseFlow\ProcessResult;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 
-class StockMultipleValidator implements ItemHolderProcessor
+class StockMultipleValidator implements ItemHolderPreprocessor
 {
     /**
      * @var ProductClassRepository

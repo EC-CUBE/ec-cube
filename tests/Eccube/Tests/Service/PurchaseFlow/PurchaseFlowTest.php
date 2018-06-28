@@ -18,8 +18,8 @@ use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\ItemInterface;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
-use Eccube\Service\PurchaseFlow\ItemHolderProcessor;
-use Eccube\Service\PurchaseFlow\ItemProcessor;
+use Eccube\Service\PurchaseFlow\ItemHolderPreprocessor;
+use Eccube\Service\PurchaseFlow\ItemPreprocessor;
 use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\ProcessResult;
@@ -59,16 +59,16 @@ class PurchaseFlowTest extends EccubeTestCase
     {
         // TODO: FIXME
         $this->markTestIncomplete(__METHOD__.'may be not implement');
-        $processor = new PurchaseFlowTest_ItemHolderProcessor();
+        $processor = new PurchaseFlowTest_ItemHolderPreprocessor();
         $this->flow->addItemHolderProcessor($processor);
 
-        $processor = new PurchaseFlowTest_ItemProcessor();
+        $processor = new PurchaseFlowTest_ItemPreprocessor();
         $this->flow->addItemProcessor($processor);
     }
 
     public function testProcessItemProcessors()
     {
-        $this->flow->addItemProcessor(new PurchaseFlowTest_ItemProcessor());
+        $this->flow->addItemProcessor(new PurchaseFlowTest_ItemPreprocessor());
         $itemHolder = new Cart();
 
         $expected = new PurchaseFlowResult($itemHolder);
@@ -77,7 +77,7 @@ class PurchaseFlowTest extends EccubeTestCase
 
     public function testProcessItemHolderProcessor()
     {
-        $this->flow->addItemHolderProcessor(new PurchaseFlowTest_ItemHolderProcessor());
+        $this->flow->addItemHolderProcessor(new PurchaseFlowTest_ItemHolderPreprocessor());
         $itemHolder = new Cart();
 
         $expected = new PurchaseFlowResult($itemHolder);
@@ -125,7 +125,7 @@ class PurchaseFlowTest extends EccubeTestCase
     }
 }
 
-class PurchaseFlowTest_ItemHolderProcessor implements ItemHolderProcessor
+class PurchaseFlowTest_ItemHolderPreprocessor implements ItemHolderPreprocessor
 {
     public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
@@ -133,7 +133,7 @@ class PurchaseFlowTest_ItemHolderProcessor implements ItemHolderProcessor
     }
 }
 
-class PurchaseFlowTest_ItemProcessor implements ItemProcessor
+class PurchaseFlowTest_ItemPreprocessor implements ItemPreprocessor
 {
     public function process(ItemInterface $item, PurchaseContext $context)
     {

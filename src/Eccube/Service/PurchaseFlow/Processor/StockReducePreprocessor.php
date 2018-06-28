@@ -17,14 +17,14 @@ use Doctrine\DBAL\LockMode;
 use Eccube\Entity\ItemInterface;
 use Eccube\Entity\OrderItem;
 use Eccube\Repository\ProductStockRepository;
-use Eccube\Service\PurchaseFlow\ItemProcessor;
+use Eccube\Service\PurchaseFlow\ItemPreprocessor;
 use Eccube\Service\PurchaseFlow\ProcessResult;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 /**
  * 在庫制御.
  */
-class StockReduceProcessor implements ItemProcessor
+class StockReducePreprocessor implements ItemPreprocessor
 {
     /**
      * @var ProductStockRepository

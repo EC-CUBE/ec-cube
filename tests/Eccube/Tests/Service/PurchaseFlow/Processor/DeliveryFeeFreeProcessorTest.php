@@ -15,7 +15,7 @@ namespace Eccube\Tests\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Order;
-use Eccube\Service\PurchaseFlow\Processor\DeliveryFeeFreeProcessor;
+use Eccube\Service\PurchaseFlow\Processor\DeliveryFeeFreePreprocessor;
 use Eccube\Service\PurchaseFlow\ProcessResult;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
@@ -23,7 +23,7 @@ use Eccube\Tests\EccubeTestCase;
 class DeliveryFeeFreeProcessorTest extends EccubeTestCase
 {
     /**
-     * @var DeliveryFeeFreeProcessor
+     * @var DeliveryFeeFreePreprocessor
      */
     protected $processor;
 
@@ -45,13 +45,13 @@ class DeliveryFeeFreeProcessorTest extends EccubeTestCase
         parent::setUp();
 
         $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
-        $this->processor = new DeliveryFeeFreeProcessor($this->BaseInfo);
+        $this->processor = new DeliveryFeeFreePreprocessor($this->BaseInfo);
         $this->Order = $this->createOrder($this->createCustomer());
     }
 
     public function testNewInstance()
     {
-        self::assertInstanceOf(DeliveryFeeFreeProcessor::class, $this->processor);
+        self::assertInstanceOf(DeliveryFeeFreePreprocessor::class, $this->processor);
     }
 
     /**

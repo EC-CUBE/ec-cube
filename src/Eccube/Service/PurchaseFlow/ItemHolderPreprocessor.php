@@ -15,7 +15,7 @@ namespace Eccube\Service\PurchaseFlow;
 
 use Eccube\Entity\ItemHolderInterface;
 
-interface ItemHolderProcessor
+interface ItemHolderPreprocessor
 {
     /**
      * TODO 戻り値

@@ -17,7 +17,7 @@ use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Cart;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\Product;
-use Eccube\Service\PurchaseFlow\Processor\AddPointProcessor;
+use Eccube\Service\PurchaseFlow\Processor\AddPointPreprocessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
@@ -67,7 +67,7 @@ class AddPointProcessorTest extends EccubeTestCase
 
     public function testProcess()
     {
-        $processor = new AddPointProcessor($this->entityManager, $this->BaseInfo);
+        $processor = new AddPointPreprocessor($this->entityManager, $this->BaseInfo);
         $processor->process($this->Cart, new PurchaseContext());
         $actual = $this->Cart->getAddPoint();
         self::assertGreaterThan(0, $actual);
