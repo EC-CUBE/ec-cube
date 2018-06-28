@@ -61,6 +61,7 @@ class PaymentDispatcher
      * Forward を使用する場合は true, Redirect を使用する場合は false を設定します.
      *
      * @param boolean $forward
+     *
      * @return PaymentDispatcher
      */
     public function setForward($forward)
@@ -84,6 +85,7 @@ class PaymentDispatcher
      * 処理を移譲するルート名を設定します.
      *
      * @param string $route
+     *
      * @return PaymentDispatcher
      */
     public function setRoute($route)
@@ -107,6 +109,7 @@ class PaymentDispatcher
      * クエリパラメータの配列を設定します.
      *
      * @param array
+     *
      * @return PaymentDispatcher
      */
     public function setQueryParameters(array $queryParameters)
@@ -130,6 +133,7 @@ class PaymentDispatcher
      * パスパラメータの配列を設定します.
      *
      * @param array
+     *
      * @return PaymentDispatcher
      */
     public function setPathParameters(array $pathParameters)

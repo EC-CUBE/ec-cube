@@ -30,6 +30,7 @@ class Cash implements PaymentMethod
     {
         $result = new PaymentResult();
         $result->setSuccess(true);
+
         return $result;
     }
 
