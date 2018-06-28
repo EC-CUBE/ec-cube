@@ -236,6 +236,7 @@ class EntityProxyService
      * - 本体でuseされているTrait -> PointTrait
      *
      * @param $name
+     *
      * @return array|Token[]
      */
     private function convertTraitNameToTokens($name)
