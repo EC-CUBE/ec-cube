@@ -61,7 +61,7 @@ class UsePointToCustomerPurchaseProcessorTest extends EccubeTestCase
         $this->expected = $this->Customer->getPoint();
         $OriginalOrder = clone $this->Order;
         $processor = new UsePointToCustomerPurchaseProcessor();
-        $processor->process($this->Order, new PurchaseContext($OriginalOrder, $this->Customer));
+        $processor->commit($this->Order, new PurchaseContext($OriginalOrder, $this->Customer));
         $this->actual = $this->Customer->getPoint() - $OriginalOrder->getUsePoint();
         $this->verify();
     }
@@ -71,7 +71,7 @@ class UsePointToCustomerPurchaseProcessorTest extends EccubeTestCase
         $this->Order->setUsePoint($this->Customer->getPoint() + 1);
         $OriginalOrder = clone $this->Order;
         $processor = new UsePointToCustomerPurchaseProcessor();
-        $ProcessResult = $processor->process($this->Order, new PurchaseContext($OriginalOrder, $this->Customer));
+        $ProcessResult = $processor->commit($this->Order, new PurchaseContext($OriginalOrder, $this->Customer));
         self::assertTrue($ProcessResult->isError());
     }
 }

@@ -150,7 +150,7 @@ class PurchaseFlow
     public function purchase(ItemHolderInterface $target, PurchaseContext $context)
     {
         foreach ($this->purchaseProcessors as $processor) {
-            $processor->process($target, $context);
+            $processor->commit($target, $context);
         }
     }
 

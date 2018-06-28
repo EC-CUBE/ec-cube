@@ -43,7 +43,7 @@ class UpdateDatePurchaseProcessor implements PurchaseProcessor
     /**
      * {@inheritdoc}
      */
-    public function process(ItemHolderInterface $TargetOrder, PurchaseContext $context)
+    public function commit(ItemHolderInterface $TargetOrder, PurchaseContext $context)
     {
         $dateTime = new \DateTime();
         $OriginOrder = $context->getOriginHolder();

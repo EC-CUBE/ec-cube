@@ -26,7 +26,7 @@ class AdminOrderRegisterPurchaseProcessor implements ItemHolderPreprocessor
     /**
      * {@inheritdoc}
      */
-    public function process(ItemHolderInterface $target, PurchaseContext $context)
+    public function commit(ItemHolderInterface $target, PurchaseContext $context)
     {
         // 画面上で削除された明細をremove
         foreach ($context->getOriginHolder()->getItems() as $OrderItem) {

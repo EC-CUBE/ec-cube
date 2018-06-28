@@ -26,7 +26,7 @@ class UsePointToCustomerPurchaseProcessor implements PurchaseProcessor
     /**
      * {@inheritdoc}
      */
-    public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function commit(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         $Order = $itemHolder;
         $Customer = $context->getUser();

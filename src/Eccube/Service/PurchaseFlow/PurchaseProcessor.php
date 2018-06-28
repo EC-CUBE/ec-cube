@@ -15,13 +15,40 @@ namespace Eccube\Service\PurchaseFlow;
 
 use Eccube\Entity\ItemHolderInterface;
 
+/**
+ * 受注の仮確定/確定/確定取り消し処理を行うインターフェイス。
+ *
+ * Interface PurchaseProcessor
+ */
 interface PurchaseProcessor
 {
     /**
+     * 受注の仮確定処理を行います。
+     *
+     * @param ItemHolderInterface $target
+     * @param PurchaseContext $context
+     *
+     * @throws PurchaseException
+     */
+    public function prepare(ItemHolderInterface $target, PurchaseContext $context);
+
+    /**
+     * 受注の確定処理を行います。
+     *
      * @param ItemHolderInterface $target
      * @param PurchaseContext     $context
      *
      * @throws PurchaseException
      */
-    public function process(ItemHolderInterface $target, PurchaseContext $context);
+    public function commit(ItemHolderInterface $target, PurchaseContext $context);
+
+    /**
+     * 仮確定した受注データの取り消し処理を行います。
+     *
+     * @param ItemHolderInterface $target
+     * @param PurchaseContext     $context
+     *
+     * @throws PurchaseException
+     */
+    public function rollback(ItemHolderInterface $target, PurchaseContext $context);
 }
