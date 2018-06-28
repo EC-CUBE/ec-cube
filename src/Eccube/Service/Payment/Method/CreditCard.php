@@ -14,7 +14,7 @@
 namespace Eccube\Service\Payment\Method;
 
 use Eccube\Entity\Order;
-use Eccube\Service\Payment\PaymentMethod;
+use Eccube\Service\Payment\PaymentMethodInterface;
 use Symfony\Component\Form\FormInterface;
 
 /**
@@ -22,7 +22,7 @@ use Symfony\Component\Form\FormInterface;
  *
  * クレジットカード決済を実装する場合は, このクラスを継承します.
  */
-abstract class CreditCard implements PaymentMethod
+abstract class CreditCard implements PaymentMethodInterface
 {
     /**
      * @var Order

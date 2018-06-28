@@ -14,14 +14,14 @@
 namespace Eccube\Service\Payment\Method;
 
 use Eccube\Entity\Order;
-use Eccube\Service\Payment\PaymentMethod;
+use Eccube\Service\Payment\PaymentMethodInterface;
 use Eccube\Service\Payment\PaymentResult;
 use Symfony\Component\Form\FormInterface;
 
 /**
  * 銀行振込, 代金引き換えなど, 主に現金を扱う支払い方法を扱うクラス.
  */
-class Cash implements PaymentMethod
+class Cash implements PaymentMethodInterface
 {
     /**
      * {@inheritdoc}

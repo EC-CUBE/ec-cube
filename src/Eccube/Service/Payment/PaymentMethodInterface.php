@@ -17,11 +17,11 @@ use Eccube\Entity\Order;
 use Symfony\Component\Form\FormInterface;
 
 /**
- * PaymentMethod
+ * PaymentMethodInterface
  *
  * 必要に応じて決済手段ごとに実装する
  */
-interface PaymentMethod
+interface PaymentMethodInterface
 {
     /**
      * 決済の妥当性を検証し, 検証結果を返します.

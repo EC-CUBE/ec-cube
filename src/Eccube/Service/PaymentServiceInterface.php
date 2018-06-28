@@ -23,23 +23,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
  *
  * 必要に応じて決済代行会社ごとに継承して実装すること
  */
-class PaymentService implements PaymentServiceInterface
+interface PaymentServiceInterface
 {
-    /**
-     * @var RequestStack
-     */
-    protected $requestStack;
-
-    /**
-     * PaymentService constructor.
-     *
-     * @param RequestStack $requestStack
-     */
-    public function __construct(RequestStack $requestStack)
-    {
-        $this->requestStack = $requestStack;
-    }
-
     /**
      * 他のコントローラに処理を移譲する.
      *
@@ -48,13 +33,7 @@ class PaymentService implements PaymentServiceInterface
      *
      * @return PaymentDispatcher
      */
-    public function dispatch(PaymentMethodInterface $method)
-    {
-        // PaymentMethod->apply に処理を移譲する
-        // 別のコントローラに forward など
-
-        return $method->apply();
-    }
+    public function dispatch(PaymentMethodInterface $method);
 
     /**
      * 決済の妥当性を検証する.
@@ -65,14 +44,7 @@ class PaymentService implements PaymentServiceInterface
      *
      * @return PaymentResult
      */
-    public function doVerify(PaymentMethodInterface $method)
-    {
-        // 注文入力画面→確認画面での入力チェックに利用する
-        // 主にカードの有効性チェック等を行なう
-        $PaymentResult = $method->verify();
-
-        return $PaymentResult;
-    }
+    public function doVerify(PaymentMethodInterface $method);
 
     /**
      * 決済処理を実行します.
@@ -82,11 +54,5 @@ class PaymentService implements PaymentServiceInterface
      *
      * @return PaymentResult
      */
-    public function doCheckout(PaymentMethodInterface $method)
-    {
-        // ここに EventDispatcher を仕掛けておけば,いろいろできるけど,やりすぎないで.
-        $PaymentResult = $method->checkout();
-
-        return $PaymentResult;
-    }
+    public function doCheckout(PaymentMethodInterface $method);
 }
