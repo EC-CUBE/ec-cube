@@ -16,11 +16,14 @@ namespace Eccube\Service\PurchaseFlow;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\ItemInterface;
 
+// TODO implements ItemProcessor
 abstract class ItemValidator implements ItemProcessor
 {
     use ValidatorTrait;
 
     /**
+     * TODO メソッド名
+     *
      * @param ItemInterface   $item
      * @param PurchaseContext $context
      *

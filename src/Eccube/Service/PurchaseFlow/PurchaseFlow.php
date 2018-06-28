@@ -34,11 +34,23 @@ class PurchaseFlow
      */
     protected $purchaseProcessors;
 
+    /**
+     * @var ArrayCollection|ItemValidator[]
+     */
+    protected $itemValidators;
+
+    /**
+     * @var ArrayCollection|ItemHolderValidator[]
+     */
+    protected $itemHolderValidators;
+
     public function __construct()
     {
         $this->itemProcessors = new ArrayCollection();
         $this->itemHolderProcessors = new ArrayCollection();
         $this->purchaseProcessors = new ArrayCollection();
+        $this->itemValidators = new ArrayCollection();
+        $this->itemHolderValidators = new ArrayCollection();
     }
 
     public function setItemProcessors(ArrayCollection $processors)
@@ -56,6 +68,16 @@ class PurchaseFlow
         $this->purchaseProcessors = $processors;
     }
 
+    public function setItemValidators(ArrayCollection $itemValidators)
+    {
+        $this->itemValidators = $itemValidators;
+    }
+
+    public function setItemHolderValidators(ArrayCollection $itemHolderValidators)
+    {
+        $this->itemHolderValidators = $itemHolderValidators;
+    }
+
     public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         $this->calculateAll($itemHolder);
@@ -63,8 +85,8 @@ class PurchaseFlow
         $flowResult = new PurchaseFlowResult($itemHolder);
 
         foreach ($itemHolder->getItems() as $item) {
-            foreach ($this->itemProcessors as $itemProsessor) {
-                $result = $itemProsessor->process($item, $context);
+            foreach ($this->itemProcessors as $itemProcessor) {
+                $result = $itemProcessor->process($item, $context);
                 $flowResult->addProcessResult($result);
             }
         }
@@ -73,6 +95,22 @@ class PurchaseFlow
 
         foreach ($this->itemHolderProcessors as $holderProcessor) {
             $result = $holderProcessor->process($itemHolder, $context);
+            $flowResult->addProcessResult($result);
+        }
+
+        $this->calculateAll($itemHolder);
+
+        foreach ($itemHolder->getItems() as $item) {
+            foreach ($this->itemValidators as $itemValidator) {
+                $result = $itemValidator->process($item, $context);
+                $flowResult->addProcessResult($result);
+            }
+        }
+
+        $this->calculateAll($itemHolder);
+
+        foreach ($this->itemHolderValidators as $itemHolderValidator) {
+            $result = $itemHolderValidator->process($itemHolder, $context);
             $flowResult->addProcessResult($result);
         }
 

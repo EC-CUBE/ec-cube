@@ -18,6 +18,8 @@ use Eccube\Entity\ItemInterface;
 interface ItemProcessor
 {
     /**
+     * TODO 戻り値
+     *
      * @param ItemInterface   $item
      * @param PurchaseContext $context
      *
