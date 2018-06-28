@@ -354,6 +354,12 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     private $currency_code;
 
     /**
+     * 注文完了画面に表示するメッセージ
+     *
+     * プラグインから注文完了時にメッセージを表示したい場合, このフィールドにセットすることで, 注文完了画面で表示されます。
+     * 複数のプラグインから利用されるため, appendCompleteMesssage()で追加してください.
+     * 表示する際にHTMLエスケープは行いません。
+     *
      * @var string|null
      *
      * @ORM\Column(name="complete_message", type="text", nullable=true)
@@ -361,6 +367,11 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     private $complete_message;
 
     /**
+     * 注文完了メールに表示するメッセージ
+     *
+     * プラグインから注文完了メールにメッセージを表示したい場合, このフィールドにセットすることで, 注文完了メールで表示されます。
+     * 複数のプラグインから利用されるため, appendCompleteMailMesssage()で追加してください.
+     *
      * @var string|null
      *
      * @ORM\Column(name="complete_mail_message", type="text", nullable=true)
