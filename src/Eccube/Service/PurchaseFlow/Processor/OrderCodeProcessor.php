@@ -23,7 +23,6 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
  * 受注番号生成処理.
  *
  * Class OrderCodeProcessor
- * @package Eccube\Service\PurchaseFlow\Processor
  */
 class OrderCodeProcessor implements ItemHolderPreprocessor
 {

@@ -19,7 +19,6 @@ use Eccube\Entity\ItemHolderInterface;
  * 受注データのバリデーションを行う前に、受注データの調整を行います。
  *
  * Interface ItemHolderPreprocessor
- * @package Eccube\Service\PurchaseFlow
  */
 interface ItemHolderPreprocessor
 {
@@ -28,7 +27,6 @@ interface ItemHolderPreprocessor
      *
      * @param ItemHolderInterface $itemHolder
      * @param PurchaseContext     $context
-     * @return void
      */
     public function process(ItemHolderInterface $itemHolder, PurchaseContext $context);
 }

@@ -26,6 +26,7 @@ class PriceChangeValidator extends ItemValidator
     /**
      * @param ItemInterface $item
      * @param PurchaseContext $context
+     *
      * @throws \Eccube\Service\PurchaseFlow\InvalidItemException
      */
     public function validate(ItemInterface $item, PurchaseContext $context)

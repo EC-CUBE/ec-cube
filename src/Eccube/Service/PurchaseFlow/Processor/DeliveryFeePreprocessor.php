@@ -66,6 +66,7 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
     /**
      * @param ItemHolderInterface $itemHolder
      * @param PurchaseContext $context
+     *
      * @throws \Doctrine\ORM\NoResultException
      */
     public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
@@ -95,6 +96,7 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
      * TODO 送料無料計算.
      *
      * @param ItemHolderInterface $itemHolder
+     *
      * @throws \Doctrine\ORM\NoResultException
      */
     private function addDeliveryFeeItem(ItemHolderInterface $itemHolder)

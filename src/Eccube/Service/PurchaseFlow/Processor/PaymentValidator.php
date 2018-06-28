@@ -19,7 +19,6 @@ use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Master\SaleType;
 use Eccube\Entity\Payment;
 use Eccube\Repository\DeliveryRepository;
-use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\ItemHolderValidator;
 
@@ -93,6 +92,7 @@ class PaymentValidator extends ItemHolderValidator
 
     /**
      * @param Delivery[] $Deliveries
+     *
      * @return ArrayCollection|Payment[]
      */
     private function getPayments($Deliveries)
