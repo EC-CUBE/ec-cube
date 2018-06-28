@@ -85,7 +85,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $this->verify();
 
         // 完了画面
-        $this->scenarioComplete($Customer, $this->generateUrl('shopping_order'));
+        $crawler = $this->scenarioComplete($Customer, $this->generateUrl('shopping_order'));
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_complete')));
 
         $BaseInfo = $this->baseInfoRepository->get();

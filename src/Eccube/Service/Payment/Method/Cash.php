@@ -13,36 +13,50 @@
 
 namespace Eccube\Service\Payment\Method;
 
+use Eccube\Entity\Order;
 use Eccube\Service\Payment\PaymentMethod;
 use Eccube\Service\Payment\PaymentResult;
+use Symfony\Component\Form\FormInterface;
 
 class Cash implements PaymentMethod
 {
-    protected $app;
-    protected $request;
-
+    /**
+     * {@inheritdoc}
+     */
     public function checkout()
     {
         return new PaymentResult();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function apply()
     {
         return false;
     }
 
-    public function setFormType($form)
+    /**
+     * {@inheritdoc}
+     */
+    public function setFormType(FormInterface $form)
     {
         // quiet
     }
 
-    public function setApplication($app)
+    /**
+     * {@inheritdoc}
+     */
+    public function verify()
     {
-        $this->app = $app;
+        return false;
     }
 
-    public function setRequest($request)
+    /**
+     * {@inheritdoc}
+     */
+    public function setOrder(Order $Order)
     {
-        $this->request = $request;
+        // quiet
     }
 }

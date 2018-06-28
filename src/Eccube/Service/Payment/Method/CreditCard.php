@@ -13,13 +13,37 @@
 
 namespace Eccube\Service\Payment\Method;
 
+use Eccube\Entity\Order;
 use Eccube\Service\Payment\PaymentMethod;
+use Symfony\Component\Form\FormInterface;
 
 abstract class CreditCard implements PaymentMethod
 {
+    /**
+     * @var
+     */
+    protected $Order;
+
+    /**
+     * {@inheritdoc}
+     */
     abstract public function checkout();
 
+    /**
+     * {@inheritdoc}
+     */
     abstract public function apply();
 
-    abstract public function setFormType($form);
+    /**
+     * {@inheritdoc}
+     */
+    abstract public function setFormType(FormInterface $form);
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setOrder(Order $Order)
+    {
+        $this->Order = $Order;
+    }
 }
