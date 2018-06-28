@@ -14,6 +14,7 @@
 namespace Eccube\Repository;
 
 use Doctrine\ORM\Query;
+use Eccube\Entity\Order;
 use Eccube\Entity\Payment;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -112,14 +113,19 @@ class PaymentRepository extends AbstractRepository
      *
      * @param $deliveries
      * @param bool $returnType
+     * @param Order $Order
      *
      * @return array
      */
-    public function findAllowedPayments($deliveries, $returnType = false)
+    public function findAllowedPayments($deliveries, $returnType = false, Order $Order = null)
     {
         $deliveries = array_unique($deliveries);
         $payments = [];
         $isFirstLoop = true;
+        $totalPayment = 0;
+        if (!is_null($Order)) {
+            $totalPayment = $Order->getSubtotal();
+        }
         foreach ($deliveries as $Delivery) {
             $paymentTmp = [];
             $p = $this->findPayments($Delivery, $returnType);
@@ -127,7 +133,19 @@ class PaymentRepository extends AbstractRepository
                 continue;
             }
             foreach ($p as $payment) {
-                $paymentTmp[$payment['id']] = $payment;
+                if (empty($totalPayment)) {
+                    $paymentTmp[$payment['id']] = $payment;
+                    continue;
+                }
+                if (is_null($payment['rule_min'])
+                    || $payment['rule_min'] <= $totalPayment
+                ) {
+                    if (is_null($payment['rule_max'])
+                        || ($payment['rule_max'] && $payment['rule_max'] >= $totalPayment)
+                    ) {
+                        $paymentTmp[$payment['id']] = $payment;
+                    }
+                }
             }
 
             if ($isFirstLoop) {

@@ -362,8 +362,7 @@ class ShoppingService
         $this->setDeliveryFreeQuantity($Order);
 
         // 初期選択の支払い方法をセット
-        $payments = $this->paymentRepository->findAllowedPayments($deliveries);
-        $payments = $this->getPayments($payments, $subTotal);
+        $payments = $this->paymentRepository->findAllowedPayments($deliveries, true, $Order);
 
         if (count($payments) > 0) {
             $payment = $payments[0];
@@ -480,28 +479,22 @@ class ShoppingService
         // 受注情報から販売種別を取得
         $saleTypes = $this->orderService->getSaleTypes($Order);
 
-        return $this->getDeliveries($saleTypes);
+        return $this->getDeliveries($saleTypes, $Order);
     }
 
     /**
      * 配送業者情報を取得
      *
      * @param $saleTypes
+     * @param $Order
      *
      * @return array
      */
-    public function getDeliveries($saleTypes)
+    public function getDeliveries($saleTypes, Order $Order = null)
     {
         // 販売種別に紐づく配送業者を取得
         $deliveries = $this->deliveryRepository->getDeliveries($saleTypes);
-
-        // 支払方法を取得
-        $payments = $this->paymentRepository->findAllowedPayments($deliveries);
-
-        if (count($saleTypes) > 1) {
-            // 販売種別が複数ある場合、配送対象となる配送業者を取得
-            $deliveries = $this->deliveryRepository->findAllowedDeliveries($saleTypes, $payments);
-        }
+        $deliveries = $this->filterDeliveries($deliveries, $Order);
 
         return $deliveries;
     }
@@ -614,7 +607,7 @@ class ShoppingService
     {
         // 受注詳細, 配送商品
         foreach ($this->cartService->getCart()
-            ->getCartItems() as $item) {
+                     ->getCartItems() as $item) {
             /* @var $ProductClass \Eccube\Entity\ProductClass */
             $ProductClass = $item->getProductClass();
             /* @var $Product \Eccube\Entity\Product */
@@ -911,32 +904,6 @@ class ShoppingService
     }
 
     /**
-     * 支払方法選択の表示設定
-     *
-     * @param $payments 支払選択肢情報
-     * @param $subTotal 小計
-     *
-     * @return array
-     */
-    public function getPayments($payments, $subTotal)
-    {
-        $pays = [];
-        foreach ($payments as $payment) {
-            // 支払方法の制限値内であれば表示
-            if (!is_null($payment)) {
-                $pay = $this->paymentRepository->find($payment['id']);
-                if (intval($pay->getRuleMin()) <= $subTotal) {
-                    if (is_null($pay->getRuleMax()) || $pay->getRuleMax() >= $subTotal) {
-                        $pays[] = $pay;
-                    }
-                }
-            }
-        }
-
-        return $pays;
-    }
-
-    /**
      * お届け日を取得
      *
      * @param Order $Order
@@ -1000,16 +967,7 @@ class ShoppingService
      */
     public function getFormPayments($deliveries, Order $Order)
     {
-        $saleTypes = $this->orderService->getSaleTypes($Order);
-        if (count($saleTypes) > 1) {
-            $payments = $this->paymentRepository->findAllowedPayments($deliveries);
-        } else {
-            // 配送業者をセット
-            $shippings = $Order->getShippings();
-            $Shipping = $shippings[0];
-            $payments = $this->paymentRepository->findPayments($Shipping->getDelivery(), true);
-        }
-        $payments = $this->getPayments($payments, $Order->getSubTotal());
+        $payments = $this->paymentRepository->findAllowedPayments($deliveries, true, $Order);
 
         return $payments;
     }
@@ -1273,21 +1231,22 @@ class ShoppingService
      * Filter deliveries match to multi shipping
      *
      * @param array $Deliveries
+     * @param Order $Order
      *
      * @return array
      */
-    public function filterDeliveries(array $Deliveries)
+    public function filterDeliveries(array $Deliveries, Order $Order = null)
     {
         if (empty($Deliveries)) {
             return [];
         }
 
-        $Payments = $this->paymentRepository->findAllowedPayments($Deliveries, true);
+        $Payments = $this->paymentRepository->findAllowedPayments($Deliveries, true, $Order);
 
         if (count($Payments) == 0) {
             array_pop($Deliveries);
 
-            return $this->filterDeliveries($Deliveries);
+            return $this->filterDeliveries($Deliveries, $Order);
         }
 
         return $Deliveries;

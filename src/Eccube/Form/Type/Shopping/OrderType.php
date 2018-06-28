@@ -133,7 +133,7 @@ class OrderType extends AbstractType
                 }
 
                 // 利用可能な支払い方法を抽出.
-                $Payments = $this->paymentRepository->findAllowedPayments($Deliveries, true);
+                $Payments = $this->paymentRepository->findAllowedPayments($Deliveries, true, $Order);
 
                 $form = $event->getForm();
 
@@ -143,9 +143,6 @@ class OrderType extends AbstractType
                         $defaultPayment = current($Payments);
                         $Order->setPayment($defaultPayment);
                         $Order->setPaymentMethod($defaultPayment->getMethod());
-                    } else {
-                        $Order->setPayment(null)
-                            ->setPaymentMethod(null);
                     }
                 }
 

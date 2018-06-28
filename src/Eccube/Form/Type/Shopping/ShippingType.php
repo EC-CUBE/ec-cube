@@ -14,6 +14,7 @@
 namespace Eccube\Form\Type\Shopping;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
 use Eccube\Repository\DeliveryFeeRepository;
 use Eccube\Repository\DeliveryRepository;
@@ -108,7 +109,7 @@ class ShippingType extends AbstractType
 
                 // 販売種別に紐づく配送業者を取得.
                 $Deliveries = $this->deliveryRepository->getDeliveries($SaleTypes);
-                $Deliveries = $this->shoppingSerive->filterDeliveries($Deliveries);
+                $Deliveries = $this->shoppingSerive->filterDeliveries($Deliveries, $Shipping->getOrders()->first());
 
                 // 配送業者のプルダウンにセット.
                 $form = $event->getForm();
