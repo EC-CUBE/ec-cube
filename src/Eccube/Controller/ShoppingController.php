@@ -961,17 +961,12 @@ class ShoppingController extends AbstractShoppingController
     private function createPaymentService(Order $Order)
     {
         $serviceClass = $Order->getPayment()->getServiceClass();
-        $paymentService = new $serviceClass($this->container->get('request_stack')); // コンテナから取得したい
-
-        return $paymentService;
+        return $this->container->get($serviceClass);
     }
 
     private function createPaymentMethod(Order $Order, $form)
     {
-        $methodClass = $Order->getPayment()->getMethodClass();
-
-        // TODO Plugin/Xxx/Resouce/config/services.yamlでpublicにする必要がある
-        $PaymentMethod = $this->container->get($methodClass);
+        $PaymentMethod = $this->container->get($Order->getPayment()->getMethodClass());
         $PaymentMethod->setOrder($Order);
         $PaymentMethod->setFormType($form);
 

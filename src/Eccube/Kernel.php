@@ -18,6 +18,8 @@ use Eccube\Common\EccubeNav;
 use Eccube\Common\EccubeTwigBlock;
 use Eccube\DependencyInjection\Compiler\AutoConfigurationTagPass;
 use Eccube\DependencyInjection\Compiler\NavCompilerPass;
+use Eccube\DependencyInjection\Compiler\PaymentMethodPass;
+use Eccube\DependencyInjection\Compiler\PaymentServicePass;
 use Eccube\DependencyInjection\Compiler\PluginPass;
 use Eccube\DependencyInjection\Compiler\QueryCustomizerPass;
 use Eccube\DependencyInjection\Compiler\TemplateListenerPass;
@@ -30,6 +32,8 @@ use Eccube\Doctrine\DBAL\Types\UTCDateTimeTzType;
 use Eccube\Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Eccube\Doctrine\Query\QueryCustomizer;
 use Eccube\Plugin\ConfigManager;
+use Eccube\Service\PaymentServiceInterface;
+use Eccube\Service\Payment\PaymentMethodInterface;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
@@ -182,6 +186,16 @@ class Kernel extends BaseKernel
         $container->registerForAutoconfiguration(EccubeTwigBlock::class)
             ->addTag(TwigBlockPass::TWIG_BLOCK_TAG);
         $container->addCompilerPass(new TwigBlockPass());
+
+        // PaymentService の拡張
+        $container->registerForAutoconfiguration(PaymentServiceInterface::class)
+            ->addTag(PaymentServicePass::PAYMENT_TAG);
+        $container->addCompilerPass(new PaymentServicePass());
+
+        // PaymentMethod の拡張
+        $container->registerForAutoconfiguration(PaymentMethodInterface::class)
+            ->addTag(PaymentMethodPass::PAYMENT_METHOD_TAG);
+        $container->addCompilerPass(new PaymentMethodPass());
     }
 
     protected function addEntityExtensionPass(ContainerBuilder $container)
