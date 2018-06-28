@@ -52,7 +52,7 @@ services:
                 - '@Eccube\Service\PurchaseFlow\Processor\DeliveryFeeFreeByShippingProcessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\UsePointProcessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\AddPointProcessor'
-                - '@Eccube\Service\PurchaseFlow\Processor\SubstractPointProcessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\SubtractPointProcessor'
 
     eccube.purchase.flow.shopping.item_validators:
         class: Doctrine\Common\Collections\ArrayCollection
@@ -96,7 +96,7 @@ services:
                 - '@Eccube\Service\PurchaseFlow\Processor\UpdateDatePurchaseProcessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\UsePointProcessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\AddPointProcessor'
-                - '@Eccube\Service\PurchaseFlow\Processor\SubstractPointProcessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\SubtractPointProcessor'
 
     eccube.purchase.flow.order.item_validators:
         class: Doctrine\Common\Collections\ArrayCollection

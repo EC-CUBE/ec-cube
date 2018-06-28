@@ -76,7 +76,7 @@ class PurchaseFlowServiceProvider implements ServiceProviderInterface
             if ($app[BaseInfo::class]->isOptionPoint()) {
                 $processors[] = new Processor\UsePointProcessor($app['orm.em'], $app[BaseInfo::class]);
                 $processors[] = new Processor\AddPointProcessor($app['orm.em'], $app[BaseInfo::class]);
-                $processors[] = new Processor\SubstractPointProcessor($app[BaseInfo::class]);
+                $processors[] = new Processor\SubtractPointProcessor($app[BaseInfo::class]);
             }
 
             return $processors;
@@ -115,7 +115,7 @@ class PurchaseFlowServiceProvider implements ServiceProviderInterface
             if ($app[BaseInfo::class]->isOptionPoint()) {
                 $processors[] = new Processor\UsePointProcessor($app['orm.em'], $app[BaseInfo::class]);
                 $processors[] = new Processor\AddPointProcessor($app['orm.em'], $app[BaseInfo::class]);
-                $processors[] = new Processor\SubstractPointProcessor($app[BaseInfo::class]);
+                $processors[] = new Processor\SubtractPointProcessor($app[BaseInfo::class]);
             }
 
             return $processors;

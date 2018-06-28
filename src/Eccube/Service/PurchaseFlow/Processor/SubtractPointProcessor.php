@@ -23,7 +23,7 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 /**
  * 利用ポイントに応じてポイントを減算する.
  */
-class SubstractPointProcessor implements ItemHolderProcessor
+class SubtractPointProcessor implements ItemHolderProcessor
 {
     /**
      * @var BaseInfo
