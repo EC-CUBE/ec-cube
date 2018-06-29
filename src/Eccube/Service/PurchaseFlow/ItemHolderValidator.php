@@ -25,7 +25,7 @@ abstract class ItemHolderValidator
      *
      * @return ProcessResult
      */
-    final public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    final public function execute(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         try {
             $this->validate($itemHolder, $context);

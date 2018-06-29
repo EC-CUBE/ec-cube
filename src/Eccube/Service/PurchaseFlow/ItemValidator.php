@@ -21,14 +21,12 @@ abstract class ItemValidator
     use ValidatorTrait;
 
     /**
-     * TODO メソッド名
-     *
      * @param ItemInterface   $item
      * @param PurchaseContext $context
      *
      * @return ProcessResult
      */
-    public function process(ItemInterface $item, PurchaseContext $context)
+    final public function execute(ItemInterface $item, PurchaseContext $context)
     {
         try {
             $this->validate($item, $context);

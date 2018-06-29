@@ -124,7 +124,7 @@ class PurchaseFlow
 
         foreach ($itemHolder->getItems() as $item) {
             foreach ($this->itemValidators as $itemValidator) {
-                $result = $itemValidator->process($item, $context);
+                $result = $itemValidator->execute($item, $context);
                 $flowResult->addProcessResult($result);
             }
         }
@@ -132,7 +132,7 @@ class PurchaseFlow
         $this->calculateAll($itemHolder);
 
         foreach ($this->itemHolderValidators as $itemHolderValidator) {
-            $result = $itemHolderValidator->process($itemHolder, $context);
+            $result = $itemHolderValidator->execute($itemHolder, $context);
             $flowResult->addProcessResult($result);
         }
 

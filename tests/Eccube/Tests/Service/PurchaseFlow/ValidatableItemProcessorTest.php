@@ -36,7 +36,7 @@ class ValidatableItemProcessorTest extends EccubeTestCase
         $validator = new ItemValidatorTest_NormalValidator();
         $item = new CartItem();
 
-        $validator->process($item, new PurchaseContext());
+        $validator->execute($item, new PurchaseContext());
         $this->assertFalse($validator->handleCalled);
     }
 
@@ -48,7 +48,7 @@ class ValidatableItemProcessorTest extends EccubeTestCase
         $validator = new ItemValidatorTest_FailValidator();
         $item = new CartItem();
 
-        $validator->process($item, new PurchaseContext());
+        $validator->execute($item, new PurchaseContext());
     }
 
     public function testValidateOrderSuccess()
@@ -56,7 +56,7 @@ class ValidatableItemProcessorTest extends EccubeTestCase
         $validator = new ItemValidatorTest_NormalValidator();
         $item = new OrderItem();
 
-        $result = $validator->process($item, new PurchaseContext());
+        $result = $validator->execute($item, new PurchaseContext());
         self::assertFalse($validator->handleCalled);
         self::assertFalse($result->isError());
     }
@@ -66,7 +66,7 @@ class ValidatableItemProcessorTest extends EccubeTestCase
         $validator = new ItemValidatorTest_FailValidator();
         $item = new OrderItem();
 
-        $result = $validator->process($item, new PurchaseContext());
+        $result = $validator->execute($item, new PurchaseContext());
         self::assertFalse($validator->handleCalled);
         self::assertTrue($result->isWarning());
     }

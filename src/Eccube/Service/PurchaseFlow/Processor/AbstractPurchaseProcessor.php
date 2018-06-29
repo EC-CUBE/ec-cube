@@ -36,7 +36,7 @@ abstract class AbstractPurchaseProcessor implements PurchaseProcessor
     /**
      * {@inheritdoc}
      */
-    public function rollback(ItemHolderInterface $target, PurchaseContext $context)
+    public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
     }
 }

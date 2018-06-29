@@ -45,10 +45,10 @@ interface PurchaseProcessor
     /**
      * 仮確定した受注データの取り消し処理を行います。
      *
-     * @param ItemHolderInterface $target
+     * @param ItemHolderInterface $itemHolder
      * @param PurchaseContext     $context
      *
      * @throws PurchaseException
      */
-    public function rollback(ItemHolderInterface $target, PurchaseContext $context);
+    public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context);
 }
