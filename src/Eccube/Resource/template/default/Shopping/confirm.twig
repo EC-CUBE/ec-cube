@@ -325,13 +325,6 @@ $(function() {
                     {{ Order.message }}
                     {{ form_widget(form.message, {'type': 'hidden'}) }}
                 </div>
-                {% for f in form.getIterator %}
-                    <div class="ec-input">
-                    {% if f.vars.name matches '[^plg*]' %}
-                        {{ form_row(f) }}
-                    {% endif %}
-                    </div>
-                {% endfor %}
             </div>
         </div>
         <div class="ec-orderRole__summary">
