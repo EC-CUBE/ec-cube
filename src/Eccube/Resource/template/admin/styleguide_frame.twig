@@ -36,6 +36,16 @@ file that was distributed with this source code.
             });
         });
     </script>
+    {# プラグイン用styleseetやmetatagなど #}
+    {% if plugin_assets is defined %}
+        {% for asset, value in plugin_assets %}
+            {% if value %}
+                {{ include(template_from_string(include(asset, ignore_missing = true))) }}
+            {% else %}
+                {{ asset|raw }}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
 </head>
 <body id="page_{{ app.request.get('_route') }}">
 <header class="c-headerBar">
@@ -66,8 +76,28 @@ file that was distributed with this source code.
 
     </div>
 </div>
+{# プラグイン用Snippets #}
+{% if plugin_snippets is defined %}
+    {% for snippet, value in plugin_snippets %}
+        {% if value %}
+            {{ include(template_from_string(include(snippet, ignore_missing = true))) }}
+        {% else %}
+            {{ snippet|raw }}
+        {% endif %}
+    {% endfor %}
+{% endif %}
 
 {% block javascript %}{% endblock %}
 
+{# プラグイン用Javascript #}
+{% if plugin_javascripts is defined %}
+    {% for javascript, value in plugin_javascripts %}
+        {% if value %}
+            {{ include(template_from_string(include(javascript, ignore_missing = true))) }}
+        {% else %}
+            {{ javascript|raw }}
+        {% endif %}
+    {% endfor %}
+{% endif %}
 </body>
 </html>

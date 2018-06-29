@@ -42,6 +42,21 @@ class TemplateEvent extends Event
     private $response;
 
     /**
+     * @var array
+     */
+    private $plugin_javascripts = [];
+
+    /**
+     * @var array
+     */
+    private $plugin_assets = [];
+
+    /**
+     * @var array
+     */
+    private $plugin_snippets = [];
+
+    /**
      * TemplateEvent constructor.
      *
      * @param string $view
@@ -148,5 +163,122 @@ class TemplateEvent extends Event
     public function setResponse($response)
     {
         $this->response = $response;
+    }
+
+    /**
+     * Add plugin_javascripts
+     *
+     * @param $plugin_javascript
+     * @param bool $value
+     *
+     * @return $this
+     */
+    public function addPluginJavascripts($plugin_javascript, $value = true)
+    {
+        $this->plugin_javascripts[$plugin_javascript] = $value;
+
+        $this->setParameter('plugin_javascripts', $this->plugin_javascripts);
+
+        return $this;
+    }
+
+    /**
+     * Remove plugin_javascripts
+     *
+     * @param $plugin_javascript
+     */
+    public function removePluginJavascripts($plugin_javascript)
+    {
+        unset($this->plugin_javascripts[$plugin_javascript]);
+
+        $this->setParameter('plugin_javascripts', $this->plugin_javascripts);
+    }
+
+    /**
+     * Get plugin_javascripts
+     *
+     * @return array
+     */
+    public function getPluginJavascripts()
+    {
+        return $this->plugin_javascripts;
+    }
+
+    /**
+     * Add plugin_assets
+     *
+     * @param $plugin_asset
+     * @param bool $value
+     *
+     * @return $this
+     */
+    public function addPluginAssets($plugin_asset, $value = true)
+    {
+        $this->plugin_assets[$plugin_asset] = $value;
+
+        $this->setParameter('plugin_assets', $this->plugin_assets);
+
+        return $this;
+    }
+
+    /**
+     * Remove plugin_assets
+     *
+     * @param $plugin_asset
+     */
+    public function removePluginAssets($plugin_asset)
+    {
+        unset($this->plugin_assets[$plugin_asset]);
+
+        $this->setParameter('plugin_assets', $this->plugin_assets);
+    }
+
+    /**
+     * Get plugin_assets
+     *
+     * @return array
+     */
+    public function getPluginAssets()
+    {
+        return $this->plugin_assets;
+    }
+
+    /**
+     * Add plugin_snippets
+     *
+     * @param $plugin_snippet
+     * @param bool $value
+     *
+     * @return $this
+     */
+    public function addPluginSnippets($plugin_snippet, $value = true)
+    {
+        $this->plugin_snippets[$plugin_snippet] = $value;
+
+        $this->setParameter('plugin_snippets', $this->plugin_snippets);
+
+        return $this;
+    }
+
+    /**
+     * Remove plugin_snippets
+     *
+     * @param $plugin_snippet
+     */
+    public function removePluginSnippets($plugin_snippet)
+    {
+        unset($this->plugin_snippets[$plugin_snippet]);
+
+        $this->setParameter('plugin_snippeet', $this->plugin_snippets);
+    }
+
+    /**
+     * Get plugin_snippets
+     *
+     * @return array
+     */
+    public function getPluginSnippets()
+    {
+        return $this->plugin_snippets;
     }
 }
