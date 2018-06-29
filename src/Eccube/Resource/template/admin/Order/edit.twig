@@ -233,6 +233,29 @@ file that was distributed with this source code.
                                         </div>
                                     </div>
                                 </div>
+
+                                {# エンティティ拡張の自動出力 #}
+                                {% for f in form if f.vars.eccube_form_options.auto_render %}
+                                    {% if f.vars.eccube_form_options.form_theme %}
+                                        {% form_theme f f.vars.eccube_form_options.form_theme %}
+                                        {{ form_row(f) }}
+                                    {% else %}
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <div class="row mb-3">
+                                                    <div class="col-3">
+                                                        <span>{{ f.vars.label|trans }}</span>
+                                                    </div>
+                                                    <div class="col">
+                                                        {{ form_widget(f) }}
+                                                        {{ form_errors(f) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+
                             </div>
                         </div>
                     </div>
