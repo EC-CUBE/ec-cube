@@ -381,22 +381,20 @@ class CartService
     public function clear()
     {
         $Carts = $this->getCarts();
-        $removed = array_splice($Carts, 0, 1);
-        if (!empty($removed)) {
-            if (UnitOfWork::STATE_MANAGED === $this->entityManager->getUnitOfWork()->getEntityState($removed[0])) {
-                $this->entityManager->remove($removed[0]);
-                $this->entityManager->flush($removed[0]);
+        if (!empty($Carts)) {
+            $removed = array_shift($Carts);
+            if ($removed && UnitOfWork::STATE_MANAGED === $this->entityManager->getUnitOfWork()->getEntityState($removed)) {
+                $this->entityManager->remove($removed);
+                $this->entityManager->flush($removed);
+
+                $cartKeys = [];
+                foreach ($Carts as $Cart) {
+                    $cartKeys[] = $Cart->getCartKey();
+                }
+                $this->session->set('cart_keys', $cartKeys);
+                $this->carts = $this->cartRepository->findBy(['cart_key' => $cartKeys], ['id' => 'DESC']);
             }
         }
-        $this->carts = $Carts;
-
-        $cartKeys = [];
-        foreach ($Carts as $Cart) {
-            $cartKeys[] = $Cart->getCartKey();
-        }
-
-        $this->session->set('cart_keys', $cartKeys);
-
         return $this;
     }
 
