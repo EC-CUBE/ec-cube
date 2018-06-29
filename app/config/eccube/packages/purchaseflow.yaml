@@ -51,9 +51,7 @@ services:
             - #
                 - '@Eccube\Service\PurchaseFlow\Processor\DeliveryFeePreprocessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\DeliveryFeeFreeByShippingPreprocessor'
-                - '@Eccube\Service\PurchaseFlow\Processor\UsePointPreprocessor'
-                - '@Eccube\Service\PurchaseFlow\Processor\AddPointPreprocessor'
-                - '@Eccube\Service\PurchaseFlow\Processor\SubtractPointPreprocessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\PointProcessor'
 
     eccube.purchase.flow.shopping.item_validators:
         class: Doctrine\Common\Collections\ArrayCollection
@@ -78,7 +76,7 @@ services:
         arguments:
             - #
                 - '@Eccube\Service\PurchaseFlow\Processor\OrderCodeProcessor'
-                - '@Eccube\Service\PurchaseFlow\Processor\UsePointToCustomerPurchaseProcessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\PointProcessor'
 
     # Purchase Flow for Order
 
@@ -95,15 +93,13 @@ services:
         class: Doctrine\Common\Collections\ArrayCollection
         arguments:
             - #
-                - '@Eccube\Service\PurchaseFlow\Processor\UsePointPreprocessor'
-                - '@Eccube\Service\PurchaseFlow\Processor\AddPointPreprocessor'
-                - '@Eccube\Service\PurchaseFlow\Processor\SubtractPointPreprocessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\PointProcessor'
 
     eccube.purchase.flow.order.holder_processors:
         class: Doctrine\Common\Collections\ArrayCollection
         arguments:
             - #
-                - '@Eccube\Service\PurchaseFlow\Processor\UpdateDatePurchaseProcessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\UpdateDateProcessor'
 
     eccube.purchase.flow.order.item_validators:
         class: Doctrine\Common\Collections\ArrayCollection

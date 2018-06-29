@@ -51,7 +51,7 @@ class OrderCodeProcessor implements ItemHolderPreprocessor
     /**
      * {@inheritdoc}
      */
-    public function commit(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         $Order = $itemHolder;
 
