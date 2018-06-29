@@ -395,6 +395,7 @@ class CartService
                 $this->carts = $this->cartRepository->findBy(['cart_key' => $cartKeys], ['id' => 'DESC']);
             }
         }
+
         return $this;
     }
 
