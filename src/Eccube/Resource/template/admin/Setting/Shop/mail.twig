@@ -98,13 +98,6 @@ file that was distributed with this source code.
                                 {{ form_errors(form.mail_footer) }}
                             </div>
                         </div>
-                        <div class="extra-form">
-                            {% for f in form.getIterator %}
-                                {% if f.vars.name matches '[^plg*]' %}
-                                    {{ form_row(f) }}
-                                {% endif %}
-                            {% endfor %}
-                        </div>
                     </div>
                 </div>
             </div>

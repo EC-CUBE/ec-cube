@@ -106,15 +106,6 @@ file that was distributed with this source code.
                                     </div>
                                     {{ form_errors(form.block_html) }}
                                 </div>
-                                <div class="card-body">
-                                    <div class="row mb-2 extra-form">
-                                        {% for f in form.getIterator %}
-                                            {% if f.vars.name matches '[^plg*]' %}
-                                                {{ form_row(f) }}
-                                            {% endif %}
-                                        {% endfor %}
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
