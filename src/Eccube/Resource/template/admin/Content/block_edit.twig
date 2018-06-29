@@ -72,8 +72,6 @@ file that was distributed with this source code.
                                         {{ form_errors(form.name) }}
                                     </div>
                                 </div>
-                            </div>
-                            <div class="card-body">
                                 <div class="row mb-2">
                                     <div class="col-2">
                                         <span>{{ 'common.label.file_name'|trans }}</span>
@@ -92,20 +90,36 @@ file that was distributed with this source code.
                                         {{ form_errors(form.file_name) }}
                                     </div>
                                 </div>
-                            </div>
-                            <div class="card-body">
                                 <div class="row mb-2">
                                     <div class="col-2">
                                         <span>{{ 'block.label.block_data'|trans }}</span>
                                         <i class="fa fa-question-circle fa-lg ml-1"></i>
                                         <span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span>
                                     </div>
-                                    <div id="editor" style="height: 480px" class="form-control{{ has_errors(form.block_html) ? ' is-invalid'}}"></div>
-                                    <div class="d-none">
-                                        {{ form_widget(form.block_html) }}
+                                    <div class="col-10">
+                                        <div id="editor" style="height: 480px" class="form-control{{ has_errors(form.block_html) ? ' is-invalid'}}"></div>
+                                        <div class="d-none">
+                                            {{ form_widget(form.block_html) }}
+                                        </div>
+                                        {{ form_errors(form.block_html) }}
                                     </div>
-                                    {{ form_errors(form.block_html) }}
                                 </div>
+                                {# エンティティ拡張の自動出力 #}
+                                {% for f in form if f.vars.eccube_form_options.auto_render %}
+                                    {% if f.vars.eccube_form_options.form_theme %}
+                                        {% form_theme f f.vars.eccube_form_options.form_theme %}
+                                        {{ form_row(f) }}
+                                    {% else %}
+                                        <div class="row mb-2">
+                                            <div class="col-2"><span>{{ f.vars.label|trans }}</span></div>
+                                            <div class="col-10">
+                                                {{ form_widget(f) }}
+                                                {{ form_errors(f) }}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+
                             </div>
                         </div>
                     </div>
