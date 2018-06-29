@@ -111,7 +111,7 @@ class PurchaseFlowServiceProvider implements ServiceProviderInterface
         $app['eccube.purchase.flow.order.holder_processors'] = function (Container $app) {
             $processors = new ArrayCollection();
             $processors[] = new Processor\PaymentTotalLimitValidator($app['config']['max_total_fee']);
-            $processors[] = new Processor\UpdateDatePurchaseProcessor($app['config']);
+            $processors[] = new Processor\UpdateDateProcessor($app['config']);
             if ($app[BaseInfo::class]->isOptionPoint()) {
                 $processors[] = new Processor\UsePointPreprocessor($app['orm.em'], $app[BaseInfo::class]);
                 $processors[] = new Processor\AddPointPreprocessor($app['orm.em'], $app[BaseInfo::class]);

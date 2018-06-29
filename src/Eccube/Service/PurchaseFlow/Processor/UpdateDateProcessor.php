@@ -16,14 +16,14 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Master\OrderStatus;
-use Eccube\Service\PurchaseFlow\PurchaseContext;
-use Eccube\Service\PurchaseFlow\PurchaseProcessor;
+use Eccube\Entity\Order;
 use Eccube\Service\PurchaseFlow\ProcessResult;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 /**
  * 受注情報の日付更新.
  */
-class UpdateDatePurchaseProcessor implements PurchaseProcessor
+class UpdateDateProcessor extends AbstractPurchaseProcessor
 {
     /**
      * @var EccubeConfig
@@ -48,6 +48,7 @@ class UpdateDatePurchaseProcessor implements PurchaseProcessor
         $dateTime = new \DateTime();
         $OriginOrder = $context->getOriginHolder();
 
+        /* @var Order $TargetOrder */
         if (!$TargetOrder->getOrderStatus()) {
             return ProcessResult::success();
         }
