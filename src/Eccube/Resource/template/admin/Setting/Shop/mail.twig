@@ -91,13 +91,28 @@ file that was distributed with this source code.
                                 {{ form_errors(form.mail_header) }}
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row mb-2">
                             <div class="col-2"><span>{{ 'admin.setting.shop.mail.mail_footer'|trans }}</span></div>
                             <div class="col-10">
                                 {{ form_widget(form.mail_footer, {'attr': {'rows': '8'}}) }}
                                 {{ form_errors(form.mail_footer) }}
                             </div>
                         </div>
+                        {# エンティティ拡張の自動出力 #}
+                        {% for f in form if f.vars.eccube_form_options.auto_render %}
+                            {% if f.vars.eccube_form_options.form_theme %}
+                                {% form_theme f f.vars.eccube_form_options.form_theme %}
+                                {{ form_row(f) }}
+                            {% else %}
+                                <div class="row mb-2">
+                                    <div class="col-2"><span>{{ f.vars.label|trans }}</span></div>
+                                    <div class="col-10">
+                                        {{ form_widget(f) }}
+                                        {{ form_errors(f) }}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
                     </div>
                 </div>
             </div>
