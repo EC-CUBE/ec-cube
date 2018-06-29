@@ -36,8 +36,8 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
      */
     public function prepend(ContainerBuilder $container)
     {
-//        $container->setParameter('eccube.plugins.enabled', []);
-//        $container->setParameter('eccube.plugins.disabled', []);
+        $container->setParameter('eccube.plugins.enabled', []);
+        $container->setParameter('eccube.plugins.disabled', []);
 
         // FIXME WebTestCase で DATABASE_URL が取得できず落ちる
         if (!array_key_exists('APP_ENV', $_ENV) || $_ENV['APP_ENV'] == 'test') {
