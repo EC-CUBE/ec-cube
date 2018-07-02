@@ -44,14 +44,6 @@ services:
         lazy: true
         public: true
 
-    Eccube\Service\PaymentService:
-        lazy: true
-        public: true
-
-    Eccube\Service\Payment\Method\Cash:
-        lazy: true
-        public: true
-
     Eccube\Service\SystemService:
         lazy: true
         public: true

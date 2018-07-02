@@ -38,6 +38,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -220,10 +221,9 @@ class ShoppingController extends AbstractShoppingController
             return $this->redirectToRoute('shopping_error');
         }
 
-        $paymentService = $this->createPaymentService($Order);
         $paymentMethod = $this->createPaymentMethod($Order, $form);
 
-        $PaymentResult = $paymentService->doVerify($paymentMethod);
+        $PaymentResult = $paymentMethod->verify();
         // エラーの場合は注文入力画面に戻す？
         if ($PaymentResult instanceof PaymentResult) {
             if (!$PaymentResult->isSuccess()) {
@@ -233,7 +233,7 @@ class ShoppingController extends AbstractShoppingController
             }
 
             $response = $PaymentResult->getResponse();
-            if ($response->isRedirection() || $response->getContent()) {
+            if ($response && ($response->isRedirection() || $response->getContent())) {
                 $this->entityManager->flush();
 
                 return $response;
@@ -817,24 +817,22 @@ class ShoppingController extends AbstractShoppingController
                 // 購入処理
                 $this->shoppingService->processPurchase($Order); // XXX フロント画面に依存してるので管理画面では使えない
 
-                // Order も引数で渡すのがベスト??
-                $paymentService = $this->createPaymentService($Order);
                 $paymentMethod = $this->createPaymentMethod($Order, $form);
 
                 // 必要に応じて別のコントローラへ forward or redirect(移譲)
-                $dispatcher = $paymentService->dispatch($paymentMethod); // 決済処理中.
+                $dispatcher = $paymentMethod->apply(); // 決済処理中.
                 // 一旦、決済処理中になった後は、購入処理中に戻せない。キャンセル or 購入完了の仕様とする
                 // ステータス履歴も保持しておく？ 在庫引き当ての仕様もセットで。
                 if ($dispatcher instanceof PaymentDispatcher) {
                     $response = $dispatcher->getResponse();
-                    if ($response->isRedirection() || $response->getContent()) {
+                    if ($response && ($response->isRedirection() || $response->getContent())) {
                         return $response;
                     }
 
                     if ($dispatcher->isForward()) {
                         return $this->forwardToRoute($dispatcher->getRoute(), $dispatcher->getPathParameters(), $dispatcher->getQueryParameters());
                     } else {
-                        return $this->redirectToRoute($dispatcher->getRoute(), $dispatcher->getQueryParameters());
+                        return $this->redirectToRoute($dispatcher->getRoute(), array_merge($dispatcher->getPathParameters(), $dispatcher->getQueryParameters()));
                     }
                 }
 
@@ -884,11 +882,10 @@ class ShoppingController extends AbstractShoppingController
         $form = $this->parameterBag->get(OrderType::class);
         $Order = $this->parameterBag->get('Order');
 
-        $paymentService = $this->createPaymentService($Order);
         $paymentMethod = $this->createPaymentMethod($Order, $form);
 
         // 決済実行
-        $PaymentResult = $paymentService->doCheckout($paymentMethod);
+        $PaymentResult = $paymentMethod->checkout();
         $response = $PaymentResult->getResponse();
         if ($response && ($response->isRedirection() || $response->getContent())) {
             return $response;
@@ -958,20 +955,9 @@ class ShoppingController extends AbstractShoppingController
         return $this->redirectToRoute('shopping_complete');
     }
 
-    private function createPaymentService(Order $Order)
+    private function createPaymentMethod(Order $Order, FormInterface $form)
     {
-        $serviceClass = $Order->getPayment()->getServiceClass();
-        $paymentService = new $serviceClass($this->container->get('request_stack')); // コンテナから取得したい
-
-        return $paymentService;
-    }
-
-    private function createPaymentMethod(Order $Order, $form)
-    {
-        $methodClass = $Order->getPayment()->getMethodClass();
-
-        // TODO Plugin/Xxx/Resouce/config/services.yamlでpublicにする必要がある
-        $PaymentMethod = $this->container->get($methodClass);
+        $PaymentMethod = $this->container->get($Order->getPayment()->getMethodClass());
         $PaymentMethod->setOrder($Order);
         $PaymentMethod->setFormType($form);
 

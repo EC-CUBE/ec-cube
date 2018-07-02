@@ -100,13 +100,6 @@ class Payment extends \Eccube\Entity\AbstractEntity
     private $method_class;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="service_class", type="string", length=255, nullable=true)
-     */
-    private $service_class;
-
-    /**
      * @var int
      *
      * @ORM\Column(name="visible", type="boolean", options={"default":true})
@@ -352,30 +345,6 @@ class Payment extends \Eccube\Entity\AbstractEntity
     public function getMethodClass()
     {
         return $this->method_class;
-    }
-
-    /**
-     * Set serviceClass.
-     *
-     * @param string|null $serviceClass
-     *
-     * @return Payment
-     */
-    public function setServiceClass($serviceClass = null)
-    {
-        $this->service_class = $serviceClass;
-
-        return $this;
-    }
-
-    /**
-     * Get serviceClass.
-     *
-     * @return string|null
-     */
-    public function getServiceClass()
-    {
-        return $this->service_class;
     }
 
     /**
