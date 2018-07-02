@@ -32,7 +32,6 @@ use Eccube\Repository\CustomerAddressRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\OrderHelper;
 use Eccube\Service\Payment\PaymentDispatcher;
-use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\ShoppingService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -126,7 +125,7 @@ class ShoppingController extends AbstractShoppingController
         $Order = $this->parameterBag->get('Order');
 
         // 単価集計
-        $flowResult = $this->executePurchaseFlow($Order);
+        $flowResult = $this->validatePurchaseFlow($Order);
 
         // 明細が丸められる場合に, カートから注文画面へ遷移できなくなるため, 集計の結果を保存する
         $this->entityManager->flush();
@@ -215,7 +214,7 @@ class ShoppingController extends AbstractShoppingController
         $form = $this->parameterBag->get(OrderType::class);
         $Order = $this->parameterBag->get('Order');
 
-        $flowResult = $this->executePurchaseFlow($Order);
+        $flowResult = $this->validatePurchaseFlow($Order);
         if ($flowResult->hasWarning() || $flowResult->hasError()) {
             return $this->redirectToRoute('shopping_error');
         }
@@ -405,7 +404,7 @@ class ShoppingController extends AbstractShoppingController
             $Shipping->setFromCustomerAddress($CustomerAddress);
 
             // 合計金額の再計算
-            $flowResult = $this->executePurchaseFlow($Order);
+            $flowResult = $this->validatePurchaseFlow($Order);
             if ($flowResult->hasWarning() || $flowResult->hasError()) {
                 return $this->redirectToRoute('shopping_error');
             }
@@ -521,7 +520,7 @@ class ShoppingController extends AbstractShoppingController
             $this->shoppingService->setShippingDeliveryFee($Shipping);
 
             // 合計金額の再計算
-            $flowResult = $this->executePurchaseFlow($Order);
+            $flowResult = $this->validatePurchaseFlow($Order);
             if ($flowResult->hasWarning() || $flowResult->hasError()) {
                 return $this->redirectToRoute('shopping_error');
             }
@@ -803,15 +802,10 @@ class ShoppingController extends AbstractShoppingController
                 // FormTypeで更新されるため不要
                 //$app['eccube.service.shopping']->setFormData($Order, $data);
 
-                $flowResult = $this->executePurchaseFlow($Order);
+                $flowResult = $this->validatePurchaseFlow($Order);
                 if ($flowResult->hasWarning() || $flowResult->hasError()) {
                     // TODO エラーメッセージ
                     throw new ShoppingException();
-                }
-                try {
-                    $this->purchaseFlow->purchase($Order, new PurchaseContext($Order, $Order->getCustomer())); // TODO 変更前の Order を渡す必要がある？
-                } catch (PurchaseException $e) {
-                    $this->addError($e->getMessage(), 'front');
                 }
 
                 // 購入処理

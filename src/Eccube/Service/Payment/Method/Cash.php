@@ -16,23 +16,41 @@ namespace Eccube\Service\Payment\Method;
 use Eccube\Entity\Order;
 use Eccube\Service\Payment\PaymentMethod;
 use Eccube\Service\Payment\PaymentResult;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
+use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Symfony\Component\Form\FormInterface;
 
 class Cash implements PaymentMethod
 {
+    /** @var Order */
+    private $Order;
+
+    /** @var FormInterface */
+    private $form;
+
     /**
      * {@inheritdoc}
+     *
+     * @throws \Eccube\Service\PurchaseFlow\PurchaseException
      */
     public function checkout()
     {
+        $purchaseFlow = new PurchaseFlow();
+        $purchaseFlow->commit($this->Order, new PurchaseContext());
+
         return new PaymentResult();
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Eccube\Service\PurchaseFlow\PurchaseException
      */
     public function apply()
     {
+        $purchaseFlow = new PurchaseFlow();
+        $purchaseFlow->prepare($this->Order, new PurchaseContext());
+
         return false;
     }
 
@@ -41,7 +59,7 @@ class Cash implements PaymentMethod
      */
     public function setFormType(FormInterface $form)
     {
-        // quiet
+        $this->form = $form;
     }
 
     /**
@@ -57,6 +75,6 @@ class Cash implements PaymentMethod
      */
     public function setOrder(Order $Order)
     {
-        // quiet
+        $this->Order = $Order;
     }
 }

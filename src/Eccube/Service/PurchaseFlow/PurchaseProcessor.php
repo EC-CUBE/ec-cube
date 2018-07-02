@@ -47,8 +47,6 @@ interface PurchaseProcessor
      *
      * @param ItemHolderInterface $itemHolder
      * @param PurchaseContext     $context
-     *
-     * @throws PurchaseException
      */
     public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context);
 }

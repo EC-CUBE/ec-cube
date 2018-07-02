@@ -311,7 +311,7 @@ class ShippingMultipleController extends AbstractShoppingController
             }
 
             // 合計金額の再計算
-            $flowResult = $this->executePurchaseFlow($Order);
+            $flowResult = $this->validatePurchaseFlow($Order);
             if ($flowResult->hasWarning()) {
                 return [
                     'form' => $form->createView(),

@@ -154,23 +154,21 @@ class PointProcessorTest extends EccubeTestCase
      */
     public function testReduceCustomerPoint()
     {
-        $this->markTestIncomplete('prepare');
-
         $ProductClass = $this->createProduct('テスト', 1)->getProductClasses()[0];
         $Order = new Order();
-        $Order->setUsePoint(0);
+        $Order->setUsePoint(10);
         $Order->addOrderItem($this->newOrderItem($ProductClass, 100, 1));
-        $Order->setAddPoint(10);
 
         $Customer = new Customer();
         $Customer->setPoint(100);
 
         $purchaseFlow = new PurchaseFlow();
-        $purchaseFlow->addItemHolderValidator($this->processor);
+        $purchaseFlow->addPurchaseProcessor($this->processor);
 
         $context = new PurchaseContext(null, $Customer);
         $purchaseFlow->validate($Order, $context);
-        $purchaseFlow->purchase($Order, $context);
+        $purchaseFlow->prepare($Order, $context);
+        $purchaseFlow->commit($Order, $context);
 
         self::assertEquals(90, $Customer->getPoint());
     }

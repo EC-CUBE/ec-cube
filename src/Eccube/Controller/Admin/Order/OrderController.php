@@ -514,7 +514,7 @@ class OrderController extends AbstractController
                 }
 
                 try {
-                    $this->purchaseFlow->purchase($Order, $purchaseContext);
+                    $this->purchaseFlow->commit($Order, $purchaseContext);
                 } catch (PurchaseException $e) {
                     $msg = $this->translator->trans('admin.order.index.bulk_error', [
                       '%orderId%' => $Order->getId(),
