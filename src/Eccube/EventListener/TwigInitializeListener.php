@@ -73,6 +73,7 @@ class TwigInitializeListener implements EventSubscriberInterface
 
     /**
      * TwigInitializeListener constructor.
+     *
      * @param Environment $twig
      * @param BaseInfoRepository $baseInfoRepository
      * @param PageRepository $pageRepository
@@ -104,6 +105,7 @@ class TwigInitializeListener implements EventSubscriberInterface
 
     /**
      * @param GetResponseEvent $event
+     *
      * @throws NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
@@ -127,6 +129,7 @@ class TwigInitializeListener implements EventSubscriberInterface
 
     /**
      * @param GetResponseEvent $event
+     *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function setFrontVaribales(GetResponseEvent $event)
