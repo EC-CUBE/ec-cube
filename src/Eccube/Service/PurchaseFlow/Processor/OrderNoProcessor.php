@@ -64,7 +64,7 @@ class OrderNoProcessor implements PurchaseProcessor
             } else {
                 do {
                     $orderNo = preg_replace_callback('/\{(.*)}/U', function ($matches) use ($Order) {
-                        if (count($matches) == 2) {
+                        if (count($matches) === 2) {
                             switch ($matches[1]) {
                                 case 'yyyy':
                                     return date('Y');
@@ -75,24 +75,24 @@ class OrderNoProcessor implements PurchaseProcessor
                                 case 'dd':
                                     return date('d');
                                 default:
-                                    $res = explode(',', $matches[1]);
-                                    if (count($res) == 2 && is_numeric($res[1])) {
-                                        if ($res[0] == 'id') {
+                                    $res = explode(',', str_replace(' ', '', $matches[1]));
+                                    if (count($res) === 2 && is_numeric($res[1])) {
+                                        if ($res[0] === 'id') {
                                             return sprintf("%0{$res[1]}d", $Order->getId());
-                                        } elseif ($res[0] == 'random') {
-                                            $rondom = substr(mt_rand(1, 999999999), 0, $res[1]);
+                                        } elseif ($res[0] === 'random') {
+                                            $random = random_int(1, (int)str_repeat('9', $res[1]));
 
-                                            return sprintf("%0{$res[1]}d", $rondom);
-                                        } elseif ($res[0] == 'randomalphanum') {
-                                            return strtoupper(StringUtil::random(5));
+                                            return sprintf("%0{$res[1]}d", $random);
+                                        } elseif ($res[0] === 'random_alnum') {
+                                            return strtoupper(StringUtil::random($res[1]));
                                         }
                                     }
 
-                                    return '';
+                                    return $Order->getId();
                             }
                         }
 
-                        return '';
+                        return $Order->getId();
                     }, $format);
 
                     $tempOrder = $this->orderRepository->findOneBy([
