@@ -77,7 +77,7 @@ file that was distributed with this source code.
 {% block javascript %}{% endblock %}
 
 {# プラグイン用Javascript #}
-{% if plugin_javascripts is defined %}{{ include('@admin/snippet.twig', { snippets: plugin_javascripts }) }}</div>{% endif %}
+{% if plugin_javascripts is defined %}{{ include('@admin/snippet.twig', { snippets: plugin_javascripts }) }}{% endif %}
 
 </body>
 </html>
