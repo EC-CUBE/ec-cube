@@ -139,11 +139,11 @@ class TwigInitializeListener implements EventSubscriberInterface
             $route = isset($routeParams['route']) ? $routeParams['route'] : $attributes->get('route', '');
         }
 
-        if (!$this->mobileDetector->isMobile()) {
-            $type = DeviceType::DEVICE_TYPE_PC;
-        } else {
+        $type = DeviceType::DEVICE_TYPE_PC;
+        if ($this->mobileDetector->isMobile() || $this->mobileDetector->isTablet()) {
             $type = DeviceType::DEVICE_TYPE_SP;
         }
+
         $DeviceType = $this->deviceTypeRepository->find($type);
 
         try {
