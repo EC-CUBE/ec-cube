@@ -912,7 +912,7 @@ class ShoppingController extends AbstractShoppingController
         $Order = $this->parameterBag->get('Order');
 
         // カート削除
-        $this->cartService->clear()->save();
+        $this->cartService->clear();
 
         $event = new EventArgs(
             [
