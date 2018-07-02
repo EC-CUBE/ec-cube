@@ -11,9 +11,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Eccube\Tests\Service;
+namespace Eccube\Tests\Service\Payment;
 
-class PaymentServiceTest extends AbstractServiceTestCase
+use Eccube\Tests\EccubeTestCase;
+
+class PaymentMethodTest extends EccubeTestCase
 {
     public function testConstructorInjection()
     {
@@ -22,18 +24,17 @@ class PaymentServiceTest extends AbstractServiceTestCase
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
 
-        $paymentService = $this->container->get($Order->getPayment()->getServiceClass());
-        $this->assertInstanceOf(\Eccube\Service\PaymentService::class, $paymentService);
-
         $form = $this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')->getMock();
         $paymentMethod = $this->container->get($Order->getPayment()->getMethodClass());
         $paymentMethod->setFormType($form);
+        $paymentMethod->setOrder($Order);
+
         $this->assertInstanceOf(\Eccube\Service\Payment\Method\Cash::class, $paymentMethod);
 
-        $dispatcher = $paymentService->dispatch($paymentMethod); // 決済処理中.
+        $dispatcher = $paymentMethod->apply(); // 決済処理中.
         $this->assertFalse($dispatcher);
 
-        $PaymentResult = $paymentService->doCheckout($paymentMethod); // 決済実行
+        $PaymentResult = $paymentMethod->checkout(); // 決済実行
         $this->assertTrue($PaymentResult->isSuccess());
     }
 }
