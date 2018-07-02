@@ -84,7 +84,6 @@ services:
         class: Eccube\Service\PurchaseFlow\PurchaseFlow
         calls:
             - [setItemHolderPreprocessors, ['@eccube.purchase.flow.order.holder_preprocessors']]
-            - [setItemHolderProcessors, ['@eccube.purchase.flow.order.holder_processors']]
             - [setItemValidators, ['@eccube.purchase.flow.order.item_validators']]
             - [setItemHolderValidators, ['@eccube.purchase.flow.order.holder_validators']]
             - [setPurchaseProcessors, ['@eccube.purchase.flow.order.purchase']]
@@ -94,12 +93,6 @@ services:
         arguments:
             - #
                 - '@Eccube\Service\PurchaseFlow\Processor\PointProcessor'
-
-    eccube.purchase.flow.order.holder_processors:
-        class: Doctrine\Common\Collections\ArrayCollection
-        arguments:
-            - #
-                - '@Eccube\Service\PurchaseFlow\Processor\UpdateDateProcessor'
 
     eccube.purchase.flow.order.item_validators:
         class: Doctrine\Common\Collections\ArrayCollection
@@ -118,3 +111,4 @@ services:
         arguments:
             - #
                 - '@Eccube\Service\PurchaseFlow\Processor\AdminOrderRegisterPurchaseProcessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\UpdateDateProcessor'

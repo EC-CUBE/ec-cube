@@ -16,6 +16,7 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\ItemHolderInterface;
+use Eccube\Entity\ItemInterface;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Master\TaxType;
@@ -143,7 +144,7 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
         $basicPointRate = $this->BaseInfo->getBasicPointRate();
 
         // 明細ごとのポイントを集計
-        $totalPoint = array_reduce($itemHolder->getItems(), function ($carry, OrderItem $item) use ($basicPointRate) {
+        $totalPoint = array_reduce($itemHolder->getItems()->toArray(), function ($carry, ItemInterface $item) use ($basicPointRate) {
             $pointRate = $item->getPointRate();
             if ($pointRate === null) {
                 $pointRate = $basicPointRate;
