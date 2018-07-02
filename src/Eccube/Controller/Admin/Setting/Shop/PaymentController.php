@@ -123,7 +123,10 @@ class PaymentController extends AbstractController
                     );
                 }
 
-                $Payment->setMethodClass(Cash::class); // Payment method class of Cash to default.
+                // Payment method class of Cash to default.
+                if (!$Payment->getMethodClass()) {
+                    $Payment->setMethodClass(Cash::class);
+                }
                 $Payment->setVisible(true);
                 $this->entityManager->persist($Payment);
                 $this->entityManager->flush();
