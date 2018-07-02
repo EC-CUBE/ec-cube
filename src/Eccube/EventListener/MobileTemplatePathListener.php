@@ -60,19 +60,20 @@ class MobileTemplatePathListener implements EventSubscriberInterface
             return;
         }
 
-        // ディレクトリが作成されてない場合は実行しない.
-        if (!file_exists($this->eccubeConfig->get('eccube_theme_app_dir').'/smartphone')) {
-            return;
-        }
-
         if (!$this->detector->isMobile()) {
             return;
         }
 
         $paths = [
-            $this->eccubeConfig->get('eccube_theme_app_dir').'/smartphone',
             $this->eccubeConfig->get('eccube_theme_src_dir').'/smartphone',
         ];
+
+        if (is_dir($this->eccubeConfig->get('eccube_theme_app_dir').'/smartphone')) {
+            $paths = [
+                $this->eccubeConfig->get('eccube_theme_app_dir').'/smartphone',
+                $this->eccubeConfig->get('eccube_theme_src_dir').'/smartphone',
+            ];
+        }
 
         $loader = new \Twig_Loader_Chain([
             new \Twig_Loader_Filesystem($paths),
