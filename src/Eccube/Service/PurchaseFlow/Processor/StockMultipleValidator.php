@@ -17,7 +17,6 @@ use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\ProductClassRepository;
 use Eccube\Service\PurchaseFlow\ItemHolderValidator;
-use Eccube\Service\PurchaseFlow\ProcessResult;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 class StockMultipleValidator extends ItemHolderValidator
@@ -40,8 +39,6 @@ class StockMultipleValidator extends ItemHolderValidator
     /**
      * @param ItemHolderInterface $itemHolder
      * @param PurchaseContext $context
-     *
-     * @return ProcessResult
      *
      * @throws \Eccube\Service\PurchaseFlow\InvalidItemException
      */
@@ -72,8 +69,6 @@ class StockMultipleValidator extends ItemHolderValidator
                 }
             }
         }
-
-        return ProcessResult::success();
     }
 
     protected function formatProductName(ProductClass $ProductClass)

@@ -19,7 +19,6 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 /**
  * 管理画面/受注登録/編集画面の完了処理.
- * TODO クラス名検討
  */
 class AdminOrderRegisterPurchaseProcessor implements ItemHolderPreprocessor
 {

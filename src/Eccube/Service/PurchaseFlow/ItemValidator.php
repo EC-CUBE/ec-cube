@@ -16,6 +16,9 @@ namespace Eccube\Service\PurchaseFlow;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\ItemInterface;
 
+/**
+ * 明細単位の妥当性検証.
+ */
 abstract class ItemValidator
 {
     use ValidatorTrait;
@@ -41,8 +44,20 @@ abstract class ItemValidator
         }
     }
 
+    /**
+     * 妥当性検証を行う.
+     *
+     * @param ItemInterface $item
+     * @param PurchaseContext $context
+     */
     abstract protected function validate(ItemInterface $item, PurchaseContext $context);
 
+    /**
+     * 検証エラー時に後処理を行う.
+     *
+     * @param ItemInterface $item
+     * @param PurchaseContext $context
+     */
     protected function handle(ItemInterface $item, PurchaseContext $context)
     {
     }

@@ -93,8 +93,6 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
     }
 
     /**
-     * TODO 送料無料計算.
-     *
      * @param ItemHolderInterface $itemHolder
      *
      * @throws \Doctrine\ORM\NoResultException

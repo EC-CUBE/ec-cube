@@ -15,6 +15,9 @@ namespace Eccube\Service\PurchaseFlow;
 
 use Eccube\Entity\ItemHolderInterface;
 
+/**
+ * カート/受注の妥当性検証を行う.
+ */
 abstract class ItemHolderValidator
 {
     use ValidatorTrait;
