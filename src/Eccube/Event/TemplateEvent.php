@@ -175,7 +175,7 @@ class TemplateEvent extends Event
      *
      * @return $this
      */
-    public function addJavascript($js, $include = false)
+    public function addJavascript($js, $include = true)
     {
         $this->javascripts[$js] = $include;
 
@@ -195,7 +195,7 @@ class TemplateEvent extends Event
      *
      * @return $this
      */
-    public function addAsset($asset, $include = false)
+    public function addAsset($asset, $include = true)
     {
         $this->assets[$asset] = $include;
 
@@ -215,7 +215,7 @@ class TemplateEvent extends Event
      *
      * @return $this
      */
-    public function addSnippet($snippet, $include = false)
+    public function addSnippet($snippet, $include = true)
     {
         $this->snippets[$snippet] = $include;
 
