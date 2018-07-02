@@ -99,7 +99,9 @@ file that was distributed with this source code.
                                         <span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span>
                                     </div>
                                     <div id="editor" style="height: 480px" class="form-control{{ has_errors(form.block_html) ? ' is-invalid'}}"></div>
-                                    {{ form_widget(form.block_html) }}
+                                    <div class="d-none">
+                                        {{ form_widget(form.block_html) }}
+                                    </div>
                                     {{ form_errors(form.block_html) }}
                                 </div>
                                 <div class="card-body">

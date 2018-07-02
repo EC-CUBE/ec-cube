@@ -38,7 +38,6 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
     public function createShippingFormData()
     {
         $faker = $this->getFaker();
-        $tel = explode('-', $faker->phoneNumber);
 
         $form = [
             'name' => [
@@ -50,20 +49,13 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
                 'kana02' => $faker->firstKanaName,
             ],
             'company_name' => $faker->company,
-            'zip' => [
-                'zip01' => $faker->postcode1(),
-                'zip02' => $faker->postcode2(),
-            ],
+            'postal_code' => $faker->postcode,
             'address' => [
                 'pref' => '5',
                 'addr01' => $faker->city,
                 'addr02' => $faker->streetAddress,
             ],
-            'tel' => [
-                'tel01' => $tel[0],
-                'tel02' => $tel[1],
-                'tel03' => $tel[2],
-            ],
+            'phone_number' => $faker->phoneNumber,
             '_token' => 'dummy',
         ];
 

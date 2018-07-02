@@ -17,6 +17,7 @@ services:
                 - '@Eccube\Service\PurchaseFlow\Processor\DeliverySettingValidator'
                 - '@Eccube\Service\PurchaseFlow\Processor\StockValidator'
                 - '@Eccube\Service\PurchaseFlow\Processor\ProductStatusValidator'
+                - '@Eccube\Service\PurchaseFlow\Processor\PriceChangeValidator'
 
     eccube.purchase.flow.cart.holder_processors:
         class: Doctrine\Common\Collections\ArrayCollection
@@ -43,6 +44,7 @@ services:
                 - '@Eccube\Service\PurchaseFlow\Processor\DisplayStatusValidator'
                 - '@Eccube\Service\PurchaseFlow\Processor\DeliverySettingValidator'
                 - '@Eccube\Service\PurchaseFlow\Processor\ProductStatusValidator'
+                - '@Eccube\Service\PurchaseFlow\Processor\PriceChangeValidator'
 
     eccube.purchase.flow.shopping.holder_processors:
         class: Doctrine\Common\Collections\ArrayCollection

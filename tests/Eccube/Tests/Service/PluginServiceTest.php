@@ -18,12 +18,18 @@ use Eccube\Exception\PluginException;
 use Eccube\Plugin\ConfigManager;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\Composer\ComposerApiService;
+use Eccube\Service\EntityProxyService;
 use Eccube\Service\PluginService;
 use Eccube\Service\SchemaService;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * Class PluginServiceTest
+ *
+ * @group cache-clear
+ */
 class PluginServiceTest extends AbstractServiceTestCase
 {
     /**
@@ -47,12 +53,19 @@ class PluginServiceTest extends AbstractServiceTestCase
 
         $this->service = $this->container->get(PluginService::class);
         $rc = new \ReflectionClass($this->service);
+
         $prop = $rc->getProperty('schemaService');
         $prop->setAccessible(true);
         $prop->setValue($this->service, $this->createMock(SchemaService::class));
+
         $prop = $rc->getProperty('composerService');
         $prop->setAccessible(true);
         $prop->setValue($this->service, $this->createMock(ComposerApiService::class));
+
+        $prop = $rc->getProperty('entityProxyService');
+        $prop->setAccessible(true);
+        $prop->setValue($this->service, $this->createMock(EntityProxyService::class));
+
         $this->pluginRepository = $this->container->get(PluginRepository::class);
     }
 

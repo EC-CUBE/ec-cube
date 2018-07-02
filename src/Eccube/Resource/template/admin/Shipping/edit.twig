@@ -205,32 +205,21 @@ file that was distributed with this source code.
                                                     {{ form_errors(form.kana.kana02) }}
                                                     {{ form_widget(form.company_name) }}
                                                     {{ form_errors(form.company_name) }}
-                                                    {{ form_widget(form.zip.zip01) }}-{{ form_widget(form.zip.zip02) }}
-                                                    {{ form_errors(form.zip.zip01) }}{{ form_errors(form.zip.zip02) }}
+                                                    {{ form_widget(form.postal_code) }}
+                                                    {{ form_errors(form.postal_code) }}
                                                     {{ form_widget(form.address.pref) }}
                                                     {{ form_errors(form.address.pref) }}
                                                     {{ form_widget(form.address.addr01, {'attr':{'placeholder':'admin.shipping.edit.736'}}) }}
                                                     {{ form_errors(form.address.addr01) }}
                                                     {{ form_widget(form.address.addr02, {'attr':{'placeholder':'admin.shipping.edit.737'}}) }}
                                                     {{ form_errors(form.address.addr02) }}
-                                                    {{ form_widget(form.tel.tel01) }}
-                                                    {{ form_errors(form.tel.tel01) }}
-                                                    {{ form_widget(form.tel.tel02) }}
-                                                    {{ form_errors(form.tel.tel02) }}
-                                                    {{ form_widget(form.tel.tel03) }}
-                                                    {{ form_errors(form.tel.tel03) }}
-                                                    {{ form_widget(form.fax.fax01) }}
-                                                    {{ form_errors(form.fax.fax01) }}
-                                                    {{ form_widget(form.fax.fax02) }}
-                                                    {{ form_errors(form.fax.fax02) }}
-                                                    {{ form_widget(form.fax.fax03) }}
-                                                    {{ form_errors(form.fax.fax03) }}
+                                                    {{ form_widget(form.phone_number) }}
+                                                    {{ form_errors(form.phone_number) }}
                                                 </div>
                                                 {% if Shipping.id %}
                                                     <label>{{ Shipping.name01 }} {{ Shipping.name02 }}（{{ Shipping.kana01 }} {{ Shipping.kana02 }}）<br>
-                                                        {{ 'admin.shipping.edit.zip'|trans({
-                                                            '%zip01%': Shipping.zip01,
-                                                            '%zip02%': Shipping.zip02
+                                                        {{ 'admin.shipping.edit.postal_code'|trans({
+                                                            '%postal_code%': Shipping.postal_code
                                                         }) }}<br>
                                                         {{ Shipping.pref ~ Shipping.addr01 ~ Shipping.addr02 }}<br><a
                                                                 href="#" id="edit-shipping-addr"><i
@@ -249,9 +238,8 @@ file that was distributed with this source code.
                                                     {% for Order in Shipping.Orders %}
                                                         <label>{{ Order.name01 }} {{ Order.name02 }}
                                                             ({{ Order.kana01 }} {{ Order.kana02 }})
-                                                            <br>{{ 'admin.shipping.edit.zip'|trans({
-                                                                '%zip01%': Order.zip01,
-                                                                '%zip02%': Order.zip02
+                                                            <br>{{ 'admin.shipping.edit.postal_code'|trans({
+                                                                '%postal_code%': Order.postal_code
                                                             }) }}
                                                             <br>{{ Order.pref.name ~ Order.addr01 ~ Order.addr02 }}
                                                         </label>

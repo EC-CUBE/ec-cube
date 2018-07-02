@@ -30,9 +30,8 @@ file that was distributed with this source code.
                 <td class="align-middle">
                     <p class="m-0">
                         {{ Order.name01 }} {{ Order.name02 }} ({{ Order.kana01 }} {{ Order.kana02 }})<br>
-                        {{ 'admin.shipping.edit.zip'|trans({
-                            '%zip01%': Order.zip01,
-                            '%zip02%': Order.zip02
+                        {{ 'admin.shipping.edit.postal_code'|trans({
+                            '%postal_code%': Order.postal_code
                         }) }}<br>
                         {{ Order.pref.name ~ Order.addr01 ~ Order.addr02 }}<br>
                     </p>

@@ -112,7 +112,7 @@ Styleguide 11.2
     display: block;
     position: absolute;
     top:15px;
-    width: 27%;
+    width: 30%;
     right: 0px;
     text-align: right;
     @include media_desktop {
@@ -424,13 +424,14 @@ Styleguide 11.2.4
 ヘッダー：カテゴリナビ
 
 ヘッダー内で使用されている商品のカテゴリ一覧として使用します。
+`li`の中に`ul > li`要素を入れることで、階層を深くする事ができます。
 
 Markup:
 include /assets/tmpl/elements/11.4.categoryNavi.pug
 +ec-itemNav
 
 sg-wrapper:
-<div class="ec-cateoryNaviRole">
+<div class="ec-cateoryNaviRole" style="padding-bottom:150px;">
   <sg-wrapper-content/>
 </div>
 
@@ -445,73 +446,141 @@ Styleguide 11.2.5
     @include reset_link;
   }
 }
+
 .ec-itemNav {
-  display: block;
-  border: 0;
   margin: 0;
   padding: 0;
   width: 100%;
-  text-align: center;
-  list-style: none;
-  position: relative;
+  height: 100%;
+  text-align:center;
   @include media_desktop {
     margin: 20px 0 30px;
     border-bottom: 1px solid #D9D9D9;
     border-top: 1px solid #D9D9D9;
   }
-  & &__item {
+}
+.ec-itemNav__nav {
+  display: block;
+  margin: 0 auto;
+  padding: 0;
+  width: auto;
+  height: auto;
+  list-style-type: none;
+  text-align: center;
+  vertical-align:bottom;
+  @include media_desktop {
     display: inline-block;
-    font-weight: bold;
-    @include reset_link;
-    &:hover {
-      background: #fafafa;
-    }
-    a {
-      display: inline-block;
-      margin-top: 0;
-      padding: 16px;
-      height: 55px;
-    }
-    &:hover > .ec-itemNavAccordion {
-      overflow: visible;
-      height: 50px;
-      transition:all .2s ease-out;
-      .ec-itemNavAccordion__item {
-        height: 50px;
-        transition:all .2s ease-out;
-      }
-    }
-  }
-  .ec-itemNavAccordion {
-    z-index: 1000;
-    position: absolute;
-    padding: 0;
-    height: 0;
-    overflow: hidden;
-    transition:all .2s ease-out;
-    .ec-itemNavAccordion__item {
-      border-bottom: 1px solid #ccc;
-      list-style: none;
-      height: 0;
-      transition:all .2s ease-out;
-      a {
-        list-style: none;
-        border-top: 1px solid #E8E8E8;
-        border-bottom: 1px solid #E8E8E8;
-        margin-top: 0;
-        padding: 15px 10px;
-        min-width: 200px;
-        width: 100%;
-        text-align: left;
-        background: #fff;
-        transition:all .5s ease-out;
-        &:hover {
-          background: #fafafa;
-        }
-      }
-    }
   }
 }
+
+.ec-itemNav__nav li {
+  float: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  @include media_desktop {
+    float: left;
+    width: auto;
+  }
+}
+.ec-itemNav__nav li a {
+  display: block;
+  margin: 0;
+  padding: 16px;
+  height: 55px;
+  color: #2e3233;;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 20px;
+  text-decoration: none;
+  text-align: left;
+  background: #fff;
+  border-bottom: 1px solid #E8E8E8;
+  @include media_desktop {
+    text-align: center;
+    border-bottom: none;
+  }
+}
+
+.ec-itemNav__nav li ul {
+  display: none;
+  z-index: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 200px;
+  list-style: none;
+  position: static;
+  top: 100%;
+  left: 0;
+  @include media_desktop {
+    display: block;
+    z-index: 100;
+    position: absolute;
+  }
+}
+
+.ec-itemNav__nav li ul li {
+  overflow: hidden;
+  width: 100%;
+  height: auto;
+  transition: .3s;
+  @include media_desktop {
+    height: 55px;
+    overflow: auto;
+    height: 0;
+  }
+}
+.ec-itemNav__nav li ul li a {
+  padding: 16px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #525263;
+  text-align: left;
+  background: #fff;
+  border-bottom: 1px solid #E8E8E8;
+}
+
+.ec-itemNav__nav > li:hover > a {  background: #fafafa; }
+.ec-itemNav__nav > li:hover li:hover > a {  background: #fafafa; }
+
+
+.ec-itemNav__nav > li:hover > ul > li {
+  @include media_desktop {
+    overflow: visible;
+    height: 55px;
+
+  }
+}
+
+.ec-itemNav__nav li ul li ul {
+  top: 0;
+  left: 100%;
+}
+
+.ec-itemNav__nav li ul li ul:before {
+  @include media_desktop {
+    content: ">";
+    position: absolute;
+    top: 13px;
+    right: auto;
+    left: -20px;
+  }
+}
+
+.ec-itemNav__nav li ul li:hover > ul > li {
+  @include media_desktop {
+    overflow: visible;
+    height: 55px;
+  }
+}
+
+.ec-itemNav__nav li ul li ul li a {  background: #fff }
+
+.ec-itemNav__nav li:hover ul li ul li a:hover {  background: #fafafa; }
+
+
 /*
 ヘッダー：SPヘッダー
 

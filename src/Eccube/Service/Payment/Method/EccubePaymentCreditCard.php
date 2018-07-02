@@ -13,51 +13,50 @@
 
 namespace Eccube\Service\Payment\Method;
 
+use Eccube\Service\Payment\PaymentDispatcher;
 use Eccube\Service\Payment\PaymentResult;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\Form\FormInterface;
 
 class EccubePaymentCreditCard extends CreditCard
 {
-    protected $app;
     protected $request;
 
+    /**
+     * {@inheritdoc}
+     */
     public function checkout()
     {
         // 支払処理をしたら PaymentResult を返す
         return new PaymentResult();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function apply()
     {
         // 他のコントローラに移譲等の処理をする
-        // $subRequest = Request::create(
-        //     $this->app->path('shopping/examplePayment'),
-        //     $this->app['request_stack']->getCurrentRequest()->getMethod(),
-        //     [],
-        //     $this->request->cookies->all(),
-        //     [],
-        //     $this->request->server->all()
-        // );
-        // if ($this->request->getSession()) {
-        //     $subRequest->setSession($this->request->getSession());
-        // }
-        // return $this->app->handle($subRequest, HttpKernelInterface::SUB_REQUEST, false);
-        return false;
+        $dispatcher = new PaymentDispatcher();
+        $dispatcher->setForward(true);
+        $dispatcher->setRoute('shopping_***');
+
+        return $dispatcher;
     }
 
-    public function setFormType($form)
+    /**
+     * {@inheritdoc}
+     */
+    public function setFormType(FormInterface $form)
     {
         // nothing
     }
 
-    public function setApplication($app)
+    /**
+     * {@inheritdoc}
+     */
+    public function verify()
     {
-        $this->app = $app;
-    }
-
-    public function setRequest($request)
-    {
-        $this->request = $request;
+        // 有効性チェック等の処理をする
+        return new PaymentResult();
     }
 }

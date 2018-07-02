@@ -285,7 +285,7 @@ class PluginDevelopEntityFromYamlTest extends AbstractCommandTest
         phone:
             type: string
             nullable: false
-        zipcode:
+        postal_code:
             type: string
             nullable: true
         pref_id:

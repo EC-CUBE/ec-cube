@@ -161,14 +161,11 @@ class EF06OtherCest
         $I->fillField(['id' => 'contact_name_name02'], '名');
         $I->fillField(['id' => 'contact_kana_kana01'], 'セイ');
         $I->fillField(['id' => 'contact_kana_kana02'], 'メイ');
-        $I->fillField(['id' => 'contact_zip_zip01'], '530');
-        $I->fillField(['id' => 'contact_zip_zip02'], '0001');
+        $I->fillField(['id' => 'contact_postal_code'], '530-0001');
         $I->selectOption(['id' => 'contact_address_pref'], ['value' => '27']);
         $I->fillField(['id' => 'contact_address_addr01'], '大阪市北区');
         $I->fillField(['id' => 'contact_address_addr02'], '梅田2-4-9 ブリーゼタワー13F');
-        $I->fillField(['id' => 'contact_tel_tel01'], '111');
-        $I->fillField(['id' => 'contact_tel_tel02'], '111');
-        $I->fillField(['id' => 'contact_tel_tel03'], '111');
+        $I->fillField(['id' => 'contact_phone_number'], '111-111-111');
         $I->fillField(['id' => 'contact_email'], $new_email);
         $I->fillField(['id' => 'contact_contents'], 'お問い合わせ内容の送信');
         $I->click('div.ec-RegisterRole__actions button.ec-blockBtn--action');

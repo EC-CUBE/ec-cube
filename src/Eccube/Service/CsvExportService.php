@@ -17,6 +17,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
+use Eccube\Form\Type\Admin\SearchProductType;
 use Eccube\Form\Type\Admin\SearchShippingType;
 use Eccube\Repository\CsvRepository;
 use Eccube\Repository\CustomerRepository;
@@ -462,12 +463,13 @@ class CsvExportService
     public function getProductQueryBuilder(Request $request)
     {
         $session = $request->getSession();
-        if ($session->has('eccube.admin.product.search')) {
-            $searchData = $session->get('eccube.admin.product.search');
-            $this->findDeserializeObjects($searchData);
-        } else {
-            $searchData = [];
-        }
+        $builder = $this->formFactory
+            ->createBuilder(SearchProductType::class);
+        $searchForm = $builder->getForm();
+
+        $viewData = $session->get('eccube.admin.product.search', []);
+        $searchData = FormUtil::submitAndGetData($searchForm, $viewData);
+
         // 商品データのクエリビルダを構築.
         $qb = $this->productRepository
             ->getQueryBuilderBySearchDataForAdmin($searchData);

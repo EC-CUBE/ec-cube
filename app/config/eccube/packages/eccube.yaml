@@ -30,8 +30,7 @@ parameters:
     eccube_theme_front_default_dir: '%eccube_theme_src_dir%/default'
     eccube_theme_admin_dir: '%eccube_theme_app_dir%/admin'
     eccube_theme_admin_default_dir: '%eccube_theme_src_dir%/admin'
-    eccube_twig_block_templates:
-      - 'render_block.twig'
+    eccube_twig_block_templates: []
     eccube_save_image_dir: '%kernel.project_dir%/html/upload/save_image'
     eccube_temp_image_dir: '%kernel.project_dir%/html/upload/temp_image'
     eccube_csv_size: 5                 # post_max_size, upload_max_filesize に任せればよい？
@@ -84,10 +83,8 @@ parameters:
     eccube_product_order_newer: 2
     eccube_product_order_price_higher: 3
     eccube_price_max: 2147483647
-    eccube_tel_len: 5
-    eccube_tel_len_min: 1
-    eccube_zip01_len: 3
-    eccube_zip02_len: 4
+    eccube_tel_len_max: 14
+    eccube_postal_code: 8
     eccube_password_min_len: 8
     eccube_password_max_len: 32
     eccube_composer_memory_limit: 1536
