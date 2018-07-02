@@ -172,6 +172,7 @@ class TemplateEvent extends Event
      *
      * @param $js
      * @param bool $include twigファイルとしてincludeするかどうか
+     *
      * @return $this
      */
     public function addJavascript($js, $include = false)
@@ -191,6 +192,7 @@ class TemplateEvent extends Event
      *
      * @param $asset
      * @param bool $include twigファイルとしてincludeするかどうか
+     *
      * @return $this
      */
     public function addAsset($asset, $include = false)
@@ -210,6 +212,7 @@ class TemplateEvent extends Event
      *
      * @param $snippet
      * @param bool $include twigファイルとしてincludeするかどうか
+     *
      * @return $this
      */
     public function addSnippet($snippet, $include = false)
