@@ -16,11 +16,11 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\ProductClassRepository;
-use Eccube\Service\PurchaseFlow\ItemHolderPreprocessor;
+use Eccube\Service\PurchaseFlow\ItemHolderValidator;
 use Eccube\Service\PurchaseFlow\ProcessResult;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 
-class SaleLimitMultipleValidator implements ItemHolderPreprocessor
+class SaleLimitMultipleValidator extends ItemHolderValidator
 {
     /**
      * @var ProductClassRepository
@@ -43,7 +43,7 @@ class SaleLimitMultipleValidator implements ItemHolderPreprocessor
      *
      * @return ProcessResult
      */
-    public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         $OrderItemsByProductClass = [];
         foreach ($itemHolder->getItems() as $Item) {
@@ -63,8 +63,7 @@ class SaleLimitMultipleValidator implements ItemHolderPreprocessor
             foreach ($Items as $Item) {
                 $total += $Item->getQuantity();
                 if ($limit < $total) {
-                    return ProcessResult::warn(trans('cart.over.sale_limit',
-                        ['%product%' => $this->formatProductName($ProductClass)]));
+                    $this->throwInvalidItemException('cart.over.sale_limit', $ProductClass);
                 }
             }
         }

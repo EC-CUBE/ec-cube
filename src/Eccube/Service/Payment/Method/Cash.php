@@ -28,6 +28,19 @@ class Cash implements PaymentMethod
     /** @var FormInterface */
     private $form;
 
+    /** @var $purchaseFlow */
+    private $purchaseFlow;
+
+    /**
+     * Cash constructor.
+     *
+     * @param PurchaseFlow $shoppingPurchaseFlow
+     */
+    public function __construct(PurchaseFlow $shoppingPurchaseFlow)
+    {
+        $this->purchaseFlow = $shoppingPurchaseFlow;
+    }
+
     /**
      * {@inheritdoc}
      *

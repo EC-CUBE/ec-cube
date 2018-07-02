@@ -209,6 +209,7 @@ class EditController extends AbstractController
 
                     if ($flowResult->hasError() === false && $form->isValid()) {
                         try {
+                            $this->purchaseFlow->prepare($TargetOrder, $purchaseContext);
                             $this->purchaseFlow->commit($TargetOrder, $purchaseContext);
                         } catch (PurchaseException $e) {
                             $this->addError($e->getMessage(), 'admin');

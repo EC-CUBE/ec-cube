@@ -18,6 +18,7 @@ use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
+use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\Processor\SaleLimitMultipleValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
@@ -91,7 +92,7 @@ class SaleLimitMultipleValidatorTest extends EccubeTestCase
         $this->ProductClass->setSaleLimit(null);
         $this->OrderItem1->setQuantity(1000);
         $this->OrderItem2->setQuantity(500);
-        $processResult = $this->validator->process($this->Order, new PurchaseContext());
+        $processResult = $this->validator->validate($this->Order, new PurchaseContext());
         self::assertTrue($processResult->isSuccess());
     }
 
@@ -100,7 +101,7 @@ class SaleLimitMultipleValidatorTest extends EccubeTestCase
         $this->ProductClass->setSaleLimit(10);
         $this->OrderItem1->setQuantity(4);
         $this->OrderItem2->setQuantity(6);
-        $processResult = $this->validator->process($this->Order, new PurchaseContext());
+        $processResult = $this->validator->validate($this->Order, new PurchaseContext());
         self::assertTrue($processResult->isSuccess());
     }
 
@@ -109,7 +110,8 @@ class SaleLimitMultipleValidatorTest extends EccubeTestCase
         $this->ProductClass->setSaleLimit(10);
         $this->OrderItem1->setQuantity(5);
         $this->OrderItem2->setQuantity(6);
-        $processResult = $this->validator->process($this->Order, new PurchaseContext());
-        self::assertTrue($processResult->isWarning());
+
+        $this->expectException(InvalidItemException::class);
+        $this->validator->validate($this->Order, new PurchaseContext());
     }
 }

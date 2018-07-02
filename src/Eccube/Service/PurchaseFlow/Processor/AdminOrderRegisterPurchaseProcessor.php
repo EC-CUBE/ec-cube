@@ -28,6 +28,10 @@ class AdminOrderRegisterPurchaseProcessor implements ItemHolderPreprocessor
      */
     public function process(ItemHolderInterface $target, PurchaseContext $context)
     {
+        if (is_null($context->getOriginHolder())) {
+            return;
+        }
+
         // 画面上で削除された明細をremove
         foreach ($context->getOriginHolder()->getItems() as $OrderItem) {
             if (false === $target->getOrderItems()->contains($OrderItem)) {

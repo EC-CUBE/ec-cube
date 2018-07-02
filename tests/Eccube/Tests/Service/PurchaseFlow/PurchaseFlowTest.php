@@ -68,7 +68,7 @@ class PurchaseFlowTest extends EccubeTestCase
 
     public function testProcessItemProcessors()
     {
-        $this->flow->addItemProcessor(new PurchaseFlowTest_ItemPreprocessor());
+        $this->flow->addItemPreprocessor(new PurchaseFlowTest_ItemPreprocessor());
         $itemHolder = new Cart();
 
         $expected = new PurchaseFlowResult($itemHolder);
@@ -77,11 +77,10 @@ class PurchaseFlowTest extends EccubeTestCase
 
     public function testProcessItemHolderProcessor()
     {
-        $this->flow->addItemHolderProcessor(new PurchaseFlowTest_ItemHolderPreprocessor());
+        $this->flow->addItemHolderPreprocessor(new PurchaseFlowTest_ItemHolderPreprocessor());
         $itemHolder = new Cart();
 
         $expected = new PurchaseFlowResult($itemHolder);
-        $expected->addProcessResult(ProcessResult::success());
         self::assertEquals($expected, $this->flow->validate($itemHolder, new PurchaseContext()));
     }
 
@@ -129,7 +128,6 @@ class PurchaseFlowTest_ItemHolderPreprocessor implements ItemHolderPreprocessor
 {
     public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
-        return ProcessResult::success();
     }
 }
 
@@ -137,7 +135,6 @@ class PurchaseFlowTest_ItemPreprocessor implements ItemPreprocessor
 {
     public function process(ItemInterface $item, PurchaseContext $context)
     {
-        return ProcessResult::success();
     }
 }
 

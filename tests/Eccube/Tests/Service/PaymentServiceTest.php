@@ -17,6 +17,8 @@ class PaymentServiceTest extends AbstractServiceTestCase
 {
     public function testConstructorInjection()
     {
+        $this->markTestSkipped();
+
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
 

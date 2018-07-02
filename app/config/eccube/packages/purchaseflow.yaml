@@ -92,6 +92,7 @@ services:
         class: Doctrine\Common\Collections\ArrayCollection
         arguments:
             - #
+                - '@Eccube\Service\PurchaseFlow\Processor\AdminOrderRegisterPurchaseProcessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\PointProcessor'
 
     eccube.purchase.flow.order.item_validators:
@@ -110,5 +111,4 @@ services:
         class: Doctrine\Common\Collections\ArrayCollection
         arguments:
             - #
-                - '@Eccube\Service\PurchaseFlow\Processor\AdminOrderRegisterPurchaseProcessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\UpdateDateProcessor'

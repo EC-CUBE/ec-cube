@@ -16,6 +16,7 @@ namespace Eccube\Tests\Service;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
+use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\Processor\StockMultipleValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
@@ -92,7 +93,7 @@ class StockMultipleValidatorTest extends EccubeTestCase
         $this->ProductClass->setStock(2);
         $this->OrderItem1->setQuantity(1);
         $this->OrderItem2->setQuantity(1);
-        $processResult = $this->validator->process($this->Order, new PurchaseContext());
+        $processResult = $this->validator->validate($this->Order, new PurchaseContext());
         self::assertTrue($processResult->isSuccess());
     }
 
@@ -103,7 +104,7 @@ class StockMultipleValidatorTest extends EccubeTestCase
         $this->OrderItem1->setQuantity(1000);
         $this->OrderItem2->setQuantity(50);
 
-        $processResult = $this->validator->process($this->Order, new PurchaseContext());
+        $processResult = $this->validator->validate($this->Order, new PurchaseContext());
         self::assertTrue($processResult->isSuccess());
     }
 
@@ -114,8 +115,8 @@ class StockMultipleValidatorTest extends EccubeTestCase
         $this->OrderItem1->setQuantity(1000);
         $this->OrderItem2->setQuantity(50);
 
-        $processResult = $this->validator->process($this->Order, new PurchaseContext());
-        self::assertTrue($processResult->isError());
+        $this->expectException(InvalidItemException::class);
+        $this->validator->validate($this->Order, new PurchaseContext());
     }
 
     public function testStockOver()
@@ -125,7 +126,7 @@ class StockMultipleValidatorTest extends EccubeTestCase
         $this->OrderItem1->setQuantity(50);
         $this->OrderItem2->setQuantity(51);
 
-        $processResult = $this->validator->process($this->Order, new PurchaseContext());
-        self::assertTrue($processResult->isWarning());
+        $this->expectException(InvalidItemException::class);
+        $this->validator->validate($this->Order, new PurchaseContext());
     }
 }
