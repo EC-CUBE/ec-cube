@@ -48,8 +48,7 @@ class Cash implements PaymentMethod
      */
     public function checkout()
     {
-        $purchaseFlow = new PurchaseFlow();
-        $purchaseFlow->commit($this->Order, new PurchaseContext());
+        $this->purchaseFlow->commit($this->Order, new PurchaseContext());
 
         return new PaymentResult();
     }
@@ -61,8 +60,7 @@ class Cash implements PaymentMethod
      */
     public function apply()
     {
-        $purchaseFlow = new PurchaseFlow();
-        $purchaseFlow->prepare($this->Order, new PurchaseContext());
+        $this->purchaseFlow->prepare($this->Order, new PurchaseContext());
 
         return false;
     }
