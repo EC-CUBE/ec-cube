@@ -18,6 +18,7 @@ use Eccube\Service\Payment\PaymentMethodInterface;
 use Eccube\Service\Payment\PaymentResult;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
+use Eccube\Service\ShoppingService;
 use Symfony\Component\Form\FormInterface;
 
 /**
@@ -35,13 +36,19 @@ class Cash implements PaymentMethodInterface
     private $purchaseFlow;
 
     /**
+     * @var ShoppingService
+     */
+    private $shoppingService;
+
+    /**
      * Cash constructor.
      *
      * @param PurchaseFlow $shoppingPurchaseFlow
      */
-    public function __construct(PurchaseFlow $shoppingPurchaseFlow)
+    public function __construct(PurchaseFlow $shoppingPurchaseFlow, ShoppingService $shoppingService)
     {
         $this->purchaseFlow = $shoppingPurchaseFlow;
+        $this->shoppingService = $shoppingService;
     }
 
     /**
@@ -51,6 +58,7 @@ class Cash implements PaymentMethodInterface
      */
     public function checkout()
     {
+        $this->shoppingService->setOrderUpdateData($this->Order);
         $this->purchaseFlow->commit($this->Order, new PurchaseContext(null, $this->Order->getCustomer()));
 
         $result = new PaymentResult();

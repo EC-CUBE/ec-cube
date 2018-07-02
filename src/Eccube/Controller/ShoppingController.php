@@ -808,9 +808,6 @@ class ShoppingController extends AbstractShoppingController
                     throw new ShoppingException();
                 }
 
-                // 購入処理
-                $this->shoppingService->processPurchase($Order); // XXX フロント画面に依存してるので管理画面では使えない
-
                 $paymentMethod = $this->createPaymentMethod($Order, $form);
 
                 // 必要に応じて別のコントローラへ forward or redirect(移譲)
