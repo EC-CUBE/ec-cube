@@ -92,8 +92,13 @@ class SaleLimitMultipleValidatorTest extends EccubeTestCase
         $this->ProductClass->setSaleLimit(null);
         $this->OrderItem1->setQuantity(1000);
         $this->OrderItem2->setQuantity(500);
-        $processResult = $this->validator->validate($this->Order, new PurchaseContext());
-        self::assertTrue($processResult->isSuccess());
+
+        try {
+            $this->validator->validate($this->Order, new PurchaseContext());
+            self::assertTrue(true);
+        } catch (InvalidItemException $e) {
+            self::fail();
+        }
     }
 
     public function testValidLimit()
@@ -101,8 +106,13 @@ class SaleLimitMultipleValidatorTest extends EccubeTestCase
         $this->ProductClass->setSaleLimit(10);
         $this->OrderItem1->setQuantity(4);
         $this->OrderItem2->setQuantity(6);
-        $processResult = $this->validator->validate($this->Order, new PurchaseContext());
-        self::assertTrue($processResult->isSuccess());
+
+        try {
+            $this->validator->validate($this->Order, new PurchaseContext());
+            self::assertTrue(true);
+        } catch (InvalidItemException $e) {
+            self::fail();
+        }
     }
 
     public function testOverLimit()
