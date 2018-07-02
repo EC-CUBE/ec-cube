@@ -233,7 +233,7 @@ class ShoppingController extends AbstractShoppingController
             }
 
             $response = $PaymentResult->getResponse();
-            if ($response->isRedirection() || $response->getContent()) {
+            if ($response && ($response->isRedirection() || $response->getContent())) {
                 $this->entityManager->flush();
 
                 return $response;
@@ -825,7 +825,7 @@ class ShoppingController extends AbstractShoppingController
                 // ステータス履歴も保持しておく？ 在庫引き当ての仕様もセットで。
                 if ($dispatcher instanceof PaymentDispatcher) {
                     $response = $dispatcher->getResponse();
-                    if ($response->isRedirection() || $response->getContent()) {
+                    if ($response && ($response->isRedirection() || $response->getContent())) {
                         return $response;
                     }
 
