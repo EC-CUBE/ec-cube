@@ -44,17 +44,17 @@ class TemplateEvent extends Event
     /**
      * @var array
      */
-    private $plugin_javascripts = [];
+    private $javascripts = [];
 
     /**
      * @var array
      */
-    private $plugin_assets = [];
+    private $assets = [];
 
     /**
      * @var array
      */
-    private $plugin_snippets = [];
+    private $snippets = [];
 
     /**
      * TemplateEvent constructor.
@@ -166,119 +166,58 @@ class TemplateEvent extends Event
     }
 
     /**
-     * Add plugin_javascripts
+     * Javascriptを追加する.
      *
-     * @param $plugin_javascript
-     * @param bool $value
+     * ここで追加したコードは, EC-CUBE本体のJavascriptより後に出力される.
      *
+     * @param $js
+     * @param bool $include twigファイルとしてincludeするかどうか
      * @return $this
      */
-    public function addPluginJavascripts($plugin_javascript, $value = true)
+    public function addJavascript($js, $include = false)
     {
-        $this->plugin_javascripts[$plugin_javascript] = $value;
+        $this->javascripts[$js] = $include;
 
-        $this->setParameter('plugin_javascripts', $this->plugin_javascripts);
+        $this->setParameter('plugin_javascripts', $this->javascripts);
 
         return $this;
     }
 
     /**
-     * Remove plugin_javascripts
+     * アセットを追加する
      *
-     * @param $plugin_javascript
-     */
-    public function removePluginJavascripts($plugin_javascript)
-    {
-        unset($this->plugin_javascripts[$plugin_javascript]);
-
-        $this->setParameter('plugin_javascripts', $this->plugin_javascripts);
-    }
-
-    /**
-     * Get plugin_javascripts
+     * ここで追加したコードは, <head></head>内に出力される
+     * javascriptの読み込みやcssの読み込みに利用する.
      *
-     * @return array
-     */
-    public function getPluginJavascripts()
-    {
-        return $this->plugin_javascripts;
-    }
-
-    /**
-     * Add plugin_assets
-     *
-     * @param $plugin_asset
-     * @param bool $value
-     *
+     * @param $asset
+     * @param bool $include twigファイルとしてincludeするかどうか
      * @return $this
      */
-    public function addPluginAssets($plugin_asset, $value = true)
+    public function addAsset($asset, $include = false)
     {
-        $this->plugin_assets[$plugin_asset] = $value;
+        $this->assets[$asset] = $include;
 
-        $this->setParameter('plugin_assets', $this->plugin_assets);
+        $this->setParameter('plugin_assets', $this->assets);
 
         return $this;
     }
 
     /**
-     * Remove plugin_assets
+     * スニペットを追加する.
      *
-     * @param $plugin_asset
-     */
-    public function removePluginAssets($plugin_asset)
-    {
-        unset($this->plugin_assets[$plugin_asset]);
-
-        $this->setParameter('plugin_assets', $this->plugin_assets);
-    }
-
-    /**
-     * Get plugin_assets
+     * ここで追加したコードは, c-containerより後, Javascriptより前に出力される
+     * <div class="d-none"></div>でくくられるため, 画面上には表示されない.
      *
-     * @return array
-     */
-    public function getPluginAssets()
-    {
-        return $this->plugin_assets;
-    }
-
-    /**
-     * Add plugin_snippets
-     *
-     * @param $plugin_snippet
-     * @param bool $value
-     *
+     * @param $snippet
+     * @param bool $include twigファイルとしてincludeするかどうか
      * @return $this
      */
-    public function addPluginSnippets($plugin_snippet, $value = true)
+    public function addSnippet($snippet, $include = false)
     {
-        $this->plugin_snippets[$plugin_snippet] = $value;
+        $this->snippets[$snippet] = $include;
 
-        $this->setParameter('plugin_snippets', $this->plugin_snippets);
+        $this->setParameter('plugin_snippets', $this->snippets);
 
         return $this;
-    }
-
-    /**
-     * Remove plugin_snippets
-     *
-     * @param $plugin_snippet
-     */
-    public function removePluginSnippets($plugin_snippet)
-    {
-        unset($this->plugin_snippets[$plugin_snippet]);
-
-        $this->setParameter('plugin_snippeet', $this->plugin_snippets);
-    }
-
-    /**
-     * Get plugin_snippets
-     *
-     * @return array
-     */
-    public function getPluginSnippets()
-    {
-        return $this->plugin_snippets;
     }
 }

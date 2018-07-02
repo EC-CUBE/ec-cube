@@ -25,7 +25,7 @@ file that was distributed with this source code.
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="{{ asset('assets/js/vendor/spin.min.js', 'admin') }}"></script>
     <script src="{{ asset('assets/js/vendor/ladda.min.js', 'admin') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/js/script.js', 'admin') }}"></script>
+    <script src="{{ asset('assets/js/script.js', 'admin') }}"></script>
     <script src="{{ asset('assets/js/function.js', 'admin') }}"></script>
     <script>
         $(function() {
@@ -37,15 +37,7 @@ file that was distributed with this source code.
         });
     </script>
     {# プラグイン用styleseetやmetatagなど #}
-    {% if plugin_assets is defined %}
-        {% for asset, value in plugin_assets %}
-            {% if value %}
-                {{ include(template_from_string(include(asset, ignore_missing = true))) }}
-            {% else %}
-                {{ asset|raw }}
-            {% endif %}
-        {% endfor %}
-    {% endif %}
+    {% if plugin_assets is defined %}{{ include('@admin/snippet.twig', { snippets: plugin_assets }) }}{% endif %}
 </head>
 <body id="page_{{ app.request.get('_route') }}">
 <header class="c-headerBar">
@@ -76,28 +68,16 @@ file that was distributed with this source code.
 
     </div>
 </div>
-{# プラグイン用Snippets #}
+
+{# プラグイン用Snippet #}
 {% if plugin_snippets is defined %}
-    {% for snippet, value in plugin_snippets %}
-        {% if value %}
-            {{ include(template_from_string(include(snippet, ignore_missing = true))) }}
-        {% else %}
-            {{ snippet|raw }}
-        {% endif %}
-    {% endfor %}
+    <div class="d-none">{{ include('@admin/snippet.twig', { snippets: plugin_snippets }) }}</div>
 {% endif %}
 
 {% block javascript %}{% endblock %}
 
 {# プラグイン用Javascript #}
-{% if plugin_javascripts is defined %}
-    {% for javascript, value in plugin_javascripts %}
-        {% if value %}
-            {{ include(template_from_string(include(javascript, ignore_missing = true))) }}
-        {% else %}
-            {{ javascript|raw }}
-        {% endif %}
-    {% endfor %}
-{% endif %}
+{% if plugin_javascripts is defined %}{{ include('@admin/snippet.twig', { snippets: plugin_javascripts }) }}</div>{% endif %}
+
 </body>
 </html>
