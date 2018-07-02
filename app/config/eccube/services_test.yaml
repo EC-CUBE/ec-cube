@@ -27,3 +27,6 @@ services:
     Eccube\Service\PurchaseFlow\Processor\SaleLimitMultipleValidator:
         autowire: true
         public: true
+    Eccube\Service\PurchaseFlow\Processor\StockReduceProcessor:
+        autowire: true
+        public: true

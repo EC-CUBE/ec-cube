@@ -77,6 +77,7 @@ services:
         arguments:
             - #
                 - '@Eccube\Service\PurchaseFlow\Processor\PointProcessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\StockReduceProcessor'
 
     # Purchase Flow for Order
 
