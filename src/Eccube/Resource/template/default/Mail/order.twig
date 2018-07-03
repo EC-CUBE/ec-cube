@@ -86,4 +86,8 @@ file that was distributed with this source code.
 {% endfor %}
 {% endfor %}
 
+{% if Order.complete_mail_message is not empty %}
+{{ Order.complete_mail_message }}
+{% endif %}
+
 {{ footer }}
