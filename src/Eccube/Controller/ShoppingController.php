@@ -825,6 +825,9 @@ class ShoppingController extends AbstractShoppingController
                 // ステータス履歴も保持しておく？ 在庫引き当ての仕様もセットで。
                 if ($dispatcher instanceof PaymentDispatcher) {
                     $response = $dispatcher->getResponse();
+                    $this->entityManager->flush();
+                    $this->entityManager->commit();
+
                     if ($response && ($response->isRedirection() || $response->getContent())) {
                         return $response;
                     }
@@ -838,12 +841,12 @@ class ShoppingController extends AbstractShoppingController
 
                 // 決済実行
                 $response = $this->forwardToRoute('shopping_do_checkout_order');
+                $this->entityManager->flush();
+                $this->entityManager->commit();
+
                 if ($response->isRedirection() || $response->getContent()) {
                     return $response;
                 }
-
-                $this->entityManager->flush();
-                $this->entityManager->getConnection()->commit();
 
                 log_info('購入処理完了', [$Order->getId()]);
             } catch (ShoppingException $e) {
