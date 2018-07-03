@@ -40,6 +40,8 @@ file that was distributed with this source code.
     {% if Page.Head %}
         {{ include('block.twig', {'Blocks': Page.Head}) }}
     {% endif %}
+    {# プラグイン用styleseetやmetatagなど #}
+    {% if plugin_assets is defined %}{{ include('@admin/snippet.twig', { snippets: plugin_assets }) }}{% endif %}
 </head>
 <body id="page_{{ app.request.get('_route') }}" class="{{ body_class|default('other_page') }}">
 {# Layout: BODY_AFTER #}
@@ -133,10 +135,13 @@ file that was distributed with this source code.
 <script src="{{ asset('js/function.js') }}"></script>
 <script src="{{ asset('js/eccube.js') }}"></script>
 {% block javascript %}{% endblock %}
-
 {# Layout: CLOSE_BODY_BEFORE #}
 {% if Page.CloseBodyBefore %}
     {{ include('block.twig', {'Blocks': Page.CloseBodyBefore}) }}
+{% endif %}
+{# プラグイン用Snippet #}
+{% if plugin_snippets is defined %}
+    {{ include('snippet.twig', { snippets: plugin_snippets }) }}
 {% endif %}
 </body>
 </html>

@@ -1,0 +1,7 @@
+{% for snippet, include in snippets %}
+    {% if include %}
+        {{ include(snippet) }}
+    {% else %}
+        {{ include(template_from_string(snippet)) }}
+    {% endif %}
+{% endfor %}
