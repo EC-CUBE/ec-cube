@@ -15,13 +15,18 @@ namespace Eccube\Service\PurchaseFlow;
 
 use Eccube\Entity\ItemHolderInterface;
 
-interface ItemHolderProcessor
+/**
+ * 受注データのバリデーションを行う前に、受注データの調整を行います。
+ *
+ * Interface ItemHolderPreprocessor
+ */
+interface ItemHolderPreprocessor
 {
     /**
+     * 受注データ調整処理。
+     *
      * @param ItemHolderInterface $itemHolder
      * @param PurchaseContext     $context
-     *
-     * @return ProcessResult
      */
     public function process(ItemHolderInterface $itemHolder, PurchaseContext $context);
 }

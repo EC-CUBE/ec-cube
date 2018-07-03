@@ -66,7 +66,7 @@ class PriceChangeValidatorTest extends EccubeTestCase
     {
         $this->ProductClass->setPrice02(100);
         $this->cartItem->setPrice($this->ProductClass->getPrice02IncTax());
-        $result = $this->validator->process($this->cartItem, new PurchaseContext());
+        $result = $this->validator->execute($this->cartItem, new PurchaseContext());
         self::assertTrue($result->isSuccess());
     }
 
@@ -74,7 +74,7 @@ class PriceChangeValidatorTest extends EccubeTestCase
     {
         $this->ProductClass->setPrice02(100);
         $this->cartItem->setPrice(50);
-        $result = $this->validator->process($this->cartItem, new PurchaseContext());
+        $result = $this->validator->execute($this->cartItem, new PurchaseContext());
         self::assertTrue($result->isWarning());
         self::assertSame($this->ProductClass->getPrice02IncTax(), $this->cartItem->getPrice());
     }

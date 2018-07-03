@@ -188,7 +188,7 @@ class EditController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_INDEX_PROGRESS, $event);
 
-            $flowResult = $this->purchaseFlow->calculate($TargetOrder, $purchaseContext);
+            $flowResult = $this->purchaseFlow->validate($TargetOrder, $purchaseContext);
             if ($flowResult->hasWarning()) {
                 foreach ($flowResult->getWarning() as $warning) {
                     // TODO Warning の場合の処理
@@ -209,7 +209,8 @@ class EditController extends AbstractController
 
                     if ($flowResult->hasError() === false && $form->isValid()) {
                         try {
-                            $this->purchaseFlow->purchase($TargetOrder, $purchaseContext);
+                            $this->purchaseFlow->prepare($TargetOrder, $purchaseContext);
+                            $this->purchaseFlow->commit($TargetOrder, $purchaseContext);
                         } catch (PurchaseException $e) {
                             $this->addError($e->getMessage(), 'admin');
                             break;

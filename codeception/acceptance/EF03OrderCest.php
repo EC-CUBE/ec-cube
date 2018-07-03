@@ -20,6 +20,7 @@ class EF03OrderCest
 {
     public function _before(\AcceptanceTester $I)
     {
+        $I->setStock(2, 20);
     }
 
     public function _after(\AcceptanceTester $I)

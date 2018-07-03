@@ -44,9 +44,9 @@ class PurchaseFlowServiceProvider implements ServiceProviderInterface
 
         $app['eccube.purchase.flow.cart.holder_processors'] = function (Container $app) {
             $processors = new ArrayCollection();
-            $processors[] = new Processor\PaymentProcessor($app[DeliveryRepository::class]);
+            $processors[] = new Processor\PaymentValidator($app[DeliveryRepository::class]);
             $processors[] = new Processor\PaymentTotalLimitValidator($app['config']['max_total_fee']);
-            $processors[] = new Processor\DeliveryFeeFreeProcessor($app[BaseInfo::class]);
+            $processors[] = new Processor\DeliveryFeeFreePreprocessor($app[BaseInfo::class]);
             $processors[] = new Processor\PaymentTotalNegativeValidator();
 
             return $processors;
@@ -71,12 +71,12 @@ class PurchaseFlowServiceProvider implements ServiceProviderInterface
         $app['eccube.purchase.flow.shopping.holder_processors'] = function (Container $app) {
             $processors = new ArrayCollection();
             $processors[] = new Processor\PaymentTotalLimitValidator($app['config']['max_total_fee']);
-            $processors[] = new Processor\DeliveryFeeProcessor($app['orm.em']);
+            $processors[] = new Processor\DeliveryFeePreprocessor($app['orm.em']);
             $processors[] = new Processor\PaymentTotalNegativeValidator();
             if ($app[BaseInfo::class]->isOptionPoint()) {
-                $processors[] = new Processor\UsePointProcessor($app['orm.em'], $app[BaseInfo::class]);
-                $processors[] = new Processor\AddPointProcessor($app['orm.em'], $app[BaseInfo::class]);
-                $processors[] = new Processor\SubstractPointProcessor($app[BaseInfo::class]);
+                $processors[] = new Processor\UsePointPreprocessor($app['orm.em'], $app[BaseInfo::class]);
+                $processors[] = new Processor\AddPointPreprocessor($app['orm.em'], $app[BaseInfo::class]);
+                $processors[] = new Processor\SubtractPointPreprocessor($app[BaseInfo::class]);
             }
 
             return $processors;
@@ -111,11 +111,11 @@ class PurchaseFlowServiceProvider implements ServiceProviderInterface
         $app['eccube.purchase.flow.order.holder_processors'] = function (Container $app) {
             $processors = new ArrayCollection();
             $processors[] = new Processor\PaymentTotalLimitValidator($app['config']['max_total_fee']);
-            $processors[] = new Processor\UpdateDatePurchaseProcessor($app['config']);
+            $processors[] = new Processor\UpdateDateProcessor($app['config']);
             if ($app[BaseInfo::class]->isOptionPoint()) {
-                $processors[] = new Processor\UsePointProcessor($app['orm.em'], $app[BaseInfo::class]);
-                $processors[] = new Processor\AddPointProcessor($app['orm.em'], $app[BaseInfo::class]);
-                $processors[] = new Processor\SubstractPointProcessor($app[BaseInfo::class]);
+                $processors[] = new Processor\UsePointPreprocessor($app['orm.em'], $app[BaseInfo::class]);
+                $processors[] = new Processor\AddPointPreprocessor($app['orm.em'], $app[BaseInfo::class]);
+                $processors[] = new Processor\SubtractPointPreprocessor($app[BaseInfo::class]);
             }
 
             return $processors;

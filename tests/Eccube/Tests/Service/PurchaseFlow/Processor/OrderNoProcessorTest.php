@@ -28,7 +28,6 @@ class OrderNoProcessorTest extends EccubeTestCase
      * @param $orderNoFormat
      * @param $expected
      *
-     * @throws \Eccube\Service\PurchaseFlow\PurchaseException
      * @throws \ReflectionException
      */
     public function testProcess($orderNoFormat, $expected)

@@ -15,13 +15,13 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\ItemHolderInterface;
+use Eccube\Entity\Order;
 use Eccube\Repository\OrderRepository;
-use Eccube\Service\PurchaseFlow\ProcessResult;
+use Eccube\Service\PurchaseFlow\ItemHolderPreprocessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
-use Eccube\Service\PurchaseFlow\PurchaseProcessor;
 use Eccube\Util\StringUtil;
 
-class OrderNoProcessor implements PurchaseProcessor
+class OrderNoProcessor implements ItemHolderPreprocessor
 {
     /**
      * @var EccubeConfig
@@ -52,9 +52,9 @@ class OrderNoProcessor implements PurchaseProcessor
     {
         $Order = $itemHolder;
 
-        if ($Order instanceof \Eccube\Entity\Order) {
+        if ($Order instanceof Order) {
             if ($Order->getOrderNo()) {
-                return ProcessResult::success();
+                return;
             }
 
             $format = $this->eccubeConfig['eccube_order_no_format'];
@@ -103,7 +103,5 @@ class OrderNoProcessor implements PurchaseProcessor
                 $Order->setOrderNo($orderNo);
             }
         }
-
-        return ProcessResult::success();
     }
 }
