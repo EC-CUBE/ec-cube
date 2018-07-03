@@ -141,7 +141,7 @@ file that was distributed with this source code.
 {% endif %}
 {# プラグイン用Snippet #}
 {% if plugin_snippets is defined %}
-    {{ include('@admin/snippet.twig', { snippets: plugin_snippets }) }}
+    {{ include('snippet.twig', { snippets: plugin_snippets }) }}
 {% endif %}
 </body>
 </html>

@@ -183,8 +183,7 @@ class TemplateEvent extends Event
     /**
      * スニペットを追加する.
      *
-     * ここで追加したコードは, c-containerより後, Javascriptより前に出力される
-     * <div class="d-none"></div>でくくられるため, 画面上には表示されない.
+     * ここで追加したコードは, </body>タグ直前に出力される
      *
      * @param $snippet
      * @param bool $include twigファイルとしてincludeするかどうか
