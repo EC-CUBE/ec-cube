@@ -29,6 +29,7 @@ use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -119,7 +120,7 @@ class PluginController extends AbstractController
 
             try {
                 // プラグイン用設定画面があれば表示(プラグイン用のサービスプロバイダーに定義されているか)
-                $configPages[$Plugin->getCode()] = $this->generateUrl('plugin_'.$Plugin->getCode().'_config');
+                $configPages[$Plugin->getCode()] = $this->generateUrl(Container::underscore($Plugin->getCode()).'_admin_config');
             } catch (\Exception $e) {
                 // プラグインで設定画面のルートが定義されていない場合は無視
             }
