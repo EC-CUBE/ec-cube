@@ -358,7 +358,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
      *
      * プラグインから注文完了時にメッセージを表示したい場合, このフィールドにセットすることで, 注文完了画面で表示されます。
      * 複数のプラグインから利用されるため, appendCompleteMesssage()で追加してください.
-     * 表示する際にHTMLは利用可能ですが、Javascriptはエスケープされます。
+     * 表示する際にHTMLは利用可能です。
      *
      * @var string|null
      *

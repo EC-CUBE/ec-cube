@@ -67,7 +67,7 @@ file that was distributed with this source code.
             </div>
             <p class="ec-reportDescription">{{'shopping.text.message.sent_email'|trans}}<br>{{'shopping.text.message.in_case'|trans}}<br>{{'shopping.text.message.thank_you_with_us'|trans}}</p>
             {% if Order.complete_message is not empty %}
-                {{ Order.complete_message|e('js') }}
+                {{ Order.complete_message|raw }}
             {% endif %}
             <div class="ec-off4Grid">
                 {% if hasNextCart %}
