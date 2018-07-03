@@ -79,6 +79,7 @@ services:
                 - '@Eccube\Service\PurchaseFlow\Processor\PointProcessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\StockReduceProcessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\CustomerPurchaseInfoProcessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\OrderUpdateProcessor'
 
     # Purchase Flow for Order
 

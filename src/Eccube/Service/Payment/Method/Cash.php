@@ -58,8 +58,7 @@ class Cash implements PaymentMethodInterface
      */
     public function checkout()
     {
-        $this->shoppingService->setOrderUpdateData($this->Order);
-        $this->purchaseFlow->commit($this->Order, new PurchaseContext(null, $this->Order->getCustomer()));
+        $this->purchaseFlow->commit($this->Order, new PurchaseContext());
 
         $result = new PaymentResult();
         $result->setSuccess(true);
@@ -74,7 +73,7 @@ class Cash implements PaymentMethodInterface
      */
     public function apply()
     {
-        $this->purchaseFlow->prepare($this->Order, new PurchaseContext(null, $this->Order->getCustomer()));
+        $this->purchaseFlow->prepare($this->Order, new PurchaseContext());
 
         return false;
     }
