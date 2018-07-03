@@ -130,7 +130,6 @@ class CartController extends AbstractController
         }
         if ($hasError) {
             $this->cartService->clear();
-            $this->cartService->save();
 
             return $this->redirectToRoute('cart');
         }
