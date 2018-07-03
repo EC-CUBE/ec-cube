@@ -25,6 +25,8 @@ use Eccube\Repository\CustomerFavoriteProductRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Service\CartService;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
+use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -61,14 +63,32 @@ class MypageController extends AbstractController
      */
     protected $orderRepository;
 
+    /**
+     * @var PurchaseFlow
+     */
+    protected $purchaseFlow;
+
+    /**
+     * MypageController constructor.
+     *
+     * @param OrderRepository $orderRepository
+     * @param CustomerFavoriteProductRepository $customerFavoriteProductRepository
+     * @param CartService $cartService
+     * @param BaseInfo $baseInfo
+     * @param PurchaseFlow $purchaseFlow
+     */
     public function __construct(
         OrderRepository $orderRepository,
         CustomerFavoriteProductRepository $customerFavoriteProductRepository,
-        BaseInfo $baseInfo
+        CartService $cartService,
+        BaseInfo $baseInfo,
+        PurchaseFlow $purchaseFlow
     ) {
         $this->orderRepository = $orderRepository;
         $this->customerFavoriteProductRepository = $customerFavoriteProductRepository;
         $this->BaseInfo = $baseInfo;
+        $this->cartService = $cartService;
+        $this->purchaseFlow = $purchaseFlow;
     }
 
     /**
@@ -94,7 +114,8 @@ class MypageController extends AbstractController
         if ($this->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             $Customer = $this->getUser();
             if ($Customer instanceof Customer) {
-                $builder->get('login_email')->setData($Customer->getEmail());
+                $builder->get('login_email')
+                    ->setData($Customer->getEmail());
             }
         }
 
@@ -155,15 +176,16 @@ class MypageController extends AbstractController
     /**
      * 購入履歴詳細を表示する.
      *
-     * @Route("/mypage/history/{id}", name="mypage_history", requirements={"id" = "\d+"})
+     * @Route("/mypage/history/{order_no}", name="mypage_history")
      * @Template("Mypage/history.twig")
      */
-    public function history(Request $request, $id)
+    public function history(Request $request, $order_no)
     {
-        $this->entityManager->getFilters()->enable('incomplete_order_status_hidden');
+        $this->entityManager->getFilters()
+            ->enable('incomplete_order_status_hidden');
         $Order = $this->orderRepository->findOneBy(
             [
-                'id' => $id,
+                'order_no' => $order_no,
                 'Customer' => $this->getUser(),
             ]
         );
@@ -190,21 +212,21 @@ class MypageController extends AbstractController
     /**
      * 再購入を行う.
      *
-     * @Route("/mypage/order/{id}", name="mypage_order", requirements={"id" = "\d+"})
+     * @Route("/mypage/order/{order_no}", name="mypage_order")
      * @Method("PUT")
      */
-    public function order(Request $request, $id)
+    public function order(Request $request, $order_no)
     {
         $this->isTokenValid();
 
-        log_info('再注文開始', [$id]);
+        log_info('再注文開始', [$order_no]);
 
         $Customer = $this->getUser();
 
         /* @var $Order \Eccube\Entity\Order */
         $Order = $this->orderRepository->findOneBy(
             [
-                'id' => $id,
+                'order_no' => $order_no,
                 'Customer' => $Customer,
             ]
         );
@@ -219,27 +241,49 @@ class MypageController extends AbstractController
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_ORDER_INITIALIZE, $event);
 
         if (!$Order) {
-            log_info('対象の注文が見つかりません', [$id]);
+            log_info('対象の注文が見つかりません', [$order_no]);
             throw new NotFoundHttpException();
         }
+
+        // エラーメッセージの配列
+        $errorMessages = [];
 
         foreach ($Order->getOrderItems() as $OrderItem) {
             try {
                 if ($OrderItem->getProduct() &&
                     $OrderItem->getProductClass()
                 ) {
-                    $this->cartService->addProduct(
-                        $OrderItem->getProductClass()->getId(),
-                        $OrderItem->getQuantity()
-                    )->save();
+                    $this->cartService->addProduct($OrderItem->getProductClass(), $OrderItem->getQuantity());
+
+                    // 明細の正規化
+                    $Carts = $this->cartService->getCarts();
+                    foreach ($Carts as $Cart) {
+                        $result = $this->purchaseFlow->calculate($Cart, new PurchaseContext($Cart, $this->getUser()));
+                        // 復旧不可のエラーが発生した場合は追加した明細を削除.
+                        if ($result->hasError()) {
+                            $this->cartService->removeProduct($OrderItem->getProductClass());
+                            foreach ($result->getErrors() as $error) {
+                                $errorMessages[] = $error->getMessage();
+                            }
+                        }
+                        foreach ($result->getWarning() as $warning) {
+                            $errorMessages[] = $warning->getMessage();
+                        }
+                    }
+
+                    $this->cartService->save();
                 } else {
-                    log_info(trans('cart.product.delete'), [$id]);
+                    log_info(trans('cart.product.delete'), [$order_no]);
                     $this->addRequestError('cart.product.delete');
                 }
             } catch (CartException $e) {
-                log_info($e->getMessage(), [$id]);
+                log_info($e->getMessage(), [$order_no]);
                 $this->addRequestError($e->getMessage());
             }
+        }
+
+        foreach ($errorMessages as $errorMessage) {
+            $this->addRequestError($errorMessage);
         }
 
         $event = new EventArgs(
@@ -255,7 +299,7 @@ class MypageController extends AbstractController
             return $event->getResponse();
         }
 
-        log_info('再注文完了', [$id]);
+        log_info('再注文完了', [$order_no]);
 
         return $this->redirect($this->generateUrl('cart'));
     }
@@ -311,7 +355,8 @@ class MypageController extends AbstractController
 
         log_info('お気に入り商品削除開始', [$Customer->getId(), $CustomerFavoriteProduct->getId()]);
 
-        if ($Customer->getId() !== $CustomerFavoriteProduct->getCustomer()->getId()) {
+        if ($Customer->getId() !== $CustomerFavoriteProduct->getCustomer()
+                ->getId()) {
             throw new BadRequestHttpException();
         }
 

@@ -20,7 +20,15 @@ use Eccube\Service\PurchaseFlow\ItemCollection;
 /**
  * Order
  *
- * @ORM\Table(name="dtb_order", indexes={@ORM\Index(name="dtb_order_pre_order_id_idx", columns={"pre_order_id"}), @ORM\Index(name="dtb_order_email_idx", columns={"email"}), @ORM\Index(name="dtb_order_order_date_idx", columns={"order_date"}), @ORM\Index(name="dtb_order_payment_date_idx", columns={"payment_date"}), @ORM\Index(name="dtb_order_shipping_date_idx", columns={"shipping_date"}), @ORM\Index(name="dtb_order_update_date_idx", columns={"update_date"})})
+ * @ORM\Table(name="dtb_order", indexes={
+ *     @ORM\Index(name="dtb_order_pre_order_id_idx", columns={"pre_order_id"}),
+ *     @ORM\Index(name="dtb_order_email_idx", columns={"email"}),
+ *     @ORM\Index(name="dtb_order_order_date_idx", columns={"order_date"}),
+ *     @ORM\Index(name="dtb_order_payment_date_idx", columns={"payment_date"}),
+ *     @ORM\Index(name="dtb_order_shipping_date_idx", columns={"shipping_date"}),
+ *     @ORM\Index(name="dtb_order_update_date_idx", columns={"update_date"}),
+ *     @ORM\Index(name="dtb_order_order_no_idx", columns={"order_no"})
+ *  })
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
  * @ORM\HasLifecycleCallbacks()
@@ -111,9 +119,9 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="order_code", type="string", length=255, nullable=true)
+     * @ORM\Column(name="order_no", type="string", length=255, nullable=true)
      */
-    private $order_code;
+    private $order_no;
 
     /**
      * @var string|null
@@ -490,27 +498,27 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     }
 
     /**
-     * Set orderCode
+     * Set orderNo
      *
-     * @param string|null $orderCode
+     * @param string|null $orderNo
      *
      * @return Order
      */
-    public function setOrderCode($orderCode = null)
+    public function setOrderNo($orderNo = null)
     {
-        $this->order_code = $orderCode;
+        $this->order_no = $orderNo;
 
         return $this;
     }
 
     /**
-     * Get orderCode
+     * Get orderNo
      *
      * @return string|null
      */
-    public function getOrderCode()
+    public function getOrderNo()
     {
-        return $this->order_code;
+        return $this->order_no;
     }
 
     /**
