@@ -258,7 +258,7 @@ class MypageController extends AbstractController
                     // 明細の正規化
                     $Carts = $this->cartService->getCarts();
                     foreach ($Carts as $Cart) {
-                        $result = $this->purchaseFlow->calculate($Cart, new PurchaseContext($Cart, $this->getUser()));
+                        $result = $this->purchaseFlow->validate($Cart, new PurchaseContext($Cart, $this->getUser()));
                         // 復旧不可のエラーが発生した場合は追加した明細を削除.
                         if ($result->hasError()) {
                             $this->cartService->removeProduct($OrderItem->getProductClass());
