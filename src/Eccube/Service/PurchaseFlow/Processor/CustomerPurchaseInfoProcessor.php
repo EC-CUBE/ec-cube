@@ -29,6 +29,10 @@ class CustomerPurchaseInfoProcessor extends AbstractPurchaseProcessor
         }
 
         $Customer = $context->getUser();
+        if (!$Customer) {
+            return;
+        }
+
         $now = new \DateTime();
         $firstBuyDate = $Customer->getFirstBuyDate();
         if (empty($firstBuyDate)) {

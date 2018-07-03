@@ -107,7 +107,9 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
     {
         // ユーザの保有ポイントを減算
         $Customer = $context->getUser();
-        $Customer->setPoint($Customer->getPoint() - $itemHolder->getUsePoint());
+        if ($Customer) {
+            $Customer->setPoint($Customer->getPoint() - $itemHolder->getUsePoint());
+        }
     }
 
     /**
