@@ -133,7 +133,7 @@ class Kernel extends BaseKernel
         $plugins = $container->getParameter('eccube.plugins.enabled');
         $pluginDir = $this->getProjectDir().'/app/Plugin';
         foreach ($plugins as $plugin) {
-            $dir = $pluginDir.'/'.$plugin['code'].'/Controller';
+            $dir = $pluginDir.'/'.$plugin.'/Controller';
             if (file_exists($dir)) {
                 $builder = $routes->import($dir, '/', 'annotation');
                 $builder->setSchemes($scheme);
