@@ -20,6 +20,7 @@ use Eccube\Entity\ItemInterface;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Master\TaxType;
+use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 use Eccube\Service\PurchaseFlow\ItemHolderPreprocessor;
 use Eccube\Service\PurchaseFlow\ItemHolderValidator;
@@ -83,6 +84,9 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
      */
     protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
+        if (!$itemHolder instanceof Order) {
+            return;
+        }
         // 支払い金額 < 利用ポイント
         $discount = $this->pointToPrice($itemHolder->getUsePoint());
         if (($itemHolder->getTotal() + $discount) < 0) {
@@ -90,7 +94,7 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
         }
 
         // 所有ポイント < 利用ポイント
-        $Customer = $context->getUser();
+        $Customer = $itemHolder->getCustomer();
         if ($Customer->getPoint() < $itemHolder->getUsePoint()) {
             $this->throwInvalidItemException('利用ポイントが所有ポイントを上回っています.');
         }
@@ -105,8 +109,11 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
      */
     public function prepare(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
+        if (!$itemHolder instanceof Order) {
+            return;
+        }
         // ユーザの保有ポイントを減算
-        $Customer = $context->getUser();
+        $Customer = $itemHolder->getCustomer();
         if ($Customer) {
             $Customer->setPoint($Customer->getPoint() - $itemHolder->getUsePoint());
         }
@@ -126,7 +133,10 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
     public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         // 利用したポイントをユーザに戻す.
-        $Customer = $context->getUser();
+        if (!$itemHolder instanceof Order) {
+            return;
+        }
+        $Customer = $itemHolder->getCustomer();
         $Customer->setPoint($Customer->getPoint() + $itemHolder->getUsePoint());
     }
 

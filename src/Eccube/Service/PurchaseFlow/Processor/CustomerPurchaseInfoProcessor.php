@@ -28,7 +28,7 @@ class CustomerPurchaseInfoProcessor extends AbstractPurchaseProcessor
             return;
         }
 
-        $Customer = $context->getUser();
+        $Customer = $target->getCustomer();
         if (!$Customer) {
             return;
         }

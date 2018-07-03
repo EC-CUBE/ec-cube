@@ -79,14 +79,15 @@ class PointProcessorTest extends EccubeTestCase
      */
     public function testUsePointOverCustomerPoint($usePoint, $customerPoint, $isError)
     {
+        $Customer = new Customer();
+        $Customer->setPoint($customerPoint);
+
         /* @var ProductClass $ProductClass */
         $ProductClass = $this->createProduct('テスト', 1)->getProductClasses()[0];
         $Order = new Order();
+        $Order->setCustomer($Customer);
         $Order->setUsePoint($usePoint);
         $Order->addOrderItem($this->newOrderItem($ProductClass, 1000, 1));
-
-        $Customer = new Customer();
-        $Customer->setPoint($customerPoint);
 
         $purchaseFlow = new PurchaseFlow();
         $purchaseFlow->addItemHolderValidator($this->processor);
@@ -119,14 +120,15 @@ class PointProcessorTest extends EccubeTestCase
      */
     public function testUsePointOverPrice($usePoint, $isError)
     {
+        $Customer = new Customer();
+        $Customer->setPoint(10000);
+
         /* @var ProductClass $ProductClass */
         $ProductClass = $this->createProduct('テスト', 1)->getProductClasses()[0];
         $Order = new Order();
+        $Order->setCustomer($Customer);
         $Order->setUsePoint($usePoint);
         $Order->addOrderItem($this->newOrderItem($ProductClass, 100, 1));
-
-        $Customer = new Customer();
-        $Customer->setPoint(10000);
 
         $purchaseFlow = new PurchaseFlow();
         $purchaseFlow->addItemHolderValidator($this->processor);
@@ -154,13 +156,14 @@ class PointProcessorTest extends EccubeTestCase
      */
     public function testReduceCustomerPoint()
     {
-        $ProductClass = $this->createProduct('テスト', 1)->getProductClasses()[0];
-        $Order = new Order();
-        $Order->setUsePoint(10);
-        $Order->addOrderItem($this->newOrderItem($ProductClass, 100, 1));
-
         $Customer = new Customer();
         $Customer->setPoint(100);
+
+        $ProductClass = $this->createProduct('テスト', 1)->getProductClasses()[0];
+        $Order = new Order();
+        $Order->setCustomer($Customer);
+        $Order->setUsePoint(10);
+        $Order->addOrderItem($this->newOrderItem($ProductClass, 100, 1));
 
         $purchaseFlow = new PurchaseFlow();
         $purchaseFlow->addPurchaseProcessor($this->processor);
