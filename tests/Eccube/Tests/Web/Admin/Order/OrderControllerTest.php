@@ -79,7 +79,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             $Customer = $this->createCustomer('user-'.$i.'@example.com');
             $Customer->setSex($Sex);
             $Order = $this->createOrder($Customer);
-            $Order->setOrderCode('order_code_'.$i);
+            $Order->setOrderNo('order_no_'.$i);
             $Order->setOrderStatus($OrderStatus);
             $Order->setPayment($Payment);
             $this->entityManager->flush();
@@ -129,7 +129,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $this->verify();
     }
 
-    public function testSearchOrderByOrderCode()
+    public function testSearchOrderByOrderNo()
     {
         $Order = $this->orderRepository->findOneBy([]);
 
@@ -137,7 +137,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             'POST', $this->generateUrl('admin_order'), [
             'admin_search_order' => [
                 '_token' => 'dummy',
-                'multi' => $Order->getOrderCode(),
+                'multi' => $Order->getOrderNo(),
             ],
             ]
         );
@@ -151,7 +151,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             'POST', $this->generateUrl('admin_order'), [
                 'admin_search_order' => [
                     '_token' => 'dummy',
-                    'order_code' => $Order->getOrderCode(),
+                    'order_no' => $Order->getOrderNo(),
                 ],
             ]
         );

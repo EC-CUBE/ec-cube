@@ -549,6 +549,7 @@ class Generator
             ->setNote($faker->realText())
             ->setAddPoint(0)    // TODO
             ->setUsePoint(0)    // TODO
+            ->setOrderNo(sha1(StringUtil::random()))
         ;
         $this->entityManager->persist($Order);
         $this->entityManager->flush($Order);

@@ -49,7 +49,7 @@ services:
         class: Doctrine\Common\Collections\ArrayCollection
         arguments:
             - #
-                - '@Eccube\Service\PurchaseFlow\Processor\OrderCodeProcessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\OrderNoProcessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\DeliveryFeePreprocessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\DeliveryFeeFreeByShippingPreprocessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\PointProcessor'
