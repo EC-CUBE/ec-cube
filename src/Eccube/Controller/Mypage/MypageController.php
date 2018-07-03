@@ -89,6 +89,8 @@ class MypageController extends AbstractController
         $builder = $this->formFactory
             ->createNamedBuilder('', CustomerLoginType::class);
 
+        $builder->get('login_memory')->setData((bool) $request->getSession()->get('_security.login_memory'));
+
         if ($this->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             $Customer = $this->getUser();
             if ($Customer instanceof Customer) {

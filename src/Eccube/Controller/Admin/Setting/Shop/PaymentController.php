@@ -20,6 +20,7 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\PaymentRegisterType;
 use Eccube\Repository\PaymentRepository;
+use Eccube\Service\Payment\Method\Cash;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -122,6 +123,10 @@ class PaymentController extends AbstractController
                     );
                 }
 
+                // Payment method class of Cash to default.
+                if (!$Payment->getMethodClass()) {
+                    $Payment->setMethodClass(Cash::class);
+                }
                 $Payment->setVisible(true);
                 $this->entityManager->persist($Payment);
                 $this->entityManager->flush();

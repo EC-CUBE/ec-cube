@@ -49,7 +49,9 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
     public function testComplete()
     {
-        $this->container->get('session')->set('eccube.front.shopping.order.id', 111);
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrder($Customer);
+        $this->container->get('session')->set('eccube.front.shopping.order.id', $Order->getId());
         $this->client->request('GET', $this->generateUrl('shopping_complete'));
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());

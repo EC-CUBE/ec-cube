@@ -305,6 +305,31 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     private $currency_code;
 
     /**
+     * 注文完了画面に表示するメッセージ
+     *
+     * プラグインから注文完了時にメッセージを表示したい場合, このフィールドにセットすることで, 注文完了画面で表示されます。
+     * 複数のプラグインから利用されるため, appendCompleteMesssage()で追加してください.
+     * 表示する際にHTMLは利用可能です。
+     *
+     * @var string|null
+     *
+     * @ORM\Column(name="complete_message", type="text", nullable=true)
+     */
+    private $complete_message;
+
+    /**
+     * 注文完了メールに表示するメッセージ
+     *
+     * プラグインから注文完了メールにメッセージを表示したい場合, このフィールドにセットすることで, 注文完了メールで表示されます。
+     * 複数のプラグインから利用されるため, appendCompleteMailMesssage()で追加してください.
+     *
+     * @var string|null
+     *
+     * @ORM\Column(name="complete_mail_message", type="text", nullable=true)
+     */
+    private $complete_mail_message;
+
+    /**
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(targetEntity="Eccube\Entity\OrderItem", mappedBy="Order", cascade={"persist","remove"})
@@ -1132,6 +1157,70 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     public function setCurrencyCode($currencyCode = null)
     {
         $this->currency_code = $currencyCode;
+
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getCompleteMessage()
+    {
+        return $this->complete_message;
+    }
+
+    /**
+     * @param null|string $complete_message
+     *
+     * @return $this
+     */
+    public function setCompleteMessage($complete_message = null)
+    {
+        $this->complete_message = $complete_message;
+
+        return $this;
+    }
+
+    /**
+     * @param null|string $complete_message
+     *
+     * @return $this
+     */
+    public function appendCompleteMessage($complete_message = null)
+    {
+        $this->complete_message .= $complete_message;
+
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getCompleteMailMessage()
+    {
+        return $this->complete_mail_message;
+    }
+
+    /**
+     * @param null|string $complete_mail_message
+     *
+     * @return
+     */
+    public function setCompleteMailMessage($complete_mail_message = null)
+    {
+        $this->complete_mail_message = $complete_mail_message;
+
+        return $this;
+    }
+
+    /**
+     * @param null|string $complete_mail_message
+     *
+     * @return
+     */
+    public function appendCompleteMailMessage($complete_mail_message = null)
+    {
+        $this->complete_mail_message .= $complete_mail_message;
 
         return $this;
     }
