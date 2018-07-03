@@ -134,21 +134,14 @@ file that was distributed with this source code.
 <script src="{{ asset('assets/js/script.js') }}"></script>
 <script src="{{ asset('js/function.js') }}"></script>
 <script src="{{ asset('js/eccube.js') }}"></script>
-
-{# プラグイン用Snippet #}
-{% if plugin_snippets is defined %}
-    <div class="d-none">{{ include('@admin/snippet.twig', { snippets: plugin_snippets }) }}</div>
-{% endif %}
-
 {% block javascript %}{% endblock %}
-
 {# Layout: CLOSE_BODY_BEFORE #}
 {% if Page.CloseBodyBefore %}
     {{ include('block.twig', {'Blocks': Page.CloseBodyBefore}) }}
 {% endif %}
-
-{# プラグイン用Javascript #}
-{% if plugin_javascripts is defined %}{{ include('@admin/snippet.twig', { snippets: plugin_javascripts }) }}{% endif %}
-
+{# プラグイン用Snippet #}
+{% if plugin_snippets is defined %}
+    {{ include('@admin/snippet.twig', { snippets: plugin_snippets }) }}
+{% endif %}
 </body>
 </html>

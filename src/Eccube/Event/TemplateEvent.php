@@ -44,11 +44,6 @@ class TemplateEvent extends Event
     /**
      * @var array
      */
-    private $javascripts = [];
-
-    /**
-     * @var array
-     */
     private $assets = [];
 
     /**
@@ -163,25 +158,6 @@ class TemplateEvent extends Event
     public function setResponse($response)
     {
         $this->response = $response;
-    }
-
-    /**
-     * Javascriptを追加する.
-     *
-     * ここで追加したコードは, EC-CUBE本体のJavascriptより後に出力される.
-     *
-     * @param $js
-     * @param bool $include twigファイルとしてincludeするかどうか
-     *
-     * @return $this
-     */
-    public function addJavascript($js, $include = true)
-    {
-        $this->javascripts[$js] = $include;
-
-        $this->setParameter('plugin_javascripts', $this->javascripts);
-
-        return $this;
     }
 
     /**

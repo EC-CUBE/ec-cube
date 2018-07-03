@@ -53,7 +53,7 @@ file that was distributed with this source code.
     </table>
     {% if pagination.getTotalItemCount / pagination.count > 1 %}
         <div class="row justify-content-md-center mb-4">
-            {% include "@admin/styleguide_pager.twig" with { 'pages' : pagination.paginationData } %}
+            {% include "@admin/pager.twig" with { 'pages' : pagination.paginationData } %}
         </div>
     {% endif %}
 {% else %}

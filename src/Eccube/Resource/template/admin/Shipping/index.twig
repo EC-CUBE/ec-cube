@@ -8,7 +8,7 @@ http://www.lockon.co.jp/
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
-{% extends '@admin/styleguide_frame.twig' %}
+{% extends '@admin/default_frame.twig' %}
 
 {% set menus = ['shipping', 'shipping_master'] %}
 
@@ -559,7 +559,7 @@ file that was distributed with this source code.
                         </table>
                         <div class="row justify-content-md-center mb-4">
                             {% if pagination.totalItemCount > 0 %}
-                                {% include "@admin/styleguide_pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_shipping_page' } %}
+                                {% include "@admin/pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_shipping_page' } %}
                             {% endif %}
                         </div>
                         </div>
