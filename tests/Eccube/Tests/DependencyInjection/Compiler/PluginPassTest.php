@@ -68,12 +68,10 @@ namespace Plugin\Sample;
 
 class TestClass
 {
-
 }
 
 namespace Plugin\SamplePayment;
 
 class TestClass
 {
-
 }
