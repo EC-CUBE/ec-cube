@@ -626,7 +626,7 @@ class ShoppingController extends AbstractShoppingController
     public function checkToCart(Request $request)
     {
         $Cart = $this->cartService->getCart();
-        if ($Cart && count($Cart->getCartItems()) > 0) {
+        if (is_object($Cart) && count($Cart->getCartItems()) > 0) {
             $divide = $request->getSession()->get('cart.divide');
             if ($divide) {
                 log_info('種別が異なる商品がカートと結合されたためカート画面にリダイレクト');
