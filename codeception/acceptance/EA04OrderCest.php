@@ -186,7 +186,7 @@ class EA04OrderCest
             return $Order->getOrderStatus()->getId() == OrderStatus::NEW;
         });
         $Order = array_pop($NewOrders);
-        $OrderListPage = OrderManagePage::go($I)->検索($Order->getId());
+        $OrderListPage = OrderManagePage::go($I)->検索($Order->getOrderNo());
         $I->see('検索結果：1件が該当しました', OrderManagePage::$検索結果_メッセージ);
 
         $OrderListPage->一覧_メール通知(1);
