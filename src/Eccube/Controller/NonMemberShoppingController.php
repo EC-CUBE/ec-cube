@@ -156,7 +156,7 @@ class NonMemberShoppingController extends AbstractShoppingController
                 }
             }
 
-            $flowResult = $this->executePurchaseFlow($Order);
+            $flowResult = $this->validatePurchaseFlow($Order);
             if ($flowResult->hasWarning() || $flowResult->hasError()) {
                 return $this->redirectToRoute('cart');
             }

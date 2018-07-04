@@ -64,15 +64,13 @@ class MypageControllerTest extends AbstractWebTestCase
 
     public function testRoutingOrder()
     {
-        self::markTestIncomplete('purchaseFlowに対応後、テストを作成');
-
         $this->loginTo($this->Customer);
         $client = $this->client;
 
         $Order = $this->createOrder($this->Customer);
 
         $client->request('PUT',
-            $this->generateUrl('mypage_order', ['id' => $Order->getId()])
+            $this->generateUrl('mypage_order', ['order_no' => $Order->getOrderNo()])
         );
 
         $this->assertTrue($client->getResponse()->isRedirection());
@@ -123,7 +121,7 @@ class MypageControllerTest extends AbstractWebTestCase
 
         $crawler = $client->request(
             'GET',
-            $this->generateUrl('mypage_history', ['id' => $Order->getId()])
+            $this->generateUrl('mypage_history', ['order_no' => $Order->getOrderNo()])
         );
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
@@ -139,7 +137,7 @@ class MypageControllerTest extends AbstractWebTestCase
 
         $crawler = $this->client->request(
             'GET',
-            $this->generateUrl('mypage_history', ['id' => $Order->getId()])
+            $this->generateUrl('mypage_history', ['order_no' => $Order->getOrderNo()])
         );
 
         $this->expected = 404;
@@ -153,7 +151,7 @@ class MypageControllerTest extends AbstractWebTestCase
 
         $crawler = $this->client->request(
             'GET',
-            $this->generateUrl('mypage_history', ['id' => 999999999])
+            $this->generateUrl('mypage_history', ['order_no' => 999999999])
         );
 
         $this->expected = 404;

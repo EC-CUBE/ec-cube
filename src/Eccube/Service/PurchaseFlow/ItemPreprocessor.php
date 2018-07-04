@@ -15,13 +15,14 @@ namespace Eccube\Service\PurchaseFlow;
 
 use Eccube\Entity\ItemInterface;
 
-interface ItemProcessor
+/**
+ * 明細単位の前処理行うインターフェス.
+ */
+interface ItemPreprocessor
 {
     /**
      * @param ItemInterface   $item
      * @param PurchaseContext $context
-     *
-     * @return ProcessResult
      */
     public function process(ItemInterface $item, PurchaseContext $context);
 }

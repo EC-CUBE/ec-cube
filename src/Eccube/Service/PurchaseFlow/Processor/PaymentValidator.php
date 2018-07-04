@@ -14,17 +14,18 @@
 namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Eccube\Entity\Delivery;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Master\SaleType;
+use Eccube\Entity\Payment;
 use Eccube\Repository\DeliveryRepository;
-use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
-use Eccube\Service\PurchaseFlow\ValidatableItemHolderProcessor;
+use Eccube\Service\PurchaseFlow\ItemHolderValidator;
 
 /**
  * 支払い方法が一致しない明細がないかどうか.
  */
-class PaymentProcessor extends ValidatableItemHolderProcessor
+class PaymentValidator extends ItemHolderValidator
 {
     /**
      * @var DeliveryRepository
@@ -73,7 +74,7 @@ class PaymentProcessor extends ValidatableItemHolderProcessor
 
         // 共通項がなければエラー
         if (empty($paymentIds)) {
-            throw new InvalidItemException(trans('paymentprocessor.label.different_payment_method'));
+            $this->throwInvalidItemException('paymentprocessor.label.different_payment_method');
         }
     }
 
@@ -89,6 +90,11 @@ class PaymentProcessor extends ValidatableItemHolderProcessor
         return $Deliveries;
     }
 
+    /**
+     * @param Delivery[] $Deliveries
+     *
+     * @return ArrayCollection|Payment[]
+     */
     private function getPayments($Deliveries)
     {
         $Payments = new ArrayCollection();

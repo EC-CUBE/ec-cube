@@ -19,6 +19,8 @@ class PaymentMethodTest extends EccubeTestCase
 {
     public function testConstructorInjection()
     {
+        $this->markTestSkipped();
+
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
 

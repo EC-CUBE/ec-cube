@@ -259,11 +259,11 @@ class OrderRepository extends AbstractRepository
                 ->setParameter('order_id', $searchData['order_id']);
         }
 
-        // order_code
-        if (isset($searchData['order_code']) && StringUtil::isNotBlank($searchData['order_code'])) {
+        // order_no
+        if (isset($searchData['order_no']) && StringUtil::isNotBlank($searchData['order_no'])) {
             $qb
-                ->andWhere('o.order_code = :order_code')
-                ->setParameter('order_code', $searchData['order_code']);
+                ->andWhere('o.order_no = :order_no')
+                ->setParameter('order_no', $searchData['order_no']);
         }
 
         // order_id_start
@@ -278,7 +278,7 @@ class OrderRepository extends AbstractRepository
             $qb
                 ->andWhere('o.id = :multi OR o.name01 LIKE :likemulti OR o.name02 LIKE :likemulti OR '.
                             'o.kana01 LIKE :likemulti OR o.kana02 LIKE :likemulti OR o.company_name LIKE :likemulti OR '.
-                            'o.order_code LIKE :likemulti')
+                            'o.order_no LIKE :likemulti')
                 ->setParameter('multi', $multi)
                 ->setParameter('likemulti', '%'.$searchData['multi'].'%');
         }

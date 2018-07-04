@@ -18,6 +18,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class EccubeExtension extends Extension implements PrependExtensionInterface
@@ -36,8 +37,13 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
      */
     public function prepend(ContainerBuilder $container)
     {
+        $pluginDir = $container->getParameter('kernel.project_dir').'/app/Plugin';
+        $pluginDirs = $this->getPluginDirectories($pluginDir);
+
         $container->setParameter('eccube.plugins.enabled', []);
-        $container->setParameter('eccube.plugins.disabled', []);
+        // ファイル設置のみの場合は, 無効なプラグインとみなす.
+        // DB接続後, 有効無効の判定を行う.
+        $container->setParameter('eccube.plugins.disabled', $pluginDirs);
 
         // FIXME WebTestCase で DATABASE_URL が取得できず落ちる
         if (!array_key_exists('APP_ENV', $_ENV) || $_ENV['APP_ENV'] == 'test') {
@@ -67,13 +73,19 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
         $stmt = $conn->query('select * from dtb_plugin');
         $plugins = $stmt->fetchAll();
 
-        $enabled = array_filter($plugins, function ($plugin) {
-            return true === (bool) $plugin['enabled'];
-        });
+        $enabled = [];
+        foreach ($plugins as $plugin) {
+            if ($plugin['enabled']) {
+                $enabled[] = $plugin['code'];
+            }
+        }
 
-        $disabled = array_filter($plugins, function ($plugin) {
-            return false === (bool) $plugin['enabled'];
-        });
+        $disabled = [];
+        foreach ($pluginDirs as $dir) {
+            if (!in_array($dir, $enabled)) {
+                $disabled[] = $dir;
+            }
+        }
 
         // 他で使いまわすため, パラメータで保持しておく.
         $container->setParameter('eccube.plugins.enabled', $enabled);
@@ -91,8 +103,7 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
     {
         $paths = [];
 
-        foreach ($enabled as $plugin) {
-            $code = $plugin['code'];
+        foreach ($enabled as $code) {
             $dir = $pluginDir.'/'.$code.'/Resource/template';
             if (file_exists($dir)) {
                 $paths[$dir] = $code;
@@ -113,8 +124,7 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
     {
         $paths = [];
 
-        foreach ($enabled as $plugin) {
-            $code = $plugin['code'];
+        foreach ($enabled as $code) {
             $dir = $pluginDir.'/'.$code.'/Resource/locale';
             if (file_exists($dir)) {
                 $paths[] = $dir;
@@ -149,5 +159,20 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
         );
 
         return empty($tables) ? false : true;
+    }
+
+    protected function getPluginDirectories($pluginDir)
+    {
+        $finder = (new Finder())
+            ->in($pluginDir)
+            ->depth(0)
+            ->directories();
+
+        $dirs = [];
+        foreach ($finder as $dir) {
+            $dirs[] = $dir->getBaseName();
+        }
+
+        return $dirs;
     }
 }

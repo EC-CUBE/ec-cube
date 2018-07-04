@@ -15,14 +15,13 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\ItemHolderInterface;
-use Eccube\Service\PurchaseFlow\ItemHolderProcessor;
-use Eccube\Service\PurchaseFlow\ProcessResult;
+use Eccube\Service\PurchaseFlow\ItemHolderPreprocessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 /**
- * 送料無料条件.
+ * 送料無料条件を適用します.
  */
-class DeliveryFeeFreeProcessor implements ItemHolderProcessor
+class DeliveryFeeFreePreprocessor implements ItemHolderPreprocessor
 {
     /**
      * @var BaseInfo
@@ -42,8 +41,6 @@ class DeliveryFeeFreeProcessor implements ItemHolderProcessor
     /**
      * @param ItemHolderInterface $itemHolder
      * @param PurchaseContext     $context
-     *
-     * @return ProcessResult
      */
     public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
@@ -72,7 +69,5 @@ class DeliveryFeeFreeProcessor implements ItemHolderProcessor
                 }
             }
         }
-
-        return ProcessResult::success();
     }
 }

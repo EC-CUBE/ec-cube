@@ -177,7 +177,7 @@ class SearchShippingType extends AbstractType
             ->add('email', TextType::class, [
                 'required' => false,
             ])
-            ->add('order_code', TextType::class, [
+            ->add('order_no', TextType::class, [
                 'label' => '注文番号',
                 'required' => false,
             ])

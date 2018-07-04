@@ -549,6 +549,7 @@ class Generator
             ->setNote($faker->realText())
             ->setAddPoint(0)    // TODO
             ->setUsePoint(0)    // TODO
+            ->setOrderNo(sha1(StringUtil::random()))
         ;
         $this->entityManager->persist($Order);
         $this->entityManager->flush($Order);
@@ -693,7 +694,7 @@ class Generator
         $this->entityManager->persist($OrderItemDiscount);
         $this->entityManager->flush($OrderItemDiscount);
 
-        $this->orderPurchaseFlow->calculate($Order, new PurchaseContext());
+        $this->orderPurchaseFlow->validate($Order, new PurchaseContext());
 
         $this->entityManager->flush($Shipping);
         $this->entityManager->flush($Order);

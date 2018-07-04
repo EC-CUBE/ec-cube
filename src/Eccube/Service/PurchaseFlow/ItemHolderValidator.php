@@ -15,7 +15,10 @@ namespace Eccube\Service\PurchaseFlow;
 
 use Eccube\Entity\ItemHolderInterface;
 
-abstract class ValidatableItemHolderProcessor implements ItemHolderProcessor
+/**
+ * カート/受注の妥当性検証を行う.
+ */
+abstract class ItemHolderValidator
 {
     use ValidatorTrait;
 
@@ -25,7 +28,7 @@ abstract class ValidatableItemHolderProcessor implements ItemHolderProcessor
      *
      * @return ProcessResult
      */
-    final public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    final public function execute(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         try {
             $this->validate($itemHolder, $context);
@@ -36,6 +39,12 @@ abstract class ValidatableItemHolderProcessor implements ItemHolderProcessor
         }
     }
 
+    /**
+     * @param ItemHolderInterface $itemHolder
+     * @param PurchaseContext $context
+     *
+     * @throws InvalidItemException
+     */
     abstract protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context);
 
     protected function handle(ItemHolderInterface $itemHolder)

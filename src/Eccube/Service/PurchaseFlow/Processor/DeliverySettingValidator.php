@@ -17,12 +17,12 @@ use Eccube\Entity\ItemInterface;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
-use Eccube\Service\PurchaseFlow\ValidatableItemProcessor;
+use Eccube\Service\PurchaseFlow\ItemValidator;
 
 /**
  * 販売種別に配送業者が設定されているかどうか.
  */
-class DeliverySettingValidator extends ValidatableItemProcessor
+class DeliverySettingValidator extends ItemValidator
 {
     /**
      * @var DeliveryRepository

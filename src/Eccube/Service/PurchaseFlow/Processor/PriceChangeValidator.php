@@ -15,25 +15,24 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\ItemInterface;
 use Eccube\Entity\OrderItem;
-use Eccube\Service\PurchaseFlow\ItemProcessor;
-use Eccube\Service\PurchaseFlow\ProcessResult;
+use Eccube\Service\PurchaseFlow\ItemValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 /**
  * 販売価格の変更検知.
  */
-class PriceChangeValidator implements ItemProcessor
+class PriceChangeValidator extends ItemValidator
 {
     /**
      * @param ItemInterface $item
      * @param PurchaseContext $context
      *
-     * @return ProcessResult
+     * @throws \Eccube\Service\PurchaseFlow\InvalidItemException
      */
-    public function process(ItemInterface $item, PurchaseContext $context)
+    public function validate(ItemInterface $item, PurchaseContext $context)
     {
         if (!$item->isProduct()) {
-            return ProcessResult::success();
+            return;
         }
 
         if ($item instanceof OrderItem) {
@@ -45,21 +44,15 @@ class PriceChangeValidator implements ItemProcessor
 
         $realPrice = $item->getProductClass()->getPrice02IncTax();
         if ($price != $realPrice) {
-            $message = trans('cart.product.price.change',
-                ['%product%' => $item->getProductClass()->formatedProductName()]);
-
             if ($item instanceof OrderItem) {
                 $item->setPrice($item->getProductClass()->getPrice02());
 
-                return ProcessResult::error($message);
+                $this->throwInvalidItemException('cart.product.price.change', $item->getProductClass());
             } else {
                 // CartItem::priceは税込金額.
                 $item->setPrice($realPrice);
-
-                return ProcessResult::warn($message);
+                $this->throwInvalidItemException('cart.product.price.change', $item->getProductClass());
             }
         }
-
-        return ProcessResult::success();
     }
 }

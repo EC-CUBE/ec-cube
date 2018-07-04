@@ -52,6 +52,7 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
     {
         parent::setUp();
         $this->createProduct();
+
         $this->orderStatusRepo = $this->container->get(OrderStatusRepository::class);
         $this->orderRepo = $this->container->get(OrderRepository::class);
         $this->sexRepo = $this->container->get(SexRepository::class);

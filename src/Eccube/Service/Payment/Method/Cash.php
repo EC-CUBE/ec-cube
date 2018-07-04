@@ -16,6 +16,9 @@ namespace Eccube\Service\Payment\Method;
 use Eccube\Entity\Order;
 use Eccube\Service\Payment\PaymentMethodInterface;
 use Eccube\Service\Payment\PaymentResult;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
+use Eccube\Service\PurchaseFlow\PurchaseFlow;
+use Eccube\Service\ShoppingService;
 use Symfony\Component\Form\FormInterface;
 
 /**
@@ -23,11 +26,40 @@ use Symfony\Component\Form\FormInterface;
  */
 class Cash implements PaymentMethodInterface
 {
+    /** @var Order */
+    private $Order;
+
+    /** @var FormInterface */
+    private $form;
+
+    /** @var $purchaseFlow */
+    private $purchaseFlow;
+
+    /**
+     * @var ShoppingService
+     */
+    private $shoppingService;
+
+    /**
+     * Cash constructor.
+     *
+     * @param PurchaseFlow $shoppingPurchaseFlow
+     */
+    public function __construct(PurchaseFlow $shoppingPurchaseFlow, ShoppingService $shoppingService)
+    {
+        $this->purchaseFlow = $shoppingPurchaseFlow;
+        $this->shoppingService = $shoppingService;
+    }
+
     /**
      * {@inheritdoc}
+     *
+     * @throws \Eccube\Service\PurchaseFlow\PurchaseException
      */
     public function checkout()
     {
+        $this->purchaseFlow->commit($this->Order, new PurchaseContext());
+
         $result = new PaymentResult();
         $result->setSuccess(true);
 
@@ -36,9 +68,13 @@ class Cash implements PaymentMethodInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Eccube\Service\PurchaseFlow\PurchaseException
      */
     public function apply()
     {
+        $this->purchaseFlow->prepare($this->Order, new PurchaseContext());
+
         return false;
     }
 
@@ -47,7 +83,7 @@ class Cash implements PaymentMethodInterface
      */
     public function setFormType(FormInterface $form)
     {
-        // quiet
+        $this->form = $form;
     }
 
     /**
@@ -63,6 +99,6 @@ class Cash implements PaymentMethodInterface
      */
     public function setOrder(Order $Order)
     {
-        // quiet
+        $this->Order = $Order;
     }
 }

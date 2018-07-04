@@ -42,6 +42,16 @@ class TemplateEvent extends Event
     private $response;
 
     /**
+     * @var array
+     */
+    private $assets = [];
+
+    /**
+     * @var array
+     */
+    private $snippets = [];
+
+    /**
      * TemplateEvent constructor.
      *
      * @param string $view
@@ -148,5 +158,44 @@ class TemplateEvent extends Event
     public function setResponse($response)
     {
         $this->response = $response;
+    }
+
+    /**
+     * アセットを追加する
+     *
+     * ここで追加したコードは, <head></head>内に出力される
+     * javascriptの読み込みやcssの読み込みに利用する.
+     *
+     * @param $asset
+     * @param bool $include twigファイルとしてincludeするかどうか
+     *
+     * @return $this
+     */
+    public function addAsset($asset, $include = true)
+    {
+        $this->assets[$asset] = $include;
+
+        $this->setParameter('plugin_assets', $this->assets);
+
+        return $this;
+    }
+
+    /**
+     * スニペットを追加する.
+     *
+     * ここで追加したコードは, </body>タグ直前に出力される
+     *
+     * @param $snippet
+     * @param bool $include twigファイルとしてincludeするかどうか
+     *
+     * @return $this
+     */
+    public function addSnippet($snippet, $include = true)
+    {
+        $this->snippets[$snippet] = $include;
+
+        $this->setParameter('plugin_snippets', $this->snippets);
+
+        return $this;
     }
 }
