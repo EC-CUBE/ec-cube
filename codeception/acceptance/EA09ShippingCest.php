@@ -5,7 +5,6 @@ use Page\Admin\CsvSettingsPage;
 use Page\Admin\ShippingManagePage;
 use Page\Admin\ShippingEditPage;
 use Page\Admin\OrderEditPage;
-use Eccube\Entity\Master\ShippingStatus;
 
 /**
  * @group admin
@@ -83,6 +82,8 @@ class EA09ShippingCest
     {
         $I->wantTo('EA0901-UC03-T01(& UC03-T02) 出荷編集');
 
+        $I->getScenario()->skip('お届け日を編集時にJSが走らない問題がありskip');
+
         $I->resetEmails();
 
         $TargetShippings = Fixtures::get('findShippings'); // Closure
@@ -118,9 +119,9 @@ class EA09ShippingCest
 
         $I->see('出荷情報を登録しました。', ShippingEditPage::$登録完了メッセージ);
 
-        /* ステータス変更 */
+        /* 出荷済みに変更 */
         $ShippingRegisterPage
-            ->入力_出荷ステータス(['2' => '出荷済み'])
+            ->入力_出荷日('2018-09-04')
             ->出荷情報登録()
             ->変更を確定();
         $I->wait(1);
@@ -163,9 +164,9 @@ class EA09ShippingCest
         $I->resetEmails();
 
         $config = Fixtures::get('config');
-        // ステータスを出荷準備中にリセット
-        $resetShippingStatusPrepared = Fixtures::get('resetShippingStatusPrepared'); // Closure
-        $resetShippingStatusPrepared();
+        // 未出荷にリセット
+        $resetShippingDate = Fixtures::get('resetShippingDate'); // Closure
+        $resetShippingDate();
 
         $TargetShippings = Fixtures::get('findShippings'); // Closure
         $Shippings = $TargetShippings();
@@ -196,9 +197,9 @@ class EA09ShippingCest
         $I->resetEmails();
 
         $config = Fixtures::get('config');
-        // ステータスを出荷済みにリセット
-        $resetShippingStatusShipped = Fixtures::get('resetShippingStatusShipped'); // Closure
-        $resetShippingStatusShipped();
+        // 出荷済みにセット
+        $setShippingDate = Fixtures::get('setShippingDate'); // Closure
+        $setShippingDate();
 
         $TargetShippings = Fixtures::get('findShippings'); // Closure
         $Shippings = $TargetShippings();

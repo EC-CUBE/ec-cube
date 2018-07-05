@@ -89,26 +89,26 @@ file that was distributed with this source code.
         {# TODO: Should move logic js into js file intead of twig #}
         var shippedNotifyModal = $('#shippedNotifyModal'),
             shippingForm = $('#form_shipping'),
-            shippingStatusSelect = shippingForm.find('select[name*="ShippingStatus"]');
+            shippingDateInput = shippingForm.find('input[name*="shipping_date"]');
 
-        shippingStatusSelect.on('change', function() {
-            if ($(this).val() == {{ constant('Eccube\\Entity\\Master\\ShippingStatus::SHIPPED') }}) {
-                {%  if Shipping.ShippingStatus and  Shipping.ShippingStatus.id != constant('Eccube\\Entity\\Master\\ShippingStatus::SHIPPED') %}
-                    shippingForm.find('#btn_save')
-                        .attr('data-toggle', 'modal')
-                        .attr('data-target', '#shippedNotifyModal')
-                        .attr('type', 'button');
-                {% endif %}
-            } else {
-                {%  if Shipping.ShippingStatus and  Shipping.ShippingStatus.id != constant('Eccube\\Entity\\Master\\ShippingStatus::SHIPPED') %}
+        shippingDateInput.on('change', function() {
+            if ($(this).val() == '') {
+                {% if Shipping.isShipped == false %}
                     shippingForm.find('#btn_save')
                         .attr('type', 'submit')
                         .removeAttr('data-toggle')
                         .removeAttr('data-target');
                 {%  endif %}
+            } else {
+                {% if Shipping.isShipped == false %}
+                    shippingForm.find('#btn_save')
+                        .attr('data-toggle', 'modal')
+                        .attr('data-target', '#shippedNotifyModal')
+                        .attr('type', 'button');
+                {% endif %}
             }
         });
-        shippingStatusSelect.trigger('change');
+        shippingDateInput.trigger('change');
         shippedNotifyModal.on('show.bs.modal', function(e) {
             var viewUrl = $('#viewEmail');
             if (viewUrl.length) {
@@ -286,7 +286,9 @@ file that was distributed with this source code.
                                             <div class="col-3"><i class="fa fa-truck mr-1"
                                                                   aria-hidden="true"></i><span>{{ 'admin.shipping.edit.ship_date'|trans }}</span></div>
                                             <div class="col">
-                                                <span>{{ Shipping.id ? Shipping.shipping_date|date_min }}</span></div>
+                                                {{ form_widget(form.shipping_date) }}
+                                                {{ form_errors(form.shipping_date) }}
+                                            </div>
                                         </div>
                                         <div class="row mb-2 align-items-center">
                                             <div class="col-3"><i class="fa fa-refresh mr-1"
@@ -408,10 +410,6 @@ file that was distributed with this source code.
                     </div>
                     <div class="col-6">
                         <div class="row align-items-center justify-content-end">
-                            <div class="col-auto">
-                                {{ form_widget(form.ShippingStatus) }}
-                                {{ form_errors(form.ShippingStatus) }}
-                            </div>
                             <div class="col-auto">
                                 <button type="submit" class="btn btn-ec-conversion px-4" id="btn_save">
                                     {{ 'admin.shipping.edit.register_shipping'|trans }}

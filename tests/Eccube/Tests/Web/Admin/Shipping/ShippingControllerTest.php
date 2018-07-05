@@ -15,7 +15,6 @@ namespace Eccube\Tests\Web\Admin\Shipping;
 
 use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\Master\OrderStatus;
-use Eccube\Entity\Master\ShippingStatus;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
 use Eccube\Repository\Master\CsvTypeRepository;
@@ -239,6 +238,9 @@ class ShippingControllerTest extends AbstractAdminWebTestCase
         );
     }
 
+    /**
+     * 出荷済み処理を実行する
+     */
     public function testMarkAsShipped()
     {
         $this->client->enableProfiler();
@@ -246,9 +248,8 @@ class ShippingControllerTest extends AbstractAdminWebTestCase
         $Order = $this->createOrder($this->createCustomer());
         /** @var Shipping $Shipping */
         $Shipping = $Order->getShippings()->first();
-        $Shipping->setShippingStatus($this->entityManager->find(ShippingStatus::class, ShippingStatus::PREPARED));
-        $this->entityManager->persist($Shipping);
-        $this->entityManager->flush();
+
+        $this->assertFalse($Shipping->isShipped());
 
         $this->client->request(
             'PUT',
@@ -257,10 +258,15 @@ class ShippingControllerTest extends AbstractAdminWebTestCase
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
+        $this->assertTrue($Shipping->isShipped());
+
         $Messages = $this->getMailCollector(false)->getMessages();
         self::assertEquals(0, count($Messages));
     }
 
+    /**
+     * 出荷済み処理と共に出荷完了メールを送信する
+     */
     public function testMarkAsShipped_sendNotifyMail()
     {
         $this->client->enableProfiler();
@@ -268,9 +274,8 @@ class ShippingControllerTest extends AbstractAdminWebTestCase
         $Order = $this->createOrder($this->createCustomer());
         /** @var Shipping $Shipping */
         $Shipping = $Order->getShippings()->first();
-        $Shipping->setShippingStatus($this->entityManager->find(ShippingStatus::class, ShippingStatus::PREPARED));
-        $this->entityManager->persist($Shipping);
-        $this->entityManager->flush();
+
+        $this->assertFalse($Shipping->isShipped());
 
         $this->client->request(
             'PUT',
@@ -279,6 +284,8 @@ class ShippingControllerTest extends AbstractAdminWebTestCase
         );
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $this->assertTrue($Shipping->isShipped());
 
         $Messages = $this->getMailCollector(false)->getMessages();
         self::assertEquals(1, count($Messages));
@@ -290,6 +297,41 @@ class ShippingControllerTest extends AbstractAdminWebTestCase
         self::assertEquals([$Order->getEmail() => null], $Message->getTo());
     }
 
+    /**
+     * 出荷済みの出荷に対しては出荷処理をしない
+     */
+    public function testNotMarkAsShipped()
+    {
+        $this->client->enableProfiler();
+
+        $Order = $this->createOrder($this->createCustomer());
+        /** @var Shipping $Shipping */
+        $Shipping = $Order->getShippings()->first();
+
+        $shippingDate = new \DateTime();
+        $Shipping->setShippingDate($shippingDate);
+        $this->entityManager->persist($Shipping);
+        $this->entityManager->flush();
+
+        $this->assertTrue($Shipping->isShipped());
+
+        $this->client->request(
+            'PUT',
+            $this->generateUrl('admin_shipping_mark_as_shipped', ['id' => $Shipping->getId()]),
+            ['notificationMail' => 'on']
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $this->assertEquals($shippingDate->getTimestamp(), $Shipping->getShippingDate()->getTimestamp());
+
+        $Messages = $this->getMailCollector(false)->getMessages();
+        self::assertEquals(0, count($Messages));
+    }
+
+    /**
+     * 出荷済みの出荷に対して出荷完了メール送信リクエストを送信する
+     */
     public function testSendNotifyMail()
     {
         $this->client->enableProfiler();
@@ -297,7 +339,9 @@ class ShippingControllerTest extends AbstractAdminWebTestCase
         $Order = $this->createOrder($this->createCustomer());
         /** @var Shipping $Shipping */
         $Shipping = $Order->getShippings()->first();
-        $Shipping->setShippingStatus($this->entityManager->find(ShippingStatus::class, ShippingStatus::SHIPPED));
+
+        $shippingDate = new \DateTime();
+        $Shipping->setShippingDate($shippingDate);
         $this->entityManager->persist($Shipping);
         $this->entityManager->flush();
 
@@ -316,5 +360,27 @@ class ShippingControllerTest extends AbstractAdminWebTestCase
 
         self::assertRegExp('/\[.*?\] 商品出荷のお知らせ/', $Message->getSubject());
         self::assertEquals([$Order->getEmail() => null], $Message->getTo());
+    }
+
+    /**
+     * 未出荷の出荷に対して出荷完了メール送信リクエストを送信する
+     */
+    public function testNotSendNotifyMail()
+    {
+        $this->client->enableProfiler();
+
+        $Order = $this->createOrder($this->createCustomer());
+        /** @var Shipping $Shipping */
+        $Shipping = $Order->getShippings()->first();
+
+        $this->client->request(
+            'PUT',
+            $this->generateUrl('admin_shipping_notify_mail', ['id' => $Shipping->getId()])
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $Messages = $this->getMailCollector(false)->getMessages();
+        self::assertEquals(0, count($Messages));
     }
 }

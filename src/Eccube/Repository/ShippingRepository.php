@@ -88,12 +88,6 @@ class ShippingRepository extends AbstractRepository
                 ->andWhere($qb->expr()->in('o.OrderStatus', ':order_status'))
                 ->setParameter('order_status', $searchData['order_status']);
         }
-        // shipping status
-        if (isset($searchData['shipping_status']) && count($searchData['shipping_status'])) {
-            $qb
-                ->andWhere($qb->expr()->in('s.ShippingStatus', ':shipping_status'))
-                ->setParameter('shipping_status', $searchData['shipping_status']);
-        }
         // name
         if (isset($searchData['name']) && StringUtil::isNotBlank($searchData['name'])) {
             $qb
