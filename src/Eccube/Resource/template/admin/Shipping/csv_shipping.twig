@@ -84,7 +84,6 @@ file that was distributed with this source code.
                                         {{ form_widget(form.import_file, {'attr': {'accept': 'text/csv,text/tsv', 'class': 'd-none'}}) }}
                                         {{ form_errors(form.import_file) }}
                                     </div>
-                                    {# TODO: Required validation is not implemented yet #}
                                     <button class="btn btn-ec-conversion" id="upload-button" type="submit">{{ 'admin.shipping.csv_shipping.btn_csv_upload'|trans }}</button>
                                     {% for error in errors %}
                                         <div id="upload_file_box__upload_error--{{ loop.index }}" class="text-danger">{{ error }}</div>
@@ -105,7 +104,7 @@ file that was distributed with this source code.
                                 </div>
                             </div>
                             <div class="col-4 text-right">
-                                <button id="download-button" class="btn btn-ec-regular">{{ 'admin.shipping.csv_shipping.btn_csv_download'|trans }}</button>
+                                <a class="btn btn-ec-regular" href="{{ url('admin_shipping_csv_template') }}">{{ 'admin.shipping.csv_shipping.btn_csv_download'|trans }}</a>
                             </div>
                         </div>
                     </div>

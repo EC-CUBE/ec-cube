@@ -38,7 +38,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CsvImportController extends AbstractCsvImportController
@@ -615,10 +614,6 @@ class CsvImportController extends AbstractCsvImportController
      */
     public function csvTemplate(Request $request, $type)
     {
-        set_time_limit(0);
-
-        $response = new StreamedResponse();
-
         if ($type == 'product') {
             $headers = $this->getProductCsvHeader();
             $filename = 'product.csv';
@@ -629,23 +624,7 @@ class CsvImportController extends AbstractCsvImportController
             throw new NotFoundHttpException();
         }
 
-        $response->setCallback(function () use ($request, $headers) {
-            // ヘッダ行の出力
-            $row = [];
-            foreach ($headers as $key => $value) {
-                $row[] = mb_convert_encoding($key, $this->eccubeConfig['eccube_csv_export_encoding'], 'UTF-8');
-            }
-
-            $fp = fopen('php://output', 'w');
-            fputcsv($fp, $row, $this->eccubeConfig['eccube_csv_export_separator']);
-            fclose($fp);
-        });
-
-        $response->headers->set('Content-Type', 'application/octet-stream');
-        $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
-        $response->send();
-
-        return $response;
+        return $this->sendTemplateResponse($request, array_keys($headers), $filename);
     }
 
     /**
@@ -653,9 +632,10 @@ class CsvImportController extends AbstractCsvImportController
      *
      * @param FormInterface $form
      * @param array $headers
-     *
      * @param bool $rollback
+     *
      * @return array
+     *
      * @throws \Doctrine\DBAL\ConnectionException
      */
     protected function renderWithError($form, $headers, $rollback = true)

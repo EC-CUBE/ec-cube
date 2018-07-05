@@ -144,6 +144,18 @@ class CsvImportController extends AbstractCsvImportController
         }
     }
 
+    /**
+     * アップロード用CSV雛形ファイルダウンロード
+     *
+     * @Route("/%eccube_admin_route%/shipping/csv_template", name="admin_shipping_csv_template")
+     */
+    public function csvTemplate(Request $request)
+    {
+        $columns = array_column($this->getColumnConfig(), 'name');
+
+        return $this->sendTemplateResponse($request, $columns, 'shipping.csv');
+    }
+
     protected function getColumnConfig()
     {
         return [

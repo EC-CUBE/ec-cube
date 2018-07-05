@@ -18,6 +18,8 @@ use Eccube\Service\CsvImportService;
 use Eccube\Util\StringUtil;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class AbstractCsvImportController extends AbstractController
 {
@@ -72,6 +74,30 @@ class AbstractCsvImportController extends AbstractController
         $data = new CsvImportService($file, $this->eccubeConfig['eccube_csv_import_delimiter'], $this->eccubeConfig['eccube_csv_import_enclosure']);
 
         return $data->setHeaderRowNumber(0) ? $data : false;
+    }
+
+    protected function sendTemplateResponse(Request $request, $columns, $filename)
+    {
+        set_time_limit(0);
+
+        $response = new StreamedResponse();
+        $response->setCallback(function () use ($request, $columns) {
+            // ヘッダ行の出力
+            $row = [];
+            foreach ($columns as $column) {
+                $row[] = mb_convert_encoding($column, $this->eccubeConfig['eccube_csv_export_encoding'], 'UTF-8');
+            }
+
+            $fp = fopen('php://output', 'w');
+            fputcsv($fp, $row, $this->eccubeConfig['eccube_csv_export_separator']);
+            fclose($fp);
+        });
+
+        $response->headers->set('Content-Type', 'application/octet-stream');
+        $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
+        $response->send();
+
+        return $response;
     }
 
     /**
