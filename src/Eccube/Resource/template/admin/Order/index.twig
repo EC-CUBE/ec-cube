@@ -223,6 +223,31 @@ file that was distributed with this source code.
             </div>
             <div class="row">
                 <div class="col">
+                    <label class="col-form-label">{{ 'admin.order.index.301'|trans }}</label>
+                    {{ form_widget(searchForm.phone_number) }}
+                    {{ form_errors(searchForm.phone_number) }}
+                </div>
+                <div class="col">
+                    <label class="col-form-label">{{ 'shipping_date_start'|trans }}</label>
+                    <div class="form-row align-items-center">
+                        <div class="col">
+                            <div class="input-group">
+                                {{ form_widget(searchForm.shipping_date_start) }}
+                                {{ form_errors(searchForm.shipping_date_start) }}
+                            </div>
+                        </div>
+                        <div class="col-auto text-center">{{ 'admin.order.index.314'|trans }}</div>
+                        <div class="col">
+                            <div class="input-group">
+                                {{ form_widget(searchForm.shipping_date_end) }}
+                                {{ form_errors(searchForm.shipping_date_end) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
                     <label class="col-form-label">{{ 'searchorder.label.order_no'|trans }}</label>
                     {{ form_widget(searchForm.order_no) }}
                     {{ form_errors(searchForm.order_no) }}
@@ -248,9 +273,13 @@ file that was distributed with this source code.
             </div>
             <div class="row">
                 <div class="col">
-                    <label class="col-form-label">{{ 'admin.order.index.301'|trans }}</label>
-                    {{ form_widget(searchForm.phone_number) }}
-                    {{ form_errors(searchForm.phone_number) }}
+                    <div class="form-row">
+                        <div class="col-12">
+                            <p class="col-form-label">{{ 'tracking_number'|trans }}</p>
+                            {{ form_widget(searchForm.tracking_number) }}
+                            {{ form_errors(searchForm.tracking_number) }}
+                        </div>
+                    </div>
                 </div>
                 <div class="col">
                     <label class="col-form-label">{{ 'admin.order.index.315'|trans }}</label>
@@ -258,19 +287,19 @@ file that was distributed with this source code.
                     {{ form_errors(searchForm.buy_product_name) }}
                 </div>
             </div>
+
             <div class="row">
                 <div class="col">
                     <div class="form-row">
                         <div class="col-12">
-                            <p class="col-form-label">{{ 'admin.order.index.303'|trans }}</p>
-                            {{ form_widget(searchForm.sex, { 'label_attr': { 'class': 'checkbox-inline'}}) }}
-                            {{ form_errors(searchForm.sex) }}
+                            <p class="col-form-label">{{ 'shipping_mail_send'|trans }}</p>
+                            {{ form_widget(searchForm.shipping_mail_send) }}
+                            {{ form_errors(searchForm.shipping_mail_send) }}
                         </div>
                     </div>
                 </div>
                 <div class="col"></div>
             </div>
-
             {# TODO: Need allow plg fields arrange two cols #}
             {% for f in searchForm.getIterator %}
                 {% if f.vars.name matches '[^plg*]' %}

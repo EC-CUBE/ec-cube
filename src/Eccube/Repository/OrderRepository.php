@@ -250,7 +250,9 @@ class OrderRepository extends AbstractRepository
      */
     public function getQueryBuilderBySearchDataForAdmin($searchData)
     {
-        $qb = $this->createQueryBuilder('o');
+        $qb = $this->createQueryBuilder('o')
+            ->select('o, s')
+            ->innerJoin('o.Shippings', 's');
 
         // order_id_start
         if (isset($searchData['order_id']) && StringUtil::isNotBlank($searchData['order_id'])) {
@@ -445,6 +447,12 @@ class OrderRepository extends AbstractRepository
                 ->leftJoin('o.OrderItems', 'oi')
                 ->andWhere('oi.product_name LIKE :buy_product_name')
                 ->setParameter('buy_product_name', '%'.$searchData['buy_product_name'].'%');
+        }
+
+        // 出荷メール送信済かどうか.
+        if (isset($searchData['shipping_mail_send']) && $searchData['shipping_mail_send']) {
+            $qb
+                ->andWhere('s.mail_send_date IS NOT NULL');
         }
 
         // Order By

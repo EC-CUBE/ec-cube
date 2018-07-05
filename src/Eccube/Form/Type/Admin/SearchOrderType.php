@@ -14,6 +14,7 @@
 namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -22,7 +23,6 @@ use Eccube\Common\EccubeConfig;
 use Eccube\Form\Type\PriceType;
 use Eccube\Form\Type\Master\OrderStatusType;
 use Eccube\Form\Type\Master\PaymentType;
-use Eccube\Form\Type\Master\SexType;
 
 class SearchOrderType extends AbstractType
 {
@@ -94,11 +94,9 @@ class SearchOrderType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('sex', SexType::class, [
-                'label' => 'searchorder.label.sex',
+            ->add('tracking_number', TextType::class, [
+                'label' => '送り状番号',
                 'required' => false,
-                'expanded' => true,
-                'multiple' => true,
             ])
             ->add('payment', PaymentType::class, [
                 'label' => 'searchorder.label.payment_method',
@@ -138,22 +136,6 @@ class SearchOrderType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
             ])
-            ->add('shipping_date_start', DateType::class, [
-                'label' => 'searchorder.label.shipping_date_from',
-                'required' => false,
-                'input' => 'datetime',
-                'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
-                'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
-            ])
-            ->add('shipping_date_end', DateType::class, [
-                'label' => 'searchorder.label.shipping_date_to',
-                'required' => false,
-                'input' => 'datetime',
-                'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
-                'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
-            ])
             ->add('update_date_start', DateType::class, [
                 'label' => 'searchorder.label.updated_date_from',
                 'required' => false,
@@ -170,6 +152,22 @@ class SearchOrderType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
             ])
+            ->add('shipping_date_start', DateType::class, [
+                'label' => 'searchorder.label.shipping_date_from',
+                'required' => false,
+                'input' => 'datetime',
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd',
+                'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+            ])
+            ->add('shipping_date_end', DateType::class, [
+                'label' => 'searchorder.label.shipping_date_to',
+                'required' => false,
+                'input' => 'datetime',
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd',
+                'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+            ])
             ->add('payment_total_start', PriceType::class, [
                 'label' => 'searchorder.label.purchased_amount_min',
                 'required' => false,
@@ -180,6 +178,10 @@ class SearchOrderType extends AbstractType
             ])
             ->add('buy_product_name', TextType::class, [
                 'label' => 'searchorder.label.purchased_products',
+                'required' => false,
+            ])
+            ->add('shipping_mail_send', CheckboxType::class, [
+                'label' => '出荷メール送信済',
                 'required' => false,
             ])
         ;
