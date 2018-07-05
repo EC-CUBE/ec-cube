@@ -126,12 +126,12 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
         $this->verify();
     }
 
-    public function testMultiWithID()
+    public function testMultiWithNo()
     {
         $this->entityManager->flush();
 
         $this->searchData = [
-            'multi' => $this->Order2->getId(),
+            'multi' => $this->Order2->getOrderNo(),
         ];
         $this->scenario();
 
