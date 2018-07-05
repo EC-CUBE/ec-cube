@@ -13,18 +13,16 @@
 
 namespace Eccube\Controller\Admin\Shipping;
 
-use Eccube\Controller\AbstractController;
+use Eccube\Controller\Admin\AbstractCsvImportController;
 use Eccube\Entity\Shipping;
 use Eccube\Form\Type\Admin\CsvImportType;
 use Eccube\Repository\ShippingRepository;
 use Eccube\Service\CsvImportService;
-use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 
-class CsvImportController extends AbstractController
+class CsvImportController extends AbstractCsvImportController
 {
     /**
      * @var ShippingRepository
@@ -56,19 +54,24 @@ class CsvImportController extends AbstractController
                 $formFile = $form['import_file']->getData();
 
                 if (!empty($formFile)) {
-                    $this->entityManager->getConfiguration()->setSQLLogger(null);
-                    $this->entityManager->getConnection()->beginTransaction();
-
                     $csv = $this->getImportData($formFile);
-                    $this->loadCsv($csv, $errors);
 
-                    if ($errors) {
-                        $this->entityManager->getConnection()->rollBack();
-                    } else {
-                        $this->entityManager->flush();
-                        $this->entityManager->getConnection()->commit();
+                    try {
+                        $this->entityManager->getConfiguration()->setSQLLogger(null);
+                        $this->entityManager->getConnection()->beginTransaction();
 
-                        $this->addInfo('admin.shipping.csv_import.save.complete', 'admin');
+                        $this->loadCsv($csv, $errors);
+
+                        if ($errors) {
+                            $this->entityManager->getConnection()->rollBack();
+                        } else {
+                            $this->entityManager->flush();
+                            $this->entityManager->getConnection()->commit();
+
+                            $this->addInfo('admin.shipping.csv_import.save.complete', 'admin');
+                        }
+                    } finally {
+                        $this->removeUploadedFile();
                     }
                 }
             }
@@ -139,52 +142,6 @@ class CsvImportController extends AbstractController
                 $Shipping->setShippingDate($shippingDate);
             }
         }
-    }
-
-    /**
-     * アップロードされたCSVファイルの行ごとの処理
-     *
-     * @param UploadedFile $formFile
-     *
-     * @return CsvImportService|bool
-     */
-    protected function getImportData(UploadedFile $formFile)
-    {
-        // アップロードされたCSVファイルを一時ディレクトリに保存
-        $fileName = 'upload_'.StringUtil::random().'.'.$formFile->getClientOriginalExtension();
-        $formFile->move($this->eccubeConfig['eccube_csv_temp_realdir'], $fileName);
-
-        $file = file_get_contents($this->eccubeConfig['eccube_csv_temp_realdir'].'/'.$fileName);
-
-        if ('\\' === DIRECTORY_SEPARATOR && PHP_VERSION_ID >= 70000) {
-            // Windows 環境の PHP7 の場合はファイルエンコーディングを CP932 に合わせる
-            // see https://github.com/EC-CUBE/ec-cube/issues/1780
-            setlocale(LC_ALL, ''); // 既定のロケールに設定
-            if (mb_detect_encoding($file) === 'UTF-8') { // UTF-8 を検出したら SJIS-win に変換
-                $file = mb_convert_encoding($file, 'SJIS-win', 'UTF-8');
-            }
-        } else {
-            // アップロードされたファイルがUTF-8以外は文字コード変換を行う
-            $encode = StringUtil::characterEncoding(substr($file, 0, 6));
-            if ($encode != 'UTF-8') {
-                $file = mb_convert_encoding($file, 'UTF-8', $encode);
-            }
-        }
-
-        $file = StringUtil::convertLineFeed($file);
-
-        $tmp = tmpfile();
-        fwrite($tmp, $file);
-        rewind($tmp);
-        $meta = stream_get_meta_data($tmp);
-        $file = new \SplFileObject($meta['uri']);
-
-        set_time_limit(0);
-
-        // アップロードされたCSVファイルを行ごとに取得
-        $data = new CsvImportService($file, $this->eccubeConfig['eccube_csv_import_delimiter'], $this->eccubeConfig['eccube_csv_import_enclosure']);
-
-        return $data->setHeaderRowNumber(0) ? $data : false;
     }
 
     protected function getColumnConfig()
