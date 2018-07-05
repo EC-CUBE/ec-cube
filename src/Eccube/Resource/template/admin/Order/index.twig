@@ -429,14 +429,23 @@ file that was distributed with this source code.
                                         <th class="border-top-0 pt-2 pb-2 text-center pl-3">
                                             <input type="checkbox" id="check_all" name="filter" value="open">
                                         </th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.328'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.329'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.330'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.331'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.332'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_delivery_number'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.334'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_note'|trans }}</th>
+                                        {#<th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.328'|trans }}</th>#}
+                                        {#<th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.329'|trans }}</th>#}
+                                        {#<th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.330'|trans }}</th>#}
+                                        {#<th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.331'|trans }}</th>#}
+                                        {#<th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.332'|trans }}</th>#}
+                                        {#<th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_delivery_number'|trans }}</th>#}
+                                        {#<th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.334'|trans }}</th>#}
+                                        {#<th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_note'|trans }}</th>#}
+                                        {#<th class="border-top-0 pt-2 pb-2 text-center pr-3"></th>#}
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ '注文番号・注文者・注文日時'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ '支払方法'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ '注文状況'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ '購入金額'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ '問合せ'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ '出荷状況'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ '送り状番号'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'お届け先'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2 text-center pr-3"></th>
                                     </tr>
                                 </thead>
@@ -453,22 +462,24 @@ file that was distributed with this source code.
                                     }
                                 %}
                                 {% for Order in pagination %}
+                                    {% for Shipping in Order.Shippings %}
                                     <tr>
                                         <td class="align-middle text-center pl-3">
                                             <input type="checkbox"  name="ids[]" id="check_{{ Order.id }}" value="{{ Order.id }}">
                                         </td>
-                                        <td class="align-middle text-left" id="order_date--{{ Order.id }}">{{ Order.order_date|date_min }}</td>
-                                        <td class="align-middle text-center" id="id--{{ Order.id }}"><a class="action-edit" href="{{ url('admin_order_edit', { id : Order.id }) }}">{{ Order.order_no }}</a></td>
-                                        <td class="align-middle text-center" id="name--{{ Order.id }}">{{ Order.name01 }} {{ Order.name02 }}</td>
-                                        <td class="align-middle text-center" id="payment_method--{{ Order.id }}">{{ Order.payment_method }}</td>
-                                        <td class="align-middle text-right" id="payment_total--{{ Order.id }}">{{ Order.payment_total|price }}</td>
-                                        <td class="align-middle text-center">
-                                            {% for shipping in Order.getShippings() %}
-                                                <a href="{{ url('admin_shipping_edit', {id: shipping.id}) }}">{{ shipping.id }}</a><br>
-                                            {% endfor %}
+                                        <td class="align-middle text-left">
+                                            <a class="action-edit" href="{{ url('admin_order_edit', { id : Order.id }) }}">{{ Order.order_no }}<br>{{ Order.name01 ~ Order.name02 }}<br>{{ Order.order_date|date_min }}</a>
                                         </td>
-                                        <td class="align-middle text-center"  id="order_status--{{ Order.id }}">
+                                        <td class="align-middle text-center">
+                                            {{ Order.payment_method }}
+                                        </td>
+
+                                        <td class="align-middle text-center">
                                             <span class="badge {{ attribute(cssClassStatus, Order.OrderStatus.id) }}">{{ Order.OrderStatus }}</span>
+                                        </td>
+                                        <td class="align-middle text-right">
+                                            {{ Order.payment_total|price }}<br>
+                                            {{ Order.payment_date ? Order.payment_date|date_day : '未入金'}}
                                         </td>
                                         <td class="align-middle text-center">
                                             {% if Order.note is not empty %}
@@ -476,6 +487,18 @@ file that was distributed with this source code.
                                                     <i class="fa fa-commenting fa-lg text-secondary" aria-hidden="true"></i>
                                                 </a>
                                             {% endif %}
+                                        </td>
+                                        <td class="align-middle text-center">
+                                            {% if Order.is_multiple %}
+                                                {% if Shipping.shipping_date %}<a href="{{ url('admin_shipping_edit', { id: Shipping.id }) }}">{% else %}未出荷{% endif %}
+                                            {% else %}
+                                                {{ Shipping.shipping_date ? Shipping.shipping_date|date_day : '未出荷' }}
+                                            {% endif %}
+                                        </td>
+                                        <td class="align-middle text-center">{{ Shipping.tracking_number }}</td>
+                                        <td class="align-middle text-center">
+                                            {{ Shipping.name01 ~ Shipping.name02 }}<br>
+                                            {{ Shipping.Pref.name }}
                                         </td>
                                         <td class="align-middle pr-3 text-center">
                                             <div class="row justify-content-end">
@@ -490,9 +513,16 @@ file that was distributed with this source code.
                                                         <i class="fa fa-table fa-lg text-secondary" aria-hidden="true"></i>
                                                     </a>
                                                 </div>
+                                                <div class="col-auto text-center">
+                                                    {# TODO: This func is not implemented yet #}
+                                                    <a class="btn btn-ec-actionIcon" href="" data-toggle="tooltip" data-placement="top" title data-original-title="{{ '出荷済にする'|trans }}">
+                                                        <i class="fa fa-check fa-lg text-secondary" aria-hidden="true"></i>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </td>
                                     </tr>
+                                    {% endfor %}
                                 {% endfor %}
                                 </tbody>
                             </table>

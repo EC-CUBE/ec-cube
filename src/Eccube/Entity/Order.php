@@ -46,7 +46,19 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
      */
     public function isMultiple()
     {
-        return count($this->getShippings()) > 1 ? true : false;
+        $Shippings = [];
+        foreach ($this->getOrderItems() as $OrderItem) {
+            if ($Shipping = $OrderItem->getShipping()) {
+                $id = $Shipping->getId();
+                if (isset($Shippings[$id])) {
+                    continue;
+                }
+                $Shippings[$id] = $Shipping;
+            }
+
+        }
+
+        return count($Shippings) > 1 ? true : false;
     }
 
     /**
