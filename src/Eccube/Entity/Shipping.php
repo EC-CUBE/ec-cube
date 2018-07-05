@@ -13,6 +13,7 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\Master\ShippingStatus;
 use Eccube\Service\Calculator\OrderItemCollection;
@@ -195,6 +196,16 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     private $update_date;
 
     /**
+     * @var \Eccube\Entity\Order
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Order", inversedBy="Shippings", cascade={"persist"})
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="order_id", referencedColumnName="id")
+     * })
+     */
+    private $Order;
+
+    /**
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(targetEntity="Eccube\Entity\OrderItem", mappedBy="Shipping", cascade={"persist"})
@@ -230,11 +241,6 @@ class Shipping extends \Eccube\Entity\AbstractEntity
      * })
      */
     private $Delivery;
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $Orders;
 
     /**
      * @var \Eccube\Entity\ProductClass
@@ -878,28 +884,43 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * Set order.
+     *
+     * @param Order $Order
+     *
+     * @return $this
+     */
+    public function setOrder(Order $Order)
+    {
+        $this->Order = $Order;
+
+        return $this;
+    }
+
+    /**
+     * Get order.
+     *
+     * @return Order
+     */
+    public function getOrder()
+    {
+        return $this->Order;
+    }
+
+    /**
      * Get orders.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
     public function getOrders()
     {
-        $Orders = [];
-        foreach ($this->getOrderItems() as $OrderItem) {
-            $Order = $OrderItem->getOrder();
-            if (is_object($Order)) {
-                $name = $Order->getName01(); // XXX lazy loading
-                $Orders[$Order->getId()] = $Order;
-            }
-        }
-        $Result = new \Doctrine\Common\Collections\ArrayCollection();
-        foreach ($Orders as $Order) {
-            $Result->add($Order);
+        // TODO 互換性維持のためいったんのこす.
+        $Orders = new ArrayCollection();
+        if (null !== $this->Order) {
+            $Orders->add($this->Order);
         }
 
-        return $Result;
-        // XXX 以下のロジックだと何故か空の Collection になってしまう場合がある
-        // return new \Doctrine\Common\Collections\ArrayCollection(array_values($Orders));
+        return $Orders;
     }
 
     /**

@@ -13,6 +13,7 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Service\Calculator\OrderItemCollection;
 use Eccube\Service\PurchaseFlow\ItemCollection;
@@ -345,6 +346,13 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     private $OrderItems;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection|Shipping[]
+     *
+     * @ORM\OneToMany(targetEntity="Eccube\Entity\Shipping", mappedBy="Order", cascade={"persist","remove"})
+     */
+    private $Shippings;
+
+    /**
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(targetEntity="Eccube\Entity\MailHistory", mappedBy="Order", cascade={"remove"})
@@ -460,6 +468,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
         ;
 
         $this->OrderItems = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->Shippings = new \Doctrine\Common\Collections\ArrayCollection();
         $this->MailHistories = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -1329,49 +1338,42 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     }
 
     /**
+     * Add shipping.
+     *
+     * @param \Eccube\Entity\Shipping $Shipping
+     *
+     * @return Shipping
+     */
+    public function addShipping(\Eccube\Entity\Shipping $Shipping)
+    {
+        $this->Shippings[] = $Shipping;
+
+        return $this;
+    }
+
+    /**
+     * Remove shipping.
+     *
+     * @param \Eccube\Entity\Shipping $Shipping
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeShipping(\Eccube\Entity\Shipping $Shipping)
+    {
+        return $this->Shippings->removeElement($Shipping);
+    }
+
+    /**
      * Get shippings.
      *
-     * 明細に紐づくShippingを, 重複をのぞいて取得する
-     *
-     * @return \Doctrine\Common\Collections\Collection|Shipping[]
+     * @return \Doctrine\Common\Collections\Collection|\Eccube\Entity\Shipping[]
      */
     public function getShippings()
     {
-        $Shippings = [];
-        foreach ($this->getOrderItems() as $OrderItem) {
-            if ($Shipping = $OrderItem->getShipping()) {
-                // 永続化される前のShippingが渡ってくる場合もあるため,
-                // Shipping::id()ではなくspl_object_id()を使用している
-                $id = \spl_object_id($Shipping);
-                if (!isset($Shippings[$id])) {
-                    $Shippings[$id] = $Shipping;
-                }
-            }
-        }
+        $criteria = Criteria::create()
+            ->orderBy(['name01' => Criteria::ASC, 'name02' => Criteria::ASC]);
 
-        usort($Shippings, function (Shipping $a, Shipping $b) {
-            $result = strnatcmp($a->getName01(), $b->getName01());
-            if ($result === 0) {
-                return strnatcmp($a->getName02(), $b->getName02());
-            } else {
-                return $result;
-            }
-        });
-
-        $Result = new \Doctrine\Common\Collections\ArrayCollection();
-        foreach ($Shippings as $Shipping) {
-            $Result->add($Shipping);
-        }
-
-        return $Result;
-        // XXX 以下のロジックだと何故か空の Collection になってしまう場合がある
-        // return new \Doctrine\Common\Collections\ArrayCollection(array_values($Shippings));
-    }
-
-    public function setShippings($dummy)
-    {
-        // XXX これが無いと Eccube\Form\Type\Shopping\OrderType がエラーになる
-        return $this;
+        return $this->Shippings->matching($criteria);
     }
 
     /**

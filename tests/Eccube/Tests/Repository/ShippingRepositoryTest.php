@@ -106,10 +106,11 @@ class ShippingRepositoryTest extends EccubeTestCase
             $Shipping = new Shipping();
             $Shipping->copyProperties($this->Customer);
             $Shipping
+                ->setOrder($this->Order)
                 ->setName01($faker->lastName)
                 ->setName02($faker->firstName)
                 ->setKana01('セイ');
-
+            $this->Order->addShipping($Shipping);
             $this->entityManager->persist($Shipping);
 
             $OrderItem = new OrderItem();
