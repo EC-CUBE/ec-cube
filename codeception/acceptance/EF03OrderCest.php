@@ -1,15 +1,16 @@
 <?php
 
 use Codeception\Util\Fixtures;
+use Eccube\Entity\Customer;
 use Page\Front\CartPage;
+use Page\Front\CustomerAddressAddPage;
+use Page\Front\MultipleShippingPage;
 use Page\Front\ProductDetailPage;
 use Page\Front\ShippingEditPage;
 use Page\Front\ShoppingCompletePage;
 use Page\Front\ShoppingConfirmPage;
 use Page\Front\ShoppingLoginPage;
 use Page\Front\ShoppingPage;
-use Page\Front\MultipleShippingPage;
-use Page\Front\CustomerAddressAddPage;
 
 /**
  * @group front
@@ -875,5 +876,32 @@ class EF03OrderCest
         // 完了画面 -> topへ
         ShoppingCompletePage::at($I)->TOPへ();
         $I->see('新着情報', '.ec-news__title');
+    }
+
+    public function order_複数配送設定画面での販売制限エラー(\AcceptanceTester $I)
+    {
+        /* @var Customer $Customer */
+        $Customer = (Fixtures::get('createCustomer'))();
+
+        ProductDetailPage::go($I, 2)
+            ->カートに入れる(1);
+        $I->acceptPopup();
+
+        CartPage::go($I)
+            ->レジに進む();
+
+        ShoppingLoginPage::at($I)
+            ->ログイン($Customer->getEmail());
+
+        ShoppingPage::at($I)
+            ->お届け先追加();
+
+        MultipleShippingPage::at($I)
+            ->入力_数量('0', '0', 100)
+            ->選択したお届け先に送る();
+
+        MultipleShippingPage::at($I);
+
+        $I->see('選択された商品(パーコレーター)は販売制限しております。', 'p.errormsg');
     }
 }

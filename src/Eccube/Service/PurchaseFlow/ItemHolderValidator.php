@@ -35,7 +35,7 @@ abstract class ItemHolderValidator
 
             return ProcessResult::success();
         } catch (InvalidItemException $e) {
-            return ProcessResult::error($e->getMessage());
+            return $e->isWarning() ? ProcessResult::warn($e->getMessage()) : ProcessResult::error($e->getMessage());
         }
     }
 
