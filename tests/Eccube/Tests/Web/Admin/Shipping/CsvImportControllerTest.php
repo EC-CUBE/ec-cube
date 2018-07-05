@@ -15,9 +15,10 @@ namespace Eccube\Tests\Web\Admin\Shipping;
 
 use Eccube\Controller\Admin\Shipping\CsvImportController;
 use Eccube\Service\CsvImportService;
-use Eccube\Tests\EccubeTestCase;
+use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class CsvImportControllerTest extends EccubeTestCase
+class CsvImportControllerTest extends AbstractAdminWebTestCase
 {
     public function testLoadCsv()
     {
@@ -124,5 +125,45 @@ class CsvImportControllerTest extends EccubeTestCase
         $this->entityManager->flush();
 
         return $errors;
+    }
+
+    public function testCsvShipping()
+    {
+        $Shipping1 = $this->createOrder($this->createCustomer())->getShippings()[0];
+        $Shipping2 = $this->createOrder($this->createCustomer())->getShippings()[0];
+
+        $tempFile = tempnam(sys_get_temp_dir(), 'csv_import_controller_test');
+        file_put_contents($tempFile, implode(PHP_EOL, [
+            '出荷ID,出荷伝票番号,出荷日',
+            $Shipping1->getId().',1234,2018-01-11',
+            $Shipping2->getId().',5678,2018-02-22',
+        ]));
+
+        $file = new UploadedFile($tempFile, 'shipping.csv', 'text/csv', null, null, true);
+
+        $crawler = $this->client->request(
+            'POST',
+            $this->generateUrl('admin_shipping_csv_import'),
+            [
+                'admin_csv_import' => [
+                    '_token' => 'dummy',
+                    'import_file' => $file,
+                ],
+            ],
+            ['import_file' => $file]
+        );
+
+        $this->assertRegexp(
+            '/出荷登録CSVファイルをアップロードしました。/u',
+            $crawler->filter('div.alert-primary')->text()
+        );
+
+        $this->entityManager->refresh($Shipping1);
+        self::assertEquals('1234', $Shipping1->getTrackingNumber());
+        self::assertEquals(\DateTime::createFromFormat('Y-m-d', '2018-01-11'), $Shipping1->getShippingDate());
+
+        $this->entityManager->refresh($Shipping2);
+        self::assertEquals('5678', $Shipping2->getTrackingNumber());
+        self::assertEquals(\DateTime::createFromFormat('Y-m-d', '2018-02-22'), $Shipping2->getShippingDate());
     }
 }
