@@ -196,6 +196,13 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     private $update_date;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="mail_send_date", type="datetimetz", nullable=true)
+     */
+    private $mail_send_date;
+
+    /**
      * @var \Eccube\Entity\Order
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Order", inversedBy="Shippings", cascade={"persist"})
@@ -737,6 +744,30 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     public function getUpdateDate()
     {
         return $this->update_date;
+    }
+
+    /**
+     * Set mailSendDate.
+     *
+     * @param \DateTime $mailSendDate
+     *
+     * @return Shipping
+     */
+    public function setMailSendDate($mailSendDate)
+    {
+        $this->mail_send_date = $mailSendDate;
+
+        return $this;
+    }
+
+    /**
+     * Get mailSendDate.
+     *
+     * @return \DateTime
+     */
+    public function getmailSendDate()
+    {
+        return $this->mail_send_date;
     }
 
     /**
