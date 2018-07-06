@@ -243,19 +243,19 @@ file that was distributed with this source code.
                     {{ form_errors(searchForm.phone_number) }}
                 </div>
                 <div class="col">
-                    <label class="col-form-label">{{ 'shipping_date_start'|trans }}</label>
+                    <label class="col-form-label">{{ 'searchorder.label.shipping_delivery_date'|trans }}</label>
                     <div class="form-row align-items-center">
                         <div class="col">
                             <div class="input-group">
-                                {{ form_widget(searchForm.shipping_date_start) }}
-                                {{ form_errors(searchForm.shipping_date_start) }}
+                                {{ form_widget(searchForm.shipping_delivery_date_start) }}
+                                {{ form_errors(searchForm.shipping_delivery_date_start) }}
                             </div>
                         </div>
                         <div class="col-auto text-center">{{ 'admin.order.index.314'|trans }}</div>
                         <div class="col">
                             <div class="input-group">
-                                {{ form_widget(searchForm.shipping_date_end) }}
-                                {{ form_errors(searchForm.shipping_date_end) }}
+                                {{ form_widget(searchForm.shipping_delivery_date_end) }}
+                                {{ form_errors(searchForm.shipping_delivery_date_end) }}
                             </div>
                         </div>
                     </div>
@@ -290,7 +290,7 @@ file that was distributed with this source code.
                 <div class="col">
                     <div class="form-row">
                         <div class="col-12">
-                            <p class="col-form-label">{{ 'tracking_number'|trans }}</p>
+                            <p class="col-form-label">{{ 'searchorder.label.tracking_number'|trans }}</p>
                             {{ form_widget(searchForm.tracking_number) }}
                             {{ form_errors(searchForm.tracking_number) }}
                         </div>
@@ -307,7 +307,7 @@ file that was distributed with this source code.
                 <div class="col">
                     <div class="form-row">
                         <div class="col-12">
-                            <p class="col-form-label">{{ 'shipping_mail_send'|trans }}</p>
+                            <p class="col-form-label">{{ 'searchorder.label.shipping_mail_send'|trans }}</p>
                             {{ form_widget(searchForm.shipping_mail_send) }}
                             {{ form_errors(searchForm.shipping_mail_send) }}
                         </div>
@@ -444,23 +444,14 @@ file that was distributed with this source code.
                                         <th class="border-top-0 pt-2 pb-2 text-center pl-3">
                                             <input type="checkbox" id="check_all" name="filter" value="open">
                                         </th>
-                                        {#<th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.328'|trans }}</th>#}
-                                        {#<th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.329'|trans }}</th>#}
-                                        {#<th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.330'|trans }}</th>#}
-                                        {#<th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.331'|trans }}</th>#}
-                                        {#<th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.332'|trans }}</th>#}
-                                        {#<th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_delivery_number'|trans }}</th>#}
-                                        {#<th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.334'|trans }}</th>#}
-                                        {#<th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_note'|trans }}</th>#}
-                                        {#<th class="border-top-0 pt-2 pb-2 text-center pr-3"></th>#}
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ '注文番号・注文者・注文日時'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ '支払方法'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ '注文状況'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ '購入金額'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ '問合せ'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ '出荷状況'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ '送り状番号'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'お届け先'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_order_description'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_payment'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_order_status'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_payment_total'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_message'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_shipping_status'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_tracking_number'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_delivery_address'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2 text-center pr-3"></th>
                                     </tr>
                                 </thead>
@@ -494,7 +485,7 @@ file that was distributed with this source code.
                                         </td>
                                         <td class="align-middle text-right">
                                             {{ Order.payment_total|price }}<br>
-                                            {{ Order.payment_date ? Order.payment_date|date_day : '未入金'}}
+                                            {{ Order.payment_date ? Order.payment_date|date_day : 'admin.order.index.not_payment'|trans }}
                                         </td>
                                         <td class="align-middle text-center">
                                             {% if Order.note is not empty %}
@@ -505,9 +496,9 @@ file that was distributed with this source code.
                                         </td>
                                         <td class="align-middle text-center">
                                             {% if Order.is_multiple %}
-                                                {% if Shipping.shipping_date %}<a href="{{ url('admin_shipping_edit', { id: Shipping.id }) }}">{% else %}未出荷{% endif %}
+                                                {% if Shipping.shipping_date %}<a href="{{ url('admin_shipping_edit', { id: Shipping.id }) }}">{% else %}{{ 'admin.order.index.not_shipping'|trans }}{% endif %}
                                             {% else %}
-                                                {{ Shipping.shipping_date ? Shipping.shipping_date|date_day : '未出荷' }}
+                                                {{ Shipping.shipping_date ? Shipping.shipping_date|date_day : 'admin.order.index.not_shipping'|trans }}
                                             {% endif %}
                                         </td>
                                         <td class="align-middle text-center">{{ Shipping.tracking_number }}</td>

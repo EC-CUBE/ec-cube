@@ -95,7 +95,11 @@ class SearchOrderType extends AbstractType
                 ],
             ])
             ->add('tracking_number', TextType::class, [
-                'label' => '送り状番号',
+                'label' => 'searchorder.label.tracking_number',
+                'required' => false,
+            ])
+            ->add('shipping_mail_send', CheckboxType::class, [
+                'label' => 'searchorder.label.shipping_mail_send',
                 'required' => false,
             ])
             ->add('payment', PaymentType::class, [
@@ -152,16 +156,16 @@ class SearchOrderType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
             ])
-            ->add('shipping_date_start', DateType::class, [
-                'label' => 'searchorder.label.shipping_date_from',
+            ->add('shipping_delivery_date_start', DateType::class, [
+                'label' => 'searchorder.label.shipping_delivery_date_start',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
             ])
-            ->add('shipping_date_end', DateType::class, [
-                'label' => 'searchorder.label.shipping_date_to',
+            ->add('shipping_delivery_date_end', DateType::class, [
+                'label' => 'searchorder.label.shipping_delivery_date_end',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -178,10 +182,6 @@ class SearchOrderType extends AbstractType
             ])
             ->add('buy_product_name', TextType::class, [
                 'label' => 'searchorder.label.purchased_products',
-                'required' => false,
-            ])
-            ->add('shipping_mail_send', CheckboxType::class, [
-                'label' => '出荷メール送信済',
                 'required' => false,
             ])
         ;

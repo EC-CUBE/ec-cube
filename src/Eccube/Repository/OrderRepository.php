@@ -397,22 +397,6 @@ class OrderRepository extends AbstractRepository
                 ->setParameter('payment_date_end', $date);
         }
 
-        // shipping_date
-        if (!empty($searchData['shipping_date_start']) && $searchData['shipping_date_start']) {
-            $date = $searchData['shipping_date_start'];
-            $qb
-                ->andWhere('o.shipping_date >= :shipping_date_start')
-                ->setParameter('shipping_date_start', $date);
-        }
-        if (!empty($searchData['shipping_date_end']) && $searchData['shipping_date_end']) {
-            $date = clone $searchData['shipping_date_end'];
-            $date = $date
-                ->modify('+1 days');
-            $qb
-                ->andWhere('o.shipping_date < :shipping_date_end')
-                ->setParameter('shipping_date_end', $date);
-        }
-
         // update_date
         if (!empty($searchData['update_date_start']) && $searchData['update_date_start']) {
             $date = $searchData['update_date_start'];
@@ -449,10 +433,33 @@ class OrderRepository extends AbstractRepository
                 ->setParameter('buy_product_name', '%'.$searchData['buy_product_name'].'%');
         }
 
-        // 出荷メール送信済かどうか.
+        // 発送メール送信済かどうか.
         if (isset($searchData['shipping_mail_send']) && $searchData['shipping_mail_send']) {
             $qb
                 ->andWhere('s.mail_send_date IS NOT NULL');
+        }
+
+        // 送り状番号.
+        if (!empty($searchData['tracking_number'])) {
+            $qb
+                ->andWhere('s.tracking_number = :tracking_number')
+                ->setParameter('tracking_number', $searchData['tracking_number']);
+        }
+
+        // お届け予定日(Shipping.delivery_date)
+        if (!empty($searchData['shipping_delivery_date_start']) && $searchData['shipping_delivery_date_start']) {
+            $date = $searchData['shipping_delivery_date_start'];
+            $qb
+                ->andWhere('s.shipping_delivery_date >= :shipping_delivery_date_start')
+                ->setParameter('shipping_delivery_date_start', $date);
+        }
+        if (!empty($searchData['shipping_delivery_date_end']) && $searchData['shipping_delivery_date_end']) {
+            $date = clone $searchData['shipping_delivery_date_end'];
+            $date = $date
+                ->modify('+1 days');
+            $qb
+                ->andWhere('s.shipping_delivery_date < :shipping_delivery_date_end')
+                ->setParameter('shipping_delivery_date_end', $date);
         }
 
         // Order By
