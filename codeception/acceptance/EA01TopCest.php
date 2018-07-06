@@ -53,19 +53,19 @@ class EA01TopCest
         // https://github.com/EC-CUBE/ec-cube/issues/1908
         // // 入金待ちをクリックすると「受注管理＞入金待ち」のページに遷移することを確認
         // $I->click(TopPage::$受付状況_入金待ち);
-        // $I->see('受注マスター', self::ページタイトル);
+        // $I->see('受注一覧', self::ページタイトル);
         // $I->seeInField(OrderManagePage::$検索条件_受注ステータス, '2'/*入金待ち*/);
         // $I->goToAdminPage();
         //
         // // 入金済みをクリックすると「受注管理＞入金済み」のページに遷移することを確認
         // $I->click(TopPage::$受付状況_入金済み);
-        // $I->see('受注マスター', self::ページタイトル);
+        // $I->see('受注一覧', self::ページタイトル);
         // $I->seeInField(OrderManagePage::$検索条件_受注ステータス, '6'/*入金済み*/);
         // $I->goToAdminPage();
         //
         // // 取り寄せ中をクリックすると「受注管理＞取り寄せ」のページに遷移することを確認
         // $I->click(TopPage::$受付状況_取り寄せ中);
-        // $I->see('受注マスター', self::ページタイトル);
+        // $I->see('受注一覧', self::ページタイトル);
         // $I->seeInField(OrderManagePage::$検索条件_受注ステータス, '4'/*取り寄せ中*/);
         // $I->goToAdminPage();
 
@@ -78,11 +78,11 @@ class EA01TopCest
 
         // ショップ情報の在庫切れ商品をクリックすると商品管理ページに遷移することを確認
         $I->click(TopPage::$ショップ状況_在庫切れ商品);
-        $I->see('商品マスター', self::ページタイトル);
+        $I->see('商品一覧', self::ページタイトル);
         $I->goToAdminPage();
 
         // ショップ情報の会員数をクリックすると会員管理に遷移することを確認
         $I->click(TopPage::$ショップ状況_会員数);
-        $I->see('会員マスター', self::ページタイトル);
+        $I->see('会員一覧', self::ページタイトル);
     }
 }
