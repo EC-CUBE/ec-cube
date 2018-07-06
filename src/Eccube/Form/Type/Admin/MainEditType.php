@@ -54,7 +54,7 @@ class MainEditType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'max' => $app['config']['stext_len'],
+                        'max' => $app['config']['sltext_len'],
                     ))
                 )
             ))
@@ -95,7 +95,7 @@ class MainEditType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $app['config']['stext_len'],
+                        'max' => $app['config']['sltext_len'],
                     ))
                 )
             ))
@@ -104,7 +104,7 @@ class MainEditType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $app['config']['stext_len'],
+                        'max' => $app['config']['sltext_len'],
                     ))
                 )
             ))
@@ -113,7 +113,7 @@ class MainEditType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $app['config']['stext_len'],
+                        'max' => $app['config']['sltext_len'],
                     ))
                 )
             ))
@@ -122,7 +122,7 @@ class MainEditType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $app['config']['stext_len'],
+                        'max' => $app['config']['sltext_len'],
                     ))
                 )
             ))->add('meta_tags', 'textarea', array(
