@@ -55,7 +55,6 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
                 }
                 $Shippings[$id] = $Shipping;
             }
-
         }
 
         return count($Shippings) > 1 ? true : false;
@@ -351,7 +350,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     private $complete_mail_message;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
+     * @var \Doctrine\Common\Collections\Collection|OrderItem[]
      *
      * @ORM\OneToMany(targetEntity="Eccube\Entity\OrderItem", mappedBy="Order", cascade={"persist","remove"})
      */
