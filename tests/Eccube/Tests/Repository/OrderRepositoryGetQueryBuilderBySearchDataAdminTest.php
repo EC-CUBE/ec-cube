@@ -396,6 +396,7 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
 
     public function testCommitDateStart()
     {
+        $this->markTestSkipped('order.shipping_dateは不要と思われる.');
         $Status = $this->orderStatusRepo->find(5);
         $this->orderRepo->changeStatus($this->Order2->getId(), $Status);
 
@@ -412,6 +413,7 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
 
     public function testCommitDateEnd()
     {
+        $this->markTestSkipped('order.shipping_dateは不要と思われる.');
         $Status = $this->orderStatusRepo->find(5);
         $this->orderRepo->changeStatus($this->Order2->getId(), $Status);
         $this->searchData = [
