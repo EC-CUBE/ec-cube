@@ -435,7 +435,7 @@ class FileController extends AbstractController
 
     private function getUserDataDir($nowDir = null)
     {
-        return rtrim($this->getParameter('kernel.project_dir').'/html/user_data'.$nowDir, '/');
+        return rtrim($this->getParameter('kernel.project_dir').'/html/user_data/'.$nowDir, '/');
     }
 
     private function getJailDir($path)
