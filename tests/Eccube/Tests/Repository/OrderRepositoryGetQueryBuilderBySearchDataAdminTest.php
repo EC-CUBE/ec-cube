@@ -17,10 +17,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
+use Eccube\Entity\Shipping;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\Master\SexRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Tests\EccubeTestCase;
+use Eccube\Util\StringUtil;
 
 /**
  * OrderRepository::getQueryBuilderBySearchDataForAdminTest test cases.
@@ -483,5 +485,55 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
         $this->expected = 2;
         $this->actual = count($this->Results);
         $this->verify();
+    }
+
+    /**
+     * Shippingを対象とする検索のテスト.
+     *
+     * 複数のShippingをもつOrderに対して, Shippingを対象として検索すると, ヒットしたShippingのみ取得できることを確認する.
+     */
+    public function testSearchShipping()
+    {
+        $trackingNumber = StringUtil::random();
+        $Shipping = new Shipping();
+        $Shipping->copyProperties($this->Customer);
+        $Shipping
+            ->setOrder($this->Order1)
+            ->setTrackingNumber($trackingNumber);
+
+        $this->Order1->addShipping($Shipping);
+
+        $this->entityManager->flush();
+
+        $this->searchData = [
+            'order_no' => $this->Order1->getOrderNo(),
+        ];
+
+        $this->scenario();
+
+        $this->expected = 1;
+        $this->actual = count($this->Results);
+        $this->verify();
+
+        $this->expected = 2;
+        $this->actual = count($this->Results[0]->getShippings());
+        $this->verify('Shippingは2件取得できるはず');
+
+        $this->entityManager->clear();
+
+        $this->searchData = [
+            'order_no' => $this->Order1->getOrderNo(),
+            'tracking_number' => $trackingNumber,
+        ];
+
+        $this->scenario();
+
+        $this->expected = 1;
+        $this->actual = count($this->Results);
+        $this->verify();
+
+        $this->expected = 1;
+        $this->actual = count($this->Results[0]->getShippings());
+        $this->verify('Shippingは1件のみ取得できるはず');
     }
 }
