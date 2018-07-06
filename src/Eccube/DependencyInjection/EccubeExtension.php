@@ -45,11 +45,6 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
         // DB接続後, 有効無効の判定を行う.
         $container->setParameter('eccube.plugins.disabled', $pluginDirs);
 
-        // FIXME WebTestCase で DATABASE_URL が取得できず落ちる
-        if (!array_key_exists('APP_ENV', $_ENV) || $_ENV['APP_ENV'] == 'test') {
-            return;
-        }
-
         // doctrine.yml, または他のprependで差し込まれたdoctrineの設定値を取得する.
         $configs = $container->getExtensionConfig('doctrine');
 
