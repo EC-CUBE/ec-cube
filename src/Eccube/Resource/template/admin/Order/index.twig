@@ -127,7 +127,22 @@ file that was distributed with this source code.
                         <div class="form-row">
                             <div class="form-group col-12">
                                 <p class="col-form-label">{{ 'admin.order.index.298'|trans }}</p>
-                                {{ form_widget(searchForm.status, {'label_attr': {'class': 'checkbox-inline'}}) }}
+                                <div id="admin_search_order_status">
+                                    {% set statusForm = searchForm.status %}
+                                    {% for status_id, child in statusForm.children %}
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox"
+                                                   id="{{ child.vars.id }}"
+                                                   name="{{ child.vars.full_name }}"
+                                                   class="form-check-input"
+                                                   value="{{ child.vars.value }}"{{ child.vars.checked ? ' checked="checked"'}}>
+                                            <label class="form-check-label" for="{{ child.vars.id }}">{{ child.vars.label }}</label>
+                                            {%- if statusForm.vars.order_count[status_id].display -%}
+                                                (<a href="{{ url('admin_order', { 'order_status_id': status_id })}}">{{ statusForm.vars.order_count[status_id].count }}</a>)
+                                            {%- endif %}
+                                        </div>
+                                    {% endfor %}
+                                </div>
                                 {{ form_errors(searchForm.status) }}
                             </div>
                         </div>

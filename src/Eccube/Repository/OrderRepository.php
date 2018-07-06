@@ -527,4 +527,24 @@ class OrderRepository extends AbstractRepository
 
         return null;
     }
+
+    /**
+     * ステータスごとの受注件数を取得する.
+     *
+     * @param $OrderStatusOrId
+     *
+     * @return int
+     *
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function countByOrderStatus($OrderStatusOrId)
+    {
+        return (int) $this->createQueryBuilder('o')
+            ->select('COALESCE(COUNT(o.id), 0)')
+            ->where('o.OrderStatus = :OrderStatus')
+            ->setParameter('OrderStatus', $OrderStatusOrId)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }
