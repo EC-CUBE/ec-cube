@@ -229,10 +229,16 @@ class OrderController extends AbstractController
                  * 初期表示の場合.
                  */
                 $page_no = 1;
-                $searchData = [];
+                $viewData = [];
+
+                if ($statusId = (int) $request->get('order_status_id')) {
+                    $viewData = ['status' => $statusId];
+                }
+
+                $searchData = FormUtil::submitAndGetData($searchForm, $viewData);
 
                 // セッション中の検索条件, ページ番号を初期化.
-                $this->session->set('eccube.admin.order.search', $searchData);
+                $this->session->set('eccube.admin.order.search', $viewData);
                 $this->session->set('eccube.admin.order.search.page_no', $page_no);
             }
         }
