@@ -12,7 +12,7 @@ file that was distributed with this source code.
     <ul class="c-mainNavArea__nav">
         <li class="c-mainNavArea__navItem">
             <a class="c-mainNavArea__navItemTitle" href="{{ url('admin_homepage') }}">
-                <i class="fa fa-home" aria-hidden="true"></i>
+                <i class="fa fa-home fa-fw" aria-hidden="true"></i>
                 <span>{{ 'admin.nav.home'|trans }}</span>
             </a>
         </li>
@@ -22,7 +22,7 @@ file that was distributed with this source code.
                     <a class="c-mainNavArea__navItemTitle{{ active_menus(menus)[0] != level1.id ? ' collapsed' }}"
                        data-toggle="collapse" href="#nav-{{ level1.id }}"
                        aria-expanded="{{ active_menus(menus)[0] == level1.id ? 'true' : 'false' }}"
-                       aria-controls="nav-{{ level1.id }}"><i class="fa {{ level1.icon }}"
+                       aria-controls="nav-{{ level1.id }}"><i class="fa {{ level1.icon }} fa-fw"
                                                               aria-hidden="true"></i><span>{{ level1.name|trans }}</span></a>
                     <ul class="collapse {% if active_menus(menus)[0] == level1.id %} show{% endif %}"
                         id="nav-{{ level1.id }}">
@@ -61,7 +61,7 @@ file that was distributed with this source code.
                                     class="fa {{ level1.icon }}"
                                     aria-hidden="true"></i><span>{{ level1.name|trans }}</span></a>
                     {% else %}
-                        <div class="c-mainNavArea__navItemTitle"><i class="fa {{ level1.icon }}" aria-hidden="true"></i><span>{{ level1.name|trans }}</span>
+                        <div class="c-mainNavArea__navItemTitle"><i class="fa {{ level1.icon }} fa-fw" aria-hidden="true"></i><span>{{ level1.name|trans }}</span>
                         </div>
                     {% endif %}
                 {% endif %}
@@ -73,7 +73,7 @@ file that was distributed with this source code.
         <li class="c-mainNavArea__navItem">
             <a class="c-mainNavArea__navItemTitle collapsed" data-toggle="collapse" href="#others" aria-expanded="false"
                aria-controls="others">
-                <i class="fa fa-truck" aria-hidden="true"></i>
+                <i class="fa fa-truck fa-fw" aria-hidden="true"></i>
                 <span>{{ 'admin.nav.other'|trans }}</span>
             </a>
             <ul class="collapse" id="others">
