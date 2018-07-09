@@ -296,7 +296,7 @@ return [
     'shopping.label.edit' => '変更',
     'shopping.label.delivery_method' => '配送方法',
     'shopping.label.delivery_date' => 'お届け日',
-    'shopping.label.anytime' => '',
+    'shopping.label.anytime' => '指定なし',
     'shopping.label.delivery_hours' => 'お届け時間',
     'shopping.label.btn.delivery_address' => 'お届け先を追加する',
     'shopping.label.payment_method' => 'お支払方法',
