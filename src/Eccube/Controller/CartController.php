@@ -90,12 +90,10 @@ class CartController extends AbstractController
         $totalQuantity = 0;
 
         foreach ($Carts as $Cart) {
-
             $quantity[$Cart->getCartKey()] = 0;
             $isDeliveryFree[$Cart->getCartKey()] = false;
 
             if ($this->baseInfo->getDeliveryFreeQuantity()) {
-
                 if ($this->baseInfo->getDeliveryFreeQuantity() > $Cart->getQuantity()) {
                     $quantity[$Cart->getCartKey()] = $this->baseInfo->getDeliveryFreeQuantity() - $Cart->getQuantity();
                 } else {
@@ -104,7 +102,6 @@ class CartController extends AbstractController
             }
 
             if ($this->baseInfo->getDeliveryFreeAmount()) {
-
                 if (!$isDeliveryFree[$Cart->getCartKey()] && $this->baseInfo->getDeliveryFreeAmount() <= $Cart->getTotalPrice()) {
                     $isDeliveryFree[$Cart->getCartKey()] = true;
                 } else {
@@ -114,7 +111,6 @@ class CartController extends AbstractController
 
             $totalPrice += $Cart->getTotalPrice();
             $totalQuantity += $Cart->getQuantity();
-
         }
 
         // カートが分割された時のセッション情報を削除
