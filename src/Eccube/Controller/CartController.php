@@ -208,9 +208,8 @@ class CartController extends AbstractController
      */
     public function buystep(Request $request, $index)
     {
-
         $Carts = $this->cartService->getCart();
-        if(!is_object($Carts)){
+        if (!is_object($Carts)) {
             return $this->redirectToRoute('cart');
         }
         // FRONT_CART_BUYSTEP_INITIALIZE
