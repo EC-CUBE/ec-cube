@@ -580,6 +580,7 @@ class Generator
         $Shipping = new Shipping();
         $Shipping->copyProperties($Customer);
         $Shipping
+            ->setOrder($Order)
             ->setPref($Pref)
             ->setDelivery($Delivery)
             ->setFeeId($DeliveryFee->getId())
@@ -587,6 +588,7 @@ class Generator
             ->setShippingDeliveryName($Delivery->getName());
         $ShippingStatus = $this->entityManager->find(ShippingStatus::class, ShippingStatus::PREPARED);
         $Shipping->setShippingStatus($ShippingStatus);
+        $Order->addShipping($Shipping);
 
         $this->entityManager->persist($Shipping);
         $this->entityManager->flush($Shipping);
