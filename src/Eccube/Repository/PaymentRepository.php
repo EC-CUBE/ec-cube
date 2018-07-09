@@ -124,7 +124,7 @@ class PaymentRepository extends AbstractRepository
                 continue;
             }
             foreach ($p as $payment) {
-                if ($payment->isVisible()) {
+                if (!method_exists($payment, 'isVisible') || $payment->isVisible()) {
                     $payments[$payment['id']] = $payment;
                     $saleTypes[$Delivery->getSaleType()->getId()][$payment['id']] = true;
                 }
