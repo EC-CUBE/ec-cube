@@ -899,7 +899,7 @@ return [
     'admin.customer.edit.98' => '番地・ビル名（例：1-3-5）',
     'admin.customer.edit.99' => '購入履歴',
     'admin.customer.edit.100' => '注文日時',
-    'admin.customer.edit.101' => '注文番号',
+    'admin.customer.edit.101' => '受注番号',
     'admin.customer.edit.102' => '購入金額',
     'admin.customer.edit.103' => '出荷日',
     'admin.customer.edit.104' => '支払方法',
