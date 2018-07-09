@@ -341,7 +341,6 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $Orders = $this->orderRepository->findBy(['OrderStatus' => $OrderStatus], [], 2);
         foreach ($Orders as $Order) {
             $orderIds[] = $Order->getId();
-            $this->assertEquals(null, $Order->getShippingDate());
             $this->assertEquals(null, $Order->getPaymentDate());
         }
 
@@ -359,12 +358,6 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         if ($orderStatusId == OrderStatus::PAID) {
             foreach ($result as $Order) {
                 $this->assertNotNull($Order->getPaymentDate());
-            }
-        }
-
-        if ($orderStatusId == OrderStatus::DELIVERED) {
-            foreach ($result as $Order) {
-                $this->assertNotNull($Order->getShippingDate());
             }
         }
 
