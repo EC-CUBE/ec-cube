@@ -280,13 +280,11 @@ class MemberController extends AbstractController
 
             log_info('メンバー削除完了', [$Member->getId()]);
         } catch (ForeignKeyConstraintViolationException $e) {
-
             log_info('メンバー削除エラー', [$Member->getId()]);
 
             $message = trans('admin.delete.failed.foreign_key', ['%name%' => $Member->getName()]);
             $this->addError($message, 'admin');
         } catch (\Exception $e) {
-
             log_info('メンバー削除エラー', [$Member->getId(), $e]);
 
             $message = trans('admin.delete.failed');
