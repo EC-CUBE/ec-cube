@@ -40,13 +40,15 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     use PointTrait;
 
     /**
-     * isMultiple
+     * 複数配送かどうかの判定を行う.
      *
      * @return boolean
      */
     public function isMultiple()
     {
         $Shippings = [];
+        // クエリビルダ使用時に絞り込まれる場合があるため,
+        // getShippingsではなくOrderItem経由でShippingを取得する.
         foreach ($this->getOrderItems() as $OrderItem) {
             if ($Shipping = $OrderItem->getShipping()) {
                 $id = $Shipping->getId();
