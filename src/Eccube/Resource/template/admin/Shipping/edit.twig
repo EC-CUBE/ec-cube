@@ -124,7 +124,8 @@ file that was distributed with this source code.
 
 {% block main %}
     <form action="{{ Shipping.id ? url('admin_shipping_edit', {id: Shipping.id}) : url('admin_shipping_new') }}"
-          method="post" id="form_shipping">
+          method="post" id="form_shipping" class="h-adr">
+        <span class="p-country-name" style="display:none;">Japan</span>
         {{ form_widget(form._token) }}
         <div class="c-contentsArea__cols">
             <div class="c-contentsArea__primaryCol">
