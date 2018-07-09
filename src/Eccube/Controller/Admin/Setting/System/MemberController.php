@@ -13,6 +13,7 @@
 
 namespace Eccube\Controller\Admin\Setting\System;
 
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Member;
 use Eccube\Event\EccubeEvents;
@@ -278,10 +279,17 @@ class MemberController extends AbstractController
             $this->addSuccess('admin.member.delete.complete', 'admin');
 
             log_info('メンバー削除完了', [$Member->getId()]);
+        } catch (ForeignKeyConstraintViolationException $e) {
+
+            log_info('メンバー削除エラー', [$Member->getId()]);
+
+            $message = trans('admin.delete.failed.foreign_key', ['%name%' => $Member->getName()]);
+            $this->addError($message, 'admin');
         } catch (\Exception $e) {
+
             log_info('メンバー削除エラー', [$Member->getId(), $e]);
 
-            $message = trans('admin.delete.failed.foreign_key', ['%name%' => trans('member.text.name')]);
+            $message = trans('admin.delete.failed');
             $this->addError($message, 'admin');
         }
 
