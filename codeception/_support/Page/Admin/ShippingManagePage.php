@@ -37,6 +37,26 @@ class ShippingManagePage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    public function 詳細検索設定()
+    {
+        $this->tester->click(self::$詳細検索ボタン);
+        $this->tester->waitForElementVisible(['id' => 'searchDetail']);
+        $this->tester->wait(0.5);
+        return $this;
+    }
+
+    public function 入力_ご注文者お名前($value)
+    {
+        $this->tester->fillField(['id' => 'admin_search_shipping_order_name'], $value);
+        return $this;
+    }
+
+    public function 入力_ご注文者お名前フリガナ($value)
+    {
+        $this->tester->fillField(['id' => 'admin_search_shipping_order_kana'], $value);
+        return $this;
+    }
+
     public function 詳細検索_電話番号($value = '')
     {
         $this->tester->click(self::$詳細検索ボタン);
@@ -120,5 +140,15 @@ class ShippingManagePage extends AbstractAdminPageStyleGuide
     public function 一覧_チェックボックス($rowNum)
     {
         $this->tester->click(['xpath' => "//*[@id='form_bulk']/div[2]/div/table/tbody/tr[${rowNum}]/td[1]/input"]);
+    }
+
+    public function 取得_出荷伝票番号($rowNum)
+    {
+        return $this->tester->grabTextFrom("#form_bulk table > tbody > tr:nth-child(${rowNum}) > td:nth-child(3)");
+    }
+
+    public function 取得_出荷日($rowNum)
+    {
+        return $this->tester->grabTextFrom("#form_bulk table > tbody > tr:nth-child(${rowNum}) > td:nth-child(7)");
     }
 }
