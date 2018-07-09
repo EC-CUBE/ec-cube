@@ -20,6 +20,7 @@ use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Cart;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\Customer;
+use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Master\ShippingStatus;
@@ -30,6 +31,7 @@ use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
 use Eccube\Repository\DeliveryFeeRepository;
 use Eccube\Repository\DeliveryRepository;
+use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\Master\OrderItemTypeRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\Master\ShippingStatusRepository;
@@ -95,6 +97,11 @@ class OrderHelper
     protected $eccubeConfig;
 
     /**
+     * @var DeviceTypeRepository
+     */
+    protected $deviceTypeRepository;
+
+    /**
      * OrderHelper constructor.
      *
      * @param OrderItemTypeRepository $orderItemTypeRepository
@@ -105,6 +112,7 @@ class OrderHelper
      * @param PaymentRepository $paymentRepository
      * @param OrderRepository $orderRepository
      * @param ShippingStatusRepository $shippingStatusRepository
+     * @param DeviceTypeRepository $deviceTypeRepository
      * @param EntityManager $entityManager
      * @param EccubeConfig $eccubeConfig
      */
@@ -117,6 +125,7 @@ class OrderHelper
         PaymentRepository $paymentRepository,
         OrderRepository $orderRepository,
         ShippingStatusRepository $shippingStatusRepository,
+        DeviceTypeRepository $deviceTypeRepository,
         EntityManagerInterface $entityManager,
         EccubeConfig $eccubeConfig
     ) {
@@ -127,6 +136,7 @@ class OrderHelper
         $this->deliveryRepository = $deliveryRepository;
         $this->paymentRepository = $paymentRepository;
         $this->orderRepository = $orderRepository;
+        $this->deviceTypeRepository = $deviceTypeRepository;
         $this->shippingStatusRepository = $shippingStatusRepository;
         $this->entityManager = $entityManager;
         $this->eccubeConfig = $eccubeConfig;
@@ -153,6 +163,10 @@ class OrderHelper
         // 顧客情報の設定
         $this->setCustomer($Order, $Customer);
 
+        $mobileDetect = new \Mobile_Detect();
+        $DeviceType = $this->deviceTypeRepository->find($mobileDetect->isMobile() ? DeviceType::DEVICE_TYPE_SP : DeviceType::DEVICE_TYPE_PC);
+        $Order->setDeviceType($DeviceType);
+
         // 明細情報の設定
         $OrderItems = $this->createOrderItemsFromCartItems($CartItems);
         $OrderItemsGroupBySaleType = array_reduce($OrderItems, function ($result, $item) {
@@ -165,11 +179,9 @@ class OrderHelper
 
         foreach ($OrderItemsGroupBySaleType as $OrderItems) {
             $Shipping = $this->createShippingFromCustomer($Customer);
-            $Shipping->setOrder($Order);
             $this->addOrderItems($Order, $Shipping, $OrderItems);
             $this->setDefaultDelivery($Shipping);
             $this->entityManager->persist($Shipping);
-            $Order->addShipping($Shipping);
         }
 
         $this->setDefaultPayment($Order);
