@@ -35,6 +35,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Eccube\Entity\Master\OrderStatus;
@@ -43,6 +44,8 @@ use Eccube\Entity\Order;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\PurchaseFlow\PurchaseException;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class OrderController extends AbstractController
 {
@@ -92,6 +95,11 @@ class OrderController extends AbstractController
     protected $orderRepository;
 
     /**
+     * @var ValidatorInterface
+     */
+    protected $validator;
+
+    /**
      * OrderController constructor.
      *
      * @param PurchaseFlow $orderPurchaseFlow
@@ -113,7 +121,8 @@ class OrderController extends AbstractController
         OrderStatusRepository $orderStatusRepository,
         PageMaxRepository $pageMaxRepository,
         ProductStatusRepository $productStatusRepository,
-        OrderRepository $orderRepository
+        OrderRepository $orderRepository,
+        ValidatorInterface $validator
     ) {
         $this->purchaseFlow = $orderPurchaseFlow;
         $this->csvExportService = $csvExportService;
@@ -124,6 +133,7 @@ class OrderController extends AbstractController
         $this->pageMaxRepository = $pageMaxRepository;
         $this->productStatusRepository = $productStatusRepository;
         $this->orderRepository = $orderRepository;
+        $this->validator = $validator;
     }
 
     /**
@@ -546,5 +556,68 @@ class OrderController extends AbstractController
         }
 
         return $this->redirectToRoute('admin_order', ['resume' => Constant::ENABLED]);
+    }
+
+    /**
+     * Update to Tracking number.
+     *
+     * @Method("PUT")
+     * @Route("/%eccube_admin_route%/shipping/{id}/tracking_number", requirements={"id" = "\d+"}, name="admin_shipping_update_tracking_number")
+     *
+     * @param Request $request
+     * @param Shipping $shipping
+     *
+     * @return Response
+     */
+    public function updateTrackingNumber(Request $request, Shipping $shipping)
+    {
+        if (!($request->isXmlHttpRequest() && $this->isTokenValid())) {
+            $response = new Response(json_encode(['status' => 'NG']), 400);
+            $response->headers->set('Content-Type', 'application/json');
+
+            return $response;
+        }
+
+        $trackingNumber = mb_convert_kana($request->get('tracking_number'), 'a', 'utf-8');
+        /** @var \Symfony\Component\Validator\ConstraintViolationListInterface $errors */
+        $errors = $this->validator->validate(
+            $trackingNumber,
+            [
+                new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
+                new Assert\Regex(
+                    ['pattern' => '/^[0-9a-zA-Z-]+$/u', 'message' => trans('form.type.admin.nottrackingnumberstyle')]
+                ),
+            ]
+        );
+
+        if ($errors->count() != 0) {
+            log_info('送り状番号入力チェックエラー');
+            $messages = [];
+            /** @var \Symfony\Component\Validator\ConstraintViolationInterface $error */
+            foreach ($errors as $error) {
+                $messages[] = $error->getMessage();
+            }
+            $response = new Response(json_encode(['status' => 'NG', 'messages' => $messages]), 400);
+            $response->headers->set('Content-Type', 'application/json');
+
+            return $response;
+        }
+
+        try {
+            $shipping->setTrackingNumber($trackingNumber);
+            $this->entityManager->flush($shipping);
+            log_info('送り状番号変更処理完了', [$shipping->getId()]);
+            $message = ['status' => 'OK', 'shipping_id' => $shipping->getId(), 'tracking_number' => $trackingNumber];
+            $response = new Response(json_encode($message));
+            $response->headers->set('Content-Type', 'application/json');
+
+            return $response;
+        } catch (\Exception $e) {
+            log_error('予期しないエラー', [$e->getMessage()]);
+            $response = new Response(json_encode(['status' => 'NG']), 500);
+            $response->headers->set('Content-Type', 'application/json');
+
+            return $response;
+        }
     }
 }

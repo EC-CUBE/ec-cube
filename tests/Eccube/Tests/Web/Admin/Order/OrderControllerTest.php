@@ -405,4 +405,56 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         );
         $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
     }
+
+    public function testUpdateTrackingNumber()
+    {
+        $Order = $this->orderRepository->findOneBy([]);
+        $Shipping = $Order->getShippings()->first();
+        $crawler = $this->client->request(
+            'PUT',
+            $this->generateUrl('admin_shipping_update_tracking_number', ['id' => $Shipping->getId()]),
+            [
+                'tracking_number' => '0000-0000-0000',
+            ],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            ]
+        );
+        $Result = json_decode($this->client->getResponse()->getContent(), true);
+        $this->expected = 'OK';
+        $this->actual = $Result['status'];
+        $this->verify();
+
+        $this->expected = '0000-0000-0000';
+        $this->actual = $Shipping->getTrackingNumber();
+        $this->verify();
+    }
+
+    public function testUpdateTrackingNumberFailure()
+    {
+        $Order = $this->orderRepository->findOneBy([]);
+        $Shipping = $Order->getShippings()->first();
+        $crawler = $this->client->request(
+            'PUT',
+            $this->generateUrl('admin_shipping_update_tracking_number', ['id' => $Shipping->getId()]),
+            [
+                'tracking_number' => '0000_0000_0000',
+            ],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            ]
+        );
+        $Result = json_decode($this->client->getResponse()->getContent(), true);
+        $this->expected = 'NG';
+        $this->actual = $Result['status'];
+        $this->verify();
+
+        $this->expected = trans('form.type.admin.nottrackingnumberstyle');
+        $this->actual = $Result['messages'][0];
+        $this->verify();
+    }
 }
