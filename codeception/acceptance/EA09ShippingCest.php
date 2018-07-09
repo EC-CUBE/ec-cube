@@ -1,10 +1,13 @@
 <?php
 
 use Codeception\Util\Fixtures;
+use Eccube\Entity\Customer;
+use Eccube\Entity\Order;
 use Page\Admin\CsvSettingsPage;
-use Page\Admin\ShippingManagePage;
-use Page\Admin\ShippingEditPage;
 use Page\Admin\OrderEditPage;
+use Page\Admin\ShippingCsvUploadPage;
+use Page\Admin\ShippingEditPage;
+use Page\Admin\ShippingManagePage;
 
 /**
  * @group admin
@@ -267,5 +270,90 @@ class EA09ShippingCest
             ->出荷情報登録();
 
         $I->see('出荷情報を登録しました。', ShippingEditPage::$登録完了メッセージ);
+    }
+
+    public function shipping_出荷CSV登録(\AcceptanceTester $I)
+    {
+        $I->wantTo('EA0903-UC04-T01 出荷CSV登録');
+
+        /* @var Customer $Customer */
+        $Customer = (Fixtures::get('createCustomer'))();
+        /* @var Order[] $Orders */
+        $Orders = (Fixtures::get('createOrders'))($Customer, 3);
+
+        /*
+         * 出荷再検索 出荷日/伝票番号が登録されていないことを確認
+         */
+
+        $ShippingManagePage = ShippingManagePage::go($I)
+            ->詳細検索設定()
+            ->入力_ご注文者お名前($Customer->getName01().$Customer->getName02())
+            ->入力_ご注文者お名前フリガナ($Customer->getKana01().$Customer->getKana02())
+            ->検索();
+
+        $I->see('検索結果 : 3 件が該当しました', ShippingManagePage::$検索結果_メッセージ);
+
+        $I->assertEquals('未登録', $ShippingManagePage->取得_出荷伝票番号(1));
+        $I->assertEquals('未登録', $ShippingManagePage->取得_出荷伝票番号(2));
+        $I->assertEquals('未登録', $ShippingManagePage->取得_出荷伝票番号(3));
+        $I->assertEquals('-', $ShippingManagePage->取得_出荷日(1));
+        $I->assertEquals('-', $ShippingManagePage->取得_出荷日(2));
+        $I->assertEquals('-', $ShippingManagePage->取得_出荷日(3));
+
+        /*
+         * 出荷CSV登録
+         */
+
+        $csv = implode(PHP_EOL, [
+            '出荷ID,出荷伝票番号,出荷日',
+            $Orders[0]->getShippings()[0]->getId().',00001,2018-01-01',
+            $Orders[1]->getShippings()[0]->getId().',00002,2018-02-02',
+            $Orders[2]->getShippings()[0]->getId().',00003,2018-03-03',
+        ]);
+
+        $csvFileName = codecept_data_dir().'/shipping.csv';
+        file_put_contents($csvFileName, $csv);
+
+        try {
+
+            ShippingCsvUploadPage::go($I)
+                ->入力_CSVファイル('shipping.csv')
+                ->CSVアップロード();
+
+            $I->see('出荷登録CSVファイルをアップロードしました。', ShippingCsvUploadPage::$完了メッセージ);
+
+            /*
+             * 出荷再検索 出荷日/伝票番号が登録されたことを確認
+             */
+
+            $ShippingManagePage = ShippingManagePage::go($I)
+                ->詳細検索設定()
+                ->入力_ご注文者お名前($Customer->getName01().$Customer->getName02())
+                ->入力_ご注文者お名前フリガナ($Customer->getKana01().$Customer->getKana02())
+                ->検索();
+
+            $I->see('検索結果 : 3 件が該当しました', ShippingManagePage::$検索結果_メッセージ);
+
+            $I->assertEquals('00003', $ShippingManagePage->取得_出荷伝票番号(1));
+            $I->assertEquals('00002', $ShippingManagePage->取得_出荷伝票番号(2));
+            $I->assertEquals('00001', $ShippingManagePage->取得_出荷伝票番号(3));
+            $I->assertEquals('2018/03/03', $ShippingManagePage->取得_出荷日(1));
+            $I->assertEquals('2018/02/02', $ShippingManagePage->取得_出荷日(2));
+            $I->assertEquals('2018/01/01', $ShippingManagePage->取得_出荷日(3));
+
+        } finally {
+            if (file_exists($csvFileName)) {
+                unlink($csvFileName);
+            }
+        }
+    }
+
+    public function shipping_出荷CSV雛形ファイルダウンロード(\AcceptanceTester $I)
+    {
+        $I->wantTo('EA0093-UC04-T02 出荷CSV雛形ファイルのダウンロード');
+
+        ShippingCsvUploadPage::go($I)->雛形ダウンロード();
+        $csv = $I->getLastDownloadFile('/^shipping\.csv$/');
+        $I->assertEquals(mb_convert_encoding(file_get_contents($csv), 'UTF-8', 'Shift_JIS'), '出荷ID,出荷伝票番号,出荷日'.PHP_EOL);
     }
 }

@@ -22,9 +22,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 class CsvImportType extends AbstractType
 {
     /**
-     * @var array
+     * @var int CSVの最大アップロードサイズ
      */
-    protected $eccubeConfig;
+    private $csvMaxSize;
 
     /**
      * CsvImportType constructor.
@@ -33,7 +33,7 @@ class CsvImportType extends AbstractType
      */
     public function __construct(EccubeConfig $eccubeConfig)
     {
-        $this->eccubeConfig = $eccubeConfig;
+        $this->csvMaxSize = $eccubeConfig['eccube_csv_size'];
     }
 
     /**
@@ -49,8 +49,8 @@ class CsvImportType extends AbstractType
                 'constraints' => [
                     new Assert\NotBlank(['message' => 'ファイルを選択してください。']),
                     new Assert\File([
-                        'maxSize' => $this->eccubeConfig['eccube_csv_size'].'M',
-                        'maxSizeMessage' => 'CSVファイルは'.$this->eccubeConfig['eccube_csv_size'].'M以下でアップロードしてください。',
+                        'maxSize' => $this->csvMaxSize.'M',
+                        'maxSizeMessage' => 'CSVファイルは'.$this->csvMaxSize.'M以下でアップロードしてください。',
                     ]),
                 ],
             ]);

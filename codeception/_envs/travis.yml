@@ -4,6 +4,10 @@ modules:
             host: 'localhost'
             port: 9515
             url: 'http://localhost:8000'
+            capabilities:
+                chromeOptions:
+                    prefs:
+                        download.default_directory: '%TRAVIS_BUILD_DIR%/codeception/_support/_downloads'
         MailCatcher:
             url: 'localhost'
             port: 1080
