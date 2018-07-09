@@ -939,22 +939,6 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get orders.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getOrders()
-    {
-        // TODO 互換性維持のためいったんのこす.
-        $Orders = new ArrayCollection();
-        if (null !== $this->Order) {
-            $Orders->add($this->Order);
-        }
-
-        return $Orders;
-    }
-
-    /**
      * Set trackingNumber
      *
      * @param string $trackingNumber
