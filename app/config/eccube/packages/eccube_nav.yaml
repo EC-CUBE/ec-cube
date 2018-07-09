@@ -37,19 +37,8 @@ parameters:
           - id: order_edit
             name: admin.nav.order.order_edit
             url: admin_order_new
-    - id: shipping
-      name: admin.nav.shipping
-      has_child: true
-      icon: fa-truck
-      child:
-          - id: shipping_master
-            name: admin.nav.shipping.shipping_master
-            url: admin_shipping
-          - id: shipping_edit
-            name: admin.nav.shipping.shipping_edit
-            url: admin_shipping_new
           - id: shipping_csv_import
-            name: admin.nav.shipping.shipping_csv_import
+            name: admin.nav.order.shipping_csv_import
             url: admin_shipping_csv_import
     - id: customer
       name: admin.nav.customer

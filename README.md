@@ -36,8 +36,8 @@ npm run build # Sass のビルド
 
 ### 動作確認環境
 
-* Apache/2.2.15 (Unix)
-* PHP5.4.14
+* Apache/2.4.x (mod_rewrite / mod_ssl 必須)
+* PHP7.0.8
 * PostgreSQL 9.2.1   
 * ブラウザー：Google Chrome  
 
