@@ -400,11 +400,7 @@ return [
     'admin.nav.order' => '受注管理',
     'admin.nav.order.order_master' => '受注マスター',
     'admin.nav.order.order_edit' => '受注登録',
-
-    'admin.nav.shipping' => '出荷管理',
-    'admin.nav.shipping.shipping_master' => '出荷マスター',
-    'admin.nav.shipping.shipping_edit' => '出荷登録',
-    'admin.nav.shipping.shipping_csv_import' => '出荷CSV登録',
+    'admin.nav.order.shipping_csv_import' => '出荷CSV登録',
 
     'admin.nav.customer' => '会員管理',
     'admin.nav.customer.customer_master' => '会員マスター',
