@@ -13,12 +13,10 @@
 
 namespace Eccube\Service;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
 use Eccube\Form\Type\Admin\SearchProductType;
-use Eccube\Form\Type\Admin\SearchShippingType;
 use Eccube\Repository\CsvRepository;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\Master\CsvTypeRepository;

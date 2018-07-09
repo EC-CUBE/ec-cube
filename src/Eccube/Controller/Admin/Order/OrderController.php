@@ -18,7 +18,6 @@ use Eccube\Controller\AbstractController;
 use Eccube\Entity\Csv;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\OrderItem;
-use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\SearchOrderType;
