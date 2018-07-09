@@ -124,8 +124,10 @@ class PaymentRepository extends AbstractRepository
                 continue;
             }
             foreach ($p as $payment) {
-                $payments[$payment['id']] = $payment;
-                $saleTypes[$Delivery->getSaleType()->getId()][$payment['id']] = true;
+                if ($payment->isVisible()) {
+                    $payments[$payment['id']] = $payment;
+                    $saleTypes[$Delivery->getSaleType()->getId()][$payment['id']] = true;
+                }
             }
         }
 
