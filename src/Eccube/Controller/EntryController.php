@@ -172,7 +172,11 @@ class EntryController extends AbstractController
                     );
                     $this->eventDispatcher->dispatch(EccubeEvents::FRONT_ENTRY_INDEX_COMPLETE, $event);
 
-                    $activateUrl = $this->generateUrl('entry_activate', ['secret_key' => $Customer->getSecretKey()]);
+                    $activateUrl = $this->generateUrl(
+                        'entry_activate', 
+                        ['secret_key' => $Customer->getSecretKey()],
+                        UrlGeneratorInterface::ABSOLUTE_URL
+                    );
 
                     $activateFlg = $this->BaseInfo->isOptionCustomerActivate();
 
