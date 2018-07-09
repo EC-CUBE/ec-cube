@@ -68,6 +68,8 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
 
         $Shipping = $this->newShipping(1);
         $Order = new Order();
+        $Shipping->setOrder($Order);
+        $Order->addShipping($Shipping);
         $DeliveryFee = $this->newDeliveryFeeItem(1000, $Shipping);
         $Order->addOrderItem($DeliveryFee);
         $Order->addOrderItem($this->newProductOrderItem($amount, 1, $Shipping));
@@ -101,6 +103,8 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
 
         $Shipping = $this->newShipping(1);
         $Order = new Order();
+        $Shipping->setOrder($Order);
+        $Order->addShipping($Shipping);
         $DeliveryFee = $this->newDeliveryFeeItem(1000, $Shipping);
         $Order->addOrderItem($DeliveryFee);
         $Order->addOrderItem($this->newProductOrderItem(1000, $quantity, $Shipping));
@@ -131,6 +135,11 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
 
         $Order = new Order();
 
+        $Shipping1->setOrder($Order);
+        $Shipping2->setOrder($Order);
+        $Order->addShipping($Shipping1);
+        $Order->addShipping($Shipping2);
+
         $Order->addItem($this->newProductOrderItem(1000, 1, $Shipping1));
         $Shipping1DeliveryFee = $this->newDeliveryFeeItem(1000, $Shipping1);
         $Order->addItem($Shipping1DeliveryFee);
@@ -155,6 +164,11 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
         $Shipping2 = $this->newShipping(2);
 
         $Order = new Order();
+
+        $Shipping1->setOrder($Order);
+        $Shipping2->setOrder($Order);
+        $Order->addShipping($Shipping1);
+        $Order->addShipping($Shipping2);
 
         $Order->addItem($this->newProductOrderItem(1000, 1, $Shipping1));
         $Shipping1DeliveryFee = $this->newDeliveryFeeItem(1000, $Shipping1);

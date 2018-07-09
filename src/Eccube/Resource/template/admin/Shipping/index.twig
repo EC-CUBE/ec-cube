@@ -525,11 +525,10 @@ file that was distributed with this source code.
                                         (constant('Eccube\\Entity\\Master\\OrderStatus::PROCESSING')): "badge-ec-yellow"
                                     }
                                     %}
-                                    {% for Order in Shipping.Orders %}
-                                        <div class="d-block">
-                                            <a href="{{ url('admin_order_edit', { id : Order.id }) }}">{{ Order.order_no }}</a>
-                                            <span class="badge {{ attribute(cssClassStatus, Order.OrderStatus.id) }} ml-2 mb-2">{{ Order.OrderStatus }}</span></div>
-                                    {% endfor %}
+                                    {% set Order = Shipping.Order %}
+                                    <div class="d-block">
+                                        <a href="{{ url('admin_order_edit', { id : Order.id }) }}">{{ Order.order_no }}</a>
+                                        <span class="badge {{ attribute(cssClassStatus, Order.OrderStatus.id) }} ml-2 mb-2">{{ Order.OrderStatus }}</span></div>
                                 </td>
                                 <td class="align-middle">
                                     <label class="m-0">{{ Shipping.postal_code }}<br>{{ Shipping.pref }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}<br>{{ Shipping.name01 }} {{ Shipping.name02 }}<br>{{ Shipping.phone_number }}</label>

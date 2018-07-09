@@ -146,6 +146,8 @@ class OrderTest extends EccubeTestCase
 
         foreach (range(1, $times) as $i) {
             $Shipping = new Shipping();
+            $Shipping->setOrder($Order);
+            $Order->addShipping($Shipping);
 
             $OrderItem = new OrderItem();
             $OrderItem->setShipping($Shipping)
