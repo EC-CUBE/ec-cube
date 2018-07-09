@@ -45,10 +45,5 @@ class CsvType extends \Eccube\Entity\Master\AbstractMasterEntity
     /**
      * @var integer
      */
-    const CSV_TYPE_SHIPPING = 4;
-
-    /**
-     * @var integer
-     */
     const CSV_TYPE_CATEGORY = 5;
 }

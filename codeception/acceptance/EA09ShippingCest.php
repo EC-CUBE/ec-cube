@@ -44,43 +44,6 @@ class EA09ShippingCest
         $I->see('検索条件に誤りがあります', ShippingManagePage::$検索結果_エラーメッセージ);
     }
 
-    /**
-     * @env firefox
-     * @env chrome
-     */
-    public function shipping出荷CSVダウンロード(\AcceptanceTester $I)
-    {
-        $I->wantTo('EA0901-UC02-T01 出荷CSVダウンロード');
-
-        $TargetShippings = Fixtures::get('findShippings'); // Closure
-        $Shippings = $TargetShippings();
-        $ShippingListPage = ShippingManagePage::go($I);
-        $I->see('検索結果 : '.count($Shippings).' 件が該当しました', ShippingManagePage::$検索結果_メッセージ);
-
-        $ShippingListPage->出荷CSVダウンロード実行();
-        // make sure wait to download file completely
-        $I->wait(10);
-        $ShippingCSV = $I->getLastDownloadFile('/^shipping_\d{14}\.csv$/');
-        $I->assertGreaterOrEquals(count($Shippings), count(file($ShippingCSV)), '検索結果以上の行数があるはず');
-    }
-
-    public function shipping出荷情報のCSV出力項目変更設定(\AcceptanceTester $I)
-    {
-        $I->wantTo('EA0901-UC02-T02 出荷情報のCSV出力項目変更設定');
-
-        $TargetShippings = Fixtures::get('findShippings'); // Closure
-        $Shippings = $TargetShippings();
-        $ShippingListPage = ShippingManagePage::go($I);
-        $I->see('検索結果 : '.count($Shippings).' 件が該当しました', ShippingManagePage::$検索結果_メッセージ);
-
-        /* 項目設定 */
-        $ShippingListPage->出荷CSV出力項目設定();
-
-        CsvSettingsPage::at($I);
-        $value = $I->grabValueFrom(CsvSettingsPage::$CSVタイプ);
-        $I->assertEquals(4, $value);
-    }
-
     public function shipping出荷編集(\AcceptanceTester $I)
     {
         $I->wantTo('EA0901-UC03-T01(& UC03-T02) 出荷編集');
