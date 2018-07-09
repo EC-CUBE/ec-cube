@@ -20,6 +20,7 @@ class EF03OrderCest
 {
     public function _before(\AcceptanceTester $I)
     {
+        $I->setStock(2, 20);
     }
 
     public function _after(\AcceptanceTester $I)
@@ -139,9 +140,9 @@ class EF03OrderCest
             $I->seeInLastEmailTo($email, $customer->getName01().' '.$customer->getName02().' 様');
             $I->seeInLastEmailTo($email, 'お名前　：'.$customer->getName01().' '.$customer->getName02().' 様');
             $I->seeInLastEmailTo($email, 'お名前(フリガナ)：'.$customer->getKana01().' '.$customer->getKana02().' 様');
-            $I->seeInLastEmailTo($email, '郵便番号：〒'.$customer->getZip01().'-'.$customer->getZip02());
+            $I->seeInLastEmailTo($email, '郵便番号：〒'.$customer->getPostalCode());
             $I->seeInLastEmailTo($email, '住所　　：'.$customer->getPref()->getName().$customer->getAddr01().$customer->getAddr02());
-            $I->seeInLastEmailTo($email, '電話番号：'.$customer->getTel01().'-'.$customer->getTel02().'-'.$customer->getTel03());
+            $I->seeInLastEmailTo($email, '電話番号：'.$customer->getPhoneNumber());
             $I->seeInLastEmailTo($email, 'メールアドレス：'.$customer->getEmail());
         }
 
@@ -173,8 +174,7 @@ class EF03OrderCest
             ->入力_名('名03')
             ->入力_セイ('セイ')
             ->入力_メイ('メイ')
-            ->入力_郵便番号1('530')
-            ->入力_郵便番号2('0001');
+            ->入力_郵便番号('530-0001');
 
         // TODO: 郵便番号入力後のcodeceptionの入力後にJSが走ってしまい「梅田」が2重で入力されてしまう。
         // 上記を回避するためにwait関数を入れる。
@@ -185,9 +185,7 @@ class EF03OrderCest
             ->入力_都道府県(['value' => '27'])
             ->入力_市区町村名('大阪市北区')
             ->入力_番地_ビル名('梅田2-4-9 ブリーゼタワー13F')
-            ->入力_電話番号1('111')
-            ->入力_電話番号2('111')
-            ->入力_電話番号3('111')
+            ->入力_電話番号('111-111-111')
             ->入力_Eメール($new_email)
             ->入力_Eメール確認($new_email)
             ->次へ();
@@ -201,15 +199,15 @@ class EF03OrderCest
 
         // 確認
         $I->seeEmailCount(2);
-        foreach (array($new_email, $BaseInfo->getEmail01()) as $email) {
+        foreach ([$new_email, $BaseInfo->getEmail01()] as $email) {
             // TODO 注文した商品の内容もチェックしたい
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
             $I->seeInLastEmailTo($email, '姓03 名03 様');
             $I->seeInLastEmailTo($email, 'お名前　：姓03 名03 様');
             $I->seeInLastEmailTo($email, 'お名前(フリガナ)：セイ メイ 様');
-            $I->seeInLastEmailTo($email, '郵便番号：〒530-0001');
+            $I->seeInLastEmailTo($email, '郵便番号：〒5300001');
             $I->seeInLastEmailTo($email, '住所　　：大阪府大阪市北区梅田2-4-9 ブリーゼタワー13F');
-            $I->seeInLastEmailTo($email, '電話番号：111-111-111');
+            $I->seeInLastEmailTo($email, '電話番号：111111111');
             $I->seeInLastEmailTo($email, 'メールアドレス：'.$new_email);
         }
 
@@ -242,8 +240,7 @@ class EF03OrderCest
             ->入力_名('名03')
             ->入力_セイ('セイ')
             ->入力_メイ('メイ')
-            ->入力_郵便番号1('530')
-            ->入力_郵便番号2('0001');
+            ->入力_郵便番号('530-0001');
 
         // TODO: 郵便番号入力後のcodeceptionの入力後にJSが走ってしまい「梅田」が2重で入力されてしまう。
         // 上記を回避するためにwait関数を入れる。
@@ -254,9 +251,7 @@ class EF03OrderCest
             ->入力_都道府県(['value' => '27'])
             ->入力_市区町村名('大阪市北区')
             ->入力_番地_ビル名('梅田2-4-9 ブリーゼタワー13F')
-            ->入力_電話番号1('111')
-            ->入力_電話番号2('111')
-            ->入力_電話番号3('111')
+            ->入力_電話番号('111-111-111')
             ->入力_Eメール($new_email)
             ->入力_Eメール確認($new_email)
             ->次へ();
@@ -285,14 +280,14 @@ class EF03OrderCest
         ShoppingConfirmPage::at($I)->注文する();
 
         $I->seeEmailCount(2);
-        foreach (array($new_email, $BaseInfo->getEmail01()) as $email) {
+        foreach ([$new_email, $BaseInfo->getEmail01()] as $email) {
             // TODO 注文した商品の内容もチェックしたい
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
             $I->seeInLastEmailTo($email, '姓0301 名03 様');
             $I->seeInLastEmailTo($email, 'お名前　：姓0302 名03 様', '変更後のお届け先');
-            $I->seeInLastEmailTo($email, '郵便番号：〒530-0001');
+            $I->seeInLastEmailTo($email, '郵便番号：〒5300001');
             $I->seeInLastEmailTo($email, '住所　　：大阪府大阪市北区梅田2-4-9 ブリーゼタワー13F');
-            $I->seeInLastEmailTo($email, '電話番号：111-111-111');
+            $I->seeInLastEmailTo($email, '電話番号：111111111');
             $I->seeInLastEmailTo($email, 'メールアドレス：'.$new_email);
         }
 
@@ -349,14 +344,14 @@ class EF03OrderCest
 
         // メール確認
         $I->seeEmailCount(2);
-        foreach (array($customer->getEmail(), $BaseInfo->getEmail01()) as $email) {
+        foreach ([$customer->getEmail(), $BaseInfo->getEmail01()] as $email) {
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
             $I->seeInLastEmailTo($email, $customer->getName01().' '.$customer->getName02().' 様');
             $I->seeInLastEmailTo($email, 'お名前　：'.$customer->getName01().' '.$customer->getName02().' 様');
             $I->seeInLastEmailTo($email, 'お名前(フリガナ)：'.$customer->getKana01().' '.$customer->getKana02().' 様');
-            $I->seeInLastEmailTo($email, '郵便番号：〒'.$customer->getZip01().'-'.$customer->getZip02());
+            $I->seeInLastEmailTo($email, '郵便番号：〒'.$customer->getPostalCode());
             $I->seeInLastEmailTo($email, '住所　　：'.$customer->getPref()->getName().$customer->getAddr01().$customer->getAddr02());
-            $I->seeInLastEmailTo($email, '電話番号：'.$customer->getTel01().'-'.$customer->getTel02().'-'.$customer->getTel03());
+            $I->seeInLastEmailTo($email, '電話番号：'.$customer->getPhoneNumber());
             $I->seeInLastEmailTo($email, 'メールアドレス：'.$customer->getEmail());
 
             $I->seeInLastEmailTo($email, '商品名: パーコレーター');
@@ -411,14 +406,11 @@ class EF03OrderCest
             ->入力_名($nameMei)
             ->入力_セイ('セイ')
             ->入力_メイ('メイ')
-            ->入力_郵便番号1('530')
-            ->入力_郵便番号2('0001')
+            ->入力_郵便番号('530-0001')
             ->入力_都道府県(['value' => '27'])
             ->入力_市区町村名('大阪市北区2')
             ->入力_番地_ビル名('梅田2-4-9 ブリーゼタワー13F2')
-            ->入力_電話番号1('222')
-            ->入力_電話番号2('222')
-            ->入力_電話番号3('222')
+            ->入力_電話番号('222-222-222')
             ->登録する();
 
         // 新規お届け先が追加されていることを確認
@@ -461,11 +453,11 @@ class EF03OrderCest
 
         // 名前を比較してお届け先が上下どちらに表示されるか判断
         $compared = strnatcmp($customer->getName01(), $nameSei);
-        if($compared === 0) {
+        if ($compared === 0) {
             $compared = strnatcmp($customer->getName02(), $nameMei);
         }
         // 上下それぞれで名前、商品個数を設定
-        if($compared < 0) {
+        if ($compared < 0) {
             $quantity1 = $shipping1_quantity;
             $quantity2 = $shipping2_quantity;
             $name1 = $customer->getName01();
@@ -492,14 +484,14 @@ class EF03OrderCest
 
         // メール確認
         $I->seeEmailCount(2);
-        foreach (array($customer->getEmail(), $BaseInfo->getEmail01()) as $email) {
+        foreach ([$customer->getEmail(), $BaseInfo->getEmail01()] as $email) {
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
             $I->seeInLastEmailTo($email, $customer->getName01().' '.$customer->getName02().' 様');
             $I->seeInLastEmailTo($email, 'お名前　：'.$customer->getName01().' '.$customer->getName02().' 様');
             $I->seeInLastEmailTo($email, 'お名前(フリガナ)：'.$customer->getKana01().' '.$customer->getKana02().' 様');
-            $I->seeInLastEmailTo($email, '郵便番号：〒'.$customer->getZip01().'-'.$customer->getZip02());
+            $I->seeInLastEmailTo($email, '郵便番号：〒'.$customer->getPostalCode());
             $I->seeInLastEmailTo($email, '住所　　：'.$customer->getPref()->getName().$customer->getAddr01().$customer->getAddr02());
-            $I->seeInLastEmailTo($email, '電話番号：'.$customer->getTel01().'-'.$customer->getTel02().'-'.$customer->getTel03());
+            $I->seeInLastEmailTo($email, '電話番号：'.$customer->getPhoneNumber());
             $I->seeInLastEmailTo($email, 'メールアドレス：'.$customer->getEmail());
             $I->seeInLastEmailTo($email, '◎お届け先1');
             $I->seeInLastEmailTo($email, 'お名前　：'.$nameSei);
@@ -512,7 +504,6 @@ class EF03OrderCest
         ShoppingCompletePage::at($I)->TOPへ();
         $I->see('新着情報', '.ec-news__title');
     }
-
 
     public function order_ログイン後に複数カートになればカートに戻す(\AcceptanceTester $I)
     {
@@ -538,7 +529,6 @@ class EF03OrderCest
 
         $createProduct = Fixtures::get('createProduct');
         $Product = $createProduct();
-
 
         $entityManager = Fixtures::get('entityManager');
         $ProductClass = $Product->getProductClasses()[0];
@@ -616,14 +606,11 @@ class EF03OrderCest
             ->入力_名($nameMei)
             ->入力_セイ('セイ')
             ->入力_メイ('メイ')
-            ->入力_郵便番号1('530')
-            ->入力_郵便番号2('0001')
+            ->入力_郵便番号('530-0001')
             ->入力_都道府県(['value' => '27'])
             ->入力_市区町村名('大阪市北区2')
             ->入力_番地_ビル名('梅田2-4-9 ブリーゼタワー13F2')
-            ->入力_電話番号1('222')
-            ->入力_電話番号2('222')
-            ->入力_電話番号3('222')
+            ->入力_電話番号('222-222-222')
             ->登録する();
 
         // 新規お届け先が追加されていることを確認
@@ -666,11 +653,11 @@ class EF03OrderCest
 
         // 名前を比較してお届け先が上下どちらに表示されるか判断
         $compared = strnatcmp($customer->getName01(), $nameSei);
-        if($compared === 0) {
+        if ($compared === 0) {
             $compared = strnatcmp($customer->getName02(), $nameMei);
         }
         // 上下それぞれで名前、商品個数を設定
-        if($compared < 0) {
+        if ($compared < 0) {
             $quantity1 = $shipping1_quantity;
             $quantity2 = $shipping2_quantity;
             $name1 = $customer->getName01();
@@ -709,14 +696,14 @@ class EF03OrderCest
 
         // メール確認
         $I->seeEmailCount(2);
-        foreach (array($customer->getEmail(), $BaseInfo->getEmail01()) as $email) {
+        foreach ([$customer->getEmail(), $BaseInfo->getEmail01()] as $email) {
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
             $I->seeInLastEmailTo($email, $customer->getName01().' '.$customer->getName02().' 様');
             $I->seeInLastEmailTo($email, 'お名前　：'.$customer->getName01().' '.$customer->getName02().' 様');
             $I->seeInLastEmailTo($email, 'お名前(フリガナ)：'.$customer->getKana01().' '.$customer->getKana02().' 様');
-            $I->seeInLastEmailTo($email, '郵便番号：〒'.$customer->getZip01().'-'.$customer->getZip02());
+            $I->seeInLastEmailTo($email, '郵便番号：〒'.$customer->getPostalCode());
             $I->seeInLastEmailTo($email, '住所　　：'.$customer->getPref()->getName().$customer->getAddr01().$customer->getAddr02());
-            $I->seeInLastEmailTo($email, '電話番号：'.$customer->getTel01().'-'.$customer->getTel02().'-'.$customer->getTel03());
+            $I->seeInLastEmailTo($email, '電話番号：'.$customer->getPhoneNumber());
             $I->seeInLastEmailTo($email, 'メールアドレス：'.$customer->getEmail());
             $I->seeInLastEmailTo($email, '◎お届け先1');
             $I->seeInLastEmailTo($email, 'お名前　：'.$nameSei);
@@ -776,14 +763,11 @@ class EF03OrderCest
             ->入力_名($nameMei)
             ->入力_セイ('セイ')
             ->入力_メイ('メイ')
-            ->入力_郵便番号1('530')
-            ->入力_郵便番号2('0001')
+            ->入力_郵便番号('530-0001')
             ->入力_都道府県(['value' => '27'])
             ->入力_市区町村名('大阪市北区2')
             ->入力_番地_ビル名('梅田2-4-9 ブリーゼタワー13F2')
-            ->入力_電話番号1('222')
-            ->入力_電話番号2('222')
-            ->入力_電話番号3('222')
+            ->入力_電話番号('222-222-222')
             ->登録する();
 
         // 新規お届け先が追加されていることを確認
@@ -826,11 +810,11 @@ class EF03OrderCest
 
         // 名前を比較してお届け先が上下どちらに表示されるか判断
         $compared = strnatcmp($customer->getName01(), $nameSei);
-        if($compared === 0) {
+        if ($compared === 0) {
             $compared = strnatcmp($customer->getName02(), $nameMei);
         }
         // 上下それぞれで名前、商品個数を設定
-        if($compared < 0) {
+        if ($compared < 0) {
             $quantity1 = $shipping1_quantity;
             $quantity2 = $shipping2_quantity;
             $name1 = $customer->getName01();
@@ -874,14 +858,14 @@ class EF03OrderCest
 
         // メール確認
         $I->seeEmailCount(2);
-        foreach (array($customer->getEmail(), $BaseInfo->getEmail01()) as $email) {
+        foreach ([$customer->getEmail(), $BaseInfo->getEmail01()] as $email) {
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
             $I->seeInLastEmailTo($email, $customer->getName01().' '.$customer->getName02().' 様');
             $I->seeInLastEmailTo($email, 'お名前　：'.$customer->getName01().' '.$customer->getName02().' 様');
             $I->seeInLastEmailTo($email, 'お名前(フリガナ)：'.$customer->getKana01().' '.$customer->getKana02().' 様');
-            $I->seeInLastEmailTo($email, '郵便番号：〒'.$customer->getZip01().'-'.$customer->getZip02());
+            $I->seeInLastEmailTo($email, '郵便番号：〒'.$customer->getPostalCode());
             $I->seeInLastEmailTo($email, '住所　　：'.$customer->getPref()->getName().$customer->getAddr01().$customer->getAddr02());
-            $I->seeInLastEmailTo($email, '電話番号：'.$customer->getTel01().'-'.$customer->getTel02().'-'.$customer->getTel03());
+            $I->seeInLastEmailTo($email, '電話番号：'.$customer->getPhoneNumber());
             $I->seeInLastEmailTo($email, 'メールアドレス：'.$customer->getEmail());
             $I->seeInLastEmailTo($email, '◎お届け先');
             $I->seeInLastEmailTo($email, 'お名前　：'.$customer->getName01());

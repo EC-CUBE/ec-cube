@@ -35,26 +35,14 @@ class ShopMasterTypeTest extends AbstractTypeTestCase
         /*
         'shop_kana' => 'カナ',
         'shop_name_eng' => 'shopname',
-        'zip' => array(
-            'zip01' => '530',
-            'zip02' => '0001',
-        ),
+        'postal_code' => '530-0001',
         'address' => array(
             'pref' => '5',
             'addr01' => '北区',
             'addr02' => '梅田',
         ),
          */
-        'tel' => [
-            'tel01' => '03',
-            'tel02' => '1111',
-            'tel03' => '1111',
-        ],
-        'fax' => [
-            'fax01' => '03',
-            'fax02' => '1111',
-            'fax03' => '4444',
-        ],
+        'phone_number' => '012-345-6789',
         /*
         'business_hour' => '店舗営業時間',
          */
@@ -91,25 +79,11 @@ class ShopMasterTypeTest extends AbstractTypeTestCase
     {
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
-        // エラーメッセージデバッグ用
-        //var_dump($this->form->getErrorsAsString());die;
     }
 
-    public function testValidFax_Blank()
+    public function testValidPhoneNumber_Blank()
     {
-        $this->formData['fax']['fax01'] = '';
-        $this->formData['fax']['fax02'] = '';
-        $this->formData['fax']['fax03'] = '';
-
-        $this->form->submit($this->formData);
-        $this->assertTrue($this->form->isValid());
-    }
-
-    public function testValidTel_Blank()
-    {
-        $this->formData['tel']['tel01'] = '';
-        $this->formData['tel']['tel02'] = '';
-        $this->formData['tel']['tel03'] = '';
+        $this->formData['phone_number'] = '';
 
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());

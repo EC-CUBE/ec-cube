@@ -16,11 +16,10 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\ProductClassRepository;
-use Eccube\Service\PurchaseFlow\ItemHolderProcessor;
-use Eccube\Service\PurchaseFlow\ProcessResult;
+use Eccube\Service\PurchaseFlow\ItemHolderValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 
-class StockMultipleValidator implements ItemHolderProcessor
+class StockMultipleValidator extends ItemHolderValidator
 {
     /**
      * @var ProductClassRepository
@@ -41,9 +40,9 @@ class StockMultipleValidator implements ItemHolderProcessor
      * @param ItemHolderInterface $itemHolder
      * @param PurchaseContext $context
      *
-     * @return ProcessResult
+     * @throws \Eccube\Service\PurchaseFlow\InvalidItemException
      */
-    public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         $OrderItemsByProductClass = [];
         foreach ($itemHolder->getItems() as $Item) {
@@ -59,21 +58,17 @@ class StockMultipleValidator implements ItemHolderProcessor
                 continue;
             }
             $stock = $ProductClass->getStock();
-            if ($stock === 0) {
-                return ProcessResult::error(trans('cart.zero.stock',
-                    ['%product%' => $this->formatProductName($ProductClass)]));
+            if ($stock == 0) {
+                $this->throwInvalidItemException('cart.zero.stock', $ProductClass);
             }
             $total = 0;
             foreach ($Items as $Item) {
                 $total += $Item->getQuantity();
                 if ($stock < $total) {
-                    return ProcessResult::warn(trans('cart.over.stock',
-                        ['%product%' => $this->formatProductName($ProductClass)]));
+                    $this->throwInvalidItemException('cart.over.stock', $ProductClass);
                 }
             }
         }
-
-        return ProcessResult::success();
     }
 
     protected function formatProductName(ProductClass $ProductClass)

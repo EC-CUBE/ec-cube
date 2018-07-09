@@ -142,7 +142,7 @@ class SearchShippingType extends AbstractType
                     ])
                     ->addEventSubscriber(new \Eccube\Form\EventListener\ConvertKanaListener('CV'))
             )
-            ->add('tel', TextType::class, [
+            ->add('phone_number', TextType::class, [
                 'label' => 'searchshipping.label.tel',
                 'required' => false,
                 'constraints' => [
@@ -177,7 +177,7 @@ class SearchShippingType extends AbstractType
             ->add('email', TextType::class, [
                 'required' => false,
             ])
-            ->add('order_code', TextType::class, [
+            ->add('order_no', TextType::class, [
                 'label' => '注文番号',
                 'required' => false,
             ])

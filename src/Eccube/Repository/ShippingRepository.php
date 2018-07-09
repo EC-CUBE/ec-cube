@@ -75,10 +75,10 @@ class ShippingRepository extends AbstractRepository
         }
 
         // order_no
-        if (isset($searchData['order_code']) && StringUtil::isNotBlank($searchData['order_code'])) {
+        if (isset($searchData['order_no']) && StringUtil::isNotBlank($searchData['order_no'])) {
             $qb
-                ->andWhere('o.order_code LIKE :order_code')
-                ->setParameter('order_code', "%{$searchData['order_code']}%");
+                ->andWhere('o.order_no LIKE :order_no')
+                ->setParameter('order_no', "%{$searchData['order_no']}%");
         }
 
         // order status
@@ -130,11 +130,11 @@ class ShippingRepository extends AbstractRepository
         }
 
         // tel
-        if (isset($searchData['tel']) && StringUtil::isNotBlank($searchData['tel'])) {
-            $tel = preg_replace('/[^0-9]/ ', '', $searchData['tel']);
+        if (isset($searchData['phone_number']) && StringUtil::isNotBlank($searchData['phone_number'])) {
+            $tel = preg_replace('/[^0-9]/ ', '', $searchData['phone_number']);
             $qb
-                ->andWhere('CONCAT(s.tel01, s.tel02, s.tel03) LIKE :tel')
-                ->setParameter('tel', '%'.$tel.'%');
+                ->andWhere('s.phone_number LIKE :phone_number')
+                ->setParameter('phone_number', '%'.$tel.'%');
         }
 
         // payment

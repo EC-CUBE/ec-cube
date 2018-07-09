@@ -200,7 +200,6 @@ class ShippingEditControllerTest extends AbstractAdminWebTestCase
     {
         /** @var Generator $faker */
         $faker = $this->getFaker();
-        $tel = explode('-', $faker->phoneNumber);
 
         if ($Shipping instanceof Shipping && $Shipping->getId()) {
             $arrFormData = [
@@ -213,25 +212,13 @@ class ShippingEditControllerTest extends AbstractAdminWebTestCase
                     'kana02' => $Shipping->getKana02(),
                 ],
                 'company_name' => $Shipping->getCompanyName(),
-                'zip' => [
-                    'zip01' => $Shipping->getZip01(),
-                    'zip02' => $Shipping->getZip02(),
-                ],
+                'postal_code' => $Shipping->getPostalCode(),
                 'address' => [
                     'pref' => $Shipping->getPref()->getId(),
                     'addr01' => $Shipping->getAddr01(),
                     'addr02' => $Shipping->getAddr02(),
                 ],
-                'tel' => [
-                    'tel01' => $Shipping->getTel01(),
-                    'tel02' => $Shipping->getTel02(),
-                    'tel03' => $Shipping->getTel03(),
-                ],
-                'fax' => [
-                    'fax01' => $Shipping->getFax01(),
-                    'fax02' => $Shipping->getFax02(),
-                    'fax03' => $Shipping->getFax03(),
-                ],
+                'phone_number' => $Shipping->getPhoneNumber(),
                 'Delivery' => $Shipping->getDelivery()->getId(),
                 'OrderItems' => [],
                 Constant::TOKEN_NAME => 'dummy',
@@ -251,25 +238,13 @@ class ShippingEditControllerTest extends AbstractAdminWebTestCase
                     'kana02' => $faker->firstKanaName,
                 ],
                 'company_name' => $faker->company,
-                'zip' => [
-                    'zip01' => $faker->postcode1(),
-                    'zip02' => $faker->postcode2(),
-                ],
+                'postal_code' => $faker->postcode,
                 'address' => [
                     'pref' => $faker->numberBetween(1, 47),
                     'addr01' => $faker->city,
                     'addr02' => $faker->streetAddress,
                 ],
-                'tel' => [
-                    'tel01' => $tel[0],
-                    'tel02' => $tel[1],
-                    'tel03' => $tel[2],
-                ],
-                'fax' => [
-                    'fax01' => $tel[0],
-                    'fax02' => $tel[1],
-                    'fax03' => $tel[2],
-                ],
+                'phone_number' => $faker->phoneNumber,
                 'Delivery' => 1,
                 Constant::TOKEN_NAME => 'dummy',
             ];

@@ -260,11 +260,6 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
 
         // お届け先設定画面で、入力値を変更しPOST送信
         $formData = $this->createNonmemberFormData();
-        $formData['fax'] = [
-            'fax01' => 111,
-            'fax02' => 111,
-            'fax03' => 111,
-        ];
         unset($formData['email']);
 
         $crawler = $client->request(
@@ -282,7 +277,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $Messages = $this->getMailCatcherMessages();
         $Message = $this->getMailCatcherMessage($Messages[0]->id);
 
-        $this->assertRegexp('/111-111-111/', $this->parseMailCatcherSource($Message), '変更した FAX 番号が一致するか');
+//        $this->assertRegexp('/111-111-111/', $this->parseMailCatcherSource($Message), '変更した FAX 番号が一致するか');
     }
 
     public function createNonmemberFormData()

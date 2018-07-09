@@ -13,6 +13,7 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Service\Calculator\OrderItemCollection;
 use Eccube\Service\PurchaseFlow\ItemCollection;
@@ -20,7 +21,15 @@ use Eccube\Service\PurchaseFlow\ItemCollection;
 /**
  * Order
  *
- * @ORM\Table(name="dtb_order", indexes={@ORM\Index(name="dtb_order_pre_order_id_idx", columns={"pre_order_id"}), @ORM\Index(name="dtb_order_email_idx", columns={"email"}), @ORM\Index(name="dtb_order_order_date_idx", columns={"order_date"}), @ORM\Index(name="dtb_order_payment_date_idx", columns={"payment_date"}), @ORM\Index(name="dtb_order_shipping_date_idx", columns={"shipping_date"}), @ORM\Index(name="dtb_order_update_date_idx", columns={"update_date"})})
+ * @ORM\Table(name="dtb_order", indexes={
+ *     @ORM\Index(name="dtb_order_pre_order_id_idx", columns={"pre_order_id"}),
+ *     @ORM\Index(name="dtb_order_email_idx", columns={"email"}),
+ *     @ORM\Index(name="dtb_order_order_date_idx", columns={"order_date"}),
+ *     @ORM\Index(name="dtb_order_payment_date_idx", columns={"payment_date"}),
+ *     @ORM\Index(name="dtb_order_shipping_date_idx", columns={"shipping_date"}),
+ *     @ORM\Index(name="dtb_order_update_date_idx", columns={"update_date"}),
+ *     @ORM\Index(name="dtb_order_order_no_idx", columns={"order_no"})
+ *  })
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
  * @ORM\HasLifecycleCallbacks()
@@ -31,13 +40,26 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     use PointTrait;
 
     /**
-     * isMultiple
+     * 複数配送かどうかの判定を行う.
      *
      * @return boolean
      */
     public function isMultiple()
     {
-        return count($this->getShippings()) > 1 ? true : false;
+        $Shippings = [];
+        // クエリビルダ使用時に絞り込まれる場合があるため,
+        // getShippingsではなくOrderItem経由でShippingを取得する.
+        foreach ($this->getOrderItems() as $OrderItem) {
+            if ($Shipping = $OrderItem->getShipping()) {
+                $id = $Shipping->getId();
+                if (isset($Shippings[$id])) {
+                    continue;
+                }
+                $Shippings[$id] = $Shipping;
+            }
+        }
+
+        return count($Shippings) > 1 ? true : false;
     }
 
     /**
@@ -111,9 +133,9 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="order_code", type="string", length=255, nullable=true)
+     * @ORM\Column(name="order_no", type="string", length=255, nullable=true)
      */
-    private $order_code;
+    private $order_no;
 
     /**
      * @var string|null
@@ -167,65 +189,16 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="tel01", type="string", length=5, nullable=true)
+     * @ORM\Column(name="phone_number", type="string", length=14, nullable=true)
      */
-    private $tel01;
+    private $phone_number;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="tel02", type="string", length=4, nullable=true)
+     * @ORM\Column(name="postal_code", type="string", length=8, nullable=true)
      */
-    private $tel02;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="tel03", type="string", length=4, nullable=true)
-     */
-    private $tel03;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="fax01", type="string", length=5, nullable=true)
-     */
-    private $fax01;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="fax02", type="string", length=4, nullable=true)
-     */
-    private $fax02;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="fax03", type="string", length=4, nullable=true)
-     */
-    private $fax03;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="zip01", type="string", length=3, nullable=true)
-     */
-    private $zip01;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="zip02", type="string", length=4, nullable=true)
-     */
-    private $zip02;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="zipcode", type="string", length=7, nullable=true)
-     */
-    private $zipcode;
+    private $postal_code;
 
     /**
      * @var string|null
@@ -354,11 +327,43 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     private $currency_code;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
+     * 注文完了画面に表示するメッセージ
+     *
+     * プラグインから注文完了時にメッセージを表示したい場合, このフィールドにセットすることで, 注文完了画面で表示されます。
+     * 複数のプラグインから利用されるため, appendCompleteMesssage()で追加してください.
+     * 表示する際にHTMLは利用可能です。
+     *
+     * @var string|null
+     *
+     * @ORM\Column(name="complete_message", type="text", nullable=true)
+     */
+    private $complete_message;
+
+    /**
+     * 注文完了メールに表示するメッセージ
+     *
+     * プラグインから注文完了メールにメッセージを表示したい場合, このフィールドにセットすることで, 注文完了メールで表示されます。
+     * 複数のプラグインから利用されるため, appendCompleteMailMesssage()で追加してください.
+     *
+     * @var string|null
+     *
+     * @ORM\Column(name="complete_mail_message", type="text", nullable=true)
+     */
+    private $complete_mail_message;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection|OrderItem[]
      *
      * @ORM\OneToMany(targetEntity="Eccube\Entity\OrderItem", mappedBy="Order", cascade={"persist","remove"})
      */
     private $OrderItems;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection|Shipping[]
+     *
+     * @ORM\OneToMany(targetEntity="Eccube\Entity\Shipping", mappedBy="Order", cascade={"persist","remove"})
+     */
+    private $Shippings;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -476,6 +481,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
         ;
 
         $this->OrderItems = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->Shippings = new \Doctrine\Common\Collections\ArrayCollection();
         $this->MailHistories = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -514,27 +520,27 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     }
 
     /**
-     * Set orderCode
+     * Set orderNo
      *
-     * @param string|null $orderCode
+     * @param string|null $orderNo
      *
      * @return Order
      */
-    public function setOrderCode($orderCode = null)
+    public function setOrderNo($orderNo = null)
     {
-        $this->order_code = $orderCode;
+        $this->order_no = $orderNo;
 
         return $this;
     }
 
     /**
-     * Get orderCode
+     * Get orderNo
      *
      * @return string|null
      */
-    public function getOrderCode()
+    public function getOrderNo()
     {
-        return $this->order_code;
+        return $this->order_no;
     }
 
     /**
@@ -706,219 +712,51 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     }
 
     /**
-     * Set tel01.
+     * Set phone_number.
      *
-     * @param string|null $tel01
+     * @param string|null $phone_number
      *
      * @return Order
      */
-    public function setTel01($tel01 = null)
+    public function setPhoneNumber($phone_number = null)
     {
-        $this->tel01 = $tel01;
+        $this->phone_number = $phone_number;
 
         return $this;
     }
 
     /**
-     * Get tel01.
+     * Get phone_number.
      *
      * @return string|null
      */
-    public function getTel01()
+    public function getPhoneNumber()
     {
-        return $this->tel01;
+        return $this->phone_number;
     }
 
     /**
-     * Set tel02.
+     * Set postal_code.
      *
-     * @param string|null $tel02
+     * @param string|null $postal_code
      *
      * @return Order
      */
-    public function setTel02($tel02 = null)
+    public function setPostalCode($postal_code = null)
     {
-        $this->tel02 = $tel02;
+        $this->postal_code = $postal_code;
 
         return $this;
     }
 
     /**
-     * Get tel02.
+     * Get postal_code.
      *
      * @return string|null
      */
-    public function getTel02()
+    public function getPostalCode()
     {
-        return $this->tel02;
-    }
-
-    /**
-     * Set tel03.
-     *
-     * @param string|null $tel03
-     *
-     * @return Order
-     */
-    public function setTel03($tel03 = null)
-    {
-        $this->tel03 = $tel03;
-
-        return $this;
-    }
-
-    /**
-     * Get tel03.
-     *
-     * @return string|null
-     */
-    public function getTel03()
-    {
-        return $this->tel03;
-    }
-
-    /**
-     * Set fax01.
-     *
-     * @param string|null $fax01
-     *
-     * @return Order
-     */
-    public function setFax01($fax01 = null)
-    {
-        $this->fax01 = $fax01;
-
-        return $this;
-    }
-
-    /**
-     * Get fax01.
-     *
-     * @return string|null
-     */
-    public function getFax01()
-    {
-        return $this->fax01;
-    }
-
-    /**
-     * Set fax02.
-     *
-     * @param string|null $fax02
-     *
-     * @return Order
-     */
-    public function setFax02($fax02 = null)
-    {
-        $this->fax02 = $fax02;
-
-        return $this;
-    }
-
-    /**
-     * Get fax02.
-     *
-     * @return string|null
-     */
-    public function getFax02()
-    {
-        return $this->fax02;
-    }
-
-    /**
-     * Set fax03.
-     *
-     * @param string|null $fax03
-     *
-     * @return Order
-     */
-    public function setFax03($fax03 = null)
-    {
-        $this->fax03 = $fax03;
-
-        return $this;
-    }
-
-    /**
-     * Get fax03.
-     *
-     * @return string|null
-     */
-    public function getFax03()
-    {
-        return $this->fax03;
-    }
-
-    /**
-     * Set zip01.
-     *
-     * @param string|null $zip01
-     *
-     * @return Order
-     */
-    public function setZip01($zip01 = null)
-    {
-        $this->zip01 = $zip01;
-
-        return $this;
-    }
-
-    /**
-     * Get zip01.
-     *
-     * @return string|null
-     */
-    public function getZip01()
-    {
-        return $this->zip01;
-    }
-
-    /**
-     * Set zip02.
-     *
-     * @param string|null $zip02
-     *
-     * @return Order
-     */
-    public function setZip02($zip02 = null)
-    {
-        $this->zip02 = $zip02;
-
-        return $this;
-    }
-
-    /**
-     * Get zip02.
-     *
-     * @return string|null
-     */
-    public function getZip02()
-    {
-        return $this->zip02;
-    }
-
-    /**
-     * Set zipcode.
-     *
-     * @param string|null $zipcode
-     *
-     * @return Order
-     */
-    public function setZipcode($zipcode = null)
-    {
-        $this->zipcode = $zipcode;
-
-        return $this;
-    }
-
-    /**
-     * Get zipcode.
-     *
-     * @return string|null
-     */
-    public function getZipcode()
-    {
-        return $this->zipcode;
+        return $this->postal_code;
     }
 
     /**
@@ -1354,6 +1192,70 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     }
 
     /**
+     * @return null|string
+     */
+    public function getCompleteMessage()
+    {
+        return $this->complete_message;
+    }
+
+    /**
+     * @param null|string $complete_message
+     *
+     * @return $this
+     */
+    public function setCompleteMessage($complete_message = null)
+    {
+        $this->complete_message = $complete_message;
+
+        return $this;
+    }
+
+    /**
+     * @param null|string $complete_message
+     *
+     * @return $this
+     */
+    public function appendCompleteMessage($complete_message = null)
+    {
+        $this->complete_message .= $complete_message;
+
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getCompleteMailMessage()
+    {
+        return $this->complete_mail_message;
+    }
+
+    /**
+     * @param null|string $complete_mail_message
+     *
+     * @return
+     */
+    public function setCompleteMailMessage($complete_mail_message = null)
+    {
+        $this->complete_mail_message = $complete_mail_message;
+
+        return $this;
+    }
+
+    /**
+     * @param null|string $complete_mail_message
+     *
+     * @return
+     */
+    public function appendCompleteMailMessage($complete_mail_message = null)
+    {
+        $this->complete_mail_message .= $complete_mail_message;
+
+        return $this;
+    }
+
+    /**
      * 商品の受注明細を取得
      *
      * @return OrderItem[]
@@ -1449,49 +1351,42 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     }
 
     /**
+     * Add shipping.
+     *
+     * @param \Eccube\Entity\Shipping $Shipping
+     *
+     * @return Shipping
+     */
+    public function addShipping(\Eccube\Entity\Shipping $Shipping)
+    {
+        $this->Shippings[] = $Shipping;
+
+        return $this;
+    }
+
+    /**
+     * Remove shipping.
+     *
+     * @param \Eccube\Entity\Shipping $Shipping
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeShipping(\Eccube\Entity\Shipping $Shipping)
+    {
+        return $this->Shippings->removeElement($Shipping);
+    }
+
+    /**
      * Get shippings.
      *
-     * 明細に紐づくShippingを, 重複をのぞいて取得する
-     *
-     * @return \Doctrine\Common\Collections\Collection|Shipping[]
+     * @return \Doctrine\Common\Collections\Collection|\Eccube\Entity\Shipping[]
      */
     public function getShippings()
     {
-        $Shippings = [];
-        foreach ($this->getOrderItems() as $OrderItem) {
-            if ($Shipping = $OrderItem->getShipping()) {
-                // 永続化される前のShippingが渡ってくる場合もあるため,
-                // Shipping::id()ではなくspl_object_id()を使用している
-                $id = \spl_object_id($Shipping);
-                if (!isset($Shippings[$id])) {
-                    $Shippings[$id] = $Shipping;
-                }
-            }
-        }
+        $criteria = Criteria::create()
+            ->orderBy(['name01' => Criteria::ASC, 'name02' => Criteria::ASC]);
 
-        usort($Shippings, function (Shipping $a, Shipping $b) {
-            $result = strnatcmp($a->getName01(), $b->getName01());
-            if ($result === 0) {
-                return strnatcmp($a->getName02(), $b->getName02());
-            } else {
-                return $result;
-            }
-        });
-
-        $Result = new \Doctrine\Common\Collections\ArrayCollection();
-        foreach ($Shippings as $Shipping) {
-            $Result->add($Shipping);
-        }
-
-        return $Result;
-        // XXX 以下のロジックだと何故か空の Collection になってしまう場合がある
-        // return new \Doctrine\Common\Collections\ArrayCollection(array_values($Shippings));
-    }
-
-    public function setShippings($dummy)
-    {
-        // XXX これが無いと Eccube\Form\Type\Shopping\OrderType がエラーになる
-        return $this;
+        return $this->Shippings->matching($criteria);
     }
 
     /**

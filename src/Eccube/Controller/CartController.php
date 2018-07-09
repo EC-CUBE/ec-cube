@@ -122,7 +122,7 @@ class CartController extends AbstractController
         $flowResults = array_map(function ($Cart) {
             $purchaseContext = new PurchaseContext($Cart, $this->getUser());
 
-            return $this->purchaseFlow->calculate($Cart, $purchaseContext);
+            return $this->purchaseFlow->validate($Cart, $purchaseContext);
         }, $Carts);
 
         // 復旧不可のエラーが発生した場合はカートをクリアして再描画
@@ -137,7 +137,6 @@ class CartController extends AbstractController
         }
         if ($hasError) {
             $this->cartService->clear();
-            $this->cartService->save();
 
             return $this->redirectToRoute('cart');
         }
@@ -216,6 +215,10 @@ class CartController extends AbstractController
      */
     public function buystep(Request $request, $index)
     {
+        $Carts = $this->cartService->getCart();
+        if (!is_object($Carts)) {
+            return $this->redirectToRoute('cart');
+        }
         // FRONT_CART_BUYSTEP_INITIALIZE
         $event = new EventArgs(
             [],

@@ -165,9 +165,11 @@ class OrderHelper
 
         foreach ($OrderItemsGroupBySaleType as $OrderItems) {
             $Shipping = $this->createShippingFromCustomer($Customer);
+            $Shipping->setOrder($Order);
             $this->addOrderItems($Order, $Shipping, $OrderItems);
             $this->setDefaultDelivery($Shipping);
             $this->entityManager->persist($Shipping);
+            $Order->addShipping($Shipping);
         }
 
         $this->setDefaultPayment($Order);
@@ -295,15 +297,8 @@ class OrderHelper
             ->setKana01($Customer->getKana01())
             ->setKana02($Customer->getKana02())
             ->setCompanyName($Customer->getCompanyName())
-            ->setTel01($Customer->getTel01())
-            ->setTel02($Customer->getTel02())
-            ->setTel03($Customer->getTel03())
-            ->setFax01($Customer->getFax01())
-            ->setFax02($Customer->getFax02())
-            ->setFax03($Customer->getFax03())
-            ->setZip01($Customer->getZip01())
-            ->setZip02($Customer->getZip02())
-            ->setZipCode($Customer->getZip01().$Customer->getZip02())
+            ->setPhoneNumber($Customer->getPhoneNumber())
+            ->setPostalCode($Customer->getPostalCode())
             ->setPref($Customer->getPref())
             ->setAddr01($Customer->getAddr01())
             ->setAddr02($Customer->getAddr02());

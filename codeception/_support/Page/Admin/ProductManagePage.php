@@ -3,7 +3,7 @@
 namespace Page\Admin;
 
 /**
- * 商品管理/商品マスター
+ * 商品管理/商品一覧
  * @package Page\Admin
  */
 class ProductManagePage extends AbstractAdminPageStyleGuide
@@ -33,7 +33,7 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
     public static function go(\AcceptanceTester $I)
     {
         $page = new ProductManagePage($I);
-        return $page->goPage(self::$URL, '商品マスター商品管理');
+        return $page->goPage(self::$URL, '商品一覧商品管理');
     }
 
     /**
@@ -55,7 +55,7 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
     {
         $this->tester->fillField(self::$検索条件_プロダクト, $product);
         $this->tester->click(self::$検索ボタン);
-        $this->tester->see('商品マスター商品管理', '.c-pageTitle');
+        $this->tester->see('商品一覧商品管理', '.c-pageTitle');
         return $this;
     }
 
@@ -65,7 +65,7 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
         $this->tester->wait(1);
         $this->tester->checkOption(['id' => 'admin_search_product_status_' . $value]);
         $this->tester->click(self::$検索ボタン);
-        $this->tester->see('商品マスター商品管理', '.c-pageTitle');
+        $this->tester->see('商品一覧商品管理', '.c-pageTitle');
         return $this;
     }
     /**

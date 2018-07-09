@@ -9,7 +9,7 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
 
-{% extends '@admin/styleguide_frame.twig' %}
+{% extends '@admin/default_frame.twig' %}
 
 {% set menus = ['customer', 'customer_edit'] %}
 
@@ -105,14 +105,8 @@ file that was distributed with this source code.
                                     <div class="row mb-2">
                                         <div class="col-auto pr-0 align-self-center"><span>{{ 'admin.customer.edit.post'|trans }}</span></div>
                                         <div class="col-2">
-                                            {{ form_widget(form.zip.zip01) }}
-                                            {{ form_errors(form.zip) }}
-                                            {{ form_errors(form.zip.zip01) }}
-                                            {{ form_errors(form.zip.zip02) }}
-                                        </div>
-                                        <div class="col-auto p-0 align-self-center"><span>-</span></div>
-                                        <div class="col-2">
-                                            {{ form_widget(form.zip.zip02) }}
+                                            {{ form_widget(form.postal_code) }}
+                                            {{ form_errors(form.postal_code) }}
                                         </div>
                                     </div>
                                 </div>
@@ -154,44 +148,8 @@ file that was distributed with this source code.
                                 </div>
                                 <div class="col">
                                     <div class="row mb-2 justify-content-start">
-                                        <div class="col-2">
-                                            {{ form_widget(form.tel.tel01) }}
-                                            {{ form_errors(form.tel.tel01) }}
-                                        </div>
-                                        <div class="col-auto text-center p-0"><span class="align-middle">-</span></div>
-                                        <div class="col-2">
-                                            {{ form_widget(form.tel.tel02) }}
-                                            {{ form_errors(form.tel.tel02) }}
-                                        </div>
-                                        <div class="col-auto text-center p-0"><span class="align-middle">-</span></div>
-                                        <div class="col-2">
-                                            {{ form_widget(form.tel.tel03) }}
-                                            {{ form_errors(form.tel.tel03) }}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row mb-2">
-                                <div class="col-3">
-                                    {{ 'admin.customer.delivery.label.006'|trans }}
-                                </div>
-                                <div class="col">
-                                    <div class="row mb-2 justify-content-start">
-                                        <div class="col-2">
-                                            {{ form_widget(form.fax.fax01) }}
-                                            {{ form_errors(form.fax.fax01) }}
-                                        </div>
-                                        <div class="col-auto text-center p-0"><span class="align-middle">-</span></div>
-                                        <div class="col-2">
-                                            {{ form_widget(form.fax.fax02) }}
-                                            {{ form_errors(form.fax.fax02) }}
-                                        </div>
-                                        <div class="col-auto text-center p-0"><span class="align-middle">-</span></div>
-                                        <div class="col-2">
-                                            {{ form_widget(form.fax.fax03) }}
-                                            {{ form_errors(form.fax.fax03) }}
-                                        </div>
+                                        {{ form_widget(form.phone_number) }}
+                                        {{ form_errors(form.phone_number) }}
                                     </div>
                                 </div>
                             </div>

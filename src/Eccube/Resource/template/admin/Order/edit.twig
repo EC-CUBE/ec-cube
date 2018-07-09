@@ -8,7 +8,7 @@ http://www.lockon.co.jp/
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
-{% extends '@admin/styleguide_frame.twig' %}
+{% extends '@admin/default_frame.twig' %}
 
 {% set menus = ['order', 'order_edit'] %}
 
@@ -135,7 +135,7 @@ file that was distributed with this source code.
                                     <div class="col-6">
                                         <div class="row mb-3">
                                             <div class="col-3"><span>{{ 'admin.order.edit.244'|trans }}</span></div>
-                                            <div class="col"><span class="mr-3">{{ Order.order_code }}</span></div>
+                                            <div class="col"><span class="mr-3">{{ Order.order_no }}</span></div>
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col-3"><span>{{ 'admin.order.edit.246'|trans }}</span></div>
@@ -266,13 +266,8 @@ file that was distributed with this source code.
                                         <div class="row justify-content-start">
                                             <div class="col-auto text-center pr-0"><span>{{ 'admin.order.edit.261'|trans }}</span></div>
                                             <div class="col-2 mb-2">
-                                                {{ form_widget(form.zip.zip01) }}
-                                                {{ form_errors(form.zip.zip01) }}
-                                            </div>
-                                            <div class="col-auto text-center p-0"><span class="align-middle">-</span></div>
-                                            <div class="col-2 mb-2">
-                                                {{ form_widget(form.zip.zip02) }}
-                                                {{ form_errors(form.zip.zip02) }}
+                                                {{ form_widget(form.postal_code) }}
+                                                {{ form_errors(form.postal_code) }}
                                             </div>
                                         </div>
                                         <div class="row justify-content-start">
@@ -299,43 +294,8 @@ file that was distributed with this source code.
                                 <div class="row mb-2">
                                     <div class="col-3"><span>{{ 'admin.common.label.tel'|trans }}</span><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></div>
                                     <div class="col">
-                                        <div class="row justify-content-start">
-                                            <div class="col-2">
-                                                {{ form_widget(form.tel.tel01) }}
-                                                {{ form_errors(form.tel.tel01) }}
-                                            </div>
-                                            <div class="col-auto text-center p-0"><span class="align-middle">-</span></div>
-                                            <div class="col-2">
-                                                {{ form_widget(form.tel.tel02) }}
-                                                {{ form_errors(form.tel.tel02) }}
-                                            </div>
-                                            <div class="col-auto text-center p-0"><span class="align-middle">-</span></div>
-                                            <div class="col-2">
-                                                {{ form_widget(form.tel.tel03) }}
-                                                {{ form_errors(form.tel.tel03) }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-3"><span>{{ 'admin.common.label.fax'|trans }}</span></div>
-                                    <div class="col">
-                                        <div class="row justify-content-start">
-                                            <div class="col-2">
-                                                {{ form_widget(form.fax.fax01) }}
-                                                {{ form_errors(form.fax.fax01) }}
-                                            </div>
-                                            <div class="col-auto text-center p-0"><span class="align-middle">-</span></div>
-                                            <div class="col-2">
-                                                {{ form_widget(form.fax.fax02) }}
-                                                {{ form_errors(form.fax.fax02) }}
-                                            </div>
-                                            <div class="col-auto text-center p-0"><span class="align-middle">-</span></div>
-                                            <div class="col-2">
-                                                {{ form_widget(form.fax.fax03) }}
-                                                {{ form_errors(form.fax.fax03) }}
-                                            </div>
-                                        </div>
+                                        {{ form_widget(form.phone_number) }}
+                                        {{ form_errors(form.phone_number) }}
                                     </div>
                                 </div>
                                 <div class="row mb-2">

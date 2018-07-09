@@ -59,7 +59,7 @@ file that was distributed with this source code.
                             <dt>{{ form_label(form.address) }}</dt>
                             <dd>
                                 <div id="detail_box__zip"
-                                     class="form-group form-inline input_zip {% if form.zip.zip01.vars.errors is not empty or form.zip.zip02.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.zip) }}</div>
+                                     class="form-group form-inline input_zip {% if form.postal_code.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.postal_code) }}</div>
                                 <div id="detail_box__pref"
                                      class="{% if form.address.pref.vars.errors is not empty or form.address.addr01.vars.errors is not empty or form.address.addr02.vars.errors is not empty %}has-error{% endif %}">
                                     {{ form_widget(form.address) }}
@@ -68,28 +68,11 @@ file that was distributed with this source code.
                             </dd>
                         </dl>
                         <dl id="detail_box__tel">
-                            <dt>{{ form_label(form.tel) }}</dt>
+                            <dt>{{ form_label(form.phone_number) }}</dt>
                             <dd>
                                 <div class="form-inline form-group input_tel">
-                                    {{ form_widget(form.tel.tel01) }}<span>-</span>
-                                    {{ form_widget(form.tel.tel02) }}<span>-</span>
-                                    {{ form_widget(form.tel.tel03) }}
-                                    {{ form_errors(form.tel.tel01) }}
-                                    {{ form_errors(form.tel.tel02) }}
-                                    {{ form_errors(form.tel.tel03) }}
-                                </div>
-                            </dd>
-                        </dl>
-                        <dl id="detail_box__fax">
-                            <dt>{{ form_label(form.fax) }}</dt>
-                            <dd>
-                                <div class="form-inline form-group input_tel">
-                                    {{ form_widget(form.fax.fax01) }}<span>-</span>
-                                    {{ form_widget(form.fax.fax02) }}<span>-</span>
-                                    {{ form_widget(form.fax.fax03) }}
-                                    {{ form_errors(form.fax.fax01) }}
-                                    {{ form_errors(form.fax.fax02) }}
-                                    {{ form_errors(form.fax.fax03) }}
+                                    {{ form_widget(form.phone_number) }}
+                                    {{ form_errors(form.phone_number) }}
                                 </div>
                             </dd>
                         </dl>

@@ -568,26 +568,25 @@ class MailService
         $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['eccube_shipping_notify_mail_template_id']);
 
         /** @var Order $Order */
-        foreach ($Shipping->getOrders() as $Order) {
-            $message = (new \Swift_Message())
-                ->setSubject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
-                ->setFrom([$this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()])
-                ->setTo($Order->getEmail())
-                ->setBcc($this->BaseInfo->getEmail01())
-                ->setReplyTo($this->BaseInfo->getEmail03())
-                ->setReturnPath($this->BaseInfo->getEmail04())
-                ->setBody($this->getShippingNotifyMailBody($Shipping, $Order, $MailTemplate));
+        $Order = $Shipping->getOrder();
+        $message = (new \Swift_Message())
+            ->setSubject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
+            ->setFrom([$this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()])
+            ->setTo($Order->getEmail())
+            ->setBcc($this->BaseInfo->getEmail01())
+            ->setReplyTo($this->BaseInfo->getEmail03())
+            ->setReturnPath($this->BaseInfo->getEmail04())
+            ->setBody($this->getShippingNotifyMailBody($Shipping, $Order, $MailTemplate));
 
-            $this->mailer->send($message);
+        $this->mailer->send($message);
 
-            $MailHistory = new MailHistory();
-            $MailHistory->setMailSubject($message->getSubject())
-                    ->setMailBody($message->getBody())
-                    ->setOrder($Order)
-                    ->setSendDate(new \DateTime());
+        $MailHistory = new MailHistory();
+        $MailHistory->setMailSubject($message->getSubject())
+                ->setMailBody($message->getBody())
+                ->setOrder($Order)
+                ->setSendDate(new \DateTime());
 
-            $this->mailHistoryRepository->save($MailHistory);
-        }
+        $this->mailHistoryRepository->save($MailHistory);
 
         log_info('出荷通知メール送信処理完了', ['id' => $Shipping->getId()]);
     }

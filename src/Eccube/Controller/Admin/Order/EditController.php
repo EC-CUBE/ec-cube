@@ -15,6 +15,7 @@ namespace Eccube\Controller\Admin\Order;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Master\OrderStatus;
@@ -187,7 +188,7 @@ class EditController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_INDEX_PROGRESS, $event);
 
-            $flowResult = $this->purchaseFlow->calculate($TargetOrder, $purchaseContext);
+            $flowResult = $this->purchaseFlow->validate($TargetOrder, $purchaseContext);
             if ($flowResult->hasWarning()) {
                 foreach ($flowResult->getWarning() as $warning) {
                     // TODO Warning の場合の処理
@@ -208,7 +209,8 @@ class EditController extends AbstractController
 
                     if ($flowResult->hasError() === false && $form->isValid()) {
                         try {
-                            $this->purchaseFlow->purchase($TargetOrder, $purchaseContext);
+                            $this->purchaseFlow->prepare($TargetOrder, $purchaseContext);
+                            $this->purchaseFlow->commit($TargetOrder, $purchaseContext);
                         } catch (PurchaseException $e) {
                             $this->addError($e->getMessage(), 'admin');
                             break;
@@ -350,6 +352,7 @@ class EditController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_SEARCH, $event);
 
+            /** @var Customer[] $Customers */
             $Customers = $qb->getQuery()->getResult();
 
             if (empty($Customers)) {
@@ -357,8 +360,6 @@ class EditController extends AbstractController
             }
 
             $data = [];
-
-            $formatTel = '%s-%s-%s';
             $formatName = '%s%s(%s%s)';
             foreach ($Customers as $Customer) {
                 $data[] = [
@@ -366,7 +367,7 @@ class EditController extends AbstractController
                     'name' => sprintf($formatName, $Customer->getName01(), $Customer->getName02(),
                         $Customer->getKana01(),
                         $Customer->getKana02()),
-                    'tel' => sprintf($formatTel, $Customer->getTel01(), $Customer->getTel02(), $Customer->getTel03()),
+                    'phone_number' => $Customer->getPhoneNumber(),
                     'email' => $Customer->getEmail(),
                 ];
             }
@@ -452,8 +453,6 @@ class EditController extends AbstractController
             }
 
             $data = [];
-
-            $formatTel = '%s-%s-%s';
             $formatName = '%s%s(%s%s)';
             foreach ($Customers as $Customer) {
                 $data[] = [
@@ -461,7 +460,7 @@ class EditController extends AbstractController
                     'name' => sprintf($formatName, $Customer->getName01(), $Customer->getName02(),
                         $Customer->getKana01(),
                         $Customer->getKana02()),
-                    'tel' => sprintf($formatTel, $Customer->getTel01(), $Customer->getTel02(), $Customer->getTel03()),
+                    'phone_number' => $Customer->getPhoneNumber(),
                     'email' => $Customer->getEmail(),
                 ];
             }
@@ -524,18 +523,12 @@ class EditController extends AbstractController
                 'name02' => $Customer->getName02(),
                 'kana01' => $Customer->getKana01(),
                 'kana02' => $Customer->getKana02(),
-                'zip01' => $Customer->getZip01(),
-                'zip02' => $Customer->getZip02(),
+                'postal_code' => $Customer->getPostalCode(),
                 'pref' => is_null($Customer->getPref()) ? null : $Customer->getPref()->getId(),
                 'addr01' => $Customer->getAddr01(),
                 'addr02' => $Customer->getAddr02(),
                 'email' => $Customer->getEmail(),
-                'tel01' => $Customer->getTel01(),
-                'tel02' => $Customer->getTel02(),
-                'tel03' => $Customer->getTel03(),
-                'fax01' => $Customer->getFax01(),
-                'fax02' => $Customer->getFax02(),
-                'fax03' => $Customer->getFax03(),
+                'phone_number' => $Customer->getPhoneNumber(),
                 'company_name' => $Customer->getCompanyName(),
             ];
 
