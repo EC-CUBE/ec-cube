@@ -442,16 +442,12 @@ file that was distributed with this source code.
                                             <span class="badge {{ attribute(cssClassStatus, Order.OrderStatus.id) }}">{{ Order.OrderStatus }}</span>
                                         </td>
                                         <td class="align-middle text-center">
-                                            {% if Order.note is not empty and Order.message is not empty%}
+                                            {% if Order.message is not empty%}
                                                 <a class="btn btn-ec-actionIcon" href="{{ url('admin_order_edit', { id : Order.id }) }}#order_message" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ Order.message }}" aria-describedby="tooltip819464">
                                                     <i class="fa fa-commenting fa-lg text-secondary" aria-hidden="true"></i>
                                                 </a>
                                             {% elseif Order.note is not empty %}
                                                 <a class="btn btn-ec-actionIcon" href="{{ url('admin_order_edit', { id : Order.id }) }}#order_note" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ Order.note }}" aria-describedby="tooltip819464">
-                                                    <i class="fa fa-commenting fa-lg text-secondary" aria-hidden="true"></i>
-                                                </a>
-                                            {% elseif Order.message is not empty %}
-                                                <a class="btn btn-ec-actionIcon" href="{{ url('admin_order_edit', { id : Order.id }) }}#order_message" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ Order.message }}" aria-describedby="tooltip819464">
                                                     <i class="fa fa-commenting fa-lg text-secondary" aria-hidden="true"></i>
                                                 </a>
                                             {% endif %}
