@@ -26,6 +26,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Eccube\Entity\BaseInfo;
 
 class CartController extends AbstractController
 {
@@ -45,20 +46,28 @@ class CartController extends AbstractController
     protected $purchaseFlow;
 
     /**
+     * @var BaseInfo
+     */
+    protected $baseInfo;
+
+    /**
      * CartController constructor.
      *
      * @param ProductClassRepository $productClassRepository
      * @param CartService $cartService
      * @param PurchaseFlow $cartPurchaseFlow
+     * @param BaseInfo $BaseInfo
      */
     public function __construct(
         ProductClassRepository $productClassRepository,
         CartService $cartService,
-        PurchaseFlow $cartPurchaseFlow
+        PurchaseFlow $cartPurchaseFlow,
+        BaseInfo $baseInfo
     ) {
         $this->productClassRepository = $productClassRepository;
         $this->cartService = $cartService;
         $this->purchaseFlow = $cartPurchaseFlow;
+        $this->baseInfo = $baseInfo;
     }
 
     /**
@@ -74,22 +83,39 @@ class CartController extends AbstractController
         $this->execPurchaseFlow($Carts);
 
         // TODO itemHolderから取得できるように
-        $least = 0;
-        $quantity = 0;
-        $isDeliveryFree = false;
+        $least = [];
+        $quantity = [];
+        $isDeliveryFree = [];
+        $totalPrice = 0;
+        $totalQuantity = 0;
 
-        $totalQuantity = array_reduce($Carts, function ($total, $Cart) {
-            /* @var Cart $Cart */
-            $total += $Cart->getQuantity();
+        foreach ($Carts as $Cart) {
 
-            return $total;
-        }, 0);
-        $totalPrice = array_reduce($Carts, function ($total, $Cart) {
-            /* @var Cart $Cart */
-            $total += $Cart->getTotalPrice();
+            $quantity[$Cart->getCartKey()] = 0;
+            $isDeliveryFree[$Cart->getCartKey()] = false;
 
-            return $total;
-        }, 0);
+            if ($this->baseInfo->getDeliveryFreeQuantity()) {
+
+                if ($this->baseInfo->getDeliveryFreeQuantity() > $Cart->getQuantity()) {
+                    $quantity[$Cart->getCartKey()] = $this->baseInfo->getDeliveryFreeQuantity() - $Cart->getQuantity();
+                } else {
+                    $isDeliveryFree[$Cart->getCartKey()] = true;
+                }
+            }
+
+            if ($this->baseInfo->getDeliveryFreeAmount()) {
+
+                if (!$isDeliveryFree[$Cart->getCartKey()] && $this->baseInfo->getDeliveryFreeAmount() <= $Cart->getTotalPrice()) {
+                    $isDeliveryFree[$Cart->getCartKey()] = true;
+                } else {
+                    $least[$Cart->getCartKey()] = $this->baseInfo->getDeliveryFreeAmount() - $Cart->getTotalPrice();
+                }
+            }
+
+            $totalPrice += $Cart->getTotalPrice();
+            $totalQuantity += $Cart->getQuantity();
+
+        }
 
         // カートが分割された時のセッション情報を削除
         $request->getSession()->remove('cart.divide');
