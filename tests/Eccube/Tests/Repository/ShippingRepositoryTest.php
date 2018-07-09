@@ -152,13 +152,4 @@ class ShippingRepositoryTest extends EccubeTestCase
             $this->verify();
         }
     }
-
-    public function testGetOrders()
-    {
-        $Shipping = $this->shippingRepository->find($this->Shippings[0]->getId());
-
-        $this->assertInstanceOf('\Doctrine\Common\Collections\Collection', $Shipping->getOrders());
-        $Order = $Shipping->getOrders()->first();
-        $this->assertEquals($this->Order->getId(), $Order->getId());
-    }
 }
