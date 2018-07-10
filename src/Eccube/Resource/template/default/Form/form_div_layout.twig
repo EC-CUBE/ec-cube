@@ -45,6 +45,16 @@ file that was distributed with this source code.
     {% endif %}
 {%- endblock textarea_widget -%}
 
+{%- block choice_widget_expanded -%}
+    <div {{ block('widget_container_attributes') }}>
+        {%- set label_attr = label_attr|merge({}) -%}
+        {%- for child in form %}
+            {{- form_widget(child) -}}
+            {{- form_label(child, null, {translation_domain: choice_translation_domain, label_attr: label_attr}) -}}
+        {% endfor -%}
+    </div>
+{%- endblock choice_widget_expanded -%}
+
 
 {% block checkbox_label -%}
     {%- set label_attr = label_attr|merge({'for': id}) -%}

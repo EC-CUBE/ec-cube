@@ -187,7 +187,7 @@ file that was distributed with this source code.
                             </dt>
                             <dd>
                                 <div class="ec-radio{{ has_errors(form.sex) ? ' error' }}">
-                                    {{ form_widget(form.sex) }}
+                                    {{ form_widget(form.sex, {label_attr: {style: 'font-weight: 400'}}) }}
                                     {{ form_errors(form.sex) }}
                                 </div>
                             </dd>
