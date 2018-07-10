@@ -21,7 +21,6 @@ use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\ItemValidator;
 
-
 /**
  * 商品を１個のみしか購入できないようにするサンプル
  *
@@ -37,11 +36,12 @@ use Eccube\Service\PurchaseFlow\ItemValidator;
  * * PurchaseProcessor
  *
  * ## 追加対象のフローの指定方法
- * * カートのPurchaseFlowにProcessorを追加する場合は以下のアノテーションを追加
+ * * カートのPurchaseFlowにProcessorを追加する場合はCartFlowアノテーションを追加
+ * * 購入フローのPurchaseFlowにProcessorを追加する場合はShoppingFlowアノテーションを追加
+ * * 管理画面でのPurchaseFlowにProcessorを追加する場合はOrderFlowアノテーションを追加
+ *
  * @CartFlow
- * * 購入フローのPurchaseFlowにProcessorを追加する場合は以下のアノテーションを追加
  * @ShoppingFlow
- * * 管理画面でのPurchaseFlowにProcessorを追加する場合は以下のアノテーションを追加
  * @OrderFlow
  */
 class SaleLimitOneValidator extends ItemValidator
