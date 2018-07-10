@@ -23,14 +23,11 @@ class EF04CustomerCest
             'entry[name][name02]' => '名',
             'entry[kana][kana01]' => 'セイ',
             'entry[kana][kana02]' => 'メイ',
-            'entry[zip][zip01]' => '530',
-            'entry[zip][zip02]' => '0001',
+            'entry[postal_code]' => '530-0001',
             'entry[address][pref]' => ['value' => '27'],
             'entry[address][addr01]' => '大阪市北区',
             'entry[address][addr02]' => '梅田2-4-9 ブリーゼタワー13F',
-            'entry[tel][tel01]' => '111',
-            'entry[tel][tel02]' => '111',
-            'entry[tel][tel03]' => '111',
+            'entry[phone_number]' => '111-111-111',
             'entry[email][first]' => $new_email,
             'entry[email][second]' => $new_email,
             'entry[password][first]' => 'password',
@@ -47,8 +44,8 @@ class EF04CustomerCest
 
         // 入力した会員情報を確認する。
         $I->see('姓 名', '.ec-registerRole form .ec-borderedDefs dl:nth-child(1) dd');
-        $I->see('111 - 111 - 111', '.ec-registerRole form .ec-borderedDefs dl:nth-child(5) dd');
-        $I->see($new_email, '.ec-registerRole form .ec-borderedDefs dl:nth-child(7) dd');
+        $I->see('111111111', '.ec-registerRole form .ec-borderedDefs dl:nth-child(5) dd');
+        $I->see($new_email, '.ec-registerRole form .ec-borderedDefs dl:nth-child(6) dd');
 
         $I->resetEmails();
         // 「会員登録をする」ボタンを押下する
@@ -100,14 +97,11 @@ class EF04CustomerCest
             'entry[name][name02]' => '名',
             'entry[kana][kana01]' => 'セイ',
             'entry[kana][kana02]' => 'メイ',
-            'entry[zip][zip01]' => '530',
-            'entry[zip][zip02]' => '0001',
+            'entry[postal_code]' => '530-0001',
             'entry[address][pref]' => ['value' => '27'],
             'entry[address][addr01]' => '大阪市北区',
             'entry[address][addr02]' => '梅田2-4-9 ブリーゼタワー13F',
-            'entry[tel][tel01]' => '111',
-            'entry[tel][tel02]' => '111',
-            'entry[tel][tel03]' => '111',
+            'entry[phone_number]' => '111-111-111',
             'entry[email][first]' => $customer->getEmail(), // 会員登録済みのメールアドレスを入力する
             'entry[email][second]' => $customer->getEmail(),
             'entry[password][first]' => 'password',
@@ -115,7 +109,7 @@ class EF04CustomerCest
         ], ['css' => 'button.ec-blockBtn--action']);
 
         // 入力した会員情報を確認する。
-        $I->see('既に利用されているメールアドレスです', '.ec-registerRole form .ec-borderedDefs dl:nth-child(7) dd');
+        $I->see('既に利用されているメールアドレスです', '.ec-registerRole form .ec-borderedDefs dl:nth-child(6) dd');
     }
 
     public function customer_会員登録異常2(\AcceptanceTester $I)
@@ -133,14 +127,11 @@ class EF04CustomerCest
             'entry[name][name02]' => '名',
             'entry[kana][kana01]' => 'セイ',
             'entry[kana][kana02]' => 'メイ',
-            'entry[zip][zip01]' => '530',
-            'entry[zip][zip02]' => '0001',
+            'entry[postal_code]' => '530-0001',
             'entry[address][pref]' => ['value' => '27'],
             'entry[address][addr01]' => '大阪市北区',
             'entry[address][addr02]' => '梅田2-4-9 ブリーゼタワー13F',
-            'entry[tel][tel01]' => '111',
-            'entry[tel][tel02]' => '111',
-            'entry[tel][tel03]' => '111',
+            'entry[phone_number]' => '111-111-111',
             'entry[email][first]' => $new_email,
             'entry[email][second]' => $new_email,
             'entry[password][first]' => 'password',
@@ -177,14 +168,11 @@ class EF04CustomerCest
             'entry[name][name02]' => '名',
             'entry[kana][kana01]' => 'セイ',
             'entry[kana][kana02]' => 'メイ',
-            'entry[zip][zip01]' => '530',
-            'entry[zip][zip02]' => '0001',
+            'entry[postal_code]' => '530-0001',
             'entry[address][pref]' => ['value' => '27'],
             'entry[address][addr01]' => '大阪市北区',
             'entry[address][addr02]' => '梅田2-4-9 ブリーゼタワー13F',
-            'entry[tel][tel01]' => '111',
-            'entry[tel][tel02]' => '111',
-            'entry[tel][tel03]' => '111',
+            'entry[phone_number]' => '111-111-111',
             'entry[email][first]' => $new_email,
             'entry[email][second]' => $new_email,
             'entry[password][first]' => 'password',

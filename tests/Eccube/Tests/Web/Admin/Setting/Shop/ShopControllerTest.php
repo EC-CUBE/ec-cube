@@ -66,25 +66,13 @@ class ShopControllerTest extends AbstractAdminWebTestCase
             'shop_name' => '店舗名',
             'shop_kana' => 'カナ',
             'shop_name_eng' => 'shopname',
-            'zip' => [
-                'zip01' => '530',
-                'zip02' => '0001',
-            ],
+            'postal_code' => '060-0000',
             'address' => [
                 'pref' => '5',
                 'addr01' => '北区',
                 'addr02' => '梅田',
             ],
-            'tel' => [
-                'tel01' => '031',
-                'tel02' => '111',
-                'tel03' => '1111',
-            ],
-            'fax' => [
-                'fax01' => '031',
-                'fax02' => '111',
-                'fax03' => '4444',
-            ],
+            'phone_number' => '012-345-6789',
             'business_hour' => '店舗営業時間',
             'email01' => 'eccube@example.com',
             'email02' => 'eccube@example.com',

@@ -14,17 +14,16 @@
 namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Doctrine\DBAL\LockMode;
-use Eccube\Entity\ItemInterface;
-use Eccube\Entity\OrderItem;
+use Eccube\Entity\ItemHolderInterface;
+use Eccube\Entity\Order;
+use Eccube\Entity\ProductStock;
 use Eccube\Repository\ProductStockRepository;
-use Eccube\Service\PurchaseFlow\ItemProcessor;
-use Eccube\Service\PurchaseFlow\ProcessResult;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 /**
  * 在庫制御.
  */
-class StockReduceProcessor implements ItemProcessor
+class StockReduceProcessor extends AbstractPurchaseProcessor
 {
     /**
      * @var ProductStockRepository
@@ -42,41 +41,48 @@ class StockReduceProcessor implements ItemProcessor
     }
 
     /**
-     * @param ItemInterface   $item
-     * @param PurchaseContext $context
-     *
-     * @return ProcessResult
-     *
-     * @internal param ItemHolderInterface $itemHolder
+     * {@inheritdoc}
      */
-    public function process(ItemInterface $item, PurchaseContext $context)
+    public function prepare(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
-        if (!$item instanceof OrderItem) {
-            // OrderItem 以外の場合は何もしない
-            return ProcessResult::success();
+        // 在庫を減らす
+        $this->eachProductOrderItems($itemHolder, function ($currentStock, $itemQuantity) {
+            return $currentStock - $itemQuantity;
+        });
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    {
+        // 在庫を戻す
+        $this->eachProductOrderItems($itemHolder, function ($currentStock, $itemQuantity) {
+            return $currentStock + $itemQuantity;
+        });
+    }
+
+    private function eachProductOrderItems(ItemHolderInterface $itemHolder, callable $callback)
+    {
+        // Order以外の場合は何もしない
+        if (!$itemHolder instanceof Order) {
+            return;
         }
 
-        // 在庫処理を実装
-        // warning も作りたい
-        if (!$item->isProduct()) {
-            // FIXME 配送明細を考慮する必要がある
-            return ProcessResult::success();
-        }
-        // 在庫が無制限かチェックし、制限ありなら在庫数をチェック
-        if (!$item->getProductClass()->isStockUnlimited()) {
-            // 在庫チェックあり
-            // 在庫に対してロック(select ... for update)を実行
-            $productStock = $this->productStockRepository->find(
-                $item->getProductClass()->getProductStock()->getId(), LockMode::PESSIMISTIC_WRITE
-            );
-            // 購入数量と在庫数をチェックして在庫がなければエラー
-            if ($productStock->getStock() < 1) {
-                return ProcessResult::fail(trans('stockreduceprocessor.text.error.stock'));
-            } elseif ($item->getQuantity() > $productStock->getStock()) {
-                return ProcessResult::fail(trans('stockreduceprocessor.text.error.stock'));
+        foreach ($itemHolder->getProductOrderItems() as $item) {
+            // 在庫が無制限かチェックし、制限ありなら在庫数をチェック
+            if (!$item->getProductClass()->isStockUnlimited()) {
+                // 在庫チェックあり
+                // 在庫に対してロック(select ... for update)を実行
+                /* @var ProductStock $productStock */
+                $productStock = $this->productStockRepository->find(
+                    $item->getProductClass()->getProductStock()->getId(), LockMode::PESSIMISTIC_WRITE
+                );
+
+                $stock = $callback($productStock->getStock(), $item->getQuantity());
+                $productStock->setStock($stock);
+                $item->getProductClass()->setStock($stock);
             }
         }
-
-        return ProcessResult::success();
     }
 }

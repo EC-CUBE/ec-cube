@@ -185,9 +185,6 @@ file that was distributed with this source code.
 
 
 {# EC-CUBE Widget #}
-
-
-
 {%- block name_widget -%}
     {%- for child in form %}
         {%- if freeze -%}
@@ -200,45 +197,6 @@ file that was distributed with this source code.
         {{- form_errors(child) -}}
     {% endfor -%}
 {%- endblock name_widget -%}
-
-{%- block tel_widget -%}
-    {%- for child in form %}
-        {{- form_widget(child, {'type': 'tel', 'attr': {'style': 'ime-mode: disabled;'}}) -}}
-        {%- if freeze -%}
-            {%- if freeze_display_text -%}
-                {%- if child.vars.value is not empty -%}
-                    {%- if loop.last == false%}&nbsp;-&nbsp;{% endif -%}
-                {%- endif -%}
-            {%- endif -%}
-        {%- else -%}
-            {%- if loop.last == false%}&nbsp;-&nbsp;{% endif -%}
-        {%- endif -%}
-    {% endfor -%}
-    {%- for child in form %}
-        {{- form_errors(child) -}}
-    {% endfor -%}
-{%- endblock tel_widget -%}
-
-{%- block fax_widget -%}
-    {%- for child in form %}
-        {{- form_widget(child, {'attr': {'style': 'ime-mode: disabled;'}}) -}}
-        {%- if loop.last == false%}&nbsp;-&nbsp;{% endif -%}
-    {% endfor -%}
-    {%- for child in form %}
-        {{- form_errors(child) -}}
-    {% endfor -%}
-{%- endblock fax_widget -%}
-
-{%- block zip_widget -%}
-    {%- if freeze -%}
-        {%- if freeze_display_text -%}〒&nbsp;{%- endif -%}{{ form_widget(form[form.vars.zip01_name]) }}{%- if freeze_display_text -%}&nbsp;-&nbsp;{%- endif -%}{{- form_widget(form[form.vars.zip02_name]) }}
-    {%- else -%}
-        〒{{- form_widget(form[form.vars.zip01_name], {'id': 'zip01', 'attr': {'style': 'ime-mode: disabled;', 'pattern': '\\d*'}}) }}-{{- form_widget(form[form.vars.zip02_name], {'id': 'zip02', 'attr': {'style': 'ime-mode: disabled;', 'pattern': '\\d*'}}) }} <span class="question-circle"><svg class="cb cb-question"><use xlink:href="#cb-question" /></svg></span> <a href="http://www.post.japanpost.jp/zipcode/" target="_blank">郵便番号検索</a>
-        {%- for child in form %}
-            {{- form_errors(child) -}}
-        {% endfor -%}
-    {%- endif -%}
-{%- endblock zip_widget -%}
 
 {%- block address_widget -%}
     <div class="form-inline form-group input_zip">

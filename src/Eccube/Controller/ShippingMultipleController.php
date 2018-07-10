@@ -183,14 +183,16 @@ class ShippingMultipleController extends AbstractShoppingController
                 $OrderItem = $mulitples->getData();
                 foreach ($mulitples as $items) {
                     foreach ($items as $item) {
-                        $cusAddId = $this->getCustomerAddressId($item['customer_address']->getData());
+                        $CustomerAddress = $item['customer_address']->getData();
+                        $customerAddressName = $CustomerAddress->getShippingMultipleDefaultName();
+
                         $itemId = $OrderItem->getProductClass()->getId();
                         $quantity = $item['quantity']->getData();
 
-                        if (isset($arrOrderItemTemp[$cusAddId]) && array_key_exists($itemId, $arrOrderItemTemp[$cusAddId])) {
-                            $arrOrderItemTemp[$cusAddId][$itemId] = $arrOrderItemTemp[$cusAddId][$itemId] + $quantity;
+                        if (isset($arrOrderItemTemp[$customerAddressName]) && array_key_exists($itemId, $arrOrderItemTemp[$customerAddressName])) {
+                            $arrOrderItemTemp[$customerAddressName][$itemId] = $arrOrderItemTemp[$customerAddressName][$itemId] + $quantity;
                         } else {
-                            $arrOrderItemTemp[$cusAddId][$itemId] = $quantity;
+                            $arrOrderItemTemp[$customerAddressName][$itemId] = $quantity;
                         }
                     }
                 }
@@ -218,6 +220,7 @@ class ShippingMultipleController extends AbstractShoppingController
                     $Order->removeOrderItem($OrderItem);
                     $this->entityManager->remove($OrderItem);
                 }
+                $Order->removeShipping($Shipping);
                 $this->entityManager->remove($Shipping);
             }
 
@@ -231,15 +234,19 @@ class ShippingMultipleController extends AbstractShoppingController
 
                 foreach ($mulitples as $items) {
                     foreach ($items as $item) {
-                        $CustomerAddress = $this->getCustomerAddress($item['customer_address']->getData());
-                        $cusAddId = $this->getCustomerAddressId($item['customer_address']->getData());
+                        $CustomerAddress = $item['customer_address']->getData();
+                        $customerAddressName = $CustomerAddress->getShippingMultipleDefaultName();
 
+                        if (isset($ShippingList[$customerAddressName][$saleTypeId])) {
+                            continue;
+                        }
                         $Shipping = new Shipping();
                         $Shipping
+                            ->setOrder($Order)
                             ->setFromCustomerAddress($CustomerAddress)
                             ->setDelivery($Delivery);
-
-                        $ShippingList[$cusAddId][$saleTypeId] = $Shipping;
+                        $Order->addShipping($Shipping);
+                        $ShippingList[$customerAddressName][$saleTypeId] = $Shipping;
                     }
                 }
             }
@@ -263,20 +270,21 @@ class ShippingMultipleController extends AbstractShoppingController
 
                 foreach ($mulitples as $items) {
                     foreach ($items as $item) {
-                        $cusAddId = $this->getCustomerAddressId($item['customer_address']->getData());
+                        $CustomerAddress = $item['customer_address']->getData();
+                        $customerAddressName = $CustomerAddress->getShippingMultipleDefaultName();
 
                         // お届け先から商品の数量を取得
                         $quantity = 0;
-                        if (isset($arrOrderItemTemp[$cusAddId]) && array_key_exists($productClassId, $arrOrderItemTemp[$cusAddId])) {
-                            $quantity = $arrOrderItemTemp[$cusAddId][$productClassId];
-                            unset($arrOrderItemTemp[$cusAddId][$productClassId]);
+                        if (isset($arrOrderItemTemp[$customerAddressName]) && array_key_exists($productClassId, $arrOrderItemTemp[$customerAddressName])) {
+                            $quantity = $arrOrderItemTemp[$customerAddressName][$productClassId];
+                            unset($arrOrderItemTemp[$customerAddressName][$productClassId]);
                         } else {
                             // この配送先には送る商品がないのでスキップ（通常ありえない）
                             continue;
                         }
 
                         // 関連付けるお届け先のインスタンスを取得
-                        $Shipping = $ShippingList[$cusAddId][$saleTypeId];
+                        $Shipping = $ShippingList[$customerAddressName][$saleTypeId];
 
                         // インスタンスを生成して保存
                         $OrderItem = new OrderItem();
@@ -308,7 +316,7 @@ class ShippingMultipleController extends AbstractShoppingController
             }
 
             // 合計金額の再計算
-            $flowResult = $this->executePurchaseFlow($Order);
+            $flowResult = $this->validatePurchaseFlow($Order);
             if ($flowResult->hasWarning()) {
                 return [
                     'form' => $form->createView(),
@@ -353,7 +361,7 @@ class ShippingMultipleController extends AbstractShoppingController
                 }
             }
 
-            $this->cartPurchaseFlow->calculate($Cart, new PurchaseContext());
+            $this->cartPurchaseFlow->validate($Cart, new PurchaseContext());
             $this->cartService->save();
 
             return $this->redirectToRoute('shopping');
@@ -441,47 +449,5 @@ class ShippingMultipleController extends AbstractShoppingController
         return [
             'form' => $form->createView(),
         ];
-    }
-
-    /**
-     * フォームの情報からお届け先のインデックスを返す
-     *
-     * @param mixed $CustomerAddressData
-     *
-     * @return int
-     */
-    private function getCustomerAddressId($CustomerAddressData)
-    {
-        if ($CustomerAddressData instanceof CustomerAddress) {
-            return $CustomerAddressData->getId();
-        } else {
-            return $CustomerAddressData;
-        }
-    }
-
-    /**
-     * フォームの情報からお届け先のインスタンスを返す
-     *
-     * @param int $customerAddressId お届け先ID。非会員の場合はセッションに登録されたお届け先リストのインデックス。
-     *
-     * @return CustomerAddress
-     */
-    private function getCustomerAddress($customerAddressId)
-    {
-        // 会員の場合は登録されているお届け先を返す
-        if ($this->getUser()) {
-            return $this->entityManager->find(CustomerAddress::class, $customerAddressId);
-        }
-
-        // 非会員の場合はセッション中のお届け先リストから返す
-        $cusAddId = $customerAddressId;
-        $customerAddresses = $this->session->get($this->sessionCustomerAddressKey);
-        $customerAddresses = unserialize($customerAddresses);
-
-        $CustomerAddress = $customerAddresses[$cusAddId];
-        $pref = $this->prefRepository->find($CustomerAddress->getPref()->getId());
-        $CustomerAddress->setPref($pref);
-
-        return $CustomerAddress;
     }
 }

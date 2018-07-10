@@ -8,7 +8,7 @@ http://www.lockon.co.jp/
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
-{% extends '@admin/styleguide_frame.twig' %}
+{% extends '@admin/default_frame.twig' %}
 
 {% set menus = ['customer', 'customer_master'] %}
 
@@ -260,8 +260,8 @@ file that was distributed with this source code.
                     <div class="col">
                         <div class="mb-3">
                             <label>{{ 'admin.customer.index.119'|trans }}</label>
-                            {{ form_widget(searchForm.tel) }}
-                            {{ form_errors(searchForm.tel) }}
+                            {{ form_widget(searchForm.phone_number) }}
+                            {{ form_errors(searchForm.phone_number) }}
                         </div>
                     </div>
                     <div class="col">
@@ -339,7 +339,7 @@ file that was distributed with this source code.
                                                 <tr>
                                                     <td class="align-middle pl-3">{{ Customer.id }}</td>
                                                     <td class="align-middle"><a href="{{ url('admin_customer_edit', { 'id': Customer.id}) }}">{{ Customer.name01 }}&nbsp;{{ Customer.name02 }}</a></td>
-                                                    <td class="align-middle">{{ Customer.tel01 }}-{{ Customer.tel02 }}-{{ Customer.tel03 }}</td>
+                                                    <td class="align-middle">{{ Customer.phone_number }}</td>
                                                     <td class="align-middle">{{ Customer.email }}</td>
                                                     <td class="align-middle"></td>
                                                     <td class="align-middle pr-3">
@@ -424,7 +424,7 @@ file that was distributed with this source code.
                                         </tbody></table>
                                     <div class="row justify-content-md-center mb-4">
                                         {% if pagination.totalItemCount > 0 %}
-                                            {% include "@admin/styleguide_pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_customer_page' } %}
+                                            {% include "@admin/pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_customer_page' } %}
                                         {% endif %}
                                     </div>
                                 </div>

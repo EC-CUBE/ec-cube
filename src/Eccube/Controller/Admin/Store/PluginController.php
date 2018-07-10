@@ -24,10 +24,12 @@ use Eccube\Form\Type\Admin\PluginManagementType;
 use Eccube\Repository\PluginEventHandlerRepository;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\PluginService;
+use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -118,7 +120,7 @@ class PluginController extends AbstractController
 
             try {
                 // プラグイン用設定画面があれば表示(プラグイン用のサービスプロバイダーに定義されているか)
-                $configPages[$Plugin->getCode()] = $this->generateUrl('plugin_'.$Plugin->getCode().'_config');
+                $configPages[$Plugin->getCode()] = $this->generateUrl(Container::underscore($Plugin->getCode()).'_admin_config');
             } catch (\Exception $e) {
                 // プラグインで設定画面のルートが定義されていない場合は無視
             }
@@ -266,7 +268,8 @@ class PluginController extends AbstractController
             $this->addSuccess('admin.plugin.enable.complete', 'admin');
         }
 
-        return $this->redirectToRoute('admin_store_plugin');
+        // 有効化できた場合はキャッシュを再生成する
+        return $this->redirectToRoute('admin_store_clear_cache');
     }
 
     /**
@@ -301,7 +304,30 @@ class PluginController extends AbstractController
             $this->addSuccess('admin.plugin.disable.complete', 'admin');
         } else {
             $this->addError('admin.plugin.already.disable', 'admin');
+
+            return $this->redirectToRoute('admin_store_plugin');
         }
+
+        // 無効化できた場合はキャッシュを再生成する
+        return $this->redirectToRoute('admin_store_clear_cache');
+    }
+
+    /**
+     * プラグイン有効状態切り替え後にキャッシュを削除するためのルーティング
+     *
+     * このルーティングが必要な理由：
+     * プラグイン有効化のリクエスト内でキャッシュを削除しても、有効になる前の情報でキャッシュが再生成されてしまう。
+     * それを回避するために、このルーティングにリダイレクトして、プラグイン有効状態であらためてキャッシュ再生成する。
+     *
+     * @Route("/%eccube_admin_route%/store/plugin/clearcache", name="admin_store_clear_cache")
+     *
+     * @param Request     $request
+     *
+     * @return RedirectResponse
+     */
+    public function clearCache(Request $request, CacheUtil $cacheUtil)
+    {
+        $cacheUtil->clearCache();
 
         return $this->redirectToRoute('admin_store_plugin');
     }

@@ -88,6 +88,11 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->customerAddressRepo = $this->container->get(CustomerAddressRepository::class);
         $this->masterPrefRepo = $this->container->get(PrefRepository::class);
         $this->masterSexRepo = $this->container->get(SexRepository::class);
+        $this->deleteAllRows([
+            'dtb_order_item',
+            'dtb_shipping',
+            'dtb_order',
+        ]);
 
         $this->removeCustomer();
         $this->Customer = $this->createCustomer('customer@example.com');
@@ -446,33 +451,25 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->verify();
     }
 
-    public function testTel()
+    public function testPhoneNumber()
     {
         $this->Customer
-            ->setTel01('090')
-            ->setTel02('999')
-            ->setTel03('000');
+            ->setPhoneNumber('0123456789');
         $this->Customer1
-            ->setTel01('090')
-            ->setTel02('111')
-            ->setTel03('000');
+            ->setPhoneNumber('0123456789');
         $this->Customer2
-            ->setTel01('090')
-            ->setTel02('222')
-            ->setTel03('000');
+            ->setPhoneNumber('0123456789');
         $this->Customer3
-            ->setTel01('090')
-            ->setTel02('333')
-            ->setTel03('000');
+            ->setPhoneNumber('9876543210');
         $this->entityManager->flush();
 
         $this->searchData = [
-            'tel' => '999',
+            'phone_number' => '0123456789',
         ];
 
         $this->scenario();
 
-        $this->expected = 1;
+        $this->expected = 3;
         $this->actual = count($this->Results);
         $this->verify();
     }

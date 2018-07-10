@@ -251,7 +251,7 @@ class ShippingController extends AbstractController
      */
     public function previewShippingNotifyMail(Shipping $Shipping)
     {
-        return new Response($this->mailService->getShippingNotifyMailBody($Shipping, $Shipping->getOrders()->first()));
+        return new Response($this->mailService->getShippingNotifyMailBody($Shipping, $Shipping->getOrder()));
     }
 
     /**

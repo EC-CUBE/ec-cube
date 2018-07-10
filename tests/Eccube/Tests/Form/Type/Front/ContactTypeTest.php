@@ -30,20 +30,13 @@ class ContactTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
             'kana01' => 'タカハシ',
             'kana02' => 'シンイチ',
         ],
-        'zip' => [
-            'zip01' => '530',
-            'zip02' => '0001',
-        ],
+        'postal_code' => '060-0000',
         'address' => [
             'pref' => '5',
             'addr01' => '北区',
             'addr02' => '梅田',
         ],
-        'tel' => [
-            'tel01' => '03',
-            'tel02' => '1111',
-            'tel03' => '1111',
-        ],
+        'phone_number' => '012-345-6789',
         'email' => 'eccube@example.com',
         'contents' => 'ほげほげ',
     ];
@@ -98,11 +91,9 @@ class ContactTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testValidTel_Blank()
+    public function testValidPhoneNumber_Blank()
     {
-        $this->formData['tel']['tel01'] = '';
-        $this->formData['tel']['tel02'] = '';
-        $this->formData['tel']['tel03'] = '';
+        $this->formData['phone_number'] = '';
 
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());

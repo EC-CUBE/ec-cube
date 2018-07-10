@@ -250,7 +250,7 @@ class EA07BasicinfoCest
 
         // 表示
         CsvSettingsPage::go($I)
-            ->入力_CSVタイプ('出荷CSV')
+            ->入力_CSVタイプ('受注CSV')
             ->選択_出力項目('誕生日')
             ->削除()
             ->設定();

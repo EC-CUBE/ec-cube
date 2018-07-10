@@ -18,8 +18,8 @@ use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\KanaType;
 use Eccube\Form\Type\NameType;
 use Eccube\Form\Type\RepeatedEmailType;
-use Eccube\Form\Type\TelType;
-use Eccube\Form\Type\ZipType;
+use Eccube\Form\Type\PhoneNumberType;
+use Eccube\Form\Type\PostalType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -62,13 +62,13 @@ class NonMemberType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('zip', ZipType::class, [
+            ->add('postal_code', PostalType::class, [
                 'required' => true,
             ])
             ->add('address', AddressType::class, [
                 'required' => true,
             ])
-            ->add('tel', TelType::class, [
+            ->add('phone_number', PhoneNumberType::class, [
                 'required' => true,
             ])
             ->add('email', RepeatedEmailType::class);
