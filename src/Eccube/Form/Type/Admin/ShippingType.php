@@ -19,7 +19,6 @@ use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Delivery;
 use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\KanaType;
-use Eccube\Form\Type\Master\ShippingStatusType;
 use Eccube\Form\Type\NameType;
 use Eccube\Form\Type\PhoneNumberType;
 use Eccube\Form\Type\PostalType;
@@ -167,6 +166,13 @@ class ShippingType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 'required' => false,
             ])
+            ->add('shipping_date', DateType::class, [
+                'label' => 'shipping.label.shipping_date',
+                'placeholder' => '',
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd',
+                'required' => false,
+            ])
             ->add('tracking_number', TextType::class, [
                 'label' => 'shipping.label.tracking_num',
                 'required' => false,
@@ -195,7 +201,6 @@ class ShippingType extends AbstractType
             ->add('OrderItemsError', TextType::class, [
                 'mapped' => false,
             ])
-            ->add('ShippingStatus', ShippingStatusType::class)
             ->add('notify_email', CheckboxType::class, [
                 'label' => 'admin.shipping.index.813',
                 'mapped' => false,

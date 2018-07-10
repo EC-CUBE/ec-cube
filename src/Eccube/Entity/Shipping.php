@@ -14,7 +14,6 @@
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Eccube\Entity\Master\ShippingStatus;
 use Eccube\Service\Calculator\OrderItemCollection;
 use Eccube\Service\PurchaseFlow\ItemCollection;
 
@@ -252,16 +251,6 @@ class Shipping extends \Eccube\Entity\AbstractEntity
      * @var \Eccube\Entity\ProductClass
      */
     private $ProductClassOfTemp;
-
-    /**
-     * @var \Eccube\Entity\Master\ShippingStatus
-     *
-     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\ShippingStatus")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="shipping_status_id", referencedColumnName="id")
-     * })
-     */
-    private $ShippingStatus;
 
     /**
      * @var \Eccube\Entity\Member
@@ -986,27 +975,13 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set ShippingStatus.
+     * 出荷済みの場合はtrue, 未出荷の場合はfalseを返す
      *
-     * @param ShippingStatus $ShippingStatus
-     *
-     * @return $this
+     * @return boolean
      */
-    public function setShippingStatus(ShippingStatus $ShippingStatus)
+    public function isShipped()
     {
-        $this->ShippingStatus = $ShippingStatus;
-
-        return $this;
-    }
-
-    /**
-     * Get ShippingStatus
-     *
-     * @return ShippingStatus
-     */
-    public function getShippingStatus()
-    {
-        return $this->ShippingStatus;
+        return !is_null($this->shipping_date);
     }
 
     /**

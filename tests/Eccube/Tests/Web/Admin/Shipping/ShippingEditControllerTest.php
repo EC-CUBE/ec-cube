@@ -16,7 +16,6 @@ namespace Eccube\Tests\Web\Admin\Shipping;
 use Eccube\Entity\Order;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Faker\Generator;
-use Eccube\Entity\Master\ShippingStatus;
 use Eccube\Repository\ShippingRepository;
 use Eccube\Common\Constant;
 use Eccube\Entity\Shipping;
@@ -74,7 +73,6 @@ class ShippingEditControllerTest extends AbstractAdminWebTestCase
     public function testNewShippingEmptyShipment()
     {
         $arrFormData = $this->createShippingForm();
-        $arrFormData['ShippingStatus'] = ShippingStatus::PREPARED;
         $this->client->request(
             'POST',
             $this->generateUrl('admin_shipping_new'),
@@ -89,20 +87,20 @@ class ShippingEditControllerTest extends AbstractAdminWebTestCase
         $this->assertContains('出荷情報を登録しました。', $success);
     }
 
-    public function testEditShippingStatusShipped()
+    public function testEditAddShippingDate()
     {
         $this->client->enableProfiler();
 
         $Order = $this->createOrder($this->createCustomer());
         /** @var Shipping $Shipping */
         $Shipping = $Order->getShippings()->first();
-        $Shipping->setShippingStatus($this->entityManager->find(ShippingStatus::class, ShippingStatus::PREPARED));
-        $this->entityManager->persist($Shipping);
-        $this->entityManager->flush();
 
         $this->assertNull($Shipping->getShippingDate());
         $arrFormData = $this->createShippingForm($Shipping);
-        $arrFormData['ShippingStatus'] = ShippingStatus::SHIPPED;
+
+        $date = new \DateTime();
+        $arrFormData['shipping_date'] = $date->format('Y-m-d');
+
         $this->client->request(
             'POST',
             $this->generateUrl('admin_shipping_edit', ['id' => $Shipping->getId()]),
@@ -123,20 +121,20 @@ class ShippingEditControllerTest extends AbstractAdminWebTestCase
         $this->assertNotNull($Shipping->getShippingDate());
     }
 
-    public function testEditShippingStatusShippedWithNotifyMail()
+    public function testEditAddShippingDateWithNotifyMail()
     {
         $this->client->enableProfiler();
 
         $Order = $this->createOrder($this->createCustomer());
         /** @var Shipping $Shipping */
         $Shipping = $Order->getShippings()->first();
-        $Shipping->setShippingStatus($this->entityManager->find(ShippingStatus::class, ShippingStatus::PREPARED));
-        $this->entityManager->persist($Shipping);
-        $this->entityManager->flush();
 
         $this->assertNull($Shipping->getShippingDate());
         $arrFormData = $this->createShippingForm($Shipping);
-        $arrFormData['ShippingStatus'] = ShippingStatus::SHIPPED;
+
+        $date = new \DateTime();
+        $arrFormData['shipping_date'] = $date->format('Y-m-d');
+
         $arrFormData['notify_email'] = 'on';
         $this->client->request(
             'POST',
@@ -163,19 +161,20 @@ class ShippingEditControllerTest extends AbstractAdminWebTestCase
         $this->assertNotNull($Shipping->getShippingDate());
     }
 
-    public function testEditShippingStatusPrepared()
+    public function testEditRemoveShippingDate()
     {
         $Order = $this->createOrder($this->createCustomer());
         /** @var Shipping $Shipping */
         $Shipping = $Order->getShippings()->first();
-        $Shipping->setShippingStatus($this->entityManager->find(ShippingStatus::class, ShippingStatus::SHIPPED));
         $Shipping->setShippingDate(new \DateTime());
         $this->entityManager->persist($Shipping);
         $this->entityManager->flush();
 
         $this->assertNotNull($Shipping->getShippingDate());
         $arrFormData = $this->createShippingForm($Shipping);
-        $arrFormData['ShippingStatus'] = ShippingStatus::PREPARED;
+
+        $arrFormData['shipping_date'] = '';
+
         $this->client->request(
             'POST',
             $this->generateUrl('admin_shipping_edit', ['id' => $Shipping->getId()]),
