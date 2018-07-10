@@ -249,26 +249,24 @@ class ShippingController extends AbstractController
      * @Method("PUT")
      * @Route("/%eccube_admin_route%/shipping/notify_mail/{id}", requirements={"id" = "\d+"}, name="admin_shipping_notify_mail")
      *
-     * @param Request $request
      * @param Shipping $Shipping
      *
      * @return JsonResponse
+     *
+     * @throws \Twig_Error
      */
     public function notifyMail(Shipping $Shipping)
     {
         $this->isTokenValid();
 
-        if ($Shipping->isShipped()) {
-            $this->mailService->sendShippingNotifyMail($Shipping);
+        $this->mailService->sendShippingNotifyMail($Shipping);
 
-            return $this->json([
-                'mail' => true,
-                'shipped' => false,
-            ]);
-        }
+        $Shipping->setMailSendDate(new \DateTime());
+        $this->shippingRepository->save($Shipping);
+        $this->entityManager->flush();
 
         return $this->json([
-            'mail' => false,
+            'mail' => true,
             'shipped' => false,
         ]);
     }
