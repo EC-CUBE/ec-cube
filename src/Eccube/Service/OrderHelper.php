@@ -30,13 +30,13 @@ use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
 use Eccube\Repository\DeliveryFeeRepository;
 use Eccube\Repository\DeliveryRepository;
-use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\Master\OrderItemTypeRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Util\StringUtil;
+use Eccube\Repository\Master\DeviceTypeRepository;
 
 /**
  * OrderやOrderに関連するエンティティを構築するクラス
@@ -90,14 +90,14 @@ class OrderHelper
     protected $eccubeConfig;
 
     /**
-     * @var DeviceTypeRepository
-     */
-    protected $deviceTypeRepository;
-
-    /**
      * @var \Mobile_Detect
      */
     protected $mobileDetect;
+
+    /**
+     * @var DeviceTypeRepository
+     */
+    protected $deviceTypeRepository;
 
     /**
      * OrderHelper constructor.
@@ -109,11 +109,10 @@ class OrderHelper
      * @param DeliveryRepository $deliveryRepository
      * @param PaymentRepository $paymentRepository
      * @param OrderRepository $orderRepository
-     * @param ShippingStatusRepository $shippingStatusRepository
-     * @param DeviceTypeRepository $deviceTypeRepository
      * @param EntityManager $entityManager
      * @param EccubeConfig $eccubeConfig
      * @param \Mobile_Detect $mobileDetect
+     * @param DeviceTypeRepository $deviceTypeRepository
      */
     public function __construct(
         OrderItemTypeRepository $orderItemTypeRepository,
@@ -123,11 +122,10 @@ class OrderHelper
         DeliveryRepository $deliveryRepository,
         PaymentRepository $paymentRepository,
         OrderRepository $orderRepository,
-        ShippingStatusRepository $shippingStatusRepository,
-        DeviceTypeRepository $deviceTypeRepository,
         EntityManagerInterface $entityManager,
         EccubeConfig $eccubeConfig,
-        \Mobile_Detect $mobileDetect
+        \Mobile_Detect $mobileDetect,
+        DeviceTypeRepository $deviceTypeRepository
     ) {
         $this->orderItemTypeRepository = $orderItemTypeRepository;
         $this->orderStatusRepository = $orderStatusRepository;
@@ -136,11 +134,10 @@ class OrderHelper
         $this->deliveryRepository = $deliveryRepository;
         $this->paymentRepository = $paymentRepository;
         $this->orderRepository = $orderRepository;
-        $this->deviceTypeRepository = $deviceTypeRepository;
-        $this->shippingStatusRepository = $shippingStatusRepository;
         $this->entityManager = $entityManager;
         $this->eccubeConfig = $eccubeConfig;
         $this->mobileDetect = $mobileDetect;
+        $this->deviceTypeRepository = $deviceTypeRepository;
     }
 
     /**
