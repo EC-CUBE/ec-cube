@@ -70,6 +70,8 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $this->customerRepository = $this->container->get(CustomerRepository::class);
 
         // FIXME: Should remove exist data before generate data for test
+        $this->deleteAllRows(['dtb_order_item']);
+        $this->deleteAllRows(['dtb_shipping']);
         $this->deleteAllRows(['dtb_order']);
 
         $Sex = $this->sexRepository->find(1);
