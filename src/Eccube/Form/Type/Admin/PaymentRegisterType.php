@@ -32,6 +32,11 @@ class PaymentRegisterType extends AbstractType
      */
     protected $eccubeConfig;
 
+    /**
+     * PaymentRegisterType constructor.
+     *
+     * @param EccubeConfig $eccubeConfig
+     */
     public function __construct(EccubeConfig $eccubeConfig)
     {
         $this->eccubeConfig = $eccubeConfig;
