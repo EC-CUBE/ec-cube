@@ -20,6 +20,7 @@ use Eccube\DependencyInjection\Compiler\AutoConfigurationTagPass;
 use Eccube\DependencyInjection\Compiler\NavCompilerPass;
 use Eccube\DependencyInjection\Compiler\PaymentMethodPass;
 use Eccube\DependencyInjection\Compiler\PluginPass;
+use Eccube\DependencyInjection\Compiler\PurchaseFlowPass;
 use Eccube\DependencyInjection\Compiler\QueryCustomizerPass;
 use Eccube\DependencyInjection\Compiler\TemplateListenerPass;
 use Eccube\DependencyInjection\Compiler\TwigBlockPass;
@@ -32,6 +33,11 @@ use Eccube\Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Eccube\Doctrine\Query\QueryCustomizer;
 use Eccube\Plugin\ConfigManager;
 use Eccube\Service\Payment\PaymentMethodInterface;
+use Eccube\Service\PurchaseFlow\ItemHolderPreprocessor;
+use Eccube\Service\PurchaseFlow\ItemHolderValidator;
+use Eccube\Service\PurchaseFlow\ItemPreprocessor;
+use Eccube\Service\PurchaseFlow\ItemValidator;
+use Eccube\Service\PurchaseFlow\PurchaseProcessor;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
@@ -189,6 +195,19 @@ class Kernel extends BaseKernel
         $container->registerForAutoconfiguration(PaymentMethodInterface::class)
             ->addTag(PaymentMethodPass::PAYMENT_METHOD_TAG);
         $container->addCompilerPass(new PaymentMethodPass());
+
+        // PurchaseFlow の拡張
+        $container->registerForAutoconfiguration(ItemPreprocessor::class)
+            ->addTag(PurchaseFlowPass::ITEM_PREPROCESSOR_TAG);
+        $container->registerForAutoconfiguration(ItemValidator::class)
+            ->addTag(PurchaseFlowPass::ITEM_VALIDATOR_TAG);
+        $container->registerForAutoconfiguration(ItemHolderPreprocessor::class)
+            ->addTag(PurchaseFlowPass::ITEM_HOLDER_PREPROCESSOR_TAG);
+        $container->registerForAutoconfiguration(ItemHolderValidator::class)
+            ->addTag(PurchaseFlowPass::ITEM_HOLDER_VALIDATOR_TAG);
+        $container->registerForAutoconfiguration(PurchaseProcessor::class)
+            ->addTag(PurchaseFlowPass::PURCHASE_PROCESSOR_TAG);
+        $container->addCompilerPass(new PurchaseFlowPass());
     }
 
     protected function addEntityExtensionPass(ContainerBuilder $container)
