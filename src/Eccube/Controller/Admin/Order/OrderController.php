@@ -492,10 +492,8 @@ class OrderController extends AbstractController
     public function updateTrackingNumber(Request $request, Shipping $shipping)
     {
         if (!($request->isXmlHttpRequest() && $this->isTokenValid())) {
-            $response = new Response(json_encode(['status' => 'NG']), 400);
-            $response->headers->set('Content-Type', 'application/json');
 
-            return $response;
+            return $this->json(['status' => 'NG'], 400);
         }
 
         $trackingNumber = mb_convert_kana($request->get('tracking_number'), 'a', 'utf-8');
@@ -517,10 +515,8 @@ class OrderController extends AbstractController
             foreach ($errors as $error) {
                 $messages[] = $error->getMessage();
             }
-            $response = new Response(json_encode(['status' => 'NG', 'messages' => $messages]), 400);
-            $response->headers->set('Content-Type', 'application/json');
 
-            return $response;
+            return $this->json(['status' => 'NG', 'messages' => $messages], 400);
         }
 
         try {
@@ -528,16 +524,12 @@ class OrderController extends AbstractController
             $this->entityManager->flush($shipping);
             log_info('送り状番号変更処理完了', [$shipping->getId()]);
             $message = ['status' => 'OK', 'shipping_id' => $shipping->getId(), 'tracking_number' => $trackingNumber];
-            $response = new Response(json_encode($message));
-            $response->headers->set('Content-Type', 'application/json');
 
-            return $response;
+            return $this->json($message);
         } catch (\Exception $e) {
             log_error('予期しないエラー', [$e->getMessage()]);
-            $response = new Response(json_encode(['status' => 'NG']), 500);
-            $response->headers->set('Content-Type', 'application/json');
 
-            return $response;
+            return $this->json(['status' => 'NG'], 500);
         }
     }
 }
