@@ -197,7 +197,6 @@ return [
     //sign up
     'signup.label.new_registration' => '新規会員登録',
     'signup.label.name' => 'お名前',
-    'signup.label.name_required' => 'お名前',
     'signup.label.family_name' => '姓',
     'signup.label.first_name' => '名',
     'signup.label.name_kana' => 'お名前(フリガナ)',
