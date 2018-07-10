@@ -250,7 +250,9 @@ class OrderRepository extends AbstractRepository
      */
     public function getQueryBuilderBySearchDataForAdmin($searchData)
     {
-        $qb = $this->createQueryBuilder('o');
+        $qb = $this->createQueryBuilder('o')
+            ->select('o, s')
+            ->innerJoin('o.Shippings', 's');
 
         // order_id_start
         if (isset($searchData['order_id']) && StringUtil::isNotBlank($searchData['order_id'])) {
@@ -395,22 +397,6 @@ class OrderRepository extends AbstractRepository
                 ->setParameter('payment_date_end', $date);
         }
 
-        // shipping_date
-        if (!empty($searchData['shipping_date_start']) && $searchData['shipping_date_start']) {
-            $date = $searchData['shipping_date_start'];
-            $qb
-                ->andWhere('o.shipping_date >= :shipping_date_start')
-                ->setParameter('shipping_date_start', $date);
-        }
-        if (!empty($searchData['shipping_date_end']) && $searchData['shipping_date_end']) {
-            $date = clone $searchData['shipping_date_end'];
-            $date = $date
-                ->modify('+1 days');
-            $qb
-                ->andWhere('o.shipping_date < :shipping_date_end')
-                ->setParameter('shipping_date_end', $date);
-        }
-
         // update_date
         if (!empty($searchData['update_date_start']) && $searchData['update_date_start']) {
             $date = $searchData['update_date_start'];
@@ -445,6 +431,35 @@ class OrderRepository extends AbstractRepository
                 ->leftJoin('o.OrderItems', 'oi')
                 ->andWhere('oi.product_name LIKE :buy_product_name')
                 ->setParameter('buy_product_name', '%'.$searchData['buy_product_name'].'%');
+        }
+
+        // 発送メール送信済かどうか.
+        if (isset($searchData['shipping_mail_send']) && $searchData['shipping_mail_send']) {
+            $qb
+                ->andWhere('s.mail_send_date IS NOT NULL');
+        }
+
+        // 送り状番号.
+        if (!empty($searchData['tracking_number'])) {
+            $qb
+                ->andWhere('s.tracking_number = :tracking_number')
+                ->setParameter('tracking_number', $searchData['tracking_number']);
+        }
+
+        // お届け予定日(Shipping.delivery_date)
+        if (!empty($searchData['shipping_delivery_date_start']) && $searchData['shipping_delivery_date_start']) {
+            $date = $searchData['shipping_delivery_date_start'];
+            $qb
+                ->andWhere('s.shipping_delivery_date >= :shipping_delivery_date_start')
+                ->setParameter('shipping_delivery_date_start', $date);
+        }
+        if (!empty($searchData['shipping_delivery_date_end']) && $searchData['shipping_delivery_date_end']) {
+            $date = clone $searchData['shipping_delivery_date_end'];
+            $date = $date
+                ->modify('+1 days');
+            $qb
+                ->andWhere('s.shipping_delivery_date < :shipping_delivery_date_end')
+                ->setParameter('shipping_delivery_date_end', $date);
         }
 
         // Order By
@@ -518,5 +533,25 @@ class OrderRepository extends AbstractRepository
         }
 
         return null;
+    }
+
+    /**
+     * ステータスごとの受注件数を取得する.
+     *
+     * @param $OrderStatusOrId
+     *
+     * @return int
+     *
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function countByOrderStatus($OrderStatusOrId)
+    {
+        return (int) $this->createQueryBuilder('o')
+            ->select('COALESCE(COUNT(o.id), 0)')
+            ->where('o.OrderStatus = :OrderStatus')
+            ->setParameter('OrderStatus', $OrderStatusOrId)
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 }

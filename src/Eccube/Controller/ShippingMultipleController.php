@@ -220,6 +220,7 @@ class ShippingMultipleController extends AbstractShoppingController
                     $Order->removeOrderItem($OrderItem);
                     $this->entityManager->remove($OrderItem);
                 }
+                $Order->removeShipping($Shipping);
                 $this->entityManager->remove($Shipping);
             }
 
@@ -236,11 +237,15 @@ class ShippingMultipleController extends AbstractShoppingController
                         $CustomerAddress = $item['customer_address']->getData();
                         $customerAddressName = $CustomerAddress->getShippingMultipleDefaultName();
 
+                        if (isset($ShippingList[$customerAddressName][$saleTypeId])) {
+                            continue;
+                        }
                         $Shipping = new Shipping();
                         $Shipping
+                            ->setOrder($Order)
                             ->setFromCustomerAddress($CustomerAddress)
                             ->setDelivery($Delivery);
-
+                        $Order->addShipping($Shipping);
                         $ShippingList[$customerAddressName][$saleTypeId] = $Shipping;
                     }
                 }

@@ -55,11 +55,17 @@ env:
             config:
                 WebDriver:
                     browser: chrome
+                    capabilities:
+                        chromeOptions:
+                            prefs:
+                                download.default_directory: '%PWD%/codeception/_support/_downloads'
     chrome-headless:
         modules:
             config:
                 WebDriver:
                     browser: chrome
                     capabilities:
-                      chromeOptions:
-                        args: ["--headless", "--disable-gpu"]
+                        chromeOptions:
+                            args: ["--headless", "--disable-gpu"]
+                            prefs:
+                                download.default_directory: '%PWD%/codeception/_support/_downloads'

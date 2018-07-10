@@ -44,7 +44,7 @@ class NewsRepositoryTest extends EccubeTestCase
                 ->setUrl($faker->url)
                 ->setLinkMethod(1)
                 ->setSortNo($i)
-                ;
+                ->setPublishDate(new \DateTime());
             $this->entityManager->persist($News);
         }
         $this->entityManager->flush();
@@ -160,5 +160,14 @@ class NewsRepositoryTest extends EccubeTestCase
         $this->newsRepo->delete($News);
 
         self::assertNull($this->newsRepo->find($newsId));
+    }
+
+    public function testGetList()
+    {
+        $arrNews = $this->newsRepo->getList();
+        $this->actual = count($arrNews);
+        $this->expected = 3;
+
+        $this->verify();
     }
 }

@@ -207,38 +207,6 @@ class ShippingControllerTest extends AbstractAdminWebTestCase
         }
     }
 
-    public function testExportShipping()
-    {
-        // 受注件数を11件にしておく
-        $Order = $this->createOrder($this->createCustomer('dummy-user@example.com'));
-        $OrderStatus = $this->container->get(OrderStatusRepository::class)->find(OrderStatus::NEW);
-        $Order->setOrderStatus($OrderStatus);
-        $this->entityManager->flush();
-
-        // 10件ヒットするはずの検索条件
-        $crawler = $this->client->request(
-            'POST',
-            $this->generateUrl('admin_order'),
-            [
-                'admin_search_order' => [
-                    '_token' => 'dummy',
-                    'email' => 'user-',
-                ],
-            ]
-        );
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->expected = '検索結果：10件が該当しました';
-        $this->actual = $crawler->filter('#search_form #search_total_count')->text();
-        $this->verify();
-
-        $this->expectOutputRegex('/user-[0-9]@example.com/', 'user-[0-9]@example.com が含まれる CSV が出力されるか');
-
-        $this->client->request(
-            'GET',
-            $this->generateUrl('admin_order_export_shipping')
-        );
-    }
-
     public function testMarkAsShipped()
     {
         $this->client->enableProfiler();
