@@ -138,7 +138,23 @@ file that was distributed with this source code.
                 $('#order_Shippings_' + idx + '_phone_number').val($('#order_phone_number').val());
                 $('#order_Shippings_' + idx + '_company_name').val($('#order_company_name').val());
             });
+        });
 
+        // 配送業者選択時にお届け時間を設定
+        var times = {{ shippingDeliveryTimes|raw }};
+        $('#order_Shippings_0_Delivery').change(function(){
+            var deliveryId = $(this).val();
+            var $shippingDeliveryTime = $('#order_Shippings_0_DeliveryTime');
+            $shippingDeliveryTime.find('option').remove();
+            $shippingDeliveryTime.append($('<option></option>').val('').text('指定なし'));
+            if (typeof(times[deliveryId]) !== 'undefined') {
+                for (var timeId in times[deliveryId]){
+                    timeValue = times[deliveryId][timeId];
+                    $shippingDeliveryTime.append($('<option></option>')
+                        .val(timeId)
+                        .text(timeValue));
+                }
+            }
         });
 
     </script>
