@@ -37,7 +37,7 @@ use Eccube\Service\PurchaseFlow\ItemCollection;
  */
 class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, ItemHolderInterface
 {
-    use PointTrait;
+    use NameTrait, PointTrait;
 
     /**
      * 複数配送かどうかの判定を行う.
@@ -112,22 +112,6 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
 
         return $this->getSubtotal() + $this->getCharge() + $this->getDeliveryFeeTotal() - $this->getDiscount();
 //        return $this->getSubtotal() + $this->getCharge() - $this->getDiscount();
-    }
-
-    /**
-     * @return string
-     */
-    public function getOrderName()
-    {
-        return (string) ($this->getName01().' '.$this->getName02());
-    }
-
-    /**
-     * @return string
-     */
-    public function getOrderKana()
-    {
-        return (string) ($this->getKana01().' '.$this->getKana02());
     }
 
     /**

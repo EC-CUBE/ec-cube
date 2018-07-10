@@ -28,25 +28,11 @@ use Eccube\Service\PurchaseFlow\ItemCollection;
  */
 class Shipping extends \Eccube\Entity\AbstractEntity
 {
+    use NameTrait;
+
     public function getShippingMultipleDefaultName()
     {
         return $this->getName01().' '.$this->getPref()->getName().' '.$this->getAddr01().' '.$this->getAddr02();
-    }
-
-    /**
-     * @return string
-     */
-    public function getShippingName()
-    {
-        return (string) ($this->getName01().' '.$this->getName02());
-    }
-
-    /**
-     * @return string
-     */
-    public function getShippingKana()
-    {
-        return (string) ($this->getKana01().' '.$this->getKana02());
     }
 
     /**
