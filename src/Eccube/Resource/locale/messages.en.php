@@ -429,7 +429,7 @@ Sorry to inquire from the inquiry page. ',
     'shopping.multiple.quantity.diff' => 'The sum of the quantities is different from the quantity in the basket. ',
     'shopping.delivery.not.saletype' => 'Items that are not ready for delivery are included.
 Sorry to inquire from the inquiry page. ',
-    'shopping.total.price' => 'Total amount is invalid. (\ TotalPrice) ',
+    'shopping.total.price' => 'Total amount is invalid. (%totalPrice%) ',
     'front.shopping.order.error' => 'There was an error in the purchase process. ',
     'front.shopping.stock.error' => 'The inventory of the selected item is insufficient. The corresponding item was deleted from the cart. ',
     'front.shopping.system.error' => 'A system error occurred in purchase processing. Sorry to trouble you, but please contact the site administrator. ',
