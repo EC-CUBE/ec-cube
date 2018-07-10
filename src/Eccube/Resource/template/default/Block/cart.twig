@@ -11,9 +11,9 @@ file that was distributed with this source code.
 <div class="ec-cartNavi">
     <div class="ec-cartNavi__icon"><img src="{{ asset('assets/icon/cart-dark.svg') }}" alt="cart"></div>
     <div class="ec-cartNavi__iconClose"><img src="{{ asset('assets/icon/cross-dark.svg') }}" alt="close"></div>
-    <div class="ec-cartNavi__badge">{{ totalQuantity }}</div>
+    <div class="ec-cartNavi__badge">{{ totalQuantity|number_format }}</div>
     <div class="ec-cartNavi__label">{{'common.label.cart_total'|trans}}
-        <div class="ec-cartNavi__price">{{ totalPrice }}</div>
+        <div class="ec-cartNavi__price">{{ totalPrice|price }}</div>
     </div>
 </div>
 
@@ -39,10 +39,10 @@ file that was distributed with this source code.
                             </div>
                         </div>
                         <div class="ec-cartNaviIsset__cartContentPrice">
-                            {{ CartItem.price}}
+                            {{ CartItem.price|price }}
                             <div class="ec-cartNaviIsset__cartContentTax">{{'shopping.label.tax_incl'|trans}}</div>
                         </div>
-                        <div class="ec-cartNaviIsset__cartContentNumber">{{'shopping.label.qty'|trans}}{{ CartItem.quantity }}</div>
+                        <div class="ec-cartNaviIsset__cartContentNumber">{{'shopping.label.qty'|trans}} {{ CartItem.quantity|number_format }}</div>
                     </div>
                 </div>
             {% endfor %}

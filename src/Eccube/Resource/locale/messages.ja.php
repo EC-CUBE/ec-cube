@@ -487,6 +487,8 @@ return [
     'form.type.admin.notkanastyle' => 'お名前(フリガナ)はカタカナで入力してください。',
     'form.type.select.notselect' => '入力されていません。',
     'form.type.select.selectisfuturedate' => '未来の日付は選択出来ません。',
+    'form.type.select.classcategory' => '項目が選択されていません。',
+    'form.type.add.quantity' => '1以上で入力してください。',
     'cart.over.stock' => '選択された商品(%product%)の在庫が不足しております。
 一度に在庫数を超える購入はできません。',
     'cart.over.sale_limit' => '選択された商品(%product%)は販売制限しております。
