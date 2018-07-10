@@ -143,7 +143,7 @@ class TwigInitializeListener implements EventSubscriberInterface
         }
 
         $type = DeviceType::DEVICE_TYPE_PC;
-        if ($this->mobileDetector->isMobile() || $this->mobileDetector->isTablet()) {
+        if ($this->mobileDetector->isMobile()) {
             $type = DeviceType::DEVICE_TYPE_SP;
         }
 
