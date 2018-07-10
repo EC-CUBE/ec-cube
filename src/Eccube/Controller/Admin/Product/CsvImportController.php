@@ -552,6 +552,7 @@ class CsvImportController extends AbstractCsvImportController
                                         log_info('カテゴリ削除エラー', [$Category->getId(), $e]);
                                         $message = trans('admin.delete.failed.foreign_key', ['%name%' => $Category->getName()]);
                                         $this->addError($message, 'admin');
+
                                         return $this->renderWithError($form, $headers);
                                     }
                                 }
