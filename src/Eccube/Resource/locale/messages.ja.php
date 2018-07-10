@@ -483,10 +483,11 @@ return [
     'form.type.name.firstname.nothasspace' => 'お名前(名)にスペース、タブ、改行は含めないで下さい。',
     'form.type.name.lastname.nothasspace' => 'お名前(性)にスペース、タブ、改行は含めないで下さい。',
     'form.type.customer.company.nothasspace' => '会社名にスペース、タブ、改行は含めないで下さい。',
-    'form.type.admin.nottelstyle' => '電話番号は半角数字かハイフンのみを入力してください。。',
+    'form.type.admin.nottelstyle' => '電話番号は半角数字かハイフンのみを入力してください。',
     'form.type.admin.notkanastyle' => 'お名前(フリガナ)はカタカナで入力してください。',
     'form.type.select.notselect' => '入力されていません。',
     'form.type.select.selectisfuturedate' => '未来の日付は選択出来ません。',
+    'form.type.admin.nottrackingnumberstyle' => '送り状番号は半角英数字かハイフンのみを入力してください。',
     'cart.over.stock' => '選択された商品(%product%)の在庫が不足しております。
 一度に在庫数を超える購入はできません。',
     'cart.over.sale_limit' => '選択された商品(%product%)は販売制限しております。
@@ -2724,8 +2725,7 @@ return [
     'shipping.label.shipping_company' => '配送業者',
     'shipping.placeholder.please_select' => '選択してください',
     'shipping.label.delivery_date' => 'お届け日',
-    'shipping.label.shipping_date' => '出荷日',
-    'shipping.label.tracking_num' => '出荷伝票番号',
+    'shipping.label.tracking_num' => '送り状番号',
     'shippingtype.571' => '',
     'shipping.label.delivery_hour' => 'お届け時間',
     'shipping.placeholder.not_specified' => '指定なし',
