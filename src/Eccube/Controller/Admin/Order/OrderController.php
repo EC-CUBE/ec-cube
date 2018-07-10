@@ -492,7 +492,6 @@ class OrderController extends AbstractController
     public function updateTrackingNumber(Request $request, Shipping $shipping)
     {
         if (!($request->isXmlHttpRequest() && $this->isTokenValid())) {
-
             return $this->json(['status' => 'NG'], 400);
         }
 
