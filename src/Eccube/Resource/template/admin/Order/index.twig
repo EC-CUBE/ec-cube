@@ -107,6 +107,79 @@ file that was distributed with this source code.
         $('#form_bulk').attr('action', "{{ url('admin_order_bulk_delete') }}").submit();
         return false;
     });
+
+    // 送り状番号
+    var updateTrackingNumber = function (id, url, tracking_number, callback) {
+        $.ajax({
+            type: 'PUT',
+            url: url,
+            data: { 'tracking_number': tracking_number }
+        }).done(function (data, textStatus, jqXHR) {
+            if (data['status'] == 'OK') {
+                $('#tracking_number_' + id).val(data['tracking_number']);
+                if (typeof callback == 'function') {
+                    callback();
+                }
+            } else {
+                alert('Update failed.');
+            }
+            return true;
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            var response = JSON.parse(jqXHR.responseText);
+            var messages = '';
+            for (var i = 0; i < response.messages.length; i++) {
+                messages += response.messages[i] + "\n";
+            }
+            alert(messages);
+            return false;
+        });
+    };
+
+    $('button.update_tracking_number').prop('disabled', true);
+    // フォームに変更があったら更新ボタンを有効にする
+    $('input.update_tracking_number').on('keyup', function(event) {
+        var $tracking_number = $(this);
+        var $button = $("button[data-target='#" + $tracking_number.attr('id') + "']");
+        $button.prop('disabled', false);
+        $button.children('i')
+               .removeClass('text-secondary')
+               .addClass('text-success');
+    });
+    // enter キーで更新し、次のフォームへフォーカスを移動する
+    $('input.update_tracking_number').on('keypress', function(event) {
+        var $tracking_number = $(this);
+        var $button = $("button[data-target='#" + $tracking_number.attr('id') + "']");
+
+        var code = event.which ? event.which : event.keyCode;
+
+        if (code == 13) { // on press to enter
+            var index = $('input.update_tracking_number').index(this);
+            var callback = function() {
+                $button.prop('disabled', true);
+                $button.children('i')
+                       .removeClass('text-success')
+                       .addClass('text-secondary');
+                $('input.update_tracking_number:gt(' + index + '):first').focus();
+            };
+            updateTrackingNumber($tracking_number.data('shipping_id'), $tracking_number.data('url'), $tracking_number.val(), callback);
+            event.preventDefault();
+        }
+    });
+    // 更新ボタンの制御
+    $('button.update_tracking_number').on('click', function(event) {
+        event.preventDefault();
+        var $button = $(this);
+        var $target = $($(this).data('target'));
+        var tracking_number = $target.val();
+        var callback = function() {
+                $button.prop('disabled', true);
+                $button.children('i')
+                       .removeClass('text-success')
+                       .addClass('text-secondary');
+        };
+
+        updateTrackingNumber($target.data('shipping_id'), $target.data('url'), tracking_number, callback);
+    });
 });
 </script>
 {% endblock javascript %}
@@ -479,7 +552,6 @@ file that was distributed with this source code.
                                         <td class="align-middle text-center">
                                             {{ Order.payment_method }}
                                         </td>
-
                                         <td class="align-middle text-center">
                                             <span class="badge {{ attribute(cssClassStatus, Order.OrderStatus.id) }}">{{ Order.OrderStatus }}</span>
                                         </td>
@@ -505,7 +577,16 @@ file that was distributed with this source code.
                                                 {{ Shipping.shipping_date ? Shipping.shipping_date|date_day : 'admin.order.index.not_shipping'|trans }}
                                             {% endif %}
                                         </td>
-                                        <td class="align-middle text-center">{{ Shipping.tracking_number }}</td>
+                                        <td class="align-middle text-center">
+                                            <div class="input-group input-group-sm">
+                                                <input type="text" id="tracking_number_{{ Shipping.id }}" class="form-control update_tracking_number" placeholder="{{ 'admin.order.index.th_tracking_number'|trans }}" value="{{ Shipping.trackingNumber }}" data-shipping_id="{{ Shipping.id }}" data-url="{{ url('admin_shipping_update_tracking_number', { id : Shipping.id }) }}" tabindex="{{ loop.index }}" />
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default update_tracking_number" data-target="#tracking_number_{{ Shipping.id }}">
+                                                        <i class="fa fa-check fa-lg text-secondary" aria-hidden="true"></i>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </td>
                                         <td class="align-middle text-center">
                                             {{ Shipping.name01 ~ Shipping.name02 }}<br>
                                             {{ Shipping.Pref.name }}
