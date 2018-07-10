@@ -122,6 +122,7 @@ class OrderEditPage extends AbstractAdminPageStyleGuide
     public function 注文者パネルを開く()
     {
         $this->tester->click('#form1 > div.c-contentsArea__cols > div > div.c-primaryCol > div:nth-child(2) > div.card-header > div > div.col-1.text-right > a');
+        $this->tester->wait(1);
         return $this;
     }
 
