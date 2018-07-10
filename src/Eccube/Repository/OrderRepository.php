@@ -57,9 +57,6 @@ class OrderRepository extends AbstractRepository
         ;
 
         switch ($Status->getId()) {
-            case '5': // 発送済へ
-                $Order->setShippingDate(new \DateTime());
-                break;
             case '6': // 入金済へ
                 $Order->setPaymentDate(new \DateTime());
                 break;

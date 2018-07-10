@@ -46,19 +46,6 @@ class OrderRepositoryTest extends EccubeTestCase
         $this->Order = $this->createOrder($this->Customer);
     }
 
-    public function testChangeStatusWithCommitted()
-    {
-        $orderId = $this->Order->getId();
-        $Status = $this->entityManager->find(OrderStatus::class, OrderStatus::DELIVERED);
-
-        $this->orderRepository->changeStatus($orderId, $Status);
-
-        $this->assertNotNull($this->Order->getShippingDate());
-        $this->expected = 5;
-        $this->actual = $this->Order->getOrderStatus()->getId();
-        $this->verify();
-    }
-
     public function testChangeStatusWithPayment()
     {
         $orderId = $this->Order->getId();
@@ -79,7 +66,6 @@ class OrderRepositoryTest extends EccubeTestCase
 
         $this->orderRepository->changeStatus($orderId, $Status);
 
-        $this->assertNull($this->Order->getShippingDate());
         $this->assertNull($this->Order->getPaymentDate());
     }
 
