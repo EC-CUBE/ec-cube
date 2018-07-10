@@ -452,7 +452,7 @@ file that was distributed with this source code.
                                             </td>
                                             <td class="align-middle">
                                                 {% if orderItemForm.vars.value.Shipping %}
-                                                    {{ orderItemForm.vars.value.Shipping.ShippingStatus }}
+                                                    {{ orderItemForm.vars.value.Shipping.ShippingDate|date_day }}
                                                 {% endif %}
                                             </td>
                                             <td class="align-middle">

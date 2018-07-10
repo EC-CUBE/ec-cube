@@ -68,9 +68,10 @@ class FileManagePage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
-    public function 一覧_削除_accept($rowNum)
+    public function 一覧_削除_accept()
     {
-        $this->tester->click("#fileList table > tbody > tr:nth-child(${rowNum}) > td:nth-child(5) > div > div:nth-child(3) div.modal a.btn-ec-delete");
+        $this->tester->waitForElementVisible('#confirmModal-1 div.modal-footer a.btn-ec-delete');
+        $this->tester->click('#confirmModal-1 div.modal-footer a.btn-ec-delete');
         return $this;
     }
 

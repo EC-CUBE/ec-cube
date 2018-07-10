@@ -21,13 +21,13 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
     public static function go(\AcceptanceTester $I)
     {
         $page = new self($I);
-        return $page->goPage('/order', '受注マスター受注管理');
+        return $page->goPage('/order', '受注一覧受注管理');
     }
 
     public static function at(\AcceptanceTester $I)
     {
         $page = new self($I);
-        return $page->atPage('受注マスター受注管理');
+        return $page->atPage('受注一覧受注管理');
     }
 
     public function 検索($value = '')
