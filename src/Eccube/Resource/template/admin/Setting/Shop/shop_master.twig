@@ -21,6 +21,10 @@ file that was distributed with this source code.
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datetimepicker.min.css', 'admin') }}">
 {% endblock stylesheet %}
 
+{% block javascript %}
+    <script src="//yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
+{% endblock %}
+
 {% block main %}
     <form name="form1" role="form" class="form-horizontal h-adr" id="point_form" method="post" action="">
         <span class="p-country-name" style="display:none;">Japan</span>

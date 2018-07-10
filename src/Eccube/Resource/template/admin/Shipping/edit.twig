@@ -124,7 +124,8 @@ file that was distributed with this source code.
 
 {% block main %}
     <form action="{{ Shipping.id ? url('admin_shipping_edit', {id: Shipping.id}) : url('admin_shipping_new') }}"
-          method="post" id="form_shipping">
+          method="post" id="form_shipping" class="h-adr">
+        <span class="p-country-name" style="display:none;">Japan</span>
         {{ form_widget(form._token) }}
         <div class="c-contentsArea__cols">
             <div class="c-contentsArea__primaryCol">
@@ -233,16 +234,14 @@ file that was distributed with this source code.
                                         <div class="row mb-2">
                                             <div class="col-3"><span>{{ 'admin.shipping.edit.orderer'|trans }}</span></div>
                                             <div class="col">
-                                                {% if Shipping.id %}
-                                                    {% for Order in Shipping.Orders %}
-                                                        <label>{{ Order.name01 }} {{ Order.name02 }}
-                                                            ({{ Order.kana01 }} {{ Order.kana02 }})
-                                                            <br>{{ 'admin.shipping.edit.postal_code'|trans({
-                                                                '%postal_code%': Order.postal_code
-                                                            }) }}
-                                                            <br>{{ Order.pref.name ~ Order.addr01 ~ Order.addr02 }}
-                                                        </label>
-                                                    {% endfor %}
+                                                {% if Shipping.id and Shipping.Order %}
+                                                    <label>{{ Shipping.Order.name01 }} {{ Shipping.Order.name02 }}
+                                                        ({{ Shipping.Order.kana01 }} {{ Shipping.Order.kana02 }})
+                                                        <br>{{ 'admin.shipping.edit.postal_code'|trans({
+                                                            '%postal_code%': Shipping.Order.postal_code
+                                                        }) }}
+                                                        <br>{{ Shipping.Order.pref.name ~ Shipping.Order.addr01 ~ Shipping.Order.addr02 }}
+                                                    </label>
                                                 {% else %}
                                                     {# TODO 新規登録時の注文者情報をどう扱うか検討 #}
                                                 {% endif %}

@@ -579,11 +579,14 @@ class Generator
         $Shipping = new Shipping();
         $Shipping->copyProperties($Customer);
         $Shipping
+            ->setOrder($Order)
             ->setPref($Pref)
             ->setDelivery($Delivery)
             ->setFeeId($DeliveryFee->getId())
             ->setShippingDeliveryFee($fee)
             ->setShippingDeliveryName($Delivery->getName());
+
+        $Order->addShipping($Shipping);
 
         $this->entityManager->persist($Shipping);
         $this->entityManager->flush($Shipping);

@@ -194,6 +194,23 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     private $update_date;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="mail_send_date", type="datetimetz", nullable=true)
+     */
+    private $mail_send_date;
+
+    /**
+     * @var \Eccube\Entity\Order
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Order", inversedBy="Shippings", cascade={"persist"})
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="order_id", referencedColumnName="id")
+     * })
+     */
+    private $Order;
+
+    /**
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(targetEntity="Eccube\Entity\OrderItem", mappedBy="Shipping", cascade={"persist"})
@@ -229,11 +246,6 @@ class Shipping extends \Eccube\Entity\AbstractEntity
      * })
      */
     private $Delivery;
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $Orders;
 
     /**
      * @var \Eccube\Entity\ProductClass
@@ -723,6 +735,30 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * Set mailSendDate.
+     *
+     * @param \DateTime $mailSendDate
+     *
+     * @return Shipping
+     */
+    public function setMailSendDate($mailSendDate)
+    {
+        $this->mail_send_date = $mailSendDate;
+
+        return $this;
+    }
+
+    /**
+     * Get mailSendDate.
+     *
+     * @return \DateTime
+     */
+    public function getmailSendDate()
+    {
+        return $this->mail_send_date;
+    }
+
+    /**
      * Add orderItem.
      *
      * @param \Eccube\Entity\OrderItem $OrderItem
@@ -867,28 +903,27 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get orders.
+     * Set order.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @param Order $Order
+     *
+     * @return $this
      */
-    public function getOrders()
+    public function setOrder(Order $Order)
     {
-        $Orders = [];
-        foreach ($this->getOrderItems() as $OrderItem) {
-            $Order = $OrderItem->getOrder();
-            if (is_object($Order)) {
-                $name = $Order->getName01(); // XXX lazy loading
-                $Orders[$Order->getId()] = $Order;
-            }
-        }
-        $Result = new \Doctrine\Common\Collections\ArrayCollection();
-        foreach ($Orders as $Order) {
-            $Result->add($Order);
-        }
+        $this->Order = $Order;
 
-        return $Result;
-        // XXX 以下のロジックだと何故か空の Collection になってしまう場合がある
-        // return new \Doctrine\Common\Collections\ArrayCollection(array_values($Orders));
+        return $this;
+    }
+
+    /**
+     * Get order.
+     *
+     * @return Order
+     */
+    public function getOrder()
+    {
+        return $this->Order;
     }
 
     /**

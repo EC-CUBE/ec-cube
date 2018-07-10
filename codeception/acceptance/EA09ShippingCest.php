@@ -3,7 +3,6 @@
 use Codeception\Util\Fixtures;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Order;
-use Page\Admin\CsvSettingsPage;
 use Page\Admin\OrderEditPage;
 use Page\Admin\ShippingCsvUploadPage;
 use Page\Admin\ShippingEditPage;
@@ -30,6 +29,7 @@ class EA09ShippingCest
 
     public function shipping出荷検索(\AcceptanceTester $I)
     {
+        $I->getScenario()->incomplete('受注管理画面に統合');
         $I->wantTo('EA0901-UC01-T01(& UC01-T02, UC01-T3) 出荷検索');
 
         $TargetShippings = Fixtures::get('findShippings'); // Closure
@@ -44,45 +44,9 @@ class EA09ShippingCest
         $I->see('検索条件に誤りがあります', ShippingManagePage::$検索結果_エラーメッセージ);
     }
 
-    /**
-     * @env firefox
-     * @env chrome
-     */
-    public function shipping出荷CSVダウンロード(\AcceptanceTester $I)
-    {
-        $I->wantTo('EA0901-UC02-T01 出荷CSVダウンロード');
-
-        $TargetShippings = Fixtures::get('findShippings'); // Closure
-        $Shippings = $TargetShippings();
-        $ShippingListPage = ShippingManagePage::go($I);
-        $I->see('検索結果 : '.count($Shippings).' 件が該当しました', ShippingManagePage::$検索結果_メッセージ);
-
-        $ShippingListPage->出荷CSVダウンロード実行();
-        // make sure wait to download file completely
-        $I->wait(10);
-        $ShippingCSV = $I->getLastDownloadFile('/^shipping_\d{14}\.csv$/');
-        $I->assertGreaterOrEquals(count($Shippings), count(file($ShippingCSV)), '検索結果以上の行数があるはず');
-    }
-
-    public function shipping出荷情報のCSV出力項目変更設定(\AcceptanceTester $I)
-    {
-        $I->wantTo('EA0901-UC02-T02 出荷情報のCSV出力項目変更設定');
-
-        $TargetShippings = Fixtures::get('findShippings'); // Closure
-        $Shippings = $TargetShippings();
-        $ShippingListPage = ShippingManagePage::go($I);
-        $I->see('検索結果 : '.count($Shippings).' 件が該当しました', ShippingManagePage::$検索結果_メッセージ);
-
-        /* 項目設定 */
-        $ShippingListPage->出荷CSV出力項目設定();
-
-        CsvSettingsPage::at($I);
-        $value = $I->grabValueFrom(CsvSettingsPage::$CSVタイプ);
-        $I->assertEquals(4, $value);
-    }
-
     public function shipping出荷編集(\AcceptanceTester $I)
     {
+        $I->getScenario()->incomplete('受注管理画面に統合');
         $I->wantTo('EA0901-UC03-T01(& UC03-T02) 出荷編集');
 
         $I->getScenario()->skip('お届け日を編集時にJSが走らない問題がありskip');
@@ -136,6 +100,7 @@ class EA09ShippingCest
 
     public function shipping出荷削除(\AcceptanceTester $I)
     {
+        $I->getScenario()->incomplete('受注管理画面に統合');
         $I->wantTo('EA0901-UC04-T01(& UC04-T02) 出荷削除');
 
         $TargetShippings = Fixtures::get('findShippings'); // Closure
@@ -157,6 +122,7 @@ class EA09ShippingCest
 
     public function shipping一括発送済み更新(\AcceptanceTester $I)
     {
+        $I->getScenario()->incomplete('受注管理画面に統合');
         $I->wantTo('EA0902-UC01-T01 一括発送済み更新');
 
         // 一括操作用の受注を生成しておく
@@ -190,6 +156,7 @@ class EA09ShippingCest
 
     public function shipping一括発送済みメール送信(\AcceptanceTester $I)
     {
+        $I->getScenario()->incomplete('受注管理画面に統合');
         $I->wantTo('EA0902-UC02-T01 一括発送済みメール送信');
 
         // 一括操作用の受注を生成しておく
@@ -223,6 +190,7 @@ class EA09ShippingCest
 
     public function shipping出荷登録(\AcceptanceTester $I)
     {
+        $I->getScenario()->incomplete('受注管理画面に統合');
         $I->wantTo('EA0903-UC01-T01(& UC01-T02) 出荷登録');
 
         $OrderRegisterPage = OrderEditPage::go($I)->受注情報登録();

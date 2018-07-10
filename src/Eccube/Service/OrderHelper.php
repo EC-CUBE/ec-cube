@@ -155,9 +155,11 @@ class OrderHelper
 
         foreach ($OrderItemsGroupBySaleType as $OrderItems) {
             $Shipping = $this->createShippingFromCustomer($Customer);
+            $Shipping->setOrder($Order);
             $this->addOrderItems($Order, $Shipping, $OrderItems);
             $this->setDefaultDelivery($Shipping);
             $this->entityManager->persist($Shipping);
+            $Order->addShipping($Shipping);
         }
 
         $this->setDefaultPayment($Order);

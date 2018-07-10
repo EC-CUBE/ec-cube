@@ -20,13 +20,13 @@ class ShippingManagePage extends AbstractAdminPageStyleGuide
     public static function go(\AcceptanceTester $I)
     {
         $page = new self($I);
-        return $page->goPage('/shipping', '出荷マスター出荷管理');
+        return $page->goPage('/shipping', '出荷一覧出荷管理');
     }
 
     public static function at(\AcceptanceTester $I)
     {
         $page = new self($I);
-        return $page->atPage('出荷管理出荷マスター');
+        return $page->atPage('出荷管理出荷一覧');
     }
 
     public function 検索($value = '')
