@@ -226,7 +226,7 @@ file that was distributed with this source code.
                                 <div class="col-2">
                                     <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.order.edit.label.customer_info'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                 </div>
-                                <div class="col">{% if id %}<span class="mr-5">{% if form.Customer.vars.value is empty %}{{ 'admin.order.edit.256'|trans }}{% else %}<a href="{{ url('admin_customer_edit', {'id': form.Customer.vars.value}) }}">{{ form.Customer.vars.value }}</a>{% endif %}</span>{{ Order.orderName }} ({{ Order.orderKana }}) 〒{{ Order.postal_code }} {{ Order.pref }}{{ Order.addr01 }}{{ Order.addr02 }} {{ Order.email }}{% endif %}</div>
+                                <div class="col">{% if id %}<span class="mr-5">{% if form.Customer.vars.value is empty %}{{ 'admin.order.edit.256'|trans }}{% else %}<a href="{{ url('admin_customer_edit', {'id': form.Customer.vars.value}) }}">{{ form.Customer.vars.value }}</a>{% endif %}</span>{{ Order.full_name }} ({{ Order.full_name_kana }}) 〒{{ Order.postal_code }} {{ Order.pref }}{{ Order.addr01 }}{{ Order.addr02 }} {{ Order.email }}{% endif %}</div>
                                 <div class="col-1 text-right"><a class="d-block" data-toggle="collapse" href="#ordererInfo" aria-expanded="false" aria-controls="ordererInfo"><i class="fa {{ id ? 'fa-angle-down' : 'fa-angle-up' }} fa-lg"></i></a></div>
                             </div>
                         </div>
@@ -570,6 +570,7 @@ file that was distributed with this source code.
                                             </div>
                                         </div>
                                     </div>
+                                    {{ form_errors(form.OrderItemsErrors) }}
                                 </div>
                                 <div class="col-5 text-right">
                                     <button type="submit" class="btn btn-ec-regular mr-2" name="mode" value="calc" data-link="order-product" id="calculate">{{ 'admin.order.edit.267'|trans }}</button>
@@ -626,11 +627,7 @@ file that was distributed with this source code.
                                                     )
                                                 {% endif %}
                                             </span>
-                                        </td>
-                                        <td class="align-middle">
-                                            {% if orderItemForm.vars.value.Shipping %}
-                                                {{ orderItemForm.vars.value.Shipping.ShippingDate|date_day }}
-                                            {% endif %}
+                                            {{ form_errors(orderItemForm.product_name) }}
                                         </td>
                                         <td class="align-middle">
                                             <div class="col-8">

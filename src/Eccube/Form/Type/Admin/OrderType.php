@@ -276,7 +276,7 @@ class OrderType extends AbstractType
             $OrderItems = $form['OrderItems']->getData();
             if (empty($OrderItems) || count($OrderItems) < 1) {
                 // 画面下部にエラーメッセージを表示させる
-                $form->addError(new FormError(trans('admin.order.edit.product.error')));
+                $form['OrderItemsErrors']->addError(new FormError(trans('admin.order.edit.product.error')));
             }
         });
     }

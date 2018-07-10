@@ -14,10 +14,12 @@
 namespace Eccube\Controller\Admin\Order;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\DeviceType;
+use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
 use Eccube\Entity\Shipping;
@@ -676,7 +678,15 @@ class EditController extends AbstractController
         if ($request->isXmlHttpRequest()) {
             log_debug('search order item type start.');
 
-            $OrderItemTypes = $this->orderItemTypeRepository->findAll();
+            $criteria = Criteria::create();
+            $criteria
+                ->where($criteria->expr()->andX(
+                    $criteria->expr()->neq('id', OrderItemType::PRODUCT),
+                    $criteria->expr()->neq('id', OrderItemType::TAX)
+                ))
+                ->orderBy(['sort_no' => 'ASC']);
+
+            $OrderItemTypes = $this->orderItemTypeRepository->matching($criteria);
 
             $forms = [];
             foreach ($OrderItemTypes as $OrderItemType) {
