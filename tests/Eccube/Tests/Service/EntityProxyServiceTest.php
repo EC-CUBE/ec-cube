@@ -221,6 +221,32 @@ EOT
 
         self::assertNull($entityTokens->getNextTokenOfKind(0, [CT::T_USE_TRAIT]), 'Traitのuse句が削除されているはず');
     }
+
+    public function testRemoveTraitWhenImportedTrait()
+    {
+        $entityTokens = Tokens::fromCode(<<< EOT
+<?php
+
+use Eccube\\Entity\\PointTrait;
+
+class EntityProxyServiceTest_Entity extends \\Eccube\\Entity\\AbstractEntity
+{
+    use PointTrait, \\Eccube\\Tests\\Service\\EntityProxyServiceTest_Trait;
+}
+EOT
+        );
+        $method = new \ReflectionMethod(EntityProxyService::class, 'removeTrait');
+        $method->setAccessible(true);
+        $method->invoke($this->entityProxyService, $entityTokens, '\\Eccube\\Tests\\Service\\EntityProxyServiceTest_Trait');
+
+        $traitTokens = [
+            [CT::T_USE_TRAIT],
+            [T_STRING, 'PointTrait'],
+            ';',
+        ];
+
+        self::assertNotNull($entityTokens->findSequence($traitTokens), 'PointTraitが残るはず');
+    }
 }
 
 /**

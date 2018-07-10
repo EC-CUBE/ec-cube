@@ -8,22 +8,69 @@ http://www.lockon.co.jp/
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
-{# ★ ページャここから ★ #}
-<div id="{{ id|default('pagination_wrap') }}" class="box-footer">
-    <div class="text-center">
-        <ul class="pagination">
-            {% if pages.previous is defined %}
-                <li class="pagenation__item-previous"><a href="{{ path(routes, app.request_stack.currentrequest.query.all|merge({'page_no': pages.previous})) }}" aria-label="Previous"><span aria-hidden="true">{{'admin.pager.397'|trans}}</span></a></li>
-            {% endif %}
-            
-            {% for page in pages.pagesInRange %}
-                <li{% if page == pages.current %} class="pagenation__item active"{% endif %}><a href="{{ path(routes, app.request_stack.currentrequest.query.all|merge({'page_no': page})) }}"><span>{{ page }}</span></a></li>
-            {% endfor %}
-            
-            {% if pages.next is defined %}
-                <li class="pagenation__item-next"><a href="{{ path(routes, app.request_stack.currentrequest.query.all|merge({'page_no': pages.next})) }}" aria-label="Next"><span aria-hidden="true">{{'admin.pager.398'|trans}}</span></a></li>
-            {% endif %}
-        </ul>
-    </div>
-</div>
-{# ★ ページャここまで ★ #}
+{% if pages.pageCount > 1 %}
+    <ul class="pagination">
+
+        {# 最初へ #}
+        {% if pages.firstPageInRange != 1 %}
+            <li class="page-item">
+                {# FIXME: Need check pass routes before use default _route from request #}
+                <a class="page-link" href="{{ path(
+                    routes ? routes : app.request.attributes.get('_route'),
+                    app.request.query.all|merge({'page_no': pages.first})) }}">{{'common.label.pager.first'|trans}}</a></li>
+
+        {% endif %}
+
+        {# 前へ #}
+        {% if pages.previous is defined %}
+            <li class="page-item">
+                {# FIXME: Need check pass routes before use default _route from request #}
+                <a class="page-link"
+                   href="{{ path(routes ? routes : app.request.attributes.get('_route'), app.request.query.all|merge({'page_no': pages.previous})) }}">
+                    Previous
+                </a>
+            </li>
+        {% endif %}
+
+        {# 1ページリンクが表示されない場合、「...」を表示 #}
+        {% if pages.firstPageInRange != 1 %}
+            <li class="page-item">...</li>
+        {% endif %}
+
+        {% for page in pages.pagesInRange %}
+            <li class="page-item{% if page == pages.current %} active{% endif %}">
+                {# FIXME: Need check pass routes before use default _route from request #}
+                <a class="page-link"
+                   href="{{ path(routes ? routes : app.request.attributes.get('_route'),app.request.query.all|merge({'page_no': page})) }}">
+                    {{ page }}
+                </a>
+            </li>
+        {% endfor %}
+
+        {# 最終ページリンクが表示されない場合、「...」を表示 #}
+        {% if pages.last != pages.lastPageInRange %}
+            <li class="page-item">...</li>
+        {% endif %}
+
+        {# 次へ #}
+        {% if pages.next is defined %}
+            <li class="page-item">
+                {# FIXME: Need check pass routes before use default _route from request #}
+                <a class="page-link"
+                   href="{{ path(routes ? routes : app.request.attributes.get('_route'),app.request.query.all|merge({'page_no': pages.next})) }}">
+                    Next
+                </a>
+            </li>
+        {% endif %}
+
+        {# 最後へ #}
+        {% if pages.last != pages.lastPageInRange %}
+            <li class="page-item">
+                {# FIXME: Need check pass routes before use default _route from request #}
+                <a class="page-link" href="{{ path(
+                    routes ? routes : app.request.attributes.get('_route'),
+                    app.request.query.all|merge({'page_no': pages.last})) }}">{{'common.label.pager.last'|trans}}</a></li>
+        {% endif %}
+
+    </ul>
+{% endif %}

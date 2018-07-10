@@ -333,10 +333,10 @@ class PluginDevelopEntityFromDbTest extends AbstractCommandTest
             'comment' => '電話番号',
             'length' => '16',
         ]);
-        $table->addColumn('zipcode', 'string', [
+        $table->addColumn('postal_code', 'string', [
             'notnull' => false,
             'comment' => '郵便番号',
-            'length' => '7',
+            'length' => '8',
         ]);
         $table->addColumn('pref_id', 'integer', [
             'notnull' => false,

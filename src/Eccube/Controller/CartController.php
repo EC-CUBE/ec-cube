@@ -67,7 +67,7 @@ class CartController extends AbstractController
      * @Route("/cart", name="cart")
      * @Template("Cart/index.twig")
      */
-    public function index()
+    public function index(Request $request)
     {
         // カートを取得して明細の正規化を実行
         $Carts = $this->cartService->getCarts();
@@ -91,6 +91,9 @@ class CartController extends AbstractController
             return $total;
         }, 0);
 
+        // カートが分割された時のセッション情報を削除
+        $request->getSession()->remove('cart.divide');
+
         return [
             'totalPrice' => $totalPrice,
             'totalQuantity' => $totalQuantity,
@@ -112,7 +115,7 @@ class CartController extends AbstractController
         $flowResults = array_map(function ($Cart) {
             $purchaseContext = new PurchaseContext($Cart, $this->getUser());
 
-            return $this->purchaseFlow->calculate($Cart, $purchaseContext);
+            return $this->purchaseFlow->validate($Cart, $purchaseContext);
         }, $Carts);
 
         // 復旧不可のエラーが発生した場合はカートをクリアして再描画
@@ -127,7 +130,6 @@ class CartController extends AbstractController
         }
         if ($hasError) {
             $this->cartService->clear();
-            $this->cartService->save();
 
             return $this->redirectToRoute('cart');
         }
@@ -206,6 +208,10 @@ class CartController extends AbstractController
      */
     public function buystep(Request $request, $index)
     {
+        $Carts = $this->cartService->getCart();
+        if (!is_object($Carts)) {
+            return $this->redirectToRoute('cart');
+        }
         // FRONT_CART_BUYSTEP_INITIALIZE
         $event = new EventArgs(
             [],

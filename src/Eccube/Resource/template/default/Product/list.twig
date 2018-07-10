@@ -60,7 +60,7 @@ file that was distributed with this source code.
                 dataType: 'json',
                 beforeSend: function(xhr, settings) {
                     // Buttonを無効にする
-                    $('.add-cart').attr('disabled', true);
+                    $('.add-cart').prop('disabled', true);
                 }
             }).done(function(data) {
                 // レスポンス内のメッセージをalertで表示
@@ -80,7 +80,7 @@ file that was distributed with this source code.
                 alert('カートの追加に失敗しました。');
             }).always(function(data) {
                 // Buttonを有効にする
-                $('.add-cart').attr('disabled', false);
+                $('.add-cart').prop('disabled', false);
             });
         });
     </script>

@@ -18,7 +18,6 @@ use Eccube\Controller\AbstractController;
 use Eccube\Entity\Csv;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\OrderItem;
-use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\SearchOrderType;
@@ -229,10 +228,16 @@ class OrderController extends AbstractController
                  * 初期表示の場合.
                  */
                 $page_no = 1;
-                $searchData = [];
+                $viewData = [];
+
+                if ($statusId = (int) $request->get('order_status_id')) {
+                    $viewData = ['status' => $statusId];
+                }
+
+                $searchData = FormUtil::submitAndGetData($searchForm, $viewData);
 
                 // セッション中の検索条件, ページ番号を初期化.
-                $this->session->set('eccube.admin.order.search', $searchData);
+                $this->session->set('eccube.admin.order.search', $viewData);
                 $this->session->set('eccube.admin.order.search.page_no', $page_no);
             }
         }
@@ -339,6 +344,10 @@ class OrderController extends AbstractController
                             // 受注データにない場合は, 受注明細を検索.
                             $ExportCsvRow->setData($csvService->getData($Csv, $OrderItem));
                         }
+                        if ($ExportCsvRow->isDataNull() && $Shipping = $OrderItem->getShipping()) {
+                            // 受注明細データにない場合は, 出荷を検索.
+                            $ExportCsvRow->setData($csvService->getData($Csv, $Shipping));
+                        }
 
                         $event = new EventArgs(
                             [
@@ -373,96 +382,6 @@ class OrderController extends AbstractController
     }
 
     /**
-     * 配送CSVの出力.
-     *
-     * @Route("/%eccube_admin_route%/order/export/shipping", name="admin_order_export_shipping")
-     *
-     * @param Request $request
-     *
-     * @return StreamedResponse
-     */
-    public function exportShipping(Request $request)
-    {
-        // タイムアウトを無効にする.
-        set_time_limit(0);
-
-        // sql loggerを無効にする.
-        $em = $this->entityManager;
-        $em->getConfiguration()->setSQLLogger(null);
-
-        $response = new StreamedResponse();
-        $response->setCallback(function () use ($request) {
-            // CSV種別を元に初期化.
-            $this->csvExportService->initCsvType(CsvType::CSV_TYPE_SHIPPING);
-
-            // ヘッダ行の出力.
-            $this->csvExportService->exportHeader();
-
-            // 受注データ検索用のクエリビルダを取得.
-            $qb = $this->csvExportService
-                ->getShippingQueryBuilder($request);
-
-            // データ行の出力.
-            $this->csvExportService->setExportQueryBuilder($qb);
-            $this->csvExportService->exportData(function ($entity, $csvService) use ($request) {
-                /** @var Csv[] $Csvs */
-                $Csvs = $csvService->getCsvs();
-
-                /** @var Shipping $Shipping */
-                $Shipping = $entity;
-                /** @var OrderItem[] $OrderItems */
-                $OrderItems = $Shipping->getOrderItems();
-
-                foreach ($OrderItems as $OrderItem) {
-                    $ExportCsvRow = new \Eccube\Entity\ExportCsvRow();
-
-                    $Order = $OrderItem->getOrder();
-                    // CSV出力項目と合致するデータを取得.
-                    foreach ($Csvs as $Csv) {
-                        // 受注データを検索.
-                        $ExportCsvRow->setData($csvService->getData($Csv, $Order));
-
-                        if ($ExportCsvRow->isDataNull()) {
-                            // 受注データにない場合は, 出荷データを検索.
-                            $ExportCsvRow->setData($csvService->getData($Csv, $Shipping));
-                        }
-                        if ($ExportCsvRow->isDataNull()) {
-                            // 出荷データにない場合は, 出荷明細を検索.
-                            $ExportCsvRow->setData($csvService->getData($Csv, $OrderItem));
-                        }
-
-                        $event = new EventArgs(
-                            [
-                                'csvService' => $csvService,
-                                'Csv' => $Csv,
-                                'OrderItem' => $OrderItem,
-                                'ExportCsvRow' => $ExportCsvRow,
-                            ],
-                            $request
-                        );
-                        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_CSV_EXPORT_SHIPPING, $event);
-
-                        $ExportCsvRow->pushData();
-                    }
-                    //$row[] = number_format(memory_get_usage(true));
-                    // 出力.
-                    $csvService->fputcsv($ExportCsvRow->getRow());
-                }
-            });
-        });
-
-        $now = new \DateTime();
-        $filename = 'shipping_'.$now->format('YmdHis').'.csv';
-        $response->headers->set('Content-Type', 'application/octet-stream');
-        $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
-        $response->send();
-
-        log_info('出荷CSV出力ファイル名', [$filename]);
-
-        return $response;
-    }
-
-    /**
      * Bulk action to order status
      *
      * @Method("POST")
@@ -491,7 +410,7 @@ class OrderController extends AbstractController
 
                 $purchaseContext = new PurchaseContext($OriginOrder, $OriginOrder->getCustomer());
 
-                $flowResult = $this->purchaseFlow->calculate($Order, $purchaseContext);
+                $flowResult = $this->purchaseFlow->validate($Order, $purchaseContext);
                 if ($flowResult->hasWarning()) {
                     foreach ($flowResult->getWarning() as $warning) {
                         $msg = $this->translator->trans('admin.order.index.bulk_warning', [
@@ -514,7 +433,7 @@ class OrderController extends AbstractController
                 }
 
                 try {
-                    $this->purchaseFlow->purchase($Order, $purchaseContext);
+                    $this->purchaseFlow->commit($Order, $purchaseContext);
                 } catch (PurchaseException $e) {
                     $msg = $this->translator->trans('admin.order.index.bulk_error', [
                       '%orderId%' => $Order->getId(),

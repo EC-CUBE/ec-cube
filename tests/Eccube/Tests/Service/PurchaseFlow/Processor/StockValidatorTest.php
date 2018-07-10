@@ -66,14 +66,14 @@ class StockValidatorTest extends EccubeTestCase
     public function testValidStock()
     {
         $this->cartItem->setQuantity(1);
-        $this->validator->process($this->cartItem, new PurchaseContext());
+        $this->validator->execute($this->cartItem, new PurchaseContext());
         self::assertEquals(1, $this->cartItem->getQuantity());
     }
 
     public function testValidStockFail()
     {
         $this->cartItem->setQuantity(PHP_INT_MAX);
-        $result = $this->validator->process($this->cartItem, new PurchaseContext());
+        $result = $this->validator->execute($this->cartItem, new PurchaseContext());
 
         self::assertEquals($this->ProductClass->getStock(), $this->cartItem->getQuantity());
         self::assertTrue($result->isWarning());
@@ -89,7 +89,7 @@ class StockValidatorTest extends EccubeTestCase
         $Order->getOrderItems()[0]->setQuantity(1);
         $this->ProductClass->setStock(100);
 
-        $this->validator->process($Order->getOrderItems()[0], new PurchaseContext());
+        $this->validator->execute($Order->getOrderItems()[0], new PurchaseContext());
         self::assertEquals(1, $Order->getOrderItems()[0]->getQuantity());
     }
 }

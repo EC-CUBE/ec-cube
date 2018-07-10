@@ -139,7 +139,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $this->assertNotNull($this->container->get('session')->get('eccube.front.shopping.nonmember.customeraddress'));
 
         $this->expected = $formData['name']['name01'];
-        $this->actual = $Nonmember['customer']->getName01();
+        $this->actual = $Nonmember->getName01();
         $this->verify();
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
@@ -260,11 +260,6 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
 
         // お届け先設定画面で、入力値を変更しPOST送信
         $formData = $this->createNonmemberFormData();
-        $formData['fax'] = [
-            'fax01' => 111,
-            'fax02' => 111,
-            'fax03' => 111,
-        ];
         unset($formData['email']);
 
         $crawler = $client->request(
@@ -282,7 +277,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $Messages = $this->getMailCatcherMessages();
         $Message = $this->getMailCatcherMessage($Messages[0]->id);
 
-        $this->assertRegexp('/111-111-111/', $this->parseMailCatcherSource($Message), '変更した FAX 番号が一致するか');
+//        $this->assertRegexp('/111-111-111/', $this->parseMailCatcherSource($Message), '変更した FAX 番号が一致するか');
     }
 
     public function createNonmemberFormData()

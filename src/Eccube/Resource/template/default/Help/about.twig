@@ -32,26 +32,19 @@ file that was distributed with this source code.
                     </dl>
                 {% endif %}
 
-                {% if BaseInfo.zip01 is defined %}
+                {% if BaseInfo.postal_code is defined %}
                     <dl id="help_about_box__zip">
                         <dt>{{'common.label.address'|trans}}</dt>
-                        <dd>〒{{ BaseInfo.zip01 }}-{{ BaseInfo.zip02 }}<br />
+                        <dd>〒{{ BaseInfo.postal_code }}<br />
                             {{ BaseInfo.pref }}{{ BaseInfo.addr01 }}{{ BaseInfo.addr02 }}
                         </dd>
                     </dl>
                 {% endif %}
 
-                {% if BaseInfo.tel01 is defined %}
+                {% if BaseInfo.phone_number is defined %}
                     <dl id="help_about_box__tel">
                         <dt>{{'common.label.phone_number'|trans}}</dt>
-                        <dd>{{ BaseInfo.tel01 }}-{{ BaseInfo.tel02 }}-{{ BaseInfo.tel03 }}</dd>
-                    </dl>
-                {% endif %}
-
-                {% if BaseInfo.fax01 is defined %}
-                    <dl id="help_about_box__fax">
-                        <dt>{{'common.label.fax_number'|trans}}</dt>
-                        <dd>{{ BaseInfo.fax01 }}-{{ BaseInfo.fax02 }}-{{ BaseInfo.fax03 }}</dd>
+                        <dd>{{ BaseInfo.phone_number }}</dd>
                     </dl>
                 {% endif %}
 

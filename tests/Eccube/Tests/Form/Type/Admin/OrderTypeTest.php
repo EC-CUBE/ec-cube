@@ -32,25 +32,13 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
             'kana02' => 'シンイチ',
         ],
         'company_name' => '株式会社テストショップ',
-        'zip' => [
-            'zip01' => '530',
-            'zip02' => '0001',
-        ],
+        'postal_code' => '530-0001',
         'address' => [
             'pref' => '5',
             'addr01' => '北区',
             'addr02' => '梅田',
         ],
-        'tel' => [
-            'tel01' => '012',
-            'tel02' => '345',
-            'tel03' => '6789',
-        ],
-        'fax' => [
-            'fax01' => '112',
-            'fax02' => '345',
-            'fax03' => '6789',
-        ],
+        'phone_number' => '012-345-6789',
         'email' => 'default@example.com',
         'discount' => '1',
         'delivery_fee_total' => '1',
@@ -79,12 +67,9 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidTel_Blank()
+    public function testInvalidPhoneNumber_Blank()
     {
-        $this->formData['tel']['tel01'] = '';
-        $this->formData['tel']['tel02'] = '';
-        $this->formData['tel']['tel03'] = '';
-
+        $this->formData['phone_number'] = '';
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }

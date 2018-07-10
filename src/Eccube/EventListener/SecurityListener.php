@@ -20,8 +20,11 @@ use Eccube\Service\CartService;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Security\Core\Event\AuthenticationFailureEvent;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
+use Symfony\Component\Security\Core\AuthenticationEvents;
 
 class SecurityListener implements EventSubscriberInterface
 {
@@ -31,14 +34,18 @@ class SecurityListener implements EventSubscriberInterface
 
     protected $purchaseFlow;
 
+    protected $requestStack;
+
     public function __construct(
         EntityManagerInterface $em,
         CartService $cartService,
-        PurchaseFlow $cartPurchaseFlow
+        PurchaseFlow $cartPurchaseFlow,
+        RequestStack $requestStack
     ) {
         $this->em = $em;
         $this->cartService = $cartService;
         $this->purchaseFlow = $cartPurchaseFlow;
+        $this->requestStack = $requestStack;
     }
 
     /**
@@ -57,10 +64,23 @@ class SecurityListener implements EventSubscriberInterface
         } elseif ($user instanceof Customer) {
             $this->cartService->mergeFromPersistedCart($user);
             foreach ($this->cartService->getCarts() as $Cart) {
-                $this->purchaseFlow->calculate($Cart, new PurchaseContext($Cart, $user));
+                $this->purchaseFlow->validate($Cart, new PurchaseContext($Cart, $user));
             }
             $this->cartService->save();
+            if (count($this->cartService->getCarts()) > 1) {
+                // カートが分割されていればメッセージを表示
+                $event->getRequest()->getSession()->set('cart.divide', true);
+            }
         }
+    }
+
+    /**
+     * @param AuthenticationFailureEvent $event
+     */
+    public function onAuthenticationFailure(AuthenticationFailureEvent $event)
+    {
+        $request = $this->requestStack->getCurrentRequest();
+        $request->getSession()->set('_security.login_memory', (bool) $request->request->get('login_memory', 0));
     }
 
     /**
@@ -85,6 +105,7 @@ class SecurityListener implements EventSubscriberInterface
     {
         return [
             SecurityEvents::INTERACTIVE_LOGIN => 'onInteractiveLogin',
+            AuthenticationEvents::AUTHENTICATION_FAILURE => 'onAuthenticationFailure',
         ];
     }
 }

@@ -232,7 +232,9 @@ class ProductController extends AbstractController
                  * 初期表示の場合.
                  */
                 $page_no = 1;
-                $searchData = [];
+                // submit default value
+                $viewData = FormUtil::getViewData($searchForm);
+                $searchData = FormUtil::submitAndGetData($searchForm, $viewData);
 
                 // セッション中の検索条件, ページ番号を初期化.
                 $this->session->set('eccube.admin.product.search', $searchData);

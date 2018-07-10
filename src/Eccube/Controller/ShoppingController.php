@@ -19,22 +19,26 @@ use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
+use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
 use Eccube\Exception\ShoppingException;
 use Eccube\Form\Type\Front\CustomerLoginType;
 use Eccube\Form\Type\Front\ShoppingShippingType;
+use Eccube\Form\Type\Shopping\CustomerAddressType;
 use Eccube\Form\Type\Shopping\OrderType;
 use Eccube\Repository\CustomerAddressRepository;
+use Eccube\Repository\OrderRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\OrderHelper;
-use Eccube\Service\PurchaseFlow\PurchaseContext;
+use Eccube\Service\Payment\PaymentDispatcher;
 use Eccube\Service\ShoppingService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -89,6 +93,7 @@ class ShoppingController extends AbstractShoppingController
         CartService $cartService,
         ShoppingService $shoppingService,
         CustomerAddressRepository $customerAddressRepository,
+        OrderRepository $orderRepository,
         ParameterBag $parameterBag
     ) {
         $this->BaseInfo = $BaseInfo;
@@ -96,6 +101,7 @@ class ShoppingController extends AbstractShoppingController
         $this->cartService = $cartService;
         $this->shoppingService = $shoppingService;
         $this->customerAddressRepository = $customerAddressRepository;
+        $this->orderRepository = $orderRepository;
         $this->parameterBag = $parameterBag;
     }
 
@@ -123,7 +129,10 @@ class ShoppingController extends AbstractShoppingController
         $Order = $this->parameterBag->get('Order');
 
         // 単価集計
-        $flowResult = $this->executePurchaseFlow($Order);
+        $flowResult = $this->validatePurchaseFlow($Order);
+
+        // 明細が丸められる場合に, カートから注文画面へ遷移できなくなるため, 集計の結果を保存する
+        $this->entityManager->flush();
 
         // フォームを生成する
         $this->forwardToRoute('shopping_create_form');
@@ -209,10 +218,30 @@ class ShoppingController extends AbstractShoppingController
         $form = $this->parameterBag->get(OrderType::class);
         $Order = $this->parameterBag->get('Order');
 
-        $flowResult = $this->executePurchaseFlow($Order);
+        $flowResult = $this->validatePurchaseFlow($Order);
         if ($flowResult->hasWarning() || $flowResult->hasError()) {
             return $this->redirectToRoute('shopping_error');
         }
+
+        $paymentMethod = $this->createPaymentMethod($Order, $form);
+
+        $PaymentResult = $paymentMethod->verify();
+        // エラーの場合は注文入力画面に戻す？
+        if ($PaymentResult instanceof PaymentResult) {
+            if (!$PaymentResult->isSuccess()) {
+                $this->entityManager->getConnection()->rollback();
+
+                $this->addError($PaymentResult->getErrors());
+            }
+
+            $response = $PaymentResult->getResponse();
+            if ($response && ($response->isRedirection() || $response->getContent())) {
+                $this->entityManager->flush();
+
+                return $response;
+            }
+        }
+        $this->entityManager->flush();
 
         return [
             'form' => $form->createView(),
@@ -306,9 +335,15 @@ class ShoppingController extends AbstractShoppingController
         // 受注IDを取得
         $orderId = $this->session->get($this->sessionOrderKey);
 
+        if (empty($orderId)) {
+            return $this->redirectToRoute('homepage');
+        }
+
+        $Order = $this->orderRepository->find($orderId);
+
         $event = new EventArgs(
             [
-                'orderId' => $orderId,
+                'Order' => $Order,
             ],
             $request
         );
@@ -320,17 +355,15 @@ class ShoppingController extends AbstractShoppingController
 
         // 受注に関連するセッションを削除
         $this->session->remove($this->sessionOrderKey);
+        $this->session->remove($this->sessionKey);
+        $this->session->remove($this->sessionCustomerAddressKey);
 
-        // 非会員用セッション情報を空の配列で上書きする(プラグイン互換性保持のために削除はしない)
-        $this->session->set($this->sessionKey, []);
-        $this->session->set($this->sessionCustomerAddressKey, []);
-
-        log_info('購入処理完了', [$orderId]);
+        log_info('購入処理完了', [$Order->getId()]);
 
         $hasNextCart = !empty($this->cartService->getCarts());
 
         return [
-            'orderId' => $orderId,
+            'Order' => $Order,
             'hasNextCart' => $hasNextCart,
         ];
     }
@@ -341,7 +374,7 @@ class ShoppingController extends AbstractShoppingController
      * @Route("/shopping/shipping/{id}", name="shopping_shipping", requirements={"id" = "\d+"})
      * @Template("Shopping/shipping.twig")
      */
-    public function shipping(Request $request, $id)
+    public function shipping(Request $request, Shipping $Shipping)
     {
         // カートチェック
         $response = $this->forwardToRoute('shopping_check_to_cart');
@@ -349,55 +382,38 @@ class ShoppingController extends AbstractShoppingController
             return $response;
         }
 
-        if ('POST' === $request->getMethod()) {
-            $address = $request->get('address');
+        // 受注の存在チェック
+        $response = $this->forwardToRoute('shopping_exists_order');
+        if ($response->isRedirection() || $response->getContent()) {
+            return $response;
+        }
 
-            if (is_null($address)) {
-                // 選択されていなければエラー
-                log_info('お届け先入力チェックエラー');
+        // 受注に紐づくShippingかどうかのチェック.
+        /** @var Order $Order */
+        $Order = $this->parameterBag->get('Order');
+        if (!$Order->findShipping($Shipping->getId())) {
+            throw new NotFoundHttpException();
+        }
 
-                return [
-                    'Customer' => $this->getUser(),
-                    'shippingId' => $id,
-                    'error' => true,
-                ];
-            }
+        $builder = $this->formFactory->createBuilder(CustomerAddressType::class, null, [
+            'customer' => $this->getUser(),
+            'shipping' => $Shipping,
+        ]);
 
-            // 選択されたお届け先情報を取得
-            $CustomerAddress = $this->customerAddressRepository->findOneBy(
-                [
-                    'Customer' => $this->getUser(),
-                    'id' => $address,
-                ]
-            );
-            if (is_null($CustomerAddress)) {
-                throw new NotFoundHttpException(trans('shoppingcontroller.text.error.selected_address'));
-            }
+        $form = $builder->getForm();
+        $form->handleRequest($request);
 
-            /** @var Order $Order */
-            $Order = $this->shoppingService->getOrder(OrderStatus::PROCESSING);
-            if (!$Order) {
-                log_info('購入処理中の受注情報がないため購入エラー');
-                $this->addError('front.shopping.order.error');
-
-                return $this->redirectToRoute('shopping_error');
-            }
-
-            $Shipping = $Order->findShipping($id);
-            if (!$Shipping) {
-                throw new NotFoundHttpException(trans('shoppingcontroller.text.error.address'));
-            }
-
+        if ($form->isSubmitted() && $form->isValid()) {
             log_info('お届先情報更新開始', [$Shipping->getId()]);
+
+            /** @var CustomerAddress $CustomerAddress */
+            $CustomerAddress = $form['addresses']->getData();
 
             // お届け先情報を更新
             $Shipping->setFromCustomerAddress($CustomerAddress);
 
-            // 配送料金の設定
-            $this->shoppingService->setShippingDeliveryFee($Shipping);
-
             // 合計金額の再計算
-            $flowResult = $this->executePurchaseFlow($Order);
+            $flowResult = $this->validatePurchaseFlow($Order);
             if ($flowResult->hasWarning() || $flowResult->hasError()) {
                 return $this->redirectToRoute('shopping_error');
             }
@@ -408,7 +424,7 @@ class ShoppingController extends AbstractShoppingController
             $event = new EventArgs(
                 [
                     'Order' => $Order,
-                    'shippingId' => $id,
+                    'Shipping' => $Shipping,
                 ],
                 $request
             );
@@ -420,9 +436,9 @@ class ShoppingController extends AbstractShoppingController
         }
 
         return [
+            'form' => $form->createView(),
             'Customer' => $this->getUser(),
-            'shippingId' => $id,
-            'error' => false,
+            'shippingId' => $Shipping->getId(),
         ];
     }
 
@@ -513,7 +529,7 @@ class ShoppingController extends AbstractShoppingController
             $this->shoppingService->setShippingDeliveryFee($Shipping);
 
             // 合計金額の再計算
-            $flowResult = $this->executePurchaseFlow($Order);
+            $flowResult = $this->validatePurchaseFlow($Order);
             if ($flowResult->hasWarning() || $flowResult->hasError()) {
                 return $this->redirectToRoute('shopping_error');
             }
@@ -611,6 +627,13 @@ class ShoppingController extends AbstractShoppingController
     {
         $Cart = $this->cartService->getCart();
         if ($Cart && count($Cart->getCartItems()) > 0) {
+            $divide = $request->getSession()->get('cart.divide');
+            if ($divide) {
+                log_info('種別が異なる商品がカートと結合されたためカート画面にリダイレクト');
+
+                return $this->redirectToRoute('cart');
+            }
+
             return new Response();
         }
         log_info('カートに商品が入っていないためショッピングカート画面にリダイレクト');
@@ -651,7 +674,6 @@ class ShoppingController extends AbstractShoppingController
                 //$Order = $app['eccube.service.shopping']->createOrder($Customer);
                 $Order = $this->orderHelper->createProcessingOrder(
                     $Customer,
-                    $Customer->getCustomerAddresses()->current(),
                     $this->cartService->getCart()->getCartItems()
                 );
                 $this->cartService->setPreOrderId($Order->getPreOrderId());
@@ -789,47 +811,42 @@ class ShoppingController extends AbstractShoppingController
                 // FormTypeで更新されるため不要
                 //$app['eccube.service.shopping']->setFormData($Order, $data);
 
-                $flowResult = $this->executePurchaseFlow($Order);
+                $flowResult = $this->validatePurchaseFlow($Order);
                 if ($flowResult->hasWarning() || $flowResult->hasError()) {
                     // TODO エラーメッセージ
                     throw new ShoppingException();
                 }
-                try {
-                    $this->purchaseFlow->purchase($Order, new PurchaseContext($Order, $Order->getCustomer())); // TODO 変更前の Order を渡す必要がある？
-                } catch (PurchaseException $e) {
-                    $this->addError($e->getMessage(), 'front');
-                }
 
-                // 購入処理
-                $this->shoppingService->processPurchase($Order); // XXX フロント画面に依存してるので管理画面では使えない
-
-                // Order も引数で渡すのがベスト??
-                $paymentService = $this->createPaymentService($Order);
                 $paymentMethod = $this->createPaymentMethod($Order, $form);
 
                 // 必要に応じて別のコントローラへ forward or redirect(移譲)
-                // forward の処理はプラグイン内で書けるようにしておく
-                // dispatch をしたら, パスを返して forwardする
-                // http://silex.sensiolabs.org/doc/cookbook/sub_requests.html
-                // 確認画面も挟める
-                // Request をセッションに入れるべし
-                $dispatcher = $paymentService->dispatch($paymentMethod); // 決済処理中.
+                $dispatcher = $paymentMethod->apply(); // 決済処理中.
                 // 一旦、決済処理中になった後は、購入処理中に戻せない。キャンセル or 購入完了の仕様とする
                 // ステータス履歴も保持しておく？ 在庫引き当ての仕様もセットで。
-                if ($dispatcher instanceof Response
-                    && ($dispatcher->isRedirection() || $dispatcher->getContent())
-                ) { // $paymentMethod->apply() が Response を返した場合は画面遷移
-                    return $dispatcher;                // 画面遷移したいパターンが複数ある場合はどうする？ 引数で制御？
-                }
-                $PaymentResult = $paymentService->doCheckout($paymentMethod); // 決済実行
-                if (!$PaymentResult->isSuccess()) {
-                    $this->entityManager->getConnection()->rollback();
+                if ($dispatcher instanceof PaymentDispatcher) {
+                    $response = $dispatcher->getResponse();
+                    $this->entityManager->flush();
+                    $this->entityManager->commit();
 
-                    return $this->redirectToRoute('shopping_error');
+                    if ($response && ($response->isRedirection() || $response->getContent())) {
+                        return $response;
+                    }
+
+                    if ($dispatcher->isForward()) {
+                        return $this->forwardToRoute($dispatcher->getRoute(), $dispatcher->getPathParameters(), $dispatcher->getQueryParameters());
+                    } else {
+                        return $this->redirectToRoute($dispatcher->getRoute(), array_merge($dispatcher->getPathParameters(), $dispatcher->getQueryParameters()));
+                    }
                 }
 
+                // 決済実行
+                $response = $this->forwardToRoute('shopping_do_checkout_order');
                 $this->entityManager->flush();
-                $this->entityManager->getConnection()->commit();
+                $this->entityManager->commit();
+
+                if ($response->isRedirection() || $response->getContent()) {
+                    return $response;
+                }
 
                 log_info('購入処理完了', [$Order->getId()]);
             } catch (ShoppingException $e) {
@@ -858,6 +875,35 @@ class ShoppingController extends AbstractShoppingController
     }
 
     /**
+     * 決済完了処理
+     *
+     * @ForwardOnly
+     * @Route("/shopping/do_checkout_order", name="shopping_do_checkout_order")
+     */
+    public function doCheckoutOrder(Request $request)
+    {
+        $form = $this->parameterBag->get(OrderType::class);
+        $Order = $this->parameterBag->get('Order');
+
+        $paymentMethod = $this->createPaymentMethod($Order, $form);
+
+        // 決済実行
+        $PaymentResult = $paymentMethod->checkout();
+        $response = $PaymentResult->getResponse();
+        if ($response && ($response->isRedirection() || $response->getContent())) {
+            return $response;
+        }
+
+        if (!$PaymentResult->isSuccess()) {
+            $this->entityManager->getConnection()->rollback();
+
+            $this->addError($PaymentResult->getErrors());
+        }
+
+        return new Response();
+    }
+
+    /**
      * 受注完了の後処理
      *
      * @ForwardOnly
@@ -869,7 +915,7 @@ class ShoppingController extends AbstractShoppingController
         $Order = $this->parameterBag->get('Order');
 
         // カート削除
-        $this->cartService->clear()->save();
+        $this->cartService->clear();
 
         $event = new EventArgs(
             [
@@ -912,120 +958,12 @@ class ShoppingController extends AbstractShoppingController
         return $this->redirectToRoute('shopping_complete');
     }
 
-    private function createPaymentService(Order $Order)
+    private function createPaymentMethod(Order $Order, FormInterface $form)
     {
-        $serviceClass = $Order->getPayment()->getServiceClass();
-        $paymentService = new $serviceClass($this->container->get('request_stack'));
-
-        return $paymentService;
-    }
-
-    private function createPaymentMethod(Order $Order, $form)
-    {
-        $methodClass = $Order->getPayment()->getMethodClass();
-        $PaymentMethod = new $methodClass();
+        $PaymentMethod = $this->container->get($Order->getPayment()->getMethodClass());
+        $PaymentMethod->setOrder($Order);
         $PaymentMethod->setFormType($form);
-        $PaymentMethod->setRequest($this->container->get('request_stack')->getCurrentRequest());
 
         return $PaymentMethod;
-    }
-
-    /**
-     * 非会員でのお客様情報変更時の入力チェック
-     *
-     * TODO https://github.com/EC-CUBE/ec-cube/issues/565
-     *
-     * @param Application $app
-     * @param array $data リクエストパラメータ
-     *
-     * @return array
-     */
-    private function customerValidation(Application $app, array &$data)
-    {
-        // 入力チェック
-        $errors = [];
-
-        $errors[] = $app['validator']->validateValue($data['customer_name01'], [
-            new Assert\NotBlank(),
-            new Assert\Length(['max' => $app['config']['name_len']]),
-            new Assert\Regex(['pattern' => '/^[^\s ]+$/u', 'message' => 'form.type.name.firstname.nothasspace']),
-        ]);
-
-        $errors[] = $app['validator']->validateValue($data['customer_name02'], [
-            new Assert\NotBlank(),
-            new Assert\Length(['max' => $app['config']['name_len']]),
-            new Assert\Regex(['pattern' => '/^[^\s ]+$/u', 'message' => 'form.type.name.firstname.nothasspace']),
-        ]);
-
-        // 互換性確保のためキーが存在する場合にのみバリデーションを行う(kana01は3.0.15から追加)
-        if (array_key_exists('customer_kana01', $data)) {
-            $data['customer_kana01'] = mb_convert_kana($data['customer_kana01'], 'CV', 'utf-8');
-            $errors[] = $app['validator']->validateValue($data['customer_kana01'], [
-                new Assert\NotBlank(),
-                new Assert\Length(['max' => $app['config']['kana_len']]),
-                new Assert\Regex(['pattern' => '/^[ァ-ヶｦ-ﾟー]+$/u']),
-            ]);
-        }
-
-        // 互換性確保のためキーが存在する場合にのみバリデーションを行う(kana01は3.0.15から追加)
-        if (array_key_exists('customer_kana02', $data)) {
-            $data['customer_kana02'] = mb_convert_kana($data['customer_kana02'], 'CV', 'utf-8');
-            $errors[] = $app['validator']->validateValue($data['customer_kana02'], [
-                new Assert\NotBlank(),
-                new Assert\Length(['max' => $app['config']['kana_len']]),
-                new Assert\Regex(['pattern' => '/^[ァ-ヶｦ-ﾟー]+$/u']),
-            ]);
-        }
-
-        $errors[] = $app['validator']->validateValue($data['customer_company_name'], [
-            new Assert\Length(['max' => $app['config']['stext_len']]),
-        ]);
-
-        $errors[] = $app['validator']->validateValue($data['customer_tel01'], [
-            new Assert\NotBlank(),
-            new Assert\Type(['type' => 'numeric', 'message' => 'form.type.numeric.invalid']),
-            new Assert\Length(['max' => $app['config']['tel_len'], 'min' => $app['config']['tel_len_min']]),
-        ]);
-
-        $errors[] = $app['validator']->validateValue($data['customer_tel02'], [
-            new Assert\NotBlank(),
-            new Assert\Type(['type' => 'numeric', 'message' => 'form.type.numeric.invalid']),
-            new Assert\Length(['max' => $app['config']['tel_len'], 'min' => $app['config']['tel_len_min']]),
-        ]);
-
-        $errors[] = $app['validator']->validateValue($data['customer_tel03'], [
-            new Assert\NotBlank(),
-            new Assert\Type(['type' => 'numeric', 'message' => 'form.type.numeric.invalid']),
-            new Assert\Length(['max' => $app['config']['tel_len'], 'min' => $app['config']['tel_len_min']]),
-        ]);
-
-        $errors[] = $app['validator']->validateValue($data['customer_zip01'], [
-            new Assert\NotBlank(),
-            new Assert\Type(['type' => 'numeric', 'message' => 'form.type.numeric.invalid']),
-            new Assert\Length(['min' => $app['config']['zip01_len'], 'max' => $app['config']['zip01_len']]),
-        ]);
-
-        $errors[] = $app['validator']->validateValue($data['customer_zip02'], [
-            new Assert\NotBlank(),
-            new Assert\Type(['type' => 'numeric', 'message' => 'form.type.numeric.invalid']),
-            new Assert\Length(['min' => $app['config']['zip02_len'], 'max' => $app['config']['zip02_len']]),
-        ]);
-
-        $errors[] = $app['validator']->validateValue($data['customer_addr01'], [
-            new Assert\NotBlank(),
-            new Assert\Length(['max' => $app['config']['address1_len']]),
-        ]);
-
-        $errors[] = $app['validator']->validateValue($data['customer_addr02'], [
-            new Assert\NotBlank(),
-            new Assert\Length(['max' => $app['config']['address2_len']]),
-        ]);
-
-        $errors[] = $app['validator']->validateValue($data['customer_email'], [
-            new Assert\NotBlank(),
-            new Assert\Email(['strict' => true]),
-        ]);
-
-        return $errors;
     }
 }

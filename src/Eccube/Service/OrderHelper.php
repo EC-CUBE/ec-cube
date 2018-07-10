@@ -20,10 +20,8 @@ use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Cart;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\Customer;
-use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\OrderStatus;
-use Eccube\Entity\Master\ShippingStatus;
 use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Order;
@@ -33,7 +31,6 @@ use Eccube\Repository\DeliveryFeeRepository;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\Master\OrderItemTypeRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
-use Eccube\Repository\Master\ShippingStatusRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Repository\TaxRuleRepository;
@@ -81,11 +78,6 @@ class OrderHelper
     protected $orderRepository;
 
     /**
-     * @var ShippingStatusRepository
-     */
-    protected $shippingStatusRepository;
-
-    /**
      * @var EntityManager
      */
     protected $entityManager;
@@ -105,7 +97,6 @@ class OrderHelper
      * @param DeliveryRepository $deliveryRepository
      * @param PaymentRepository $paymentRepository
      * @param OrderRepository $orderRepository
-     * @param ShippingStatusRepository $shippingStatusRepository
      * @param EntityManager $entityManager
      * @param EccubeConfig $eccubeConfig
      */
@@ -117,7 +108,6 @@ class OrderHelper
         DeliveryRepository $deliveryRepository,
         PaymentRepository $paymentRepository,
         OrderRepository $orderRepository,
-        ShippingStatusRepository $shippingStatusRepository,
         EntityManagerInterface $entityManager,
         EccubeConfig $eccubeConfig
     ) {
@@ -128,7 +118,6 @@ class OrderHelper
         $this->deliveryRepository = $deliveryRepository;
         $this->paymentRepository = $paymentRepository;
         $this->orderRepository = $orderRepository;
-        $this->shippingStatusRepository = $shippingStatusRepository;
         $this->entityManager = $entityManager;
         $this->eccubeConfig = $eccubeConfig;
     }
@@ -137,12 +126,11 @@ class OrderHelper
      * 購入処理中の受注データを生成する.
      *
      * @param Customer $Customer
-     * @param CustomerAddress $CustomerAddress
      * @param array $CartItems
      *
      * @return Order
      */
-    public function createProcessingOrder(Customer $Customer, CustomerAddress $CustomerAddress, $CartItems, $preOrderId = null)
+    public function createProcessingOrder(Customer $Customer, $CartItems, $preOrderId = null)
     {
         $OrderStatus = $this->orderStatusRepository->find(OrderStatus::PROCESSING);
         $Order = new Order($OrderStatus);
@@ -166,10 +154,12 @@ class OrderHelper
         }, []);
 
         foreach ($OrderItemsGroupBySaleType as $OrderItems) {
-            $Shipping = $this->createShippingFromCustomerAddress($CustomerAddress);
+            $Shipping = $this->createShippingFromCustomer($Customer);
+            $Shipping->setOrder($Order);
             $this->addOrderItems($Order, $Shipping, $OrderItems);
             $this->setDefaultDelivery($Shipping);
             $this->entityManager->persist($Shipping);
+            $Order->addShipping($Shipping);
         }
 
         $this->setDefaultPayment($Order);
@@ -288,30 +278,20 @@ class OrderHelper
         }, $CartItems->toArray());
     }
 
-    private function createShippingFromCustomerAddress(CustomerAddress $CustomerAddress)
+    private function createShippingFromCustomer(Customer $Customer)
     {
         $Shipping = new Shipping();
         $Shipping
-            ->setName01($CustomerAddress->getName01())
-            ->setName02($CustomerAddress->getName02())
-            ->setKana01($CustomerAddress->getKana01())
-            ->setKana02($CustomerAddress->getKana02())
-            ->setCompanyName($CustomerAddress->getCompanyName())
-            ->setTel01($CustomerAddress->getTel01())
-            ->setTel02($CustomerAddress->getTel02())
-            ->setTel03($CustomerAddress->getTel03())
-            ->setFax01($CustomerAddress->getFax01())
-            ->setFax02($CustomerAddress->getFax02())
-            ->setFax03($CustomerAddress->getFax03())
-            ->setZip01($CustomerAddress->getZip01())
-            ->setZip02($CustomerAddress->getZip02())
-            ->setZipCode($CustomerAddress->getZip01().$CustomerAddress->getZip02())
-            ->setPref($CustomerAddress->getPref())
-            ->setAddr01($CustomerAddress->getAddr01())
-            ->setAddr02($CustomerAddress->getAddr02());
-
-        $ShippingStatus = $this->shippingStatusRepository->find(ShippingStatus::PREPARED);
-        $Shipping->setShippingStatus($ShippingStatus);
+            ->setName01($Customer->getName01())
+            ->setName02($Customer->getName02())
+            ->setKana01($Customer->getKana01())
+            ->setKana02($Customer->getKana02())
+            ->setCompanyName($Customer->getCompanyName())
+            ->setPhoneNumber($Customer->getPhoneNumber())
+            ->setPostalCode($Customer->getPostalCode())
+            ->setPref($Customer->getPref())
+            ->setAddr01($Customer->getAddr01())
+            ->setAddr02($Customer->getAddr02());
 
         return $Shipping;
     }

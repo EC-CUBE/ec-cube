@@ -8,12 +8,24 @@ http://www.lockon.co.jp/
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
-{% extends '@admin/styleguide_frame.twig' %}
+{% extends '@admin/default_frame.twig' %}
 
 {% set menus = ['content', 'block'] %}
 
 {% block title %}{{ 'admin.content.block.6'|trans }}{% endblock %}
 {% block sub_title %}{{ 'admin.content.block.5'|trans }}{% endblock %}
+
+{% block stylesheet %}
+    {# TODO:
+    - Fix to display popup confirmation block delete.
+    - Move to css file or unset z-index = 1 for css .list-group-item
+    #}
+    <style type="text/css">
+        li.list-group-item {
+            z-index: inherit !important;
+        }
+    </style>
+{% endblock %}
 
 {% block main %}
     <div class="c-contentsArea__cols">
@@ -25,19 +37,72 @@ file that was distributed with this source code.
                             <ul class="list-group list-group-flush">
                                 {% for Block in Blocks %}
                                     <li class="list-group-item">
-                                        <div class="row justify-content-around">
-                                            <div class="col d-flex align-items-center">
+                                        <div class="row">
+                                            <div class="col-7 col-md-10 d-flex align-items-center">
                                                 <a href="{{ url('admin_content_block_edit', {id: Block.id}) }}">
                                                     {{ Block.name }}
                                                 </a>
                                             </div>
-                                            <div class="col-auto text-right">
-                                                <a href="{{ url('admin_content_block_edit', {id: Block.id}) }}" class="btn btn-ec-actionIcon mr-3" data-toggle="tooltip" data-placement="top" title="{{ 'admin.content.block_edit.14'|trans }}">
-                                                    <i class="fa fa-pencil fa-lg text-secondary"></i>
-                                                </a>
-                                                <a href="{{ url('admin_content_block_delete', {id: Block.Id} ) }}" class="btn btn-ec-actionIcon mr-3 {% if not Block.deletable %}disabled{% endif %}" data-toggle="tooltip" data-placement="top" title="{{ 'admin.content.block_edit.17'|trans }}" {{ csrf_token_for_anchor() }} data-method="delete">
-                                                    <i class="fa fa-close fa-lg text-secondary"></i>
-                                                </a>
+                                            <div class="col-5 col-md-2">
+                                                <div class="row">
+                                                    <div class="col-6 text-right">
+                                                        <a href="{{ url('admin_content_block_edit', {id: Block.id}) }}"
+                                                           class="btn btn-ec-actionIcon mr-3" data-toggle="tooltip"
+                                                           data-placement="top"
+                                                           title="{{ 'admin.content.block_edit.14'|trans }}">
+                                                            <i class="fa fa-pencil fa-lg text-secondary"></i>
+                                                        </a>
+                                                    </div>
+                                                    {% if Block.deletable %}
+                                                        <div class="col-6">
+                                                            <a href="#"
+                                                               data-toggle="modal"
+                                                               data-target="#confirmModal-{{ Block.id }}"
+                                                               class="btn btn-ec-actionIcon mr-3" data-toggle="tooltip"
+                                                               data-placement="top"
+                                                               title="{{ 'admin.content.block_edit.17'|trans }}">
+                                                                <i class="fa fa-close fa-lg text-secondary"></i>
+                                                            </a>
+                                                        </div>
+
+                                                        <div class="modal fade" id="confirmModal-{{ Block.id }}"
+                                                             tabindex="-1"
+                                                             role="dialog"
+                                                             aria-labelledby="confirmModal-{{ Block.id }}"
+                                                             aria-hidden="true">
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title font-weight-bold">
+                                                                            {{ 'admin.content.block.delete.confirm.title'|trans }}</h5>
+                                                                        <button class="close" type="button"
+                                                                                data-dismiss="modal"
+                                                                                aria-label="Close"><span
+                                                                                    aria-hidden="true">×</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body text-left">
+                                                                        <p class="text-left">
+                                                                            {{ 'admin.content.block.delete.confirm.message'|trans }}</p>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button class="btn btn-ec-sub" type="button"
+                                                                                data-dismiss="modal">{{ 'admin.common.label.cancel'|trans }}
+                                                                        </button>
+                                                                        <a
+                                                                                href="{{ url('admin_content_block_delete', {id: Block.Id} ) }}"
+                                                                                class="btn btn-ec-delete"
+                                                                                data-confirm="false"
+                                                                                {{ csrf_token_for_anchor() }}
+                                                                                data-method="delete">
+                                                                            {{ 'admin.common.label.ok'|trans }}
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
                                             </div>
                                         </div>
                                     </li>

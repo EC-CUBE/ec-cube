@@ -28,7 +28,7 @@ class PaymentTotalLimitValidatorTest extends EccubeTestCase
         $cart = new Cart();
         $cart->setTotal(100);
 
-        $result = $validator->process($cart, new PurchaseContext());
+        $result = $validator->execute($cart, new PurchaseContext());
         self::assertFalse($result->isError());
     }
 
@@ -39,7 +39,7 @@ class PaymentTotalLimitValidatorTest extends EccubeTestCase
         $cart = new Cart();
         $cart->setTotal(1001);
 
-        $result = $validator->process($cart, new PurchaseContext());
+        $result = $validator->execute($cart, new PurchaseContext());
         self::assertTrue($result->isError());
     }
 
@@ -50,7 +50,7 @@ class PaymentTotalLimitValidatorTest extends EccubeTestCase
         $order = new Order();
         $order->setTotal(100);
 
-        $result = $validator->process($order, new PurchaseContext());
+        $result = $validator->execute($order, new PurchaseContext());
         self::assertFalse($result->isError());
     }
 
@@ -61,10 +61,17 @@ class PaymentTotalLimitValidatorTest extends EccubeTestCase
         $order = new Order();
         $order->setTotal(1001);
 
-        $result = $validator->process($order, new PurchaseContext());
+        $result = $validator->execute($order, new PurchaseContext());
         self::assertTrue($result->isError());
     }
 
+    /**
+     * @param $maxTotalFee
+     *
+     * @return PaymentTotalLimitValidator
+     *
+     * @throws \ReflectionException
+     */
     private function newValidator($maxTotalFee)
     {
         $result = $this->container->get(PaymentTotalLimitValidator::class);
