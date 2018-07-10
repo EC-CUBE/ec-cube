@@ -206,7 +206,6 @@ class ShippingControllerTest extends AbstractAdminWebTestCase
         }
     }
 
-
     /**
      * 出荷済み処理を実行する
      */
