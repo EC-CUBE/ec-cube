@@ -5,10 +5,9 @@ namespace Page\Admin;
 
 class ShippingManagePage extends AbstractAdminPageStyleGuide
 {
-    public static $検索条件_受注ステータス = ['id' => 'admin_search_shipping_status'];
     public static $検索結果_メッセージ = '#search_form > div.c-outsideBlock__contents.mb-3 > span';
     public static $検索結果_エラーメッセージ = '//*[@id="page_admin_shipping"]/div[1]/div[3]/div[3]/div/div[1]/div/div/div[1]';
-    public static $詳細検索ボタン = '//*[@id="search_form"]/div[1]/div/div/div[3]/a/span';
+    public static $詳細検索ボタン = '//*[@id="search_form"]/div[1]/div/div/div[2]/a/span';
 
     /**
      * ShippingListPage constructor.

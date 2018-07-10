@@ -22,7 +22,6 @@ use Eccube\Entity\CartItem;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\OrderStatus;
-use Eccube\Entity\Master\ShippingStatus;
 use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Order;
@@ -32,7 +31,6 @@ use Eccube\Repository\DeliveryFeeRepository;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\Master\OrderItemTypeRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
-use Eccube\Repository\Master\ShippingStatusRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Repository\TaxRuleRepository;
@@ -80,11 +78,6 @@ class OrderHelper
     protected $orderRepository;
 
     /**
-     * @var ShippingStatusRepository
-     */
-    protected $shippingStatusRepository;
-
-    /**
      * @var EntityManager
      */
     protected $entityManager;
@@ -104,7 +97,6 @@ class OrderHelper
      * @param DeliveryRepository $deliveryRepository
      * @param PaymentRepository $paymentRepository
      * @param OrderRepository $orderRepository
-     * @param ShippingStatusRepository $shippingStatusRepository
      * @param EntityManager $entityManager
      * @param EccubeConfig $eccubeConfig
      */
@@ -116,7 +108,6 @@ class OrderHelper
         DeliveryRepository $deliveryRepository,
         PaymentRepository $paymentRepository,
         OrderRepository $orderRepository,
-        ShippingStatusRepository $shippingStatusRepository,
         EntityManagerInterface $entityManager,
         EccubeConfig $eccubeConfig
     ) {
@@ -127,7 +118,6 @@ class OrderHelper
         $this->deliveryRepository = $deliveryRepository;
         $this->paymentRepository = $paymentRepository;
         $this->orderRepository = $orderRepository;
-        $this->shippingStatusRepository = $shippingStatusRepository;
         $this->entityManager = $entityManager;
         $this->eccubeConfig = $eccubeConfig;
     }
@@ -302,9 +292,6 @@ class OrderHelper
             ->setPref($Customer->getPref())
             ->setAddr01($Customer->getAddr01())
             ->setAddr02($Customer->getAddr02());
-
-        $ShippingStatus = $this->shippingStatusRepository->find(ShippingStatus::PREPARED);
-        $Shipping->setShippingStatus($ShippingStatus);
 
         return $Shipping;
     }
