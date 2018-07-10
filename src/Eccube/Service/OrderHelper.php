@@ -102,6 +102,11 @@ class OrderHelper
     protected $deviceTypeRepository;
 
     /**
+     * @var \Mobile_Detect
+     */
+    protected $mobileDetect;
+
+    /**
      * OrderHelper constructor.
      *
      * @param OrderItemTypeRepository $orderItemTypeRepository
@@ -115,6 +120,7 @@ class OrderHelper
      * @param DeviceTypeRepository $deviceTypeRepository
      * @param EntityManager $entityManager
      * @param EccubeConfig $eccubeConfig
+     * @param \Mobile_Detect $mobileDetect
      */
     public function __construct(
         OrderItemTypeRepository $orderItemTypeRepository,
@@ -127,7 +133,8 @@ class OrderHelper
         ShippingStatusRepository $shippingStatusRepository,
         DeviceTypeRepository $deviceTypeRepository,
         EntityManagerInterface $entityManager,
-        EccubeConfig $eccubeConfig
+        EccubeConfig $eccubeConfig,
+        \Mobile_Detect $mobileDetect
     ) {
         $this->orderItemTypeRepository = $orderItemTypeRepository;
         $this->orderStatusRepository = $orderStatusRepository;
@@ -140,6 +147,7 @@ class OrderHelper
         $this->shippingStatusRepository = $shippingStatusRepository;
         $this->entityManager = $entityManager;
         $this->eccubeConfig = $eccubeConfig;
+        $this->mobileDetect = $mobileDetect;
     }
 
     /**
@@ -163,8 +171,7 @@ class OrderHelper
         // 顧客情報の設定
         $this->setCustomer($Order, $Customer);
 
-        $mobileDetect = new \Mobile_Detect();
-        $DeviceType = $this->deviceTypeRepository->find($mobileDetect->isMobile() ? DeviceType::DEVICE_TYPE_SP : DeviceType::DEVICE_TYPE_PC);
+        $DeviceType = $this->deviceTypeRepository->find($this->mobileDetect->isMobile() ? DeviceType::DEVICE_TYPE_SP : DeviceType::DEVICE_TYPE_PC);
         $Order->setDeviceType($DeviceType);
 
         // 明細情報の設定
