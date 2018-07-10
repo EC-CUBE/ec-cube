@@ -593,7 +593,7 @@ SimpleSendMail.prototype = Object.create(SimpleUpdate.prototype, {
                             <div class="row justify-content-between">
                                 <div class="col-auto d-none btn-bulk-wrapper">
                                     <label class="mr-2">{{ 'admin.order.index.label_bulk_actions'|trans }}</label>
-                                    <button type="button" class="btn btn-ec-regular mr-2" data-toggle="modal" data-target="#sentUpdateModal" data-type="mail" data-bulk-update="true">
+                                    <button id="bulkSendMail" type="button" class="btn btn-ec-regular mr-2" data-toggle="modal" data-target="#sentUpdateModal" data-type="mail" data-bulk-update="true">
                                         {{ 'admin.order.index.btn_bulk_mail'|trans }}
                                     </button>
                                     {# TODO: This button is not implemented yet #}

@@ -252,6 +252,7 @@ class ShippingController extends AbstractController
      * @param Shipping $Shipping
      *
      * @return JsonResponse
+     *
      * @throws \Twig_Error
      */
     public function notifyMail(Shipping $Shipping)
