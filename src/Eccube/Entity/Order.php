@@ -115,6 +115,22 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     }
 
     /**
+     * @return string
+     */
+    public function getOrderName()
+    {
+        return (string) ($this->getName01().' '.$this->getName02());
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrderKana()
+    {
+        return (string) ($this->getKana01().' '.$this->getKana02());
+    }
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="id", type="integer", options={"unsigned":true})

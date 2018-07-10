@@ -34,6 +34,22 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * @return string
+     */
+    public function getShippingName()
+    {
+        return (string) ($this->getName01().' '.$this->getName02());
+    }
+
+    /**
+     * @return string
+     */
+    public function getShippingKana()
+    {
+        return (string) ($this->getKana01().' '.$this->getKana02());
+    }
+
+    /**
      * @var int
      *
      * @ORM\Column(name="id", type="integer", options={"unsigned":true})

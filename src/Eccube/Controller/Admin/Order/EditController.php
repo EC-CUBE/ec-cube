@@ -19,6 +19,8 @@ use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Order;
+use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\AddCartType;
@@ -29,8 +31,10 @@ use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\Master\DeviceTypeRepository;
+use Eccube\Repository\Master\OrderItemTypeRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\ProductRepository;
+use Eccube\Service\PurchaseFlow\Processor\OrderNoProcessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseException;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
@@ -92,6 +96,16 @@ class EditController extends AbstractController
     protected $orderRepository;
 
     /**
+     * @var OrderNoProcessor
+     */
+    protected $orderNoProcessor;
+
+    /**
+     * @var OrderItemTypeRepository
+     */
+    protected $orderItemTypeRepository;
+
+    /**
      * EditController constructor.
      *
      * @param TaxRuleService $taxRuleService
@@ -103,6 +117,7 @@ class EditController extends AbstractController
      * @param DeliveryRepository $deliveryRepository
      * @param PurchaseFlow $orderPurchaseFlow
      * @param OrderRepository $orderRepository
+     * @param OrderNoProcessor $orderNoProcessor
      */
     public function __construct(
         TaxRuleService $taxRuleService,
@@ -113,7 +128,9 @@ class EditController extends AbstractController
         SerializerInterface $serializer,
         DeliveryRepository $deliveryRepository,
         PurchaseFlow $orderPurchaseFlow,
-        OrderRepository $orderRepository
+        OrderRepository $orderRepository,
+        OrderNoProcessor $orderNoProcessor,
+        OrderItemTypeRepository $orderItemTypeRepository
     ) {
         $this->taxRuleService = $taxRuleService;
         $this->deviceTypeRepository = $deviceTypeRepository;
@@ -124,6 +141,8 @@ class EditController extends AbstractController
         $this->deliveryRepository = $deliveryRepository;
         $this->purchaseFlow = $orderPurchaseFlow;
         $this->orderRepository = $orderRepository;
+        $this->orderNoProcessor = $orderNoProcessor;
+        $this->orderItemTypeRepository = $orderItemTypeRepository;
     }
 
     /**
@@ -137,10 +156,12 @@ class EditController extends AbstractController
     {
         $TargetOrder = null;
         $OriginOrder = null;
+        $isNewOrder = false;
 
         if (is_null($id)) {
             // 空のエンティティを作成.
             $TargetOrder = $this->newOrder();
+            $isNewOrder = true;
         } else {
             $TargetOrder = $this->orderRepository->find($id);
             if (is_null($TargetOrder)) {
@@ -220,24 +241,28 @@ class EditController extends AbstractController
                         $this->entityManager->flush();
 
                         foreach ($OriginItems as $Item) {
-                            if (false === $TargetOrder->getOrderItems()->contains($Item)) {
+                            if ($TargetOrder->getOrderItems()->contains($Item) === false) {
                                 $this->entityManager->remove($Item);
                             }
                         }
                         $this->entityManager->flush();
 
-                        // TODO 集計系に移動
-//                        if ($Customer) {
-//                            // 会員の場合、購入回数、購入金額などを更新
-//                            $app['eccube.repository.customer']->updateBuyData($app, $Customer, $TargetOrder->getOrderStatus()->getId());
-//                        }
+                        // 新規登録時はMySQL対応のためflushしてから採番
+                        $this->orderNoProcessor->process($TargetOrder, $purchaseContext);
+                        $this->entityManager->flush();
+
+                        $Customer = $TargetOrder->getCustomer();
+                        if ($Customer) {
+                            // 会員の場合、購入回数、購入金額などを更新
+                            $this->customerRepository->updateBuyData($Customer, $isNewOrder);
+                        }
 
                         $event = new EventArgs(
                             [
                                 'form' => $form,
                                 'OriginOrder' => $OriginOrder,
                                 'TargetOrder' => $TargetOrder,
-                                //'Customer' => $Customer,
+                                'Customer' => $Customer,
                             ],
                             $request
                         );
@@ -257,7 +282,7 @@ class EditController extends AbstractController
 
                     $form = $builder->getForm();
 
-                    $Shipping = new \Eccube\Entity\Shipping();
+                    $Shipping = new Shipping();
                     $TargetOrder->addShipping($Shipping);
 
                     $Shipping->setOrder($TargetOrder);
@@ -636,12 +661,48 @@ class EditController extends AbstractController
         }
     }
 
+    /**
+     * その他明細情報を取得
+     *
+     * @Route("/%eccube_admin_route%/order/search/order_item_type", name="admin_order_search_order_item_type")
+     * @Template("@admin/Order/order_item_type.twig")
+     *
+     * @param Request $request
+     *
+     * @return array
+     */
+    public function searchOrderItemType(Request $request)
+    {
+        if ($request->isXmlHttpRequest()) {
+            log_debug('search order item type start.');
+
+            $OrderItemTypes = $this->orderItemTypeRepository->findAll();
+
+            $forms = [];
+            foreach ($OrderItemTypes as $OrderItemType) {
+                /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
+                $builder = $this->formFactory->createBuilder();
+                $form = $builder->getForm();
+                $forms[$OrderItemType->getId()] = $form->createView();
+            }
+
+            return [
+                'forms' => $forms,
+                'OrderItemTypes' => $OrderItemTypes,
+            ];
+        }
+    }
+
     protected function newOrder()
     {
-        $Order = new \Eccube\Entity\Order();
+        $Order = new Order();
         // device type
         $DeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_ADMIN);
         $Order->setDeviceType($DeviceType);
+
+        $Shipping = new Shipping();
+        $Order->addShipping($Shipping);
+        $Shipping->setOrder($Order);
 
         return $Order;
     }
