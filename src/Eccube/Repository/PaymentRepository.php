@@ -91,7 +91,7 @@ class PaymentRepository extends AbstractRepository
     {
         $query = $this->createQueryBuilder('p')
             ->innerJoin('Eccube\Entity\PaymentOption', 'po', 'WITH', 'po.payment_id = p.id')
-            ->where('po.Delivery = (:delivery)')
+            ->where('po.Delivery = (:delivery) AND p.visible = true')
             ->orderBy('p.sort_no', 'DESC')
             ->setParameter('delivery', $delivery)
             ->getQuery();
@@ -124,10 +124,8 @@ class PaymentRepository extends AbstractRepository
                 continue;
             }
             foreach ($p as $payment) {
-                if (!method_exists($payment, 'isVisible') || $payment->isVisible()) {
-                    $payments[$payment['id']] = $payment;
-                    $saleTypes[$Delivery->getSaleType()->getId()][$payment['id']] = true;
-                }
+                $payments[$payment['id']] = $payment;
+                $saleTypes[$Delivery->getSaleType()->getId()][$payment['id']] = true;
             }
         }
 
