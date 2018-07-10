@@ -63,6 +63,10 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
      */
     public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
+        if (!$this->BaseInfo->isOptionPoint()) {
+            return;
+        }
+
         // 付与ポイントを計算
         $addPoint = $this->calculateAddPoint($itemHolder);
         $itemHolder->setAddPoint($addPoint);
@@ -109,6 +113,10 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
      */
     public function prepare(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
+        if (!$this->BaseInfo->isOptionPoint()) {
+            return;
+        }
+
         if (!$itemHolder instanceof Order) {
             return;
         }
