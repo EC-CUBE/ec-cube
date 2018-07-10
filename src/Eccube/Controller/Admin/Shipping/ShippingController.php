@@ -261,7 +261,7 @@ class ShippingController extends AbstractController
 
         $this->mailService->sendShippingNotifyMail($Shipping);
 
-        $Shipping->setShippingDate(new \DateTime());
+        $Shipping->setMailSendDate(new \DateTime());
         $this->shippingRepository->save($Shipping);
         $this->entityManager->flush();
 
