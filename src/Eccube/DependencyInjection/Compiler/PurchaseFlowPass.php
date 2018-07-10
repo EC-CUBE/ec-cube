@@ -54,11 +54,6 @@ class PurchaseFlowPass implements CompilerPassInterface
                 foreach ($flowDefs as $annotationName => $purchaseFlowDef) {
                     $anno = $reader->getClassAnnotation(new \ReflectionClass($def->getClass()), $annotationName);
                     if ($anno) {
-//                        $class = $container->getParameterBag()->resolveValue($def->getClass());
-//                        if (!is_subclass_of($class, PaymentMethodInterface::class)) {
-//                            throw new \InvalidArgumentException(
-//                                sprintf('Service "%s" must implement interface "%s".', $id, PaymentMethodInterface::class));
-//                        }
                         $purchaseFlowDef->addMethodCall($methodName, [new Reference($id)]);
                     }
                 }
