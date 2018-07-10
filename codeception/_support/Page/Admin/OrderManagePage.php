@@ -21,13 +21,13 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
     public static function go(\AcceptanceTester $I)
     {
         $page = new self($I);
-        return $page->goPage('/order', '受注マスター受注管理');
+        return $page->goPage('/order', '受注一覧受注管理');
     }
 
     public static function at(\AcceptanceTester $I)
     {
         $page = new self($I);
-        return $page->atPage('受注マスター受注管理');
+        return $page->atPage('受注一覧受注管理');
     }
 
     public function 検索($value = '')
@@ -41,7 +41,7 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
     {
         $this->tester->click(self::$詳細検索ボタン);
         $this->tester->wait(1);
-        $this->tester->fillField(['id' => 'admin_search_order_tel'], $value);
+        $this->tester->fillField(['id' => 'admin_search_order_phone_number'], $value);
         $this->tester->click('#search_form #search_submit');
         return $this;
     }

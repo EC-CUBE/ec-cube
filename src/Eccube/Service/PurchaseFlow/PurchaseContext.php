@@ -16,6 +16,9 @@ namespace Eccube\Service\PurchaseFlow;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Customer;
 
+/**
+ * PurchaseFlowの実行中コンテキスト.
+ */
 class PurchaseContext extends \SplObjectStorage
 {
     private $user;
@@ -28,11 +31,21 @@ class PurchaseContext extends \SplObjectStorage
         $this->user = $user;
     }
 
+    /**
+     * PurchaseFlow実行前の{@link ItemHolderInterface}を取得.
+     *
+     * @return ItemHolderInterface
+     */
     public function getOriginHolder()
     {
         return $this->originHolder;
     }
 
+    /**
+     * 会員情報を取得.
+     *
+     * @return Customer
+     */
     public function getUser()
     {
         return $this->user;

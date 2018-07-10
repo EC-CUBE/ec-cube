@@ -120,4 +120,17 @@ class NewsRepository extends AbstractRepository
         $em->remove($News);
         $em->flush($News);
     }
+
+    /**
+     * @return array
+     */
+    public function getList()
+    {
+        $qb = $this->createQueryBuilder('n');
+        $qb->where('n.publish_date <= :date')
+            ->setParameter('date', new \DateTime())
+            ->orderBy('n.sort_no', 'DESC');
+
+        return $qb->getQuery()->getResult();
+    }
 }

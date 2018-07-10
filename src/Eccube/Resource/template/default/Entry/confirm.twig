@@ -64,9 +64,8 @@ file that was distributed with this source code.
                             </dt>
                             <dd>
                                 {# 郵便番号 #}
-                                <span>〒</span>{{ form.zip.zip01.vars.data }}<span>-</span>{{ form.zip.zip02.vars.data }}
-                                {{ form_widget(form.zip.zip01, { type : 'hidden' }) }}
-                                {{ form_widget(form.zip.zip02, { type : 'hidden' }) }}
+                                <span>〒</span>{{ form.postal_code.vars.data }}
+                                {{ form_widget(form.postal_code, { type : 'hidden' }) }}
                                 {# 都道府県・住所 #}
                                 {{ form.address.pref.vars.data }} {{ form.address.addr01.vars.data }} {{ form.address.addr02.vars.data }}
                                 {{ form_widget(form.address.pref, { type : 'hidden' }) }}
@@ -76,25 +75,10 @@ file that was distributed with this source code.
                         </dl>
                         <dl>
                             <dt>
-                                {{ form_label(form.tel, 'signup.label.tel_number', {'label_attr': {'class': 'ec-label'}}) }}
+                                {{ form_label(form.phone_number, 'signup.label.tel_number', {'label_attr': {'class': 'ec-label'}}) }}
                             </dt>
-                            <dd>{{ form.tel.tel01.vars.data }} - {{ form.tel.tel02.vars.data }}
-                                - {{ form.tel.tel03.vars.data }}
-                                {{ form_widget(form.tel.tel01, { type : 'hidden' }) }}
-                                {{ form_widget(form.tel.tel02, { type : 'hidden' }) }}
-                                {{ form_widget(form.tel.tel03, { type : 'hidden' }) }}
-                            </dd>
-                        </dl>
-                        <dl>
-                            <dt>
-                                {{ form_label(form.fax, 'signup.label.fax', {'label_attr': {'class': 'ec-label'}}) }}
-                            </dt>
-                            <dd>
-                                {{ form.fax.fax01.vars.data }} - {{ form.fax.fax02.vars.data }}
-                                - {{ form.fax.fax03.vars.data }}
-                                {{ form_widget(form.fax.fax01, { type : 'hidden' }) }}
-                                {{ form_widget(form.fax.fax02, { type : 'hidden' }) }}
-                                {{ form_widget(form.fax.fax03, { type : 'hidden' }) }}
+                            <dd>{{ form.phone_number.vars.data }}
+                                {{ form_widget(form.phone_number, { type : 'hidden' }) }}
                             </dd>
                         </dl>
                         <dl>

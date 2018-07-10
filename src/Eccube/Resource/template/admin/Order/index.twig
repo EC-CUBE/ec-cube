@@ -8,7 +8,7 @@ http://www.lockon.co.jp/
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
-{% extends '@admin/styleguide_frame.twig' %}
+{% extends '@admin/default_frame.twig' %}
 
 {% set menus = ['order', 'order_master'] %}
 
@@ -107,6 +107,79 @@ file that was distributed with this source code.
         $('#form_bulk').attr('action', "{{ url('admin_order_bulk_delete') }}").submit();
         return false;
     });
+
+    // 送り状番号
+    var updateTrackingNumber = function (id, url, tracking_number, callback) {
+        $.ajax({
+            type: 'PUT',
+            url: url,
+            data: { 'tracking_number': tracking_number }
+        }).done(function (data, textStatus, jqXHR) {
+            if (data['status'] == 'OK') {
+                $('#tracking_number_' + id).val(data['tracking_number']);
+                if (typeof callback == 'function') {
+                    callback();
+                }
+            } else {
+                alert('Update failed.');
+            }
+            return true;
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            var response = JSON.parse(jqXHR.responseText);
+            var messages = '';
+            for (var i = 0; i < response.messages.length; i++) {
+                messages += response.messages[i] + "\n";
+            }
+            alert(messages);
+            return false;
+        });
+    };
+
+    $('button.update_tracking_number').prop('disabled', true);
+    // フォームに変更があったら更新ボタンを有効にする
+    $('input.update_tracking_number').on('keyup', function(event) {
+        var $tracking_number = $(this);
+        var $button = $("button[data-target='#" + $tracking_number.attr('id') + "']");
+        $button.prop('disabled', false);
+        $button.children('i')
+               .removeClass('text-secondary')
+               .addClass('text-success');
+    });
+    // enter キーで更新し、次のフォームへフォーカスを移動する
+    $('input.update_tracking_number').on('keypress', function(event) {
+        var $tracking_number = $(this);
+        var $button = $("button[data-target='#" + $tracking_number.attr('id') + "']");
+
+        var code = event.which ? event.which : event.keyCode;
+
+        if (code == 13) { // on press to enter
+            var index = $('input.update_tracking_number').index(this);
+            var callback = function() {
+                $button.prop('disabled', true);
+                $button.children('i')
+                       .removeClass('text-success')
+                       .addClass('text-secondary');
+                $('input.update_tracking_number:gt(' + index + '):first').focus();
+            };
+            updateTrackingNumber($tracking_number.data('shipping_id'), $tracking_number.data('url'), $tracking_number.val(), callback);
+            event.preventDefault();
+        }
+    });
+    // 更新ボタンの制御
+    $('button.update_tracking_number').on('click', function(event) {
+        event.preventDefault();
+        var $button = $(this);
+        var $target = $($(this).data('target'));
+        var tracking_number = $target.val();
+        var callback = function() {
+                $button.prop('disabled', true);
+                $button.children('i')
+                       .removeClass('text-success')
+                       .addClass('text-secondary');
+        };
+
+        updateTrackingNumber($target.data('shipping_id'), $target.data('url'), tracking_number, callback);
+    });
 });
 </script>
 {% endblock javascript %}
@@ -127,7 +200,22 @@ file that was distributed with this source code.
                         <div class="form-row">
                             <div class="form-group col-12">
                                 <p class="col-form-label">{{ 'admin.order.index.298'|trans }}</p>
-                                {{ form_widget(searchForm.status, {'label_attr': {'class': 'checkbox-inline'}}) }}
+                                <div id="admin_search_order_status">
+                                    {% set statusForm = searchForm.status %}
+                                    {% for status_id, child in statusForm.children %}
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox"
+                                                   id="{{ child.vars.id }}"
+                                                   name="{{ child.vars.full_name }}"
+                                                   class="form-check-input"
+                                                   value="{{ child.vars.value }}"{{ child.vars.checked ? ' checked="checked"'}}>
+                                            <label class="form-check-label" for="{{ child.vars.id }}">{{ child.vars.label }}</label>
+                                            {%- if statusForm.vars.order_count[status_id].display -%}
+                                                (<a href="{{ url('admin_order', { 'order_status_id': status_id })}}">{{ statusForm.vars.order_count[status_id].count }}</a>)
+                                            {%- endif %}
+                                        </div>
+                                    {% endfor %}
+                                </div>
                                 {{ form_errors(searchForm.status) }}
                             </div>
                         </div>
@@ -223,9 +311,34 @@ file that was distributed with this source code.
             </div>
             <div class="row">
                 <div class="col">
-                    <label class="col-form-label">{{ 'searchorder.label.order_code'|trans }}</label>
-                    {{ form_widget(searchForm.order_code) }}
-                    {{ form_errors(searchForm.order_code) }}
+                    <label class="col-form-label">{{ 'admin.order.index.301'|trans }}</label>
+                    {{ form_widget(searchForm.phone_number) }}
+                    {{ form_errors(searchForm.phone_number) }}
+                </div>
+                <div class="col">
+                    <label class="col-form-label">{{ 'searchorder.label.shipping_delivery_date'|trans }}</label>
+                    <div class="form-row align-items-center">
+                        <div class="col">
+                            <div class="input-group">
+                                {{ form_widget(searchForm.shipping_delivery_date_start) }}
+                                {{ form_errors(searchForm.shipping_delivery_date_start) }}
+                            </div>
+                        </div>
+                        <div class="col-auto text-center">{{ 'admin.order.index.314'|trans }}</div>
+                        <div class="col">
+                            <div class="input-group">
+                                {{ form_widget(searchForm.shipping_delivery_date_end) }}
+                                {{ form_errors(searchForm.shipping_delivery_date_end) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label class="col-form-label">{{ 'searchorder.label.order_no'|trans }}</label>
+                    {{ form_widget(searchForm.order_no) }}
+                    {{ form_errors(searchForm.order_no) }}
                 </div>
                 <div class="col">
                     <label class="col-form-label">{{ 'admin.order.index.313'|trans }}</label>
@@ -248,9 +361,13 @@ file that was distributed with this source code.
             </div>
             <div class="row">
                 <div class="col">
-                    <label class="col-form-label">{{ 'admin.order.index.301'|trans }}</label>
-                    {{ form_widget(searchForm.tel) }}
-                    {{ form_errors(searchForm.tel) }}
+                    <div class="form-row">
+                        <div class="col-12">
+                            <p class="col-form-label">{{ 'searchorder.label.tracking_number'|trans }}</p>
+                            {{ form_widget(searchForm.tracking_number) }}
+                            {{ form_errors(searchForm.tracking_number) }}
+                        </div>
+                    </div>
                 </div>
                 <div class="col">
                     <label class="col-form-label">{{ 'admin.order.index.315'|trans }}</label>
@@ -258,19 +375,19 @@ file that was distributed with this source code.
                     {{ form_errors(searchForm.buy_product_name) }}
                 </div>
             </div>
+
             <div class="row">
                 <div class="col">
                     <div class="form-row">
                         <div class="col-12">
-                            <p class="col-form-label">{{ 'admin.order.index.303'|trans }}</p>
-                            {{ form_widget(searchForm.sex, { 'label_attr': { 'class': 'checkbox-inline'}}) }}
-                            {{ form_errors(searchForm.sex) }}
+                            <p class="col-form-label">{{ 'searchorder.label.shipping_mail_send'|trans }}</p>
+                            {{ form_widget(searchForm.shipping_mail_send) }}
+                            {{ form_errors(searchForm.shipping_mail_send) }}
                         </div>
                     </div>
                 </div>
                 <div class="col"></div>
             </div>
-
             {# TODO: Need allow plg fields arrange two cols #}
             {% for f in searchForm.getIterator %}
                 {% if f.vars.name matches '[^plg*]' %}
@@ -400,14 +517,14 @@ file that was distributed with this source code.
                                         <th class="border-top-0 pt-2 pb-2 text-center pl-3">
                                             <input type="checkbox" id="check_all" name="filter" value="open">
                                         </th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.328'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.329'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.330'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.331'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.332'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_delivery_number'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.334'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_note'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_order_description'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_payment'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_order_status'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_payment_total'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_message'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_shipping_status'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_tracking_number'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_delivery_address'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2 text-center pr-3"></th>
                                     </tr>
                                 </thead>
@@ -424,29 +541,55 @@ file that was distributed with this source code.
                                     }
                                 %}
                                 {% for Order in pagination %}
+                                    {% for Shipping in Order.Shippings %}
                                     <tr>
                                         <td class="align-middle text-center pl-3">
                                             <input type="checkbox"  name="ids[]" id="check_{{ Order.id }}" value="{{ Order.id }}">
                                         </td>
-                                        <td class="align-middle text-left" id="order_date--{{ Order.id }}">{{ Order.order_date|date_min }}</td>
-                                        <td class="align-middle text-center" id="id--{{ Order.id }}"><a class="action-edit" href="{{ url('admin_order_edit', { id : Order.id }) }}">{{ Order.order_code }}</a></td>
-                                        <td class="align-middle text-center" id="name--{{ Order.id }}">{{ Order.name01 }} {{ Order.name02 }}</td>
-                                        <td class="align-middle text-center" id="payment_method--{{ Order.id }}">{{ Order.payment_method }}</td>
-                                        <td class="align-middle text-right" id="payment_total--{{ Order.id }}">{{ Order.payment_total|price }}</td>
-                                        <td class="align-middle text-center">
-                                            {% for shipping in Order.getShippings() %}
-                                                <a href="{{ url('admin_shipping_edit', {id: shipping.id}) }}">{{ shipping.id }}</a><br>
-                                            {% endfor %}
+                                        <td class="align-middle text-left">
+                                            <a class="action-edit" href="{{ url('admin_order_edit', { id : Order.id }) }}">{{ Order.order_no }}<br>{{ Order.name01 ~ Order.name02 }}<br>{{ Order.order_date|date_min }}</a>
                                         </td>
-                                        <td class="align-middle text-center"  id="order_status--{{ Order.id }}">
+                                        <td class="align-middle text-center">
+                                            {{ Order.payment_method }}
+                                        </td>
+                                        <td class="align-middle text-center">
                                             <span class="badge {{ attribute(cssClassStatus, Order.OrderStatus.id) }}">{{ Order.OrderStatus }}</span>
                                         </td>
+                                        <td class="align-middle text-right">
+                                            {{ Order.payment_total|price }}<br>
+                                            {{ Order.payment_date ? Order.payment_date|date_day : 'admin.order.index.not_payment'|trans }}
+                                        </td>
                                         <td class="align-middle text-center">
-                                            {% if Order.note is not empty %}
+                                            {% if Order.message is not empty%}
+                                                <a class="btn btn-ec-actionIcon" href="{{ url('admin_order_edit', { id : Order.id }) }}#order_message" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ Order.message }}" aria-describedby="tooltip819464">
+                                                    <i class="fa fa-commenting fa-lg text-secondary" aria-hidden="true"></i>
+                                                </a>
+                                            {% elseif Order.note is not empty %}
                                                 <a class="btn btn-ec-actionIcon" href="{{ url('admin_order_edit', { id : Order.id }) }}#order_note" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ Order.note }}" aria-describedby="tooltip819464">
                                                     <i class="fa fa-commenting fa-lg text-secondary" aria-hidden="true"></i>
                                                 </a>
                                             {% endif %}
+                                        </td>
+                                        <td class="align-middle text-center">
+                                            {% if Order.is_multiple %}
+                                                {% if Shipping.shipping_date %}<a href="{{ url('admin_shipping_edit', { id: Shipping.id }) }}">{% else %}{{ 'admin.order.index.not_shipping'|trans }}{% endif %}
+                                            {% else %}
+                                                {{ Shipping.shipping_date ? Shipping.shipping_date|date_day : 'admin.order.index.not_shipping'|trans }}
+                                            {% endif %}
+                                        </td>
+                                        <td class="align-middle text-center">
+                                            <div class="input-group input-group-sm">
+                                                <input type="text" id="tracking_number_{{ Shipping.id }}" class="form-control update_tracking_number" placeholder="{{ 'admin.order.index.th_tracking_number'|trans }}" value="{{ Shipping.trackingNumber }}" data-shipping_id="{{ Shipping.id }}" data-url="{{ url('admin_shipping_update_tracking_number', { id : Shipping.id }) }}" tabindex="{{ loop.index }}" />
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default update_tracking_number" data-target="#tracking_number_{{ Shipping.id }}">
+                                                        <i class="fa fa-check fa-lg text-secondary" aria-hidden="true"></i>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td class="align-middle text-center">
+                                            {{ Shipping.name01 ~ Shipping.name02 }}<br>
+                                            {{ Shipping.Pref.name }}
                                         </td>
                                         <td class="align-middle pr-3 text-center">
                                             <div class="row justify-content-end">
@@ -461,9 +604,16 @@ file that was distributed with this source code.
                                                         <i class="fa fa-table fa-lg text-secondary" aria-hidden="true"></i>
                                                     </a>
                                                 </div>
+                                                <div class="col-auto text-center">
+                                                    {# TODO: This func is not implemented yet #}
+                                                    <a class="btn btn-ec-actionIcon" href="" data-toggle="tooltip" data-placement="top" title data-original-title="{{ '出荷済にする'|trans }}">
+                                                        <i class="fa fa-check fa-lg text-secondary" aria-hidden="true"></i>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </td>
                                     </tr>
+                                    {% endfor %}
                                 {% endfor %}
                                 </tbody>
                             </table>
@@ -471,7 +621,7 @@ file that was distributed with this source code.
                         </div>
                         <div class="row justify-content-md-center mb-4">
                             {% if pagination.totalItemCount > 0 %}
-                                {% include "@admin/styleguide_pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_order_page' } %}
+                                {% include "@admin/pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_order_page' } %}
                             {% endif %}
                         </div>
                     </div>

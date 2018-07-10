@@ -44,11 +44,45 @@ file that was distributed with this source code.
                             {% if Plugin.enabled %}
                                 {{ 'admin.store.plugin_table.896'|trans }}
                             {% else %}
-                                <a href="{{ url('admin_store_plugin_uninstall', { id : Plugin.id }) }}" {{ csrf_token_for_anchor() }}
-                                   data-method="delete" data-message="{{ 'admin.store.plugin_table.895'|trans }}">
+                                <a href="#"
+                                   data-toggle="modal"
+                                   data-target="#confirmModal-{{ Plugin.id }}">
                                     {{ 'admin.store.plugin_table.896'|trans }}
                                 </a>
                             {% endif %}
+
+                            <div class="modal fade" id="confirmModal-{{ Plugin.id }}" tabindex="-1"
+                                 role="dialog"
+                                 aria-labelledby="confirmModal-{{ Plugin.id }}" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title font-weight-bold">
+                                                {{ 'admin.store.plugin.popup.delete.confirm.title'|trans }}</h5>
+                                            <button class="close" type="button"
+                                                    data-dismiss="modal"
+                                                    aria-label="Close"><span aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body text-left">
+                                            <p class="text-left">
+                                                {{ 'admin.store.plugin.popup.delete.confirm.message'|trans }}</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-ec-sub" type="button"
+                                                    data-dismiss="modal">{{ 'common.label.cancel'|trans }}
+                                            </button>
+                                            <a href="{{ url('admin_store_plugin_uninstall', { id : Plugin.id }) }}"
+                                                    {{ csrf_token_for_anchor() }}
+                                                    class="btn btn-ec-delete"
+                                                    data-confirm="false"
+                                                    data-method="delete">
+                                                {{ 'common.label.delete'|trans }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </td>
                         <td class="align-middle">{{ Plugin.version }}</td>
                         <td class="align-middle">{{ Plugin.code }}

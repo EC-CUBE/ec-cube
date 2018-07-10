@@ -4,7 +4,6 @@ use Codeception\Util\Fixtures;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
-use Eccube\Entity\Master\ShippingStatus;
 use Eccube\Kernel;
 use Faker\Factory as Faker;
 
@@ -146,7 +145,7 @@ function createOrder($container, Customer $Customer, array $ProductClasses, $Del
     $Order = $generator->createOrder($Customer, $ProductClasses, $Delivery, $charge, $discount);
     $Order->setOrderStatus($Status);
     $Order->setOrderDate($OrderDate);
-    $Order->setOrderCode(\Eccube\Util\StringUtil::random(6));
+    $Order->setOrderNo(\Eccube\Util\StringUtil::random(6));
     $entityManager->flush($Order);
     return $Order;
 }
@@ -200,31 +199,29 @@ $findShippings = function () use ($entityManager) {
 /** 出荷を検索するクロージャ. */
 Fixtures::add('findShippings', $findShippings);
 
-$resetShippingStatusPrepared = function () use ($entityManager) {
-    $StatusPrepared = $entityManager->find(ShippingStatus::class, ShippingStatus::PREPARED);
+$resetShippingDate = function () use ($entityManager) {
     $Shippings = $entityManager->getRepository('Eccube\Entity\Shipping')
         ->findAll();
     foreach ($Shippings as $Shipping) {
-        $Shipping->setShippingStatus($StatusPrepared);
+        $Shipping->setShippingDate(null);
     }
     $entityManager->flush();
     return true;
 };
 /** 出荷準備中に更新するクロージャ. */
-Fixtures::add('resetShippingStatusPrepared', $resetShippingStatusPrepared);
+Fixtures::add('resetShippingDate', $resetShippingDate);
 
-$resetShippingStatusShipped = function () use ($entityManager) {
-    $StatusShipped = $entityManager->find(ShippingStatus::class, ShippingStatus::SHIPPED);
+$setShippingDate = function () use ($entityManager) {
     $Shippings = $entityManager->getRepository('Eccube\Entity\Shipping')
         ->findAll();
     foreach ($Shippings as $Shipping) {
-        $Shipping->setShippingStatus($StatusShipped);
+        $Shipping->setShippingDate(new \DateTime());
     }
     $entityManager->flush();
     return true;
 };
 /** 出荷済みに更新するクロージャ. */
-Fixtures::add('resetShippingStatusShipped', $resetShippingStatusShipped);
+Fixtures::add('setShippingDate', $setShippingDate);
 
 $deleteShippingNotExistsOfItem = function () use ($entityManager) {
 
@@ -276,7 +273,7 @@ $createOrders = function ($Customer, $numberOfOrders = 5, $ProductClasses = arra
         $OrderDate = $faker->dateTimeThisYear();
         $Order->setOrderStatus($Status);
         $Order->setOrderDate($OrderDate);
-        $Order->setOrderCode(\Eccube\Util\StringUtil::random(6));
+        $Order->setOrderNo(\Eccube\Util\StringUtil::random(6));
         $entityManager->flush($Order);
         $Orders[] = $Order;
     }

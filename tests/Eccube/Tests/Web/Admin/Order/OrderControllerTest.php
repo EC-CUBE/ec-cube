@@ -70,6 +70,8 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $this->customerRepository = $this->container->get(CustomerRepository::class);
 
         // FIXME: Should remove exist data before generate data for test
+        $this->deleteAllRows(['dtb_order_item']);
+        $this->deleteAllRows(['dtb_shipping']);
         $this->deleteAllRows(['dtb_order']);
 
         $Sex = $this->sexRepository->find(1);
@@ -79,7 +81,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             $Customer = $this->createCustomer('user-'.$i.'@example.com');
             $Customer->setSex($Sex);
             $Order = $this->createOrder($Customer);
-            $Order->setOrderCode('order_code_'.$i);
+            $Order->setOrderNo('order_no_'.$i);
             $Order->setOrderStatus($OrderStatus);
             $Order->setPayment($Payment);
             $this->entityManager->flush();
@@ -129,7 +131,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $this->verify();
     }
 
-    public function testSearchOrderByOrderCode()
+    public function testSearchOrderByOrderNo()
     {
         $Order = $this->orderRepository->findOneBy([]);
 
@@ -137,7 +139,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             'POST', $this->generateUrl('admin_order'), [
             'admin_search_order' => [
                 '_token' => 'dummy',
-                'multi' => $Order->getOrderCode(),
+                'multi' => $Order->getOrderNo(),
             ],
             ]
         );
@@ -151,7 +153,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             'POST', $this->generateUrl('admin_order'), [
                 'admin_search_order' => [
                     '_token' => 'dummy',
-                    'order_code' => $Order->getOrderCode(),
+                    'order_no' => $Order->getOrderNo(),
                 ],
             ]
         );
@@ -404,5 +406,57 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             ]
         );
         $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
+    }
+
+    public function testUpdateTrackingNumber()
+    {
+        $Order = $this->orderRepository->findOneBy([]);
+        $Shipping = $Order->getShippings()->first();
+        $crawler = $this->client->request(
+            'PUT',
+            $this->generateUrl('admin_shipping_update_tracking_number', ['id' => $Shipping->getId()]),
+            [
+                'tracking_number' => '0000-0000-0000',
+            ],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            ]
+        );
+        $Result = json_decode($this->client->getResponse()->getContent(), true);
+        $this->expected = 'OK';
+        $this->actual = $Result['status'];
+        $this->verify();
+
+        $this->expected = '0000-0000-0000';
+        $this->actual = $Shipping->getTrackingNumber();
+        $this->verify();
+    }
+
+    public function testUpdateTrackingNumberFailure()
+    {
+        $Order = $this->orderRepository->findOneBy([]);
+        $Shipping = $Order->getShippings()->first();
+        $crawler = $this->client->request(
+            'PUT',
+            $this->generateUrl('admin_shipping_update_tracking_number', ['id' => $Shipping->getId()]),
+            [
+                'tracking_number' => '0000_0000_0000',
+            ],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            ]
+        );
+        $Result = json_decode($this->client->getResponse()->getContent(), true);
+        $this->expected = 'NG';
+        $this->actual = $Result['status'];
+        $this->verify();
+
+        $this->expected = trans('form.type.admin.nottrackingnumberstyle');
+        $this->actual = $Result['messages'][0];
+        $this->verify();
     }
 }

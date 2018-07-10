@@ -224,15 +224,13 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
             ],
         ]);
 
-        $arrCustomerAddress = $Customer->getCustomerAddresses();
-
         $multiForm = [
             '_token' => 'dummy',
             'shipping_multiple' => [
                 [
                     'shipping' => [
                         [
-                            'customer_address' => $arrCustomerAddress->first()->getId(),
+                            'customer_address' => 0,
                             'quantity' => 1,
                         ],
                     ],
@@ -251,10 +249,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $Order = $this->orderRepository->findOneBy(['Customer' => $Customer]);
 
         // One shipping
-        $Shipping = $Order->getShippings();
-        $this->actual = count($Shipping);
-        $this->expected = count($arrCustomerAddress);
-        $this->verify();
+        $this->assertCount(1, $Order->getShippings());
     }
 
     /**
@@ -288,19 +283,17 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
             ],
         ]);
 
-        $arrCustomerAddress = $Customer->getCustomerAddresses();
-
         $multiForm = [
             '_token' => 'dummy',
             'shipping_multiple' => [
                 [
                     'shipping' => [
                         [
-                            'customer_address' => $arrCustomerAddress->first()->getId(),
+                            'customer_address' => 0,
                             'quantity' => 1,
                         ],
                         [
-                            'customer_address' => $arrCustomerAddress->first()->getId(),
+                            'customer_address' => 0,
                             'quantity' => 1,
                         ],
                     ],
@@ -317,13 +310,9 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
 
         $Order = $this->orderRepository->findOneBy(['Customer' => $Customer]);
-        $Shipping = $Order->getShippings();
 
         // One shipping
-        $this->actual = count($Shipping);
-        $this->expected = count($arrCustomerAddress);
-
-        $this->verify();
+        $this->assertCount(1, $Order->getShippings());
     }
 
     /**
@@ -374,19 +363,17 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
             ],
         ]);
 
-        $arrCustomerAddress = $Customer->getCustomerAddresses();
-
         $multiForm = [
             '_token' => 'dummy',
             'shipping_multiple' => [
                 [
                     'shipping' => [
                         [
-                            'customer_address' => $arrCustomerAddress->first()->getId(),
+                            'customer_address' => 0,
                             'quantity' => 1,
                         ],
                         [
-                            'customer_address' => $arrCustomerAddress->first()->getId(),
+                            'customer_address' => 0,
                             'quantity' => 1,
                         ],
                     ],
@@ -394,11 +381,11 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                 [
                     'shipping' => [
                         [
-                            'customer_address' => $arrCustomerAddress->first()->getId(),
+                            'customer_address' => 0,
                             'quantity' => 1,
                         ],
                         [
-                            'customer_address' => $arrCustomerAddress->first()->getId(),
+                            'customer_address' => 0,
                             'quantity' => 1,
                         ],
                     ],
@@ -417,10 +404,8 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $Order = $this->orderRepository->findOneBy(['Customer' => $Customer]);
         $Shipping = $Order->getShippings();
 
-        // one shipping
-        $this->actual = count($Shipping);
-        $this->expected = count($arrCustomerAddress);
-        $this->verify();
+        // One shipping
+        $this->assertCount(1, $Order->getShippings());
     }
 
     /**
@@ -452,8 +437,6 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->scenarioCartIn($Customer, $ProductClass2->getId());
         $this->scenarioCartIn($Customer, $ProductClass2->getId());
 
-        $this->scenarioCartIn($Customer);
-
         // 確認画面
         $crawler = $this->scenarioConfirm($Customer);
 
@@ -473,28 +456,26 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
             ],
         ]);
 
-        $arrCustomerAddress = $Customer->getCustomerAddresses();
-
         $multiForm = [
             '_token' => 'dummy',
             'shipping_multiple' => [
                 [
                     'shipping' => [
                         [
-                            'customer_address' => $arrCustomerAddress->first()->getId(),
-                            'quantity' => 1,
+                            'customer_address' => 0,
+                            'quantity' => 2,
                         ],
                     ],
                 ],
                 [
                     'shipping' => [
                         [
-                            'customer_address' => $arrCustomerAddress->first()->getId(),
-                            'quantity' => 1,
+                            'customer_address' => 0,
+                            'quantity' => 2,
                         ],
                         [
-                            'customer_address' => $arrCustomerAddress->last()->getId(),
-                            'quantity' => 1,
+                            'customer_address' => 1,
+                            'quantity' => 2,
                         ],
                     ],
                 ],
@@ -512,10 +493,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $Order = $this->orderRepository->findOneBy(['Customer' => $Customer]);
 
         // Two shipping
-        $Shipping = $Order->getShippings();
-        $this->actual = count($Shipping);
-        $this->expected = count($arrCustomerAddress);
-        $this->verify();
+        $this->assertCount(2, $Order->getShippings());
     }
 
     /**
@@ -569,19 +547,17 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
             ],
         ]);
 
-        $arrCustomerAddress = $Customer->getCustomerAddresses();
-
         $multiForm = [
             '_token' => 'dummy',
             'shipping_multiple' => [
                 [
                     'shipping' => [
                         [
-                            'customer_address' => $arrCustomerAddress->first()->getId(),
+                            'customer_address' => 0,
                             'quantity' => 1,
                         ],
                         [
-                            'customer_address' => $arrCustomerAddress->last()->getId(),
+                            'customer_address' => 1,
                             'quantity' => 1,
                         ],
                     ],
@@ -589,11 +565,11 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                 [
                     'shipping' => [
                         [
-                            'customer_address' => $arrCustomerAddress->first()->getId(),
+                            'customer_address' => 0,
                             'quantity' => 1,
                         ],
                         [
-                            'customer_address' => $arrCustomerAddress->last()->getId(),
+                            'customer_address' => 1,
                             'quantity' => 1,
                         ],
                     ],
@@ -612,10 +588,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $Order = $this->orderRepository->findOneBy(['Customer' => $Customer]);
 
         // Two shipping
-        $Shipping = $Order->getShippings();
-        $this->actual = count($Shipping);
-        $this->expected = count($arrCustomerAddress);
-        $this->verify();
+        $this->assertCount(2, $Order->getShippings());
     }
 
     /**
@@ -674,31 +647,17 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
             ],
         ]);
 
-        $arrCustomerAddress = $Customer->getCustomerAddresses();
-
         $multiForm = [
             '_token' => 'dummy',
             'shipping_multiple' => [
                 [
                     'shipping' => [
                         [
-                            'customer_address' => $arrCustomerAddress->first()->getId(),
+                            'customer_address' => 0,
                             'quantity' => 1,
                         ],
                         [
-                            'customer_address' => $arrCustomerAddress->first()->getId(),
-                            'quantity' => 1,
-                        ],
-                    ],
-                ],
-                [
-                    'shipping' => [
-                        [
-                            'customer_address' => $arrCustomerAddress->first()->getId(),
-                            'quantity' => 1,
-                        ],
-                        [
-                            'customer_address' => $arrCustomerAddress->first()->getId(),
+                            'customer_address' => 0,
                             'quantity' => 1,
                         ],
                     ],
@@ -706,7 +665,19 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                 [
                     'shipping' => [
                         [
-                            'customer_address' => $arrCustomerAddress->first()->getId(),
+                            'customer_address' => 0,
+                            'quantity' => 1,
+                        ],
+                        [
+                            'customer_address' => 0,
+                            'quantity' => 1,
+                        ],
+                    ],
+                ],
+                [
+                    'shipping' => [
+                        [
+                            'customer_address' => 0,
                             'quantity' => 1,
                         ],
                     ],
@@ -723,12 +694,9 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
 
         $Order = $this->orderRepository->findOneBy(['Customer' => $Customer]);
-        $Shipping = $Order->getShippings();
 
         // One shipping
-        $this->actual = count($Shipping);
-        $this->expected = count($arrCustomerAddress);
-        $this->verify();
+        $this->assertCount(1, $Order->getShippings());
     }
 
     /**
@@ -790,31 +758,17 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
             ],
         ]);
 
-        $arrCustomerAddress = $Customer->getCustomerAddresses();
-
         $multiForm = [
             '_token' => 'dummy',
             'shipping_multiple' => [
                 [
                     'shipping' => [
                         [
-                            'customer_address' => $arrCustomerAddress->first()->getId(),
+                            'customer_address' => 0,
                             'quantity' => 1,
                         ],
                         [
-                            'customer_address' => $arrCustomerAddress->last()->getId(),
-                            'quantity' => 1,
-                        ],
-                    ],
-                ],
-                [
-                    'shipping' => [
-                        [
-                            'customer_address' => $arrCustomerAddress->first()->getId(),
-                            'quantity' => 1,
-                        ],
-                        [
-                            'customer_address' => $arrCustomerAddress->last()->getId(),
+                            'customer_address' => 1,
                             'quantity' => 1,
                         ],
                     ],
@@ -822,7 +776,19 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                 [
                     'shipping' => [
                         [
-                            'customer_address' => $arrCustomerAddress->first()->getId(),
+                            'customer_address' => 0,
+                            'quantity' => 1,
+                        ],
+                        [
+                            'customer_address' => 1,
+                            'quantity' => 1,
+                        ],
+                    ],
+                ],
+                [
+                    'shipping' => [
+                        [
+                            'customer_address' => 0,
                             'quantity' => 1,
                         ],
                     ],
@@ -839,12 +805,9 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
 
         $Order = $this->orderRepository->findOneBy(['Customer' => $Customer]);
-        $Shipping = $Order->getShippings();
 
         // Two shipping
-        $this->actual = count($Shipping);
-        $this->expected = count($arrCustomerAddress);
-        $this->verify();
+        $this->assertCount(2, $Order->getShippings());
     }
 
     /**
@@ -908,32 +871,17 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
             ],
         ]);
 
-        $arrCustomerAddress = $Customer->getCustomerAddresses();
-        $secondCustomerAddress = $arrCustomerAddress->get(1);
-
         $multiForm = [
             '_token' => 'dummy',
             'shipping_multiple' => [
                 [
                     'shipping' => [
                         [
-                            'customer_address' => $arrCustomerAddress->first()->getId(),
+                            'customer_address' => 0,
                             'quantity' => 1,
                         ],
                         [
-                            'customer_address' => $arrCustomerAddress->last()->getId(),
-                            'quantity' => 1,
-                        ],
-                    ],
-                ],
-                [
-                    'shipping' => [
-                        [
-                            'customer_address' => $arrCustomerAddress->first()->getId(),
-                            'quantity' => 1,
-                        ],
-                        [
-                            'customer_address' => $arrCustomerAddress->last()->getId(),
+                            'customer_address' => 1,
                             'quantity' => 1,
                         ],
                     ],
@@ -941,7 +889,19 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                 [
                     'shipping' => [
                         [
-                            'customer_address' => $secondCustomerAddress->getId(),
+                            'customer_address' => 0,
+                            'quantity' => 1,
+                        ],
+                        [
+                            'customer_address' => 1,
+                            'quantity' => 1,
+                        ],
+                    ],
+                ],
+                [
+                    'shipping' => [
+                        [
+                            'customer_address' => 2,
                             'quantity' => 1,
                         ],
                     ],
@@ -958,12 +918,9 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
 
         $Order = $this->orderRepository->findOneBy(['Customer' => $Customer]);
-        $Shipping = $Order->getShippings();
 
         // Three shipping
-        $this->actual = count($Shipping);
-        $this->expected = count($arrCustomerAddress);
-        $this->verify();
+        $this->assertCount(3, $Order->getShippings());
     }
 
     /**
@@ -1057,118 +1014,6 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
     /**
      * Test add multi shipping
      */
-    public function testAddMultiShippingWithQuantityNotEqual()
-    {
-        $Customer = $this->createCustomer();
-        $Customer->addCustomerAddress($this->createCustomerAddress($Customer));
-        $Customer->addCustomerAddress($this->createCustomerAddress($Customer));
-
-        // Product test 1 with type 1
-        $Product1 = $this->createProduct();
-        $ProductClass1 = $Product1->getProductClasses()->first();
-        $ProductClass1->setStock(111);
-
-        // Product test 2
-        $Product2 = $this->createProduct();
-        $ProductClass2 = $Product2->getProductClasses()->first();
-        $ProductClass2->setStock(111);
-
-        // Product test 3
-        $Product3 = $this->createProduct();
-        $ProductClass3 = $Product3->getProductClasses()->first();
-        $ProductClass3->setStock(111);
-
-        $this->entityManager->persist($ProductClass1);
-        $this->entityManager->persist($ProductClass2);
-        $this->entityManager->persist($ProductClass3);
-        $this->entityManager->flush();
-
-        // Item of product 1
-        $this->scenarioCartIn($Customer, $ProductClass1->getId());
-        $this->scenarioCartIn($Customer, $ProductClass1->getId());
-
-        // Item of product 2
-        $this->scenarioCartIn($Customer, $ProductClass2->getId());
-        $this->scenarioCartIn($Customer, $ProductClass2->getId());
-
-        // Item of product 3
-        $this->scenarioCartIn($Customer, $ProductClass3->getId());
-
-        // 確認画面
-        $crawler = $this->scenarioConfirm($Customer);
-        // お届け先指定画面
-        $this->scenarioRedirectTo($Customer, [
-            '_shopping_order' => [
-                'Shippings' => [
-                    0 => [
-                        'Delivery' => 1,
-                        'DeliveryTime' => 1,
-                    ],
-                ],
-                'Payment' => 1,
-                'message' => $this->getFaker()->realText(),
-                'mode' => 'shipping_multiple_change',
-                'param' => $crawler->filter('button.btn-shipping')->attr('data-id'),
-            ],
-        ]);
-
-        $arrCustomerAddress = $Customer->getCustomerAddresses();
-        $secondCustomerAddress = $arrCustomerAddress->next();
-
-        $multiForm = [
-            '_token' => 'dummy',
-            'shipping_multiple' => [
-                [
-                    'shipping' => [
-                        [
-                            'customer_address' => $arrCustomerAddress->first()->getId(),
-                            'quantity' => 2, // total not equal
-                        ],
-                        [
-                            'customer_address' => $arrCustomerAddress->last()->getId(),
-                            'quantity' => 1,
-                        ],
-                    ],
-                ],
-                [
-                    'shipping' => [
-                        [
-                            'customer_address' => $arrCustomerAddress->first()->getId(),
-                            'quantity' => 1,
-                        ],
-                        [
-                            'customer_address' => $arrCustomerAddress->last()->getId(),
-                            'quantity' => 1,
-                        ],
-                    ],
-                ],
-                [
-                    'shipping' => [
-                        [
-                            'customer_address' => $secondCustomerAddress->getId(),
-                            'quantity' => 1,
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        $this->client->request(
-            'POST',
-            $this->generateUrl('shopping_shipping_multiple'),
-            ['form' => $multiForm]
-        );
-
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
-
-        $crawler = $this->client->request('GET', $this->generateUrl('shopping'));
-        $shipping = $crawler->filter('#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery')->text();
-        $this->assertContains('× 2', $shipping);
-    }
-
-    /**
-     * Test add multi shipping
-     */
     public function testAddMultiShippingWithShippingEarlier()
     {
         $Customer = $this->createCustomer();
@@ -1224,9 +1069,6 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
             ],
         ]);
 
-        $arrCustomerAddress = $Customer->getCustomerAddresses();
-        $secondCustomerAddress = $arrCustomerAddress->next();
-
         // Before multi shipping
         // Only shipped to one address
         $beforeForm = [
@@ -1235,7 +1077,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                 [
                     'shipping' => [
                         [
-                            'customer_address' => $arrCustomerAddress->first()->getId(),
+                            'customer_address' => 0,
                             'quantity' => 2,
                         ],
                     ],
@@ -1243,7 +1085,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                 [
                     'shipping' => [
                         [
-                            'customer_address' => $arrCustomerAddress->first()->getId(),
+                            'customer_address' => 0,
                             'quantity' => 2,
                         ],
                     ],
@@ -1251,7 +1093,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                 [
                     'shipping' => [
                         [
-                            'customer_address' => $arrCustomerAddress->first()->getId(),
+                            'customer_address' => 0,
                             'quantity' => 1,
                         ],
                     ],
@@ -1267,23 +1109,11 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                 [
                     'shipping' => [
                         [
-                            'customer_address' => $arrCustomerAddress->first()->getId(),
+                            'customer_address' => 0,
                             'quantity' => 1,
                         ],
                         [
-                            'customer_address' => $arrCustomerAddress->last()->getId(),
-                            'quantity' => 1,
-                        ],
-                    ],
-                ],
-                [
-                    'shipping' => [
-                        [
-                            'customer_address' => $arrCustomerAddress->first()->getId(),
-                            'quantity' => 1,
-                        ],
-                        [
-                            'customer_address' => $arrCustomerAddress->last()->getId(),
+                            'customer_address' => 1,
                             'quantity' => 1,
                         ],
                     ],
@@ -1291,7 +1121,19 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                 [
                     'shipping' => [
                         [
-                            'customer_address' => $secondCustomerAddress->getId(),
+                            'customer_address' => 0,
+                            'quantity' => 1,
+                        ],
+                        [
+                            'customer_address' => 1,
+                            'quantity' => 1,
+                        ],
+                    ],
+                ],
+                [
+                    'shipping' => [
+                        [
+                            'customer_address' => 2,
                             'quantity' => 1,
                         ],
                     ],
@@ -1319,9 +1161,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $Shipping = $Order->getShippings();
 
         // Three shipping
-        $this->actual = count($Shipping);
-        $this->expected = count($arrCustomerAddress);
-        $this->verify();
+        $this->assertCount(3, $Shipping);
     }
 
     /**
@@ -1366,8 +1206,6 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->actual = $crawler->filter('div.ec-pageHeader h1')->text();
         $this->verify();
 
-        $arrCustomerAddress = $Customer->getCustomerAddresses();
-        $addressId = $arrCustomerAddress->first()->getId();
         // Before multi shipping
         // Only shipped to one address
         $multiForm = [
@@ -1377,15 +1215,15 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                     'shipping' => [
                         // number 3
                         [
-                            'customer_address' => $addressId,
+                            'customer_address' => 0,
                             'quantity' => 1,
                         ],
                         [
-                            'customer_address' => $addressId,
+                            'customer_address' => 0,
                             'quantity' => 1,
                         ],
                         [
-                            'customer_address' => $addressId,
+                            'customer_address' => 0,
                             'quantity' => 1,
                         ],
                     ],

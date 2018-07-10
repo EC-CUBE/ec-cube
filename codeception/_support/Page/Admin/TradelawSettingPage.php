@@ -31,15 +31,10 @@ class TradelawSettingPage extends AbstractAdminPage
         return $this;
     }
 
-    public function 入力_郵便番号1($value)
+    public function 入力_郵便番号($value)
     {
-        $this->tester->fillField(['id' => 'tradelaw_zip_zip01'], $value);
-        return $this;
-    }
+        $this->tester->fillField(['id' => 'tradelaw_postal_code'], $value);
 
-    public function 入力_郵便番号2($value)
-    {
-        $this->tester->fillField(['id' => 'tradelaw_zip_zip02'], $value);
         return $this;
     }
 
@@ -61,21 +56,10 @@ class TradelawSettingPage extends AbstractAdminPage
         return $this;
     }
 
-    public function 入力_電話番号1($value)
+    public function 入力_電話番号($value)
     {
-        $this->tester->fillField(['id' => 'tradelaw_tel_tel01'], $value);
-        return $this;
-    }
+        $this->tester->fillField(['id' => 'tradelaw_phone_number'], $value);
 
-    public function 入力_電話番号2($value)
-    {
-        $this->tester->fillField(['id' => 'tradelaw_tel_tel02'], $value);
-        return $this;
-    }
-
-    public function 入力_電話番号3($value)
-    {
-        $this->tester->fillField(['id' => 'tradelaw_tel_tel03'], $value);
         return $this;
     }
 

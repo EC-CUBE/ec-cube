@@ -114,7 +114,7 @@ class SearchCustomerType extends AbstractType
                 'label' => 'searchcustomer.label.prefecture',
                 'required' => false,
             ])
-            ->add('tel', TextType::class, [
+            ->add('phone_number', TextType::class, [
                 'label' => 'searchcustomer.label.tel',
                 'required' => false,
                 'constraints' => [

@@ -13,36 +13,92 @@
 
 namespace Eccube\Service\Payment\Method;
 
-use Eccube\Service\Payment\PaymentMethod;
+use Eccube\Entity\Order;
+use Eccube\Service\Payment\PaymentMethodInterface;
 use Eccube\Service\Payment\PaymentResult;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
+use Eccube\Service\PurchaseFlow\PurchaseFlow;
+use Eccube\Service\ShoppingService;
+use Symfony\Component\Form\FormInterface;
 
-class Cash implements PaymentMethod
+/**
+ * 銀行振込, 代金引き換えなど, 主に現金を扱う支払い方法を扱うクラス.
+ */
+class Cash implements PaymentMethodInterface
 {
-    protected $app;
-    protected $request;
+    /** @var Order */
+    private $Order;
 
-    public function checkout()
+    /** @var FormInterface */
+    private $form;
+
+    /** @var $purchaseFlow */
+    private $purchaseFlow;
+
+    /**
+     * @var ShoppingService
+     */
+    private $shoppingService;
+
+    /**
+     * Cash constructor.
+     *
+     * @param PurchaseFlow $shoppingPurchaseFlow
+     */
+    public function __construct(PurchaseFlow $shoppingPurchaseFlow, ShoppingService $shoppingService)
     {
-        return new PaymentResult();
+        $this->purchaseFlow = $shoppingPurchaseFlow;
+        $this->shoppingService = $shoppingService;
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \Eccube\Service\PurchaseFlow\PurchaseException
+     */
+    public function checkout()
+    {
+        $this->purchaseFlow->commit($this->Order, new PurchaseContext());
+
+        $result = new PaymentResult();
+        $result->setSuccess(true);
+
+        return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \Eccube\Service\PurchaseFlow\PurchaseException
+     */
     public function apply()
+    {
+        $this->purchaseFlow->prepare($this->Order, new PurchaseContext());
+
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setFormType(FormInterface $form)
+    {
+        $this->form = $form;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function verify()
     {
         return false;
     }
 
-    public function setFormType($form)
+    /**
+     * {@inheritdoc}
+     */
+    public function setOrder(Order $Order)
     {
-        // quiet
-    }
-
-    public function setApplication($app)
-    {
-        $this->app = $app;
-    }
-
-    public function setRequest($request)
-    {
-        $this->request = $request;
+        $this->Order = $Order;
     }
 }

@@ -46,8 +46,8 @@ file that was distributed with this source code.
                         <dd>{{ Order.create_date|date("Y/m/d H:i:s") }}</dd>
                     </div>
                     <div class="ec-definitions">
-                        <dt>{{ 'mypage.history.label.order_code'|trans}}</dt>
-                        <dd>{{ Order.order_code }}</dd>
+                        <dt>{{ 'mypage.history.label.order_no'|trans}}</dt>
+                        <dd>{{ Order.order_no }}</dd>
                     </div>
                     {% if BaseInfo.option_mypage_order_status_display %}
                         <div class="ec-definitions">
@@ -106,8 +106,8 @@ file that was distributed with this source code.
                         <div class="ec-orderDelivery__address">
                             <p>{{ Shipping.name01 }}&nbsp;{{ Shipping.name02 }}&nbsp;
                                 ({{ Shipping.kana01 }}&nbsp;{{ Shipping.kana02 }})</p>
-                            <p>〒{{ Shipping.zip01 }}-{{ Shipping.zip02 }}　{{ Shipping.Pref }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}</p>
-                            <p>{{ Shipping.tel01 }}-{{ Shipping.tel02 }}-{{ Shipping.tel03 }}</p>
+                            <p>〒{{ Shipping.postal_code }}　{{ Shipping.Pref }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}</p>
+                            <p>{{ Shipping.phone_number }}</p>
                         </div>
                         <div class="ec-definitions--soft">
                             <dt>{{'mypage.history.detail.label.shipping_method'|trans}}</dt>
@@ -168,7 +168,7 @@ file that was distributed with this source code.
                         <dd>{{ Order.delivery_fee_total|price }}</dd>
                     </dl>
                     <div class="ec-totalBox__total">{{'common.label.cart_total'|trans}}<span class="ec-totalBox__price">{{ Order.payment_total|price }}</span><span class="ec-totalBox__taxLabel">{{'shopping.label.tax_incl'|trans}}</span></div>
-                    <a href="{{ url('mypage_order', {'id': Order.id }) }}" class="ec-blockBtn--action" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">{{'mypage.history.detail.re_order'|trans}}</a>
+                    <a href="{{ url('mypage_order', {'order_no': Order.order_no }) }}" class="ec-blockBtn--action load-overlay" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">{{'mypage.history.detail.re_order'|trans}}</a>
 
                 </div>
                 {% if remessage %}

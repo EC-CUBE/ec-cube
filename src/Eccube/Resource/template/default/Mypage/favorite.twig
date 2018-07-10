@@ -54,6 +54,9 @@ file that was distributed with this source code.
                             {% endfor %}
                         </ul>
                     </div>
+                    <div class="ec-pagerRole">
+                        {% include "pager.twig" with {'pages': pagination.paginationData} %}
+                    </div>
                 {% else %}
                     <div class="ec-favoriteRole__header">{{'mypage.message.no_favorite'|trans}}</div>
                 {% endif %}

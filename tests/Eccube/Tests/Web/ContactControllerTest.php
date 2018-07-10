@@ -20,8 +20,6 @@ class ContactControllerTest extends AbstractWebTestCase
     protected function createFormData()
     {
         $faker = $this->getFaker();
-        $tel = explode('-', $faker->phoneNumber);
-
         $email = $faker->safeEmail;
         $password = $faker->lexify('????????');
 
@@ -34,20 +32,13 @@ class ContactControllerTest extends AbstractWebTestCase
                 'kana01' => $faker->lastKanaName,
                 'kana02' => $faker->firstKanaName,
             ],
-            'zip' => [
-                'zip01' => $faker->postcode1(),
-                'zip02' => $faker->postcode2(),
-            ],
+            'postal_code' => $faker->postcode,
             'address' => [
                 'pref' => '5',
                 'addr01' => $faker->city,
                 'addr02' => $faker->streetAddress,
             ],
-            'tel' => [
-                'tel01' => $tel[0],
-                'tel02' => $tel[1],
-                'tel03' => $tel[2],
-            ],
+            'phone_number' => $faker->phoneNumber,
             'email' => $email,
             'contents' => $faker->realText(),
             '_token' => 'dummy',
@@ -117,14 +108,11 @@ class ContactControllerTest extends AbstractWebTestCase
         $formData = $this->createFormData();
         $formData['kana']['kana01'] = null;
         $formData['kana']['kana02'] = null;
-        $formData['zip']['zip01'] = null;
-        $formData['zip']['zip02'] = null;
+        $formData['postal_code'] = null;
         $formData['address']['pref'] = null;
         $formData['address']['addr01'] = null;
         $formData['address']['addr02'] = null;
-        $formData['tel']['tel01'] = null;
-        $formData['tel']['tel02'] = null;
-        $formData['tel']['tel03'] = null;
+        $formData['phone_number'] = null;
 
         $this->client->enableProfiler();
         $crawler = $this->client->request(
