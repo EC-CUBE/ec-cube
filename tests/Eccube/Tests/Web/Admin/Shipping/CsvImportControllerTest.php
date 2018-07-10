@@ -34,7 +34,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->refresh($Shipping);
 
         self::assertEquals('1234', $Shipping->getTrackingNumber());
-        self::assertEquals(\DateTime::createFromFormat('Y-m-d', '2018-01-23'), $Shipping->getShippingDate());
+        self::assertEquals($this->parseDate('2018-01-23'), $Shipping->getShippingDate());
     }
 
     public function testLoadCsv_FlippedColumns()
@@ -51,7 +51,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->refresh($Shipping);
 
         self::assertEquals('1234', $Shipping->getTrackingNumber());
-        self::assertEquals(\DateTime::createFromFormat('Y-m-d', '2018-01-23'), $Shipping->getShippingDate());
+        self::assertEquals($this->parseDate('2018-01-23'), $Shipping->getShippingDate());
     }
 
     /**
@@ -160,10 +160,18 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
 
         $this->entityManager->refresh($Shipping1);
         self::assertEquals('1234', $Shipping1->getTrackingNumber());
-        self::assertEquals(\DateTime::createFromFormat('Y-m-d', '2018-01-11'), $Shipping1->getShippingDate());
+        self::assertEquals($this->parseDate('2018-01-11'), $Shipping1->getShippingDate());
 
         $this->entityManager->refresh($Shipping2);
         self::assertEquals('5678', $Shipping2->getTrackingNumber());
-        self::assertEquals(\DateTime::createFromFormat('Y-m-d', '2018-02-22'), $Shipping2->getShippingDate());
+        self::assertEquals($this->parseDate('2018-02-22'), $Shipping2->getShippingDate());
+    }
+
+    private function parseDate($value)
+    {
+        $result = \DateTime::createFromFormat('Y-m-d', $value);
+        $result->setTime(0, 0, 0);
+
+        return $result;
     }
 }

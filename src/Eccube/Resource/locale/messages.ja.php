@@ -2717,6 +2717,7 @@ return [
     'shipping.label.shipping_company' => '配送業者',
     'shipping.placeholder.please_select' => '選択してください',
     'shipping.label.delivery_date' => 'お届け日',
+    'shipping.label.shipping_date' => '出荷日',
     'shipping.label.tracking_num' => '出荷伝票番号',
     'shippingtype.571' => '',
     'shipping.label.delivery_hour' => 'お届け時間',

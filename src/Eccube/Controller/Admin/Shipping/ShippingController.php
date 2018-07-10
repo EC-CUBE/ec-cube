@@ -22,7 +22,6 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\SearchShippingType;
 use Eccube\Repository\Master\PageMaxRepository;
-use Eccube\Repository\Master\ShippingStatusRepository;
 use Eccube\Repository\ShippingRepository;
 use Eccube\Service\MailService;
 use Eccube\Util\FormUtil;
@@ -52,27 +51,19 @@ class ShippingController extends AbstractController
     protected $mailService;
 
     /**
-     * @var ShippingStatusRepository
-     */
-    protected $shippingStatusRepository;
-
-    /**
      * ShippingController constructor.
      *
      * @param ShippingRepository $shippingRepository
      * @param PageMaxRepository $pageMaxRepository
-     * @param ShippingStatusRepository $shippingStatusRepository
      * @param MailService $mailService
      */
     public function __construct(
         ShippingRepository $shippingRepository,
         PageMaxRepository $pageMaxRepository,
-        ShippingStatusRepository $shippingStatusRepository,
         MailService $mailService
     ) {
         $this->shippingRepository = $shippingRepository;
         $this->pageMaxRepository = $pageMaxRepository;
-        $this->shippingStatusRepository = $shippingStatusRepository;
         $this->mailService = $mailService;
     }
 
@@ -199,6 +190,10 @@ class ShippingController extends AbstractController
     }
 
     /**
+     * 出荷済み処理
+     * 未出荷の出荷のみ出荷処理をする
+     * 出荷処理をした場合でリクエストで 'notificationMail' が送信されていた場合のみ出荷完了メールを送信する
+     *
      * @Method("PUT")
      * @Route("/%eccube_admin_route%/shipping/mark_as_shipped/{id}", requirements={"id" = "\d+"}, name="admin_shipping_mark_as_shipped")
      *
@@ -214,10 +209,7 @@ class ShippingController extends AbstractController
         $this->isTokenValid();
 
         $result = [];
-        if ($Shipping->getShippingStatus()->getId() !== ShippingStatus::SHIPPED) {
-            /** @var ShippingStatus $StatusShipped */
-            $StatusShipped = $this->shippingStatusRepository->find(ShippingStatus::SHIPPED);
-            $Shipping->setShippingStatus($StatusShipped);
+        if ($Shipping->isShipped() == false) {
             $Shipping->setShippingDate(new \DateTime());
             $this->shippingRepository->save($Shipping);
 
@@ -266,7 +258,7 @@ class ShippingController extends AbstractController
     {
         $this->isTokenValid();
 
-        if ($Shipping->getShippingStatus()->getId() === ShippingStatus::SHIPPED) {
+        if ($Shipping->isShipped()) {
             $this->mailService->sendShippingNotifyMail($Shipping);
 
             return new JsonResponse([
