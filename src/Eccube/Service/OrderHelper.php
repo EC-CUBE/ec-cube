@@ -23,7 +23,6 @@ use Eccube\Entity\Customer;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\OrderStatus;
-use Eccube\Entity\Master\ShippingStatus;
 use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Order;
@@ -34,7 +33,6 @@ use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\Master\OrderItemTypeRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
-use Eccube\Repository\Master\ShippingStatusRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Repository\TaxRuleRepository;
@@ -80,11 +78,6 @@ class OrderHelper
      * @var OrderRepository
      */
     protected $orderRepository;
-
-    /**
-     * @var ShippingStatusRepository
-     */
-    protected $shippingStatusRepository;
 
     /**
      * @var EntityManager
@@ -323,9 +316,6 @@ class OrderHelper
             ->setPref($Customer->getPref())
             ->setAddr01($Customer->getAddr01())
             ->setAddr02($Customer->getAddr02());
-
-        $ShippingStatus = $this->shippingStatusRepository->find(ShippingStatus::PREPARED);
-        $Shipping->setShippingStatus($ShippingStatus);
 
         return $Shipping;
     }

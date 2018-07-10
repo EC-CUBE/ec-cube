@@ -3,7 +3,6 @@
 use Codeception\Util\Fixtures;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Order;
-use Page\Admin\CsvSettingsPage;
 use Page\Admin\OrderEditPage;
 use Page\Admin\ShippingCsvUploadPage;
 use Page\Admin\ShippingEditPage;
@@ -30,6 +29,7 @@ class EA09ShippingCest
 
     public function shipping出荷検索(\AcceptanceTester $I)
     {
+        $I->getScenario()->incomplete('受注管理画面に統合');
         $I->wantTo('EA0901-UC01-T01(& UC01-T02, UC01-T3) 出荷検索');
 
         $TargetShippings = Fixtures::get('findShippings'); // Closure
@@ -46,7 +46,10 @@ class EA09ShippingCest
 
     public function shipping出荷編集(\AcceptanceTester $I)
     {
+        $I->getScenario()->incomplete('受注管理画面に統合');
         $I->wantTo('EA0901-UC03-T01(& UC03-T02) 出荷編集');
+
+        $I->getScenario()->skip('お届け日を編集時にJSが走らない問題がありskip');
 
         $I->resetEmails();
 
@@ -83,9 +86,9 @@ class EA09ShippingCest
 
         $I->see('出荷情報を登録しました。', ShippingEditPage::$登録完了メッセージ);
 
-        /* ステータス変更 */
+        /* 出荷済みに変更 */
         $ShippingRegisterPage
-            ->入力_出荷ステータス(['2' => '出荷済み'])
+            ->入力_出荷日('2018-09-04')
             ->出荷情報登録()
             ->変更を確定();
         $I->wait(1);
@@ -97,6 +100,7 @@ class EA09ShippingCest
 
     public function shipping出荷削除(\AcceptanceTester $I)
     {
+        $I->getScenario()->incomplete('受注管理画面に統合');
         $I->wantTo('EA0901-UC04-T01(& UC04-T02) 出荷削除');
 
         $TargetShippings = Fixtures::get('findShippings'); // Closure
@@ -118,6 +122,7 @@ class EA09ShippingCest
 
     public function shipping一括発送済み更新(\AcceptanceTester $I)
     {
+        $I->getScenario()->incomplete('受注管理画面に統合');
         $I->wantTo('EA0902-UC01-T01 一括発送済み更新');
 
         // 一括操作用の受注を生成しておく
@@ -128,9 +133,9 @@ class EA09ShippingCest
         $I->resetEmails();
 
         $config = Fixtures::get('config');
-        // ステータスを出荷準備中にリセット
-        $resetShippingStatusPrepared = Fixtures::get('resetShippingStatusPrepared'); // Closure
-        $resetShippingStatusPrepared();
+        // 未出荷にリセット
+        $resetShippingDate = Fixtures::get('resetShippingDate'); // Closure
+        $resetShippingDate();
 
         $TargetShippings = Fixtures::get('findShippings'); // Closure
         $Shippings = $TargetShippings();
@@ -151,6 +156,7 @@ class EA09ShippingCest
 
     public function shipping一括発送済みメール送信(\AcceptanceTester $I)
     {
+        $I->getScenario()->incomplete('受注管理画面に統合');
         $I->wantTo('EA0902-UC02-T01 一括発送済みメール送信');
 
         // 一括操作用の受注を生成しておく
@@ -161,9 +167,9 @@ class EA09ShippingCest
         $I->resetEmails();
 
         $config = Fixtures::get('config');
-        // ステータスを出荷済みにリセット
-        $resetShippingStatusShipped = Fixtures::get('resetShippingStatusShipped'); // Closure
-        $resetShippingStatusShipped();
+        // 出荷済みにセット
+        $setShippingDate = Fixtures::get('setShippingDate'); // Closure
+        $setShippingDate();
 
         $TargetShippings = Fixtures::get('findShippings'); // Closure
         $Shippings = $TargetShippings();
@@ -184,6 +190,7 @@ class EA09ShippingCest
 
     public function shipping出荷登録(\AcceptanceTester $I)
     {
+        $I->getScenario()->incomplete('受注管理画面に統合');
         $I->wantTo('EA0903-UC01-T01(& UC01-T02) 出荷登録');
 
         $OrderRegisterPage = OrderEditPage::go($I)->受注情報登録();

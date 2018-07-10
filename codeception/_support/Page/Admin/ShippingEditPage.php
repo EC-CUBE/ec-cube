@@ -33,9 +33,9 @@ class ShippingEditPage extends AbstractAdminPageStyleGuide
         return $page;
     }
 
-    public function 入力_出荷ステータス($value)
+    public function 入力_出荷日($value)
     {
-        $this->tester->selectOption(['id' => 'shipping_ShippingStatus'], $value);
+        $this->tester->executeJS("document.getElementById('shipping_shipping_date').value = '{$value}'");
         return $this;
     }
 
