@@ -107,6 +107,18 @@ class OrderEditPage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    public function 入力_配送業者($value)
+    {
+        $this->tester->selectOption(['id' => 'order_Shippings_0_Delivery'], $value);
+        return $this;
+    }
+
+    public function 注文者情報をコピー()
+    {
+        $this->tester->click('#shippingInfo > div > div.row.mb-3 > div:nth-child(1) > button.btn.btn-ec-regular.copy-customer');
+        return $this;
+    }
+
     public function 商品検索($value = '')
     {
         $this->tester->scrollTo(['css' => '#orderItem > div > div.row.justify-content-between.mb-2 > div.col-6 > a.btn.btn-ec-regular.mr-2.add'], 0, -50);
