@@ -88,20 +88,24 @@ class EA04OrderCest
     {
         $I->wantTo('EA0401-UC05-T01(& UC05-T02/UC05-T03/UC06-T01) 受注編集');
 
-        $findOrders = Fixtures::get('findOrders'); // Closure
-        $TargetOrders = array_filter($findOrders(), function ($Order) {
-            return $Order->getOrderStatus()->getId() != OrderStatus::PROCESSING;
-        });
-        $OrderListPage = OrderManagePage::go($I)->検索();
-        $I->see('検索結果：'.count($TargetOrders).'件が該当しました', OrderManagePage::$検索結果_メッセージ);
+        // 新規受付ステータスの受注を作る
+        $createCustomer = Fixtures::get('createCustomer');
+        $createOrders = Fixtures::get('createOrders');
+        $newOrders = $createOrders($createCustomer(), 1, array());
+
+        $OrderListPage = OrderManagePage::go($I)->検索($newOrders[0]->getOrderNo());
+
+        $I->see('検索結果：1件が該当しました', OrderManagePage::$検索結果_メッセージ);
 
         /* 編集 */
         $OrderListPage->一覧_編集(1);
 
         $OrderRegisterPage = OrderEditPage::at($I)
+            ->注文者パネルを開く()
             ->入力_姓('')
             ->受注情報登録();
 
+        $OrderRegisterPage->注文者パネルを開く();
         /* 異常系 */
         $I->see('入力されていません。', OrderEditPage::$姓_エラーメッセージ);
 
