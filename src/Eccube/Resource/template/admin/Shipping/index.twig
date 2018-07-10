@@ -8,7 +8,7 @@ http://www.lockon.co.jp/
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
-{% extends '@admin/styleguide_frame.twig' %}
+{% extends '@admin/default_frame.twig' %}
 
 {% set menus = ['shipping', 'shipping_master'] %}
 
@@ -314,13 +314,6 @@ file that was distributed with this source code.
                         {{ form_widget(searchForm.multi) }}
                         {{ form_errors(searchForm.multi) }}
                     </div>
-                    <div class="form-row">
-                        <div class="form-group col-12">
-                            <p class="col-form-label">{{'admin.shipping.index.764'|trans}}</p>
-                            {{ form_widget(searchForm.shipping_status, {'label_attr': {'class': 'checkbox-inline'}}) }}
-                            {{ form_errors(searchForm.shipping_status) }}
-                        </div>
-                    </div>
                     <div class="d-inline-block mb-3 collapsed" data-toggle="collapse" href="#searchDetail" aria-expanded="false" aria-controls="searchDetail"><a><i class="fa font-weight-bold mr-1 fa-plus-square-o"></i><span class="font-weight-bold">{{ 'admin.shipping.index.823'|trans }}</span></a></div>
                 </div>
             </div>
@@ -358,8 +351,8 @@ file that was distributed with this source code.
                 </div>
                 <div class="col">
                     <label class="col-form-label">{{ 'admin.shipping.index.770'|trans }}</label>
-                    {{ form_widget(searchForm.tel) }}
-                    {{ form_errors(searchForm.tel) }}
+                    {{ form_widget(searchForm.phone_number) }}
+                    {{ form_errors(searchForm.phone_number) }}
                 </div>
             </div>
             <div class="row">
@@ -473,13 +466,14 @@ file that was distributed with this source code.
                         </div>
                         <div class="d-inline-block">
                             <div class="btn-group" role="group">
-                                <a class="btn btn-ec-regular" href="{{ url('admin_order_export_shipping') }}"><i
-                                            class="fa fa-cloud-download mr-1 text-secondary"></i><span>{{ 'admin.shipping.index.785'|trans }}</span>
-                                </a>
-                                <a class="btn btn-ec-regular"
-                                   href="{{ url('admin_setting_shop_csv', { 'id' : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_SHIPPING') }) }}"><i
-                                            class="fa fa-cog mr-1 text-secondary"></i><span>{{ 'admin.shipping.index.818'|trans }}</span>
-                                </a>
+                                {# FIXME 出荷のCSV出力は廃止されるためコメントアウト #}
+                                {#<a class="btn btn-ec-regular" href="{{ url('admin_order_export_shipping') }}"><i#}
+                                            {#class="fa fa-cloud-download mr-1 text-secondary"></i><span>{{ 'admin.shipping.index.785'|trans }}</span>#}
+                                {#</a>#}
+                                {#<a class="btn btn-ec-regular"#}
+                                   {#href="{{ url('admin_setting_shop_csv', { 'id' : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_SHIPPING') }) }}"><i#}
+                                            {#class="fa fa-cog mr-1 text-secondary"></i><span>{{ 'admin.shipping.index.818'|trans }}</span>#}
+                                {#</a>#}
                             </div>
                         </div>
                     </div>
@@ -525,14 +519,13 @@ file that was distributed with this source code.
                                         (constant('Eccube\\Entity\\Master\\OrderStatus::PROCESSING')): "badge-ec-yellow"
                                     }
                                     %}
-                                    {% for Order in Shipping.Orders %}
-                                        <div class="d-block">
-                                            <a href="{{ url('admin_order_edit', { id : Order.id }) }}">{{ Order.order_code }}</a>
-                                            <span class="badge {{ attribute(cssClassStatus, Order.OrderStatus.id) }} ml-2 mb-2">{{ Order.OrderStatus }}</span></div>
-                                    {% endfor %}
+                                    {% set Order = Shipping.Order %}
+                                    <div class="d-block">
+                                        <a href="{{ url('admin_order_edit', { id : Order.id }) }}">{{ Order.order_no }}</a>
+                                        <span class="badge {{ attribute(cssClassStatus, Order.OrderStatus.id) }} ml-2 mb-2">{{ Order.OrderStatus }}</span></div>
                                 </td>
                                 <td class="align-middle">
-                                    <label class="m-0">{{ Shipping.zip01 }}-{{ Shipping.zip02 }}<br>{{ Shipping.pref }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}<br>{{ Shipping.name01 }} {{ Shipping.name02 }}<br>{{ Shipping.tel01 }}-{{ Shipping.tel02 }}-{{ Shipping.tel03 }}</label>
+                                    <label class="m-0">{{ Shipping.postal_code }}<br>{{ Shipping.pref }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}<br>{{ Shipping.name01 }} {{ Shipping.name02 }}<br>{{ Shipping.phone_number }}</label>
                                 </td>
                                 <td class="align-middle">{{ Shipping.ShippingDeliveryName }}</td>
                                 <td class="align-middle">
@@ -559,7 +552,7 @@ file that was distributed with this source code.
                         </table>
                         <div class="row justify-content-md-center mb-4">
                             {% if pagination.totalItemCount > 0 %}
-                                {% include "@admin/styleguide_pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_shipping_page' } %}
+                                {% include "@admin/pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_shipping_page' } %}
                             {% endif %}
                         </div>
                         </div>

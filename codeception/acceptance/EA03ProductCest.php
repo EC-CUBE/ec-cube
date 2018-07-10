@@ -60,7 +60,7 @@ class EA03ProductCest
         $em->persist($ProductStatus);
         $em->flush();
 
-        // 商品マスターを表示
+        // 商品一覧を表示
         $page = ProductManagePage::go($I);
 
         // ダミーのステータスを削除する

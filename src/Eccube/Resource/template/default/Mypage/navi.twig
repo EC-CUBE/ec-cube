@@ -14,8 +14,10 @@ file that was distributed with this source code.
     <ul class="ec-navlistRole__navlist {% if favorite %}favorite{% endif %}">
         <li class="ec-navlistRole__item {% if mypageno|default('') == 'index' %}active{% endif %}"><a href="{{ url('mypage') }}">{{'mypage.label.order_history'|trans}}</a>
         </li>
+        {% if (favorite) %}
         <li class="ec-navlistRole__item {% if mypageno|default('') == 'favorite' %}active{% endif %}"><a href="{{ url('mypage_favorite') }}">{{'mypage.label.favorites'|trans}}</a>
         </li>
+        {% endif %}
         <li class="ec-navlistRole__item {% if mypageno|default('') == 'change' %}active{% endif %}"><a href="{{ url('mypage_change') }}">{{'mypage.label.customer_info'|trans}}</a>
         </li>
         <li class="ec-navlistRole__item {% if mypageno|default('') == 'delivery' %}active{% endif %}"><a href="{{ url('mypage_delivery') }}">{{'mypage.label.edit_address'|trans}}</a>
@@ -25,5 +27,5 @@ file that was distributed with this source code.
     </ul>
 </div>
 
-<div class="ec-welcomeMsg">{{'mypage.message.welcome'|trans}} {{ app.user.name01 }} {{ app.user.name02 }}</div>
+<div class="ec-welcomeMsg">{{'mypage.message.welcome'|trans({'%user_name%': app.user.name01 ~ ' ' ~ app.user.name02 }) }}</div>
 

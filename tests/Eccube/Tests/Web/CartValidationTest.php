@@ -721,6 +721,7 @@ class CartValidationTest extends AbstractWebTestCase
         /** @var Product $Product */
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, 1, 10);
+        /** @var ProductClass $ProductClass */
         $ProductClass = $Product->getProductClasses()->first();
 
         // add to cart

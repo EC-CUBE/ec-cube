@@ -18,7 +18,7 @@ use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
-use Eccube\Service\PurchaseFlow\Processor\DeliveryFeeFreeByShippingProcessor;
+use Eccube\Service\PurchaseFlow\Processor\DeliveryFeeFreeByShippingPreprocessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
@@ -41,7 +41,7 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
      */
     public function testWithoutDeliveryFreeSettings()
     {
-        $processor = new DeliveryFeeFreeByShippingProcessor($this->newBaseInfo(0, 0));
+        $processor = new DeliveryFeeFreeByShippingPreprocessor($this->newBaseInfo(0, 0));
 
         $Order = new Order();
         $Shipping = $this->newShipping(1);
@@ -64,10 +64,12 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
      */
     public function testWithDeliveryFreeAmount($amount, $expectedFee)
     {
-        $processor = new DeliveryFeeFreeByShippingProcessor($this->newBaseInfo(1000, 0));
+        $processor = new DeliveryFeeFreeByShippingPreprocessor($this->newBaseInfo(1000, 0));
 
         $Shipping = $this->newShipping(1);
         $Order = new Order();
+        $Shipping->setOrder($Order);
+        $Order->addShipping($Shipping);
         $DeliveryFee = $this->newDeliveryFeeItem(1000, $Shipping);
         $Order->addOrderItem($DeliveryFee);
         $Order->addOrderItem($this->newProductOrderItem($amount, 1, $Shipping));
@@ -97,10 +99,12 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
      */
     public function testWithDeliveryFreeQuantity($quantity, $expectedFee)
     {
-        $processor = new DeliveryFeeFreeByShippingProcessor($this->newBaseInfo(0, 10));
+        $processor = new DeliveryFeeFreeByShippingPreprocessor($this->newBaseInfo(0, 10));
 
         $Shipping = $this->newShipping(1);
         $Order = new Order();
+        $Shipping->setOrder($Order);
+        $Order->addShipping($Shipping);
         $DeliveryFee = $this->newDeliveryFeeItem(1000, $Shipping);
         $Order->addOrderItem($DeliveryFee);
         $Order->addOrderItem($this->newProductOrderItem(1000, $quantity, $Shipping));
@@ -125,11 +129,16 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
      */
     public function testMultipleShippingWithDeliveryFreeAmount()
     {
-        $processor = new DeliveryFeeFreeByShippingProcessor($this->newBaseInfo(1000, 0));
+        $processor = new DeliveryFeeFreeByShippingPreprocessor($this->newBaseInfo(1000, 0));
         $Shipping1 = $this->newShipping(1);
         $Shipping2 = $this->newShipping(2);
 
         $Order = new Order();
+
+        $Shipping1->setOrder($Order);
+        $Shipping2->setOrder($Order);
+        $Order->addShipping($Shipping1);
+        $Order->addShipping($Shipping2);
 
         $Order->addItem($this->newProductOrderItem(1000, 1, $Shipping1));
         $Shipping1DeliveryFee = $this->newDeliveryFeeItem(1000, $Shipping1);
@@ -150,11 +159,16 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
      */
     public function testMultipleShippingWithDeliveryFreeQuantity()
     {
-        $processor = new DeliveryFeeFreeByShippingProcessor($this->newBaseInfo(0, 5));
+        $processor = new DeliveryFeeFreeByShippingPreprocessor($this->newBaseInfo(0, 5));
         $Shipping1 = $this->newShipping(1);
         $Shipping2 = $this->newShipping(2);
 
         $Order = new Order();
+
+        $Shipping1->setOrder($Order);
+        $Shipping2->setOrder($Order);
+        $Order->addShipping($Shipping1);
+        $Order->addShipping($Shipping2);
 
         $Order->addItem($this->newProductOrderItem(1000, 1, $Shipping1));
         $Shipping1DeliveryFee = $this->newDeliveryFeeItem(1000, $Shipping1);

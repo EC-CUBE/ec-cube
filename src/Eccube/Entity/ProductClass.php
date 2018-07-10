@@ -31,6 +31,24 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     private $tax_rate = false;
 
     /**
+     * 商品規格名を含めた商品名を返す.
+     *
+     * @return string
+     */
+    public function formatedProductName()
+    {
+        $productName = $this->getProduct()->getName();
+        if ($this->hasClassCategory1()) {
+            $productName .= ' - '.$this->getClassCategory1()->getName();
+        }
+        if ($this->hasClassCategory2()) {
+            $productName .= ' - '.$this->getClassCategory2()->getName();
+        }
+
+        return $productName;
+    }
+
+    /**
      * Is Enable
      *
      * @return bool

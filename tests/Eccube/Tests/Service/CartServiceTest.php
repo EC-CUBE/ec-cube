@@ -93,7 +93,7 @@ class CartServiceTest extends AbstractServiceTestCase
     public function testClear()
     {
         $this->cartService->addProduct(1);
-        $this->purchaseFlow->calculate($this->cartService->getCart(), new PurchaseContext());
+        $this->purchaseFlow->validate($this->cartService->getCart(), new PurchaseContext());
         $this->cartService->save();
 
         $this->assertCount(1, $this->cartService->getCart()->getCartItems());
@@ -207,7 +207,7 @@ class CartServiceTest extends AbstractServiceTestCase
     public function testRemoveProduct()
     {
         $this->cartService->addProduct(1, 2);
-        $this->purchaseFlow->calculate($this->cartService->getCart(), new PurchaseContext());
+        $this->purchaseFlow->validate($this->cartService->getCart(), new PurchaseContext());
         $this->cartService->save();
 
         $this->cartService->removeProduct(1);
@@ -221,7 +221,7 @@ class CartServiceTest extends AbstractServiceTestCase
 
         $this->cartService->addProduct(1, 1);
         $this->cartService->setPreOrderId($preOrderId);
-        $this->purchaseFlow->calculate($this->cartService->getCart(), new PurchaseContext());
+        $this->purchaseFlow->validate($this->cartService->getCart(), new PurchaseContext());
 
         $this->cartService->save();
 

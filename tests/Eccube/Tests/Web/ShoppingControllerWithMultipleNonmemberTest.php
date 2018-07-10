@@ -66,11 +66,6 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         $crawler = $this->client->request('GET', $this->generateUrl('shopping_shipping_multiple_edit'));
 
         $form = $this->createShippingFormData();
-        $form['fax'] = [
-            'fax01' => $form['tel']['tel01'],
-            'fax02' => $form['tel']['tel02'],
-            'fax03' => $form['tel']['tel03'],
-        ];
 
         // お届け先追加
         $crawler = $this->client->request(
@@ -368,11 +363,6 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
 
         // Address 2
         $formData = $this->createNonmemberFormData();
-        $formData['fax'] = [
-            'fax01' => 111,
-            'fax02' => 111,
-            'fax03' => 111,
-        ];
         unset($formData['email']);
 
         $this->client->request(
@@ -466,11 +456,6 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
 
         // Address 2
         $formData = $this->createNonmemberFormData();
-        $formData['fax'] = [
-            'fax01' => 111,
-            'fax02' => 111,
-            'fax03' => 111,
-        ];
         unset($formData['email']);
 
         $this->client->request(
@@ -678,11 +663,6 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
 
         // Address 2
         $formData = $this->createNonmemberFormData();
-        $formData['fax'] = [
-            'fax01' => 111,
-            'fax02' => 111,
-            'fax03' => 111,
-        ];
         unset($formData['email']);
 
         $this->client->request(
@@ -799,11 +779,6 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
 
         // Address 2
         $formData = $this->createNonmemberFormData();
-        $formData['fax'] = [
-            'fax01' => 111,
-            'fax02' => 111,
-            'fax03' => 111,
-        ];
         unset($formData['email']);
 
         $this->client->request(
@@ -817,11 +792,6 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
 
         // Address 3
         $formData = $this->createNonmemberFormData();
-        $formData['fax'] = [
-            'fax01' => 333,
-            'fax02' => 333,
-            'fax03' => 333,
-        ];
         unset($formData['email']);
 
         $this->client->request(
@@ -1078,11 +1048,6 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
 
         // Address 2
         $formData = $this->createNonmemberFormData();
-        $formData['fax'] = [
-            'fax01' => 111,
-            'fax02' => 111,
-            'fax03' => 111,
-        ];
         unset($formData['email']);
 
         $this->client->request(
@@ -1201,11 +1166,6 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
 
         // Address 2
         $formData = $this->createNonmemberFormData();
-        $formData['fax'] = [
-            'fax01' => 111,
-            'fax02' => 111,
-            'fax03' => 111,
-        ];
         unset($formData['email']);
 
         $this->client->request(
@@ -1219,11 +1179,6 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
 
         // Address 3
         $formData = $this->createNonmemberFormData();
-        $formData['fax'] = [
-            'fax01' => 333,
-            'fax02' => 333,
-            'fax03' => 333,
-        ];
         unset($formData['email']);
 
         $this->client->request(
@@ -1329,11 +1284,6 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
 
         // Address
         $formData = $this->createNonmemberFormData();
-        $formData['fax'] = [
-            'fax01' => 111,
-            'fax02' => 111,
-            'fax03' => 111,
-        ];
         unset($formData['email']);
 
         for ($i = 0; $i < $maxAddress; $i++) {

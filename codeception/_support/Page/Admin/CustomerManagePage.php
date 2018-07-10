@@ -27,14 +27,14 @@ class CustomerManagePage extends AbstractAdminPageStyleGuide
     public static function go(\AcceptanceTester $I)
     {
         $page = new self($I);
-        return $page->goPage(self::$URL, '会員マスター会員管理');
+        return $page->goPage(self::$URL, '会員一覧会員管理');
     }
 
     public function 検索($value = '')
     {
         $this->tester->fillField(['id' => 'admin_search_customer_multi'], $value);
         $this->tester->click(self::$検索ボタン);
-        $this->tester->see('会員マスター会員管理', '.c-pageTitle');
+        $this->tester->see('会員一覧会員管理', '.c-pageTitle');
         return $this;
     }
 
@@ -42,9 +42,9 @@ class CustomerManagePage extends AbstractAdminPageStyleGuide
     {
         $this->tester->click(self::$詳細検索ボタン);
         $this->tester->wait(1);
-        $this->tester->fillField(['id' => 'admin_search_customer_tel'], $value);
+        $this->tester->fillField(['id' => 'admin_search_customer_phone_number'], $value);
         $this->tester->click(self::$検索ボタン);
-        $this->tester->see('会員マスター会員管理', '.c-pageTitle');
+        $this->tester->see('会員一覧会員管理', '.c-pageTitle');
         return $this;
     }
 

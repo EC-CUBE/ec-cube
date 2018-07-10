@@ -80,6 +80,7 @@ class DeliveryRepository extends AbstractRepository
             ->andWhere('d.visible = :visible')
             ->setParameter('saleTypes', $saleTypes)
             ->setParameter('visible', true)
+            ->orderBy('d.sort_no', 'DESC')
             ->getQuery()
             ->getResult();
 

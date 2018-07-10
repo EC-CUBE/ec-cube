@@ -250,8 +250,8 @@ $(function() {
                 </div>
                 <div class="ec-orderAccount__account">
                     <p><span class="customer-edit customer-name01">{{ Order.name01 }}</span> <span class="customer-edit customer-name02">{{ Order.name02 }}</span> 様</p>
-                    <p>〒<span class="customer-edit customer-zip01">{{ Order.zip01 }}</span>-<span class="customer-edit customer-zip02">{{ Order.zip02 }}</span>　<span class="customer-edit customer-pref">{{ Order.pref }}</span><span class="customer-edit customer-addr01">{{ Order.addr01 }}</span><span class="customer-edit customer-addr02">{{ Order.addr02 }}</span></p>
-                    <p><span class="customer-edit customer-tel01">{{ Order.tel01 }}</span>-<span class="customer-edit customer-tel02">{{ Order.tel02 }}</span>-<span class="customer-edit customer-tel03">{{ Order.tel03 }}</span></p>
+                    <p>〒<span class="customer-edit customer-zip">{{ Order.postal_code }}</span><span class="customer-edit customer-pref">{{ Order.pref }}</span><span class="customer-edit customer-addr01">{{ Order.addr01 }}</span><span class="customer-edit customer-addr02">{{ Order.addr02 }}</span></p>
+                    <p><span class="customer-edit customer-phone_number">{{ Order.phone_number }}</span></p>
                 </div>
             </div>
             <div class="ec-orderDelivery">
@@ -283,8 +283,8 @@ $(function() {
                     </div>
                     <div class="ec-orderDelivery__address">
                         <p>{{ shipping.name01 }} {{ shipping.name02 }} ({{ shipping.kana01 }} {{ shipping.kana02 }}) 様</p>
-                        <p>〒{{ shipping.zip01 }}-{{ shipping.zip02 }} {{ shipping.pref }}{{ shipping.addr01 }}{{ shipping.addr02 }}</p>
-                        <p>{{ shipping.tel01 }}-{{ shipping.tel02 }}-{{ shipping.tel03 }}</p>
+                        <p>〒{{ shipping.postal_code }} {{ shipping.pref }}{{ shipping.addr01 }}{{ shipping.addr02 }}</p>
+                        <p>{{ shipping.phone_number }}</p>
                     </div>
                     <div class="ec-orderDelivery__actions">
                         <div class="ec-selects">
@@ -316,6 +316,7 @@ $(function() {
                     {{ form_widget(form.Payment, {'type': 'hidden'}) }}
                 </div>
             </div>
+
             <div class="ec-orderConfirm">
                 <div class="ec-rectHeading">
                     <h2>お問い合わせ</h2>

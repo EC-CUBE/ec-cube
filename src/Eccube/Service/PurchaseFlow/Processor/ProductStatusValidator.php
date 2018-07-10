@@ -17,12 +17,12 @@ use Eccube\Entity\ItemInterface;
 use Eccube\Entity\Master\ProductStatus;
 use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
-use Eccube\Service\PurchaseFlow\ValidatableItemProcessor;
+use Eccube\Service\PurchaseFlow\ItemValidator;
 
 /**
  * 商品が公開されているかどうか。
  */
-class ProductStatusValidator extends ValidatableItemProcessor
+class ProductStatusValidator extends ItemValidator
 {
     /**
      * @param ItemInterface $item

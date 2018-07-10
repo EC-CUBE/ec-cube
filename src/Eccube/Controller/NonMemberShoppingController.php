@@ -14,7 +14,6 @@
 namespace Eccube\Controller;
 
 use Eccube\Entity\Customer;
-use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
 use Eccube\Event\EccubeEvents;
@@ -129,35 +128,11 @@ class NonMemberShoppingController extends AbstractShoppingController
                 ->setKana02($data['kana02'])
                 ->setCompanyName($data['company_name'])
                 ->setEmail($data['email'])
-                ->setTel01($data['tel01'])
-                ->setTel02($data['tel02'])
-                ->setTel03($data['tel03'])
-                ->setZip01($data['zip01'])
-                ->setZip02($data['zip02'])
-                ->setZipCode($data['zip01'].$data['zip02'])
+                ->setPhonenumber($data['phone_number'])
+                ->setPostalcode($data['postal_code'])
                 ->setPref($data['pref'])
                 ->setAddr01($data['addr01'])
                 ->setAddr02($data['addr02']);
-
-            // 非会員複数配送用
-            $CustomerAddress = new CustomerAddress();
-            $CustomerAddress
-                ->setCustomer($Customer)
-                ->setName01($data['name01'])
-                ->setName02($data['name02'])
-                ->setKana01($data['kana01'])
-                ->setKana02($data['kana02'])
-                ->setCompanyName($data['company_name'])
-                ->setTel01($data['tel01'])
-                ->setTel02($data['tel02'])
-                ->setTel03($data['tel03'])
-                ->setZip01($data['zip01'])
-                ->setZip02($data['zip02'])
-                ->setZipCode($data['zip01'].$data['zip02'])
-                ->setPref($data['pref'])
-                ->setAddr01($data['addr01'])
-                ->setAddr02($data['addr02']);
-            $Customer->addCustomerAddress($CustomerAddress);
 
             // 受注情報を取得
             /** @var Order $Order */
@@ -170,7 +145,6 @@ class NonMemberShoppingController extends AbstractShoppingController
                     // 受注情報を作成
                     $Order = $this->orderHelper->createProcessingOrder(
                         $Customer,
-                        $Customer->getCustomerAddresses()->current(),
                         $cartService->getCart()->getCartItems()
                     );
                     $cartService->setPreOrderId($Order->getPreOrderId());
@@ -182,20 +156,14 @@ class NonMemberShoppingController extends AbstractShoppingController
                 }
             }
 
-            $flowResult = $this->executePurchaseFlow($Order);
+            $flowResult = $this->validatePurchaseFlow($Order);
             if ($flowResult->hasWarning() || $flowResult->hasError()) {
                 return $this->redirectToRoute('cart');
             }
 
             // 非会員用セッションを作成
-            $nonMember = [];
-            $nonMember['customer'] = $Customer;
-            $nonMember['pref'] = $Customer->getPref()->getId();
-            $this->session->set($this->sessionKey, $nonMember);
-
-            $customerAddresses = [];
-            $customerAddresses[] = $CustomerAddress;
-            $this->session->set($this->sessionCustomerAddressKey, serialize($customerAddresses));
+            $this->session->set($this->sessionKey, $Customer);
+            $this->session->set($this->sessionCustomerAddressKey, serialize([]));
 
             $event = new EventArgs(
                 [
@@ -305,6 +273,7 @@ class NonMemberShoppingController extends AbstractShoppingController
 
                 return $response;
             }
+            /** @var Order $Order */
             $Order = $this->shoppingService->getOrder(OrderStatus::PROCESSING);
             if (!$Order) {
                 log_info('カートが存在しません');
@@ -318,12 +287,8 @@ class NonMemberShoppingController extends AbstractShoppingController
                 ->setKana01($data['customer_kana01'])
                 ->setKana02($data['customer_kana02'])
                 ->setCompanyName($data['customer_company_name'])
-                ->setTel01($data['customer_tel01'])
-                ->setTel02($data['customer_tel02'])
-                ->setTel03($data['customer_tel03'])
-                ->setZip01($data['customer_zip01'])
-                ->setZip02($data['customer_zip02'])
-                ->setZipCode($data['customer_zip01'].$data['customer_zip02'])
+                ->setPhoneNumber($data['customer_phone_number'])
+                ->setPostalCode($data['customer_postal_code'])
                 ->setPref($pref)
                 ->setAddr01($data['customer_addr01'])
                 ->setAddr02($data['customer_addr02'])
@@ -413,56 +378,23 @@ class NonMemberShoppingController extends AbstractShoppingController
         );
 
         $errors[] = $this->validator->validate(
-            $data['customer_tel01'],
+            $data['customer_phone_number'],
             [
                 new Assert\NotBlank(),
                 new Assert\Type(['type' => 'numeric', 'message' => 'form.type.numeric.invalid']),
                 new Assert\Length(
-                    ['max' => $this->eccubeConfig['eccube_tel_len'], 'min' => $this->eccubeConfig['eccube_tel_len_min']]
+                    ['max' => $this->eccubeConfig['eccube_tel_len_max']]
                 ),
             ]
         );
 
         $errors[] = $this->validator->validate(
-            $data['customer_tel02'],
+            $data['customer_postal_code'],
             [
                 new Assert\NotBlank(),
                 new Assert\Type(['type' => 'numeric', 'message' => 'form.type.numeric.invalid']),
                 new Assert\Length(
-                    ['max' => $this->eccubeConfig['eccube_tel_len'], 'min' => $this->eccubeConfig['eccube_tel_len_min']]
-                ),
-            ]
-        );
-
-        $errors[] = $this->validator->validate(
-            $data['customer_tel03'],
-            [
-                new Assert\NotBlank(),
-                new Assert\Type(['type' => 'numeric', 'message' => 'form.type.numeric.invalid']),
-                new Assert\Length(
-                    ['max' => $this->eccubeConfig['eccube_tel_len'], 'min' => $this->eccubeConfig['eccube_tel_len_min']]
-                ),
-            ]
-        );
-
-        $errors[] = $this->validator->validate(
-            $data['customer_zip01'],
-            [
-                new Assert\NotBlank(),
-                new Assert\Type(['type' => 'numeric', 'message' => 'form.type.numeric.invalid']),
-                new Assert\Length(
-                    ['min' => $this->eccubeConfig['eccube_zip01_len'], 'max' => $this->eccubeConfig['eccube_zip01_len']]
-                ),
-            ]
-        );
-
-        $errors[] = $this->validator->validate(
-            $data['customer_zip02'],
-            [
-                new Assert\NotBlank(),
-                new Assert\Type(['type' => 'numeric', 'message' => 'form.type.numeric.invalid']),
-                new Assert\Length(
-                    ['min' => $this->eccubeConfig['eccube_zip02_len'], 'max' => $this->eccubeConfig['eccube_zip02_len']]
+                    ['max' => $this->eccubeConfig['eccube_postal_code']]
                 ),
             ]
         );
