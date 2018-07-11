@@ -40,7 +40,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Eccube\Util\FormUtil;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -671,7 +670,7 @@ class ProductController extends AbstractController
                 if ($request->isXmlHttpRequest()) {
                     $message = trans('admin.delete.warning');
 
-                    return new JsonResponse(['success' => $success, 'message' => $message]);
+                    return $this->json(['success' => $success, 'message' => $message]);
                 } else {
                     $this->deleteMessage();
                     $rUrl = $this->generateUrl('admin_product_page', ['page_no' => $page_no]).'?resume='.Constant::ENABLED;
@@ -729,7 +728,7 @@ class ProductController extends AbstractController
         }
 
         if ($request->isXmlHttpRequest()) {
-            return new JsonResponse(['success' => $success, 'message' => $message]);
+            return $this->json(['success' => $success, 'message' => $message]);
         } else {
             if ($success) {
                 $this->addSuccess($message, 'admin');
