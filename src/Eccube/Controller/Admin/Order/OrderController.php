@@ -15,9 +15,7 @@ namespace Eccube\Controller\Admin\Order;
 
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
-use Eccube\Entity\Csv;
 use Eccube\Entity\Master\CsvType;
-use Eccube\Entity\OrderItem;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\SearchOrderType;
