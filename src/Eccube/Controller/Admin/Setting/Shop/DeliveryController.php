@@ -116,7 +116,7 @@ class DeliveryController extends AbstractController
     public function edit(Request $request, $id = null)
     {
         if (is_null($id)) {
-            $SaleType = $this->saleTypeRepository->findOneBy([]);
+            $SaleType = $this->saleTypeRepository->findOneBy([], ['sort_no' => 'ASC']);
             $Delivery = $this->deliveryRepository->findOneBy([], ['sort_no' => 'DESC']);
 
             $sortNo = 1;
