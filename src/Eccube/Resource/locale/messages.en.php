@@ -408,6 +408,8 @@ return [
     'form.type.name.firstname.nothasspace' => 'Please do not include spaces, tabs, newlines in your name (first name). ',
     'form.type.name.lastname.nothasspace' => 'Please do not include spaces, tabs, newlines in your name (gender). ',
     'form.type.customer.company.nothasspace' => 'Please do not include spaces, tabs, newlines in company name. ',
+    'form.type.customer.password.too_short' => 'This password is too short. It should have {{ limit }} character or less.|This password is too short. It should have {{ limit }} characters or less.',
+    'form.type.customer.password.too_long' => 'This password is too long. It should have {{ limit }} character or more.|This password is too long. It should have {{ limit }} characters or more.',
     'form.type.admin.nottelstyle' => 'Please enter only a half-width number or a hyphen for the telephone number. . ',
     'form.type.admin.notkanastyle' => 'Please enter your name (phonetic) in katakana. ',
     'form.type.select.notselect' => 'Not entered. ',
