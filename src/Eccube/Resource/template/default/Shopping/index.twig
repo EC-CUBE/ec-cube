@@ -342,11 +342,9 @@ file that was distributed with this source code.
                     <div class="ec-blockRadio">
                         {% for key, child in form.Payment %}
                             {% set Payment = form.Payment.vars.choices[key].data %}
-                            {% if Payment.visible %}
-                                <label>{{ form_widget(child, {'attr': {'class': 'payment' }}) }}<span>{{ child.vars.label }}</span></label>
-                                {% if Payment.payment_image is not null %}
-                                    <img src="{{ asset(Payment.payment_image, 'save_image') }}">
-                                {% endif %}
+                            <label>{{ form_widget(child, {'attr': {'class': 'payment' }}) }}<span>{{ child.vars.label }}</span></label>
+                            {% if Payment.payment_image is not null %}
+                                <img src="{{ asset(Payment.payment_image, 'save_image') }}">
                             {% endif %}
                         {% endfor %}
                         {{ form_errors(form.Payment) }}
