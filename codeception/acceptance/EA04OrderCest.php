@@ -88,20 +88,24 @@ class EA04OrderCest
     {
         $I->wantTo('EA0401-UC05-T01(& UC05-T02/UC05-T03/UC06-T01) 受注編集');
 
-        $findOrders = Fixtures::get('findOrders'); // Closure
-        $TargetOrders = array_filter($findOrders(), function ($Order) {
-            return $Order->getOrderStatus()->getId() != OrderStatus::PROCESSING;
-        });
-        $OrderListPage = OrderManagePage::go($I)->検索();
-        $I->see('検索結果：'.count($TargetOrders).'件が該当しました', OrderManagePage::$検索結果_メッセージ);
+        // 新規受付ステータスの受注を作る
+        $createCustomer = Fixtures::get('createCustomer');
+        $createOrders = Fixtures::get('createOrders');
+        $newOrders = $createOrders($createCustomer(), 1, array());
+
+        $OrderListPage = OrderManagePage::go($I)->検索($newOrders[0]->getOrderNo());
+
+        $I->see('検索結果：1件が該当しました', OrderManagePage::$検索結果_メッセージ);
 
         /* 編集 */
         $OrderListPage->一覧_編集(1);
 
         $OrderRegisterPage = OrderEditPage::at($I)
+            ->注文者パネルを開く()
             ->入力_姓('')
             ->受注情報登録();
 
+        $OrderRegisterPage->注文者パネルを開く();
         /* 異常系 */
         $I->see('入力されていません。', OrderEditPage::$姓_エラーメッセージ);
 
@@ -181,26 +185,13 @@ class EA04OrderCest
         $I->wantTo('EA0402-UC01-T01 受注メール通知');
 
         $I->resetEmails();
-        $findOrders = Fixtures::get('findOrders');
-        $NewOrders = array_filter($findOrders(), function ($Order) {
-            return $Order->getOrderStatus()->getId() == OrderStatus::NEW;
-        });
-        $Order = array_pop($NewOrders);
-        $OrderListPage = OrderManagePage::go($I)->検索($Order->getOrderNo());
-        $I->see('検索結果：1件が該当しました', OrderManagePage::$検索結果_メッセージ);
 
-        $OrderListPage->一覧_メール通知(1);
+        OrderManagePage::go($I)
+            ->一覧_メール通知(1);
 
-        $I->selectOption(['id' => 'template-change'], ['1' => '注文受付メール']);
-        $I->click(['id' => 'mailConfirm']);
-        $I->scrollTo(['id' => 'sendMail'], 0, 100);
-        $I->wait(1);
-        $I->click(['id' => 'sendMail']);
-
-        $I->wait(3);
         $I->seeEmailCount(2);
 
-        $I->seeInLastEmailSubjectTo('admin@example.com', 'ご注文ありがとうございます');
+        $I->seeInLastEmailSubjectTo('admin@example.com', '[EC-CUBE SHOP] 商品出荷のお知らせ');
     }
 
     public function order_一括メール通知(\AcceptanceTester $I)
@@ -209,25 +200,10 @@ class EA04OrderCest
 
         $I->resetEmails();
 
-        $config = Fixtures::get('config');
-        $findOrders = Fixtures::get('findOrders'); // Closure
-        $TargetOrders = array_filter($findOrders(), function ($Order) use ($config) {
-            return $Order->getOrderStatus()->getId() != OrderStatus::PROCESSING;
-        });
-        $OrderListPage = OrderManagePage::go($I)->検索();
-        $I->see('検索結果：'.count($TargetOrders).'件が該当しました', OrderManagePage::$検索結果_メッセージ);
-
-        $OrderListPage
+        OrderManagePage::go($I)
             ->一覧_全選択()
-            ->メール一括通知();
+            ->一括メール送信();
 
-        $I->selectOption(['id' => 'template-change'], ['1' => '注文受付メール']);
-        $I->click(['id' => 'mailConfirm']);
-        $I->scrollTo(['id' => 'sendMail'], 0, 100);
-        $I->wait(1);
-        $I->click(['id' => 'sendMail']);
-
-        $I->wait(5);
         $I->seeEmailCount(20);
     }
 
@@ -243,6 +219,7 @@ class EA04OrderCest
         /* 正常系 */
         $OrderRegisterPage
             ->入力_受注ステータス(['1' => '新規受付'])
+            ->入力_支払方法(['4' => '郵便振替'])
             ->入力_姓('order1')
             ->入力_名('order1')
             ->入力_セイ('アアア')
@@ -253,9 +230,10 @@ class EA04OrderCest
             ->入力_番地_ビル名('bbb')
             ->入力_Eメール('test@test.com')
             ->入力_電話番号('111-111-111')
+            ->注文者情報をコピー()
+            ->入力_配送業者([1 => 'サンプル業者'])
             ->商品検索('パーコレーター')
             ->商品検索結果_選択(1)
-            ->入力_支払方法(['4' => '郵便振替'])
             ->受注情報登録();
 
         $I->see('受注情報を保存しました。', OrderEditPage::$登録完了メッセージ);
@@ -263,6 +241,8 @@ class EA04OrderCest
 
     public function order_ー括受注のステータス変更(\AcceptanceTester $I)
     {
+        $I->getScenario()->incomplete('ステータス変更処理の再実装待ち');
+
         $I->wantTo('EA0405-UC06-T01_ー括受注のステータス変更');
 
         // 新規受付ステータスをキャンセルに変更する
