@@ -494,7 +494,7 @@ class OrderRepository extends AbstractRepository
     public function getCustomerCount(\Eccube\Entity\Customer $Customer, array $OrderStatuses)
     {
         $result = $this->createQueryBuilder('o')
-            ->select('COUNT(o.id) AS buy_times, SUM(o.total)  AS buy_total')
+            ->select('COUNT(o.id) AS buy_times, SUM(o.total) AS buy_total, MAX(o.id) AS order_id')
             ->where('o.Customer = :Customer')
             ->andWhere('o.OrderStatus in (:OrderStatuses)')
             ->setParameter('Customer', $Customer)

@@ -27,6 +27,7 @@ use Eccube\Repository\DeliveryTimeRepository;
 use Eccube\Util\StringUtil;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -36,7 +37,6 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class ShippingType extends AbstractType
 {
@@ -113,6 +113,9 @@ class ShippingType extends AbstractType
             ])
             ->add('postal_code', PostalType::class, [
                 'required' => false,
+                'constraints' => [
+                    new Assert\NotBlank(),
+                ],
             ])
             ->add('address', AddressType::class, [
                 'required' => false,
@@ -144,6 +147,9 @@ class ShippingType extends AbstractType
             ])
             ->add('phone_number', PhoneNumberType::class, [
                 'required' => false,
+                'constraints' => [
+                    new Assert\NotBlank(),
+                ],
             ])
             ->add('Delivery', EntityType::class, [
                 'required' => false,
@@ -162,7 +168,6 @@ class ShippingType extends AbstractType
             ->add('shipping_delivery_date', DateType::class, [
                 'label' => 'shipping.label.delivery_date',
                 'placeholder' => '',
-                'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'required' => false,
             ])
@@ -212,6 +217,10 @@ class ShippingType extends AbstractType
                 $data = $event->getData();
                 /** @var \Symfony\Component\Form\Form $form */
                 $form = $event->getForm();
+
+                if (!$data) {
+                    return;
+                }
 
                 $Delivery = $data->getDelivery();
                 $timeId = $data->getTimeId();
