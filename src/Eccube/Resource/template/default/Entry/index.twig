@@ -218,9 +218,15 @@ file that was distributed with this source code.
                     <div class="ec-registerRole__actions">
                         <div class="ec-off4Grid">
                             <div class="ec-off4Grid__cell">
-                                <p><span></span>{{'signup.text.message.accept_terms_conditions'|trans}}<span></span><br>
-                                    <a class="ec-link" href="{{ url('help_agreement') }}" target="_blank">{{'signup.label.btn.user_policy'|trans}}</a>
-                                </p>
+
+                                <div class="ec-checkbox{{ has_errors(form.user_policy_check) ? ' error' }}">
+                                    <p>
+                                        {{ form_widget(form.user_policy_check) }}
+                                        <a class="ec-link" href="{{ url('help_agreement') }}" target="_blank">{{'signup.label.btn.user_policy'|trans}}</a>
+                                        <span></span>{{'signup.text.message.accept_terms_conditions'|trans}}<span></span>
+                                        {{ form_errors(form.user_policy_check) }}
+                                    </p>
+                                </div>
                                 <button class="ec-blockBtn--action" type="submit" name="mode" value="confirm">{{'signup.label.radio.accept'|trans}}</button>
                                 <a class="ec-blockBtn--cancel" href="{{ url('homepage') }}">{{'signup.label.radio.decline'|trans}}</a>
                             </div>
