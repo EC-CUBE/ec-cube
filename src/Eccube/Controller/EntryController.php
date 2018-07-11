@@ -23,6 +23,7 @@ use Eccube\Repository\Master\CustomerStatusRepository;
 use Eccube\Service\MailService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception as HttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -128,6 +129,15 @@ class EntryController extends AbstractController
 
         /* @var $form \Symfony\Component\Form\FormInterface */
         $form = $builder->getForm();
+
+        $form->add('user_policy_check', CheckboxType::class, [
+            'required' => true,
+            'label' => 'signup.label.btn.user_policy',
+            'mapped' => false,
+            'constraints' => [
+                new Assert\NotBlank(),
+            ],
+        ]);
 
         $form->handleRequest($request);
 

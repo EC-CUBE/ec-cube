@@ -25,7 +25,6 @@ use Eccube\Form\Type\PhoneNumberType;
 use Eccube\Form\Type\PostalType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -108,15 +107,7 @@ class EntryType extends AbstractType
                     ],
                     'mapped' => false,
                 ]
-            )
-            ->add('user_policy_check', CheckboxType::class, [
-                'required' => true,
-                'label' => 'signup.label.btn.user_policy',
-                'mapped' => false,
-                'constraints' => [
-                    new Assert\NotBlank(),
-                ],
-            ]);
+            );
     }
 
     /**
