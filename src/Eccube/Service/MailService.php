@@ -387,14 +387,21 @@ class MailService
     /**
      * Send admin order mail.
      *
-     * @param $Order 受注情報
+     * @param Order $Order 受注情報
      * @param $formData 入力内容
+     * @param string $twig テンプレートファイル名
+     *
+     * @return $this
+     *
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
      */
-    public function sendAdminOrderMail(\Eccube\Entity\Order $Order, $formData)
+    public function sendAdminOrderMail(Order $Order, $formData, $twig = '@admin/Mail/order.twig')
     {
         log_info('受注管理通知メール送信開始');
 
-        $body = $this->twig->render('Mail/order.twig', [
+        $body = $this->twig->render($twig, [
             'header' => $formData['mail_header'],
             'footer' => $formData['mail_footer'],
             'Order' => $Order,
@@ -424,7 +431,7 @@ class MailService
 
         log_info('受注管理通知メール送信完了', ['count' => $count]);
 
-        return $count;
+        return $message;
     }
 
     /**
@@ -561,26 +568,25 @@ class MailService
         $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['eccube_shipping_notify_mail_template_id']);
 
         /** @var Order $Order */
-        foreach ($Shipping->getOrders() as $Order) {
-            $message = (new \Swift_Message())
-                ->setSubject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
-                ->setFrom([$this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()])
-                ->setTo($Order->getEmail())
-                ->setBcc($this->BaseInfo->getEmail01())
-                ->setReplyTo($this->BaseInfo->getEmail03())
-                ->setReturnPath($this->BaseInfo->getEmail04())
-                ->setBody($this->getShippingNotifyMailBody($Shipping, $Order, $MailTemplate));
+        $Order = $Shipping->getOrder();
+        $message = (new \Swift_Message())
+            ->setSubject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
+            ->setFrom([$this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()])
+            ->setTo($Order->getEmail())
+            ->setBcc($this->BaseInfo->getEmail01())
+            ->setReplyTo($this->BaseInfo->getEmail03())
+            ->setReturnPath($this->BaseInfo->getEmail04())
+            ->setBody($this->getShippingNotifyMailBody($Shipping, $Order, $MailTemplate));
 
-            $this->mailer->send($message);
+        $this->mailer->send($message);
 
-            $MailHistory = new MailHistory();
-            $MailHistory->setMailSubject($message->getSubject())
-                    ->setMailBody($message->getBody())
-                    ->setOrder($Order)
-                    ->setSendDate(new \DateTime());
+        $MailHistory = new MailHistory();
+        $MailHistory->setMailSubject($message->getSubject())
+                ->setMailBody($message->getBody())
+                ->setOrder($Order)
+                ->setSendDate(new \DateTime());
 
-            $this->mailHistoryRepository->save($MailHistory);
-        }
+        $this->mailHistoryRepository->save($MailHistory);
 
         log_info('出荷通知メール送信処理完了', ['id' => $Shipping->getId()]);
     }

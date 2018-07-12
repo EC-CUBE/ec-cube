@@ -16,8 +16,7 @@ file that was distributed with this source code.
 　ご請求金額
 ************************************************
 
-ご注文番号：{{ Order.id }}
-ご注文コード: {{ Order.code }}
+ご注文番号: {{ Order.order_no }}
 お支払い合計：{{ Order.payment_total|price}}
 お支払い方法：{{ Order.payment_method }}
 メッセージ：{{ Order.message }}
@@ -54,10 +53,9 @@ file that was distributed with this source code.
 {% if Order.company_name %}
 {{'signup.label.company_name'|trans}}　：{{ Order.company_name }}
 {% endif %}
-{{'signup.label.postal_code'|trans}}：〒{{ Order.zip01 }}-{{ Order.zip02 }}
+{{'signup.label.postal_code'|trans}}：〒{{ Order.postal_code }}
 {{'signup.label.address'|trans}}　　：{{ Order.Pref.name }}{{ Order.addr01 }}{{ Order.addr02 }}
-{{'signup.label.tel_number'|trans}}：{{ Order.tel01 }}-{{ Order.tel02 }}-{{ Order.tel03 }}
-{{'signup.label.fax'|trans}} ：{{ Order.fax01 }}-{{ Order.fax02 }}-{{ Order.fax03 }}
+{{'signup.label.tel_number'|trans}}：{{ Order.phone_number }}
 
 {{'signup.label.email'|trans}}：{{ Order.email }}
 
@@ -73,13 +71,12 @@ file that was distributed with this source code.
 {% if Shipping.company_name %}
 {{'shipping.label.shipping_company'|trans}}　：{{ Shipping.company_name }}
 {% endif %}
-{{'signup.label.postal_code'|trans}}：〒{{ Shipping.zip01 }}-{{ Shipping.zip02 }}
+{{'signup.label.postal_code'|trans}}：〒{{ Shipping.postal_code }}
 {{'signup.label.address'|trans}}　　：{{ Shipping.Pref.name }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}
-{{'signup.label.tel_number'|trans}}：{{ Shipping.tel01 }}-{{ Shipping.tel02 }}-{{ Shipping.tel03 }}
-{{'signup.label.fax'|trans}} ：{{ Shipping.fax01 }}-{{ Shipping.fax02 }}-{{ Shipping.fax03 }}
+{{'signup.label.tel_number'|trans}}：{{ Shipping.phone_number }}
 
-{{'shopping.label.delivery_date'|trans}}：{{ Shipping.shipping_delivery_date is empty ? 'shopping.label.anytime' : Shipping.shipping_delivery_date|date_format }}
-{{'shopping.label.delivery_hours'|trans}}：{{ Shipping.shipping_delivery_time|default('shopping.label.anytime') }}
+{{'shopping.label.delivery_date'|trans}}：{{ Shipping.shipping_delivery_date is empty ? 'shopping.label.anytime'|trans : Shipping.shipping_delivery_date|date_format }}
+{{'shopping.label.delivery_hours'|trans}}：{{ Shipping.shipping_delivery_time|default('shopping.label.anytime'|trans) }}
 
 {%  for OrderItem in Shipping.OrderItems %}
 {{'product_description.label.product_code'|trans}}: {{ OrderItem.product_code }}
@@ -88,5 +85,9 @@ file that was distributed with this source code.
 
 {% endfor %}
 {% endfor %}
+
+{% if Order.complete_mail_message is not empty %}
+{{ Order.complete_mail_message }}
+{% endif %}
 
 {{ footer }}

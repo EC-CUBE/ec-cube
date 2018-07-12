@@ -13,8 +13,6 @@
 
 namespace Eccube\Controller\Admin\Store;
 
-use Doctrine\ORM\EntityManager;
-use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BaseInfo;
@@ -26,16 +24,16 @@ use Eccube\Form\Type\Admin\PluginManagementType;
 use Eccube\Repository\PluginEventHandlerRepository;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\PluginService;
+use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bridge\Monolog\Logger;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,16 +42,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class PluginController extends AbstractController
 {
-    /**
-     * @var EntityManager
-     */
-    protected $entityManager;
-
-    /**
-     * @var Logger
-     */
-    protected $logger;
-
     /**
      * @var PluginEventHandlerRepository
      */
@@ -65,19 +53,9 @@ class PluginController extends AbstractController
     protected $pluginService;
 
     /**
-     * @var array
-     */
-    protected $eccubeConfig;
-
-    /**
      * @var BaseInfo
      */
     protected $BaseInfo;
-
-    /**
-     * @var FormFactory
-     */
-    protected $formFactory;
 
     /**
      * @var PluginRepository
@@ -85,25 +63,40 @@ class PluginController extends AbstractController
     protected $pluginRepository;
 
     /**
+     * PluginController constructor.
+     *
+     * @param PluginRepository $pluginRepository
+     * @param PluginService $pluginService
+     * @param BaseInfo $baseInfo
+     */
+    public function __construct(PluginRepository $pluginRepository, PluginService $pluginService, PluginEventHandlerRepository $eventHandlerRepository, BaseInfo $baseInfo)
+    {
+        $this->pluginRepository = $pluginRepository;
+        $this->pluginService = $pluginService;
+        $this->pluginEventHandlerRepository = $eventHandlerRepository;
+        $this->BaseInfo = $baseInfo;
+    }
+
+    /**
      * インストール済プラグイン画面
      *
      * @Route("/%eccube_admin_route%/store/plugin", name="admin_store_plugin")
-     * @Template("Store/plugin.twig")
+     * @Template("@admin/Store/plugin.twig")
      */
-    public function index(Application $app, Request $request)
+    public function index(Request $request)
     {
         $pluginForms = [];
         $configPages = [];
         $Plugins = $this->pluginRepository->findBy([], ['code' => 'ASC']);
 
         // ファイル設置プラグインの取得.
-        $unregisterdPlugins = $this->getUnregisteredPlugins($Plugins, $app);
+        $unregisterdPlugins = $this->getUnregisteredPlugins($Plugins);
         $unregisterdPluginsConfigPages = [];
         foreach ($unregisterdPlugins as $unregisterdPlugin) {
             try {
                 $code = $unregisterdPlugin['code'];
                 // プラグイン用設定画面があれば表示(プラグイン用のサービスプロバイダーに定義されているか)
-                $unregisterdPluginsConfigPages[$code] = $app->url('plugin_'.$code.'_config');
+                $unregisterdPluginsConfigPages[$code] = $this->generateUrl('plugin_'.$code.'_config');
             } catch (RouteNotFoundException $e) {
                 // プラグインで設定画面のルートが定義されていない場合は無視
             }
@@ -127,7 +120,7 @@ class PluginController extends AbstractController
 
             try {
                 // プラグイン用設定画面があれば表示(プラグイン用のサービスプロバイダーに定義されているか)
-                $configPages[$Plugin->getCode()] = $app->url('plugin_'.$Plugin->getCode().'_config');
+                $configPages[$Plugin->getCode()] = $this->generateUrl(Container::underscore($Plugin->getCode()).'_admin_config');
             } catch (\Exception $e) {
                 // プラグインで設定画面のルートが定義されていない場合は無視
             }
@@ -143,8 +136,8 @@ class PluginController extends AbstractController
         // オーナーズストアからダウンロード可能プラグイン情報を取得
         $authKey = $this->BaseInfo->getAuthenticationKey();
         // オーナーズストア通信
-        $url = $this->eccubeConfig['package_repo_url'].'/search/packages.json';
-        list($json, $info) = $this->getRequestApi($request, $authKey, $url, $app);
+        $url = $this->eccubeConfig['eccube_package_repo_url'].'/search/packages.json';
+        list($json, $info) = $this->getRequestApi($request, $authKey, $url);
 
         $officialPluginsDetail = [];
         if ($json) {
@@ -182,13 +175,12 @@ class PluginController extends AbstractController
      * @Method("POST")
      * @Route("/%eccube_admin_route%/store/plugin/{id}/update", requirements={"id" = "\d+"}, name="admin_store_plugin_update")
      *
-     * @param Application $app
      * @param Request     $request
      * @param Plugin      $Plugin
      *
      * @return RedirectResponse
      */
-    public function update(Application $app, Request $request, Plugin $Plugin)
+    public function update(Request $request, Plugin $Plugin)
     {
         $form = $this->formFactory
             ->createNamedBuilder(
@@ -213,9 +205,9 @@ class PluginController extends AbstractController
                 $this->pluginService->update($Plugin, $tmpDir.'/'.$tmpFile);
                 $fs = new Filesystem();
                 $fs->remove($tmpDir);
-                $app->addSuccess('admin.plugin.update.complete', 'admin');
+                $this->addSuccess('admin.plugin.update.complete', 'admin');
 
-                return $app->redirect($app->url('admin_store_plugin'));
+                return $this->redirectToRoute('admin_store_plugin');
             } catch (PluginException $e) {
                 if (!empty($tmpDir) && file_exists($tmpDir)) {
                     $fs = new Filesystem();
@@ -228,7 +220,7 @@ class PluginController extends AbstractController
                     $fs = new Filesystem();
                     $fs->remove($tmpDir);
                 }
-                $this->logger->error('plugin install failed.', ['original-message' => $er->getMessage()]);
+                log_error('plugin install failed.', ['original-message' => $er->getMessage()]);
                 $message = 'admin.plugin.install.fail';
             }
         } else {
@@ -238,9 +230,9 @@ class PluginController extends AbstractController
             }
         }
 
-        $app->addError($message, 'admin');
+        $this->addError($message, 'admin');
 
-        return $app->redirect($app->url('admin_store_plugin'));
+        return $this->redirectToRoute('admin_store_plugin');
     }
 
     /**
@@ -249,17 +241,16 @@ class PluginController extends AbstractController
      * @Method("PUT")
      * @Route("/%eccube_admin_route%/store/plugin/{id}/enable", requirements={"id" = "\d+"}, name="admin_store_plugin_enable")
      *
-     * @param Application $app
      * @param Plugin      $Plugin
      *
      * @return RedirectResponse
      */
-    public function enable(Application $app, Plugin $Plugin)
+    public function enable(Plugin $Plugin)
     {
-        $this->isTokenValid($app);
+        $this->isTokenValid();
 
         if ($Plugin->isEnabled()) {
-            $app->addError('admin.plugin.already.enable', 'admin');
+            $this->addError('admin.plugin.already.enable', 'admin');
         } else {
             $requires = $this->pluginService->findRequirePluginNeedEnable($Plugin->getCode());
             if (!empty($requires)) {
@@ -269,15 +260,16 @@ class PluginController extends AbstractController
                     $dependName = $DependPlugin->getName();
                 }
                 $message = trans('admin.plugin.enable.depend', ['%name%' => $Plugin->getName(), '%depend_name%' => $dependName]);
-                $app->addError($message, 'admin');
+                $this->addError($message, 'admin');
 
-                return $app->redirect($app->url('admin_store_plugin'));
+                return $this->redirectToRoute('admin_store_plugin');
             }
             $this->pluginService->enable($Plugin);
-            $app->addSuccess('admin.plugin.enable.complete', 'admin');
+            $this->addSuccess('admin.plugin.enable.complete', 'admin');
         }
 
-        return $app->redirect($app->url('admin_store_plugin'));
+        // 有効化できた場合はキャッシュを再生成する
+        return $this->redirectToRoute('admin_store_clear_cache');
     }
 
     /**
@@ -286,14 +278,13 @@ class PluginController extends AbstractController
      * @Method("PUT")
      * @Route("/%eccube_admin_route%/store/plugin/{id}/disable", requirements={"id" = "\d+"}, name="admin_store_plugin_disable")
      *
-     * @param Application $app
      * @param Plugin      $Plugin
      *
      * @return RedirectResponse
      */
-    public function disable(Application $app, Plugin $Plugin)
+    public function disable(Plugin $Plugin)
     {
-        $this->isTokenValid($app);
+        $this->isTokenValid();
 
         if ($Plugin->isEnabled()) {
             $dependents = $this->pluginService->findDependentPluginNeedDisable($Plugin->getCode());
@@ -304,18 +295,41 @@ class PluginController extends AbstractController
                     $dependName = $DependPlugin->getName();
                 }
                 $message = trans('admin.plugin.disable.depend', ['%name%' => $Plugin->getName(), '%depend_name%' => $dependName]);
-                $app->addError($message, 'admin');
+                $this->addError($message, 'admin');
 
-                return $app->redirect($app->url('admin_store_plugin'));
+                return $this->redirectToRoute('admin_store_plugin');
             }
 
             $this->pluginService->disable($Plugin);
-            $app->addSuccess('admin.plugin.disable.complete', 'admin');
+            $this->addSuccess('admin.plugin.disable.complete', 'admin');
         } else {
-            $app->addError('admin.plugin.already.disable', 'admin');
+            $this->addError('admin.plugin.already.disable', 'admin');
+
+            return $this->redirectToRoute('admin_store_plugin');
         }
 
-        return $app->redirect($app->url('admin_store_plugin'));
+        // 無効化できた場合はキャッシュを再生成する
+        return $this->redirectToRoute('admin_store_clear_cache');
+    }
+
+    /**
+     * プラグイン有効状態切り替え後にキャッシュを削除するためのルーティング
+     *
+     * このルーティングが必要な理由：
+     * プラグイン有効化のリクエスト内でキャッシュを削除しても、有効になる前の情報でキャッシュが再生成されてしまう。
+     * それを回避するために、このルーティングにリダイレクトして、プラグイン有効状態であらためてキャッシュ再生成する。
+     *
+     * @Route("/%eccube_admin_route%/store/plugin/clearcache", name="admin_store_clear_cache")
+     *
+     * @param Request     $request
+     *
+     * @return RedirectResponse
+     */
+    public function clearCache(Request $request, CacheUtil $cacheUtil)
+    {
+        $cacheUtil->clearCache();
+
+        return $this->redirectToRoute('admin_store_plugin');
     }
 
     /**
@@ -324,19 +338,18 @@ class PluginController extends AbstractController
      * @Method("DELETE")
      * @Route("/%eccube_admin_route%/store/plugin/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_uninstall")
      *
-     * @param Application $app
      * @param Plugin      $Plugin
      *
      * @return RedirectResponse
      */
-    public function uninstall(Application $app, Plugin $Plugin)
+    public function uninstall(Plugin $Plugin)
     {
-        $this->isTokenValid($app);
+        $this->isTokenValid();
 
         if ($Plugin->isEnabled()) {
-            $app->addError('admin.plugin.uninstall.error.not_disable', 'admin');
+            $this->addError('admin.plugin.uninstall.error.not_disable', 'admin');
 
-            return $app->redirect($app->url('admin_store_plugin'));
+            return $this->redirectToRoute('admin_store_plugin');
         }
 
         // Check other plugin depend on it
@@ -349,22 +362,22 @@ class PluginController extends AbstractController
                 $dependName = $DependPlugin->getName();
             }
             $message = trans('admin.plugin.uninstall.depend', ['%name%' => $Plugin->getName(), '%depend_name%' => $dependName]);
-            $app->addError($message, 'admin');
+            $this->addError($message, 'admin');
 
-            return $app->redirect($app->url('admin_store_plugin'));
+            return $this->redirectToRoute('admin_store_plugin');
         }
 
         $this->pluginService->uninstall($Plugin);
-        $app->addSuccess('admin.plugin.uninstall.complete', 'admin');
+        $this->addSuccess('admin.plugin.uninstall.complete', 'admin');
 
-        return $app->redirect($app->url('admin_store_plugin'));
+        return $this->redirectToRoute('admin_store_plugin');
     }
 
     /**
      * @Route("/%eccube_admin_route%/store/plugin/handler", name="admin_store_plugin_handler")
-     * @Template("Store/plugin_handler.twig")
+     * @Template("@admin/Store/plugin_handler.twig")
      */
-    public function handler(Application $app)
+    public function handler()
     {
         $handlers = $this->pluginEventHandlerRepository->getHandlers();
 
@@ -382,37 +395,36 @@ class PluginController extends AbstractController
     /**
      * @Route("/%eccube_admin_route%/store/plugin/handler_up/{id}", requirements={"id" = "\d+"}, name="admin_store_plugin_handler_up")
      */
-    public function handler_up(Application $app, PluginEventHandler $Handler)
+    public function handler_up(PluginEventHandler $Handler)
     {
         $repo = $this->pluginEventHandlerRepository;
         $repo->upPriority($repo->find($Handler->getId()));
 
-        return $app->redirectToRoute('admin_store_plugin_handler');
+        return $this->redirectToRoute('admin_store_plugin_handler');
     }
 
     /**
      * @Route("/%eccube_admin_route%/store/plugin/handler_down/{id}", requirements={"id" = "\d+"}, name="admin_store_plugin_handler_down")
      */
-    public function handler_down(Application $app, PluginEventHandler $Handler)
+    public function handler_down(PluginEventHandler $Handler)
     {
         $repo = $this->pluginEventHandlerRepository;
         $repo->upPriority($Handler, false);
 
-        return $app->redirectToRoute('admin_store_plugin_handler');
+        return $this->redirectToRoute('admin_store_plugin_handler');
     }
 
     /**
      * プラグインファイルアップロード画面
      *
      * @Route("/%eccube_admin_route%/store/plugin/install", name="admin_store_plugin_install")
-     * @Template("Store/plugin_install.twig")
+     * @Template("@admin/Store/plugin_install.twig")
      *
-     * @param Application $app
      * @param Request     $request
      *
      * @return array|RedirectResponse
      */
-    public function install(Application $app, Request $request)
+    public function install(Request $request)
     {
         $form = $this->formFactory
             ->createBuilder(PluginLocalInstallType::class)
@@ -434,15 +446,15 @@ class PluginController extends AbstractController
                 // Remove tmp file
                 $fs = new Filesystem();
                 $fs->remove($tmpDir);
-                $app->addSuccess('admin.plugin.install.complete', 'admin');
+                $this->addSuccess('admin.plugin.install.complete', 'admin');
 
-                return $app->redirect($app->url('admin_store_plugin'));
+                return $this->redirectToRoute('admin_store_plugin');
             } catch (PluginException $e) {
                 if (!empty($tmpDir) && file_exists($tmpDir)) {
                     $fs = new Filesystem();
                     $fs->remove($tmpDir);
                 }
-                $this->logger->error('plugin install failed.', ['original-message' => $e->getMessage()]);
+                log_error('plugin install failed.', ['original-message' => $e->getMessage()]);
                 $errors[] = $e;
             } catch (\Exception $er) {
                 // Catch composer install error | Other error
@@ -450,8 +462,8 @@ class PluginController extends AbstractController
                     $fs = new Filesystem();
                     $fs->remove($tmpDir);
                 }
-                $this->logger->error('plugin install failed.', ['original-message' => $er->getMessage()]);
-                $app->addError('admin.plugin.install.fail', 'admin');
+                log_error('plugin install failed.', ['original-message' => $er->getMessage()]);
+                $this->addError('admin.plugin.install.fail', 'admin');
             }
         } else {
             foreach ($form->getErrors(true) as $error) {
@@ -469,9 +481,9 @@ class PluginController extends AbstractController
      * 認証キー設定画面
      *
      * @Route("/%eccube_admin_route%/store/plugin/authentication_setting", name="admin_store_authentication_setting")
-     * @Template("Store/authentication_setting.twig")
+     * @Template("@admin/Store/authentication_setting.twig")
      */
-    public function authenticationSetting(Application $app, Request $request)
+    public function authenticationSetting(Request $request)
     {
         $builder = $this->formFactory
             ->createBuilder(FormType::class, $this->BaseInfo);
@@ -491,10 +503,11 @@ class PluginController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             // 認証キーの登録
-            $BaseInfo = $form->getData();
-            $this->entityManager->flush($BaseInfo);
+            $this->BaseInfo = $form->getData();
+            $this->entityManager->persist($this->BaseInfo);
+            $this->entityManager->flush();
 
-            $app->addSuccess('admin.plugin.authentication.setting.complete', 'admin');
+            $this->addSuccess('admin.plugin.authentication.setting.complete', 'admin');
         }
 
         return [
@@ -508,11 +521,10 @@ class PluginController extends AbstractController
      * @param Request $request
      * @param $authKey
      * @param string $url
-     * @param Application $app
      *
      * @return array
      */
-    private function getRequestApi(Request $request, $authKey, $url, $app)
+    private function getRequestApi(Request $request, $authKey, $url)
     {
         $curl = curl_init($url);
 
@@ -538,7 +550,7 @@ class PluginController extends AbstractController
         $info['message'] = $message;
         curl_close($curl);
 
-        $app->log('http get_info', $info);
+        log_info('http get_info', $info);
 
         return [$result, $info];
     }
@@ -568,11 +580,10 @@ class PluginController extends AbstractController
      * フォルダ設置のみのプラグインを取得する.
      *
      * @param array $plugins
-     * @param Application $app
      *
      * @return array
      */
-    protected function getUnregisteredPlugins(array $plugins, \Eccube\Application $app)
+    protected function getUnregisteredPlugins(array $plugins)
     {
         $finder = new Finder();
         $pluginCodes = [];
@@ -595,7 +606,7 @@ class PluginController extends AbstractController
                 $this->pluginService->checkPluginArchiveContent($dir->getRealPath());
             } catch (\Eccube\Exception\PluginException $e) {
                 //config.yamlに不備があった際は全てスキップ
-                $this->logger->warning($e->getMessage());
+                log_warning($e->getMessage());
                 continue;
             }
             $config = $this->pluginService->readYml($dir->getRealPath().'/config.yml');

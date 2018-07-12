@@ -160,43 +160,13 @@ class OrderRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->verify();
     }
 
-    public function testTel01()
+    public function testPhoneNumber()
     {
-        $this->Order1->setTel01('999');
+        $this->Order1->setPhoneNumber('999');
         $this->entityManager->flush();
 
         $this->searchData = [
-            'tel01' => '999',
-        ];
-        $this->scenario();
-
-        $this->expected = 1;
-        $this->actual = count($this->Results);
-        $this->verify();
-    }
-
-    public function testTel02()
-    {
-        $this->Order1->setTel02('999');
-        $this->entityManager->flush();
-
-        $this->searchData = [
-            'tel02' => '999',
-        ];
-        $this->scenario();
-
-        $this->expected = 1;
-        $this->actual = count($this->Results);
-        $this->verify();
-    }
-
-    public function testTel03()
-    {
-        $this->Order1->setTel03('999');
-        $this->entityManager->flush();
-
-        $this->searchData = [
-            'tel03' => '999',
+            'phone_number' => '999',
         ];
         $this->scenario();
 

@@ -15,6 +15,7 @@ namespace Eccube\Form\Type\Admin;
 
 use Eccube\Form\Type\PriceType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -67,6 +68,12 @@ class PaymentRegisterType extends AbstractType
             ])
             ->add('payment_image', HiddenType::class, [
                 'required' => false,
+            ])
+            ->add('visible', ChoiceType::class, [
+                'label' => false,
+                'choices' => ['common.label.display' => true, 'common.label.hide' => false],
+                'required' => true,
+                'expanded' => false,
             ])
             ->add('charge', PriceType::class, [
                 'label' => 'paymentregister.label.commision',

@@ -41,11 +41,6 @@ class AbstractShoppingController extends AbstractController
     protected $sessionCustomerAddressKey = 'eccube.front.shopping.nonmember.customeraddress';
 
     /**
-     * @var string 複数配送警告メッセージ
-     */
-    protected $sessionMultipleKey = 'eccube.front.shopping.multiple';
-
-    /**
      * @var string 受注IDキー
      */
     protected $sessionOrderKey = 'eccube.front.shopping.order.id';
@@ -64,10 +59,10 @@ class AbstractShoppingController extends AbstractController
      *
      * @return PurchaseFlowResult
      */
-    protected function executePurchaseFlow(ItemHolderInterface $itemHolder)
+    protected function validatePurchaseFlow(ItemHolderInterface $itemHolder)
     {
         /** @var PurchaseFlowResult $flowResult */
-        $flowResult = $this->purchaseFlow->calculate($itemHolder, new PurchaseContext($itemHolder, $itemHolder->getCustomer()));
+        $flowResult = $this->purchaseFlow->validate($itemHolder, new PurchaseContext($itemHolder, $itemHolder->getCustomer()));
         foreach ($flowResult->getWarning() as $warning) {
             $this->addRequestError($warning);
         }

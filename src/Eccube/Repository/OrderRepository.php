@@ -57,9 +57,6 @@ class OrderRepository extends AbstractRepository
         ;
 
         switch ($Status->getId()) {
-            case '5': // 発送済へ
-                $Order->setShippingDate(new \DateTime());
-                break;
             case '6': // 入金済へ
                 $Order->setPaymentDate(new \DateTime());
                 break;
@@ -124,20 +121,10 @@ class OrderRepository extends AbstractRepository
         }
 
         // tel
-        if (isset($searchData['tel01']) && StringUtil::isNotBlank($searchData['tel01'])) {
+        if (isset($searchData['phone_number']) && StringUtil::isNotBlank($searchData['phone_number'])) {
             $qb
-                ->andWhere('o.tel01 = :tel01')
-                ->setParameter('tel01', $searchData['tel01']);
-        }
-        if (isset($searchData['tel02']) && StringUtil::isNotBlank($searchData['tel02'])) {
-            $qb
-                ->andWhere('o.tel02 = :tel02')
-                ->setParameter('tel02', $searchData['tel02']);
-        }
-        if (isset($searchData['tel03']) && StringUtil::isNotBlank($searchData['tel03'])) {
-            $qb
-                ->andWhere('o.tel03 = :tel03')
-                ->setParameter('tel03', $searchData['tel03']);
+                ->andWhere('o.phone_number = :phone_number')
+                ->setParameter('phone_number', $searchData['phone_number']);
         }
 
         // birth
@@ -260,13 +247,22 @@ class OrderRepository extends AbstractRepository
      */
     public function getQueryBuilderBySearchDataForAdmin($searchData)
     {
-        $qb = $this->createQueryBuilder('o');
+        $qb = $this->createQueryBuilder('o')
+            ->select('o, s')
+            ->innerJoin('o.Shippings', 's');
 
         // order_id_start
         if (isset($searchData['order_id']) && StringUtil::isNotBlank($searchData['order_id'])) {
             $qb
                 ->andWhere('o.id = :order_id')
                 ->setParameter('order_id', $searchData['order_id']);
+        }
+
+        // order_no
+        if (isset($searchData['order_no']) && StringUtil::isNotBlank($searchData['order_no'])) {
+            $qb
+                ->andWhere('o.order_no = :order_no')
+                ->setParameter('order_no', $searchData['order_no']);
         }
 
         // order_id_start
@@ -281,7 +277,7 @@ class OrderRepository extends AbstractRepository
             $qb
                 ->andWhere('o.id = :multi OR o.name01 LIKE :likemulti OR o.name02 LIKE :likemulti OR '.
                            'o.kana01 LIKE :likemulti OR o.kana02 LIKE :likemulti OR o.company_name LIKE :likemulti OR '.
-                           'o.code LIKE :likemulti')
+                           'o.order_no LIKE :likemulti')
                 ->setParameter('multi', $multi)
                 ->setParameter('likemulti', '%'.$searchData['multi'].'%');
         }
@@ -340,11 +336,11 @@ class OrderRepository extends AbstractRepository
         }
 
         // tel
-        if (isset($searchData['tel']) && StringUtil::isNotBlank($searchData['tel'])) {
-            $tel = preg_replace('/[^0-9]/ ', '', $searchData['tel']);
+        if (isset($searchData['phone_number']) && StringUtil::isNotBlank($searchData['phone_number'])) {
+            $tel = preg_replace('/[^0-9]/ ', '', $searchData['phone_number']);
             $qb
-                ->andWhere('CONCAT(o.tel01, o.tel02, o.tel03) LIKE :tel')
-                ->setParameter('tel', '%'.$tel.'%');
+                ->andWhere('o.phone_number LIKE :phone_number')
+                ->setParameter('phone_number', '%'.$tel.'%');
         }
 
         // sex
@@ -398,22 +394,6 @@ class OrderRepository extends AbstractRepository
                 ->setParameter('payment_date_end', $date);
         }
 
-        // shipping_date
-        if (!empty($searchData['shipping_date_start']) && $searchData['shipping_date_start']) {
-            $date = $searchData['shipping_date_start'];
-            $qb
-                ->andWhere('o.shipping_date >= :shipping_date_start')
-                ->setParameter('shipping_date_start', $date);
-        }
-        if (!empty($searchData['shipping_date_end']) && $searchData['shipping_date_end']) {
-            $date = clone $searchData['shipping_date_end'];
-            $date = $date
-                ->modify('+1 days');
-            $qb
-                ->andWhere('o.shipping_date < :shipping_date_end')
-                ->setParameter('shipping_date_end', $date);
-        }
-
         // update_date
         if (!empty($searchData['update_date_start']) && $searchData['update_date_start']) {
             $date = $searchData['update_date_start'];
@@ -448,6 +428,35 @@ class OrderRepository extends AbstractRepository
                 ->leftJoin('o.OrderItems', 'oi')
                 ->andWhere('oi.product_name LIKE :buy_product_name')
                 ->setParameter('buy_product_name', '%'.$searchData['buy_product_name'].'%');
+        }
+
+        // 発送メール送信済かどうか.
+        if (isset($searchData['shipping_mail_send']) && $searchData['shipping_mail_send']) {
+            $qb
+                ->andWhere('s.mail_send_date IS NOT NULL');
+        }
+
+        // 送り状番号.
+        if (!empty($searchData['tracking_number'])) {
+            $qb
+                ->andWhere('s.tracking_number = :tracking_number')
+                ->setParameter('tracking_number', $searchData['tracking_number']);
+        }
+
+        // お届け予定日(Shipping.delivery_date)
+        if (!empty($searchData['shipping_delivery_date_start']) && $searchData['shipping_delivery_date_start']) {
+            $date = $searchData['shipping_delivery_date_start'];
+            $qb
+                ->andWhere('s.shipping_delivery_date >= :shipping_delivery_date_start')
+                ->setParameter('shipping_delivery_date_start', $date);
+        }
+        if (!empty($searchData['shipping_delivery_date_end']) && $searchData['shipping_delivery_date_end']) {
+            $date = clone $searchData['shipping_delivery_date_end'];
+            $date = $date
+                ->modify('+1 days');
+            $qb
+                ->andWhere('s.shipping_delivery_date < :shipping_delivery_date_end')
+                ->setParameter('shipping_delivery_date_end', $date);
         }
 
         // Order By
@@ -485,7 +494,7 @@ class OrderRepository extends AbstractRepository
     public function getCustomerCount(\Eccube\Entity\Customer $Customer, array $OrderStatuses)
     {
         $result = $this->createQueryBuilder('o')
-            ->select('COUNT(o.id) AS buy_times, SUM(o.total)  AS buy_total')
+            ->select('COUNT(o.id) AS buy_times, SUM(o.total) AS buy_total, MAX(o.id) AS order_id')
             ->where('o.Customer = :Customer')
             ->andWhere('o.OrderStatus in (:OrderStatuses)')
             ->setParameter('Customer', $Customer)
@@ -495,5 +504,51 @@ class OrderRepository extends AbstractRepository
             ->getResult();
 
         return $result;
+    }
+
+    /**
+     * 会員が保持する最新の購入処理中の Order を取得する.
+     *
+     * @param Customer
+     *
+     * @return Order
+     */
+    public function getExistsOrdersByCustomer(\Eccube\Entity\Customer $Customer)
+    {
+        $qb = $this->createQueryBuilder('o');
+        $Order = $qb
+            ->select('o')
+            ->where('o.Customer = :Customer')
+            ->setParameter('Customer', $Customer)
+            ->orderBy('o.id', 'DESC')
+            ->getQuery()
+            ->setMaxResults(1)
+            ->getOneOrNullResult();
+
+        if ($Order && $Order->getOrderStatus()->getId() == OrderStatus::PROCESSING) {
+            return $Order;
+        }
+
+        return null;
+    }
+
+    /**
+     * ステータスごとの受注件数を取得する.
+     *
+     * @param $OrderStatusOrId
+     *
+     * @return int
+     *
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function countByOrderStatus($OrderStatusOrId)
+    {
+        return (int) $this->createQueryBuilder('o')
+            ->select('COALESCE(COUNT(o.id), 0)')
+            ->where('o.OrderStatus = :OrderStatus')
+            ->setParameter('OrderStatus', $OrderStatusOrId)
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 }

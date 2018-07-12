@@ -9,7 +9,7 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
 
-{% extends 'default_frame.twig' %}
+{% extends '@admin/default_frame.twig' %}
 
 {% set menus = ['store', 'plugin', 'plugin_list'] %}
 
@@ -35,47 +35,49 @@ file that was distributed with this source code.
 {% endblock javascript %}
 
 {% block main %}
-    <div class="row">
-        <div class="col-md-12">
-            <div class="box">
-                <div class="box-header">
-                    <a href="{{ url('admin_store_plugin_owners_search') }}" class="btn btn-info btn-xs pull-right">{{'admin.store.plugin.811'|trans}}</a>
-                    <h3 class="box-title">{{'admin.store.plugin.812'|trans}}</h3>
-                </div><!-- /.box-header -->
-                <div class="box-body">
-                    {{ include('Store/plugin_table_official.twig', {'Plugins': officialPlugins}) }}
-                </div><!-- /.box-body -->
-            </div><!-- /.box -->
+    <div class="c-contentsArea__cols">
+        <div class="c-contentsArea__primaryCol">
+            <div class="c-primaryCol">
+                <div class="card rounded border-0 mb-4">
+                    <div class="card-header">
+                        <a href="{{ url('admin_store_plugin_owners_search') }}"
+                           class="btn btn-info btn-xs pull-right">{{ 'admin.store.plugin.811'|trans }}</a>
+                        <h4 class="box-title font-weight-bold">{{ 'admin.store.plugin.812'|trans }}</h4>
+                    </div>
 
-            <div class="box">
-                <div class="box-header">
-                    <a href="{{ url('admin_store_plugin_install') }}" class="btn btn-info btn-xs pull-right">{{'admin.store.plugin.813'|trans}}</a>
-                    <h3 class="box-title">{{'admin.store.plugin.814'|trans}}</h3>
-                </div><!-- /.box-header -->
-                <div class="box-body">
-                    {{ include('Store/plugin_table.twig', {'Plugins': unofficialPlugins}) }}
-                </div><!-- /.box-body -->
-            </div><!-- /.box -->
-            {% if unregisterdPlugins is not empty %}
-                <div class="box">
-                    <div class="box-header">
-                        <h3 class="box-title">{{'admin.store.plugin.815'|trans}}</h3>
+                    {{ include('@admin/Store/plugin_table_official.twig', {'Plugins': officialPlugins}) }}
+                </div>
+
+                <div class="card rounded border-0 mb-4">
+                    <div class="card-header">
+                        <a href="{{ url('admin_store_plugin_install') }}"
+                           class="btn btn-info btn-xs pull-right">{{ 'admin.store.plugin.813'|trans }}</a>
+                        <h4 class="box-title font-weight-bold">{{ 'admin.store.plugin.814'|trans }}</h4>
                     </div><!-- /.box-header -->
-                    <div class="box-body">
-                        {{ include('Store/unregisterd_plugin_table.twig', {'Plugins': unregisterdPlugins}) }}
-                    </div><!-- /.box-body -->
-                </div><!-- /.box -->
-            {% endif %}
-        </div><!-- /.col -->
+
+                    {{ include('@admin/Store/plugin_table.twig', {'Plugins': unofficialPlugins}) }}
+                </div>
+
+                {% if unregisterdPlugins is not empty %}
+
+                <div class="card rounded border-0 mb-4">
+                    <div class="card-header">
+                        <h4 class="box-title font-weight-bold">{{ 'admin.store.plugin.815'|trans }}</h4>
+                    </div><!-- /.col -->
+
+                    {{ include('@admin/Store/unregisterd_plugin_table.twig', {'Plugins': unregisterdPlugins}) }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
     </div>
-{% endblock %}
-{% block modal %}
+
     <div class="modal fade" id="readmeModal" tabindex="-1" role="dialog" aria-labelledby="readmeModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><svg class="cb cb-close" aria-hidden="true"><use xlink:href="#cb-close"></svg></button>
                     <h4 class="modal-title" id="readmeModalLabel">{# {{'admin.store.plugin.816'|trans}} #}</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group" id="readmeContent">

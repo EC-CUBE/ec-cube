@@ -16,18 +16,29 @@ namespace Eccube\Service\PurchaseFlow;
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\ItemInterface;
+use Eccube\Entity\Order;
 
 class PurchaseFlow
 {
     /**
-     * @var ArrayCollection|ItemHolderProcessor[]
+     * @var ArrayCollection|ItemPreprocessor[]
      */
-    protected $itemHolderProcessors;
+    protected $itemPreprocessors;
 
     /**
-     * @var ArrayCollection|ItemProcessor[]
+     * @var ArrayCollection|ItemHolderPreprocessor[]
      */
-    protected $itemProcessors;
+    protected $itemHolderPreprocessors;
+
+    /**
+     * @var ArrayCollection|ItemValidator[]
+     */
+    protected $itemValidators;
+
+    /**
+     * @var ArrayCollection|ItemHolderValidator[]
+     */
+    protected $itemHolderValidators;
 
     /**
      * @var ArrayCollection|PurchaseProcessor[]
@@ -36,19 +47,11 @@ class PurchaseFlow
 
     public function __construct()
     {
-        $this->itemProcessors = new ArrayCollection();
-        $this->itemHolderProcessors = new ArrayCollection();
         $this->purchaseProcessors = new ArrayCollection();
-    }
-
-    public function setItemProcessors(ArrayCollection $processors)
-    {
-        $this->itemProcessors = $processors;
-    }
-
-    public function setItemHolderProcessors(ArrayCollection $processors)
-    {
-        $this->itemHolderProcessors = $processors;
+        $this->itemValidators = new ArrayCollection();
+        $this->itemHolderValidators = new ArrayCollection();
+        $this->itemPreprocessors = new ArrayCollection();
+        $this->itemHolderPreprocessors = new ArrayCollection();
     }
 
     public function setPurchaseProcessors(ArrayCollection $processors)
@@ -56,23 +59,57 @@ class PurchaseFlow
         $this->purchaseProcessors = $processors;
     }
 
-    public function calculate(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function setItemValidators(ArrayCollection $itemValidators)
+    {
+        $this->itemValidators = $itemValidators;
+    }
+
+    public function setItemHolderValidators(ArrayCollection $itemHolderValidators)
+    {
+        $this->itemHolderValidators = $itemHolderValidators;
+    }
+
+    public function setItemPreprocessors(ArrayCollection $itemPreprocessors)
+    {
+        $this->itemPreprocessors = $itemPreprocessors;
+    }
+
+    public function setItemHolderPreprocessors(ArrayCollection $itemHolderPreprocessors)
+    {
+        $this->itemHolderPreprocessors = $itemHolderPreprocessors;
+    }
+
+    public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         $this->calculateAll($itemHolder);
 
         $flowResult = new PurchaseFlowResult($itemHolder);
 
         foreach ($itemHolder->getItems() as $item) {
-            foreach ($this->itemProcessors as $itemProsessor) {
-                $result = $itemProsessor->process($item, $context);
+            foreach ($this->itemPreprocessors as $itemPreprocessor) {
+                $itemPreprocessor->process($item, $context);
+            }
+        }
+
+        $this->calculateAll($itemHolder);
+
+        foreach ($this->itemHolderPreprocessors as $holderPreprocessor) {
+            $holderPreprocessor->process($itemHolder, $context);
+        }
+
+        $this->calculateAll($itemHolder);
+
+        foreach ($itemHolder->getItems() as $item) {
+            foreach ($this->itemValidators as $itemValidator) {
+                $result = $itemValidator->execute($item, $context);
                 $flowResult->addProcessResult($result);
             }
         }
 
         $this->calculateAll($itemHolder);
 
-        foreach ($this->itemHolderProcessors as $holderProcessor) {
-            $result = $holderProcessor->process($itemHolder, $context);
+        foreach ($this->itemHolderValidators as $itemHolderValidator) {
+            $result = $itemHolderValidator->execute($itemHolder, $context);
             $flowResult->addProcessResult($result);
         }
 
@@ -82,15 +119,45 @@ class PurchaseFlow
     }
 
     /**
+     * 購入フロー仮確定処理.
+     *
+     * @param ItemHolderInterface $target
+     * @param PurchaseContext $context
+     *
+     * @throws PurchaseException
+     */
+    public function prepare(ItemHolderInterface $target, PurchaseContext $context)
+    {
+        foreach ($this->purchaseProcessors as $processor) {
+            $processor->prepare($target, $context);
+        }
+    }
+
+    /**
+     * 購入フロー確定処理.
+     *
      * @param ItemHolderInterface $target
      * @param PurchaseContext     $context
      *
      * @throws PurchaseException
      */
-    public function purchase(ItemHolderInterface $target, PurchaseContext $context)
+    public function commit(ItemHolderInterface $target, PurchaseContext $context)
     {
         foreach ($this->purchaseProcessors as $processor) {
-            $processor->process($target, $context);
+            $processor->commit($target, $context);
+        }
+    }
+
+    /**
+     * 購入フロー仮確定取り消し処理.
+     *
+     * @param ItemHolderInterface $target
+     * @param PurchaseContext $context
+     */
+    public function rollback(ItemHolderInterface $target, PurchaseContext $context)
+    {
+        foreach ($this->purchaseProcessors as $processor) {
+            $processor->rollback($target, $context);
         }
     }
 
@@ -99,14 +166,24 @@ class PurchaseFlow
         $this->purchaseProcessors[] = $processor;
     }
 
-    public function addItemHolderProcessor(ItemHolderProcessor $prosessor)
+    public function addItemHolderPreprocessor(ItemHolderPreprocessor $holderPreprocessor)
     {
-        $this->itemHolderProcessors[] = $prosessor;
+        $this->itemHolderPreprocessors[] = $holderPreprocessor;
     }
 
-    public function addItemProcessor(ItemProcessor $prosessor)
+    public function addItemPreprocessor(ItemPreprocessor $itemPreprocessor)
     {
-        $this->itemProcessors[] = $prosessor;
+        $this->itemPreprocessors[] = $itemPreprocessor;
+    }
+
+    public function addItemValidator(ItemValidator $itemValidator)
+    {
+        $this->itemValidators[] = $itemValidator;
+    }
+
+    public function addItemHolderValidator(ItemHolderValidator $itemHolderValidator)
+    {
+        $this->itemHolderValidators[] = $itemHolderValidator;
     }
 
     /**
@@ -121,7 +198,7 @@ class PurchaseFlow
         }, 0);
         $itemHolder->setTotal($total);
         // TODO
-        if ($itemHolder instanceof \Eccube\Entity\Order) {
+        if ($itemHolder instanceof Order) {
             // Order には PaymentTotal もセットする
             $itemHolder->setPaymentTotal($total);
         }
@@ -137,7 +214,7 @@ class PurchaseFlow
                 return $sum;
             }, 0);
         // TODO
-        if ($itemHolder instanceof \Eccube\Entity\Order) {
+        if ($itemHolder instanceof Order) {
             // Order の場合は SubTotal をセットする
             $itemHolder->setSubTotal($total);
         }

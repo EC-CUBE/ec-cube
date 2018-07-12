@@ -34,25 +34,13 @@ class ShoppingShippingTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestC
             'kana02' => 'シンイチ',
         ],
         'company_name' => '',
-        'zip' => [
-            'zip01' => '530',
-            'zip02' => '0001',
-        ],
+        'postal_code' => '060-0000',
         'address' => [
             'pref' => '5',
             'addr01' => '北区',
             'addr02' => '梅田',
         ],
-        'tel' => [
-            'tel01' => '03',
-            'tel02' => '1111',
-            'tel03' => '1111',
-        ],
-        'fax' => [
-            'fax01' => '03',
-            'fax02' => '1111',
-            'fax03' => '1111',
-        ],
+        'phone_number' => '012-345-6789',
     ];
 
     public function setUp()
@@ -73,11 +61,9 @@ class ShoppingShippingTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestC
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInvalidTel_Blank()
+    public function testInvalidPhoneNumber_Blank()
     {
-        $this->formData['tel']['tel01'] = '';
-        $this->formData['tel']['tel02'] = '';
-        $this->formData['tel']['tel03'] = '';
+        $this->formData['phone_number'] = '';
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());

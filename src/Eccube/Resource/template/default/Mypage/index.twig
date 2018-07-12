@@ -33,21 +33,19 @@ file that was distributed with this source code.
                                 <p class="ec-historyListHeader__date">{{ Order.order_date|date("Y/m/d H:i:s") }}</p>
                                 <dl class="ec-definitions">
                                     <dt>{{'admin.mail.order.200'|trans}}</dt>
-                                    <dd>{{ Order.id }}</dd>
+                                    <dd>{{ Order.order_no }}</dd>
                                 </dl>
-                                <dl class="ec-definitions">
-                                    <dt>ご注文コード：</dt> {# TODO 未翻訳 #}
-                                    <dd>{{ Order.code }}</dd>
-                                </dl>
+                                {% if (BaseInfo.option_mypage_order_status_display) %}
                                 <dl class="ec-definitions">
                                     <dt>{{  'mypage.history.label.order_status'|trans}}</dt>
                                     <dd>{{ Order.CustomerOrderStatus }}</dd>
                                 </dl>
-                                <p class="ec-historyListHeader__action"><a class="ec-inlineBtn" href="{{ url('mypage_history', {'id': Order.id}) }}">{{'mypage.history.label.view_detail'|trans}}</a></p>
+                                {% endif %}
+                                <p class="ec-historyListHeader__action"><a class="ec-inlineBtn" href="{{ url('mypage_history', {'order_no': Order.order_no}) }}">{{'mypage.history.label.view_detail'|trans}}</a></p>
                             </div>
                         </div>
                         <div class="ec-historyRole__detail">
-                            {% for OrderItem in Order.OrderItems %}
+                            {% for OrderItem in Order.MergedProductOrderItems %}
                                 <div class="ec-imageGrid">
                                     <div class="ec-imageGrid__img">
                                         {% if OrderItem.Product is null %}
@@ -64,7 +62,7 @@ file that was distributed with this source code.
                                         {% if OrderItem.class_category_name1 is not empty %}
                                             / {{ OrderItem.class_category_name2 }}
                                         {% endif %}
-                                        <p class="ec-historyRole__detailPrice">{{ OrderItem.price_inc_tax|price }} ×{{ OrderItem.quantity }}</p>
+                                        <p class="ec-historyRole__detailPrice">{{ OrderItem.price_inc_tax|price }} × {{ OrderItem.quantity }}</p>
                                     </div>
                                 </div>
                             {% endfor %}
@@ -73,7 +71,7 @@ file that was distributed with this source code.
                 </div>
             {% endfor %}
             <div class="ec-pagerRole">
-                {% include "pagination.twig" with {'pages': pagination.paginationData} %}
+                {% include "pager.twig" with {'pages': pagination.paginationData} %}
             </div>
         {% else %}
             <div class="text-center">{{'mypage.text.message.no_order_history'|trans}}</div>

@@ -18,7 +18,6 @@ use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\OrderRepository;
-use Eccube\Service\CartService;
 use Symfony\Component\DomCrawler\Crawler;
 
 class ShoppingControllerTest extends AbstractShoppingControllerTestCase
@@ -42,21 +41,17 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
     public function testRoutingShoppingLogin()
     {
-        $this->client->request('GET', '/shopping/login');
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('cart')));
-    }
-
-    public function testShoppingIndexWithCartUnlock()
-    {
-        $this->container->get(CartService::class)->unlock();
-        $this->client->request('GET', $this->generateUrl('shopping'));
-
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('cart')));
+        $crawler = $this->client->request('GET', '/shopping/login');
+        $this->expected = 'ログイン';
+        $this->actual = $crawler->filter('.ec-pageHeader h1')->text();
+        $this->verify();
     }
 
     public function testComplete()
     {
-        $this->container->get('session')->set('eccube.front.shopping.order.id', 111);
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrder($Customer);
+        $this->container->get('session')->set('eccube.front.shopping.order.id', $Order->getId());
         $this->client->request('GET', $this->generateUrl('shopping_complete'));
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -92,7 +87,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $this->verify();
 
         // 完了画面
-        $this->scenarioComplete($Customer, $this->generateUrl('shopping_order'));
+        $crawler = $this->scenarioComplete($Customer, $this->generateUrl('shopping_order'));
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_complete')));
 
         $BaseInfo = $this->baseInfoRepository->get();
@@ -444,17 +439,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
         // お届け先設定画面へ遷移し POST 送信
         $formData = $this->createShippingFormData();
-        $formData['tel'] = [
-            'tel01' => 222,
-            'tel02' => 222,
-            'tel03' => 222,
-        ];
-        $formData['fax'] = [
-            'fax01' => 111,
-            'fax02' => 111,
-            'fax03' => 111,
-        ];
-
+        $formData['phone_number'] = $faker->phoneNumber;
         $crawler = $client->request(
             'POST',
             $shipping_edit_url,
@@ -471,7 +456,6 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $Message = $this->getMailCatcherMessage($Messages[0]->id);
 
         // https://github.com/EC-CUBE/ec-cube/issues/1305
-        $this->assertRegexp('/111-111-111/', $this->parseMailCatcherSource($Message), '変更した FAX 番号が一致するか');
         $this->assertRegexp('/222-222-222/', $this->parseMailCatcherSource($Message), '変更した 電話番号が一致するか');
     }
 

@@ -16,7 +16,7 @@ namespace Eccube\Tests\Service\PurchaseFlow\Processor;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
-use Eccube\Service\PurchaseFlow\Processor\DeliveryFeeProcessor;
+use Eccube\Service\PurchaseFlow\Processor\DeliveryFeePreprocessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
@@ -24,7 +24,7 @@ class DeliveryFeeProcessorTest extends EccubeTestCase
 {
     public function testProcess()
     {
-        $processor = new DeliveryFeeProcessor($this->entityManager);
+        $processor = $this->container->get(DeliveryFeePreprocessor::class);
         $Order = $this->createOrder($this->createCustomer());
         /*
          * @var OrderItem
@@ -43,7 +43,7 @@ class DeliveryFeeProcessorTest extends EccubeTestCase
      */
     public function testProcessWithDeliveryFee()
     {
-        $processor = new DeliveryFeeProcessor($this->entityManager);
+        $processor = $this->container->get(DeliveryFeePreprocessor::class);
         $Order = $this->createOrder($this->createCustomer());
         /*
          * @var OrderItem

@@ -16,8 +16,7 @@ file that was distributed with this source code.
 　ご請求金額
 ************************************************
 
-ご注文番号：{{ Order.id }}
-ご注文コード: {{ Order.code }}
+ご注文番号: {{ Order.order_no }}
 お支払い合計：{{ Order.payment_total|price}}
 お支払い方法：{{ Order.payment_method }}
 メッセージ：{{ Order.message }}
@@ -57,10 +56,9 @@ file that was distributed with this source code.
 {% if Order.company_name %}
 会社名　：{{ Order.company_name }}
 {% endif %}
-郵便番号：〒{{ Order.zip01 }}-{{ Order.zip02 }}
+郵便番号：〒{{ Order.postal_code }}
 住所　　：{{ Order.Pref.name }}{{ Order.addr01 }}{{ Order.addr02 }}
-電話番号：{{ Order.tel01 }}-{{ Order.tel02 }}-{{ Order.tel03 }}
-FAX番号 ：{{ Order.fax01 }}-{{ Order.fax02 }}-{{ Order.fax03 }}
+電話番号：{{ Order.phone_number }}
 
 メールアドレス：{{ Order.email }}
 
@@ -76,10 +74,9 @@ FAX番号 ：{{ Order.fax01 }}-{{ Order.fax02 }}-{{ Order.fax03 }}
 {% if Shipping.company_name %}
 会社名　：{{ Shipping.company_name }}
 {% endif %}
-郵便番号：〒{{ Shipping.zip01 }}-{{ Shipping.zip02 }}
+郵便番号：〒{{ Shipping.postal_code }}
 住所　　：{{ Shipping.Pref.name }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}
-電話番号：{{ Shipping.tel01 }}-{{ Shipping.tel02 }}-{{ Shipping.tel03 }}
-FAX番号 ：{{ Shipping.fax01 }}-{{ Shipping.fax02 }}-{{ Shipping.fax03 }}
+電話番号：{{ Shipping.phone_number }}
 
 お届け日：{{ Shipping.shipping_delivery_date is empty ? '指定なし' : Shipping.shipping_delivery_date|date_format }}
 お届け時間：{{ Shipping.shipping_delivery_time|default('指定なし') }}
@@ -91,5 +88,9 @@ FAX番号 ：{{ Shipping.fax01 }}-{{ Shipping.fax02 }}-{{ Shipping.fax03 }}
 
 {% endfor %}
 {% endfor %}
+
+{% if Order.complete_mail_message is not empty %}
+{{ Order.complete_mail_message }}
+{% endif %}
 
 {{ footer }}

@@ -13,7 +13,6 @@
 
 namespace Eccube\Form\Type;
 
-use Eccube\Application;
 use Eccube\Form\Type\Master\CustomerStatusType;
 use Eccube\Form\Type\Master\JobType;
 use Eccube\Form\Type\Master\SexType;
@@ -86,17 +85,14 @@ class CustomerType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('zip', ZipType::class, [
+            ->add('postal_code', PostalType::class, [
                 'required' => false,
             ])
             ->add('address', AddressType::class, [
                 'help' => 'form.contact.address.help',
                 'required' => false,
             ])
-            ->add('tel', TelType::class, [
-                'required' => false,
-            ])
-            ->add('fax', TelType::class, [
+            ->add('phone_number', PhoneNumberType::class, [
                 'required' => false,
             ])
             ->add('email', EmailType::class, [

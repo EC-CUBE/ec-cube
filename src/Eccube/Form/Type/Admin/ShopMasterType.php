@@ -17,9 +17,9 @@ use Eccube\Common\EccubeConfig;
 use Eccube\Form\EventListener\ConvertKanaListener;
 use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\PriceType;
-use Eccube\Form\Type\TelType;
+use Eccube\Form\Type\PhoneNumberType;
 use Eccube\Form\Type\ToggleSwitchType;
-use Eccube\Form\Type\ZipType;
+use Eccube\Form\Type\PostalType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -87,19 +87,15 @@ class ShopMasterType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('zip', ZipType::class, [
+            ->add('postal_code', PostalType::class, [
                 'required' => false,
             ])
             ->add('address', AddressType::class, [
                 'label' => 'common.label.address',
                 'required' => false,
             ])
-            ->add('tel', TelType::class, [
+            ->add('phone_number', PhoneNumberType::class, [
                 'label' => 'common.label.phone_number',
-                'required' => false,
-            ])
-            ->add('fax', TelType::class, [
-                'label' => 'common.label.fax_number',
                 'required' => false,
             ])
             ->add('business_hour', TextType::class, [
@@ -178,8 +174,6 @@ class ShopMasterType extends AbstractType
                 ],
             ])
             ->add('option_product_delivery_fee', ToggleSwitchType::class)
-            // 複数配送
-            ->add('option_multiple_shipping', ToggleSwitchType::class)
             // 会員設定
             ->add('option_customer_activate', ToggleSwitchType::class)
             // マイページに注文状況を表示する

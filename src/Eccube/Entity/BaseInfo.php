@@ -53,23 +53,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * @var string|null
      *
-     * @ORM\Column(name="zip01", type="string", length=3, nullable=true)
+     * @ORM\Column(name="postal_code", type="string", length=8, nullable=true)
      */
-    private $zip01;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="zip02", type="string", length=4, nullable=true)
-     */
-    private $zip02;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="zipcode", type="string", length=7, nullable=true)
-     */
-    private $zipcode;
+    private $postal_code;
 
     /**
      * @var string|null
@@ -88,44 +74,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * @var string|null
      *
-     * @ORM\Column(name="tel01", type="string", length=5, nullable=true)
+     * @ORM\Column(name="phone_number", type="string", length=14, nullable=true)
      */
-    private $tel01;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="tel02", type="string", length=4, nullable=true)
-     */
-    private $tel02;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="tel03", type="string", length=4, nullable=true)
-     */
-    private $tel03;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="fax01", type="string", length=5, nullable=true)
-     */
-    private $fax01;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="fax02", type="string", length=4, nullable=true)
-     */
-    private $fax02;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="fax03", type="string", length=4, nullable=true)
-     */
-    private $fax03;
+    private $phone_number;
 
     /**
      * @var string|null
@@ -217,13 +168,6 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
      * @ORM\Column(name="delivery_free_quantity", type="integer", nullable=true, options={"unsigned":true})
      */
     private $delivery_free_quantity;
-
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="option_multiple_shipping", type="boolean", options={"default":false})
-     */
-    private $option_multiple_shipping = false;
 
     /**
      * @var boolean
@@ -383,75 +327,27 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set zip01.
+     * Set postal_code.
      *
-     * @param string|null $zip01
+     * @param string|null $postal_code
      *
      * @return BaseInfo
      */
-    public function setZip01($zip01 = null)
+    public function setPostalCode($postal_code = null)
     {
-        $this->zip01 = $zip01;
+        $this->postal_code = $postal_code;
 
         return $this;
     }
 
     /**
-     * Get zip01.
+     * Get postal_code.
      *
      * @return string|null
      */
-    public function getZip01()
+    public function getPostalCode()
     {
-        return $this->zip01;
-    }
-
-    /**
-     * Set zip02.
-     *
-     * @param string|null $zip02
-     *
-     * @return BaseInfo
-     */
-    public function setZip02($zip02 = null)
-    {
-        $this->zip02 = $zip02;
-
-        return $this;
-    }
-
-    /**
-     * Get zip02.
-     *
-     * @return string|null
-     */
-    public function getZip02()
-    {
-        return $this->zip02;
-    }
-
-    /**
-     * Set zipcode.
-     *
-     * @param string|null $zipcode
-     *
-     * @return BaseInfo
-     */
-    public function setZipcode($zipcode = null)
-    {
-        $this->zipcode = $zipcode;
-
-        return $this;
-    }
-
-    /**
-     * Get zipcode.
-     *
-     * @return string|null
-     */
-    public function getZipcode()
-    {
-        return $this->zipcode;
+        return $this->postal_code;
     }
 
     /**
@@ -503,147 +399,27 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set tel01.
+     * Set phone_number.
      *
-     * @param string|null $tel01
+     * @param string|null $phone_number
      *
      * @return BaseInfo
      */
-    public function setTel01($tel01 = null)
+    public function setPhoneNumber($phone_number = null)
     {
-        $this->tel01 = $tel01;
+        $this->phone_number = $phone_number;
 
         return $this;
     }
 
     /**
-     * Get tel01.
+     * Get phone_number.
      *
      * @return string|null
      */
-    public function getTel01()
+    public function getPhoneNumber()
     {
-        return $this->tel01;
-    }
-
-    /**
-     * Set tel02.
-     *
-     * @param string|null $tel02
-     *
-     * @return BaseInfo
-     */
-    public function setTel02($tel02 = null)
-    {
-        $this->tel02 = $tel02;
-
-        return $this;
-    }
-
-    /**
-     * Get tel02.
-     *
-     * @return string|null
-     */
-    public function getTel02()
-    {
-        return $this->tel02;
-    }
-
-    /**
-     * Set tel03.
-     *
-     * @param string|null $tel03
-     *
-     * @return BaseInfo
-     */
-    public function setTel03($tel03 = null)
-    {
-        $this->tel03 = $tel03;
-
-        return $this;
-    }
-
-    /**
-     * Get tel03.
-     *
-     * @return string|null
-     */
-    public function getTel03()
-    {
-        return $this->tel03;
-    }
-
-    /**
-     * Set fax01.
-     *
-     * @param string|null $fax01
-     *
-     * @return BaseInfo
-     */
-    public function setFax01($fax01 = null)
-    {
-        $this->fax01 = $fax01;
-
-        return $this;
-    }
-
-    /**
-     * Get fax01.
-     *
-     * @return string|null
-     */
-    public function getFax01()
-    {
-        return $this->fax01;
-    }
-
-    /**
-     * Set fax02.
-     *
-     * @param string|null $fax02
-     *
-     * @return BaseInfo
-     */
-    public function setFax02($fax02 = null)
-    {
-        $this->fax02 = $fax02;
-
-        return $this;
-    }
-
-    /**
-     * Get fax02.
-     *
-     * @return string|null
-     */
-    public function getFax02()
-    {
-        return $this->fax02;
-    }
-
-    /**
-     * Set fax03.
-     *
-     * @param string|null $fax03
-     *
-     * @return BaseInfo
-     */
-    public function setFax03($fax03 = null)
-    {
-        $this->fax03 = $fax03;
-
-        return $this;
-    }
-
-    /**
-     * Get fax03.
-     *
-     * @return string|null
-     */
-    public function getFax03()
-    {
-        return $this->fax03;
+        return $this->phone_number;
     }
 
     /**
@@ -956,30 +732,6 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     public function getDeliveryFreeQuantity()
     {
         return $this->delivery_free_quantity;
-    }
-
-    /**
-     * Set optionMultipleShipping.
-     *
-     * @param boolean $optionMultipleShipping
-     *
-     * @return BaseInfo
-     */
-    public function setOptionMultipleShipping($optionMultipleShipping)
-    {
-        $this->option_multiple_shipping = $optionMultipleShipping;
-
-        return $this;
-    }
-
-    /**
-     * Get optionMultipleShipping.
-     *
-     * @return boolean
-     */
-    public function isOptionMultipleShipping()
-    {
-        return $this->option_multiple_shipping;
     }
 
     /**
