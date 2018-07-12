@@ -14,6 +14,7 @@
 namespace Eccube\Form\Type\Front;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\Customer;
 use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\KanaType;
 use Eccube\Form\Type\Master\JobType;
@@ -125,7 +126,7 @@ class EntryType extends AbstractType
             FormEvents::PRE_SET_DATA,
             function (FormEvent $event) {
                 $Customer = $event->getData();
-                if (!$Customer->getId()) {
+                if ($Customer instanceof Customer && !$Customer->getId()) {
                     $form = $event->getForm();
 
                     $form->add('user_policy_check', CheckboxType::class, [
@@ -143,7 +144,7 @@ class EntryType extends AbstractType
         $builder->addEventListener(FormEvents::SUBMIT,
             function (FormEvent $event) {
                 $Customer = $event->getData();
-                if (!$Customer->getId()) {
+                if ($Customer instanceof Customer && !$Customer->getId()) {
                     $form = $event->getForm();
 
                     if ($this->requestStack->getCurrentRequest()->get('mode') == 'confirm') {
