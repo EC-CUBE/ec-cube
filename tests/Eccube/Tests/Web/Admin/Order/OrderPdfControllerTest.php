@@ -11,7 +11,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Plugin\OrderPdf\Tests\Web;
+namespace Eccube\Tests\Web\Admin\Order;
 
 use Eccube\Common\Constant;
 use Eccube\Entity\Master\OrderStatus;
@@ -44,6 +44,24 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
+     * testRoutingOrderExportPdf test
+     */
+    public function testRoutingOrderExportPdf()
+    {
+        $Order = $this->createOrderForSearch();
+
+        $this->client->request('POST',
+            $this->generateUrl('admin_order_export_pdf'),
+            [
+                '_token' => 'dummy',
+                'ids' => [$Order->getId()],
+            ]
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
+    /**
      * Render test.
      */
     public function testRender()
@@ -60,7 +78,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
 
         $this->assertContains((string) $orderId, $crawler->filter('#search_result')->html());
 
-        $expectedText = '帳票出力';
+        $expectedText = 'PDF出力';
         $actualNode = $crawler->filter('.btn-bulk-wrapper')->html();
         $this->assertContains($expectedText, $actualNode);
     }
@@ -72,16 +90,12 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
     {
         $Order = $this->createOrderForSearch();
         $orderId = $Order->getId();
-        /**
-         * @var Client
-         */
-        $client = $this->client;
 
         /**
          * @var Crawler
          */
-        $crawler = $client->request('POST',
-            $this->generateUrl('plugin_admin_order_pdf'),
+        $crawler = $this->client->request('POST',
+            $this->generateUrl('admin_order_export_pdf'),
             [
                 '_token' => 'dummy',
                 'ids' => [$orderId],
@@ -102,16 +116,12 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
     {
         $Order = $this->createOrderForSearch();
         $orderId = $Order->getId();
-        /**
-         * @var Client
-         */
-        $client = $this->client;
 
         /**
          * @var Crawler
          */
-        $crawler = $client->request('POST',
-            $this->generateUrl('plugin_admin_order_pdf'),
+        $crawler = $this->client->request('POST',
+            $this->generateUrl('admin_order_export_pdf'),
             [
                 '_token' => 'dummy',
                 'ids' => [$orderId],
@@ -131,12 +141,12 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         $form['order_pdf[note2]'] = $faker->text(50);
         $form['order_pdf[note3]'] = $faker->text(50);
         $form['order_pdf[default]'] = 1;
-        $client->submit($form);
-        $this->actual = $client->getResponse()->headers->get('Content-Type');
+        $this->client->submit($form);
+        $this->actual = $this->client->getResponse()->headers->get('Content-Type');
         $this->expected = 'application/pdf';
         $this->verify();
 
-        $crawler = $client->request('GET', $this->generateUrl('plugin_admin_order_pdf'),
+        $crawler = $this->client->request('GET', $this->generateUrl('admin_order_export_pdf'),
             [
                 '_token' => 'dummy',
                 'ids' => [$orderId],
@@ -159,17 +169,12 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
      */
     public function testDownloadIdInvalid()
     {
-        /**
-         * @var Client
-         */
-        $client = $this->client;
-
-        $client->request('GET', $this->generateUrl('plugin_admin_order_pdf'));
-        $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('admin_order')));
+        $this->client->request('GET', $this->generateUrl('admin_order_export_pdf'));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order')));
         /**
          * @var Crawler
          */
-        $crawler = $client->followRedirect();
+        $crawler = $this->client->followRedirect();
 
         $html = $crawler->filter('.alert')->html();
         $this->assertContains('注文番号がありません。', $html);
@@ -180,12 +185,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
      */
     public function testDownloadWithBadMethod()
     {
-        /**
-         * @var Client
-         */
-        $client = $this->client;
-
-        $client->request('GET', $this->generateUrl('plugin_admin_order_pdf_download'));
+        $this->client->request('GET', $this->generateUrl('admin_order_pdf_download'));
         $this->assertEquals($this->client->getResponse()->getStatusCode(), Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 
@@ -209,7 +209,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         /**
          * @var Crawler
          */
-        $crawler = $client->request('POST', $this->generateUrl('plugin_admin_order_pdf'),
+        $crawler = $client->request('POST', $this->generateUrl('admin_order_export_pdf'),
             [
                 '_token' => 'dummy',
                 'ids' => [$orderId],
@@ -268,7 +268,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         /**
          * @var Crawler
          */
-        $crawler = $client->request('POST', $this->generateUrl('plugin_admin_order_pdf'),
+        $crawler = $client->request('POST', $this->generateUrl('admin_order_export_pdf'),
             [
                 '_token' => 'dummy',
                 'ids' => [$orderId],
@@ -321,7 +321,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->persist($OrderPdf);
         $this->entityManager->flush($OrderPdf);
 
-        $crawler = $client->request('POST', $this->generateUrl('plugin_admin_order_pdf'),
+        $crawler = $client->request('POST', $this->generateUrl('admin_order_export_pdf'),
             [
                 '_token' => 'dummy',
                 'ids' => [$orderId],

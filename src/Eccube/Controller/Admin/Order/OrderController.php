@@ -457,7 +457,7 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/order/export/pdf/download", name="plugin_admin_order_pdf_download")
+     * @Route("/%eccube_admin_route%/order/export/pdf/download", name="admin_order_pdf_download")
      * @Template("@admin/Order/order_pdf.twig")
      *
      * @param Request $request
