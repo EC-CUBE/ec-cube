@@ -20,7 +20,7 @@ file that was distributed with this source code.
 {% form_theme searchProductModalForm '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block javascript %}
-    <script src="//yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
+    <script src="https://yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
     <script>
         $(function() {
             // 項目数が多く、入力している項目によってEnter押下時に期待する動作が変わるので、いったん禁止
@@ -69,6 +69,22 @@ file that was distributed with this source code.
                 });
             });
 
+            // その他明細
+            $('#addOrderItemType').on('show.bs.modal', function (e) {
+                var list = $('#searchOrderItemTypeList');
+                list.children().remove();
+
+                $.ajax({
+                    url: '{{ url('admin_order_search_order_item_type') }}',
+                    type: 'POST',
+                    dataType: 'html'
+                }).done(function(data) {
+                    $('#searchOrderItemTypeList').html(data);
+                }).fail(function(data) {
+                    alert('search order item type failed.');
+                });
+            });
+
             // Trigger paging after append
             $(document).on('click', '#searchProductModalList ul.pagination li.page-item a.page-link', function(e) {
                 e.preventDefault();
@@ -106,14 +122,46 @@ file that was distributed with this source code.
                 }
             });
 
+            // 注文者情報をコピー
+            $('.copy-customer').on('click', function() {
+                var data = $(this).data();
+                var idx = data.idx;
+                $('#order_Shippings_' + idx + '_name_name01').val($('#order_name_name01').val());
+                $('#order_Shippings_' + idx + '_name_name02').val($('#order_name_name02').val());
+                $('#order_Shippings_' + idx + '_kana_kana01').val($('#order_kana_kana01').val());
+                $('#order_Shippings_' + idx + '_kana_kana02').val($('#order_kana_kana02').val());
+                $('#order_Shippings_' + idx + '_postal_code').val($('#order_postal_code').val());
+                $('#order_Shippings_' + idx + '_address_pref').val($('#order_address_pref').val());
+                $('#order_Shippings_' + idx + '_address_addr01').val($('#order_address_addr01').val());
+                $('#order_Shippings_' + idx + '_address_addr02').val($('#order_address_addr02').val());
+                $('#order_Shippings_' + idx + '_email').val($('#order_email').val());
+                $('#order_Shippings_' + idx + '_phone_number').val($('#order_phone_number').val());
+                $('#order_Shippings_' + idx + '_company_name').val($('#order_company_name').val());
+            });
+        });
+
+        // 配送業者選択時にお届け時間を設定
+        var times = {{ shippingDeliveryTimes|raw }};
+        $('#order_Shippings_0_Delivery').change(function(){
+            var deliveryId = $(this).val();
+            var $shippingDeliveryTime = $('#order_Shippings_0_DeliveryTime');
+            $shippingDeliveryTime.find('option').remove();
+            $shippingDeliveryTime.append($('<option></option>').val('').text('指定なし'));
+            if (typeof(times[deliveryId]) !== 'undefined') {
+                for (var timeId in times[deliveryId]){
+                    timeValue = times[deliveryId][timeId];
+                    $shippingDeliveryTime.append($('<option></option>')
+                        .val(timeId)
+                        .text(timeValue));
+                }
+            }
         });
 
     </script>
 {% endblock javascript %}
 
 {% block main %}
-    <form name="form1" id="form1" method="post" action="?" class="h-adr">
-        <span class="p-country-name" style="display:none;">Japan</span>
+    <form name="form1" id="form1" method="post" action="?">
         <input type="hidden" name="mode" value="">
         <input type="hidden" name="modal" value="">
         {{ form_widget(form._token) }}
@@ -134,29 +182,23 @@ file that was distributed with this source code.
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="row mb-3">
-                                            <div class="col-3"><span>{{ 'admin.order.edit.244'|trans }}</span></div>
-                                            <div class="col"><span class="mr-3">{{ Order.order_no }}</span></div>
+                                            <div class="col-3">{{ 'admin.order.edit.244'|trans }}</div>
+                                            <div class="col">{{ Order.order_no }}</div>
                                         </div>
                                         <div class="row mb-3">
-                                            <div class="col-3"><span>{{ 'admin.order.edit.246'|trans }}</span></div>
-                                            <div class="col">
-                                                {% for Shipping in Order.Shippings %}
-                                                    <a href="{{ url('admin_shipping_edit', { id : Shipping.id }) }}">{{ Shipping.id }}</a>{% if not loop.last %}<span class="ml-3 mr-3">|</span>{% endif %}
-                                                {% endfor %}
-                                            </div>
+                                            <div class="col-3">{{ 'admin.order.edit.label.device_type'|trans }}</div>
+                                            <div class="col">{{ Order.device_type }}</div>
                                         </div>
-                                        <div class="row mb-3">
-                                            <div class="col-3">
-                                                <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>{{ 'admin.order.index.298'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
-                                            </div>
+                                        <div class="row mb-3 form-group">
+                                            <label class="col-3 col-form-label">{{ 'admin.order.index.298'|trans }}<i class="fa fa-question-circle fa-lg ml-1" data-toggle="tooltip" data-placement="top" title="Tooltip"></i></label>
                                             <div class="col">
                                                 {{ form_widget(form.OrderStatus) }}
                                                 {{ form_errors(form.OrderStatus) }}
                                                 <p class="form-text font-weight-bold text-danger mb-0">{{ 'admin.order.edit.248'|trans }}</p>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-3"><span>{{ 'admin.order.edit.284'|trans }}</span></div>
+                                        <div class="row mb-3 form-group">
+                                            <label class="col-3 col-form-label">{{ 'admin.order.edit.284'|trans }}</label>
                                             <div class="col">
                                                 {{ form_widget(form.Payment) }}
                                                 {{ form_errors(form.Payment) }}
@@ -165,22 +207,29 @@ file that was distributed with this source code.
                                         </div>
                                     </div>
                                     <div class="col-6">
-                                        {# TODO 日付か日時か #}
                                         <div class="row mb-3">
-                                            <div class="col-3"><i class="fa fa-inbox mr-2" aria-hidden="true"></i><span>{{ 'admin.order.edit.label.order_date'|trans }}</span></div>
-                                            <div class="col"><span>{{ Order.order_date ? Order.order_date|date('Y/m/d H:i:s') : '' }}</span></div>
+                                            <div class="col-3"><i class="fa fa-inbox fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.order.edit.label.order_date'|trans }}</div>
+                                            <div class="col">{{ Order.order_date ? Order.order_date|date_sec : '' }}</div>
                                         </div>
                                         <div class="row mb-3">
-                                            <div class="col-3"><i class="fa fa-money mr-2" aria-hidden="true"></i><span>{{ 'admin.order.edit.label.payment_date'|trans }}</span></div>
-                                            <div class="col"><span>{{ Order.payment_date ? Order.payment_date|date('Y/m/d H:i:s') : '' }}</span></div>
+                                            <div class="col-3"><i class="fa fa-money fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.order.edit.label.payment_date'|trans }}</div>
+                                            <div class="col">{{ Order.payment_date ? Order.payment_date|date_sec : '' }}</div>
                                         </div>
                                         <div class="row mb-3">
-                                            <div class="col-3"><i class="fa fa-refresh mr-2" aria-hidden="true"></i><span>{{ 'admin.order.edit.label.update_date'|trans }}</span></div>
-                                            <div class="col"><span>{{ Order.update_date ? Order.update_date|date('Y/m/d H:i:s') : '' }}</span></div>
+                                            <div class="col-3"><i class="fa fa-refresh fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.order.edit.label.update_date'|trans }}</div>
+                                            <div class="col">{{ Order.update_date ? Order.update_date|date_sec : '' }}</div>
                                         </div>
+                                        {% if not Order.isMultiple %}
+                                            <div class="row mb-3">
+                                                <div class="col-3"><i class="fa fa-truck fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.shipping.edit.ship_date'|trans }}</div>
+                                                <div class="col">
+                                                    {{ Order.Shippings[0].shipping_date|date_sec }}
+                                                </div>
+                                            </div>
+                                        {% endif %}
                                         <div class="row mb-3">
-                                            <div class="col-3"><i class="fa fa-user mr-2" aria-hidden="true"></i><span>{{ 'admin.order.edit.label.update_user'|trans }}</span></div>
-                                            <div class="col"><span>{% if id %}{{ app.user }}{% endif %}</span></div>
+                                            <div class="col-3"><i class="fa fa-commenting fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.order.edit.label.message'|trans }}</div>
+                                            <div class="col">{{ Order.message ? Order.message|nl2br : '' }}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -190,16 +239,18 @@ file that was distributed with this source code.
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header">
                             <div class="row">
-                                <div class="col-8">
+                                <div class="col-2">
                                     <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.order.edit.label.customer_info'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                 </div>
-                                <div class="col-4 text-right"><a data-toggle="collapse" href="#ordererInfo" aria-expanded="false" aria-controls="ordererInfo"><i class="fa fa-angle-up fa-lg"></i></a></div>
+                                <div class="col">{% if id %}<span class="mr-5">{% if form.Customer.vars.value is empty %}{{ 'admin.order.edit.256'|trans }}{% else %}<a href="{{ url('admin_customer_edit', {'id': form.Customer.vars.value}) }}">{{ form.Customer.vars.value }}</a>{% endif %}</span>{{ Order.full_name }} ({{ Order.full_name_kana }}) 〒{{ Order.postal_code }} {{ Order.pref }}{{ Order.addr01 }}{{ Order.addr02 }} {{ Order.email }}{% endif %}</div>
+                                <div class="col-1 text-right"><a class="d-block" data-toggle="collapse" href="#ordererInfo" aria-expanded="false" aria-controls="ordererInfo"><i class="fa {{ id ? 'fa-angle-down' : 'fa-angle-up' }} fa-lg"></i></a></div>
                             </div>
                         </div>
-                        <div class="collapse show ec-cardCollapse" id="ordererInfo">
+                        <div class="collapse {{ id ? '' : 'show' }} ec-cardCollapse h-adr" id="ordererInfo">
+                            <span class="p-country-name" style="display:none;">Japan</span>
                             <div class="card-body">
                                 {% if Order.id is empty %}
-                                    <div class="row mb-4">
+                                    <div class="row mb-3">
                                         <div class="col-auto">
                                             <a class="btn btn-ec-regular px-3" data-toggle="modal" data-target="#searchCustomerModal">{{ 'admin.order.edit.label.search'|trans }}</a>
                                         </div>
@@ -212,7 +263,6 @@ file that was distributed with this source code.
                                                     <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    {# TODO 会員検索をして追加できるようにする #}
                                                     {{ form_widget(searchCustomerModalForm.multi, { attr : {'class': 'mb-2searchCustomerModal', placeholder : 'admin.order.edit.290' }}) }}
                                                     <button type="button" id="searchCustomerModalButton" class="btn btn-ec-conversion px-5 mb-4 mt-2">{{ 'admin.order.edit.294'|trans }}</button>
                                                     <div class="form-group" id="searchCustomerModalList"></div>
@@ -221,436 +271,578 @@ file that was distributed with this source code.
                                         </div>
                                     </div>
                                 {% endif %}
-                                <div class="row mb-2">
-                                    <div class="col-3">
-                                        <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>{{ 'admin.order.edit.customer_id'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
-                                    </div>
-                                    <div class="col">
-                                        <p id="order_CustomerId">{% if form.Customer.vars.value is empty %}{{ 'admin.order.edit.256'|trans }}{% else %}<a href="{{ url('admin_customer_edit', {'id': form.Customer.vars.value}) }}">{{ form.Customer.vars.value }}</a>{% endif %}</p>
-                                        {{ form_widget(form.Customer) }}
-                                        {{ form_errors(form.Customer) }}
-                                    </div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-3"><span>{{ 'admin.common.label.name'|trans }}</span><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></div>
-                                    <div class="col">
-
-                                        <div class="row">
-                                            <div class="col">
-                                                {{ form_widget(form.name.name01, {attr: {placeholder: 'admin.common.label.family_name' }}) }}
-                                            </div>
-                                            <div class="col">
-                                                {{ form_widget(form.name.name02, {attr: {placeholder: 'admin.common.label.first_name' }}) }}
-                                            </div>
-                                        </div>
-                                        {{ form_errors(form.name.name01) }}
-                                        {{ form_errors(form.name.name02) }}
-                                    </div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-3"><span>{{ 'admin.common.label.kana'|trans }}</span><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></div>
-                                    <div class="col">
-                                        <div class="row">
-                                            <div class="col">
-                                                {{ form_widget(form.kana.kana01, {attr: {placeholder: 'admin.common.label.family_name_kana' }}) }}
-                                            </div>
-                                            <div class="col">
-                                                {{ form_widget(form.kana.kana02, {attr: {placeholder: 'admin.common.label.first_name_kana' }}) }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-3"><span>{{ 'admin.common.label.address'|trans }}</span><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></div>
-                                    <div class="col mb-3">
-                                        <div class="row justify-content-start">
-                                            <div class="col-auto text-center pr-0"><span>{{ 'admin.order.edit.261'|trans }}</span></div>
-                                            <div class="col-2 mb-2">
-                                                {{ form_widget(form.postal_code) }}
-                                                {{ form_errors(form.postal_code) }}
-                                            </div>
-                                        </div>
-                                        <div class="row justify-content-start">
-                                            <div class="col-3 mb-2">
-                                                {{ form_widget(form.address.pref) }}
-                                                {{ form_errors(form.address.pref) }}
-                                            </div>
-                                        </div>
-                                        <div class="mb-2">
-                                            {{ form_widget(form.address.addr01, { attr : {placeholder : 'admin.order.edit.262' }}) }}
-                                            {{ form_errors(form.address.addr01) }}
-                                        </div>
-                                        {{ form_widget(form.address.addr02, { attr : { placeholder : 'admin.order.edit.263' }}) }}
-                                        {{ form_errors(form.address.addr02) }}
-                                    </div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-3"><span>{{ 'admin.common.label.email'|trans }}</span><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></div>
-                                    <div class="col">
-                                        {{ form_widget(form.email) }}
-                                        {{ form_errors(form.email) }}
-                                    </div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-3"><span>{{ 'admin.common.label.tel'|trans }}</span><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></div>
-                                    <div class="col">
-                                        {{ form_widget(form.phone_number) }}
-                                        {{ form_errors(form.phone_number) }}
-                                    </div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-3"><span>{{ 'admin.common.label.company'|trans }}</span></div>
-                                    <div class="col">
-                                        {{ form_widget(form.company_name) }}
-                                        {{ form_errors(form.company_name) }}
-                                    </div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-3"><span>{{ 'order.label.inquiry'|trans }}</span></div>
-                                    <div class="col">
-                                        {{ form_widget(form.message, { attr : {'rows': 8, placeholder : 'admin.order.edit.264' }}) }}
-                                        {{ form_errors(form.message) }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="order-product" class="card rounded border-0 mb-4">
-                        <div class="card-header">
-                            <div class="row">
-                                <div class="col-8">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.order.edit.label.product_info'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></span></div>
-                                </div>
-                                <div class="col-4 text-right"><a data-toggle="collapse" href="#orderItem" aria-expanded="false" aria-controls="orderItem"><i class="fa fa-angle-up fa-lg"></i></a></div>
-                            </div>
-                        </div>
-                        <div class="collapse show ec-cardCollapse" id="orderItem">
-                            <div class="card-body">
-                                <div class="row justify-content-between mb-2">
+                                <div class="row">
                                     <div class="col-6">
-                                        <a class="btn btn-ec-regular mr-2 add" data-toggle="modal" data-target="#addProduct">{{ 'admin.order.edit.btn.add_product'|trans }}</a>
-                                        <div class="modal fade" id="addProduct" tabindex="-1" role="dialog" aria-labelledby="addProduct" aria-hidden="true">
-                                            <div class="modal-dialog modal-lg" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title">{{ 'admin.order.edit.btn.add_product'|trans }}</h5>
-                                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                        <div class="row">
+                                            <label class="col-3">{{ 'admin.order.edit.customer_id'|trans }}<i class="fa fa-question-circle fa-lg ml-1" data-toggle="tooltip" data-placement="top" title="Tooltip"></i></label>
+                                            <div class="col">
+                                                <p id="order_CustomerId">{% if form.Customer.vars.value is empty %}{{ 'admin.order.edit.256'|trans }}{% else %}<a href="{{ url('admin_customer_edit', {'id': form.Customer.vars.value}) }}">{{ form.Customer.vars.value }}</a>{% endif %}</p>
+                                                {{ form_widget(form.Customer) }}
+                                                {{ form_errors(form.Customer) }}
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <label class="col-3 col-form-label">{{ 'admin.common.label.name'|trans }}<span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></label>
+                                            <div class="col">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        {{ form_widget(form.name.name01, {attr: {placeholder: 'admin.common.label.family_name' }}) }}
+                                                        {{ form_errors(form.name.name01) }}
                                                     </div>
-                                                    <div class="modal-body">
-                                                        {# TODO 商品を追加できるようにする #}
-                                                        {{ form_widget(searchProductModalForm.id, { attr : {'class': 'mb-3',  placeholder : 'admin.order.edit.293' }}) }}
-                                                        {{ form_widget(searchProductModalForm.category_id) }}
-                                                        <button type="button" id="searchProductModalButton" class="btn btn-ec-conversion px-5 mb-4 mt-2">{{ 'admin.order.edit.294'|trans }}</button>
-                                                        <div id="searchProductModalList"></div>
+                                                    <div class="col">
+                                                        {{ form_widget(form.name.name02, {attr: {placeholder: 'admin.common.label.first_name' }}) }}
+                                                        {{ form_errors(form.name.name02) }}
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <a class="btn btn-ec-regular mr-2" data-toggle="modal" data-target="#addDetail">{{ 'admin.order.edit.btn.add_other_item'|trans }}</a>
-                                        <div class="modal fade" id="addDetail" tabindex="-1" role="dialog" aria-labelledby="addDetail" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title">{{ 'admin.order.edit.btn.add_other_item'|trans }}</h5>
-                                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                        <div class="row form-group">
+                                            <label class="col-3 col-form-label">{{ 'admin.common.label.kana'|trans }}<span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></label>
+                                            <div class="col">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        {{ form_widget(form.kana.kana01, {attr: {placeholder: 'admin.common.label.family_name_kana' }}) }}
+                                                        {{ form_errors(form.kana.kana01) }}
                                                     </div>
-                                                    <div class="modal-body">
-                                                        {# TODO その他明細を追加できるようにする #}
-                                                        <table class="table table-striped mb-3">
-                                                            <thead class="table-active">
-                                                            <tr>
-                                                                <th class="pt-2 pb-2 pl-3">{{ 'admin.order.edit.label.add_item'|trans }}</th>
-                                                                <th class="pt-2 pb-2 pr-3"></th>
-                                                            </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                            <tr>
-                                                                <td class="align-middle pl-3">{{ 'admin.order.edit.label.add_delivery_fee'|trans }}</td>
-                                                                <td class="align-middle pr-3 text-right"><a><i class="fa fa-plus fa-lg font-weight-bold text-secondary"></i></a></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="align-middle pl-3">{{ 'admin.order.edit.label.add_charge'|trans }}</td>
-                                                                <td class="align-middle pr-3 text-right"><a><i class="fa fa-plus fa-lg font-weight-bold text-secondary"></i></a></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="align-middle pl-3">{{ 'admin.order.edit.label.add_discount'|trans }}</td>
-                                                                <td class="align-middle pr-3 text-right"><a><i class="fa fa-plus fa-lg font-weight-bold text-secondary"></i></a></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="align-middle pl-3">{{ 'admin.order.edit.label.add_blank'|trans }}</td>
-                                                                <td class="align-middle pr-3 text-right"><a><i class="fa fa-plus fa-lg font-weight-bold text-secondary"></i></a></td>
-                                                            </tr>
-                                                            </tbody>
-                                                        </table>
-                                                        <div class="row justify-content-md-center mb-4">
-                                                            <ul class="pagination">
-                                                                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                                                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                                                <li class="page-item"><a class="page-link" href="#">4</a></li>
-                                                                <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                                                            </ul>
+                                                    <div class="col">
+                                                        {{ form_widget(form.kana.kana02, {attr: {placeholder: 'admin.common.label.first_name_kana' }}) }}
+                                                        {{ form_errors(form.kana.kana02) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <label class="col-3 col-form-label">{{ 'admin.common.label.address'|trans }}<span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></label>
+                                            <div class="col">
+                                                <div class="row mb-3">
+                                                    <div class="col form-inline">
+                                                        {{ 'admin.order.edit.261'|trans }}
+                                                        {{ form_widget(form.postal_code) }}
+                                                        {{ form_errors(form.postal_code) }}
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col">
+                                                        {{ form_widget(form.address.pref) }}
+                                                        {{ form_errors(form.address.pref) }}
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col">
+                                                        {{ form_widget(form.address.addr01, { attr : {placeholder : 'admin.order.edit.262' }}) }}
+                                                        {{ form_errors(form.address.addr01) }}
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        {{ form_widget(form.address.addr02, { attr : { placeholder : 'admin.order.edit.263' }}) }}
+                                                        {{ form_errors(form.address.addr02) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6">
+                                        <div class="row form-group">
+                                            <label class="col-3 col-form-label">{{ 'admin.common.label.email'|trans }}<span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></label>
+                                            <div class="col">
+                                                {{ form_widget(form.email) }}
+                                                {{ form_errors(form.email) }}
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <label class="col-3 col-form-label">{{ 'admin.common.label.tel'|trans }}<span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></label>
+                                            <div class="col">
+                                                {{ form_widget(form.phone_number) }}
+                                                {{ form_errors(form.phone_number) }}
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <label class="col-3 col-form-label">{{ 'admin.common.label.company'|trans }}</label>
+                                            <div class="col">
+                                                {{ form_widget(form.company_name) }}
+                                                {{ form_errors(form.company_name) }}
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <label class="col-3 col-form-label">{{ 'admin.order.edit.label.message'|trans }}</label>
+                                            <div class="col">
+                                                {{ form_widget(form.message, { attr : {'rows': 8, placeholder : 'admin.order.edit.264' }}) }}
+                                                {{ form_errors(form.message) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% if not Order.isMultiple %}
+                    {% for shippingForm in form.Shippings %}
+                        {% set shippingIndex = shippingForm.vars.name %}
+                        <div class="card rounded border-0 mb-4 h-adr">
+                            <span class="p-country-name" style="display:none;">Japan</span>
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.shipping.edit.730'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                    </div>
+                                    <div class="col-4 text-right"><a data-toggle="collapse" href="#shippingInfo" aria-expanded="false" aria-controls="shippingInfo"><i class="fa fa-angle-up fa-lg"></i></a></div>
+                                </div>
+                            </div>
+                            <div class="collapse show ec-cardCollapse" id="shippingInfo">
+                                <div class="card-body">
+                                    <div class="row mb-3">
+                                        <div class="col-6">
+                                            <button type="button" class="btn btn-ec-regular copy-customer" data-idx="{{ shippingIndex }}">{{ 'admin.order.edit.label.customer_info.copy'|trans }}</button>
+                                            <button type="button" id="print" class="btn btn-ec-regular">{{ 'admin.order.edit.label.shipping.print'|trans }}</button>
+                                        </div>
+                                        <div class="col-6 text-right">
+                                            <button type="button" id="shipping-add" class="btn btn-ec-regular w-25">{{ 'admin.order.edit.label.shipping.add'|trans }}</button>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="row form-group">
+                                                <label class="col-3 col-form-label">{{ 'admin.common.label.name'|trans }}<span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></label>
+                                                <div class="col">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            {{ form_widget(shippingForm.name.name01, {attr: {placeholder: 'admin.common.label.family_name' }}) }}
+                                                            {{ form_errors(shippingForm.name.name01) }}
+                                                        </div>
+                                                        <div class="col">
+                                                            {{ form_widget(shippingForm.name.name02, {attr: {placeholder: 'admin.common.label.first_name' }}) }}
+                                                            {{ form_errors(shippingForm.name.name02) }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row form-group">
+                                                <label class="col-3 col-form-label">{{ 'admin.common.label.kana'|trans }}<span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></label>
+                                                <div class="col">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            {{ form_widget(shippingForm.kana.kana01, {attr: {placeholder: 'admin.common.label.family_name_kana' }}) }}
+                                                            {{ form_errors(shippingForm.kana.kana01) }}
+                                                        </div>
+                                                        <div class="col">
+                                                            {{ form_widget(shippingForm.kana.kana02, {attr: {placeholder: 'admin.common.label.first_name_kana' }}) }}
+                                                            {{ form_errors(shippingForm.kana.kana02) }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row form-group">
+                                                <label class="col-3 col-form-label">{{ 'admin.common.label.address'|trans }}<span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></label>
+                                                <div class="col">
+                                                    <div class="row mb-3">
+                                                        <div class="col form-inline">
+                                                            {{ 'admin.order.edit.261'|trans }}
+                                                            {{ form_widget(shippingForm.postal_code) }}
+                                                            {{ form_errors(shippingForm.postal_code) }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <div class="col">
+                                                            {{ form_widget(shippingForm.address.pref) }}
+                                                            {{ form_errors(shippingForm.address.pref) }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <div class="col">
+                                                            {{ form_widget(shippingForm.address.addr01, { attr : {placeholder : 'admin.order.edit.262' }}) }}
+                                                            {{ form_errors(shippingForm.address.addr01) }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            {{ form_widget(shippingForm.address.addr02, { attr : { placeholder : 'admin.order.edit.263' }}) }}
+                                                            {{ form_errors(shippingForm.address.addr02) }}
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-5 text-right">
-                                        <button type="submit" class="btn btn-ec-regular mr-2" name="mode" value="calc" data-link="order-product" id="calculate">{{ 'admin.order.edit.267'|trans }}</button>
+                                        <div class="col-6">
+                                            <div class="row form-group">
+                                                <label class="col-3 col-form-label">{{ 'admin.common.label.tel'|trans }}<span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></label>
+                                                <div class="col">
+                                                    {{ form_widget(shippingForm.phone_number) }}
+                                                    {{ form_errors(shippingForm.phone_number) }}
+                                                </div>
+                                            </div>
+
+                                            <div class="row form-group">
+                                                <label class="col-3 col-form-label">{{ 'admin.common.label.company'|trans }}</label>
+                                                <div class="col">
+                                                    {{ form_widget(shippingForm.company_name) }}
+                                                    {{ form_errors(shippingForm.company_name) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <hr>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="row mb-3 form-group">
+                                                <label class="col-3 col-form-label">{{ 'admin.common.label.tracking_number'|trans }}</label>
+                                                <div class="col">
+                                                    {{ form_widget(shippingForm.tracking_number) }}
+                                                    {{ form_errors(shippingForm.tracking_number) }}
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3 form-group">
+                                                <label class="col-3 col-form-label">{{ 'admin.shipping.edit.delivery_provider'|trans }}<span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></label>
+                                                <div class="col">
+                                                    {{ form_widget(shippingForm.Delivery) }}
+                                                    {{ form_errors(shippingForm.Delivery) }}
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3 form-group">
+                                                <label class="col-3 col-form-label">{{ 'admin.shipping.edit.note_title'|trans }}</label>
+                                                <div class="col">
+                                                    {{ form_widget(shippingForm.note) }}
+                                                    {{ form_errors(shippingForm.note) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="row mb-3 form-group">
+                                                <label class="col-3 col-form-label"><i class="fa fa-calendar-check-o fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.shipping.edit.date_to_deliver'|trans }}</label>
+                                                <div class="col">
+                                                    {{ form_widget(shippingForm.shipping_delivery_date) }}
+                                                    {{ form_errors(shippingForm.shipping_delivery_date) }}
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3 form-group">
+                                                <label class="col-3 col-form-label"><i class="fa fa-clock-o fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.shipping.edit.specified_time_zone'|trans }}</label>
+                                                <div class="col">
+                                                    {{ form_widget(shippingForm.DeliveryTime) }}
+                                                    {{ form_errors(shippingForm.DeliveryTime) }}
+                                                </div>
+                                            </div>
+                                            {% if Order.isMultiple %}
+                                                <div class="row mb-3">
+                                                    <div class="col-3"><i class="fa fa-truck fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.shipping.edit.ship_date'|trans }}</div>
+                                                    <div class="col">
+                                                        {{ Order.Shippings[shippingIndex].shipping_date|date_sec }}
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        </div>
                                     </div>
                                 </div>
-                                <table id="table-form-field" class="table table-striped table-sm mb-0"
-                                       data-prototype="{% filter escape %}{{ include('@admin/Order/order_item_prototype.twig', {'orderItemForm': form.OrderItems.vars.prototype}) }}{% endfilter %}">
-                                    <thead class="table-active">
+                            </div>
+                        </div>
+
+                    {% endfor %}
+                {% endif %}
+
+                <div id="order-product" class="card rounded border-0 mb-4">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.order.edit.label.product_info'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></span></div>
+                            </div>
+                            <div class="col-4 text-right"><a data-toggle="collapse" href="#orderItem" aria-expanded="false" aria-controls="orderItem"><i class="fa fa-angle-up fa-lg"></i></a></div>
+                        </div>
+                    </div>
+                    <div class="collapse show ec-cardCollapse" id="orderItem">
+                        <div class="card-body">
+                            <input type="hidden" name="error-message">
+                            <div class="row justify-content-between mb-2">
+                                <div class="col-6">
+                                    <a class="btn btn-ec-regular mr-2 add" data-toggle="modal" data-target="#addProduct">{{ 'admin.order.edit.btn.add_product'|trans }}</a>
+                                    <div class="modal fade" id="addProduct" tabindex="-1" role="dialog" aria-labelledby="addProduct" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">{{ 'admin.order.edit.btn.add_product'|trans }}</h5>
+                                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    {{ form_widget(searchProductModalForm.id, { attr : {'class': 'mb-3',  placeholder : 'admin.order.edit.293' }}) }}
+                                                    {{ form_widget(searchProductModalForm.category_id) }}
+                                                    <button type="button" id="searchProductModalButton" class="btn btn-ec-conversion px-5 mb-4 mt-2">{{ 'admin.order.edit.294'|trans }}</button>
+                                                    <div id="searchProductModalList"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <a class="btn btn-ec-regular mr-2" data-toggle="modal" data-target="#addOrderItemType">{{ 'admin.order.edit.btn.add_other_item'|trans }}</a>
+                                    <div class="modal fade" id="addOrderItemType" tabindex="-1" role="dialog" aria-labelledby="addOrderItemType" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">{{ 'admin.order.edit.btn.add_other_item'|trans }}</h5>
+                                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div id="searchOrderItemTypeList"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{ form_errors(form.OrderItemsErrors) }}
+                                </div>
+                                <div class="col-5 text-right">
+                                    <button type="submit" class="btn btn-ec-regular mr-2" name="mode" value="calc" data-link="order-product" id="calculate">{{ 'admin.order.edit.267'|trans }}</button>
+                                </div>
+                            </div>
+                            <table id="table-form-field" class="table table-striped table-sm mb-0  text-nowrap"
+                                   data-prototype="{% filter escape %}{{ include('@admin/Order/order_item_prototype.twig', {'orderItemForm': form.OrderItems.vars.prototype}) }}{% endfilter %}">
+                                <thead class="table-active">
+                                <tr>
+                                    <th class="pt-2 pb-2 pl-3">{{ 'admin.order.edit.label.product_name_code'|trans }}</th>
+                                    <th class="pt-2 pb-2">
+                                        <div class="col-8">{{ 'admin.common.label.price02'|trans }}</div>
+                                    </th>
+                                    <th class="pt-2 pb-2">
+                                        <div class="col-8">{{ 'admin.common.label.quantity'|trans }}</div>
+                                    </th>
+                                    <th class="pt-2 pb-2">
+                                        <div class="col-8">{{ 'admin.common.label.tax'|trans }}</div>
+                                    </th>
+                                    <th class="pt-2 pb-2">
+                                        <div class="col-8">{{ 'admin.common.label.tax_status'|trans }}</div>
+                                    </th>
+                                    <th class="pt-2 pb-2">
+                                        <div class="col-8">{{ 'admin.common.label.subtotal'|trans }}</div>
+                                    </th>
+                                    <th class="pt-2 pb-2 pr-3"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for orderItemForm in form.OrderItems %}
                                     <tr>
-                                        <th class="pt-2 pb-2 pl-3">{{ 'admin.order.edit.label.product_name_code'|trans }}</th>
-                                        <th class="pt-2 pb-2">{{ 'admin.order.edit.246'|trans }}</th>
-                                        <th class="pt-2 pb-2">{{ 'admin.common.label.shipping_status'|trans }}</th>
-                                        <th class="pt-2 pb-2">{{ 'admin.common.label.price02'|trans }}</th>
-                                        <th class="pt-2 pb-2">{{ 'admin.common.label.quantity'|trans }}</th>
-                                        <th class="pt-2 pb-2">{{ 'admin.common.label.tax'|trans }}</th>
-                                        <th class="pt-2 pb-2">{{ 'admin.common.label.tax_status'|trans }}</th>
-                                        <th class="pt-2 pb-2">{{ 'admin.common.label.subtotal'|trans }}</th>
-                                        <th class="pt-2 pb-2 pr-3"></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for orderItemForm in form.OrderItems %}
-                                        <tr>
-                                            {{ form_widget(orderItemForm.Order) }}
-                                            <td class="align-middle w-25 pl-3">
-                                                <p class="mb-0 font-weight-bold">
-                                                    {% if orderItemForm.vars.value.OrderItemType.isProduct %}
-                                                        {{ orderItemForm.vars.value.product_name }}
-                                                        {{ form_widget(orderItemForm.product_name, {'attr': {'class': 'd-none'}}) }}
-                                                    {% else %}
-                                                        {{ form_widget(orderItemForm.product_name) }}
-                                                        {{ form_errors(orderItemForm.product_name) }}
-                                                    {% endif %}
-                                                </p>
-                                                <span>
+                                        {{ form_widget(orderItemForm.Order) }}
+                                        <td class="align-middle w-25 pl-3">
+                                            <p class="mb-0 font-weight-bold">
+                                                {% if orderItemForm.vars.value.OrderItemType.isProduct %}
+                                                    {{ orderItemForm.vars.value.product_name }}
+                                                    {{ form_widget(orderItemForm.product_name, {'attr': {'class': 'd-none'}}) }}
+                                                {% else %}
+                                                    {{ form_widget(orderItemForm.product_name) }}
+                                                    {{ form_errors(orderItemForm.product_name) }}
+                                                {% endif %}
+                                            </p>
+                                            <span>
                                                     {{ orderItemForm.vars.value.product_code }}
-                                                    {% if orderItemForm.vars.value.class_category_name1 is not empty %}
-                                                        / (
-                                                        {{ orderItemForm.vars.value.class_name1 }}：
-                                                        {{ orderItemForm.vars.value.class_category_name1 }}
-                                                        {% if orderItemForm.vars.value.class_category_name2 is not empty %}
-                                                            /
-                                                            {{ orderItemForm.vars.value.class_name2 }}：
-                                                            {{ orderItemForm.vars.value.class_category_name2 }}
-                                                        {% endif %}
-                                                        )
+                                                {% if orderItemForm.vars.value.class_category_name1 is not empty %}
+                                                    / (
+                                                    {{ orderItemForm.vars.value.class_name1 }}：
+                                                    {{ orderItemForm.vars.value.class_category_name1 }}
+                                                    {% if orderItemForm.vars.value.class_category_name2 is not empty %}
+                                                        /
+                                                        {{ orderItemForm.vars.value.class_name2 }}：
+                                                        {{ orderItemForm.vars.value.class_category_name2 }}
                                                     {% endif %}
-                                                </span>
-                                            </td>
-                                            <td class="align-middle">
-                                                {% if orderItemForm.vars.value.Shipping %}
-                                                    <a href="{{ url('admin_shipping_edit', { id : orderItemForm.vars.value.Shipping.id }) }}">{{ orderItemForm.vars.value.Shipping.id }}</a>
+                                                    )
                                                 {% endif %}
-                                            </td>
-                                            <td class="align-middle">
-                                                {% if orderItemForm.vars.value.Shipping %}
-                                                    {{ orderItemForm.vars.value.Shipping.ShippingStatus }}
-                                                {% endif %}
-                                            </td>
-                                            <td class="align-middle">
-                                                <div class="col-8">
-                                                    {{ form_widget(orderItemForm.price, {'attr': {'class': 'input-price'}}) }}
-                                                    {{ form_errors(orderItemForm.price) }}
-                                                </div>
-                                            </td>
-                                            <td class="align-middle">
-                                                <div class="col-6">
-                                                    {{ form_widget(orderItemForm.quantity) }}
-                                                    {{ form_errors(orderItemForm.quantity) }}
-                                                </div>
-                                            </td>
-                                            <td class="align-middle">
-                                                <div class="col-8">
-                                                    {{ orderItemForm.vars.value.tax_rate }}
-                                                    {{ form_widget(orderItemForm.tax_rate, {'attr': {'class': 'd-none'}}) }}
-                                                    {{ form_errors(orderItemForm.tax_rate) }}
-                                                </div>
-                                            </td>
-                                            <td class="align-middle">
-                                                <div class="col-8">
-                                                    {{ orderItemForm.vars.value.tax_type }}
-                                                </div>
-                                            </td>
-                                            <td class="align-middle"><span>{{ orderItemForm.vars.value.total_price|price }}</span>
+                                            </span>
+                                            {{ form_errors(orderItemForm.product_name) }}
+                                        </td>
+                                        <td class="align-middle">
+                                            <div class="col-8">
+                                                {{ form_widget(orderItemForm.price, {'attr': {'class': 'input-price'}}) }}
+                                                {{ form_errors(orderItemForm.price) }}
+                                            </div>
+                                        </td>
+                                        <td class="align-middle">
+                                            <div class="col-6">
+                                                {{ form_widget(orderItemForm.quantity) }}
+                                                {{ form_errors(orderItemForm.quantity) }}
+                                            </div>
+                                        </td>
+                                        <td class="align-middle">
+                                            <div class="col-8">
+                                                {{ orderItemForm.vars.value.tax_rate }}
+                                                {{ form_widget(orderItemForm.tax_rate, {'attr': {'class': 'd-none'}}) }}
+                                                {{ form_errors(orderItemForm.tax_rate) }}
+                                            </div>
+                                        </td>
+                                        <td class="align-middle">
+                                            <div class="col-8">
+                                                {{ orderItemForm.vars.value.tax_type }}
+                                            </div>
+                                        </td>
+                                        <td class="align-middle">
+                                            <div class="col-8">
+                                                <span>{{ orderItemForm.vars.value.total_price|price }}</span>
                                                 <small>（{{ 'admin.common.label.taxinc'|trans }}）</small>
-                                            </td>
-                                            <td class="align-middle text-right pr-3">
-                                                <div class="row justify-content-end">
-                                                    <div class="col-auto text-center"><a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#delete_{{ orderItemForm.vars.id }}" data-tooltip="tooltip" data-placement="top" title="{{ 'common.label.delete'|trans }}"><i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a>
-                                                        <div class="modal fade" id="delete_{{ orderItemForm.vars.id }}" tabindex="-1" role="dialog" aria-labelledby="delete_{{ orderItemForm.vars.id }}" aria-hidden="true">
-                                                            <div class="modal-dialog" role="document">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title font-weight-bold">{{ 'admin.order.edit.delete.modal.header'|trans }}</h5>
-                                                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                                                    </div>
-                                                                    <div class="modal-body text-left"><p class="text-left">{{ 'admin.order.edit.delete.modal.body'|trans }}</p></div>
-                                                                    <div class="modal-footer">
-                                                                        <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'common.label.cancel'|trans }}</button>
-                                                                        <a href="#order-product" class="btn delete btn-ec-delete">{{ 'common.label.delete'|trans }}</a>
-                                                                    </div>
+                                            </div>
+                                        </td>
+                                        <td class="align-middle text-right pr-3">
+                                            <div class="row justify-content-end">
+                                                <div class="col-auto text-center"><a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#delete_{{ orderItemForm.vars.id }}" data-tooltip="tooltip" data-placement="top" title="{{ 'common.label.delete'|trans }}"><i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a>
+                                                    <div class="modal fade" id="delete_{{ orderItemForm.vars.id }}" tabindex="-1" role="dialog" aria-labelledby="delete_{{ orderItemForm.vars.id }}" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title font-weight-bold">{{ 'admin.order.edit.delete.modal.header'|trans }}</h5>
+                                                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                                </div>
+                                                                <div class="modal-body text-left"><p class="text-left">{{ 'admin.order.edit.delete.modal.body'|trans }}</p></div>
+                                                                <div class="modal-footer">
+                                                                    <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'common.label.cancel'|trans }}</button>
+                                                                    <a href="#order-product" class="btn delete btn-ec-delete">{{ 'common.label.delete'|trans }}</a>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </td>
-                                            {{ form_widget(orderItemForm.Order) }}
-                                            {{ form_widget(orderItemForm.Shipping) }}
-                                            {{ form_widget(orderItemForm.Product) }}
-                                            {{ form_widget(orderItemForm.ProductClass) }}
-                                            {{ form_widget(orderItemForm.product_name) }}
-                                            {{ form_widget(orderItemForm.product_code) }}
-                                            {{ form_widget(orderItemForm.class_name1) }}
-                                            {{ form_widget(orderItemForm.class_name2) }}
-                                            {{ form_widget(orderItemForm.class_category_name1) }}
-                                            {{ form_widget(orderItemForm.class_category_name2) }}
-                                            {{ form_widget(orderItemForm.tax_rule) }}
-                                            {{ form_widget(orderItemForm.tax_type) }}
-                                            {{ form_widget(orderItemForm.tax_display_type) }}
-                                            {{ form_widget(orderItemForm.order_item_type) }}
-                                        </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
-                                <hr class="mt-0">
-                                {# TODO 小計,内値引き,内送料,内手数料の金額が明細と合わない #}
-                                <div class="row justify-content-end mb-3">
-                                    <div class="col-auto"><span class="align-middle">{{ 'admin.order.edit.276'|trans }}</span></div>
-                                    <div class="col-2 text-right"><span class="h4 align-middle font-weight-normal">{{ Order.subtotal|price }}</span></div>
-                                </div>
-                                <div class="row justify-content-end mb-3">
-                                    <div class="col-auto"><span class="align-middle">{{ 'admin.order.edit.277'|trans }}</span></div>
-                                    <div class="col-2 text-right"><span class="h4 align-middle text-danger font-weight-normal">- {{ Order.discount|price }}</span></div>
-                                </div>
-                                <div class="row justify-content-end mb-3">
-                                    <div class="col-auto"><span class="align-middle">{{ 'admin.order.edit.279'|trans }}</span></div>
-                                    <div class="col-2 text-right"><span class="h4 align-middle font-weight-normal">{{ Order.delivery_fee_total|price }}</span></div>
-                                </div>
-                                <div class="row justify-content-end mb-3">
-                                    <div class="col-auto"><span class="align-middle">{{ 'admin.order.edit.280'|trans }}</span></div>
-                                    <div class="col-2 text-right"><span class="h4 align-middle font-weight-normal">{{ Order.charge|price }}</span></div>
-                                </div>
-                                <div class="row justify-content-end mb-3">
-                                    <div class="col-auto"><span class="align-middle">{{ 'admin.common.label.add_point'|trans }}</span></div>
-                                    <div class="col-2 text-right">
+                                            </div>
+                                        </td>
+                                        {{ form_widget(orderItemForm.Order) }}
+                                        {{ form_widget(orderItemForm.Shipping) }}
+                                        {{ form_widget(orderItemForm.Product) }}
+                                        {{ form_widget(orderItemForm.ProductClass) }}
+                                        {{ form_widget(orderItemForm.product_name) }}
+                                        {{ form_widget(orderItemForm.product_code) }}
+                                        {{ form_widget(orderItemForm.class_name1) }}
+                                        {{ form_widget(orderItemForm.class_name2) }}
+                                        {{ form_widget(orderItemForm.class_category_name1) }}
+                                        {{ form_widget(orderItemForm.class_category_name2) }}
+                                        {{ form_widget(orderItemForm.tax_rule) }}
+                                        {{ form_widget(orderItemForm.tax_type) }}
+                                        {{ form_widget(orderItemForm.tax_display_type) }}
+                                        {{ form_widget(orderItemForm.order_item_type) }}
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <hr class="mt-0">
+                            {# TODO 小計,内値引き,内送料,内手数料の金額が明細と合わない #}
+                            <div class="row justify-content-end mb-3">
+                                <div class="col-auto"><span class="align-middle">{{ 'admin.order.edit.276'|trans }}</span></div>
+                                <div class="col-2 text-right"><span class="h4 align-middle font-weight-normal">{{ Order.subtotal|price }}</span></div>
+                            </div>
+                            <div class="row justify-content-end mb-3">
+                                <div class="col-auto"><span class="align-middle">{{ 'admin.order.edit.277'|trans }}</span></div>
+                                <div class="col-2 text-right"><span class="h4 align-middle text-danger font-weight-normal">- {{ Order.discount|price }}</span></div>
+                            </div>
+                            <div class="row justify-content-end mb-3">
+                                <div class="col-auto"><span class="align-middle">{{ 'admin.order.edit.279'|trans }}</span></div>
+                                <div class="col-2 text-right"><span class="h4 align-middle font-weight-normal">{{ Order.delivery_fee_total|price }}</span></div>
+                            </div>
+                            <div class="row justify-content-end mb-3">
+                                <div class="col-auto"><span class="align-middle">{{ 'admin.order.edit.280'|trans }}</span></div>
+                                <div class="col-2 text-right"><span class="h4 align-middle font-weight-normal">{{ Order.charge|price }}</span></div>
+                            </div>
+                            <div class="row justify-content-end mb-3">
+                                <div class="col-auto"><span class="align-middle">{{ 'admin.common.label.add_point'|trans }}</span></div>
+                                <div class="col-2 text-right">
                                         <span class="h4 align-middle font-weight-normal">
                                             {{ form_widget(form.add_point) }}
                                             {{ form_errors(form.add_point) }}
                                         </span>
-                                    </div>
                                 </div>
-                                <div class="row justify-content-end mb-3">
-                                    <div class="col-auto"><span class="align-middle">{{ 'admin.common.label.use_point'|trans }}</span></div>
-                                    <div class="col-2 text-right">
+                            </div>
+                            <div class="row justify-content-end mb-3">
+                                <div class="col-auto"><span class="align-middle">{{ 'admin.common.label.use_point'|trans }}</span></div>
+                                <div class="col-2 text-right">
                                         <span class="h4 align-middle font-weight-normal">
                                             {{ form_widget(form.use_point) }}
                                             {{ form_errors(form.use_point) }}
                                         </span>
-                                    </div>
                                 </div>
+                            </div>
 
-                                <hr>
-                                <div class="row justify-content-end mb-3">
-                                    <div class="col-auto"><span class="align-middle">{{ 'admin.common.label.total'|trans }}</span></div>
-                                    <div class="col-2 text-right"><span class="h4 align-middle font-weight-normal">{{ Order.total|price }}</span></div>
-                                </div>
-                                <div class="row justify-content-end mb-3">
-                                    <div class="col-auto"><span class="align-middle">{{ 'admin.common.label.payment_total'|trans }}</span></div>
-                                    <div class="col-2 text-right"><span class="h4 align-middle font-weight-normal">{{ Order.payment_total|price }}</span></div>
-                                </div>
+                            <hr>
+                            <div class="row justify-content-end mb-3">
+                                <div class="col-auto"><span class="align-middle">{{ 'admin.common.label.total'|trans }}</span></div>
+                                <div class="col-2 text-right"><span class="h4 align-middle font-weight-normal">{{ Order.total|price }}</span></div>
+                            </div>
+                            <div class="row justify-content-end mb-3">
+                                <div class="col-auto"><span class="align-middle">{{ 'admin.common.label.payment_total'|trans }}</span></div>
+                                <div class="col-2 text-right"><span class="h4 align-middle font-weight-normal">{{ Order.payment_total|price }}</span></div>
                             </div>
                         </div>
                     </div>
-                    {% if id is not null %}
-                        <div class="card rounded border-0 mb-4">
-                            <div class="card-header">
-                                <div class="row">
-                                    <div class="col-8"><span class="card-title">{{ 'admin.order.edit.label.mail_delivery_history'|trans }}</span></div>
-                                    <div class="col-4 text-right"><a data-toggle="collapse" href="#mailHistory" aria-expanded="false" aria-controls="mailHistory"><i class="fa fa-angle-up fa-lg"></i></a></div>
-                                </div>
+                </div>
+                <div class="card rounded border-0 mb-4">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.common.label.memo'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></span></div>
                             </div>
-                            <div class="collapse show ec-cardCollapse" id="mailHistory">
-                                <div class="card-body">
-                                    <table class="table table-striped">
-                                        <thead class="table-active">
-                                        <tr>
-                                            <th class="pt-2 pb-2 pl-3">{{ 'admin.order.edit.label.mail_delivery_date'|trans }}</th>
-                                            <th class="pt-2 pb-2 pr-3">{{ 'admin.order.edit.label.mail_delivery_title'|trans }}</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {% for MailHistory in Order.MailHistories %}
-                                            <tr>
-                                                <td class="pl-3">{{ MailHistory.send_date|date_min }}</td>
-                                                <td class="pr-3"><a class="text-primary" data-toggle="modal" data-target="#mail2">{{ MailHistory.mail_subject }}</a>
-                                                    <div class="modal fade" id="mail2" tabindex="-1" role="dialog" aria-labelledby="mail2" aria-hidden="true">
-                                                        <div class="modal-dialog" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title">{{ MailHistory.mail_subject }}</h5>
-                                                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <p>
-                                                                        {{ MailHistory.mail_body|nl2br }}
-                                                                    </p>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button class="btn btn-ec-regular" type="button" data-dismiss="modal">{{ 'admin.common.label.close'|trans }}</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        {% endfor %}
-                                        </tbody>
-                                    </table>
-                                    <div class="text-center">
-                                        <a class="btn btn-ec-regular" href="{{ url('admin_order_mail', { id : Order.id }) }}">{{ 'admin.order.edit.label.mail'|trans }}</a>
-                                    </div>
-                                </div>
-                            </div>
+                            <div class="col-4 text-right"><a data-toggle="collapse" href="#freeArea" aria-expanded="false" aria-controls="freeArea"><i class="fa fa-angle-up fa-lg"></i></a></div>
                         </div>
-                    {% endif %}
+                    </div>
+                    <div class="collapse show ec-cardCollapse" id="freeArea">
+                        <div class="card-body">
+                            {{ form_widget(form.note, {'attr': {'rows': 8}}) }}
+                        </div>
+                    </div>
+                </div>
+                {% if id is not null %}
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header">
                             <div class="row">
-                                <div class="col-8">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.common.label.memo'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></span></div>
-                                </div>
-                                <div class="col-4 text-right"><a data-toggle="collapse" href="#freeArea" aria-expanded="false" aria-controls="freeArea"><i class="fa fa-angle-up fa-lg"></i></a></div>
+                                <div class="col-8"><span class="card-title">{{ 'admin.order.edit.label.mail_delivery_history'|trans }}</span></div>
+                                <div class="col-4 text-right"><a data-toggle="collapse" href="#mailHistory" aria-expanded="false" aria-controls="mailHistory"><i class="fa fa-angle-up fa-lg"></i></a></div>
                             </div>
                         </div>
-                        <div class="collapse show ec-cardCollapse" id="freeArea">
+                        <div class="collapse show ec-cardCollapse" id="mailHistory">
                             <div class="card-body">
-                                {{ form_widget(form.note, {'attr': {'rows': 8}}) }}
+                                <table class="table table-striped">
+                                    <thead class="table-active">
+                                    <tr>
+                                        <th class="pt-2 pb-2 pl-3">{{ 'admin.order.edit.label.mail_delivery_date'|trans }}</th>
+                                        <th class="pt-2 pb-2 pr-3">{{ 'admin.order.edit.label.mail_delivery_title'|trans }}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for MailHistory in Order.MailHistories %}
+                                        <tr>
+                                            <td class="pl-3">{{ MailHistory.send_date|date_min }}</td>
+                                            <td class="pr-3"><a class="text-primary" data-toggle="modal" data-target="#mail2">{{ MailHistory.mail_subject }}</a>
+                                                <div class="modal fade" id="mail2" tabindex="-1" role="dialog" aria-labelledby="mail2" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title">{{ MailHistory.mail_subject }}</h5>
+                                                                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <p>
+                                                                    {{ MailHistory.mail_body|nl2br }}
+                                                                </p>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button class="btn btn-ec-regular" type="button" data-dismiss="modal">{{ 'admin.common.label.close'|trans }}</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                                <div class="text-center">
+                                    <a class="btn btn-ec-regular" href="{{ url('admin_order_mail', { id : Order.id }) }}">{{ 'admin.order.edit.label.mail'|trans }}</a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="card rounded border-0 mb-4">
-                        <div class="collapse show ec-cardCollapse">
-                            <div class="card-body">
-                                {% for f in form %}
-                                    {# auto_render有効時に出力 #}
-                                    {% if f.vars.eccube_form_options.auto_render %}
-                                        {# form_themeが設定されている場合にthemeを適用 #}
-                                        {% if f.vars.eccube_form_options.form_theme %}
-                                            {% form_theme f f.vars.eccube_form_options.form_theme %}
-                                        {% endif %}
-                                        {{ form_row(f) }}
+                {% endif %}
+                <div class="card rounded border-0 mb-4">
+                    <div class="collapse show ec-cardCollapse">
+                        <div class="card-body">
+                            {% for f in form %}
+                                {# auto_render有効時に出力 #}
+                                {% if f.vars.eccube_form_options.auto_render %}
+                                    {# form_themeが設定されている場合にthemeを適用 #}
+                                    {% if f.vars.eccube_form_options.form_theme %}
+                                        {% form_theme f f.vars.eccube_form_options.form_theme %}
                                     {% endif %}
-                                {% endfor %}
-                            </div>
+                                    {{ form_row(f) }}
+                                {% endif %}
+                            {% endfor %}
                         </div>
                     </div>
                 </div>

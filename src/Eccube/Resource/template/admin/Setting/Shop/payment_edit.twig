@@ -216,6 +216,10 @@ file that was distributed with this source code.
                     <div class="col-6">
                         <div class="row align-items-center justify-content-end">
                             <div class="col-auto">
+                                {{ form_widget(form.visible) }}
+                                {{ form_errors(form.visible) }}
+                            </div>
+                            <div class="col-auto">
                                 <button class="btn btn-ec-conversion px-5" type="submit">{{'admin.setting.shop.payment_edit.submit_button'|trans}}</button>
                             </div>
                         </div>

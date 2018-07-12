@@ -46,6 +46,13 @@ class UpdatePointEventSubscriber implements EventSubscriber
             return;
         }
 
+        $Order = $eventArgs->getObject();
+        $Customer = $Order->getCustomer();
+        // 非会員の場合、処理は無効にする
+        if (!$Customer) {
+            return;
+        }
+
         /** @var PreUpdateEventArgs $eventArgs */
         if ($eventArgs->hasChangedField('OrderStatus')) {
             $addCustomerPoint = 0;

@@ -139,6 +139,7 @@ class CsvImportController extends AbstractCsvImportController
                     continue;
                 }
 
+                $shippingDate->setTime(0, 0, 0);
                 $Shipping->setShippingDate($shippingDate);
             }
         }

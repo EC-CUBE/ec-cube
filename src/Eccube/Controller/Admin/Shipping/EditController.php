@@ -15,13 +15,11 @@ namespace Eccube\Controller\Admin\Shipping;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Controller\AbstractController;
-use Eccube\Entity\Master\ShippingStatus;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
 use Eccube\Form\Type\Admin\ShippingType;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\DeliveryRepository;
-use Eccube\Repository\Master\ShippingStatusRepository;
 use Eccube\Repository\OrderItemRepository;
 use Eccube\Repository\ShippingRepository;
 use Eccube\Service\TaxRuleService;
@@ -67,11 +65,6 @@ class EditController extends AbstractController
     protected $serializer;
 
     /**
-     * @var ShippingStatusRepository
-     */
-    protected $shippingStatusRepository;
-
-    /**
      * @var \Eccube\Service\MailService
      */
     protected $mailService;
@@ -85,7 +78,6 @@ class EditController extends AbstractController
      * @param DeliveryRepository $deliveryRepository
      * @param TaxRuleService $taxRuleService
      * @param ShippingRepository $shippingRepository
-     * @param ShippingStatusRepository $shippingStatusRepository
      * @param SerializerInterface $serializer
      */
     public function __construct(
@@ -95,7 +87,6 @@ class EditController extends AbstractController
         DeliveryRepository $deliveryRepository,
         TaxRuleService $taxRuleService,
         ShippingRepository $shippingRepository,
-        ShippingStatusRepository $shippingStatusRepository,
         SerializerInterface $serializer
     ) {
         $this->mailService = $mailService;
@@ -104,7 +95,6 @@ class EditController extends AbstractController
         $this->deliveryRepository = $deliveryRepository;
         $this->taxRuleService = $taxRuleService;
         $this->shippingRepository = $shippingRepository;
-        $this->shippingStatusRepository = $shippingStatusRepository;
         $this->serializer = $serializer;
     }
 
@@ -174,17 +164,10 @@ class EditController extends AbstractController
                 $OrderItem->setShipping($TargetShipping);
             }
 
-            $OriginShippingStatus = $OriginShipping->getShippingStatus();
-            $TargetShippingStatus = $TargetShipping->getShippingStatus();
-
             // 出荷ステータス変更時の処理
-            if ($TargetShippingStatus !== null
-             && $TargetShippingStatus->getId() == ShippingStatus::SHIPPED) {
+            if ($TargetShipping->isShipped()) {
                 // 「出荷済み」にステータスが変更された場合
-                if ($OriginShippingStatus === null
-                 || $OriginShippingStatus->getId() != $TargetShippingStatus->getId()) {
-                    // 出荷日時を更新
-                    $TargetShipping->setShippingDate(new \DateTime());
+                if ($OriginShipping->isShipped() == false) {
                     // 出荷メールを送信
                     if ($form->get('notify_email')->getData()) {
                         try {
@@ -200,9 +183,6 @@ class EditController extends AbstractController
                         }
                     }
                 }
-            } else {
-                // 「出荷済み」以外に変更した場合は、出荷日時をクリアする
-                $TargetShipping->setShippingDate(null);
             }
 
             try {
