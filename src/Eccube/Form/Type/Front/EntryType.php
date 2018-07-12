@@ -147,7 +147,7 @@ class EntryType extends AbstractType
                 if ($Customer instanceof Customer && !$Customer->getId()) {
                     $form = $event->getForm();
 
-                    if ($this->requestStack->getCurrentRequest()->get('mode') == 'confirm') {
+                    if ($this->requestStack->getCurrentRequest() && $this->requestStack->getCurrentRequest()->get('mode') == 'confirm') {
                         $validator = \Symfony\Component\Validator\Validation::createValidator();
                         $metadata = $validator->getMetadataFor(\Symfony\Component\Form\Form::class);
                         $metadata->addConstraint(new \Symfony\Component\Form\Extension\Validator\Constraints\Form());
