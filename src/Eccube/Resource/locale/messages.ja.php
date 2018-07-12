@@ -504,6 +504,11 @@ return [
     'cart.product.price.change' => '「%product%」の販売価格が変更されました。',
     'cart.product.divide' => '同時購入できない商品がカートに含まれています。
 お手数ですが、個別に購入手続きをお願い致します。',
+    'cart.shipping.free' => '送料無料',
+    'cart.shipping.free_applied' => '現在送料無料です',
+    'cart.shipping.free_if_amount_quantity' => 'あと「%amount%」または「%quantity%」のお買い上げで%free_text%になります。',
+    'cart.shipping.free_if_amount' => 'あと「%amount%」のお買い上げで%free_text%になります。',
+    'cart.shipping.free_if_quantity' => 'あと「%quantity%」のお買い上げで%free_text%になります。',
     'shopping.multiple.delivery' => '配送方法が異なる商品が含まれているため、お届け先は複数となります。',
     'shopping.multiple.quantity.diff' => '数量の合計が、カゴの中の数量と異なっています。',
     'shopping.delivery.not.saletype' => '配送の準備ができていない商品が含まれております。
