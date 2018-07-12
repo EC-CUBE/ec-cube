@@ -108,7 +108,7 @@ class ShippingType extends AbstractType
 
                 // 販売種別に紐づく配送業者を取得.
                 $Deliveries = $this->deliveryRepository->getDeliveries($SaleTypes);
-                $Deliveries = $this->shoppingSerive->filterDeliveries($Deliveries, $Shipping->getOrders()->first());
+                $Deliveries = $this->shoppingSerive->filterDeliveries($Deliveries, $Shipping->getOrder());
 
                 // 配送業者のプルダウンにセット.
                 $form = $event->getForm();
