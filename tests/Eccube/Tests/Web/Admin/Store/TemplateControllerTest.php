@@ -179,7 +179,7 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
     /**
      * 削除
      */
-    public function tessDelete()
+    public function testDelete()
     {
         // テンプレートをアップロード
         $this->scenarioUpload();
