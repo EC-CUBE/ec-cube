@@ -14,11 +14,18 @@
 namespace Eccube\Form\Type\Admin;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\Master\Work;
+use Eccube\Repository\Master\AuthorityRepository;
+use Eccube\Repository\Master\WorkRepository;
+use Eccube\Repository\MemberRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -30,6 +37,21 @@ class MemberType extends AbstractType
     protected $eccubeConfig;
 
     /**
+     * @var MemberRepository
+     */
+    protected $memberRepository;
+
+    /**
+     * @var WorkRepository
+     */
+    protected $workRepository;
+
+    /**
+     * @var AuthorityRepository
+     */
+    protected $authorityRepository;
+
+    /**
      * @var string
      */
     protected $blankMessage = 'admin.system.member.form.not.blank';
@@ -38,11 +60,18 @@ class MemberType extends AbstractType
      * MemberType constructor.
      *
      * @param EccubeConfig $eccubeConfig
+     * @param MemberRepository $memberRepository
      */
     public function __construct(
-        EccubeConfig $eccubeConfig
+        EccubeConfig $eccubeConfig,
+        MemberRepository $memberRepository,
+        WorkRepository $workRepository,
+        AuthorityRepository $authorityRepository
     ) {
         $this->eccubeConfig = $eccubeConfig;
+        $this->memberRepository = $memberRepository;
+        $this->workRepository = $workRepository;
+        $this->authorityRepository = $authorityRepository;
     }
 
     /**
@@ -114,6 +143,32 @@ class MemberType extends AbstractType
                 ],
             ])
         ;
+
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            $form = $event->getForm();
+            $member = $event->getData();
+
+            if (!empty($member) && $member->getId() && $member->getWork()->getId() == 0) {
+                $members = $this->memberRepository
+                    ->createQueryBuilder('m')
+                    ->where('m.Work = :work AND m.Authority = :authority')
+                    ->setMaxResults(2)
+                    ->setParameter('work', $this->workRepository->find(Work::WORK_ACTIVE_ID))
+                    ->setParameter('authority', $this->authorityRepository->find(0))
+                    ->getQuery()
+                    ->getResult();
+
+                if (count($members) < 2) {
+                    if (count($members) == 1) {
+                        if ($members[0]->getId() != $member->getId()) {
+                            return;
+                        }
+                    }
+
+                    $form['Work']->addError(new FormError(trans('admin.setting.system.member.work.error')));
+                }
+            }
+        });
     }
 
     /**
