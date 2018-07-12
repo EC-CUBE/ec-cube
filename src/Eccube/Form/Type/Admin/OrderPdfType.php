@@ -68,9 +68,7 @@ class OrderPdfType extends AbstractType
             ])
             ->add('issue_date', DateType::class, [
                 'label' => 'admin.order.export.pdf.label.002',
-                'input' => 'datetime',
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
                 'required' => true,
                 'data' => new \DateTime(),
                 'constraints' => [

@@ -19,6 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
  * OrderPdf
  *
  * @ORM\Table(name="dtb_order_pdf")
+ * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
  * @ORM\Entity(repositoryClass="Eccube\Repository\OrderPdfRepository")
  */
