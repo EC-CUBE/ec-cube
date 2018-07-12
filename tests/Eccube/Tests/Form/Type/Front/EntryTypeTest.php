@@ -53,7 +53,6 @@ class EntryTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         ],
         'sex' => 1,
         'job' => 1,
-        'user_policy_check' => 1,
     ];
 
     public function setUp()
