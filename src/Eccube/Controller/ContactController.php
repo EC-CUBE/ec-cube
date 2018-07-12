@@ -13,6 +13,7 @@
 
 namespace Eccube\Controller;
 
+use Eccube\Entity\Customer;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\ContactType;
@@ -50,6 +51,7 @@ class ContactController extends AbstractController
         $builder = $this->formFactory->createBuilder(ContactType::class);
 
         if ($this->isGranted('ROLE_USER')) {
+            /** @var Customer $user */
             $user = $this->getUser();
             $builder->setData(
                 [
@@ -57,14 +59,11 @@ class ContactController extends AbstractController
                     'name02' => $user->getName02(),
                     'kana01' => $user->getKana01(),
                     'kana02' => $user->getKana02(),
-                    'zip01' => $user->getZip01(),
-                    'zip02' => $user->getZip02(),
+                    'postal_code' => $user->getPostalCode(),
                     'pref' => $user->getPref(),
                     'addr01' => $user->getAddr01(),
                     'addr02' => $user->getAddr02(),
-                    'tel01' => $user->getTel01(),
-                    'tel02' => $user->getTel02(),
-                    'tel03' => $user->getTel03(),
+                    'phone_number' => $user->getPhoneNumber(),
                     'email' => $user->getEmail(),
                 ]
             );

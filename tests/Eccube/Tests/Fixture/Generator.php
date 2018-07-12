@@ -22,7 +22,6 @@ use Eccube\Entity\DeliveryTime;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Master\OrderItemType;
-use Eccube\Entity\Master\ShippingStatus;
 use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Member;
@@ -214,13 +213,13 @@ class Generator
      */
     public function createCustomer($email = null)
     {
+        /** @var Generator_Faker $faker */
         $faker = $this->getFaker();
         $Customer = new Customer();
         if (is_null($email)) {
             $email = $faker->safeEmail;
         }
-        $tel = explode('-', $faker->phoneNumber);
-        $fax = explode('-', $faker->phoneNumber);
+        $phoneNumber = str_replace('-', '', $faker->phoneNumber);
         $Status = $this->entityManager->find(\Eccube\Entity\Master\CustomerStatus::class, CustomerStatus::ACTIVE);
         $Pref = $this->entityManager->find(\Eccube\Entity\Master\Pref::class, $faker->numberBetween(1, 47));
         $Sex = $this->entityManager->find(\Eccube\Entity\Master\Sex::class, $faker->numberBetween(1, 2));
@@ -235,18 +234,11 @@ class Generator
             ->setKana02($this->locale === 'ja_JP' ? $faker->firstKanaName : '')
             ->setCompanyName($faker->company)
             ->setEmail($email)
-            ->setZip01($this->locale === 'ja_JP' ? $faker->postcode1 : null)
-            ->setZip02($this->locale === 'ja_JP' ? $faker->postcode2 : null)
-            ->setZipcode($faker->postcode)
+            ->setPostalcode($faker->postcode)
             ->setPref($Pref)
             ->setAddr01($faker->city)
             ->setAddr02($faker->streetAddress)
-            ->setTel01($tel[0])
-            ->setTel02(isset($tel[1]) ? $tel[1] : null)
-            ->setTel03(isset($tel[2]) ? $tel[2] : null)
-            ->setFax01($fax[0])
-            ->setFax02(isset($fax[1]) ? $fax[1] : null)
-            ->setFax03(isset($fax[2]) ? $fax[2] : null)
+            ->setPhoneNumber($phoneNumber)
             ->setBirth($faker->dateTimeThisDecade())
             ->setSex($Sex)
             ->setJob($Job)
@@ -277,8 +269,7 @@ class Generator
     {
         $faker = $this->getFaker();
         $Pref = $this->entityManager->find(\Eccube\Entity\Master\Pref::class, $faker->numberBetween(1, 47));
-        $tel = explode('-', $faker->phoneNumber);
-        $fax = explode('-', $faker->phoneNumber);
+        $phoneNumber = str_replace('-', '', $faker->phoneNumber);
         $CustomerAddress = new CustomerAddress();
         $CustomerAddress
             ->setCustomer($Customer)
@@ -287,18 +278,11 @@ class Generator
             ->setKana01($this->locale === 'ja_JP' ? $faker->lastKanaName : '')
             ->setKana02($this->locale === 'ja_JP' ? $faker->firstKanaName : '')
             ->setCompanyName($faker->company)
-            ->setZip01($this->locale === 'ja_JP' ? $faker->postcode1 : null)
-            ->setZip02($this->locale === 'ja_JP' ? $faker->postcode2 : null)
-            ->setZipcode($faker->postcode)
+            ->setPostalCode($faker->postcode)
             ->setPref($Pref)
             ->setAddr01($faker->city)
             ->setAddr02($faker->streetAddress)
-            ->setTel01($tel[0])
-            ->setTel02(isset($tel[1]) ? $tel[1] : null)
-            ->setTel03(isset($tel[2]) ? $tel[2] : null)
-            ->setFax01($fax[0])
-            ->setFax02(isset($fax[1]) ? $fax[1] : null)
-            ->setFax03(isset($fax[2]) ? $fax[2] : null);
+            ->setPhoneNumber($phoneNumber);
         if ($is_nonmember) {
             $Customer->addCustomerAddress($CustomerAddress);
             // TODO 外部でやった方がいい？
@@ -334,8 +318,7 @@ class Generator
             $email = $faker->safeEmail;
         }
         $Pref = $this->entityManager->find(\Eccube\Entity\Master\Pref::class, $faker->numberBetween(1, 47));
-        $tel = explode('-', $faker->phoneNumber);
-        $fax = explode('-', $faker->phoneNumber);
+        $phoneNumber = str_replace('-', '', $faker->phoneNumber);
         $Customer
             ->setName01($faker->lastName)
             ->setName02($faker->firstName)
@@ -343,18 +326,11 @@ class Generator
             ->setKana02($this->locale === 'ja_JP' ? $faker->firstKanaName : '')
             ->setCompanyName($faker->company)
             ->setEmail($email)
-            ->setZip01($this->locale === 'ja_JP' ? $faker->postcode1 : null)
-            ->setZip02($this->locale === 'ja_JP' ? $faker->postcode2 : null)
-            ->setZipcode($faker->postcode)
+            ->setPostalCode($faker->postcode)
             ->setPref($Pref)
             ->setAddr01($faker->city)
             ->setAddr02($faker->streetAddress)
-            ->setTel01($tel[0])
-            ->setTel02(isset($tel[1]) ? $tel[1] : null)
-            ->setTel03(isset($tel[2]) ? $tel[2] : null)
-            ->setFax01($fax[0])
-            ->setFax02(isset($fax[1]) ? $fax[1] : null)
-            ->setFax03(isset($fax[2]) ? $fax[2] : null);
+            ->setPhoneNumber($phoneNumber);
 
         $nonMember = [];
         $nonMember['customer'] = $Customer;
@@ -572,6 +548,7 @@ class Generator
             ->setNote($faker->realText())
             ->setAddPoint(0)    // TODO
             ->setUsePoint(0)    // TODO
+            ->setOrderNo(sha1(StringUtil::random()))
         ;
         $this->entityManager->persist($Order);
         $this->entityManager->flush($Order);
@@ -602,13 +579,14 @@ class Generator
         $Shipping = new Shipping();
         $Shipping->copyProperties($Customer);
         $Shipping
+            ->setOrder($Order)
             ->setPref($Pref)
             ->setDelivery($Delivery)
             ->setFeeId($DeliveryFee->getId())
             ->setShippingDeliveryFee($fee)
             ->setShippingDeliveryName($Delivery->getName());
-        $ShippingStatus = $this->entityManager->find(ShippingStatus::class, ShippingStatus::PREPARED);
-        $Shipping->setShippingStatus($ShippingStatus);
+
+        $Order->addShipping($Shipping);
 
         $this->entityManager->persist($Shipping);
         $this->entityManager->flush($Shipping);
@@ -716,7 +694,7 @@ class Generator
         $this->entityManager->persist($OrderItemDiscount);
         $this->entityManager->flush($OrderItemDiscount);
 
-        $this->orderPurchaseFlow->calculate($Order, new PurchaseContext());
+        $this->orderPurchaseFlow->validate($Order, new PurchaseContext());
 
         $this->entityManager->flush($Shipping);
         $this->entityManager->flush($Order);

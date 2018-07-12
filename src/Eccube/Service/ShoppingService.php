@@ -18,6 +18,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
+use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Delivery;
 use Eccube\Entity\MailHistory;
 use Eccube\Entity\Master\DeviceType;
@@ -162,6 +163,11 @@ class ShoppingService
     protected $authorizationChecker;
 
     /**
+     * @var \Mobile_Detect
+     */
+    protected $mobileDetect;
+
+    /**
      * ShoppingService constructor.
      *
      * @param MailTemplateRepository $mailTemplateRepository
@@ -185,6 +191,7 @@ class ShoppingService
      * @param OrderService $orderService
      * @param BaseInfo $BaseInfo
      * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param \Mobile_Detect $mobileDetect
      */
     public function __construct(
         MailTemplateRepository $mailTemplateRepository,
@@ -207,7 +214,8 @@ class ShoppingService
         CartService $cartService,
         OrderService $orderService,
         BaseInfo $BaseInfo,
-        AuthorizationCheckerInterface $authorizationChecker
+        AuthorizationCheckerInterface $authorizationChecker,
+        \Mobile_Detect $mobileDetect
     ) {
         $this->mailTemplateRepository = $mailTemplateRepository;
         $this->mailService = $mailService;
@@ -230,6 +238,7 @@ class ShoppingService
         $this->orderService = $orderService;
         $this->BaseInfo = $BaseInfo;
         $this->authorizationChecker = $authorizationChecker;
+        $this->mobileDetect = $mobileDetect;
     }
 
     /**
@@ -327,8 +336,7 @@ class ShoppingService
         $Order = $this->getNewOrder($Customer);
         $Order->setPreOrderId($preOrderId);
 
-        $mobileDetect = new \Mobile_Detect();
-        $DeviceType = $this->deviceTypeRepository->find($mobileDetect->isMobile() ? DeviceType::DEVICE_TYPE_SP : DeviceType::DEVICE_TYPE_PC);
+        $DeviceType = $this->deviceTypeRepository->find($this->mobileDetect->isMobile() ? DeviceType::DEVICE_TYPE_SP : DeviceType::DEVICE_TYPE_PC);
         $Order->setDeviceType($DeviceType);
 
         $this->entityManager->persist($Order);
@@ -435,15 +443,8 @@ class ShoppingService
             ->setKana02($Customer->getKana02())
             ->setCompanyName($Customer->getCompanyName())
             ->setEmail($Customer->getEmail())
-            ->setTel01($Customer->getTel01())
-            ->setTel02($Customer->getTel02())
-            ->setTel03($Customer->getTel03())
-            ->setFax01($Customer->getFax01())
-            ->setFax02($Customer->getFax02())
-            ->setFax03($Customer->getFax03())
-            ->setZip01($Customer->getZip01())
-            ->setZip02($Customer->getZip02())
-            ->setZipCode($Customer->getZip01().$Customer->getZip02())
+            ->setPhoneNumber($Customer->getPhoneNumber())
+            ->setPostalCode($Customer->getPostalCode())
             ->setPref($Customer->getPref())
             ->setAddr01($Customer->getAddr01())
             ->setAddr02($Customer->getAddr02())
@@ -548,6 +549,7 @@ class ShoppingService
             return $Shipping;
         }
 
+        /** @var CustomerAddress $CustomerAddress */
         $CustomerAddress = $this->customerAddressRepository->findOneBy(
             ['Customer' => $Customer],
             ['id' => 'ASC']
@@ -560,15 +562,8 @@ class ShoppingService
                 ->setKana01($CustomerAddress->getKana01())
                 ->setKana02($CustomerAddress->getKana02())
                 ->setCompanyName($CustomerAddress->getCompanyName())
-                ->setTel01($CustomerAddress->getTel01())
-                ->setTel02($CustomerAddress->getTel02())
-                ->setTel03($CustomerAddress->getTel03())
-                ->setFax01($CustomerAddress->getFax01())
-                ->setFax02($CustomerAddress->getFax02())
-                ->setFax03($CustomerAddress->getFax03())
-                ->setZip01($CustomerAddress->getZip01())
-                ->setZip02($CustomerAddress->getZip02())
-                ->setZipCode($CustomerAddress->getZip01().$CustomerAddress->getZip02())
+                ->setPhoneNumber($CustomerAddress->getPhoneNumber())
+                ->setPostalCode($CustomerAddress->getPostalCode())
                 ->setPref($CustomerAddress->getPref())
                 ->setAddr01($CustomerAddress->getAddr01())
                 ->setAddr02($CustomerAddress->getAddr02());
@@ -579,15 +574,8 @@ class ShoppingService
                 ->setKana01($Customer->getKana01())
                 ->setKana02($Customer->getKana02())
                 ->setCompanyName($Customer->getCompanyName())
-                ->setTel01($Customer->getTel01())
-                ->setTel02($Customer->getTel02())
-                ->setTel03($Customer->getTel03())
-                ->setFax01($Customer->getFax01())
-                ->setFax02($Customer->getFax02())
-                ->setFax03($Customer->getFax03())
-                ->setZip01($Customer->getZip01())
-                ->setZip02($Customer->getZip02())
-                ->setZipCode($Customer->getZip01().$Customer->getZip02())
+                ->setPhoneNumber($Customer->getPhoneNumber())
+                ->setPostalCode($Customer->getPostalCode())
                 ->setPref($Customer->getPref())
                 ->setAddr01($Customer->getAddr01())
                 ->setAddr02($Customer->getAddr02());

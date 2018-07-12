@@ -15,7 +15,6 @@ namespace Eccube\Form\Type\Admin;
 
 use Eccube\Common\EccubeConfig;
 use Eccube\Form\Type\Master\OrderStatusType;
-use Eccube\Form\Type\Master\ShippingStatusType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -51,11 +50,6 @@ class SearchShippingType extends AbstractType
             ])
             ->add('order_status', OrderStatusType::class, [
                 'label' => 'searchshipping.label.order_status',
-                'expanded' => true,
-                'multiple' => true,
-            ])
-            ->add('shipping_status', ShippingStatusType::class, [
-                'label' => 'searchshipping.label.shipping_status',
                 'expanded' => true,
                 'multiple' => true,
             ])
@@ -142,7 +136,7 @@ class SearchShippingType extends AbstractType
                     ])
                     ->addEventSubscriber(new \Eccube\Form\EventListener\ConvertKanaListener('CV'))
             )
-            ->add('tel', TextType::class, [
+            ->add('phone_number', TextType::class, [
                 'label' => 'searchshipping.label.tel',
                 'required' => false,
                 'constraints' => [
@@ -177,7 +171,7 @@ class SearchShippingType extends AbstractType
             ->add('email', TextType::class, [
                 'required' => false,
             ])
-            ->add('order_code', TextType::class, [
+            ->add('order_no', TextType::class, [
                 'label' => '注文番号',
                 'required' => false,
             ])

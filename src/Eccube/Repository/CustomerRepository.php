@@ -152,11 +152,11 @@ class CustomerRepository extends AbstractRepository
         }
 
         // tel
-        if (isset($searchData['tel']) && StringUtil::isNotBlank($searchData['tel'])) {
-            $tel = preg_replace('/[^0-9]/ ', '', $searchData['tel']);
+        if (isset($searchData['phone_number']) && StringUtil::isNotBlank($searchData['phone_number'])) {
+            $tel = preg_replace('/[^0-9]/ ', '', $searchData['phone_number']);
             $qb
-                ->andWhere('CONCAT(c.tel01, c.tel02, c.tel03) LIKE :tel')
-                ->setParameter('tel', '%'.$tel.'%');
+                ->andWhere('c.phone_number LIKE :phone_number')
+                ->setParameter('phone_number', '%'.$tel.'%');
         }
 
         // buy_total
@@ -339,12 +339,10 @@ class CustomerRepository extends AbstractRepository
     /**
      * 会員の初回購入時間、購入時間、購入回数、購入金額を更新する
      *
-     * @param $app
-     * @param  Customer $Customer
-     * @param  $orderStatusId
-     * @param  $isNewOrder
+     * @param Customer $Customer
+     * @param null $isNewOrder
      */
-    public function updateBuyData(Customer $Customer, $orderStatusId)
+    public function updateBuyData(Customer $Customer, $isNewOrder = null)
     {
         // 会員の場合、初回購入時間・購入時間・購入回数・購入金額を更新
 
@@ -368,13 +366,13 @@ class CustomerRepository extends AbstractRepository
                 $Customer->setFirstBuyDate($now);
             }
 
-            if ($orderStatusId == OrderStatus::CANCEL ||
-                $orderStatusId == OrderStatus::PENDING ||
-                $orderStatusId == OrderStatus::PROCESSING
-            ) {
-                // キャンセル、決済処理中、購入処理中は購入時間は更新しない
-            } else {
+            if ($isNewOrder) {
                 $Customer->setLastBuyDate($now);
+            } else {
+                $Order = $this->orderRepository->find($data['order_id']);
+                if ($Order) {
+                    $Customer->setLastBuyDate($Order->getOrderDate());
+                }
             }
 
             $Customer->setBuyTimes($data['buy_times']);

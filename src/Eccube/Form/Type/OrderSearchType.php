@@ -76,7 +76,7 @@ class OrderSearchType extends AbstractType
             ->add('email', EmailType::class, [
                 'required' => false,
             ])
-            ->add('tel', TelType::class, [
+            ->add('phone_number', PhoneNumberType::class, [
                 'required' => false,
             ])
             ->add('birth_start', BirthdayType::class, [

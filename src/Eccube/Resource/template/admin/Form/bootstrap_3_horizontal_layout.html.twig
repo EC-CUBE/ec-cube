@@ -22,24 +22,6 @@ file that was distributed with this source code.
     {%- endif %}
 {%- endblock form_errors %}
 
-{%- block tel_widget -%}
-    <div class="form-group range">
-        {%- for child in form %}
-            {{- form_widget(child, {'attr': {'style': 'ime-mode: disabled;'}} ) -}}
-            {%- if loop.last == false%}&nbsp;-&nbsp;{% endif -%}
-        {% endfor -%}
-    </div>
-{%- endblock tel_widget -%}
-
-{%- block zip_widget -%}
-    <div class="form-group range">
-        {%- for child in form %}
-            {{- form_widget(child, {'attr': {'style': 'ime-mode: disabled;'}} ) -}}
-            {%- if loop.last == false%}&nbsp;-&nbsp;{% endif -%}
-        {% endfor -%}
-    </div>
-{%- endblock zip_widget -%}
-
 {% block radio_widget -%}
     <div class="radio-inline">
         {{ parent() }}

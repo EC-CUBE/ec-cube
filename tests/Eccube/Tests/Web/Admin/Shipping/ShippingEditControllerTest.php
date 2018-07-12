@@ -16,7 +16,6 @@ namespace Eccube\Tests\Web\Admin\Shipping;
 use Eccube\Entity\Order;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Faker\Generator;
-use Eccube\Entity\Master\ShippingStatus;
 use Eccube\Repository\ShippingRepository;
 use Eccube\Common\Constant;
 use Eccube\Entity\Shipping;
@@ -74,7 +73,6 @@ class ShippingEditControllerTest extends AbstractAdminWebTestCase
     public function testNewShippingEmptyShipment()
     {
         $arrFormData = $this->createShippingForm();
-        $arrFormData['ShippingStatus'] = ShippingStatus::PREPARED;
         $this->client->request(
             'POST',
             $this->generateUrl('admin_shipping_new'),
@@ -89,20 +87,20 @@ class ShippingEditControllerTest extends AbstractAdminWebTestCase
         $this->assertContains('出荷情報を登録しました。', $success);
     }
 
-    public function testEditShippingStatusShipped()
+    public function testEditAddShippingDate()
     {
         $this->client->enableProfiler();
 
         $Order = $this->createOrder($this->createCustomer());
         /** @var Shipping $Shipping */
         $Shipping = $Order->getShippings()->first();
-        $Shipping->setShippingStatus($this->entityManager->find(ShippingStatus::class, ShippingStatus::PREPARED));
-        $this->entityManager->persist($Shipping);
-        $this->entityManager->flush();
 
         $this->assertNull($Shipping->getShippingDate());
         $arrFormData = $this->createShippingForm($Shipping);
-        $arrFormData['ShippingStatus'] = ShippingStatus::SHIPPED;
+
+        $date = new \DateTime();
+        $arrFormData['shipping_date'] = $date->format('Y-m-d');
+
         $this->client->request(
             'POST',
             $this->generateUrl('admin_shipping_edit', ['id' => $Shipping->getId()]),
@@ -123,20 +121,20 @@ class ShippingEditControllerTest extends AbstractAdminWebTestCase
         $this->assertNotNull($Shipping->getShippingDate());
     }
 
-    public function testEditShippingStatusShippedWithNotifyMail()
+    public function testEditAddShippingDateWithNotifyMail()
     {
         $this->client->enableProfiler();
 
         $Order = $this->createOrder($this->createCustomer());
         /** @var Shipping $Shipping */
         $Shipping = $Order->getShippings()->first();
-        $Shipping->setShippingStatus($this->entityManager->find(ShippingStatus::class, ShippingStatus::PREPARED));
-        $this->entityManager->persist($Shipping);
-        $this->entityManager->flush();
 
         $this->assertNull($Shipping->getShippingDate());
         $arrFormData = $this->createShippingForm($Shipping);
-        $arrFormData['ShippingStatus'] = ShippingStatus::SHIPPED;
+
+        $date = new \DateTime();
+        $arrFormData['shipping_date'] = $date->format('Y-m-d');
+
         $arrFormData['notify_email'] = 'on';
         $this->client->request(
             'POST',
@@ -163,19 +161,20 @@ class ShippingEditControllerTest extends AbstractAdminWebTestCase
         $this->assertNotNull($Shipping->getShippingDate());
     }
 
-    public function testEditShippingStatusPrepared()
+    public function testEditRemoveShippingDate()
     {
         $Order = $this->createOrder($this->createCustomer());
         /** @var Shipping $Shipping */
         $Shipping = $Order->getShippings()->first();
-        $Shipping->setShippingStatus($this->entityManager->find(ShippingStatus::class, ShippingStatus::SHIPPED));
         $Shipping->setShippingDate(new \DateTime());
         $this->entityManager->persist($Shipping);
         $this->entityManager->flush();
 
         $this->assertNotNull($Shipping->getShippingDate());
         $arrFormData = $this->createShippingForm($Shipping);
-        $arrFormData['ShippingStatus'] = ShippingStatus::PREPARED;
+
+        $arrFormData['shipping_date'] = '';
+
         $this->client->request(
             'POST',
             $this->generateUrl('admin_shipping_edit', ['id' => $Shipping->getId()]),
@@ -200,7 +199,6 @@ class ShippingEditControllerTest extends AbstractAdminWebTestCase
     {
         /** @var Generator $faker */
         $faker = $this->getFaker();
-        $tel = explode('-', $faker->phoneNumber);
 
         if ($Shipping instanceof Shipping && $Shipping->getId()) {
             $arrFormData = [
@@ -213,25 +211,13 @@ class ShippingEditControllerTest extends AbstractAdminWebTestCase
                     'kana02' => $Shipping->getKana02(),
                 ],
                 'company_name' => $Shipping->getCompanyName(),
-                'zip' => [
-                    'zip01' => $Shipping->getZip01(),
-                    'zip02' => $Shipping->getZip02(),
-                ],
+                'postal_code' => $Shipping->getPostalCode(),
                 'address' => [
                     'pref' => $Shipping->getPref()->getId(),
                     'addr01' => $Shipping->getAddr01(),
                     'addr02' => $Shipping->getAddr02(),
                 ],
-                'tel' => [
-                    'tel01' => $Shipping->getTel01(),
-                    'tel02' => $Shipping->getTel02(),
-                    'tel03' => $Shipping->getTel03(),
-                ],
-                'fax' => [
-                    'fax01' => $Shipping->getFax01(),
-                    'fax02' => $Shipping->getFax02(),
-                    'fax03' => $Shipping->getFax03(),
-                ],
+                'phone_number' => $Shipping->getPhoneNumber(),
                 'Delivery' => $Shipping->getDelivery()->getId(),
                 'OrderItems' => [],
                 Constant::TOKEN_NAME => 'dummy',
@@ -251,25 +237,13 @@ class ShippingEditControllerTest extends AbstractAdminWebTestCase
                     'kana02' => $faker->firstKanaName,
                 ],
                 'company_name' => $faker->company,
-                'zip' => [
-                    'zip01' => $faker->postcode1(),
-                    'zip02' => $faker->postcode2(),
-                ],
+                'postal_code' => $faker->postcode,
                 'address' => [
                     'pref' => $faker->numberBetween(1, 47),
                     'addr01' => $faker->city,
                     'addr02' => $faker->streetAddress,
                 ],
-                'tel' => [
-                    'tel01' => $tel[0],
-                    'tel02' => $tel[1],
-                    'tel03' => $tel[2],
-                ],
-                'fax' => [
-                    'fax01' => $tel[0],
-                    'fax02' => $tel[1],
-                    'fax03' => $tel[2],
-                ],
+                'phone_number' => $faker->phoneNumber,
                 'Delivery' => 1,
                 Constant::TOKEN_NAME => 'dummy',
             ];
