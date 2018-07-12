@@ -85,14 +85,14 @@ file that was distributed with this source code.
                             </div>
                         </div>
                         <div class="row mb-2">
-                            <div class="col-2"><span>{{ 'admin.setting.shop.mail.mail_header'|trans }}</span></div>
+                            <div class="col-2"><span>{{ 'admin.setting.shop.mail.mail_header'|trans }}</span><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></div>
                             <div class="col-10">
                                 {{ form_widget(form.mail_header, {'attr': {'rows': '8'}}) }}
                                 {{ form_errors(form.mail_header) }}
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-2"><span>{{ 'admin.setting.shop.mail.mail_footer'|trans }}</span></div>
+                            <div class="col-2"><span>{{ 'admin.setting.shop.mail.mail_footer'|trans }}</span><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></div>
                             <div class="col-10">
                                 {{ form_widget(form.mail_footer, {'attr': {'rows': '8'}}) }}
                                 {{ form_errors(form.mail_footer) }}
