@@ -157,6 +157,12 @@ file that was distributed with this source code.
         $('#form_bulk').attr('action', "{{ url('admin_order_bulk_delete') }}").submit();
         return false;
     });
+    $('#btn_bulk_status').on('click', function(event) {
+        event.preventDefault();
+        var url = $('#option_bulk_status').val();
+        $('#form_bulk').attr('action', url).submit();
+        return false;
+    });
 
     // 送り状番号
     var updateTrackingNumber = function (id, url, tracking_number, callback) {
@@ -232,159 +238,159 @@ file that was distributed with this source code.
     });
 });
 
-/*
-* Super class
-*/
-function ConfirmationModal() {
-}
+    /*
+     * Super class
+     */
+    function ConfirmationModal() {
+    }
 
-ConfirmationModal.prototype = {
-    modalTitle: "{{ 'admin.shipping.index.829'|trans }}",
-    modalMessage: "{{ 'admin.shipping.index.830'|trans }}",
-    modalButton: "{{ 'admin.shipping.index.816'|trans }}",
-    getPreviewUrl: function () {
-        return $('input[data-preview-notify-mail-url]:checked').data('preview-notify-mail-url');
-    },
-    getTotalCount: function () {
-        return 1;
-    },
-    getPromises: function (progress, url) {
-        return $.ajax({
-            'url': url,
-            'type': 'PUT',
-            'data': {'notificationMail': $('input#notificationMail:checked').val()}
-        })
-            .fail(function () {
-                progress.reject();
+    ConfirmationModal.prototype = {
+        modalTitle: "{{ 'admin.shipping.index.829'|trans }}",
+        modalMessage: "{{ 'admin.shipping.index.830'|trans }}",
+        modalButton: "{{ 'admin.shipping.index.816'|trans }}",
+        getPreviewUrl: function () {
+            return $('input[data-preview-notify-mail-url]:checked').data('preview-notify-mail-url');
+        },
+        getTotalCount: function () {
+            return 1;
+        },
+        getPromises: function (progress, url) {
+            return $.ajax({
+                'url': url,
+                'type': 'PUT',
+                'data': {'notificationMail': $('input#notificationMail:checked').val()}
             })
-            .always(function (data) {
-                progress.notifyWith(data);
-            });
+                    .fail(function () {
+                        progress.reject();
+                    })
+                    .always(function (data) {
+                        progress.notifyWith(data);
+                    });
+        }
+    };
+
+    /*
+     * 個別更新
+     */
+    function SimpleUpdate(relatedTarget) {
+        this.eventTarget = relatedTarget;
     }
-};
 
-/*
-* 個別更新
-*/
-function SimpleUpdate(relatedTarget) {
-    this.eventTarget = relatedTarget;
-}
-
-// extends super class
-SimpleUpdate.prototype = Object.create(ConfirmationModal.prototype, {
-    constructor: {
-        value: ConfirmationModal
-    },
-    getPreviewUrl: {
-        value: function () {
-            return this.eventTarget.data('preview-notify-mail-url');
-        }
-    },
-    getPromises: {
-        value: function (progress) {
-            var url = this.eventTarget.data('mark-as-shipped-url');
-            return ConfirmationModal.prototype.getPromises.call(this, progress, url);
-        }
-    }
-});
-
-/*
-* 一括更新
-*/
-function BulkUpdate() {
-    ConfirmationModal.call(this);
-}
-
-// extend super class
-BulkUpdate.prototype = Object.create(ConfirmationModal.prototype, {
-    constructor: {
-        value: ConfirmationModal
-    },
-    modalTitle: {
-        value: '{{ 'admin.shipping.index.807'|trans }}'
-    },
-    modalMessage: {
-        value: "{{ 'admin.shipping.index.808'|trans }}"
-    },
-    getTotalCount: {
-        value: function () {
-            return $('input[data-mark-as-shipped-url]:checked').length;
-        }
-    },
-    getPromises: {
-        value: function (progress) {
-            return $('input[data-mark-as-shipped-url]:checked').map(function () {
-                var url = $(this).data('mark-as-shipped-url');
+    // extends super class
+    SimpleUpdate.prototype = Object.create(ConfirmationModal.prototype, {
+        constructor: {
+            value: ConfirmationModal
+        },
+        getPreviewUrl: {
+            value: function () {
+                return this.eventTarget.data('preview-notify-mail-url');
+            }
+        },
+        getPromises: {
+            value: function (progress) {
+                var url = this.eventTarget.data('mark-as-shipped-url');
                 return ConfirmationModal.prototype.getPromises.call(this, progress, url);
-            });
+            }
         }
+    });
+
+    /*
+     * 一括更新
+     */
+    function BulkUpdate() {
+        ConfirmationModal.call(this);
     }
-});
 
-/*
-* メール一括送信
-*/
-function BulkSendMail() {
-    BulkUpdate.call(this);
-}
-
-// extend BulkUpdate
-BulkSendMail.prototype = Object.create(BulkUpdate.prototype, {
-    constructor: {
-        value: BulkUpdate
-    },
-    modalTitle: {
-        value: "{{ 'admin.shipping.index.832'|trans }}"
-    },
-    modalMessage: {
-        value: "{{ 'admin.shipping.index.833'|trans }}"
-    },
-    modalButton: {
-        value: "{{ 'admin.shipping.index.834'|trans }}"
-    },
-    getTotalCount: {
-        value: function () {
-            return $('input[data-preview-notify-mail-url]:checked').length;
+    // extend super class
+    BulkUpdate.prototype = Object.create(ConfirmationModal.prototype, {
+        constructor: {
+            value: ConfirmationModal
+        },
+        modalTitle: {
+            value: '{{ 'admin.shipping.index.807'|trans }}'
+        },
+        modalMessage: {
+            value: "{{ 'admin.shipping.index.808'|trans }}"
+        },
+        getTotalCount: {
+            value: function () {
+                return $('input[data-mark-as-shipped-url]:checked').length;
+            }
+        },
+        getPromises: {
+            value: function (progress) {
+                return $('input[data-mark-as-shipped-url]:checked').map(function () {
+                    var url = $(this).data('mark-as-shipped-url');
+                    return ConfirmationModal.prototype.getPromises.call(this, progress, url);
+                });
+            }
         }
-    },
-    getPromises: {
-        value: function (progress) {
-            return $('input[data-notify-mail-url]:checked').map(function () {
-                var url = $(this).data('notify-mail-url');
+    });
+
+    /*
+     * メール一括送信
+     */
+    function BulkSendMail() {
+        BulkUpdate.call(this);
+    }
+
+    // extend BulkUpdate
+    BulkSendMail.prototype = Object.create(BulkUpdate.prototype, {
+        constructor: {
+            value: BulkUpdate
+        },
+        modalTitle: {
+            value: "{{ 'admin.shipping.index.832'|trans }}"
+        },
+        modalMessage: {
+            value: "{{ 'admin.shipping.index.833'|trans }}"
+        },
+        modalButton: {
+            value: "{{ 'admin.shipping.index.834'|trans }}"
+        },
+        getTotalCount: {
+            value: function () {
+                return $('input[data-preview-notify-mail-url]:checked').length;
+            }
+        },
+        getPromises: {
+            value: function (progress) {
+                return $('input[data-notify-mail-url]:checked').map(function () {
+                    var url = $(this).data('notify-mail-url');
+                    return ConfirmationModal.prototype.getPromises.call(this, progress, url);
+                });
+            }
+        }
+    });
+
+    /*
+     * 個別メール送信
+     */
+    function SimpleSendMail(relatedTarget) {
+        this.eventTarget = relatedTarget;
+    }
+
+    // extends SimpleUpdate
+    SimpleSendMail.prototype = Object.create(SimpleUpdate.prototype, {
+        constructor: {
+            value: SimpleUpdate
+        },
+        modalTitle: {
+            value: "{{ 'admin.shipping.index.835'|trans }}"
+        },
+        modalMessage: {
+            value: "{{ 'admin.shipping.index.836'|trans }}"
+        },
+        modalButton: {
+            value: "{{ 'admin.shipping.index.834'|trans }}"
+        },
+        getPromises: {
+            value: function (progress) {
+                var url = this.eventTarget.data('notify-mail-url');
                 return ConfirmationModal.prototype.getPromises.call(this, progress, url);
-            });
+            }
         }
-    }
-});
-
-/*
-* 個別メール送信
-*/
-function SimpleSendMail(relatedTarget) {
-    this.eventTarget = relatedTarget;
-}
-
-// extends SimpleUpdate
-SimpleSendMail.prototype = Object.create(SimpleUpdate.prototype, {
-    constructor: {
-        value: SimpleUpdate
-    },
-    modalTitle: {
-        value: "{{ 'admin.shipping.index.835'|trans }}"
-    },
-    modalMessage: {
-        value: "{{ 'admin.shipping.index.836'|trans }}"
-    },
-    modalButton: {
-        value: "{{ 'admin.shipping.index.834'|trans }}"
-    },
-    getPromises: {
-        value: function (progress) {
-            var url = this.eventTarget.data('notify-mail-url');
-            return ConfirmationModal.prototype.getPromises.call(this, progress, url);
-        }
-    }
-});
+    });
 </script>
 {% endblock javascript %}
 
