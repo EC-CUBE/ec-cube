@@ -1677,6 +1677,7 @@ return [
     'admin.product.subnavi.552' => '商品登録',
     'admin.product.subnavi.553' => '規格管理',
     'admin.product.subnavi.554' => 'カテゴリ登録',
+    'admin.setting.system.member.work.error' => '最後のシステム管理者は稼働状況を非稼働に変更できません。',
     'admin.setting.shop.csv.555' => '基本情報設定',
     'admin.setting.shop.csv.556' => 'CSV出力項目設定',
     'admin.setting.shop.csv.557' => 'CSV出力しない項目',
