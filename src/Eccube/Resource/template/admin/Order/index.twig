@@ -158,6 +158,12 @@ file that was distributed with this source code.
         return false;
     });
 
+      $('#bulkExportPdf').on('click', function (event) {
+          event.preventDefault();
+          $('#form_bulk').attr('action', "{{ url('admin_order_export_pdf') }}").submit();
+          return false;
+      });
+
     // 送り状番号
     var updateTrackingNumber = function (id, url, tracking_number, callback) {
         $.ajax({
@@ -669,8 +675,7 @@ SimpleSendMail.prototype = Object.create(SimpleUpdate.prototype, {
                                     <button id="bulkSendMail" type="button" class="btn btn-ec-regular mr-2" data-toggle="modal" data-target="#sentUpdateModal" data-type="mail" data-bulk-update="true">
                                         {{ 'admin.order.index.btn_bulk_mail'|trans }}
                                     </button>
-                                    {# TODO: This button is not implemented yet #}
-                                    <button type="button" class="btn btn-ec-regular mr-2">{{ 'admin.order.index.btn_bulk_export'|trans }}</button>
+                                    <button type="button" id="bulkExportPdf" class="btn btn-ec-regular mr-2">{{ 'admin.order.export.pdf.button.export'|trans }}</button>
                                     {# TODO: This button is not implemented yet #}
                                     <button type="button" class="btn btn-ec-delete" data-toggle="modal" data-target="#bulkDeleteModal">{{ 'admin.order.index.btn_bulk_delete'|trans }}</button>
                                 </div>

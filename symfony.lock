@@ -299,6 +299,18 @@
             "ref": "576d653444dade07f272c889d52fe4594caa4fc3"
         }
     },
+    "setasign/fpdf": {
+        "version": "1.8.1"
+    },
+    "setasign/fpdi": {
+        "version": "v2.0.3"
+    },
+    "setasign/fpdi-fpdf": {
+        "version": "v2.0.0"
+    },
+    "setasign/fpdi-tcpdf": {
+        "version": "v2.0.0"
+    },
     "suncat/mobile-detect-bundle": {
         "version": "1.0",
         "recipe": {
@@ -565,6 +577,9 @@
     },
     "symfony/yaml": {
         "version": "v3.4.1"
+    },
+    "tecnickcom/tcpdf": {
+        "version": "6.2.17"
     },
     "theseer/tokenizer": {
         "version": "1.1.0"
