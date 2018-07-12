@@ -92,6 +92,7 @@
         "symfony/validator": "^3.4",
         "symfony/var-dumper": "^3.4",
         "symfony/web-profiler-bundle": "^3.4",
+        "symfony/workflow": "^3.4",
         "symfony/yaml": "^3.4",
         "twig/extensions": "^1.5",
         "twig/twig": "^2.4",
