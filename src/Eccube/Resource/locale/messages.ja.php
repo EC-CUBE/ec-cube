@@ -347,7 +347,7 @@ return [
     'mypage.history.detail.re_order' => '再注文する',
     'mypage.text.message.no_order_history' => 'ご注文履歴がありません。',
     'mypage.label.btn.next_page' => '',
-    'mypage.message.welcome' => 'ようこそ%user_name%さん',
+    'mypage.message.welcome' => 'ようこそ%user_name%さん 現在の所持ポイントは %point%pt です。',
     'mypage.label.favorites' => 'お気に入り一覧',
     'mypage.message.no_favorite' => 'お気に入りが登録されていません。',
     'mypage.message.favorite_results' => '<span class="ec-font-bold">%count%件</span>のお気に入りがあります。',
