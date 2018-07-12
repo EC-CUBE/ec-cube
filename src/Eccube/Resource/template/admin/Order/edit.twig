@@ -830,7 +830,22 @@ file that was distributed with this source code.
                         </div>
                     </div>
                 {% endif %}
-
+                <div class="card rounded border-0 mb-4">
+                    <div class="collapse show ec-cardCollapse">
+                        <div class="card-body">
+                            {% for f in form %}
+                                {# auto_render有効時に出力 #}
+                                {% if f.vars.eccube_form_options.auto_render %}
+                                    {# form_themeが設定されている場合にthemeを適用 #}
+                                    {% if f.vars.eccube_form_options.form_theme %}
+                                        {% form_theme f f.vars.eccube_form_options.form_theme %}
+                                    {% endif %}
+                                    {{ form_row(f) }}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="c-conversionArea">

@@ -605,6 +605,17 @@ SimpleSendMail.prototype = Object.create(SimpleUpdate.prototype, {
                 {% endif %}
             {% endfor %}
 
+            {% for f in searchForm %}
+                {# auto_render有効時に出力 #}
+                {% if f.vars.eccube_form_options.auto_render %}
+                    {# form_themeが設定されている場合にthemeを適用 #}
+                    {% if f.vars.eccube_form_options.form_theme %}
+                        {% form_theme f f.vars.eccube_form_options.form_theme %}
+                    {% endif %}
+                    {{ form_row(f) }}
+                {% endif %}
+            {% endfor %}
+
             <div class="d-block text-center">
                 <button class="btn btn-ec-regular" type="button">{{ 'admin.order.index.btn_clear_criteria'|trans }}</button>
             </div>
