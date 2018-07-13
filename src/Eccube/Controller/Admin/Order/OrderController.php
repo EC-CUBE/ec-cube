@@ -448,9 +448,6 @@ class OrderController extends AbstractController
             }
             $this->entityManager->flush($Order);
             log_info('対応状況一括変更処理完了', [$Order->getId()]);
-        } catch (\LogicException $e) {
-            // XXX 何故か OrderStateMachine::can() が LogicException をスローする
-            log_error('不正なワークフローです', [$e->getMessage()]);
         } catch (\Exception $e) {
             log_error('予期しないエラーです', [$e->getMessage()]);
 
