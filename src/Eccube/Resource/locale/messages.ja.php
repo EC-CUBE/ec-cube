@@ -482,6 +482,8 @@ return [
     'form.type.graph.invalid' => '半角英数字で入力してください。',
     'form.type.name.firstname.nothasspace' => 'お名前(名)にスペース、タブ、改行は含めないで下さい。',
     'form.type.name.lastname.nothasspace' => 'お名前(性)にスペース、タブ、改行は含めないで下さい。',
+    'form.type.customer.password.too_short' => 'パスワードが短すぎます。{{ limit }}文字以上でなければなりません。',
+    'form.type.customer.password.too_long' => 'パスワードが長すぎます。{{ limit }}文字以内でなければなりません。',
     'form.type.customer.company.nothasspace' => '会社名にスペース、タブ、改行は含めないで下さい。',
     'form.type.admin.nottelstyle' => '電話番号は半角数字かハイフンのみを入力してください。',
     'form.type.admin.notkanastyle' => 'お名前(フリガナ)はカタカナで入力してください。',
