@@ -510,7 +510,7 @@ return [
     'shopping.multiple.quantity.diff' => '数量の合計が、カゴの中の数量と異なっています。',
     'shopping.delivery.not.saletype' => '配送の準備ができていない商品が含まれております。
 恐れ入りますがお問い合わせページよりお問い合わせください。',
-    'shopping.total.price' => '合計金額が不正です。(¥ totalPrice)',
+    'shopping.total.price' => '合計金額が不正です。(¥ %totalPrice%)',
     'front.shopping.order.error' => '購入処理でエラーが発生しました。',
     'front.shopping.stock.error' => '選択された商品の在庫が不足しております。該当商品をカートから削除しました。',
     'front.shopping.system.error' => '購入処理でシステムエラーが発生しました。大変お手数ですが、サイト管理者までご連絡ください。',
