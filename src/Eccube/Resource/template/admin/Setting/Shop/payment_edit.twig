@@ -140,8 +140,8 @@ file that was distributed with this source code.
                                 <div class="col-3"><span>{{ 'paymentregister.label.payment_method'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.method) }}
+                                    {{ form_errors(form.method) }}
                                 </div>
-                                {{ form_errors(form.method) }}
                             </div>
                             <div class="row"><div class="col-3"><span>{{ 'paymentregister.label.commision'|trans }}</span></div>
                                 <div class="col mb-2">
