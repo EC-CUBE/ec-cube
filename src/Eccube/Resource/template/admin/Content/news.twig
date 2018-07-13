@@ -15,68 +15,181 @@ file that was distributed with this source code.
 {% block title %}{{'admin.content.news.53'|trans}}{% endblock %}
 {% block sub_title %}{{'admin.content.news.54'|trans}}{% endblock %}
 
-{% block main %}
-    <div id="news_wrap" class="row">
-        <div id="news_list_box" class="col-md-12">
-            <div id="news_list_box__body" class="box">
-                <div id="news_list_box__header" class="box-header">
-                    <h3 class="box-title">{{'admin.content.news.55'|trans}}</h3>
-                </div><!-- /.box-header -->
-                <div id="news_list_box__body_inner" class="box-body">
-                    <form name="form1" id="form1" method="post" action="">
-                        <div id="news_list_box__list_box" class="table_list">
-                            <div id="news_list_box__list" class="table-responsive with-border">
-                                <table class="table table-striped">
-                                    <thead>
-                                       <tr id="news_list_box__list_header">
-                                            <th id="news_list_box__header_sort_no">{{'admin.content.news.56'|trans}}</th>
-                                            <th id="news_list_box__header_date">{{'admin.content.news.57'|trans}}</th>
-                                            <th id="news_list_box__header_title">{{'admin.content.news.58'|trans}}</th>
-                                            <th id="news_list_box__header_menu_box">&nbsp;</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for News in NewsList %}
-                                        <tr id="news_list_box__item--{{ News.id }}">
-                                            <td id="news_list_box__sort_no--{{ News.id }}">{{ loop.index }}</td>
-                                            <td id="news_list_box__date--{{ News.id }}">{{ News.publishDate|date("Y/m/d") }}</td>
-                                            <td id="news_list_box__title--{{ News.id }}">{{ News.title }}</td>
-                                            <td id="news_list_box__menu_box--{{ News.id }}" class="icon_edit">
-                                                <div id="news_list_box__menu_box_toggle--{{ News.id }}" class="dropdown">
-                                                    <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
-                                                    <ul id="news_list_box__menu--{{ News.id }}" class="dropdown-menu dropdown-menu-right">
-                                                        <li><a href="{{ url('admin_content_news_edit', {id: News.id}) }}" >{{'admin.content.news.59'|trans}}</a></li>
-                                                        <li><a href="{{ url('admin_content_news_delete', {id: News.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="{{'admin.content.news.60'|trans}}">{{'common.label.delete'|trans}}</a></li>
-                                                        {% if loop.first == false %}
-                                                            <li>
-                                                                <a href="{{ url('admin_content_news_up', {id: News.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">{{'admin.content.news.61'|trans}}</a>
-                                                            </li>
-                                                        {% endif %}
-                                                        {% if loop.last == false %}
-                                                            <li>
-                                                                <a href="{{ url('admin_content_news_down', {id: News.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">{{'admin.content.news.62'|trans}}</a>
-                                                            </li>
-                                                        {% endif %}
+{% block stylesheet %}
+    <style type="text/css">
+        li.list-group-item {
+            z-index: inherit !important;
+        }
+    </style>
+{% endblock %}
 
-                                                    </ul>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
+{% block javascript %}
+    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.core.min.js', 'admin') }}"></script>
+    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.widget.min.js', 'admin') }}"></script>
+    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.mouse.min.js', 'admin') }}"></script>
+    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.sortable.min.js', 'admin') }}"></script>
+    <script>
+        $(function () {
+            // 初期表示時のsort noを保持.
+            var oldSortNos = [];
+            $('.sortable-item').each(function () {
+                oldSortNos.push(this.dataset.sortNo);
+            });
+            oldSortNos.sort(function (a, b) {
+                return a - b;
+            }).reverse();
+
+            // 並び替え後にsort noを更新
+            var updateSortNo = function () {
+                var newSortNos = {};
+                var i = 0;
+                $('.sortable-item').each(function () {
+                    newSortNos[this.dataset.id] = oldSortNos[i];
+                    i++;
+                });
+
+                $.ajax({
+                    url: '{{ url('admin_content_news_sort_no_move') }}',
+                    type: 'POST',
+                    data: newSortNos
+                }).always(function () {
+                    $(".modal-backdrop").remove();
+                });
+            };
+
+            // 最初と最後の↑↓を再描画
+            var redrawDisableAllows = function () {
+                var items = $('.sortable-item');
+                items.find('a').removeClass('disabled');
+                items.first().find('a.action-up').addClass('disabled');
+                items.last().find('a.action-down').addClass('disabled');
+            };
+
+            // オーバレイ後, 表示順の更新を行う
+            var moveSortNo = function () {
+                $('body').append($('<div class="modal-backdrop show"></div>'));
+                updateSortNo();
+                redrawDisableAllows();
+            }
+
+            // Drag and Drop
+            $(".sortable-container").sortable({
+                items: '> .sortable-item',
+                cursor: 'move',
+                update: function (e, ui) {
+                    moveSortNo();
+                }
+            });
+
+            // Up
+            $(".sortable-item").on('click', 'a.action-up', function (e) {
+                e.preventDefault();
+                var current = $(this).parents("li");
+
+                if (current.prev().hasClass('sortable-item')) {
+                    current.prev().before(current);
+                    moveSortNo();
+                }
+            });
+
+            // Down
+            $(".sortable-item").on('click', 'a.action-down', function (e) {
+                e.preventDefault();
+                var current = $(this).parents("li");
+
+                if (current.next().hasClass('sortable-item')) {
+                    current.next().after(current);
+                    moveSortNo();
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block main %}
+<div class="c-contentsArea__cols">
+    <div class="c-contentsArea__primaryCol">
+        <div class="c-primaryCol">
+            <div class="card rounded border-0 mb-4">
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush mb-4 sortable-container">
+                        <li class="list-group-item">
+                            <div class="row justify-content-around">
+                                <div class="col-auto"><strong>&nbsp;</strong></div>
+                                <div class="col-1"><strong>{{'admin.content.news.56'|trans}}</strong></div>
+                                <div class="col-1"><strong>{{'admin.content.news.57'|trans}}</strong></div>
+                                <div class="col"><strong>{{'admin.content.news.58'|trans}}</strong></div>
                             </div>
-                        </div>
-                    </form>
-                </div>
-            </div><!-- /.box -->
-            <div id="news_list_box__footer" class="row">
-                <div id="news_list_box__insert_button" class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
-                    <a href="{{ url('admin_content_news_new') }}" class="btn btn-primary btn-block btn-lg">{{'admin.content.news.63'|trans}}</a>
+                        </li>
+                        {% for News in NewsList %}
+                            <li class="list-group-item sortable-item" data-id="{{ News.id }}" data-sort-no="{{ News.sortNo }}">
+                                <div class="row justify-content-around">
+                                    <div class="col-auto d-flex align-items-center"><i class="fa fa-bars text-ec-gray"></i></div>
+                                    <div class="col-1 d-flex align-items-center">{{ loop.index }}</div>
+                                    <div class="col-1 d-flex align-items-center"><span>{{ News.publishDate|date_day }}</span></div>
+                                    <div class="col d-flex align-items-center"><a href="{{ url('admin_content_news_edit', {id: News.id}) }}">{{ News.title }}</a></div>
+                                    <div class="col-3 text-right">
+                                        <div class="row">
+                                            <div class="col text-center" data-toggle="tooltip" data-placement="top" title="{{ 'admin.setting.shop.payment.608'|trans }}">
+                                                <a class="btn btn-ec-actionIcon mr-3 action-up{{ loop.first ? ' disabled' }}" data-toggle="tooltip" data-placement="top" title="{{'admin.setting.shop.payment.608'|trans}}">
+                                                    <i class="fa fa-arrow-up fa-lg text-secondary"></i>
+                                                </a>
+                                            </div>
+                                            <div class="col text-center" data-toggle="tooltip" data-placement="top" title="{{ 'admin.setting.shop.payment.609'|trans }}">
+                                                <a class="btn btn-ec-actionIcon mr-3 action-down{{ loop.last ? ' disabled' }}"  data-toggle="tooltip" data-placement="top" title="{{'admin.setting.shop.payment.609'|trans}}">
+                                                    <i class="fa fa-arrow-down fa-lg text-secondary"></i>
+                                                </a>
+                                            </div>
+                                            <div class="col text-center" data-toggle="tooltip" data-placement="top" title="{{'admin.setting.shop.payment.607'|trans}}">
+                                                <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#delete_{{ News.id }}">
+                                                    <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
+                                                </a>
+                                                <div class="modal fade" id="delete_{{ News.id }}" tabindex="-1"
+                                                     role="dialog"
+                                                     aria-labelledby="delete_{{ News.id }}" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title font-weight-bold">
+                                                                    {{ 'admin.setting.shop.payment.modal.header'|trans }}</h5>
+                                                                <button class="close" type="button"
+                                                                        data-dismiss="modal"
+                                                                        aria-label="Close"><span
+                                                                            aria-hidden="true">×</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body text-left">
+                                                                <p class="text-left">
+                                                                    この新着情報を削除してもよろしいですか？</p>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'common.label.cancel'|trans }}
+                                                                </button>
+                                                                <a class="btn btn-ec-delete" href="{{ url('admin_content_news_delete', {id: News.id}) }}" {{ csrf_token_for_anchor() }}
+                                                                   data-method="delete" data-confirm="false">{{'common.label.delete'|trans}}</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
-
+            <p>{{'admin.setting.shop.payment.notice'|trans}}</p>
+        </div>
+        <div class="card rounded border-0">
+            <div class="card-body p-4">
+                <div class="text-center">
+                    {# TODO 新規作成ボタンのレイアウトについてデザイン調整が必要 #}
+                    <a href="{{ url('admin_content_news_new') }}" class="btn btn-ec-regular pl-4 pr-4">{{'admin.content.news.63'|trans}}</a>
+                </div>
+            </div>
         </div>
     </div>
-
+</div>
 {% endblock %}

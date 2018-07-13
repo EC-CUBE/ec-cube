@@ -23,6 +23,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class NewsController extends AbstractController
@@ -135,57 +136,29 @@ class NewsController extends AbstractController
     }
 
     /**
-     * 指定した新着情報の表示順を1つ上げる。
+     * @Method("POST")
+     * @Route("/%eccube_admin_route%/content/news/sort_no/move", name="admin_content_news_sort_no_move")
      *
-     * @Method("PUT")
-     * @Route("/%eccube_admin_route%/content/news/{id}/up", requirements={"id" = "\d+"}, name="admin_content_news_up")
+     * @param Request $request
      *
-     * @param News $News
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return Response
      */
-    public function up(News $News)
+    public function moveSortNo(Request $request)
     {
-        $this->isTokenValid();
-
-        try {
-            $this->newsRepository->up($News);
-
-            $this->addSuccess('admin.news.up.complete', 'admin');
-        } catch (\Exception $e) {
-            log_error('新着情報表示順更新エラー', [$News->getId(), $e]);
-
-            $this->addError('admin.news.up.error', 'admin');
+        if ($request->isXmlHttpRequest()) {
+            $this->isTokenValid();
+            $sortNos = $request->request->all();
+            foreach ($sortNos as $newsId => $sortNo) {
+                /** @var News $News */
+                $News = $this->newsRepository
+                    ->find($newsId);
+                $News->setSortNo($sortNo);
+                $this->entityManager->persist($News);
+            }
+            $this->entityManager->flush();
         }
 
-        return $this->redirectToRoute('admin_content_news');
-    }
-
-    /**
-     * 指定した新着情報の表示順を1つ下げる。
-     *
-     * @Method("PUT")
-     * @Route("/%eccube_admin_route%/content/news/{id}/down", requirements={"id" = "\d+"}, name="admin_content_news_down")
-     *
-     * @param News $News
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function down(News $News)
-    {
-        $this->isTokenValid();
-
-        try {
-            $this->newsRepository->down($News);
-
-            $this->addSuccess('admin.news.down.complete', 'admin');
-        } catch (\Exception $e) {
-            log_error('新着情報表示順更新エラー', [$News->getId(), $e]);
-
-            $this->addError('admin.news.down.error', 'admin');
-        }
-
-        return $this->redirectToRoute('admin_content_news');
+        return new Response();
     }
 
     /**
