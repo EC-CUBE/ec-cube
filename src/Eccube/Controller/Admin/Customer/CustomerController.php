@@ -250,7 +250,7 @@ class CustomerController extends AbstractController
         } catch (ForeignKeyConstraintViolationException $e) {
             log_error('会員削除失敗', [$e], 'admin');
 
-            $message = trans('admin.delete.failed.foreign_key', ['%name%' => trans('customer.text.name')]);
+            $message = trans('admin.delete.failed.foreign_key', ['%name%' => $Customer->getName01().' '.$Customer->getName02()]);
             $this->addError($message, 'admin');
         }
 
