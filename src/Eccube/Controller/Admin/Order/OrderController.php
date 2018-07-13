@@ -470,6 +470,7 @@ class OrderController extends AbstractController
      * @param OrderStatus $OrderStatus
      *
      * @return RedirectResponse
+     *
      * @deprecated 使用していない
      */
     public function bulkOrderStatus(Request $request, OrderStatus $OrderStatus)
