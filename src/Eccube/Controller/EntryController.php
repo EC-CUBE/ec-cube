@@ -30,7 +30,6 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class EntryController extends AbstractController
 {
@@ -173,11 +172,7 @@ class EntryController extends AbstractController
                     );
                     $this->eventDispatcher->dispatch(EccubeEvents::FRONT_ENTRY_INDEX_COMPLETE, $event);
 
-                    $activateUrl = $this->generateUrl(
-                        'entry_activate', 
-                        ['secret_key' => $Customer->getSecretKey()],
-                        UrlGeneratorInterface::ABSOLUTE_URL
-                    );
+                    $activateUrl = $this->generateUrl('entry_activate', ['secret_key' => $Customer->getSecretKey()]);
 
                     $activateFlg = $this->BaseInfo->isOptionCustomerActivate();
 
