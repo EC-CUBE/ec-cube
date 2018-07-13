@@ -48,13 +48,17 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
 
     public function 受注CSVダウンロード実行()
     {
-        $this->tester->click('#form_bulk #btn_csv_download');
+        $this->tester->click(['id' => 'csvDownloadDropDown']);
+        $this->tester->waitForElementVisible(['id' => 'orderCsvDownload']);
+        $this->tester->click(['id' => 'orderCsvDownload']);
         return $this;
     }
 
     public function 受注CSV出力項目設定()
     {
-        $this->tester->click('#form_bulk #btn_csv_setting');
+        $this->tester->click(['id' => 'csvSettingDropDown']);
+        $this->tester->waitForElementVisible(['id' => 'orderCsvSetting']);
+        $this->tester->click(['id' => 'orderCsvSetting']);
         return $this;
     }
 
