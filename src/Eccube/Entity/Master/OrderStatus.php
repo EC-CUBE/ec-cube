@@ -43,6 +43,10 @@ class OrderStatus extends \Eccube\Entity\Master\AbstractMasterEntity
     const PENDING = 7;
     /** 購入処理中. */
     const PROCESSING = 8;
+    /** 対応中 */
+    const IN_PROGRESS = 9;
+    /** 返品 */
+    const RETURNED = 10;
 
     /**
      * 受注一覧画面で, ステータスごとの受注件数を表示するかどうか
