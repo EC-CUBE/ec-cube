@@ -558,7 +558,7 @@ return [
     'admin.register.failed' => '登録できませんでした。',
     'admin.delete.complete' => '削除が完了しました。',
     'admin.delete.failed' => '削除できませんでした。',
-    'admin.delete.failed.foreign_key' => '関連するデータがあるため, %name%を削除できませんでした。',
+    'admin.delete.failed.foreign_key' => '関連するデータがあるため「%name%」を削除できませんでした。',
     'admin.delete.warning' => '既に削除されています。',
     'admin.sort_no.move.complete' => 'ランクの移動が完了しました。',
     'admin.sort_no.move.error' => '順序の移動ができませんでした。',
