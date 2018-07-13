@@ -55,8 +55,6 @@ class MemberRepository extends AbstractRepository
     {
         $this->createQueryBuilder('m')
             ->update()
-            ->set('m.sort_no', 'm.sort_no - 1')
-            ->where('m.sort_no > :sort_no')
             ->getQuery()
             ->execute();
 
