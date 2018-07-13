@@ -368,13 +368,6 @@ file that was distributed with this source code.
                         {{ form_widget(form.message, {'attr': {'class': 'form-control', 'placeholder': 'お問い合わせ事項がございましたら、こちらにご入力ください。(3000文字まで)', 'rows': '6'}}) }}
                         {{ form_errors(form.message) }}
                     </div>
-                    {% for f in form.getIterator %}
-                        <div class="ec-input">
-                            {% if f.vars.name matches '[^plg*]' %}
-                                {{ form_row(f) }}
-                            {% endif %}
-                        </div>
-                    {% endfor %}
                 </div>
             </div>
             <div class="ec-orderRole__summary">
