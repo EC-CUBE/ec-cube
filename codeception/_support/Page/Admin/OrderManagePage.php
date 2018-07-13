@@ -62,6 +62,22 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    public function 配送CSVダウンロード実行()
+    {
+        $this->tester->click(['id' => 'csvDownloadDropDown']);
+        $this->tester->waitForElementVisible(['id' => 'shippingCsvDownload']);
+        $this->tester->click(['id' => 'shippingCsvDownload']);
+        return $this;
+    }
+
+    public function 配送CSV出力項目設定()
+    {
+        $this->tester->click(['id' => 'csvSettingDropDown']);
+        $this->tester->waitForElementVisible(['id' => 'shippingCsvSetting']);
+        $this->tester->click(['id' => 'shippingCsvSetting']);
+        return $this;
+    }
+
     public function 一覧_編集($rowNum)
     {
         $this->tester->click("#search_result > tbody > tr:nth-child(${rowNum}) a.action-edit");

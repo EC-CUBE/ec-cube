@@ -43,10 +43,6 @@ class EA04OrderCest
         $I->see('検索条件に誤りがあります。', OrderManagePage::$検索結果_エラーメッセージ);
     }
 
-    /**
-     * @env firefox
-     * @env chrome
-     */
     public function order_受注CSVダウンロード(\AcceptanceTester $I)
     {
         $I->wantTo('EA0401-UC02-T01 受注CSVダウンロード');
@@ -82,6 +78,43 @@ class EA04OrderCest
         CsvSettingsPage::at($I);
         $value = $I->grabValueFrom(CsvSettingsPage::$CSVタイプ);
         $I->assertEquals(3, $value);
+    }
+
+    public function order_配送CSVダウンロード(\AcceptanceTester $I)
+    {
+        $I->wantTo('EA0401-UC02-T01 配送CSVダウンロード');
+
+        $findOrders = Fixtures::get('findOrders'); // Closure
+        $TargetOrders = array_filter($findOrders(), function ($Order) {
+            return $Order->getOrderStatus()->getId() != OrderStatus::PROCESSING;
+        });
+        $OrderListPage = OrderManagePage::go($I)->検索();
+        $I->see('検索結果：'.count($TargetOrders).'件が該当しました', OrderManagePage::$検索結果_メッセージ);
+
+        $OrderListPage->配送CSVダウンロード実行();
+        // make sure wait to download file completely
+        $I->wait(10);
+        $OrderCSV = $I->getLastDownloadFile('/^shipping_\d{14}\.csv$/');
+        $I->assertGreaterOrEquals(count($TargetOrders), count(file($OrderCSV)), '検索結果以上の行数があるはず');
+    }
+
+    public function order_配送情報のCSV出力項目変更設定(\AcceptanceTester $I)
+    {
+        $I->wantTo('EA0401-UC02-T02 配送情報のCSV出力項目変更設定');
+
+        $findOrders = Fixtures::get('findOrders'); // Closure
+        $TargetOrders = array_filter($findOrders(), function ($Order) {
+            return $Order->getOrderStatus()->getId() != OrderStatus::PROCESSING;
+        });
+        $OrderListPage = OrderManagePage::go($I)->検索();
+        $I->see('検索結果：'.count($TargetOrders).'件が該当しました', OrderManagePage::$検索結果_メッセージ);
+
+        /* 項目設定 */
+        $OrderListPage->配送CSV出力項目設定();
+
+        CsvSettingsPage::at($I);
+        $value = $I->grabValueFrom(CsvSettingsPage::$CSVタイプ);
+        $I->assertEquals(4, $value);
     }
 
     public function order_受注編集(\AcceptanceTester $I)
