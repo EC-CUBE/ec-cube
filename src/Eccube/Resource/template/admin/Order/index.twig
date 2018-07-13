@@ -264,11 +264,14 @@ file that was distributed with this source code.
             $('.modal-body > p', this.modal).text("{{ 'admin.shipping.index.828'|trans }}");
             $('#bulkChangeComplete').show();
         },
-        getPromises: function (progress, url) {
+        getPromises: function (progress, url, data) {
+            if (data == undefined) {
+                data = {'notificationMail': $('input#notificationMail:checked').val()};
+            }
             return $.ajax({
                 'url': url,
                 'type': 'PUT',
-                'data': {'notificationMail': $('input#notificationMail:checked').val()}
+                'data': data
             })
                    .fail(function () {
                         progress.reject();
@@ -365,8 +368,9 @@ file that was distributed with this source code.
         getPromises: {
             value: function (progress) {
                 return $('input[data-id]:checked').map(function () {
-                    var url = $(this).data('mark-as-shipped-url');
-                    return ConfirmationModal.prototype.getPromises.call(this, progress, url);
+                    var url = $(this).data('update-status-url');
+                    var data = {'order_status': $('#option_bulk_status').val()};
+                    return ConfirmationModal.prototype.getPromises.call(this, progress, url, data);
                 });
             }
         }

@@ -403,8 +403,9 @@ class OrderController extends AbstractController
      *
      * @return RedirectResponse
      */
-    public function updateOrderStatus(Request $request, Shipping $shipping)
+    public function updateOrderStatus(Request $request, Shipping $Shipping)
     {
+        return $this->json(['status' => 'NG'], 400);
         if (!($request->isXmlHttpRequest() && $this->isTokenValid())) {
             return $this->json(['status' => 'NG'], 400);
         }
