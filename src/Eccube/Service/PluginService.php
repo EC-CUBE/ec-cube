@@ -560,7 +560,7 @@ class PluginService
         }, $enabledPluginCodes);
 
         return $this->entityProxyService->generate(
-            array_merge([$this->projectRoot.'/app/Acme/Entity'], $enabledPluginEntityDirs),
+            array_merge([$this->projectRoot.'/app/Customize/Entity'], $enabledPluginEntityDirs),
             $excludes,
             $outputDir
         );

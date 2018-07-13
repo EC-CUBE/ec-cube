@@ -1,8 +1,8 @@
 controllers:
     resource: ../../src/Eccube/Controller/
     type: annotation
-acme_controllers:
-    resource: ../../app/Acme/Controller/
+customize_controllers:
+    resource: ../../app/Customizse/Controller/
     type: annotation
 
 #    prefix: /{_locale}
