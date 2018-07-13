@@ -106,5 +106,5 @@ parameters:
     # {random,桁数}: ランダムな数値を桁数分作成
     # {random_alnum,桁数} : ランダムな半角英数大文字を桁数分作成
     eccube_order_no_format: ''
-    order_pdf_message_len: 30
+    eccube_order_pdf_message_len: 30
 

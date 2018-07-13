@@ -88,27 +88,27 @@ class OrderPdfType extends AbstractType
             ->add('message1', TextType::class, [
                 'label' => 'admin.order.export.pdf.label.004',
                 'required' => false,
-                'attr' => ['maxlength' => $config['order_pdf_message_len']],
+                'attr' => ['maxlength' => $config['eccube_order_pdf_message_len']],
                 'constraints' => [
-                    new Assert\Length(['max' => $config['order_pdf_message_len']]),
+                    new Assert\Length(['max' => $config['eccube_order_pdf_message_len']]),
                 ],
                 'trim' => false,
             ])
             ->add('message2', TextType::class, [
                 'label' => 'admin.order.export.pdf.label.005',
                 'required' => false,
-                'attr' => ['maxlength' => $config['order_pdf_message_len']],
+                'attr' => ['maxlength' => $config['eccube_order_pdf_message_len']],
                 'constraints' => [
-                    new Assert\Length(['max' => $config['order_pdf_message_len']]),
+                    new Assert\Length(['max' => $config['eccube_order_pdf_message_len']]),
                 ],
                 'trim' => false,
             ])
             ->add('message3', TextType::class, [
                 'label' => 'admin.order.export.pdf.label.006',
                 'required' => false,
-                'attr' => ['maxlength' => $config['order_pdf_message_len']],
+                'attr' => ['maxlength' => $config['eccube_order_pdf_message_len']],
                 'constraints' => [
-                    new Assert\Length(['max' => $config['order_pdf_message_len']]),
+                    new Assert\Length(['max' => $config['eccube_order_pdf_message_len']]),
                 ],
                 'trim' => false,
             ])
