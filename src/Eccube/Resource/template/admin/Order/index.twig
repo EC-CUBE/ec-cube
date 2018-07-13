@@ -812,6 +812,7 @@ file that was distributed with this source code.
                                     </tr>
                                 </thead>
                                 <tbody>
+                                {# TODO IN_PROGRESS と RETURNED の色を決める #}
                                 {% set cssClassStatus = {
                                         (constant('Eccube\\Entity\\Master\\OrderStatus::NEW')): "badge-ec-blue",
                                         (constant('Eccube\\Entity\\Master\\OrderStatus::PAY_WAIT')): "badge-ec-red",
@@ -820,7 +821,9 @@ file that was distributed with this source code.
                                         (constant('Eccube\\Entity\\Master\\OrderStatus::DELIVERED')): "badge-ec-glay",
                                         (constant('Eccube\\Entity\\Master\\OrderStatus::PAID')): "badge-ec-green",
                                         (constant('Eccube\\Entity\\Master\\OrderStatus::PENDING')): "badge-ec-yellow",
-                                        (constant('Eccube\\Entity\\Master\\OrderStatus::PROCESSING')): "badge-ec-yellow"
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::PROCESSING')): "badge-ec-yellow",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::IN_PROGRESS')): "badge-ec-yellow",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::RETURNED')): "badge-ec-yellow" 
                                     }
                                 %}
                                 {% for Order in pagination %}

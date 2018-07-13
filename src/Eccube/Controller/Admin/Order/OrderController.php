@@ -29,6 +29,7 @@ use Eccube\Repository\Master\SexRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Service\CsvExportService;
+use Eccube\Service\OrderStateMachine;
 use Eccube\Util\FormUtil;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -100,6 +101,11 @@ class OrderController extends AbstractController
     protected $validator;
 
     /**
+     * @var OrderStateMachine
+     */
+    protected $orderStateMachine;
+
+    /**
      * OrderController constructor.
      *
      * @param PurchaseFlow $orderPurchaseFlow
@@ -111,6 +117,7 @@ class OrderController extends AbstractController
      * @param PageMaxRepository $pageMaxRepository
      * @param ProductStatusRepository $productStatusRepository
      * @param OrderRepository $orderRepository
+     * @param OrderStateMachine $orderStateMachine;
      */
     public function __construct(
         PurchaseFlow $orderPurchaseFlow,
@@ -122,7 +129,8 @@ class OrderController extends AbstractController
         PageMaxRepository $pageMaxRepository,
         ProductStatusRepository $productStatusRepository,
         OrderRepository $orderRepository,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        OrderStateMachine $orderStateMachine
     ) {
         $this->purchaseFlow = $orderPurchaseFlow;
         $this->csvExportService = $csvExportService;
@@ -134,6 +142,7 @@ class OrderController extends AbstractController
         $this->productStatusRepository = $productStatusRepository;
         $this->orderRepository = $orderRepository;
         $this->validator = $validator;
+        $this->orderStateMachine = $orderStateMachine;
     }
 
     /**
@@ -405,37 +414,50 @@ class OrderController extends AbstractController
      */
     public function updateOrderStatus(Request $request, Shipping $Shipping)
     {
-        return $this->json(['status' => 'NG'], 400);
         if (!($request->isXmlHttpRequest() && $this->isTokenValid())) {
             return $this->json(['status' => 'NG'], 400);
         }
 
-        $OrderStatus = $this->entityManager->find(OrderStatus::class, $request->get('order_status'));
         $Order = $Shipping->getOrder();
-        // ステートマシンを動かす
+        $OrderStatus = $this->entityManager->find(OrderStatus::class, $request->get('order_status'));
 
-        // 発送済みに変更された場合は、関連する出荷がすべて出荷済みになったら OrderStatus を変更する
-        if (OrderStatus::DELIVERED == $OrderStatus->getId()) {
-            if (!$Shipping->getShippingDate()) {
-                $Shipping->setShippingDate(\DateTime());
-            }
-            $RelateShippings = $Order->getShippings();
-            $allShipped = false;
-            foreach ($RelateShippings as $RelateShipping) {
-                if (!$RelateShipping->getShippingDate()) {
-                    continue;
+        try {
+            // 発送済みに変更された場合は、関連する出荷がすべて出荷済みになったら OrderStatus を変更する
+            if (OrderStatus::DELIVERED == $OrderStatus->getId()) {
+                if (!$Shipping->getShippingDate()) {
+                    $Shipping->setShippingDate(\DateTime());
+                    $this->entityManager->flush($Shipping);
                 }
-                $allShipped = true;
+                $RelateShippings = $Order->getShippings();
+                $allShipped = false;
+                foreach ($RelateShippings as $RelateShipping) {
+                    if (!$RelateShipping->getShippingDate()) {
+                        continue;
+                    }
+                    $allShipped = true;
+                }
+                if ($allShipped) {
+                    if ($this->orderStateMachine->can($Order, $OrderStatus)) {
+                        $this->orderStateMachine->apply($Order, $OrderStatus);
+                    }
+                }
+            } else {
+                if ($this->orderStateMachine->can($Order, $OrderStatus)) {
+                    $this->orderStateMachine->apply($Order, $OrderStatus);
+                }
             }
-            if ($allShipped) {
-                $Order->setOrderStatus($OrderStatus);
-            }
-        } else {
-            $Order->setOrderStatus($OrderStatus);
+            $this->entityManager->flush($Order);
+            log_info('対応状況一括変更処理完了', [$Order->getId()]);
+        } catch (\LogicException $e) {
+            // XXX 何故か OrderStateMachine::can() が LogicException をスローする
+            log_error('不正なワークフローです', [$e->getMessage()]);
+        } catch (\Exception $e) {
+            log_error('予期しないエラーです', [$e->getMessage()]);
+
+            return $this->json(['status' => 'NG'], 500);
         }
-        $this->entityManager->flush($Order);
-        sleep(2);
-        return $this->json(['OK']);
+
+        return $this->json(['status' => 'OK']);
     }
 
     /**
@@ -448,6 +470,7 @@ class OrderController extends AbstractController
      * @param OrderStatus $OrderStatus
      *
      * @return RedirectResponse
+     * @deprecated 使用していない
      */
     public function bulkOrderStatus(Request $request, OrderStatus $OrderStatus)
     {
