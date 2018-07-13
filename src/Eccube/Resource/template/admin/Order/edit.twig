@@ -385,21 +385,31 @@ file that was distributed with this source code.
                     {# 注文者 終了 #}
 
                     {# お届け先情報 開始 #}
-                    {% if not Order.isMultiple %}
-                        {% for shippingForm in form.Shippings %}
-                            {% set shippingIndex = shippingForm.vars.name %}
-                            <div class="card rounded border-0 mb-4 h-adr">
-                                <span class="p-country-name" style="display:none;">Japan</span>
-                                <div class="card-header">
-                                    <div class="row">
-                                        <div class="col-8">
-                                            <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.shipping.edit.730'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
-                                        </div>
-                                        <div class="col-4 text-right"><a data-toggle="collapse" href="#shippingInfo" aria-expanded="false" aria-controls="shippingInfo"><i class="fa fa-angle-up fa-lg"></i></a></div>
-                                    </div>
+                    <div class="card rounded border-0 mb-4 h-adr">
+                        <span class="p-country-name" style="display:none;">Japan</span>
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-8">
+                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.shipping.edit.730'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                 </div>
-                                <div class="collapse show ec-cardCollapse" id="shippingInfo">
-                                    <div class="card-body">
+                                <div class="col-4 text-right"><a data-toggle="collapse" href="#shippingInfo" aria-expanded="false" aria-controls="shippingInfo"><i class="fa fa-angle-up fa-lg"></i></a></div>
+                            </div>
+                        </div>
+                        <div class="collapse show ec-cardCollapse" id="shippingInfo">
+                            <div class="card-body">
+                                {% if Order.isMultiple %}
+                                    {# 複数配送の場合は配送先の表示のみ #}
+                                    <div class="mb-3">
+                                        <button type="button" id="shipping-add" class="btn btn-ec-regular">{{ 'admin.order.edit.label.shipping.edit'|trans }}</button>
+                                        複数配送を指定している場合は、こちらのボタンからそれぞれの配送設定の編集ができます。
+                                    </div>
+                                    {% for shippingForm in form.Shippings %}
+                                        お届け先{{ shippingForm.vars.name + 1 }}　{{ shippingForm.name.name01.vars.value }}{{ shippingForm.name.name02.vars.value }}　{{ shippingForm.address.addr01.vars.value }}{{ shippingForm.address.addr02.vars.value }}<br>
+                                    {% endfor %}
+                                {% else %}
+                                    {# 単数配送の場合は配送先の編集が可能 #}
+                                    {% for shippingForm in form.Shippings %}
+                                        {% set shippingIndex = shippingForm.vars.name %}
                                         <div class="row mb-3">
                                             <div class="col-6">
                                                 <button type="button" class="btn btn-ec-regular copy-customer" data-idx="{{ shippingIndex }}">{{ 'admin.order.edit.label.customer_info.copy'|trans }}</button>
@@ -540,11 +550,11 @@ file that was distributed with this source code.
                                                 {% endif %}
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
+                                    {% endfor %}
+                                {% endif %}
                             </div>
-                        {% endfor %}
-                    {% endif %}
+                        </div>
+                    </div>
                     {# お届け先情報 終了 #}
 
                     {# 受注商品情報 開始 #}
@@ -562,23 +572,26 @@ file that was distributed with this source code.
                                 <input type="hidden" name="error-message">
                                 <div class="row justify-content-between mb-2">
                                     <div class="col-6">
-                                        <a class="btn btn-ec-regular mr-2 add" data-toggle="modal" data-target="#addProduct">{{ 'admin.order.edit.btn.add_product'|trans }}</a>
-                                        <div class="modal fade" id="addProduct" tabindex="-1" role="dialog" aria-labelledby="addProduct" aria-hidden="true">
-                                            <div class="modal-dialog modal-lg" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title">{{ 'admin.order.edit.btn.add_product'|trans }}</h5>
-                                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        {{ form_widget(searchProductModalForm.id, { attr : {'class': 'mb-3',  placeholder : 'admin.order.edit.293' }}) }}
-                                                        {{ form_widget(searchProductModalForm.category_id) }}
-                                                        <button type="button" id="searchProductModalButton" class="btn btn-ec-conversion px-5 mb-4 mt-2">{{ 'admin.order.edit.294'|trans }}</button>
-                                                        <div id="searchProductModalList"></div>
+                                        {# 複数配送の場合は商品追加できない #}
+                                        {% if not Order.isMultiple %}
+                                            <a class="btn btn-ec-regular mr-2 add" data-toggle="modal" data-target="#addProduct">{{ 'admin.order.edit.btn.add_product'|trans }}</a>
+                                            <div class="modal fade" id="addProduct" tabindex="-1" role="dialog" aria-labelledby="addProduct" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">{{ 'admin.order.edit.btn.add_product'|trans }}</h5>
+                                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            {{ form_widget(searchProductModalForm.id, { attr : {'class': 'mb-3',  placeholder : 'admin.order.edit.293' }}) }}
+                                                            {{ form_widget(searchProductModalForm.category_id) }}
+                                                            <button type="button" id="searchProductModalButton" class="btn btn-ec-conversion px-5 mb-4 mt-2">{{ 'admin.order.edit.294'|trans }}</button>
+                                                            <div id="searchProductModalList"></div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        {% endif %}
                                         <a class="btn btn-ec-regular mr-2" data-toggle="modal" data-target="#addOrderItemType">{{ 'admin.order.edit.btn.add_other_item'|trans }}</a>
                                         <div class="modal fade" id="addOrderItemType" tabindex="-1" role="dialog" aria-labelledby="addOrderItemType" aria-hidden="true">
                                             <div class="modal-dialog modal-lg" role="document">
@@ -660,8 +673,15 @@ file that was distributed with this source code.
                                             </td>
                                             <td class="align-middle">
                                                 <div class="col-6">
-                                                    {{ form_widget(orderItemForm.quantity) }}
-                                                    {{ form_errors(orderItemForm.quantity) }}
+                                                    {# 複数配送の場合は商品の個数を変更できない #}
+                                                    {% if Order.isMultiple and orderItemForm.vars.value.orderItemType.id == 1 %}
+                                                        {{ orderItemForm.vars.value.quantity }}
+                                                        {{ form_widget(orderItemForm.quantity, {'attr': {'class': 'd-none'}}) }}
+                                                        {{ form_errors(orderItemForm.quantity) }}
+                                                    {% else %}
+                                                        {{ form_widget(orderItemForm.quantity) }}
+                                                        {{ form_errors(orderItemForm.quantity) }}
+                                                    {% endif %}
                                                 </div>
                                             </td>
                                             <td class="align-middle">
