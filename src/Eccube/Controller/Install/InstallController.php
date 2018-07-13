@@ -758,7 +758,6 @@ class InstallController extends AbstractController
                 'work_id' => 1,
                 'authority_id' => 0,
                 'creator_id' => 1,
-                'sort_no' => 1,
                 'update_date' => new \DateTime(),
                 'create_date' => new \DateTime(),
                 'name' => trans('install.label'),
@@ -795,7 +794,7 @@ class InstallController extends AbstractController
                 ]);
             } else {
                 // 新しい管理者IDが入力されたらinsert
-                $sth = $conn->prepare("INSERT INTO dtb_member (login_id, password, salt, work, del_flg, authority, creator_id, sort_no, update_date, create_date,name,department,discriminator_type) VALUES (:login_id, :password , :salt , '1', '0', '0', '1', '1', current_timestamp, current_timestamp,'管理者','EC-CUBE SHOP', 'member');");
+                $sth = $conn->prepare("INSERT INTO dtb_member (login_id, password, salt, work, del_flg, authority, creator_id, update_date, create_date,name,department,discriminator_type) VALUES (:login_id, :password , :salt , '1', '0', '0', '1', current_timestamp, current_timestamp,'管理者','EC-CUBE SHOP', 'member');");
                 $sth->execute([
                     ':login_id' => $data['login_id'],
                     ':password' => $password,

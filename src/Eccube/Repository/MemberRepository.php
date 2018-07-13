@@ -32,67 +32,12 @@ class MemberRepository extends AbstractRepository
     }
 
     /**
-     * 管理ユーザの表示順を一つ上げる.
-     *
-     * @param Member $Member
-     *
-     * @throws \Exception 更新対象のユーザより上位のユーザが存在しない場合.
-     */
-    public function up(Member $Member)
-    {
-        $sortNo = $Member->getSortNo();
-        $Member2 = $this->findOneBy(['sort_no' => $sortNo + 1]);
-
-        if (!$Member2) {
-            throw new \Exception(sprintf('%s より上位の管理ユーザが存在しません.', $Member->getId()));
-        }
-
-        $Member->setSortNo($sortNo + 1);
-        $Member2->setSortNo($sortNo);
-
-        $em = $this->getEntityManager();
-        $em->flush([$Member, $Member2]);
-    }
-
-    /**
-     * 管理ユーザの表示順を一つ下げる.
-     *
-     * @param Member $Member
-     *
-     * @throws \Exception 更新対象のユーザより下位のユーザが存在しない場合.
-     */
-    public function down(Member $Member)
-    {
-        $sortNo = $Member->getSortNo();
-        $Member2 = $this->findOneBy(['sort_no' => $sortNo - 1]);
-
-        if (!$Member2) {
-            throw new \Exception(sprintf('%s より下位の管理ユーザが存在しません.', $Member->getId()));
-        }
-
-        $Member->setSortNo($sortNo - 1);
-        $Member2->setSortNo($sortNo);
-
-        $em = $this->getEntityManager();
-        $em->flush([$Member, $Member2]);
-    }
-
-    /**
      * 管理ユーザを登録します.
      *
      * @param Member $Member
      */
     public function save($Member)
     {
-        if (!$Member->getId()) {
-            $sortNo = $this->createQueryBuilder('m')
-                ->select('COALESCE(MAX(m.sort_no), 0)')
-                ->getQuery()
-                ->getSingleScalarResult();
-            $Member
-                ->setSortNo($sortNo + 1);
-        }
-
         $em = $this->getEntityManager();
         $em->persist($Member);
         $em->flush($Member);
@@ -112,7 +57,6 @@ class MemberRepository extends AbstractRepository
             ->update()
             ->set('m.sort_no', 'm.sort_no - 1')
             ->where('m.sort_no > :sort_no')
-            ->setParameter('sort_no', $Member->getSortNo())
             ->getQuery()
             ->execute();
 

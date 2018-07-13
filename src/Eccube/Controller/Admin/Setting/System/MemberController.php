@@ -67,7 +67,7 @@ class MemberController extends AbstractController
      */
     public function index(Request $request)
     {
-        $Members = $this->memberRepository->findBy([], ['sort_no' => 'DESC']);
+        $Members = $this->memberRepository->findBy([], ['id' => 'DESC']);
 
         $builder = $this->formFactory->createBuilder();
 
@@ -211,48 +211,6 @@ class MemberController extends AbstractController
             'form' => $form->createView(),
             'Member' => $Member,
         ];
-    }
-
-    /**
-     * @Method("PUT")
-     * @Route("/%eccube_admin_route%/setting/system/member/{id}/up", requirements={"id" = "\d+"}, name="admin_setting_system_member_up")
-     */
-    public function up(Request $request, Member $Member)
-    {
-        $this->isTokenValid();
-
-        try {
-            $this->memberRepository->up($Member);
-
-            $this->addSuccess('admin.member.up.complete', 'admin');
-        } catch (\Exception $e) {
-            log_error('メンバー表示順更新エラー', [$Member->getId(), $e]);
-
-            $this->addError('admin.member.up.error', 'admin');
-        }
-
-        return $this->redirectToRoute('admin_setting_system_member');
-    }
-
-    /**
-     * @Method("PUT")
-     * @Route("/%eccube_admin_route%/setting/system/member/{id}/down", requirements={"id" = "\d+"}, name="admin_setting_system_member_down")
-     */
-    public function down(Request $request, Member $Member)
-    {
-        $this->isTokenValid();
-
-        try {
-            $this->memberRepository->down($Member);
-
-            $this->addSuccess('admin.member.down.complete', 'admin');
-        } catch (\Exception $e) {
-            log_error('メンバー表示順更新エラー', [$Member->getId(), $e]);
-
-            $this->addError('admin.member.down.error', 'admin');
-        }
-
-        return $this->redirectToRoute('admin_setting_system_member');
     }
 
     /**

@@ -113,13 +113,6 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
     private $salt;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="sort_no", type="smallint", options={"unsigned":true})
-     */
-    private $sort_no;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(name="create_date", type="datetimetz")
@@ -298,30 +291,6 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
     public function getSalt()
     {
         return $this->salt;
-    }
-
-    /**
-     * Set sortNo.
-     *
-     * @param int $sortNo
-     *
-     * @return Member
-     */
-    public function setSortNo($sortNo)
-    {
-        $this->sort_no = $sortNo;
-
-        return $this;
-    }
-
-    /**
-     * Get sortNo.
-     *
-     * @return int
-     */
-    public function getSortNo()
-    {
-        return $this->sort_no;
     }
 
     /**

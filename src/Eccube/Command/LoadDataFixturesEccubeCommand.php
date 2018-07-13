@@ -65,7 +65,6 @@ EOF
             'work_id' => 1,
             'authority_id' => 0,
             'creator_id' => 1,
-            'sort_no' => 1,
             'update_date' => new \DateTime(),
             'create_date' => new \DateTime(),
             'name' => '管理者',

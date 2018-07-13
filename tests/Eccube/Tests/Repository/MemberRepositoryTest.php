@@ -51,59 +51,10 @@ class MemberRepositoryTest extends EccubeTestCase
                 ->setLoginId('member-1')
                 ->setPassword($encoder->encodePassword($password, $salt))
                 ->setSalt($salt)
-                ->setSortNo($i)
                 ->setWork($Work);
             $this->entityManager->persist($Member);
             $this->memberRepo->save($Member);
         }
-    }
-
-    public function testUp()
-    {
-        $sortNo = $this->Member->getSortNo();
-        $this->memberRepo->up($this->Member);
-
-        $this->expected = $sortNo + 1;
-        $this->actual = $this->Member->getSortNo();
-        $this->verify();
-    }
-
-    public function testUpWithException()
-    {
-        $this->expectException(\Exception::class);
-        $this->Member->setSortNo(999);
-        $this->entityManager->flush();
-
-        $this->memberRepo->up($this->Member);
-    }
-
-    public function testDown()
-    {
-        $qb = $this->entityManager->createQueryBuilder();
-        $max = $qb->select('MAX(m.sort_no)')
-            ->from(Member::class, 'm')
-            ->getQuery()
-            ->getSingleScalarResult();
-
-        $this->Member->setSortNo($max + 1);
-        $this->entityManager->flush();
-
-        $sortNo = $this->Member->getSortNo();
-        $this->memberRepo->down($this->Member);
-
-        $this->expected = $sortNo - 1;
-        $this->actual = $this->Member->getSortNo();
-        $this->verify();
-    }
-
-    public function testDownWithException()
-    {
-        $this->expectException(\Exception::class);
-        $this->Member->setSortNo(0);
-        $this->entityManager->flush();
-
-        $this->memberRepo->down($this->Member);
-        $this->fail();
     }
 
     public function testSave()
@@ -112,8 +63,7 @@ class MemberRepositoryTest extends EccubeTestCase
         $Member
             ->setLoginId('member-100')
             ->setPassword('password')
-            ->setSalt('salt')
-            ->setSortNo(100);
+            ->setSalt('salt');
 
         $this->memberRepo->save($Member);
 
@@ -121,28 +71,6 @@ class MemberRepositoryTest extends EccubeTestCase
         $member = $this->memberRepo->findOneBy(['login_id' => 'member-100']);
         $this->actual = $member->getPassword();
         $this->expected = $Member->getPassword();
-        $this->verify();
-    }
-
-    public function testSaveWithSortNoNull()
-    {
-        $qb = $this->entityManager->createQueryBuilder();
-        $sortNo = $qb->select('MAX(m.sort_no)')
-            ->from(Member::class, 'm')
-            ->getQuery()
-            ->getSingleScalarResult();
-
-        $Member = new Member();
-        $Member
-            ->setLoginId('member-100')
-            ->setPassword('password')
-            ->setSalt('salt')
-            ->setSortNo(100);
-        $this->memberRepo->save($Member);
-
-        $this->expected = $sortNo + 1;
-        $this->actual = $Member->getSortNo();
-
         $this->verify();
     }
 
