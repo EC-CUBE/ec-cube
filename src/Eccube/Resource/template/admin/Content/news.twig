@@ -130,17 +130,17 @@ file that was distributed with this source code.
                                     <div class="col d-flex align-items-center"><a href="{{ url('admin_content_news_edit', {id: News.id}) }}">{{ News.title }}</a></div>
                                     <div class="col-3 text-right">
                                         <div class="row">
-                                            <div class="col text-center" data-toggle="tooltip" data-placement="top" title="{{ 'admin.setting.shop.payment.608'|trans }}">
-                                                <a class="btn btn-ec-actionIcon mr-3 action-up{{ loop.first ? ' disabled' }}" data-toggle="tooltip" data-placement="top" title="{{'admin.setting.shop.payment.608'|trans}}">
+                                            <div class="col text-center">
+                                                <a class="btn btn-ec-actionIcon mr-3 action-up{{ loop.first ? ' disabled' }}" data-toggle="tooltip" data-placement="top" title="{{'admin.common.label.move.up'|trans}}">
                                                     <i class="fa fa-arrow-up fa-lg text-secondary"></i>
                                                 </a>
                                             </div>
-                                            <div class="col text-center" data-toggle="tooltip" data-placement="top" title="{{ 'admin.setting.shop.payment.609'|trans }}">
-                                                <a class="btn btn-ec-actionIcon mr-3 action-down{{ loop.last ? ' disabled' }}"  data-toggle="tooltip" data-placement="top" title="{{'admin.setting.shop.payment.609'|trans}}">
+                                            <div class="col text-center">
+                                                <a class="btn btn-ec-actionIcon mr-3 action-down{{ loop.last ? ' disabled' }}"  data-toggle="tooltip" data-placement="top" title="{{'admin.common.label.move.down'|trans}}">
                                                     <i class="fa fa-arrow-down fa-lg text-secondary"></i>
                                                 </a>
                                             </div>
-                                            <div class="col text-center" data-toggle="tooltip" data-placement="top" title="{{'admin.setting.shop.payment.607'|trans}}">
+                                            <div class="col text-center" data-toggle="tooltip" data-placement="top" title="{{'common.label.delete'|trans}}">
                                                 <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#delete_{{ News.id }}">
                                                     <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
                                                 </a>
@@ -151,7 +151,7 @@ file that was distributed with this source code.
                                                         <div class="modal-content">
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title font-weight-bold">
-                                                                    {{ 'admin.setting.shop.payment.modal.header'|trans }}</h5>
+                                                                    {{ 'admin.content.news.del.confirm.title'|trans }}</h5>
                                                                 <button class="close" type="button"
                                                                         data-dismiss="modal"
                                                                         aria-label="Close"><span
@@ -160,7 +160,7 @@ file that was distributed with this source code.
                                                             </div>
                                                             <div class="modal-body text-left">
                                                                 <p class="text-left">
-                                                                    この新着情報を削除してもよろしいですか？</p>
+                                                                    {{ 'admin.content.news.del.confirm.message'|trans }}</p>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'common.label.cancel'|trans }}

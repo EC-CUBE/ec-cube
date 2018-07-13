@@ -13,10 +13,27 @@
 
 namespace Eccube\Tests\Web\Admin\Content;
 
+use Eccube\Entity\News;
+use Eccube\Repository\NewsRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class NewsControllerTest extends AbstractAdminWebTestCase
 {
+    /**
+     * @var NewsRepository
+     */
+    protected $newsRepository;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->newsRepository = $this->container->get(NewsRepository::class);
+    }
+
     public function testRoutingAdminContentNews()
     {
         $this->client->request('GET', $this->generateUrl('admin_content_news'));
@@ -57,30 +74,42 @@ class NewsControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
     }
 
-    public function testRoutingAdminContentNewsUp()
+    public function testMoveSortNo()
     {
-        $Member = $this->createMember();
-        $News1 = $this->createNews($Member, 1);
-        $News2 = $this->createNews($Member, 2);
+        /** @var News[] $News */
+        $News = $this->newsRepository->findBy([], ['sort_no' => 'DESC']);
 
-        $redirectUrl = $this->generateUrl('admin_content_news');
-        $this->client->request('PUT',
-            $this->generateUrl('admin_content_news_up', ['id' => $News1->getId()])
+        $this->expected = [];
+        foreach ($News as $New) {
+            $this->expected[$New->getId()] = $New->getSortNo();
+        }
+
+        // swap sort_no
+        reset($this->expected);
+        $firstKey = key($this->expected);
+        end($this->expected);
+        $lastKey = key($this->expected);
+
+        $tmp = $this->expected[$firstKey];
+        $this->expected[$firstKey] = $this->expected[$lastKey];
+        $this->expected[$lastKey] = $tmp;
+
+        $this->client->request('POST',
+            $this->generateUrl('admin_content_news_sort_no_move'),
+            $this->expected,
+            [],
+            ['HTTP_X-Requested-With' => 'XMLHttpRequest']
         );
-        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
-    }
 
-    public function testRoutingAdminContentNewsDown()
-    {
-        $Member = $this->createMember();
-        $News1 = $this->createNews($Member, 1);
-        $News2 = $this->createNews($Member, 2);
+        $News = $this->newsRepository->findBy([], ['sort_no' => 'DESC']);
+        $this->actual = [];
+        foreach ($News as $New) {
+            $this->actual[$New->getId()] = $New->getSortNo();
+        }
+        sort($this->expected);
+        sort($this->actual);
 
-        $redirectUrl = $this->generateUrl('admin_content_news');
-        $this->client->request('PUT',
-            $this->generateUrl('admin_content_news_down', ['id' => $News2->getId()])
-        );
-        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
+        $this->verify();
     }
 
     private function createNews($TestCreator, $sortNo = 1)
