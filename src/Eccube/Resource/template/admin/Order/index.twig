@@ -273,12 +273,13 @@ file that was distributed with this source code.
                 'type': 'PUT',
                 'data': data
             })
-                   .fail(function () {
-                        progress.reject();
-                    })
-                    .always(function (data) {
-                        progress.notifyWith(data);
-                    });
+            .fail(function () {
+                progress.reject();
+                ConfirmationModal.prototype.fail.call(this);
+            })
+            .always(function (data) {
+                progress.notifyWith(data);
+            });
         }
     };
 
