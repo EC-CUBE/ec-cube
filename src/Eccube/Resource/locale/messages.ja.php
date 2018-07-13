@@ -1674,6 +1674,7 @@ return [
     'admin.product.product_class.product_list' => '商品一覧',
     'admin.product.product_class.register' => '登録',
     'admin.product.product_class.update' => '更新',
+    'admin.product.product_class.class_backend_name_label' => '管理名',
     'admin.product.subnavi.550' => '商品管理',
     'admin.product.subnavi.551' => '商品一覧',
     'admin.product.subnavi.552' => '商品登録',
