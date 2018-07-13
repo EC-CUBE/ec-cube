@@ -65,16 +65,21 @@ file that was distributed with this source code.
     var updater;
 
     // モーダルの表示を制御
-    $('#sentUpdateModal').on('show.bs.modal', function(e) {
-        var modal = this;
-        var eventTarget = $(e.relatedTarget);
+    $('#bulkSendMail, .confirmationModal').on('click', function(e) {
+        var modal = $('#sentUpdateModal');
+        modal.modal();
+        var eventTarget = $(e.currentTarget);
         var type = eventTarget.data('type');
+
         switch (type) {
             case 'mail':
                 updater = eventTarget.data('bulk-update') ? new BulkSendMail(modal, eventTarget) : new SimpleSendMail(modal, eventTarget);
                 $('#notificationMail').attr('type', 'hidden');
                 $('.notificationMail').hide();
                 $('#viewEmail').removeClass('collapse').addClass('collapsed');;
+                break;
+            case 'status':
+                updater = new BulkStatusUpdate(modal, eventTarget); // bulk-update is always true
                 break;
             case 'update':
             default:
@@ -101,9 +106,8 @@ file that was distributed with this source code.
     });
 
     // 一括更新
-    $('#bulkChange, #btn_bulk_status').on('click', function(e) {
+    $('#bulkChange, .progressModal').on('click', function(e) {
         var eventTarget = $(e.currentTarget);
-
         var type = eventTarget.data('type');
         var modal = $('#sentUpdateModal');
 
@@ -119,7 +123,7 @@ file that was distributed with this source code.
             default:
                 updater = eventTarget.data('bulk-update') ? new BulkUpdate(modal, eventTarget) : new SimpleUpdate(modal, eventTarget);
         }
-        console.log(updater.modalTitle);
+
         $('.modal-title', modal).text(updater.modalTitle);
         $('.modal-body > p', modal).text("{{ 'admin.shipping.index.827'|trans }}");
         $('button', modal).hide();
@@ -249,19 +253,16 @@ file that was distributed with this source code.
             if (this.currentCount >= this.totalCount) {
                 progress.resolve();
             }
-            console.log(this.currentCount);
         },
         fail: function (result) {
             $('<li><span class="badge badge-danger">ERROR</span> </li>')
                 .append($('<span></span>').text("{{ 'application.text.error.system'|trans }}"))
                 .appendTo('#bulkErrors');
-            console.log('fail');
         },
         always: function (result) {
             $('.progress', this.modal).hide();
             $('.modal-body > p', this.modal).text("{{ 'admin.shipping.index.828'|trans }}");
             $('#bulkChangeComplete').show();
-            console.log('always');
         },
         getPromises: function (progress, url) {
             return $.ajax({
@@ -343,7 +344,6 @@ file that was distributed with this source code.
     function BulkStatusUpdate(modal, eventTarget) {
         ConfirmationModal.call(this, modal);
         this.eventTarget = eventTarget;
-        console.log('BulkStatusUpdate');
     }
 
     // extend super class
@@ -403,7 +403,6 @@ file that was distributed with this source code.
             value: function (result, progress) {
                 if (result.mail) {
                     this.mailCount++;
-                    console.log(this.mailCount);
                     this.notifierCompleteMessage = '{{ 'admin.shipping.index.837'|trans }}'.replace(/%count%/, this.mailCount);
                 }
                 BulkUpdate.prototype.progress.call(this, result, progress);
@@ -734,7 +733,7 @@ file that was distributed with this source code.
                             <div class="row justify-content-between">
                                 <div class="col-auto d-none btn-bulk-wrapper">
                                     <label class="mr-2">{{ 'admin.order.index.label_bulk_actions'|trans }}</label>
-                                    <button id="bulkSendMail" type="button" class="btn btn-ec-regular mr-2" data-toggle="modal" data-target="#sentUpdateModal" data-type="mail" data-bulk-update="true">
+                                    <button id="bulkSendMail" type="button" class="btn btn-ec-regular mr-2" data-type="mail" data-bulk-update="true">
                                         {{ 'admin.order.index.btn_bulk_mail'|trans }}
                                     </button>
                                     {# TODO: This button is not implemented yet #}
@@ -751,7 +750,7 @@ file that was distributed with this source code.
                                             {% endfor %}
                                         </select>
                                     </div>
-                                    <button type="button" id="btn_bulk_status" class="btn btn-ec-regular mr-2" data-type="status" data-bulk-update="true" data-submit="bulk">
+                                    <button type="button" id="btn_bulk_status" class="btn btn-ec-regular mr-2 progressModal" data-type="status" data-bulk-update="true" data-submit="bulk">
                                         {{ 'admin.order.index.btn_bulk_submit'|trans }}
                                     </button>
                                 </div>
@@ -871,8 +870,7 @@ file that was distributed with this source code.
                                         <td class="align-middle pr-3 text-center">
                                             <div class="row justify-content-end">
                                                 <div class="col-auto text-center">
-                                                    <a class="btn btn-ec-actionIcon"
-                                                       data-toggle="modal" data-target="#sentUpdateModal"
+                                                    <a class="btn btn-ec-actionIcon confirmationModal"
                                                        data-type="mail" data-bulk-update="false"
                                                        data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: Shipping.id}) }}"
                                                        data-notify-mail-url="{{ url('admin_shipping_notify_mail', { id: Shipping.id}) }}">
