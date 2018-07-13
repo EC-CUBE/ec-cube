@@ -223,9 +223,10 @@ class EA03ProductCest
         $Product = array_pop($Products);
         ProductManagePage::go($I)
             ->検索($Product->getName())
-            ->検索結果_複製(1);
+            ->検索結果_複製(1)
+            ->Accept_重複する(1);
 
-        $I->acceptPopup();
+        $I->see('商品を複製しました。', ProductEditPage::$登録結果メッセージ);
     }
 
     /**
