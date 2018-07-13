@@ -239,6 +239,51 @@ class EA04OrderCest
         $I->see('受注情報を保存しました。', OrderEditPage::$登録完了メッセージ);
     }
 
+    public function order_export_pdf_page(\AcceptanceTester $I)
+    {
+        $I->wantTo('EA0401-UC02-T01 受注CSVダウンロード');
+
+        $findOrders = Fixtures::get('findOrders'); // Closure
+        $TargetOrders = array_filter($findOrders(), function ($Order) {
+            return $Order->getOrderStatus()->getId() != OrderStatus::PROCESSING;
+        });
+        $OrderListPage = OrderManagePage::go($I)->検索();
+        $I->see('検索結果：'.count($TargetOrders).'件が該当しました', OrderManagePage::$検索結果_メッセージ);
+
+        $OrderListPage->checkAll();
+        $OrderListPage->clickToElement('#form_bulk #bulkExportPdf');
+
+        // Check redirect to form pdf information
+        $I->see('受注管理帳票出力', OrderManagePage::$titleAndSub);
+        $I->wait(5);
+    }
+
+    public function order_export_pdf_download(\AcceptanceTester $I)
+    {
+        $I->wantTo('EA0401-UC02-T01 受注CSVダウンロード');
+
+        $findOrders = Fixtures::get('findOrders'); // Closure
+        $TargetOrders = array_filter($findOrders(), function ($Order) {
+            return $Order->getOrderStatus()->getId() != OrderStatus::PROCESSING;
+        });
+        $OrderListPage = OrderManagePage::go($I)->検索();
+        $I->see('検索結果：'.count($TargetOrders).'件が該当しました', OrderManagePage::$検索結果_メッセージ);
+
+        $OrderListPage->checkAll();
+        $OrderListPage->clickToElement('#form_bulk #bulkExportPdf');
+        $I->see('受注管理帳票出力', OrderManagePage::$titleAndSub);
+
+        $OrderListPage->enterPdfForm(['id' => 'order_pdf_note1'], 'Test note first');
+        $OrderListPage->enterPdfForm(['id' => 'order_pdf_note2'], 'Test note second');
+        $OrderListPage->enterPdfForm(['id' => 'order_pdf_note3'], 'Test note third');
+        $OrderListPage->clickToElement('#order_pdf_default');
+        $OrderListPage->clickToElement('#order_pdf_form .c-conversionArea .justify-content-end button.btn-ec-conversion');
+        // make sure wait to download file completely
+        $I->wait(5);
+        $filename = $I->getLastDownloadFile('/^nouhinsyo\.pdf$/');
+        $I->assertTrue(file_exists($filename));
+    }
+
     public function order_ー括受注のステータス変更(\AcceptanceTester $I)
     {
         $I->getScenario()->incomplete('ステータス変更処理の再実装待ち');
