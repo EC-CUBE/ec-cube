@@ -39,6 +39,7 @@ file that was distributed with this source code.
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
     <script>
         $(function () {
+            // Todo: fix drag&drop style
             $("#thumb").sortable({
                 cursor: 'move',
                 opacity: 0.7,
@@ -61,8 +62,9 @@ file that was distributed with this source code.
                 }
             });
             {% endif %}
-            {# TODO: 画像の削除ができるように #}
-            var proto_img = '<div class="c-form__fileUploadThumbnail" style="background-image:url(\'__path__\');"></div>';
+            var proto_img = '<div class="c-form__fileUploadThumbnail" style="background-image:url(\'__path__\');">' +
+                '<span class="delete-image"><i class="fa fa-times" aria-hidden="true"></i></span>' +
+                '</div>';
             var proto_add = '{{ form_widget(form.add_images.vars.prototype) }}';
             var proto_del = '{{ form_widget(form.delete_images.vars.prototype) }}';
             {% for image in form.images %}
@@ -80,6 +82,7 @@ file that was distributed with this source code.
             {% for delete_image in form.delete_images %}
             $("#thumb").append('{{ form_widget(delete_image) }}');
             {% endfor %}
+            // Todo: fix hideSvg
             var hideSvg = function () {
                 if ($("#thumb li").length > 0) {
                     $("#icon_no_image").css("display", "none");
@@ -87,6 +90,7 @@ file that was distributed with this source code.
                     $("#icon_no_image").css("display", "");
                 }
             };
+            // Todo: fix update sort by drag&drop
             var updateSortNo = function () {
                 $("#thumb li").each(function (index) {
                     $(this).find(".sort_no_images").remove();
@@ -100,14 +104,13 @@ file that was distributed with this source code.
             updateSortNo();
             // Delete of images
             var count_del = 0;
-            $("#thumb").on("click", ".delete-image", function () {
+            $("#thumb").on("click", '.delete-image', function () {
                 var $new_delete_image = $(proto_del.replace(/__name__/g, count_del));
-                var src = $(this).prev().attr('src')
-                    .replace('{{ asset('', 'temp_image') }}', '')
-                    .replace('{{ asset('', 'save_image') }}', '');
+                var thumbnail = $(this).parents('div.c-form__fileUploadThumbnail');
+                var src = $(thumbnail).find('input').val();
                 $new_delete_image.val(src);
                 $("#thumb").append($new_delete_image);
-                $(this).parent("li").remove();
+                $(thumbnail).remove();
                 hideSvg();
                 updateSortNo();
                 count_del++;
