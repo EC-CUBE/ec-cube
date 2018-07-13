@@ -50,7 +50,7 @@ class RepeatedEmailType extends AbstractType
             'trim' => true,
             'error_mapping' => function (Options $options) {
                 return ['.' => $options['second_name']];
-            }
+            },
         ]);
     }
 
