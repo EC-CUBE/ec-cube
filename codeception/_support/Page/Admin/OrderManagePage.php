@@ -9,7 +9,7 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
     public static $検索結果_メッセージ = '#search_form #search_total_count';
     public static $検索結果_エラーメッセージ = '//*[@id="page_admin_order"]/div[1]/div[3]/div[3]/div/div/div[1]/div/div[1]';
     public static $詳細検索ボタン = '//*[@id="search_form"]/div[1]/div/div/div[3]/a/i/span';
-    public static $titleAndSub = '.c-container .c-contentsArea .c-pageTitle .c-pageTitle__titles';
+    public static $タイトル要素 = '.c-container .c-contentsArea .c-pageTitle .c-pageTitle__titles';
 
     /**
      * OrderListPage constructor.
@@ -59,18 +59,19 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
-    public function checkAll()
+    public function すべてチェック()
     {
         $this->tester->click('#form_bulk #check_all');
         return $this;
     }
-    public function clickToElement($element)
+
+    public function 要素をクリック($element)
     {
         $this->tester->click($element);
         return $this;
     }
 
-    public function enterPdfForm($elId, $value)
+    public function PDFフォームを入力($elId, $value)
     {
         $this->tester->fillField($elId, $value);
         return $this;

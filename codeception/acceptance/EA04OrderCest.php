@@ -239,9 +239,9 @@ class EA04OrderCest
         $I->see('受注情報を保存しました。', OrderEditPage::$登録完了メッセージ);
     }
 
-    public function order_export_pdf_page(\AcceptanceTester $I)
+    public function order_pdfページをエクスポートする(\AcceptanceTester $I)
     {
-        $I->wantTo('EA0401-UC02-T01 受注CSVダウンロード');
+        $I->wantTo('EA0401-UC02-T01 pdfページをエクスポートする');
 
         $findOrders = Fixtures::get('findOrders'); // Closure
         $TargetOrders = array_filter($findOrders(), function ($Order) {
@@ -250,17 +250,17 @@ class EA04OrderCest
         $OrderListPage = OrderManagePage::go($I)->検索();
         $I->see('検索結果：'.count($TargetOrders).'件が該当しました', OrderManagePage::$検索結果_メッセージ);
 
-        $OrderListPage->checkAll();
-        $OrderListPage->clickToElement('#form_bulk #bulkExportPdf');
+        $OrderListPage->すべてチェック();
+        $OrderListPage->要素をクリック('#form_bulk #bulkExportPdf');
 
         // Check redirect to form pdf information
         $I->see('受注管理帳票出力', OrderManagePage::$titleAndSub);
         $I->wait(5);
     }
 
-    public function order_export_pdf_download(\AcceptanceTester $I)
+    public function order_輸出pdfダウンロード(\AcceptanceTester $I)
     {
-        $I->wantTo('EA0401-UC02-T01 受注CSVダウンロード');
+        $I->wantTo('EA0401-UC02-T01 輸出pdfダウンロード');
 
         $findOrders = Fixtures::get('findOrders'); // Closure
         $TargetOrders = array_filter($findOrders(), function ($Order) {
@@ -269,15 +269,15 @@ class EA04OrderCest
         $OrderListPage = OrderManagePage::go($I)->検索();
         $I->see('検索結果：'.count($TargetOrders).'件が該当しました', OrderManagePage::$検索結果_メッセージ);
 
-        $OrderListPage->checkAll();
-        $OrderListPage->clickToElement('#form_bulk #bulkExportPdf');
-        $I->see('受注管理帳票出力', OrderManagePage::$titleAndSub);
+        $OrderListPage->すべてチェック();
+        $OrderListPage->要素をクリック('#form_bulk #bulkExportPdf');
+        $I->see('受注管理帳票出力', OrderManagePage::$タイトル要素);
 
-        $OrderListPage->enterPdfForm(['id' => 'order_pdf_note1'], 'Test note first');
-        $OrderListPage->enterPdfForm(['id' => 'order_pdf_note2'], 'Test note second');
-        $OrderListPage->enterPdfForm(['id' => 'order_pdf_note3'], 'Test note third');
-        $OrderListPage->clickToElement('#order_pdf_default');
-        $OrderListPage->clickToElement('#order_pdf_form .c-conversionArea .justify-content-end button.btn-ec-conversion');
+        $OrderListPage->PDFフォームを入力(['id' => 'order_pdf_note1'], 'Test note first');
+        $OrderListPage->PDFフォームを入力(['id' => 'order_pdf_note2'], 'Test note second');
+        $OrderListPage->PDFフォームを入力(['id' => 'order_pdf_note3'], 'Test note third');
+        $OrderListPage->要素をクリック('#order_pdf_default');
+        $OrderListPage->要素をクリック('#order_pdf_form .c-conversionArea .justify-content-end button.btn-ec-conversion');
         // make sure wait to download file completely
         $I->wait(5);
         $filename = $I->getLastDownloadFile('/^nouhinsyo\.pdf$/');
