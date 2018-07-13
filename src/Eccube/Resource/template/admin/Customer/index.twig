@@ -256,7 +256,7 @@ file that was distributed with this source code.
                         </div>
                     </div>
                 </div>
-                <div class="row mb-4">
+                <div class="row mb-2">
                     <div class="col">
                         <div class="mb-3">
                             <label>{{ 'admin.customer.index.119'|trans }}</label>
@@ -281,6 +281,26 @@ file that was distributed with this source code.
                         </div>
                     </div>
                 </div>
+
+                {# エンティティ拡張の自動出力 #}
+                {% for f in searchForm if f.vars.eccube_form_options.auto_render %}
+                    {# TODO 1項目1行になるのを改善 #}
+                    <div class="row mb-2">
+                    {% if f.vars.eccube_form_options.form_theme %}
+                        {% form_theme f f.vars.eccube_form_options.form_theme %}
+                        {{ form_row(f) }}
+                    {% else %}
+                        <div class="col">
+                            <div class="mb-3">
+                                <label>{{ f.vars.label|trans }}</label>
+                                {{ form_widget(f) }}
+                                {{ form_errors(f) }}
+                            </div>
+                        </div>
+                    {% endif %}
+                    </div>
+                {% endfor %}
+
                 <div class="d-block text-center">
                     <button class="btn btn-ec-regular" type="reset">{{ 'admin.customer.index.132'|trans }}</button>
                 </div>

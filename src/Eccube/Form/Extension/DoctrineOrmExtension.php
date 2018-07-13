@@ -93,6 +93,15 @@ class DoctrineOrmExtension extends AbstractTypeExtension
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $options = $form->getConfig()->getOption('eccube_form_options');
+
+        if (!array_key_exists('auto_render', $options)) {
+            $options['auto_render'] = false;
+        }
+
+        if (!array_key_exists('form_theme', $options)) {
+            $options['form_theme'] = null;
+        }
+
         $view->vars['eccube_form_options'] = $options;
     }
 

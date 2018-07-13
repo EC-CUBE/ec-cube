@@ -40,13 +40,6 @@ file that was distributed with this source code.
                                 </dd>
                             </dl>
                         </div>
-                        {% for f in form %}
-                            {% if f.vars.name matches '[^plg*]' %}
-                                <div class="extra-form dl_table">
-                                    {{ form_row(f) }}
-                                </div>
-                            {% endif %}
-                        {% endfor %}
                     </div>
                 </div>
             </div>

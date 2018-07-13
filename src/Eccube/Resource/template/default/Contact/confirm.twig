@@ -86,6 +86,25 @@ file that was distributed with this source code.
                                 {{ form_widget(form.contents, { type : 'hidden' }) }}
                             </dd>
                         </dl>
+                        {# エンティティ拡張の自動出力 #}
+                        {% for f in form if f.vars.eccube_form_options.auto_render %}
+                            {% if f.vars.eccube_form_options.form_theme %}
+                                {% form_theme f f.vars.eccube_form_options.form_theme %}
+                                {{ form_row(f) }}
+                            {% else %}
+                                <dl>
+                                    <dt>
+                                        {{ form_label(f) }}
+                                    </dt>
+                                    <dd>
+                                        <div class="ec-select{{ has_errors(f) ? ' error' }}">
+                                            {{ f.vars.data }}
+                                            {{ form_widget(f, { type: 'hidden'}) }}
+                                        </div>
+                                    </dd>
+                                </dl>
+                            {% endif %}
+                        {% endfor %}
                     </div>
                     <div class="ec-RegisterRole__actions">
                         <div class="ec-off4Grid">
