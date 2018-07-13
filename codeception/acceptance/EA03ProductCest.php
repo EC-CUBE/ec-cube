@@ -310,7 +310,6 @@ class EA03ProductCest
             ->検索結果_選択(1);
         ProductEditPage::at($I);
 
-        $I->click(['css' => '#basicConfig > div > div:nth-child(7) > div.col > div.d-inline-block.mb-2 > a']);
         $I->seeElement(ProductEditPage::$販売種別);
         $I->seeElement(ProductEditPage::$販売価格);
         $I->waitForElement(ProductEditPage::$通常価格);
