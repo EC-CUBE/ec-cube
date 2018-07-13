@@ -1325,7 +1325,7 @@ class CsvImportController extends AbstractCsvImportController
             ],
             trans('admin.product.csv_category.category_delete_flag') => [
                 'id' => 'category_del_flg',
-                'description' => '',
+                'description' => 'admin.product.csv_category.category_del_flg',
                 'required' => false,
             ],
         ];
