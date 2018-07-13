@@ -53,11 +53,6 @@ class MemberRepository extends AbstractRepository
      */
     public function delete($Member)
     {
-        $this->createQueryBuilder('m')
-            ->update()
-            ->getQuery()
-            ->execute();
-
         $em = $this->getEntityManager();
         $em->remove($Member);
         $em->flush($Member);
