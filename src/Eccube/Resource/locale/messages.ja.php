@@ -47,7 +47,7 @@ return [
     'common.label.option_mypage_order_status_display' => 'マイページに注文状況を表示',
     'common.label.option_favorite_product' => 'お気に入り商品機能',
     'common.label.option_remember_me' => '自動ログイン機能',
-    'common.label.nostock_hidden' => '在庫切れ商品の表示',
+    'common.label.nostock_hidden' => '在庫切れ商品の非表示',
     'common.label.company_name_kana' => '会社名（フリガナ）',
     'common.label.shop_name_kana' => '店名（フリガナ）',
     'common.placeholder.address01' => '市区町村名（例：千代田区神田神保町）',
