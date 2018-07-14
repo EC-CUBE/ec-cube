@@ -16,13 +16,25 @@ namespace Eccube\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
+/**
+ * プラグインのコンポーネント定義を制御するクラス.
+ */
 class PluginPass implements CompilerPassInterface
 {
     /**
-     * You can modify the container here before it is dumped to PHP code.
+     * プラグインのコンポーネント定義を制御する.
+     *
+     * 無効状態のプラグインに対し, 付与されているサービスタグをクリアすることで,
+     * プラグインが作成しているEventListener等の拡張機構が呼び出されないようにする.
+     *
+     * サービスタグが収集されるタイミング(一般的にPassConfig::TYPE_BEFORE_OPTIMIZATIONの0)より先に実行される必要があります.
+     *
+     * @param ContainerBuilder $container
      */
     public function process(ContainerBuilder $container)
     {
+        // 無効状態のプラグインコード一覧を取得.
+        // 無効なプラグインの一覧はEccubeExtensionで定義している.
         $plugins = $container->getParameter('eccube.plugins.disabled');
 
         if (empty($plugins)) {
