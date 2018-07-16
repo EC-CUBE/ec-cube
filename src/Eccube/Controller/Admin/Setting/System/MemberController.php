@@ -67,7 +67,7 @@ class MemberController extends AbstractController
      */
     public function index(Request $request)
     {
-        $Members = $this->memberRepository->findBy([], ['id' => 'DESC']);
+        $Members = $this->memberRepository->findBy([], ['id' => 'ASC']);
 
         $builder = $this->formFactory->createBuilder();
 
