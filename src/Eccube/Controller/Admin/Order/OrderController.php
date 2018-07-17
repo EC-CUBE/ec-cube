@@ -16,6 +16,7 @@ namespace Eccube\Controller\Admin\Order;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Csv;
+use Eccube\Entity\ExportCsvRow;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\OrderItem;
 use Eccube\Event\EccubeEvents;
@@ -317,6 +318,40 @@ class OrderController extends AbstractController
      */
     public function exportOrder(Request $request)
     {
+        $filename = 'order_'.(new \DateTime())->format('YmdHis').'.csv';
+        $response = $this->exportCsv($request, CsvType::CSV_TYPE_ORDER, $filename);
+        log_info('受注CSV出力ファイル名', [$filename]);
+
+        return $response;
+    }
+
+    /**
+     * 配送CSVの出力.
+     *
+     * @Route("/%eccube_admin_route%/order/export/shipping", name="admin_order_export_shipping")
+     *
+     * @param Request $request
+     *
+     * @return StreamedResponse
+     */
+    public function exportShipping(Request $request)
+    {
+        $filename = 'shipping_'.(new \DateTime())->format('YmdHis').'.csv';
+        $response = $this->exportCsv($request, CsvType::CSV_TYPE_SHIPPING, $filename);
+        log_info('配送CSV出力ファイル名', [$filename]);
+
+        return $response;
+    }
+
+    /**
+     * @param Request $request
+     * @param $csvTypeId
+     * @param $fileName
+     *
+     * @return StreamedResponse
+     */
+    private function exportCsv(Request $request, $csvTypeId, $fileName)
+    {
         // タイムアウトを無効にする.
         set_time_limit(0);
 
@@ -325,9 +360,9 @@ class OrderController extends AbstractController
         $em->getConfiguration()->setSQLLogger(null);
 
         $response = new StreamedResponse();
-        $response->setCallback(function () use ($request) {
+        $response->setCallback(function () use ($request, $csvTypeId) {
             // CSV種別を元に初期化.
-            $this->csvExportService->initCsvType(CsvType::CSV_TYPE_ORDER);
+            $this->csvExportService->initCsvType($csvTypeId);
 
             // ヘッダ行の出力.
             $this->csvExportService->exportHeader();
@@ -345,7 +380,7 @@ class OrderController extends AbstractController
                 $OrderItems = $Order->getOrderItems();
 
                 foreach ($OrderItems as $OrderItem) {
-                    $ExportCsvRow = new \Eccube\Entity\ExportCsvRow();
+                    $ExportCsvRow = new ExportCsvRow();
 
                     // CSV出力項目と合致するデータを取得.
                     foreach ($Csvs as $Csv) {
@@ -381,13 +416,9 @@ class OrderController extends AbstractController
             });
         });
 
-        $now = new \DateTime();
-        $filename = 'order_'.$now->format('YmdHis').'.csv';
         $response->headers->set('Content-Type', 'application/octet-stream');
-        $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
+        $response->headers->set('Content-Disposition', 'attachment; filename='.$fileName);
         $response->send();
-
-        log_info('受注CSV出力ファイル名', [$filename]);
 
         return $response;
     }
