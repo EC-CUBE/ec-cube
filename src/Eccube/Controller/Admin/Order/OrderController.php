@@ -30,6 +30,7 @@ use Eccube\Repository\Master\SexRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Service\CsvExportService;
+use Eccube\Service\OrderStateMachine;
 use Eccube\Util\FormUtil;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -101,6 +102,11 @@ class OrderController extends AbstractController
     protected $validator;
 
     /**
+     * @var OrderStateMachine
+     */
+    protected $orderStateMachine;
+
+    /**
      * OrderController constructor.
      *
      * @param PurchaseFlow $orderPurchaseFlow
@@ -112,6 +118,7 @@ class OrderController extends AbstractController
      * @param PageMaxRepository $pageMaxRepository
      * @param ProductStatusRepository $productStatusRepository
      * @param OrderRepository $orderRepository
+     * @param OrderStateMachine $orderStateMachine;
      */
     public function __construct(
         PurchaseFlow $orderPurchaseFlow,
@@ -123,7 +130,8 @@ class OrderController extends AbstractController
         PageMaxRepository $pageMaxRepository,
         ProductStatusRepository $productStatusRepository,
         OrderRepository $orderRepository,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        OrderStateMachine $orderStateMachine
     ) {
         $this->purchaseFlow = $orderPurchaseFlow;
         $this->csvExportService = $csvExportService;
@@ -135,6 +143,7 @@ class OrderController extends AbstractController
         $this->productStatusRepository = $productStatusRepository;
         $this->orderRepository = $orderRepository;
         $this->validator = $validator;
+        $this->orderStateMachine = $orderStateMachine;
     }
 
     /**
@@ -424,6 +433,62 @@ class OrderController extends AbstractController
     }
 
     /**
+     * Update to order status
+     *
+     * @Method("PUT")
+     * @Route("/%eccube_admin_route%/shipping/{id}/order_status", requirements={"id" = "\d+"}, name="admin_shipping_update_order_status")
+     *
+     * @param Request $request
+     * @param Shipping $shipping
+     *
+     * @return RedirectResponse
+     */
+    public function updateOrderStatus(Request $request, Shipping $Shipping)
+    {
+        if (!($request->isXmlHttpRequest() && $this->isTokenValid())) {
+            return $this->json(['status' => 'NG'], 400);
+        }
+
+        $Order = $Shipping->getOrder();
+        $OrderStatus = $this->entityManager->find(OrderStatus::class, $request->get('order_status'));
+
+        try {
+            // 発送済みに変更された場合は、関連する出荷がすべて出荷済みになったら OrderStatus を変更する
+            if (OrderStatus::DELIVERED == $OrderStatus->getId()) {
+                if (!$Shipping->getShippingDate()) {
+                    $Shipping->setShippingDate(\DateTime());
+                    $this->entityManager->flush($Shipping);
+                }
+                $RelateShippings = $Order->getShippings();
+                $allShipped = false;
+                foreach ($RelateShippings as $RelateShipping) {
+                    if (!$RelateShipping->getShippingDate()) {
+                        continue;
+                    }
+                    $allShipped = true;
+                }
+                if ($allShipped) {
+                    if ($this->orderStateMachine->can($Order, $OrderStatus)) {
+                        $this->orderStateMachine->apply($Order, $OrderStatus);
+                    }
+                }
+            } else {
+                if ($this->orderStateMachine->can($Order, $OrderStatus)) {
+                    $this->orderStateMachine->apply($Order, $OrderStatus);
+                }
+            }
+            $this->entityManager->flush($Order);
+            log_info('対応状況一括変更処理完了', [$Order->getId()]);
+        } catch (\Exception $e) {
+            log_error('予期しないエラーです', [$e->getMessage()]);
+
+            return $this->json(['status' => 'NG'], 500);
+        }
+
+        return $this->json(['status' => 'OK']);
+    }
+
+    /**
      * Bulk action to order status
      *
      * @Method("POST")
@@ -433,6 +498,8 @@ class OrderController extends AbstractController
      * @param OrderStatus $OrderStatus
      *
      * @return RedirectResponse
+     *
+     * @deprecated 使用していない
      */
     public function bulkOrderStatus(Request $request, OrderStatus $OrderStatus)
     {

@@ -65,19 +65,25 @@ file that was distributed with this source code.
     var updater;
 
     // モーダルの表示を制御
-    $('#sentUpdateModal').on('show.bs.modal', function(e) {
-        var eventTarget = $(e.relatedTarget);
+    $('#bulkSendMail, .confirmationModal').on('click', function(e) {
+        var modal = $('#sentUpdateModal');
+        modal.modal();
+        var eventTarget = $(e.currentTarget);
         var type = eventTarget.data('type');
+
         switch (type) {
             case 'mail':
-                updater = eventTarget.data('bulk-update') ? new BulkSendMail(eventTarget) : new SimpleSendMail(eventTarget);
+                updater = eventTarget.data('bulk-update') ? new BulkSendMail(modal, eventTarget) : new SimpleSendMail(modal, eventTarget);
                 $('#notificationMail').attr('type', 'hidden');
                 $('.notificationMail').hide();
                 $('#viewEmail').removeClass('collapse').addClass('collapsed');;
                 break;
+            case 'status':
+                updater = new BulkStatusUpdate(modal, eventTarget); // bulk-update is always true
+                break;
             case 'update':
             default:
-                updater = eventTarget.data('bulk-update') ? new BulkUpdate(eventTarget) : new SimpleUpdate(eventTarget);
+                updater = eventTarget.data('bulk-update') ? new BulkUpdate(modal, eventTarget) : new SimpleUpdate(modal, eventTarget);
                 $('#notificationMail').attr('type', 'checkbox');
                 $('.notificationMail').show();
                 $('#viewEmail').removeClass('collapsed').addClass('collapse');
@@ -87,8 +93,8 @@ file that was distributed with this source code.
             $('#viewEmail > pre').text(res);
         });
 
-        $('.modal-title', this).text(updater.modalTitle);
-        $('.modal-body > p', this).text(updater.modalMessage);
+        $('.modal-title', modal).text(updater.modalTitle);
+        $('.modal-body > p', modal).text(updater.modalMessage);
         $('#bulkChange')
             .attr({
                 'data-bulk-update': eventTarget.data('bulk-update'),
@@ -100,50 +106,40 @@ file that was distributed with this source code.
     });
 
     // 一括更新
-    $('#bulkChange').on('click', function(e) {
+    $('#bulkChange, .progressModal').on('click', function(e) {
         var eventTarget = $(e.currentTarget);
         var type = eventTarget.data('type');
+        var modal = $('#sentUpdateModal');
+
         switch (type) {
             case 'mail':
-                updater = eventTarget.data('bulk-update') ? new BulkSendMail(eventTarget) : new SimpleSendMail(eventTarget);
+                updater = eventTarget.data('bulk-update') ? new BulkSendMail(modal, eventTarget) : new SimpleSendMail(modal, eventTarget);
+                break;
+            case 'status':
+                updater = new BulkStatusUpdate(modal, eventTarget); // bulk-update is always true
+                modal.modal();
                 break;
             case 'update':
             default:
-                updater = eventTarget.data('bulk-update') ? new BulkUpdate(eventTarget) : new SimpleUpdate(eventTarget);
+                updater = eventTarget.data('bulk-update') ? new BulkUpdate(modal, eventTarget) : new SimpleUpdate(modal, eventTarget);
         }
-        var modal = $('#sentUpdateModal');
 
+        $('.modal-title', modal).text(updater.modalTitle);
         $('.modal-body > p', modal).text("{{ 'admin.shipping.index.827'|trans }}");
         $('button', modal).hide();
         $('#bulk-options').hide();
         $('.progress', modal).show();
 
-        var totalCount = updater.getTotalCount();
-        var currentCount = 0;
-        var mailCount = 0;
-        var notifierCompleteMessage = '';
+        updater.totalCount = updater.getTotalCount();
 
         var progress = new $.Deferred();
         progress.progress(function() {
-            var result = this;
-            if (result.mail) {
-                mailCount++;
-                notifierCompleteMessage = '{{ 'admin.shipping.index.837'|trans }}'.replace(/%count%/, mailCount);
-            }
-            $('.progress-bar', modal).css('width', (++currentCount / totalCount * 100) + '%');
-            if (currentCount >= totalCount) {
-                progress.resolve();
-            }
+            updater.progress(this, progress);
         }).fail(function() {
-            $('<li><span class="badge badge-danger">ERROR</span> </li>')
-                .append($('<span></span>').text("{{ 'application.text.error.system'|trans }}"))
-                .appendTo('#bulkErrors');
+            updater.fail(this);
         }).always(function() {
-            $('.progress', modal).hide();
-            $('.modal-body > p', modal).text("{{ 'admin.shipping.index.828'|trans }}" + notifierCompleteMessage);
-            $('#bulkChangeComplete').show();
+            updater.always(this);
         });
-
         updater.getPromises(progress);
     });
 
@@ -232,159 +228,235 @@ file that was distributed with this source code.
     });
 });
 
-/*
-* Super class
-*/
-function ConfirmationModal() {
-}
+    /*
+     * Super class
+     */
+    function ConfirmationModal(modal) {
+        this.modal = modal;
+        this.mailCount = 0;
+        this.currentCount = 0;
+        this.totalCount = 0;
+    }
 
-ConfirmationModal.prototype = {
-    modalTitle: "{{ 'admin.shipping.index.829'|trans }}",
-    modalMessage: "{{ 'admin.shipping.index.830'|trans }}",
-    modalButton: "{{ 'admin.shipping.index.816'|trans }}",
-    getPreviewUrl: function () {
-        return $('input[data-preview-notify-mail-url]:checked').data('preview-notify-mail-url');
-    },
-    getTotalCount: function () {
-        return 1;
-    },
-    getPromises: function (progress, url) {
-        return $.ajax({
-            'url': url,
-            'type': 'PUT',
-            'data': {'notificationMail': $('input#notificationMail:checked').val()}
-        })
+    ConfirmationModal.prototype = {
+        modalTitle: "{{ 'admin.shipping.index.829'|trans }}",
+        modalMessage: "{{ 'admin.shipping.index.830'|trans }}",
+        modalButton: "{{ 'admin.shipping.index.816'|trans }}",
+        getPreviewUrl: function () {
+            return $('input[data-preview-notify-mail-url]:checked').data('preview-notify-mail-url');
+        },
+        getTotalCount: function () {
+            return 1;
+        },
+        progress: function (result, progress) {
+            $('.progress-bar', this.modal).css('width', (++this.currentCount / this.totalCount * 100) + '%');
+            if (this.currentCount >= this.totalCount) {
+                progress.resolve();
+            }
+        },
+        fail: function (result) {
+            $('<li><span class="badge badge-danger">ERROR</span> </li>')
+                .append($('<span></span>').text("{{ 'application.text.error.system'|trans }}"))
+                .appendTo('#bulkErrors');
+        },
+        always: function (result) {
+            $('.progress', this.modal).hide();
+            $('.modal-body > p', this.modal).text("{{ 'admin.shipping.index.828'|trans }}");
+            $('#bulkChangeComplete').show();
+        },
+        getPromises: function (progress, url, data) {
+            if (data == undefined) {
+                data = {'notificationMail': $('input#notificationMail:checked').val()};
+            }
+            return $.ajax({
+                'url': url,
+                'type': 'PUT',
+                'data': data
+            })
             .fail(function () {
                 progress.reject();
+                ConfirmationModal.prototype.fail.call(this);
             })
             .always(function (data) {
                 progress.notifyWith(data);
             });
+        }
+    };
+
+    /*
+     * 個別更新
+     */
+    function SimpleUpdate(modal, relatedTarget) {
+        ConfirmationModal.call(this, modal);
+        this.eventTarget = relatedTarget;
     }
-};
 
-/*
-* 個別更新
-*/
-function SimpleUpdate(relatedTarget) {
-    this.eventTarget = relatedTarget;
-}
-
-// extends super class
-SimpleUpdate.prototype = Object.create(ConfirmationModal.prototype, {
-    constructor: {
-        value: ConfirmationModal
-    },
-    getPreviewUrl: {
-        value: function () {
-            return this.eventTarget.data('preview-notify-mail-url');
-        }
-    },
-    getPromises: {
-        value: function (progress) {
-            var url = this.eventTarget.data('mark-as-shipped-url');
-            return ConfirmationModal.prototype.getPromises.call(this, progress, url);
-        }
-    }
-});
-
-/*
-* 一括更新
-*/
-function BulkUpdate() {
-    ConfirmationModal.call(this);
-}
-
-// extend super class
-BulkUpdate.prototype = Object.create(ConfirmationModal.prototype, {
-    constructor: {
-        value: ConfirmationModal
-    },
-    modalTitle: {
-        value: '{{ 'admin.shipping.index.807'|trans }}'
-    },
-    modalMessage: {
-        value: "{{ 'admin.shipping.index.808'|trans }}"
-    },
-    getTotalCount: {
-        value: function () {
-            return $('input[data-mark-as-shipped-url]:checked').length;
-        }
-    },
-    getPromises: {
-        value: function (progress) {
-            return $('input[data-mark-as-shipped-url]:checked').map(function () {
-                var url = $(this).data('mark-as-shipped-url');
+    // extends super class
+    SimpleUpdate.prototype = Object.create(ConfirmationModal.prototype, {
+        constructor: {
+            value: ConfirmationModal
+        },
+        getPreviewUrl: {
+            value: function () {
+                return this.eventTarget.data('preview-notify-mail-url');
+            }
+        },
+        getPromises: {
+            value: function (progress) {
+                var url = this.eventTarget.data('mark-as-shipped-url');
                 return ConfirmationModal.prototype.getPromises.call(this, progress, url);
-            });
+            }
         }
+    });
+
+    /*
+     * 出荷一括更新(使用していない)
+     */
+    function BulkUpdate(modal) {
+        ConfirmationModal.call(this, modal);
     }
-});
 
-/*
-* メール一括送信
-*/
-function BulkSendMail() {
-    BulkUpdate.call(this);
-}
-
-// extend BulkUpdate
-BulkSendMail.prototype = Object.create(BulkUpdate.prototype, {
-    constructor: {
-        value: BulkUpdate
-    },
-    modalTitle: {
-        value: "{{ 'admin.shipping.index.832'|trans }}"
-    },
-    modalMessage: {
-        value: "{{ 'admin.shipping.index.833'|trans }}"
-    },
-    modalButton: {
-        value: "{{ 'admin.shipping.index.834'|trans }}"
-    },
-    getTotalCount: {
-        value: function () {
-            return $('input[data-preview-notify-mail-url]:checked').length;
+    // extend super class
+    BulkUpdate.prototype = Object.create(ConfirmationModal.prototype, {
+        constructor: {
+            value: ConfirmationModal
+        },
+        modalTitle: {
+            value: '{{ 'admin.shipping.index.807'|trans }}'
+        },
+        modalMessage: {
+            value: "{{ 'admin.shipping.index.808'|trans }}"
+        },
+        getTotalCount: {
+            value: function () {
+                return $('input[data-mark-as-shipped-url]:checked').length;
+            }
+        },
+        getPromises: {
+            value: function (progress) {
+                return $('input[data-mark-as-shipped-url]:checked').map(function () {
+                    var url = $(this).data('mark-as-shipped-url');
+                    return ConfirmationModal.prototype.getPromises.call(this, progress, url);
+                });
+            }
         }
-    },
-    getPromises: {
-        value: function (progress) {
-            return $('input[data-notify-mail-url]:checked').map(function () {
-                var url = $(this).data('notify-mail-url');
+    });
+
+    /*
+     * ステータス一括更新
+     */
+    function BulkStatusUpdate(modal, eventTarget) {
+        ConfirmationModal.call(this, modal);
+        this.eventTarget = eventTarget;
+    }
+
+    // extend super class
+    BulkStatusUpdate.prototype = Object.create(ConfirmationModal.prototype, {
+        constructor: {
+            value: ConfirmationModal
+        },
+        modalTitle: {
+            value: '対応状況を更新します。'
+        },
+        modalMessage: {
+            value: "{{ 'admin.shipping.index.808'|trans }}"
+        },
+        getTotalCount: {
+            value: function () {
+                return $('input[data-id]:checked').length;
+            }
+        },
+        getPromises: {
+            value: function (progress) {
+                return $('input[data-id]:checked').map(function () {
+                    var url = $(this).data('update-status-url');
+                    var data = {'order_status': $('#option_bulk_status').val()};
+                    return ConfirmationModal.prototype.getPromises.call(this, progress, url, data);
+                });
+            }
+        }
+    });
+
+    /*
+     * メール一括送信
+     */
+    function BulkSendMail(modal) {
+        BulkUpdate.call(this, modal);
+        this.notifierCompleteMessage = '';
+    }
+
+    // extend BulkUpdate
+    BulkSendMail.prototype = Object.create(BulkUpdate.prototype, {
+        constructor: {
+            value: BulkUpdate
+        },
+        modalTitle: {
+            value: "{{ 'admin.shipping.index.832'|trans }}"
+        },
+        modalMessage: {
+            value: "{{ 'admin.shipping.index.833'|trans }}"
+        },
+        modalButton: {
+            value: "{{ 'admin.shipping.index.834'|trans }}"
+        },
+        getTotalCount: {
+            value: function () {
+                return $('input[data-preview-notify-mail-url]:checked').length;
+            }
+        },
+        progress: {
+            value: function (result, progress) {
+                if (result.mail) {
+                    this.mailCount++;
+                    this.notifierCompleteMessage = '{{ 'admin.shipping.index.837'|trans }}'.replace(/%count%/, this.mailCount);
+                }
+                BulkUpdate.prototype.progress.call(this, result, progress);
+            }
+        },
+        always: {
+            value: function (result) {
+                BulkUpdate.prototype.always.call(this, result);
+                $('.modal-body > p', this.modal).text("{{ 'admin.shipping.index.828'|trans }}" + this.notifierCompleteMessage);
+            }
+        },
+        getPromises: {
+            value: function (progress) {
+                return $('input[data-notify-mail-url]:checked').map(function () {
+                    var url = $(this).data('notify-mail-url');
+                    return ConfirmationModal.prototype.getPromises.call(this, progress, url);
+                });
+            }
+        }
+    });
+
+    /*
+     * 個別メール送信
+     */
+    function SimpleSendMail(modal, relatedTarget) {
+        SimpleUpdate.call(this, modal, relatedTarget);
+    }
+
+    // extends SimpleUpdate
+    SimpleSendMail.prototype = Object.create(SimpleUpdate.prototype, {
+        constructor: {
+            value: SimpleUpdate
+        },
+        modalTitle: {
+            value: "{{ 'admin.shipping.index.835'|trans }}"
+        },
+        modalMessage: {
+            value: "{{ 'admin.shipping.index.836'|trans }}"
+        },
+        modalButton: {
+            value: "{{ 'admin.shipping.index.834'|trans }}"
+        },
+        getPromises: {
+            value: function (progress) {
+                var url = this.eventTarget.data('notify-mail-url');
                 return ConfirmationModal.prototype.getPromises.call(this, progress, url);
-            });
+            }
         }
-    }
-});
-
-/*
-* 個別メール送信
-*/
-function SimpleSendMail(relatedTarget) {
-    this.eventTarget = relatedTarget;
-}
-
-// extends SimpleUpdate
-SimpleSendMail.prototype = Object.create(SimpleUpdate.prototype, {
-    constructor: {
-        value: SimpleUpdate
-    },
-    modalTitle: {
-        value: "{{ 'admin.shipping.index.835'|trans }}"
-    },
-    modalMessage: {
-        value: "{{ 'admin.shipping.index.836'|trans }}"
-    },
-    modalButton: {
-        value: "{{ 'admin.shipping.index.834'|trans }}"
-    },
-    getPromises: {
-        value: function (progress) {
-            var url = this.eventTarget.data('notify-mail-url');
-            return ConfirmationModal.prototype.getPromises.call(this, progress, url);
-        }
-    }
-});
+    });
 </script>
 {% endblock javascript %}
 
@@ -673,7 +745,7 @@ SimpleSendMail.prototype = Object.create(SimpleUpdate.prototype, {
                             <div class="row justify-content-between">
                                 <div class="col-auto d-none btn-bulk-wrapper">
                                     <label class="mr-2">{{ 'admin.order.index.label_bulk_actions'|trans }}</label>
-                                    <button id="bulkSendMail" type="button" class="btn btn-ec-regular mr-2" data-toggle="modal" data-target="#sentUpdateModal" data-type="mail" data-bulk-update="true">
+                                    <button id="bulkSendMail" type="button" class="btn btn-ec-regular mr-2" data-type="mail" data-bulk-update="true">
                                         {{ 'admin.order.index.btn_bulk_mail'|trans }}
                                     </button>
                                     {# TODO: This button is not implemented yet #}
@@ -686,11 +758,11 @@ SimpleSendMail.prototype = Object.create(SimpleUpdate.prototype, {
                                         <select class="custom-select" id="option_bulk_status">
                                             <option value="" selected>{{ 'admin.order.index.option_bulk_change_status'|trans }}</option>
                                             {% for status in OrderStatuses %}
-                                                <option value="{{ url('admin_order_bulk_order_status', {'id': status.id }) }}">{{ status.name }}</option>
+                                                <option value="{{ status.id }}">{{ status.name }}</option>
                                             {% endfor %}
                                         </select>
                                     </div>
-                                    <button id="btn_bulk_status" class="btn btn-ec-regular mr-2" data-submit="bulk" data-confirm="true">
+                                    <button type="button" id="btn_bulk_status" class="btn btn-ec-regular mr-2 progressModal" data-type="status" data-bulk-update="true" data-submit="bulk">
                                         {{ 'admin.order.index.btn_bulk_submit'|trans }}
                                     </button>
                                 </div>
@@ -761,6 +833,7 @@ SimpleSendMail.prototype = Object.create(SimpleUpdate.prototype, {
                                     </tr>
                                 </thead>
                                 <tbody>
+                                {# TODO IN_PROGRESS と RETURNED の色を決める #}
                                 {% set cssClassStatus = {
                                         (constant('Eccube\\Entity\\Master\\OrderStatus::NEW')): "badge-ec-blue",
                                         (constant('Eccube\\Entity\\Master\\OrderStatus::PAY_WAIT')): "badge-ec-red",
@@ -769,7 +842,9 @@ SimpleSendMail.prototype = Object.create(SimpleUpdate.prototype, {
                                         (constant('Eccube\\Entity\\Master\\OrderStatus::DELIVERED')): "badge-ec-glay",
                                         (constant('Eccube\\Entity\\Master\\OrderStatus::PAID')): "badge-ec-green",
                                         (constant('Eccube\\Entity\\Master\\OrderStatus::PENDING')): "badge-ec-yellow",
-                                        (constant('Eccube\\Entity\\Master\\OrderStatus::PROCESSING')): "badge-ec-yellow"
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::PROCESSING')): "badge-ec-yellow",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::IN_PROGRESS')): "badge-ec-yellow",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::RETURNED')): "badge-ec-yellow" 
                                     }
                                 %}
                                 {% for Order in pagination %}
@@ -779,7 +854,9 @@ SimpleSendMail.prototype = Object.create(SimpleUpdate.prototype, {
                                             <input type="checkbox" id="check_{{ Shipping.id }}" data-id="{{ Shipping.id }}" name="ids[]" value="{{ Shipping.id }}"
                                                    data-mark-as-shipped-url="{{ url('admin_shipping_mark_as_shipped', { id: Shipping.id}) }}"
                                                    data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: Shipping.id}) }}"
-                                                   data-notify-mail-url="{{ url('admin_shipping_notify_mail', { id: Shipping.id}) }}"/>
+                                                   data-notify-mail-url="{{ url('admin_shipping_notify_mail', { id: Shipping.id}) }}"
+                                                   data-update-status-url="{{ url('admin_shipping_update_order_status', { id: Shipping.id}) }}"
+                                            />
                                         </td>
                                         <td class="align-middle text-left">
                                             <a class="action-edit" href="{{ url('admin_order_edit', { id : Order.id }) }}">{{ Order.order_no }}<br>{{ Order.name01 ~ Order.name02 }}<br>{{ Order.order_date|date_min }}</a>
@@ -829,8 +906,7 @@ SimpleSendMail.prototype = Object.create(SimpleUpdate.prototype, {
                                         <td class="align-middle pr-3 text-center">
                                             <div class="row justify-content-end">
                                                 <div class="col-auto text-center">
-                                                    <a class="btn btn-ec-actionIcon"
-                                                       data-toggle="modal" data-target="#sentUpdateModal"
+                                                    <a class="btn btn-ec-actionIcon confirmationModal"
                                                        data-type="mail" data-bulk-update="false"
                                                        data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: Shipping.id}) }}"
                                                        data-notify-mail-url="{{ url('admin_shipping_notify_mail', { id: Shipping.id}) }}">
