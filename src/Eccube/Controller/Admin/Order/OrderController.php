@@ -452,32 +452,47 @@ class OrderController extends AbstractController
         $Order = $Shipping->getOrder();
         $OrderStatus = $this->entityManager->find(OrderStatus::class, $request->get('order_status'));
 
+        $result = [];
         try {
             // 発送済みに変更された場合は、関連する出荷がすべて出荷済みになったら OrderStatus を変更する
             if (OrderStatus::DELIVERED == $OrderStatus->getId()) {
                 if (!$Shipping->getShippingDate()) {
-                    $Shipping->setShippingDate(\DateTime());
+                    $Shipping->setShippingDate(new \DateTime());
                     $this->entityManager->flush($Shipping);
                 }
                 $RelateShippings = $Order->getShippings();
-                $allShipped = false;
+                $allShipped = true;
                 foreach ($RelateShippings as $RelateShipping) {
                     if (!$RelateShipping->getShippingDate()) {
-                        continue;
+                        $allShipped = false;
+                        break;
                     }
-                    $allShipped = true;
                 }
                 if ($allShipped) {
                     if ($this->orderStateMachine->can($Order, $OrderStatus)) {
                         $this->orderStateMachine->apply($Order, $OrderStatus);
+                    } else {
+                        $from = $Order->getOrderStatus()->getName();
+                        $to = $OrderStatus->getName();
+                        $result = ['message' => sprintf('%s: %s から %s へのステータス変更はできません', $Shipping->getId(), $from, $to)];
                     }
                 }
             } else {
                 if ($this->orderStateMachine->can($Order, $OrderStatus)) {
                     $this->orderStateMachine->apply($Order, $OrderStatus);
+                } else {
+                    $from = $Order->getOrderStatus()->getName();
+                    $to = $OrderStatus->getName();
+                    $result = ['message' => sprintf('%s: %s から %s へのステータス変更はできません', $Shipping->getId(), $from, $to)];
                 }
             }
             $this->entityManager->flush($Order);
+
+            // 会員の場合、購入回数、購入金額などを更新
+            if ($Customer = $Order->getCustomer()) {
+                $this->orderRepository->updateOrderSummary($Customer);
+                $this->entityManager->flush($Customer);
+            }
             log_info('対応状況一括変更処理完了', [$Order->getId()]);
         } catch (\Exception $e) {
             log_error('予期しないエラーです', [$e->getMessage()]);
@@ -485,7 +500,7 @@ class OrderController extends AbstractController
             return $this->json(['status' => 'NG'], 500);
         }
 
-        return $this->json(['status' => 'OK']);
+        return $this->json(array_merge(['status' => 'OK'], $result));
     }
 
     /**

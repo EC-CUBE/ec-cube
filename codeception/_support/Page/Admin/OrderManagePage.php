@@ -122,7 +122,7 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
 
     public function 一覧_全選択()
     {
-        $this->tester->checkOption('#check_all');
+        $this->tester->checkOption('#toggle_check_all');
         return $this;
     }
 
