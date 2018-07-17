@@ -430,12 +430,12 @@ class OrderController extends AbstractController
                     $this->entityManager->flush($Shipping);
                 }
                 $RelateShippings = $Order->getShippings();
-                $allShipped = false;
+                $allShipped = true;
                 foreach ($RelateShippings as $RelateShipping) {
                     if (!$RelateShipping->getShippingDate()) {
-                        continue;
+                        $allShipped = false;
+                        break;
                     }
-                    $allShipped = true;
                 }
                 if ($allShipped) {
                     if ($this->orderStateMachine->can($Order, $OrderStatus)) {
