@@ -402,7 +402,10 @@ file that was distributed with this source code.
                                         複数配送を指定している場合は、こちらのボタンからそれぞれの配送設定の編集ができます。
                                     </div>
                                     {% for shipping in Order.Shippings %}
-                                        お届け先{{ loop.index }}　{{ shipping.name01 }} {{ shipping.name02 }}　 〒{{ shipping.postal_code }} {{ shipping.addr01 }} {{ shipping.addr02 }}　{{ shipping.shipping_date|date_sec }}<br>
+                                        <div class="col">
+                                            <span class="mr-5">お届け先{{ loop.index }}</span>
+                                            {{ shipping.full_name }} ({{ shipping.full_name_kana }}) {% if shipping.company_name is not null %}{{ shipping.company_name }} {% endif %}〒{{ shipping.postal_code }} {{ shipping.pref }}{{ shipping.addr01 }}{{ shipping.addr02 }} {{ shipping.phone_number }}{% if shipping.shipping_date is not null %} {{ shipping.shipping_date|date_sec }}{% endif %}
+                                        </div>
                                     {% endfor %}
                                 {% else %}
                                     {# 単数配送の場合は配送先の編集が可能 #}
