@@ -62,14 +62,13 @@ class SecurityController extends AbstractController
             $env = StringUtil::replaceOrAddEnv($env, [
                 'ECCUBE_ADMIN_ALLOW_HOSTS' => "'{$adminAllowHosts}'",
                 'ECCUBE_FORCE_SSL' => $data['force_ssl'] ? 'true' : 'false',
-                'ECCUBE_SCHEME' => $data['force_ssl'] ? 'https' : 'http',
             ]);
 
             file_put_contents($envFile, $env);
 
             // 管理画面URLの更新. 変更されている場合はログアウトし再ログインさせる.
-            $adminRoot = $this->eccubeConfig['eccube_admin_route'];
-            if ($adminRoot !== $data['admin_route_dir']) {
+            $adminRoute = $this->eccubeConfig['eccube_admin_route'];
+            if ($adminRoute !== $data['admin_route_dir']) {
                 $env = StringUtil::replaceOrAddEnv($env, [
                     'ECCUBE_ADMIN_ROUTE' => $data['admin_route_dir'],
                 ]);

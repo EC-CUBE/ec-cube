@@ -18,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\OptionsResolver\Options;
 
 class RepeatedEmailType extends AbstractType
 {
@@ -47,6 +48,9 @@ class RepeatedEmailType extends AbstractType
             ],
             'error_bubbling' => false,
             'trim' => true,
+            'error_mapping' => function (Options $options) {
+                return ['.' => $options['second_name']];
+            },
         ]);
     }
 

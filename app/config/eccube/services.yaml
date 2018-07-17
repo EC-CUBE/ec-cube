@@ -63,12 +63,12 @@ services:
         resource: '../../../app/Plugin/*'
         exclude: '../../../app/Plugin/*/{Entity,Resource,ServiceProvider,Tests}'
 
-    Acme\:
-        resource: '../../../app/Acme/*'
-        exclude: '../../../app/Acme/{Entity,Resource,Tests}'
+    Customize\:
+        resource: '../../../app/Customize/*'
+        exclude: '../../../app/Customize/{Entity,Resource,Tests}'
 
-    Acme\Controller\:
-        resource: '../../../app/Acme/Controller'
+    Customize\Controller\:
+        resource: '../../../app/Customize/Controller'
         tags: ['controller.service_arguments']
 
     twig.extension.stringloader:
