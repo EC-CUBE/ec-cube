@@ -36,13 +36,6 @@ file that was distributed with this source code.
                             <div class="ec-input">
                                 {{ form_widget(form.login_email, {attr: {'style' : 'ime-mode: disabled;', placeholder: 'メールアドレス', 'autofocus': true}}) }}
                                 {{ form_widget(form.login_pass, {attr: {placeholder: 'パスワード'}}) }}
-                                {% for f in form.getIterator %}
-                                    {% if f.vars.name matches '[^plg*]' %}
-                                        {{ form_row(f) }}
-                                        {{ form_widget(f) }}
-                                        {{ form_errors(f) }}
-                                    {% endif %}
-                                {% endfor %}
                             </div>
                             <div class="ec-checkbox">
                                 <label>

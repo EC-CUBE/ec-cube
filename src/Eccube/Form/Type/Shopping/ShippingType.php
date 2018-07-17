@@ -179,6 +179,7 @@ class ShippingType extends AbstractType
                             'required' => false,
                             'placeholder' => '指定なし',
                             'mapped' => false,
+                            'data' => $Shipping->getShippingDeliveryDate() ? $Shipping->getShippingDeliveryDate()->format('Y/m/d') : null,
                         ]
                     );
             }
@@ -192,10 +193,17 @@ class ShippingType extends AbstractType
                     return;
                 }
 
+                $ShippingDeliveryTime = null;
                 $DeliveryTimes = [];
                 $Delivery = $Shipping->getDelivery();
                 if ($Delivery) {
                     $DeliveryTimes = $Delivery->getDeliveryTimes();
+                    foreach ($DeliveryTimes as $deliveryTime) {
+                        if ($deliveryTime->getId() == $Shipping->getTimeId()) {
+                            $ShippingDeliveryTime = $deliveryTime;
+                            break;
+                        }
+                    }
                 }
 
                 $form = $event->getForm();
@@ -210,6 +218,7 @@ class ShippingType extends AbstractType
                         'required' => false,
                         'placeholder' => '指定なし',
                         'mapped' => false,
+                        'data' => $ShippingDeliveryTime,
                     ]
                 );
             }
@@ -232,10 +241,20 @@ class ShippingType extends AbstractType
                 $Shipping->setShippingDeliveryName($Delivery->getName());
             }
             $form = $event->getForm();
+            $DeliveryDate = $form['shipping_delivery_date']->getData();
+            if ($DeliveryDate) {
+                $Shipping->setShippingDeliveryDate(new \DateTime($DeliveryDate));
+            } else {
+                $Shipping->setShippingDeliveryDate(null);
+            }
+
             $DeliveryTime = $form['DeliveryTime']->getData();
             if ($DeliveryTime) {
                 $Shipping->setShippingDeliveryTime($DeliveryTime->getDeliveryTime());
                 $Shipping->setTimeId($DeliveryTime->getId());
+            } else {
+                $Shipping->setShippingDeliveryTime(null);
+                $Shipping->setTimeId(null);
             }
         });
     }

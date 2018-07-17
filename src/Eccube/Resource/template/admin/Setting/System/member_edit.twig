@@ -131,21 +131,27 @@ file that was distributed with this source code.
                                         <span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span>
                                     </div>
                                     <div class="col">
-                                        <div class="row">
-                                            <div class="col">
-                                                {{ form_widget(form.Work, {'attr': {'class': 'form-check-inline'}}) }}
-                                            </div>
-                                            {{ form_errors(form.Work) }}
-                                        </div>
+                                        {{ form_widget(form.Work, {'attr': {'class': 'form-check-inline'}}) }}
+                                        {{ form_errors(form.Work) }}
                                     </div>
                                 </div>
-                                <div class="extra-form">
-                                    {% for f in form.getIterator %}
-                                        {% if f.vars.name matches '[^plg*]' %}
-                                            {{ form_row(f) }}
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
+                                {# エンティティ拡張の自動出力 #}
+                                {% for f in form if f.vars.eccube_form_options.auto_render %}
+                                    {% if f.vars.eccube_form_options.form_theme %}
+                                        {% form_theme f f.vars.eccube_form_options.form_theme %}
+                                        {{ form_row(f) }}
+                                    {% else %}
+                                        <div class="row mb-2">
+                                            <div class="col-3">
+                                                <span>{{ f.vars.label|trans }}</span>
+                                            </div>
+                                            <div class="col">
+                                                {{ form_widget(f) }}
+                                                {{ form_errors(f) }}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
                             </div>
                         </div>
                     </div>

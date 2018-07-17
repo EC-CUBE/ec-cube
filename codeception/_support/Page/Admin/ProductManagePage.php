@@ -154,6 +154,14 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
       return $this;
     }
 
+    public function Accept_重複する($rowNum)
+    {
+        $modalCssSelector = "#page_admin_product > div.c-container > div.c-contentsArea > div.c-contentsArea__cols > div > div > form > div.card.rounded.border-0.mb-4 > div.card-body.p-0 > table > tbody > tr:nth-child(${rowNum}) > td.align-middle.pr-3 > div > div:nth-child(2) div.modal";
+        $this->tester->waitForElementVisible(['css' => $modalCssSelector]);
+        $this->tester->click($modalCssSelector." div.modal-footer a.btn-ec-delete");
+        return $this;
+    }
+
     public function Accept_削除($rowNum)
     {
         $this->tester->click("#page_admin_product > div.c-container > div.c-contentsArea > div.c-contentsArea__cols > div > div > form > div.card.rounded.border-0.mb-4 > div.card-body.p-0 > table > tbody > tr:nth-child(${rowNum}) > td.align-middle.pr-3 > div > div:nth-child(3) div.modal div.modal-footer a.btn-ec-delete");
