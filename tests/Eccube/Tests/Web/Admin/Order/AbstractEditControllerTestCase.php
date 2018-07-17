@@ -54,7 +54,7 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
                 'tax_rule' => 1,
                 'product_name' => $Product->getName(),
                 'product_code' => $ProductClasses[0]->getCode(),
-                'order_item_type' => 1
+                'order_item_type' => 1,
             ];
         }
 
@@ -74,7 +74,7 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
                 'addr02' => $faker->streetAddress,
             ],
             'phone_number' => $faker->phoneNumber,
-            'Delivery' => 1
+            'Delivery' => 1,
         ];
 
         $order = [
@@ -165,7 +165,7 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
                 'addr02' => $Shipping->getAddr02(),
             ],
             'phone_number' => $Shipping->getPhoneNumber(),
-            'Delivery' => 1
+            'Delivery' => 1,
         ];
 
         //受注フォーム

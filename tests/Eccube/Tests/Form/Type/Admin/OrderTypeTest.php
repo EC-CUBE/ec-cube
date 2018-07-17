@@ -60,7 +60,7 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
                 'addr02' => '梅田',
             ],
             'phone_number' => '012-345-6789',
-            'Delivery' => 1
+            'Delivery' => 1,
         ],
     ];
 
