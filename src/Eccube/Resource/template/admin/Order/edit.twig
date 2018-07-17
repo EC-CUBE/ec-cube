@@ -166,7 +166,6 @@ file that was distributed with this source code.
         <div class="c-contentsArea__cols">
             <div class="c-contentsArea__primaryCol">
                 <div class="c-primaryCol">
-                    {# 注文概要 開始 #}
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header">
                             <div class="row">
@@ -234,10 +233,7 @@ file that was distributed with this source code.
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    {# 注文概要 終了 #}
-
-                    {# 注文者 開始 #}
+                    </div><!-- .card.rounded -->
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header">
                             <div class="row">
@@ -379,10 +375,7 @@ file that was distributed with this source code.
 
                             </div>
                         </div>
-                    </div>
-                    {# 注文者 終了 #}
-
-                    {# お届け先情報 開始 #}
+                    </div><!-- .card.rounded -->
                     <div class="card rounded border-0 mb-4 h-adr">
                         <span class="p-country-name" style="display:none;">Japan</span>
                         <div class="card-header">
@@ -544,10 +537,7 @@ file that was distributed with this source code.
                                 {% endif %}
                             </div>
                         </div>
-                    </div>
-                    {# お届け先情報 終了 #}
-
-                    {# 受注商品情報 開始 #}
+                    </div><!-- .card.rounded -->
                     <div id="order-product" class="card rounded border-0 mb-4">
                         <div class="card-header">
                             <div class="row">
@@ -791,10 +781,7 @@ file that was distributed with this source code.
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    {# 受注商品情報 終了 #}
-
-                    {# ショップ用メモ欄 開始 #}
+                    </div><!-- .card.rounded -->
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header">
                             <div class="row">
@@ -809,10 +796,7 @@ file that was distributed with this source code.
                                 {{ form_widget(form.note, {'attr': {'rows': 8}}) }}
                             </div>
                         </div>
-                    </div>
-                    {# ショップ用メモ欄 終了 #}
-
-                    {# メール配信履歴 開始 #}
+                    </div><!-- .card.rounded -->
                     {% if id is not null %}
                         <div class="card rounded border-0 mb-4">
                             <div class="card-header">
@@ -863,10 +847,8 @@ file that was distributed with this source code.
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div><!-- .card.rounded -->
                     {% endif %}
-                    {# メール配信履歴 終了 #}
-
                 </div>
             </div>
         </div>
