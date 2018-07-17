@@ -78,7 +78,7 @@ class LogType extends AbstractType
                 ],
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Range(['min' => 0, 'max' => 50000]),
+                    new Assert\Range(['min' => 1, 'max' => 50000]),
                 ],
             ]);
     }
