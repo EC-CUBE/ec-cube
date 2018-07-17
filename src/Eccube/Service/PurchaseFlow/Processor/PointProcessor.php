@@ -161,6 +161,7 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
      * - 会員のOrderであること.
      *
      * @param ItemHolderInterface $itemHolder
+     *
      * @return bool
      */
     private function supports(ItemHolderInterface $itemHolder)
