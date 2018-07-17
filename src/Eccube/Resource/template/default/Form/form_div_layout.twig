@@ -45,16 +45,6 @@ file that was distributed with this source code.
     {% endif %}
 {%- endblock textarea_widget -%}
 
-{%- block choice_widget_expanded -%}
-    <div {{ block('widget_container_attributes') }}>
-        {%- set label_attr = label_attr|merge({}) -%}
-        {%- for child in form %}
-            {{- form_widget(child) -}}
-            {{- form_label(child, null, {translation_domain: choice_translation_domain, label_attr: label_attr}) -}}
-        {% endfor -%}
-    </div>
-{%- endblock choice_widget_expanded -%}
-
 {%- block radio_widget -%}
     <label for="{{ id }}">{{ parent() }}
         <span>{{ label is not same as(false) ? (translation_domain is same as(false) ? label : label|trans({}, translation_domain)) }}</span>
