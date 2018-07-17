@@ -44,7 +44,24 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         'delivery_fee_total' => '1',
         'charge' => '1',
         'Payment' => '1', // dtb_payment?
-        'Shippings' => [],
+        'Shipping' => [
+            'name' => [
+                'name01' => 'たかはし',
+                'name02' => 'しんいち',
+            ],
+            'kana' => [
+                'kana01' => 'タカハシ',
+                'kana02' => 'シンイチ',
+            ],
+            'postal_code' => '530-0001',
+            'address' => [
+                'pref' => '5',
+                'addr01' => '北区',
+                'addr02' => '梅田',
+            ],
+            'phone_number' => '012-345-6789',
+            'Delivery' => 1
+        ],
     ];
 
     public function setUp()
