@@ -250,6 +250,11 @@ file that was distributed with this source code.
         },
         progress: function (result, progress) {
             $('.progress-bar', this.modal).css('width', (++this.currentCount / this.totalCount * 100) + '%');
+            if (result['message']) {
+                $('<li><span class="badge badge-warning">NOTICE</span> </li>')
+                    .append($('<span></span>').text(result['message']))
+                    .appendTo('#bulkErrors');
+            }
             if (this.currentCount >= this.totalCount) {
                 progress.resolve();
             }
@@ -863,7 +868,11 @@ file that was distributed with this source code.
                                         </td>
                                         <td class="align-middle text-center">
                                             {% if Order.is_multiple %}
-                                                {% if Shipping.shipping_date %}<a href="{{ url('admin_shipping_edit', { id: Shipping.id }) }}">{% else %}{{ 'admin.order.index.not_shipping'|trans }}{% endif %}
+                                                {% if Shipping.shipping_date %}
+                                                    <a href="{{ url('admin_shipping_edit', { id: Shipping.id }) }}">{{ Shipping.shipping_date|date_day }}</a>
+                                                {% else %}
+                                                    {{ 'admin.order.index.not_shipping'|trans }}
+                                                {% endif %}
                                             {% else %}
                                                 {{ Shipping.shipping_date ? Shipping.shipping_date|date_day : 'admin.order.index.not_shipping'|trans }}
                                             {% endif %}

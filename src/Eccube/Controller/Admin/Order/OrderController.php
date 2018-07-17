@@ -421,11 +421,12 @@ class OrderController extends AbstractController
         $Order = $Shipping->getOrder();
         $OrderStatus = $this->entityManager->find(OrderStatus::class, $request->get('order_status'));
 
+        $result = [];
         try {
             // 発送済みに変更された場合は、関連する出荷がすべて出荷済みになったら OrderStatus を変更する
             if (OrderStatus::DELIVERED == $OrderStatus->getId()) {
                 if (!$Shipping->getShippingDate()) {
-                    $Shipping->setShippingDate(\DateTime());
+                    $Shipping->setShippingDate(new \DateTime());
                     $this->entityManager->flush($Shipping);
                 }
                 $RelateShippings = $Order->getShippings();
@@ -439,11 +440,19 @@ class OrderController extends AbstractController
                 if ($allShipped) {
                     if ($this->orderStateMachine->can($Order, $OrderStatus)) {
                         $this->orderStateMachine->apply($Order, $OrderStatus);
+                    } else {
+                        $from = $Order->getOrderStatus()->getName();
+                        $to = $OrderStatus->getName();
+                        $result = ['message' => sprintf('%s: %s から %s へのステータス変更はできません', $Shipping->getId(), $from, $to)];
                     }
                 }
             } else {
                 if ($this->orderStateMachine->can($Order, $OrderStatus)) {
                     $this->orderStateMachine->apply($Order, $OrderStatus);
+                } else {
+                    $from = $Order->getOrderStatus()->getName();
+                    $to = $OrderStatus->getName();
+                    $result = ['message' => sprintf('%s: %s から %s へのステータス変更はできません', $Shipping->getId(), $from, $to)];
                 }
             }
             $this->entityManager->flush($Order);
@@ -454,7 +463,7 @@ class OrderController extends AbstractController
             return $this->json(['status' => 'NG'], 500);
         }
 
-        return $this->json(['status' => 'OK']);
+        return $this->json(array_merge(['status' => 'OK'], $result));
     }
 
     /**
