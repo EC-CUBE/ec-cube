@@ -55,13 +55,6 @@ file that was distributed with this source code.
     </div>
 {%- endblock choice_widget_expanded -%}
 
-
-{% block checkbox_label -%}
-    {%- set label_attr = label_attr|merge({'for': id}) -%}
-
-    {{- block('checkbox_radio_label') -}}
-{%- endblock checkbox_label %}
-
 {%- block radio_widget -%}
     <label for="{{ id }}">{{ parent() }}
         <span>{{ label is not same as(false) ? (translation_domain is same as(false) ? label : label|trans({}, translation_domain)) }}</span>
