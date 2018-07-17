@@ -40,22 +40,10 @@ class PointProcessorTest extends EccubeTestCase
         $this->BaseInfo = $this->container->get(BaseInfo::class);
     }
 
-    public function testAddPoint()
-    {
-        $Cart = new Cart();
-        $ProductClasses = $this->createProduct('テスト商品', 3)->getProductClasses();
-
-        $Cart->addCartItem($this->newCartItem($ProductClasses[0], 1000, 1));
-        $Cart->addCartItem($this->newCartItem($ProductClasses[1], 100, 2));
-        $Cart->addCartItem($this->newCartItem($ProductClasses[2], 10, 3));
-
-        $this->processor->process($Cart, new PurchaseContext());
-        self::assertEquals(12, $Cart->getAddPoint());
-    }
-
     public function testUsePoint()
     {
         $Order = new Order();
+        $Order->setCustomer(new Customer());
         $Order->setUsePoint(100);
         $this->processor->process($Order, new PurchaseContext());
 
