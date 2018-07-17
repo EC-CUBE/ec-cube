@@ -413,7 +413,7 @@ return [
     'form.type.admin.nottelstyle' => 'Please enter only a half-width number or a hyphen for the telephone number. . ',
     'form.type.admin.notkanastyle' => 'Please enter your name (phonetic) in katakana. ',
     'form.type.select.notselect' => 'Not entered. ',
-    'form.type.select.selectisfuturedate' => 'You can not select future dates. ',
+    'form.type.select.selectis_future_or_now_date' => 'You can not select future or now dates. ',
     'cart.over.stock' => 'Inventory of the selected product (%product%) is insufficient.
 You can not purchase more than the stock number at once. ',
     'cart.over.sale_limit' => 'Selected items (%product%) are selling restricted.
