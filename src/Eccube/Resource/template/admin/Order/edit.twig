@@ -124,19 +124,17 @@ file that was distributed with this source code.
 
             // 注文者情報をコピー
             $('.copy-customer').on('click', function() {
-                var data = $(this).data();
-                var idx = data.idx;
-                $('#order_Shippings_' + idx + '_name_name01').val($('#order_name_name01').val());
-                $('#order_Shippings_' + idx + '_name_name02').val($('#order_name_name02').val());
-                $('#order_Shippings_' + idx + '_kana_kana01').val($('#order_kana_kana01').val());
-                $('#order_Shippings_' + idx + '_kana_kana02').val($('#order_kana_kana02').val());
-                $('#order_Shippings_' + idx + '_postal_code').val($('#order_postal_code').val());
-                $('#order_Shippings_' + idx + '_address_pref').val($('#order_address_pref').val());
-                $('#order_Shippings_' + idx + '_address_addr01').val($('#order_address_addr01').val());
-                $('#order_Shippings_' + idx + '_address_addr02').val($('#order_address_addr02').val());
-                $('#order_Shippings_' + idx + '_email').val($('#order_email').val());
-                $('#order_Shippings_' + idx + '_phone_number').val($('#order_phone_number').val());
-                $('#order_Shippings_' + idx + '_company_name').val($('#order_company_name').val());
+                $('#order_Shipping_name_name01').val($('#order_name_name01').val());
+                $('#order_Shipping_name_name02').val($('#order_name_name02').val());
+                $('#order_Shipping_kana_kana01').val($('#order_kana_kana01').val());
+                $('#order_Shipping_kana_kana02').val($('#order_kana_kana02').val());
+                $('#order_Shipping_postal_code').val($('#order_postal_code').val());
+                $('#order_Shipping_address_pref').val($('#order_address_pref').val());
+                $('#order_Shipping_address_addr01').val($('#order_address_addr01').val());
+                $('#order_Shipping_address_addr02').val($('#order_address_addr02').val());
+                $('#order_Shipping_email').val($('#order_email').val());
+                $('#order_Shipping_phone_number').val($('#order_phone_number').val());
+                $('#order_Shipping_company_name').val($('#order_company_name').val());
             });
         });
 
@@ -410,7 +408,7 @@ file that was distributed with this source code.
                                     {# 単数配送の場合は配送先の編集が可能 #}
                                     <div class="row mb-3">
                                         <div class="col-6">
-                                            <button type="button" class="btn btn-ec-regular copy-customer" data-idx="{{ form.Shipping.vars.name }}">{{ 'admin.order.edit.label.customer_info.copy'|trans }}</button>
+                                            <button type="button" class="btn btn-ec-regular copy-customer">{{ 'admin.order.edit.label.customer_info.copy'|trans }}</button>
                                             <button type="button" id="print" class="btn btn-ec-regular">{{ 'admin.order.edit.label.shipping.print'|trans }}</button>
                                         </div>
                                         <div class="col-6 text-right">
