@@ -109,7 +109,7 @@ class OrderEditPage extends AbstractAdminPageStyleGuide
 
     public function 入力_配送業者($value)
     {
-        $this->tester->selectOption(['id' => 'order_Shippings_0_Delivery'], $value);
+        $this->tester->selectOption(['id' => 'order_Shipping_Delivery'], $value);
         return $this;
     }
 

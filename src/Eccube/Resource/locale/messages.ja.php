@@ -1136,6 +1136,7 @@ return [
     'admin.order.edit.label.customer_info.copy' => '注文者情報をコピー',
     'admin.order.edit.label.shipping.print' => '納品書出力',
     'admin.order.edit.label.shipping.add' => 'お届け先の追加',
+    'admin.order.edit.label.shipping.edit' => '複数配送の編集',
     'admin.order.edit.label.customer_info' => '注文者',
     'admin.order.edit.label.customer_info.edit' => '注文者の編集',
     'admin.order.edit.product.error' => '商品が追加されていません。',
