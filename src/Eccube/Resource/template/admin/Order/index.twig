@@ -116,6 +116,10 @@ file that was distributed with this source code.
                 updater = eventTarget.data('bulk-update') ? new BulkSendMail(modal, eventTarget) : new SimpleSendMail(modal, eventTarget);
                 break;
             case 'status':
+                if ($('#option_bulk_status').val() == '') {
+                    alert('対応状況を選択してください');
+                    return;
+                }
                 updater = new BulkStatusUpdate(modal, eventTarget); // bulk-update is always true
                 modal.modal();
                 break;
