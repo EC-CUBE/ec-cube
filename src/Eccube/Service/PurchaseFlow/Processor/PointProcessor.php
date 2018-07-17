@@ -63,6 +63,10 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
      */
     public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
+        if (!$this->supports($itemHolder)) {
+            return;
+        }
+
         // 付与ポイントを計算
         $addPoint = $this->calculateAddPoint($itemHolder);
         $itemHolder->setAddPoint($addPoint);
@@ -84,9 +88,10 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
      */
     protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
-        if (!$itemHolder instanceof Order) {
+        if (!$this->supports($itemHolder)) {
             return;
         }
+
         // 支払い金額 < 利用ポイント
         $discount = $this->pointToPrice($itemHolder->getUsePoint());
         if (($itemHolder->getTotal() + $discount) < 0) {
@@ -109,9 +114,10 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
      */
     public function prepare(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
-        if (!$itemHolder instanceof Order) {
+        if (!$this->supports($itemHolder)) {
             return;
         }
+
         // ユーザの保有ポイントを減算
         $Customer = $itemHolder->getCustomer();
         if ($Customer) {
@@ -133,9 +139,10 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
     public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         // 利用したポイントをユーザに戻す.
-        if (!$itemHolder instanceof Order) {
+        if (!$this->supports($itemHolder)) {
             return;
         }
+
         $Customer = $itemHolder->getCustomer();
         $Customer->setPoint($Customer->getPoint() + $itemHolder->getUsePoint());
     }
@@ -143,6 +150,35 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
     /*
      * Helper methods
      */
+
+    /**
+     * Processorが実行出来るかどうかを返す.
+     *
+     * 以下を満たす場合に実行できる.
+     *
+     * - ポイント設定が有効であること.
+     * - $itemHolderがOrderエンティティであること.
+     * - 会員のOrderであること.
+     *
+     * @param ItemHolderInterface $itemHolder
+     * @return bool
+     */
+    private function supports(ItemHolderInterface $itemHolder)
+    {
+        if (!$this->BaseInfo->isOptionPoint()) {
+            return false;
+        }
+
+        if (!$itemHolder instanceof Order) {
+            return false;
+        }
+
+        if (!$itemHolder->getCustomer()) {
+            return false;
+        }
+
+        return true;
+    }
 
     /**
      * 付与ポイントを計算.
