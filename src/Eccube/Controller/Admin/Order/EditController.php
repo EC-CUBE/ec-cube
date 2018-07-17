@@ -253,10 +253,10 @@ class EditController extends AbstractController
                         $this->orderNoProcessor->process($TargetOrder, $purchaseContext);
                         $this->entityManager->flush();
 
-                        $Customer = $TargetOrder->getCustomer();
-                        if ($Customer) {
-                            // 会員の場合、購入回数、購入金額などを更新
-                            $this->customerRepository->updateBuyData($Customer, $isNewOrder);
+                        // 会員の場合、購入回数、購入金額などを更新
+                        if ($Customer = $TargetOrder->getCustomer()) {
+                            $this->orderRepository->updateOrderSummary($Customer);
+                            $this->entityManager->flush($Customer);
                         }
 
                         $event = new EventArgs(

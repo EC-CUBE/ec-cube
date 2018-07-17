@@ -48,11 +48,12 @@ file that was distributed with this source code.
 
     toggleBtnBulk('input[id^="check_"]', '.btn-bulk-wrapper');
     $('input[id^="check_"]').on('change', function() {
+        $('#toggle_check_all').prop('checked', false);
         toggleBtnBulk('input[id^="check_"]', '.btn-bulk-wrapper');
     });
 
     // 登録チェックボックス
-    $('#check_all').on('change', function() {
+    $('#toggle_check_all').on('change', function() {
         var checked = $(this).prop('checked');
         if (checked) {
             $('input[id^="check_"]').prop('checked', true);
@@ -149,7 +150,7 @@ file that was distributed with this source code.
 
     // 完了ボタン
     $('#bulkChangeComplete').on('click', function() {
-        location.reload(true);
+        location.href = '{{ url('admin_order', { 'resume': 1 }) }}';
     });
 
     $('#btn_bulk_delete').on('click', function(event) {
@@ -807,7 +808,7 @@ file that was distributed with this source code.
                                 <thead>
                                     <tr>
                                         <th class="border-top-0 pt-2 pb-2 text-center pl-3">
-                                            <input type="checkbox" id="check_all" name="filter" value="open">
+                                            <input type="checkbox" id="toggle_check_all" name="filter" value="open">
                                         </th>
                                         <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_order_description'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_payment'|trans }}</th>

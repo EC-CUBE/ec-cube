@@ -456,6 +456,12 @@ class OrderController extends AbstractController
                 }
             }
             $this->entityManager->flush($Order);
+
+            // 会員の場合、購入回数、購入金額などを更新
+            if ($Customer = $Order->getCustomer()) {
+                $this->orderRepository->updateOrderSummary($Customer);
+                $this->entityManager->flush($Customer);
+            }
             log_info('対応状況一括変更処理完了', [$Order->getId()]);
         } catch (\Exception $e) {
             log_error('予期しないエラーです', [$e->getMessage()]);
