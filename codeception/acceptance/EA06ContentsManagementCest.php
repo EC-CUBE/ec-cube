@@ -80,20 +80,20 @@ class EA06ContentsManagementCest
             ->入力_ファイル('upload.txt')
             ->アップロード();
 
-        $I->see('upload.txt', $FileManagePage->ファイル名(1));
+        $I->see('upload.txt', $FileManagePage->ファイル名(2));
 
-        $FileManagePage->一覧_ダウンロード(1);
+        $FileManagePage->一覧_ダウンロード(2);
         $UploadedFile = $I->getLastDownloadFile('/^upload\.txt$/');
         $I->assertEquals('This is uploaded file.', file_get_contents($UploadedFile));
 
-        $FileManagePage->一覧_表示(1);
+        $FileManagePage->一覧_表示(2);
         $I->switchToNewWindow();
         $I->see('This is uploaded file.');
 
         FileManagePage::go($I)
-            ->一覧_削除(1)
-            ->一覧_削除_accept(1);
-        $I->dontSee('upload.txt', $FileManagePage->ファイル名(1));
+            ->一覧_削除(2)
+            ->一覧_削除_accept(2);
+        $I->dontSee('upload.txt', $FileManagePage->ファイル名(2));
 
         $FileManagePage = FileManagePage::go($I)
             ->入力_フォルダ名('folder1')
