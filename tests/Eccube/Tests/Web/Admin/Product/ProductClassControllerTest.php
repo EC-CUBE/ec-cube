@@ -131,7 +131,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // THEN
         // check submit
         $htmlMessage = $crawler->filter('body')->html();
-        $this->assertContains('1以上でなければなりません。', $htmlMessage);
+        $this->assertContains('0以上でなければなりません。', $htmlMessage);
         $this->assertContains('数字と小数点のみ入力できます。', $htmlMessage);
     }
 
@@ -311,7 +311,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // THEN
         // check submit
         $htmlMessage = $crawler->filter('body')->html();
-        $this->assertContains('1以上でなければなりません。', $htmlMessage);
+        $this->assertContains('0以上でなければなりません。', $htmlMessage);
         $this->assertContains('数字と小数点のみ入力できます。', $htmlMessage);
     }
 
