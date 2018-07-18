@@ -48,7 +48,7 @@ class AuthorityRoleType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new Regex([
-                        'pattern' => "/^\\/.*/",
+                        'pattern' => '/^\\/.*/',
                         'message' => trans('admin.setting.system.authority.663'),
                     ]),
                 ],
