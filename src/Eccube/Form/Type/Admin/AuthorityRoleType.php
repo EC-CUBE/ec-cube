@@ -21,6 +21,7 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class AuthorityRoleType extends AbstractType
 {
@@ -45,6 +46,12 @@ class AuthorityRoleType extends AbstractType
             ->add('deny_url', TextType::class, [
                 'label' => 'authorityrole.label.denied_url',
                 'required' => false,
+                'constraints' => [
+                    new Regex([
+                        'pattern' => "/^\\/.*/",
+                        'message' => trans('admin.setting.system.authority.663'),
+                    ]),
+                ],
             ])
             ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
                 $form = $event->getForm();
