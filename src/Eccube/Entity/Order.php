@@ -1263,7 +1263,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
                     ->setProductName($ProductOrderItem->getProductName())
                     ->setClassCategoryName1($ProductOrderItem->getClassCategoryName1())
                     ->setClassCategoryName2($ProductOrderItem->getClassCategoryName2())
-                    ->setPriceIncTax($ProductOrderItem->getPriceIncTax())
+                    ->setPrice($ProductOrderItem->getPriceIncTax())
                     ->setQuantity($ProductOrderItem->getQuantity());
                 $orderItemArray[$productClassId] = $OrderItem;
             }
