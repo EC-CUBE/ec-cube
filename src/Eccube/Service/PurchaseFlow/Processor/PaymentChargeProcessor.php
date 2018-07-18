@@ -1,0 +1,89 @@
+<?php
+namespace Eccube\Service\PurchaseFlow\Processor;
+
+use Eccube\Service\PurchaseFlow\ItemHolderPreprocessor;
+use Eccube\Entity\ItemHolderInterface;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
+use Eccube\Entity\OrderItem;
+use Eccube\Repository\Master\OrderItemTypeRepository;
+use Eccube\Repository\Master\TaxDisplayTypeRepository;
+use Eccube\Entity\Master\OrderItemType;
+use Eccube\Entity\Master\TaxDisplayType;
+use Eccube\Entity\Order;
+use Eccube\Entity\Payment;
+
+class PaymentChargeProcessor implements ItemHolderPreprocessor
+{
+    /**
+     * @var OrderItemTypeRepository
+     */
+    protected $orderItemTypeRepository;
+
+    /**
+     * @var TaxDisplayTypeRepository
+     */
+    protected $taxDisplayTypeRepository;
+
+    /**
+     * PaymentChargeProcessor constructor.
+     *
+     * @param OrderItemTypeRepository $orderItemTypeRepository
+     * @param TaxDisplayTypeRepository $taxDisplayTypeRepository
+     */
+    public function __construct(
+        OrderItemTypeRepository $orderItemTypeRepository,
+        TaxDisplayTypeRepository $taxDisplayTypeRepository
+    ) {
+        $this->orderItemTypeRepository = $orderItemTypeRepository;
+        $this->taxDisplayTypeRepository = $taxDisplayTypeRepository;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param ItemHolderInterface $itemHolder
+     * @param PurchaseContext $context
+     *
+     * @return void
+     */
+    public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    {
+        if (!$itemHolder instanceof Order) {
+            return;
+        }
+
+        if (!$itemHolder->getPayment() instanceof Payment || !$itemHolder->getPayment()->getId()) {
+            return;
+        }
+
+        foreach ($itemHolder->getItems() as $item) {
+            if ($item->isCharge()) {
+                $item->setPrice($itemHolder->getPayment()->getCharge());
+                return;
+            }
+        }
+
+        $this->addChargeItem($itemHolder);
+    }
+
+    /**
+     * Add charge item to item holder
+     *
+     * @param ItemHolderInterface $itemHolder
+     */
+    protected function addChargeItem(ItemHolderInterface $itemHolder)
+    {
+        /** @var Order $itemHolder */
+
+        $OrderItemType = $this->orderItemTypeRepository->find(OrderItemType::CHARGE);
+        $TaxDisplayType = $this->taxDisplayTypeRepository->find(TaxDisplayType::EXCLUDED);
+        $item = new OrderItem();
+        $item->setProductName(trans('paymentprocessor.label.charge'))
+            ->setQuantity(1)
+            ->setPrice($itemHolder->getPayment()->getCharge())
+            ->setOrderItemType($OrderItemType)
+            ->setOrder($itemHolder)
+            ->setTaxDisplayType($TaxDisplayType);
+        $itemHolder->addItem($item);
+    }
+}

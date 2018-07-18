@@ -2910,6 +2910,7 @@ return [
     'pluginservice.text.error.upload_failure' => 'アップロードに失敗しました。圧縮ファイルを確認してください。',
     'deliveryfeeprocessor.label.shippint_charge' => '送料',
     'paymentprocessor.label.different_payment_method' => '支払い方法が異なる',
+    'paymentprocessor.label.charge' => '手数料',
     'stockreduceprocessor.text.error.stock' => '在庫エラー',
     'str.937' => '',
     'str.938' => '',
