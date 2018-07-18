@@ -26,6 +26,9 @@
     "composer/spdx-licenses": {
         "version": "1.1.6"
     },
+    "composer/xdebug-handler": {
+        "version": "1.1.0"
+    },
     "dama/doctrine-test-bundle": {
         "version": "4.0",
         "recipe": {
@@ -169,6 +172,9 @@
     },
     "nesbot/carbon": {
         "version": "1.22.1"
+    },
+    "nikic/php-parser": {
+        "version": "v4.0.3"
     },
     "ocramius/package-versions": {
         "version": "1.2.0"
@@ -463,6 +469,9 @@
     },
     "symfony/polyfill-apcu": {
         "version": "v1.6.0"
+    },
+    "symfony/polyfill-ctype": {
+        "version": "v1.8.0"
     },
     "symfony/polyfill-intl-icu": {
         "version": "v1.6.0"
