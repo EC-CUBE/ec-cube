@@ -350,6 +350,7 @@ class FileController extends AbstractController
         $finder = Finder::create()
             ->filter($filter)
             ->in($nowDir)
+            ->ignoreDotFiles(false)
             ->sortByName()
             ->depth(0);
         $dirFinder = $finder->directories();
