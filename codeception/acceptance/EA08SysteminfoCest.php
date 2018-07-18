@@ -192,7 +192,7 @@ class EA08SysteminfoCest
         $I->click('#search_result tbody tr:last-child .modal .btn-ec-delete');
 
         $I->see('メンバーを削除しました。', '.c-contentsArea .alert-success');
-        $I->see('管理者', '#search_result tbody tr:nth-child(1) td:nth-child(1)');
+        $I->see('管理者', '#search_result tbody tr:last-child td:nth-child(1)');
     }
 
     public function systeminfo_メンバー管理自ユーザー削除(\AcceptanceTester $I)
