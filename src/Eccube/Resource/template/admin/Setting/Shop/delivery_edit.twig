@@ -168,6 +168,9 @@ file that was distributed with this source code.
                 current.find('.display-label').text(value);
                 current.find('.mode-view').removeClass('d-none');
                 current.find('.mode-edit').addClass('d-none');
+                current.find('[data-origin-value]').each(function(e) {
+                    $(this).attr('data-origin-value', value);
+                });
             });
             // 編集キャンセル
             $('#delivery-time-group').on('click', 'button.action-edit-cancel', function (e) {
