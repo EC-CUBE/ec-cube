@@ -16,7 +16,6 @@ namespace Eccube\Doctrine\EventSubscriber;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
-use Eccube\Entity\OrderItem;
 use Eccube\Entity\ProductClass;
 use Eccube\Service\TaxRuleService;
 use Symfony\Component\DependencyInjection\ContainerInterface;

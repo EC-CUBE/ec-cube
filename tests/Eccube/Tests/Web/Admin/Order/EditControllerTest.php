@@ -376,7 +376,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
                 //商品数変更3個追加
                 $formDataForEdit['OrderItems'][$index]['quantity'] = $orderItem['quantity'] + 3;
             }
-            $tax = (int)$this->container->get(TaxRuleService::class)->calcTax($orderItem['price'],
+            $tax = (int) $this->container->get(TaxRuleService::class)->calcTax($orderItem['price'],
                 $orderItem['tax_rate'], $orderItem['tax_rule']);
             $totalTax += $tax * $formDataForEdit['OrderItems'][$index]['quantity'];
         }
