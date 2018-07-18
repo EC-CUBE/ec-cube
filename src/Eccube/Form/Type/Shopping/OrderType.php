@@ -180,6 +180,12 @@ class OrderType extends AbstractType
                 $Order->setPaymentMethod($Payment ? $Payment->getMethod() : null);
                 // TODO CalculateChargeStrategy でセットする
                 // $Order->setCharge($Payment ? $Payment->getCharge() : null);
+
+                $form = $event->getForm();
+                $data = $form['message']->getData();
+                if (mb_strlen($data) > 4000) {
+                    $Order->setMessage(mb_substr($data, 0, 4000));
+                }
             }
         );
     }
