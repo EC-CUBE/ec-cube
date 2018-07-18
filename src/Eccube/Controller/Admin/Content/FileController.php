@@ -372,10 +372,12 @@ class FileController extends AbstractController
             $dirPath = $this->normalizePath($dir->getRealPath());
             $childDir = Finder::create()
                 ->in($dirPath)
+                ->ignoreDotFiles(false)
                 ->directories()
                 ->depth(0);
             $childFile = Finder::create()
                 ->in($dirPath)
+                ->ignoreDotFiles(false)
                 ->files()
                 ->depth(0);
             $countNumber = $childDir->count() + $childFile->count();
