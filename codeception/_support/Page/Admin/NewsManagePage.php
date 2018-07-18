@@ -7,7 +7,7 @@ namespace Page\Admin;
 class NewsManagePage extends AbstractAdminPage
 {
 
-    public static $登録完了メッセージ = '#main .container-fluid div:nth-child(1) .alert-success';
+    public static $登録完了メッセージ = '.c-container .c-contentsArea .alert-success';
 
     /**
      * ContentsRegisterPage constructor.
@@ -31,7 +31,8 @@ class NewsManagePage extends AbstractAdminPage
 
     public function 新規登録()
     {
-        $this->tester->click('#main > div > div > div > div.row > div > a');
+        $this->tester->click('.c-contentsArea .c-contentsArea__cols .c-contentsArea__primaryCol .card-body #addNew
+        ');
     }
 
     public function 一覧_編集($rowNum)
