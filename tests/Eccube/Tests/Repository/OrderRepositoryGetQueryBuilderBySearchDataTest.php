@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Eccube\Tests\Repository;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -149,43 +160,13 @@ class OrderRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->verify();
     }
 
-    public function testTel01()
+    public function testPhoneNumber()
     {
-        $this->Order1->setTel01('999');
+        $this->Order1->setPhoneNumber('999');
         $this->entityManager->flush();
 
         $this->searchData = [
-            'tel01' => '999',
-        ];
-        $this->scenario();
-
-        $this->expected = 1;
-        $this->actual = count($this->Results);
-        $this->verify();
-    }
-
-    public function testTel02()
-    {
-        $this->Order1->setTel02('999');
-        $this->entityManager->flush();
-
-        $this->searchData = [
-            'tel02' => '999',
-        ];
-        $this->scenario();
-
-        $this->expected = 1;
-        $this->actual = count($this->Results);
-        $this->verify();
-    }
-
-    public function testTel03()
-    {
-        $this->Order1->setTel03('999');
-        $this->entityManager->flush();
-
-        $this->searchData = [
-            'tel03' => '999',
+            'phone_number' => '999',
         ];
         $this->scenario();
 

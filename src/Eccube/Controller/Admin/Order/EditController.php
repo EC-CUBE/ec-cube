@@ -1,33 +1,28 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Controller\Admin\Order;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\DeviceType;
+use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Order;
+use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\AddCartType;
@@ -38,8 +33,10 @@ use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\Master\DeviceTypeRepository;
+use Eccube\Repository\Master\OrderItemTypeRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\ProductRepository;
+use Eccube\Service\PurchaseFlow\Processor\OrderNoProcessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseException;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
@@ -101,6 +98,16 @@ class EditController extends AbstractController
     protected $orderRepository;
 
     /**
+     * @var OrderNoProcessor
+     */
+    protected $orderNoProcessor;
+
+    /**
+     * @var OrderItemTypeRepository
+     */
+    protected $orderItemTypeRepository;
+
+    /**
      * EditController constructor.
      *
      * @param TaxRuleService $taxRuleService
@@ -112,6 +119,7 @@ class EditController extends AbstractController
      * @param DeliveryRepository $deliveryRepository
      * @param PurchaseFlow $orderPurchaseFlow
      * @param OrderRepository $orderRepository
+     * @param OrderNoProcessor $orderNoProcessor
      */
     public function __construct(
         TaxRuleService $taxRuleService,
@@ -122,7 +130,9 @@ class EditController extends AbstractController
         SerializerInterface $serializer,
         DeliveryRepository $deliveryRepository,
         PurchaseFlow $orderPurchaseFlow,
-        OrderRepository $orderRepository
+        OrderRepository $orderRepository,
+        OrderNoProcessor $orderNoProcessor,
+        OrderItemTypeRepository $orderItemTypeRepository
     ) {
         $this->taxRuleService = $taxRuleService;
         $this->deviceTypeRepository = $deviceTypeRepository;
@@ -133,6 +143,8 @@ class EditController extends AbstractController
         $this->deliveryRepository = $deliveryRepository;
         $this->purchaseFlow = $orderPurchaseFlow;
         $this->orderRepository = $orderRepository;
+        $this->orderNoProcessor = $orderNoProcessor;
+        $this->orderItemTypeRepository = $orderItemTypeRepository;
     }
 
     /**
@@ -146,10 +158,12 @@ class EditController extends AbstractController
     {
         $TargetOrder = null;
         $OriginOrder = null;
+        $isNewOrder = false;
 
         if (is_null($id)) {
             // 空のエンティティを作成.
             $TargetOrder = $this->newOrder();
+            $isNewOrder = true;
         } else {
             $TargetOrder = $this->orderRepository->find($id);
             if (is_null($TargetOrder)) {
@@ -171,6 +185,11 @@ class EditController extends AbstractController
                 ]
             );
 
+        // 複数配送の場合は配送先の編集ができない
+        if ($TargetOrder->isMultiple()) {
+            $builder->remove('Shipping');
+        }
+
         $event = new EventArgs(
             [
                 'builder' => $builder,
@@ -182,6 +201,12 @@ class EditController extends AbstractController
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_INDEX_INITIALIZE, $event);
 
         $form = $builder->getForm();
+
+        // 単数配送の場合は配送先の編集ができる
+        if ($TargetOrder->isMultiple() == false) {
+            $form['Shipping']->setData($TargetOrder->getShippings()[0]);
+        }
+
         $form->handleRequest($request);
         $purchaseContext = new PurchaseContext($OriginOrder, $OriginOrder->getCustomer());
 
@@ -197,7 +222,7 @@ class EditController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_INDEX_PROGRESS, $event);
 
-            $flowResult = $this->purchaseFlow->calculate($TargetOrder, $purchaseContext);
+            $flowResult = $this->purchaseFlow->validate($TargetOrder, $purchaseContext);
             if ($flowResult->hasWarning()) {
                 foreach ($flowResult->getWarning() as $warning) {
                     // TODO Warning の場合の処理
@@ -218,7 +243,8 @@ class EditController extends AbstractController
 
                     if ($flowResult->hasError() === false && $form->isValid()) {
                         try {
-                            $this->purchaseFlow->purchase($TargetOrder, $purchaseContext);
+                            $this->purchaseFlow->prepare($TargetOrder, $purchaseContext);
+                            $this->purchaseFlow->commit($TargetOrder, $purchaseContext);
                         } catch (PurchaseException $e) {
                             $this->addError($e->getMessage(), 'admin');
                             break;
@@ -228,24 +254,28 @@ class EditController extends AbstractController
                         $this->entityManager->flush();
 
                         foreach ($OriginItems as $Item) {
-                            if (false === $TargetOrder->getOrderItems()->contains($Item)) {
+                            if ($TargetOrder->getOrderItems()->contains($Item) === false) {
                                 $this->entityManager->remove($Item);
                             }
                         }
                         $this->entityManager->flush();
 
-                        // TODO 集計系に移動
-//                        if ($Customer) {
-//                            // 会員の場合、購入回数、購入金額などを更新
-//                            $app['eccube.repository.customer']->updateBuyData($app, $Customer, $TargetOrder->getOrderStatus()->getId());
-//                        }
+                        // 新規登録時はMySQL対応のためflushしてから採番
+                        $this->orderNoProcessor->process($TargetOrder, $purchaseContext);
+                        $this->entityManager->flush();
+
+                        // 会員の場合、購入回数、購入金額などを更新
+                        if ($Customer = $TargetOrder->getCustomer()) {
+                            $this->orderRepository->updateOrderSummary($Customer);
+                            $this->entityManager->flush($Customer);
+                        }
 
                         $event = new EventArgs(
                             [
                                 'form' => $form,
                                 'OriginOrder' => $OriginOrder,
                                 'TargetOrder' => $TargetOrder,
-                                //'Customer' => $Customer,
+                                'Customer' => $Customer,
                             ],
                             $request
                         );
@@ -265,7 +295,7 @@ class EditController extends AbstractController
 
                     $form = $builder->getForm();
 
-                    $Shipping = new \Eccube\Entity\Shipping();
+                    $Shipping = new Shipping();
                     $TargetOrder->addShipping($Shipping);
 
                     $Shipping->setOrder($TargetOrder);
@@ -360,6 +390,7 @@ class EditController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_SEARCH, $event);
 
+            /** @var Customer[] $Customers */
             $Customers = $qb->getQuery()->getResult();
 
             if (empty($Customers)) {
@@ -367,8 +398,6 @@ class EditController extends AbstractController
             }
 
             $data = [];
-
-            $formatTel = '%s-%s-%s';
             $formatName = '%s%s(%s%s)';
             foreach ($Customers as $Customer) {
                 $data[] = [
@@ -376,7 +405,7 @@ class EditController extends AbstractController
                     'name' => sprintf($formatName, $Customer->getName01(), $Customer->getName02(),
                         $Customer->getKana01(),
                         $Customer->getKana02()),
-                    'tel' => sprintf($formatTel, $Customer->getTel01(), $Customer->getTel02(), $Customer->getTel03()),
+                    'phone_number' => $Customer->getPhoneNumber(),
                     'email' => $Customer->getEmail(),
                 ];
             }
@@ -462,8 +491,6 @@ class EditController extends AbstractController
             }
 
             $data = [];
-
-            $formatTel = '%s-%s-%s';
             $formatName = '%s%s(%s%s)';
             foreach ($Customers as $Customer) {
                 $data[] = [
@@ -471,7 +498,7 @@ class EditController extends AbstractController
                     'name' => sprintf($formatName, $Customer->getName01(), $Customer->getName02(),
                         $Customer->getKana01(),
                         $Customer->getKana02()),
-                    'tel' => sprintf($formatTel, $Customer->getTel01(), $Customer->getTel02(), $Customer->getTel03()),
+                    'phone_number' => $Customer->getPhoneNumber(),
                     'email' => $Customer->getEmail(),
                 ];
             }
@@ -534,18 +561,12 @@ class EditController extends AbstractController
                 'name02' => $Customer->getName02(),
                 'kana01' => $Customer->getKana01(),
                 'kana02' => $Customer->getKana02(),
-                'zip01' => $Customer->getZip01(),
-                'zip02' => $Customer->getZip02(),
+                'postal_code' => $Customer->getPostalCode(),
                 'pref' => is_null($Customer->getPref()) ? null : $Customer->getPref()->getId(),
                 'addr01' => $Customer->getAddr01(),
                 'addr02' => $Customer->getAddr02(),
                 'email' => $Customer->getEmail(),
-                'tel01' => $Customer->getTel01(),
-                'tel02' => $Customer->getTel02(),
-                'tel03' => $Customer->getTel03(),
-                'fax01' => $Customer->getFax01(),
-                'fax02' => $Customer->getFax02(),
-                'fax03' => $Customer->getFax03(),
+                'phone_number' => $Customer->getPhoneNumber(),
                 'company_name' => $Customer->getCompanyName(),
             ];
 
@@ -653,12 +674,56 @@ class EditController extends AbstractController
         }
     }
 
+    /**
+     * その他明細情報を取得
+     *
+     * @Route("/%eccube_admin_route%/order/search/order_item_type", name="admin_order_search_order_item_type")
+     * @Template("@admin/Order/order_item_type.twig")
+     *
+     * @param Request $request
+     *
+     * @return array
+     */
+    public function searchOrderItemType(Request $request)
+    {
+        if ($request->isXmlHttpRequest()) {
+            log_debug('search order item type start.');
+
+            $criteria = Criteria::create();
+            $criteria
+                ->where($criteria->expr()->andX(
+                    $criteria->expr()->neq('id', OrderItemType::PRODUCT),
+                    $criteria->expr()->neq('id', OrderItemType::TAX)
+                ))
+                ->orderBy(['sort_no' => 'ASC']);
+
+            $OrderItemTypes = $this->orderItemTypeRepository->matching($criteria);
+
+            $forms = [];
+            foreach ($OrderItemTypes as $OrderItemType) {
+                /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
+                $builder = $this->formFactory->createBuilder();
+                $form = $builder->getForm();
+                $forms[$OrderItemType->getId()] = $form->createView();
+            }
+
+            return [
+                'forms' => $forms,
+                'OrderItemTypes' => $OrderItemTypes,
+            ];
+        }
+    }
+
     protected function newOrder()
     {
-        $Order = new \Eccube\Entity\Order();
+        $Order = new Order();
         // device type
         $DeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_ADMIN);
         $Order->setDeviceType($DeviceType);
+
+        $Shipping = new Shipping();
+        $Order->addShipping($Shipping);
+        $Shipping->setOrder($Order);
 
         return $Order;
     }
@@ -692,7 +757,6 @@ class EditController extends AbstractController
             if ($TargetOrder->getOrderStatus()->getId() == OrderStatus::DELIVERED) {
                 // 編集前と異なる場合のみ更新
                 if ($TargetOrder->getOrderStatus()->getId() != $OriginOrder->getOrderStatus()->getId()) {
-                    $TargetOrder->setShippingDate($dateTime);
                     // お届け先情報の発送日も更新する.
                     $Shippings = $TargetOrder->getShippings();
                     foreach ($Shippings as $Shipping) {
@@ -710,7 +774,6 @@ class EditController extends AbstractController
         } else {
             // 発送済
             if ($TargetOrder->getOrderStatus()->getId() == OrderStatus::DELIVERED) {
-                $TargetOrder->setShippingDate($dateTime);
                 // お届け先情報の発送日も更新する.
                 $Shippings = $TargetOrder->getShippings();
                 foreach ($Shippings as $Shipping) {

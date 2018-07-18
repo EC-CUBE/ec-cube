@@ -1,23 +1,12 @@
 {#
 This file is part of EC-CUBE
 
-Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
 
 http://www.lockon.co.jp/
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
 #}
 {% extends 'default_frame.twig' %}
 
@@ -38,9 +27,61 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             eccube.setValue('pageno', 1);
             eccube.submitForm();
         }
+
         // 商品表示BOXの高さを揃える
-        $(window).load(function () {
+        $(window).load(function() {
             $('.product_item').matchHeight();
+        });
+
+        eccube.productsClassCategories = {
+            {% for Product in pagination %}
+            "{{ Product.id|escape('js') }}": {{ class_categories_as_json(Product)|raw }}{% if loop.last == false %}, {% endif %}
+            {% endfor %}
+        };
+
+
+        $('.add-cart').on('click', function(e) {
+            e.preventDefault();
+            var $form = $(this).parents('form');
+
+            // 個数フォームのチェック
+            var $quantity = $form.parent().find('.quantity');
+            if ($quantity.val() < 1) {
+                $quantity[0].setCustomValidity("1以上で入力してください。");
+                return true;
+            } else {
+                $quantity[0].setCustomValidity("");
+            }
+
+            $.ajax({
+                url: $form.attr('action'),
+                type: $form.attr('method'),
+                data: $form.serialize(),
+                dataType: 'json',
+                beforeSend: function(xhr, settings) {
+                    // Buttonを無効にする
+                    $('.add-cart').prop('disabled', true);
+                }
+            }).done(function(data) {
+                // レスポンス内のメッセージをalertで表示
+                $.each(data.messages, function() {
+                    alert(this);
+                });
+
+                // カートブロックを更新する
+                $.ajax({
+                    url: "{{ url('block_cart') }}",
+                    type: 'GET',
+                    dataType: 'html'
+                }).done(function(html) {
+                    $('.ec-headerRole__cart').html(html);
+                });
+            }).fail(function(data) {
+                alert('カートの追加に失敗しました。');
+            }).always(function(data) {
+                // Buttonを有効にする
+                $('.add-cart').prop('disabled', false);
+            });
         });
     </script>
 {% endblock %}
@@ -98,19 +139,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <div class="ec-shelfRole">
                 <ul class="ec-shelfGrid">
                     {% for Product in pagination %}
-                        <li class="ec-shelfGrid__item"><a href="{{ url('product_detail', {'id': Product.id}) }}"><img
-                                        src="{{ asset(Product.main_list_image|no_image_product, 'save_image') }}">
+                        <li class="ec-shelfGrid__item">
+                            <a href="{{ url('product_detail', {'id': Product.id}) }}">
+                                <img src="{{ asset(Product.main_list_image|no_image_product, 'save_image') }}">
                                 <p>{{ Product.name }}</p>
-                                <ul class="ec-productRole ec-productRole__tags">
-                                    {% for Tag in Product.Tags %}
-                                        <li class="ec-productRole__tag tag_{{ Tag.id }}">{{ Tag }}
-                                        </li>
-                                    {% endfor %}
-                                </ul>
+                                {% if Product.Tags %}
+                                    <ul class="ec-productRole ec-productRole__tags">
+                                        {% for Tag in Product.Tags %}
+                                            <li class="ec-productRole__tag tag_{{ Tag.id }}">{{ Tag }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
                                 {% if Product.description_list %}
                                     <p>{{ Product.description_list|raw|nl2br }}</p>
                                 {% endif %}
-                                <p>
+                                <p class="price02_default">
                                     {% if Product.hasProductClass %}
                                         {% if Product.getPrice02Min == Product.getPrice02Max %}
                                             {{ Product.getPrice02IncTaxMin|price }}
@@ -120,7 +163,44 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {% else %}
                                         {{ Product.getPrice02IncTaxMin|price }}
                                     {% endif %}
-                                </p></a>
+                                </p>
+                            </a>
+
+                            {% if Product.stock_find %}
+                                {% set form = forms[Product.id] %}
+                                <form name="form{{ Product.id }}" id="productForm{{ Product.id }}" action="{{ url('product_add_cart', {id:Product.id}) }}" method="post">
+                                    <div class="ec-productRole__actions">
+                                        {% if form.classcategory_id1 is defined %}
+                                            <div class="ec-select">
+                                                {{ form_widget(form.classcategory_id1) }}
+                                                {{ form_errors(form.classcategory_id1) }}
+                                            </div>
+                                            {% if form.classcategory_id2 is defined %}
+                                                <div class="ec-select">
+                                                    {{ form_widget(form.classcategory_id2) }}
+                                                    {{ form_errors(form.classcategory_id2) }}
+                                                </div>
+                                            {% endif %}
+                                        {% endif %}
+                                        <div class="ec-numberInput"><span>{{ 'common.label.qty'|trans }}</span>
+                                            {{ form_widget(form.quantity, {'attr': {'class': 'quantity'}}) }}
+                                            {{ form_errors(form.quantity) }}
+                                        </div>
+                                    </div>
+                                    <div class="ec-productRole__btn">
+                                        <button type="submit" class="ec-blockBtn--action add-cart" data-cartid="{{ Product.id }}">
+                                            {{ 'common.label.add_cart'|trans }}
+                                        </button>
+                                    </div>
+                                    {{ form_rest(form) }}
+                                </form>
+                            {% else %}
+                                <div class="ec-productRole__btn">
+                                    <button type="button" class="ec-blockBtn--action" disabled="disabled">
+                                        ただいま品切れ中です
+                                    </button>
+                                </div>
+                            {% endif %}
                         </li>
                     {% endfor %}
                 </ul>

@@ -1,24 +1,14 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Entity;
@@ -39,6 +29,24 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     private $price01_inc_tax = null;
     private $price02_inc_tax = null;
     private $tax_rate = false;
+
+    /**
+     * 商品規格名を含めた商品名を返す.
+     *
+     * @return string
+     */
+    public function formatedProductName()
+    {
+        $productName = $this->getProduct()->getName();
+        if ($this->hasClassCategory1()) {
+            $productName .= ' - '.$this->getClassCategory1()->getName();
+        }
+        if ($this->hasClassCategory2()) {
+            $productName .= ' - '.$this->getClassCategory2()->getName();
+        }
+
+        return $productName;
+    }
 
     /**
      * Is Enable

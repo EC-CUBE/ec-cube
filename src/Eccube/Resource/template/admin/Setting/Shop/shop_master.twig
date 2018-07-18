@@ -1,25 +1,14 @@
 {#
 This file is part of EC-CUBE
 
-Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
 
 http://www.lockon.co.jp/
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
 #}
-{% extends '@admin/styleguide_frame.twig' %}
+{% extends '@admin/default_frame.twig' %}
 
 {% set menus = ['setting', 'shop', 'shop_index'] %}
 
@@ -31,6 +20,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block stylesheet %}
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datetimepicker.min.css', 'admin') }}">
 {% endblock stylesheet %}
+
+{% block javascript %}
+    <script src="//yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
+{% endblock %}
 
 {% block main %}
     <form name="form1" role="form" class="form-horizontal h-adr" id="point_form" method="post" action="">
@@ -86,14 +79,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <div class="row justify-content-start">
                                             <div class="col-auto text-center pr-0"><span class="align-middle">{{ 'admin.setting.shop.shop_master.629'|trans }}</span></div>
                                             <div class="col-2">
-                                                {{ form_widget(form.zip.zip01) }}
+                                                {{ form_widget(form.postal_code) }}
                                             </div>
-                                            <div class="col-auto text-center p-0"><span class="align-middle">-</span></div>
-                                            <div class="col-2">
-                                                {{ form_widget(form.zip.zip02) }}
-                                            </div>
-                                            {{ form_errors(form.zip.zip01) }}
-                                            {{ form_errors(form.zip.zip02) }}
+                                            {{ form_errors(form.postal_code) }}
                                         </div>
                                     </div>
                                     <div class="mb-2">
@@ -117,43 +105,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <div class="row mb-2">
                                 <div class="col-3"><span>{{ 'common.label.phone_number'|trans }}</span></div>
                                 <div class="col">
-                                    <div class="row justify-content-start">
-                                        <div class="col-2">
-                                            {{ form_widget(form.tel.tel01) }}
-                                        </div>
-                                        <div class="col-auto text-center p-0"><span class="align-middle">-</span></div>
-                                        <div class="col-2">
-                                            {{ form_widget(form.tel.tel02) }}
-                                        </div>
-                                        <div class="col-auto text-center p-0"><span class="align-middle">-</span></div>
-                                        <div class="col-2">
-                                            {{ form_widget(form.tel.tel03) }}
-                                        </div>
-                                        {{ form_errors(form.tel.tel01) }}
-                                        {{ form_errors(form.tel.tel02) }}
-                                        {{ form_errors(form.tel.tel03) }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col-3"><span>{{ 'common.label.fax_number'|trans }}</span></div>
-                                <div class="col">
-                                    <div class="row justify-content-start">
-                                        <div class="col-2">
-                                            {{ form_widget(form.fax.fax01) }}
-                                        </div>
-                                        <div class="col-auto text-center p-0"><span class="align-middle">-</span></div>
-                                        <div class="col-2">
-                                            {{ form_widget(form.fax.fax02) }}
-                                        </div>
-                                        <div class="col-auto text-center p-0"><span class="align-middle">-</span></div>
-                                        <div class="col-2">
-                                            {{ form_widget(form.fax.fax03) }}
-                                        </div>
-                                        {{ form_errors(form.fax.fax01) }}
-                                        {{ form_errors(form.fax.fax02) }}
-                                        {{ form_errors(form.fax.fax03) }}
-                                    </div>
+                                    {{ form_widget(form.phone_number) }}
+                                    {{ form_errors(form.phone_number) }}
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -205,6 +158,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {{ form_errors(form.message) }}
                                 </div>
                             </div>
+                            {# エンティティ拡張の自動出力 #}
+                            {% for f in form if f.vars.eccube_form_options.auto_render %}
+                                {% if f.vars.eccube_form_options.form_theme %}
+                                    {% form_theme f f.vars.eccube_form_options.form_theme %}
+                                    {{ form_row(f) }}
+                                {% else %}
+                                    <div class="row">
+                                        <div class="col-3"><span>{{ f.vars.label|trans }}</span></div>
+                                        <div class="col mb-2">
+                                            {{ form_widget(f) }}
+                                            {{ form_errors(f) }}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
                         </div>
                     </div>
                     <div class="card rounded border-0 mb-4">
@@ -235,15 +203,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <div class="col mb-2">
                                     {{ form_widget(form.option_product_delivery_fee) }}
                                     {{ form_errors(form.option_product_delivery_fee) }}
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-3">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>{{ 'common.label.option_multiple_shipping'|trans }}</span></div>
-                                </div>
-                                <div class="col mb-2">
-                                    {{ form_widget(form.option_multiple_shipping) }}
-                                    {{ form_errors(form.option_multiple_shipping) }}
                                 </div>
                             </div>
                         </div>

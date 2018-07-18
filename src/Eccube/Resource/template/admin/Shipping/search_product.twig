@@ -1,3 +1,13 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
 {% if pagination|length > 0 %}
     <table class="table table-striped table-sm mb-3">
         <thead class="table-active">
@@ -20,9 +30,8 @@
                 <td class="align-middle">
                     <p class="m-0">
                         {{ Order.name01 }} {{ Order.name02 }} ({{ Order.kana01 }} {{ Order.kana02 }})<br>
-                        {{ 'admin.shipping.edit.zip'|trans({
-                            '%zip01%': Order.zip01,
-                            '%zip02%': Order.zip02
+                        {{ 'admin.shipping.edit.postal_code'|trans({
+                            '%postal_code%': Order.postal_code
                         }) }}<br>
                         {{ Order.pref.name ~ Order.addr01 ~ Order.addr02 }}<br>
                     </p>
@@ -44,7 +53,7 @@
     </table>
     {% if pagination.getTotalItemCount / pagination.count > 1 %}
         <div class="row justify-content-md-center mb-4">
-            {% include "@admin/styleguide_pager.twig" with { 'pages' : pagination.paginationData } %}
+            {% include "@admin/pager.twig" with { 'pages' : pagination.paginationData } %}
         </div>
     {% endif %}
 {% else %}

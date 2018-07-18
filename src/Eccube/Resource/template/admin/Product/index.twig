@@ -1,25 +1,14 @@
 {#
 This file is part of EC-CUBE
 
-Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
 
 http://www.lockon.co.jp/
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
 #}
-{% extends '@admin/styleguide_frame.twig' %}
+{% extends '@admin/default_frame.twig' %}
 
 {% set menus = ['product', 'product_master'] %}
 
@@ -193,7 +182,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             // Append html and show popup
             function renderClass(data, btnClass) {
                 $('div.modal-body', modalClass).html(data);
-                $('h5.modal-title', modalClass).html(btnClass.data('message'));
+                $('h5.modal-title', modalClass).text(btnClass.data('message'));
                 $('a.btn-ec-conversion', modalClass).attr('href', btnClass.data('class-url'));
                 modalClass.modal('show');
                 btnClass.attr('disabled', false);
@@ -285,6 +274,24 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </div>
                     </div>
                 </div>
+                {# エンティティ拡張の自動出力 #}
+                {% for f in searchForm if f.vars.eccube_form_options.auto_render %}
+                    {# TODO 1項目1行になるのを改善 #}
+                    <div class="row mb-2">
+                        {% if f.vars.eccube_form_options.form_theme %}
+                            {% form_theme f f.vars.eccube_form_options.form_theme %}
+                            {{ form_row(f) }}
+                        {% else %}
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label>{{ f.vars.label|trans }}</label>
+                                    {{ form_widget(f) }}
+                                    {{ form_errors(f) }}
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
                 <div class="d-block text-center">
                     <button class="btn btn-ec-regular search-clear"
                             type="button">{{ 'admin.product.index.477'|trans }}</button>
@@ -436,12 +443,47 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                                         aria-hidden="true"></i></a></div>
                                                         <div class="col text-center" data-toggle="tooltip"
                                                              data-placement="top"
-                                                             title="{{ 'admin.product.index.duplicate'|trans }}"><a class="btn btn-ec-actionIcon"
-                                                                           href="{{ url('admin_product_product_copy', {'id' : Product.id}) }}" {{ csrf_token_for_anchor() }}
-                                                                           data-method="post"
-                                                                           data-message="{{ 'admin.product.index.text01'|trans }}"><i
-                                                                        class="fa fa-files-o fa-lg text-secondary"
-                                                                        aria-hidden="true"></i></a></div>
+                                                             title="{{ 'admin.product.index.duplicate'|trans }}">
+                                                            <a href="#" class="btn btn-ec-actionIcon"
+                                                               data-toggle="modal"
+                                                               data-target="#confirmModal-{{ Product.id }}">
+                                                                <i class="fa fa-files-o fa-lg text-secondary"
+                                                                        aria-hidden="true"></i></a>
+                                                            <div class="modal fade" id="confirmModal-{{ Product.id }}" tabindex="-1"
+                                                                 role="dialog"
+                                                                 aria-labelledby="confirmModal-{{ Product.id }}" aria-hidden="true">
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title font-weight-bold">
+                                                                                {{ 'admin.product.index.duplicate.confirm.title'|trans }}</h5>
+                                                                            <button class="close" type="button"
+                                                                                    data-dismiss="modal"
+                                                                                    aria-label="Close"><span
+                                                                                        aria-hidden="true">×</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="modal-body text-left">
+                                                                            <p class="text-left">
+                                                                                {{ 'admin.product.index.text01'|trans }}</p>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button class="btn btn-ec-sub" type="button"
+                                                                                    data-dismiss="modal">{{ 'admin.product.index.cancel'|trans }}
+                                                                            </button>
+                                                                            <a
+                                                                                    href="{{ url('admin_product_product_copy', {'id' : Product.id}) }}"
+                                                                                    class="btn btn-ec-delete"
+                                                                                    data-confirm="false"
+                                                                                    {{ csrf_token_for_anchor() }}
+                                                                                    data-method="post">
+                                                                                {{ 'common.label.execute'|trans }}
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                         <div class="col text-center" data-toggle="tooltip"
                                                              data-placement="top"
                                                              title="{{ 'admin.product.index.abolition'|trans }}"><a class="btn btn-ec-actionIcon" data-toggle="modal"
@@ -489,7 +531,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 </div>
                                 <div class="row justify-content-md-center mb-4">
                                     {% if pagination.totalItemCount > 0 %}
-                                        {% include "@admin/styleguide_pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_product_page' } %}
+                                        {% include "@admin/pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_product_page' } %}
                                     {% endif %}
                                 </div>
                             </div>

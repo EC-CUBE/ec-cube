@@ -1,23 +1,12 @@
 {#
 This file is part of EC-CUBE
 
-Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
 
 http://www.lockon.co.jp/
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
 #}
 {% extends 'default_frame.twig' %}
 
@@ -55,8 +44,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <a class="ec-addressList__remove" href="{{ url('mypage_delivery_delete', { id : CustomerAddress.id }) }}" {{ csrf_token_for_anchor() }} data-method="delete"></a>
                                     <div class="ec-addressList__address">
                                         <div>{{ CustomerAddress.name01 }}&nbsp;{{ CustomerAddress.name02 }}</div>
-                                        <div>〒{{ CustomerAddress.zip01 }}-{{ CustomerAddress.zip02 }}　{{ CustomerAddress.Pref }}{{ CustomerAddress.addr01 }}{{ CustomerAddress.addr02 }}</div>
-                                        <div>{{ CustomerAddress.tel01 }}-{{ CustomerAddress.tel02 }}-{{ CustomerAddress.tel03 }}</div>
+                                        <div>〒{{ CustomerAddress.postal_code }}　{{ CustomerAddress.Pref }}{{ CustomerAddress.addr01 }}{{ CustomerAddress.addr02 }}</div>
+                                        <div>{{ CustomerAddress.phone_number }}</div>
                                     </div>
                                     <div class="ec-addressList__action"><a class="ec-inlineBtn" href="{{ url('mypage_delivery_edit', { id : CustomerAddress.id }) }}">{{'mypage.label.btn.edit'|trans}}</a></div>
                                 </div>

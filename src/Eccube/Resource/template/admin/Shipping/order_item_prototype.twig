@@ -1,3 +1,13 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
 <tr>
     <input type="hidden" name="shipping[OrderItems][{{ OrderItem.id }}][id]" value="{{ OrderItem.id }}">
     <td class="align-middle w-25 pl-3">
@@ -13,7 +23,7 @@
         </span>
     </td>
     <td class="align-middle">
-        <a href="{{ url('admin_order_edit', {'id': OrderItem.order_id}) }}">{{ OrderItem.order_id }}</a>
+        <a href="{{ url('admin_order_edit', {'id': OrderItem.order_id}) }}">{{ OrderItem.Order.order_no }}</a>
     </td>
     <td class="align-middle"><span>{{ OrderItem.price|price }}</span></td>
     <td class="align-middle"><span>{{ OrderItem.quantity }}</span></td>

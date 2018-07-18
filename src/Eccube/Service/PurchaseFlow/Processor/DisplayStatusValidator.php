@@ -1,13 +1,24 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\CartItem;
 use Eccube\Entity\ItemInterface;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
-use Eccube\Service\PurchaseFlow\ValidatableItemProcessor;
+use Eccube\Service\PurchaseFlow\ItemValidator;
 
-class DisplayStatusValidator extends ValidatableItemProcessor
+class DisplayStatusValidator extends ItemValidator
 {
     /**
      * @param ItemInterface $item

@@ -1,23 +1,12 @@
 {#
 This file is part of EC-CUBE
 
-Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
 
 http://www.lockon.co.jp/
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
 #}
 {% set version_check = item.version_check  %}
 <div class="plugin-panel {% if version_check == 0 %}plugin-panel-not{% endif %} {% if item.promotion == 1 %}plugin-panel-pr{% endif %}">
@@ -27,9 +16,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <div class="plugin-content-top">
         <div class="plugin-title">
             <span class="pull-right">
-                <a class="btn btn-xs searchPluginModal" href="#" data-id="{{ item.product_id }}">{{'admin.store.plugin_owners_search.869'|trans}</a>
+                <a class="btn btn-xs searchPluginModal" href="#" data-id="{{ item.product_id }}">{{'admin.store.plugin_owners_search.869'|trans}}</a>
                 {% if item.update_status == 2 or item.update_status == 3 %}
-                    <h4 id="plugin-id-{{ item.product_id }}" class="display-in-bl"><span class="label label-success">{{'admin.store.plugin_owners_search.870'|trans}</span></h4>
+                    <h4 id="plugin-id-{{ item.product_id }}" class="display-in-bl"><span class="label label-success">{{'admin.store.plugin_owners_search.870'|trans}}</span></h4>
                 {% elseif item.update_status == 4 %}
                     <a id="plugin-id-{{ item.product_id }}" class="btn btn-success btn-xs" href="{{ item.product_url }}" target="_blank">{{'admin.store.plugin_owners_search.872'|trans}}</a>
                 {% else %}
@@ -57,15 +46,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <dt class="plugin-version">{{'admin.store.plugin_owners_search.876'|trans}}</dt><dd>{{ item.version }}</dd>
             <dt class="plugin-update">{{'admin.store.plugin_owners_search.877'|trans}}</dt><dd>{{ item.last_update_date|time_ago }}</dd>
             <dt class="plugin-eccubeversion">{{'admin.store.plugin_owners_search.878'|trans}}</dt><dd>{% for version in item.eccube_version %}{{ version }} {%- if loop.last == false%}, {% endif -%}{% endfor %}</dd>
-            <dt class="plugin-size">ファイルサイズ</dt><dd>約 {{ (item.file_size / 1024)|round(0, 'ceil')|number_format }} KB</dd>
+            <dt class="plugin-size">{{ 'admin.store.plugin_owners_confirm.848.1'|trans }}</dt><dd>{{ 'admin.store.plugin_owners_confirm.848.2'|trans }} {{ (item.file_size / 1024)|round(0, 'ceil')|number_format }} KB</dd>
             <dt class="plugin-licence">{{'admin.store.plugin_owners_search.880'|trans}}</dt><dd>{{ item.licence }}</dd>
         </dl>
         {% if version_check == 0 %}
-            <p class="text-danger">このプラグインはEC-CUBE {{ constant('Eccube\\Common\\Constant::VERSION') }}をサポートしていないため、正常に動作しない可能性があります。</p>
+            <p class="text-danger">{{ 'admin.store.plugin_owners_confirm.850'|trans({"%version%": constant('Eccube\\Common\\Constant::VERSION') }) }}</p>
         {% endif %}
         {% if item.depend is not empty %}
             {% for depend in item.depend %}
-                <p class="text-danger">{{ depend.name }}が必要です。同時にインストールされます。</p>
+                <p class="text-danger">{{ 'admin.store.plugin_owners_search.882'|trans({"%dependency%" : depend.name})  }}</p>
             {% endfor %}
         {% endif %}
         <p class="plugin-developer">

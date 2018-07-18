@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Eccube\Tests\Repository;
 
 use Eccube\Entity\OrderItem;
@@ -95,10 +106,11 @@ class ShippingRepositoryTest extends EccubeTestCase
             $Shipping = new Shipping();
             $Shipping->copyProperties($this->Customer);
             $Shipping
+                ->setOrder($this->Order)
                 ->setName01($faker->lastName)
                 ->setName02($faker->firstName)
                 ->setKana01('セイ');
-
+            $this->Order->addShipping($Shipping);
             $this->entityManager->persist($Shipping);
 
             $OrderItem = new OrderItem();
@@ -139,14 +151,5 @@ class ShippingRepositoryTest extends EccubeTestCase
             $this->actual = $Shippings[$i]->getKana01();
             $this->verify();
         }
-    }
-
-    public function testGetOrders()
-    {
-        $Shipping = $this->shippingRepository->find($this->Shippings[0]->getId());
-
-        $this->assertInstanceOf('\Doctrine\Common\Collections\Collection', $Shipping->getOrders());
-        $Order = $Shipping->getOrders()->first();
-        $this->assertEquals($this->Order->getId(), $Order->getId());
     }
 }

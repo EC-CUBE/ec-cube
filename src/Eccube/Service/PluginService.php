@@ -3,23 +3,12 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Service;
@@ -115,6 +104,9 @@ class PluginService
      */
     protected $container;
 
+    /** @var CacheUtil */
+    protected $cacheUtil;
+
     /**
      * PluginService constructor.
      *
@@ -123,6 +115,9 @@ class PluginService
      * @param PluginRepository $pluginRepository
      * @param EntityProxyService $entityProxyService
      * @param SchemaService $schemaService
+     * @param EccubeConfig $eccubeConfig
+     * @param ContainerInterface $container
+     * @param CacheUtil $cacheUtil
      */
     public function __construct(
         PluginEventHandlerRepository $pluginEventHandlerRepository,
@@ -131,7 +126,8 @@ class PluginService
         EntityProxyService $entityProxyService,
         SchemaService $schemaService,
         EccubeConfig $eccubeConfig,
-        ContainerInterface $container
+        ContainerInterface $container,
+        CacheUtil $cacheUtil
     ) {
         $this->pluginEventHandlerRepository = $pluginEventHandlerRepository;
         $this->entityManager = $entityManager;
@@ -142,6 +138,7 @@ class PluginService
         $this->projectRoot = $eccubeConfig->get('kernel.project_dir');
         $this->environment = $eccubeConfig->get('kernel.environment');
         $this->container = $container;
+        $this->cacheUtil = $cacheUtil;
     }
 
     /**
@@ -185,11 +182,12 @@ class PluginService
 
             // Check dependent plugin
             // Don't install ec-cube library
-            $dependents = $this->getDependentByCode($config['code'], self::OTHER_LIBRARY);
-            if (!empty($dependents)) {
-                $package = $this->parseToComposerCommand($dependents);
-                $this->composerService->execRequire($package);
-            }
+//            $dependents = $this->getDependentByCode($config['code'], self::OTHER_LIBRARY);
+//            if (!empty($dependents)) {
+//                $package = $this->parseToComposerCommand($dependents);
+            //FIXME: how to working with ComposerProcessService or ComposerApiService ?
+//                $this->composerService->execRequire($package);
+//            }
 
             // プラグイン配置後に実施する処理
             $this->postInstall($config, $event, $source);
@@ -212,7 +210,8 @@ class PluginService
     {
         // キャッシュの削除
         PluginConfigManager::removePluginConfigCache();
-        CacheUtil::clear($this->app, false);
+        // FIXME: Please fix clearCache function (because it's clear all cache and this file just upload)
+//        $this->cacheUtil->clearCache();
     }
 
     // インストール事後処理
@@ -274,6 +273,12 @@ class PluginService
         }
     }
 
+    /**
+     * @param $archive
+     * @param $dir
+     *
+     * @throws PluginException
+     */
     public function unpackPluginArchive($archive, $dir)
     {
         $extension = pathinfo($archive, PATHINFO_EXTENSION);
@@ -292,6 +297,12 @@ class PluginService
         }
     }
 
+    /**
+     * @param $dir
+     * @param array $config_cache
+     *
+     * @throws PluginException
+     */
     public function checkPluginArchiveContent($dir, array $config_cache = [])
     {
         try {
@@ -369,6 +380,11 @@ class PluginService
         return $this->projectRoot.'/app/Plugin/'.$name;
     }
 
+    /**
+     * @param $d
+     *
+     * @throws PluginException
+     */
     public function createPluginDir($d)
     {
         $b = @mkdir($d);
@@ -377,6 +393,15 @@ class PluginService
         }
     }
 
+    /**
+     * @param $meta
+     * @param $event_yml
+     * @param int $source
+     *
+     * @return Plugin
+     *
+     * @throws PluginException
+     */
     public function registerPlugin($meta, $event_yml, $source = 0)
     {
         $em = $this->entityManager;
@@ -429,6 +454,10 @@ class PluginService
         return $p;
     }
 
+    /**
+     * @param $meta
+     * @param $method
+     */
     public function callPluginManagerMethod($meta, $method)
     {
         $class = '\\Plugin'.'\\'.$meta['code'].'\\'.'PluginManager';
@@ -441,27 +470,34 @@ class PluginService
         }
     }
 
+    /**
+     * @param Plugin $plugin
+     * @param bool $force
+     *
+     * @return bool
+     */
     public function uninstall(\Eccube\Entity\Plugin $plugin, $force = true)
     {
         $pluginDir = $this->calcPluginDir($plugin->getCode());
         ConfigManager::removePluginConfigCache();
-        CacheUtil::clear($this->app, false);
+        $this->cacheUtil->clearCache();
         $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), 'disable');
         $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), 'uninstall');
         $this->disable($plugin);
         $this->unregisterPlugin($plugin);
 
-        if ($force) {
-            $this->deleteFile($pluginDir);
-            $this->removeAssets($plugin->getCode());
-        }
-
         // スキーマを更新する
+        //FIXME: Update schema before no affect
         $this->schemaService->updateSchema([], $this->projectRoot.'/app/proxy/entity');
 
         // プラグインのネームスペースに含まれるEntityのテーブルを削除する
         $namespace = 'Plugin\\'.$plugin->getCode().'\\Entity';
         $this->schemaService->dropTable($namespace);
+
+        if ($force) {
+            $this->deleteFile($pluginDir);
+            $this->removeAssets($plugin->getCode());
+        }
 
         ConfigManager::writePluginConfigCache();
 
@@ -524,7 +560,7 @@ class PluginService
         }, $enabledPluginCodes);
 
         return $this->entityProxyService->generate(
-            array_merge([$this->projectRoot.'/app/Acme/Entity'], $enabledPluginEntityDirs),
+            array_merge([$this->projectRoot.'/app/Customize/Entity'], $enabledPluginEntityDirs),
             $excludes,
             $outputDir
         );
@@ -535,7 +571,6 @@ class PluginService
         $em = $this->entityManager;
         try {
             PluginConfigManager::removePluginConfigCache();
-            CacheUtil::clear($this->app, false);
             $pluginDir = $this->calcPluginDir($plugin->getCode());
             $em->getConnection()->beginTransaction();
             $plugin->setEnabled($enable ? true : false);
@@ -574,7 +609,7 @@ class PluginService
         $tmp = null;
         try {
             PluginConfigManager::removePluginConfigCache();
-            CacheUtil::clear($this->app, false);
+            $this->cacheUtil->clearCache();
             $tmp = $this->createTempDir();
 
             $this->unpackPluginArchive($path, $tmp); //一旦テンポラリに展開

@@ -1,25 +1,14 @@
 {#
 This file is part of EC-CUBE
 
-Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
 
 http://www.lockon.co.jp/
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
 #}
-{% extends '@admin/styleguide_frame.twig' %}
+{% extends '@admin/default_frame.twig' %}
 
 {% set menus = ['shipping', 'shipping_edit'] %}
 
@@ -100,26 +89,26 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         {# TODO: Should move logic js into js file intead of twig #}
         var shippedNotifyModal = $('#shippedNotifyModal'),
             shippingForm = $('#form_shipping'),
-            shippingStatusSelect = shippingForm.find('select[name*="ShippingStatus"]');
+            shippingDateInput = shippingForm.find('input[name*="shipping_date"]');
 
-        shippingStatusSelect.on('change', function() {
-            if ($(this).val() == {{ constant('Eccube\\Entity\\Master\\ShippingStatus::SHIPPED') }}) {
-                {%  if Shipping.ShippingStatus and  Shipping.ShippingStatus.id != constant('Eccube\\Entity\\Master\\ShippingStatus::SHIPPED') %}
-                    shippingForm.find('#btn_save')
-                        .attr('data-toggle', 'modal')
-                        .attr('data-target', '#shippedNotifyModal')
-                        .attr('type', 'button');
-                {% endif %}
-            } else {
-                {%  if Shipping.ShippingStatus and  Shipping.ShippingStatus.id != constant('Eccube\\Entity\\Master\\ShippingStatus::SHIPPED') %}
+        shippingDateInput.on('change', function() {
+            if ($(this).val() == '') {
+                {% if Shipping.isShipped == false %}
                     shippingForm.find('#btn_save')
                         .attr('type', 'submit')
                         .removeAttr('data-toggle')
                         .removeAttr('data-target');
                 {%  endif %}
+            } else {
+                {% if Shipping.isShipped == false %}
+                    shippingForm.find('#btn_save')
+                        .attr('data-toggle', 'modal')
+                        .attr('data-target', '#shippedNotifyModal')
+                        .attr('type', 'button');
+                {% endif %}
             }
         });
-        shippingStatusSelect.trigger('change');
+        shippingDateInput.trigger('change');
         shippedNotifyModal.on('show.bs.modal', function(e) {
             var viewUrl = $('#viewEmail');
             if (viewUrl.length) {
@@ -135,7 +124,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% block main %}
     <form action="{{ Shipping.id ? url('admin_shipping_edit', {id: Shipping.id}) : url('admin_shipping_new') }}"
-          method="post" id="form_shipping">
+          method="post" id="form_shipping" class="h-adr">
+        <span class="p-country-name" style="display:none;">Japan</span>
         {{ form_widget(form._token) }}
         <div class="c-contentsArea__cols">
             <div class="c-contentsArea__primaryCol">
@@ -215,32 +205,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     {{ form_errors(form.kana.kana02) }}
                                                     {{ form_widget(form.company_name) }}
                                                     {{ form_errors(form.company_name) }}
-                                                    {{ form_widget(form.zip.zip01) }}-{{ form_widget(form.zip.zip02) }}
-                                                    {{ form_errors(form.zip.zip01) }}{{ form_errors(form.zip.zip02) }}
+                                                    {{ form_widget(form.postal_code) }}
+                                                    {{ form_errors(form.postal_code) }}
                                                     {{ form_widget(form.address.pref) }}
                                                     {{ form_errors(form.address.pref) }}
                                                     {{ form_widget(form.address.addr01, {'attr':{'placeholder':'admin.shipping.edit.736'}}) }}
                                                     {{ form_errors(form.address.addr01) }}
                                                     {{ form_widget(form.address.addr02, {'attr':{'placeholder':'admin.shipping.edit.737'}}) }}
                                                     {{ form_errors(form.address.addr02) }}
-                                                    {{ form_widget(form.tel.tel01) }}
-                                                    {{ form_errors(form.tel.tel01) }}
-                                                    {{ form_widget(form.tel.tel02) }}
-                                                    {{ form_errors(form.tel.tel02) }}
-                                                    {{ form_widget(form.tel.tel03) }}
-                                                    {{ form_errors(form.tel.tel03) }}
-                                                    {{ form_widget(form.fax.fax01) }}
-                                                    {{ form_errors(form.fax.fax01) }}
-                                                    {{ form_widget(form.fax.fax02) }}
-                                                    {{ form_errors(form.fax.fax02) }}
-                                                    {{ form_widget(form.fax.fax03) }}
-                                                    {{ form_errors(form.fax.fax03) }}
+                                                    {{ form_widget(form.phone_number) }}
+                                                    {{ form_errors(form.phone_number) }}
                                                 </div>
                                                 {% if Shipping.id %}
                                                     <label>{{ Shipping.name01 }} {{ Shipping.name02 }}（{{ Shipping.kana01 }} {{ Shipping.kana02 }}）<br>
-                                                        {{ 'admin.shipping.edit.zip'|trans({
-                                                            '%zip01%': Shipping.zip01,
-                                                            '%zip02%': Shipping.zip02
+                                                        {{ 'admin.shipping.edit.postal_code'|trans({
+                                                            '%postal_code%': Shipping.postal_code
                                                         }) }}<br>
                                                         {{ Shipping.pref ~ Shipping.addr01 ~ Shipping.addr02 }}<br><a
                                                                 href="#" id="edit-shipping-addr"><i
@@ -255,17 +234,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <div class="row mb-2">
                                             <div class="col-3"><span>{{ 'admin.shipping.edit.orderer'|trans }}</span></div>
                                             <div class="col">
-                                                {% if Shipping.id %}
-                                                    {% for Order in Shipping.Orders %}
-                                                        <label>{{ Order.name01 }} {{ Order.name02 }}
-                                                            ({{ Order.kana01 }} {{ Order.kana02 }})
-                                                            <br>{{ 'admin.shipping.edit.zip'|trans({
-                                                                '%zip01%': Order.zip01,
-                                                                '%zip02%': Order.zip02
-                                                            }) }}
-                                                            <br>{{ Order.pref.name ~ Order.addr01 ~ Order.addr02 }}
-                                                        </label>
-                                                    {% endfor %}
+                                                {% if Shipping.id and Shipping.Order %}
+                                                    <label>{{ Shipping.Order.name01 }} {{ Shipping.Order.name02 }}
+                                                        ({{ Shipping.Order.kana01 }} {{ Shipping.Order.kana02 }})
+                                                        <br>{{ 'admin.shipping.edit.postal_code'|trans({
+                                                            '%postal_code%': Shipping.Order.postal_code
+                                                        }) }}
+                                                        <br>{{ Shipping.Order.pref.name ~ Shipping.Order.addr01 ~ Shipping.Order.addr02 }}
+                                                    </label>
                                                 {% else %}
                                                     {# TODO 新規登録時の注文者情報をどう扱うか検討 #}
                                                 {% endif %}
@@ -309,7 +285,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             <div class="col-3"><i class="fa fa-truck mr-1"
                                                                   aria-hidden="true"></i><span>{{ 'admin.shipping.edit.ship_date'|trans }}</span></div>
                                             <div class="col">
-                                                <span>{{ Shipping.id ? Shipping.shipping_date|date_min }}</span></div>
+                                                {{ form_widget(form.shipping_date) }}
+                                                {{ form_errors(form.shipping_date) }}
+                                            </div>
                                         </div>
                                         <div class="row mb-2 align-items-center">
                                             <div class="col-3"><i class="fa fa-refresh mr-1"
@@ -431,10 +409,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     </div>
                     <div class="col-6">
                         <div class="row align-items-center justify-content-end">
-                            <div class="col-auto">
-                                {{ form_widget(form.ShippingStatus) }}
-                                {{ form_errors(form.ShippingStatus) }}
-                            </div>
                             <div class="col-auto">
                                 <button type="submit" class="btn btn-ec-conversion px-4" id="btn_save">
                                     {{ 'admin.shipping.edit.register_shipping'|trans }}

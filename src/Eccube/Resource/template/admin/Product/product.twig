@@ -1,20 +1,14 @@
 {#
 This file is part of EC-CUBE
-Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+
 http://www.lockon.co.jp/
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
 #}
-{% extends '@admin/styleguide_frame.twig' %}
+{% extends '@admin/default_frame.twig' %}
 
 {% set menus = ['product', 'product_edit'] %}
 
@@ -45,6 +39,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
     <script>
         $(function () {
+            // Todo: fix drag&drop style
             $("#thumb").sortable({
                 cursor: 'move',
                 opacity: 0.7,
@@ -67,8 +62,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 }
             });
             {% endif %}
-            {# TODO: 画像の削除ができるように #}
-            var proto_img = '<div class="c-form__fileUploadThumbnail" style="background-image:url(\'__path__\');"></div>';
+            var proto_img = '<div class="c-form__fileUploadThumbnail" style="background-image:url(\'__path__\');">' +
+                '<span class="delete-image"><i class="fa fa-times" aria-hidden="true"></i></span>' +
+                '</div>';
             var proto_add = '{{ form_widget(form.add_images.vars.prototype) }}';
             var proto_del = '{{ form_widget(form.delete_images.vars.prototype) }}';
             {% for image in form.images %}
@@ -86,6 +82,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             {% for delete_image in form.delete_images %}
             $("#thumb").append('{{ form_widget(delete_image) }}');
             {% endfor %}
+            // Todo: fix hideSvg
             var hideSvg = function () {
                 if ($("#thumb li").length > 0) {
                     $("#icon_no_image").css("display", "none");
@@ -93,6 +90,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     $("#icon_no_image").css("display", "");
                 }
             };
+            // Todo: fix update sort by drag&drop
             var updateSortNo = function () {
                 $("#thumb li").each(function (index) {
                     $(this).find(".sort_no_images").remove();
@@ -106,14 +104,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             updateSortNo();
             // Delete of images
             var count_del = 0;
-            $("#thumb").on("click", ".delete-image", function () {
+            $("#thumb").on("click", '.delete-image', function () {
                 var $new_delete_image = $(proto_del.replace(/__name__/g, count_del));
-                var src = $(this).prev().attr('src')
-                    .replace('{{ asset('', 'temp_image') }}', '')
-                    .replace('{{ asset('', 'save_image') }}', '');
+                var thumbnail = $(this).parents('div.c-form__fileUploadThumbnail');
+                var src = $(thumbnail).find('input').val();
                 $new_delete_image.val(src);
                 $("#thumb").append($new_delete_image);
-                $(this).parent("li").remove();
+                $(thumbnail).remove();
                 hideSvg();
                 updateSortNo();
                 count_del++;
@@ -431,33 +428,23 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 </span>
                                             </div>
                                         </div>
-                                        <div class="col">
-                                            {{ form_widget(form.class.price02) }}
-                                            {{ form_errors(form.class.price02) }}
-                                            <div class="d-inline-block mb-2" data-toggle="collapse" href="#addPrice"
-                                                 role="button" aria-expanded="false" aria-controls="addPrice">
-                                                <a>
-                                                    <i class="fa fa-plus-square-o font-weight-bold mr-1"></i>
-                                                    <span class="font-weight-bold text-ec-black">
-                                                        {{ 'admin.product.product.add_price01'|trans }}
-                                                    </span>
-                                                </a>
+                                        <div class="col mb-2">
+                                            <div>
+                                                {{ form_widget(form.class.price02) }}
+                                                {{ form_errors(form.class.price02) }}
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="collapse ec-collapse" id="addPrice">
-                                        <div class="row bg-ec-formGray pt-3 mb-2">
-                                            <div class="col-3">
-                                                <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
-                                                     title="Tooltip">
-                                                    <span>{{ 'admin.product.product.price01'|trans }}</span>
-                                                    <i class="fa fa-question-circle fa-lg ml-1"></i>
-                                                    <span class="badge badge-primary ml-1">
-                                                        {{ 'admin.product.product.require'|trans }}
-                                                    </span>
-                                                </div>
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
+                                                 title="Tooltip">
+                                                <span>{{ 'admin.product.product.price01'|trans }}</span>
+                                                <i class="fa fa-question-circle fa-lg ml-1"></i>
                                             </div>
-                                            <div class="col mb-4">
+                                        </div>
+                                        <div class="col mb-2">
+                                            <div>
                                                 {{ form_widget(form.class.price01) }}
                                                 {{ form_errors(form.class.price01) }}
                                             </div>
@@ -491,7 +478,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     {#</label>#}
                                                 {#</div>#}
                                                 {{ form_widget(form.class.stock_unlimited) }}
-                                                {{ form_errors(form.class.stock_unlimited) }}
                                             </div>
                                         </div>
                                     </div>
@@ -593,25 +579,47 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {% endif %}
                                 {% endif %}
 
-                                <div class="extra-form">
-                                    {% for f in form.getIterator %}
-                                        {% if f.vars.name matches '[^plg*]' %}
-                                            {{ form_row(f) }}
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
-
                                 {# エンティティ拡張の自動出力 #}
-                                {% for f in form %}
-                                    {# auto_render有効時に出力 #}
-                                    {% if f.vars.eccube_form_options.auto_render %}
-                                        {# form_themeが設定されている場合にthemeを適用 #}
-                                        {% if f.vars.eccube_form_options.form_theme %}
-                                            {% form_theme f f.vars.eccube_form_options.form_theme %}
-                                        {% endif %}
+                                {% for f in form if f.vars.eccube_form_options.auto_render %}
+                                    {% if f.vars.eccube_form_options.form_theme %}
+                                        {% form_theme f f.vars.eccube_form_options.form_theme %}
                                         {{ form_row(f) }}
+                                    {% else %}
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <span>{{ f.vars.label|trans }}</span>
+                                            </div>
+                                            <div class="col mb-2">
+                                                <div>
+                                                    {{ form_widget(f) }}
+                                                    {{ form_errors(f) }}
+                                                </div>
+                                            </div>
+                                        </div>
                                     {% endif %}
                                 {% endfor %}
+
+                                {% if has_class == false %}
+                                    {% for f in form.class if f.vars.eccube_form_options.auto_render %}
+                                        {% if f.vars.eccube_form_options.form_theme %}
+                                            {% form_theme f f.vars.eccube_form_options.form_theme %}
+                                            {{ form_row(f) }}
+                                        {% else %}
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <span>{{ f.vars.label|trans }}</span>
+                                                </div>
+                                                <div class="col mb-2">
+                                                    <div>
+                                                        {{ form_widget(f) }}
+                                                        {{ form_errors(f) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+
                             </div>
                         </div>
                     </div>

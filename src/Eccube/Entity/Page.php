@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -220,6 +231,13 @@ class Page extends \Eccube\Entity\AbstractEntity
         return $Layout ? $Layout->getBlocks(self::TARGET_ID_HEAD) : [];
     }
 
+    public function getBodyAfter()
+    {
+        $Layout = current($this->getLayouts());
+
+        return $Layout ? $Layout->getBlocks(self::TARGET_ID_BODY_AFTER) : [];
+    }
+
     public function getHeader()
     {
         $Layout = current($this->getLayouts());
@@ -274,6 +292,20 @@ class Page extends \Eccube\Entity\AbstractEntity
         $Layout = current($this->getLayouts());
 
         return $Layout ? $Layout->getBlocks(self::TARGET_ID_FOOTER) : [];
+    }
+
+    public function getDrawer()
+    {
+        $Layout = current($this->getLayouts());
+
+        return $Layout ? $Layout->getBlocks(self::TARGET_ID_DRAWER) : [];
+    }
+
+    public function getCloseBodyBefore()
+    {
+        $Layout = current($this->getLayouts());
+
+        return $Layout ? $Layout->getBlocks(self::TARGET_ID_CLOSE_BODY_BEFORE) : [];
     }
 
     /**

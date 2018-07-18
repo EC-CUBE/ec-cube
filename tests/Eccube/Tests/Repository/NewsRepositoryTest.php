@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Eccube\Tests\Repository;
 
 use Eccube\Entity\News;
@@ -33,7 +44,7 @@ class NewsRepositoryTest extends EccubeTestCase
                 ->setUrl($faker->url)
                 ->setLinkMethod(1)
                 ->setSortNo($i)
-                ;
+                ->setPublishDate(new \DateTime());
             $this->entityManager->persist($News);
         }
         $this->entityManager->flush();
@@ -149,5 +160,14 @@ class NewsRepositoryTest extends EccubeTestCase
         $this->newsRepo->delete($News);
 
         self::assertNull($this->newsRepo->find($newsId));
+    }
+
+    public function testGetList()
+    {
+        $arrNews = $this->newsRepo->getList();
+        $this->actual = count($arrNews);
+        $this->expected = 3;
+
+        $this->verify();
     }
 }

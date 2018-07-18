@@ -1,24 +1,14 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Form\Type\Admin;
@@ -30,9 +20,9 @@ use Eccube\Form\DataTransformer;
 use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\KanaType;
 use Eccube\Form\Type\NameType;
+use Eccube\Form\Type\PhoneNumberType;
+use Eccube\Form\Type\PostalType;
 use Eccube\Form\Type\PriceType;
-use Eccube\Form\Type\TelType;
-use Eccube\Form\Type\ZipType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -42,6 +32,7 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -109,12 +100,12 @@ class OrderType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('zip', ZipType::class, [
+            ->add('postal_code', PostalType::class, [
                 'required' => false,
+                'constraints' => [
+                    new Assert\NotBlank(),
+                ],
                 'options' => [
-                    'constraints' => [
-                        new Assert\NotBlank(),
-                    ],
                     'attr' => ['class' => 'p-postal-code'],
                 ],
             ])
@@ -154,17 +145,11 @@ class OrderType extends AbstractType
                     new Assert\Email(['strict' => true]),
                 ],
             ])
-            ->add('tel', TelType::class, [
+            ->add('phone_number', PhoneNumberType::class, [
                 'required' => false,
-                'options' => [
-                    'constraints' => [
-                        new Assert\NotBlank(),
-                    ],
+                'constraints' => [
+                    new Assert\NotBlank(),
                 ],
-            ])
-            ->add('fax', TelType::class, [
-                'label' => 'order.label.fax_number',
-                'required' => false,
             ])
             ->add('company_name', TextType::class, [
                 'label' => 'order.label.company_name',
@@ -198,7 +183,7 @@ class OrderType extends AbstractType
             ])
             ->add('add_point', NumberType::class, [
                 'required' => false,
-                'label' => '加算ポイント', // TODO 未翻訳
+                'label' => 'admin.common.label.add_point',
                 'constraints' => [
                     new Assert\Regex([
                         'pattern' => "/^\d+$/u",
@@ -209,7 +194,7 @@ class OrderType extends AbstractType
             ])
             ->add('use_point', NumberType::class, [
                 'required' => false,
-                'label' => '利用ポイント', // TODO 未翻訳
+                'label' => 'admin.common.label.use_point',
                 'constraints' => [
                     new Assert\Regex([
                         'pattern' => "/^\d+$/u",
@@ -254,6 +239,9 @@ class OrderType extends AbstractType
                 'prototype' => true,
                 'data' => $options['SortedItems'],
             ])
+            ->add('Shipping', ShippingType::class, [
+                'mapped' => false,
+            ])
             ->add('OrderItemsErrors', TextType::class, [
                 'mapped' => false,
             ]);
@@ -272,15 +260,20 @@ class OrderType extends AbstractType
             if (!is_null($Payment)) {
                 $Order->setPaymentMethod($Payment->getMethod());
             }
-        });
-        // 会員受注の場合、会員の性別/職業/誕生日をエンティティにコピーする
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
-            $Order = $event->getData();
+
+            // 会員受注の場合、会員の性別/職業/誕生日をエンティティにコピーする
             $Customer = $Order->getCustomer();
             if (!is_null($Customer)) {
                 $Order->setSex($Customer->getSex());
                 $Order->setJob($Customer->getJob());
                 $Order->setBirth($Customer->getBirth());
+            }
+
+            $form = $event->getForm();
+            $OrderItems = $form['OrderItems']->getData();
+            if (empty($OrderItems) || count($OrderItems) < 1) {
+                // 画面下部にエラーメッセージを表示させる
+                $form['OrderItemsErrors']->addError(new FormError(trans('admin.order.edit.product.error')));
             }
         });
     }

@@ -1,129 +1,180 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License'csvimport.text.error.format'
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Controller\Admin\Shipping;
 
-use Eccube\Controller\AbstractController;
+use Eccube\Controller\Admin\AbstractCsvImportController;
+use Eccube\Entity\Shipping;
+use Eccube\Form\Type\Admin\CsvImportType;
+use Eccube\Repository\ShippingRepository;
+use Eccube\Service\CsvImportService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Eccube\Form\Type\Admin\CsvImportType;
-use Symfony\Component\Filesystem\Filesystem;
-use Eccube\Exception\CsvImportException;
+use Symfony\Component\HttpFoundation\Request;
 
-class CsvImportController extends AbstractController
+class CsvImportController extends AbstractCsvImportController
 {
     /**
-     * @var array
+     * @var ShippingRepository
      */
-    protected $errors = [];
+    private $shippingRepository;
+
+    public function __construct(ShippingRepository $shippingRepository)
+    {
+        $this->shippingRepository = $shippingRepository;
+    }
 
     /**
-     * @var array
-     */
-    protected $headers = [
-        '商品ID',
-    ];
-
-    /**
-     * @var array
-     */
-    protected $descriptions = [
-        '項目は未決定',
-    ];
-
-    /**
-     * @var array
-     */
-    protected $columns = [
-        'id',
-    ];
-
-    /**
-     * 商品登録CSVアップロード
-     *
-     * TODO: This function is not implemented yet
+     * 出荷CSVアップロード
      *
      * @Route("/%eccube_admin_route%/shipping/shipping_csv_upload", name="admin_shipping_csv_import")
      * @Template("@admin/Shipping/csv_shipping.twig")
+     *
+     * @throws \Doctrine\DBAL\ConnectionException
      */
-    public function csvShipping()
+    public function csvShipping(Request $request)
     {
         $form = $this->formFactory->createBuilder(CsvImportType::class)->getForm();
-        $headers = [];
+        $columnConfig = $this->getColumnConfig();
+        $errors = [];
 
-        try {
-            $headers = $this->getMappedDescriptionHeaders();
+        if ($request->getMethod() === 'POST') {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $formFile = $form['import_file']->getData();
 
-            if (!empty($this->fileName)) {
-                $fs = new Filesystem();
-                $fs->remove($this->eccubeConfig['eccube_csv_temp_realdir'].'/'.$this->fileName);
-            }
-        } catch (\Exception $e) {
-            // エラーが発生しても無視する
-        }
+                if (!empty($formFile)) {
+                    $csv = $this->getImportData($formFile);
 
-        if ($this->hasErrors()) {
-            if ($this->entityManager) {
-                $this->entityManager->getConnection()->rollback();
+                    try {
+                        $this->entityManager->getConfiguration()->setSQLLogger(null);
+                        $this->entityManager->getConnection()->beginTransaction();
+
+                        $this->loadCsv($csv, $errors);
+
+                        if ($errors) {
+                            $this->entityManager->getConnection()->rollBack();
+                        } else {
+                            $this->entityManager->flush();
+                            $this->entityManager->getConnection()->commit();
+
+                            $this->addInfo('admin.shipping.csv_import.save.complete', 'admin');
+                        }
+                    } finally {
+                        $this->removeUploadedFile();
+                    }
+                }
             }
         }
 
         return [
             'form' => $form->createView(),
-            'headers' => $headers,
-            'errors' => $this->getErrors(),
+            'headers' => $columnConfig,
+            'errors' => $errors,
         ];
     }
 
-    /**
-     * TODO: This function is not implemented yet
-     *
-     * @return array
-     *
-     * @throws CsvImportException
-     */
-    public function getMappedDescriptionHeaders()
+    protected function loadCsv(CsvImportService $csv, &$errors)
     {
-        if (count($this->headers) != count($this->descriptions)) {
-            throw new CsvImportException('Incorrect mapping csv header & description');
+        $columnConfig = $this->getColumnConfig();
+
+        if ($csv === false) {
+            $errors[] = trans('csvimport.text.error.format_invalid');
         }
 
-        return array_combine($this->headers, $this->descriptions);
+        // 必須カラムの確認
+        $requiredColumns = array_map(function ($value) {
+            return $value['name'];
+        }, array_filter($columnConfig, function ($value) {
+            return $value['required'];
+        }));
+        $csvColumns = $csv->getColumnHeaders();
+        if (count(array_diff($requiredColumns, $csvColumns)) > 0) {
+            $errors[] = trans('csvimport.text.error.format_invalid');
+        }
+
+        // 行数の確認
+        $size = count($csv);
+        if ($size < 1) {
+            $errors[] = trans('csvimport.text.error.format_invalid');
+        }
+
+        $columnNames = array_combine(array_keys($columnConfig), array_column($columnConfig, 'name'));
+
+        foreach ($csv as $line => $row) {
+            // 出荷IDがなければエラー
+            if (!isset($row[$columnNames['id']])) {
+                $errors[] = trans('csvimportcontroller.require', ['%line%' => $line, '%name%' => $columnNames['id']]);
+                continue;
+            }
+
+            /* @var Shipping $Shipping */
+            $Shipping = is_numeric($row[$columnNames['id']]) ? $this->shippingRepository->find($row[$columnNames['id']]) : null;
+
+            // 存在しない出荷IDはエラー
+            if (is_null($Shipping)) {
+                $errors[] = trans('csvimportcontroller.notfound', ['%line%' => $line, '%name%' => $columnNames['id']]);
+                continue;
+            }
+
+            if (isset($row[$columnNames['tracking_number']])) {
+                $Shipping->setTrackingNumber($row[$columnNames['tracking_number']]);
+            }
+
+            if (isset($row[$columnNames['shipping_date']])) {
+                // 日付フォーマットが異なる場合はエラー
+                $shippingDate = \DateTime::createFromFormat('Y-m-d', $row[$columnNames['shipping_date']]);
+                if ($shippingDate === false) {
+                    $errors[] = trans('csvimportcontroller.invalid_date_format', ['%line%' => $line, '%name%' => $columnNames['id']]);
+                    continue;
+                }
+
+                $shippingDate->setTime(0, 0, 0);
+                $Shipping->setShippingDate($shippingDate);
+            }
+        }
     }
 
     /**
-     * @return array
+     * アップロード用CSV雛形ファイルダウンロード
+     *
+     * @Route("/%eccube_admin_route%/shipping/csv_template", name="admin_shipping_csv_template")
      */
-    protected function getErrors()
+    public function csvTemplate(Request $request)
     {
-        return $this->errors;
+        $columns = array_column($this->getColumnConfig(), 'name');
+
+        return $this->sendTemplateResponse($request, $columns, 'shipping.csv');
     }
 
-    /**
-     * @return boolean
-     */
-    protected function hasErrors()
+    protected function getColumnConfig()
     {
-        return count($this->getErrors()) > 0;
+        return [
+            'id' => [
+                'name' => trans('admin.shipping.csv_shipping.id'),
+                'description' => trans('admin.shipping.csv_shipping.id.description'),
+                'required' => true,
+            ],
+            'tracking_number' => [
+                'name' => trans('admin.shipping.csv_shipping.tracking_number'),
+                'description' => trans('admin.shipping.csv_shipping.tracking_number.description'),
+                'required' => false,
+            ],
+            'shipping_date' => [
+                'name' => trans('admin.shipping.csv_shipping.shipping_date'),
+                'description' => trans('admin.shipping.csv_shipping.shipping_date.description'),
+                'required' => false,
+            ],
+        ];
     }
 }

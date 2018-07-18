@@ -1,33 +1,22 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Service;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
-use Eccube\Form\Type\Admin\SearchShippingType;
+use Eccube\Form\Type\Admin\SearchProductType;
 use Eccube\Repository\CsvRepository;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\Master\CsvTypeRepository;
@@ -404,35 +393,15 @@ class CsvExportService
     public function getOrderQueryBuilder(Request $request)
     {
         $session = $request->getSession();
-        if ($session->has('eccube.admin.order.search')) {
-            $searchData = $session->get('eccube.admin.order.search');
-            $this->findDeserializeObjects($searchData);
-        } else {
-            $searchData = [];
-        }
+        $builder = $this->formFactory
+            ->createBuilder(SearchProductType::class);
+        $searchForm = $builder->getForm();
+
+        $viewData = $session->get('eccube.admin.order.search', []);
+        $searchData = FormUtil::submitAndGetData($searchForm, $viewData);
 
         // 受注データのクエリビルダを構築.
         $qb = $this->orderRepository
-            ->getQueryBuilderBySearchDataForAdmin($searchData);
-
-        return $qb;
-    }
-
-    /**
-     * 出荷検索用のクエリビルダを返す.
-     *
-     * @param Request $request
-     *
-     * @return \Doctrine\ORM\QueryBuilder
-     */
-    public function getShippingQueryBuilder(Request $request)
-    {
-        $session = $request->getSession();
-        $form = $this->formFactory->create(SearchShippingType::class);
-        $searchData = FormUtil::submitAndGetData($form, $session->get('eccube.admin.shipping.search', []));
-
-        // 出荷データのクエリビルダを構築.
-        $qb = $this->shippingRepository
             ->getQueryBuilderBySearchDataForAdmin($searchData);
 
         return $qb;
@@ -448,12 +417,12 @@ class CsvExportService
     public function getCustomerQueryBuilder(Request $request)
     {
         $session = $request->getSession();
-        if ($session->has('eccube.admin.customer.search')) {
-            $searchData = $session->get('eccube.admin.customer.search');
-            $this->findDeserializeObjects($searchData);
-        } else {
-            $searchData = [];
-        }
+        $builder = $this->formFactory
+            ->createBuilder(SearchProductType::class);
+        $searchForm = $builder->getForm();
+
+        $viewData = $session->get('eccube.admin.customer.search', []);
+        $searchData = FormUtil::submitAndGetData($searchForm, $viewData);
 
         // 会員データのクエリビルダを構築.
         $qb = $this->customerRepository
@@ -472,41 +441,17 @@ class CsvExportService
     public function getProductQueryBuilder(Request $request)
     {
         $session = $request->getSession();
-        if ($session->has('eccube.admin.product.search')) {
-            $searchData = $session->get('eccube.admin.product.search');
-            $this->findDeserializeObjects($searchData);
-        } else {
-            $searchData = [];
-        }
+        $builder = $this->formFactory
+            ->createBuilder(SearchProductType::class);
+        $searchForm = $builder->getForm();
+
+        $viewData = $session->get('eccube.admin.product.search', []);
+        $searchData = FormUtil::submitAndGetData($searchForm, $viewData);
+
         // 商品データのクエリビルダを構築.
         $qb = $this->productRepository
             ->getQueryBuilderBySearchDataForAdmin($searchData);
 
         return $qb;
-    }
-
-    /**
-     * セッションでシリアライズされた Doctrine のオブジェクトを取得し直す.
-     *
-     * XXX self::setExportQueryBuilder() をコールする前に EntityManager を取得したいので、引数で渡している
-     *
-     * @param array $searchData セッションから取得した検索条件の配列
-     */
-    protected function findDeserializeObjects(array &$searchData)
-    {
-        $em = $this->getEntityManager();
-        foreach ($searchData as &$Conditions) {
-            if ($Conditions instanceof ArrayCollection) {
-                $Conditions = new ArrayCollection(
-                    array_map(
-                        function ($Entity) use ($em) {
-                            return $em->getRepository(get_class($Entity))->find($Entity->getId());
-                        }, $Conditions->toArray()
-                    )
-                );
-            } elseif ($Conditions instanceof \Eccube\Entity\AbstractEntity) {
-                $Conditions = $em->getRepository(get_class($Conditions))->find($Conditions->getId());
-            }
-        }
     }
 }

@@ -300,19 +300,13 @@
                 'shipping_kana01',
                 'shipping_kana02',
                 'shipping_pref',
-                'shipping_zip01',
-                'shipping_zip02',
+                'shipping_postal_code',
                 'shipping_addr01',
                 'shipping_addr02',
-                'shipping_tel01',
-                'shipping_tel02',
-                'shipping_tel03',
+                'shipping_phone_number',
                 'shipping_company_name',
                 'shipping_country_id',
                 'shipping_zipcode',
-                'shipping_fax01',
-                'shipping_fax02',
-                'shipping_fax03'
             ];
 
             if (!document.form1.deliv_check.checked) {
@@ -453,18 +447,18 @@
     /**
      * 規格の選択状態に応じて, フィールドを設定する.
      */
+    var price02_origin = [];
     eccube.checkStock = function($form, product_id, classcat_id1, classcat_id2) {
 
         classcat_id2 = classcat_id2 ? classcat_id2 : '';
 
         var classcat2;
 
-        // 商品一覧時
         if (eccube.hasOwnProperty('productsClassCategories')) {
+            // 商品一覧時
             classcat2 = eccube.productsClassCategories[product_id][classcat_id1]['#' + classcat_id2];
-        }
-        // 詳細表示時
-        else {
+        } else {
+            // 詳細表示時
             if (typeof eccube.classCategories[classcat_id1] !== 'undefined') {
                 classcat2 = eccube.classCategories[classcat_id1]['#' + classcat_id2];
             }
@@ -491,21 +485,23 @@
             var $price01 = $('#detail_description_box__class_normal_range_price')
                 .find('.price01_default')
                 .first();
-            if (typeof this.proce01_origin === 'undefined') {
+            if (typeof this.price01_origin === 'undefined') {
                 // 初期値を保持しておく
-                this.proce01_origin = $price01.text();
+                this.price01_origin = $price01.text();
             }
-            $price01.text(this.proce01_origin);
+            $price01.text(this.price01_origin);
 
             // 販売価格
-            var $price02 = $('#detail_description_box__class_range_sale_price')
-                .find('.price02_default')
-                .first();
-            if (typeof this.proce02_origin === 'undefined') {
+            var $price02 = $form.parent().find('.price02_default').first();
+            if (typeof price02_origin[product_id] === 'undefined') {
                 // 初期値を保持しておく
-                this.proce02_origin = $price02.text();
+                price02_origin[product_id] = $price02.text();
             }
-            $price02.text(this.proce02_origin);
+            $price02.text(price02_origin[product_id]);
+
+            // 商品規格
+            var $product_class_id_dynamic = $form.find('[id^=ProductClass]');
+            $product_class_id_dynamic.val('');
 
         } else {
             // 商品コード
@@ -530,28 +526,26 @@
             var $price01 = $('#detail_description_box__class_normal_range_price')
                 .find('.price01_default')
                 .first();
-            if (typeof this.proce01_origin === 'undefined') {
+            if (typeof this.price01_origin === 'undefined') {
                 // 初期値を保持しておく
-                this.proce01_origin = $price01.text();
+                this.price01_origin = $price01.text();
             }
             if (classcat2 && typeof classcat2.price01_inc_tax !== 'undefined' && String(classcat2.price01_inc_tax).length >= 1) {
                 $price01.text('¥ ' + classcat2.price01_inc_tax);
             } else {
-                $price01.text(this.proce01_origin);
+                $price01.text(this.price01_origin);
             }
 
             // 販売価格
-            var $price02 = $('#detail_description_box__class_range_sale_price')
-                .find('.price02_default')
-                .first();
-            if (typeof this.proce02_origin === 'undefined') {
+            var $price02 = $form.parent().find('.price02_default').first();
+            if (typeof price02_origin[product_id] === 'undefined') {
                 // 初期値を保持しておく
-                this.proce02_origin = $price02.text();
+                price02_origin[product_id] = $price02.text();
             }
             if (classcat2 && typeof classcat2.price02_inc_tax !== 'undefined' && String(classcat2.price02_inc_tax).length >= 1) {
                 $price02.text('¥ ' + classcat2.price02_inc_tax);
             } else {
-                $price02.text(this.proce02_origin);
+                $price02.text(price02_origin[product_id]);
             }
 
             // ポイント

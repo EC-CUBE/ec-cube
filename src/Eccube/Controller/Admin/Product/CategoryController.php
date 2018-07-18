@@ -1,29 +1,20 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Controller\Admin\Product;
 
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\Category;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -39,9 +30,6 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-/**
- * @Route(service=CategoryController::class)
- */
 class CategoryController extends AbstractController
 {
     /**
@@ -77,6 +65,7 @@ class CategoryController extends AbstractController
     public function index(Request $request, $parent_id = null, $id = null)
     {
         if ($parent_id) {
+            /** @var Category $Parent */
             $Parent = $this->categoryRepository->find($parent_id);
             if (!$Parent) {
                 throw new NotFoundHttpException(trans('category.text.error.no_parent_category'));
@@ -188,9 +177,18 @@ class CategoryController extends AbstractController
             $formViews[$key] = $value->createView();
         }
 
+        $Ids = [];
+        if ($Parent && $Parent->getParents()) {
+            foreach ($Parent->getParents() as $item) {
+                $Ids[] = $item['id'];
+            }
+        }
+        $Ids[] = intval($parent_id);
+
         return [
             'form' => $form->createView(),
             'Parent' => $Parent,
+            'Ids' => $Ids,
             'Categories' => $Categories,
             'TopCategories' => $TopCategories,
             'TargetCategory' => $TargetCategory,

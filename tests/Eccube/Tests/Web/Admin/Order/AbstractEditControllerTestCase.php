@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Eccube\Tests\Web\Admin\Order;
 
 use Eccube\Entity\Customer;
@@ -31,8 +42,6 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
     public function createFormData(Customer $Customer, Product $Product = null)
     {
         $faker = $this->getFaker();
-        $tel = explode('-', $faker->phoneNumber);
-
         $email = $faker->safeEmail;
         $delivery_date = $faker->dateTimeBetween('now', '+ 5 days');
 
@@ -54,6 +63,25 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
             ];
         }
 
+        $shipping = [
+            'name' => [
+                'name01' => $faker->lastName,
+                'name02' => $faker->firstName,
+            ],
+            'kana' => [
+                'kana01' => $faker->lastKanaName,
+                'kana02' => $faker->firstKanaName,
+            ],
+            'postal_code' => $faker->postcode,
+            'address' => [
+                'pref' => '5',
+                'addr01' => $faker->city,
+                'addr02' => $faker->streetAddress,
+            ],
+            'phone_number' => $faker->phoneNumber,
+            'Delivery' => 1,
+        ];
+
         $order = [
             '_token' => 'dummy',
             'Customer' => $Customer->getId(),
@@ -67,25 +95,13 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
                 'kana02' => $faker->firstKanaName,
             ],
             'company_name' => $faker->company,
-            'zip' => [
-                'zip01' => $faker->postcode1(),
-                'zip02' => $faker->postcode2(),
-            ],
+            'postal_code' => $faker->postcode,
             'address' => [
                 'pref' => '5',
                 'addr01' => $faker->city,
                 'addr02' => $faker->streetAddress,
             ],
-            'tel' => [
-                'tel01' => $tel[0],
-                'tel02' => $tel[1],
-                'tel03' => $tel[2],
-            ],
-            'fax' => [
-                'fax01' => $tel[0],
-                'fax02' => $tel[1],
-                'fax03' => $tel[2],
-            ],
+            'phone_number' => $faker->phoneNumber,
             'email' => $email,
             'message' => $faker->realText,
             'Payment' => 1,     // XXX ハードコーディング
@@ -96,6 +112,7 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
             'OrderItems' => $OrderItems,
             'add_point' => 0,
             'use_point' => 0,
+            'Shipping' => $shipping,
         ];
 
         return $order;
@@ -137,6 +154,28 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
         if (is_object($Customer)) {
             $customer_id = $Customer->getId();
         }
+
+        $Shipping = $Order->getShippings()[0];
+
+        $shipping = [
+            'name' => [
+                'name01' => $Shipping->getName01(),
+                'name02' => $Shipping->getName02(),
+            ],
+            'kana' => [
+                'kana01' => $Shipping->getKana01(),
+                'kana02' => $Shipping->getKana02(),
+            ],
+            'postal_code' => $Shipping->getPostalCode(),
+            'address' => [
+                'pref' => $Shipping->getPref()->getId(),
+                'addr01' => $Shipping->getAddr01(),
+                'addr02' => $Shipping->getAddr02(),
+            ],
+            'phone_number' => $Shipping->getPhoneNumber(),
+            'Delivery' => 1,
+        ];
+
         //受注フォーム
         $order = [
             '_token' => 'dummy',
@@ -150,26 +189,14 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
                 'kana01' => $Order->getKana01(),
                 'kana02' => $Order->getKana02(),
             ],
-            'zip' => [
-                'zip01' => $Order->getZip01(),
-                'zip02' => $Order->getZip02(),
-            ],
+            'postal_code' => $Order->getPostalCode(),
             'address' => [
                 'pref' => $Order->getPref()->getId(),
                 'addr01' => $Order->getAddr01(),
                 'addr02' => $Order->getAddr02(),
             ],
             'email' => $Order->getEmail(),
-            'tel' => [
-                'tel01' => $Order->getTel01(),
-                'tel02' => $Order->getTel02(),
-                'tel03' => $Order->getTel03(),
-            ],
-            'fax' => [
-                'fax01' => $Order->getFax01(),
-                'fax02' => $Order->getFax02(),
-                'fax03' => $Order->getFax03(),
-            ],
+            'phone_number' => $Order->getPhoneNumber(),
             'company_name' => $Order->getCompanyName(),
             'message' => $Order->getMessage(),
             'OrderItems' => $orderItem,
@@ -180,6 +207,7 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
             'note' => $Order->getNote(),
             'add_point' => 0,
             'use_point' => 0,
+            'Shipping' => $shipping,
         ];
 
         return $order;

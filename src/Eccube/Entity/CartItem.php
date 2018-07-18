@@ -1,107 +1,86 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * CartItem
+ *
+ * @ORM\Table(name="dtb_cart_item")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+ * @ORM\HasLifecycleCallbacks()
+ * @ORM\Entity(repositoryClass="Eccube\Repository\CartItemRepository")
+ */
 class CartItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
 {
     use PointRateTrait;
 
-    private $price;
-    private $quantity;
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="bigint", options={"unsigned":true})
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="price", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
+     */
+    private $price = 0;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="quantity", type="decimal", precision=10, scale=0, options={"unsigned":true,"default":0})
+     */
+    private $quantity = 0;
+
+    /**
+     * @var \Eccube\Entity\ProductClass
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\ProductClass")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="product_class_id", referencedColumnName="id")
+     * })
+     */
     private $ProductClass;
+
+    /**
+     * @var \Eccube\Entity\Cart
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Cart", inversedBy="CartItems")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="cart_id", referencedColumnName="id", onDelete="CASCADE")
+     * })
+     */
+    private $Cart;
+
+    /**
+     * sessionのシリアライズのために使われる
+     *
+     * @var int
+     */
     private $product_class_id;
-
-    /**
-     * @deprecated
-     */
-    private $class_name;
-
-    /**
-     * @deprecated
-     */
-    private $class_id;
-
-    /**
-     * @deprecated
-     */
-    private $object;
-
-    public function __construct()
-    {
-    }
 
     public function __sleep()
     {
         return ['product_class_id', 'price', 'quantity'];
-    }
-
-    /**
-     * @param  string   $class_name
-     *
-     * @return CartItem
-     *
-     * @deprecated
-     */
-    public function setClassName($class_name)
-    {
-        $this->class_name = $class_name;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     *
-     * @deprecated
-     */
-    public function getClassName()
-    {
-        return $this->class_name;
-    }
-
-    /**
-     * @param  string   $class_id
-     *
-     * @return CartItem
-     *
-     * @deprecated
-     */
-    public function setClassId($class_id)
-    {
-        $this->class_id = $class_id;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     *
-     * @deprecated
-     */
-    public function getClassId()
-    {
-        return $this->class_id;
     }
 
     /**
@@ -150,30 +129,6 @@ class CartItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
     public function getTotalPrice()
     {
         return $this->getPrice() * $this->getQuantity();
-    }
-
-    /**
-     * @param  object   $object
-     *
-     * @return CartItem
-     *
-     * @deprecated
-     */
-    public function setObject($object)
-    {
-        $this->object = $object;
-
-        return $this;
-    }
-
-    /**
-     * @return object
-     *
-     * @deprecated
-     */
-    public function getObject()
-    {
-        return $this->object;
     }
 
     /**
@@ -270,5 +225,21 @@ class CartItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
     {
         // TODO ItemInterfaceに追加, Cart::priceは税込み金額が入っているので,フィールドを分ける必要がある
         return $this->price;
+    }
+
+    /**
+     * @return Cart
+     */
+    public function getCart()
+    {
+        return $this->Cart;
+    }
+
+    /**
+     * @param Cart $Cart
+     */
+    public function setCart(Cart $Cart)
+    {
+        $this->Cart = $Cart;
     }
 }

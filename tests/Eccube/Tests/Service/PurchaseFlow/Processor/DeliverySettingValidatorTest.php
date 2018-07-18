@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Eccube\Tests\Service;
 
 use Eccube\Entity\CartItem;
@@ -56,7 +67,7 @@ class DeliverySettingValidatorTest extends EccubeTestCase
      */
     public function testDeliverySettingIsValid()
     {
-        $result = $this->validator->process($this->cartItem, new PurchaseContext());
+        $result = $this->validator->execute($this->cartItem, new PurchaseContext());
 
         self::assertFalse($result->isError());
     }
@@ -70,7 +81,7 @@ class DeliverySettingValidatorTest extends EccubeTestCase
         $SaleType->setId(10000);
         $this->ProductClass->setSaleType($SaleType);
 
-        $this->validator->process($this->cartItem, new PurchaseContext());
+        $this->validator->execute($this->cartItem, new PurchaseContext());
 
         self::assertEquals(0, $this->cartItem->getQuantity());
     }

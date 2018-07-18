@@ -1,23 +1,12 @@
 {#
 This file is part of EC-CUBE
 
-Copyright(c) 2000-2018 LOCKON CO.,LTD. All Rights Reserved.
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
 
 http://www.lockon.co.jp/
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
 #}
 {{ Shipping.name01 }} {{ Shipping.name02 }} 様
 
@@ -44,10 +33,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% if Shipping.company_name %}
     会社名　：{{ Shipping.company_name }}
 {% endif %}
-郵便番号：〒{{ Shipping.zip01 }}-{{ Shipping.zip02 }}
+郵便番号：〒{{ Shipping.postal_code }}
 住所　　：{{ Shipping.Pref.name }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}
-電話番号：{{ Shipping.tel01 }}-{{ Shipping.tel02 }}-{{ Shipping.tel03 }}
-FAX番号 ：{{ Shipping.fax01 }}-{{ Shipping.fax02 }}-{{ Shipping.fax03 }}
+電話番号：{{ Shipping.phone_number }}
 
 ************************************************
 　配送情報
@@ -58,10 +46,9 @@ FAX番号 ：{{ Shipping.fax01 }}-{{ Shipping.fax02 }}-{{ Shipping.fax03 }}
 {% if Shipping.company_name %}
     会社名　：{{ Shipping.company_name }}
 {% endif %}
-郵便番号：〒{{ Shipping.zip01 }}-{{ Shipping.zip02 }}
+郵便番号：〒{{ Shipping.postal_code }}
 住所　　：{{ Shipping.Pref.name }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}
-電話番号：{{ Shipping.tel01 }}-{{ Shipping.tel02 }}-{{ Shipping.tel03 }}
-FAX番号 ：{{ Shipping.fax01 }}-{{ Shipping.fax02 }}-{{ Shipping.fax03 }}
+電話番号：{{ Shipping.phone_number }}
 
 お届け日：{{ Shipping.shipping_delivery_date is empty ? '指定なし' : Shipping.shipping_delivery_date|date_format }}
 お届け時間：{{ Shipping.shipping_delivery_time|default('指定なし') }}

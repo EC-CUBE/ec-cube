@@ -1,72 +1,64 @@
 {#
 This file is part of EC-CUBE
-Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+
 http://www.lockon.co.jp/
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
 #}
-<div class="table_list plugin-table">
-    <div class="table-responsive with-border">
-        <table class="table table-hover table-condensed">
-            <thead>
-            <tr>
-                <th>{{'admin.store.unregisterd_plugin_table.941'|trans}}</th>
-                <th>{{'admin.store.unregisterd_plugin_table.942'|trans}}</th>
-                <th>{{'admin.store.unregisterd_plugin_table.943'|trans}}</th>
-                <th>{{'admin.store.unregisterd_plugin_table.944'|trans}}</th>
-                <th>{{'admin.store.unregisterd_plugin_table.945'|trans}}</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for Plugin in Plugins %}
-                <form id="{{ Plugin.name }}" name="{{ Plugin.name }}" method="post" action="">
-                    <tr class="{% if Plugin.enabled == false %}active{% endif %}">
-                        {% if Plugin.name is defined %}
-                            <td class="tp">
-                                <strong>{{ Plugin.name }}</strong>
-                            </td>
-                        {% else %}
-                            <td class="tp">
-                                <strong>{{'admin.store.unregisterd_plugin_table.946'|trans}}</strong>
-                            </td>
-                        {% endif %}
-                        {% if Plugin.version is defined %}
-                            <td class="tv text-center">{{ Plugin.version }}</td>
-                        {% else %}
-                            <td class="tv text-center">{{'admin.store.unregisterd_plugin_table.947'|trans}}</td>
-                        {% endif %}
-                        {% if Plugin.code is defined %}
-                            <td class="tc"><p>{{ Plugin.code }}</p>
-                                {% if attribute(app.config[Plugin.code].const, 'readme') is defined %}
-                                    <a href="#" class="view_readme" data-toggle="modal" data-target="#readmeModal" data-name="{{ Plugin.name }}" data-readme="{{ attribute(app.config[Plugin.code].const, 'readme')  }}">詳細を表示</a>
-                                {% endif %}
-                            </td>
-                        {% else %}
-                            <td class="tc">{{'admin.store.unregisterd_plugin_table.949'|trans}}</td>
-                        {% endif %}
-                        <td class="tu">
-                            &nbsp;-&nbsp;
+<div class="card-body p-0">
+    <table class="table table-sm">
+        <thead>
+        <tr>
+            <th class="border-top-0 pl-3 pt-2 pb-2">{{'admin.store.unregisterd_plugin_table.941'|trans}}</th>
+            <th class="border-top-0 pt-2 pb-2">{{'admin.store.unregisterd_plugin_table.942'|trans}}</th>
+            <th class="border-top-0 pt-2 pb-2">{{'admin.store.unregisterd_plugin_table.943'|trans}}</th>
+            <th class="border-top-0 pt-2 pb-2">{{'admin.store.unregisterd_plugin_table.944'|trans}}</th>
+            <th class="border-top-0 pt-2 pb-2">{{'admin.store.unregisterd_plugin_table.945'|trans}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for Plugin in Plugins %}
+            <form id="{{ Plugin.name }}" name="{{ Plugin.name }}" method="post" action="">
+                <tr class="{% if Plugin.enabled == false %}active{% endif %}">
+                    {% if Plugin.name is defined %}
+                        <td class="align-middle pl-3">
+                            <strong>{{ Plugin.name }}</strong>
                         </td>
-                        <td class="ta text-center">
-                            {% if unregisterdPluginsConfigPages[Plugin.code] is defined %}
-                                <a href='{{ unregisterdPluginsConfigPages[Plugin.code]}}'>{{'admin.store.unregisterd_plugin_table.950'|trans}}</a>
-                            {% else %}
-                                &nbsp;-&nbsp;
+                    {% else %}
+                        <td class="align-middle pl-3">
+                            <strong>{{'admin.store.unregisterd_plugin_table.946'|trans}}</strong>
+                        </td>
+                    {% endif %}
+                    {% if Plugin.version is defined %}
+                        <td class="align-middle">{{ Plugin.version }}</td>
+                    {% else %}
+                        <td class="align-middle">{{'admin.store.unregisterd_plugin_table.947'|trans}}</td>
+                    {% endif %}
+                    {% if Plugin.code is defined %}
+                        <td class="align-middle"><p>{{ Plugin.code }}</p>
+                            {% if attribute(app.config[Plugin.code].const, 'readme') is defined %}
+                                <a href="#" class="view_readme" data-toggle="modal" data-target="#readmeModal" data-name="{{ Plugin.name }}" data-readme="{{ attribute(app.config[Plugin.code].const, 'readme')  }}">{{ 'admin.store.plugin_table.897'|trans }}</a>
                             {% endif %}
                         </td>
-                    </tr>
-                </form>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
+                    {% else %}
+                        <td class="align-middle">{{'admin.store.unregisterd_plugin_table.949'|trans}}</td>
+                    {% endif %}
+                    <td class="align-middle">
+                        &nbsp;-&nbsp;
+                    </td>
+                    <td class="align-middle">
+                        {% if unregisterdPluginsConfigPages[Plugin.code] is defined %}
+                            <a href='{{ unregisterdPluginsConfigPages[Plugin.code]}}'>{{'admin.store.unregisterd_plugin_table.950'|trans}}</a>
+                        {% else %}
+                            &nbsp;-&nbsp;
+                        {% endif %}
+                    </td>
+                </tr>
+            </form>
+        {% endfor %}
+        </tbody>
+    </table>
 </div>

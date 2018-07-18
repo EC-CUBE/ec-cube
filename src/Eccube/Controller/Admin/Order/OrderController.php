@@ -1,24 +1,14 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Controller\Admin\Order;
@@ -26,9 +16,9 @@ namespace Eccube\Controller\Admin\Order;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Csv;
+use Eccube\Entity\ExportCsvRow;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\OrderItem;
-use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\SearchOrderType;
@@ -40,19 +30,24 @@ use Eccube\Repository\Master\SexRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Service\CsvExportService;
+use Eccube\Service\OrderStateMachine;
 use Eccube\Util\FormUtil;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Eccube\Entity\Master\OrderStatus;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Eccube\Entity\Order;
+use Eccube\Entity\Shipping;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\PurchaseFlow\PurchaseException;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class OrderController extends AbstractController
 {
@@ -102,6 +97,16 @@ class OrderController extends AbstractController
     protected $orderRepository;
 
     /**
+     * @var ValidatorInterface
+     */
+    protected $validator;
+
+    /**
+     * @var OrderStateMachine
+     */
+    protected $orderStateMachine;
+
+    /**
      * OrderController constructor.
      *
      * @param PurchaseFlow $orderPurchaseFlow
@@ -113,6 +118,7 @@ class OrderController extends AbstractController
      * @param PageMaxRepository $pageMaxRepository
      * @param ProductStatusRepository $productStatusRepository
      * @param OrderRepository $orderRepository
+     * @param OrderStateMachine $orderStateMachine;
      */
     public function __construct(
         PurchaseFlow $orderPurchaseFlow,
@@ -123,7 +129,9 @@ class OrderController extends AbstractController
         OrderStatusRepository $orderStatusRepository,
         PageMaxRepository $pageMaxRepository,
         ProductStatusRepository $productStatusRepository,
-        OrderRepository $orderRepository
+        OrderRepository $orderRepository,
+        ValidatorInterface $validator,
+        OrderStateMachine $orderStateMachine
     ) {
         $this->purchaseFlow = $orderPurchaseFlow;
         $this->csvExportService = $csvExportService;
@@ -134,6 +142,8 @@ class OrderController extends AbstractController
         $this->pageMaxRepository = $pageMaxRepository;
         $this->productStatusRepository = $productStatusRepository;
         $this->orderRepository = $orderRepository;
+        $this->validator = $validator;
+        $this->orderStateMachine = $orderStateMachine;
     }
 
     /**
@@ -239,10 +249,16 @@ class OrderController extends AbstractController
                  * 初期表示の場合.
                  */
                 $page_no = 1;
-                $searchData = [];
+                $viewData = [];
+
+                if ($statusId = (int) $request->get('order_status_id')) {
+                    $viewData = ['status' => $statusId];
+                }
+
+                $searchData = FormUtil::submitAndGetData($searchForm, $viewData);
 
                 // セッション中の検索条件, ページ番号を初期化.
-                $this->session->set('eccube.admin.order.search', $searchData);
+                $this->session->set('eccube.admin.order.search', $viewData);
                 $this->session->set('eccube.admin.order.search.page_no', $page_no);
             }
         }
@@ -311,6 +327,40 @@ class OrderController extends AbstractController
      */
     public function exportOrder(Request $request)
     {
+        $filename = 'order_'.(new \DateTime())->format('YmdHis').'.csv';
+        $response = $this->exportCsv($request, CsvType::CSV_TYPE_ORDER, $filename);
+        log_info('受注CSV出力ファイル名', [$filename]);
+
+        return $response;
+    }
+
+    /**
+     * 配送CSVの出力.
+     *
+     * @Route("/%eccube_admin_route%/order/export/shipping", name="admin_order_export_shipping")
+     *
+     * @param Request $request
+     *
+     * @return StreamedResponse
+     */
+    public function exportShipping(Request $request)
+    {
+        $filename = 'shipping_'.(new \DateTime())->format('YmdHis').'.csv';
+        $response = $this->exportCsv($request, CsvType::CSV_TYPE_SHIPPING, $filename);
+        log_info('配送CSV出力ファイル名', [$filename]);
+
+        return $response;
+    }
+
+    /**
+     * @param Request $request
+     * @param $csvTypeId
+     * @param $fileName
+     *
+     * @return StreamedResponse
+     */
+    private function exportCsv(Request $request, $csvTypeId, $fileName)
+    {
         // タイムアウトを無効にする.
         set_time_limit(0);
 
@@ -319,9 +369,9 @@ class OrderController extends AbstractController
         $em->getConfiguration()->setSQLLogger(null);
 
         $response = new StreamedResponse();
-        $response->setCallback(function () use ($request) {
+        $response->setCallback(function () use ($request, $csvTypeId) {
             // CSV種別を元に初期化.
-            $this->csvExportService->initCsvType(CsvType::CSV_TYPE_ORDER);
+            $this->csvExportService->initCsvType($csvTypeId);
 
             // ヘッダ行の出力.
             $this->csvExportService->exportHeader();
@@ -339,7 +389,7 @@ class OrderController extends AbstractController
                 $OrderItems = $Order->getOrderItems();
 
                 foreach ($OrderItems as $OrderItem) {
-                    $ExportCsvRow = new \Eccube\Entity\ExportCsvRow();
+                    $ExportCsvRow = new ExportCsvRow();
 
                     // CSV出力項目と合致するデータを取得.
                     foreach ($Csvs as $Csv) {
@@ -348,6 +398,10 @@ class OrderController extends AbstractController
                         if ($ExportCsvRow->isDataNull()) {
                             // 受注データにない場合は, 受注明細を検索.
                             $ExportCsvRow->setData($csvService->getData($Csv, $OrderItem));
+                        }
+                        if ($ExportCsvRow->isDataNull() && $Shipping = $OrderItem->getShipping()) {
+                            // 受注明細データにない場合は, 出荷を検索.
+                            $ExportCsvRow->setData($csvService->getData($Csv, $Shipping));
                         }
 
                         $event = new EventArgs(
@@ -371,105 +425,82 @@ class OrderController extends AbstractController
             });
         });
 
-        $now = new \DateTime();
-        $filename = 'order_'.$now->format('YmdHis').'.csv';
         $response->headers->set('Content-Type', 'application/octet-stream');
-        $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
+        $response->headers->set('Content-Disposition', 'attachment; filename='.$fileName);
         $response->send();
-
-        log_info('受注CSV出力ファイル名', [$filename]);
 
         return $response;
     }
 
     /**
-     * 配送CSVの出力.
+     * Update to order status
      *
-     * @Route("/%eccube_admin_route%/order/export/shipping", name="admin_order_export_shipping")
+     * @Method("PUT")
+     * @Route("/%eccube_admin_route%/shipping/{id}/order_status", requirements={"id" = "\d+"}, name="admin_shipping_update_order_status")
      *
      * @param Request $request
+     * @param Shipping $shipping
      *
-     * @return StreamedResponse
+     * @return RedirectResponse
      */
-    public function exportShipping(Request $request)
+    public function updateOrderStatus(Request $request, Shipping $Shipping)
     {
-        // タイムアウトを無効にする.
-        set_time_limit(0);
+        if (!($request->isXmlHttpRequest() && $this->isTokenValid())) {
+            return $this->json(['status' => 'NG'], 400);
+        }
 
-        // sql loggerを無効にする.
-        $em = $this->entityManager;
-        $em->getConfiguration()->setSQLLogger(null);
+        $Order = $Shipping->getOrder();
+        $OrderStatus = $this->entityManager->find(OrderStatus::class, $request->get('order_status'));
 
-        $response = new StreamedResponse();
-        $response->setCallback(function () use ($request) {
-            // CSV種別を元に初期化.
-            $this->csvExportService->initCsvType(CsvType::CSV_TYPE_SHIPPING);
-
-            // ヘッダ行の出力.
-            $this->csvExportService->exportHeader();
-
-            // 受注データ検索用のクエリビルダを取得.
-            $qb = $this->csvExportService
-                ->getShippingQueryBuilder($request);
-
-            // データ行の出力.
-            $this->csvExportService->setExportQueryBuilder($qb);
-            $this->csvExportService->exportData(function ($entity, $csvService) use ($request) {
-                /** @var Csv[] $Csvs */
-                $Csvs = $csvService->getCsvs();
-
-                /** @var Shipping $Shipping */
-                $Shipping = $entity;
-                /** @var OrderItem[] $OrderItems */
-                $OrderItems = $Shipping->getOrderItems();
-
-                foreach ($OrderItems as $OrderItem) {
-                    $ExportCsvRow = new \Eccube\Entity\ExportCsvRow();
-
-                    $Order = $OrderItem->getOrder();
-                    // CSV出力項目と合致するデータを取得.
-                    foreach ($Csvs as $Csv) {
-                        // 受注データを検索.
-                        $ExportCsvRow->setData($csvService->getData($Csv, $Order));
-
-                        if ($ExportCsvRow->isDataNull()) {
-                            // 受注データにない場合は, 出荷データを検索.
-                            $ExportCsvRow->setData($csvService->getData($Csv, $Shipping));
-                        }
-                        if ($ExportCsvRow->isDataNull()) {
-                            // 出荷データにない場合は, 出荷明細を検索.
-                            $ExportCsvRow->setData($csvService->getData($Csv, $OrderItem));
-                        }
-
-                        $event = new EventArgs(
-                            [
-                                'csvService' => $csvService,
-                                'Csv' => $Csv,
-                                'OrderItem' => $OrderItem,
-                                'ExportCsvRow' => $ExportCsvRow,
-                            ],
-                            $request
-                        );
-                        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_CSV_EXPORT_SHIPPING, $event);
-
-                        $ExportCsvRow->pushData();
-                    }
-                    //$row[] = number_format(memory_get_usage(true));
-                    // 出力.
-                    $csvService->fputcsv($ExportCsvRow->getRow());
+        $result = [];
+        try {
+            // 発送済みに変更された場合は、関連する出荷がすべて出荷済みになったら OrderStatus を変更する
+            if (OrderStatus::DELIVERED == $OrderStatus->getId()) {
+                if (!$Shipping->getShippingDate()) {
+                    $Shipping->setShippingDate(new \DateTime());
+                    $this->entityManager->flush($Shipping);
                 }
-            });
-        });
+                $RelateShippings = $Order->getShippings();
+                $allShipped = true;
+                foreach ($RelateShippings as $RelateShipping) {
+                    if (!$RelateShipping->getShippingDate()) {
+                        $allShipped = false;
+                        break;
+                    }
+                }
+                if ($allShipped) {
+                    if ($this->orderStateMachine->can($Order, $OrderStatus)) {
+                        $this->orderStateMachine->apply($Order, $OrderStatus);
+                    } else {
+                        $from = $Order->getOrderStatus()->getName();
+                        $to = $OrderStatus->getName();
+                        $result = ['message' => sprintf('%s: %s から %s へのステータス変更はできません', $Shipping->getId(), $from, $to)];
+                    }
+                }
+            } else {
+                if ($this->orderStateMachine->can($Order, $OrderStatus)) {
+                    $this->orderStateMachine->apply($Order, $OrderStatus);
+                } else {
+                    $from = $Order->getOrderStatus()->getName();
+                    $to = $OrderStatus->getName();
+                    $result = ['message' => sprintf('%s: %s から %s へのステータス変更はできません', $Shipping->getId(), $from, $to)];
+                }
+            }
+            $this->entityManager->flush($Order);
 
-        $now = new \DateTime();
-        $filename = 'shipping_'.$now->format('YmdHis').'.csv';
-        $response->headers->set('Content-Type', 'application/octet-stream');
-        $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
-        $response->send();
+            // 会員の場合、購入回数、購入金額などを更新
+            if ($Customer = $Order->getCustomer()) {
+                $this->orderRepository->updateOrderSummary($Customer);
+                $this->entityManager->flush($Customer);
+            }
+            log_info('対応状況一括変更処理完了', [$Order->getId()]);
+        } catch (\Exception $e) {
+            log_error('予期しないエラーです', [$e->getMessage()]);
 
-        log_info('出荷CSV出力ファイル名', [$filename]);
+            return $this->json(['status' => 'NG'], 500);
+        }
 
-        return $response;
+        return $this->json(array_merge(['status' => 'OK'], $result));
     }
 
     /**
@@ -482,6 +513,8 @@ class OrderController extends AbstractController
      * @param OrderStatus $OrderStatus
      *
      * @return RedirectResponse
+     *
+     * @deprecated 使用していない
      */
     public function bulkOrderStatus(Request $request, OrderStatus $OrderStatus)
     {
@@ -501,7 +534,7 @@ class OrderController extends AbstractController
 
                 $purchaseContext = new PurchaseContext($OriginOrder, $OriginOrder->getCustomer());
 
-                $flowResult = $this->purchaseFlow->calculate($Order, $purchaseContext);
+                $flowResult = $this->purchaseFlow->validate($Order, $purchaseContext);
                 if ($flowResult->hasWarning()) {
                     foreach ($flowResult->getWarning() as $warning) {
                         $msg = $this->translator->trans('admin.order.index.bulk_warning', [
@@ -524,7 +557,7 @@ class OrderController extends AbstractController
                 }
 
                 try {
-                    $this->purchaseFlow->purchase($Order, $purchaseContext);
+                    $this->purchaseFlow->commit($Order, $purchaseContext);
                 } catch (PurchaseException $e) {
                     $msg = $this->translator->trans('admin.order.index.bulk_error', [
                       '%orderId%' => $Order->getId(),
@@ -556,5 +589,59 @@ class OrderController extends AbstractController
         }
 
         return $this->redirectToRoute('admin_order', ['resume' => Constant::ENABLED]);
+    }
+
+    /**
+     * Update to Tracking number.
+     *
+     * @Method("PUT")
+     * @Route("/%eccube_admin_route%/shipping/{id}/tracking_number", requirements={"id" = "\d+"}, name="admin_shipping_update_tracking_number")
+     *
+     * @param Request $request
+     * @param Shipping $shipping
+     *
+     * @return Response
+     */
+    public function updateTrackingNumber(Request $request, Shipping $shipping)
+    {
+        if (!($request->isXmlHttpRequest() && $this->isTokenValid())) {
+            return $this->json(['status' => 'NG'], 400);
+        }
+
+        $trackingNumber = mb_convert_kana($request->get('tracking_number'), 'a', 'utf-8');
+        /** @var \Symfony\Component\Validator\ConstraintViolationListInterface $errors */
+        $errors = $this->validator->validate(
+            $trackingNumber,
+            [
+                new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
+                new Assert\Regex(
+                    ['pattern' => '/^[0-9a-zA-Z-]+$/u', 'message' => trans('form.type.admin.nottrackingnumberstyle')]
+                ),
+            ]
+        );
+
+        if ($errors->count() != 0) {
+            log_info('送り状番号入力チェックエラー');
+            $messages = [];
+            /** @var \Symfony\Component\Validator\ConstraintViolationInterface $error */
+            foreach ($errors as $error) {
+                $messages[] = $error->getMessage();
+            }
+
+            return $this->json(['status' => 'NG', 'messages' => $messages], 400);
+        }
+
+        try {
+            $shipping->setTrackingNumber($trackingNumber);
+            $this->entityManager->flush($shipping);
+            log_info('送り状番号変更処理完了', [$shipping->getId()]);
+            $message = ['status' => 'OK', 'shipping_id' => $shipping->getId(), 'tracking_number' => $trackingNumber];
+
+            return $this->json($message);
+        } catch (\Exception $e) {
+            log_error('予期しないエラー', [$e->getMessage()]);
+
+            return $this->json(['status' => 'NG'], 500);
+        }
     }
 }

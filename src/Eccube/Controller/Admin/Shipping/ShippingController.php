@@ -1,17 +1,26 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Eccube\Controller\Admin\Shipping;
 
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
-use Eccube\Entity\Master\ShippingStatus;
 use Eccube\Entity\Shipping;
 use Eccube\Entity\OrderItem;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\SearchShippingType;
 use Eccube\Repository\Master\PageMaxRepository;
-use Eccube\Repository\Master\ShippingStatusRepository;
 use Eccube\Repository\ShippingRepository;
 use Eccube\Service\MailService;
 use Eccube\Util\FormUtil;
@@ -41,27 +50,19 @@ class ShippingController extends AbstractController
     protected $mailService;
 
     /**
-     * @var ShippingStatusRepository
-     */
-    protected $shippingStatusRepository;
-
-    /**
      * ShippingController constructor.
      *
      * @param ShippingRepository $shippingRepository
      * @param PageMaxRepository $pageMaxRepository
-     * @param ShippingStatusRepository $shippingStatusRepository
      * @param MailService $mailService
      */
     public function __construct(
         ShippingRepository $shippingRepository,
         PageMaxRepository $pageMaxRepository,
-        ShippingStatusRepository $shippingStatusRepository,
         MailService $mailService
     ) {
         $this->shippingRepository = $shippingRepository;
         $this->pageMaxRepository = $pageMaxRepository;
-        $this->shippingStatusRepository = $shippingStatusRepository;
         $this->mailService = $mailService;
     }
 
@@ -188,6 +189,10 @@ class ShippingController extends AbstractController
     }
 
     /**
+     * 出荷済み処理
+     * 未出荷の出荷のみ出荷処理をする
+     * 出荷処理をした場合でリクエストで 'notificationMail' が送信されていた場合のみ出荷完了メールを送信する
+     *
      * @Method("PUT")
      * @Route("/%eccube_admin_route%/shipping/mark_as_shipped/{id}", requirements={"id" = "\d+"}, name="admin_shipping_mark_as_shipped")
      *
@@ -203,10 +208,7 @@ class ShippingController extends AbstractController
         $this->isTokenValid();
 
         $result = [];
-        if ($Shipping->getShippingStatus()->getId() !== ShippingStatus::SHIPPED) {
-            /** @var ShippingStatus $StatusShipped */
-            $StatusShipped = $this->shippingStatusRepository->find(ShippingStatus::SHIPPED);
-            $Shipping->setShippingStatus($StatusShipped);
+        if ($Shipping->isShipped() == false) {
             $Shipping->setShippingDate(new \DateTime());
             $this->shippingRepository->save($Shipping);
 
@@ -220,10 +222,10 @@ class ShippingController extends AbstractController
             $this->entityManager->flush();
             $result['shipped'] = true;
 
-            return new JsonResponse($result);
+            return $this->json($result);
         }
 
-        return new JsonResponse([
+        return $this->json([
             'shipped' => false,
             'mail' => false,
         ]);
@@ -240,33 +242,31 @@ class ShippingController extends AbstractController
      */
     public function previewShippingNotifyMail(Shipping $Shipping)
     {
-        return new Response($this->mailService->getShippingNotifyMailBody($Shipping, $Shipping->getOrders()->first()));
+        return new Response($this->mailService->getShippingNotifyMailBody($Shipping, $Shipping->getOrder()));
     }
 
     /**
      * @Method("PUT")
      * @Route("/%eccube_admin_route%/shipping/notify_mail/{id}", requirements={"id" = "\d+"}, name="admin_shipping_notify_mail")
      *
-     * @param Request $request
      * @param Shipping $Shipping
      *
      * @return JsonResponse
+     *
+     * @throws \Twig_Error
      */
     public function notifyMail(Shipping $Shipping)
     {
         $this->isTokenValid();
 
-        if ($Shipping->getShippingStatus()->getId() === ShippingStatus::SHIPPED) {
-            $this->mailService->sendShippingNotifyMail($Shipping);
+        $this->mailService->sendShippingNotifyMail($Shipping);
 
-            return new JsonResponse([
-                'mail' => true,
-                'shipped' => false,
-            ]);
-        }
+        $Shipping->setMailSendDate(new \DateTime());
+        $this->shippingRepository->save($Shipping);
+        $this->entityManager->flush();
 
-        return new JsonResponse([
-            'mail' => false,
+        return $this->json([
+            'mail' => true,
             'shipped' => false,
         ]);
     }

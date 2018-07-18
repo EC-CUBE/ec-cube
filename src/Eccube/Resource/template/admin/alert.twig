@@ -1,72 +1,59 @@
 {#
 This file is part of EC-CUBE
 
-Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
 
 http://www.lockon.co.jp/
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
 #}
-{% if app.session.flashBag.has('eccube.admin.success') %}
-    {% for message in app.session.flashBag.get('eccube.admin.success') %}
-        <div class="row">
-            <div class="alert alert-success alert-dismissable alert-section">
-                <button type="button" class="close" data-dismiss="alert"><span class="alert-close" aria-hidden="true">&times;</span></button>
-                <svg class="cb cb-info-circle"> <use xlink:href="#cb-info-circle" /></svg> {{ message|trans }}
-            </div>
-        </div>
-    {% endfor %}
-{% endif %}
+{% for message in app.flashes('eccube.admin.info') %}
+    <div class="alert alert-primary alert-dismissible fade show m-3" role="alert">
+        <i class="fa fa-comment fa-lg mr-2"></i>
+        <span class="font-weight-bold">{{ message|trans }}</span>
+        <button class="close" type="button" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+{% endfor %}
 
-{% if app.session.flashBag.has('eccube.admin.info') %}
-    {% for message in app.session.flashBag.get('eccube.admin.info') %}
-        <div class="row">
-            <div class="alert alert-info alert-dismissable alert-section">
-                <button type="button" class="close" data-dismiss="alert"><span class="alert-close" aria-hidden="true">&times;</span></button>
-                <svg class="cb cb-info-circle"> <use xlink:href="#cb-info-circle" /></svg> {{ message|trans }}
-            </div>
-        </div>
-    {% endfor %}
-{% endif %}
-{% if app.session.flashBag.has('eccube.admin.warning') %}
-    {% for message in app.session.flashBag.get('eccube.admin.warning') %}
-        <div class="row">
-            <div class="alert alert-warning alert-dismissable alert-section">
-                <button type="button" class="close" data-dismiss="alert"><span class="alert-close" aria-hidden="true">&times;</span></button>
-                <svg class="cb cb-info-circle"> <use xlink:href="#cb-info-circle" /></svg> {{ message|trans }}
-            </div>
-        </div>
-    {% endfor %}
-{% endif %}
-{% if app.session.flashBag.has('eccube.admin.danger') %}
-    {% for message in app.session.flashBag.get('eccube.admin.danger') %}
-        <div class="row">
-            <div class="alert alert-danger alert-dismissable alert-section">
-                <button type="button" class="close" data-dismiss="alert"><span class="alert-close" aria-hidden="true">&times;</span></button>
-                <svg class="cb cb-info-circle"> <use xlink:href="#cb-info-circle" /></svg> {{ message|trans }}
-            </div>
-        </div>
-    {% endfor %}
-{% endif %}
-{% if app.session.flashBag.has('eccube.admin.error') %}
-    {% for message in app.session.flashBag.get('eccube.admin.error') %}
-        <div class="row">
-            <div class="alert alert-danger alert-dismissable alert-section">
-                <button type="button" class="close" data-dismiss="alert"><span class="alert-close" aria-hidden="true">&times;</span></button>
-                <svg class="cb cb-info-circle"> <use xlink:href="#cb-info-circle" /></svg> {{ message|trans }}
-            </div>
-        </div>
-    {% endfor %}
-{% endif %}
+{% for message in app.flashes('eccube.admin.success') %}
+    <div class="alert alert-success alert-dismissible fade show m-3" role="alert">
+        <i class="fa fa-check fa-lg mr-2"></i>
+        <span class="font-weight-bold">{{ message|trans }}</span>
+        <button class="close" type="button" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+{% endfor %}
+
+{% for message in app.flashes('eccube.admin.danger') %}
+    <div class="alert alert-danger alert-dismissible fade show m-3" role="alert">
+        <i class="fa fa-warning fa-lg mr-2"></i>
+        <span class="font-weight-bold">{{ message|trans }}</span>
+        <button class="close" type="button" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+{% endfor %}
+
+{% for message in app.flashes('eccube.admin.error') %}
+    <div class="alert alert-danger alert-dismissible fade show m-3" role="alert">
+        <i class="fa fa-warning fa-lg mr-2"></i>
+        <span class="font-weight-bold">{{ message|trans }}</span>
+        <button class="close" type="button" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+{% endfor %}
+
+{% for message in app.flashes('eccube.admin.warning') %}
+    <div class="alert alert-warning alert-dismissible fade show m-3" role="alert">
+        <i class="fa fa-warning fa-lg mr-2"></i>
+        <span class="font-weight-bold">{{ message|trans }}</span>
+        <button class="close" type="button" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+{% endfor %}

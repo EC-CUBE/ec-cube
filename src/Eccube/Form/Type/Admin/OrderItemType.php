@@ -1,24 +1,14 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Form\Type\Admin;
@@ -30,6 +20,7 @@ use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Master\TaxType;
 use Eccube\Form\DataTransformer;
 use Eccube\Form\Type\PriceType;
+use Eccube\Repository\Master\OrderItemTypeRepository;
 use Eccube\Repository\OrderItemRepository;
 use Eccube\Repository\ProductClassRepository;
 use Symfony\Component\Form\AbstractType;
@@ -65,6 +56,11 @@ class OrderItemType extends AbstractType
     protected $orderItemRepository;
 
     /**
+     * @var OrderItemTypeRepository
+     */
+    protected $orderItemTypeRepository;
+
+    /**
      * @var RequestStack
      */
     protected $requestStack;
@@ -83,12 +79,14 @@ class OrderItemType extends AbstractType
         EccubeConfig $eccubeConfig,
         ProductClassRepository $productClassRepository,
         OrderItemRepository $orderItemRepository,
+        OrderItemTypeRepository $orderItemTypeRepository,
         RequestStack $requestStack
     ) {
         $this->entityManager = $entityManager;
         $this->eccubeConfig = $eccubeConfig;
         $this->productClassRepository = $productClassRepository;
         $this->orderItemRepository = $orderItemRepository;
+        $this->orderItemTypeRepository = $orderItemTypeRepository;
         $this->requestStack = $requestStack;
     }
 
@@ -233,6 +231,8 @@ class OrderItemType extends AbstractType
                     }
                 } else {
                     // 新規受注登録時の場合
+                    $data['price'] = 0;
+                    $data['quantity'] = 1;
                     $data['product_code'] = null;
                     $data['class_name1'] = null;
                     $data['class_name2'] = null;
@@ -240,23 +240,23 @@ class OrderItemType extends AbstractType
                     $data['class_category_name2'] = null;
                     switch ($data['order_item_type']) {
                         case OrderItemTypeMaster::DELIVERY_FEE:
-                            // $data['product_name'] = trans('orderitem.text.data.shipping_charge');
-                            // $data['price'] = 0;
-                            // $data['quantity'] = 1;
+                            $data['product_name'] = $this->orderItemTypeRepository
+                                ->find(OrderItemTypeMaster::DELIVERY_FEE)
+                                ->getName();
                             $data['tax_type'] = TaxType::TAXATION;
                             $data['tax_display_type'] = TaxDisplayType::INCLUDED;
                             break;
                         case OrderItemTypeMaster::CHARGE:
-                            // $data['product_name'] = trans('orderitem.text.data.commision');
-                            // $data['price'] = 0;
-                            // $data['quantity'] = 1;
+                            $data['product_name'] = $this->orderItemTypeRepository
+                                ->find(OrderItemTypeMaster::CHARGE)
+                                ->getName();
                             $data['tax_type'] = TaxType::TAXATION;
                             $data['tax_display_type'] = TaxDisplayType::INCLUDED;
                             break;
                         case OrderItemTypeMaster::DISCOUNT:
-                            // $data['product_name'] = trans('orderitem.text.data.discount');
-                            // $data['price'] = -0;
-                            // $data['quantity'] = 1;
+                            $data['product_name'] = $this->orderItemTypeRepository
+                                ->find(OrderItemTypeMaster::DISCOUNT)
+                                ->getName();
                             $data['tax_type'] = TaxType::NON_TAXABLE;
                             $data['tax_display_type'] = TaxDisplayType::INCLUDED;
                             break;

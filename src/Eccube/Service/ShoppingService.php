@@ -1,34 +1,24 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Service;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Eccube\Annotation\Service;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
+use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Delivery;
 use Eccube\Entity\MailHistory;
 use Eccube\Entity\Master\DeviceType;
@@ -63,9 +53,6 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-/**
- * @Service
- */
 class ShoppingService
 {
     /**
@@ -176,6 +163,11 @@ class ShoppingService
     protected $authorizationChecker;
 
     /**
+     * @var \Mobile_Detect
+     */
+    protected $mobileDetect;
+
+    /**
      * ShoppingService constructor.
      *
      * @param MailTemplateRepository $mailTemplateRepository
@@ -199,6 +191,7 @@ class ShoppingService
      * @param OrderService $orderService
      * @param BaseInfo $BaseInfo
      * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param \Mobile_Detect $mobileDetect
      */
     public function __construct(
         MailTemplateRepository $mailTemplateRepository,
@@ -221,7 +214,8 @@ class ShoppingService
         CartService $cartService,
         OrderService $orderService,
         BaseInfo $BaseInfo,
-        AuthorizationCheckerInterface $authorizationChecker
+        AuthorizationCheckerInterface $authorizationChecker,
+        \Mobile_Detect $mobileDetect
     ) {
         $this->mailTemplateRepository = $mailTemplateRepository;
         $this->mailService = $mailService;
@@ -244,6 +238,7 @@ class ShoppingService
         $this->orderService = $orderService;
         $this->BaseInfo = $BaseInfo;
         $this->authorizationChecker = $authorizationChecker;
+        $this->mobileDetect = $mobileDetect;
     }
 
     /**
@@ -285,26 +280,12 @@ class ShoppingService
      */
     public function getNonMember($sesisonKey)
     {
-        // 非会員でも一度会員登録されていればショッピング画面へ遷移
-        $nonMember = $this->session->get($sesisonKey);
-        if (is_null($nonMember)) {
-            return null;
-        }
-        if (!array_key_exists('customer', $nonMember) || !array_key_exists('pref', $nonMember)) {
-            return null;
-        }
+        if ($NonMember = $this->session->get($sesisonKey)) {
+            $Pref = $this->prefRepository->find($NonMember->getPref()->getId());
+            $NonMember->setPref($Pref);
 
-        $Customer = $nonMember['customer'];
-        $Customer->setPref($this->prefRepository->find($nonMember['pref']));
-
-        foreach ($Customer->getCustomerAddresses() as $CustomerAddress) {
-            $Pref = $CustomerAddress->getPref();
-            if ($Pref) {
-                $CustomerAddress->setPref($this->prefRepository->find($Pref->getId()));
-            }
+            return $NonMember;
         }
-
-        return $Customer;
     }
 
     /**
@@ -355,8 +336,7 @@ class ShoppingService
         $Order = $this->getNewOrder($Customer);
         $Order->setPreOrderId($preOrderId);
 
-        $mobileDetect = new \Mobile_Detect();
-        $DeviceType = $this->deviceTypeRepository->find($mobileDetect->isMobile() ? DeviceType::DEVICE_TYPE_SP : DeviceType::DEVICE_TYPE_PC);
+        $DeviceType = $this->deviceTypeRepository->find($this->mobileDetect->isMobile() ? DeviceType::DEVICE_TYPE_SP : DeviceType::DEVICE_TYPE_PC);
         $Order->setDeviceType($DeviceType);
 
         $this->entityManager->persist($Order);
@@ -464,15 +444,8 @@ class ShoppingService
             ->setKana02($Customer->getKana02())
             ->setCompanyName($Customer->getCompanyName())
             ->setEmail($Customer->getEmail())
-            ->setTel01($Customer->getTel01())
-            ->setTel02($Customer->getTel02())
-            ->setTel03($Customer->getTel03())
-            ->setFax01($Customer->getFax01())
-            ->setFax02($Customer->getFax02())
-            ->setFax03($Customer->getFax03())
-            ->setZip01($Customer->getZip01())
-            ->setZip02($Customer->getZip02())
-            ->setZipCode($Customer->getZip01().$Customer->getZip02())
+            ->setPhoneNumber($Customer->getPhoneNumber())
+            ->setPostalCode($Customer->getPostalCode())
             ->setPref($Customer->getPref())
             ->setAddr01($Customer->getAddr01())
             ->setAddr02($Customer->getAddr02())
@@ -523,16 +496,12 @@ class ShoppingService
         // 販売種別に紐づく配送業者を取得
         $deliveries = $this->deliveryRepository->getDeliveries($saleTypes);
 
-        if ($this->BaseInfo->isOptionMultipleShipping()) {
-            // 複数配送対応
+        // 支払方法を取得
+        $payments = $this->paymentRepository->findAllowedPayments($deliveries);
 
-            // 支払方法を取得
-            $payments = $this->paymentRepository->findAllowedPayments($deliveries);
-
-            if (count($saleTypes) > 1) {
-                // 販売種別が複数ある場合、配送対象となる配送業者を取得
-                $deliveries = $this->deliveryRepository->findAllowedDeliveries($saleTypes, $payments);
-            }
+        if (count($saleTypes) > 1) {
+            // 販売種別が複数ある場合、配送対象となる配送業者を取得
+            $deliveries = $this->deliveryRepository->findAllowedDeliveries($saleTypes, $payments);
         }
 
         return $deliveries;
@@ -551,7 +520,8 @@ class ShoppingService
     {
         $saleTypes = [];
         foreach ($deliveries as $Delivery) {
-            if (!in_array($Delivery->getSaleType()->getId(), $saleTypes)) {
+            if (!in_array($Delivery->getSaleType()
+                ->getId(), $saleTypes)) {
                 $Shipping = new Shipping();
 
                 $this->copyToShippingFromCustomer($Shipping, $Customer)
@@ -564,7 +534,8 @@ class ShoppingService
 
                 $Order->addShipping($Shipping);
 
-                $saleTypes[] = $Delivery->getProductType()->getId();
+                $saleTypes[] = $Delivery->getProductType()
+                    ->getId();
             }
         }
 
@@ -585,6 +556,7 @@ class ShoppingService
             return $Shipping;
         }
 
+        /** @var CustomerAddress $CustomerAddress */
         $CustomerAddress = $this->customerAddressRepository->findOneBy(
             ['Customer' => $Customer],
             ['id' => 'ASC']
@@ -597,15 +569,8 @@ class ShoppingService
                 ->setKana01($CustomerAddress->getKana01())
                 ->setKana02($CustomerAddress->getKana02())
                 ->setCompanyName($CustomerAddress->getCompanyName())
-                ->setTel01($CustomerAddress->getTel01())
-                ->setTel02($CustomerAddress->getTel02())
-                ->setTel03($CustomerAddress->getTel03())
-                ->setFax01($CustomerAddress->getFax01())
-                ->setFax02($CustomerAddress->getFax02())
-                ->setFax03($CustomerAddress->getFax03())
-                ->setZip01($CustomerAddress->getZip01())
-                ->setZip02($CustomerAddress->getZip02())
-                ->setZipCode($CustomerAddress->getZip01().$CustomerAddress->getZip02())
+                ->setPhoneNumber($CustomerAddress->getPhoneNumber())
+                ->setPostalCode($CustomerAddress->getPostalCode())
                 ->setPref($CustomerAddress->getPref())
                 ->setAddr01($CustomerAddress->getAddr01())
                 ->setAddr02($CustomerAddress->getAddr02());
@@ -616,15 +581,8 @@ class ShoppingService
                 ->setKana01($Customer->getKana01())
                 ->setKana02($Customer->getKana02())
                 ->setCompanyName($Customer->getCompanyName())
-                ->setTel01($Customer->getTel01())
-                ->setTel02($Customer->getTel02())
-                ->setTel03($Customer->getTel03())
-                ->setFax01($Customer->getFax01())
-                ->setFax02($Customer->getFax02())
-                ->setFax03($Customer->getFax03())
-                ->setZip01($Customer->getZip01())
-                ->setZip02($Customer->getZip02())
-                ->setZipCode($Customer->getZip01().$Customer->getZip02())
+                ->setPhoneNumber($Customer->getPhoneNumber())
+                ->setPostalCode($Customer->getPostalCode())
                 ->setPref($Customer->getPref())
                 ->setAddr01($Customer->getAddr01())
                 ->setAddr02($Customer->getAddr02());
@@ -643,7 +601,8 @@ class ShoppingService
     public function getNewDetails(Order $Order)
     {
         // 受注詳細, 配送商品
-        foreach ($this->cartService->getCart()->getCartItems() as $item) {
+        foreach ($this->cartService->getCart()
+            ->getCartItems() as $item) {
             /* @var $ProductClass \Eccube\Entity\ProductClass */
             $ProductClass = $item->getProductClass();
             /* @var $Product \Eccube\Entity\Product */
@@ -676,7 +635,10 @@ class ShoppingService
         // 選択された商品がどのお届け先情報と関連するかチェック
         $Shipping = null;
         foreach ($shippings as $s) {
-            if ($s->getDelivery()->getSaleType()->getId() == $ProductClass->getSaleType()->getId()) {
+            if ($s->getDelivery()
+                    ->getSaleType()
+                    ->getId() == $ProductClass->getSaleType()
+                    ->getId()) {
                 // 販売種別が同一のお届け先情報と関連させる
                 $Shipping = $s;
                 break;
@@ -708,12 +670,14 @@ class ShoppingService
         $ClassCategory1 = $ProductClass->getClassCategory1();
         if (!is_null($ClassCategory1)) {
             $OrderItem->setClasscategoryName1($ClassCategory1->getName());
-            $OrderItem->setClassName1($ClassCategory1->getClassName()->getName());
+            $OrderItem->setClassName1($ClassCategory1->getClassName()
+                ->getName());
         }
         $ClassCategory2 = $ProductClass->getClassCategory2();
         if (!is_null($ClassCategory2)) {
             $OrderItem->setClasscategoryName2($ClassCategory2->getName());
-            $OrderItem->setClassName2($ClassCategory2->getClassName()->getName());
+            $OrderItem->setClassName2($ClassCategory2->getClassName()
+                ->getName());
         }
         $Shipping->addOrderItem($OrderItem);
         $this->entityManager->persist($OrderItem);
@@ -750,7 +714,8 @@ class ShoppingService
         $productDeliveryFeeTotal = 0;
         $OrderItems = $Shipping->getOrderItems();
         foreach ($OrderItems as $OrderItem) {
-            $productDeliveryFeeTotal += $OrderItem->getProductClass()->getDeliveryFee() * $OrderItem->getQuantity();
+            $productDeliveryFeeTotal += $OrderItem->getProductClass()
+                    ->getDeliveryFee() * $OrderItem->getQuantity();
         }
 
         return $productDeliveryFeeTotal;
@@ -1024,9 +989,7 @@ class ShoppingService
     public function getFormPayments($deliveries, Order $Order)
     {
         $saleTypes = $this->orderService->getSaleTypes($Order);
-        if ($this->BaseInfo->isOptionMultipleShipping() && count($saleTypes) > 1) {
-            // 複数配送時の支払方法
-
+        if (count($saleTypes) > 1) {
             $payments = $this->paymentRepository->findAllowedPayments($deliveries);
         } else {
             // 配送業者をセット

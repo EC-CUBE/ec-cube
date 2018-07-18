@@ -1,3 +1,13 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
 <script>
     // 商品規格情報. 規格2のプルダウンリストの設定に利用する,
     var productsClassCategories = {
@@ -225,7 +235,7 @@
 </table>
 {% if pagination.totalItemCount > 0 %}
     <div id="product_pagination" class="row justify-content-md-center mb-4">
-        {% include "@admin/styleguide_pager.twig" with {'pages': pagination.paginationData, 'routes': 'admin_order_search_product_page'} %}
+        {% include "@admin/pager.twig" with {'pages': pagination.paginationData, 'routes': 'admin_order_search_product_page'} %}
     </div>
 {% endif %}
 

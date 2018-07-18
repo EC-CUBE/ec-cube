@@ -1,23 +1,12 @@
 {#
 This file is part of EC-CUBE
 
-Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
 
 http://www.lockon.co.jp/
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
 #}
 {%- extends 'bootstrap_3_layout.html.twig' -%}
 
@@ -196,9 +185,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 
 {# EC-CUBE Widget #}
-
-
-
 {%- block name_widget -%}
     {%- for child in form %}
         {%- if freeze -%}
@@ -211,45 +197,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         {{- form_errors(child) -}}
     {% endfor -%}
 {%- endblock name_widget -%}
-
-{%- block tel_widget -%}
-    {%- for child in form %}
-        {{- form_widget(child, {'type': 'tel', 'attr': {'style': 'ime-mode: disabled;'}}) -}}
-        {%- if freeze -%}
-            {%- if freeze_display_text -%}
-                {%- if child.vars.value is not empty -%}
-                    {%- if loop.last == false%}&nbsp;-&nbsp;{% endif -%}
-                {%- endif -%}
-            {%- endif -%}
-        {%- else -%}
-            {%- if loop.last == false%}&nbsp;-&nbsp;{% endif -%}
-        {%- endif -%}
-    {% endfor -%}
-    {%- for child in form %}
-        {{- form_errors(child) -}}
-    {% endfor -%}
-{%- endblock tel_widget -%}
-
-{%- block fax_widget -%}
-    {%- for child in form %}
-        {{- form_widget(child, {'attr': {'style': 'ime-mode: disabled;'}}) -}}
-        {%- if loop.last == false%}&nbsp;-&nbsp;{% endif -%}
-    {% endfor -%}
-    {%- for child in form %}
-        {{- form_errors(child) -}}
-    {% endfor -%}
-{%- endblock fax_widget -%}
-
-{%- block zip_widget -%}
-    {%- if freeze -%}
-        {%- if freeze_display_text -%}〒&nbsp;{%- endif -%}{{ form_widget(form[form.vars.zip01_name]) }}{%- if freeze_display_text -%}&nbsp;-&nbsp;{%- endif -%}{{- form_widget(form[form.vars.zip02_name]) }}
-    {%- else -%}
-        〒{{- form_widget(form[form.vars.zip01_name], {'id': 'zip01', 'attr': {'style': 'ime-mode: disabled;', 'pattern': '\\d*'}}) }}-{{- form_widget(form[form.vars.zip02_name], {'id': 'zip02', 'attr': {'style': 'ime-mode: disabled;', 'pattern': '\\d*'}}) }} <span class="question-circle"><svg class="cb cb-question"><use xlink:href="#cb-question" /></svg></span> <a href="http://www.post.japanpost.jp/zipcode/" target="_blank">郵便番号検索</a>
-        {%- for child in form %}
-            {{- form_errors(child) -}}
-        {% endfor -%}
-    {%- endif -%}
-{%- endblock zip_widget -%}
 
 {%- block address_widget -%}
     <div class="form-inline form-group input_zip">

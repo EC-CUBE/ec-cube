@@ -1,25 +1,14 @@
 {#
 This file is part of EC-CUBE
 
-Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
 
 http://www.lockon.co.jp/
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
 #}
-{% extends '@admin/styleguide_frame.twig' %}
+{% extends '@admin/default_frame.twig' %}
 
 {% set menus = ['product', 'class_category'] %}
 
@@ -128,6 +117,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     </script>
 {% endblock %}
 
+{% block stylesheet %}
+    {#TODO: Move to css file#}
+    <style>
+        .c-directoryTree ul>li>ul li:not(:last-of-type)>label:before,
+        .c-directoryTree ul>li>ul li:last-of-type>label:before{ margin-right: 1.6em;}
+    </style>
+{% endblock %}
+
 {% block main %}
     <div class="c-outsideBlock">
         <div class="c-outsideBlock__contents mb-2">
@@ -177,30 +174,40 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="card rounded border-0 mb-2">
                             <ul class="list-group list-group-flush sortable-container">
                                 <li class="list-group-item">
-                                    <form role="form" class="form-row" name="form1" id="form1" method="post"
+                                    <form role="form" name="form1" id="form1" method="post"
                                           action="{% if TargetCategory.id %}{{ path('admin_product_category_edit', {id: TargetCategory.id}) }}{% elseif Parent %}{{ url('admin_product_category_show', {'parent_id': Parent.id}) }}{% else %}{{ url('admin_product_category') }}{% endif %}"
                                           enctype="multipart/form-data">
                                         {% if TargetCategory.hierarchy < eccube_config.eccube_category_nest_level %}
                                             {{ form_widget(form._token) }}
-                                            <div class="col-auto">
-                                                {{ form_widget(form.name) }}
-                                                {{ form_errors(form.name) }}
-                                            </div>
-                                            <div class="col-auto">
-                                                <button class="btn btn-ec-regular" type="submit">
-                                                    {{ 'admin.product.category.403'|trans }}
-                                                </button>
-                                            </div>
-                                        {% endif %}
-                                        {% for f in form.getIterator %}
-                                            {% if f.vars.name matches '[^plg*]' %}
+                                            <div class="form-row mb-3">
                                                 <div class="col-auto">
-                                                    {{ form_label(f) }}
-                                                    {{ form_widget(f) }}
-                                                    {{ form_errors(f) }}
+                                                    {{ form_widget(form.name) }}
+                                                    {{ form_errors(form.name) }}
                                                 </div>
-                                            {% endif %}
-                                        {% endfor %}
+                                                <div class="col-auto">
+                                                    <button class="btn btn-ec-regular" type="submit">
+                                                        {{ 'admin.product.category.403'|trans }}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            {# エンティティ拡張の自動出力 #}
+                                            {% for f in form if f.vars.eccube_form_options.auto_render %}
+                                                {% if f.vars.eccube_form_options.form_theme %}
+                                                    {% form_theme f f.vars.eccube_form_options.form_theme %}
+                                                    {{ form_row(f) }}
+                                                {% else %}
+                                                    <div class="form-row mb-3">
+                                                        <div class="col-3">
+                                                            <span>{{ f.vars.label|trans }}</span>
+                                                        </div>
+                                                        <div class="col">
+                                                            {{ form_widget(f) }}
+                                                            {{ form_errors(f) }}
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
                                     </form>
                                 </li>
                                 {% if Categories|length > 0 %}
@@ -274,20 +281,23 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             </div>
         </div>
 
-        {# TODO: 選択中の項目をわかるように表示 #}
-        {% macro tree(Category, TargetId, level) %}
+        {% macro tree(Category, TargetId, level, Ids) %}
             {% import _self as selfMacro %}
             {% set level = level + 1 %}
             <li>
-                <label {% if Category.children|length > 0 %}class="collapsed" {% endif %}data-toggle="collapse"
-                       href="#directory_category{{ Category.id }}" aria-expanded="false"
-                       aria-controls="directory_category{{ Category.id }}"><span><a
-                                href="{{ url('admin_product_category_show', { parent_id : Category.id }) }}">{{ Category.name }}
-                            ({{ Category.children|length }})</a></span></label>
+                <label {% if (Category.children|length > 0) and (Category.id not in Ids) %}class="collapsed"
+                       {% endif %}data-toggle="collapse"
+                       href="#directory_category{{ Category.id }}"
+                       aria-expanded="{% if Category.id in Ids %}true{% endif %}"
+                       aria-controls="directory_category{{ Category.id }}"></label>
+                <span>
+                    <a href="{{ url('admin_product_category_show', { parent_id : Category.id }) }}">{{ Category.name }}
+                        ({{ Category.children|length }})</a></span>
                 {% if Category.children|length > 0 %}
-                    <ul class="collapse" id="directory_category{{ Category.id }}">
+                    <ul class="collapse {% if Category.id in Ids %}show{% endif %}"
+                        id="directory_category{{ Category.id }}">
                         {% for ChildCategory in Category.children %}
-                            {{ selfMacro.tree(ChildCategory, TargetId, level) }}
+                            {{ selfMacro.tree(ChildCategory, TargetId, level, Ids) }}
                         {% endfor %}
                     </ul>
                 {% endif %}
@@ -306,7 +316,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             {% import _self as renderMacro %}
                             {% for TopCategory in TopCategories %}
                                 <ul>
-                                    {{ renderMacro.tree(TopCategory, TargetCategory.Parent.id | default(null), 0) }}
+                                    {{ renderMacro.tree(TopCategory, TargetCategory.Parent.id | default(null), 0, Ids) }}
                                 </ul>
                             {% endfor %}
                         </div>

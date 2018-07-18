@@ -1,27 +1,14 @@
 {#
-/*
- * This file is part of EC-CUBE
- *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
- *
- * http://www.lockon.co.jp/
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- */
+This file is part of EC-CUBE
+
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
 #}
-{% extends '@admin/styleguide_frame.twig' %}
+{% extends '@admin/default_frame.twig' %}
 
 {% set menus = ['content', 'block'] %}
 
@@ -85,8 +72,6 @@
                                         {{ form_errors(form.name) }}
                                     </div>
                                 </div>
-                            </div>
-                            <div class="card-body">
                                 <div class="row mb-2">
                                     <div class="col-2">
                                         <span>{{ 'common.label.file_name'|trans }}</span>
@@ -95,7 +80,9 @@
                                     </div>
                                     <div class="col-10">
                                         {% if deletable %}
+                                            <div class="form-inline">
                                             {{ form_widget(form.file_name) }}.twig
+                                            </div>
                                         {% else %}
                                             {{ form.file_name.vars.value }}.twig
                                             {{ form_widget(form.file_name, { type : 'hidden' } ) }}
@@ -103,27 +90,36 @@
                                         {{ form_errors(form.file_name) }}
                                     </div>
                                 </div>
-                            </div>
-                            <div class="card-body">
                                 <div class="row mb-2">
                                     <div class="col-2">
                                         <span>{{ 'block.label.block_data'|trans }}</span>
                                         <i class="fa fa-question-circle fa-lg ml-1"></i>
                                         <span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span>
                                     </div>
-                                    <div id="editor" style="height: 480px" class="form-control{{ has_errors(form.block_html) ? ' is-invalid'}}"></div>
-                                    {{ form_widget(form.block_html) }}
-                                    {{ form_errors(form.block_html) }}
-                                </div>
-                                <div class="card-body">
-                                    <div class="row mb-2 extra-form">
-                                        {% for f in form.getIterator %}
-                                            {% if f.vars.name matches '[^plg*]' %}
-                                                {{ form_row(f) }}
-                                            {% endif %}
-                                        {% endfor %}
+                                    <div class="col-10">
+                                        <div id="editor" style="height: 480px" class="form-control{{ has_errors(form.block_html) ? ' is-invalid'}}"></div>
+                                        <div class="d-none">
+                                            {{ form_widget(form.block_html) }}
+                                        </div>
+                                        {{ form_errors(form.block_html) }}
                                     </div>
                                 </div>
+                                {# エンティティ拡張の自動出力 #}
+                                {% for f in form if f.vars.eccube_form_options.auto_render %}
+                                    {% if f.vars.eccube_form_options.form_theme %}
+                                        {% form_theme f f.vars.eccube_form_options.form_theme %}
+                                        {{ form_row(f) }}
+                                    {% else %}
+                                        <div class="row mb-2">
+                                            <div class="col-2"><span>{{ f.vars.label|trans }}</span></div>
+                                            <div class="col-10">
+                                                {{ form_widget(f) }}
+                                                {{ form_errors(f) }}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+
                             </div>
                         </div>
                     </div>

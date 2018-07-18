@@ -1,25 +1,14 @@
 {#
 This file is part of EC-CUBE
 
-Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
 
 http://www.lockon.co.jp/
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
 #}
-{% extends '@admin/styleguide_frame.twig' %}
+{% extends '@admin/default_frame.twig' %}
 
 {% set menus = ['customer', 'customer_master'] %}
 
@@ -267,12 +256,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </div>
                     </div>
                 </div>
-                <div class="row mb-4">
+                <div class="row mb-2">
                     <div class="col">
                         <div class="mb-3">
                             <label>{{ 'admin.customer.index.119'|trans }}</label>
-                            {{ form_widget(searchForm.tel) }}
-                            {{ form_errors(searchForm.tel) }}
+                            {{ form_widget(searchForm.phone_number) }}
+                            {{ form_errors(searchForm.phone_number) }}
                         </div>
                     </div>
                     <div class="col">
@@ -292,6 +281,26 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </div>
                     </div>
                 </div>
+
+                {# エンティティ拡張の自動出力 #}
+                {% for f in searchForm if f.vars.eccube_form_options.auto_render %}
+                    {# TODO 1項目1行になるのを改善 #}
+                    <div class="row mb-2">
+                    {% if f.vars.eccube_form_options.form_theme %}
+                        {% form_theme f f.vars.eccube_form_options.form_theme %}
+                        {{ form_row(f) }}
+                    {% else %}
+                        <div class="col">
+                            <div class="mb-3">
+                                <label>{{ f.vars.label|trans }}</label>
+                                {{ form_widget(f) }}
+                                {{ form_errors(f) }}
+                            </div>
+                        </div>
+                    {% endif %}
+                    </div>
+                {% endfor %}
+
                 <div class="d-block text-center">
                     <button class="btn btn-ec-regular" type="reset">{{ 'admin.customer.index.132'|trans }}</button>
                 </div>
@@ -350,7 +359,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 <tr>
                                                     <td class="align-middle pl-3">{{ Customer.id }}</td>
                                                     <td class="align-middle"><a href="{{ url('admin_customer_edit', { 'id': Customer.id}) }}">{{ Customer.name01 }}&nbsp;{{ Customer.name02 }}</a></td>
-                                                    <td class="align-middle">{{ Customer.tel01 }}-{{ Customer.tel02 }}-{{ Customer.tel03 }}</td>
+                                                    <td class="align-middle">{{ Customer.phone_number }}</td>
                                                     <td class="align-middle">{{ Customer.email }}</td>
                                                     <td class="align-middle"></td>
                                                     <td class="align-middle pr-3">
@@ -435,7 +444,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         </tbody></table>
                                     <div class="row justify-content-md-center mb-4">
                                         {% if pagination.totalItemCount > 0 %}
-                                            {% include "@admin/styleguide_pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_customer_page' } %}
+                                            {% include "@admin/pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_customer_page' } %}
                                         {% endif %}
                                     </div>
                                 </div>

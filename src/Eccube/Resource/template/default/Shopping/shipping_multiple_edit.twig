@@ -1,23 +1,12 @@
 {#
 This file is part of EC-CUBE
 
-Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
 
 http://www.lockon.co.jp/
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
 #}
 {% extends 'default_frame.twig' %}
 
@@ -30,6 +19,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block main %}
     <h1 class="page-heading">お届け先の追加</h1>
     <div id="detail_wrap" class="container-fluid">
+        {% if error is defined %}
+            <div class="row">
+                <span>{{ error }}</span>
+            </div>
+        {% endif %}
         <div id="detail_box" class="row">
             <form method="post" action="{{ url('shopping_shipping_multiple_edit') }}" class="h-adr">
                 <span class="p-country-name" style="display:none;">Japan</span>
@@ -65,7 +59,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <dt>{{ form_label(form.address) }}</dt>
                             <dd>
                                 <div id="detail_box__zip"
-                                     class="form-group form-inline input_zip {% if form.zip.zip01.vars.errors is not empty or form.zip.zip02.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.zip) }}</div>
+                                     class="form-group form-inline input_zip {% if form.postal_code.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.postal_code) }}</div>
                                 <div id="detail_box__pref"
                                      class="{% if form.address.pref.vars.errors is not empty or form.address.addr01.vars.errors is not empty or form.address.addr02.vars.errors is not empty %}has-error{% endif %}">
                                     {{ form_widget(form.address) }}
@@ -74,31 +68,34 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             </dd>
                         </dl>
                         <dl id="detail_box__tel">
-                            <dt>{{ form_label(form.tel) }}</dt>
+                            <dt>{{ form_label(form.phone_number) }}</dt>
                             <dd>
                                 <div class="form-inline form-group input_tel">
-                                    {{ form_widget(form.tel, {attr : {class : 'short'}}) }}
-                                    {{ form_errors(form.tel) }}
+                                    {{ form_widget(form.phone_number) }}
+                                    {{ form_errors(form.phone_number) }}
                                 </div>
                             </dd>
                         </dl>
-                        <dl id="detail_box__fax">
-                            <dt>{{ form_label(form.fax) }}</dt>
-                            <dd>
-                                <div class="form-inline form-group input_tel">
-                                    {{ form_widget(form.fax, {attr : {class : 'short'}}) }}
-                                    {{ form_errors(form.fax) }}
-                                </div>
-                            </dd>
-                        </dl>
-                    </div>
-                    {% for f in form %}
-                        {% if f.vars.name matches '[^plg*]' %}
-                            <div class="extra-form dl_table">
+                        {# エンティティ拡張の自動出力 #}
+                        {% for f in form if f.vars.eccube_form_options.auto_render %}
+                            {% if f.vars.eccube_form_options.form_theme %}
+                                {% form_theme f f.vars.eccube_form_options.form_theme %}
                                 {{ form_row(f) }}
-                            </div>
-                        {% endif %}
-                    {% endfor %}
+                            {% else %}
+                                <dl>
+                                    <dt>
+                                        {{ form_label(f) }}
+                                    </dt>
+                                    <dd>
+                                        <div class="ec-select{{ has_errors(f) ? ' error' }}">
+                                            {{ form_widget(f) }}
+                                            {{ form_errors(f) }}
+                                        </div>
+                                    </dd>
+                                </dl>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                     <div id="detail_box__button_menu" class="row no-padding">
                         <div class="btn_group col-sm-offset-4 col-sm-4">
                             <p id="detail_box__insert_button">

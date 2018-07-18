@@ -1,24 +1,14 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Entity;
@@ -108,13 +98,6 @@ class Payment extends \Eccube\Entity\AbstractEntity
      * @ORM\Column(name="method_class", type="string", length=255, nullable=true)
      */
     private $method_class;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="service_class", type="string", length=255, nullable=true)
-     */
-    private $service_class;
 
     /**
      * @var int
@@ -362,30 +345,6 @@ class Payment extends \Eccube\Entity\AbstractEntity
     public function getMethodClass()
     {
         return $this->method_class;
-    }
-
-    /**
-     * Set serviceClass.
-     *
-     * @param string|null $serviceClass
-     *
-     * @return Payment
-     */
-    public function setServiceClass($serviceClass = null)
-    {
-        $this->service_class = $serviceClass;
-
-        return $this;
-    }
-
-    /**
-     * Get serviceClass.
-     *
-     * @return string|null
-     */
-    public function getServiceClass()
-    {
-        return $this->service_class;
     }
 
     /**

@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Eccube\Doctrine\EventSubscriber;
 
 use Doctrine\Common\EventSubscriber;
@@ -32,6 +43,13 @@ class UpdatePointEventSubscriber implements EventSubscriber
     public function preUpdate(LifecycleEventArgs $eventArgs)
     {
         if (!$eventArgs->getObject() instanceof Order) {
+            return;
+        }
+
+        $Order = $eventArgs->getObject();
+        $Customer = $Order->getCustomer();
+        // 非会員の場合、処理は無効にする
+        if (!$Customer) {
             return;
         }
 
