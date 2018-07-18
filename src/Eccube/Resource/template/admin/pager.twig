@@ -10,6 +10,17 @@ file that was distributed with this source code.
 #}
 {% if pages.pageCount > 1 %}
     <ul class="pagination">
+
+        {# 最初へ #}
+        {% if pages.firstPageInRange != 1 %}
+            <li class="page-item">
+                {# FIXME: Need check pass routes before use default _route from request #}
+                <a class="page-link" href="{{ path(
+                    routes ? routes : app.request.attributes.get('_route'),
+                    app.request.query.all|merge({'page_no': pages.first})) }}">{{'common.label.pager.first'|trans}}</a></li>
+
+        {% endif %}
+
         {# 前へ #}
         {% if pages.previous is defined %}
             <li class="page-item">
@@ -51,5 +62,15 @@ file that was distributed with this source code.
                 </a>
             </li>
         {% endif %}
+
+        {# 最後へ #}
+        {% if pages.last != pages.lastPageInRange %}
+            <li class="page-item">
+                {# FIXME: Need check pass routes before use default _route from request #}
+                <a class="page-link" href="{{ path(
+                    routes ? routes : app.request.attributes.get('_route'),
+                    app.request.query.all|merge({'page_no': pages.last})) }}">{{'common.label.pager.last'|trans}}</a></li>
+        {% endif %}
+
     </ul>
 {% endif %}

@@ -77,6 +77,10 @@ class ForgotController extends AbstractController
      */
     public function index(Request $request)
     {
+        if ($this->isGranted('ROLE_USER')) {
+            throw new HttpException\NotFoundHttpException();
+        }
+
         $builder = $this->formFactory
             ->createNamedBuilder('', ForgotType::class);
 
@@ -145,6 +149,10 @@ class ForgotController extends AbstractController
      */
     public function complete(Request $request)
     {
+        if ($this->isGranted('ROLE_USER')) {
+            throw new HttpException\NotFoundHttpException();
+        }
+
         return [];
     }
 
@@ -156,6 +164,10 @@ class ForgotController extends AbstractController
      */
     public function reset(Request $request, $reset_key)
     {
+        if ($this->isGranted('ROLE_USER')) {
+            throw new HttpException\NotFoundHttpException();
+        }
+
         $errors = $this->recursiveValidator->validate(
             $reset_key,
             [

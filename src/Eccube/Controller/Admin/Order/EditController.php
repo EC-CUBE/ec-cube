@@ -185,6 +185,11 @@ class EditController extends AbstractController
                 ]
             );
 
+        // 複数配送の場合は配送先の編集ができない
+        if ($TargetOrder->isMultiple()) {
+            $builder->remove('Shipping');
+        }
+
         $event = new EventArgs(
             [
                 'builder' => $builder,
@@ -196,6 +201,12 @@ class EditController extends AbstractController
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_INDEX_INITIALIZE, $event);
 
         $form = $builder->getForm();
+
+        // 単数配送の場合は配送先の編集ができる
+        if ($TargetOrder->isMultiple() == false) {
+            $form['Shipping']->setData($TargetOrder->getShippings()[0]);
+        }
+
         $form->handleRequest($request);
         $purchaseContext = new PurchaseContext($OriginOrder, $OriginOrder->getCustomer());
 
@@ -253,10 +264,10 @@ class EditController extends AbstractController
                         $this->orderNoProcessor->process($TargetOrder, $purchaseContext);
                         $this->entityManager->flush();
 
-                        $Customer = $TargetOrder->getCustomer();
-                        if ($Customer) {
-                            // 会員の場合、購入回数、購入金額などを更新
-                            $this->customerRepository->updateBuyData($Customer, $isNewOrder);
+                        // 会員の場合、購入回数、購入金額などを更新
+                        if ($Customer = $TargetOrder->getCustomer()) {
+                            $this->orderRepository->updateOrderSummary($Customer);
+                            $this->entityManager->flush($Customer);
                         }
 
                         $event = new EventArgs(

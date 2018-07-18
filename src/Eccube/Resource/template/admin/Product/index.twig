@@ -443,12 +443,47 @@ file that was distributed with this source code.
                                                                         aria-hidden="true"></i></a></div>
                                                         <div class="col text-center" data-toggle="tooltip"
                                                              data-placement="top"
-                                                             title="{{ 'admin.product.index.duplicate'|trans }}"><a class="btn btn-ec-actionIcon"
-                                                                           href="{{ url('admin_product_product_copy', {'id' : Product.id}) }}" {{ csrf_token_for_anchor() }}
-                                                                           data-method="post"
-                                                                           data-message="{{ 'admin.product.index.text01'|trans }}"><i
-                                                                        class="fa fa-files-o fa-lg text-secondary"
-                                                                        aria-hidden="true"></i></a></div>
+                                                             title="{{ 'admin.product.index.duplicate'|trans }}">
+                                                            <a href="#" class="btn btn-ec-actionIcon"
+                                                               data-toggle="modal"
+                                                               data-target="#confirmModal-{{ Product.id }}">
+                                                                <i class="fa fa-files-o fa-lg text-secondary"
+                                                                        aria-hidden="true"></i></a>
+                                                            <div class="modal fade" id="confirmModal-{{ Product.id }}" tabindex="-1"
+                                                                 role="dialog"
+                                                                 aria-labelledby="confirmModal-{{ Product.id }}" aria-hidden="true">
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title font-weight-bold">
+                                                                                {{ 'admin.product.index.duplicate.confirm.title'|trans }}</h5>
+                                                                            <button class="close" type="button"
+                                                                                    data-dismiss="modal"
+                                                                                    aria-label="Close"><span
+                                                                                        aria-hidden="true">×</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="modal-body text-left">
+                                                                            <p class="text-left">
+                                                                                {{ 'admin.product.index.text01'|trans }}</p>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button class="btn btn-ec-sub" type="button"
+                                                                                    data-dismiss="modal">{{ 'admin.product.index.cancel'|trans }}
+                                                                            </button>
+                                                                            <a
+                                                                                    href="{{ url('admin_product_product_copy', {'id' : Product.id}) }}"
+                                                                                    class="btn btn-ec-delete"
+                                                                                    data-confirm="false"
+                                                                                    {{ csrf_token_for_anchor() }}
+                                                                                    data-method="post">
+                                                                                {{ 'common.label.execute'|trans }}
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                         <div class="col text-center" data-toggle="tooltip"
                                                              data-placement="top"
                                                              title="{{ 'admin.product.index.abolition'|trans }}"><a class="btn btn-ec-actionIcon" data-toggle="modal"

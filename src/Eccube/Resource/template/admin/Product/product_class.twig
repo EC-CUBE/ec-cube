@@ -121,7 +121,7 @@ file that was distributed with this source code.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <span class="card-title align-middle">{{ 'admin.product.product_class.product_name_label'|trans }}{{ Product.name }}</span>
+                                    <span class="card-title align-middle">{{ 'admin.product.product_class.product_name_label'|trans }}：{{ Product.name }}</span>
                                 </div>
                                 <div class="col-4 text-right">
                                     {# 規格の初期化ボタン #}
@@ -170,9 +170,8 @@ file that was distributed with this source code.
                                     <div class="d-inline-block mr-2">
                                         <span>{{ 'admin.product.product_class.class_name1_label'|trans }}</span>
                                     </div>
-                                    <div class="d-inline-block"><span>{{ ClassName1.name }}
-                                            [{{ 'admin.product.product_class.class_backend_name_label'|trans }}{{ ClassName1.backend_name }}
-                                            ]</span>
+                                    <div class="d-inline-block">
+                                        <span>{{ ClassName1.name }} [{{ 'admin.product.product_class.class_backend_name_label'|trans }} ：{{ ClassName1.backend_name }}]</span>
                                     </div>
                                 </div>
                             </div>
@@ -182,9 +181,8 @@ file that was distributed with this source code.
                                         <div class="d-inline-block mr-2">
                                             <span>{{ 'admin.product.product_class.class_name2_label'|trans }}</span>
                                         </div>
-                                        <div class="d-inline-block"><span>{{ ClassName2.name }}
-                                                [{{ 'admin.product.product_class.class_backend_name_label'|trans }}{{ ClassName2.backend_name }}
-                                                ]</span>
+                                        <div class="d-inline-block">
+                                            <span>{{ ClassName2.name }} [{{ 'admin.product.product_class.class_backend_name_label'|trans }} ：{{ ClassName2.backend_name }}]</span>
                                         </div>
                                     </div>
                                 </div>
@@ -304,7 +302,6 @@ file that was distributed with this source code.
                                                     <div class="col-auto">
                                                         <div class="form-check form-check-inline">
                                                             {{ form_widget(product_class_form.stock_unlimited) }}
-                                                            {{ form_errors(product_class_form.stock_unlimited) }}
                                                         </div>
                                                     </div>
                                                 </div>

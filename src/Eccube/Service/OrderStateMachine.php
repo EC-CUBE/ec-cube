@@ -46,9 +46,9 @@ class OrderStateMachine implements EventSubscriberInterface
      */
     private $stockReduceProcessor;
 
-    public function __construct(StateMachine $machine, OrderStatusRepository $orderStatusRepository, PointProcessor $pointProcessor, StockReduceProcessor $stockReduceProcessor)
+    public function __construct(StateMachine $_orderStateMachine, OrderStatusRepository $orderStatusRepository, PointProcessor $pointProcessor, StockReduceProcessor $stockReduceProcessor)
     {
-        $this->machine = $machine;
+        $this->machine = $_orderStateMachine;
         $this->orderStatusRepository = $orderStatusRepository;
         $this->pointProcessor = $pointProcessor;
         $this->stockReduceProcessor = $stockReduceProcessor;
@@ -190,7 +190,9 @@ class OrderStateMachine implements EventSubscriberInterface
         /* @var Order $Order */
         $Order = $event->getSubject();
         $Customer = $Order->getCustomer();
-        $Customer->setPoint(intval($Customer->getPoint()) + intval($Order->getAddPoint()));
+        if ($Customer) {
+            $Customer->setPoint(intval($Customer->getPoint()) + intval($Order->getAddPoint()));
+        }
     }
 
     /**
@@ -203,7 +205,9 @@ class OrderStateMachine implements EventSubscriberInterface
         /* @var Order $Order */
         $Order = $event->getSubject();
         $Customer = $Order->getCustomer();
-        $Customer->setPoint(intval($Customer->getPoint()) - intval($Order->getAddPoint()));
+        if ($Customer) {
+            $Customer->setPoint(intval($Customer->getPoint()) - intval($Order->getAddPoint()));
+        }
     }
 
     /**

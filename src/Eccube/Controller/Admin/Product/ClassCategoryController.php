@@ -253,7 +253,7 @@ class ClassCategoryController extends AbstractController
 
     /**
      * @Method("POST")
-     * @Route("/product/class_category/sort_no/move", name="admin_product_class_category_sort_no_move")
+     * @Route("/%eccube_admin_route%/product/class_category/sort_no/move", name="admin_product_class_category_sort_no_move")
      */
     public function moveSortNo(Request $request)
     {

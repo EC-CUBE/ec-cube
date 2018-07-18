@@ -121,7 +121,7 @@
         ],
         "psr-4": {
             "Eccube\\Entity\\": "app/proxy/entity",
-            "Acme\\": "app/Acme",
+            "Customize\\": "app/Customize",
             "Eccube\\": "src/Eccube",
             "Plugin\\": "app/Plugin"
         },

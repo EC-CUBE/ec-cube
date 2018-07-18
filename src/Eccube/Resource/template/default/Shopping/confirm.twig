@@ -295,7 +295,7 @@ $(function() {
                             </div>
                             <div class="ec-select ec-select__delivery">
                                 <label>お届け日</label>
-                                {{ Order.Shippings[idx].shipping_delivery_date?:"指定なし" }}
+                                {{ Order.Shippings[idx].shipping_delivery_date? Order.Shippings[idx].shipping_delivery_date|date_day :"指定なし" }}
                                 {{ form_widget(form.Shippings[idx].shipping_delivery_date, {'type': 'hidden'}) }}
                             </div>
                             <div class="ec-select ec-select__time">
@@ -348,6 +348,24 @@ $(function() {
                 </dl>
                 {% endif %}
                 <div class="ec-totalBox__total">合計<span class="ec-totalBox__price">{{ Order.total|price }}</span><span class="ec-totalBox__taxLabel">税込</span></div>
+                {% if BaseInfo.isOptionPoint and Order.Customer is not null %}
+                    <dl class="ec-totalBox__spec">
+                        <dt>ご注文前のポイント</dt>
+                        <dd>{{ Order.Customer.Point|number_format }} pt</dd>
+                    </dl>
+                    <dl class="ec-totalBox__spec">
+                        <dt>ご使用ポイント</dt>
+                        <dd>{{ Order.UsePoint|number_format }} pt</dd>
+                    </dl>
+                    <dl class="ec-totalBox__spec">
+                        <dt>加算予定ポイント</dt>
+                        <dd>{{ Order.AddPoint|number_format }} pt</dd>
+                    </dl>
+                    <dl class="ec-totalBox__spec">
+                        <dt>加算後のポイント</dt>
+                        <dd>{{ (Order.Customer.Point - Order.UsePoint + Order.AddPoint)|number_format }} pt</dd>
+                    </dl>
+                {% endif %}
                 <div class="ec-totalBox__btn">
                     <button type="submit" class="ec-blockBtn--action">注文する</button>
                     <a href="{{ url('shopping') }}" class="ec-blockBtn--cancel">ご注文手続きに戻る</a>

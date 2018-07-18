@@ -221,6 +221,9 @@
     "phpunit/phpunit-mock-objects": {
         "version": "5.0.6"
     },
+    "pimple/pimple": {
+        "version": "v1.1.1"
+    },
     "psr/cache": {
         "version": "1.0.1"
     },
