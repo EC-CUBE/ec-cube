@@ -287,8 +287,7 @@ class EA04OrderCest
         $OrderListPage->要素をクリック('#form_bulk #bulkExportPdf');
 
         // Check redirect to form pdf information
-        $I->see('受注管理帳票出力', OrderManagePage::$titleAndSub);
-        $I->wait(5);
+        $I->see('受注管理帳票出力', OrderManagePage::$タイトル要素);
     }
 
     public function order_輸出pdfダウンロード(\AcceptanceTester $I)
