@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "a6f4fa8749c6605085a6c0ffb82c6daf",
+    "content-hash": "459247aec5b6daf2b548f079bccc0c8c",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -1551,16 +1551,16 @@
         },
         {
             "name": "easycorp/easy-log-handler",
-            "version": "v1.0.5",
+            "version": "v1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/EasyCorp/easy-log-handler.git",
-                "reference": "21c442f5d08b6761a6fa7653e08a5525fb4ccd2b"
+                "reference": "79104f113f562ab6c677d482457d4474204d34a5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EasyCorp/easy-log-handler/zipball/21c442f5d08b6761a6fa7653e08a5525fb4ccd2b",
-                "reference": "21c442f5d08b6761a6fa7653e08a5525fb4ccd2b",
+                "url": "https://api.github.com/repos/EasyCorp/easy-log-handler/zipball/79104f113f562ab6c677d482457d4474204d34a5",
+                "reference": "79104f113f562ab6c677d482457d4474204d34a5",
                 "shasum": ""
             },
             "require": {
@@ -1597,7 +1597,7 @@
                 "monolog",
                 "productivity"
             ],
-            "time": "2018-06-12T06:27:09+00:00"
+            "time": "2017-10-20T08:47:57+00:00"
         },
         {
             "name": "egulias/email-validator",

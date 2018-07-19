@@ -162,7 +162,7 @@
     "conflict": {
         "symfony/debug": "3.4.4",
         "symfony/symfony": "*",
-        "easycorp/easy-log-handler": "1.0.4"
+        "easycorp/easy-log-handler": "1.0.4|1.0.5"
     },
     "extra": {
         "symfony": {
