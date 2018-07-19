@@ -39,6 +39,9 @@ class ShippingControllerTest extends AbstractAdminWebTestCase
         $this->shippingRepository = $this->container->get(ShippingRepository::class);
 
         // FIXME: Should remove exist data before generate data for test
+        $this->deleteAllRows(['dtb_order_item']);
+        $this->deleteAllRows(['dtb_shipping']);
+        $this->deleteAllRows(['dtb_mail_history']);
         $this->deleteAllRows(['dtb_order']);
 
         $Sex = $this->container->get(SexRepository::class)->find(1);
@@ -72,95 +75,6 @@ class ShippingControllerTest extends AbstractAdminWebTestCase
             $this->entityManager->persist($ShipCsvType);
             $this->entityManager->flush();
         }
-    }
-
-    public function testIndex()
-    {
-        $this->client->request(
-            'GET',
-            $this->generateUrl('admin_shipping')
-        );
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
-    }
-
-    public function testIndexInitial()
-    {
-        // 初期表示時検索条件テスト
-        $crawler = $this->client->request(
-            'GET',
-            $this->generateUrl('admin_shipping')
-        );
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
-
-        $this->expected = '検索結果 : 10 件が該当しました';
-        $this->actual = $crawler->filter('#search_form .c-outsideBlock__contents.mb-3 span')->text();
-        $this->verify();
-    }
-
-    public function testSearchOrderByName()
-    {
-        $faker = $this->getFaker();
-        /** @var Shipping $Shipping */
-        $Shipping = $this->shippingRepository->findOneBy([]);
-        $name = $Shipping->getName01();
-        $name .= $faker->realText(10);
-        $Shipping->setName01($name);
-        $this->entityManager->flush($Shipping);
-
-        $Shippings = $this->shippingRepository->findBy(['name01' => $name]);
-        $cnt = count($Shippings);
-
-        $crawler = $this->client->request(
-            'POST', $this->generateUrl('admin_shipping'), [
-                'admin_search_shipping' => [
-                    '_token' => 'dummy',
-                    'multi' => $name,
-                ],
-            ]
-        );
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
-
-        $this->expected = '検索結果 : '.$cnt.' 件が該当しました';
-        $this->actual = $crawler->filter('#search_form .c-outsideBlock__contents.mb-3 span')->text();
-        $this->verify();
-
-        $crawler = $this->client->request(
-            'POST', $this->generateUrl('admin_shipping'), [
-                'admin_search_shipping' => [
-                    '_token' => 'dummy',
-                    'name' => $name,
-                ],
-            ]
-        );
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
-
-        $this->expected = '検索結果 : '.$cnt.' 件が該当しました';
-        $this->actual = $crawler->filter('#search_form .c-outsideBlock__contents.mb-3 span')->text();
-        $this->verify();
-    }
-
-    public function testIndexWithNext()
-    {
-        $crawler = $this->client->request(
-            'POST',
-            $this->generateUrl('admin_shipping').'?page_count=30',
-            [
-                'admin_search_shipping' => [
-                    '_token' => 'dummy',
-                ],
-            ]
-        );
-
-        // 次のページへ遷移
-        $crawler = $this->client->request(
-            'GET',
-            $this->generateUrl('admin_shipping_page', ['page_no' => 2])
-        );
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
-
-        $this->expected = '検索結果 : 10 件が該当しました';
-        $this->actual = $crawler->filter('#search_form .c-outsideBlock__contents.mb-3 span')->text();
-        $this->verify();
     }
 
     public function testBulkDelete()
