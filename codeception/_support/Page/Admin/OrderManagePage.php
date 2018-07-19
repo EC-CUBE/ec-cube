@@ -81,7 +81,7 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
 
     public function すべてチェック()
     {
-        $this->tester->click('#form_bulk #check_all');
+        $this->tester->click('#form_bulk #toggle_check_all');
         return $this;
     }
 
