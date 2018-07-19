@@ -166,8 +166,19 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
     {
         $this->tester->selectOption('#option_bulk_status', $option);
         $this->tester->click('#form_bulk #btn_bulk_status');
-        $this->tester->waitForElementVisible('#confirmBulkModal', 5);
-        $this->tester->click('#confirmBulkModal button[data-action="execute"]');
+        return $this;
+    }
+
+    public function 出荷済にする($rowNum)
+    {
+        $this->tester->click("#search_result > tbody > tr:nth-child($rowNum) a[data-type='status']");
+        $this->tester->waitForElementVisible(['id' => 'sentUpdateModal']);
+        $this->tester->wait(2);
+        $this->tester->click(['id' => 'notificationMail']);
+        $this->tester->scrollTo(['id' => 'bulkChange']);
+        $this->tester->click(['id' => 'bulkChange']);
+        $this->tester->wait(5);
+        $this->tester->waitForElementVisible(['id' => 'bulkChangeComplete']);
         return $this;
     }
 }

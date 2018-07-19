@@ -79,12 +79,9 @@ file that was distributed with this source code.
                 $('.notificationMail').hide();
                 $('#viewEmail').removeClass('collapse').addClass('collapsed');;
                 break;
+            default:
             case 'status':
                 updater = new SimpleStatusUpdate(modal, eventTarget); // bulk-update is always false
-                break;
-            case 'update':
-            default:
-                updater = eventTarget.data('bulk-update') ? new BulkUpdate(modal, eventTarget) : new SimpleUpdate(modal, eventTarget);
                 $('#notificationMail').attr('type', 'checkbox');
                 $('.notificationMail').show();
                 $('#viewEmail').removeClass('collapsed').addClass('collapse');
