@@ -23,6 +23,7 @@ use Eccube\Form\Type\Admin\SearchShippingType;
 use Eccube\Repository\Master\PageMaxRepository;
 use Eccube\Repository\ShippingRepository;
 use Eccube\Service\MailService;
+use Eccube\Service\OrderStateMachine;
 use Eccube\Util\FormUtil;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -50,20 +51,28 @@ class ShippingController extends AbstractController
     protected $mailService;
 
     /**
+     * @var OrderStateMachine
+     */
+    protected $orderStateMachine;
+
+    /**
      * ShippingController constructor.
      *
      * @param ShippingRepository $shippingRepository
      * @param PageMaxRepository $pageMaxRepository
      * @param MailService $mailService
+     * @param OrderStateMachine $orderStateMachine;
      */
     public function __construct(
         ShippingRepository $shippingRepository,
         PageMaxRepository $pageMaxRepository,
-        MailService $mailService
+        MailService $mailService,
+        OrderStateMachine $orderStateMachine
     ) {
         $this->shippingRepository = $shippingRepository;
         $this->pageMaxRepository = $pageMaxRepository;
         $this->mailService = $mailService;
+        $this->orderStateMachine = $orderStateMachine;
     }
 
     /**
