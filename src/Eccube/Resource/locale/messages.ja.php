@@ -354,7 +354,7 @@ return [
     'mypage.label.customer_info' => '会員情報編集',
     'mypage.label.customer_info_complete' => '会員情報編集(完了)',
     'mypage.label.btn.edit' => '変更する',
-    'mypage.label.edit_address' => 'お届け先編集',
+    'mypage.label.edit_address' => 'お届け先一覧',
     'mypage.label.add_address' => '新規お届け先を追加する',
     'mypage.label.btn.register' => '登録する',
     'mypage.label.cancel_membership' => '退会手続き',
