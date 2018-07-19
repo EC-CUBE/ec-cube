@@ -89,11 +89,8 @@ class InstallerCommand extends Command
 
         // DATABASE_SERVER_VERSION
         $databaseName = $this->getDatabaseName($databaseUrl);
-        $serverVersion = null;
-        if ('postgres' === $databaseName) {
-            $question = new ConfirmationQuestion('PostgreSQL version is 10 or lator ?');
-            $serverVersion = $this->io->askQuestion($question) ? '10' : '9';
-        } else {
+        $serverVersion = $this->io->ask('Database Server version', 'auto');
+        if ('auto' === $serverVersion) {
             $serverVersion = $this->getDatabaseServerVersion($databaseName);
         }
 
