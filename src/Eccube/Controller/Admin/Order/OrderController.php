@@ -459,6 +459,10 @@ class OrderController extends AbstractController
         $Order = $Shipping->getOrder();
         $OrderStatus = $this->entityManager->find(OrderStatus::class, $request->get('order_status'));
 
+        if (!$OrderStatus) {
+            return $this->json(['status' => 'NG'], 400);
+        }
+
         $result = [];
         try {
             // 発送済みに変更された場合は、関連する出荷がすべて出荷済みになったら OrderStatus を変更する
