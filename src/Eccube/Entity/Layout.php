@@ -91,11 +91,19 @@ class Layout extends AbstractEntity
      */
     public function getBlockPositionsBy($targetId)
     {
-        return $this->BlockPositions->filter(
+        $BlockPositons = $this->BlockPositions->filter(
             function ($BlockPosition) use ($targetId) {
                 return $BlockPosition->getSection() == $targetId;
             }
         );
+
+        $Iterator = $BlockPositons->getIterator();
+
+        $Iterator->uasort(function ($a, $b) {
+            return $a->getBlockRow() > $b->getBlockRow();
+        });
+
+        return new \Doctrine\Common\Collections\ArrayCollection(iterator_to_array($Iterator));
     }
 
     // -----------------------

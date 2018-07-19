@@ -17,7 +17,6 @@ use Doctrine\ORM\NoResultException;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BlockPosition;
 use Eccube\Entity\Layout;
-use Eccube\Entity\Master\DeviceType;
 use Eccube\Form\Type\Master\DeviceTypeType;
 use Eccube\Repository\BlockRepository;
 use Eccube\Repository\LayoutRepository;
@@ -220,6 +219,61 @@ class LayoutController extends AbstractController
             $this->addSuccess('admin.register.complete', 'admin');
 
             return $this->redirectToRoute('admin_content_layout_edit', ['id' => $Layout->getId()]);
+        }
+
+        // リクエストのブロック情報により直近の配置を復元する
+        $data = $request->request->all();
+        for ($i = 0; $i < count($data); $i++) {
+            // block_idが取得できない場合は無視
+            if (!isset($data['block_id_'.$i])) {
+                continue;
+            }
+
+            // 未使用ブロックは無視
+            if ($data['section_'.$i] == \Eccube\Entity\Page::TARGET_ID_UNUSED) {
+                continue;
+            }
+
+            // ブロックを取得
+            $Block = $this->blockRepository->find($data['block_id_'.$i]);
+
+            // レイアウト配置済みブロックは未使用ブロックリストより削除
+            foreach ($UnusedBlocks as $unUsedBlockKey => $UnusedBlock) {
+                if ($Block->getId() == $UnusedBlock->getId()) {
+                    unset($UnusedBlocks[$unUsedBlockKey]);
+                }
+            }
+
+            // レイアウト配置済み（DB登録済み）ブロックポジションを取得
+            $BlockPositions = $Layout->getBlockPositions();
+            $BlockPositions = $BlockPositions->filter(
+                function ($BlockPosition) use ($Block) {
+                    return $BlockPosition->getBlock() == $Block;
+                }
+            );
+
+            if ($BlockPositions && $BlockPositions->count() > 0) {
+                // すでに配置されている（かつDB登録済み）ブロックポジションは更新
+                // filterはArrayCollectionでとれる為、連想配列化し先頭を取得する
+                $BlockPosition = current($BlockPositions->toArray());
+                $BlockPosition
+                    ->setBlockId($data['block_id_'.$i])
+                    ->setBlockRow($data['block_row_'.$i])
+                    ->setSection($data['section_'.$i])
+                    ->setBlock($Block)
+                    ->setLayout($Layout);
+            } else {
+                $BlockPosition = new BlockPosition();
+                $BlockPosition
+                    ->setBlockId($data['block_id_'.$i])
+                    ->setLayoutId($Layout->getId())
+                    ->setBlockRow($data['block_row_'.$i])
+                    ->setSection($data['section_'.$i])
+                    ->setBlock($Block)
+                    ->setLayout($Layout);
+
+                $Layout->addBlockPosition($BlockPosition);
+            }
         }
 
         return [
