@@ -27,7 +27,7 @@ file that was distributed with this source code.
             $.ajax({
                 type: 'POST',
                 dataType: 'html',
-                url: '{{ url('admin_shipping_search_product') }}',
+                url: '{{ url('admin_order_search_product') }}',
             }).done(function (data) {
                 // モーダルに結果を書き出し.
                 $('#searchItemsResult').html(data);
@@ -329,27 +329,22 @@ file that was distributed with this source code.
                                         <button class="btn btn-ec-regular mr-2" type="button" data-toggle="modal"
                                                 data-target="#addProduct">{{ 'admin.shipping.edit.add_product'|trans }}
                                         </button>
-                                        <div class="modal fade" id="addProduct" tabindex="-1" role="dialog"
-                                             aria-labelledby="addProduct" aria-hidden="true">
+                                        <div class="modal fade" id="addProduct" tabindex="-1" role="dialog" aria-labelledby="addProduct" aria-hidden="true">
                                             <div class="modal-dialog modal-lg" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title">{{ 'admin.shipping.edit.add_product'|trans }}</h5>
-                                                        <button class="close" type="button" data-dismiss="modal"
-                                                                aria-label="Close"><span aria-hidden="true">×</span>
-                                                        </button>
+                                                        <h5 class="modal-title">{{ 'admin.order.edit.btn.add_product'|trans }}</h5>
+                                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        {# TODO 検索項目を検討する #}
-                                                        <button id="searchItemsButton"
-                                                                class="btn btn-ec-conversion px-5 mb-4" type="button">{{ 'admin.shipping.edit.search'|trans }}
-                                                        </button>
-                                                        <div id="searchItemsResult"></div>
+                                                        {{ form_widget(searchProductModalForm.id, { attr : {'class': 'mb-3',  placeholder : 'admin.order.edit.293' }}) }}
+                                                        {{ form_widget(searchProductModalForm.category_id) }}
+                                                        <button type="button" id="searchProductModalButton" class="btn btn-ec-conversion px-5 mb-4 mt-2">{{ 'admin.order.edit.294'|trans }}</button>
+                                                        <div id="searchProductModalList"></div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-
                                         {# 明細行のエラー表示 #}
                                         {{ form_errors(form.OrderItemsError) }}
 

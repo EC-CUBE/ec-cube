@@ -17,6 +17,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
+use Eccube\Form\Type\Admin\SearchProductType;
 use Eccube\Form\Type\Admin\ShippingType;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\DeliveryRepository;
@@ -202,6 +203,12 @@ class ShippingController extends AbstractController
             $this->addError('admin.flash.register_failed', 'admin');
         }
 
+        // 商品検索フォーム
+        $builder = $this->formFactory
+            ->createBuilder(SearchProductType::class);
+
+        $searchProductModalForm = $builder->getForm();
+
         // 配送業者のお届け時間
         $times = [];
         $deliveries = $this->deliveryRepository->findAll();
@@ -214,6 +221,7 @@ class ShippingController extends AbstractController
 
         return [
             'form' => $form->createView(),
+            'searchProductModalForm' => $searchProductModalForm->createView(),
             'Shipping' => $TargetShipping,
             'shippingDeliveryTimes' => $this->serializer->serialize($times, 'json'),
         ];
@@ -222,6 +230,8 @@ class ShippingController extends AbstractController
     /**
      * @Route("/%eccube_admin_route%/shipping/search/product", name="admin_shipping_search_product")
      * @Template("@admin/Order/search_product.twig")
+     *
+     * @deprecated
      */
     public function searchProduct(Request $request, PaginatorInterface $paginator)
     {
