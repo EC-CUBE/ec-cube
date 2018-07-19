@@ -11,7 +11,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Eccube\Controller\Admin\Shipping;
+namespace Eccube\Controller\Admin\Order;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Controller\AbstractController;
@@ -32,7 +32,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\SerializerInterface;
 use Eccube\Service\MailService;
 
-class EditController extends AbstractController
+class ShippingController extends AbstractController
 {
     /**
      * @var OrderItemRepository
@@ -103,7 +103,7 @@ class EditController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/shipping/new", name="admin_shipping_new")
      * @Route("/%eccube_admin_route%/shipping/{id}/edit", requirements={"id" = "\d+"}, name="admin_shipping_edit")
-     * @Template("@admin/Shipping/edit.twig")
+     * @Template("@admin/Order/shipping.twig")
      */
     public function edit(Request $request, $id = null)
     {
@@ -221,7 +221,7 @@ class EditController extends AbstractController
 
     /**
      * @Route("/%eccube_admin_route%/shipping/search/product", name="admin_shipping_search_product")
-     * @Template("@admin/Shipping/search_product.twig")
+     * @Template("@admin/Order/search_product.twig")
      */
     public function searchProduct(Request $request, PaginatorInterface $paginator)
     {
@@ -253,7 +253,7 @@ class EditController extends AbstractController
 
     /**
      * @Route("/%eccube_admin_route%/shipping/search/item", name="admin_shipping_search_item")
-     * @Template("@admin/Shipping/order_item_prototype.twig")
+     * @Template("@admin/Order/order_item_prototype.twig")
      */
     public function searchItem(Request $request)
     {

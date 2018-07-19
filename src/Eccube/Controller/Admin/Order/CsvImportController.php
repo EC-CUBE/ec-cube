@@ -11,7 +11,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Eccube\Controller\Admin\Shipping;
+namespace Eccube\Controller\Admin\Order;
 
 use Eccube\Controller\Admin\AbstractCsvImportController;
 use Eccube\Entity\Shipping;
@@ -37,8 +37,8 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * 出荷CSVアップロード
      *
-     * @Route("/%eccube_admin_route%/shipping/shipping_csv_upload", name="admin_shipping_csv_import")
-     * @Template("@admin/Shipping/csv_shipping.twig")
+     * @Route("/%eccube_admin_route%/order/shipping_csv_upload", name="admin_shipping_csv_import")
+     * @Template("@admin/Order/csv_shipping.twig")
      *
      * @throws \Doctrine\DBAL\ConnectionException
      */
@@ -148,7 +148,7 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * アップロード用CSV雛形ファイルダウンロード
      *
-     * @Route("/%eccube_admin_route%/shipping/csv_template", name="admin_shipping_csv_template")
+     * @Route("/%eccube_admin_route%/order/csv_template", name="admin_shipping_csv_template")
      */
     public function csvTemplate(Request $request)
     {
