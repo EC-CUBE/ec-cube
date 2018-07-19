@@ -431,11 +431,7 @@ class ProductController extends AbstractController
         }
         $form['Category']->setData($categories);
 
-        $Tags = [];
-        $ProductTags = $Product->getProductTag();
-        foreach ($ProductTags as $ProductTag) {
-            $Tags[] = $ProductTag->getTag();
-        }
+        $Tags = $Product->getTags();
         $form['Tag']->setData($Tags);
 
         if ('POST' === $request->getMethod()) {
