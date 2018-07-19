@@ -198,49 +198,6 @@ class ShippingController extends AbstractController
     }
 
     /**
-     * 出荷済み処理
-     * 未出荷の出荷のみ出荷処理をする
-     * 出荷処理をした場合でリクエストで 'notificationMail' が送信されていた場合のみ出荷完了メールを送信する
-     *
-     * @Method("PUT")
-     * @Route("/%eccube_admin_route%/shipping/mark_as_shipped/{id}", requirements={"id" = "\d+"}, name="admin_shipping_mark_as_shipped")
-     *
-     * @param Request $request
-     * @param Shipping $Shipping
-     *
-     * @return JsonResponse
-     *
-     * @throws \Twig_Error
-     */
-    public function markAsShipped(Request $request, Shipping $Shipping)
-    {
-        $this->isTokenValid();
-
-        $result = [];
-        if ($Shipping->isShipped() == false) {
-            $Shipping->setShippingDate(new \DateTime());
-            $this->shippingRepository->save($Shipping);
-
-            if ($request->get('notificationMail')) {
-                $this->mailService->sendShippingNotifyMail($Shipping);
-                $result['mail'] = true;
-            } else {
-                $result['mail'] = false;
-            }
-
-            $this->entityManager->flush();
-            $result['shipped'] = true;
-
-            return $this->json($result);
-        }
-
-        return $this->json([
-            'shipped' => false,
-            'mail' => false,
-        ]);
-    }
-
-    /**
      * @Route("/%eccube_admin_route%/shipping/preview_notify_mail/{id}", requirements={"id" = "\d+"}, name="admin_shipping_preview_notify_mail")
      *
      * @param Shipping $Shipping
