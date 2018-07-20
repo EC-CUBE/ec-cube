@@ -106,7 +106,6 @@ class OrderStateMachine implements EventSubscriberInterface
             'workflow.order.transition.ship' => ['commitAddPoint'],
             'workflow.order.transition.return' => [['rollbackUsePoint'], ['rollbackAddPoint']],
             'workflow.order.transition.cancel_return' => [['commitUsePoint'], ['commitAddPoint']],
-            'workflow.order.guard.ship' => [],
         ];
     }
 

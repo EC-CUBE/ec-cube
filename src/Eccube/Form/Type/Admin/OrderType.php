@@ -318,11 +318,6 @@ class OrderType extends AbstractType
         $OrderStatuses = $this->orderStatusRepisotory->findBy([], ['sort_no' => 'ASC']);
         $OrderStatuses = new ArrayCollection($OrderStatuses);
 
-        // 発送済のガード条件をはずすため, ダミーの発送日時を入れる.
-        foreach ($Order->getShippings() as $Shipping) {
-            $Shipping->setShippingDate(new \DateTime());
-        }
-
         foreach ($OrderStatuses as $Status) {
             // 同一ステータスはスキップ
             if ($Order->getOrderStatus()->getId() == $Status->getId()) {
@@ -332,11 +327,6 @@ class OrderType extends AbstractType
             if (!$this->orderStateMachine->can($Order, $Status)) {
                 $OrderStatuses->removeElement($Status);
             }
-        }
-
-        // ダミーでいれた発送日時をもとに戻す.
-        foreach ($Order->getShippings() as $Shipping) {
-            $this->entityManager->refresh($Shipping);
         }
 
         $form = $event->getForm();
