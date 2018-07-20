@@ -414,7 +414,7 @@ class OrderType extends AbstractType
 
     /**
      * 受注ステータスのバリデーションを行う.
-     * 
+     *
      * @param FormEvent $event
      */
     public function validateOrderStatus(FormEvent $event)
@@ -436,7 +436,7 @@ class OrderType extends AbstractType
             if (!$this->orderStateMachine->can($Order, $newStatus)) {
                 $form['OrderStatus']->addError(
                     new FormError(sprintf('%sから%sには変更できません', $oldStatus->getName(), $newStatus->getName())));
-            };
+            }
         }
     }
 

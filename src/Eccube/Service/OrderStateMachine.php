@@ -15,14 +15,12 @@ namespace Eccube\Service;
 
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
-use Eccube\Entity\Shipping;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Service\PurchaseFlow\Processor\PointProcessor;
 use Eccube\Service\PurchaseFlow\Processor\StockReduceProcessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
-use Symfony\Component\Workflow\Event\GuardEvent;
 use Symfony\Component\Workflow\StateMachine;
 
 class OrderStateMachine implements EventSubscriberInterface
