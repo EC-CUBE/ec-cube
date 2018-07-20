@@ -52,7 +52,6 @@ class OrderStateMachine implements EventSubscriberInterface
      */
     private $entityManager;
 
-
     public function __construct(StateMachine $_orderStateMachine, OrderStatusRepository $orderStatusRepository, PointProcessor $pointProcessor, StockReduceProcessor $stockReduceProcessor, EntityManagerInterface $entityManager)
     {
         $this->machine = $_orderStateMachine;
