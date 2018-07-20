@@ -4,6 +4,7 @@ use Codeception\Util\Fixtures;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Order;
 use Page\Admin\OrderEditPage;
+use Page\Admin\OrderManagePage;
 use Page\Admin\ShippingCsvUploadPage;
 use Page\Admin\ShippingEditPage;
 use Page\Admin\ShippingManagePage;
@@ -219,20 +220,20 @@ class EA09ShippingCest
          * 出荷再検索 出荷日/伝票番号が登録されていないことを確認
          */
 
-        $ShippingManagePage = ShippingManagePage::go($I)
+        $OrderManagePage = OrderManagePage::go($I)
             ->詳細検索設定()
             ->入力_ご注文者お名前($Customer->getName01().$Customer->getName02())
             ->入力_ご注文者お名前フリガナ($Customer->getKana01().$Customer->getKana02())
             ->検索();
 
-        $I->see('検索結果 : 3 件が該当しました', ShippingManagePage::$検索結果_メッセージ);
+        $I->see('検索結果：3件が該当しました', OrderManagePage::$検索結果_メッセージ);
 
-        $I->assertEquals('未登録', $ShippingManagePage->取得_出荷伝票番号(1));
-        $I->assertEquals('未登録', $ShippingManagePage->取得_出荷伝票番号(2));
-        $I->assertEquals('未登録', $ShippingManagePage->取得_出荷伝票番号(3));
-        $I->assertEquals('-', $ShippingManagePage->取得_出荷日(1));
-        $I->assertEquals('-', $ShippingManagePage->取得_出荷日(2));
-        $I->assertEquals('-', $ShippingManagePage->取得_出荷日(3));
+        $I->assertEmpty($OrderManagePage->取得_出荷伝票番号(1));
+        $I->assertEmpty($OrderManagePage->取得_出荷伝票番号(2));
+        $I->assertEmpty($OrderManagePage->取得_出荷伝票番号(3));
+        $I->assertEquals('未発送', $OrderManagePage->取得_出荷日(1));
+        $I->assertEquals('未発送', $OrderManagePage->取得_出荷日(2));
+        $I->assertEquals('未発送', $OrderManagePage->取得_出荷日(3));
 
         /*
          * 出荷CSV登録
@@ -260,20 +261,20 @@ class EA09ShippingCest
              * 出荷再検索 出荷日/伝票番号が登録されたことを確認
              */
 
-            $ShippingManagePage = ShippingManagePage::go($I)
-                ->詳細検索設定()
-                ->入力_ご注文者お名前($Customer->getName01().$Customer->getName02())
-                ->入力_ご注文者お名前フリガナ($Customer->getKana01().$Customer->getKana02())
-                ->検索();
+            $OrderManagePage = OrderManagePage::go($I)
+            ->詳細検索設定()
+            ->入力_ご注文者お名前($Customer->getName01().$Customer->getName02())
+            ->入力_ご注文者お名前フリガナ($Customer->getKana01().$Customer->getKana02())
+            ->検索();
 
-            $I->see('検索結果 : 3 件が該当しました', ShippingManagePage::$検索結果_メッセージ);
+            $I->see('検索結果：3件が該当しました', OrderManagePage::$検索結果_メッセージ);
 
-            $I->assertEquals('00003', $ShippingManagePage->取得_出荷伝票番号(1));
-            $I->assertEquals('00002', $ShippingManagePage->取得_出荷伝票番号(2));
-            $I->assertEquals('00001', $ShippingManagePage->取得_出荷伝票番号(3));
-            $I->assertEquals('2018/03/03', $ShippingManagePage->取得_出荷日(1));
-            $I->assertEquals('2018/02/02', $ShippingManagePage->取得_出荷日(2));
-            $I->assertEquals('2018/01/01', $ShippingManagePage->取得_出荷日(3));
+            $I->assertEquals('00003', $OrderManagePage->取得_出荷伝票番号(1));
+            $I->assertEquals('00002', $OrderManagePage->取得_出荷伝票番号(2));
+            $I->assertEquals('00001', $OrderManagePage->取得_出荷伝票番号(3));
+            $I->assertEquals('2018/03/03', $OrderManagePage->取得_出荷日(1));
+            $I->assertEquals('2018/02/02', $OrderManagePage->取得_出荷日(2));
+            $I->assertEquals('2018/01/01', $OrderManagePage->取得_出荷日(3));
 
         } finally {
             if (file_exists($csvFileName)) {
