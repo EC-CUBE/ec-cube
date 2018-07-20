@@ -131,265 +131,314 @@ file that was distributed with this source code.
             <div class="c-contentsArea__primaryCol">
                 <div class="c-primaryCol">
                     {% for shippingField in form.shippings %}
-                    <div class="modal fade" id="shippedNotifyModal" tabindex="-1" role="dialog" aria-labelledby="shippedNotifyModal" aria-hidden="true" data-keyboard="false" data-backdrop="static">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title font-weight-bold">{{ 'admin.shipping.index.829'|trans }}</h5>
-                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                </div>
-                                <div class="modal-body">
-                                    <p class="mb-4">{{ 'admin.shipping.index.830'|trans }}</p>
-                                    <div id="mail-options">
-                                        <div class="font-weight-bold mb-2">{{ 'admin.shipping.index.812'|trans }}</div>
-                                        <div class="form-check form-check-inline">
-                                            <label class="form-check-label">
-                                                {{ form_widget(shippingField.notify_email, {'label_attr': {'class': 'checkbox-inline'}}) }}
-                                            </label>
+                        <div class="card rounded border-0 mb-4">
+                            <div class="modal fade" id="shippedNotifyModal" tabindex="-1" role="dialog"
+                                 aria-labelledby="shippedNotifyModal" aria-hidden="true" data-keyboard="false"
+                                 data-backdrop="static">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title font-weight-bold">{{ 'admin.shipping.index.829'|trans }}</h5>
+                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">×</span></button>
                                         </div>
-                                        {% if (attribute(Shippings, loop.index0).id) %}
-                                        <div>
-                                            <div class="d-inline-block" data-toggle="collapse" href="#viewEmail" aria-expanded="false" aria-controls="viewEmail">
-                                                <a>
-                                                    <i class="fa fa-plus-square-o font-weight-bold mr-1"></i>
-                                                    <span class="font-weight-bold">{{ 'admin.shipping.index.814'|trans }}</span>
-                                                </a>
-                                            </div>
-                                            <div class="collapse bg-light p-4 ec-collapse bg-ec-formGray" id="viewEmail" style="word-wrap: break-word; word-break:break-all" data-preview-url="{{ url('admin_shipping_preview_notify_mail', {id: attribute(Shippings, loop.index0).id}) }}">
-                                                <pre></pre>
-                                            </div>
-                                        </div>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.shipping.index.815'|trans }}</button>
-                                    <button class="btn btn-ec-conversion" type="submit">{{ 'admin.shipping.index.816'|trans }}</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card rounded border-0 mb-4">
-                        <div class="card-header">
-                            <div class="row">
-                                <div class="col-8">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
-                                         title="Tooltip">
-                                        <span class="card-title">{{ 'admin.shipping.edit.description_title'|trans }}</span>
-                                        <i class="fa fa-question-circle fa-lg ml-1" aria-hidden="true"></i>
-                                    </div>
-                                </div>
-                                <div class="col-4 text-right"><a data-toggle="collapse" href="#shipmentOverview"
-                                                                 aria-expanded="false" aria-controls="shipmentOverview"><i
-                                                class="fa fa-angle-up fa-lg" aria-hidden="true"></i></a></div>
-                            </div>
-                        </div>
-                        <div class="collapse show ec-cardCollapse" id="shipmentOverview">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-6">
-                                        <div class="row mb-2 align-items-center">
-                                            <div class="col-3"><span>{{ 'admin.shipping.edit.shipping_id'|trans }}</span></div>
-                                            <div class="col">{{ attribute(Shippings, loop.index0).id ? attribute(Shippings, loop.index0).id }}</div>
-                                        </div>
-                                        <div class="row mb-2">
-                                            <div class="col-3"><span>{{ 'admin.shipping.edit.shipping_address'|trans }}</span></div>
-                                            <div class="col">
-                                                <div id="shipping-addr-area" style="{{ attribute(Shippings, loop.index0).id ? 'display:none' }}">
-                                                    {{ form_widget(shippingField.name.name01) }}
-                                                    {{ form_errors(shippingField.name.name01) }}
-                                                    {{ form_widget(shippingField.name.name02) }}
-                                                    {{ form_errors(shippingField.name.name02) }}
-                                                    {{ form_widget(shippingField.kana.kana01) }}
-                                                    {{ form_errors(shippingField.kana.kana01) }}
-                                                    {{ form_widget(shippingField.kana.kana02) }}
-                                                    {{ form_errors(shippingField.kana.kana02) }}
-                                                    {{ form_widget(shippingField.company_name) }}
-                                                    {{ form_errors(shippingField.company_name) }}
-                                                    {{ form_widget(shippingField.postal_code) }}
-                                                    {{ form_errors(shippingField.postal_code) }}
-                                                    {{ form_widget(shippingField.address.pref) }}
-                                                    {{ form_errors(shippingField.address.pref) }}
-                                                    {{ form_widget(shippingField.address.addr01, {'attr':{'placeholder':'admin.shipping.edit.736'}}) }}
-                                                    {{ form_errors(shippingField.address.addr01) }}
-                                                    {{ form_widget(shippingField.address.addr02, {'attr':{'placeholder':'admin.shipping.edit.737'}}) }}
-                                                    {{ form_errors(shippingField.address.addr02) }}
-                                                    {{ form_widget(shippingField.phone_number) }}
-                                                    {{ form_errors(shippingField.phone_number) }}
-                                                </div>
-                                                {% if attribute(Shippings, loop.index0).id %}
-                                                    <label>{{ attribute(Shippings, loop.index0).name01 }} {{ attribute(Shippings, loop.index0).name02 }}（{{ attribute(Shippings, loop.index0).kana01 }} {{ attribute(Shippings, loop.index0).kana02 }}）<br>
-                                                        {{ 'admin.shipping.edit.postal_code'|trans({
-                                                            '%postal_code%': attribute(Shippings, loop.index0).postal_code
-                                                        }) }}<br>
-                                                        {{ attribute(Shippings, loop.index0).pref ~ attribute(Shippings, loop.index0).addr01 ~ attribute(Shippings, loop.index0).addr02 }}<br><a
-                                                                href="#" id="edit-shipping-addr"><i
-                                                                    class="fa fa-pencil"
-                                                                    aria-hidden="true">{{ 'admin.shipping.edit.edit_shipping_address'|trans }}</i></a></label>
-                                                {% else %}
-
-                                                    {# TODO お届け先入力のデザインを検討 #}
-                                                {% endif %}
-                                            </div>
-                                        </div>
-                                        <div class="row mb-2">
-                                            <div class="col-3"><span>{{ 'admin.shipping.edit.orderer'|trans }}</span></div>
-                                            <div class="col">
-                                                {% if attribute(Shippings, loop.index0).id and attribute(Shippings, loop.index0).Order %}
-                                                    <label>{{ attribute(Shippings, loop.index0).Order.name01 }} {{ attribute(Shippings, loop.index0).Order.name02 }}
-                                                        ({{ attribute(Shippings, loop.index0).Order.kana01 }} {{ attribute(Shippings, loop.index0).Order.kana02 }})
-                                                        <br>{{ 'admin.shipping.edit.postal_code'|trans({
-                                                            '%postal_code%': attribute(Shippings, loop.index0).Order.postal_code
-                                                        }) }}
-                                                        <br>{{ attribute(Shippings, loop.index0).Order.pref.name ~ attribute(Shippings, loop.index0).Order.addr01 ~ attribute(Shippings, loop.index0).Order.addr02 }}
+                                        <div class="modal-body">
+                                            <p class="mb-4">{{ 'admin.shipping.index.830'|trans }}</p>
+                                            <div id="mail-options">
+                                                <div class="font-weight-bold mb-2">{{ 'admin.shipping.index.812'|trans }}</div>
+                                                <div class="form-check form-check-inline">
+                                                    <label class="form-check-label">
+                                                        {{ form_widget(shippingField.notify_email, {'label_attr': {'class': 'checkbox-inline'}}) }}
                                                     </label>
-                                                {% else %}
-                                                    {# TODO 新規登録時の注文者情報をどう扱うか検討 #}
+                                                </div>
+                                                {% if (attribute(Shippings, loop.index0).id) %}
+                                                    <div>
+                                                        <div class="d-inline-block" data-toggle="collapse"
+                                                             href="#viewEmail" aria-expanded="false"
+                                                             aria-controls="viewEmail">
+                                                            <a>
+                                                                <i class="fa fa-plus-square-o font-weight-bold mr-1"></i>
+                                                                <span class="font-weight-bold">{{ 'admin.shipping.index.814'|trans }}</span>
+                                                            </a>
+                                                        </div>
+                                                        <div class="collapse bg-light p-4 ec-collapse bg-ec-formGray"
+                                                             id="viewEmail"
+                                                             style="word-wrap: break-word; word-break:break-all"
+                                                             data-preview-url="{{ url('admin_shipping_preview_notify_mail', {id: attribute(Shippings, loop.index0).id}) }}">
+                                                            <pre></pre>
+                                                        </div>
+                                                    </div>
                                                 {% endif %}
                                             </div>
                                         </div>
-                                        <div class="row mb-2 align-items-center">
-                                            <div class="col-3"><span>{{ 'admin.shipping.edit.slip_number'|trans }}</span></div>
-                                            <div class="col">
-                                                {{ form_widget(shippingField.tracking_number, {'attr': {'placeholder': 'admin.shipping.placeholder.tracking_number'}}) }}
-                                                {{ form_errors(shippingField.tracking_number) }}
-                                            </div>
-                                        </div>
-                                        <div class="row mb-2 align-items-center">
-                                            <div class="col-3"><span>{{ 'admin.shipping.edit.delivery_provider'|trans }}</span></div>
-                                            <div class="col">
-                                                {{ form_widget(shippingField.Delivery) }}
-                                                {{ form_errors(shippingField.Delivery) }}
-                                            </div>
-                                            <div class="col-6"></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="row mb-2 align-items-center">
-                                            <div class="col-3"><i class="fa fa-calendar-check-o mr-1"
-                                                                  aria-hidden="true"></i><span>{{ 'admin.shipping.edit.date_to_deliver'|trans }}</span></div>
-                                            <div class="col">
-                                                {{ form_widget(shippingField.shipping_delivery_date) }}
-                                                {{ form_errors(shippingField.shipping_delivery_date) }}
-                                            </div>
-                                        </div>
-                                        <div class="row mb-2 align-items-center">
-                                            <div class="col-3"><i class="fa fa-clock-o mr-1"
-                                                                  aria-hidden="true"></i><span>{{ 'admin.shipping.edit.specified_time_zone'|trans }}</span>
-                                            </div>
-                                            <div class="col">
-                                                {{ form_widget(shippingField.DeliveryTime) }}
-                                                {{ form_errors(shippingField.DeliveryTime) }}
-                                            </div>
-                                        </div>
-                                        <div class="row mb-2 align-items-center">
-                                            <div class="col-3"><i class="fa fa-truck mr-1"
-                                                                  aria-hidden="true"></i><span>{{ 'admin.shipping.edit.ship_date'|trans }}</span></div>
-                                            <div class="col">
-                                                {{ form_widget(shippingField.shipping_date) }}
-                                                {{ form_errors(shippingField.shipping_date) }}
-                                            </div>
-                                        </div>
-                                        <div class="row mb-2 align-items-center">
-                                            <div class="col-3"><i class="fa fa-refresh mr-1"
-                                                                  aria-hidden="true"></i><span>{{ 'admin.shipping.edit.last_update_date'|trans }}</span>
-                                            </div>
-                                            <div class="col">
-                                                <span>{{ attribute(Shippings, loop.index0).id ? attribute(Shippings, loop.index0).update_date|date_min }}</span></div>
-                                        </div>
-                                        <div class="row mb-2 align-items-center">
-                                            <div class="col-3"><i class="fa fa-user mr-1"
-                                                                  aria-hidden="true"></i><span>{{ 'admin.shipping.edit.last_modified_by'|trans }}</span></div>
-                                            <div class="col"><span>{{ attribute(Shippings, loop.index0).id ? attribute(Shippings, loop.index0).creator }}</span>
-                                            </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-ec-sub" type="button"
+                                                    data-dismiss="modal">{{ 'admin.shipping.index.815'|trans }}</button>
+                                            <button class="btn btn-ec-conversion"
+                                                    type="submit">{{ 'admin.shipping.index.816'|trans }}</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="card rounded border-0 mb-4">
-                        <div class="card-header">
-                            <div class="row">
-                                <div class="col-8">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
-                                         title="Tooltip">
-                                        <span class="card-title">{{ 'admin.shipping.edit.produtcs_title'|trans }}</span><i
-                                                class="fa fa-question-circle fa-lg ml-1"
-                                                aria-hidden="true"></i></div>
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
+                                             title="Tooltip">
+                                            <span class="card-title">{{ 'admin.shipping.edit.description_title'|trans }}{{ loop.index }}</span>
+                                            <i class="fa fa-question-circle fa-lg ml-1" aria-hidden="true"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 text-right">
+                                        <a data-toggle="collapse" href="#shipmentOverview" aria-expanded="false"
+                                           aria-controls="shipmentOverview">
+                                            <i class="fa fa-angle-up fa-lg" aria-hidden="true"></i>
+                                        </a>
+                                    </div>
                                 </div>
-                                <div class="col-4 text-right"><a data-toggle="collapse" href="#shipmentItem"
-                                                                 aria-expanded="false" aria-controls="shipmentItem"><i
-                                                class="fa fa-angle-up fa-lg" aria-hidden="true"></i></a></div>
                             </div>
-                        </div>
-                        <div class="collapse show ec-cardCollapse" id="shipmentItem">
-                            <div class="card-body">
-                                <div class="row mb-2">
-                                    <div class="col-12">
-                                        <button class="btn btn-ec-regular mr-2" type="button" data-toggle="modal"
-                                                data-target="#addProduct">{{ 'admin.shipping.edit.add_product'|trans }}
-                                        </button>
-                                        <div class="modal fade" id="addProduct" tabindex="-1" role="dialog" aria-labelledby="addProduct" aria-hidden="true">
-                                            <div class="modal-dialog modal-lg" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title">{{ 'admin.order.edit.btn.add_product'|trans }}</h5>
-                                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                            <div class="collapse show ec-cardCollapse" id="shipmentOverview">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="row mb-2 align-items-center">
+                                                <div class="col-3">
+                                                    <span>{{ 'admin.shipping.edit.shipping_id'|trans }}</span></div>
+                                                <div class="col">{{ attribute(Shippings, loop.index0).id ? attribute(Shippings, loop.index0).id }}</div>
+                                            </div>
+                                            <div class="row mb-2">
+                                                <div class="col-3">
+                                                    <span>{{ 'admin.shipping.edit.shipping_address'|trans }}</span>
+                                                </div>
+                                                <div class="col">
+                                                    <div id="shipping-addr-area"
+                                                         style="{{ attribute(Shippings, loop.index0).id ? 'display:none' }}">
+                                                        {{ form_widget(shippingField.name.name01) }}
+                                                        {{ form_errors(shippingField.name.name01) }}
+                                                        {{ form_widget(shippingField.name.name02) }}
+                                                        {{ form_errors(shippingField.name.name02) }}
+                                                        {{ form_widget(shippingField.kana.kana01) }}
+                                                        {{ form_errors(shippingField.kana.kana01) }}
+                                                        {{ form_widget(shippingField.kana.kana02) }}
+                                                        {{ form_errors(shippingField.kana.kana02) }}
+                                                        {{ form_widget(shippingField.company_name) }}
+                                                        {{ form_errors(shippingField.company_name) }}
+                                                        {{ form_widget(shippingField.postal_code) }}
+                                                        {{ form_errors(shippingField.postal_code) }}
+                                                        {{ form_widget(shippingField.address.pref) }}
+                                                        {{ form_errors(shippingField.address.pref) }}
+                                                        {{ form_widget(shippingField.address.addr01, {'attr':{'placeholder':'admin.shipping.edit.736'}}) }}
+                                                        {{ form_errors(shippingField.address.addr01) }}
+                                                        {{ form_widget(shippingField.address.addr02, {'attr':{'placeholder':'admin.shipping.edit.737'}}) }}
+                                                        {{ form_errors(shippingField.address.addr02) }}
+                                                        {{ form_widget(shippingField.phone_number) }}
+                                                        {{ form_errors(shippingField.phone_number) }}
                                                     </div>
-                                                    <div class="modal-body">
-                                                        {{ form_widget(searchProductModalForm.id, { attr : {'class': 'mb-3',  placeholder : 'admin.order.edit.293' }}) }}
-                                                        {{ form_widget(searchProductModalForm.category_id) }}
-                                                        <button type="button" id="searchProductModalButton" class="btn btn-ec-conversion px-5 mb-4 mt-2">{{ 'admin.order.edit.294'|trans }}</button>
-                                                        <div id="searchProductModalList"></div>
-                                                    </div>
+                                                    {% if attribute(Shippings, loop.index0).id %}
+                                                        <label>{{ attribute(Shippings, loop.index0).name01 }} {{ attribute(Shippings, loop.index0).name02 }}
+                                                            （{{ attribute(Shippings, loop.index0).kana01 }} {{ attribute(Shippings, loop.index0).kana02 }}
+                                                            ）<br>
+                                                            {{ 'admin.shipping.edit.postal_code'|trans({
+                                                                '%postal_code%': attribute(Shippings, loop.index0).postal_code
+                                                            }) }}<br>
+                                                            {{ attribute(Shippings, loop.index0).pref ~ attribute(Shippings, loop.index0).addr01 ~ attribute(Shippings, loop.index0).addr02 }}
+                                                            <br>
+                                                            <a href="#" id="edit-shipping-addr">
+                                                                <i class="fa fa-pencil"
+                                                                   aria-hidden="true">{{ 'admin.shipping.edit.edit_shipping_address'|trans }}</i>
+                                                            </a>
+                                                        </label>
+                                                    {% else %}
+
+                                                        {# TODO お届け先入力のデザインを検討 #}
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="row mb-2">
+                                                <div class="col-3">
+                                                    <span>{{ 'admin.shipping.edit.orderer'|trans }}</span></div>
+                                                <div class="col">
+                                                    {% if attribute(Shippings, loop.index0).id and attribute(Shippings, loop.index0).Order %}
+                                                        <label>{{ attribute(Shippings, loop.index0).Order.name01 }} {{ attribute(Shippings, loop.index0).Order.name02 }}
+                                                            ({{ attribute(Shippings, loop.index0).Order.kana01 }} {{ attribute(Shippings, loop.index0).Order.kana02 }}
+                                                            )
+                                                            <br>
+                                                            {{ 'admin.shipping.edit.postal_code'|trans({ '%postal_code%': attribute(Shippings, loop.index0).Order.postal_code}) }}
+                                                            <br>
+                                                            {{ attribute(Shippings, loop.index0).Order.pref.name ~ attribute(Shippings, loop.index0).Order.addr01 ~ attribute(Shippings, loop.index0).Order.addr02 }}
+                                                        </label>
+                                                    {% else %}
+                                                        {# TODO 新規登録時の注文者情報をどう扱うか検討 #}
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="row mb-2 align-items-center">
+                                                <div class="col-3">
+                                                    <span>{{ 'admin.shipping.edit.slip_number'|trans }}</span></div>
+                                                <div class="col">
+                                                    {{ form_widget(shippingField.tracking_number, {'attr': {'placeholder': 'admin.shipping.placeholder.tracking_number'}}) }}
+                                                    {{ form_errors(shippingField.tracking_number) }}
+                                                </div>
+                                            </div>
+                                            <div class="row mb-2 align-items-center">
+                                                <div class="col-3">
+                                                    <span>{{ 'admin.shipping.edit.delivery_provider'|trans }}</span>
+                                                </div>
+                                                <div class="col">
+                                                    {{ form_widget(shippingField.Delivery) }}
+                                                    {{ form_errors(shippingField.Delivery) }}
+                                                </div>
+                                                <div class="col-6"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="row mb-2 align-items-center">
+                                                <div class="col-3">
+                                                    <i class="fa fa-calendar-check-o mr-1" aria-hidden="true"></i>
+                                                    <span>{{ 'admin.shipping.edit.date_to_deliver'|trans }}</span>
+                                                </div>
+                                                <div class="col">
+                                                    {{ form_widget(shippingField.shipping_delivery_date) }}
+                                                    {{ form_errors(shippingField.shipping_delivery_date) }}
+                                                </div>
+                                            </div>
+                                            <div class="row mb-2 align-items-center">
+                                                <div class="col-3">
+                                                    <i class="fa fa-clock-o mr-1" aria-hidden="true"></i>
+                                                    <span>{{ 'admin.shipping.edit.specified_time_zone'|trans }}</span>
+                                                </div>
+                                                <div class="col">
+                                                    {{ form_widget(shippingField.DeliveryTime) }}
+                                                    {{ form_errors(shippingField.DeliveryTime) }}
+                                                </div>
+                                            </div>
+                                            <div class="row mb-2 align-items-center">
+                                                <div class="col-3">
+                                                    <i class="fa fa-truck mr-1" aria-hidden="true"></i>
+                                                    <span>{{ 'admin.shipping.edit.ship_date'|trans }}</span>
+                                                </div>
+                                                <div class="col">
+                                                    {{ form_widget(shippingField.shipping_date) }}
+                                                    {{ form_errors(shippingField.shipping_date) }}
+                                                </div>
+                                            </div>
+                                            <div class="row mb-2 align-items-center">
+                                                <div class="col-3"><i class="fa fa-refresh mr-1" aria-hidden="true"></i>
+                                                    <span>{{ 'admin.shipping.edit.last_update_date'|trans }}</span>
+                                                </div>
+                                                <div class="col">
+                                                    <span>{{ attribute(Shippings, loop.index0).id ? attribute(Shippings, loop.index0).update_date|date_min }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-2 align-items-center">
+                                                <div class="col-3">
+                                                    <i class="fa fa-user mr-1" aria-hidden="true"></i>
+                                                    <span>{{ 'admin.shipping.edit.last_modified_by'|trans }}</span>
+                                                </div>
+                                                <div class="col">
+                                                    <span>{{ attribute(Shippings, loop.index0).id ? attribute(Shippings, loop.index0).creator }}</span>
                                                 </div>
                                             </div>
                                         </div>
-                                        {# 明細行のエラー表示 #}
-                                        {{ form_errors(shippingField.OrderItemsError) }}
-
                                     </div>
                                 </div>
-                                <table id="addOrderItem" class="table table-striped table-sm mb-0">
-                                    <thead class="table-active">
-                                    <th class="pt-2 pb-2 pl-3">{{ 'admin.shipping.edit.product_name_and_code'|trans }}</th>
-                                    <th class="pt-2 pb-2">{{ 'admin.shipping.edit.price'|trans }}</th>
-                                    <th class="pt-2 pb-2">{{ 'admin.shipping.edit.quantity'|trans }}</th>
-                                    <th class="pt-2 pb-2">{{ 'admin.shipping.edit.tax_rate'|trans }}</th>
-                                    <th class="pt-2 pb-2">{{ 'admin.shipping.edit.sub_total'|trans }}</th>
-                                    <th class="pt-2 pb-2 pr-3"></th>
-                                    </thead>
-                                    <tbody>
-                                    {% set OrderItems = attribute(Shippings, loop.index0).OrderItems %}
-                                    {% for orderItemField in shippingField.OrderItems %}
-                                        {% include '@admin/Shipping/order_item_prototype.twig' with { 'OrderItem': attribute(OrderItems, loop.index0), 'orderItemField': orderItemField } %}
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
                             </div>
-                        </div>
-                    </div>
-                    <div class="card rounded border-0 mb-4">
-                        <div class="card-header">
-                            <div class="row">
-                                <div class="col-8">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
-                                         title="Tooltip">
-                                    <span class="card-title">{{ 'admin.shipping.edit.note_title'|trans }}<i
-                                                class="fa fa-question-circle fa-lg ml-1"></i></span></div>
+                            {#</div>#}
+                            {#<div class="card rounded border-0 mb-4">#}
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
+                                             title="Tooltip">
+                                            <span class="card-title">{{ 'admin.shipping.edit.produtcs_title'|trans }}</span>
+                                            <i class="fa fa-question-circle fa-lg ml-1" aria-hidden="true"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 text-right">
+                                        <a data-toggle="collapse" href="#shipmentItem" aria-expanded="false"
+                                           aria-controls="shipmentItem">
+                                            <i class="fa fa-angle-up fa-lg" aria-hidden="true"></i>
+                                        </a>
+                                    </div>
                                 </div>
-                                <div class="col-4 text-right"><a data-toggle="collapse" href="#freeArea"
-                                                                 aria-expanded="false" aria-controls="freeArea"><i
-                                                class="fa fa-angle-up fa-lg"></i></a></div>
+                            </div>
+                            <div class="collapse show ec-cardCollapse" id="shipmentItem">
+                                <div class="card-body">
+                                    <div class="row mb-2">
+                                        <div class="col-12">
+                                            <button class="btn btn-ec-regular mr-2" type="button" data-toggle="modal"
+                                                    data-target="#addProduct">{{ 'admin.shipping.edit.add_product'|trans }}
+                                            </button>
+                                            <div class="modal fade" id="addProduct" tabindex="-1" role="dialog"
+                                                 aria-labelledby="addProduct" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">{{ 'admin.order.edit.btn.add_product'|trans }}</h5>
+                                                            <button class="close" type="button" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                <span aria-hidden="true">×</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            {{ form_widget(searchProductModalForm.id, { attr : {'class': 'mb-3',  placeholder : 'admin.order.edit.293' }}) }}
+                                                            {{ form_widget(searchProductModalForm.category_id) }}
+                                                            <button type="button" id="searchProductModalButton"
+                                                                    class="btn btn-ec-conversion px-5 mb-4 mt-2">{{ 'admin.order.edit.294'|trans }}</button>
+                                                            <div id="searchProductModalList"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {# 明細行のエラー表示 #}
+                                            {{ form_errors(shippingField.OrderItemsError) }}
+
+                                        </div>
+                                    </div>
+                                    <table id="addOrderItem" class="table table-striped table-sm mb-0">
+                                        <thead class="table-active">
+                                        <th class="pt-2 pb-2 pl-3">{{ 'admin.shipping.edit.product_name_and_code'|trans }}</th>
+                                        <th class="pt-2 pb-2">{{ 'admin.shipping.edit.price'|trans }}</th>
+                                        <th class="pt-2 pb-2">{{ 'admin.shipping.edit.quantity'|trans }}</th>
+                                        <th class="pt-2 pb-2">{{ 'admin.shipping.edit.tax_rate'|trans }}</th>
+                                        <th class="pt-2 pb-2">{{ 'admin.shipping.edit.sub_total'|trans }}</th>
+                                        <th class="pt-2 pb-2 pr-3"></th>
+                                        </thead>
+                                        <tbody>
+                                        {% set OrderItems = attribute(Shippings, loop.index0).OrderItems %}
+                                        {% for orderItemField in shippingField.OrderItems %}
+                                            {% include '@admin/Shipping/order_item_prototype.twig' with { 'OrderItem': attribute(OrderItems, loop.index0), 'orderItemField': orderItemField } %}
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            {#</div>#}
+                            {#<div class="card rounded border-0 mb-4">#}
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
+                                             title="Tooltip">
+                                    <span class="card-title">{{ 'admin.shipping.edit.note_title'|trans }}<i
+                                                class="fa fa-question-circle fa-lg ml-1"></i>
+                                    </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 text-right">
+                                        <a data-toggle="collapse" href="#freeArea" aria-expanded="false"
+                                           aria-controls="freeArea">
+                                            <i class="fa fa-angle-up fa-lg"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="collapse show ec-cardCollapse" id="freeArea">
+                                <div class="card-body">
+                                    {{ form_widget(shippingField.note, { attr: { rows: 8 }}) }}
+                                </div>
                             </div>
                         </div>
-                        <div class="collapse show ec-cardCollapse" id="freeArea">
-                            <div class="card-body">
-                                {{ form_widget(shippingField.note, { attr: { rows: 8 }}) }}
-                            </div>
-                        </div>
-                    </div>
                     {% endfor %}
                 </div>
             </div>
