@@ -108,7 +108,7 @@ class OrderStateMachine implements EventSubscriberInterface
             'workflow.order.transition.ship' => ['commitAddPoint'],
             'workflow.order.transition.return' => [['rollbackUsePoint'], ['rollbackAddPoint']],
             'workflow.order.transition.cancel_return' => [['commitUsePoint'], ['commitAddPoint']],
-            'workflow.order.guard.ship' => ['guardShip'],
+            'workflow.order.guard.ship' => [],
         ];
     }
 
@@ -223,22 +223,5 @@ class OrderStateMachine implements EventSubscriberInterface
         $OrderStatusId = $Order->getOrderStatus()->getId();
         $CompletedOrderStatus = $this->orderStatusRepository->find($OrderStatusId);
         $Order->setOrderStatus($CompletedOrderStatus);
-    }
-
-    /**
-     * すべての出荷が発送済みなら、受注も発送済みに遷移できる.
-     *
-     * @param GuardEvent $event
-     */
-    public function guardShip(GuardEvent $event)
-    {
-        /** @var Order $Order */
-        $Order = $event->getSubject();
-        $UnShipped = $Order->getShippings()->filter(function (Shipping $Shipping) {
-            return $Shipping->getShippingDate() == null;
-        });
-        if (!$UnShipped->isEmpty()) {
-            $event->setBlocked(true);
-        }
     }
 }
