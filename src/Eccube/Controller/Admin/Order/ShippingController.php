@@ -167,14 +167,22 @@ class ShippingController extends AbstractController
                 // TODO 在庫の有無や販売制限数のチェックなども行う必要があるため、完了処理もcaluclatorのように抽象化できないか検討する.
                 // TODO 後続にある会員情報の更新のように、完了処理もcaluclatorのように抽象化できないか検討する.
                 // 画面上で削除された明細をremove
+                /** @var OrderItem $OrderItem */
                 foreach ($OriginalOrderItems[$key] as $OrderItem) {
                     if (false === $TargetShipping->getOrderItems()->contains($OrderItem)) {
+                        $TargetShipping->removeOrderItem($OrderItem); // 不要かも
                         $OrderItem->setShipping(null);
+                        $Order->removeOrderItem($OrderItem);
+                        $OrderItem->setOrder(null);
                     }
                 }
 
+
                 foreach ($TargetShipping->getOrderItems() as $OrderItem) {
+                    $TargetShipping->addOrderItem($OrderItem); // 不要かも
                     $OrderItem->setShipping($TargetShipping);
+                    $Order->addOrderItem($OrderItem);
+                    $OrderItem->setOrder($Order);
                 }
 
                 // 出荷ステータス変更時の処理
