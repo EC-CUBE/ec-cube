@@ -58,6 +58,7 @@ file that was distributed with this source code.
                     return $('#context-menu').html();
                 }
             }).on('shown.bs.popover', function () {
+                $('.block-context-menu').not(this).popover('hide');
                 var $menu = $(this);
                 var $block = $menu.closest('[id^="detail_box__layout_item"]');
                 var block = {
