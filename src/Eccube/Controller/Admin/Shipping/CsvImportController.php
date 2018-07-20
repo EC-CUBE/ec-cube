@@ -164,6 +164,8 @@ class CsvImportController extends AbstractCsvImportController
             }
             $OrderStatus = $this->entityManager->find(OrderStatus::class, OrderStatus::DELIVERED);
             if ($allShipped) {
+                // XXX 先行の行で OrderStateMachine が OrderStatus::id を変更している場合があるので refresh する
+                $this->entityManager->refresh($Order);
                 if ($this->orderStateMachine->can($Order, $OrderStatus)) {
                     $this->orderStateMachine->apply($Order, $OrderStatus);
                 } else {
