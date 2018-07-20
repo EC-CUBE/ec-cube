@@ -119,27 +119,6 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->verify();
     }
 
-    public function testSearchCustomer()
-    {
-        $crawler = $this->client->request(
-            'POST',
-            $this->generateUrl('admin_order_search_customer'),
-            [
-                'search_word' => $this->Customer->getId(),
-            ],
-            [],
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-                'CONTENT_TYPE' => 'application/json',
-            ]
-        );
-        $Result = json_decode($this->client->getResponse()->getContent(), true);
-
-        $this->expected = $this->Customer->getName01().$this->Customer->getName02().'('.$this->Customer->getKana01().$this->Customer->getKana02().')';
-        $this->actual = $Result[0]['name'];
-        $this->verify();
-    }
-
     public function testOrderCustomerInfo()
     {
         $this->markTestSkipped('顧客の購入回数と購入金額の実装が完了するまでスキップ');
@@ -196,7 +175,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
     {
         $crawler = $this->client->request(
             'POST',
-            $this->generateUrl('admin_order_search_customer'),
+            $this->generateUrl('admin_order_search_customer_html'),
             [
                 'search_word' => $this->Customer->getId(),
             ],

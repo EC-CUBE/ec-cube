@@ -85,7 +85,7 @@ file that was distributed with this source code.
                 });
             });
 
-            // Trigger paging after append
+            // ページング処理
             $(document).on('click', '#searchProductModalList ul.pagination li.page-item a.page-link', function(e) {
                 e.preventDefault();
                 var list = $('#searchProductModalList');
@@ -104,7 +104,7 @@ file that was distributed with this source code.
 
             // 商品追加
             $collectionHolder = $('#table-form-field');
-            index = $collectionHolder.find('.input-price').length;
+            index = $collectionHolder.find('tbody > tr').length;
 
             $(document).on('click', '.delete', function(e) {
                 // 商品削除
@@ -183,16 +183,14 @@ file that was distributed with this source code.
                                             <div class="col-3">{{ 'admin.order.edit.244'|trans }}</div>
                                             <div class="col">{{ Order.order_no }}</div>
                                         </div>
-                                        <div class="row mb-3">
-                                            <div class="col-3">{{ 'admin.order.edit.label.device_type'|trans }}</div>
-                                            <div class="col">{{ Order.device_type }}</div>
-                                        </div>
                                         <div class="row mb-3 form-group">
                                             <label class="col-3 col-form-label">{{ 'admin.order.index.298'|trans }}<i class="fa fa-question-circle fa-lg ml-1" data-toggle="tooltip" data-placement="top" title="Tooltip"></i></label>
                                             <div class="col">
-                                                {{ form_widget(form.OrderStatus) }}
-                                                {{ form_errors(form.OrderStatus) }}
-                                                <p class="form-text font-weight-bold text-danger mb-0">{{ 'admin.order.edit.248'|trans }}</p>
+                                                {% if Order.id is not empty %}
+                                                    {{ form_widget(form.OrderStatus) }}
+                                                    {{ form_errors(form.OrderStatus) }}
+                                                    <p class="form-text font-weight-bold text-danger mb-0">{{ 'admin.order.edit.248'|trans }}</p>
+                                                {% endif %}
                                             </div>
                                         </div>
                                         <div class="row mb-3 form-group">
@@ -213,10 +211,6 @@ file that was distributed with this source code.
                                             <div class="col-3"><i class="fa fa-money fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.order.edit.label.payment_date'|trans }}</div>
                                             <div class="col">{{ Order.payment_date ? Order.payment_date|date_sec : '' }}</div>
                                         </div>
-                                        <div class="row mb-3">
-                                            <div class="col-3"><i class="fa fa-refresh fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.order.edit.label.update_date'|trans }}</div>
-                                            <div class="col">{{ Order.update_date ? Order.update_date|date_sec : '' }}</div>
-                                        </div>
                                         {% if not Order.isMultiple %}
                                             <div class="row mb-3">
                                                 <div class="col-3"><i class="fa fa-truck fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.shipping.edit.ship_date'|trans }}</div>
@@ -225,6 +219,14 @@ file that was distributed with this source code.
                                                 </div>
                                             </div>
                                         {% endif %}
+                                        <div class="row mb-3">
+                                            <div class="col-3"><i class="fa fa-refresh fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.order.edit.label.update_date'|trans }}</div>
+                                            <div class="col">{{ Order.update_date ? Order.update_date|date_sec : '' }}</div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-3"><i class="fa fa-mobile fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.order.edit.label.device_type'|trans }}</div>
+                                            <div class="col">{{ Order.device_type }}</div>
+                                        </div>
                                         <div class="row mb-3">
                                             <div class="col-3"><i class="fa fa-commenting fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.order.edit.label.message'|trans }}</div>
                                             <div class="col">{{ Order.message ? Order.message|nl2br : '' }}</div>
@@ -572,7 +574,6 @@ file that was distributed with this source code.
                         </div>
                         <div class="collapse show ec-cardCollapse" id="orderItem">
                             <div class="card-body">
-                                <input type="hidden" name="error-message">
                                 <div class="row justify-content-between mb-2">
                                     <div class="col-6">
                                         {# 複数配送の場合は商品追加できない #}
@@ -640,28 +641,30 @@ file that was distributed with this source code.
                                     </thead>
                                     <tbody>
                                     {% for orderItemForm in form.OrderItems %}
+                                        {% set OrderItem = orderItemForm.vars.data %}
+                                        {# hidden values #}
+                                        {{ form_widget(orderItemForm.ProductClass) }}
+                                        {{ form_widget(orderItemForm.order_item_type) }}
                                         <tr>
-                                            {{ form_widget(orderItemForm.Order) }}
                                             <td class="align-middle w-25 pl-3">
                                                 <p class="mb-0 font-weight-bold">
-                                                    {% if orderItemForm.vars.value.OrderItemType.isProduct %}
-                                                        {{ orderItemForm.vars.value.product_name }}
-                                                        {{ form_widget(orderItemForm.product_name, {'attr': {'class': 'd-none'}}) }}
+                                                    {% if OrderItem.OrderItemType.isProduct %}
+                                                        {{ OrderItem.product_name }}
+                                                        {{ form_widget(orderItemForm.product_name, { 'type': 'hidden' }) }}
                                                     {% else %}
                                                         {{ form_widget(orderItemForm.product_name) }}
-                                                        {{ form_errors(orderItemForm.product_name) }}
                                                     {% endif %}
                                                 </p>
                                                 <span>
-                                                        {{ orderItemForm.vars.value.product_code }}
-                                                    {% if orderItemForm.vars.value.class_category_name1 is not empty %}
+                                                    {{ OrderItem.product_code }}
+                                                    {% if OrderItem.class_category_name1 is not empty %}
                                                         / (
-                                                        {{ orderItemForm.vars.value.class_name1 }}：
-                                                        {{ orderItemForm.vars.value.class_category_name1 }}
-                                                        {% if orderItemForm.vars.value.class_category_name2 is not empty %}
+                                                        {{ OrderItem.class_name1 }}：
+                                                        {{ OrderItem.class_category_name1 }}
+                                                        {% if OrderItem.class_category_name2 is not empty %}
                                                             /
-                                                            {{ orderItemForm.vars.value.class_name2 }}：
-                                                            {{ orderItemForm.vars.value.class_category_name2 }}
+                                                            {{ OrderItem.class_name2 }}：
+                                                            {{ OrderItem.class_category_name2 }}
                                                         {% endif %}
                                                         )
                                                     {% endif %}
@@ -669,17 +672,17 @@ file that was distributed with this source code.
                                                 {{ form_errors(orderItemForm.product_name) }}
                                             </td>
                                             <td class="align-middle">
-                                                <div class="col-8">
-                                                    {{ form_widget(orderItemForm.price, {'attr': {'class': 'input-price'}}) }}
+                                                <div class="col-12">
+                                                    {{ form_widget(orderItemForm.price, { 'tax_display_type': OrderItem.TaxDisplayType }) }}
                                                     {{ form_errors(orderItemForm.price) }}
                                                 </div>
                                             </td>
                                             <td class="align-middle">
                                                 <div class="col-6">
                                                     {# 複数配送の場合は商品の個数を変更できない #}
-                                                    {% if Order.isMultiple and orderItemForm.vars.value.orderItemType.id == 1 %}
-                                                        {{ orderItemForm.vars.value.quantity }}
-                                                        {{ form_widget(orderItemForm.quantity, {'attr': {'class': 'd-none'}}) }}
+                                                    {% if Order.isMultiple and OrderItem.orderItemType.id == constant('Eccube\\Entity\\Master\\OrderItemType::PRODUCT') %}
+                                                        {{ OrderItem.quantity }}
+                                                        {{ form_widget(orderItemForm.quantity, { 'type': 'hidden' }) }}
                                                         {{ form_errors(orderItemForm.quantity) }}
                                                     {% else %}
                                                         {{ form_widget(orderItemForm.quantity) }}
@@ -689,26 +692,23 @@ file that was distributed with this source code.
                                             </td>
                                             <td class="align-middle">
                                                 <div class="col-8">
-                                                    {{ orderItemForm.vars.value.tax_rate }}
-                                                    {{ form_widget(orderItemForm.tax_rate, {'attr': {'class': 'd-none'}}) }}
-                                                    {{ form_errors(orderItemForm.tax_rate) }}
+                                                    {{ OrderItem.tax_rate }}
                                                 </div>
                                             </td>
                                             <td class="align-middle">
                                                 <div class="col-8">
-                                                    {{ orderItemForm.vars.value.tax_type }}
+                                                    {{ OrderItem.tax_type }}
                                                 </div>
                                             </td>
                                             <td class="align-middle">
                                                 <div class="col-8">
-                                                    <span>{{ orderItemForm.vars.value.total_price|price }}</span>
-                                                    <small>（{{ 'admin.common.label.taxinc'|trans }}）</small>
+                                                    <span>{{ OrderItem.total_price|price }}</span>
                                                 </div>
                                             </td>
                                             <td class="align-middle text-right pr-3">
                                                 <div class="row justify-content-end">
                                                     {# 複数配送の場合は商品を削除できない #}
-                                                    {% if Order.isMultiple and orderItemForm.vars.value.orderItemType.id == 1 %}
+                                                    {% if Order.isMultiple and OrderItem.orderItemType.id == constant('Eccube\\Entity\\Master\\OrderItemType::PRODUCT') %}
                                                         <div class="col-auto text-center">
                                                             <a class="btn btn-ec-actionIcon disabled">
                                                                 <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
@@ -738,66 +738,59 @@ file that was distributed with this source code.
                                                     {% endif %}
                                                 </div>
                                             </td>
-                                            {{ form_widget(orderItemForm.Order) }}
-                                            {{ form_widget(orderItemForm.Shipping) }}
-                                            {{ form_widget(orderItemForm.Product) }}
-                                            {{ form_widget(orderItemForm.ProductClass) }}
-                                            {{ form_widget(orderItemForm.product_name) }}
-                                            {{ form_widget(orderItemForm.product_code) }}
-                                            {{ form_widget(orderItemForm.class_name1) }}
-                                            {{ form_widget(orderItemForm.class_name2) }}
-                                            {{ form_widget(orderItemForm.class_category_name1) }}
-                                            {{ form_widget(orderItemForm.class_category_name2) }}
-                                            {{ form_widget(orderItemForm.tax_rule) }}
-                                            {{ form_widget(orderItemForm.tax_type) }}
-                                            {{ form_widget(orderItemForm.tax_display_type) }}
-                                            {{ form_widget(orderItemForm.order_item_type) }}
                                         </tr>
                                     {% endfor %}
                                     </tbody>
                                 </table>
                                 <hr class="mt-0">
-                                {# TODO 小計,内値引き,内送料,内手数料の金額が明細と合わない #}
+                                <!-- 小計 -->
                                 <div class="row justify-content-end mb-3">
                                     <div class="col-auto"><span class="align-middle">{{ 'admin.order.edit.276'|trans }}</span></div>
                                     <div class="col-2 text-right"><span class="h4 align-middle font-weight-normal">{{ Order.subtotal|price }}</span></div>
                                 </div>
+                                <!-- 内値引き -->
                                 <div class="row justify-content-end mb-3">
                                     <div class="col-auto"><span class="align-middle">{{ 'admin.order.edit.277'|trans }}</span></div>
-                                    <div class="col-2 text-right"><span class="h4 align-middle text-danger font-weight-normal">- {{ Order.discount|price }}</span></div>
+                                    <div class="col-2 text-right"><span class="h4 align-middle text-danger font-weight-normal">{{ Order.discount|price }}</span></div>
                                 </div>
+                                <!-- 内送料 -->
                                 <div class="row justify-content-end mb-3">
                                     <div class="col-auto"><span class="align-middle">{{ 'admin.order.edit.279'|trans }}</span></div>
                                     <div class="col-2 text-right"><span class="h4 align-middle font-weight-normal">{{ Order.delivery_fee_total|price }}</span></div>
                                 </div>
+                                <!-- 内手数料 -->
                                 <div class="row justify-content-end mb-3">
                                     <div class="col-auto"><span class="align-middle">{{ 'admin.order.edit.280'|trans }}</span></div>
                                     <div class="col-2 text-right"><span class="h4 align-middle font-weight-normal">{{ Order.charge|price }}</span></div>
                                 </div>
+                                <!-- 加算ポイント -->
                                 <div class="row justify-content-end mb-3">
                                     <div class="col-auto"><span class="align-middle">{{ 'admin.common.label.add_point'|trans }}</span></div>
                                     <div class="col-2 text-right">
-                                            <span class="h4 align-middle font-weight-normal">
-                                                {{ form_widget(form.add_point) }}
-                                                {{ form_errors(form.add_point) }}
-                                            </span>
+                                        <span class="h4 align-middle font-weight-normal">
+                                            {{ form_widget(form.add_point) }}
+                                            {{ form_errors(form.add_point) }}
+                                        </span>
                                     </div>
                                 </div>
+                                <!-- 利用ポイント -->
                                 <div class="row justify-content-end mb-3">
                                     <div class="col-auto"><span class="align-middle">{{ 'admin.common.label.use_point'|trans }}</span></div>
                                     <div class="col-2 text-right">
-                                            <span class="h4 align-middle font-weight-normal">
-                                                {{ form_widget(form.use_point) }}
-                                                {{ form_errors(form.use_point) }}
-                                            </span>
+                                        <span class="h4 align-middle font-weight-normal">
+                                            {{ form_widget(form.use_point) }}
+                                            {{ form_errors(form.use_point) }}
+                                        </span>
                                     </div>
                                 </div>
 
                                 <hr>
+                                <!-- 小計 -->
                                 <div class="row justify-content-end mb-3">
                                     <div class="col-auto"><span class="align-middle">{{ 'admin.common.label.total'|trans }}</span></div>
                                     <div class="col-2 text-right"><span class="h4 align-middle font-weight-normal">{{ Order.total|price }}</span></div>
                                 </div>
+                                <!-- 合計 -->
                                 <div class="row justify-content-end mb-3">
                                     <div class="col-auto"><span class="align-middle">{{ 'admin.common.label.payment_total'|trans }}</span></div>
                                     <div class="col-2 text-right"><span class="h4 align-middle font-weight-normal">{{ Order.payment_total|price }}</span></div>
