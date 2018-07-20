@@ -32,8 +32,10 @@ use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\Master\OrderItemTypeRepository;
+use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\ProductRepository;
+use Eccube\Service\OrderStateMachine;
 use Eccube\Service\PurchaseFlow\Processor\OrderNoProcessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseException;
@@ -106,6 +108,16 @@ class EditController extends AbstractController
     protected $orderItemTypeRepository;
 
     /**
+     * @var OrderStateMachine
+     */
+    protected $orderStateMachine;
+
+    /**
+     * @var OrderStatusRepository
+     */
+    protected $orderStatusRepository;
+
+    /**
      * EditController constructor.
      *
      * @param TaxRuleService $taxRuleService
@@ -130,7 +142,9 @@ class EditController extends AbstractController
         PurchaseFlow $orderPurchaseFlow,
         OrderRepository $orderRepository,
         OrderNoProcessor $orderNoProcessor,
-        OrderItemTypeRepository $orderItemTypeRepository
+        OrderItemTypeRepository $orderItemTypeRepository,
+        OrderStatusRepository $orderStatusRepository,
+        OrderStateMachine $orderStateMachine
     ) {
         $this->taxRuleService = $taxRuleService;
         $this->deviceTypeRepository = $deviceTypeRepository;
@@ -143,6 +157,8 @@ class EditController extends AbstractController
         $this->orderRepository = $orderRepository;
         $this->orderNoProcessor = $orderNoProcessor;
         $this->orderItemTypeRepository = $orderItemTypeRepository;
+        $this->orderStatusRepository = $orderStatusRepository;
+        $this->orderStateMachine = $orderStateMachine;
     }
 
     /**
@@ -230,6 +246,20 @@ class EditController extends AbstractController
                         } catch (PurchaseException $e) {
                             $this->addError($e->getMessage(), 'admin');
                             break;
+                        }
+
+                        // ステータスが変更されている場合はステートマシンを実行.
+                        $OldStatus = $OriginOrder->getOrderStatus();
+                        $NewStatus = $TargetOrder->getOrderStatus();
+
+                        if ($TargetOrder->getId() && $OldStatus->getId() != $NewStatus->getId()) {
+                            // ステートマシンでステータスは更新されるので, 古いステータスに戻す.
+                            $TargetOrder->setOrderStatus($OldStatus);
+                            // FormTypeでステータスの遷移チェックは行っているのでapplyのみ.
+                            $this->orderStateMachine->apply($TargetOrder, $NewStatus);
+                            // FIXME ステートマシンがmtb_order_statusを更新しようとするので, refreshしておく.
+                            $this->entityManager->refresh($OldStatus);
+                            $this->entityManager->refresh($NewStatus);
                         }
 
                         $this->entityManager->persist($TargetOrder);

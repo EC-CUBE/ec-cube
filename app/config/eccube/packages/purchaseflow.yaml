@@ -112,6 +112,6 @@ services:
 
     eccube.purchase.flow.order.purchase:
         class: Doctrine\Common\Collections\ArrayCollection
-        arguments:
-            - #
-                - '@Eccube\Service\PurchaseFlow\Processor\UpdateDateProcessor'
+#        arguments:
+#            - #
+#                - '@Eccube\Service\PurchaseFlow\Processor\UpdateDateProcessor'
