@@ -121,6 +121,7 @@ class OrderItemType extends AbstractType
             ])
             ->add('quantity', IntegerType::class, [
                 'constraints' => [
+                    new Assert\NotBlank(),
                     new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_int_len'],
                     ]),
