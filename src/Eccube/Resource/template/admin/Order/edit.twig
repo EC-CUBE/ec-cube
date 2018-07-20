@@ -414,7 +414,7 @@ file that was distributed with this source code.
                                 {% if Order.isMultiple %}
                                     {# 複数配送の場合は配送先の表示のみ #}
                                     <div class="mb-3">
-                                        <button type="button" id="shipping-add" class="btn btn-ec-regular">{{ 'admin.order.edit.label.shipping.edit'|trans }}</button>
+                                        <a id="shipping-add" class="btn btn-ec-regular" href="{{ url("admin_shipping_edit", {id: Order.id}) }}">{{ 'admin.order.edit.label.shipping.edit'|trans }}</a>
                                         複数配送を指定している場合は、こちらのボタンからそれぞれの配送設定の編集ができます。
                                     </div>
                                     {% for shipping in Order.Shippings %}
@@ -431,7 +431,7 @@ file that was distributed with this source code.
                                             <button type="button" id="print" class="btn btn-ec-regular">{{ 'admin.order.edit.label.shipping.print'|trans }}</button>
                                         </div>
                                         <div class="col-6 text-right">
-                                            <button type="button" id="shipping-add" class="btn btn-ec-regular w-25">{{ 'admin.order.edit.label.shipping.add'|trans }}</button>
+                                            <a id="shipping-add" class="btn btn-ec-regular w-25" href="{{ url("admin_shipping_edit", {id: Order.id}) }}">{{ 'admin.order.edit.label.shipping.add'|trans }}</a>
                                         </div>
                                     </div>
                                     <div class="row">
