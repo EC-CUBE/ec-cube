@@ -13,6 +13,7 @@
 
 namespace Eccube\Service;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
 use Eccube\Entity\Shipping;
@@ -46,12 +47,19 @@ class OrderStateMachine implements EventSubscriberInterface
      */
     private $stockReduceProcessor;
 
-    public function __construct(StateMachine $_orderStateMachine, OrderStatusRepository $orderStatusRepository, PointProcessor $pointProcessor, StockReduceProcessor $stockReduceProcessor)
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+
+    public function __construct(StateMachine $_orderStateMachine, OrderStatusRepository $orderStatusRepository, PointProcessor $pointProcessor, StockReduceProcessor $stockReduceProcessor, EntityManagerInterface $entityManager)
     {
         $this->machine = $_orderStateMachine;
         $this->orderStatusRepository = $orderStatusRepository;
         $this->pointProcessor = $pointProcessor;
         $this->stockReduceProcessor = $stockReduceProcessor;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -221,6 +229,11 @@ class OrderStateMachine implements EventSubscriberInterface
         /** @var Order $Order */
         $Order = $event->getSubject();
         $OrderStatusId = $Order->getOrderStatus()->getId();
+
+        // XXX このまま EntityManager::flush() をコールすると、 OrderStatus::id が更新されてしまうため元に戻す
+        $TransitionlStatus = $Order->getOrderStatus();
+        $this->entityManager->detach($TransitionlStatus);
+
         $CompletedOrderStatus = $this->orderStatusRepository->find($OrderStatusId);
         $Order->setOrderStatus($CompletedOrderStatus);
     }

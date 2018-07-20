@@ -211,4 +211,9 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
     {
         return $this->tester->grabTextFrom("#search_result > tbody > tr:nth-child(${rowNum}) > td:nth-child(7)");
     }
+
+    public function 取得_ステータス($rowNum)
+    {
+        return $this->tester->grabTextFrom("#search_result > tbody > tr:nth-child(${rowNum}) > td:nth-child(4) > span");
+    }
 }
