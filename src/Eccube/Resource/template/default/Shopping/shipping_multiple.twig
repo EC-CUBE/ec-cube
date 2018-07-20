@@ -172,13 +172,6 @@ $(function() {
                             <button id="button__add{{ idx }}" type="button" class="btn btn-default btn-sm add" data-idx="{{ idx }}">お届け先追加</button>
                         </p>
                     {% endfor %}
-                    <div class="extra-form">
-                        {% for f in form %}
-                            {% if f.vars.name matches '[^plg*]' %}
-                                {{ form_row(f) }}
-                            {% endif %}
-                        {% endfor %}
-                    </div>
                     <div id="multiple_list__footer" class="row no-padding">
                         <div id="multiple_list__button_menu" class="btn_group col-sm-offset-4 col-sm-4">
                             <p id="multiple_list__confirm_button">

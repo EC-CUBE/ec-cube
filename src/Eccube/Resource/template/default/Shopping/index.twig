@@ -249,12 +249,10 @@ file that was distributed with this source code.
                         <p class="ec-zipInput">〒<span class="customer-edit customer-postal_code">{{ Order.postal_code }}</span></p>
                         <p class="ec-input"><span class="customer-edit customer-pref">{{ Order.pref }}</span><span class="customer-edit customer-addr01">{{ Order.addr01 }}</span><span class="customer-edit customer-addr02">{{ Order.addr02 }}</span></p>
                         <p class="ec-telInput"><span class="customer-edit customer-phone_number">{{ Order.phone_number }}</span></p>
+                        <p class="ec-input"><span class="customer-edit customer-email">{{ Order.email }}</span></p>
+                        <p class="ec-input"><span class="customer-edit customer-company_name">{{ Order.companyName }}</span></p>
                     </div>
                     {% if is_granted('ROLE_USER') == false %}
-                        <div class="ec-orderAccount__account">
-                            <p class="ec-input"><span class="customer-edit customer-email">{{ Order.email }}</span></p>
-                            <p class="ec-input"><span class="customer-edit customer-company_name">{{ Order.companyName }}</span></p>
-                        </div>
                         <div class="mod-button" style="display:none;">
                             <span id="customer-ok"><button type="button" class="ec-inlineBtn">OK</button></span>
                             <span id="customer-cancel"><button type="button" class="ec-inlineBtn">{{'shopping.label.btn.cancel'|trans}}</button></span>
@@ -342,11 +340,9 @@ file that was distributed with this source code.
                     <div class="ec-blockRadio">
                         {% for key, child in form.Payment %}
                             {% set Payment = form.Payment.vars.choices[key].data %}
-                            {% if Payment.visible %}
-                                <label>{{ form_widget(child, {'attr': {'class': 'payment' }}) }}<span>{{ child.vars.label }}</span></label>
-                                {% if Payment.payment_image is not null %}
-                                    <img src="{{ asset(Payment.payment_image, 'save_image') }}">
-                                {% endif %}
+                            <label>{{ form_widget(child, {'attr': {'class': 'payment' }}) }}<span>{{ child.vars.label }}</span></label>
+                            {% if Payment.payment_image is not null %}
+                                <img src="{{ asset(Payment.payment_image, 'save_image') }}">
                             {% endif %}
                         {% endfor %}
                         {{ form_errors(form.Payment) }}
@@ -372,13 +368,6 @@ file that was distributed with this source code.
                         {{ form_widget(form.message, {'attr': {'class': 'form-control', 'placeholder': 'お問い合わせ事項がございましたら、こちらにご入力ください。(3000文字まで)', 'rows': '6'}}) }}
                         {{ form_errors(form.message) }}
                     </div>
-                    {% for f in form.getIterator %}
-                        <div class="ec-input">
-                            {% if f.vars.name matches '[^plg*]' %}
-                                {{ form_row(f) }}
-                            {% endif %}
-                        </div>
-                    {% endfor %}
                 </div>
             </div>
             <div class="ec-orderRole__summary">

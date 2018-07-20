@@ -14,6 +14,7 @@
 namespace Eccube\Controller\Admin\Setting\Shop;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Delivery;
 use Eccube\Entity\DeliveryTime;
@@ -116,7 +117,7 @@ class DeliveryController extends AbstractController
     public function edit(Request $request, $id = null)
     {
         if (is_null($id)) {
-            $SaleType = $this->saleTypeRepository->findOneBy([], ['sort_no' => 'DESC']);
+            $SaleType = $this->saleTypeRepository->findOneBy([], ['sort_no' => 'ASC']);
             $Delivery = $this->deliveryRepository->findOneBy([], ['sort_no' => 'DESC']);
 
             $sortNo = 1;
@@ -269,8 +270,14 @@ class DeliveryController extends AbstractController
     {
         $this->isTokenValid();
 
-        $this->entityManager->remove($Delivery);
-        $this->entityManager->flush();
+        try {
+            $this->entityManager->remove($Delivery);
+            $this->entityManager->flush();
+        } catch (ForeignKeyConstraintViolationException $e) {
+            $this->addError(trans('admin.delete.failed.foreign_key', ['%name%' => $Delivery->getName()]), 'admin');
+
+            return $this->redirectToRoute('admin_setting_shop_delivery');
+        }
 
         $sortNo = 1;
         $Delivs = $this->deliveryRepository

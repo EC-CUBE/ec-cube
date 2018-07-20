@@ -45,6 +45,7 @@ file that was distributed with this source code.
     {% endif %}
 {%- endblock textarea_widget -%}
 
+
 {%- block checkbox_widget -%}
     {% if type is defined and type == 'hidden' %}
         {{ block('form_widget_simple') }}
@@ -52,3 +53,10 @@ file that was distributed with this source code.
         {{ parent() }}
     {% endif %}
 {%- endblock checkbox_widget -%}
+
+{%- block radio_widget -%}
+    <label for="{{ id }}">{{ parent() }}
+        <span>{{ label is not same as(false) ? (translation_domain is same as(false) ? label : label|trans({}, translation_domain)) }}</span>
+    </label>
+{%- endblock radio_widget -%}
+

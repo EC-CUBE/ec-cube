@@ -36,7 +36,7 @@ use Eccube\Service\PurchaseFlow\ItemCollection;
  */
 class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, ItemHolderInterface
 {
-    use PointTrait;
+    use NameTrait, PointTrait;
 
     /**
      * 複数配送かどうかの判定を行う.

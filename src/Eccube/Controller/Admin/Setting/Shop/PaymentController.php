@@ -127,7 +127,6 @@ class PaymentController extends AbstractController
                 if (!$Payment->getMethodClass()) {
                     $Payment->setMethodClass(Cash::class);
                 }
-                $Payment->setVisible(true);
                 $this->entityManager->persist($Payment);
                 $this->entityManager->flush();
 

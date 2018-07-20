@@ -50,9 +50,9 @@ p 項目の内容はドラッグ＆ドロップで変更可能です。
       height:100%;
       background: transparent;
     }
-    &::after{
+
+    .delete-image {
       display: none;
-      content: "\f00d";
       font-family: FontAwesome;
       font-size: 18px;
       line-height: 1;
@@ -70,9 +70,8 @@ p 項目の内容はドラッグ＆ドロップで変更可能です。
       background: rgba(0,0,0,0.5);
     }
 
-    &::after{
+    .delete-image {
       display: inline-block;
-      content: "\f00d";
       font-family: FontAwesome;
       font-size: 18px;
       line-height: 1;

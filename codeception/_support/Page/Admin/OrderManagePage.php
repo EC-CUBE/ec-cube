@@ -48,13 +48,33 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
 
     public function 受注CSVダウンロード実行()
     {
-        $this->tester->click('#form_bulk #btn_csv_download');
+        $this->tester->click(['id' => 'csvDownloadDropDown']);
+        $this->tester->waitForElementVisible(['id' => 'orderCsvDownload']);
+        $this->tester->click(['id' => 'orderCsvDownload']);
         return $this;
     }
 
     public function 受注CSV出力項目設定()
     {
-        $this->tester->click('#form_bulk #btn_csv_setting');
+        $this->tester->click(['id' => 'csvSettingDropDown']);
+        $this->tester->waitForElementVisible(['id' => 'orderCsvSetting']);
+        $this->tester->click(['id' => 'orderCsvSetting']);
+        return $this;
+    }
+
+    public function 配送CSVダウンロード実行()
+    {
+        $this->tester->click(['id' => 'csvDownloadDropDown']);
+        $this->tester->waitForElementVisible(['id' => 'shippingCsvDownload']);
+        $this->tester->click(['id' => 'shippingCsvDownload']);
+        return $this;
+    }
+
+    public function 配送CSV出力項目設定()
+    {
+        $this->tester->click(['id' => 'csvSettingDropDown']);
+        $this->tester->waitForElementVisible(['id' => 'shippingCsvSetting']);
+        $this->tester->click(['id' => 'shippingCsvSetting']);
         return $this;
     }
 
@@ -84,7 +104,13 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
 
     public function 一覧_メール通知($rowNum)
     {
-        $this->tester->click("#search_result > tbody > tr:nth-child(${rowNum}) a.action-mail");
+        $this->tester->click(['css' => "#search_result > tbody > tr:nth-child(${rowNum}) > td.align-middle.pr-3.text-center > div > div:nth-child(1) > a"]);
+        $this->tester->waitForElementVisible(['id' => 'sentUpdateModal']);
+        $this->tester->wait(2);
+        $this->tester->scrollTo(['id' => 'bulkChange']);
+        $this->tester->click(['id' => 'bulkChange']);
+        $this->tester->wait(5);
+        $this->tester->waitForElementVisible(['id' => 'bulkChangeComplete']);
         return $this;
     }
 
@@ -96,14 +122,32 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
 
     public function 一覧_全選択()
     {
-        $this->tester->checkOption('#check_all');
+        $this->tester->checkOption('#toggle_check_all');
         return $this;
     }
 
 
-    public function メール一括通知()
+    public function 個別メール送信($rowNum)
     {
-        $this->tester->click('#form_bulk #btn_bulk_mail');
+        $this->tester->click(['css' => "#search_result > tbody > tr:nth-child(${rowNum}) > td.align-middle.pr-3.text-center > div > div:nth-child(1) > a"]);
+        $this->tester->waitForElementVisible(['id' => 'sentUpdateModal']);
+        $this->tester->wait(2);
+        $this->tester->scrollTo(['id' => 'bulkChange']);
+        $this->tester->click(['id' => 'bulkChange']);
+        $this->tester->wait(5);
+        $this->tester->waitForElementVisible(['id' => 'bulkChangeComplete']);
+        return $this;
+    }
+
+    public function 一括メール送信()
+    {
+        $this->tester->click(['id' => 'bulkSendMail']);
+        $this->tester->waitForElementVisible(['id' => 'sentUpdateModal']);
+        $this->tester->wait(1);
+        $this->tester->click(['id' => 'bulkChange']);
+        $this->tester->wait(5);
+        $this->tester->waitForElementVisible(['id' => 'bulkChangeComplete']);
+        return $this;
     }
 
     public function 一覧_注文番号($rowNum)

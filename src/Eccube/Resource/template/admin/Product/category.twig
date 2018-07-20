@@ -174,30 +174,40 @@ file that was distributed with this source code.
                         <div class="card rounded border-0 mb-2">
                             <ul class="list-group list-group-flush sortable-container">
                                 <li class="list-group-item">
-                                    <form role="form" class="form-row" name="form1" id="form1" method="post"
+                                    <form role="form" name="form1" id="form1" method="post"
                                           action="{% if TargetCategory.id %}{{ path('admin_product_category_edit', {id: TargetCategory.id}) }}{% elseif Parent %}{{ url('admin_product_category_show', {'parent_id': Parent.id}) }}{% else %}{{ url('admin_product_category') }}{% endif %}"
                                           enctype="multipart/form-data">
                                         {% if TargetCategory.hierarchy < eccube_config.eccube_category_nest_level %}
                                             {{ form_widget(form._token) }}
-                                            <div class="col-auto">
-                                                {{ form_widget(form.name) }}
-                                                {{ form_errors(form.name) }}
-                                            </div>
-                                            <div class="col-auto">
-                                                <button class="btn btn-ec-regular" type="submit">
-                                                    {{ 'admin.product.category.403'|trans }}
-                                                </button>
-                                            </div>
-                                        {% endif %}
-                                        {% for f in form.getIterator %}
-                                            {% if f.vars.name matches '[^plg*]' %}
+                                            <div class="form-row mb-3">
                                                 <div class="col-auto">
-                                                    {{ form_label(f) }}
-                                                    {{ form_widget(f) }}
-                                                    {{ form_errors(f) }}
+                                                    {{ form_widget(form.name) }}
+                                                    {{ form_errors(form.name) }}
                                                 </div>
-                                            {% endif %}
-                                        {% endfor %}
+                                                <div class="col-auto">
+                                                    <button class="btn btn-ec-regular" type="submit">
+                                                        {{ 'admin.product.category.403'|trans }}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            {# エンティティ拡張の自動出力 #}
+                                            {% for f in form if f.vars.eccube_form_options.auto_render %}
+                                                {% if f.vars.eccube_form_options.form_theme %}
+                                                    {% form_theme f f.vars.eccube_form_options.form_theme %}
+                                                    {{ form_row(f) }}
+                                                {% else %}
+                                                    <div class="form-row mb-3">
+                                                        <div class="col-3">
+                                                            <span>{{ f.vars.label|trans }}</span>
+                                                        </div>
+                                                        <div class="col">
+                                                            {{ form_widget(f) }}
+                                                            {{ form_errors(f) }}
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
                                     </form>
                                 </li>
                                 {% if Categories|length > 0 %}

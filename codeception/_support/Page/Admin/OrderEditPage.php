@@ -7,7 +7,7 @@ namespace Page\Admin;
 class OrderEditPage extends AbstractAdminPageStyleGuide
 {
 
-    public static $姓_エラーメッセージ = '#ordererInfo > div > div:nth-child(2) > div.col > span > span > span.form-error-message';
+    public static $姓_エラーメッセージ = '#ordererInfo > div > div > div:nth-child(1) > div:nth-child(2) > div > div > div:nth-child(1) > span';
 
     public static $登録完了メッセージ = 'div.c-container > div.c-contentsArea > div.alert.alert-success.alert-dismissible.fade.show.m-3 > span';
 
@@ -104,6 +104,25 @@ class OrderEditPage extends AbstractAdminPageStyleGuide
     public function 入力_支払方法($value)
     {
         $this->tester->selectOption(['id' => 'order_Payment'], $value);
+        return $this;
+    }
+
+    public function 入力_配送業者($value)
+    {
+        $this->tester->selectOption(['id' => 'order_Shipping_Delivery'], $value);
+        return $this;
+    }
+
+    public function 注文者情報をコピー()
+    {
+        $this->tester->click('#shippingInfo > div > div.row.mb-3 > div:nth-child(1) > button.btn.btn-ec-regular.copy-customer');
+        return $this;
+    }
+
+    public function 注文者パネルを開く()
+    {
+        $this->tester->click('#form1 > div.c-contentsArea__cols > div > div.c-primaryCol > div:nth-child(2) > div.card-header > div > div.col-1.text-right > a');
+        $this->tester->wait(1);
         return $this;
     }
 
