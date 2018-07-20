@@ -48,7 +48,7 @@ class GenerateProxyCommand extends ContainerAwareCommand
 
         $projectRoot = $this->getContainer()->getParameter('kernel.project_dir');
         $this->entityProxyService->generate(
-            [$projectRoot.'/app/Acme/Entity'], // TODO Acme
+            [$projectRoot.'/app/Customize/Entity'],
             [],
             $projectRoot.'/app/proxy/entity',
             $output

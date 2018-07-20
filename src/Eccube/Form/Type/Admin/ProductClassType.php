@@ -57,6 +57,11 @@ class ProductClassType extends AbstractType
             ->add('code', TextType::class, [
                 'label' => 'productclass.label.product_code',
                 'required' => false,
+                'constraints' => [
+                    new Assert\Length([
+                        'max' => 255,
+                    ]),
+                ],
             ])
             ->add('stock', NumberType::class, [
                 'label' => 'productclass.label.stock',
@@ -129,7 +134,7 @@ class ProductClassType extends AbstractType
                 $data = $form->getData();
 
                 if (empty($data['stock_unlimited']) && is_null($data['stock'])) {
-                    $form['stock_unlimited']->addError(new FormError('productclass.text.error.set_stock_quantitiy'));
+                    $form['stock_unlimited']->addError(new FormError(trans('productclass.text.error.set_stock_quantitiy')));
                 }
             });
 

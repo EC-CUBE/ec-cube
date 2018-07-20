@@ -58,6 +58,7 @@ file that was distributed with this source code.
                     return $('#context-menu').html();
                 }
             }).on('shown.bs.popover', function () {
+                $('.block-context-menu').not(this).popover('hide');
                 var $menu = $(this);
                 var $block = $menu.closest('[id^="detail_box__layout_item"]');
                 var block = {
@@ -211,7 +212,7 @@ file that was distributed with this source code.
                                         {{ form_errors(form.name) }}
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row mb-2">
                                     <div class="col-3 pr-0"><span>{{ 'admin.content.layout.device_type'|trans }}</span></div>
                                     <div class="col">
                                         <span>
@@ -225,6 +226,21 @@ file that was distributed with this source code.
                                         </span>
                                     </div>
                                 </div>
+                                {# エンティティ拡張の自動出力 #}
+                                {% for f in form if f.vars.eccube_form_options.auto_render %}
+                                    {% if f.vars.eccube_form_options.form_theme %}
+                                        {% form_theme f f.vars.eccube_form_options.form_theme %}
+                                        {{ form_row(f) }}
+                                    {% else %}
+                                        <div class="row mb-2">
+                                            <div class="col-3 pr-0"><span>{{ f.vars.label|trans }}</span></div>
+                                            <div class="col">
+                                                {{ form_widget(f) }}
+                                                {{ form_errors(f) }}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
                             </div>
                         </div>
                     </div>
@@ -428,7 +444,7 @@ file that was distributed with this source code.
                                                                    data-id="{{ UnusedBlock.id }}"
                                                                    data-name="{{ UnusedBlock.name }}"
                                                                    title="{{ UnusedBlock.name }}"
-                                                                >{{ UnusedBlock.name|length > 10 ? UnusedBlock.name|slice(0, 10) ~ '…' : UnusedBlock.name }}</a>
+                                                                >{{ UnusedBlock.name }}</a>
                                                             </div>
                                                             <div class="col-auto text-right">
                                                                 <input type="hidden" class="name" name="name_{{ loop_index }}"

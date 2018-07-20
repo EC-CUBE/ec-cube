@@ -13,6 +13,7 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Common\EccubeConfig;
 use Eccube\Form\Type\Master\PaymentType;
 use Eccube\Form\Type\Master\SaleTypeType;
 use Eccube\Form\Type\PriceType;
@@ -27,6 +28,16 @@ use Symfony\Component\Validator\Constraints as Assert;
 class DeliveryType extends AbstractType
 {
     /**
+     * @var EccubeConfig
+     */
+    protected $eccubeConfig;
+
+    public function __construct(EccubeConfig $eccubeConfig)
+    {
+        $this->eccubeConfig = $eccubeConfig;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -37,6 +48,7 @@ class DeliveryType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
                 ],
             ])
             ->add('service_name', TextType::class, [
@@ -44,6 +56,7 @@ class DeliveryType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
                 ],
             ])
             ->add('description', TextareaType::class, [

@@ -13,8 +13,10 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Common\EccubeConfig;
 use Eccube\Form\Type\PriceType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -27,6 +29,21 @@ use Symfony\Component\Validator\Constraints as Assert;
 class PaymentRegisterType extends AbstractType
 {
     /**
+     * @var EccubeConfig
+     */
+    protected $eccubeConfig;
+
+    /**
+     * PaymentRegisterType constructor.
+     *
+     * @param EccubeConfig $eccubeConfig
+     */
+    public function __construct(EccubeConfig $eccubeConfig)
+    {
+        $this->eccubeConfig = $eccubeConfig;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -37,6 +54,7 @@ class PaymentRegisterType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
                 ],
             ])
             ->add('rule_min', PriceType::class, [
@@ -67,6 +85,12 @@ class PaymentRegisterType extends AbstractType
             ])
             ->add('payment_image', HiddenType::class, [
                 'required' => false,
+            ])
+            ->add('visible', ChoiceType::class, [
+                'label' => false,
+                'choices' => ['common.label.display' => true, 'common.label.hide' => false],
+                'required' => true,
+                'expanded' => false,
             ])
             ->add('charge', PriceType::class, [
                 'label' => 'paymentregister.label.commision',

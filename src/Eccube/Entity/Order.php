@@ -26,7 +26,6 @@ use Eccube\Service\PurchaseFlow\ItemCollection;
  *     @ORM\Index(name="dtb_order_email_idx", columns={"email"}),
  *     @ORM\Index(name="dtb_order_order_date_idx", columns={"order_date"}),
  *     @ORM\Index(name="dtb_order_payment_date_idx", columns={"payment_date"}),
- *     @ORM\Index(name="dtb_order_shipping_date_idx", columns={"shipping_date"}),
  *     @ORM\Index(name="dtb_order_update_date_idx", columns={"update_date"}),
  *     @ORM\Index(name="dtb_order_order_no_idx", columns={"order_no"})
  *  })
@@ -37,7 +36,7 @@ use Eccube\Service\PurchaseFlow\ItemCollection;
  */
 class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, ItemHolderInterface
 {
-    use PointTrait;
+    use NameTrait, PointTrait;
 
     /**
      * 複数配送かどうかの判定を行う.
@@ -304,13 +303,6 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
      * @ORM\Column(name="order_date", type="datetimetz", nullable=true)
      */
     private $order_date;
-
-    /**
-     * @var \DateTime|null
-     *
-     * @ORM\Column(name="shipping_date", type="datetimetz", nullable=true)
-     */
-    private $shipping_date;
 
     /**
      * @var \DateTime|null
@@ -1117,30 +1109,6 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     public function getOrderDate()
     {
         return $this->order_date;
-    }
-
-    /**
-     * Set shippingDate.
-     *
-     * @param \DateTime|null $shippingDate
-     *
-     * @return Order
-     */
-    public function setShippingDate($shippingDate = null)
-    {
-        $this->shipping_date = $shippingDate;
-
-        return $this;
-    }
-
-    /**
-     * Get shippingDate.
-     *
-     * @return \DateTime|null
-     */
-    public function getShippingDate()
-    {
-        return $this->shipping_date;
     }
 
     /**

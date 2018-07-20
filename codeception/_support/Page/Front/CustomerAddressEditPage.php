@@ -34,7 +34,7 @@ class CustomerAddressEditPage extends AbstractFrontPage
     public static function at($I)
     {
         $page = new self($I);
-        $page->tester->see('マイページ/お届け先編集', 'div.ec-pageHeader h1');
+        $page->tester->see('マイページ/お届け先一覧', 'div.ec-pageHeader h1');
         return $page;
     }
 

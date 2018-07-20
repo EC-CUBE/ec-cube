@@ -330,9 +330,6 @@ class ShippingControllerTest extends AbstractAdminWebTestCase
         self::assertEquals([$Order->getEmail() => null], $Message->getTo());
     }
 
-    /**
-     * 未出荷の出荷に対して出荷完了メール送信リクエストを送信する
-     */
     public function testNotSendNotifyMail()
     {
         $this->client->enableProfiler();
@@ -349,6 +346,6 @@ class ShippingControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         $Messages = $this->getMailCollector(false)->getMessages();
-        self::assertEquals(0, count($Messages));
+        self::assertEquals(1, count($Messages));
     }
 }

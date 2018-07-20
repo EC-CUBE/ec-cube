@@ -47,7 +47,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -432,11 +431,7 @@ class ProductController extends AbstractController
         }
         $form['Category']->setData($categories);
 
-        $Tags = [];
-        $ProductTags = $Product->getProductTag();
-        foreach ($ProductTags as $ProductTag) {
-            $Tags[] = $ProductTag->getTag();
-        }
+        $Tags = $Product->getTags();
         $form['Tag']->setData($Tags);
 
         if ('POST' === $request->getMethod()) {
@@ -671,7 +666,7 @@ class ProductController extends AbstractController
                 if ($request->isXmlHttpRequest()) {
                     $message = trans('admin.delete.warning');
 
-                    return new JsonResponse(['success' => $success, 'message' => $message]);
+                    return $this->json(['success' => $success, 'message' => $message]);
                 } else {
                     $this->deleteMessage();
                     $rUrl = $this->generateUrl('admin_product_page', ['page_no' => $page_no]).'?resume='.Constant::ENABLED;
@@ -729,7 +724,7 @@ class ProductController extends AbstractController
         }
 
         if ($request->isXmlHttpRequest()) {
-            return new JsonResponse(['success' => $success, 'message' => $message]);
+            return $this->json(['success' => $success, 'message' => $message]);
         } else {
             if ($success) {
                 $this->addSuccess($message, 'admin');
@@ -865,7 +860,7 @@ class ProductController extends AbstractController
     /**
      * 商品CSVの出力.
      *
-     * @Route("/%eccube_admin_route%/export", name="admin_product_export")
+     * @Route("/%eccube_admin_route%/product/export", name="admin_product_export")
      *
      * @param Request $request
      *

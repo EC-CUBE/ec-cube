@@ -480,7 +480,7 @@ class InstallController extends AbstractController
     {
         $paths = [
             $this->getParameter('kernel.project_dir').'/src/Eccube/Entity',
-            $this->getParameter('kernel.project_dir').'/app/Acme/Entity',
+            $this->getParameter('kernel.project_dir').'/app/Customize/Entity',
         ];
         $config = Setup::createAnnotationMetadataConfiguration($paths, true, null, null, false);
         $em = EntityManager::create($conn, $config);

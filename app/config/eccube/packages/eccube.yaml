@@ -105,5 +105,5 @@ parameters:
     # {id,桁数}: dtb_order.idの桁数分0埋め(桁数を超えたらそのまま表示)
     # {random,桁数}: ランダムな数値を桁数分作成
     # {random_alnum,桁数} : ランダムな半角英数大文字を桁数分作成
-    eccube_order_no_format: '{dd}{yyyy}{id,9}{mm}'
+    eccube_order_no_format: ''
 

@@ -32,7 +32,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -456,7 +455,7 @@ class ProductController extends AbstractController
                 $messages = $errorMessages;
             }
 
-            return new JsonResponse(['done' => $done, 'messages' => $messages]);
+            return $this->json(['done' => $done, 'messages' => $messages]);
         } else {
             // ajax以外でのリクエストの場合はカート画面へリダイレクト
             foreach ($errorMessages as $errorMessage) {

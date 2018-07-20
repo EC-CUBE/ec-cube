@@ -20,6 +20,7 @@ use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Cart;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\Customer;
+use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Master\TaxDisplayType;
@@ -35,6 +36,7 @@ use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Util\StringUtil;
+use Eccube\Repository\Master\DeviceTypeRepository;
 
 /**
  * OrderやOrderに関連するエンティティを構築するクラス
@@ -88,6 +90,16 @@ class OrderHelper
     protected $eccubeConfig;
 
     /**
+     * @var \Mobile_Detect
+     */
+    protected $mobileDetect;
+
+    /**
+     * @var DeviceTypeRepository
+     */
+    protected $deviceTypeRepository;
+
+    /**
      * OrderHelper constructor.
      *
      * @param OrderItemTypeRepository $orderItemTypeRepository
@@ -99,6 +111,8 @@ class OrderHelper
      * @param OrderRepository $orderRepository
      * @param EntityManager $entityManager
      * @param EccubeConfig $eccubeConfig
+     * @param \Mobile_Detect $mobileDetect
+     * @param DeviceTypeRepository $deviceTypeRepository
      */
     public function __construct(
         OrderItemTypeRepository $orderItemTypeRepository,
@@ -109,7 +123,9 @@ class OrderHelper
         PaymentRepository $paymentRepository,
         OrderRepository $orderRepository,
         EntityManagerInterface $entityManager,
-        EccubeConfig $eccubeConfig
+        EccubeConfig $eccubeConfig,
+        \Mobile_Detect $mobileDetect,
+        DeviceTypeRepository $deviceTypeRepository
     ) {
         $this->orderItemTypeRepository = $orderItemTypeRepository;
         $this->orderStatusRepository = $orderStatusRepository;
@@ -120,6 +136,8 @@ class OrderHelper
         $this->orderRepository = $orderRepository;
         $this->entityManager = $entityManager;
         $this->eccubeConfig = $eccubeConfig;
+        $this->mobileDetect = $mobileDetect;
+        $this->deviceTypeRepository = $deviceTypeRepository;
     }
 
     /**
@@ -142,6 +160,9 @@ class OrderHelper
 
         // 顧客情報の設定
         $this->setCustomer($Order, $Customer);
+
+        $DeviceType = $this->deviceTypeRepository->find($this->mobileDetect->isMobile() ? DeviceType::DEVICE_TYPE_SP : DeviceType::DEVICE_TYPE_PC);
+        $Order->setDeviceType($DeviceType);
 
         // 明細情報の設定
         $OrderItems = $this->createOrderItemsFromCartItems($CartItems);

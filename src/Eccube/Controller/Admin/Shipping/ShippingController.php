@@ -223,10 +223,10 @@ class ShippingController extends AbstractController
             $this->entityManager->flush();
             $result['shipped'] = true;
 
-            return new JsonResponse($result);
+            return $this->json($result);
         }
 
-        return new JsonResponse([
+        return $this->json([
             'shipped' => false,
             'mail' => false,
         ]);
@@ -253,22 +253,21 @@ class ShippingController extends AbstractController
      * @param Shipping $Shipping
      *
      * @return JsonResponse
+     *
+     * @throws \Twig_Error
      */
     public function notifyMail(Shipping $Shipping)
     {
         $this->isTokenValid();
 
-        if ($Shipping->isShipped()) {
-            $this->mailService->sendShippingNotifyMail($Shipping);
+        $this->mailService->sendShippingNotifyMail($Shipping);
 
-            return new JsonResponse([
-                'mail' => true,
-                'shipped' => false,
-            ]);
-        }
+        $Shipping->setMailSendDate(new \DateTime());
+        $this->shippingRepository->save($Shipping);
+        $this->entityManager->flush();
 
-        return new JsonResponse([
-            'mail' => false,
+        return $this->json([
+            'mail' => true,
             'shipped' => false,
         ]);
     }

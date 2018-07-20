@@ -163,6 +163,11 @@ class ShoppingService
     protected $authorizationChecker;
 
     /**
+     * @var \Mobile_Detect
+     */
+    protected $mobileDetect;
+
+    /**
      * ShoppingService constructor.
      *
      * @param MailTemplateRepository $mailTemplateRepository
@@ -186,6 +191,7 @@ class ShoppingService
      * @param OrderService $orderService
      * @param BaseInfo $BaseInfo
      * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param \Mobile_Detect $mobileDetect
      */
     public function __construct(
         MailTemplateRepository $mailTemplateRepository,
@@ -208,7 +214,8 @@ class ShoppingService
         CartService $cartService,
         OrderService $orderService,
         BaseInfo $BaseInfo,
-        AuthorizationCheckerInterface $authorizationChecker
+        AuthorizationCheckerInterface $authorizationChecker,
+        \Mobile_Detect $mobileDetect
     ) {
         $this->mailTemplateRepository = $mailTemplateRepository;
         $this->mailService = $mailService;
@@ -231,6 +238,7 @@ class ShoppingService
         $this->orderService = $orderService;
         $this->BaseInfo = $BaseInfo;
         $this->authorizationChecker = $authorizationChecker;
+        $this->mobileDetect = $mobileDetect;
     }
 
     /**
@@ -328,8 +336,7 @@ class ShoppingService
         $Order = $this->getNewOrder($Customer);
         $Order->setPreOrderId($preOrderId);
 
-        $mobileDetect = new \Mobile_Detect();
-        $DeviceType = $this->deviceTypeRepository->find($mobileDetect->isMobile() ? DeviceType::DEVICE_TYPE_SP : DeviceType::DEVICE_TYPE_PC);
+        $DeviceType = $this->deviceTypeRepository->find($this->mobileDetect->isMobile() ? DeviceType::DEVICE_TYPE_SP : DeviceType::DEVICE_TYPE_PC);
         $Order->setDeviceType($DeviceType);
 
         $this->entityManager->persist($Order);

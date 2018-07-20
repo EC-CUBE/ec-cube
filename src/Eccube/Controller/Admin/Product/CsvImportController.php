@@ -13,6 +13,7 @@
 
 namespace Eccube\Controller\Admin\Product;
 
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Eccube\Common\Constant;
 use Eccube\Controller\Admin\AbstractCsvImportController;
 use Eccube\Entity\BaseInfo;
@@ -537,6 +538,26 @@ class CsvImportController extends AbstractCsvImportController
                                 $this->addErrors(($data->key() + 1).'行目のカテゴリIDと親カテゴリIDが同じです。');
 
                                 return $this->renderWithError($form, $headers);
+                            }
+                        }
+
+                        if (isset($row['カテゴリ削除フラグ']) && StringUtil::isNotBlank($row['カテゴリ削除フラグ'])) {
+                            if (StringUtil::trimAll($row['カテゴリ削除フラグ']) == 1) {
+                                if ($Category->getId()) {
+                                    log_info('カテゴリ削除開始', [$Category->getId()]);
+                                    try {
+                                        $this->categoryRepository->delete($Category);
+                                        log_info('カテゴリ削除完了', [$Category->getId()]);
+                                    } catch (ForeignKeyConstraintViolationException $e) {
+                                        log_info('カテゴリ削除エラー', [$Category->getId(), $e]);
+                                        $message = trans('admin.delete.failed.foreign_key', ['%name%' => $Category->getName()]);
+                                        $this->addError($message, 'admin');
+
+                                        return $this->renderWithError($form, $headers);
+                                    }
+                                }
+
+                                continue;
                             }
                         }
 
@@ -1305,7 +1326,7 @@ class CsvImportController extends AbstractCsvImportController
             ],
             trans('admin.product.csv_category.category_delete_flag') => [
                 'id' => 'category_del_flg',
-                'description' => '',
+                'description' => 'admin.product.csv_category.category_del_flg',
                 'required' => false,
             ],
         ];

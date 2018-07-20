@@ -260,7 +260,7 @@ class LayoutController extends AbstractController
                 ->getSourceContext('Block/'.$Block->getFileName().'.twig')
                 ->getCode();
 
-        return new JsonResponse([
+        return $this->json([
             'id' => $Block->getId(),
             'source' => $source,
         ]);
