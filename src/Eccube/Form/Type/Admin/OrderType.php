@@ -15,7 +15,10 @@ namespace Eccube\Form\Type\Admin;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
-use Eccube\Entity\BaseInfo;
+use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Order;
+use Eccube\Entity\OrderItem;
+use Eccube\Entity\Payment;
 use Eccube\Form\DataTransformer;
 use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\KanaType;
@@ -51,22 +54,15 @@ class OrderType extends AbstractType
     protected $eccubeConfig;
 
     /**
-     * @var BaseInfo
-     */
-    protected $BaseInfo;
-
-    /**
      * OrderType constructor.
      *
      * @param EntityManagerInterface $entityManager
      * @param EccubeConfig $eccubeConfig
-     * @param BaseInfo $BaseInfo
      */
-    public function __construct(EntityManagerInterface $entityManager, EccubeConfig $eccubeConfig, BaseInfo $BaseInfo)
+    public function __construct(EntityManagerInterface $entityManager, EccubeConfig $eccubeConfig)
     {
         $this->entityManager = $entityManager;
         $this->eccubeConfig = $eccubeConfig;
-        $this->BaseInfo = $BaseInfo;
     }
 
     /**
@@ -212,7 +208,7 @@ class OrderType extends AbstractType
                 ],
             ])
             ->add('OrderStatus', EntityType::class, [
-                'class' => 'Eccube\Entity\Master\OrderStatus',
+                'class' => OrderStatus::class,
                 'choice_label' => 'name',
                 'placeholder' => 'order.placeholder.select',
                 'query_builder' => function ($er) {
@@ -225,9 +221,13 @@ class OrderType extends AbstractType
             ])
             ->add('Payment', EntityType::class, [
                 'required' => false,
-                'class' => 'Eccube\Entity\Payment',
+                'class' => Payment::class,
                 'choice_label' => 'method',
                 'placeholder' => 'order.placeholder.select',
+                'query_builder' => function ($er) {
+                    return $er->createQueryBuilder('o')
+                        ->orderBy('o.sort_no', 'ASC');
+                },
                 'constraints' => [
                     new Assert\NotBlank(),
                 ],
@@ -255,25 +255,49 @@ class OrderType extends AbstractType
 
         // 選択された支払い方法の名称をエンティティにコピーする
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            /** @var Order $Order */
             $Order = $event->getData();
-            $Payment = $Order->getPayment();
-            if (!is_null($Payment)) {
+            if ($Payment = $Order->getPayment()) {
                 $Order->setPaymentMethod($Payment->getMethod());
             }
 
             // 会員受注の場合、会員の性別/職業/誕生日をエンティティにコピーする
-            $Customer = $Order->getCustomer();
-            if (!is_null($Customer)) {
+            if ($Customer = $Order->getCustomer()) {
                 $Order->setSex($Customer->getSex());
                 $Order->setJob($Customer->getJob());
                 $Order->setBirth($Customer->getBirth());
             }
 
             $form = $event->getForm();
+            /** @var OrderItem[] $OrderItems */
             $OrderItems = $form['OrderItems']->getData();
             if (empty($OrderItems) || count($OrderItems) < 1) {
                 // 画面下部にエラーメッセージを表示させる
                 $form['OrderItemsErrors']->addError(new FormError(trans('admin.order.edit.product.error')));
+            }
+
+            // 明細とOrder, Shippingを紐付ける.
+            // 新規の明細のみが対象, 更新時はスキップする.
+            foreach ($OrderItems as $OrderItem) {
+                // 更新時はスキップ
+                if (!$OrderItem->getId()) {
+                    continue;
+                }
+
+                $OrderItem->setOrder($Order);
+
+                // 送料明細の紐付けを行う.
+                // 複数配送の場合は, 常に最初のShippingと紐付ける.
+                // Order::getShippingsは氏名でソートされている.
+                if ($OrderItem->isDeliveryFee()) {
+                    $OrderItem->setShipping($Order->getShippings()->first());
+                }
+
+                // 商品明細の紐付けを行う.
+                // 複数配送時は, 明細の追加は行われないためスキップする.
+                if ($OrderItem->isProduct() && !$Order->isMultiple()) {
+                    $OrderItem->setShipping($Order->getShippings()->first());
+                }
             }
         });
     }
@@ -284,8 +308,7 @@ class OrderType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Eccube\Entity\Order',
-            'orign_order' => null,
+            'data_class' => Order::class,
             'SortedItems' => null,
         ]);
     }

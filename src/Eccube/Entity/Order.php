@@ -1352,7 +1352,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     public function getShippings()
     {
         $criteria = Criteria::create()
-            ->orderBy(['name01' => Criteria::ASC, 'name02' => Criteria::ASC]);
+            ->orderBy(['name01' => Criteria::ASC, 'name02' => Criteria::ASC, 'id' => Criteria::ASC]);
 
         return $this->Shippings->matching($criteria);
     }
