@@ -259,9 +259,10 @@ class OrderType extends AbstractType
         $builder->addEventListener(FormEvents::POST_SET_DATA, [$this, 'sortOrderItems']);
         $builder->addEventListener(FormEvents::POST_SET_DATA, [$this, 'addOrderStatusForm']);
         $builder->addEventListener(FormEvents::POST_SET_DATA, [$this, 'addShippingForm']);
-        $builder->addEventListener(FormEvents::POST_SUBMIT, [$this, 'copyFields']);
+        $builder->addEventListener(FormEvents::POST_SUBMIT, [$this, 'validateOrderStatus']);
         $builder->addEventListener(FormEvents::POST_SUBMIT, [$this, 'validateOrderItems']);
-        $builder->addEventListener(FormEvents::POST_SUBMIT, [$this, 'assosiateOrderAndShipping']);
+        $builder->addEventListener(FormEvents::POST_SUBMIT, [$this, 'copyFields']);
+        $builder->addEventListener(FormEvents::POST_SUBMIT, [$this, 'associateOrderAndShipping']);
     }
 
     /**
@@ -317,7 +318,7 @@ class OrderType extends AbstractType
         $OrderStatuses = $this->orderStatusRepisotory->findBy([], ['sort_no' => 'ASC']);
         $OrderStatuses = new ArrayCollection($OrderStatuses);
 
-        // 発送済のガード条件をはずすため, 発送日時を入れる.
+        // 発送済のガード条件をはずすため, ダミーの発送日時を入れる.
         foreach ($Order->getShippings() as $Shipping) {
             $Shipping->setShippingDate(new \DateTime());
         }
@@ -346,6 +347,9 @@ class OrderType extends AbstractType
             'constraints' => [
                 new Assert\NotBlank(),
             ],
+            // 変更前後のステータスチェックが必要なのでmapped => false で定義する.
+            'mapped' => false,
+            'data' => $Order->getOrderStatus(),
         ]);
     }
 
@@ -399,8 +403,40 @@ class OrderType extends AbstractType
         }
 
         // 受注の新規登録時は, 新規受付ステータスで登録する.
-        if (!$Order->getOrderStatus()) {
+        if (null === $Order->getOrderStatus()) {
             $Order->setOrderStatus($this->orderStatusRepisotory->find(OrderStatus::NEW));
+        } else {
+            // 編集時は, mapped => falseで定義しているため, フォームから変更後データを取得する.
+            $form = $event->getForm();
+            $Order->setOrderStatus($form['OrderStatus']->getData());
+        }
+    }
+
+    /**
+     * 受注ステータスのバリデーションを行う.
+     * 
+     * @param FormEvent $event
+     */
+    public function validateOrderStatus(FormEvent $event)
+    {
+        /** @var Order $Order */
+        $Order = $event->getData();
+        if (!$Order->getId()) {
+            return;
+        }
+
+        // mapped => falseで定義しているため, Orderのステータスは変更されない
+        $oldStatus = $Order->getOrderStatus();
+        // 変更後のステータスはFormから直接取得する.
+        $form = $event->getForm();
+        $newStatus = $form['OrderStatus']->getData();
+
+        // ステータスに変更があった場合のみチェックする.
+        if ($oldStatus->getId() != $newStatus->getId()) {
+            if (!$this->orderStateMachine->can($Order, $newStatus)) {
+                $form['OrderStatus']->addError(
+                    new FormError(sprintf('%sから%sには変更できません', $oldStatus->getName(), $newStatus->getName())));
+            };
         }
     }
 
@@ -435,7 +471,7 @@ class OrderType extends AbstractType
      *
      * @param FormEvent $event
      */
-    public function assosiateOrderAndShipping(FormEvent $event)
+    public function associateOrderAndShipping(FormEvent $event)
     {
         /** @var Order $Order */
         $Order = $event->getData();
@@ -445,7 +481,7 @@ class OrderType extends AbstractType
         // 新規の明細のみが対象, 更新時はスキップする.
         foreach ($OrderItems as $OrderItem) {
             // 更新時はスキップ
-            if (!$OrderItem->getId()) {
+            if ($OrderItem->getId()) {
                 continue;
             }
 
