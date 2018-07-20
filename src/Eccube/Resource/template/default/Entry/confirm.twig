@@ -130,7 +130,7 @@ file that was distributed with this source code.
                             </dd>
                         </dl>
 
-                        {{ form_widget(form.user_policy_check) }}
+                        {{ form_widget(form.user_policy_check, { type: 'hidden'}) }}
 
                         {# エンティティ拡張の自動出力 #}
                         {% for f in form %}

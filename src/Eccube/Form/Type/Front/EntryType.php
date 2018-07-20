@@ -24,8 +24,6 @@ use Eccube\Form\Type\RepeatedEmailType;
 use Eccube\Form\Type\RepeatedPasswordType;
 use Eccube\Form\Type\PhoneNumberType;
 use Eccube\Form\Type\PostalType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -45,20 +43,13 @@ class EntryType extends AbstractType
     protected $eccubeConfig;
 
     /**
-     * @var RequestStack
-     */
-    protected $requestStack;
-
-    /**
      * EntryType constructor.
      *
      * @param EccubeConfig $eccubeConfig
-     * @param RequestStack $request
      */
-    public function __construct(EccubeConfig $eccubeConfig, RequestStack $requestStack)
+    public function __construct(EccubeConfig $eccubeConfig)
     {
         $this->eccubeConfig = $eccubeConfig;
-        $this->requestStack = $requestStack;
     }
 
     /**
@@ -137,33 +128,6 @@ class EntryType extends AbstractType
                             new Assert\NotBlank(),
                         ],
                     ]);
-                }
-            }
-        );
-
-        $builder->addEventListener(FormEvents::SUBMIT,
-            function (FormEvent $event) {
-                $Customer = $event->getData();
-                if ($Customer instanceof Customer && !$Customer->getId()) {
-                    $form = $event->getForm();
-
-                    if ($this->requestStack->getCurrentRequest() && $this->requestStack->getCurrentRequest()->get('mode') == 'confirm') {
-                        $validator = \Symfony\Component\Validator\Validation::createValidator();
-                        $metadata = $validator->getMetadataFor(\Symfony\Component\Form\Form::class);
-                        $metadata->addConstraint(new \Symfony\Component\Form\Extension\Validator\Constraints\Form());
-
-                        $isValid = !$validator->validate($form)->count();
-                        if ($isValid) {
-                            $form->remove('user_policy_check')->add('user_policy_check', HiddenType::class, [
-                                'required' => true,
-                                'label' => 'signup.label.btn.user_policy',
-                                'mapped' => false,
-                                'constraints' => [
-                                    new Assert\NotBlank(),
-                                ],
-                            ]);
-                        }
-                    }
                 }
             }
         );
