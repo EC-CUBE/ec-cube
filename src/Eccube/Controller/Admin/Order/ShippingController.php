@@ -15,6 +15,7 @@ namespace Eccube\Controller\Admin\Order;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
 use Eccube\Form\Type\Admin\SearchProductType;
@@ -27,6 +28,7 @@ use Eccube\Service\TaxRuleService;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -102,41 +104,43 @@ class ShippingController extends AbstractController
     /**
      * 出荷登録/編集画面.
      *
-     * @Route("/%eccube_admin_route%/shipping/new", name="admin_shipping_new")
      * @Route("/%eccube_admin_route%/shipping/{id}/edit", requirements={"id" = "\d+"}, name="admin_shipping_edit")
      * @Template("@admin/Order/shipping.twig")
      */
-    public function edit(Request $request, $id = null)
+    public function edit(Request $request, Order $Order)
     {
-        $TargetShipping = null;
-        $OriginShipping = null;
+        $TargetShippings = $Order->getShippings();
+        $OriginShippings = [];
+        $OriginalOrderItems = [];
 
-        if (null === $id) {
-            // 空のエンティティを作成.
-            $TargetShipping = new Shipping();
-        } else {
-            $TargetShipping = $this->shippingRepository->find($id);
-            if (null === $TargetShipping) {
-                throw new NotFoundHttpException();
+        // 編集前の受注情報を保持
+        foreach ($TargetShippings as $key => $TargetShipping) {
+            $OriginShippings[$key] = clone $TargetShipping;
+
+            // 編集前のお届け先のアイテム情報を保持
+            $OriginalOrderItems[$key] = new ArrayCollection();
+
+            foreach ($TargetShipping->getOrderItems() as $OrderItem) {
+                $OriginalOrderItems[$key]->add($OrderItem);
             }
         }
 
-        // 編集前の受注情報を保持
-        $OriginShipping = clone $TargetShipping;
-        // 編集前のお届け先のアイテム情報を保持
-        $OriginalOrderItems = new ArrayCollection();
-
-        foreach ($TargetShipping->getOrderItems() as $OrderItem) {
-            $OriginalOrderItems->add($OrderItem);
-        }
-
-        $builder = $this->formFactory
-            ->createBuilder(ShippingType::class, $TargetShipping);
+        $builder = $this->formFactory->createBuilder();
+        $builder
+            ->add('shippings', CollectionType::class, [
+                'entry_type' => ShippingType::class,
+                'data' => $TargetShippings,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'prototype' => true,
+            ]);
 
         $form = $builder->getForm();
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            foreach ($TargetShippings as $key => $TargetShipping) {
+
             // TODO: Should move logic out of controller such as service, modal
 
             // FIXME 税額計算は CalculateService で処理する. ここはテストを通すための暫定処理
@@ -155,7 +159,7 @@ class ShippingController extends AbstractController
             // TODO 在庫の有無や販売制限数のチェックなども行う必要があるため、完了処理もcaluclatorのように抽象化できないか検討する.
             // TODO 後続にある会員情報の更新のように、完了処理もcaluclatorのように抽象化できないか検討する.
             // 画面上で削除された明細をremove
-            foreach ($OriginalOrderItems as $OrderItem) {
+            foreach ($OriginalOrderItems[$key] as $OrderItem) {
                 if (false === $TargetShipping->getOrderItems()->contains($OrderItem)) {
                     $OrderItem->setShipping(null);
                 }
@@ -168,35 +172,39 @@ class ShippingController extends AbstractController
             // 出荷ステータス変更時の処理
             if ($TargetShipping->isShipped()) {
                 // 「出荷済み」にステータスが変更された場合
-                if ($OriginShipping->isShipped() == false) {
+                if ($OriginShippings[$key]->isShipped() == false) {
                     // 出荷メールを送信
                     if ($form->get('notify_email')->getData()) {
                         try {
                             $this->mailService->sendShippingNotifyMail(
-                              $TargetShipping
+                                $TargetShipping
                             );
                         } catch (\Exception $e) {
                             log_error('メール通知エラー', [$TargetShipping->getId(), $e]);
                             $this->addError(
-                              'admin.shipping.edit.shipped_mail_failed',
-                              'admin'
+                                'admin.shipping.edit.shipped_mail_failed',
+                                'admin'
                             );
                         }
                     }
                 }
             }
 
+            }
+
             try {
-                $this->entityManager->persist($TargetShipping);
+                foreach ($TargetShippings as $TargetShipping) {
+                    $this->entityManager->persist($TargetShipping);
+                }
                 $this->entityManager->flush();
 
                 $this->addSuccess('admin.shipping.edit.save.complete', 'admin');
                 $this->addInfo('admin.shipping.edit.save.info', 'admin');
-                log_info('出荷登録完了', [$TargetShipping->getId()]);
+                log_info('出荷登録完了', [$Order->getId()]);
 
-                return $this->redirectToRoute('admin_shipping_edit', ['id' => $TargetShipping->getId()]);
+                return $this->redirectToRoute('admin_shipping_edit', ['id' => $Order->getId()]);
             } catch (\Exception $e) {
-                log_error('出荷登録エラー', [$TargetShipping->getId(), $e]);
+                log_error('出荷登録エラー', [$Order->getId(), $e]);
                 $this->addError('admin.flash.register_failed', 'admin');
             }
         } elseif ($form->isSubmitted() && $form->getErrors(true)) {
@@ -222,7 +230,8 @@ class ShippingController extends AbstractController
         return [
             'form' => $form->createView(),
             'searchProductModalForm' => $searchProductModalForm->createView(),
-            'Shipping' => $TargetShipping,
+            'Order' => $Order,
+            'Shippings' => $TargetShippings,
             'shippingDeliveryTimes' => $this->serializer->serialize($times, 'json'),
         ];
     }

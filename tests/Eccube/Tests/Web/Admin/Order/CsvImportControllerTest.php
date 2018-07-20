@@ -11,9 +11,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Eccube\Tests\Web\Admin\Shipping;
+namespace Eccube\Tests\Web\Admin\Order;
 
-use Eccube\Controller\Admin\Shipping\CsvImportController;
+use Eccube\Controller\Admin\Order\CsvImportController;
 use Eccube\Service\CsvImportService;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
