@@ -37,6 +37,14 @@ file that was distributed with this source code.
     </div>
 {%- endblock -%}
 
+{% block choice_widget %}
+    {% if type is defined and type == 'hidden' %}
+        {{ block('form_widget_simple') }}
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
 {% block price_widget -%}
     {%- set prepend = not (money_pattern starts with '{{') -%}
     {%- set append = not (money_pattern ends with '}}') -%}

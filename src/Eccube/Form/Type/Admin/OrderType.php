@@ -13,11 +13,11 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
-use Eccube\Entity\OrderItem;
 use Eccube\Entity\Payment;
 use Eccube\Form\DataTransformer;
 use Eccube\Form\Type\AddressType;
@@ -26,6 +26,8 @@ use Eccube\Form\Type\NameType;
 use Eccube\Form\Type\PhoneNumberType;
 use Eccube\Form\Type\PostalType;
 use Eccube\Form\Type\PriceType;
+use Eccube\Repository\Master\OrderStatusRepository;
+use Eccube\Service\OrderStateMachine;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -54,15 +56,32 @@ class OrderType extends AbstractType
     protected $eccubeConfig;
 
     /**
+     * @var OrderStateMachine
+     */
+    protected $orderStateMachine;
+
+    /**
+     * @var OrderStatusRepository
+     */
+    protected $orderStatusRepisotory;
+
+    /**
      * OrderType constructor.
      *
      * @param EntityManagerInterface $entityManager
      * @param EccubeConfig $eccubeConfig
+     * @param OrderStateMachine $orderStateMachine
      */
-    public function __construct(EntityManagerInterface $entityManager, EccubeConfig $eccubeConfig)
-    {
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        EccubeConfig $eccubeConfig,
+        OrderStateMachine $orderStateMachine,
+        OrderStatusRepository $orderStatusRepository
+    ) {
         $this->entityManager = $entityManager;
         $this->eccubeConfig = $eccubeConfig;
+        $this->orderStateMachine = $orderStateMachine;
+        $this->orderStatusRepisotory = $orderStatusRepository;
     }
 
     /**
@@ -207,18 +226,6 @@ class OrderType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('OrderStatus', EntityType::class, [
-                'class' => OrderStatus::class,
-                'choice_label' => 'name',
-                'placeholder' => 'order.placeholder.select',
-                'query_builder' => function ($er) {
-                    return $er->createQueryBuilder('o')
-                        ->orderBy('o.sort_no', 'ASC');
-                },
-                'constraints' => [
-                    new Assert\NotBlank(),
-                ],
-            ])
             ->add('Payment', EntityType::class, [
                 'required' => false,
                 'class' => Payment::class,
@@ -237,10 +244,6 @@ class OrderType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
-                'data' => $options['SortedItems'],
-            ])
-            ->add('Shipping', ShippingType::class, [
-                'mapped' => false,
             ])
             ->add('OrderItemsErrors', TextType::class, [
                 'mapped' => false,
@@ -253,53 +256,12 @@ class OrderType extends AbstractType
                     '\Eccube\Entity\Customer'
                 )));
 
-        // 選択された支払い方法の名称をエンティティにコピーする
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
-            /** @var Order $Order */
-            $Order = $event->getData();
-            if ($Payment = $Order->getPayment()) {
-                $Order->setPaymentMethod($Payment->getMethod());
-            }
-
-            // 会員受注の場合、会員の性別/職業/誕生日をエンティティにコピーする
-            if ($Customer = $Order->getCustomer()) {
-                $Order->setSex($Customer->getSex());
-                $Order->setJob($Customer->getJob());
-                $Order->setBirth($Customer->getBirth());
-            }
-
-            $form = $event->getForm();
-            /** @var OrderItem[] $OrderItems */
-            $OrderItems = $form['OrderItems']->getData();
-            if (empty($OrderItems) || count($OrderItems) < 1) {
-                // 画面下部にエラーメッセージを表示させる
-                $form['OrderItemsErrors']->addError(new FormError(trans('admin.order.edit.product.error')));
-            }
-
-            // 明細とOrder, Shippingを紐付ける.
-            // 新規の明細のみが対象, 更新時はスキップする.
-            foreach ($OrderItems as $OrderItem) {
-                // 更新時はスキップ
-                if (!$OrderItem->getId()) {
-                    continue;
-                }
-
-                $OrderItem->setOrder($Order);
-
-                // 送料明細の紐付けを行う.
-                // 複数配送の場合は, 常に最初のShippingと紐付ける.
-                // Order::getShippingsは氏名でソートされている.
-                if ($OrderItem->isDeliveryFee()) {
-                    $OrderItem->setShipping($Order->getShippings()->first());
-                }
-
-                // 商品明細の紐付けを行う.
-                // 複数配送時は, 明細の追加は行われないためスキップする.
-                if ($OrderItem->isProduct() && !$Order->isMultiple()) {
-                    $OrderItem->setShipping($Order->getShippings()->first());
-                }
-            }
-        });
+        $builder->addEventListener(FormEvents::POST_SET_DATA, [$this, 'sortOrderItems']);
+        $builder->addEventListener(FormEvents::POST_SET_DATA, [$this, 'addOrderStatusForm']);
+        $builder->addEventListener(FormEvents::POST_SET_DATA, [$this, 'addShippingForm']);
+        $builder->addEventListener(FormEvents::POST_SUBMIT, [$this, 'copyFields']);
+        $builder->addEventListener(FormEvents::POST_SUBMIT, [$this, 'validateOrderItems']);
+        $builder->addEventListener(FormEvents::POST_SUBMIT, [$this, 'assosiateOrderAndShipping']);
     }
 
     /**
@@ -309,7 +271,6 @@ class OrderType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Order::class,
-            'SortedItems' => null,
         ]);
     }
 
@@ -319,5 +280,189 @@ class OrderType extends AbstractType
     public function getBlockPrefix()
     {
         return 'order';
+    }
+
+    /**
+     * 受注明細をソートする.
+     *
+     * @param FormEvent $event
+     */
+    public function sortOrderItems(FormEvent $event)
+    {
+        /** @var Order $Order */
+        $Order = $event->getData();
+        $OrderItems = $Order->getItems()->sort();
+
+        $form = $event->getForm();
+        $form['OrderItems']->setData($OrderItems);
+    }
+
+    /**
+     * 受注ステータスのフォームを追加する
+     * 新規登録の際は, ユーザ編集不可のため追加しない.
+     *
+     * ステータスのプルダウンは, ステートマシンで遷移可能なステータスのみ表示する.
+     *
+     * @param FormEvent $event
+     */
+    public function addOrderStatusForm(FormEvent $event)
+    {
+        /** @var Order $Order */
+        $Order = $event->getData();
+        if (!$Order->getId()) {
+            return;
+        }
+
+        /** @var ArrayCollection|OrderStatus[] $OrderStatuses */
+        $OrderStatuses = $this->orderStatusRepisotory->findBy([], ['sort_no' => 'ASC']);
+        $OrderStatuses = new ArrayCollection($OrderStatuses);
+
+        // 発送済のガード条件をはずすため, 発送日時を入れる.
+        foreach ($Order->getShippings() as $Shipping) {
+            $Shipping->setShippingDate(new \DateTime());
+        }
+
+        foreach ($OrderStatuses as $Status) {
+            // 同一ステータスはスキップ
+            if ($Order->getOrderStatus()->getId() == $Status->getId()) {
+                continue;
+            }
+            // 遷移できないステータスはリストから除外する.
+            if (!$this->orderStateMachine->can($Order, $Status)) {
+                $OrderStatuses->removeElement($Status);
+            }
+        }
+
+        // ダミーでいれた発送日時をもとに戻す.
+        foreach ($Order->getShippings() as $Shipping) {
+            $this->entityManager->refresh($Shipping);
+        }
+
+        $form = $event->getForm();
+        $form->add('OrderStatus', EntityType::class, [
+            'class' => OrderStatus::class,
+            'choices' => $OrderStatuses,
+            'choice_label' => 'name',
+            'constraints' => [
+                new Assert\NotBlank(),
+            ],
+        ]);
+    }
+
+    /**
+     * 単一配送時に, Shippingのフォームを追加する.
+     * 複数配送時はShippingの編集は行わない.
+     *
+     * @param FormEvent $event
+     */
+    public function addShippingForm(FormEvent $event)
+    {
+        /** @var Order $Order */
+        $Order = $event->getData();
+
+        // 複数配送時はShippingの編集は行わない
+        if ($Order->isMultiple()) {
+            return;
+        }
+
+        $form = $event->getForm();
+        $form->add('Shipping', ShippingType::class, [
+            'mapped' => false,
+            'data' => $Order->getShippings()->first(),
+        ]);
+    }
+
+    /**
+     * フォームからPOSTされない情報をコピーする.
+     *
+     * - 支払方法の名称
+     * - 会員の性別/職業/誕生日
+     * - 受注ステータス(新規登録時)
+     *
+     * @param FormEvent $event
+     */
+    public function copyFields(FormEvent $event)
+    {
+        /** @var Order $Order */
+        $Order = $event->getData();
+
+        // 支払方法の名称をコピーする.
+        if ($Payment = $Order->getPayment()) {
+            $Order->setPaymentMethod($Payment->getMethod());
+        }
+
+        // 会員受注の場合、会員の性別/職業/誕生日をエンティティにコピーする
+        if ($Customer = $Order->getCustomer()) {
+            $Order->setSex($Customer->getSex());
+            $Order->setJob($Customer->getJob());
+            $Order->setBirth($Customer->getBirth());
+        }
+
+        // 受注の新規登録時は, 新規受付ステータスで登録する.
+        if (!$Order->getOrderStatus()) {
+            $Order->setOrderStatus($this->orderStatusRepisotory->find(OrderStatus::NEW));
+        }
+    }
+
+    /**
+     * 受注明細のバリデーションを行う.
+     * 商品明細が1件も登録されていない場合はエラーとする.
+     *
+     * @param FormEvent $event
+     */
+    public function validateOrderItems(FormEvent $event)
+    {
+        /** @var Order $Order */
+        $Order = $event->getData();
+        $OrderItems = $Order->getOrderItems();
+
+        $count = 0;
+        foreach ($OrderItems as $OrderItem) {
+            if ($OrderItem->isProduct()) {
+                $count++;
+            }
+        }
+        // 商品明細が1件もない場合はエラーとする.
+        if ($count < 1) {
+            // 画面下部にエラーメッセージを表示させる
+            $form = $event->getForm();
+            $form['OrderItemsErrors']->addError(new FormError(trans('admin.order.edit.product.error')));
+        }
+    }
+
+    /**
+     * 受注明細と, Order/Shippingの紐付けを行う.
+     *
+     * @param FormEvent $event
+     */
+    public function assosiateOrderAndShipping(FormEvent $event)
+    {
+        /** @var Order $Order */
+        $Order = $event->getData();
+        $OrderItems = $Order->getOrderItems();
+
+        // 明細とOrder, Shippingを紐付ける.
+        // 新規の明細のみが対象, 更新時はスキップする.
+        foreach ($OrderItems as $OrderItem) {
+            // 更新時はスキップ
+            if (!$OrderItem->getId()) {
+                continue;
+            }
+
+            $OrderItem->setOrder($Order);
+
+            // 送料明細の紐付けを行う.
+            // 複数配送の場合は, 常に最初のShippingと紐付ける.
+            // Order::getShippingsは氏名でソートされている.
+            if ($OrderItem->isDeliveryFee()) {
+                $OrderItem->setShipping($Order->getShippings()->first());
+            }
+
+            // 商品明細の紐付けを行う.
+            // 複数配送時は, 明細の追加は行われないためスキップする.
+            if ($OrderItem->isProduct() && !$Order->isMultiple()) {
+                $OrderItem->setShipping($Order->getShippings()->first());
+            }
+        }
     }
 }

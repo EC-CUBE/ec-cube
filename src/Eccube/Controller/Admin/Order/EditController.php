@@ -175,17 +175,7 @@ class EditController extends AbstractController
             $OriginItems->add($Item);
         }
 
-        $builder = $this->formFactory
-            ->createBuilder(OrderType::class, $TargetOrder,
-                [
-                    'SortedItems' => $TargetOrder->getItems(),
-                ]
-            );
-
-        // 複数配送の場合は配送先の編集ができない
-        if ($TargetOrder->isMultiple()) {
-            $builder->remove('Shipping');
-        }
+        $builder = $this->formFactory->createBuilder(OrderType::class, $TargetOrder);
 
         $event = new EventArgs(
             [
@@ -198,11 +188,6 @@ class EditController extends AbstractController
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_INDEX_INITIALIZE, $event);
 
         $form = $builder->getForm();
-
-        // 単数配送の場合は配送先の編集ができる
-        if (!$TargetOrder->isMultiple()) {
-            $form['Shipping']->setData($TargetOrder->getShippings()[0]);
-        }
 
         $form->handleRequest($request);
         $purchaseContext = new PurchaseContext($OriginOrder, $OriginOrder->getCustomer());

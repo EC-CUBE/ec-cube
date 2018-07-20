@@ -183,16 +183,14 @@ file that was distributed with this source code.
                                             <div class="col-3">{{ 'admin.order.edit.244'|trans }}</div>
                                             <div class="col">{{ Order.order_no }}</div>
                                         </div>
-                                        <div class="row mb-3">
-                                            <div class="col-3">{{ 'admin.order.edit.label.device_type'|trans }}</div>
-                                            <div class="col">{{ Order.device_type }}</div>
-                                        </div>
                                         <div class="row mb-3 form-group">
                                             <label class="col-3 col-form-label">{{ 'admin.order.index.298'|trans }}<i class="fa fa-question-circle fa-lg ml-1" data-toggle="tooltip" data-placement="top" title="Tooltip"></i></label>
                                             <div class="col">
-                                                {{ form_widget(form.OrderStatus) }}
-                                                {{ form_errors(form.OrderStatus) }}
-                                                <p class="form-text font-weight-bold text-danger mb-0">{{ 'admin.order.edit.248'|trans }}</p>
+                                                {% if Order.id is not empty %}
+                                                    {{ form_widget(form.OrderStatus) }}
+                                                    {{ form_errors(form.OrderStatus) }}
+                                                    <p class="form-text font-weight-bold text-danger mb-0">{{ 'admin.order.edit.248'|trans }}</p>
+                                                {% endif %}
                                             </div>
                                         </div>
                                         <div class="row mb-3 form-group">
@@ -213,10 +211,6 @@ file that was distributed with this source code.
                                             <div class="col-3"><i class="fa fa-money fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.order.edit.label.payment_date'|trans }}</div>
                                             <div class="col">{{ Order.payment_date ? Order.payment_date|date_sec : '' }}</div>
                                         </div>
-                                        <div class="row mb-3">
-                                            <div class="col-3"><i class="fa fa-refresh fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.order.edit.label.update_date'|trans }}</div>
-                                            <div class="col">{{ Order.update_date ? Order.update_date|date_sec : '' }}</div>
-                                        </div>
                                         {% if not Order.isMultiple %}
                                             <div class="row mb-3">
                                                 <div class="col-3"><i class="fa fa-truck fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.shipping.edit.ship_date'|trans }}</div>
@@ -225,6 +219,14 @@ file that was distributed with this source code.
                                                 </div>
                                             </div>
                                         {% endif %}
+                                        <div class="row mb-3">
+                                            <div class="col-3"><i class="fa fa-refresh fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.order.edit.label.update_date'|trans }}</div>
+                                            <div class="col">{{ Order.update_date ? Order.update_date|date_sec : '' }}</div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-3"><i class="fa fa-mobile fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.order.edit.label.device_type'|trans }}</div>
+                                            <div class="col">{{ Order.device_type }}</div>
+                                        </div>
                                         <div class="row mb-3">
                                             <div class="col-3"><i class="fa fa-commenting fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.order.edit.label.message'|trans }}</div>
                                             <div class="col">{{ Order.message ? Order.message|nl2br : '' }}</div>
@@ -678,9 +680,9 @@ file that was distributed with this source code.
                                             <td class="align-middle">
                                                 <div class="col-6">
                                                     {# 複数配送の場合は商品の個数を変更できない #}
-                                                    {% if Order.isMultiple and OrderItem.orderItemType.id == 1 %}
+                                                    {% if Order.isMultiple and OrderItem.orderItemType.id == constant('Eccube\\Entity\\Master\\OrderItemType::PRODUCT') %}
                                                         {{ OrderItem.quantity }}
-                                                        {{ form_widget(orderItemForm.quantity, {'attr': {'class': 'd-none'}}) }}
+                                                        {{ form_widget(orderItemForm.quantity, { 'type': 'hidden' }) }}
                                                         {{ form_errors(orderItemForm.quantity) }}
                                                     {% else %}
                                                         {{ form_widget(orderItemForm.quantity) }}
@@ -706,7 +708,7 @@ file that was distributed with this source code.
                                             <td class="align-middle text-right pr-3">
                                                 <div class="row justify-content-end">
                                                     {# 複数配送の場合は商品を削除できない #}
-                                                    {% if Order.isMultiple and OrderItem.orderItemType.id == 1 %}
+                                                    {% if Order.isMultiple and OrderItem.orderItemType.id == constant('Eccube\\Entity\\Master\\OrderItemType::PRODUCT') %}
                                                         <div class="col-auto text-center">
                                                             <a class="btn btn-ec-actionIcon disabled">
                                                                 <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
