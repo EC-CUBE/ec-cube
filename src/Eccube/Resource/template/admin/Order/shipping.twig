@@ -23,32 +23,39 @@ file that was distributed with this source code.
     <script>
         // 商品の追加モーダル#検索ボタン
         // 明細の一覧を取得し, モーダル内に描画する
-        $('#addProduct').on('click', '#searchItemsButton', function () {
+        $('#addProduct').on('click', '#searchProductModalButton', function () {
+            var list = $('#searchProductModalList');
+            list.children().remove();
+
             $.ajax({
+                url: '{{ url('admin_order_search_product') }}',
                 type: 'POST',
                 dataType: 'html',
-                url: '{{ url('admin_order_search_product') }}',
-            }).done(function (data) {
-                // モーダルに結果を書き出し.
-                $('#searchItemsResult').html(data);
-            }).fail(function () {
-                alert('failed.');
+                data: {
+                    'id': $('#admin_search_product_id').val(),
+                    'category_id': $('#admin_search_product_category_id').val()
+                }
+            }).done(function(data) {
+                $('#searchProductModalList').html(data);
+            }).fail(function(data) {
+                alert('search product failed.');
             });
         });
         // 商品の追加モーダル#ページャ部分
         // クリックしたページ番号の明細一覧を取得し, モーダル内に描画する
         $('#addProduct').on('click', '.page-link', function (event) {
             event.preventDefault();
-
+            var list = $('#searchProductModalList');
+            list.children().remove();
+            var url = $(this).attr('href');
             $.ajax({
-                type: 'POST',
-                dataType: 'html',
-                url: event.target.href,
-            }).done(function (data) {
-                // モーダルに結果を書き出し.
-                $('#searchItemsResult').html(data);
-            }).fail(function () {
-                alert('failed.');
+                url: url,
+                type: 'GET',
+                dataType: 'html'
+            }).done(function(data) {
+                $('#searchProductModalList').html(data);
+            }).fail(function(data) {
+                alert('search product failed.');
             });
         });
         // 商品の追加モーダル#＋ボタン
@@ -73,17 +80,11 @@ file that was distributed with this source code.
             });
         });
         // 明細行の削除
-        $('#addOrderItem').on('click', '.remove-order-item', function (event) {
+        $('.addOrderItem').on('click', '.remove-order-item', function (event) {
             event.preventDefault();
 
             // 自身の行を削除.
             $(event.target).parents('tr').remove();
-        });
-
-        // お届け先の編集
-        // 入力フォームの開閉を行う.
-        $('#edit-shipping-addr').on('click', function () {
-            $('#shipping-addr-area').toggle();
         });
 
         {# TODO: Should move logic js into js file intead of twig #}
@@ -127,6 +128,26 @@ file that was distributed with this source code.
           method="post" id="form_shipping" class="h-adr">
         <span class="p-country-name" style="display:none;">Japan</span>
         {{ form_widget(form._token) }}
+        <div class="modal fade" id="addProduct" tabindex="-1" role="dialog"
+             aria-labelledby="addProduct" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ 'admin.order.edit.btn.add_product'|trans }}</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {{ form_widget(searchProductModalForm.id, { attr : {'class': 'mb-3',  placeholder : 'admin.order.edit.293' }}) }}
+                        {{ form_widget(searchProductModalForm.category_id) }}
+                        <button type="button" id="searchProductModalButton"
+                                class="btn btn-ec-conversion px-5 mb-4 mt-2">{{ 'admin.order.edit.294'|trans }}</button>
+                        <div id="searchProductModalList"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="c-contentsArea__cols">
             <div class="c-contentsArea__primaryCol">
                 <div class="c-primaryCol">
@@ -340,15 +361,6 @@ file that was distributed with this source code.
                                                     {{ form_errors(shippingField.Delivery) }}
                                                 </div>
                                             </div>
-                                            {#<div class="row mb-3 form-group">#}
-                                                {#<label class="col-3 col-form-label">#}
-                                                    {#{{ 'admin.shipping.edit.note_title'|trans }}#}
-                                                {#</label>#}
-                                                {#<div class="col">#}
-                                                    {#{{ form_widget(shippingField.note) }}#}
-                                                    {#{{ form_errors(shippingField.note) }}#}
-                                                {#</div>#}
-                                            {#</div>#}
                                         </div>
                                         <div class="col-6">
                                             <div class="row mb-3 form-group">
@@ -406,30 +418,10 @@ file that was distributed with this source code.
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <a class="btn btn-ec-regular mr-2 add" data-toggle="modal" data-target="#addProduct">
-                                                {{ 'admin.order.edit.btn.add_product'|trans }}
-                                            </a>
-                                            <div class="modal fade" id="addProduct" tabindex="-1" role="dialog"
-                                                 aria-labelledby="addProduct" aria-hidden="true">
-                                                <div class="modal-dialog modal-lg" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title">{{ 'admin.order.edit.btn.add_product'|trans }}</h5>
-                                                            <button class="close" type="button" data-dismiss="modal"
-                                                                    aria-label="Close">
-                                                                <span aria-hidden="true">×</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            {{ form_widget(searchProductModalForm.id, { attr : {'class': 'mb-3',  placeholder : 'admin.order.edit.293' }}) }}
-                                                            {{ form_widget(searchProductModalForm.category_id) }}
-                                                            <button type="button" id="searchProductModalButton"
-                                                                    class="btn btn-ec-conversion px-5 mb-4 mt-2">{{ 'admin.order.edit.294'|trans }}</button>
-                                                            <div id="searchProductModalList"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <button class="btn btn-ec-regular mr-2" type="button" data-toggle="modal"
+                                                    data-target="#addProduct">
+                                                {{ 'admin.shipping.edit.add_product'|trans }}
+                                            </button>
 
                                             {# TODO: 処理を確認 #}
                                             <a class="btn btn-ec-regular mr-2" data-toggle="modal" data-target="#addOrderItemType">{{ 'admin.order.edit.btn.add_other_item'|trans }}</a>
@@ -440,7 +432,7 @@ file that was distributed with this source code.
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <table id="addOrderItem" class="table table-striped table-sm mb-0">
+                                        <table id="addOrderItem_{{ loop.index0 }}" class="table table-striped table-sm mb-0 addOrderItem">
                                             <thead class="table-active">
                                             <th class="pt-2 pb-2 pl-3">{{ 'admin.shipping.edit.product_name_and_code'|trans }}</th>
                                             <th class="pt-2 pb-2">{{ 'admin.shipping.edit.price'|trans }}</th>
@@ -477,6 +469,9 @@ file that was distributed with this source code.
                             </div>
                         </div>
                     {% endfor %}
+                    <div class="card rounded border-0 mb-4">
+                        <button type="button" class="btn btn-ec-regular">出荷先を追加</button>
+                    </div>
                 </div>
             </div>
         </div>
