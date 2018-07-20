@@ -354,7 +354,6 @@ file that was distributed with this source code.
                                 <table id="addOrderItem" class="table table-striped table-sm mb-0">
                                     <thead class="table-active">
                                     <th class="pt-2 pb-2 pl-3">{{ 'admin.shipping.edit.product_name_and_code'|trans }}</th>
-                                    <th class="pt-2 pb-2">{{ 'admin.shipping.edit.order_id'|trans }}</th>
                                     <th class="pt-2 pb-2">{{ 'admin.shipping.edit.price'|trans }}</th>
                                     <th class="pt-2 pb-2">{{ 'admin.shipping.edit.quantity'|trans }}</th>
                                     <th class="pt-2 pb-2">{{ 'admin.shipping.edit.tax_rate'|trans }}</th>
@@ -362,8 +361,9 @@ file that was distributed with this source code.
                                     <th class="pt-2 pb-2 pr-3"></th>
                                     </thead>
                                     <tbody>
-                                    {% for OrderItem in attribute(Shippings, loop.index0).OrderItems %}
-                                        {% include '@admin/Shipping/order_item_prototype.twig' with { 'OrderItem': OrderItem } %}
+                                    {% set OrderItems = attribute(Shippings, loop.index0).OrderItems %}
+                                    {% for orderItemField in shippingField.OrderItems %}
+                                        {% include '@admin/Shipping/order_item_prototype.twig' with { 'OrderItem': attribute(OrderItems, loop.index0), 'orderItemField': orderItemField } %}
                                     {% endfor %}
                                     </tbody>
                                 </table>

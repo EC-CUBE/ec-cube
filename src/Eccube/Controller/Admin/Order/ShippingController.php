@@ -136,6 +136,14 @@ class ShippingController extends AbstractController
             ]);
 
         $form = $builder->getForm();
+
+        // idは更新できないのでFormTypeで 'mapped'=>false にしてこちらでdateをset
+        foreach ($TargetShippings as $shippingKey => $TargetShipping) {
+            foreach ($TargetShipping->getOrderItems() as $itemKey => $OrderItem) {
+                $form['shippings'][$shippingKey]['OrderItems'][$itemKey]['id']->setData($TargetShipping->getOrderItems()->get($itemKey)->getId());
+            }
+        }
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

@@ -13,15 +13,18 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\OrderItem;
 use Eccube\Repository\OrderItemRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class OrderItemForShippingRegistrationType extends AbstractType
 {
@@ -29,10 +32,15 @@ class OrderItemForShippingRegistrationType extends AbstractType
      * @var OrderItemRepository
      */
     protected $orderItemRepository;
+    /**
+     * @var EccubeConfig
+     */
+    private $eccubeConfig;
 
-    public function __construct(OrderItemRepository $orderItemRepository)
+    public function __construct(OrderItemRepository $orderItemRepository, EccubeConfig $eccubeConfig)
     {
         $this->orderItemRepository = $orderItemRepository;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
@@ -43,19 +51,20 @@ class OrderItemForShippingRegistrationType extends AbstractType
         $builder
             ->add('id', HiddenType::class, [
                 'required' => false,
-                'mapped' => false,
+                'mapped' => false, // idは更新できないので 'mapped'=>false にしてcontrollerでdateをset
                 'constraints' => [
                     new NotBlank(),
                 ],
-            ]);
-
-        $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
-            $form = $event->getForm();
-            $orderItemId = $form['id']->getData();
-
-            $OrderItem = $this->orderItemRepository->find($orderItemId);
-            $event->setData($OrderItem);
-        });
+            ])
+            ->add('quantity', TextType::class, [
+                'constraints' => [
+                    new Assert\NotBlank(),
+                    new Assert\Length([
+                        'max' => $this->eccubeConfig['eccube_int_len'],
+                    ]),
+                ],
+            ])
+        ;
     }
 
     /**
