@@ -16,7 +16,7 @@ file that was distributed with this source code.
                 <span>{{ 'admin.nav.home'|trans }}</span>
             </a>
         </li>
-        {% for level1 in eccube_config.eccube_nav if app.request.baseUrl ~ '/' ~ eccube_config.eccube_admin_route ~ '/' ~ level1.id not in AuthorityRoles %}
+        {% for level1 in eccube_config.eccube_nav if is_authorized_url(app.request.baseUrl ~ '/' ~ eccube_config.eccube_admin_route ~ '/' ~ level1.id, AuthorityRoles) %}
             <li class="c-mainNavArea__navItem">
                 {% if level1.has_child is defined and level1.has_child %}
                     <a class="c-mainNavArea__navItemTitle{{ active_menus(menus)[0] != level1.id ? ' collapsed' }}"
@@ -26,28 +26,26 @@ file that was distributed with this source code.
                                                               aria-hidden="true"></i><span>{{ level1.name|trans }}</span></a>
                     <ul class="collapse {% if active_menus(menus)[0] == level1.id %} show{% endif %}"
                         id="nav-{{ level1.id }}">
-                        {% for level2 in level1.child if app.request.baseUrl ~ '/' ~ eccube_config.eccube_admin_route ~ '/' ~ level1.id ~ '/' ~ level2.id not in AuthorityRoles %}
-                            {% if level2.url is defined and path(level2.url) in AuthorityRoles %}
+                        {% for level2 in level1.child%}
+                            {% if level2.has_child is defined and level2.has_child %}
+                                <li>
+                                    <a class="c-mainNavArea__navItemSubTitle{{ active_menus(menus)[1] != level2.id ? ' collapsed' }}"
+                                        data-toggle="collapse" href="#nav-{{ level2.id }}"
+                                        aria-expanded="{{ active_menus(menus)[1] != level2.id ? 'true' : 'false' }}"
+                                        aria-controls="nav-{{ level2.id }}"><span>{{ level2.name|trans }}</span></a>
+                                    <ul class="collapse{{ active_menus(menus)[1] == level2.id ? ' show' }}"
+                                        id="nav-{{ level2.id }}">
+                                        {% for level3 in level2.child %}
+                                            {% if level3.url is defined and is_authorized_url(path(level3.url), AuthorityRoles) %}
+                                                <li>
+                                                    <a href="{{ url(level3.url) }}"{{ active_menus(menus)[2] == level3.id ? ' class="is-active"' }}>{{ level3.name|trans }}</a>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                </li>
                             {% else %}
-                                {% if level2.has_child is defined and level2.has_child %}
-                                    <li>
-                                        <a class="c-mainNavArea__navItemSubTitle{{ active_menus(menus)[1] != level2.id ? ' collapsed' }}"
-                                           data-toggle="collapse" href="#nav-{{ level2.id }}"
-                                           aria-expanded="{{ active_menus(menus)[1] != level2.id ? 'true' : 'false' }}"
-                                           aria-controls="nav-{{ level2.id }}"><span>{{ level2.name|trans }}</span></a>
-                                        <ul class="collapse{{ active_menus(menus)[1] == level2.id ? ' show' }}"
-                                            id="nav-{{ level2.id }}">
-                                            {% for level3 in level2.child %}
-                                                {% if level3.url is defined and path(level3.url) in AuthorityRoles %}
-                                                {% else %}
-                                                    <li>
-                                                        <a href="{{ url(level3.url) }}"{{ active_menus(menus)[2] == level3.id ? ' class="is-active"' }}>{{ level3.name|trans }}</a>
-                                                    </li>
-                                                {% endif %}
-                                            {% endfor %}
-                                        </ul>
-                                    </li>
-                                {% else %}
+                                {% if is_authorized_url(path(level2.url), AuthorityRoles)%}
                                     <li>
                                         <a href="{{ url(level2.url) }}"{{ active_menus(menus)[1] == level2.id ? ' class="is-active"' }}>{{ level2.name|trans }}</a>
                                     </li>
@@ -56,7 +54,7 @@ file that was distributed with this source code.
                         {% endfor %}
                     </ul>
                 {% else %}
-                    {% if level1.url is defined and path(level1.url) in AuthorityRoles == false %}
+                    {% if level1.url is defined and is_authorized_url(path(level1.url), AuthorityRoles) %}
                         <a class="c-mainNavArea__navItemTitle" href="{{ url(level1.url) }}"><i
                                     class="fa {{ level1.icon }}"
                                     aria-hidden="true"></i><span>{{ level1.name|trans }}</span></a>
