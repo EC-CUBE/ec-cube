@@ -162,10 +162,10 @@ class EF05MypageCest
         $customer = $createCustomer();
         $I->loginAsMember($customer->getEmail(), 'password');
 
-        // TOPページ>マイページ>お届け先編集
+        // TOPページ>マイページ>お届け先一覧
         MyPage::go($I)->お届け先編集();
 
-        $I->see('お届け先編集', 'div.ec-pageHeader h1');
+        $I->see('お届け先一覧', 'div.ec-pageHeader h1');
     }
 
     public function mypage_お届け先編集作成変更(\AcceptanceTester $I)

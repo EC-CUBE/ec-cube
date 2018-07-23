@@ -82,7 +82,7 @@ file that was distributed with this source code.
                                 {{ form_label(form.contents, 'お問い合わせ内容', {'label_attr': {'class': 'ec-label'}}) }}
                             </dt>
                             <dd>
-                                {{ form.contents.vars.data }}
+                                {{ form.contents.vars.data|nl2br }}
                                 {{ form_widget(form.contents, { type : 'hidden' }) }}
                             </dd>
                         </dl>
