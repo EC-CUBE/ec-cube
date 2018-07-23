@@ -13,7 +13,6 @@
 
 namespace Eccube\Service\PurchaseFlow\Processor;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\ProductClass;
