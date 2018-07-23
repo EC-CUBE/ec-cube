@@ -93,10 +93,9 @@ file that was distributed with this source code.
         // 配送業者選択時にお届け時間を設定
         var times = {{ shippingDeliveryTimes|raw }};
 
-        {# TODO: 複数配送に対応ッセル必要があるがここ全体をループしか方法が浮かばない・・・ #}
-        $('#form_shippings_0_Delivery').change(function(){
+        $("select[id$='_Delivery']").on('change', function(){
             var deliveryId = $(this).val();
-            var $shippingDeliveryTime = $('#form_shippings_0_DeliveryTime');
+            var $shippingDeliveryTime = $(this).parents('.card-body').find("select[id$='_DeliveryTime']");
             $shippingDeliveryTime.find('option').remove();
             $shippingDeliveryTime.append($('<option></option>').val('').text('指定なし'));
             if (typeof(times[deliveryId]) !== 'undefined') {
