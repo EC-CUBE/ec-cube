@@ -7,7 +7,7 @@ namespace Page\Admin;
 class ShippingEditPage extends AbstractAdminPageStyleGuide
 {
 
-    public static $姓_エラーメッセージ = '#shippingerInfo > div > div:nth-child(2) > div.col > span > ul > p';
+    public static $姓_エラーメッセージ = '#shipmentOverview_0 > div > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div > div > div:nth-child(1) > span > span > span.form-error-message';
 
     public static $登録完了メッセージ = '#page_admin_shipping_edit > div > div.c-contentsArea > div.alert.alert-success.alert-dismissible.fade.show.m-3 > span';
 
@@ -48,75 +48,75 @@ class ShippingEditPage extends AbstractAdminPageStyleGuide
 
     public function 入力_姓($value)
     {
-        $this->tester->fillField(['id' => 'shipping_name_name01'], $value);
+        $this->tester->fillField(['id' => 'form_shippings_0_name_name01'], $value);
         return $this;
     }
 
     public function 入力_名($value)
     {
-        $this->tester->fillField(['id' => 'shipping_name_name02'], $value);
+        $this->tester->fillField(['id' => 'form_shippings_0_name_name02'], $value);
         return $this;
     }
 
     public function 入力_セイ($value)
     {
-        $this->tester->fillField(['id' => 'shipping_kana_kana01'], $value);
+        $this->tester->fillField(['id' => 'form_shippings_0_kana_kana01'], $value);
         return $this;
     }
 
     public function 入力_メイ($value)
     {
-        $this->tester->fillField(['id' => 'shipping_kana_kana02'], $value);
+        $this->tester->fillField(['id' => 'form_shippings_0_kana_kana02'], $value);
         return $this;
     }
 
     public function 入力_郵便番号($value)
     {
-        $this->tester->fillField(['id' => 'shipping_postal_code'], $value);
+        $this->tester->fillField(['id' => 'form_shippings_0_postal_code'], $value);
 
         return $this;
     }
 
     public function 入力_都道府県($value)
     {
-        $this->tester->selectOption(['id' => 'shipping_address_pref'], $value);
+        $this->tester->selectOption(['id' => 'form_shippings_0_address_pref'], $value);
         return $this;
     }
 
     public function 入力_市区町村名($value)
     {
-        $this->tester->fillField(['id' => 'shipping_address_addr01'], $value);
+        $this->tester->fillField(['id' => 'form_shippings_0_address_addr01'], $value);
         return $this;
     }
 
     public function 入力_番地_ビル名($value)
     {
-        $this->tester->fillField(['id' => 'shipping_address_addr02'], $value);
+        $this->tester->fillField(['id' => 'form_shippings_0_address_addr02'], $value);
         return $this;
     }
 
     public function 入力_電話番号($value)
     {
-        $this->tester->fillField(['id' => 'shipping_phone_number'], $value);
+        $this->tester->fillField(['id' => 'form_shippings_0_phone_number'], $value);
 
         return $this;
     }
 
     public function 入力_出荷伝票番号($value)
     {
-        $this->tester->fillField(['id' => 'shipping_tracking_number'], $value);
+        $this->tester->fillField(['id' => 'form_shippings_0_tracking_number'], $value);
         return $this;
     }
 
     public function 入力_配送業者($value)
     {
-        $this->tester->selectOption(['id' => 'shipping_Delivery'], $value);
+        $this->tester->selectOption(['id' => 'form_shippings_0_Delivery'], $value);
         return $this;
     }
 
     public function 入力_配達用メモ($value)
     {
-        $this->tester->fillField(['id' => 'shipping_note'], $value);
+        $this->tester->fillField(['id' => 'form_shippings_0_note'], $value);
         return $this;
     }
 
