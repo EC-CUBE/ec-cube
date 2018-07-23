@@ -39,14 +39,14 @@ class LayoutManagePage extends AbstractAdminPageStyleGuide
 
     public function レイアウト編集($layoutName)
     {
-        $this->tester->click(['xpath' => "//*[@id=\"page_admin_content_layout\"]/div[1]/div[3]/div[2]/div/div//div/a[translate(text(), ' \r\n', '')='${layoutName}']"]);
+        $this->tester->click(['xpath' => "//*[@id=\"page_admin_content_layout\"]/div[1]/div[3]/div[2]/div/div//div/span[translate(text(), ' \r\n', '')='${layoutName}']"]);
     }
 
     public function 削除($layoutName)
     {
         $this->tester->getScenario()->incomplete('未実装：レイアウトの削除は未実装');
 
-        $this->tester->click(['xpath' => "//div[@id='sortable_list_box__list']//div[@class='item_pattern td'][translate(text(), ' \r\n', '')='${layoutName}']/parent::node()/div[@class='icon_edit td']/div/a"]);
-        $this->tester->click(['xpath' => "//div[@id='sortable_list_box__list']//div[@class='item_pattern td'][translate(text(), ' \r\n', '')='${layoutName}']/parent::node()/div[@class='icon_edit td']/div/ul/li[2]/a"]);
+        $this->tester->click(['xpath' => "//div[@id='sortable_list_box__list']//div[@class='item_pattern td'][translate(text(), ' \r\n', '')='${layoutName}']/parent::node()/div[@class='icon_edit td']/div/span"]);
+        $this->tester->click(['xpath' => "//div[@id='sortable_list_box__list']//div[@class='item_pattern td'][translate(text(), ' \r\n', '')='${layoutName}']/parent::node()/div[@class='icon_edit td']/div/ul/li[2]/span"]);
     }
 }
