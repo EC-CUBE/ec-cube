@@ -230,7 +230,7 @@ class OrderType extends AbstractType
                 'required' => false,
                 'class' => Payment::class,
                 'choice_label' => 'method',
-                'placeholder' => 'order.placeholder.select',
+                'placeholder' => false,
                 'query_builder' => function ($er) {
                     return $er->createQueryBuilder('o')
                         ->orderBy('o.sort_no', 'ASC');
@@ -392,13 +392,18 @@ class OrderType extends AbstractType
             $Order->setBirth($Customer->getBirth());
         }
 
-        // 受注の新規登録時は, 新規受付ステータスで登録する.
+        // 新規登録時は, 新規受付ステータスで登録する.
         if (null === $Order->getOrderStatus()) {
             $Order->setOrderStatus($this->orderStatusRepisotory->find(OrderStatus::NEW));
         } else {
             // 編集時は, mapped => falseで定義しているため, フォームから変更後データを取得する.
             $form = $event->getForm();
             $Order->setOrderStatus($form['OrderStatus']->getData());
+        }
+
+        // 新規登録時は受注日を登録する.
+        if (null === $Order->getOrderDate()) {
+            $Order->setOrderDate(new \DateTime());
         }
     }
 
