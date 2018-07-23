@@ -49,11 +49,13 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
     public function testRoutingAdminOrderNewPost()
     {
+        $formData = $this->createFormData($this->Customer, $this->Product);
+        unset($formData['OrderStatus']);
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_order_new'),
             [
-                'order' => $this->createFormData($this->Customer, $this->Product),
+                'order' => $formData,
                 'mode' => 'register',
             ]
         );
@@ -358,6 +360,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
             'mode' => 'register',
             ]
         );
+
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_edit', ['id' => $Order->getId()])));
 
         $EditedOrder = $this->orderRepository->find($Order->getId());
@@ -368,7 +371,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         foreach ($formDataForEdit['OrderItems'] as $indx => $orderItem) {
             //商品数変更3個追加
             $formDataForEdit['OrderItems'][$indx]['quantity'] = $orderItem['quantity'] + 3;
-            $tax = (int) $this->container->get(TaxRuleService::class)->calcTax($orderItem['price'], $orderItem['tax_rate'], $orderItem['tax_rule']);
+            $tax = $this->container->get(TaxRuleService::class)->getTax($orderItem['price']);
             $totalTax += $tax * $formDataForEdit['OrderItems'][$indx]['quantity'];
         }
 
@@ -396,11 +399,13 @@ class EditControllerTest extends AbstractEditControllerTestCase
      */
     public function testOrderProcessingWithCustomer()
     {
+        $formData = $this->createFormData($this->Customer, $this->Product);
+        unset($formData['OrderStatus']);
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_order_new'),
             [
-                'order' => $this->createFormData($this->Customer, $this->Product),
+                'order' => $formData,
                 'mode' => 'register',
             ]
         );

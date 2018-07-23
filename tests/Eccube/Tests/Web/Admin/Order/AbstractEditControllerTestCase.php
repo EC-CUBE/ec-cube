@@ -48,7 +48,7 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
             $OrderItems[] = [
                 'ProductClass' => $ProductClasses[0]->getId(),
                 'price' => $ProductClasses[0]->getPrice02(),
-                'quantity' => $faker->numberBetween(1, 999),
+                'quantity' => $faker->numberBetween(1, 9),
                 'product_name' => $Product->getName(),
                 'order_item_type' => 1,
             ];
