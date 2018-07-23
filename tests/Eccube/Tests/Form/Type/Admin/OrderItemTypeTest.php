@@ -80,7 +80,7 @@ class OrderItemTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->formData['price'] = '-123456';
 
         $this->form->submit($this->formData);
-        $this->assertFalse($this->form->isValid());
+        $this->assertTrue($this->form->isValid());
     }
 
     public function testInvalidQuantity_Blank()

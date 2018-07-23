@@ -15,6 +15,7 @@ namespace Eccube\Tests\Web\Admin\Order;
 
 use Eccube\Common\Constant;
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\Master\OrderStatus;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\CartService;
@@ -48,11 +49,13 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
     public function testRoutingAdminOrderNewPost()
     {
+        $formData = $this->createFormData($this->Customer, $this->Product);
+        unset($formData['OrderStatus']);
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_order_new'),
             [
-                'order' => $this->createFormData($this->Customer, $this->Product),
+                'order' => $formData,
                 'mode' => 'register',
             ]
         );
@@ -73,6 +76,9 @@ class EditControllerTest extends AbstractEditControllerTestCase
     {
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
+        $Order->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
+        $this->entityManager->flush($Order);
+
         $formData = $this->createFormData($Customer, $this->Product);
         $this->client->request(
             'POST',
@@ -103,6 +109,9 @@ class EditControllerTest extends AbstractEditControllerTestCase
     {
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
+        $Order->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
+        $this->entityManager->flush($Order);
+
         $formData = $this->createFormData($Customer, $this->Product);
         $crawler = $this->client->request(
             'POST',
@@ -125,6 +134,8 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->markTestIncomplete('EditController is not implemented.');
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
+        $Order->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
+        $this->entityManager->flush($Order);
 
         $formData = $this->createFormData($Customer, $this->Product);
         $this->client->request(
@@ -149,6 +160,9 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->verify();
 
         $Order = $this->createOrder($Customer);
+        $Order->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
+        $this->entityManager->flush($Order);
+
         $formData = $this->createFormData($Customer, $this->Product);
         $this->client->request(
             'POST',
@@ -334,7 +348,11 @@ class EditControllerTest extends AbstractEditControllerTestCase
     {
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
+        $Order->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
+        $this->entityManager->flush($Order);
+
         $formData = $this->createFormData($Customer, $this->Product);
+
         // 管理画面から受注登録
         $this->client->request(
             'POST', $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]), [
@@ -342,6 +360,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
             'mode' => 'register',
             ]
         );
+
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_edit', ['id' => $Order->getId()])));
 
         $EditedOrder = $this->orderRepository->find($Order->getId());
@@ -352,7 +371,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         foreach ($formDataForEdit['OrderItems'] as $indx => $orderItem) {
             //商品数変更3個追加
             $formDataForEdit['OrderItems'][$indx]['quantity'] = $orderItem['quantity'] + 3;
-            $tax = (int) $this->container->get(TaxRuleService::class)->calcTax($orderItem['price'], $orderItem['tax_rate'], $orderItem['tax_rule']);
+            $tax = $this->container->get(TaxRuleService::class)->getTax($orderItem['price']);
             $totalTax += $tax * $formDataForEdit['OrderItems'][$indx]['quantity'];
         }
 
@@ -380,11 +399,13 @@ class EditControllerTest extends AbstractEditControllerTestCase
      */
     public function testOrderProcessingWithCustomer()
     {
+        $formData = $this->createFormData($this->Customer, $this->Product);
+        unset($formData['OrderStatus']);
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_order_new'),
             [
-                'order' => $this->createFormData($this->Customer, $this->Product),
+                'order' => $formData,
                 'mode' => 'register',
             ]
         );

@@ -255,7 +255,7 @@ class EditController extends AbstractController
                         if ($TargetOrder->getId() && $OldStatus->getId() != $NewStatus->getId()) {
                             // ステートマシンでステータスは更新されるので, 古いステータスに戻す.
                             $TargetOrder->setOrderStatus($OldStatus);
-                            // FormTypeでステータスの遷移チェックは行っているのでapplyのみ.
+                            // FormTypeでステータスの遷移チェックは行っているのでapplyのみ実行.
                             $this->orderStateMachine->apply($TargetOrder, $NewStatus);
                             // FIXME ステートマシンがmtb_order_statusを更新しようとするので, refreshしておく.
                             $this->entityManager->refresh($OldStatus);

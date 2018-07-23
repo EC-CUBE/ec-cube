@@ -118,6 +118,7 @@ class OrderItemType extends AbstractType
                 ],
             ])
             ->add('price', PriceType::class, [
+                'accept_minus' => true,
             ])
             ->add('quantity', IntegerType::class, [
                 'constraints' => [
@@ -195,7 +196,7 @@ class OrderItemType extends AbstractType
                         $OrderItem->setTaxRule($TaxRule->getId());
                         $OrderItem->setTaxRate($TaxRule->getTaxRate());
                     }
-                    // no break
+                    break;
                 case OrderItemTypeMaster::CHARGE:
                     // 手数料明細は税込表示・課税
                     if (null === $OrderItem->getTaxDisplayType()) {
