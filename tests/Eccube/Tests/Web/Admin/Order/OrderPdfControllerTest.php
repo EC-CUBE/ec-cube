@@ -182,15 +182,6 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
 
     /**
      * Order pdf download.
-     */
-    public function testDownloadWithBadMethod()
-    {
-        $this->client->request('GET', $this->generateUrl('admin_order_pdf_download'));
-        $this->assertEquals($this->client->getResponse()->getStatusCode(), Response::HTTP_INTERNAL_SERVER_ERROR);
-    }
-
-    /**
-     * Order pdf download.
      *
      * @param string $field
      * @param string $message
