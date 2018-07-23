@@ -239,11 +239,8 @@ class OrderType extends AbstractType
                 'prototype' => true,
                 'data' => $options['SortedItems'],
             ])
-            ->add('Shippings', CollectionType::class, [
-                'entry_type' => ShippingType::class,
-                'allow_add' => true,
-                'allow_delete' => true,
-                'prototype' => true,
+            ->add('Shipping', ShippingType::class, [
+                'mapped' => false,
             ])
             ->add('OrderItemsErrors', TextType::class, [
                 'mapped' => false,

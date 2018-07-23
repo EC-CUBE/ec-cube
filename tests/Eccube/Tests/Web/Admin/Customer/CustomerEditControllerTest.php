@@ -169,7 +169,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
         );
 
         $orderListing = $crawler->filter('#orderHistory > div')->text();
-        $this->assertRegexp('/'.$Order->getId().'/', $orderListing);
+        $this->assertRegexp('/'.$Order->getOrderNo().'/', $orderListing);
     }
 
     public function testNotShowProcessingOrder()

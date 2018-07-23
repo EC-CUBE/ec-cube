@@ -94,10 +94,15 @@ cardCollapseIconUp();
 
 // toggle bulk button
 var toggleBtnBulk = function(checkboxSelector, btnSelector) {
-    if ($(checkboxSelector + ':checked').length) {
-        $(btnSelector).addClass('d-block').removeClass('d-none');
-    } else {
-        $(btnSelector).addClass('d-none').removeClass('d-block');
-    }
+    $(function () {
+        if ($(checkboxSelector + ':checked').length) {
+            $(btnSelector).fadeIn('fast').addClass('d-block').removeClass('d-none');
+        } else {
+            $(btnSelector).fadeOut('fast', function() {
+                $(this).addClass('d-none').removeClass('d-block');
+            })
+        }
+    });
 };
+
 

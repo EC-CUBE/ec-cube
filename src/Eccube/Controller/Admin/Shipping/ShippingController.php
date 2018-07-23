@@ -222,10 +222,10 @@ class ShippingController extends AbstractController
             $this->entityManager->flush();
             $result['shipped'] = true;
 
-            return new JsonResponse($result);
+            return $this->json($result);
         }
 
-        return new JsonResponse([
+        return $this->json([
             'shipped' => false,
             'mail' => false,
         ]);
@@ -265,7 +265,7 @@ class ShippingController extends AbstractController
         $this->shippingRepository->save($Shipping);
         $this->entityManager->flush();
 
-        return new JsonResponse([
+        return $this->json([
             'mail' => true,
             'shipped' => false,
         ]);

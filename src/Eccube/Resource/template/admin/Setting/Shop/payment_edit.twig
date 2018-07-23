@@ -140,8 +140,8 @@ file that was distributed with this source code.
                                 <div class="col-3"><span>{{ 'paymentregister.label.payment_method'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.method) }}
+                                    {{ form_errors(form.method) }}
                                 </div>
-                                {{ form_errors(form.method) }}
                             </div>
                             <div class="row"><div class="col-3"><span>{{ 'paymentregister.label.commision'|trans }}</span></div>
                                 <div class="col mb-2">
@@ -192,14 +192,21 @@ file that was distributed with this source code.
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="extra-form">
-                                {% for f in form.getIterator %}
-                                    {% if f.vars.name matches '[^plg*]' %}
-                                        {{ form_row(f) }}
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
+                            {# エンティティ拡張の自動出力 #}
+                            {% for f in form if f.vars.eccube_form_options.auto_render %}
+                                {% if f.vars.eccube_form_options.form_theme %}
+                                    {% form_theme f f.vars.eccube_form_options.form_theme %}
+                                    {{ form_row(f) }}
+                                {% else %}
+                                    <div class="row">
+                                        <div class="col-3"><span>{{ f.vars.label|trans }}</span></div>
+                                        <div class="col mb-2">
+                                            {{ form_widget(f) }}
+                                            {{ form_errors(f) }}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
                         </div><!-- /.box-body -->
                     </div>
                 </div>
@@ -215,6 +222,10 @@ file that was distributed with this source code.
                     </div>
                     <div class="col-6">
                         <div class="row align-items-center justify-content-end">
+                            <div class="col-auto">
+                                {{ form_widget(form.visible) }}
+                                {{ form_errors(form.visible) }}
+                            </div>
                             <div class="col-auto">
                                 <button class="btn btn-ec-conversion px-5" type="submit">{{'admin.setting.shop.payment_edit.submit_button'|trans}}</button>
                             </div>

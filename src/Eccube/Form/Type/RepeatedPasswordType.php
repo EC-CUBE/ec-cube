@@ -56,6 +56,8 @@ class RepeatedPasswordType extends AbstractType
                     new Assert\Length([
                         'min' => $this->eccubeConfig['eccube_password_min_len'],
                         'max' => $this->eccubeConfig['eccube_password_max_len'],
+                        'minMessage' => trans('form.type.customer.password.too_short', ['%limit%' => $this->eccubeConfig['eccube_password_min_len']]),
+                        'maxMessage' => trans('form.type.customer.password.too_long', ['%limit%' => $this->eccubeConfig['eccube_password_max_len']]),
                     ]),
                     new Assert\Regex([
                         'pattern' => '/^[[:graph:][:space:]]+$/i',

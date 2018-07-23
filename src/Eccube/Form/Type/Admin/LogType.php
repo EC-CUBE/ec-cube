@@ -53,7 +53,11 @@ class LogType extends AbstractType
     {
         $files = [];
         $finder = new Finder();
-        $finder->name('*.log')->depth('== 0');
+        $finder->name('*.log')
+            ->depth('== 0')
+            ->sort(function (\SplFileInfo $a, \SplFileInfo $b) {
+                return strcmp($b->getMTime(), $a->getMTime());
+            });
         $dirs = $this->kernel->getLogDir().DIRECTORY_SEPARATOR.$this->kernel->getEnvironment();
         foreach ($finder->in($dirs) as $file) {
             $files[$file->getFilename()] = $file->getFilename();
@@ -78,7 +82,7 @@ class LogType extends AbstractType
                 ],
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Range(['min' => 0, 'max' => 50000]),
+                    new Assert\Range(['min' => 1, 'max' => 50000]),
                 ],
             ]);
     }

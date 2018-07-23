@@ -48,13 +48,33 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
 
     public function 受注CSVダウンロード実行()
     {
-        $this->tester->click('#form_bulk #btn_csv_download');
+        $this->tester->click(['id' => 'csvDownloadDropDown']);
+        $this->tester->waitForElementVisible(['id' => 'orderCsvDownload']);
+        $this->tester->click(['id' => 'orderCsvDownload']);
         return $this;
     }
 
     public function 受注CSV出力項目設定()
     {
-        $this->tester->click('#form_bulk #btn_csv_setting');
+        $this->tester->click(['id' => 'csvSettingDropDown']);
+        $this->tester->waitForElementVisible(['id' => 'orderCsvSetting']);
+        $this->tester->click(['id' => 'orderCsvSetting']);
+        return $this;
+    }
+
+    public function 配送CSVダウンロード実行()
+    {
+        $this->tester->click(['id' => 'csvDownloadDropDown']);
+        $this->tester->waitForElementVisible(['id' => 'shippingCsvDownload']);
+        $this->tester->click(['id' => 'shippingCsvDownload']);
+        return $this;
+    }
+
+    public function 配送CSV出力項目設定()
+    {
+        $this->tester->click(['id' => 'csvSettingDropDown']);
+        $this->tester->waitForElementVisible(['id' => 'shippingCsvSetting']);
+        $this->tester->click(['id' => 'shippingCsvSetting']);
         return $this;
     }
 
@@ -102,7 +122,7 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
 
     public function 一覧_全選択()
     {
-        $this->tester->checkOption('#check_all');
+        $this->tester->checkOption('#toggle_check_all');
         return $this;
     }
 

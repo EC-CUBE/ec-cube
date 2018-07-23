@@ -16,6 +16,7 @@ namespace Eccube\Controller\Admin\Order;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Csv;
+use Eccube\Entity\ExportCsvRow;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\OrderItem;
 use Eccube\Event\EccubeEvents;
@@ -29,6 +30,7 @@ use Eccube\Repository\Master\SexRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Service\CsvExportService;
+use Eccube\Service\OrderStateMachine;
 use Eccube\Util\FormUtil;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -100,6 +102,11 @@ class OrderController extends AbstractController
     protected $validator;
 
     /**
+     * @var OrderStateMachine
+     */
+    protected $orderStateMachine;
+
+    /**
      * OrderController constructor.
      *
      * @param PurchaseFlow $orderPurchaseFlow
@@ -111,6 +118,7 @@ class OrderController extends AbstractController
      * @param PageMaxRepository $pageMaxRepository
      * @param ProductStatusRepository $productStatusRepository
      * @param OrderRepository $orderRepository
+     * @param OrderStateMachine $orderStateMachine;
      */
     public function __construct(
         PurchaseFlow $orderPurchaseFlow,
@@ -122,7 +130,8 @@ class OrderController extends AbstractController
         PageMaxRepository $pageMaxRepository,
         ProductStatusRepository $productStatusRepository,
         OrderRepository $orderRepository,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        OrderStateMachine $orderStateMachine
     ) {
         $this->purchaseFlow = $orderPurchaseFlow;
         $this->csvExportService = $csvExportService;
@@ -134,6 +143,7 @@ class OrderController extends AbstractController
         $this->productStatusRepository = $productStatusRepository;
         $this->orderRepository = $orderRepository;
         $this->validator = $validator;
+        $this->orderStateMachine = $orderStateMachine;
     }
 
     /**
@@ -317,6 +327,40 @@ class OrderController extends AbstractController
      */
     public function exportOrder(Request $request)
     {
+        $filename = 'order_'.(new \DateTime())->format('YmdHis').'.csv';
+        $response = $this->exportCsv($request, CsvType::CSV_TYPE_ORDER, $filename);
+        log_info('受注CSV出力ファイル名', [$filename]);
+
+        return $response;
+    }
+
+    /**
+     * 配送CSVの出力.
+     *
+     * @Route("/%eccube_admin_route%/order/export/shipping", name="admin_order_export_shipping")
+     *
+     * @param Request $request
+     *
+     * @return StreamedResponse
+     */
+    public function exportShipping(Request $request)
+    {
+        $filename = 'shipping_'.(new \DateTime())->format('YmdHis').'.csv';
+        $response = $this->exportCsv($request, CsvType::CSV_TYPE_SHIPPING, $filename);
+        log_info('配送CSV出力ファイル名', [$filename]);
+
+        return $response;
+    }
+
+    /**
+     * @param Request $request
+     * @param $csvTypeId
+     * @param $fileName
+     *
+     * @return StreamedResponse
+     */
+    private function exportCsv(Request $request, $csvTypeId, $fileName)
+    {
         // タイムアウトを無効にする.
         set_time_limit(0);
 
@@ -325,9 +369,9 @@ class OrderController extends AbstractController
         $em->getConfiguration()->setSQLLogger(null);
 
         $response = new StreamedResponse();
-        $response->setCallback(function () use ($request) {
+        $response->setCallback(function () use ($request, $csvTypeId) {
             // CSV種別を元に初期化.
-            $this->csvExportService->initCsvType(CsvType::CSV_TYPE_ORDER);
+            $this->csvExportService->initCsvType($csvTypeId);
 
             // ヘッダ行の出力.
             $this->csvExportService->exportHeader();
@@ -345,7 +389,7 @@ class OrderController extends AbstractController
                 $OrderItems = $Order->getOrderItems();
 
                 foreach ($OrderItems as $OrderItem) {
-                    $ExportCsvRow = new \Eccube\Entity\ExportCsvRow();
+                    $ExportCsvRow = new ExportCsvRow();
 
                     // CSV出力項目と合致するデータを取得.
                     foreach ($Csvs as $Csv) {
@@ -381,15 +425,82 @@ class OrderController extends AbstractController
             });
         });
 
-        $now = new \DateTime();
-        $filename = 'order_'.$now->format('YmdHis').'.csv';
         $response->headers->set('Content-Type', 'application/octet-stream');
-        $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
+        $response->headers->set('Content-Disposition', 'attachment; filename='.$fileName);
         $response->send();
 
-        log_info('受注CSV出力ファイル名', [$filename]);
-
         return $response;
+    }
+
+    /**
+     * Update to order status
+     *
+     * @Method("PUT")
+     * @Route("/%eccube_admin_route%/shipping/{id}/order_status", requirements={"id" = "\d+"}, name="admin_shipping_update_order_status")
+     *
+     * @param Request $request
+     * @param Shipping $shipping
+     *
+     * @return RedirectResponse
+     */
+    public function updateOrderStatus(Request $request, Shipping $Shipping)
+    {
+        if (!($request->isXmlHttpRequest() && $this->isTokenValid())) {
+            return $this->json(['status' => 'NG'], 400);
+        }
+
+        $Order = $Shipping->getOrder();
+        $OrderStatus = $this->entityManager->find(OrderStatus::class, $request->get('order_status'));
+
+        $result = [];
+        try {
+            // 発送済みに変更された場合は、関連する出荷がすべて出荷済みになったら OrderStatus を変更する
+            if (OrderStatus::DELIVERED == $OrderStatus->getId()) {
+                if (!$Shipping->getShippingDate()) {
+                    $Shipping->setShippingDate(new \DateTime());
+                    $this->entityManager->flush($Shipping);
+                }
+                $RelateShippings = $Order->getShippings();
+                $allShipped = true;
+                foreach ($RelateShippings as $RelateShipping) {
+                    if (!$RelateShipping->getShippingDate()) {
+                        $allShipped = false;
+                        break;
+                    }
+                }
+                if ($allShipped) {
+                    if ($this->orderStateMachine->can($Order, $OrderStatus)) {
+                        $this->orderStateMachine->apply($Order, $OrderStatus);
+                    } else {
+                        $from = $Order->getOrderStatus()->getName();
+                        $to = $OrderStatus->getName();
+                        $result = ['message' => sprintf('%s: %s から %s へのステータス変更はできません', $Shipping->getId(), $from, $to)];
+                    }
+                }
+            } else {
+                if ($this->orderStateMachine->can($Order, $OrderStatus)) {
+                    $this->orderStateMachine->apply($Order, $OrderStatus);
+                } else {
+                    $from = $Order->getOrderStatus()->getName();
+                    $to = $OrderStatus->getName();
+                    $result = ['message' => sprintf('%s: %s から %s へのステータス変更はできません', $Shipping->getId(), $from, $to)];
+                }
+            }
+            $this->entityManager->flush($Order);
+
+            // 会員の場合、購入回数、購入金額などを更新
+            if ($Customer = $Order->getCustomer()) {
+                $this->orderRepository->updateOrderSummary($Customer);
+                $this->entityManager->flush($Customer);
+            }
+            log_info('対応状況一括変更処理完了', [$Order->getId()]);
+        } catch (\Exception $e) {
+            log_error('予期しないエラーです', [$e->getMessage()]);
+
+            return $this->json(['status' => 'NG'], 500);
+        }
+
+        return $this->json(array_merge(['status' => 'OK'], $result));
     }
 
     /**
@@ -402,6 +513,8 @@ class OrderController extends AbstractController
      * @param OrderStatus $OrderStatus
      *
      * @return RedirectResponse
+     *
+     * @deprecated 使用していない
      */
     public function bulkOrderStatus(Request $request, OrderStatus $OrderStatus)
     {
