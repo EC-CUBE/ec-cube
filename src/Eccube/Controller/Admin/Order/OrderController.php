@@ -15,10 +15,12 @@ namespace Eccube\Controller\Admin\Order;
 
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
-use Eccube\Entity\Csv;
 use Eccube\Entity\ExportCsvRow;
 use Eccube\Entity\Master\CsvType;
+use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Order;
 use Eccube\Entity\OrderPdf;
+use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\OrderPdfType;
@@ -34,22 +36,19 @@ use Eccube\Repository\PaymentRepository;
 use Eccube\Service\CsvExportService;
 use Eccube\Service\OrderPdfService;
 use Eccube\Service\OrderStateMachine;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
+use Eccube\Service\PurchaseFlow\PurchaseException;
+use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Util\FormUtil;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\StreamedResponse;
-use Eccube\Entity\Master\OrderStatus;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Eccube\Entity\Order;
-use Eccube\Entity\Shipping;
-use Eccube\Service\PurchaseFlow\PurchaseContext;
-use Eccube\Service\PurchaseFlow\PurchaseFlow;
-use Eccube\Service\PurchaseFlow\PurchaseException;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -131,7 +130,7 @@ class OrderController extends AbstractController
      * @param OrderPdfRepository $orderPdfRepository
      * @param OrderPdfService $orderPdfService
      * @param ValidatorInterface $validator
-     * @param OrderStateMachine $orderStateMachine;
+     * @param OrderStateMachine $orderStateMachine ;
      */
     public function __construct(
         PurchaseFlow $orderPurchaseFlow,
@@ -207,7 +206,7 @@ class OrderController extends AbstractController
          * また, セッションに保存する際は mtb_page_maxと照合し, 一致した場合のみ保存する.
          **/
         $page_count = $this->session->get('eccube.admin.order.search.page_count',
-                $this->eccubeConfig->get('eccube_default_page_count'));
+            $this->eccubeConfig->get('eccube_default_page_count'));
 
         $page_count_param = (int) $request->get('page_count');
         $pageMaxis = $this->pageMaxRepository->findAll();
@@ -547,8 +546,15 @@ class OrderController extends AbstractController
             ['content-type' => 'application/pdf']
         );
 
+        $downloadKind = $form->get('download_kind')->getData();
+
         // レスポンスヘッダーにContent-Dispositionをセットし、ファイル名をreceipt.pdfに指定
-        $response->headers->set('Content-Disposition', 'attachment; filename="'.$this->orderPdfService->getPdfFileName().'"');
+        if ($downloadKind == 1) {
+            $response->headers->set('Content-Disposition', 'attachment; filename="'.$this->orderPdfService->getPdfFileName().'"');
+        } else {
+            $response->headers->set('Content-Disposition', 'inline; filename="'.$this->orderPdfService->getPdfFileName().'"');
+        }
+
         log_info('OrderPdf download success!', ['Order ID' => implode(',', $request->get('ids', []))]);
 
         $isDefault = isset($arrData['default']) ? $arrData['default'] : false;
@@ -667,8 +673,8 @@ class OrderController extends AbstractController
                 if ($flowResult->hasWarning()) {
                     foreach ($flowResult->getWarning() as $warning) {
                         $msg = $this->translator->trans('admin.order.index.bulk_warning', [
-                          '%orderId%' => $Order->getId(),
-                          '%message%' => $warning->getMessage(),
+                            '%orderId%' => $Order->getId(),
+                            '%message%' => $warning->getMessage(),
                         ]);
                         $this->addWarning($msg, 'admin');
                     }
@@ -677,8 +683,8 @@ class OrderController extends AbstractController
                 if ($flowResult->hasError()) {
                     foreach ($flowResult->getErrors() as $error) {
                         $msg = $this->translator->trans('admin.order.index.bulk_error', [
-                          '%orderId%' => $Order->getId(),
-                          '%message%' => $error->getMessage(),
+                            '%orderId%' => $Order->getId(),
+                            '%message%' => $error->getMessage(),
                         ]);
                         $this->addError($msg, 'admin');
                     }
@@ -689,8 +695,8 @@ class OrderController extends AbstractController
                     $this->purchaseFlow->commit($Order, $purchaseContext);
                 } catch (PurchaseException $e) {
                     $msg = $this->translator->trans('admin.order.index.bulk_error', [
-                      '%orderId%' => $Order->getId(),
-                      '%message%' => $e->getMessage(),
+                        '%orderId%' => $Order->getId(),
+                        '%message%' => $e->getMessage(),
                     ]);
                     $this->addError($msg, 'admin');
                     continue;

@@ -30,6 +30,10 @@ parameters:
     eccube_theme_front_default_dir: '%eccube_theme_src_dir%/default'
     eccube_theme_admin_dir: '%eccube_theme_app_dir%/admin'
     eccube_theme_admin_default_dir: '%eccube_theme_src_dir%/admin'
+    eccube_html_dir: '%kernel.project_dir%/html'
+    eccube_html_plugin_dir: '%kernel.project_dir%/html/plugin'
+    eccube_html_front_dir: '%eccube_html_dir%/template/%eccube.theme%'
+    eccube_html_admin_dir: '%eccube_html_dir%/template/admin'
     eccube_twig_block_templates: []
     eccube_save_image_dir: '%kernel.project_dir%/html/upload/save_image'
     eccube_temp_image_dir: '%kernel.project_dir%/html/upload/temp_image'

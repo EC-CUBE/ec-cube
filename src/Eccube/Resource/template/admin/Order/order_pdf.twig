@@ -1,12 +1,12 @@
 {#
-/*
- * This file is part of the Order Pdf plugin
- *
- * Copyright (C) 2016 LOCKON CO.,LTD. All Rights Reserved.
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+This file is part of EC-CUBE
+
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
 #}
 {% extends '@admin/default_frame.twig' %}
 
@@ -19,7 +19,53 @@
 
 {% block stylesheet %}
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datetimepicker.min.css', 'admin') }}">
+    <style>
+        .c-container {
+            min-width: inherit;
+            margin-top: 0;
+        }
+
+        .c-headerBar {
+            display: none;
+            height: inherit;
+        }
+
+        .c-headerBar__toggleBtn,
+        .c-mainNavArea {
+            display: none;
+        }
+    </style>
 {% endblock stylesheet %}
+
+{% block javascript %}
+    <script src="{{ asset('assets/js/vendor/moment.min.js', 'admin') }}"></script>
+    <script src="{{ asset('assets/js/vendor/moment-ja.js', 'admin') }}"></script>
+    <script src="{{ asset('assets/js/vendor/bootstrap-datetimepicker.min.js', 'admin') }}"></script>
+    <script type="text/javascript">
+        $(function() {
+            var inputDate = document.createElement('input');
+            inputDate.setAttribute('type', 'date');
+            if (inputDate.type !== 'date') {
+                $('input[id$=_issue_date]').datetimepicker({
+                    locale: 'ja',
+                    format: 'YYYY-MM-DD',
+                    useCurrent: true,
+                    showTodayButton: true
+                });
+            }
+
+            var close = $('#windowclose');
+
+            $('.btn-ec-regular').on('click', function() {
+                window.open('about:blank', '_self').close();
+            });
+
+        });
+
+        Ladda.bind('button[type="submit"]', {timeout: 3000});
+
+    </script>
+{% endblock %}
 
 {% block main %}
     <form role="form" name="order_pdf_form" id="order_pdf_form" method="post" action="{{ url('admin_order_pdf_download') }}">
@@ -33,90 +79,74 @@
                         </div>
 
                         <div class="card-body">
-                            <div class="row">
-                                <div class="col-3"><span>{{ 'admin.order.export.pdf.label.002'|trans }}</span></div>
-                                <div class="col mb-2">
-                                    {{ form_widget(form.issue_date) }}
-                                    {{ form_errors(form.issue_date) }}
-                                </div>
+                            <div class="form-group">
+                                <label>{{ 'admin.order.export.pdf.label.002'|trans }}</label>
+                                {{ form_widget(form.issue_date) }}
+                                {{ form_errors(form.issue_date) }}
                             </div>
 
-                            <div class="row">
-                                <div class="col-3"><span>{{ 'admin.order.export.pdf.label.001'|trans }}</span></div>
-                                <div class="col mb-2">
-                                    {{ form_widget(form.ids) }}
-                                    {{ form_errors(form.ids) }}
-                                </div>
+                            <div class="form-group">
+                                <label>{{ 'admin.order.export.pdf.label.001'|trans }}</label>
+                                {{ form_widget(form.ids) }}
+                                {{ form_errors(form.ids) }}
                             </div>
 
-                            <div class="row">
-                                <div class="col-3"><span>{{ 'admin.order.export.pdf.label.003'|trans }}</span></div>
-                                <div class="col mb-2">
-                                    {{ form_widget(form.title) }}
-                                    {{ form_errors(form.title) }}
-                                </div>
+                            <div class="form-group">
+                                <label>{{ 'admin.order.export.pdf.label.003'|trans }}</label>
+                                {{ form_widget(form.title) }}
+                                {{ form_errors(form.title) }}
                             </div>
 
-                            <div class="row">
-                                <div class="col-3"><span class="align-middle">{{ 'admin.order.export.pdf.label.004'|trans }}</span></div>
-                                <div class="col mb-2">
-                                    <div class="row">
-                                        <div class="col-2"><span>{{ 'admin.order.export.pdf.label.004'|trans }}</span></div>
-                                        <div class="col mb-2">
-                                            {{ form_widget(form.message1) }}
-                                            {{ form_errors(form.message1) }}
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-2"><span>{{ 'admin.order.export.pdf.label.005'|trans }}</span></div>
-                                        <div class="col mb-2">
-                                            {{ form_widget(form.message2) }}
-                                            {{ form_errors(form.message2) }}
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-2"><span>{{ 'admin.order.export.pdf.label.006'|trans }}</span></div>
-                                        <div class="col mb-2">
-                                            {{ form_widget(form.message3) }}
-                                            {{ form_errors(form.message3) }}
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-2"><span>{{ 'admin.order.export.pdf.label.007'|trans }}</span></div>
-                                        <div class="col mb-2">
-                                            {{ form_widget(form.note1) }}
-                                            {{ form_errors(form.note1) }}
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-2"><span>{{ 'admin.order.export.pdf.label.008'|trans }}</span></div>
-                                        <div class="col mb-2">
-                                            {{ form_widget(form.note2) }}
-                                            {{ form_errors(form.note2) }}
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-2"><span>{{ 'admin.order.export.pdf.label.009'|trans }}</span></div>
-                                        <div class="col mb-2">
-                                            {{ form_widget(form.note3) }}
-                                            {{ form_errors(form.note3) }}
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-2">&nbsp;</div>
-                                        <div class="col mb-2">
-                                            {{ form_widget(form.default) }}
-                                            {{ form_errors(form.default) }}
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="form-group">
+                                <label>{{ 'admin.order.export.pdf.label.download_kind'|trans }}</label>
+                                {{ form_widget(form.download_kind) }}
+                                {{ form_errors(form.download_kind) }}
                             </div>
+
+                            <div class="font-weight-bold">{{ 'admin.order.export.pdf.label.message'|trans }}</div>
+
+                            <div class="form-group">
+                                <label>{{ 'admin.order.export.pdf.label.004'|trans }}</label>
+                                {{ form_widget(form.message1) }}
+                                {{ form_errors(form.message1) }}
+                            </div>
+
+                            <div class="form-group">
+                                <label>{{ 'admin.order.export.pdf.label.005'|trans }}</label>
+                                {{ form_widget(form.message2) }}
+                                {{ form_errors(form.message2) }}
+                            </div>
+
+                            <div class="form-group">
+                                <label>{{ 'admin.order.export.pdf.label.006'|trans }}</label>
+                                {{ form_widget(form.message3) }}
+                                {{ form_errors(form.message3) }}
+                            </div>
+
+                            <div class="font-weight-bold">{{ 'admin.order.export.pdf.label.note'|trans }}</div>
+                            <div class="form-group">
+                                <label>{{ 'admin.order.export.pdf.label.007'|trans }}</label>
+                                {{ form_widget(form.note1) }}
+                                {{ form_errors(form.note1) }}
+                            </div>
+
+                            <div class="form-group">
+                                <label>{{ 'admin.order.export.pdf.label.008'|trans }}</label>
+                                {{ form_widget(form.note2) }}
+                                {{ form_errors(form.note2) }}
+                            </div>
+
+                            <div class="form-group">
+                                <label>{{ 'admin.order.export.pdf.label.009'|trans }}</label>
+                                {{ form_widget(form.note3) }}
+                                {{ form_errors(form.note3) }}
+                            </div>
+
+                            <div class="form-group text-right">
+                                {{ form_widget(form.default) }}
+                                {{ form_errors(form.default) }}
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -128,20 +158,10 @@
                 <div class="row justify-content-between align-items-center">
                     <div class="col-6">
                         <div class="c-conversionArea__leftBlockItem">
-                            <a class="c-beseLink" href="{{ url('admin_order_page', { page_no: app.session.get('eccube.admin.order.search.page_no')|default('1') }) }}?resume=1">
-                                <i class="fa fa-backward" aria-hidden="true"></i>
-                                <span>{{ 'admin.order.export.pdf.label.011'|trans }}</span></a>
-
+                            <button class="btn btn-ec-regular px-5" type="button">{{ 'admin.common.label.close'|trans }}</button>
                         </div>
                     </div>
-                    <div class="col-4 text-right">
-                        <div class="row align-items-center justify-content-end">
-                            <div class="col-auto">
-                                <button class="btn btn-ec-sub px-5" id="reset" type="reset">{{ 'admin.order.export.pdf.label.012'|trans }}</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-2">
+                    <div class="col-6">
                         <div class="row align-items-center justify-content-end">
                             <div class="col-auto">
                                 <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.order.export.pdf.label.013'|trans }}</button>
@@ -152,38 +172,4 @@
             </div>
         </div>
     </form>
-{% endblock %}
-
-{% block javascript %}
-    <script src="{{ asset('assets/js/vendor/moment.min.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/moment-ja.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/bootstrap-datetimepicker.min.js', 'admin') }}"></script>
-    <script type="text/javascript">
-        $(function () {
-            var inputDate = document.createElement('input');
-            inputDate.setAttribute('type', 'date');
-            if (inputDate.type !== 'date') {
-                $('input[id$=_issue_date]').datetimepicker({
-                    locale: 'ja',
-                    format: 'YYYY-MM-DD',
-                    useCurrent: true,
-                    showTodayButton: true
-                });
-            }
-
-            Ladda.bind( 'button[type="submit"]', { timeout: 2000 } );
-
-            $("#reset").click(function (_e) {
-                _e.preventDefault();
-                $("input[name='order_pdf[title]']").val('{{ form.vars.value.title }}');
-                $("input[name='order_pdf[issue_date]']").val('{{ "now"|date("Y-m-d") }}');
-                $("input[name='order_pdf[message1]']").val('{{ form.vars.value.message1 }}');
-                $("input[name='order_pdf[message2]']").val('{{ form.vars.value.message2 }}');
-                $("input[name='order_pdf[message3]']").val('{{ form.vars.value.message3 }}');
-                $("input[name='order_pdf[note1]']").val('{{ form.vars.value.note1 }}');
-                $("input[name='order_pdf[note2]']").val('{{ form.vars.value.note2 }}');
-                $("input[name='order_pdf[note3]']").val('{{ form.vars.value.note3 }}');
-            });
-        });
-    </script>
 {% endblock %}

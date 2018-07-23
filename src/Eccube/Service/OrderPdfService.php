@@ -21,6 +21,7 @@ use Eccube\Entity\OrderItem;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\OrderPdfRepository;
+use Eccube\Twig\Extension\EccubeExtension;
 use setasign\Fpdi\TcpdfFpdi;
 
 /**
@@ -42,12 +43,14 @@ class OrderPdfService extends TcpdfFpdi
      */
     private $eccubeConfig;
 
+    /**
+     * @var EccubeExtension
+     */
+    private $eccubeExtension;
+
     // ====================================
     // 定数宣言
     // ====================================
-
-    /** 通貨単位 */
-    const MONETARY_UNIT = '円';
 
     /** ダウンロードするPDFファイルのデフォルト名 */
     const DEFAULT_PDF_FILE_NAME = 'nouhinsyo.pdf';
@@ -105,12 +108,13 @@ class OrderPdfService extends TcpdfFpdi
      * @param TaxRuleService $taxRuleService
      * @param BaseInfoRepository $baseInfoRepository
      */
-    public function __construct(EccubeConfig $eccubeConfig, OrderRepository $orderRepository, TaxRuleService $taxRuleService, BaseInfoRepository $baseInfoRepository)
+    public function __construct(EccubeConfig $eccubeConfig, OrderRepository $orderRepository, TaxRuleService $taxRuleService, BaseInfoRepository $baseInfoRepository, EccubeExtension $eccubeExtension)
     {
         $this->eccubeConfig = $eccubeConfig;
         $this->baseInfoRepository = $baseInfoRepository->get();
         $this->orderRepository = $orderRepository;
         $this->taxRuleService = $taxRuleService;
+        $this->eccubeExtension = $eccubeExtension;
         parent::__construct();
 
         // 購入詳細情報の設定を行う
@@ -172,7 +176,7 @@ class OrderPdfService extends TcpdfFpdi
         $this->setDefaultData($formData);
 
         // テンプレートファイルを読み込む
-        $userPath = $this->eccubeConfig['eccube_theme_src_dir'].'/admin/Order/PdfTemplate/nouhinsyo1.pdf';
+        $userPath = $this->eccubeConfig->get('eccube_html_admin_dir').'/assets/pdf/nouhinsyo1.pdf';
         $this->setSourceFile($userPath);
 
         foreach ($ids as $id) {
@@ -291,7 +295,7 @@ class OrderPdfService extends TcpdfFpdi
         }
 
         // ロゴ画像(app配下のロゴ画像を優先して読み込む)
-        $logoFile = $this->eccubeConfig['eccube_theme_src_dir'].'/admin/Order/PdfTemplate/logo.png';
+        $logoFile = $this->eccubeConfig->get('eccube_html_admin_dir').'/assets/pdf/logo.png';
         $this->Image($logoFile, 124, 46, 40);
     }
 
@@ -399,7 +403,7 @@ class OrderPdfService extends TcpdfFpdi
 
         // 総合計金額
         $this->SetFont(self::FONT_SJIS, 'B', 15);
-        $paymentTotalText = number_format($Order->getPaymentTotal()).' '.self::MONETARY_UNIT;
+        $paymentTotalText = $this->eccubeExtension->getPriceFilter($Order->getPaymentTotal());
 
         $this->setBasePosition(120, 95.5);
         $this->Cell(5, 7, '', 0, 0, '', 0, '');
@@ -446,9 +450,9 @@ class OrderPdfService extends TcpdfFpdi
             // 購入数量
             $arrOrder[$i][1] = number_format($OrderItem->getQuantity());
             // 税込金額（単価）
-            $arrOrder[$i][2] = number_format($OrderItem->getPriceIncTax()).self::MONETARY_UNIT;
+            $arrOrder[$i][2] = $this->eccubeExtension->getPriceFilter($OrderItem->getPriceIncTax());
             // 小計（商品毎）
-            $arrOrder[$i][3] = number_format($OrderItem->getTotalPrice()).self::MONETARY_UNIT;
+            $arrOrder[$i][3] = $this->eccubeExtension->getPriceFilter($OrderItem->getTotalPrice());
 
             ++$i;
         }
@@ -465,31 +469,31 @@ class OrderPdfService extends TcpdfFpdi
         $arrOrder[$i][0] = '';
         $arrOrder[$i][1] = '';
         $arrOrder[$i][2] = '商品合計';
-        $arrOrder[$i][3] = number_format($Order->getSubtotal()).self::MONETARY_UNIT;
+        $arrOrder[$i][3] = $this->eccubeExtension->getPriceFilter($Order->getSubtotal());
 
         ++$i;
         $arrOrder[$i][0] = '';
         $arrOrder[$i][1] = '';
         $arrOrder[$i][2] = '送料';
-        $arrOrder[$i][3] = number_format($Order->getDeliveryFeeTotal()).self::MONETARY_UNIT;
+        $arrOrder[$i][3] = $this->eccubeExtension->getPriceFilter($Order->getDeliveryFeeTotal());
 
         ++$i;
         $arrOrder[$i][0] = '';
         $arrOrder[$i][1] = '';
         $arrOrder[$i][2] = '手数料';
-        $arrOrder[$i][3] = number_format($Order->getCharge()).self::MONETARY_UNIT;
+        $arrOrder[$i][3] = $this->eccubeExtension->getPriceFilter($Order->getCharge());
 
         ++$i;
         $arrOrder[$i][0] = '';
         $arrOrder[$i][1] = '';
         $arrOrder[$i][2] = '値引き';
-        $arrOrder[$i][3] = '- '.number_format($Order->getDiscount()).self::MONETARY_UNIT;
+        $arrOrder[$i][3] = '- '.$this->eccubeExtension->getPriceFilter($Order->getDiscount());
 
         ++$i;
         $arrOrder[$i][0] = '';
         $arrOrder[$i][1] = '';
         $arrOrder[$i][2] = '請求金額';
-        $arrOrder[$i][3] = number_format($Order->getPaymentTotal()).self::MONETARY_UNIT;
+        $arrOrder[$i][3] = $this->eccubeExtension->getPriceFilter($Order->getPaymentTotal());
 
         // PDFに設定する
         $this->setFancyTable($this->labelCell, $arrOrder, $this->widthCell);

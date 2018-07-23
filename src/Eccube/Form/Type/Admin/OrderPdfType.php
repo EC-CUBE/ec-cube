@@ -17,6 +17,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -83,6 +84,18 @@ class OrderPdfType extends AbstractType
                 'constraints' => [
                     new Assert\Length(['max' => $config['eccube_stext_len']]),
                 ],
+            ])
+            ->add('download_kind', ChoiceType::class, [
+                'label' => 'admin.order.export.pdf.label.download_kind',
+                'choices' => [
+                    'admin.order.export.pdf.label.file' => 1,
+                    'admin.order.export.pdf.label.browser' => 2,
+                ],
+                'expanded' => false,
+                'multiple' => false,
+                'required' => false,
+                'mapped' => false,
+                'placeholder' => null,
             ])
             // メッセージ
             ->add('message1', TextType::class, [
