@@ -231,10 +231,6 @@ class ProductClassEditType extends AbstractType
             ]);
             $this->addErrors('sale_limit', $form, $errors);
 
-            foreach ($errors as $error) {
-                $form['sale_limit']->addError(new FormError($error->getMessage()));
-            }
-
             // 販売価格
             $errors = $this->validator->validate($data['price02'], [
                 new Assert\NotBlank(),
