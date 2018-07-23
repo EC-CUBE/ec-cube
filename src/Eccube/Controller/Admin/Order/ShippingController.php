@@ -109,7 +109,6 @@ class ShippingController extends AbstractController
      */
     public function index(Request $request, Order $Order)
     {
-        dump($_POST);
         $TargetShippings = $Order->getShippings();
         $OriginShippings = [];
         $OriginOrderItems = [];
