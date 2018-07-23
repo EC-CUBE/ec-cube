@@ -124,7 +124,7 @@ class EA04OrderCest
         // 新規受付ステータスの受注を作る
         $createCustomer = Fixtures::get('createCustomer');
         $createOrders = Fixtures::get('createOrders');
-        $newOrders = $createOrders($createCustomer(), 1, array());
+        $newOrders = $createOrders($createCustomer(), 1, array(), OrderStatus::NEW);
 
         $OrderListPage = OrderManagePage::go($I)->検索($newOrders[0]->getOrderNo());
 
@@ -160,7 +160,8 @@ class EA04OrderCest
 
         /* ステータス変更 */
         $OrderRegisterPage
-            ->入力_受注ステータス(['2' => '入金待ち'])
+            // 新規受付から遷移可能なステータスをセットする.
+            ->入力_受注ステータス(['3' => '入金済み'])
             ->受注情報登録();
 
         $I->see('受注情報を保存しました。', OrderEditPage::$登録完了メッセージ);
@@ -251,7 +252,6 @@ class EA04OrderCest
 
         /* 正常系 */
         $OrderRegisterPage
-            ->入力_受注ステータス(['1' => '新規受付'])
             ->入力_支払方法(['4' => '郵便振替'])
             ->入力_姓('order1')
             ->入力_名('order1')

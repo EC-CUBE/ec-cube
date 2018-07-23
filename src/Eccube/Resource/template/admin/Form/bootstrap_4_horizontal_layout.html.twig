@@ -51,7 +51,7 @@ file that was distributed with this source code.
     {%- if prepend or append -%}
         <div class="input-group{{ group_class|default('') }}">
             {# 税込/税抜を表示する #}
-            {%- if append and tax_display_type is defined -%}
+            {%- if append and tax_display_type is defined and tax_display_type is not null -%}
                 <div class="input-group-append">
                     <span class="input-group-text">{{ tax_display_type.name }}</span>
                 </div>
@@ -68,7 +68,7 @@ file that was distributed with this source code.
                 </div>
             {%- endif -%}
             {# 税込/税抜を表示する #}
-            {%- if prepend and tax_display_type is defined -%}
+            {%- if prepend and tax_display_type is defined and tax_display_type is not null -%}
                 <div class="input-group-append">
                     <span class="input-group-text">{{ tax_display_type.name }}</span>
                 </div>

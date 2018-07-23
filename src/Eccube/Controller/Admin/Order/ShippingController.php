@@ -25,13 +25,13 @@ use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\OrderItemRepository;
 use Eccube\Repository\ShippingRepository;
 use Eccube\Service\TaxRuleService;
-use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\SerializerInterface;
 use Eccube\Service\MailService;
 
@@ -107,21 +107,21 @@ class ShippingController extends AbstractController
      * @Route("/%eccube_admin_route%/shipping/{id}/edit", requirements={"id" = "\d+"}, name="admin_shipping_edit")
      * @Template("@admin/Order/shipping.twig")
      */
-    public function edit(Request $request, Order $Order)
+    public function index(Request $request, Order $Order)
     {
         $TargetShippings = $Order->getShippings();
         $OriginShippings = [];
-        $OriginalOrderItems = [];
+        $OriginOrderItems = [];
 
         // 編集前の受注情報を保持
         foreach ($TargetShippings as $key => $TargetShipping) {
             $OriginShippings[$key] = clone $TargetShipping;
 
             // 編集前のお届け先のアイテム情報を保持
-            $OriginalOrderItems[$key] = new ArrayCollection();
+            $OriginOrderItems[$key] = new ArrayCollection();
 
             foreach ($TargetShipping->getOrderItems() as $OrderItem) {
-                $OriginalOrderItems[$key]->add($OrderItem);
+                $OriginOrderItems[$key]->add($OrderItem);
             }
         }
 
@@ -135,41 +135,75 @@ class ShippingController extends AbstractController
                 'prototype' => true,
             ]);
 
+        // 配送先の追加フラグ
+        $builder
+            ->add('add_shipping', HiddenType::class, [
+                'mapped' => false,
+            ]);
+
+        // 配送先の追加フラグが立っている場合は新しいお届け先を追加
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+            $data = $event->getData();
+            if ($data['add_shipping']) {
+                $Shippings = $data['shippings'];
+                $newShipping = ['Delivery' => ''];
+                $Shippings[] = $newShipping;
+                $data['shippings'] = $Shippings;
+                $data['add_shipping'] = '';
+                $event->setData($data);
+            }
+        });
+
         $form = $builder->getForm();
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid() && $request->get('mode') == 'register') {
-            foreach ($TargetShippings as $key => $TargetShipping) {
+            // 削除された項目の削除
+            /** @var Shipping $OriginShipping */
+            foreach ($OriginShippings as $key => $OriginShipping) {
+                // 削除された明細の削除
+                /** @var OrderItem $OriginOrderItem */
+                foreach ($OriginOrderItems[$key] as $OriginOrderItem) {
+                    if (false === $TargetShippings[$key]->getOrderItems()->contains($OriginOrderItem)) {
+                        $TargetShippings[$key]->removeOrderItem($OriginOrderItem); // 不要かも
+                        $OriginOrderItem->setShipping(null);
+                        $Order->removeOrderItem($OriginOrderItem);
+                        $OriginOrderItem->setOrder(null);
+                    }
+                }
+            }
 
+            foreach ($TargetShippings as $key => $TargetShipping) {
                 // TODO: Should move logic out of controller such as service, modal
 
                 // FIXME 税額計算は CalculateService で処理する. ここはテストを通すための暫定処理
                 // see EditControllerTest::testOrderProcessingWithTax
-                $OrderItems = $TargetShipping->getOrderItems();
-                $taxtotal = 0;
-                foreach ($OrderItems as $OrderItem) {
-                    $tax = $this->taxRuleService
-                        ->calcTax($OrderItem->getPrice(), $OrderItem->getTaxRate(), $OrderItem->getTaxRule());
-                    $OrderItem->setPriceIncTax($OrderItem->getPrice() + $tax);
-
-                    $taxtotal += $tax * $OrderItem->getQuantity();
-                }
+//                $OrderItems = $TargetShipping->getOrderItems();
+//                $taxtotal = 0;
+//                foreach ($OrderItems as $OrderItem) {
+//                    $tax = $this->taxRuleService
+//                        ->calcTax($OrderItem->getPrice(), $OrderItem->getTaxRate(), $OrderItem->getTaxRule());
+//                    $OrderItem->setPriceIncTax($OrderItem->getPrice() + $tax);
+//
+//                    $taxtotal += $tax * $OrderItem->getQuantity();
+//                }
 
                 log_info('出荷登録開始', [$TargetShipping->getId()]);
                 // TODO 在庫の有無や販売制限数のチェックなども行う必要があるため、完了処理もcaluclatorのように抽象化できないか検討する.
                 // TODO 後続にある会員情報の更新のように、完了処理もcaluclatorのように抽象化できないか検討する.
                 // 画面上で削除された明細をremove
-                /** @var OrderItem $OrderItem */
-                foreach ($OriginalOrderItems[$key] as $OrderItem) {
-                    if (false === $TargetShipping->getOrderItems()->contains($OrderItem)) {
-                        $TargetShipping->removeOrderItem($OrderItem); // 不要かも
-                        $OrderItem->setShipping(null);
-                        $Order->removeOrderItem($OrderItem);
-                        $OrderItem->setOrder(null);
-                    }
-                }
-
+//                if (array_key_exists($key, $OriginOrderItems)) {
+//                    /** @var OrderItem $OrderItem */
+//                    foreach ($OriginOrderItems[$key] as $OrderItem) {
+//                        if (false === $TargetShipping->getOrderItems()->contains($OrderItem)) {
+//                            $TargetShipping->removeOrderItem($OrderItem); // 不要かも
+//                            $OrderItem->setShipping(null);
+//                            $Order->removeOrderItem($OrderItem);
+//                            $OrderItem->setOrder(null);
+//                        }
+//                    }
+//                }
 
                 foreach ($TargetShipping->getOrderItems() as $OrderItem) {
                     $TargetShipping->addOrderItem($OrderItem); // 不要かも
@@ -178,27 +212,28 @@ class ShippingController extends AbstractController
                     $OrderItem->setOrder($Order);
                 }
 
-                // 出荷ステータス変更時の処理
-                if ($TargetShipping->isShipped()) {
-                    // 「出荷済み」にステータスが変更された場合
-                    if ($OriginShippings[$key]->isShipped() == false) {
-                        // 出荷メールを送信
-                        if ($form->get('notify_email')->getData()) {
-                            try {
-                                $this->mailService->sendShippingNotifyMail(
-                                    $TargetShipping
-                                );
-                            } catch (\Exception $e) {
-                                log_error('メール通知エラー', [$TargetShipping->getId(), $e]);
-                                $this->addError(
-                                    'admin.shipping.edit.shipped_mail_failed',
-                                    'admin'
-                                );
-                            }
-                        }
-                    }
-                }
+                $TargetShipping->setOrder($Order);
 
+                // 出荷ステータス変更時の処理
+//                if ($TargetShipping->isShipped()) {
+//                    // 「出荷済み」にステータスが変更された場合
+//                    if ($OriginShippings[$key]->isShipped() == false) {
+//                        // 出荷メールを送信
+//                        if ($form->get('notify_email')->getData()) {
+//                            try {
+//                                $this->mailService->sendShippingNotifyMail(
+//                                    $TargetShipping
+//                                );
+//                            } catch (\Exception $e) {
+//                                log_error('メール通知エラー', [$TargetShipping->getId(), $e]);
+//                                $this->addError(
+//                                    'admin.shipping.edit.shipped_mail_failed',
+//                                    'admin'
+//                                );
+//                            }
+//                        }
+//                    }
+//                }
             }
 
             try {
@@ -216,7 +251,7 @@ class ShippingController extends AbstractController
                 log_error('出荷登録エラー', [$Order->getId(), $e]);
                 $this->addError('admin.flash.register_failed', 'admin');
             }
-        } elseif ($form->isSubmitted() && $request->get('mode') != 'register' && $form->getErrors(true)) {
+        } elseif ($form->isSubmitted() && $request->get('mode') == 'register' && $form->getErrors(true)) {
             $this->addError('admin.flash.register_failed', 'admin');
         }
 

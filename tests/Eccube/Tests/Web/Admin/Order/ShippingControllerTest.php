@@ -15,7 +15,6 @@ namespace Eccube\Tests\Web\Admin\Order;
 
 use Eccube\Entity\Order;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
-use Faker\Generator;
 use Eccube\Repository\ShippingRepository;
 use Eccube\Common\Constant;
 use Eccube\Entity\Shipping;
@@ -100,7 +99,7 @@ class ShippingControllerTest extends AbstractAdminWebTestCase
 
     public function testEditToShipped()
     {
-        $this->markTestIncomplete('出荷済み処理未実装のためスキップ');
+        $this->markTestIncomplete('出荷日は更新不可のためスキップ');
         $this->client->enableProfiler();
 
         $Order = $this->createOrder($this->createCustomer());
@@ -135,7 +134,7 @@ class ShippingControllerTest extends AbstractAdminWebTestCase
 
     public function testEditAddShippingDateWithNotifyMail()
     {
-        $this->markTestSkipped('出荷処理未実装のためスキップ');
+        $this->markTestSkipped('出荷日は更新不可のためスキップ');
         $this->client->enableProfiler();
 
         $Order = $this->createOrder($this->createCustomer());
@@ -176,7 +175,8 @@ class ShippingControllerTest extends AbstractAdminWebTestCase
 
     public function testEditRemoveShippingDate()
     {
-        $this->markTestSkipped('出荷処理未実装のためスキップ');
+        $this->markTestSkipped('出荷日は更新不可のためスキップ');
+
         $Order = $this->createOrder($this->createCustomer());
         /** @var Shipping $Shipping */
         $Shipping = $Order->getShippings()->first();
@@ -217,7 +217,6 @@ class ShippingControllerTest extends AbstractAdminWebTestCase
             ];
 
         if ($Order instanceof Order && $Order->getId()) {
-
             $Shippings = $Order->getShippings();
 
             foreach ($Shippings as $key => $Shipping) {

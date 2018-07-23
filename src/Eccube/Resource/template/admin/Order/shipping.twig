@@ -109,6 +109,11 @@ file that was distributed with this source code.
             }
         });
 
+        $('#addShipping').on('click', function() {
+          $('#form_add_shipping').val("1");
+          $("#calculate").trigger('click');
+        })
+
         {# TODO: 出荷済み時の確認モーダルの実装、複数出荷に対応できていない #}
         {# TODO: Should move logic js into js file intead of twig #}
         {#var shippedNotifyModal = $('#shippedNotifyModal'),#}
@@ -148,9 +153,9 @@ file that was distributed with this source code.
 
 {% block main %}
     <form name="form1" id="form1" action="{{ url('admin_shipping_edit', {id: Order.id}) }}"
-          method="post" class="h-adr">
-        <span class="p-country-name" style="display:none;">Japan</span>
+          method="post">
         {{ form_widget(form._token) }}
+        {{ form_widget(form.add_shipping) }}
         <button type="submit" class="d-none btn" name="mode" value="calc" id="calculate">{{ 'admin.order.edit.267'|trans }}</button>
         {# 商品明細追加モーダル #}
         <div class="modal fade" id="addProduct" tabindex="-1" role="dialog"
@@ -191,7 +196,8 @@ file that was distributed with this source code.
             <div class="c-contentsArea__primaryCol">
                 <div class="c-primaryCol">
                     {% for shippingForm in form.shippings %}
-                        <div class="card rounded border-0 mb-4">
+                        <div class="card rounded border-0 mb-4 h-adr">
+                            <span class="p-country-name" style="display:none;">Japan</span>
                             {# TODO: 出荷日登録機能の実装 #}
                             {#<div class="modal fade" id="shippedNotifyModal_{{ loop.index0 }}" tabindex="-1" role="dialog"#}
                                  {#aria-labelledby="shippedNotifyModal" aria-hidden="true" data-keyboard="false"#}
@@ -603,7 +609,7 @@ file that was distributed with this source code.
                         </div>
                     {% endfor %}
                     <div class="card rounded border-0 mb-4">
-                        <button type="button" class="btn btn-ec-regular">出荷先を追加</button>
+                        <button id="addShipping" type="button" class="btn btn-ec-regular">出荷先を追加</button>
                     </div>
                 </div>
             </div>

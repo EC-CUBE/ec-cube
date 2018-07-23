@@ -13,6 +13,7 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Service\Calculator\OrderItemCollection;
@@ -475,6 +476,18 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
         $this->OrderItems = new \Doctrine\Common\Collections\ArrayCollection();
         $this->Shippings = new \Doctrine\Common\Collections\ArrayCollection();
         $this->MailHistories = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Clone
+     */
+    public function __clone()
+    {
+        $OrderItems = new ArrayCollection();
+        foreach ($this->OrderItems as $OrderItem) {
+            $OrderItems->add(clone $OrderItem);
+        }
+        $this->OrderItems = $OrderItems;
     }
 
     /**
