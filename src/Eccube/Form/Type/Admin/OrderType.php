@@ -292,7 +292,10 @@ class OrderType extends AbstractType
     {
         /** @var Order $Order */
         $Order = $event->getData();
-        $OrderItems = $Order->getItems()->sort();
+        if (null === $Order) {
+            return;
+        }
+        $OrderItems = $Order->getItems();
 
         $form = $event->getForm();
         $form['OrderItems']->setData($OrderItems);
@@ -310,7 +313,7 @@ class OrderType extends AbstractType
     {
         /** @var Order $Order */
         $Order = $event->getData();
-        if (!$Order->getId()) {
+        if (null === $Order || ($Order && !$Order->getId())) {
             return;
         }
 
@@ -355,14 +358,15 @@ class OrderType extends AbstractType
         $Order = $event->getData();
 
         // 複数配送時はShippingの編集は行わない
-        if ($Order->isMultiple()) {
+        if ($Order && $Order->isMultiple()) {
             return;
         }
 
+        $data = $Order ? $Order->getShippings()->first() : null;
         $form = $event->getForm();
         $form->add('Shipping', ShippingType::class, [
             'mapped' => false,
-            'data' => $Order->getShippings()->first(),
+            'data' => $data,
         ]);
     }
 
