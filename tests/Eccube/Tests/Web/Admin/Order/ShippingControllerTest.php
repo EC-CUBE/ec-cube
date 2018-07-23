@@ -208,6 +208,7 @@ class ShippingControllerTest extends AbstractAdminWebTestCase
      * @param Order $Order
      *
      * @return array
+     *
      * @deprecated Controller で FormInterface::isSubmitted() を使用しているため使用不可
      */
     private function createShippingForm(Order $Order = null): array
