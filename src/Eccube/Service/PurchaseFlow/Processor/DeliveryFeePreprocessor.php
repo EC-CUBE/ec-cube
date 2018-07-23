@@ -102,7 +102,7 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
         $DeliveryFeeType = $this->entityManager
             ->find(OrderItemType::class, OrderItemType::DELIVERY_FEE);
         $TaxInclude = $this->entityManager
-            ->find(TaxDisplayType::class, TaxDisplayType::INCLUDED);
+            ->find(TaxDisplayType::class, TaxDisplayType::EXCLUDED);
         $Taxion = $this->entityManager
             ->find(TaxType::class, TaxType::TAXATION);
         $TaxRule = $this->taxRuleRepository->getByRule();
