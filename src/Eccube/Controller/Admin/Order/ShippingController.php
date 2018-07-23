@@ -137,16 +137,9 @@ class ShippingController extends AbstractController
 
         $form = $builder->getForm();
 
-        // idは更新できないのでFormTypeで 'mapped'=>false にしてこちらでdateをset
-        foreach ($TargetShippings as $shippingKey => $TargetShipping) {
-            foreach ($TargetShipping->getOrderItems() as $itemKey => $OrderItem) {
-                $form['shippings'][$shippingKey]['OrderItems'][$itemKey]['id']->setData($TargetShipping->getOrderItems()->get($itemKey)->getId());
-            }
-        }
-
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid() && $request->get('mode') == 'register') {
             foreach ($TargetShippings as $key => $TargetShipping) {
 
                 // TODO: Should move logic out of controller such as service, modal
@@ -223,7 +216,7 @@ class ShippingController extends AbstractController
                 log_error('出荷登録エラー', [$Order->getId(), $e]);
                 $this->addError('admin.flash.register_failed', 'admin');
             }
-        } elseif ($form->isSubmitted() && $form->getErrors(true)) {
+        } elseif ($form->isSubmitted() && $request->get('mode') != 'register' && $form->getErrors(true)) {
             $this->addError('admin.flash.register_failed', 'admin');
         }
 
