@@ -89,6 +89,7 @@ class ShippingEditControllerTest extends AbstractAdminWebTestCase
 
     public function testEditAddShippingDate()
     {
+        $this->markTestSkipped('出荷日は更新不可のためスキップ');
         $this->client->enableProfiler();
 
         $Order = $this->createOrder($this->createCustomer());
@@ -123,6 +124,8 @@ class ShippingEditControllerTest extends AbstractAdminWebTestCase
 
     public function testEditAddShippingDateWithNotifyMail()
     {
+        $this->markTestSkipped('出荷日は更新不可のためスキップ');
+
         $this->client->enableProfiler();
 
         $Order = $this->createOrder($this->createCustomer());
