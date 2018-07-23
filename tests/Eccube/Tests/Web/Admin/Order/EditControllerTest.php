@@ -135,7 +135,6 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $Order->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
         $this->entityManager->flush($Order);
 
-
         $formData = $this->createFormData($Customer, $this->Product);
         $this->client->request(
             'POST',
