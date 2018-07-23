@@ -226,7 +226,6 @@ file that was distributed with this source code.
                     <div class="ec-registerRole__actions">
                         <div class="ec-off4Grid">
                             <div class="ec-off4Grid__cell">
-
                                 <div class="ec-checkbox{{ has_errors(form.user_policy_check) ? ' error' }}">
                                     <p>
                                         {{ form_widget(form.user_policy_check) }}
@@ -235,8 +234,12 @@ file that was distributed with this source code.
                                         {{ form_errors(form.user_policy_check) }}
                                     </p>
                                 </div>
-                                <button class="ec-blockBtn--action" type="submit" name="mode" value="confirm">{{'common.label.goto_conf'|trans}}</button>
-                                <a class="ec-blockBtn--cancel" href="{{ url('homepage') }}">{{'common.label.back_to_top'|trans}}</a>
+                                <p><span></span>
+                                    <a class="ec-link" href="{{ url('help_agreement') }}" target="_blank">{{'signup.label.btn.user_policy'|trans}}</a>
+                                    {{'signup.text.message.accept_terms_conditions'|trans}}<span></span>
+                                </p>
+                                <button class="ec-blockBtn--action" type="submit" name="mode" value="confirm">{{'signup.label.radio.accept'|trans}}</button>
+                                <a class="ec-blockBtn--cancel" href="{{ url('homepage') }}">{{'signup.label.radio.decline'|trans}}</a>
                             </div>
                         </div>
                     </div>

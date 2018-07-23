@@ -17,7 +17,7 @@ file that was distributed with this source code.
                data-id="{{ BlockPosition.Block.id }}"
                data-name="{{ BlockPosition.Block.name }}"
                title="{{ BlockPosition.Block.name }}"
-            >{{ BlockPosition.Block.name|length > 10 ? BlockPosition.Block.name|slice(0, 10) ~ '…' : BlockPosition.Block.name }}</a>
+            >{{ BlockPosition.Block.name }}</a>
         </div>
         <div class="col-auto text-right">
             <div class="d-inline-block px-3 sort{% if loop.first %} first{% endif %}">

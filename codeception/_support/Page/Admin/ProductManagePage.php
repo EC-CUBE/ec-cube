@@ -188,7 +188,7 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
 
     public function すべて選択()
     {
-        $this->tester->checkOption(['id' => 'check_all']);
+        $this->tester->checkOption(['id' => 'trigger_check_all']);
         return $this;
     }
 

@@ -15,7 +15,7 @@ namespace Eccube\Form\Type\Front;
 
 use Eccube\Common\EccubeConfig;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -44,7 +44,7 @@ class ForgotType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('login_email', TextType::class, [
+        $builder->add('login_email', EmailType::class, [
             'attr' => [
                 'max_length' => $this->eccubeConfig['eccube_stext_len'],
             ],
