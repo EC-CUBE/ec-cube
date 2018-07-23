@@ -141,9 +141,9 @@ file that was distributed with this source code.
 
         // 配送業者選択時にお届け時間を設定
         var times = {{ shippingDeliveryTimes|raw }};
-        $('#order_Shippings_0_Delivery').change(function(){
+        $('#order_Shipping_Delivery').change(function(){
             var deliveryId = $(this).val();
-            var $shippingDeliveryTime = $('#order_Shippings_0_DeliveryTime');
+            var $shippingDeliveryTime = $('#order_Shipping_DeliveryTime');
             $shippingDeliveryTime.find('option').remove();
             $shippingDeliveryTime.append($('<option></option>').val('').text('指定なし'));
             if (typeof(times[deliveryId]) !== 'undefined') {
