@@ -642,10 +642,10 @@ file that was distributed with this source code.
                                     <tbody>
                                     {% for orderItemForm in form.OrderItems %}
                                         {% set OrderItem = orderItemForm.vars.data %}
-                                        {# hidden values #}
-                                        {{ form_widget(orderItemForm.ProductClass) }}
-                                        {{ form_widget(orderItemForm.order_item_type) }}
                                         <tr>
+                                            {# hidden values #}
+                                            {{ form_widget(orderItemForm.ProductClass) }}
+                                            {{ form_widget(orderItemForm.order_item_type) }}
                                             <td class="align-middle w-25 pl-3">
                                                 <p class="mb-0 font-weight-bold">
                                                     {% if OrderItem.OrderItemType.isProduct %}
