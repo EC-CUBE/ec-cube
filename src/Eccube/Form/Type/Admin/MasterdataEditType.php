@@ -41,7 +41,7 @@ class MasterdataEditType extends AbstractType
                 $data = $event->getData();
 
                 // IDのみを配列化
-                $ids = array();
+                $ids = [];
                 foreach ($data['data'] as $key => $value) {
                     if (isset($value['id'])) {
                         $ids[$key] = $value['id'];
@@ -60,7 +60,7 @@ class MasterdataEditType extends AbstractType
                                 $form['data'][$key]['id']->addError(new FormError(trans('admin.setting.system.masterdata.680')));
                             }
                         }
-                    } 
+                    }
                 }
             });
     }
