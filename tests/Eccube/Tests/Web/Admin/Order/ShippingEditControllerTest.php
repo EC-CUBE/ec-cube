@@ -15,7 +15,6 @@ namespace Eccube\Tests\Web\Admin\Order;
 
 use Eccube\Entity\Order;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
-use Faker\Generator;
 use Eccube\Repository\ShippingRepository;
 use Eccube\Common\Constant;
 use Eccube\Entity\Shipping;
@@ -187,7 +186,6 @@ class ShippingEditControllerTest extends AbstractAdminWebTestCase
             ];
 
         if ($Order instanceof Order && $Order->getId()) {
-
             $Shippings = $Order->getShippings();
 
             foreach ($Shippings as $key => $Shipping) {

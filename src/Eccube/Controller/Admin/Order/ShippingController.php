@@ -25,7 +25,6 @@ use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\OrderItemRepository;
 use Eccube\Repository\ShippingRepository;
 use Eccube\Service\TaxRuleService;
-use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -33,8 +32,6 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\SerializerInterface;
 use Eccube\Service\MailService;
 
@@ -163,10 +160,9 @@ class ShippingController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid() && $request->get('mode') == 'register') {
-
             // 削除された項目の削除
             /** @var Shipping $OriginShipping */
-            foreach ($OriginShippings as $key =>$OriginShipping) {
+            foreach ($OriginShippings as $key => $OriginShipping) {
                 // 削除された明細の削除
                 /** @var OrderItem $OriginOrderItem */
                 foreach ($OriginOrderItems[$key] as $OriginOrderItem) {
@@ -180,7 +176,6 @@ class ShippingController extends AbstractController
             }
 
             foreach ($TargetShippings as $key => $TargetShipping) {
-
                 // TODO: Should move logic out of controller such as service, modal
 
                 // FIXME 税額計算は CalculateService で処理する. ここはテストを通すための暫定処理
@@ -240,7 +235,6 @@ class ShippingController extends AbstractController
 //                        }
 //                    }
 //                }
-
             }
 
             try {
