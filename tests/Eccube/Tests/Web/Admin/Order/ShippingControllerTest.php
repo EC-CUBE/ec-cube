@@ -20,7 +20,7 @@ use Eccube\Common\Constant;
 use Eccube\Entity\Shipping;
 use Eccube\Entity\OrderItem;
 
-class ShippingEditControllerTest extends AbstractAdminWebTestCase
+class ShippingControllerTest extends AbstractAdminWebTestCase
 {
     /**
      * @var ShippingRepository
@@ -67,9 +67,39 @@ class ShippingEditControllerTest extends AbstractAdminWebTestCase
         $this->assertContains('出荷に関わる情報が変更されました：送料の変更が必要な場合は、受注管理より手動で変更してください。', $info);
     }
 
-    public function testEditAddShippingDate()
+    public function testEditAddTrackingNumber()
     {
-        $this->markTestSkipped('出荷日は更新不可のためスキップ');
+        $trackingNumber = '11111111111111111111';
+
+        $Order = $this->createOrder($this->createCustomer());
+        /** @var Shipping $Shipping */
+        $Shipping = $Order->getShippings()->first();
+        $shippingId = $Shipping->getId();
+
+        $this->assertNull($Shipping->getTrackingNumber());
+
+        $crawler = $this->client->request(
+            'GET',
+            $this->generateUrl('admin_shipping_edit', ['id' => $Order->getId()])
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $form = $crawler->selectButton('出荷情報を登録')->form();
+        $form['form[shippings][0][tracking_number]']->setValue($trackingNumber);
+
+        $this->client->submit($form);
+        $crawler = $this->client->followRedirect();
+
+        $success = $crawler->filter('#page_admin_shipping_edit > div.c-container > div.c-contentsArea > div.alert.alert-success')->text();
+        $this->assertContains('出荷情報を登録しました。', $success);
+
+        $expectedShipping = $this->entityManager->find(Shipping::class, $shippingId);
+        $this->assertEquals($trackingNumber, $expectedShipping->getTrackingNumber());
+    }
+
+    public function testEditToShipped()
+    {
+        $this->markTestIncomplete('出荷日は更新不可のためスキップ');
         $this->client->enableProfiler();
 
         $Order = $this->createOrder($this->createCustomer());
@@ -178,6 +208,7 @@ class ShippingEditControllerTest extends AbstractAdminWebTestCase
      * @param Order $Order
      *
      * @return array
+     * @deprecated Controller で FormInterface::isSubmitted() を使用しているため使用不可
      */
     private function createShippingForm(Order $Order = null): array
     {
