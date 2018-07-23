@@ -166,6 +166,8 @@ class ShippingEditControllerTest extends AbstractAdminWebTestCase
 
     public function testEditRemoveShippingDate()
     {
+        $this->markTestSkipped('出荷日は更新不可のためスキップ');
+
         $Order = $this->createOrder($this->createCustomer());
         /** @var Shipping $Shipping */
         $Shipping = $Order->getShippings()->first();
