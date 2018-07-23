@@ -21,7 +21,7 @@ use Eccube\Common\Constant;
 use Eccube\Entity\Shipping;
 use Eccube\Entity\OrderItem;
 
-class ShippingEditControllerTest extends AbstractAdminWebTestCase
+class ShippingControllerTest extends AbstractAdminWebTestCase
 {
     /**
      * @var ShippingRepository
