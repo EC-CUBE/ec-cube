@@ -402,8 +402,7 @@ file that was distributed with this source code.
                             </div>
                         </div>
                     </div><!-- .card.rounded -->
-                    <div class="card rounded border-0 mb-4 h-adr">
-                        <span class="p-country-name" style="display:none;">Japan</span>
+                    <div class="card rounded border-0 mb-4">
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
@@ -437,7 +436,8 @@ file that was distributed with this source code.
                                             <a id="shipping-add" class="btn btn-ec-regular w-25" href="{{ url("admin_shipping_edit", {id: Order.id}) }}">{{ 'admin.order.edit.label.shipping.add'|trans }}</a>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <div class="row h-adr">
+                                        <span class="p-country-name" style="display:none;">Japan</span>
                                         <div class="col-6">
                                             <div class="row form-group">
                                                 <label class="col-3 col-form-label">{{ 'admin.common.label.name'|trans }}<span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></label>
