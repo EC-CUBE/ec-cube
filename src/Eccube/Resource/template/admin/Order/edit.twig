@@ -137,6 +137,12 @@ file that was distributed with this source code.
                 $('#order_Shipping_phone_number').val($('#order_phone_number').val());
                 $('#order_Shipping_company_name').val($('#order_company_name').val());
             });
+
+            // PDF出力(単一)
+            $('.pdf-print').click(function() {
+                window.open(this.href, 'newwin', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=700, height=700');
+                return false;
+            });
         });
 
         // 配送業者選択時にお届け時間を設定
@@ -430,7 +436,7 @@ file that was distributed with this source code.
                                     <div class="row mb-3">
                                         <div class="col-6">
                                             <button type="button" class="btn btn-ec-regular copy-customer">{{ 'admin.order.edit.label.customer_info.copy'|trans }}</button>
-                                            <button type="button" id="print" class="btn btn-ec-regular">{{ 'admin.order.edit.label.shipping.print'|trans }}</button>
+                                            <a class="btn btn-ec-regular pdf-print" href="{{ url('admin_order_export_pdf') }}?ids[]={{ Order.id }}">{{ 'admin.order.edit.label.shipping.print'|trans }}</a>
                                         </div>
                                         <div class="col-6 text-right">
                                             <a id="shipping-add" class="btn btn-ec-regular w-25" href="{{ url("admin_shipping_edit", {id: Order.id}) }}">{{ 'admin.order.edit.label.shipping.add'|trans }}</a>

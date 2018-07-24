@@ -272,6 +272,61 @@ class EA04OrderCest
         $I->see('受注情報を保存しました。', OrderEditPage::$登録完了メッセージ);
     }
 
+    public function order_pdfページをエクスポートする(\AcceptanceTester $I)
+    {
+        $I->wantTo('EA0401-UC02-T01 pdfページをエクスポートする');
+
+        $findOrders = Fixtures::get('findOrders'); // Closure
+        $TargetOrders = array_filter($findOrders(), function ($Order) {
+            return $Order->getOrderStatus()->getId() != OrderStatus::PROCESSING;
+        });
+        $OrderListPage = OrderManagePage::go($I)->検索();
+        $I->see('検索結果：'.count($TargetOrders).'件が該当しました', OrderManagePage::$検索結果_メッセージ);
+
+        $OrderListPage->すべてチェック();
+        $OrderListPage->要素をクリック('#form_bulk #bulkExportPdf');
+
+        // 別ウィンドウ
+        $I->switchToWindow('newwin');
+
+        // Check redirect to form pdf information
+        $I->see('受注管理帳票出力', OrderManagePage::$タイトル要素);
+
+        $I->closeTab();
+    }
+
+    public function order_出力pdfダウンロード(\AcceptanceTester $I)
+    {
+        $I->wantTo('EA0401-UC02-T01 出力pdfダウンロード');
+
+        $findOrders = Fixtures::get('findOrders'); // Closure
+        $TargetOrders = array_filter($findOrders(), function ($Order) {
+            return $Order->getOrderStatus()->getId() != OrderStatus::PROCESSING;
+        });
+        $OrderListPage = OrderManagePage::go($I)->検索();
+        $I->see('検索結果：'.count($TargetOrders).'件が該当しました', OrderManagePage::$検索結果_メッセージ);
+
+        $OrderListPage->すべてチェック();
+        $OrderListPage->要素をクリック('#form_bulk #bulkExportPdf');
+
+        // 別ウィンドウ
+        $I->switchToWindow('newwin');
+
+        $I->see('受注管理帳票出力', OrderManagePage::$タイトル要素);
+
+        $OrderListPage->PDFフォームを入力(['id' => 'order_pdf_note1'], 'Test note first');
+        $OrderListPage->PDFフォームを入力(['id' => 'order_pdf_note2'], 'Test note second');
+        $OrderListPage->PDFフォームを入力(['id' => 'order_pdf_note3'], 'Test note third');
+        $OrderListPage->要素をクリック('#order_pdf_default');
+        $OrderListPage->要素をクリック('#order_pdf_form .c-conversionArea .justify-content-end button.btn-ec-conversion');
+        // make sure wait to download file completely
+        $I->wait(5);
+        $filename = $I->getLastDownloadFile('/^nouhinsyo\.pdf$/');
+        $I->assertTrue(file_exists($filename));
+
+        $I->closeTab();
+    }
+
     public function order_ー括受注のステータス変更(\AcceptanceTester $I)
     {
         $I->wantTo('EA0405-UC06-T01_ー括受注のステータス変更');
