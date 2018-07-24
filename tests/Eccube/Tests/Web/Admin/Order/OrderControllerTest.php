@@ -336,6 +336,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
      */
     public function testBulkOrderStatus($orderStatusId)
     {
+        $this->markTestSkipped('使用していないルーティングのためスキップ.');
         // case true
         $orderIds = [];
         /** @var Order[] $Orders */

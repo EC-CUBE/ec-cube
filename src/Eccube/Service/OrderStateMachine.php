@@ -16,14 +16,12 @@ namespace Eccube\Service;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
-use Eccube\Entity\Shipping;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Service\PurchaseFlow\Processor\PointProcessor;
 use Eccube\Service\PurchaseFlow\Processor\StockReduceProcessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
-use Symfony\Component\Workflow\Event\GuardEvent;
 use Symfony\Component\Workflow\StateMachine;
 
 class OrderStateMachine implements EventSubscriberInterface
@@ -112,10 +110,9 @@ class OrderStateMachine implements EventSubscriberInterface
             'workflow.order.transition.pay' => ['updatePaymentDate'],
             'workflow.order.transition.cancel' => [['rollbackStock'], ['rollbackUsePoint']],
             'workflow.order.transition.back_to_in_progress' => [['commitStock'], ['commitUsePoint']],
-            'workflow.order.transition.ship' => ['commitAddPoint'],
+            'workflow.order.transition.ship' => [['commitAddPoint'], ['updateShippingDate']],
             'workflow.order.transition.return' => [['rollbackUsePoint'], ['rollbackAddPoint']],
             'workflow.order.transition.cancel_return' => [['commitUsePoint'], ['commitAddPoint']],
-            'workflow.order.guard.ship' => ['guardShip'],
         ];
     }
 
@@ -124,7 +121,7 @@ class OrderStateMachine implements EventSubscriberInterface
      */
 
     /**
-     * 購入日を更新する.
+     * 入金日を更新する.
      *
      * @param Event $event
      */
@@ -133,6 +130,22 @@ class OrderStateMachine implements EventSubscriberInterface
         /* @var Order $Order */
         $Order = $event->getSubject();
         $Order->setPaymentDate(new \DateTime());
+    }
+
+    /**
+     * 発送日を更新する.
+     *
+     * @param Event $event
+     */
+    public function updateShippingDate(Event $event)
+    {
+        /* @var Order $Order */
+        $Order = $event->getSubject();
+        foreach ($Order->getShippings() as $Shipping) {
+            if (!$Shipping->getShippingDate()) {
+                $Shipping->setShippingDate(new \DateTime());
+            }
+        }
     }
 
     /**
@@ -231,26 +244,9 @@ class OrderStateMachine implements EventSubscriberInterface
 
         // XXX このまま EntityManager::flush() をコールすると、 OrderStatus::id が更新されてしまうため元に戻す
         $TransitionlStatus = $Order->getOrderStatus();
-        $this->entityManager->detach($TransitionlStatus);
+        $this->entityManager->refresh($TransitionlStatus);
 
         $CompletedOrderStatus = $this->orderStatusRepository->find($OrderStatusId);
         $Order->setOrderStatus($CompletedOrderStatus);
-    }
-
-    /**
-     * すべての出荷が発送済みなら、受注も発送済みに遷移できる.
-     *
-     * @param GuardEvent $event
-     */
-    public function guardShip(GuardEvent $event)
-    {
-        /** @var Order $Order */
-        $Order = $event->getSubject();
-        $UnShipped = $Order->getShippings()->filter(function (Shipping $Shipping) {
-            return $Shipping->getShippingDate() == null;
-        });
-        if (!$UnShipped->isEmpty()) {
-            $event->setBlocked(true);
-        }
     }
 }

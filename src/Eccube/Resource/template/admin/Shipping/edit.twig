@@ -87,28 +87,8 @@ file that was distributed with this source code.
         });
 
         {# TODO: Should move logic js into js file intead of twig #}
-        var shippedNotifyModal = $('#shippedNotifyModal'),
-            shippingForm = $('#form_shipping'),
-            shippingDateInput = shippingForm.find('input[name*="shipping_date"]');
+        var shippedNotifyModal = $('#shippedNotifyModal')
 
-        shippingDateInput.on('change', function() {
-            if ($(this).val() == '') {
-                {% if Shipping.isShipped == false %}
-                    shippingForm.find('#btn_save')
-                        .attr('type', 'submit')
-                        .removeAttr('data-toggle')
-                        .removeAttr('data-target');
-                {%  endif %}
-            } else {
-                {% if Shipping.isShipped == false %}
-                    shippingForm.find('#btn_save')
-                        .attr('data-toggle', 'modal')
-                        .attr('data-target', '#shippedNotifyModal')
-                        .attr('type', 'button');
-                {% endif %}
-            }
-        });
-        shippingDateInput.trigger('change');
         shippedNotifyModal.on('show.bs.modal', function(e) {
             var viewUrl = $('#viewEmail');
             if (viewUrl.length) {
@@ -285,8 +265,7 @@ file that was distributed with this source code.
                                             <div class="col-3"><i class="fa fa-truck mr-1"
                                                                   aria-hidden="true"></i><span>{{ 'admin.shipping.edit.ship_date'|trans }}</span></div>
                                             <div class="col">
-                                                {{ form_widget(form.shipping_date) }}
-                                                {{ form_errors(form.shipping_date) }}
+                                                {{ Shipping.id ? Shipping.shipping_date|date_min }}
                                             </div>
                                         </div>
                                         <div class="row mb-2 align-items-center">

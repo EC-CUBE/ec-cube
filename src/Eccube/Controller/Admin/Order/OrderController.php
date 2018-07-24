@@ -465,10 +465,12 @@ class OrderController extends AbstractController
 
         $result = [];
         try {
-            // 発送済みに変更された場合は、関連する出荷がすべて出荷済みになったら OrderStatus を変更する
-            if (OrderStatus::DELIVERED == $OrderStatus->getId()) {
-                if (!$Shipping->getShippingDate()) {
-                    $Shipping->setShippingDate(new \DateTime());
+            if ($Order->getOrderStatus()->getId() == $OrderStatus->getId()) {
+                log_info('対応状況一括変更スキップ');
+                $result = ['message' => sprintf('%s:  ステータス変更をスキップしました', $Shipping->getId())];
+            } else {
+                if ($this->orderStateMachine->can($Order, $OrderStatus)) {
+                    $this->orderStateMachine->apply($Order, $OrderStatus);
 
                     if ($request->get('notificationMail')) { // for SimpleStatusUpdate
                         $this->mailService->sendShippingNotifyMail($Shipping);
@@ -478,42 +480,21 @@ class OrderController extends AbstractController
                         $result['mail'] = false;
                     }
                     $this->entityManager->flush($Shipping);
-                }
+                    $this->entityManager->flush($Order);
 
-                $RelateShippings = $Order->getShippings();
-                $allShipped = true;
-                foreach ($RelateShippings as $RelateShipping) {
-                    if (!$RelateShipping->getShippingDate()) {
-                        $allShipped = false;
-                        break;
+                    // 会員の場合、購入回数、購入金額などを更新
+                    if ($Customer = $Order->getCustomer()) {
+                        $this->orderRepository->updateOrderSummary($Customer);
+                        $this->entityManager->flush($Customer);
                     }
-                }
-                if ($allShipped) {
-                    if ($this->orderStateMachine->can($Order, $OrderStatus)) {
-                        $this->orderStateMachine->apply($Order, $OrderStatus);
-                    } else {
-                        $from = $Order->getOrderStatus()->getName();
-                        $to = $OrderStatus->getName();
-                        $result = ['message' => sprintf('%s: %s から %s へのステータス変更はできません', $Shipping->getId(), $from, $to)];
-                    }
-                }
-            } else {
-                if ($this->orderStateMachine->can($Order, $OrderStatus)) {
-                    $this->orderStateMachine->apply($Order, $OrderStatus);
                 } else {
                     $from = $Order->getOrderStatus()->getName();
                     $to = $OrderStatus->getName();
                     $result = ['message' => sprintf('%s: %s から %s へのステータス変更はできません', $Shipping->getId(), $from, $to)];
                 }
-            }
-            $this->entityManager->flush($Order);
 
-            // 会員の場合、購入回数、購入金額などを更新
-            if ($Customer = $Order->getCustomer()) {
-                $this->orderRepository->updateOrderSummary($Customer);
-                $this->entityManager->flush($Customer);
+                log_info('対応状況一括変更処理完了', [$Order->getId()]);
             }
-            log_info('対応状況一括変更処理完了', [$Order->getId()]);
         } catch (\Exception $e) {
             log_error('予期しないエラーです', [$e->getMessage()]);
 
