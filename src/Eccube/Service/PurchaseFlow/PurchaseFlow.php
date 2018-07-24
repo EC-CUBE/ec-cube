@@ -279,6 +279,7 @@ class PurchaseFlow
                 } else {
                     $sum += ($item->getPriceIncTax() - $item->getPrice()) * $item->getQuantity();
                 }
+
                 return $sum;
             }, 0);
         $itemHolder->setTax($total);

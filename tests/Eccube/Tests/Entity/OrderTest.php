@@ -14,13 +14,8 @@
 namespace Eccube\Tests\Entity;
 
 use Eccube\Entity\Customer;
-use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
-use Eccube\Entity\OrderItem;
-use Eccube\Entity\Product;
-use Eccube\Entity\ProductClass;
-use Eccube\Entity\Shipping;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\Master\SaleTypeRepository;
 use Eccube\Repository\TaxRuleRepository;
