@@ -26,7 +26,7 @@
                 $('#viewEmail > pre').text(res);
             });
             $('.modal-title', modal).text(updater.modalTitle);
-            $('.modal-body > p', modal).text(updater.modalMessage);
+            $('.modal-body > p.modal-message', modal).text(updater.modalMessage);
             $('#bulkChange')
                 .attr({
                     'data-bulk-update': eventTarget.data('bulk-update'),

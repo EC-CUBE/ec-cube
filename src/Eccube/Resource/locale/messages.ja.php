@@ -2044,6 +2044,7 @@ return [
     'admin.shipping.index.835' => '出荷お知らせメールを送信します',
     'admin.shipping.index.836' => '出荷お知らせメールを送信します。メールの文面を確認してから［送信を確定］ボタンを押してください。この操作は取り消すことができません。ご注意ください。',
     'admin.shipping.index.837' => '%count%件のメールを送信しました。',
+    'admin.shipping.index.838' => 'この操作は保存済みのデータに対して処理を行います。また、編集中で登録が完了していない情報は失われます。登録が完了していない情報がある場合は先に登録を完了してください。',
     'admin.shipping.index.invalid_search_data' => '検索条件に誤りがあります。',
     'admin.shipping.delete.complete' => '出荷情報を削除しました。',
     'admin.shipping.search_product.800' => '注文日・注文ID<br>注文者<br>注文内容',
