@@ -140,14 +140,4 @@ class ShippingManagePage extends AbstractAdminPageStyleGuide
     {
         $this->tester->click(['xpath' => "//*[@id='form_bulk']/div[2]/div/table/tbody/tr[${rowNum}]/td[1]/input"]);
     }
-
-    public function 取得_出荷伝票番号($rowNum)
-    {
-        return $this->tester->grabTextFrom("#form_bulk table > tbody > tr:nth-child(${rowNum}) > td:nth-child(3)");
-    }
-
-    public function 取得_出荷日($rowNum)
-    {
-        return $this->tester->grabTextFrom("#form_bulk table > tbody > tr:nth-child(${rowNum}) > td:nth-child(7)");
-    }
 }
