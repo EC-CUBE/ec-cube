@@ -17,6 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\RoundingType;
 use Eccube\Entity\Master\TaxDisplayType;
+use Eccube\Entity\Master\TaxType;
 
 /**
  * OrderItem
@@ -31,22 +32,6 @@ class OrderItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
 {
     use PointRateTrait;
 
-    private $price_inc_tax = null;
-
-    /**
-     * Set price IncTax
-     *
-     * @param  string       $price_inc_tax
-     *
-     * @return OrderItem
-     */
-    public function setPriceIncTax($price_inc_tax)
-    {
-        $this->price_inc_tax = $price_inc_tax;
-
-        return $this;
-    }
-
     /**
      * Get price IncTax
      *
@@ -54,7 +39,12 @@ class OrderItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
      */
     public function getPriceIncTax()
     {
-        return $this->price_inc_tax;
+        // 税表示区分が税込の場合は, priceに税込金額が入っている.
+        if ($this->TaxDisplayType && $this->TaxDisplayType->getId() == TaxDisplayType::INCLUDED) {
+            return $this->price;
+        }
+
+        return $this->price + $this->tax;
     }
 
     /**
@@ -62,21 +52,6 @@ class OrderItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
      */
     public function getTotalPrice()
     {
-        $TaxDisplayType = $this->getTaxDisplayType();
-        if (is_object($TaxDisplayType)) {
-            switch ($TaxDisplayType->getId()) {
-                // 税込価格
-                case TaxDisplayType::INCLUDED:
-                    $this->setPriceIncTax($this->getPrice());
-                    break;
-                    // 税別価格の場合は税額を加算する
-                case TaxDisplayType::EXCLUDED:
-                    // TODO 課税規則を考慮する
-                    $this->setPriceIncTax($this->getPrice() + $this->getPrice() * $this->getTaxRate() / 100);
-                    break;
-            }
-        }
-
         return $this->getPriceIncTax() * $this->getQuantity();
     }
 
@@ -206,7 +181,7 @@ class OrderItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="price", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
+     * @ORM\Column(name="price", type="decimal", precision=12, scale=2, options={"default":0})
      */
     private $price = 0;
 
@@ -216,6 +191,13 @@ class OrderItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
      * @ORM\Column(name="quantity", type="decimal", precision=10, scale=0, options={"default":0})
      */
     private $quantity = 0;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="tax", type="decimal", precision=10, scale=0, options={"default":0})
+     */
+    private $tax;
 
     /**
      * @var string
@@ -518,6 +500,26 @@ class OrderItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
     public function getQuantity()
     {
         return $this->quantity;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTax()
+    {
+        return $this->tax;
+    }
+
+    /**
+     * @param string $tax
+     *
+     * @return $this
+     */
+    public function setTax($tax)
+    {
+        $this->tax = $tax;
+
+        return $this;
     }
 
     /**

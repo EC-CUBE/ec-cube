@@ -87,10 +87,17 @@ services:
     eccube.purchase.flow.order:
         class: Eccube\Service\PurchaseFlow\PurchaseFlow
         calls:
+            - [setItemPreprocessors, ['@eccube.purchase.flow.order.item_preprocessors']]
             - [setItemHolderPreprocessors, ['@eccube.purchase.flow.order.holder_preprocessors']]
             - [setItemValidators, ['@eccube.purchase.flow.order.item_validators']]
             - [setItemHolderValidators, ['@eccube.purchase.flow.order.holder_validators']]
             - [setPurchaseProcessors, ['@eccube.purchase.flow.order.purchase']]
+
+    eccube.purchase.flow.order.item_preprocessors:
+        class: Doctrine\Common\Collections\ArrayCollection
+        arguments:
+            - #
+                - '@Eccube\Service\PurchaseFlow\Processor\TaxProcessor'
 
     eccube.purchase.flow.order.holder_preprocessors:
         class: Doctrine\Common\Collections\ArrayCollection

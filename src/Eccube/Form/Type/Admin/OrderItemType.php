@@ -176,12 +176,6 @@ class OrderItemType extends AbstractType
                     if (null === $OrderItem->getTaxType()) {
                         $OrderItem->setTaxType($this->entityManager->find(TaxType::class, TaxType::TAXATION));
                     }
-                    if (null === $OrderItem->getTaxRuleId()) {
-                        $TaxRule = $this->taxRuleRepository->getByRule($Product, $ProductClass);
-                        $OrderItem->setTaxRuleId($TaxRule->getId());
-                        $OrderItem->setTaxRate($TaxRule->getTaxRate());
-                        $OrderItem->setRoundingType($TaxRule->getRoundingType());
-                    }
                     break;
                 case OrderItemTypeMaster::DELIVERY_FEE:
                     // 送料明細は税込表示・課税
@@ -192,12 +186,6 @@ class OrderItemType extends AbstractType
                     if (null === $OrderItem->getTaxType()) {
                         $OrderItem->setTaxType($this->entityManager->find(TaxType::class, TaxType::TAXATION));
                     }
-                    if (null === $OrderItem->getTaxRuleId()) {
-                        $TaxRule = $this->taxRuleRepository->getByRule();
-                        $OrderItem->setTaxRuleId($TaxRule->getId());
-                        $OrderItem->setTaxRate($TaxRule->getTaxRate());
-                        $OrderItem->setRoundingType($TaxRule->getRoundingType());
-                    }
                     break;
                 case OrderItemTypeMaster::CHARGE:
                     // 手数料明細は税込表示・課税
@@ -207,12 +195,6 @@ class OrderItemType extends AbstractType
                     }
                     if (null === $OrderItem->getTaxType()) {
                         $OrderItem->setTaxType($this->entityManager->find(TaxType::class, TaxType::TAXATION));
-                    }
-                    if (null === $OrderItem->getTaxRuleId()) {
-                        $TaxRule = $this->taxRuleRepository->getByRule();
-                        $OrderItem->setTaxRuleId($TaxRule->getId());
-                        $OrderItem->setTaxRate($TaxRule->getTaxRate());
-                        $OrderItem->setRoundingType($TaxRule->getRoundingType());
                     }
                     break;
                 case OrderItemTypeMaster::DISCOUNT:
@@ -225,17 +207,8 @@ class OrderItemType extends AbstractType
                     if (null === $OrderItem->getTaxType()) {
                         $OrderItem->setTaxType($this->entityManager->find(TaxType::class, TaxType::TAXATION));
                     }
-                    if (null === $OrderItem->getTaxRuleId()) {
-                        $TaxRule = $this->taxRuleRepository->getByRule();
-                        $OrderItem->setTaxRuleId($TaxRule->getId());
-                        $OrderItem->setTaxRate($TaxRule->getTaxRate());
-                        $OrderItem->setRoundingType($TaxRule->getRoundingType());
-                    }
                     break;
             }
-
-            // TaxRuleEventSubscriberを呼ぶため.
-            $this->entityManager->persist($OrderItem);
         });
     }
 
