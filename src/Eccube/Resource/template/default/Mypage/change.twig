@@ -79,7 +79,7 @@ file that was distributed with this source code.
                                     </dt>
                                     <dd>
                                         <div class="ec-zipInput{{ has_errors(form.postal_code) ? ' error' }}"><span>〒</span>
-                                            {{ form_widget(form.postal_code, {'attr': {'placeholder': '例：1010000'}}) }}
+                                            {{ form_widget(form.postal_code) }}
                                             {{ form_errors(form.postal_code) }}
                                         </div>
                                         <div class="ec-zipInputHelp"><a href="http://www.post.japanpost.jp/zipcode/"
@@ -108,7 +108,7 @@ file that was distributed with this source code.
                                     </dt>
                                     <dd>
                                         <div class="ec-telInput{{ has_errors(form.phone_number) ? ' error' }}">
-                                            {{ form_widget(form.phone_number, {'attr': {'placeholder': '例：0312345678'}}) }}
+                                            {{ form_widget(form.phone_number) }}
                                             {{ form_errors(form.phone_number) }}
                                         </div>
                                     </dd>
