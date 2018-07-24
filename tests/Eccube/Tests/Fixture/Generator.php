@@ -620,7 +620,8 @@ class Generator
                 ->setProductCode($ProductClass->getCode())
                 ->setPrice($ProductClass->getPrice02())
                 ->setQuantity($quantity)
-                ->setTaxRule($TaxRule->getRoundingType()->getId())
+                ->setTaxRuleId($TaxRule->getId())
+                ->setRoundingType($TaxRule->getRoundingType())
                 ->setTaxRate($TaxRule->getTaxRate())
                 ->setTaxType($Taxion) // 課税
                 ->setTaxDisplayType($TaxExclude) // 税別

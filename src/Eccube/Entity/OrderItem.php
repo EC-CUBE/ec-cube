@@ -15,6 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\Master\OrderItemType;
+use Eccube\Entity\Master\RoundingType;
 use Eccube\Entity\Master\TaxDisplayType;
 
 /**
@@ -226,9 +227,9 @@ class OrderItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
     /**
      * @var int|null
      *
-     * @ORM\Column(name="tax_rule", type="smallint", nullable=true, options={"unsigned":true})
+     * @ORM\Column(name="tax_rule_id", type="smallint", nullable=true, options={"unsigned":true})
      */
-    private $tax_rule;
+    private $tax_rule_id;
 
     /**
      * @var string|null
@@ -276,6 +277,16 @@ class OrderItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
      * })
      */
     private $Shipping;
+
+    /**
+     * @var \Eccube\Entity\Master\RoundingType
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\RoundingType")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="rounding_type_id", referencedColumnName="id")
+     * })
+     */
+    private $RoundingType;
 
     /**
      * @var \Eccube\Entity\Master\TaxType
@@ -534,27 +545,27 @@ class OrderItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
     }
 
     /**
-     * Set taxRule.
+     * Set taxRuleId.
      *
-     * @param int|null $taxRule
+     * @param int|null $taxRuleId
      *
      * @return OrderItem
      */
-    public function setTaxRule($taxRule = null)
+    public function setTaxRuleId($taxRuleId = null)
     {
-        $this->tax_rule = $taxRule;
+        $this->tax_rule_id = $taxRuleId;
 
         return $this;
     }
 
     /**
-     * Get taxRule.
+     * Get taxRuleId.
      *
      * @return int|null
      */
-    public function getTaxRule()
+    public function getTaxRuleId()
     {
-        return $this->tax_rule;
+        return $this->tax_rule_id;
     }
 
     /**
@@ -684,6 +695,24 @@ class OrderItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
     public function getShipping()
     {
         return $this->Shipping;
+    }
+
+    /**
+     * @return RoundingType
+     */
+    public function getRoundingType()
+    {
+        return $this->RoundingType;
+    }
+
+    /**
+     * @param RoundingType $RoundingType
+     */
+    public function setRoundingType(RoundingType $RoundingType = null)
+    {
+        $this->RoundingType = $RoundingType;
+
+        return $this;
     }
 
     /**

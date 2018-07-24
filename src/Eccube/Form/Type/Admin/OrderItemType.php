@@ -176,10 +176,11 @@ class OrderItemType extends AbstractType
                     if (null === $OrderItem->getTaxType()) {
                         $OrderItem->setTaxType($this->entityManager->find(TaxType::class, TaxType::TAXATION));
                     }
-                    if (null === $OrderItem->getTaxRule()) {
+                    if (null === $OrderItem->getTaxRuleId()) {
                         $TaxRule = $this->taxRuleRepository->getByRule($Product, $ProductClass);
-                        $OrderItem->setTaxRule($TaxRule->getId());
+                        $OrderItem->setTaxRuleId($TaxRule->getId());
                         $OrderItem->setTaxRate($TaxRule->getTaxRate());
+                        $OrderItem->setRoundingType($TaxRule->getRoundingType());
                     }
                     break;
                 case OrderItemTypeMaster::DELIVERY_FEE:
@@ -191,10 +192,11 @@ class OrderItemType extends AbstractType
                     if (null === $OrderItem->getTaxType()) {
                         $OrderItem->setTaxType($this->entityManager->find(TaxType::class, TaxType::TAXATION));
                     }
-                    if (null === $OrderItem->getTaxRule()) {
+                    if (null === $OrderItem->getTaxRuleId()) {
                         $TaxRule = $this->taxRuleRepository->getByRule();
-                        $OrderItem->setTaxRule($TaxRule->getId());
+                        $OrderItem->setTaxRuleId($TaxRule->getId());
                         $OrderItem->setTaxRate($TaxRule->getTaxRate());
+                        $OrderItem->setRoundingType($TaxRule->getRoundingType());
                     }
                     break;
                 case OrderItemTypeMaster::CHARGE:
@@ -206,10 +208,11 @@ class OrderItemType extends AbstractType
                     if (null === $OrderItem->getTaxType()) {
                         $OrderItem->setTaxType($this->entityManager->find(TaxType::class, TaxType::TAXATION));
                     }
-                    if (null === $OrderItem->getTaxRule()) {
+                    if (null === $OrderItem->getTaxRuleId()) {
                         $TaxRule = $this->taxRuleRepository->getByRule();
-                        $OrderItem->setTaxRule($TaxRule->getId());
+                        $OrderItem->setTaxRuleId($TaxRule->getId());
                         $OrderItem->setTaxRate($TaxRule->getTaxRate());
+                        $OrderItem->setRoundingType($TaxRule->getRoundingType());
                     }
                     break;
                 case OrderItemTypeMaster::DISCOUNT:
@@ -222,10 +225,11 @@ class OrderItemType extends AbstractType
                     if (null === $OrderItem->getTaxType()) {
                         $OrderItem->setTaxType($this->entityManager->find(TaxType::class, TaxType::TAXATION));
                     }
-                    if (null === $OrderItem->getTaxRule()) {
+                    if (null === $OrderItem->getTaxRuleId()) {
                         $TaxRule = $this->taxRuleRepository->getByRule();
-                        $OrderItem->setTaxRule($TaxRule->getId());
+                        $OrderItem->setTaxRuleId($TaxRule->getId());
                         $OrderItem->setTaxRate($TaxRule->getTaxRate());
+                        $OrderItem->setRoundingType($TaxRule->getRoundingType());
                     }
                     break;
             }
