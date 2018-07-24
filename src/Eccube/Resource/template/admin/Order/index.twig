@@ -619,7 +619,8 @@ file that was distributed with this source code.
                                                     <a class="btn btn-ec-actionIcon confirmationModal" href="javascript:;"
                                                        data-id="{{ Shipping.id }}" data-type="status" data-bulk-update="false"
                                                        data-update-status-id="{{ constant('Eccube\\Entity\\Master\\OrderStatus::DELIVERED') }}"
-                                                       data-update-status-url="{{ url('admin_shipping_update_order_status', { id: Shipping.id}) }}"                                                                                   data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: Shipping.id}) }}"
+                                                       data-update-status-url="{{ url('admin_shipping_update_order_status', { id: Shipping.id}) }}"
+                                                       data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: Shipping.id}) }}"
                                                        data-toggle="tooltip" data-placement="top" title data-original-title="{{ '出荷済にする'|trans }}">
                                                         <i class="fa fa-check fa-lg text-secondary" aria-hidden="true"></i>
                                                     </a>
