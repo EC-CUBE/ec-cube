@@ -253,4 +253,56 @@ class ShippingControllerTest extends AbstractAdminWebTestCase
 
         return $arrFormData;
     }
+
+    /**
+     * 出荷済みの出荷に対して出荷完了メール送信リクエストを送信する
+     */
+    public function testSendNotifyMail()
+    {
+        $this->client->enableProfiler();
+
+        $Order = $this->createOrder($this->createCustomer());
+        /** @var Shipping $Shipping */
+        $Shipping = $Order->getShippings()->first();
+
+        $shippingDate = new \DateTime();
+        $Shipping->setShippingDate($shippingDate);
+        $this->entityManager->persist($Shipping);
+        $this->entityManager->flush();
+
+        $this->client->request(
+            'PUT',
+            $this->generateUrl('admin_shipping_notify_mail', ['id' => $Shipping->getId()])
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $Messages = $this->getMailCollector(false)->getMessages();
+        self::assertEquals(1, count($Messages));
+
+        /** @var \Swift_Message $Message */
+        $Message = $Messages[0];
+
+        self::assertRegExp('/\[.*?\] 商品出荷のお知らせ/', $Message->getSubject());
+        self::assertEquals([$Order->getEmail() => null], $Message->getTo());
+    }
+
+    public function testNotSendNotifyMail()
+    {
+        $this->client->enableProfiler();
+
+        $Order = $this->createOrder($this->createCustomer());
+        /** @var Shipping $Shipping */
+        $Shipping = $Order->getShippings()->first();
+
+        $this->client->request(
+            'PUT',
+            $this->generateUrl('admin_shipping_notify_mail', ['id' => $Shipping->getId()])
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $Messages = $this->getMailCollector(false)->getMessages();
+        self::assertEquals(1, count($Messages));
+    }
 }

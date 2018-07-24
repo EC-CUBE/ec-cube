@@ -26,13 +26,16 @@ use Eccube\Repository\OrderItemRepository;
 use Eccube\Repository\ShippingRepository;
 use Eccube\Service\OrderStateMachine;
 use Eccube\Service\TaxRuleService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\SerializerInterface;
 use Eccube\Service\MailService;
 
@@ -239,5 +242,45 @@ class ShippingController extends AbstractController
             'Shippings' => $TargetShippings,
             'shippingDeliveryTimes' => $this->serializer->serialize($times, 'json'),
         ];
+    }
+
+    /**
+     * @Route("/%eccube_admin_route%/shipping/preview_notify_mail/{id}", requirements={"id" = "\d+"}, name="admin_shipping_preview_notify_mail")
+     *
+     * @param Shipping $Shipping
+     *
+     * @return Response
+     *
+     * @throws \Twig_Error
+     */
+    public function previewShippingNotifyMail(Shipping $Shipping)
+    {
+        return new Response($this->mailService->getShippingNotifyMailBody($Shipping, $Shipping->getOrder()));
+    }
+
+    /**
+     * @Method("PUT")
+     * @Route("/%eccube_admin_route%/shipping/notify_mail/{id}", requirements={"id" = "\d+"}, name="admin_shipping_notify_mail")
+     *
+     * @param Shipping $Shipping
+     *
+     * @return JsonResponse
+     *
+     * @throws \Twig_Error
+     */
+    public function notifyMail(Shipping $Shipping)
+    {
+        $this->isTokenValid();
+
+        $this->mailService->sendShippingNotifyMail($Shipping);
+
+        $Shipping->setMailSendDate(new \DateTime());
+        $this->shippingRepository->save($Shipping);
+        $this->entityManager->flush();
+
+        return $this->json([
+            'mail' => true,
+            'shipped' => false,
+        ]);
     }
 }
