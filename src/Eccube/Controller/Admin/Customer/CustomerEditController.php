@@ -72,6 +72,7 @@ class CustomerEditController extends AbstractController
             $Customer = $this->customerRepository->newCustomer();
             $Customer->setBuyTimes(0);
             $Customer->setBuyTotal(0);
+            $oldStatusId = null;
         }
 
         // 会員登録フォーム
