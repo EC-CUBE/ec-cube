@@ -19,24 +19,29 @@ use Eccube\Entity\Csv;
 use Eccube\Entity\ExportCsvRow;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\OrderItem;
+use Eccube\Entity\OrderPdf;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Form\Type\Admin\OrderPdfType;
 use Eccube\Form\Type\Admin\SearchOrderType;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\Master\PageMaxRepository;
 use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Repository\Master\SexRepository;
+use Eccube\Repository\OrderPdfRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Service\CsvExportService;
 use Eccube\Service\MailService;
+use Eccube\Service\OrderPdfService;
 use Eccube\Service\OrderStateMachine;
 use Eccube\Util\FormUtil;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -95,6 +100,12 @@ class OrderController extends AbstractController
      */
     protected $orderRepository;
 
+    /** @var OrderPdfRepository */
+    protected $orderPdfRepository;
+
+    /** @var OrderPdfService */
+    protected $orderPdfService;
+
     /**
      * @var ValidatorInterface
      */
@@ -122,8 +133,10 @@ class OrderController extends AbstractController
      * @param PageMaxRepository $pageMaxRepository
      * @param ProductStatusRepository $productStatusRepository
      * @param OrderRepository $orderRepository
-     * @param OrderStateMachine $orderStateMachine
-     * @param MailService $mailService
+     * @param OrderPdfRepository $orderPdfRepository
+     * @param OrderPdfService $orderPdfService
+     * @param ValidatorInterface $validator
+     * @param OrderStateMachine $orderStateMachine ;
      */
     public function __construct(
         PurchaseFlow $orderPurchaseFlow,
@@ -135,6 +148,8 @@ class OrderController extends AbstractController
         PageMaxRepository $pageMaxRepository,
         ProductStatusRepository $productStatusRepository,
         OrderRepository $orderRepository,
+        OrderPdfRepository $orderPdfRepository,
+        OrderPdfService $orderPdfService,
         ValidatorInterface $validator,
         OrderStateMachine $orderStateMachine,
         MailService $mailService
@@ -148,6 +163,8 @@ class OrderController extends AbstractController
         $this->pageMaxRepository = $pageMaxRepository;
         $this->productStatusRepository = $productStatusRepository;
         $this->orderRepository = $orderRepository;
+        $this->orderPdfRepository = $orderPdfRepository;
+        $this->orderPdfService = $orderPdfService;
         $this->validator = $validator;
         $this->orderStateMachine = $orderStateMachine;
         $this->mailService = $mailService;
@@ -197,7 +214,7 @@ class OrderController extends AbstractController
          * また, セッションに保存する際は mtb_page_maxと照合し, 一致した場合のみ保存する.
          **/
         $page_count = $this->session->get('eccube.admin.order.search.page_count',
-                $this->eccubeConfig->get('eccube_default_page_count'));
+            $this->eccubeConfig->get('eccube_default_page_count'));
 
         $page_count_param = (int) $request->get('page_count');
         $pageMaxis = $this->pageMaxRepository->findAll();
@@ -556,5 +573,124 @@ class OrderController extends AbstractController
 
             return $this->json(['status' => 'NG'], 500);
         }
+    }
+
+    /**
+     * @Route("/%eccube_admin_route%/order/export/pdf", name="admin_order_export_pdf")
+     * @Template("@admin/Order/order_pdf.twig")
+     *
+     * @param Request $request
+     *
+     * @return array|RedirectResponse
+     */
+    public function exportPdf(Request $request)
+    {
+        // requestから受注番号IDの一覧を取得する.
+        $ids = $request->get('ids', []);
+
+        if (count($ids) == 0) {
+            $this->addError('admin.order.export.pdf.parameter.not.found', 'admin');
+            log_info('The Order cannot found!');
+
+            return $this->redirectToRoute('admin_order');
+        }
+
+        /** @var OrderPdf $OrderPdf */
+        $OrderPdf = $this->orderPdfRepository->find($this->getUser());
+
+        if (!$OrderPdf) {
+            $OrderPdf = new OrderPdf();
+            $OrderPdf
+                ->setTitle(trans('admin.order.export.pdf.title.default'))
+                ->setMessage1(trans('admin.order.export.pdf.message1.default'))
+                ->setMessage2(trans('admin.order.export.pdf.message2.default'))
+                ->setMessage3(trans('admin.order.export.pdf.message3.default'));
+        }
+
+        /**
+         * @var FormBuilder
+         */
+        $builder = $this->formFactory->createBuilder(OrderPdfType::class, $OrderPdf);
+
+        /* @var \Symfony\Component\Form\Form $form */
+        $form = $builder->getForm();
+
+        // Formへの設定
+        $form->get('ids')->setData(implode(',', $ids));
+
+        return [
+            'form' => $form->createView(),
+        ];
+    }
+
+    /**
+     * @Route("/%eccube_admin_route%/order/export/pdf/download", name="admin_order_pdf_download")
+     * @Template("@admin/Order/order_pdf.twig")
+     *
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function exportPdfDownload(Request $request)
+    {
+        /**
+         * @var FormBuilder
+         */
+        $builder = $this->formFactory->createBuilder(OrderPdfType::class);
+
+        /* @var \Symfony\Component\Form\Form $form */
+        $form = $builder->getForm();
+        $form->handleRequest($request);
+
+        // Validation
+        if (!$form->isValid()) {
+            log_info('The parameter is invalid!');
+
+            return $this->render('@admin/Order/order_pdf.twig', [
+                'form' => $form->createView(),
+            ]);
+        }
+
+        $arrData = $form->getData();
+
+        // 購入情報からPDFを作成する
+        $status = $this->orderPdfService->makePdf($arrData);
+
+        // 異常終了した場合の処理
+        if (!$status) {
+            $this->addError('admin.order.export.pdf.download.failure', 'admin');
+            log_info('Unable to create pdf files! Process have problems!');
+
+            return $this->render('@admin/Order/order_pdf.twig', [
+                'form' => $form->createView(),
+            ]);
+        }
+
+        // ダウンロードする
+        $response = new Response(
+            $this->orderPdfService->outputPdf(),
+            200,
+            ['content-type' => 'application/pdf']
+        );
+
+        $downloadKind = $form->get('download_kind')->getData();
+
+        // レスポンスヘッダーにContent-Dispositionをセットし、ファイル名を指定
+        if ($downloadKind == 1) {
+            $response->headers->set('Content-Disposition', 'attachment; filename="'.$this->orderPdfService->getPdfFileName().'"');
+        } else {
+            $response->headers->set('Content-Disposition', 'inline; filename="'.$this->orderPdfService->getPdfFileName().'"');
+        }
+
+        log_info('OrderPdf download success!', ['Order ID' => implode(',', $request->get('ids', []))]);
+
+        $isDefault = isset($arrData['default']) ? $arrData['default'] : false;
+        if ($isDefault) {
+            // Save input to DB
+            $arrData['admin'] = $this->getUser();
+            $this->orderPdfRepository->save($arrData);
+        }
+
+        return $response;
     }
 }

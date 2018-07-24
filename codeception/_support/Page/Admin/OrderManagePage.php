@@ -9,6 +9,7 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
     public static $検索結果_メッセージ = '#search_form #search_total_count';
     public static $検索結果_エラーメッセージ = '//*[@id="page_admin_order"]/div[1]/div[3]/div[3]/div/div/div[1]/div/div[1]';
     public static $詳細検索ボタン = '//*[@id="search_form"]/div[1]/div/div/div[3]/a/i/span';
+    public static $タイトル要素 = '.c-container .c-contentsArea .c-pageTitle .c-pageTitle__titles';
 
     /**
      * OrderListPage constructor.
@@ -95,6 +96,24 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
         $this->tester->click(['id' => 'csvSettingDropDown']);
         $this->tester->waitForElementVisible(['id' => 'shippingCsvSetting']);
         $this->tester->click(['id' => 'shippingCsvSetting']);
+        return $this;
+    }
+
+    public function すべてチェック()
+    {
+        $this->tester->click('#form_bulk #toggle_check_all');
+        return $this;
+    }
+
+    public function 要素をクリック($element)
+    {
+        $this->tester->click($element);
+        return $this;
+    }
+
+    public function PDFフォームを入力($elId, $value)
+    {
+        $this->tester->fillField($elId, $value);
         return $this;
     }
 
