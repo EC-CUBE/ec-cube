@@ -487,7 +487,6 @@ class OrderController extends AbstractController
                         $this->orderRepository->updateOrderSummary($Customer);
                         $this->entityManager->flush($Customer);
                     }
-
                 } else {
                     $from = $Order->getOrderStatus()->getName();
                     $to = $OrderStatus->getName();
