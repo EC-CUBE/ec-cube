@@ -943,8 +943,9 @@ file that was distributed with this source code.
                     <div class="col-6">
                         <div class="c-conversionArea__leftBlockItem">
                             <a class="c-beseLink" href="{{ url('admin_product_page', { page_no : app.session.get('eccube.admin.product.search.page_no')|default('1') } ) }}?resume=1"
-                               data-action="confirm"
-                               title="{{ 'admin.product.product.text11'|trans({'%name%' : 'admin.product.product.title_product_screen'|trans }) }}"><i class="fa fa-backward" aria-hidden="true"></i><span>{{ 'admin.product.product.509'|trans }}</span></a>
+                               data-action="confirm" title="{{ 'admin.product.product.text11'|trans({'%name%' : 'admin.product.product.title_product_screen'|trans }) }}">
+                                <i class="fa fa-backward" aria-hidden="true"></i><span>{{ 'admin.product.product.509'|trans }}</span>
+                            </a>
                         </div>
                     </div>
                     <div class="col-6">
