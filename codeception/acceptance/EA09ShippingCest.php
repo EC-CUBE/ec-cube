@@ -33,14 +33,12 @@ class EA09ShippingCest
     {
         $I->wantTo('EA0901-UC03-T01(& UC03-T02) 出荷編集');
 
-        // $I->getScenario()->skip('お届け日を編集時にJSが走らない問題がありskip');
-
         $I->resetEmails();
 
-        // 新規受付ステータスの受注を作る
+        // 対応中ステータスの受注を作る
         $createCustomer = Fixtures::get('createCustomer');
         $createOrders = Fixtures::get('createOrders');
-        $newOrders = $createOrders($createCustomer(), 1, array());
+        $newOrders = $createOrders($createCustomer(), 1, array(), OrderStatus::IN_PROGRESS);
 
         $OrderListPage = OrderManagePage::go($I)->検索($newOrders[0]->getOrderNo());
 
@@ -57,7 +55,6 @@ class EA09ShippingCest
         $Shippings = $TargetShippings();
 
         $ShippingRegisterPage = ShippingEditPage::at($I)
-            // ->お届け先編集()
             ->入力_姓('')
             ->出荷情報登録();
 
@@ -81,18 +78,75 @@ class EA09ShippingCest
 
         $I->see('出荷情報を登録しました。', ShippingEditPage::$登録完了メッセージ);
 
-        /* 出荷済みに変更 */
-        // $ShippingRegisterPage
-        //     // ->入力_出荷日('2018-09-04')
-        //     ->出荷情報登録()
-        //     ->変更を確定();
-        // $I->wait(1);
-        // $I->see('出荷情報を登録しました。', ShippingEditPage::$登録完了メッセージ);
+        $I->wait(10);
 
-        // $I->wait(3);
-        // $I->seeEmailCount(2);
+        // 出荷済みに変更
+        $ShippingRegisterPage
+            ->出荷完了にする()
+            ->変更を確定()
+            ->出荷日を確認();
     }
 
+    public function shippingお届け先追加(\AcceptanceTester $I)
+    {
+        $I->wantTo('EA0901-UC03-T03 お届け先追加');
+
+        $I->resetEmails();
+
+        // 対応中ステータスの受注を作る
+        $createCustomer = Fixtures::get('createCustomer');
+        $createOrders = Fixtures::get('createOrders');
+        $newOrders = $createOrders($createCustomer(), 1, array(), OrderStatus::IN_PROGRESS);
+
+        $OrderListPage = OrderManagePage::go($I)->検索($newOrders[0]->getOrderNo());
+
+        $I->see('検索結果：1件が該当しました', OrderManagePage::$検索結果_メッセージ);
+
+        /* 編集 */
+        $OrderListPage->一覧_編集(1);
+
+        $OrderRegisterPage = OrderEditPage::at($I)
+            ->お届け先の追加();
+
+
+        $TargetShippings = Fixtures::get('findShippings'); // Closure
+        $Shippings = $TargetShippings();
+
+        $ShippingRegisterPage = ShippingEditPage::at($I);
+        $ShippingRegisterPage
+            ->出荷先を追加();
+
+        /* 正常系 */
+        $ShippingRegisterPage
+            // ->お届け先編集()
+            ->入力_姓('aaa', 1)
+            ->入力_名('bbb', 1)
+            ->入力_セイ('アアア', 1)
+            ->入力_メイ('アアア', 1)
+            ->入力_郵便番号('060-0000', 1)
+            ->入力_都道府県(['1' => '北海道'], 1)
+            ->入力_市区町村名('bbb', 1)
+            ->入力_番地_ビル名('bbb', 1)
+            ->入力_電話番号('111-111-111', 1)
+            ->入力_番地_ビル名('address 2', 1)
+            ->出荷情報登録();
+
+        $I->see('出荷情報を登録しました。', ShippingEditPage::$登録完了メッセージ);
+
+        $I->wait(10);
+        // 出荷済みに変更
+        $ShippingRegisterPage
+            ->出荷完了にする()
+            ->変更を確定()
+            ->出荷日を確認();
+
+        // 出荷済みに変更
+        $ShippingRegisterPage
+            ->出荷完了にする(1)
+            ->変更を確定(1);
+        // TODO ステータス変更スキップしました
+
+    }
 
     public function shipping_出荷CSV登録(\AcceptanceTester $I)
     {
