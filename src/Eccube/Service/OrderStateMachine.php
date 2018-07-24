@@ -142,7 +142,9 @@ class OrderStateMachine implements EventSubscriberInterface
         /* @var Order $Order */
         $Order = $event->getSubject();
         foreach ($Order->getShippings() as $Shipping) {
-            $Shipping->setShippingDate(new \DateTime());
+            if (!$Shipping->getShippingDate()) {
+                $Shipping->setShippingDate(new \DateTime());
+            }
         }
     }
 
