@@ -8,7 +8,6 @@ use Page\Admin\OrderEditPage;
 use Page\Admin\OrderManagePage;
 use Page\Admin\ShippingCsvUploadPage;
 use Page\Admin\ShippingEditPage;
-use Page\Admin\ShippingManagePage;
 
 /**
  * @group admin

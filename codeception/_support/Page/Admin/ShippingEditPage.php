@@ -22,14 +22,14 @@ class ShippingEditPage extends AbstractAdminPageStyleGuide
     public static function go($I)
     {
         $page = new self($I);
-        $page->goPage('/shipping/new', '出荷登録出荷管理');
+        $page->goPage('/shipping/new', '出荷登録受注管理');
         return $page;
     }
 
     public static function at($I)
     {
         $page = new self($I);
-        $page->atPage('出荷登録出荷管理');
+        $page->atPage('出荷登録受注管理');
         return $page;
     }
 

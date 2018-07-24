@@ -2051,7 +2051,7 @@ return [
     'admin.shipping.search_product.801' => '注文ID: %order_id%',
     'admin.shipping.search_product.802' => '決定',
     'admin.shipping.csv_shipping.title' => '出荷CSV登録',
-    'admin.shipping.csv_shipping.sub_title' => '出荷管理',
+    'admin.shipping.csv_shipping.sub_title' => '受注管理',
     'admin.shipping.csv_shipping.title_csv_upload' => 'CSVファイルをアップロード',
     'admin.shipping.csv_shipping.label_csv_select' => 'CSVファイル選択',
     'admin.shipping.csv_shipping.btn_csv_select' => 'ファイルを選択',
