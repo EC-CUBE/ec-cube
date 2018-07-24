@@ -158,6 +158,8 @@ file that was distributed with this source code.
                 var current = $(this).parents("li");
                 current.find('.mode-view').addClass('d-none');
                 current.find('.mode-edit').removeClass('d-none');
+                current.find('.action-edit-submit').attr('disabled', false);
+                current.find('.action-edit-cancel').attr('disabled', false);
             });
 
             // 編集決定
