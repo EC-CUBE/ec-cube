@@ -142,7 +142,9 @@ class OrderStateMachine implements EventSubscriberInterface
         /* @var Order $Order */
         $Order = $event->getSubject();
         foreach ($Order->getShippings() as $Shipping) {
-            $Shipping->setShippingDate(new \DateTime());
+            if (!$Shipping->getShippingDate()) {
+                $Shipping->setShippingDate(new \DateTime());
+            }
         }
     }
 
@@ -242,7 +244,7 @@ class OrderStateMachine implements EventSubscriberInterface
 
         // XXX このまま EntityManager::flush() をコールすると、 OrderStatus::id が更新されてしまうため元に戻す
         $TransitionlStatus = $Order->getOrderStatus();
-        $this->entityManager->detach($TransitionlStatus);
+        $this->entityManager->refresh($TransitionlStatus);
 
         $CompletedOrderStatus = $this->orderStatusRepository->find($OrderStatusId);
         $Order->setOrderStatus($CompletedOrderStatus);
