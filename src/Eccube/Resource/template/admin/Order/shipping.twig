@@ -113,57 +113,14 @@ file that was distributed with this source code.
           $("#calculate").trigger('click');
         })
 
-        // 出荷済み
-        $('.shipped-button').on('click', function() {
-            var url = $(this).data('shipped-url')
-
-            $.ajax({
-                url: url,
-                type: 'PUT'
-            }).done(function(data) {
-                alert(data['shipping_id'] + ': 出荷済みにしました。');
-                $('#shipping_date_' + data['shipping_id']).text(data['shipping_date']);
-                $('#shipping_date_button_' + data['shipping_id']).addClass('d-none');
-            }).fail(function(data) {
-                alert('shipped failed.');
-            });
+        // 完了ボタン
+        $('#bulkChangeComplete').on('click', function() {
+            location.href = '{{ url('admin_shipping_edit', { 'id': Order.id }) }}';
         });
-
-        {# TODO: 出荷済み時の確認モーダルの実装、複数出荷に対応できていない #}
-        {# TODO: Should move logic js into js file intead of twig #}
-        {#var shippedNotifyModal = $('#shippedNotifyModal'),#}
-            {#shippingForm = $('#form_shipping'),#}
-            {#shippingDateInput = shippingForm.find('input[name*="shipping_date"]');#}
-
-        {#shippingDateInput.on('change', function() {#}
-            {#if ($(this).val() == '') {#}
-                {#{% if Shippings.0.isShipped == false %}#}
-                    {#shippingForm.find('#btn_save')#}
-                        {#.attr('type', 'submit')#}
-                        {#.removeAttr('data-toggle')#}
-                        {#.removeAttr('data-target');#}
-                {#{%  endif %}#}
-            {#} else {#}
-                {#{% if Shippings.0.isShipped == false %}#}
-                    {#shippingForm.find('#btn_save')#}
-                        {#.attr('data-toggle', 'modal')#}
-                        {#.attr('data-target', '#shippedNotifyModal')#}
-                        {#.attr('type', 'button');#}
-                {#{% endif %}#}
-            {#}#}
-        {#});#}
-        {#shippingDateInput.trigger('change');#}
-        {#shippedNotifyModal.on('show.bs.modal', function(e) {#}
-            {#var viewUrl = $('#viewEmail');#}
-            {#if (viewUrl.length) {#}
-                {#$.ajax(viewUrl.data('preview-url')).done(function(res) {#}
-                    {#viewUrl.find(' > pre').text(res);#}
-                {#});#}
-            {#}#}
-        {#});#}
 
     </script>
 
+{{ include('@admin/Order/confirmationModal_js.twig') }}
 {% endblock javascript %}
 
 {% block main %}
@@ -207,6 +164,45 @@ file that was distributed with this source code.
                 </div>
             </div>
         </div>
+        {# 出荷完了メール送信確認モーダル #}
+        <div class="modal fade" id="sentUpdateModal" tabindex="-1" role="dialog" aria-labelledby="sentUpdateModal" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title font-weight-bold"></h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="mb-4"></p>
+                        <ul id="bulkErrors"></ul>
+                        <div id="bulk-options">
+                            <div class="font-weight-bold mb-2 notificationMail">{{ 'admin.shipping.index.812'|trans }}</div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="notificationMail">
+                                <label class="form-check-label notificationMail">
+                                    {{ 'admin.shipping.index.813'|trans }}
+                                </label>
+                            </div>
+                            <div>
+                                <div class="d-inline-block" data-toggle="collapse" href="#viewEmail" aria-expanded="false" aria-controls="viewEmail"><a><i class="fa fa-plus-square-o font-weight-bold mr-1"></i><span class="font-weight-bold">{{ 'admin.shipping.index.814'|trans }}</span></a></div>
+                                <div class="collapse bg-light p-4 ec-collapse bg-ec-formGray" id="viewEmail" style="word-wrap: break-word; word-break:break-all">
+                                    <pre></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="progress" style="display: none">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.shipping.index.815'|trans }}</button>
+                        <button id="bulkChange" class="btn btn-ec-conversion" type="button">{{ 'admin.shipping.index.816'|trans }}</button>
+                        <button id="bulkChangeComplete" class="btn btn-ec-regular" style="display: none" type="button">{{ 'admin.shipping.index.826'|trans }}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="c-contentsArea__cols">
             <div class="c-contentsArea__primaryCol">
                 <div class="c-primaryCol">
@@ -214,55 +210,55 @@ file that was distributed with this source code.
                         <div class="card rounded border-0 mb-4 h-adr">
                             <span class="p-country-name" style="display:none;">Japan</span>
                             {# TODO: 出荷日登録機能の実装 #}
-                            {#<div class="modal fade" id="shippedNotifyModal_{{ loop.index0 }}" tabindex="-1" role="dialog"#}
-                                 {#aria-labelledby="shippedNotifyModal" aria-hidden="true" data-keyboard="false"#}
-                                 {#data-backdrop="static">#}
-                                {#<div class="modal-dialog" role="document">#}
-                                    {#<div class="modal-content">#}
-                                        {#<div class="modal-header">#}
-                                            {#<h5 class="modal-title font-weight-bold">{{ 'admin.shipping.index.829'|trans }}</h5>#}
-                                            {#<button class="close" type="button" data-dismiss="modal" aria-label="Close">#}
-                                                {#<span aria-hidden="true">×</span>#}
-                                            {#</button>#}
-                                        {#</div>#}
-                                        {#<div class="modal-body">#}
-                                            {#<p class="mb-4">{{ 'admin.shipping.index.830'|trans }}</p>#}
-                                            {#<div id="mail-options_{{ loop.index0 }}">#}
-                                                {#<div class="font-weight-bold mb-2">{{ 'admin.shipping.index.812'|trans }}</div>#}
-                                                {#<div class="form-check form-check-inline">#}
-                                                    {#<label class="form-check-label">#}
-                                                        {#{{ form_widget(shippingForm.notify_email, {'label_attr': {'class': 'checkbox-inline'}}) }}#}
-                                                    {#</label>#}
-                                                {#</div>#}
-                                                {#{% if (attribute(Shippings, loop.index0).id) %}#}
-                                                    {#<div>#}
-                                                        {#<div class="d-inline-block" data-toggle="collapse"#}
-                                                             {#href="#viewEmail_{{ loop.index0 }}" aria-expanded="false"#}
-                                                             {#aria-controls="viewEmail_{{ loop.index0 }}">#}
-                                                            {#<a>#}
-                                                                {#<i class="fa fa-plus-square-o font-weight-bold mr-1"></i>#}
-                                                                {#<span class="font-weight-bold">{{ 'admin.shipping.index.814'|trans }}</span>#}
-                                                            {#</a>#}
-                                                        {#</div>#}
-                                                        {#<div class="collapse bg-light p-4 ec-collapse bg-ec-formGray"#}
-                                                             {#id="viewEmail_{{ loop.index0 }}"#}
-                                                             {#style="word-wrap: break-word; word-break:break-all"#}
-                                                             {#data-preview-url="{{ url('admin_shipping_preview_notify_mail', {id: attribute(Shippings, loop.index0).id}) }}">#}
-                                                            {#<pre></pre>#}
-                                                        {#</div>#}
-                                                    {#</div>#}
-                                                {#{% endif %}#}
-                                            {#</div>#}
-                                        {#</div>#}
-                                        {#<div class="modal-footer">#}
-                                            {#<button class="btn btn-ec-sub" type="button"#}
-                                                    {#data-dismiss="modal">{{ 'admin.shipping.index.815'|trans }}</button>#}
-                                            {#<button class="btn btn-ec-conversion"#}
-                                                    {#type="submit">{{ 'admin.shipping.index.816'|trans }}</button>#}
-                                        {#</div>#}
-                                    {#</div>#}
-                                {#</div>#}
-                            {#</div>#}
+                            <div class="modal fade" id="shippedNotifyModal_{{ loop.index0 }}" tabindex="-1" role="dialog"
+                                 aria-labelledby="shippedNotifyModal" aria-hidden="true" data-keyboard="false"
+                                 data-backdrop="static">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title font-weight-bold">{{ 'admin.shipping.index.829'|trans }}</h5>
+                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p class="mb-4">{{ 'admin.shipping.index.830'|trans }}</p>
+                                            <div id="mail-options_{{ loop.index0 }}">
+                                                <div class="font-weight-bold mb-2">{{ 'admin.shipping.index.812'|trans }}</div>
+                                                <div class="form-check form-check-inline">
+                                                    <label class="form-check-label">
+                                                        {{ form_widget(shippingForm.notify_email, {'label_attr': {'class': 'checkbox-inline'}}) }}
+                                                    </label>
+                                                </div>
+                                                {% if (attribute(Shippings, loop.index0).id) %}
+                                                    <div>
+                                                        <div class="d-inline-block" data-toggle="collapse"
+                                                             href="#viewEmail_{{ loop.index0 }}" aria-expanded="false"
+                                                             aria-controls="viewEmail_{{ loop.index0 }}">
+                                                            <a>
+                                                                <i class="fa fa-plus-square-o font-weight-bold mr-1"></i>
+                                                                <span class="font-weight-bold">{{ 'admin.shipping.index.814'|trans }}</span>
+                                                            </a>
+                                                        </div>
+                                                        <div class="collapse bg-light p-4 ec-collapse bg-ec-formGray"
+                                                             id="viewEmail_{{ loop.index0 }}"
+                                                             style="word-wrap: break-word; word-break:break-all"
+                                                             data-preview-url="{{ url('admin_shipping_preview_notify_mail', {id: attribute(Shippings, loop.index0).id}) }}">
+                                                            <pre></pre>
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-ec-sub" type="button"
+                                                    data-dismiss="modal">{{ 'admin.shipping.index.815'|trans }}</button>
+                                            <button class="btn btn-ec-conversion"
+                                                    type="submit">{{ 'admin.shipping.index.816'|trans }}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-8">
@@ -284,14 +280,22 @@ file that was distributed with this source code.
                                 <div class="card-body">
                                     <div class="row mb-3">
                                         <div class="col-6">
-                                            {# TODO: 納品書出力実装 #}
-                                            <button type="button" id="print_{{ loop.index0 }}" class="btn btn-ec-regular">
-                                                {{ 'admin.order.edit.label.shipping.print'|trans }}
-                                            </button>
-                                            {# TODO: 出荷完了メール実装 #}
-                                            <button type="button" id="shipped_mail_{{ loop.index0 }}" class="btn btn-ec-regular">
-                                                {{ 'admin.order.edit.label.shipping.shipped_mail'|trans }}
-                                            </button>
+                                            {% if attribute(Shippings, loop.index0).id %}
+                                                {# 登録済みの出荷 #}
+                                                {# TODO: 納品書出力実装 #}
+                                                <button type="button" id="print_{{ loop.index0 }}" class="btn btn-ec-regular">
+                                                    {{ 'admin.order.edit.label.shipping.print'|trans }}
+                                                </button>
+                                                {# TODO: 出荷完了メール実装 #}
+                                                <button type="button" class="btn btn-ec-regular confirmationModal"
+                                                        data-type="mail" data-bulk-update="false"
+                                                        data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: attribute(Shippings, loop.index0).id}) }}"
+                                                        data-notify-mail-url="{{ url('admin_shipping_notify_mail', { id: attribute(Shippings, loop.index0).id}) }}">
+                                                    {{ 'admin.order.edit.label.shipping.shipped_mail'|trans }}
+                                                </button>
+                                            {% else %}
+                                                {# 未登録の出荷 #}
+                                            {% endif %}
                                         </div>
                                     </div>
                                     <div class="row">
@@ -450,16 +454,22 @@ file that was distributed with this source code.
                                                     {{ 'admin.shipping.edit.ship_date'|trans }}
                                                 </label>
                                                 <div class="col">
-                                                    {% if attribute(Shippings, loop.index0).id and attribute(Shippings, loop.index0).shipping_date %}
+                                                    {% if attribute(Shippings, loop.index0).shipping_date %}
                                                         {# 登録済みの出荷で出荷日が設定されている場合 #}
-                                                        <span id="shipping_date_{{ attribute(Shippings, loop.index0).id }}">{{ attribute(Shippings, loop.index0).shipping_date|date_day }}</span>
+                                                        <span>{{ attribute(Shippings, loop.index0).shipping_date|date_day }}</span>
                                                     {% elseif attribute(Shippings, loop.index0).id %}
                                                         {# 登録済みの出荷で出荷日が設定されていない場合 #}
-                                                        <span id="shipping_date_{{ attribute(Shippings, loop.index0).id }}"></span>
-                                                        <button id="shipping_date_button_{{ attribute(Shippings, loop.index0).id }}" type="button" class="btn btn-ec-regular mr-2 shipped-button" data-shipped-url="{{ url('admin_shipping_shipped', {id: attribute(Shippings, loop.index0).id}) }}">出荷完了にする</button>
+                                                        <button type="button"
+                                                                class="btn btn-ec-regular mr-2 progressModal"
+                                                                data-id="{{ attribute(Shippings, loop.index0).id }}" data-type="status" data-bulk-update="false"
+                                                                {#data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: attribute(Shippings, loop.index0).id}) }}"#}
+                                                                {#data-notify-mail-url="{{ url('admin_shipping_notify_mail', { id: attribute(Shippings, loop.index0).id}) }}"#}
+                                                                data-update-status-id="{{ constant('Eccube\\Entity\\Master\\OrderStatus::DELIVERED') }}"
+                                                                data-update-status-url="{{ url('admin_shipping_update_order_status', { id: attribute(Shippings, loop.index0).id}) }}">
+                                                            出荷完了にする
+                                                        </button>
                                                     {% else %}
                                                         {# 未登録の出荷 #}
-                                                        <span></span>
                                                     {% endif %}
                                                 </div>
                                             </div>
