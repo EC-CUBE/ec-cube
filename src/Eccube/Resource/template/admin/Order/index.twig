@@ -576,11 +576,13 @@ file that was distributed with this source code.
                                         </td>
                                         <td class="align-middle text-center">
                                             {% if Order.is_multiple %}
-                                                {% if Shipping.shipping_date %}
-                                                    <a href="{{ url('admin_shipping_edit', { id: Shipping.id }) }}">{{ Shipping.shipping_date|date_day }}</a>
-                                                {% else %}
-                                                    {{ 'admin.order.index.not_shipping'|trans }}
-                                                {% endif %}
+                                                <a href="{{ url('admin_shipping_edit', { id: Order.id }) }}">
+                                                    {% if Shipping.shipping_date %}
+                                                        {{ Shipping.shipping_date|date_day }}
+                                                    {% else %}
+                                                        {{ 'admin.order.index.not_shipping'|trans }}
+                                                    {% endif %}
+                                                </a>
                                             {% else %}
                                                 {{ Shipping.shipping_date ? Shipping.shipping_date|date_day : 'admin.order.index.not_shipping'|trans }}
                                             {% endif %}
