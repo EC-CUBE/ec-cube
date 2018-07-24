@@ -170,7 +170,6 @@ class ShippingController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid() && $request->get('mode') == 'register') {
-
             log_info('出荷登録開始', [$TargetShipping->getId()]);
 
             // 削除された項目の削除
@@ -242,50 +241,5 @@ class ShippingController extends AbstractController
             'Shippings' => $TargetShippings,
             'shippingDeliveryTimes' => $this->serializer->serialize($times, 'json'),
         ];
-    }
-
-    /**
-     * shipped
-     *
-     * @Method("PUT")
-     * @Route("/%eccube_admin_route%/shipping/{id}/shipped", requirements={"id" = "\d+"}, name="admin_shipping_shipped")
-     *
-     * @param Request $request
-     * @param Shipping $Shipping
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function shipped(Request $request, Shipping $Shipping)
-    {
-        if (!($request->isXmlHttpRequest() && $this->isTokenValid())) {
-            return $this->json(['status' => 'NG'], 400);
-        }
-
-        log_info('出荷済み処理開始', [$Shipping->getId()]);
-
-        $Order = $Shipping->getOrder();
-        $OrderStatus = $this->entityManager->find(OrderStatus::class, OrderStatus::DELIVERED);
-
-        $Shipping->setShippingDate(new \DateTime());
-        $this->entityManager->flush($Shipping);
-
-        try {
-            if ($this->orderStateMachine->can($Order, $OrderStatus)) {
-                $this->orderStateMachine->apply($Order, $OrderStatus);
-            }
-            $this->entityManager->flush($Order);
-
-            log_info('出荷済み処理完了', [$Shipping->getId()]);
-        } catch (\Exception $e) {
-            log_error('予期しないエラーです', [$e->getMessage()]);
-
-            return $this->json(['status' => 'NG'], 500);
-        }
-
-        return $this->json([
-            'status' => 'OK',
-            'shipping_id' => $Shipping->getId(),
-            'shipping_date' => $Shipping->getShippingDate()->format('Y/m/d'),
-        ]);
     }
 }

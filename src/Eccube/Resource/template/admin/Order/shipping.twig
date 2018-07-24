@@ -164,7 +164,7 @@ file that was distributed with this source code.
                 </div>
             </div>
         </div>
-        {# 出荷完了メール送信確認モーダル #}
+        {# 出荷完了、メール送信モーダル #}
         <div class="modal fade" id="sentUpdateModal" tabindex="-1" role="dialog" aria-labelledby="sentUpdateModal" aria-hidden="true" data-keyboard="false" data-backdrop="static">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -459,13 +459,13 @@ file that was distributed with this source code.
                                                         <span>{{ attribute(Shippings, loop.index0).shipping_date|date_day }}</span>
                                                     {% elseif attribute(Shippings, loop.index0).id %}
                                                         {# 登録済みの出荷で出荷日が設定されていない場合 #}
-                                                        <button type="button"
-                                                                class="btn btn-ec-regular mr-2 progressModal"
-                                                                data-id="{{ attribute(Shippings, loop.index0).id }}" data-type="status" data-bulk-update="false"
-                                                                {#data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: attribute(Shippings, loop.index0).id}) }}"#}
-                                                                {#data-notify-mail-url="{{ url('admin_shipping_notify_mail', { id: attribute(Shippings, loop.index0).id}) }}"#}
-                                                                data-update-status-id="{{ constant('Eccube\\Entity\\Master\\OrderStatus::DELIVERED') }}"
-                                                                data-update-status-url="{{ url('admin_shipping_update_order_status', { id: attribute(Shippings, loop.index0).id}) }}">
+                                                        <button type="button" class="btn btn-ec-regular mr-2 confirmationModal" href="javascript:;"
+                                                           data-id="{{ attribute(Shippings, loop.index0).id }}" data-type="status" data-bulk-update="false"
+                                                           data-update-status-id="{{ constant('Eccube\\Entity\\Master\\OrderStatus::DELIVERED') }}"
+                                                           data-update-status-url="{{ url('admin_shipping_update_order_status', { id: attribute(Shippings, loop.index0).id}) }}"
+                                                           data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: attribute(Shippings, loop.index0).id}) }}"
+                                                           data-toggle="tooltip" data-placement="top" title data-original-title="{{ '出荷済にする'|trans }}">
+                                                            <i class="fa fa-check fa-lg text-secondary" aria-hidden="true"></i>
                                                             出荷完了にする
                                                         </button>
                                                     {% else %}
