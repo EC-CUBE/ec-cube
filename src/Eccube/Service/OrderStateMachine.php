@@ -242,7 +242,7 @@ class OrderStateMachine implements EventSubscriberInterface
 
         // XXX このまま EntityManager::flush() をコールすると、 OrderStatus::id が更新されてしまうため元に戻す
         $TransitionlStatus = $Order->getOrderStatus();
-        $this->entityManager->detach($TransitionlStatus);
+        $this->entityManager->refresh($TransitionlStatus);
 
         $CompletedOrderStatus = $this->orderStatusRepository->find($OrderStatusId);
         $Order->setOrderStatus($CompletedOrderStatus);
