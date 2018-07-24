@@ -93,6 +93,7 @@ class OrderType extends AbstractType
                             'pattern' => "/^\d+$/u",
                             'message' => 'form.type.numeric.invalid',
                         ]),
+                        new Length(['max' => 11]),
                     ],
                 ]
             )

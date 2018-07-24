@@ -30,6 +30,7 @@ use Eccube\Repository\Master\SexRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Service\CsvExportService;
+use Eccube\Service\MailService;
 use Eccube\Service\OrderStateMachine;
 use Eccube\Util\FormUtil;
 use Knp\Component\Pager\PaginatorInterface;
@@ -43,9 +44,7 @@ use Eccube\Entity\Master\OrderStatus;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Eccube\Entity\Order;
 use Eccube\Entity\Shipping;
-use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
-use Eccube\Service\PurchaseFlow\PurchaseException;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -107,6 +106,11 @@ class OrderController extends AbstractController
     protected $orderStateMachine;
 
     /**
+     * @var MailService
+     */
+    protected $mailService;
+
+    /**
      * OrderController constructor.
      *
      * @param PurchaseFlow $orderPurchaseFlow
@@ -118,7 +122,8 @@ class OrderController extends AbstractController
      * @param PageMaxRepository $pageMaxRepository
      * @param ProductStatusRepository $productStatusRepository
      * @param OrderRepository $orderRepository
-     * @param OrderStateMachine $orderStateMachine;
+     * @param OrderStateMachine $orderStateMachine
+     * @param MailService $mailService
      */
     public function __construct(
         PurchaseFlow $orderPurchaseFlow,
@@ -131,7 +136,8 @@ class OrderController extends AbstractController
         ProductStatusRepository $productStatusRepository,
         OrderRepository $orderRepository,
         ValidatorInterface $validator,
-        OrderStateMachine $orderStateMachine
+        OrderStateMachine $orderStateMachine,
+        MailService $mailService
     ) {
         $this->purchaseFlow = $orderPurchaseFlow;
         $this->csvExportService = $csvExportService;
@@ -144,6 +150,7 @@ class OrderController extends AbstractController
         $this->orderRepository = $orderRepository;
         $this->validator = $validator;
         $this->orderStateMachine = $orderStateMachine;
+        $this->mailService = $mailService;
     }
 
     /**
@@ -452,6 +459,10 @@ class OrderController extends AbstractController
         $Order = $Shipping->getOrder();
         $OrderStatus = $this->entityManager->find(OrderStatus::class, $request->get('order_status'));
 
+        if (!$OrderStatus) {
+            return $this->json(['status' => 'NG'], 400);
+        }
+
         $result = [];
         try {
             if ($Order->getOrderStatus()->getId() == $OrderStatus->getId()) {
@@ -460,18 +471,29 @@ class OrderController extends AbstractController
             } else {
                 if ($this->orderStateMachine->can($Order, $OrderStatus)) {
                     $this->orderStateMachine->apply($Order, $OrderStatus);
+
+                    if ($request->get('notificationMail')) { // for SimpleStatusUpdate
+                        $this->mailService->sendShippingNotifyMail($Shipping);
+                        $Shipping->setMailSendDate(new \DateTime());
+                        $result['mail'] = true;
+                    } else {
+                        $result['mail'] = false;
+                    }
+                    $this->entityManager->flush($Shipping);
+                    $this->entityManager->flush($Order);
+
+                    // 会員の場合、購入回数、購入金額などを更新
+                    if ($Customer = $Order->getCustomer()) {
+                        $this->orderRepository->updateOrderSummary($Customer);
+                        $this->entityManager->flush($Customer);
+                    }
+
                 } else {
                     $from = $Order->getOrderStatus()->getName();
                     $to = $OrderStatus->getName();
                     $result = ['message' => sprintf('%s: %s から %s へのステータス変更はできません', $Shipping->getId(), $from, $to)];
                 }
-                $this->entityManager->flush($Order);
 
-                // 会員の場合、購入回数、購入金額などを更新
-                if ($Customer = $Order->getCustomer()) {
-                    $this->orderRepository->updateOrderSummary($Customer);
-                    $this->entityManager->flush($Customer);
-                }
                 log_info('対応状況一括変更処理完了', [$Order->getId()]);
             }
         } catch (\Exception $e) {
@@ -481,94 +503,6 @@ class OrderController extends AbstractController
         }
 
         return $this->json(array_merge(['status' => 'OK'], $result));
-    }
-
-    /**
-     * Bulk action to order status
-     *
-     * @Method("POST")
-     * @Route("/%eccube_admin_route%/order/bulk/order-status/{id}", requirements={"id" = "\d+"}, name="admin_order_bulk_order_status")
-     *
-     * @param Request $request
-     * @param OrderStatus $OrderStatus
-     *
-     * @return RedirectResponse
-     *
-     * @deprecated 使用していない
-     */
-    public function bulkOrderStatus(Request $request, OrderStatus $OrderStatus)
-    {
-        $this->isTokenValid();
-
-        /** @var Order[] $Orders */
-        $Orders = $this->orderRepository->findBy(['id' => $request->get('ids')]);
-
-        $count = 0;
-        foreach ($Orders as $Order) {
-            try {
-                // TODO: should support event for plugin customize
-                // 編集前の受注情報を保持
-                $OriginOrder = clone $Order;
-
-                $Order->setOrderStatus($OrderStatus);
-
-                $purchaseContext = new PurchaseContext($OriginOrder, $OriginOrder->getCustomer());
-
-                $flowResult = $this->purchaseFlow->validate($Order, $purchaseContext);
-                if ($flowResult->hasWarning()) {
-                    foreach ($flowResult->getWarning() as $warning) {
-                        $msg = $this->translator->trans('admin.order.index.bulk_warning', [
-                          '%orderId%' => $Order->getId(),
-                          '%message%' => $warning->getMessage(),
-                        ]);
-                        $this->addWarning($msg, 'admin');
-                    }
-                }
-
-                if ($flowResult->hasError()) {
-                    foreach ($flowResult->getErrors() as $error) {
-                        $msg = $this->translator->trans('admin.order.index.bulk_error', [
-                          '%orderId%' => $Order->getId(),
-                          '%message%' => $error->getMessage(),
-                        ]);
-                        $this->addError($msg, 'admin');
-                    }
-                    continue;
-                }
-
-                try {
-                    $this->purchaseFlow->commit($Order, $purchaseContext);
-                } catch (PurchaseException $e) {
-                    $msg = $this->translator->trans('admin.order.index.bulk_error', [
-                      '%orderId%' => $Order->getId(),
-                      '%message%' => $e->getMessage(),
-                    ]);
-                    $this->addError($msg, 'admin');
-                    continue;
-                }
-
-                $this->orderRepository->save($Order);
-
-                $count++;
-            } catch (\Exception $e) {
-                $this->addError('#'.$Order->getId().': '.$e->getMessage(), 'admin');
-            }
-        }
-        try {
-            if ($count) {
-                $this->entityManager->flush();
-                $msg = $this->translator->trans('admin.order.index.bulk_order_status_success_count', [
-                    '%count%' => $count,
-                    '%status%' => $OrderStatus->getName(),
-                ]);
-                $this->addSuccess($msg, 'admin');
-            }
-        } catch (\Exception $e) {
-            log_error('Bulk order status error', [$e]);
-            $this->addError('admin.flash.register_failed', 'admin');
-        }
-
-        return $this->redirectToRoute('admin_order', ['resume' => Constant::ENABLED]);
     }
 
     /**

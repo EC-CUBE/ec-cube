@@ -37,6 +37,26 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    public function 詳細検索設定()
+    {
+        $this->tester->click(self::$詳細検索ボタン);
+        $this->tester->waitForElementVisible(['id' => 'searchDetail']);
+        $this->tester->wait(0.5);
+        return $this;
+    }
+
+    public function 入力_ご注文者お名前($value)
+    {
+        $this->tester->fillField(['id' => 'admin_search_order_name'], $value);
+        return $this;
+    }
+
+    public function 入力_ご注文者お名前フリガナ($value)
+    {
+        $this->tester->fillField(['id' => 'admin_search_order_kana'], $value);
+        return $this;
+    }
+
     public function 詳細検索_電話番号($value = '')
     {
         $this->tester->click(self::$詳細検索ボタン);
@@ -166,8 +186,34 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
     {
         $this->tester->selectOption('#option_bulk_status', $option);
         $this->tester->click('#form_bulk #btn_bulk_status');
-        $this->tester->waitForElementVisible('#confirmBulkModal', 5);
-        $this->tester->click('#confirmBulkModal button[data-action="execute"]');
         return $this;
+    }
+
+    public function 出荷済にする($rowNum)
+    {
+        $this->tester->click("#search_result > tbody > tr:nth-child($rowNum) a[data-type='status']");
+        $this->tester->waitForElementVisible(['id' => 'sentUpdateModal']);
+        $this->tester->wait(2);
+        $this->tester->click(['id' => 'notificationMail']);
+        $this->tester->scrollTo(['id' => 'bulkChange']);
+        $this->tester->click(['id' => 'bulkChange']);
+        $this->tester->wait(5);
+        $this->tester->waitForElementVisible(['id' => 'bulkChangeComplete']);
+        return $this;
+    }
+
+    public function 取得_出荷伝票番号($rowNum)
+    {
+        return $this->tester->grabValueFrom("#search_result > tbody > tr:nth-child(${rowNum}) > td:nth-child(8) > div > input");
+    }
+
+    public function 取得_出荷日($rowNum)
+    {
+        return $this->tester->grabTextFrom("#search_result > tbody > tr:nth-child(${rowNum}) > td:nth-child(7)");
+    }
+
+    public function 取得_ステータス($rowNum)
+    {
+        return $this->tester->grabTextFrom("#search_result > tbody > tr:nth-child(${rowNum}) > td:nth-child(4) > span");
     }
 }
