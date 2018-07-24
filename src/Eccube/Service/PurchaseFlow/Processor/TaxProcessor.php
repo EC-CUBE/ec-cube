@@ -59,8 +59,8 @@ class TaxProcessor implements ItemPreprocessor
         // 税区分: 非課税, 不課税
         if ($item->getTaxType()->getId() != TaxType::TAXATION) {
             $item->setTax(0);
+            $item->setTaxRate(0);
             $item->setRoundingType(null);
-            $item->setTaxRate(null);
             $item->setTaxRuleId(null);
 
             return;
@@ -82,8 +82,8 @@ class TaxProcessor implements ItemPreprocessor
         }
 
         $item->setTax($tax);
-        $item->setRoundingType($TaxRule->getRoundingType());
         $item->setTaxRate($TaxRule->getTaxRate());
+        $item->setRoundingType($TaxRule->getRoundingType());
         $item->setTaxRuleId($TaxRule->getId());
     }
 }
