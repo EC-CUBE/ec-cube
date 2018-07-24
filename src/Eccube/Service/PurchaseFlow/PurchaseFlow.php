@@ -17,6 +17,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\ItemInterface;
 use Eccube\Entity\Order;
+use Eccube\Entity\OrderItem;
 
 class PurchaseFlow
 {
@@ -273,8 +274,11 @@ class PurchaseFlow
     {
         $total = $itemHolder->getItems()
             ->reduce(function ($sum, ItemInterface $item) {
-                $sum += ($item->getPriceIncTax() - $item->getPrice()) * $item->getQuantity();
-
+                if ($item instanceof OrderItem) {
+                    $sum += $item->getTax();
+                } else {
+                    $sum += ($item->getPriceIncTax() - $item->getPrice()) * $item->getQuantity();
+                }
                 return $sum;
             }, 0);
         $itemHolder->setTax($total);
