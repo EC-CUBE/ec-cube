@@ -19,6 +19,7 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Repository\Master\CustomerStatusRepository;
 use Eccube\Service\MailService;
+use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -96,6 +97,7 @@ class WithdrawController extends AbstractController
                     // 退会ステータスに変更
                     $CustomerStatus = $this->customerStatusRepository->find(CustomerStatus::WITHDRAWING);
                     $Customer->setStatus($CustomerStatus);
+                    $Customer->setEmail(StringUtil::random(60).'@dummy.dummy');
 
                     $this->entityManager->flush();
 
