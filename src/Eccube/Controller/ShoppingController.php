@@ -215,15 +215,15 @@ class ShoppingController extends AbstractShoppingController
         $form = $this->parameterBag->get(OrderType::class);
         $form->handleRequest($request);
 
+        $form = $this->parameterBag->get(OrderType::class);
+        $Order = $this->parameterBag->get('Order');
+
         // フォームエラーチェック
         if (!$form->isValid()) {
             $response = $this->forwardToRoute('shopping_redirect_to');
 
             return $response;
         }
-
-        $form = $this->parameterBag->get(OrderType::class);
-        $Order = $this->parameterBag->get('Order');
 
         $flowResult = $this->validatePurchaseFlow($Order);
         if ($flowResult->hasWarning() || $flowResult->hasError()) {
