@@ -286,13 +286,18 @@ class EA04OrderCest
         $OrderListPage->すべてチェック();
         $OrderListPage->要素をクリック('#form_bulk #bulkExportPdf');
 
+        // 別ウィンドウ
+        $I->switchToWindow('newwin');
+
         // Check redirect to form pdf information
         $I->see('受注管理帳票出力', OrderManagePage::$タイトル要素);
+
+        $I->closeTab();
     }
 
-    public function order_輸出pdfダウンロード(\AcceptanceTester $I)
+    public function order_出力pdfダウンロード(\AcceptanceTester $I)
     {
-        $I->wantTo('EA0401-UC02-T01 輸出pdfダウンロード');
+        $I->wantTo('EA0401-UC02-T01 出力pdfダウンロード');
 
         $findOrders = Fixtures::get('findOrders'); // Closure
         $TargetOrders = array_filter($findOrders(), function ($Order) {
@@ -303,6 +308,10 @@ class EA04OrderCest
 
         $OrderListPage->すべてチェック();
         $OrderListPage->要素をクリック('#form_bulk #bulkExportPdf');
+
+        // 別ウィンドウ
+        $I->switchToWindow('newwin');
+
         $I->see('受注管理帳票出力', OrderManagePage::$タイトル要素);
 
         $OrderListPage->PDFフォームを入力(['id' => 'order_pdf_note1'], 'Test note first');
@@ -314,6 +323,8 @@ class EA04OrderCest
         $I->wait(5);
         $filename = $I->getLastDownloadFile('/^nouhinsyo\.pdf$/');
         $I->assertTrue(file_exists($filename));
+
+        $I->closeTab();
     }
 
     public function order_ー括受注のステータス変更(\AcceptanceTester $I)
