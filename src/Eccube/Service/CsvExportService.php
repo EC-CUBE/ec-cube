@@ -16,6 +16,7 @@ namespace Eccube\Service;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
+use Eccube\Form\Type\Admin\SearchOrderType;
 use Eccube\Form\Type\Admin\SearchProductType;
 use Eccube\Repository\CsvRepository;
 use Eccube\Repository\CustomerRepository;
@@ -394,7 +395,7 @@ class CsvExportService
     {
         $session = $request->getSession();
         $builder = $this->formFactory
-            ->createBuilder(SearchProductType::class);
+            ->createBuilder(SearchOrderType::class);
         $searchForm = $builder->getForm();
 
         $viewData = $session->get('eccube.admin.order.search', []);

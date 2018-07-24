@@ -322,7 +322,7 @@ $(function() {
                     <h2>お問い合わせ</h2>
                 </div>
                 <div class="ec-input">
-                    {{ Order.message }}
+                    {{ Order.message|nl2br }}
                     {{ form_widget(form.message, {'type': 'hidden'}) }}
                 </div>
             </div>

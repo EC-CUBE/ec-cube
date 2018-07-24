@@ -31,7 +31,6 @@ use Eccube\Doctrine\DBAL\Types\UTCDateTimeType;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeTzType;
 use Eccube\Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Eccube\Doctrine\Query\QueryCustomizer;
-use Eccube\Plugin\ConfigManager;
 use Eccube\Service\Payment\PaymentMethodInterface;
 use Eccube\Service\PurchaseFlow\ItemHolderPreprocessor;
 use Eccube\Service\PurchaseFlow\ItemHolderValidator;
@@ -44,6 +43,7 @@ use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 
@@ -229,10 +229,18 @@ class Kernel extends BaseKernel
         ));
 
         // Plugin
-        $pluginConfigs = ConfigManager::getPluginConfigAll($this->isDebug());
-        foreach ($pluginConfigs as $config) {
-            $code = $config['config']['code'];
-            if (file_exists($projectDir.'/app/Plugin/'.$code.'/Entity')) {
+        $pluginDir = $projectDir.'/app/Plugin';
+        $finder = (new Finder())
+            ->in($pluginDir)
+            ->sortByName()
+            ->depth(0)
+            ->directories();
+        $plugins = array_map(function ($dir) {
+            return $dir->getBaseName();
+        }, iterator_to_array($finder));
+
+        foreach ($plugins as $code) {
+            if (file_exists($pluginDir.'/'.$code.'/Entity')) {
                 $container->addCompilerPass(DoctrineOrmMappingsPass::createAnnotationMappingDriver(
                     ['Plugin\\'.$code.'\\Entity'],
                     ['%kernel.project_dir%/app/Plugin/'.$code.'/Entity']

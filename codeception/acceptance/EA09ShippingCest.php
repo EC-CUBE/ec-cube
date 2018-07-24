@@ -3,6 +3,7 @@
 use Codeception\Util\Fixtures;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Order;
+use Eccube\Entity\Master\OrderStatus;
 use Page\Admin\OrderEditPage;
 use Page\Admin\OrderManagePage;
 use Page\Admin\ShippingCsvUploadPage;
@@ -97,29 +98,36 @@ class EA09ShippingCest
     {
         $I->wantTo('EA0903-UC04-T01 出荷CSV登録');
 
+        $entityManager = Fixtures::get('entityManager');
         /* @var Customer $Customer */
         $Customer = (Fixtures::get('createCustomer'))();
         /* @var Order[] $Orders */
         $Orders = (Fixtures::get('createOrders'))($Customer, 3);
+        // 入金済みに更新しておく
+        $Status = $entityManager->getRepository('Eccube\Entity\Master\OrderStatus')->find(OrderStatus::PAID);
+        foreach ($Orders as $newOrder) {
+            $newOrder->setOrderStatus($Status);
+        }
+        $entityManager->flush();
 
         /*
          * 出荷再検索 出荷日/伝票番号が登録されていないことを確認
          */
 
-        $ShippingManagePage = ShippingManagePage::go($I)
+        $OrderManagePage = OrderManagePage::go($I)
             ->詳細検索設定()
             ->入力_ご注文者お名前($Customer->getName01().$Customer->getName02())
             ->入力_ご注文者お名前フリガナ($Customer->getKana01().$Customer->getKana02())
             ->検索();
 
-        $I->see('検索結果 : 3 件が該当しました', ShippingManagePage::$検索結果_メッセージ);
+        $I->see('検索結果：3件が該当しました', OrderManagePage::$検索結果_メッセージ);
 
-        $I->assertEquals('未登録', $ShippingManagePage->取得_出荷伝票番号(1));
-        $I->assertEquals('未登録', $ShippingManagePage->取得_出荷伝票番号(2));
-        $I->assertEquals('未登録', $ShippingManagePage->取得_出荷伝票番号(3));
-        $I->assertEquals('-', $ShippingManagePage->取得_出荷日(1));
-        $I->assertEquals('-', $ShippingManagePage->取得_出荷日(2));
-        $I->assertEquals('-', $ShippingManagePage->取得_出荷日(3));
+        $I->assertEmpty($OrderManagePage->取得_出荷伝票番号(1));
+        $I->assertEmpty($OrderManagePage->取得_出荷伝票番号(2));
+        $I->assertEmpty($OrderManagePage->取得_出荷伝票番号(3));
+        $I->assertEquals('未発送', $OrderManagePage->取得_出荷日(1));
+        $I->assertEquals('未発送', $OrderManagePage->取得_出荷日(2));
+        $I->assertEquals('未発送', $OrderManagePage->取得_出荷日(3));
 
         /*
          * 出荷CSV登録
@@ -136,7 +144,6 @@ class EA09ShippingCest
         file_put_contents($csvFileName, $csv);
 
         try {
-
             ShippingCsvUploadPage::go($I)
                 ->入力_CSVファイル('shipping.csv')
                 ->CSVアップロード();
@@ -147,21 +154,90 @@ class EA09ShippingCest
              * 出荷再検索 出荷日/伝票番号が登録されたことを確認
              */
 
-            $ShippingManagePage = ShippingManagePage::go($I)
-                ->詳細検索設定()
-                ->入力_ご注文者お名前($Customer->getName01().$Customer->getName02())
-                ->入力_ご注文者お名前フリガナ($Customer->getKana01().$Customer->getKana02())
-                ->検索();
+            $OrderManagePage = OrderManagePage::go($I)
+            ->詳細検索設定()
+            ->入力_ご注文者お名前($Customer->getName01().$Customer->getName02())
+            ->入力_ご注文者お名前フリガナ($Customer->getKana01().$Customer->getKana02())
+            ->検索();
 
-            $I->see('検索結果 : 3 件が該当しました', ShippingManagePage::$検索結果_メッセージ);
+            $I->see('検索結果：3件が該当しました', OrderManagePage::$検索結果_メッセージ);
 
-            $I->assertEquals('00003', $ShippingManagePage->取得_出荷伝票番号(1));
-            $I->assertEquals('00002', $ShippingManagePage->取得_出荷伝票番号(2));
-            $I->assertEquals('00001', $ShippingManagePage->取得_出荷伝票番号(3));
-            $I->assertEquals('2018/03/03', $ShippingManagePage->取得_出荷日(1));
-            $I->assertEquals('2018/02/02', $ShippingManagePage->取得_出荷日(2));
-            $I->assertEquals('2018/01/01', $ShippingManagePage->取得_出荷日(3));
+            $I->assertEquals('00003', $OrderManagePage->取得_出荷伝票番号(1));
+            $I->assertEquals('00002', $OrderManagePage->取得_出荷伝票番号(2));
+            $I->assertEquals('00001', $OrderManagePage->取得_出荷伝票番号(3));
+            $I->assertEquals('2018/03/03', $OrderManagePage->取得_出荷日(1));
+            $I->assertEquals('2018/02/02', $OrderManagePage->取得_出荷日(2));
+            $I->assertEquals('2018/01/01', $OrderManagePage->取得_出荷日(3));
+            $I->assertEquals('発送済み', $OrderManagePage->取得_ステータス(1));
+            $I->assertEquals('発送済み', $OrderManagePage->取得_ステータス(2));
+            $I->assertEquals('発送済み', $OrderManagePage->取得_ステータス(3));
+        } finally {
+            if (file_exists($csvFileName)) {
+                unlink($csvFileName);
+            }
+        }
+    }
 
+    public function shipping_出荷CSV登録失敗(\AcceptanceTester $I)
+    {
+        $I->wantTo('EA0903-UC04-T02 出荷CSV登録失敗');
+
+        $entityManager = Fixtures::get('entityManager');
+        /* @var Customer $Customer */
+        $Customer = (Fixtures::get('createCustomer'))();
+        /* @var Order[] $Orders */
+        $Orders = (Fixtures::get('createOrders'))($Customer, 3);
+        // 決済処理中に更新しておく
+        $Status = $entityManager->getRepository('Eccube\Entity\Master\OrderStatus')->find(OrderStatus::PENDING);
+        foreach ($Orders as $newOrder) {
+            $newOrder->setOrderStatus($Status);
+        }
+        $entityManager->flush();
+
+        /*
+         * 出荷再検索 出荷日/伝票番号が登録されていないことを確認
+         */
+
+        $OrderManagePage = OrderManagePage::go($I)
+            ->詳細検索設定()
+            ->入力_ご注文者お名前($Customer->getName01().$Customer->getName02())
+            ->入力_ご注文者お名前フリガナ($Customer->getKana01().$Customer->getKana02())
+            ->検索();
+
+        $I->see('検索結果：3件が該当しました', OrderManagePage::$検索結果_メッセージ);
+
+        $I->assertEmpty($OrderManagePage->取得_出荷伝票番号(1));
+        $I->assertEmpty($OrderManagePage->取得_出荷伝票番号(2));
+        $I->assertEmpty($OrderManagePage->取得_出荷伝票番号(3));
+        $I->assertEquals('未発送', $OrderManagePage->取得_出荷日(1));
+        $I->assertEquals('未発送', $OrderManagePage->取得_出荷日(2));
+        $I->assertEquals('未発送', $OrderManagePage->取得_出荷日(3));
+
+        /*
+         * 出荷CSV登録
+         */
+
+        $csv = implode(PHP_EOL, [
+            '出荷ID,出荷伝票番号,出荷日',
+            $Orders[0]->getShippings()[0]->getId().',00001,2018-01-01',
+            $Orders[1]->getShippings()[0]->getId().',00002,2018-02-02',
+            $Orders[2]->getShippings()[0]->getId().',00003,2018-03-03',
+        ]);
+
+        $csvFileName = codecept_data_dir().'/shipping.csv';
+        file_put_contents($csvFileName, $csv);
+
+        try {
+            ShippingCsvUploadPage::go($I)
+                ->入力_CSVファイル('shipping.csv')
+                ->CSVアップロード();
+
+            $I->see(sprintf('%s: %s から %s へステータス変更できませんでした', $Orders[0]->getShippings()[0]->getId(), '決済処理中', '発送済み'),
+                    '#upload_file_box__upload_error--1');
+            $I->see(sprintf('%s: %s から %s へステータス変更できませんでした', $Orders[1]->getShippings()[0]->getId(), '決済処理中', '発送済み'),
+                    '#upload_file_box__upload_error--2');
+            $I->see(sprintf('%s: %s から %s へステータス変更できませんでした', $Orders[2]->getShippings()[0]->getId(), '決済処理中', '発送済み'),
+                    '#upload_file_box__upload_error--3');
         } finally {
             if (file_exists($csvFileName)) {
                 unlink($csvFileName);
