@@ -227,7 +227,6 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
         $OrderItem = new OrderItem();
         $OrderItem->setProductName('ポイント値引')
             ->setPrice($discount)
-            ->setPriceIncTax($discount)
             ->setTaxRate(8)
             ->setQuantity(1)
             ->setOrderItemType($DiscountType)

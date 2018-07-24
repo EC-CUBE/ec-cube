@@ -16,6 +16,7 @@ namespace Eccube\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\TaxDisplayType;
+use Eccube\Entity\Master\TaxType;
 
 /**
  * OrderItem
@@ -30,30 +31,27 @@ class OrderItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
 {
     use PointRateTrait;
 
-    private $price_inc_tax = null;
-
-    /**
-     * Set price IncTax
-     *
-     * @param  string       $price_inc_tax
-     *
-     * @return OrderItem
-     */
-    public function setPriceIncTax($price_inc_tax)
-    {
-        $this->price_inc_tax = $price_inc_tax;
-
-        return $this;
-    }
-
     /**
      * Get price IncTax
      *
-     * @return string
+     * @return integer
      */
     public function getPriceIncTax()
     {
-        return $this->price_inc_tax;
+        $TaxType = $this->getTaxType();
+        $TaxDisplayType = $this->getTaxDisplayType();
+        if (is_object($TaxType) && is_object($TaxDisplayType)) {
+            // 課税かつ外税の場合にのみ商品単価に消費税を足した金額を返す
+            if ($TaxType->getId() == TaxType::TAXATION && $TaxDisplayType->getId() == TaxDisplayType::EXCLUDED) {
+                // 課税かつ外税の場合は商品単価に消費税を足して返す。
+                return round($this->getPrice() + $this->getPrice() * $this->getTaxRate() / 100, 0);
+            } else {
+                // （課税かつ外税）以外の場合は商品単価をそのまま返す。
+                return $this->getPrice();
+            }
+        }
+
+        return $this->getPrice();
     }
 
     /**
@@ -61,21 +59,6 @@ class OrderItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
      */
     public function getTotalPrice()
     {
-        $TaxDisplayType = $this->getTaxDisplayType();
-        if (is_object($TaxDisplayType)) {
-            switch ($TaxDisplayType->getId()) {
-                // 税込価格
-                case TaxDisplayType::INCLUDED:
-                    $this->setPriceIncTax($this->getPrice());
-                    break;
-                    // 税別価格の場合は税額を加算する
-                case TaxDisplayType::EXCLUDED:
-                    // TODO 課税規則を考慮する
-                    $this->setPriceIncTax($this->getPrice() + $this->getPrice() * $this->getTaxRate() / 100);
-                    break;
-            }
-        }
-
         return $this->getPriceIncTax() * $this->getQuantity();
     }
 

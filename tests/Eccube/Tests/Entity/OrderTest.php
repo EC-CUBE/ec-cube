@@ -154,7 +154,7 @@ class OrderTest extends EccubeTestCase
                 ->setOrder($Order)
                 ->setProduct($Product)
                 ->setProductName('name')
-                ->setPriceIncTax('1000')
+                ->setPrice(1000)
                 ->setQuantity($quantity)
                 ->setProductClass($ProductClass)
                 ->setClassCategoryName1('name1')

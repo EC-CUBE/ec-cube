@@ -271,6 +271,7 @@ class PurchaseFlow
      */
     protected function calculateTax(ItemHolderInterface $itemHolder)
     {
+        // FIXME: $item->getPrice()で税抜き価格が得られるとは限らないので以下の計算は必ずしも正確では無い
         $total = $itemHolder->getItems()
             ->reduce(function ($sum, ItemInterface $item) {
                 $sum += ($item->getPriceIncTax() - $item->getPrice()) * $item->getQuantity();

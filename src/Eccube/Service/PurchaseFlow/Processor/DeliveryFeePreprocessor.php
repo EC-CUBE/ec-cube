@@ -122,7 +122,6 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
             $OrderItem = new OrderItem();
             $OrderItem->setProductName(trans('deliveryfeeprocessor.label.shippint_charge'))
                 ->setPrice($Shipping->getShippingDeliveryFee())
-                ->setPriceIncTax($Shipping->getShippingDeliveryFee())
                 ->setTaxRule($TaxRule->getId())
                 ->setTaxRate($TaxRule->getTaxRate())
                 ->setQuantity(1)

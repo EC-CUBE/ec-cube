@@ -136,20 +136,6 @@ class EditController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // TODO: Should move logic out of controller such as service, modal
-
-            // FIXME 税額計算は CalculateService で処理する. ここはテストを通すための暫定処理
-            // see EditControllerTest::testOrderProcessingWithTax
-            $OrderItems = $TargetShipping->getOrderItems();
-            $taxtotal = 0;
-            foreach ($OrderItems as $OrderItem) {
-                $tax = $this->taxRuleService
-                    ->calcTax($OrderItem->getPrice(), $OrderItem->getTaxRate(), $OrderItem->getTaxRule());
-                $OrderItem->setPriceIncTax($OrderItem->getPrice() + $tax);
-
-                $taxtotal += $tax * $OrderItem->getQuantity();
-            }
-
             log_info('出荷登録開始', [$TargetShipping->getId()]);
             // TODO 在庫の有無や販売制限数のチェックなども行う必要があるため、完了処理もcaluclatorのように抽象化できないか検討する.
             // TODO 後続にある会員情報の更新のように、完了処理もcaluclatorのように抽象化できないか検討する.

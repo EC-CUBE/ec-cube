@@ -15,6 +15,7 @@ namespace Eccube\Tests\Web\Admin\Order;
 
 use Eccube\Common\Constant;
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\Master\OrderItemType;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\CartService;
@@ -370,11 +371,14 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
         //税金計算
         $totalTax = 0;
-        foreach ($formDataForEdit['OrderItems'] as $indx => $orderItem) {
-            //商品数変更3個追加
-            $formDataForEdit['OrderItems'][$indx]['quantity'] = $orderItem['quantity'] + 3;
-            $tax = (int) $this->container->get(TaxRuleService::class)->calcTax($orderItem['price'], $orderItem['tax_rate'], $orderItem['tax_rule']);
-            $totalTax += $tax * $formDataForEdit['OrderItems'][$indx]['quantity'];
+        foreach ($formDataForEdit['OrderItems'] as $index => $orderItem) {
+            if ($orderItem['order_item_type'] == OrderItemType::PRODUCT) {
+                //商品数変更3個追加
+                $formDataForEdit['OrderItems'][$index]['quantity'] = $orderItem['quantity'] + 3;
+            }
+            $tax = (int) $this->container->get(TaxRuleService::class)->calcTax($orderItem['price'],
+                $orderItem['tax_rate'], $orderItem['tax_rule']);
+            $totalTax += $tax * $formDataForEdit['OrderItems'][$index]['quantity'];
         }
 
         // 管理画面で受注編集する
@@ -386,11 +390,11 @@ class EditControllerTest extends AbstractEditControllerTestCase
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_edit', ['id' => $Order->getId()])));
-        $EditedOrderafterEdit = $this->orderRepository->find($Order->getId());
+        $EditedOrderAfterEdit = $this->orderRepository->find($Order->getId());
 
         //確認する「トータル税金」
         $this->expected = $totalTax;
-        $this->actual = $EditedOrderafterEdit->getTax();
+        $this->actual = $EditedOrderAfterEdit->getTax();
         $this->verify();
     }
 
