@@ -15,12 +15,11 @@ namespace Eccube\Controller\Admin\Order;
 
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\Csv;
 use Eccube\Entity\ExportCsvRow;
 use Eccube\Entity\Master\CsvType;
-use Eccube\Entity\Master\OrderStatus;
-use Eccube\Entity\Order;
+use Eccube\Entity\OrderItem;
 use Eccube\Entity\OrderPdf;
-use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\OrderPdfType;
@@ -34,21 +33,23 @@ use Eccube\Repository\OrderPdfRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Service\CsvExportService;
+use Eccube\Service\MailService;
 use Eccube\Service\OrderPdfService;
 use Eccube\Service\OrderStateMachine;
-use Eccube\Service\PurchaseFlow\PurchaseContext;
-use Eccube\Service\PurchaseFlow\PurchaseException;
-use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Util\FormUtil;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Eccube\Entity\Master\OrderStatus;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Eccube\Entity\Order;
+use Eccube\Entity\Shipping;
+use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -116,6 +117,11 @@ class OrderController extends AbstractController
     protected $orderStateMachine;
 
     /**
+     * @var MailService
+     */
+    protected $mailService;
+
+    /**
      * OrderController constructor.
      *
      * @param PurchaseFlow $orderPurchaseFlow
@@ -145,7 +151,8 @@ class OrderController extends AbstractController
         OrderPdfRepository $orderPdfRepository,
         OrderPdfService $orderPdfService,
         ValidatorInterface $validator,
-        OrderStateMachine $orderStateMachine
+        OrderStateMachine $orderStateMachine,
+        MailService $mailService
     ) {
         $this->purchaseFlow = $orderPurchaseFlow;
         $this->csvExportService = $csvExportService;
@@ -160,6 +167,7 @@ class OrderController extends AbstractController
         $this->orderPdfService = $orderPdfService;
         $this->validator = $validator;
         $this->orderStateMachine = $orderStateMachine;
+        $this->mailService = $mailService;
     }
 
     /**
@@ -449,6 +457,125 @@ class OrderController extends AbstractController
     }
 
     /**
+     * Update to order status
+     *
+     * @Method("PUT")
+     * @Route("/%eccube_admin_route%/shipping/{id}/order_status", requirements={"id" = "\d+"}, name="admin_shipping_update_order_status")
+     *
+     * @param Request $request
+     * @param Shipping $shipping
+     *
+     * @return RedirectResponse
+     */
+    public function updateOrderStatus(Request $request, Shipping $Shipping)
+    {
+        if (!($request->isXmlHttpRequest() && $this->isTokenValid())) {
+            return $this->json(['status' => 'NG'], 400);
+        }
+
+        $Order = $Shipping->getOrder();
+        $OrderStatus = $this->entityManager->find(OrderStatus::class, $request->get('order_status'));
+
+        if (!$OrderStatus) {
+            return $this->json(['status' => 'NG'], 400);
+        }
+
+        $result = [];
+        try {
+            if ($Order->getOrderStatus()->getId() == $OrderStatus->getId()) {
+                log_info('対応状況一括変更スキップ');
+                $result = ['message' => sprintf('%s:  ステータス変更をスキップしました', $Shipping->getId())];
+            } else {
+                if ($this->orderStateMachine->can($Order, $OrderStatus)) {
+                    $this->orderStateMachine->apply($Order, $OrderStatus);
+
+                    if ($request->get('notificationMail')) { // for SimpleStatusUpdate
+                        $this->mailService->sendShippingNotifyMail($Shipping);
+                        $Shipping->setMailSendDate(new \DateTime());
+                        $result['mail'] = true;
+                    } else {
+                        $result['mail'] = false;
+                    }
+                    $this->entityManager->flush($Shipping);
+                    $this->entityManager->flush($Order);
+
+                    // 会員の場合、購入回数、購入金額などを更新
+                    if ($Customer = $Order->getCustomer()) {
+                        $this->orderRepository->updateOrderSummary($Customer);
+                        $this->entityManager->flush($Customer);
+                    }
+                } else {
+                    $from = $Order->getOrderStatus()->getName();
+                    $to = $OrderStatus->getName();
+                    $result = ['message' => sprintf('%s: %s から %s へのステータス変更はできません', $Shipping->getId(), $from, $to)];
+                }
+
+                log_info('対応状況一括変更処理完了', [$Order->getId()]);
+            }
+        } catch (\Exception $e) {
+            log_error('予期しないエラーです', [$e->getMessage()]);
+
+            return $this->json(['status' => 'NG'], 500);
+        }
+
+        return $this->json(array_merge(['status' => 'OK'], $result));
+    }
+
+    /**
+     * Update to Tracking number.
+     *
+     * @Method("PUT")
+     * @Route("/%eccube_admin_route%/shipping/{id}/tracking_number", requirements={"id" = "\d+"}, name="admin_shipping_update_tracking_number")
+     *
+     * @param Request $request
+     * @param Shipping $shipping
+     *
+     * @return Response
+     */
+    public function updateTrackingNumber(Request $request, Shipping $shipping)
+    {
+        if (!($request->isXmlHttpRequest() && $this->isTokenValid())) {
+            return $this->json(['status' => 'NG'], 400);
+        }
+
+        $trackingNumber = mb_convert_kana($request->get('tracking_number'), 'a', 'utf-8');
+        /** @var \Symfony\Component\Validator\ConstraintViolationListInterface $errors */
+        $errors = $this->validator->validate(
+            $trackingNumber,
+            [
+                new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
+                new Assert\Regex(
+                    ['pattern' => '/^[0-9a-zA-Z-]+$/u', 'message' => trans('form.type.admin.nottrackingnumberstyle')]
+                ),
+            ]
+        );
+
+        if ($errors->count() != 0) {
+            log_info('送り状番号入力チェックエラー');
+            $messages = [];
+            /** @var \Symfony\Component\Validator\ConstraintViolationInterface $error */
+            foreach ($errors as $error) {
+                $messages[] = $error->getMessage();
+            }
+
+            return $this->json(['status' => 'NG', 'messages' => $messages], 400);
+        }
+
+        try {
+            $shipping->setTrackingNumber($trackingNumber);
+            $this->entityManager->flush($shipping);
+            log_info('送り状番号変更処理完了', [$shipping->getId()]);
+            $message = ['status' => 'OK', 'shipping_id' => $shipping->getId(), 'tracking_number' => $trackingNumber];
+
+            return $this->json($message);
+        } catch (\Exception $e) {
+            log_error('予期しないエラー', [$e->getMessage()]);
+
+            return $this->json(['status' => 'NG'], 500);
+        }
+    }
+
+    /**
      * @Route("/%eccube_admin_route%/order/export/pdf", name="admin_order_export_pdf")
      * @Template("@admin/Order/order_pdf.twig")
      *
@@ -548,7 +675,7 @@ class OrderController extends AbstractController
 
         $downloadKind = $form->get('download_kind')->getData();
 
-        // レスポンスヘッダーにContent-Dispositionをセットし、ファイル名をreceipt.pdfに指定
+        // レスポンスヘッダーにContent-Dispositionをセットし、ファイル名を指定
         if ($downloadKind == 1) {
             $response->headers->set('Content-Disposition', 'attachment; filename="'.$this->orderPdfService->getPdfFileName().'"');
         } else {
@@ -565,218 +692,5 @@ class OrderController extends AbstractController
         }
 
         return $response;
-    }
-
-    /**
-     * Update to order status
-     *
-     * @Method("PUT")
-     * @Route("/%eccube_admin_route%/shipping/{id}/order_status", requirements={"id" = "\d+"}, name="admin_shipping_update_order_status")
-     *
-     * @param Request $request
-     * @param Shipping $shipping
-     *
-     * @return RedirectResponse
-     */
-    public function updateOrderStatus(Request $request, Shipping $Shipping)
-    {
-        if (!($request->isXmlHttpRequest() && $this->isTokenValid())) {
-            return $this->json(['status' => 'NG'], 400);
-        }
-
-        $Order = $Shipping->getOrder();
-        $OrderStatus = $this->entityManager->find(OrderStatus::class, $request->get('order_status'));
-
-        $result = [];
-        try {
-            // 発送済みに変更された場合は、関連する出荷がすべて出荷済みになったら OrderStatus を変更する
-            if (OrderStatus::DELIVERED == $OrderStatus->getId()) {
-                if (!$Shipping->getShippingDate()) {
-                    $Shipping->setShippingDate(new \DateTime());
-                    $this->entityManager->flush($Shipping);
-                }
-                $RelateShippings = $Order->getShippings();
-                $allShipped = true;
-                foreach ($RelateShippings as $RelateShipping) {
-                    if (!$RelateShipping->getShippingDate()) {
-                        $allShipped = false;
-                        break;
-                    }
-                }
-                if ($allShipped) {
-                    if ($this->orderStateMachine->can($Order, $OrderStatus)) {
-                        $this->orderStateMachine->apply($Order, $OrderStatus);
-                    } else {
-                        $from = $Order->getOrderStatus()->getName();
-                        $to = $OrderStatus->getName();
-                        $result = ['message' => sprintf('%s: %s から %s へのステータス変更はできません', $Shipping->getId(), $from, $to)];
-                    }
-                }
-            } else {
-                if ($this->orderStateMachine->can($Order, $OrderStatus)) {
-                    $this->orderStateMachine->apply($Order, $OrderStatus);
-                } else {
-                    $from = $Order->getOrderStatus()->getName();
-                    $to = $OrderStatus->getName();
-                    $result = ['message' => sprintf('%s: %s から %s へのステータス変更はできません', $Shipping->getId(), $from, $to)];
-                }
-            }
-            $this->entityManager->flush($Order);
-
-            // 会員の場合、購入回数、購入金額などを更新
-            if ($Customer = $Order->getCustomer()) {
-                $this->orderRepository->updateOrderSummary($Customer);
-                $this->entityManager->flush($Customer);
-            }
-            log_info('対応状況一括変更処理完了', [$Order->getId()]);
-        } catch (\Exception $e) {
-            log_error('予期しないエラーです', [$e->getMessage()]);
-
-            return $this->json(['status' => 'NG'], 500);
-        }
-
-        return $this->json(array_merge(['status' => 'OK'], $result));
-    }
-
-    /**
-     * Bulk action to order status
-     *
-     * @Method("POST")
-     * @Route("/%eccube_admin_route%/order/bulk/order-status/{id}", requirements={"id" = "\d+"}, name="admin_order_bulk_order_status")
-     *
-     * @param Request $request
-     * @param OrderStatus $OrderStatus
-     *
-     * @return RedirectResponse
-     *
-     * @deprecated 使用していない
-     */
-    public function bulkOrderStatus(Request $request, OrderStatus $OrderStatus)
-    {
-        $this->isTokenValid();
-
-        /** @var Order[] $Orders */
-        $Orders = $this->orderRepository->findBy(['id' => $request->get('ids')]);
-
-        $count = 0;
-        foreach ($Orders as $Order) {
-            try {
-                // TODO: should support event for plugin customize
-                // 編集前の受注情報を保持
-                $OriginOrder = clone $Order;
-
-                $Order->setOrderStatus($OrderStatus);
-
-                $purchaseContext = new PurchaseContext($OriginOrder, $OriginOrder->getCustomer());
-
-                $flowResult = $this->purchaseFlow->validate($Order, $purchaseContext);
-                if ($flowResult->hasWarning()) {
-                    foreach ($flowResult->getWarning() as $warning) {
-                        $msg = $this->translator->trans('admin.order.index.bulk_warning', [
-                            '%orderId%' => $Order->getId(),
-                            '%message%' => $warning->getMessage(),
-                        ]);
-                        $this->addWarning($msg, 'admin');
-                    }
-                }
-
-                if ($flowResult->hasError()) {
-                    foreach ($flowResult->getErrors() as $error) {
-                        $msg = $this->translator->trans('admin.order.index.bulk_error', [
-                            '%orderId%' => $Order->getId(),
-                            '%message%' => $error->getMessage(),
-                        ]);
-                        $this->addError($msg, 'admin');
-                    }
-                    continue;
-                }
-
-                try {
-                    $this->purchaseFlow->commit($Order, $purchaseContext);
-                } catch (PurchaseException $e) {
-                    $msg = $this->translator->trans('admin.order.index.bulk_error', [
-                        '%orderId%' => $Order->getId(),
-                        '%message%' => $e->getMessage(),
-                    ]);
-                    $this->addError($msg, 'admin');
-                    continue;
-                }
-
-                $this->orderRepository->save($Order);
-
-                $count++;
-            } catch (\Exception $e) {
-                $this->addError('#'.$Order->getId().': '.$e->getMessage(), 'admin');
-            }
-        }
-        try {
-            if ($count) {
-                $this->entityManager->flush();
-                $msg = $this->translator->trans('admin.order.index.bulk_order_status_success_count', [
-                    '%count%' => $count,
-                    '%status%' => $OrderStatus->getName(),
-                ]);
-                $this->addSuccess($msg, 'admin');
-            }
-        } catch (\Exception $e) {
-            log_error('Bulk order status error', [$e]);
-            $this->addError('admin.flash.register_failed', 'admin');
-        }
-
-        return $this->redirectToRoute('admin_order', ['resume' => Constant::ENABLED]);
-    }
-
-    /**
-     * Update to Tracking number.
-     *
-     * @Method("PUT")
-     * @Route("/%eccube_admin_route%/shipping/{id}/tracking_number", requirements={"id" = "\d+"}, name="admin_shipping_update_tracking_number")
-     *
-     * @param Request $request
-     * @param Shipping $shipping
-     *
-     * @return Response
-     */
-    public function updateTrackingNumber(Request $request, Shipping $shipping)
-    {
-        if (!($request->isXmlHttpRequest() && $this->isTokenValid())) {
-            return $this->json(['status' => 'NG'], 400);
-        }
-
-        $trackingNumber = mb_convert_kana($request->get('tracking_number'), 'a', 'utf-8');
-        /** @var \Symfony\Component\Validator\ConstraintViolationListInterface $errors */
-        $errors = $this->validator->validate(
-            $trackingNumber,
-            [
-                new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
-                new Assert\Regex(
-                    ['pattern' => '/^[0-9a-zA-Z-]+$/u', 'message' => trans('form.type.admin.nottrackingnumberstyle')]
-                ),
-            ]
-        );
-
-        if ($errors->count() != 0) {
-            log_info('送り状番号入力チェックエラー');
-            $messages = [];
-            /** @var \Symfony\Component\Validator\ConstraintViolationInterface $error */
-            foreach ($errors as $error) {
-                $messages[] = $error->getMessage();
-            }
-
-            return $this->json(['status' => 'NG', 'messages' => $messages], 400);
-        }
-
-        try {
-            $shipping->setTrackingNumber($trackingNumber);
-            $this->entityManager->flush($shipping);
-            log_info('送り状番号変更処理完了', [$shipping->getId()]);
-            $message = ['status' => 'OK', 'shipping_id' => $shipping->getId(), 'tracking_number' => $trackingNumber];
-
-            return $this->json($message);
-        } catch (\Exception $e) {
-            log_error('予期しないエラー', [$e->getMessage()]);
-
-            return $this->json(['status' => 'NG'], 500);
-        }
     }
 }

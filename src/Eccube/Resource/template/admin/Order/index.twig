@@ -78,13 +78,11 @@ file that was distributed with this source code.
                         $('#notificationMail').attr('type', 'hidden');
                         $('.notificationMail').hide();
                         $('#viewEmail').removeClass('collapse').addClass('collapsed');
+                        ;
                         break;
-                    case 'status':
-                        updater = new BulkStatusUpdate(modal, eventTarget); // bulk-update is always true
-                        break;
-                    case 'update':
                     default:
-                        updater = eventTarget.data('bulk-update') ? new BulkUpdate(modal, eventTarget) : new SimpleUpdate(modal, eventTarget);
+                    case 'status':
+                        updater = new SimpleStatusUpdate(modal, eventTarget); // bulk-update is always false
                         $('#notificationMail').attr('type', 'checkbox');
                         $('.notificationMail').show();
                         $('#viewEmail').removeClass('collapsed').addClass('collapse');
@@ -100,8 +98,9 @@ file that was distributed with this source code.
                     .attr({
                         'data-bulk-update': eventTarget.data('bulk-update'),
                         'data-type': eventTarget.data('type'),
-                        'data-mark-as-shipped-url': eventTarget.data('mark-as-shipped-url'),
-                        'data-notify-mail-url': eventTarget.data('notify-mail-url')
+                        'data-update-status-url': eventTarget.data('update-status-url'),
+                        'data-notify-mail-url': eventTarget.data('notify-mail-url'),
+                        'data-update-status-id': eventTarget.data('update-status-id')
                     })
                     .text(updater.modalButton);
             });
@@ -116,19 +115,20 @@ file that was distributed with this source code.
                     case 'mail':
                         updater = eventTarget.data('bulk-update') ? new BulkSendMail(modal, eventTarget) : new SimpleSendMail(modal, eventTarget);
                         break;
-                    case 'status':
-                        if ($('#option_bulk_status').val() == '') {
-                            alert('対応状況を選択してください');
-                            return;
-                        }
-                        updater = new BulkStatusUpdate(modal, eventTarget); // bulk-update is always true
-                        modal.modal();
-                        break;
-                    case 'update':
-                    default:
-                        updater = eventTarget.data('bulk-update') ? new BulkUpdate(modal, eventTarget) : new SimpleUpdate(modal, eventTarget);
-                }
 
+                    default:
+                    case 'status':
+                        if (eventTarget.data('bulk-update')) {
+                            if ($('#option_bulk_status').val() == '') {
+                                alert('対応状況を選択してください');
+                                return;
+                            }
+                            updater = new BulkStatusUpdate(modal, eventTarget);
+                            modal.modal();
+                        } else {
+                            updater = new SimpleStatusUpdate(modal, eventTarget);
+                        }
+                }
                 $('.modal-title', modal).text(updater.modalTitle);
                 $('.modal-body > p', modal).text("{{ 'admin.shipping.index.827'|trans }}");
                 $('button', modal).hide();
@@ -263,7 +263,7 @@ file that was distributed with this source code.
             modalMessage: "{{ 'admin.shipping.index.830'|trans }}",
             modalButton: "{{ 'admin.shipping.index.816'|trans }}",
             getPreviewUrl: function() {
-                return $('input[data-preview-notify-mail-url]:checked').data('preview-notify-mail-url');
+                return null;
             },
             getTotalCount: function() {
                 return 1;
@@ -309,65 +309,6 @@ file that was distributed with this source code.
         };
 
         /*
-         * 個別更新
-         */
-        function SimpleUpdate(modal, relatedTarget) {
-            ConfirmationModal.call(this, modal);
-            this.eventTarget = relatedTarget;
-        }
-
-        // extends super class
-        SimpleUpdate.prototype = Object.create(ConfirmationModal.prototype, {
-            constructor: {
-                value: ConfirmationModal
-            },
-            getPreviewUrl: {
-                value: function() {
-                    return this.eventTarget.data('preview-notify-mail-url');
-                }
-            },
-            getPromises: {
-                value: function(progress) {
-                    var url = this.eventTarget.data('mark-as-shipped-url');
-                    return ConfirmationModal.prototype.getPromises.call(this, progress, url);
-                }
-            }
-        });
-
-        /*
-         * 出荷一括更新(使用していない)
-         */
-        function BulkUpdate(modal) {
-            ConfirmationModal.call(this, modal);
-        }
-
-        // extend super class
-        BulkUpdate.prototype = Object.create(ConfirmationModal.prototype, {
-            constructor: {
-                value: ConfirmationModal
-            },
-            modalTitle: {
-                value: '{{ 'admin.shipping.index.807'|trans }}'
-            },
-            modalMessage: {
-                value: "{{ 'admin.shipping.index.808'|trans }}"
-            },
-            getTotalCount: {
-                value: function() {
-                    return $('input[data-mark-as-shipped-url]:checked').length;
-                }
-            },
-            getPromises: {
-                value: function(progress) {
-                    return $('input[data-mark-as-shipped-url]:checked').map(function() {
-                        var url = $(this).data('mark-as-shipped-url');
-                        return ConfirmationModal.prototype.getPromises.call(this, progress, url);
-                    });
-                }
-            }
-        });
-
-        /*
          * ステータス一括更新
          */
         function BulkStatusUpdate(modal, eventTarget) {
@@ -381,10 +322,7 @@ file that was distributed with this source code.
                 value: ConfirmationModal
             },
             modalTitle: {
-                value: '対応状況を更新します。'
-            },
-            modalMessage: {
-                value: "{{ 'admin.shipping.index.808'|trans }}"
+                value: "{{ 'admin.order.index.option_bulk_change_status'|trans }}"
             },
             getTotalCount: {
                 value: function() {
@@ -403,17 +341,62 @@ file that was distributed with this source code.
         });
 
         /*
-         * メール一括送信
+         * ステータス個別更新
          */
-        function BulkSendMail(modal) {
-            BulkUpdate.call(this, modal);
+        function SimpleStatusUpdate(modal, eventTarget) {
+            ConfirmationModal.call(this, modal);
+            this.eventTarget = eventTarget;
             this.notifierCompleteMessage = '';
         }
 
-        // extend BulkUpdate
-        BulkSendMail.prototype = Object.create(BulkUpdate.prototype, {
+        // extend super class
+        SimpleStatusUpdate.prototype = Object.create(ConfirmationModal.prototype, {
             constructor: {
-                value: BulkUpdate
+                value: ConfirmationModal
+            },
+            getPreviewUrl: {
+                value: function() {
+                    return this.eventTarget.data('preview-notify-mail-url');
+                }
+            },
+            progress: {
+                value: function(result, progress) {
+                    if (result.mail) {
+                        this.mailCount++;
+                        this.notifierCompleteMessage = '{{ 'admin.shipping.index.837'|trans }}'.replace(/%count%/, this.mailCount);
+                    }
+                    ConfirmationModal.prototype.progress.call(this, result, progress);
+                }
+            },
+            always: {
+                value: function(result) {
+                    ConfirmationModal.prototype.always.call(this, result);
+                    $('.modal-body > p', this.modal).text("{{ 'admin.shipping.index.828'|trans }}" + this.notifierCompleteMessage);
+                }
+            },
+            getPromises: {
+                value: function(progress) {
+                    var url = this.eventTarget.data('update-status-url');
+                    var data = {
+                        'order_status': this.eventTarget.data('update-status-id'),
+                        'notificationMail': $('input#notificationMail:checked').val()
+                    };
+                    return ConfirmationModal.prototype.getPromises.call(this, progress, url, data);
+                }
+            }
+        });
+
+        /*
+         * メール一括送信
+         */
+        function BulkSendMail(modal) {
+            SimpleStatusUpdate.call(this, modal);
+        }
+
+        // extend BulkUpdate
+        BulkSendMail.prototype = Object.create(SimpleStatusUpdate.prototype, {
+            constructor: {
+                value: SimpleStatusUpdate
             },
             modalTitle: {
                 value: "{{ 'admin.shipping.index.832'|trans }}"
@@ -424,24 +407,14 @@ file that was distributed with this source code.
             modalButton: {
                 value: "{{ 'admin.shipping.index.834'|trans }}"
             },
+            getPreviewUrl: {
+                value: function() {
+                    return $('input[data-preview-notify-mail-url]:checked').data('preview-notify-mail-url');
+                }
+            },
             getTotalCount: {
                 value: function() {
                     return $('input[data-preview-notify-mail-url]:checked').length;
-                }
-            },
-            progress: {
-                value: function(result, progress) {
-                    if (result.mail) {
-                        this.mailCount++;
-                        this.notifierCompleteMessage = '{{ 'admin.shipping.index.837'|trans }}'.replace(/%count%/, this.mailCount);
-                    }
-                    BulkUpdate.prototype.progress.call(this, result, progress);
-                }
-            },
-            always: {
-                value: function(result) {
-                    BulkUpdate.prototype.always.call(this, result);
-                    $('.modal-body > p', this.modal).text("{{ 'admin.shipping.index.828'|trans }}" + this.notifierCompleteMessage);
                 }
             },
             getPromises: {
@@ -458,13 +431,13 @@ file that was distributed with this source code.
          * 個別メール送信
          */
         function SimpleSendMail(modal, relatedTarget) {
-            SimpleUpdate.call(this, modal, relatedTarget);
+            SimpleStatusUpdate.call(this, modal, relatedTarget);
         }
 
         // extends SimpleUpdate
-        SimpleSendMail.prototype = Object.create(SimpleUpdate.prototype, {
+        SimpleSendMail.prototype = Object.create(SimpleStatusUpdate.prototype, {
             constructor: {
-                value: SimpleUpdate
+                value: SimpleStatusUpdate
             },
             modalTitle: {
                 value: "{{ 'admin.shipping.index.835'|trans }}"
@@ -773,7 +746,8 @@ file that was distributed with this source code.
                                         <button id="bulkSendMail" type="button" class="btn btn-ec-regular mr-2" data-type="mail" data-bulk-update="true">
                                             {{ 'admin.order.index.btn_bulk_mail'|trans }}
                                         </button>
-                                        <button type="button" id="bulkExportPdf" class="btn btn-ec-regular mr-2">{{ 'admin.order.export.pdf.button.export'|trans }}</button>
+                                        {# TODO: This button is not implemented yet #}
+                                        <button type="button" class="btn btn-ec-regular mr-2">{{ 'admin.order.index.btn_bulk_export'|trans }}</button>
                                         {# TODO: This button is not implemented yet #}
                                         <button type="button" class="btn btn-ec-delete" data-toggle="modal" data-target="#bulkDeleteModal">{{ 'admin.order.index.btn_bulk_delete'|trans }}</button>
                                     </div>
@@ -875,7 +849,6 @@ file that was distributed with this source code.
                                             <tr>
                                                 <td class="align-middle text-center pl-3">
                                                     <input type="checkbox" id="check_{{ Shipping.id }}" data-id="{{ Shipping.id }}" name="ids[]" value="{{ Shipping.id }}"
-                                                           data-mark-as-shipped-url="{{ url('admin_shipping_mark_as_shipped', { id: Shipping.id}) }}"
                                                            data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: Shipping.id}) }}"
                                                            data-notify-mail-url="{{ url('admin_shipping_notify_mail', { id: Shipping.id}) }}"
                                                            data-update-status-url="{{ url('admin_shipping_update_order_status', { id: Shipping.id}) }}"
@@ -946,8 +919,11 @@ file that was distributed with this source code.
                                                             </a>
                                                         </div>
                                                         <div class="col-auto text-center">
-                                                            {# TODO: This func is not implemented yet #}
-                                                            <a class="btn btn-ec-actionIcon" href="" data-toggle="tooltip" data-placement="top" title data-original-title="{{ '出荷済にする'|trans }}">
+                                                            <a class="btn btn-ec-actionIcon confirmationModal" href="javascript:;"
+                                                               data-id="{{ Shipping.id }}" data-type="status" data-bulk-update="false"
+                                                               data-update-status-id="{{ constant('Eccube\\Entity\\Master\\OrderStatus::DELIVERED') }}"
+                                                               data-update-status-url="{{ url('admin_shipping_update_order_status', { id: Shipping.id}) }}" data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: Shipping.id}) }}"
+                                                               data-toggle="tooltip" data-placement="top" title data-original-title="{{ '出荷済にする'|trans }}">
                                                                 <i class="fa fa-check fa-lg text-secondary" aria-hidden="true"></i>
                                                             </a>
                                                         </div>

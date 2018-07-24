@@ -23,6 +23,7 @@ use Eccube\Form\Type\Admin\SearchShippingType;
 use Eccube\Repository\Master\PageMaxRepository;
 use Eccube\Repository\ShippingRepository;
 use Eccube\Service\MailService;
+use Eccube\Service\OrderStateMachine;
 use Eccube\Util\FormUtil;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -50,20 +51,28 @@ class ShippingController extends AbstractController
     protected $mailService;
 
     /**
+     * @var OrderStateMachine
+     */
+    protected $orderStateMachine;
+
+    /**
      * ShippingController constructor.
      *
      * @param ShippingRepository $shippingRepository
      * @param PageMaxRepository $pageMaxRepository
      * @param MailService $mailService
+     * @param OrderStateMachine $orderStateMachine;
      */
     public function __construct(
         ShippingRepository $shippingRepository,
         PageMaxRepository $pageMaxRepository,
-        MailService $mailService
+        MailService $mailService,
+        OrderStateMachine $orderStateMachine
     ) {
         $this->shippingRepository = $shippingRepository;
         $this->pageMaxRepository = $pageMaxRepository;
         $this->mailService = $mailService;
+        $this->orderStateMachine = $orderStateMachine;
     }
 
     /**
@@ -186,49 +195,6 @@ class ShippingController extends AbstractController
             'page_count' => $page_count,
             'has_errors' => false,
         ];
-    }
-
-    /**
-     * 出荷済み処理
-     * 未出荷の出荷のみ出荷処理をする
-     * 出荷処理をした場合でリクエストで 'notificationMail' が送信されていた場合のみ出荷完了メールを送信する
-     *
-     * @Method("PUT")
-     * @Route("/%eccube_admin_route%/shipping/mark_as_shipped/{id}", requirements={"id" = "\d+"}, name="admin_shipping_mark_as_shipped")
-     *
-     * @param Request $request
-     * @param Shipping $Shipping
-     *
-     * @return JsonResponse
-     *
-     * @throws \Twig_Error
-     */
-    public function markAsShipped(Request $request, Shipping $Shipping)
-    {
-        $this->isTokenValid();
-
-        $result = [];
-        if ($Shipping->isShipped() == false) {
-            $Shipping->setShippingDate(new \DateTime());
-            $this->shippingRepository->save($Shipping);
-
-            if ($request->get('notificationMail')) {
-                $this->mailService->sendShippingNotifyMail($Shipping);
-                $result['mail'] = true;
-            } else {
-                $result['mail'] = false;
-            }
-
-            $this->entityManager->flush();
-            $result['shipped'] = true;
-
-            return $this->json($result);
-        }
-
-        return $this->json([
-            'shipped' => false,
-            'mail' => false,
-        ]);
     }
 
     /**
