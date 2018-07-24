@@ -15,6 +15,7 @@ namespace Eccube\Controller\Admin\Order;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
@@ -24,7 +25,9 @@ use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\OrderItemRepository;
 use Eccube\Repository\ShippingRepository;
+use Eccube\Service\OrderStateMachine;
 use Eccube\Service\TaxRuleService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -73,6 +76,11 @@ class ShippingController extends AbstractController
     protected $mailService;
 
     /**
+     * @var OrderStateMachine
+     */
+    private $orderStateMachine;
+
+    /**
      * EditController constructor.
      *
      * @param MailService $mailService
@@ -82,6 +90,7 @@ class ShippingController extends AbstractController
      * @param TaxRuleService $taxRuleService
      * @param ShippingRepository $shippingRepository
      * @param SerializerInterface $serializer
+     * @param OrderStateMachine $orderStateMachine
      */
     public function __construct(
         MailService $mailService,
@@ -90,7 +99,8 @@ class ShippingController extends AbstractController
         DeliveryRepository $deliveryRepository,
         TaxRuleService $taxRuleService,
         ShippingRepository $shippingRepository,
-        SerializerInterface $serializer
+        SerializerInterface $serializer,
+        OrderStateMachine $orderStateMachine
     ) {
         $this->mailService = $mailService;
         $this->orderItemRepository = $orderItemRepository;
@@ -99,6 +109,7 @@ class ShippingController extends AbstractController
         $this->taxRuleService = $taxRuleService;
         $this->shippingRepository = $shippingRepository;
         $this->serializer = $serializer;
+        $this->orderStateMachine = $orderStateMachine;
     }
 
     /**
@@ -159,6 +170,9 @@ class ShippingController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid() && $request->get('mode') == 'register') {
+
+            log_info('出荷登録開始', [$TargetShipping->getId()]);
+
             // 削除された項目の削除
             /** @var Shipping $OriginShipping */
             foreach ($OriginShippings as $key => $OriginShipping) {
@@ -174,37 +188,8 @@ class ShippingController extends AbstractController
                 }
             }
 
+            // 追加された項目の追加
             foreach ($TargetShippings as $key => $TargetShipping) {
-                // TODO: Should move logic out of controller such as service, modal
-
-                // FIXME 税額計算は CalculateService で処理する. ここはテストを通すための暫定処理
-                // see EditControllerTest::testOrderProcessingWithTax
-//                $OrderItems = $TargetShipping->getOrderItems();
-//                $taxtotal = 0;
-//                foreach ($OrderItems as $OrderItem) {
-//                    $tax = $this->taxRuleService
-//                        ->calcTax($OrderItem->getPrice(), $OrderItem->getTaxRate(), $OrderItem->getTaxRule());
-//                    $OrderItem->setPriceIncTax($OrderItem->getPrice() + $tax);
-//
-//                    $taxtotal += $tax * $OrderItem->getQuantity();
-//                }
-
-                log_info('出荷登録開始', [$TargetShipping->getId()]);
-                // TODO 在庫の有無や販売制限数のチェックなども行う必要があるため、完了処理もcaluclatorのように抽象化できないか検討する.
-                // TODO 後続にある会員情報の更新のように、完了処理もcaluclatorのように抽象化できないか検討する.
-                // 画面上で削除された明細をremove
-//                if (array_key_exists($key, $OriginOrderItems)) {
-//                    /** @var OrderItem $OrderItem */
-//                    foreach ($OriginOrderItems[$key] as $OrderItem) {
-//                        if (false === $TargetShipping->getOrderItems()->contains($OrderItem)) {
-//                            $TargetShipping->removeOrderItem($OrderItem); // 不要かも
-//                            $OrderItem->setShipping(null);
-//                            $Order->removeOrderItem($OrderItem);
-//                            $OrderItem->setOrder(null);
-//                        }
-//                    }
-//                }
-
                 foreach ($TargetShipping->getOrderItems() as $OrderItem) {
                     $TargetShipping->addOrderItem($OrderItem); // 不要かも
                     $OrderItem->setShipping($TargetShipping);
@@ -213,27 +198,6 @@ class ShippingController extends AbstractController
                 }
 
                 $TargetShipping->setOrder($Order);
-
-                // 出荷ステータス変更時の処理
-//                if ($TargetShipping->isShipped()) {
-//                    // 「出荷済み」にステータスが変更された場合
-//                    if ($OriginShippings[$key]->isShipped() == false) {
-//                        // 出荷メールを送信
-//                        if ($form->get('notify_email')->getData()) {
-//                            try {
-//                                $this->mailService->sendShippingNotifyMail(
-//                                    $TargetShipping
-//                                );
-//                            } catch (\Exception $e) {
-//                                log_error('メール通知エラー', [$TargetShipping->getId(), $e]);
-//                                $this->addError(
-//                                    'admin.shipping.edit.shipped_mail_failed',
-//                                    'admin'
-//                                );
-//                            }
-//                        }
-//                    }
-//                }
             }
 
             try {
@@ -278,5 +242,50 @@ class ShippingController extends AbstractController
             'Shippings' => $TargetShippings,
             'shippingDeliveryTimes' => $this->serializer->serialize($times, 'json'),
         ];
+    }
+
+    /**
+     * shipped
+     *
+     * @Method("PUT")
+     * @Route("/%eccube_admin_route%/shipping/{id}/shipped", requirements={"id" = "\d+"}, name="admin_shipping_shipped")
+     *
+     * @param Request $request
+     * @param Shipping $Shipping
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function shipped(Request $request, Shipping $Shipping)
+    {
+        if (!($request->isXmlHttpRequest() && $this->isTokenValid())) {
+            return $this->json(['status' => 'NG'], 400);
+        }
+
+        log_info('出荷済み処理開始', [$Shipping->getId()]);
+
+        $Order = $Shipping->getOrder();
+        $OrderStatus = $this->entityManager->find(OrderStatus::class, OrderStatus::DELIVERED);
+
+        $Shipping->setShippingDate(new \DateTime());
+        $this->entityManager->flush($Shipping);
+
+        try {
+            if ($this->orderStateMachine->can($Order, $OrderStatus)) {
+                $this->orderStateMachine->apply($Order, $OrderStatus);
+            }
+            $this->entityManager->flush($Order);
+
+            log_info('出荷済み処理完了', [$Shipping->getId()]);
+        } catch (\Exception $e) {
+            log_error('予期しないエラーです', [$e->getMessage()]);
+
+            return $this->json(['status' => 'NG'], 500);
+        }
+
+        return $this->json([
+            'status' => 'OK',
+            'shipping_id' => $Shipping->getId(),
+            'shipping_date' => $Shipping->getShippingDate()->format('Y/m/d'),
+        ]);
     }
 }

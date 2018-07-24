@@ -113,6 +113,22 @@ file that was distributed with this source code.
           $("#calculate").trigger('click');
         })
 
+        // 出荷済み
+        $('.shipped-button').on('click', function() {
+            var url = $(this).data('shipped-url')
+
+            $.ajax({
+                url: url,
+                type: 'PUT'
+            }).done(function(data) {
+                alert(data['shipping_id'] + ': 出荷済みにしました。');
+                $('#shipping_date_' + data['shipping_id']).text(data['shipping_date']);
+                $('#shipping_date_button_' + data['shipping_id']).addClass('d-none');
+            }).fail(function(data) {
+                alert('shipped failed.');
+            });
+        });
+
         {# TODO: 出荷済み時の確認モーダルの実装、複数出荷に対応できていない #}
         {# TODO: Should move logic js into js file intead of twig #}
         {#var shippedNotifyModal = $('#shippedNotifyModal'),#}
@@ -434,9 +450,17 @@ file that was distributed with this source code.
                                                     {{ 'admin.shipping.edit.ship_date'|trans }}
                                                 </label>
                                                 <div class="col">
-                                                    {# TODO: 出荷日を出力 #}
-                                                    {#{{ form_widget(shippingForm.shipping_date) }}#}
-                                                    {#{{ form_errors(shippingForm.shipping_date) }}#}
+                                                    {% if attribute(Shippings, loop.index0).id and attribute(Shippings, loop.index0).shipping_date %}
+                                                        {# 登録済みの出荷で出荷日が設定されている場合 #}
+                                                        <span id="shipping_date_{{ attribute(Shippings, loop.index0).id }}">{{ attribute(Shippings, loop.index0).shipping_date|date_day }}</span>
+                                                    {% elseif attribute(Shippings, loop.index0).id %}
+                                                        {# 登録済みの出荷で出荷日が設定されていない場合 #}
+                                                        <span id="shipping_date_{{ attribute(Shippings, loop.index0).id }}"></span>
+                                                        <button id="shipping_date_button_{{ attribute(Shippings, loop.index0).id }}" type="button" class="btn btn-ec-regular mr-2 shipped-button" data-shipped-url="{{ url('admin_shipping_shipped', {id: attribute(Shippings, loop.index0).id}) }}">出荷完了にする</button>
+                                                    {% else %}
+                                                        {# 未登録の出荷 #}
+                                                        <span></span>
+                                                    {% endif %}
                                                 </div>
                                             </div>
                                             <div class="row mb-3 form-group">
