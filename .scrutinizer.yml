@@ -21,7 +21,7 @@ build_failure_conditions:
     - 'project.metric_change("scrutinizer.test_coverage", < -0.10)'
 
 filter:
-    paths: ["src/*"]
+    paths: ["src/*", "codeception/*"]
     excluded_paths:
         - 'app/*'
         - 'tests/*'
