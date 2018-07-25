@@ -755,7 +755,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
      *
      * @return \DateTime
      */
-    public function getmailSendDate()
+    public function getMailSendDate()
     {
         return $this->mail_send_date;
     }

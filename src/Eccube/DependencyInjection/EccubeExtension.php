@@ -160,6 +160,7 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
     {
         $finder = (new Finder())
             ->in($pluginDir)
+            ->sortByName()
             ->depth(0)
             ->directories();
 

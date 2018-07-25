@@ -11,13 +11,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Eccube\Controller\Admin\Shipping;
+namespace Eccube\Controller\Admin\Order;
 
 use Eccube\Controller\Admin\AbstractCsvImportController;
 use Eccube\Entity\Shipping;
+use Eccube\Entity\Master\OrderStatus;
 use Eccube\Form\Type\Admin\CsvImportType;
 use Eccube\Repository\ShippingRepository;
 use Eccube\Service\CsvImportService;
+use Eccube\Service\OrderStateMachine;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,16 +31,24 @@ class CsvImportController extends AbstractCsvImportController
      */
     private $shippingRepository;
 
-    public function __construct(ShippingRepository $shippingRepository)
-    {
+    /**
+     * @var OrderStateMachine
+     */
+    protected $orderStateMachine;
+
+    public function __construct(
+        ShippingRepository $shippingRepository,
+        OrderStateMachine $orderStateMachine
+    ) {
         $this->shippingRepository = $shippingRepository;
+        $this->orderStateMachine = $orderStateMachine;
     }
 
     /**
      * 出荷CSVアップロード
      *
-     * @Route("/%eccube_admin_route%/shipping/shipping_csv_upload", name="admin_shipping_csv_import")
-     * @Template("@admin/Shipping/csv_shipping.twig")
+     * @Route("/%eccube_admin_route%/order/shipping_csv_upload", name="admin_shipping_csv_import")
+     * @Template("@admin/Order/csv_shipping.twig")
      *
      * @throws \Doctrine\DBAL\ConnectionException
      */
@@ -142,13 +152,35 @@ class CsvImportController extends AbstractCsvImportController
                 $shippingDate->setTime(0, 0, 0);
                 $Shipping->setShippingDate($shippingDate);
             }
+
+            $Order = $Shipping->getOrder();
+            $RelateShippings = $Order->getShippings();
+            $allShipped = true;
+            foreach ($RelateShippings as $RelateShipping) {
+                if (!$RelateShipping->getShippingDate()) {
+                    $allShipped = false;
+                    break;
+                }
+            }
+            $OrderStatus = $this->entityManager->find(OrderStatus::class, OrderStatus::DELIVERED);
+            if ($allShipped) {
+                // XXX 先行の行で OrderStateMachine が OrderStatus::id を変更している場合があるので refresh する
+                $this->entityManager->refresh($Order);
+                if ($this->orderStateMachine->can($Order, $OrderStatus)) {
+                    $this->orderStateMachine->apply($Order, $OrderStatus);
+                } else {
+                    $from = $Order->getOrderStatus()->getName();
+                    $to = $OrderStatus->getName();
+                    $errors[] = sprintf('%s: %s から %s へステータス変更できませんでした', $Shipping->getId(), $from, $to);
+                }
+            }
         }
     }
 
     /**
      * アップロード用CSV雛形ファイルダウンロード
      *
-     * @Route("/%eccube_admin_route%/shipping/csv_template", name="admin_shipping_csv_template")
+     * @Route("/%eccube_admin_route%/order/csv_template", name="admin_shipping_csv_template")
      */
     public function csvTemplate(Request $request)
     {
