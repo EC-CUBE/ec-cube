@@ -196,7 +196,7 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
 
     public function 受注ステータス検索($value = '')
     {
-        $this->tester->checkOption(['id' => 'admin_search_order_status_' . $value]);
+        $this->tester->checkOption(['id' => 'admin_search_order_status_'.$value]);
         $this->tester->click('#search_form #search_submit');
         return $this;
     }

@@ -140,7 +140,7 @@ class EF02ProductCest
         ProductDetailPage::go($I, 2);
 
         // 「カートに入れる」ボタンが、非活性となり「ただいま品切れ中です」と表示される。
-        $I->see('ただいま品切れ中です','#form1 button');
+        $I->see('ただいま品切れ中です', '#form1 button');
     }
 
     public function product_商品詳細カテゴリリンク(\AcceptanceTester $I)

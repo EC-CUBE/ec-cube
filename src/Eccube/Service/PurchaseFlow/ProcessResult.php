@@ -25,6 +25,7 @@ class ProcessResult
 
     /**
      * @param string $type
+     * @param string|null $message
      */
     private function __construct($type, $message)
     {
