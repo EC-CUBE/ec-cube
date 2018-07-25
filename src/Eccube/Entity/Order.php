@@ -1336,7 +1336,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
      *
      * @param \Eccube\Entity\Shipping $Shipping
      *
-     * @return Shipping
+     * @return Order
      */
     public function addShipping(\Eccube\Entity\Shipping $Shipping)
     {

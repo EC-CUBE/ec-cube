@@ -156,6 +156,9 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
         return empty($tables) ? false : true;
     }
 
+    /**
+     * @param string $pluginDir
+     */
     protected function getPluginDirectories($pluginDir)
     {
         $finder = (new Finder())

@@ -32,11 +32,17 @@ class ProcessResult
         $this->message = $message;
     }
 
+    /**
+     * @param string $message
+     */
     public static function warn($message)
     {
         return new self(self::WARNING, $message);
     }
 
+    /**
+     * @param string $message
+     */
     public static function error($message)
     {
         return new self(self::ERROR, $message);
