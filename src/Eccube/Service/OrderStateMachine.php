@@ -139,6 +139,7 @@ class OrderStateMachine implements EventSubscriberInterface
      */
     public function updateShippingDate(Event $event)
     {
+        // TODO: 出荷に出荷日を入れる処理は出荷ごとに実行される可能性があるのでステートマシン外で処理する必要がある
         /* @var Order $Order */
         $Order = $event->getSubject();
         foreach ($Order->getShippings() as $Shipping) {

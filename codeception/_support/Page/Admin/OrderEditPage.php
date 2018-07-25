@@ -171,4 +171,12 @@ class OrderEditPage extends AbstractAdminPageStyleGuide
         $this->tester->click("#table-form-field > tbody > tr:nth-child({$row}) > td.align-middle.text-right.pr-3 div.modal a.delete");
         return $this;
     }
+
+    public function お届け先の追加()
+    {
+        $this->tester->scrollTo(['css' => '#form1'], 0, 200);
+        $this->tester->wait(5);
+        $this->tester->click('#shipping-add');
+        return $this;
+    }
 }

@@ -486,6 +486,7 @@ class OrderController extends AbstractController
                 log_info('対応状況一括変更スキップ');
                 $result = ['message' => sprintf('%s:  ステータス変更をスキップしました', $Shipping->getId())];
             } else {
+                // TODO: 出荷済み処理の場合は場合分けをして出荷に出荷日を入れる処理が必要
                 if ($this->orderStateMachine->can($Order, $OrderStatus)) {
                     $this->orderStateMachine->apply($Order, $OrderStatus);
 
