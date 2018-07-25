@@ -1,8 +1,6 @@
 <?php
 
-use Codeception\Util\Fixtures;
 use Page\Admin\CsvSettingsPage;
-use Page\Admin\CustomerAgreementSettingPage;
 use Page\Admin\DeliveryEditPage;
 use Page\Admin\DeliveryManagePage;
 use Page\Admin\MailSettingsPage;
@@ -10,7 +8,6 @@ use Page\Admin\PaymentEditPage;
 use Page\Admin\PaymentManagePage;
 use Page\Admin\ShopSettingPage;
 use Page\Admin\TaxManagePage;
-use Page\Admin\TradelawSettingPage;
 
 /**
  * @group admin

@@ -6,10 +6,10 @@ use Page\Admin\BlockManagePage;
 use Page\Admin\FileManagePage;
 use Page\Admin\LayoutEditPage;
 use Page\Admin\LayoutManagePage;
-use Page\Admin\NewsManagePage;
 use Page\Admin\NewsEditPage;
-use Page\Admin\PageManagePage;
+use Page\Admin\NewsManagePage;
 use Page\Admin\PageEditPage;
+use Page\Admin\PageManagePage;
 
 /**
  * @group admin

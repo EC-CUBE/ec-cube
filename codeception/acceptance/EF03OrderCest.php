@@ -2,14 +2,14 @@
 
 use Codeception\Util\Fixtures;
 use Page\Front\CartPage;
+use Page\Front\CustomerAddressAddPage;
+use Page\Front\MultipleShippingPage;
 use Page\Front\ProductDetailPage;
 use Page\Front\ShippingEditPage;
 use Page\Front\ShoppingCompletePage;
 use Page\Front\ShoppingConfirmPage;
 use Page\Front\ShoppingLoginPage;
 use Page\Front\ShoppingPage;
-use Page\Front\MultipleShippingPage;
-use Page\Front\CustomerAddressAddPage;
 
 /**
  * @group front
