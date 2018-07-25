@@ -19,8 +19,8 @@ use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 use Eccube\Repository\BaseInfoRepository;
-use Eccube\Repository\OrderRepository;
 use Eccube\Repository\OrderPdfRepository;
+use Eccube\Repository\OrderRepository;
 use Eccube\Twig\Extension\EccubeExtension;
 use setasign\Fpdi\TcpdfFpdi;
 
@@ -286,12 +286,12 @@ class OrderPdfService extends TcpdfFpdi
 
         // 電話番号
         $text = 'TEL: '.$this->baseInfoRepository->getPhoneNumber();
-        $this->lfText(125, 72, $text, 8);  //TEL・FAX
+        $this->lfText(125, 72, $text, 8); //TEL・FAX
 
         // メールアドレス
         if (strlen($this->baseInfoRepository->getEmail01()) > 0) {
             $text = 'Email: '.$this->baseInfoRepository->getEmail01();
-            $this->lfText(125, 75, $text, 8);      // Email
+            $this->lfText(125, 75, $text, 8); // Email
         }
 
         // ロゴ画像(app配下のロゴ画像を優先して読み込む)
@@ -306,9 +306,9 @@ class OrderPdfService extends TcpdfFpdi
      */
     protected function renderMessageData(array $formData)
     {
-        $this->lfText(27, 70, $formData['message1'], 8);  //メッセージ1
-        $this->lfText(27, 74, $formData['message2'], 8);  //メッセージ2
-        $this->lfText(27, 78, $formData['message3'], 8);  //メッセージ3
+        $this->lfText(27, 70, $formData['message1'], 8); //メッセージ1
+        $this->lfText(27, 74, $formData['message2'], 8); //メッセージ2
+        $this->lfText(27, 78, $formData['message3'], 8); //メッセージ3
     }
 
     /**
@@ -585,12 +585,12 @@ class OrderPdfService extends TcpdfFpdi
                 $ln = ($i == (count($row) - 1)) ? 1 : 0;
 
                 $this->MultiCell(
-                    $w[$i],             // セル幅
-                    $cellHeight,        // セルの最小の高さ
-                    $col,               // 文字列
-                    1,                  // 境界線の描画方法を指定
-                    $align,             // テキストの整列
-                    $fill,              // 背景の塗つぶし指定
+                    $w[$i], // セル幅
+                    $cellHeight, // セルの最小の高さ
+                    $col, // 文字列
+                    1, // 境界線の描画方法を指定
+                    $align, // テキストの整列
+                    $fill, // 背景の塗つぶし指定
                     $ln                 // 出力後のカーソルの移動方法
                 );
                 $h = $this->getLastH();

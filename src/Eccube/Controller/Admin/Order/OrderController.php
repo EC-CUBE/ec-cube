@@ -36,22 +36,20 @@ use Eccube\Repository\OrderPdfRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Service\CsvExportService;
-use Eccube\Service\PurchaseFlow\PurchaseContext;
-use Eccube\Service\PurchaseFlow\PurchaseException;
-use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\MailService;
 use Eccube\Service\OrderPdfService;
 use Eccube\Service\OrderStateMachine;
+use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Util\FormUtil;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -381,7 +379,7 @@ class OrderController extends AbstractController
     /**
      * @param Request $request
      * @param $csvTypeId
-     * @param $fileName
+     * @param string $fileName
      *
      * @return StreamedResponse
      */
@@ -465,9 +463,9 @@ class OrderController extends AbstractController
      * @Route("/%eccube_admin_route%/shipping/{id}/order_status", requirements={"id" = "\d+"}, name="admin_shipping_update_order_status")
      *
      * @param Request $request
-     * @param Shipping $shipping
+     * @param Shipping $Shipping
      *
-     * @return RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function updateOrderStatus(Request $request, Shipping $Shipping)
     {

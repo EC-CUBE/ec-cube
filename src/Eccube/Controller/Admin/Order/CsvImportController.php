@@ -14,8 +14,8 @@
 namespace Eccube\Controller\Admin\Order;
 
 use Eccube\Controller\Admin\AbstractCsvImportController;
-use Eccube\Entity\Shipping;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Shipping;
 use Eccube\Form\Type\Admin\CsvImportType;
 use Eccube\Repository\ShippingRepository;
 use Eccube\Service\CsvImportService;

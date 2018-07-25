@@ -537,7 +537,7 @@ class OrderRepository extends AbstractRepository
     /**
      * ステータスごとの受注件数を取得する.
      *
-     * @param $OrderStatusOrId
+     * @param integer $OrderStatusOrId
      *
      * @return int
      *
