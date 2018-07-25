@@ -25,7 +25,6 @@ filter:
     excluded_paths:
         - 'app/*'
         - 'tests/*'
-        - 'codeception/*'
         - 'var/*'
     dependency_paths:
         - vendor/
