@@ -436,11 +436,15 @@ file that was distributed with this source code.
                                     <div class="row mb-3">
                                         <div class="col-6">
                                             <button type="button" class="btn btn-ec-regular copy-customer">{{ 'admin.order.edit.label.customer_info.copy'|trans }}</button>
-                                            <a class="btn btn-ec-regular pdf-print" href="{{ url('admin_order_export_pdf') }}?ids[]={{ Order.id }}">{{ 'admin.order.edit.label.shipping.print'|trans }}</a>
+                                            {% if Order.id %}
+                                                <a class="btn btn-ec-regular pdf-print" href="{{ url('admin_order_export_pdf') }}?ids[]={{ Order.id }}">{{ 'admin.order.edit.label.shipping.print'|trans }}</a>
+                                            {% endif %}
                                         </div>
-                                        <div class="col-6 text-right">
-                                            <a id="shipping-add" class="btn btn-ec-regular w-25" href="{{ url("admin_shipping_edit", {id: Order.id}) }}">{{ 'admin.order.edit.label.shipping.add'|trans }}</a>
-                                        </div>
+                                        {% if Order.id %}
+                                            <div class="col-6 text-right">
+                                                <a id="shipping-add" class="btn btn-ec-regular w-25" href="{{ url("admin_shipping_edit", {id: Order.id}) }}">{{ 'admin.order.edit.label.shipping.add'|trans }}</a>
+                                            </div>
+                                        {% endif %}
                                     </div>
                                     <div class="row h-adr">
                                         <span class="p-country-name" style="display:none;">Japan</span>
