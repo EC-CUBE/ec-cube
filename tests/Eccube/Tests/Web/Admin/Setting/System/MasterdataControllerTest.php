@@ -341,6 +341,66 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $this->verify();
     }
 
+    public function testZeroEdit()
+    {
+        $formData = $this->createFormData($this->entityTest);
+        $editForm = $this->createFormDataEdit($this->entityTest);
+        $id = count($editForm['data']) + 1;
+        $editForm['data'][$id]['id'] = 0;
+        $editForm['data'][$id]['name'] = "0削除テスト";
+
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_setting_system_masterdata_edit'),
+            [
+                'admin_system_masterdata' => $formData,
+                'admin_system_masterdata_edit' => $editForm,
+            ]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_setting_system_masterdata_view', ['entity' => $formData['masterdata']])));
+
+        $data = $editForm['data'][0];
+        $this->expected = $data['name'];
+
+        $entityName = str_replace('-', '\\', $formData['masterdata']);
+        $this->actual = $this->entityManager->getRepository($entityName)->find(0)->getName();
+        $this->verify();
+
+        // message check
+        $outPut = $this->session->getFlashBag()->get('eccube.admin.success');
+        $this->actual = array_shift($outPut);
+        $this->expected = 'admin.register.complete';
+        $this->verify();
+    }
+
+    public function testZeroRemove()
+    {
+        $formData = $this->createFormData($this->entityTest);
+        $editForm = $this->createFormDataEdit($this->entityTest);
+        $id = count($editForm['data']);
+        $editForm['data'][$id]['id'] = null;
+        $editForm['data'][$id]['name'] = null;
+
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_setting_system_masterdata_edit'),
+            [
+                'admin_system_masterdata' => $formData,
+                'admin_system_masterdata_edit' => $editForm,
+            ]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_setting_system_masterdata_view', ['entity' => $formData['masterdata']])));
+
+        $entityName = str_replace('-', '\\', $formData['masterdata']);
+        $this->assertNull($this->entityManager->getRepository($entityName)->find(0));
+
+        // message check
+        $outPut = $this->session->getFlashBag()->get('eccube.admin.success');
+        $this->actual = array_shift($outPut);
+        $this->expected = 'admin.register.complete';
+        $this->verify();
+    }
+
     /**
      * @param string $entity
      *
