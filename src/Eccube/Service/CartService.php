@@ -166,13 +166,16 @@ class CartService
      */
     public function getCart()
     {
-        $Carts = $this->getCarts();
+        $cartKeys = $this->session->get('cart_keys', []);
+        foreach ($cartKeys as $cartKey) {
+            $this->carts[] = $this->cartRepository->findOneBy(['cart_key' => $cartKey]);
+        }
 
-        if (empty($Carts)) {
+        if (empty($this->carts)) {
             return null;
         }
 
-        return current($Carts);
+        return current($this->carts);
     }
 
     /**
