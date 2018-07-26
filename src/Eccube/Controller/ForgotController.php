@@ -48,18 +48,15 @@ class ForgotController extends AbstractController
      * ForgotController constructor.
      *
      * @param ValidatorInterface $recursiveValidator
-     * @param MailService $mailService
      * @param CustomerRepository $customerRepository
      * @param EncoderFactoryInterface $encoderFactory
      */
     public function __construct(
         ValidatorInterface $recursiveValidator,
-        MailService $mailService,
         CustomerRepository $customerRepository,
         EncoderFactoryInterface $encoderFactory
     ) {
         $this->recursiveValidator = $recursiveValidator;
-        $this->mailService = $mailService;
         $this->customerRepository = $customerRepository;
         $this->encoderFactory = $encoderFactory;
     }
