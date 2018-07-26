@@ -13,10 +13,12 @@
 
 namespace Eccube\Repository;
 
+use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
 use Eccube\Doctrine\Query\Queries;
-use Eccube\Entity\Order;
+use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Order;
 use Eccube\Util\StringUtil;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -57,9 +59,6 @@ class OrderRepository extends AbstractRepository
         ;
 
         switch ($Status->getId()) {
-            case '5': // 発送済へ
-                $Order->setShippingDate(new \DateTime());
-                break;
             case '6': // 入金済へ
                 $Order->setPaymentDate(new \DateTime());
                 break;
@@ -250,7 +249,9 @@ class OrderRepository extends AbstractRepository
      */
     public function getQueryBuilderBySearchDataForAdmin($searchData)
     {
-        $qb = $this->createQueryBuilder('o');
+        $qb = $this->createQueryBuilder('o')
+            ->select('o, s')
+            ->innerJoin('o.Shippings', 's');
 
         // order_id_start
         if (isset($searchData['order_id']) && StringUtil::isNotBlank($searchData['order_id'])) {
@@ -395,22 +396,6 @@ class OrderRepository extends AbstractRepository
                 ->setParameter('payment_date_end', $date);
         }
 
-        // shipping_date
-        if (!empty($searchData['shipping_date_start']) && $searchData['shipping_date_start']) {
-            $date = $searchData['shipping_date_start'];
-            $qb
-                ->andWhere('o.shipping_date >= :shipping_date_start')
-                ->setParameter('shipping_date_start', $date);
-        }
-        if (!empty($searchData['shipping_date_end']) && $searchData['shipping_date_end']) {
-            $date = clone $searchData['shipping_date_end'];
-            $date = $date
-                ->modify('+1 days');
-            $qb
-                ->andWhere('o.shipping_date < :shipping_date_end')
-                ->setParameter('shipping_date_end', $date);
-        }
-
         // update_date
         if (!empty($searchData['update_date_start']) && $searchData['update_date_start']) {
             $date = $searchData['update_date_start'];
@@ -445,6 +430,35 @@ class OrderRepository extends AbstractRepository
                 ->leftJoin('o.OrderItems', 'oi')
                 ->andWhere('oi.product_name LIKE :buy_product_name')
                 ->setParameter('buy_product_name', '%'.$searchData['buy_product_name'].'%');
+        }
+
+        // 発送メール送信済かどうか.
+        if (isset($searchData['shipping_mail_send']) && $searchData['shipping_mail_send']) {
+            $qb
+                ->andWhere('s.mail_send_date IS NOT NULL');
+        }
+
+        // 送り状番号.
+        if (!empty($searchData['tracking_number'])) {
+            $qb
+                ->andWhere('s.tracking_number = :tracking_number')
+                ->setParameter('tracking_number', $searchData['tracking_number']);
+        }
+
+        // お届け予定日(Shipping.delivery_date)
+        if (!empty($searchData['shipping_delivery_date_start']) && $searchData['shipping_delivery_date_start']) {
+            $date = $searchData['shipping_delivery_date_start'];
+            $qb
+                ->andWhere('s.shipping_delivery_date >= :shipping_delivery_date_start')
+                ->setParameter('shipping_delivery_date_start', $date);
+        }
+        if (!empty($searchData['shipping_delivery_date_end']) && $searchData['shipping_delivery_date_end']) {
+            $date = clone $searchData['shipping_delivery_date_end'];
+            $date = $date
+                ->modify('+1 days');
+            $qb
+                ->andWhere('s.shipping_delivery_date < :shipping_delivery_date_end')
+                ->setParameter('shipping_delivery_date_end', $date);
         }
 
         // Order By
@@ -482,7 +496,7 @@ class OrderRepository extends AbstractRepository
     public function getCustomerCount(\Eccube\Entity\Customer $Customer, array $OrderStatuses)
     {
         $result = $this->createQueryBuilder('o')
-            ->select('COUNT(o.id) AS buy_times, SUM(o.total)  AS buy_total')
+            ->select('COUNT(o.id) AS buy_times, SUM(o.total) AS buy_total, MAX(o.id) AS order_id')
             ->where('o.Customer = :Customer')
             ->andWhere('o.OrderStatus in (:OrderStatuses)')
             ->setParameter('Customer', $Customer)
@@ -518,5 +532,62 @@ class OrderRepository extends AbstractRepository
         }
 
         return null;
+    }
+
+    /**
+     * ステータスごとの受注件数を取得する.
+     *
+     * @param $OrderStatusOrId
+     *
+     * @return int
+     *
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function countByOrderStatus($OrderStatusOrId)
+    {
+        return (int) $this->createQueryBuilder('o')
+            ->select('COALESCE(COUNT(o.id), 0)')
+            ->where('o.OrderStatus = :OrderStatus')
+            ->setParameter('OrderStatus', $OrderStatusOrId)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    /**
+     * 会員の購入金額, 購入回数, 初回購入日, 最終購入費を更新する
+     *
+     * @param Customer $Customer
+     * @param array $OrderStatuses
+     */
+    public function updateOrderSummary(Customer $Customer, array $OrderStatuses = [OrderStatus::NEW, OrderStatus::PAID, OrderStatus::DELIVERED, OrderStatus::IN_PROGRESS])
+    {
+        try {
+            $result = $this->createQueryBuilder('o')
+                ->select('COUNT(o.id) AS buy_times, SUM(o.total) AS buy_total, MIN(o.id) AS first_order_id, MAX(o.id) AS last_order_id')
+                ->where('o.Customer = :Customer')
+                ->andWhere('o.OrderStatus in (:OrderStatuses)')
+                ->setParameter('Customer', $Customer)
+                ->setParameter('OrderStatuses', $OrderStatuses)
+                ->groupBy('o.Customer')
+                ->getQuery()
+                ->getSingleResult();
+        } catch (NoResultException $e) {
+            // 受注データが存在しなければ初期化
+            $Customer->setFirstBuyDate(null);
+            $Customer->setLastBuyDate(null);
+            $Customer->setBuyTimes(0);
+            $Customer->setBuyTotal(0);
+
+            return;
+        }
+
+        $FirstOrder = $this->find(['id' => $result['first_order_id']]);
+        $LastOrder = $this->find(['id' => $result['last_order_id']]);
+
+        $Customer->setBuyTimes($result['buy_times']);
+        $Customer->setBuyTotal($result['buy_total']);
+        $Customer->setFirstBuyDate($FirstOrder->getOrderDate());
+        $Customer->setLastBuyDate($LastOrder->getOrderDate());
     }
 }

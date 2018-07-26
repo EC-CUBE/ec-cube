@@ -21,6 +21,10 @@ file that was distributed with this source code.
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datetimepicker.min.css', 'admin') }}">
 {% endblock stylesheet %}
 
+{% block javascript %}
+    <script src="//yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
+{% endblock %}
+
 {% block main %}
     <form name="form1" role="form" class="form-horizontal h-adr" id="point_form" method="post" action="">
         <span class="p-country-name" style="display:none;">Japan</span>
@@ -154,6 +158,21 @@ file that was distributed with this source code.
                                     {{ form_errors(form.message) }}
                                 </div>
                             </div>
+                            {# エンティティ拡張の自動出力 #}
+                            {% for f in form if f.vars.eccube_form_options.auto_render %}
+                                {% if f.vars.eccube_form_options.form_theme %}
+                                    {% form_theme f f.vars.eccube_form_options.form_theme %}
+                                    {{ form_row(f) }}
+                                {% else %}
+                                    <div class="row">
+                                        <div class="col-3"><span>{{ f.vars.label|trans }}</span></div>
+                                        <div class="col mb-2">
+                                            {{ form_widget(f) }}
+                                            {{ form_errors(f) }}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
                         </div>
                     </div>
                     <div class="card rounded border-0 mb-4">

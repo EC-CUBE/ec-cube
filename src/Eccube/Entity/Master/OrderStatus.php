@@ -43,4 +43,33 @@ class OrderStatus extends \Eccube\Entity\Master\AbstractMasterEntity
     const PENDING = 7;
     /** 購入処理中. */
     const PROCESSING = 8;
+    /** 対応中 */
+    const IN_PROGRESS = 9;
+    /** 返品 */
+    const RETURNED = 10;
+
+    /**
+     * 受注一覧画面で, ステータスごとの受注件数を表示するかどうか
+     *
+     * @var bool
+     *
+     * @ORM\Column(name="display_order_count", type="boolean", options={"default":false})
+     */
+    private $display_order_count;
+
+    /**
+     * @return bool
+     */
+    public function isDisplayOrderCount()
+    {
+        return $this->display_order_count;
+    }
+
+    /**
+     * @param bool $display_order_count
+     */
+    public function setDisplayOrderCount($display_order_count = false)
+    {
+        $this->display_order_count = $display_order_count;
+    }
 }

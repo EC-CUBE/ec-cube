@@ -60,7 +60,7 @@ class EA03ProductCest
         $em->persist($ProductStatus);
         $em->flush();
 
-        // 商品マスターを表示
+        // 商品一覧を表示
         $page = ProductManagePage::go($I);
 
         // ダミーのステータスを削除する
@@ -223,9 +223,10 @@ class EA03ProductCest
         $Product = array_pop($Products);
         ProductManagePage::go($I)
             ->検索($Product->getName())
-            ->検索結果_複製(1);
+            ->検索結果_複製(1)
+            ->Accept_重複する(1);
 
-        $I->acceptPopup();
+        $I->see('商品を複製しました。', ProductEditPage::$登録結果メッセージ);
     }
 
     /**
@@ -310,7 +311,6 @@ class EA03ProductCest
             ->検索結果_選択(1);
         ProductEditPage::at($I);
 
-        $I->click(['css' => '#basicConfig > div > div:nth-child(7) > div.col > div.d-inline-block.mb-2 > a']);
         $I->seeElement(ProductEditPage::$販売種別);
         $I->seeElement(ProductEditPage::$販売価格);
         $I->waitForElement(ProductEditPage::$通常価格);

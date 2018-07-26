@@ -19,7 +19,6 @@ use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Delivery;
 use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\KanaType;
-use Eccube\Form\Type\Master\ShippingStatusType;
 use Eccube\Form\Type\NameType;
 use Eccube\Form\Type\PhoneNumberType;
 use Eccube\Form\Type\PostalType;
@@ -28,6 +27,7 @@ use Eccube\Repository\DeliveryTimeRepository;
 use Eccube\Util\StringUtil;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -37,7 +37,6 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class ShippingType extends AbstractType
 {
@@ -114,6 +113,9 @@ class ShippingType extends AbstractType
             ])
             ->add('postal_code', PostalType::class, [
                 'required' => false,
+                'constraints' => [
+                    new Assert\NotBlank(),
+                ],
             ])
             ->add('address', AddressType::class, [
                 'required' => false,
@@ -145,6 +147,9 @@ class ShippingType extends AbstractType
             ])
             ->add('phone_number', PhoneNumberType::class, [
                 'required' => false,
+                'constraints' => [
+                    new Assert\NotBlank(),
+                ],
             ])
             ->add('Delivery', EntityType::class, [
                 'required' => false,
@@ -155,7 +160,7 @@ class ShippingType extends AbstractType
                         ? $Delivery->getServiceName()
                         : $Delivery->getServiceName().trans('delivery.text.hidden');
                 },
-                'placeholder' => 'shipping.placeholder.please_select',
+                'placeholder' => false,
                 'constraints' => [
                     new Assert\NotBlank(),
                 ],
@@ -163,7 +168,6 @@ class ShippingType extends AbstractType
             ->add('shipping_delivery_date', DateType::class, [
                 'label' => 'shipping.label.delivery_date',
                 'placeholder' => '',
-                'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'required' => false,
             ])
@@ -186,7 +190,7 @@ class ShippingType extends AbstractType
                 ],
             ])
             ->add('OrderItems', CollectionType::class, [
-                'entry_type' => OrderItemForShippingRegistrationType::class,
+                'entry_type' => OrderItemType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
@@ -195,7 +199,6 @@ class ShippingType extends AbstractType
             ->add('OrderItemsError', TextType::class, [
                 'mapped' => false,
             ])
-            ->add('ShippingStatus', ShippingStatusType::class)
             ->add('notify_email', CheckboxType::class, [
                 'label' => 'admin.shipping.index.813',
                 'mapped' => false,
@@ -207,6 +210,10 @@ class ShippingType extends AbstractType
                 $data = $event->getData();
                 /** @var \Symfony\Component\Form\Form $form */
                 $form = $event->getForm();
+
+                if (!$data) {
+                    return;
+                }
 
                 $Delivery = $data->getDelivery();
                 $timeId = $data->getTimeId();

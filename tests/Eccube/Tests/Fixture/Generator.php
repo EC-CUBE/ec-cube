@@ -22,7 +22,6 @@ use Eccube\Entity\DeliveryTime;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Master\OrderItemType;
-use Eccube\Entity\Master\ShippingStatus;
 use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Member;
@@ -580,13 +579,14 @@ class Generator
         $Shipping = new Shipping();
         $Shipping->copyProperties($Customer);
         $Shipping
+            ->setOrder($Order)
             ->setPref($Pref)
             ->setDelivery($Delivery)
             ->setFeeId($DeliveryFee->getId())
             ->setShippingDeliveryFee($fee)
             ->setShippingDeliveryName($Delivery->getName());
-        $ShippingStatus = $this->entityManager->find(ShippingStatus::class, ShippingStatus::PREPARED);
-        $Shipping->setShippingStatus($ShippingStatus);
+
+        $Order->addShipping($Shipping);
 
         $this->entityManager->persist($Shipping);
         $this->entityManager->flush($Shipping);
@@ -694,7 +694,7 @@ class Generator
         $this->entityManager->persist($OrderItemDiscount);
         $this->entityManager->flush($OrderItemDiscount);
 
-        $this->orderPurchaseFlow->validate($Order, new PurchaseContext());
+        $this->orderPurchaseFlow->validate($Order, new PurchaseContext($Order));
 
         $this->entityManager->flush($Shipping);
         $this->entityManager->flush($Order);

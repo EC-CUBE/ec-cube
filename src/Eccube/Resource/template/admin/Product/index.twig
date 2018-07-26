@@ -126,11 +126,11 @@ file that was distributed with this source code.
 
             toggleBtnBulk('input[id^="check_"]', '#btn_bulk');
             $('input[id^="check_"]').on('change', function() {
+                $('#trigger_check_all').prop('checked', false);
                 toggleBtnBulk('input[id^="check_"]', '#btn_bulk');
             });
 
-
-            $('#check_all').on('change', function() {
+            $('#trigger_check_all').on('change', function() {
                 var checked = $(this).prop('checked');
                 if (checked) {
                     $('input[id^="check_"]').prop('checked', true);
@@ -182,7 +182,7 @@ file that was distributed with this source code.
             // Append html and show popup
             function renderClass(data, btnClass) {
                 $('div.modal-body', modalClass).html(data);
-                $('h5.modal-title', modalClass).html(btnClass.data('message'));
+                $('h5.modal-title', modalClass).text(btnClass.data('message'));
                 $('a.btn-ec-conversion', modalClass).attr('href', btnClass.data('class-url'));
                 modalClass.modal('show');
                 btnClass.attr('disabled', false);
@@ -274,6 +274,24 @@ file that was distributed with this source code.
                         </div>
                     </div>
                 </div>
+                {# エンティティ拡張の自動出力 #}
+                {% for f in searchForm if f.vars.eccube_form_options.auto_render %}
+                    {# TODO 1項目1行になるのを改善 #}
+                    <div class="row mb-2">
+                        {% if f.vars.eccube_form_options.form_theme %}
+                            {% form_theme f f.vars.eccube_form_options.form_theme %}
+                            {{ form_row(f) }}
+                        {% else %}
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label>{{ f.vars.label|trans }}</label>
+                                    {{ form_widget(f) }}
+                                    {{ form_errors(f) }}
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
                 <div class="d-block text-center">
                     <button class="btn btn-ec-regular search-clear"
                             type="button">{{ 'admin.product.index.477'|trans }}</button>
@@ -346,7 +364,7 @@ file that was distributed with this source code.
                                         <thead>
                                         <tr>
                                             <th class="border-top-0 pl-3 pt-2 pb-2">
-                                                <input type="checkbox" name="filter" value="open" id="check_all">
+                                                <input type="checkbox" name="filter" value="open" id="trigger_check_all">
                                             </th>
                                             <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.index.id'|trans }}</th>
                                             <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.index.image'|trans }}</th>
@@ -425,12 +443,47 @@ file that was distributed with this source code.
                                                                         aria-hidden="true"></i></a></div>
                                                         <div class="col text-center" data-toggle="tooltip"
                                                              data-placement="top"
-                                                             title="{{ 'admin.product.index.duplicate'|trans }}"><a class="btn btn-ec-actionIcon"
-                                                                           href="{{ url('admin_product_product_copy', {'id' : Product.id}) }}" {{ csrf_token_for_anchor() }}
-                                                                           data-method="post"
-                                                                           data-message="{{ 'admin.product.index.text01'|trans }}"><i
-                                                                        class="fa fa-files-o fa-lg text-secondary"
-                                                                        aria-hidden="true"></i></a></div>
+                                                             title="{{ 'admin.product.index.duplicate'|trans }}">
+                                                            <a href="#" class="btn btn-ec-actionIcon"
+                                                               data-toggle="modal"
+                                                               data-target="#confirmModal-{{ Product.id }}">
+                                                                <i class="fa fa-files-o fa-lg text-secondary"
+                                                                        aria-hidden="true"></i></a>
+                                                            <div class="modal fade" id="confirmModal-{{ Product.id }}" tabindex="-1"
+                                                                 role="dialog"
+                                                                 aria-labelledby="confirmModal-{{ Product.id }}" aria-hidden="true">
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title font-weight-bold">
+                                                                                {{ 'admin.product.index.duplicate.confirm.title'|trans }}</h5>
+                                                                            <button class="close" type="button"
+                                                                                    data-dismiss="modal"
+                                                                                    aria-label="Close"><span
+                                                                                        aria-hidden="true">×</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="modal-body text-left">
+                                                                            <p class="text-left">
+                                                                                {{ 'admin.product.index.text01'|trans }}</p>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button class="btn btn-ec-sub" type="button"
+                                                                                    data-dismiss="modal">{{ 'admin.product.index.cancel'|trans }}
+                                                                            </button>
+                                                                            <a
+                                                                                    href="{{ url('admin_product_product_copy', {'id' : Product.id}) }}"
+                                                                                    class="btn btn-ec-delete"
+                                                                                    data-confirm="false"
+                                                                                    {{ csrf_token_for_anchor() }}
+                                                                                    data-method="post">
+                                                                                {{ 'common.label.execute'|trans }}
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                         <div class="col text-center" data-toggle="tooltip"
                                                              data-placement="top"
                                                              title="{{ 'admin.product.index.abolition'|trans }}"><a class="btn btn-ec-actionIcon" data-toggle="modal"

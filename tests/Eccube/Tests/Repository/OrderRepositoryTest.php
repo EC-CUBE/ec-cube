@@ -46,19 +46,6 @@ class OrderRepositoryTest extends EccubeTestCase
         $this->Order = $this->createOrder($this->Customer);
     }
 
-    public function testChangeStatusWithCommitted()
-    {
-        $orderId = $this->Order->getId();
-        $Status = $this->entityManager->find(OrderStatus::class, OrderStatus::DELIVERED);
-
-        $this->orderRepository->changeStatus($orderId, $Status);
-
-        $this->assertNotNull($this->Order->getShippingDate());
-        $this->expected = 5;
-        $this->actual = $this->Order->getOrderStatus()->getId();
-        $this->verify();
-    }
-
     public function testChangeStatusWithPayment()
     {
         $orderId = $this->Order->getId();
@@ -79,7 +66,6 @@ class OrderRepositoryTest extends EccubeTestCase
 
         $this->orderRepository->changeStatus($orderId, $Status);
 
-        $this->assertNull($this->Order->getShippingDate());
         $this->assertNull($this->Order->getPaymentDate());
     }
 
@@ -123,5 +109,36 @@ class OrderRepositoryTest extends EccubeTestCase
         $this->orderRepository->changeStatus($Order2->getId(), $Status);
 
         $this->assertNull($this->orderRepository->getExistsOrdersByCustomer($this->Customer));
+    }
+
+    public function testUpdateOrderSummary()
+    {
+        $Customer = $this->createCustomer();
+        $this->orderRepository->updateOrderSummary($Customer);
+
+        self::assertNull($Customer->getFirstBuyDate());
+        self::assertNull($Customer->getLastBuyDate());
+        self::assertSame(0, $Customer->getBuyTimes());
+        self::assertSame(0, $Customer->getBuyTotal());
+
+        $Order1 = $this->createOrder($Customer);
+        $Order1->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
+        $this->entityManager->flush();
+
+        $this->orderRepository->updateOrderSummary($Customer);
+        self::assertSame($Order1->getOrderDate(), $Customer->getFirstBuyDate());
+        self::assertSame($Order1->getOrderDate(), $Customer->getLastBuyDate());
+        self::assertEquals(1, $Customer->getBuyTimes());
+        self::assertEquals($Order1->getTotal(), $Customer->getBuyTotal());
+
+        $Order2 = $this->createOrder($Customer);
+        $Order2->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
+        $this->entityManager->flush();
+
+        $this->orderRepository->updateOrderSummary($Customer);
+        self::assertSame($Order1->getOrderDate(), $Customer->getFirstBuyDate());
+        self::assertSame($Order2->getOrderDate(), $Customer->getLastBuyDate());
+        self::assertEquals(2, $Customer->getBuyTimes());
+        self::assertEquals($Order1->getTotal() + $Order2->getTotal(), $Customer->getBuyTotal());
     }
 }

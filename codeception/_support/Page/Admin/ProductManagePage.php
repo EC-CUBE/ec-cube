@@ -3,7 +3,7 @@
 namespace Page\Admin;
 
 /**
- * 商品管理/商品マスター
+ * 商品管理/商品一覧
  * @package Page\Admin
  */
 class ProductManagePage extends AbstractAdminPageStyleGuide
@@ -33,7 +33,7 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
     public static function go(\AcceptanceTester $I)
     {
         $page = new ProductManagePage($I);
-        return $page->goPage(self::$URL, '商品マスター商品管理');
+        return $page->goPage(self::$URL, '商品一覧商品管理');
     }
 
     /**
@@ -55,7 +55,7 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
     {
         $this->tester->fillField(self::$検索条件_プロダクト, $product);
         $this->tester->click(self::$検索ボタン);
-        $this->tester->see('商品マスター商品管理', '.c-pageTitle');
+        $this->tester->see('商品一覧商品管理', '.c-pageTitle');
         return $this;
     }
 
@@ -65,7 +65,7 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
         $this->tester->wait(1);
         $this->tester->checkOption(['id' => 'admin_search_product_status_' . $value]);
         $this->tester->click(self::$検索ボタン);
-        $this->tester->see('商品マスター商品管理', '.c-pageTitle');
+        $this->tester->see('商品一覧商品管理', '.c-pageTitle');
         return $this;
     }
     /**
@@ -154,6 +154,14 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
       return $this;
     }
 
+    public function Accept_重複する($rowNum)
+    {
+        $modalCssSelector = "#page_admin_product > div.c-container > div.c-contentsArea > div.c-contentsArea__cols > div > div > form > div.card.rounded.border-0.mb-4 > div.card-body.p-0 > table > tbody > tr:nth-child(${rowNum}) > td.align-middle.pr-3 > div > div:nth-child(2) div.modal";
+        $this->tester->waitForElementVisible(['css' => $modalCssSelector]);
+        $this->tester->click($modalCssSelector." div.modal-footer a.btn-ec-delete");
+        return $this;
+    }
+
     public function Accept_削除($rowNum)
     {
         $this->tester->click("#page_admin_product > div.c-container > div.c-contentsArea > div.c-contentsArea__cols > div > div > form > div.card.rounded.border-0.mb-4 > div.card-body.p-0 > table > tbody > tr:nth-child(${rowNum}) > td.align-middle.pr-3 > div > div:nth-child(3) div.modal div.modal-footer a.btn-ec-delete");
@@ -180,7 +188,7 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
 
     public function すべて選択()
     {
-        $this->tester->checkOption(['id' => 'check_all']);
+        $this->tester->checkOption(['id' => 'trigger_check_all']);
         return $this;
     }
 

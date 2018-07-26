@@ -127,7 +127,6 @@ class PaymentController extends AbstractController
                 if (!$Payment->getMethodClass()) {
                     $Payment->setMethodClass(Cash::class);
                 }
-                $Payment->setVisible(true);
                 $this->entityManager->persist($Payment);
                 $this->entityManager->flush();
 
@@ -228,7 +227,7 @@ class PaymentController extends AbstractController
         } catch (ForeignKeyConstraintViolationException $e) {
             $this->entityManager->rollback();
 
-            $message = trans('admin.delete.failed.foreign_key', ['%name%' => trans('payment.text.name')]);
+            $message = trans('admin.delete.failed.foreign_key', ['%name%' => $TargetPayment->getMethod()]);
             $this->addError($message, 'admin');
         }
 

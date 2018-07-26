@@ -89,7 +89,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
             $this->generateUrl('admin_customer_edit', ['id' => $this->Customer->getId()])
         );
 
-        $this->expected = '会員マスター';
+        $this->expected = '会員一覧';
         $this->actual = $crawler->filter('#customer_form > div.c-conversionArea > div > div > div:nth-child(1) > div')->text();
         $this->assertContains($this->expected, $this->actual);
     }
@@ -169,7 +169,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
         );
 
         $orderListing = $crawler->filter('#orderHistory > div')->text();
-        $this->assertRegexp('/'.$Order->getId().'/', $orderListing);
+        $this->assertRegexp('/'.$Order->getOrderNo().'/', $orderListing);
     }
 
     public function testNotShowProcessingOrder()

@@ -4,7 +4,6 @@ use Codeception\Util\Fixtures;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
-use Eccube\Entity\Master\ShippingStatus;
 use Eccube\Kernel;
 use Faker\Factory as Faker;
 
@@ -200,31 +199,29 @@ $findShippings = function () use ($entityManager) {
 /** 出荷を検索するクロージャ. */
 Fixtures::add('findShippings', $findShippings);
 
-$resetShippingStatusPrepared = function () use ($entityManager) {
-    $StatusPrepared = $entityManager->find(ShippingStatus::class, ShippingStatus::PREPARED);
+$resetShippingDate = function () use ($entityManager) {
     $Shippings = $entityManager->getRepository('Eccube\Entity\Shipping')
         ->findAll();
     foreach ($Shippings as $Shipping) {
-        $Shipping->setShippingStatus($StatusPrepared);
+        $Shipping->setShippingDate(null);
     }
     $entityManager->flush();
     return true;
 };
 /** 出荷準備中に更新するクロージャ. */
-Fixtures::add('resetShippingStatusPrepared', $resetShippingStatusPrepared);
+Fixtures::add('resetShippingDate', $resetShippingDate);
 
-$resetShippingStatusShipped = function () use ($entityManager) {
-    $StatusShipped = $entityManager->find(ShippingStatus::class, ShippingStatus::SHIPPED);
+$setShippingDate = function () use ($entityManager) {
     $Shippings = $entityManager->getRepository('Eccube\Entity\Shipping')
         ->findAll();
     foreach ($Shippings as $Shipping) {
-        $Shipping->setShippingStatus($StatusShipped);
+        $Shipping->setShippingDate(new \DateTime());
     }
     $entityManager->flush();
     return true;
 };
 /** 出荷済みに更新するクロージャ. */
-Fixtures::add('resetShippingStatusShipped', $resetShippingStatusShipped);
+Fixtures::add('setShippingDate', $setShippingDate);
 
 $deleteShippingNotExistsOfItem = function () use ($entityManager) {
 
@@ -267,12 +264,14 @@ $createCustomer = function ($email = null, $active = true) use ($container, $fak
 /** 会員を生成するクロージャ. */
 Fixtures::add('createCustomer', $createCustomer);
 
-$createOrders = function ($Customer, $numberOfOrders = 5, $ProductClasses = array()) use ($container, $entityManager, $faker) {
+$createOrders = function ($Customer, $numberOfOrders = 5, $ProductClasses = array(), $Status = null) use ($container, $entityManager, $faker) {
     $generator = $container->get('Eccube\Tests\Fixture\Generator');
     $Orders = array();
     for ($i = 0; $i < $numberOfOrders; $i++) {
         $Order = $generator->createOrder($Customer, $ProductClasses);
-        $Status = $entityManager->getRepository('Eccube\Entity\Master\OrderStatus')->find($faker->numberBetween(1, 7));
+        $Status = $Status
+            ? $entityManager->getRepository('Eccube\Entity\Master\OrderStatus')->find($Status)
+            : $entityManager->getRepository('Eccube\Entity\Master\OrderStatus')->find($faker->numberBetween(1, 7));
         $OrderDate = $faker->dateTimeThisYear();
         $Order->setOrderStatus($Status);
         $Order->setOrderDate($OrderDate);

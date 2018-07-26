@@ -27,7 +27,6 @@ use Eccube\Service\ShoppingService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -246,10 +245,7 @@ class NonMemberShoppingController extends AbstractShoppingController
     public function customer(Request $request)
     {
         if (!$request->isXmlHttpRequest()) {
-            $response = new Response(json_encode(['status' => 'NG']), 400);
-            $response->headers->set('Content-Type', 'application/json');
-
-            return $response;
+            return $this->json(['status' => 'NG'], 400);
         }
         try {
             log_info('非会員お客様情報変更処理開始');
@@ -259,19 +255,15 @@ class NonMemberShoppingController extends AbstractShoppingController
             foreach ($errors as $error) {
                 if ($error->count() != 0) {
                     log_info('非会員お客様情報変更入力チェックエラー');
-                    $response = new Response(json_encode('NG'), 400);
-                    $response->headers->set('Content-Type', 'application/json');
 
-                    return $response;
+                    return $this->json(['status' => 'NG'], 400);
                 }
             }
             $pref = $this->prefRepository->findOneBy(['name' => $data['customer_pref']]);
             if (!$pref) {
                 log_info('非会員お客様情報変更入力チェックエラー');
-                $response = new Response(json_encode('NG'), 400);
-                $response->headers->set('Content-Type', 'application/json');
 
-                return $response;
+                return $this->json(['status' => 'NG'], 400);
             }
             /** @var Order $Order */
             $Order = $this->shoppingService->getOrder(OrderStatus::PROCESSING);
@@ -307,12 +299,12 @@ class NonMemberShoppingController extends AbstractShoppingController
             $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_CUSTOMER_INITIALIZE, $event);
             log_info('非会員お客様情報変更処理完了', [$Order->getId()]);
             $message = ['status' => 'OK', 'kana01' => $data['customer_kana01'], 'kana02' => $data['customer_kana02']];
-            $response = new Response(json_encode($message));
-            $response->headers->set('Content-Type', 'application/json');
+
+            $response = $this->json($message);
         } catch (\Exception $e) {
             log_error('予期しないエラー', [$e->getMessage()]);
-            $response = new Response(json_encode(['status' => 'NG']), 500);
-            $response->headers->set('Content-Type', 'application/json');
+
+            $response = $this->json(['status' => 'NG'], 500);
         }
 
         return $response;

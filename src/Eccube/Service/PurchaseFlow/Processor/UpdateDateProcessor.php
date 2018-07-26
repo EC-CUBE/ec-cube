@@ -59,7 +59,6 @@ class UpdateDateProcessor extends AbstractPurchaseProcessor
             if ($TargetOrder->getOrderStatus()->getId() == OrderStatus::DELIVERED) {
                 // 編集前と異なる場合のみ更新
                 if ($TargetOrder->getOrderStatus()->getId() != $OriginOrder->getOrderStatus()->getId()) {
-                    $TargetOrder->setShippingDate($dateTime);
                     // お届け先情報の発送日も更新する.
                     $Shippings = $TargetOrder->getShippings();
                     foreach ($Shippings as $Shipping) {
@@ -77,7 +76,6 @@ class UpdateDateProcessor extends AbstractPurchaseProcessor
         } else {
             // 発送済
             if ($TargetOrder->getOrderStatus()->getId() == OrderStatus::DELIVERED) {
-                $TargetOrder->setShippingDate($dateTime);
                 // お届け先情報の発送日も更新する.
                 $Shippings = $TargetOrder->getShippings();
                 foreach ($Shippings as $Shipping) {

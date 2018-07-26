@@ -102,6 +102,7 @@ file that was distributed with this source code.
                 // お届け時間名を入れる
                 var inputId = '#delivery_delivery_times_' + index + '_delivery_time';
                 $(inputId).val(deliveryTimeName);
+                $(inputId).attr('data-origin-value', deliveryTimeName);
 
                 // 入力欄を初期化
                 $('#add-delivery-time-value').val('');
@@ -157,6 +158,8 @@ file that was distributed with this source code.
                 var current = $(this).parents("li");
                 current.find('.mode-view').addClass('d-none');
                 current.find('.mode-edit').removeClass('d-none');
+                current.find('.action-edit-submit').attr('disabled', false);
+                current.find('.action-edit-cancel').attr('disabled', false);
             });
 
             // 編集決定
@@ -167,6 +170,9 @@ file that was distributed with this source code.
                 current.find('.display-label').text(value);
                 current.find('.mode-view').removeClass('d-none');
                 current.find('.mode-edit').addClass('d-none');
+                current.find('[data-origin-value]').each(function(e) {
+                    $(this).attr('data-origin-value', value);
+                });
             });
             // 編集キャンセル
             $('#delivery-time-group').on('click', 'button.action-edit-cancel', function (e) {
@@ -232,6 +238,21 @@ file that was distributed with this source code.
                                     {{ form_errors(form.sale_type) }}
                                 </div>
                             </div>
+                            {# エンティティ拡張の自動出力 #}
+                            {% for f in form if f.vars.eccube_form_options.auto_render %}
+                                {% if f.vars.eccube_form_options.form_theme %}
+                                    {% form_theme f f.vars.eccube_form_options.form_theme %}
+                                    {{ form_row(f) }}
+                                {% else %}
+                                    <div class="row">
+                                        <div class="col-3"><span>{{ f.vars.label|trans }}</span></div>
+                                        <div class="col mb-2">
+                                            {{ form_widget(f) }}
+                                            {{ form_errors(f) }}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
                         </div>
                     </div>
                     <div class="card rounded border-0 mb-4">

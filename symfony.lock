@@ -221,6 +221,9 @@
     "phpunit/phpunit-mock-objects": {
         "version": "5.0.6"
     },
+    "pimple/pimple": {
+        "version": "v1.1.1"
+    },
     "psr/cache": {
         "version": "1.0.1"
     },
@@ -298,6 +301,12 @@
             "version": "4.0",
             "ref": "576d653444dade07f272c889d52fe4594caa4fc3"
         }
+    },
+    "setasign/fpdi": {
+        "version": "v2.0.3"
+    },
+    "setasign/fpdi-tcpdf": {
+        "version": "v2.0.0"
     },
     "suncat/mobile-detect-bundle": {
         "version": "1.0",
@@ -563,8 +572,20 @@
             "ref": "c72d107d077f1654428edaed69415d0228c1aefe"
         }
     },
+    "symfony/workflow": {
+        "version": "3.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "3.3",
+            "ref": "7c8798612bf94fbe4cb75056a4cd7ea3a9183698"
+        }
+    },
     "symfony/yaml": {
         "version": "v3.4.1"
+    },
+    "tecnickcom/tcpdf": {
+        "version": "6.2.17"
     },
     "theseer/tokenizer": {
         "version": "1.1.0"
