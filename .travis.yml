@@ -47,7 +47,7 @@ jobs:
     - stage: Inspection
       php: 7.1
       env: DATABASE_URL=postgres://postgres:password@localhost/cube4_dev DATABASE_SERVER_VERSION=9
-      script: vendor/bin/php-cs-fixer fix --config=.php_cs.dist --dry-run
+      script: vendor/bin/php-cs-fixer fix --config=.php_cs.dist --dry-run --diff
     - &unit_test
       stage: Unit Test
       before_install:
