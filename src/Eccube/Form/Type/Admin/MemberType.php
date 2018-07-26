@@ -14,6 +14,7 @@
 namespace Eccube\Form\Type\Admin;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\Master\Authority;
 use Eccube\Entity\Master\Work;
 use Eccube\Repository\MemberRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -131,8 +132,9 @@ class MemberType extends AbstractType
                 $count = $this->memberRepository
                     ->createQueryBuilder('m')
                     ->select('COUNT(m)')
-                    ->where('m.Work = :Work AND m.id <> :Member')
+                    ->where('m.Work = :Work AND m.Authority m.id <> :Member')
                     ->setParameter('Work', Work::WORK_ACTIVE_ID)
+                    ->setParameter('Authority', Authority::ADMIN)
                     ->setParameter('Member', $Member)
                     ->getQuery()
                     ->getSingleScalarResult();
