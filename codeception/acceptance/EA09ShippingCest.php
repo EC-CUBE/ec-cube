@@ -8,7 +8,6 @@ use Page\Admin\OrderEditPage;
 use Page\Admin\OrderManagePage;
 use Page\Admin\ShippingCsvUploadPage;
 use Page\Admin\ShippingEditPage;
-use Page\Admin\ShippingManagePage;
 
 /**
  * @group admin
@@ -29,52 +28,42 @@ class EA09ShippingCest
     {
     }
 
-    public function shipping出荷検索(\AcceptanceTester $I)
-    {
-        $I->getScenario()->incomplete('受注管理画面に統合');
-        $I->wantTo('EA0901-UC01-T01(& UC01-T02, UC01-T3) 出荷検索');
-
-        $TargetShippings = Fixtures::get('findShippings'); // Closure
-        $Shippings = $TargetShippings();
-        ShippingManagePage::go($I);
-        $I->see('検索結果 : '.count($Shippings).' 件が該当しました', ShippingManagePage::$検索結果_メッセージ);
-
-        ShippingManagePage::go($I)->検索('gege@gege.com');
-        $I->see('検索結果 : 0 件が該当しました', ShippingManagePage::$検索結果_メッセージ);
-
-        ShippingManagePage::go($I)->詳細検索_電話番号('あああ');
-        $I->see('検索条件に誤りがあります', ShippingManagePage::$検索結果_エラーメッセージ);
-    }
-
     public function shipping出荷編集(\AcceptanceTester $I)
     {
-        $I->getScenario()->incomplete('受注管理画面に統合');
         $I->wantTo('EA0901-UC03-T01(& UC03-T02) 出荷編集');
-
-        $I->getScenario()->skip('お届け日を編集時にJSが走らない問題がありskip');
 
         $I->resetEmails();
 
-        $TargetShippings = Fixtures::get('findShippings'); // Closure
-        $Shippings = $TargetShippings();
-        $ShippingListPage = ShippingManagePage::go($I);
-        $I->see('検索結果 : '.count($Shippings).' 件が該当しました', ShippingManagePage::$検索結果_メッセージ);
+        // 対応中ステータスの受注を作る
+        $createCustomer = Fixtures::get('createCustomer');
+        $createOrders = Fixtures::get('createOrders');
+        $newOrders = $createOrders($createCustomer(), 1, array(), OrderStatus::IN_PROGRESS);
+
+        $OrderListPage = OrderManagePage::go($I)->検索($newOrders[0]->getOrderNo());
+
+        $I->see('検索結果：1件が該当しました', OrderManagePage::$検索結果_メッセージ);
 
         /* 編集 */
-        $ShippingListPage->一覧_編集(1);
+        $OrderListPage->一覧_編集(1);
+
+        $OrderRegisterPage = OrderEditPage::at($I)
+            ->お届け先の追加();
+
+
+        $TargetShippings = Fixtures::get('findShippings'); // Closure
+        $Shippings = $TargetShippings();
 
         $ShippingRegisterPage = ShippingEditPage::at($I)
-            ->お届け先編集()
             ->入力_姓('')
             ->出荷情報登録();
 
         /* 異常系 */
         // FIXME お届け先編集が閉じてしまうため、エラーメッセージが表示されない
-        // $I->see('入力されていません。', ShippingEditPage::$姓_エラーメッセージ);
+        $I->see('入力されていません。', ShippingEditPage::$姓_エラーメッセージ);
 
         /* 正常系 */
         $ShippingRegisterPage
-            ->お届け先編集()
+            // ->お届け先編集()
             ->入力_姓('aaa')
             ->入力_セイ('アアア')
             ->入力_メイ('アアア')
@@ -88,124 +77,74 @@ class EA09ShippingCest
 
         $I->see('出荷情報を登録しました。', ShippingEditPage::$登録完了メッセージ);
 
-        /* 出荷済みに変更 */
+        $I->wait(10);
+
+        // 出荷済みに変更
         $ShippingRegisterPage
-            ->入力_出荷日('2018-09-04')
-            ->出荷情報登録()
-            ->変更を確定();
-        $I->wait(1);
-        $I->see('出荷情報を登録しました。', ShippingEditPage::$登録完了メッセージ);
-
-        $I->wait(3);
-        $I->seeEmailCount(2);
+            ->出荷完了にする()
+            ->変更を確定()
+            ->出荷日を確認();
     }
 
-    public function shipping出荷削除(\AcceptanceTester $I)
+    public function shippingお届け先追加(\AcceptanceTester $I)
     {
-        $I->getScenario()->incomplete('受注管理画面に統合');
-        $I->wantTo('EA0901-UC04-T01(& UC04-T02) 出荷削除');
-
-        $TargetShippings = Fixtures::get('findShippings'); // Closure
-        $Shippings = $TargetShippings();
-        $ShippingListPage = ShippingManagePage::go($I);
-        $I->see('検索結果 : '.count($Shippings).' 件が該当しました', ShippingManagePage::$検索結果_メッセージ);
-
-        // 削除
-        $ShippingListPage->一覧_チェックボックス(1);
-        $ShippingListPage->一覧_削除();
-
-        $I->waitForElementVisible(['xpath' => '//*[@id="page_admin_shipping"]/div[1]/div[3]/div[2]/span']);
-        $I->see('出荷情報を削除しました。', ['xpath' => '//*[@id="page_admin_shipping"]/div[1]/div[3]/div[2]/span']);
-
-        // 削除キャンセル
-        $ShippingListPage->一覧_チェックボックス(1);
-        $ShippingListPage->一覧_削除キャンセル();
-    }
-
-    public function shipping一括発送済み更新(\AcceptanceTester $I)
-    {
-        $I->getScenario()->incomplete('受注管理画面に統合');
-        $I->wantTo('EA0902-UC01-T01 一括発送済み更新');
-
-        // 一括操作用の受注を生成しておく
-        $createCustomer = Fixtures::get('createCustomer');
-        $createOrders = Fixtures::get('createOrders');
-        $createOrders($createCustomer(), 10, array());
+        $I->wantTo('EA0901-UC03-T03 お届け先追加');
 
         $I->resetEmails();
 
-        $config = Fixtures::get('config');
-        // 未出荷にリセット
-        $resetShippingDate = Fixtures::get('resetShippingDate'); // Closure
-        $resetShippingDate();
+        // 対応中ステータスの受注を作る
+        $createCustomer = Fixtures::get('createCustomer');
+        $createOrders = Fixtures::get('createOrders');
+        $newOrders = $createOrders($createCustomer(), 1, array(), OrderStatus::IN_PROGRESS);
+
+        $OrderListPage = OrderManagePage::go($I)->検索($newOrders[0]->getOrderNo());
+
+        $I->see('検索結果：1件が該当しました', OrderManagePage::$検索結果_メッセージ);
+
+        /* 編集 */
+        $OrderListPage->一覧_編集(1);
+
+        $OrderRegisterPage = OrderEditPage::at($I)
+            ->お届け先の追加();
+
 
         $TargetShippings = Fixtures::get('findShippings'); // Closure
         $Shippings = $TargetShippings();
-        $ShippingListPage = ShippingManagePage::go($I);
-        $I->see('検索結果 : '.count($Shippings).' 件が該当しました', ShippingManagePage::$検索結果_メッセージ);
 
-        $ShippingListPage
-            ->一覧_全選択()
-            ->一括発送済み更新();
-
-        $I->wait(5);
-        $I->waitForElementVisible(['xpath' => '//*[@id="sentUpdateModal"]/div/div/div[2]/p']);
-        $I->see('処理完了。10件のメールを送信しました', ['xpath' => '//*[@id="sentUpdateModal"]/div/div/div[2]/p']);
-        $I->seeEmailCount(20);
-
-        $I->click(['id' => 'bulkChangeComplete']);
-    }
-
-    public function shipping出荷登録(\AcceptanceTester $I)
-    {
-        $I->getScenario()->incomplete('受注管理画面に統合');
-        $I->wantTo('EA0903-UC01-T01(& UC01-T02) 出荷登録');
-
-        $OrderRegisterPage = OrderEditPage::go($I)->受注情報登録();
-
-        /* 正常系 */
-        $OrderRegisterPage
-            ->入力_受注ステータス(['1' => '新規受付'])
-            ->入力_姓('order1')
-            ->入力_名('order1')
-            ->入力_セイ('アアア')
-            ->入力_メイ('アアア')
-            ->入力_郵便番号('060-0000')
-            ->入力_都道府県(['1' => '北海道'])
-            ->入力_市区町村名('bbb')
-            ->入力_番地_ビル名('bbb')
-            ->入力_Eメール('test@test.com')
-            ->入力_電話番号('111-111-111')
-            ->商品検索('パーコレーター')
-            ->商品検索結果_選択(1)
-            ->入力_支払方法(['4'=> '郵便振替'])
-            ->受注情報登録();
-
-        $ShippingRegisterPage = ShippingEditPage::go($I)->出荷情報登録();
-
-        /* 異常系 */
-        $I->dontSee('出荷情報を保存しました。', ShippingEditPage::$登録完了メッセージ);
-
+        $ShippingRegisterPage = ShippingEditPage::at($I);
+        $ShippingRegisterPage
+            ->出荷先を追加();
 
         /* 正常系 */
         $ShippingRegisterPage
-            ->入力_姓('shipping1')
-            ->入力_名('shipping1')
-            ->入力_セイ('アアア')
-            ->入力_メイ('アアア')
-            ->入力_郵便番号('060-0000')
-            ->入力_都道府県(['1' => '北海道'])
-            ->入力_市区町村名('bbb')
-            ->入力_番地_ビル名('bbb')
-            ->入力_電話番号('111-111-111')
-            ->入力_出荷伝票番号('1111-1111-1111')
-            ->入力_配送業者([1 => 'サンプル業者'])
-            ->入力_配達用メモ('メモ')
-            ->商品検索()
-            ->商品検索結果_選択(1)
+            // ->お届け先編集()
+            ->入力_姓('aaa', 1)
+            ->入力_名('bbb', 1)
+            ->入力_セイ('アアア', 1)
+            ->入力_メイ('アアア', 1)
+            ->入力_郵便番号('060-0000', 1)
+            ->入力_都道府県(['1' => '北海道'], 1)
+            ->入力_市区町村名('bbb', 1)
+            ->入力_番地_ビル名('bbb', 1)
+            ->入力_電話番号('111-111-111', 1)
+            ->入力_番地_ビル名('address 2', 1)
             ->出荷情報登録();
 
         $I->see('出荷情報を登録しました。', ShippingEditPage::$登録完了メッセージ);
+
+        $I->wait(10);
+        // 出荷済みに変更
+        $ShippingRegisterPage
+            ->出荷完了にする()
+            ->変更を確定()
+            ->出荷日を確認();
+
+        // 出荷済みに変更
+        $ShippingRegisterPage
+            ->出荷完了にする(1)
+            ->変更を確定(1);
+        // TODO ステータス変更スキップしました
+
     }
 
     public function shipping_出荷CSV登録(\AcceptanceTester $I)

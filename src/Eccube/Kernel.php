@@ -88,6 +88,7 @@ class Kernel extends BaseKernel
         // DateTime/DateTimeTzのタイムゾーンを設定.
         UTCDateTimeType::setTimeZone($this->container->getParameter('timezone'));
         UTCDateTimeTzType::setTimeZone($this->container->getParameter('timezone'));
+        date_default_timezone_set($this->container->getParameter('timezone'));
 
         // Activate to $app
         $app = Application::getInstance(['debug' => $this->isDebug()]);

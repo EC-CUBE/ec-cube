@@ -190,7 +190,7 @@ class ShippingType extends AbstractType
                 ],
             ])
             ->add('OrderItems', CollectionType::class, [
-                'entry_type' => OrderItemForShippingRegistrationType::class,
+                'entry_type' => OrderItemType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,

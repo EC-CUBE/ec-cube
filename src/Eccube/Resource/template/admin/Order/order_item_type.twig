@@ -11,19 +11,16 @@ file that was distributed with this source code.
 <script>
     // 受注明細行を追加する.
     function fnAddOrderItem($row, product_id, type, product_name) {
-        // 受注明細行を取得.
-        var list = '#table-form-field';
-
         var prototype = $collectionHolder.data('prototype');
         index++;
         var newForm = prototype.replace(/__name__/g, index);
-        $(list + ' tbody').append(newForm);
-        var $lastRow = $(list + ' tbody > tr:last');
+        $collectionHolder.children('tbody').append(newForm);
+        var $lastRow = $collectionHolder.children('tbody').children('tr').last;
 
-        $($lastRow).find('#order_OrderItems_' + index + '_price').val(0);
-        $($lastRow).find('#order_OrderItems_' + index + '_quantity').val(1);
-        $($lastRow).find('#order_OrderItems_' + index + '_order_item_type').val(type);
-        $($lastRow).find('#order_OrderItems_' + index + '_product_name').val(product_name);
+        $($lastRow).find(formIdPrefix + index + '_price').val(0);
+        $($lastRow).find(formIdPrefix + index + '_quantity').val(1);
+        $($lastRow).find(formIdPrefix + index + '_order_item_type').val(type);
+        $($lastRow).find(formIdPrefix + index + '_product_name').val(product_name);
         // モーダル閉じる.
         $('#addOrderItemType').modal('hide');
 
