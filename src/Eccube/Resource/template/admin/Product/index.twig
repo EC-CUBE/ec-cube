@@ -126,11 +126,11 @@ file that was distributed with this source code.
 
             toggleBtnBulk('input[id^="check_"]', '#btn_bulk');
             $('input[id^="check_"]').on('change', function() {
+                $('#trigger_check_all').prop('checked', false);
                 toggleBtnBulk('input[id^="check_"]', '#btn_bulk');
             });
 
-
-            $('#check_all').on('change', function() {
+            $('#trigger_check_all').on('change', function() {
                 var checked = $(this).prop('checked');
                 if (checked) {
                     $('input[id^="check_"]').prop('checked', true);
@@ -364,7 +364,7 @@ file that was distributed with this source code.
                                         <thead>
                                         <tr>
                                             <th class="border-top-0 pl-3 pt-2 pb-2">
-                                                <input type="checkbox" name="filter" value="open" id="check_all">
+                                                <input type="checkbox" name="filter" value="open" id="trigger_check_all">
                                             </th>
                                             <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.index.id'|trans }}</th>
                                             <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.index.image'|trans }}</th>

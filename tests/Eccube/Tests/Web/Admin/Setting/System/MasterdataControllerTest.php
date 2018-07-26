@@ -116,36 +116,6 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
-     * New id is null
-     *
-     * @see https://github.com/EC-CUBE/ec-cube/issues/1884
-     */
-    public function testNewIdIsNull()
-    {
-        $formData = $this->createFormData($this->entityTest);
-        $editForm = $this->createFormDataEdit($this->entityTest);
-        $id = count($editForm['data']) + 1;
-        $editForm['data'][$id]['id'] = null;
-        $editForm['data'][$id]['name'] = 'test';
-
-        $crawler = $this->client->request(
-            'POST',
-            $this->generateUrl('admin_setting_system_masterdata_edit'),
-            [
-                'admin_system_masterdata' => $formData,
-                'admin_system_masterdata_edit' => $editForm,
-            ]
-        );
-        $html = $crawler->html();
-        $this->assertContains('入力されていません。', $html);
-
-        // Cannot save
-        $entityName = str_replace('-', '\\', $formData['masterdata']);
-        $actual = $this->entityManager->getRepository($entityName)->find($id);
-        $this->assertTrue(empty($actual));
-    }
-
-    /**
      * Add new name test
      *
      * @see https://github.com/EC-CUBE/ec-cube/issues/1884
@@ -173,34 +143,6 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $entityName = str_replace('-', '\\', $formData['masterdata']);
         $actual = $this->entityManager->getRepository($entityName)->find($id);
         $this->assertTrue(empty($actual));
-    }
-
-    /**
-     * Edit id is null
-     *
-     * @see https://github.com/EC-CUBE/ec-cube/issues/1884
-     */
-    public function testEditIdIsNull()
-    {
-        $formData = $this->createFormData($this->entityTest);
-        $editForm = $this->createFormDataEdit($this->entityTest);
-        $id = $editForm['data'][1]['id'];
-        $editForm['data'][1]['id'] = null;
-
-        $crawler = $this->client->request(
-            'POST',
-            $this->generateUrl('admin_setting_system_masterdata_edit'),
-            [
-                'admin_system_masterdata' => $formData,
-                'admin_system_masterdata_edit' => $editForm,
-            ]
-        );
-        $html = $crawler->html();
-        $this->assertContains('入力されていません。', $html);
-
-        $entityName = str_replace('-', '\\', $formData['masterdata']);
-        $actual = $this->entityManager->getRepository($entityName)->find($id);
-        $this->assertFalse(empty($actual));
     }
 
     /**

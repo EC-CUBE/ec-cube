@@ -106,9 +106,6 @@ parameters:
             name: admin.nav.setting.system
             has_child: true
             child:
-                - id: system_index
-                  name: admin.nav.setting.system.system_index
-                  url: admin_setting_system_system
                 - id: member
                   name: admin.nav.setting.system.member
                   url: admin_setting_system_member
@@ -124,6 +121,9 @@ parameters:
                 - id: masterdata
                   name: admin.nav.setting.system.masterdata
                   url: admin_setting_system_masterdata
+                - id: system_index
+                  name: admin.nav.setting.system.system_index
+                  url: admin_setting_system_system
     - id: store
       name: admin.nav.store
       has_child: true

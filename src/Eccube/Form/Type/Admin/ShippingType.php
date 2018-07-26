@@ -160,7 +160,7 @@ class ShippingType extends AbstractType
                         ? $Delivery->getServiceName()
                         : $Delivery->getServiceName().trans('delivery.text.hidden');
                 },
-                'placeholder' => 'shipping.placeholder.please_select',
+                'placeholder' => false,
                 'constraints' => [
                     new Assert\NotBlank(),
                 ],
@@ -168,13 +168,6 @@ class ShippingType extends AbstractType
             ->add('shipping_delivery_date', DateType::class, [
                 'label' => 'shipping.label.delivery_date',
                 'placeholder' => '',
-                'format' => 'yyyy-MM-dd',
-                'required' => false,
-            ])
-            ->add('shipping_date', DateType::class, [
-                'label' => 'shipping.label.shipping_date',
-                'placeholder' => '',
-                'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'required' => false,
             ])
@@ -197,7 +190,7 @@ class ShippingType extends AbstractType
                 ],
             ])
             ->add('OrderItems', CollectionType::class, [
-                'entry_type' => OrderItemForShippingRegistrationType::class,
+                'entry_type' => OrderItemType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,

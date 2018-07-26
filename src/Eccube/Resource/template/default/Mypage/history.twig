@@ -115,7 +115,7 @@ file that was distributed with this source code.
                         </div>
                         <div class="ec-definitions--soft">
                             <dt>{{'mypage.history.detail.label.shipping_date'|trans}} : </dt>
-                            <dd>{{ Shipping.shipping_delivery_date|date_format|default('admin.shipping.edit.719'|trans) }}</dd>
+                            <dd>{{ Shipping.shipping_delivery_date|date_day_with_weekday|default('admin.shipping.edit.719'|trans) }}</dd>
                         </div>
                         <div class="ec-definitions--soft">
                             <dt>{{'mypage.history.detail.label.shipping_time'|trans}} : </dt>

@@ -50,7 +50,7 @@ class MyPage extends AbstractFrontPage
         $page->tester->see('ご注文履歴', self::ORDER_HISTORY);
         $page->tester->see('お気に入り一覧', self::FAVORITE);
         $page->tester->see('会員情報編集', self::USER_INFO);
-        $page->tester->see('お届け先編集', self::ADDRESS);
+        $page->tester->see('お届け先一覧', self::ADDRESS);
         $page->tester->see('退会手続き', self::WITHDRAW);
         return $page;
     }
