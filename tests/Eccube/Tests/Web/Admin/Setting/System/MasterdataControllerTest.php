@@ -359,7 +359,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_setting_system_masterdata_view', ['entity' => $formData['masterdata']])));
 
-        $data = $editForm['data'][0];
+        $data = $editForm['data'][$id];
         $this->expected = $data['name'];
 
         $entityName = str_replace('-', '\\', $formData['masterdata']);
