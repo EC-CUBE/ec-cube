@@ -18,7 +18,6 @@ use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\ForgotType;
 use Eccube\Form\Type\Front\ResetType;
 use Eccube\Repository\CustomerRepository;
-use Eccube\Service\MailService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,11 +33,6 @@ class ForgotController extends AbstractController
      * @var ValidatorInterface
      */
     protected $recursiveValidator;
-
-    /**
-     * @var MailService
-     */
-    protected $mailService;
 
     /**
      * @var CustomerRepository
@@ -241,6 +235,9 @@ class ForgotController extends AbstractController
                 $request
             );
             $this->eventDispatcher->dispatch(EccubeEvents::FRONT_FORGOT_RESET_COMPLETE, $event);
+
+            // 完了メッセージを設定
+            $this->addFlash('password_reset_complete', trans('forgotcontroller.text.complete'));
 
             // マイページへリダイレクト
             return $this->redirectToRoute('mypage_login');
