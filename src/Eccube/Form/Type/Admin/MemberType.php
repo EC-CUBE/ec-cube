@@ -132,7 +132,7 @@ class MemberType extends AbstractType
                 $count = $this->memberRepository
                     ->createQueryBuilder('m')
                     ->select('COUNT(m)')
-                    ->where('m.Work = :Work AND m.Authority m.id <> :Member')
+                    ->where('m.Work = :Work AND m.Authority = :Authority AND m.id <> :Member')
                     ->setParameter('Work', Work::WORK_ACTIVE_ID)
                     ->setParameter('Authority', Authority::ADMIN)
                     ->setParameter('Member', $Member)
