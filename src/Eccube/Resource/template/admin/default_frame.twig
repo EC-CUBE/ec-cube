@@ -47,7 +47,7 @@ file that was distributed with this source code.
         </div>
         <a class="c-headerBar__toggleBtn"><i class="fa fa-bars" aria-hidden="true"></i></a>
         <a class="c-headerBar__shopTitle" href="{{ url('homepage') }}" target="_blank"><span>{{ BaseInfo.shop_name }}</span><i class="fa fa-angle-right" aria-hidden="true"></i></a>
-        <a class="c-headerBar__userMenu" data-container="body" data-toggle="popover" data-placement="bottom" title="{{ 'admin.header.last_login'|trans }}" data-content="&lt;p&gt;{{ app.user.login_date|date_format }}&lt;/p&gt;&lt;a href='{{ url("admin_change_password") }}' class='btn btn-ec-regular btn-block'&gt;{{ 'admin.header.change_password'|trans }}&lt;/a&gt;&lt;a href='{{ url("admin_logout") }}' class='btn btn-ec-sub btn-block'&gt;{{ 'admin.header.logout'|trans }}&lt;/a&gt;" data-html="true"><i class="fa fa-user-circle" aria-hidden="true"></i><span>{{ 'admin.header.user_name'|trans({'%name%':app.user.name}) }}</span><i class="fa fa-angle-down" aria-hidden="true"></i></a>
+        <a class="c-headerBar__userMenu" data-container="body" data-toggle="popover" data-placement="bottom" title="{{ 'admin.header.last_login'|trans }}" data-content="&lt;p&gt;{{ app.user.login_date|date_min }}&lt;/p&gt;&lt;a href='{{ url("admin_change_password") }}' class='btn btn-ec-regular btn-block'&gt;{{ 'admin.header.change_password'|trans }}&lt;/a&gt;&lt;a href='{{ url("admin_logout") }}' class='btn btn-ec-sub btn-block'&gt;{{ 'admin.header.logout'|trans }}&lt;/a&gt;" data-html="true"><i class="fa fa-user-circle" aria-hidden="true"></i><span>{{ 'admin.header.user_name'|trans({'%name%':app.user.name}) }}</span><i class="fa fa-angle-down" aria-hidden="true"></i></a>
     </div>
 </header>
 <div class="c-container">

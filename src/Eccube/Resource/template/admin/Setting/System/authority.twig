@@ -95,17 +95,7 @@ $(function() {
                             <p id="authority_box__add_button">
                                 <button type="button" class="btn btn-ec-regular add">{{'admin.setting.system.authority.667'|trans}}</button>
                             </p>
-                            <div class="extra-form clearfix">
-                                {% for f in form.getIterator %}
-                                    {% if f.vars.name matches '[^plg*]' %}
-                                        <div class="form-group">
-                                            {{ form_label(f) }}
-                                            {{ form_widget(f) }}
-                                            {{ form_errors(f) }}
-                                        </div>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
+
                         </div>
                     </div>
                     <div class="c-conversionArea">

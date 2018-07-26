@@ -13,10 +13,12 @@
 
 namespace Eccube\Repository;
 
+use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
 use Eccube\Doctrine\Query\Queries;
-use Eccube\Entity\Order;
+use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Order;
 use Eccube\Util\StringUtil;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -494,7 +496,7 @@ class OrderRepository extends AbstractRepository
     public function getCustomerCount(\Eccube\Entity\Customer $Customer, array $OrderStatuses)
     {
         $result = $this->createQueryBuilder('o')
-            ->select('COUNT(o.id) AS buy_times, SUM(o.total)  AS buy_total')
+            ->select('COUNT(o.id) AS buy_times, SUM(o.total) AS buy_total, MAX(o.id) AS order_id')
             ->where('o.Customer = :Customer')
             ->andWhere('o.OrderStatus in (:OrderStatuses)')
             ->setParameter('Customer', $Customer)
@@ -550,5 +552,42 @@ class OrderRepository extends AbstractRepository
             ->setParameter('OrderStatus', $OrderStatusOrId)
             ->getQuery()
             ->getSingleScalarResult();
+    }
+
+    /**
+     * 会員の購入金額, 購入回数, 初回購入日, 最終購入費を更新する
+     *
+     * @param Customer $Customer
+     * @param array $OrderStatuses
+     */
+    public function updateOrderSummary(Customer $Customer, array $OrderStatuses = [OrderStatus::NEW, OrderStatus::PAID, OrderStatus::DELIVERED, OrderStatus::IN_PROGRESS])
+    {
+        try {
+            $result = $this->createQueryBuilder('o')
+                ->select('COUNT(o.id) AS buy_times, SUM(o.total) AS buy_total, MIN(o.id) AS first_order_id, MAX(o.id) AS last_order_id')
+                ->where('o.Customer = :Customer')
+                ->andWhere('o.OrderStatus in (:OrderStatuses)')
+                ->setParameter('Customer', $Customer)
+                ->setParameter('OrderStatuses', $OrderStatuses)
+                ->groupBy('o.Customer')
+                ->getQuery()
+                ->getSingleResult();
+        } catch (NoResultException $e) {
+            // 受注データが存在しなければ初期化
+            $Customer->setFirstBuyDate(null);
+            $Customer->setLastBuyDate(null);
+            $Customer->setBuyTimes(0);
+            $Customer->setBuyTotal(0);
+
+            return;
+        }
+
+        $FirstOrder = $this->find(['id' => $result['first_order_id']]);
+        $LastOrder = $this->find(['id' => $result['last_order_id']]);
+
+        $Customer->setBuyTimes($result['buy_times']);
+        $Customer->setBuyTotal($result['buy_total']);
+        $Customer->setFirstBuyDate($FirstOrder->getOrderDate());
+        $Customer->setLastBuyDate($LastOrder->getOrderDate());
     }
 }

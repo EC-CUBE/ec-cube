@@ -36,7 +36,7 @@ class CategoryManagePage extends AbstractAdminPageStyleGuide
 
     public function カテゴリ作成()
     {
-        $this->tester->click('#form1 > div:nth-child(3) > button');
+        $this->tester->click('#form1 > div:nth-child(2) > div:nth-child(2) > button');
         return $this;
     }
 

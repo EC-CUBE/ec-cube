@@ -222,10 +222,10 @@ class Kernel extends BaseKernel
         $driver->addMethodCall('setTraitProxiesDirectory', [$projectDir.'/app/proxy/entity']);
         $container->addCompilerPass(new DoctrineOrmMappingsPass($driver, $namespaces, []));
 
-        // Acme
+        // Customize
         $container->addCompilerPass(DoctrineOrmMappingsPass::createAnnotationMappingDriver(
-            ['Acme\\Entity'],
-            ['%kernel.project_dir%/app/Acme/Entity']
+            ['Customize\\Entity'],
+            ['%kernel.project_dir%/app/Customize/Entity']
         ));
 
         // Plugin

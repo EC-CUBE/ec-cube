@@ -166,17 +166,6 @@ file that was distributed with this source code.
                                     </div>
                                 </div>
                             </div>
-                            <div class="mb-4 extra-form row">
-                                <div class="col-12">
-                                    {% for f in form.getIterator %}
-                                        {% if f.vars.name matches '[^plg*]' %}
-                                            <div class="col-md-12 form-group">
-                                                {{ form_row(f) }}
-                                            </div>
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
-                            </div>
                             <p></p>
                             {{ 'admin.setting.shop.csv.576'|trans|raw }}
                         </div>
