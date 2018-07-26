@@ -18,6 +18,7 @@ use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\ForgotType;
 use Eccube\Form\Type\Front\ResetType;
 use Eccube\Repository\CustomerRepository;
+use Eccube\Service\MailService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,6 +36,11 @@ class ForgotController extends AbstractController
     protected $recursiveValidator;
 
     /**
+     * @var MailService
+     */
+    protected $mailService;
+
+    /**
      * @var CustomerRepository
      */
     protected $customerRepository;
@@ -48,15 +54,18 @@ class ForgotController extends AbstractController
      * ForgotController constructor.
      *
      * @param ValidatorInterface $recursiveValidator
+     * @param MailService $mailService
      * @param CustomerRepository $customerRepository
      * @param EncoderFactoryInterface $encoderFactory
      */
     public function __construct(
         ValidatorInterface $recursiveValidator,
+        MailService $mailService,
         CustomerRepository $customerRepository,
         EncoderFactoryInterface $encoderFactory
     ) {
         $this->recursiveValidator = $recursiveValidator;
+        $this->mailService = $mailService;
         $this->customerRepository = $customerRepository;
         $this->encoderFactory = $encoderFactory;
     }
