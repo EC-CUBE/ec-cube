@@ -13,8 +13,8 @@ file that was distributed with this source code.
 
 {% set menus = ['setting', 'system', 'system_index'] %}
 
-{% block title %}{{ 'admin.setting.system.system.714'|trans }}{% endblock %}
-{% block sub_title %}{{ 'admin.setting.system.system.713'|trans }}{% endblock %}
+{% block title %}{{'admin.setting.system.system.714'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.setting.system.system.713'|trans}}{% endblock %}
 
 {% block main %}
     <div class="c-contentsArea__cols">
@@ -22,9 +22,9 @@ file that was distributed with this source code.
             <div class="c-primaryCol">
                 <div class="card rounded border-0 mb-4">
                     <div class="card-header">
-                        <div class="row">
-                            <div class="col-8">
-                                <span class="card-title ">{{ 'admin.setting.system.system.715'|trans }}</span>
+                        <div class="row" >
+                            <div class="col-8" id="server_info_box__header">
+                                <span class="card-title ">{{'admin.setting.system.system.715'|trans}}</span>
                                 <i class="fa fa-question-circle fa-lg ml-1"></i>
                             </div>
                             <div class="col-4 text-right">
@@ -35,17 +35,17 @@ file that was distributed with this source code.
                             </div>
                         </div>
                     </div>
-                    <div class="collapse show ec-cardCollapse" id="systemInfo">
-                        <div class="card-body">
+                    <div class="collapse show ec-cardCollapse" id="systemInfo" >
+                        <div class="card-body" id="server_info_box__body_inner">
                             {% for key, item in info %}
                                 <div class="row mb-2">
                                     <div class="col-2">
-                                        <span>{{ item.title }}</span>
+                                        <span>{{item.title}}</span>
                                     </div>
                                     <div class="col">
                                         <div class="row">
-                                            <div class="col">
-                                                {{ item.value }}
+                                            <div class="col" id="server_info_box__value--{{ loop.index }}">
+                                                {{item.value}}
                                             </div>
                                         </div>
                                     </div>
@@ -60,13 +60,13 @@ file that was distributed with this source code.
                 <div class="card rounded border-0 mb-4">
                     <div class="card-header">
                         <div class="row">
-                            <div class="col-8">
-                                <span class="card-title">{{ 'admin.setting.system.system.716'|trans }}</span>
+                            <div class="col-8" id="php_info_box__header" >
+                                <span class="card-title">{{'admin.setting.system.system.716'|trans}}</span>
                                 <i class="fa fa-question-circle fa-lg ml-1"></i>
                             </div>
                         </div>
                     </div>
-                    <div>
+                    <div id="php_info_box__frame">
                         <iframe name="php_info" src="{{ url('admin_setting_system_system_phpinfo') }}" height="500" frameborder="0" style="width: 100%;"></iframe>
                     </div>
 

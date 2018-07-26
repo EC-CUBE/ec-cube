@@ -64,7 +64,7 @@ file that was distributed with this source code.
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-striped table-condensed with-border"
+                                <table id="table-authority" class="table table-striped table-condensed with-border"
                                        data-prototype="{% filter escape %}{{ include('@admin/Setting/System/authority_prototype.twig', {'form': form.AuthorityRoles.vars.prototype}) }}{% endfilter %}">
                                     <thead>
                                     <tr>
