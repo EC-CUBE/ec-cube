@@ -15,8 +15,6 @@ namespace Eccube\Form\Type\Admin;
 
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Master\Work;
-use Eccube\Repository\Master\AuthorityRepository;
-use Eccube\Repository\Master\WorkRepository;
 use Eccube\Repository\MemberRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -42,21 +40,6 @@ class MemberType extends AbstractType
     protected $memberRepository;
 
     /**
-     * @var WorkRepository
-     */
-    protected $workRepository;
-
-    /**
-     * @var AuthorityRepository
-     */
-    protected $authorityRepository;
-
-    /**
-     * @var string
-     */
-    protected $blankMessage = 'admin.system.member.form.not.blank';
-
-    /**
      * MemberType constructor.
      *
      * @param EccubeConfig $eccubeConfig
@@ -64,14 +47,10 @@ class MemberType extends AbstractType
      */
     public function __construct(
         EccubeConfig $eccubeConfig,
-        MemberRepository $memberRepository,
-        WorkRepository $workRepository,
-        AuthorityRepository $authorityRepository
+        MemberRepository $memberRepository
     ) {
         $this->eccubeConfig = $eccubeConfig;
         $this->memberRepository = $memberRepository;
-        $this->workRepository = $workRepository;
-        $this->authorityRepository = $authorityRepository;
     }
 
     /**
@@ -83,7 +62,7 @@ class MemberType extends AbstractType
             ->add('name', TextType::class, [
                 'label' => 'member.label.name',
                 'constraints' => [
-                    new Assert\NotBlank(['message' => $this->blankMessage]),
+                    new Assert\NotBlank(),
                     new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
                 ],
             ])
@@ -91,14 +70,14 @@ class MemberType extends AbstractType
                 'required' => false,
                 'label' => 'member.label.organization',
                 'constraints' => [
-                    new Assert\NotBlank(['message' => $this->blankMessage]),
+                    new Assert\NotBlank(),
                     new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
                 ],
             ])
             ->add('login_id', TextType::class, [
                 'label' => 'member.label.login_id',
                 'constraints' => [
-                    new Assert\NotBlank(['message' => $this->blankMessage]),
+                    new Assert\NotBlank(),
                     new Assert\Length([
                         'min' => $this->eccubeConfig['eccube_id_min_len'],
                         'max' => $this->eccubeConfig['eccube_id_max_len'],
@@ -115,7 +94,7 @@ class MemberType extends AbstractType
                     'label' => 'member.label.varify_pass',
                 ],
                 'constraints' => [
-                    new Assert\NotBlank(['message' => $this->blankMessage]),
+                    new Assert\NotBlank(),
                     new Assert\Length([
                         'min' => $this->eccubeConfig['eccube_id_min_len'],
                         'max' => $this->eccubeConfig['eccube_id_max_len'],
@@ -130,7 +109,7 @@ class MemberType extends AbstractType
                 'multiple' => false,
                 'placeholder' => 'form.empty_value',
                 'constraints' => [
-                    new Assert\NotBlank(['message' => $this->blankMessage]),
+                    new Assert\NotBlank(),
                 ],
             ])
             ->add('Work', EntityType::class, [
@@ -139,32 +118,27 @@ class MemberType extends AbstractType
                 'expanded' => true,
                 'multiple' => false,
                 'constraints' => [
-                    new Assert\NotBlank(['message' => $this->blankMessage]),
+                    new Assert\NotBlank(),
                 ],
-            ])
-        ;
+            ]);
 
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
-            $form = $event->getForm();
-            $member = $event->getData();
+            /** @var Member $Member */
+            $Member = $event->getData();
 
-            if (!empty($member) && $member->getId() && $member->getWork()->getId() == 0) {
-                $members = $this->memberRepository
+            if ($Member && $Member->getId()) {
+                // 自身を除いた可動メンバーの件数
+                $count = $this->memberRepository
                     ->createQueryBuilder('m')
-                    ->where('m.Work = :work AND m.Authority = :authority')
-                    ->setMaxResults(2)
-                    ->setParameter('work', $this->workRepository->find(Work::WORK_ACTIVE_ID))
-                    ->setParameter('authority', $this->authorityRepository->find(0))
+                    ->select('COUNT(m)')
+                    ->where('m.Work = :Work AND m.id <> :Member')
+                    ->setParameter('Work', Work::WORK_ACTIVE_ID)
+                    ->setParameter('Member', $Member)
                     ->getQuery()
-                    ->getResult();
+                    ->getSingleScalarResult();
 
-                if (count($members) < 2) {
-                    if (count($members) == 1) {
-                        if ($members[0]->getId() != $member->getId()) {
-                            return;
-                        }
-                    }
-
+                if ($count < 1) {
+                    $form = $event->getForm();
                     $form['Work']->addError(new FormError(trans('admin.setting.system.member.work.error')));
                 }
             }
