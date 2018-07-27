@@ -143,8 +143,8 @@ file that was distributed with this source code.
                         }
                     }).done(function(json, statusText, jqXHR) {
                         editor.setValue(json.source);
-                        editor.goTo(1);
-                        editor.scrollTo(1);
+                        editor.gotoLine(1);
+                        editor.scrollToLine(1);
                     }).fail(function(jqXHR, statusText, errorThrown) {
                         editor.setValue(statusText + ' ' + errorThrown);
                     });

@@ -76,6 +76,7 @@ class LayoutEditPage extends AbstractAdminPageStyleGuide
     public function コンテキストメニューでコードプレビュー($blockName, $element = null, $timeout = 10)
     {
         $this->コンテキストメニューを開く($blockName);
+        $this->tester->scrollTo('//div[contains(@id, \'popover\')]/div[2]/div/a[4]', 0, 0);
         $this->tester->waitForElementVisible(['xpath' => "//div[contains(@id, 'popover')]/div[2]/div/a[4]"]);
         $this->tester->click(['xpath' => "//div[contains(@id, 'popover')]/div[2]/div/a[4]"]);
         $this->tester->waitForElementVisible(['id' => "codePreview"]);
