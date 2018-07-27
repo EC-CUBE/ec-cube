@@ -220,7 +220,7 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
      */
     private function addPointDiscountItem(ItemHolderInterface $itemHolder, $discount)
     {
-        $DiscountType = $this->entityManager->find(OrderItemType::class, OrderItemType::DISCOUNT);
+        $DiscountType = $this->entityManager->find(OrderItemType::class, OrderItemType::POINT);
         $TaxInclude = $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::INCLUDED);
         $Taxation = $this->entityManager->find(TaxType::class, TaxType::TAXATION);
 
@@ -245,7 +245,7 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
     private function removePointDiscountItem(ItemHolderInterface $itemHolder)
     {
         foreach ($itemHolder->getItems() as $item) {
-            if ($item->isDiscount() && $item->getProductName() == 'ポイント値引') {
+            if ($item->isPoint()) {
                 $itemHolder->removeOrderItem($item);
                 $this->entityManager->remove($item);
             }

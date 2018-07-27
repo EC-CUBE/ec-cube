@@ -49,7 +49,7 @@ class PointProcessorTest extends EccubeTestCase
         /** @var OrderItem $OrderItem */
         $OrderItem = $Order->getOrderItems()->filter(
             function (OrderItem $OrderItem) {
-                return $OrderItem->getProductName() == 'ポイント値引';
+                return $OrderItem->isPoint();
             }
         )->first();
 
