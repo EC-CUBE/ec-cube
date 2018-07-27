@@ -17,7 +17,6 @@ use Doctrine\ORM\NoResultException;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BlockPosition;
 use Eccube\Entity\Layout;
-use Eccube\Entity\Master\DeviceType;
 use Eccube\Form\Type\Master\DeviceTypeType;
 use Eccube\Repository\BlockRepository;
 use Eccube\Repository\LayoutRepository;
