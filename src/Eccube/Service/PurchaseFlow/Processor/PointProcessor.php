@@ -98,13 +98,15 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
         // 所有ポイント < 新規利用ポイント
         $Customer = $itemHolder->getCustomer();
         if ($Customer->getPoint() < $diffUsePoint) {
+            // 購入フローでエラーとなってカートから進めなくなるのを防止
+            $itemHolder->setUsePoint(0);
             $this->throwInvalidItemException('利用ポイントが所有ポイントを上回っています.');
         }
 
         // 支払い金額 < 利用ポイント
-        $discount = $this->pointToPrice($itemHolder->getUsePoint());
-        // TODO: 値引き後の金額と比較してしまっている
-        if (($itemHolder->getTotal() + $discount) < 0) {
+        if ($itemHolder->getTotal() < 0) {
+            // 購入フローでエラーとなってカートから進めなくなるのを防止
+            $itemHolder->setUsePoint(0);
             $this->throwInvalidItemException('利用ポイントがお支払い金額を上回っています.');
         }
     }
@@ -209,16 +211,7 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
             return $carry + $point;
         }, 0);
 
-        /* 利用したポイントの割合に対して付与するポイントを減算
-         * 明細のポイント合計 - (利用ポイント * ポイント付与率)
-         *
-         * 例) ポイント付与率10%で、1000円分購入したとき
-         * ポイント利用なし -> 1000円 * 10% = 100ポイント付与
-         * 500ポイント利用して購入 -> (1000円 - 500p) * 10% = 50ポイント付与
-         */
-        dump($totalPoint);
         $totalPoint -= intval($itemHolder->getUsePoint() * $basicPointRate / 100);
-        dump($totalPoint);
 
         return $totalPoint < 0 ? 0 : $totalPoint;
     }
