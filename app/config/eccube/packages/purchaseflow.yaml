@@ -69,6 +69,7 @@ services:
             - #
                 - '@Eccube\Service\PurchaseFlow\Processor\StockMultipleValidator'
                 - '@Eccube\Service\PurchaseFlow\Processor\SaleLimitMultipleValidator'
+                - '@Eccube\Service\PurchaseFlow\Processor\PointProcessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\PaymentTotalLimitValidator'
                 - '@Eccube\Service\PurchaseFlow\Processor\PaymentTotalNegativeValidator'
 

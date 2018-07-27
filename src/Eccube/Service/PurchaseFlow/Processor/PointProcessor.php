@@ -282,11 +282,16 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
      *
      * @param ItemHolderInterface $itemHolder
      * @param PurchaseContext $context
+     *
      * @return int
      */
     public function getDiffOfUsePoint(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
-        $fromUsePoint = $context->getOriginHolder()->getUsePoint();
+        if ($context->getOriginHolder()) {
+            $fromUsePoint = $context->getOriginHolder()->getUsePoint();
+        } else {
+            $fromUsePoint = 0;
+        }
         $toUsePoint = $itemHolder->getUsePoint();
 
         return $toUsePoint - $fromUsePoint;
