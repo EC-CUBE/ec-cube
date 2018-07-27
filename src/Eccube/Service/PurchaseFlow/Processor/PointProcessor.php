@@ -86,6 +86,8 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
 
     /**
      * {@inheritdoc}
+     *
+     * TODO: handle関数に処理を分けた方がいいか
      */
     protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
@@ -93,20 +95,19 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
             return;
         }
 
-        $diffUsePoint = $this->getDiffOfUsePoint($itemHolder, $context);
-
-        // 所有ポイント < 新規利用ポイント
+        // 所有ポイント < 利用ポイント
         $Customer = $itemHolder->getCustomer();
-        if ($Customer->getPoint() < $diffUsePoint) {
-            // 購入フローでエラーとなってカートから進めなくなるのを防止
-            $itemHolder->setUsePoint(0);
+        if ($Customer->getPoint() < $itemHolder->getUsePoint()) {
+            // 利用ポイントが所有ポイントを上回っていた場合は所有ポイントで上書き
+            $itemHolder->setUsePoint($Customer->getPoint());
             $this->throwInvalidItemException('利用ポイントが所有ポイントを上回っています.');
         }
 
         // 支払い金額 < 利用ポイント
         if ($itemHolder->getTotal() < 0) {
-            // 購入フローでエラーとなってカートから進めなくなるのを防止
-            $itemHolder->setUsePoint(0);
+            // 利用ポイントが支払い金額を上回っていた場合は支払い金額が0円以上となるようにポイントを調整
+            $overPoint = floor($itemHolder->getTotal() / $this->BaseInfo->getPointConversionRate());
+            $itemHolder->setUsePoint($itemHolder->getUsePoint() + $overPoint);
             $this->throwInvalidItemException('利用ポイントがお支払い金額を上回っています.');
         }
     }
@@ -124,11 +125,9 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
             return;
         }
 
-        $diffUsePoint = $this->getDiffOfUsePoint($itemHolder, $context);
-
         // ユーザの保有ポイントを減算
         $Customer = $itemHolder->getCustomer();
-        $Customer->setPoint($Customer->getPoint() - $diffUsePoint);
+        $Customer->setPoint($Customer->getPoint() - $itemHolder->getUsePoint());
     }
 
     /**
@@ -205,13 +204,16 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
                 $pointRate = $basicPointRate;
             }
 
-            // ポイント = 単価 * ポイント付与率 * 数量
-            $point = round($item->getPriceIncTax() * ($pointRate / 100)) * $item->getQuantity();
+            // TODO: ポイントは税抜き分しか割引されない、ポイント明細は税抜きのままでいいのか？
+            if ($item->isPoint()) {
+                $point = round($item->getPrice() * ($pointRate / 100)) * $item->getQuantity();
+            } else {
+                // ポイント = 単価 * ポイント付与率 * 数量
+                $point = round($item->getPriceIncTax() * ($pointRate / 100)) * $item->getQuantity();
+            }
 
             return $carry + $point;
         }, 0);
-
-        $totalPoint -= intval($itemHolder->getUsePoint() * $basicPointRate / 100);
 
         return $totalPoint < 0 ? 0 : $totalPoint;
     }
@@ -266,30 +268,5 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
     private function pointToPrice($point)
     {
         return intval($point * $this->BaseInfo->getPointConversionRate()) * -1;
-    }
-
-    /**
-     * 利用ポイントの差を計算する
-     * この差が新規利用ポイントとなる
-     *
-     * 使用ポイントが増えた場合プラスとなる
-     * 50 -> 100 : 50
-     * 100 -> 50 : -50
-     *
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext $context
-     *
-     * @return int
-     */
-    public function getDiffOfUsePoint(ItemHolderInterface $itemHolder, PurchaseContext $context)
-    {
-        if ($context->getOriginHolder()) {
-            $fromUsePoint = $context->getOriginHolder()->getUsePoint();
-        } else {
-            $fromUsePoint = 0;
-        }
-        $toUsePoint = $itemHolder->getUsePoint();
-
-        return $toUsePoint - $fromUsePoint;
     }
 }
