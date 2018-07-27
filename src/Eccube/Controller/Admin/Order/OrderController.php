@@ -15,10 +15,8 @@ namespace Eccube\Controller\Admin\Order;
 
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
-use Eccube\Entity\Csv;
 use Eccube\Entity\ExportCsvRow;
 use Eccube\Entity\Master\CsvType;
-use Eccube\Entity\OrderItem;
 use Eccube\Entity\OrderPdf;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
