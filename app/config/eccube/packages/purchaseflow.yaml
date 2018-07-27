@@ -107,9 +107,11 @@ services:
             - #
                 - '@Eccube\Service\PurchaseFlow\Processor\StockDiffProcessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\PaymentTotalLimitValidator'
+                - '@Eccube\Service\PurchaseFlow\Processor\PointProcessor'
 
     eccube.purchase.flow.order.purchase:
         class: Doctrine\Common\Collections\ArrayCollection
         arguments:
             - #
                 - '@Eccube\Service\PurchaseFlow\Processor\StockDiffProcessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\PointProcessor'
