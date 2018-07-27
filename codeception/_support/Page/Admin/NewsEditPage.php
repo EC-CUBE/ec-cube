@@ -43,7 +43,7 @@ class NewsEditPage extends AbstractAdminPage
 
     public function 登録()
     {
-        $this->tester->click('#aside_column > div > div > div > div > div > button');
+        $this->tester->click('.c-contentsArea .c-contentsArea__cols .c-conversionArea .btn-ec-conversion');
         return $this;
     }
 }
