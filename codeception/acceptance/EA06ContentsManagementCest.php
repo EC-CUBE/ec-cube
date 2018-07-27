@@ -183,9 +183,9 @@ class EA06ContentsManagementCest
         $I->getScenario()->incomplete('未実装：プレビューは未実装');
 
         LayoutManagePage::go($I)->レイアウト編集('下層ページ用レイアウト');
-        LayoutEditPage::at($I)
-            ->ブロックを移動('新着情報', '#position_0')
-            ->プレビュー();
+        // LayoutEditPage::at($I)
+        //     ->ブロックを移動('新着情報', '#position_0')
+        //     ->プレビュー();
 
         $I->switchToNewWindow();
 

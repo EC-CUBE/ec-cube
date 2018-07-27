@@ -138,7 +138,6 @@ class EA04OrderCest
             ->入力_姓('')
             ->受注情報登録();
 
-        $OrderRegisterPage->注文者パネルを開く();
         /* 異常系 */
         $I->see('入力されていません。', OrderEditPage::$姓_エラーメッセージ);
 
