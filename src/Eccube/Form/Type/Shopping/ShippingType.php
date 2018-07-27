@@ -164,8 +164,18 @@ class ShippingType extends AbstractType
                         new \DateTime($minDate + $this->eccubeConfig['eccube_deliv_date_end_max'].' day')
                     );
 
+                    // 曜日設定用
+                    $dateFormatter = \IntlDateFormatter::create(
+                        'ja_JP@calendar=japanese',
+                        \IntlDateFormatter::FULL,
+                        \IntlDateFormatter::FULL,
+                        'Asia/Tokyo',
+                        \IntlDateFormatter::TRADITIONAL,
+                        'E'
+                    );
+
                     foreach ($period as $day) {
-                        $deliveryDurations[$day->format('Y/m/d')] = $day->format('Y/m/d');
+                        $deliveryDurations[$day->format('Y/m/d')] = $day->format('Y/m/d').'('.$dateFormatter->format($day).')';
                     }
                 }
 
