@@ -81,7 +81,7 @@ file that was distributed with this source code.
             // Down
             $('.sortable-item').on('click', 'a.action-down', function(e) {
                 e.preventDefault();
-                var current = $(this).parents('li';
+                var current = $(this).parents('li');
                 if (current.next().hasClass('sortable-item')) {
                     current.next().after(current);
                     moveSortNo();
