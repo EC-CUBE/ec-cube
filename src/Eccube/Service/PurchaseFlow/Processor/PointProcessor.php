@@ -92,17 +92,19 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
             return;
         }
 
+        $diffUsePoint = $this->getDiffOfUsePoint($itemHolder, $context);
+
+        // 所有ポイント < 新規利用ポイント
+        $Customer = $itemHolder->getCustomer();
+        if ($Customer->getPoint() < $diffUsePoint) {
+            $this->throwInvalidItemException('利用ポイントが所有ポイントを上回っています.');
+        }
+
         // 支払い金額 < 利用ポイント
         $discount = $this->pointToPrice($itemHolder->getUsePoint());
         // TODO: 値引き後の金額と比較してしまっている
         if (($itemHolder->getTotal() + $discount) < 0) {
             $this->throwInvalidItemException('利用ポイントがお支払い金額を上回っています.');
-        }
-
-        // 所有ポイント < 利用ポイント
-        $Customer = $itemHolder->getCustomer();
-        if ($Customer->getPoint() < $itemHolder->getUsePoint()) {
-            $this->throwInvalidItemException('利用ポイントが所有ポイントを上回っています.');
         }
     }
 
@@ -119,11 +121,11 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
             return;
         }
 
+        $diffUsePoint = $this->getDiffOfUsePoint($itemHolder, $context);
+
         // ユーザの保有ポイントを減算
         $Customer = $itemHolder->getCustomer();
-        if ($Customer) {
-            $Customer->setPoint($Customer->getPoint() - $itemHolder->getUsePoint());
-        }
+        $Customer->setPoint($Customer->getPoint() - $diffUsePoint);
     }
 
     /**
@@ -268,5 +270,25 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
     private function pointToPrice($point)
     {
         return intval($point * $this->BaseInfo->getPointConversionRate()) * -1;
+    }
+
+    /**
+     * 利用ポイントの差を計算する
+     * この差が新規利用ポイントとなる
+     *
+     * 使用ポイントが増えた場合プラスとなる
+     * 50 -> 100 : 50
+     * 100 -> 50 : -50
+     *
+     * @param ItemHolderInterface $itemHolder
+     * @param PurchaseContext $context
+     * @return int
+     */
+    public function getDiffOfUsePoint(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    {
+        $fromUsePoint = $context->getOriginHolder()->getUsePoint();
+        $toUsePoint = $itemHolder->getUsePoint();
+
+        return $toUsePoint - $fromUsePoint;
     }
 }
