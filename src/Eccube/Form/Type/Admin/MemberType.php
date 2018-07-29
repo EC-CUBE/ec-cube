@@ -16,6 +16,7 @@ namespace Eccube\Form\Type\Admin;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Master\Authority;
 use Eccube\Entity\Master\Work;
+use Eccube\Entity\Member;
 use Eccube\Repository\MemberRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -127,13 +128,14 @@ class MemberType extends AbstractType
             /** @var Member $Member */
             $Member = $event->getData();
 
-            if ($Member && $Member->getId()) {
-                // 自身を除いた可動メンバーの件数
+            // 編集時に, 非稼働で更新した場合にチェック.
+            if ($Member->getId() && $Member->getWork()->getId() == Work::NON_ACTIVE) {
+                // 自身を除いた稼働メンバーの件数
                 $count = $this->memberRepository
                     ->createQueryBuilder('m')
                     ->select('COUNT(m)')
                     ->where('m.Work = :Work AND m.Authority = :Authority AND m.id <> :Member')
-                    ->setParameter('Work', Work::WORK_ACTIVE_ID)
+                    ->setParameter('Work', Work::ACTIVE)
                     ->setParameter('Authority', Authority::ADMIN)
                     ->setParameter('Member', $Member)
                     ->getQuery()
