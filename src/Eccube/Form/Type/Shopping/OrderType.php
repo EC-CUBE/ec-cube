@@ -108,8 +108,8 @@ class OrderType extends AbstractType
                         new Range(['min' => 0]),
                     ],
                     'attr' => [
-                        'min' => 0
-                    ]
+                        'min' => 0,
+                    ],
                 ]
             )
             ->add(
@@ -201,6 +201,7 @@ class OrderType extends AbstractType
                 $Customer = $Order->getCustomer();
                 if ($Customer->getPoint() < $Order->getUsePoint()) {
                     $form['use_point']->addError(new FormError(trans('shopping.use_point.error.exceed')));
+
                     return;
                 }
                 $moneyFromPoint = $this->BaseInfo->pointToPrice($Order->getUsePoint());
