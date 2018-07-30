@@ -67,16 +67,19 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
             return;
         }
 
+        // 利用ポイントがある場合は割引明細を追加
+        if ($itemHolder->getUsePoint() > 0) {
+            $discount = $this->BaseInfo->pointToPrice($itemHolder->getUsePoint());
+            $this->removePointDiscountItem($itemHolder);
+            if (abs($discount) > $itemHolder->getTotal()) {
+                return;
+            }
+            $this->addPointDiscountItem($itemHolder, $discount);
+        }
+
         // 付与ポイントを計算
         $addPoint = $this->calculateAddPoint($itemHolder);
         $itemHolder->setAddPoint($addPoint);
-
-        // 利用ポイントがある場合は割引明細を追加
-        if ($itemHolder->getUsePoint() > 0) {
-            $discount = $this->pointToPrice($itemHolder->getUsePoint());
-            $this->removePointDiscountItem($itemHolder);
-            $this->addPointDiscountItem($itemHolder, $discount);
-        }
     }
 
     /*
@@ -93,15 +96,15 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
         }
 
         // 支払い金額 < 利用ポイント
-        $discount = $this->pointToPrice($itemHolder->getUsePoint());
+        $discount = $this->BaseInfo->pointToPrice($itemHolder->getUsePoint());
         if (($itemHolder->getTotal() + $discount) < 0) {
-            $this->throwInvalidItemException('利用ポイントがお支払い金額を上回っています.');
+            $this->throwInvalidItemException(trans('shopping.use_point.error.exceed.payment'));
         }
 
         // 所有ポイント < 利用ポイント
         $Customer = $itemHolder->getCustomer();
         if ($Customer->getPoint() < $itemHolder->getUsePoint()) {
-            $this->throwInvalidItemException('利用ポイントが所有ポイントを上回っています.');
+            $this->throwInvalidItemException(trans('shopping.use_point.error.exceed'));
         }
     }
 
@@ -250,17 +253,5 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
                 $this->entityManager->remove($item);
             }
         }
-    }
-
-    /**
-     * ポイントを金額に変換する.
-     *
-     * @param $point int ポイント
-     *
-     * @return int 金額
-     */
-    private function pointToPrice($point)
-    {
-        return intval($point * $this->BaseInfo->getPointConversionRate()) * -1;
     }
 }

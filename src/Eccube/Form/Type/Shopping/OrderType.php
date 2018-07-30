@@ -13,6 +13,7 @@
 
 namespace Eccube\Form\Type\Shopping;
 
+use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 use Eccube\Repository\DeliveryRepository;
@@ -22,14 +23,16 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Range;
 use Symfony\Component\Validator\Constraints\Regex;
 
 class OrderType extends AbstractType
@@ -50,20 +53,28 @@ class OrderType extends AbstractType
     protected $paymentRepository;
 
     /**
+     * @var BaseInfo
+     */
+    protected $BaseInfo;
+
+    /**
      * OrderType constructor.
      *
      * @param OrderRepository $orderRepository
      * @param DeliveryRepository $deliveryRepository
      * @param PaymentRepository $paymentRepository
+     * @param BaseInfo $BaseInfo
      */
     public function __construct(
         OrderRepository $orderRepository,
         DeliveryRepository $deliveryRepository,
-        PaymentRepository $paymentRepository
+        PaymentRepository $paymentRepository,
+        BaseInfo $BaseInfo
     ) {
         $this->orderRepository = $orderRepository;
         $this->deliveryRepository = $deliveryRepository;
         $this->paymentRepository = $paymentRepository;
+        $this->BaseInfo = $BaseInfo;
     }
 
     /**
@@ -84,7 +95,7 @@ class OrderType extends AbstractType
             )
             ->add(
                 'use_point',
-                NumberType::class,
+                IntegerType::class,
                 [
                     'required' => false,
                     'label' => '利用ポイント',
@@ -94,7 +105,11 @@ class OrderType extends AbstractType
                             'message' => 'form.type.numeric.invalid',
                         ]),
                         new Length(['max' => 11]),
+                        new Range(['min' => 0]),
                     ],
+                    'attr' => [
+                        'min' => 0
+                    ]
                 ]
             )
             ->add(
@@ -181,6 +196,19 @@ class OrderType extends AbstractType
                 $Order->setPaymentMethod($Payment ? $Payment->getMethod() : null);
                 // TODO CalculateChargeStrategy でセットする
                 // $Order->setCharge($Payment ? $Payment->getCharge() : null);
+
+                $form = $event->getForm();
+                $Customer = $Order->getCustomer();
+                if ($Customer->getPoint() < $Order->getUsePoint()) {
+                    $form['use_point']->addError(new FormError(trans('shopping.use_point.error.exceed')));
+                    return;
+                }
+                $moneyFromPoint = $this->BaseInfo->pointToPrice($Order->getUsePoint());
+                if (($Order->getTotal() + $moneyFromPoint) < 0) {
+                    $number = intval(ceil($Order->getTotal() / $this->BaseInfo->getPointConversionRate()));
+                    $form['use_point']->addError(new FormError(trans('shopping.use_point.error.exceed.payment')));
+                    $form['use_point']->addError(new FormError(trans('shopping.use_point.error.max', ['%max%' => $number])));
+                }
             }
         );
     }

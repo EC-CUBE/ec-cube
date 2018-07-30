@@ -28,7 +28,7 @@ file that was distributed with this source code.
                 $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
             });
 
-            $('.use_point').on('blur', function() {
+            $('.use_point').on('change', function() {
                 loadingOverlay();
                 $('#shopping_order_mode').val('use_point');
                 $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
@@ -353,7 +353,7 @@ file that was distributed with this source code.
                         <div class="ec-rectHeading">
                             <h2>利用ポイント(暫定実装)</h2>
                             <p>{{ Order.Customer.Point }} ポイントが利用可能です。</p>
-                            {{ form_widget(form.use_point, {'attr': {'class': 'form-control use_point'}}) }}
+                            {{ form_widget(form.use_point, {attr: {class: 'form-control use_point', max : Order.Customer.Point }}) }}
                             {{ form_errors(form.use_point) }}
                         </div>
                     </div>
