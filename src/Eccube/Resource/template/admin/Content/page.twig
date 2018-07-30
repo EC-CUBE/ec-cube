@@ -15,6 +15,40 @@ file that was distributed with this source code.
 {% block title %}{{ 'admin.content.page.title'|trans }}{% endblock %}
 {% block sub_title %}{{ 'admin.content.page.sub_title'|trans }}{% endblock %}
 
+{% block javascript %}
+<script>
+    var searchWord = function(){
+        var searchText = $(this).val(), // 検索ボックスに入力された値
+            targetText;
+
+        // 検索ボックスに値が入っていない場合
+        if (searchText == '') {
+            // 全て表示する
+            $('#list_page_tbl tbody tr').show();
+            return;
+        }
+
+        // 検索ボックスに値が入ってる場合
+        // 表示を全て空にする
+        $('#list_page_tbl tbody tr').hide();
+
+        // 検索ワードが（子を含めて）含まれる要素のみ表示
+        $('#list_page_tbl tbody tr').each(function() {
+            targetText = $(this).find('td a').text();
+
+            // 検索対象となるリストに入力された文字列が存在するかどうかを判断
+            if (targetText.indexOf(searchText) != -1) {
+                // 存在する場合はそのリストのテキストを用意した配列に格納
+                $(this).show();
+            }
+        });
+    };
+
+    // searchWordの実行
+    $('#search-page').on('input', searchWord);
+</script>
+{% endblock javascript %}
+
 {% block main %}
     <div class="c-contentsArea__cols">
         <div class="c-contentsArea__primaryCol">
@@ -26,12 +60,12 @@ file that was distributed with this source code.
                         <form class="mb-2">
                             <div class="form-row">
                                 <div class="col">
-                                    <input class="form-control" type="search" placeholder="" aria-label="Search">
-                                </div>
-                                {# TODO 検索の実装 #}
-                                <div class="col-auto">
-                                    <button class="btn btn-ec-sub" type="submit"><i
-                                                class="fa fa-search fa-lg text-secondary"></i></button>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1"><i class="fa fa-search"></i></span>
+                                        </div>
+                                        <input id="search-page" class="form-control" type="search" aria-label="Search">
+                                    </div>
                                 </div>
                             </div>
                         </form>
