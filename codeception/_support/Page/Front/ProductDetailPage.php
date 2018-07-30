@@ -85,4 +85,15 @@ class ProductDetailPage extends AbstractFrontPage
         $this->tester->click('#favorite');
         return $this;
     }
+
+    public function カートに追加()
+    {
+        return $this->tester->grabTextFrom(["xpath" => "//*[@id=\"ec-modal-header\"]"]);
+    }
+
+    public function カートへ進む()
+    {
+        $this->tester->click("div.ec-modal-box > div > a");
+        return new CartPage($this->tester);
+    }
 }

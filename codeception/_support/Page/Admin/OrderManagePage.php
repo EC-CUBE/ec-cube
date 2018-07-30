@@ -9,6 +9,7 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
     public static $検索結果_メッセージ = '#search_form #search_total_count';
     public static $検索結果_エラーメッセージ = '//*[@id="page_admin_order"]/div[1]/div[3]/div[3]/div/div/div[1]/div/div[1]';
     public static $詳細検索ボタン = '//*[@id="search_form"]/div[1]/div/div/div[3]/a/i/span';
+    public static $タイトル要素 = '.c-container .c-contentsArea .c-pageTitle .c-pageTitle__titles';
 
     /**
      * OrderListPage constructor.
@@ -34,6 +35,26 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
     {
         $this->tester->fillField(['id' => 'admin_search_order_multi'], $value);
         $this->tester->click('#search_form #search_submit');
+        return $this;
+    }
+
+    public function 詳細検索設定()
+    {
+        $this->tester->click(self::$詳細検索ボタン);
+        $this->tester->waitForElementVisible(['id' => 'searchDetail']);
+        $this->tester->wait(0.5);
+        return $this;
+    }
+
+    public function 入力_ご注文者お名前($value)
+    {
+        $this->tester->fillField(['id' => 'admin_search_order_name'], $value);
+        return $this;
+    }
+
+    public function 入力_ご注文者お名前フリガナ($value)
+    {
+        $this->tester->fillField(['id' => 'admin_search_order_kana'], $value);
         return $this;
     }
 
@@ -78,6 +99,24 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    public function すべてチェック()
+    {
+        $this->tester->click('#form_bulk #toggle_check_all');
+        return $this;
+    }
+
+    public function 要素をクリック($element)
+    {
+        $this->tester->click($element);
+        return $this;
+    }
+
+    public function PDFフォームを入力($elId, $value)
+    {
+        $this->tester->fillField($elId, $value);
+        return $this;
+    }
+
     public function 一覧_編集($rowNum)
     {
         $this->tester->click("#search_result > tbody > tr:nth-child(${rowNum}) a.action-edit");
@@ -98,6 +137,7 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
 
     public function Cancel_削除()
     {
+        $this->tester->waitForElementVisible('#bulkDeleteModal > div > div > div.modal-footer > button.btn.btn-ec-sub');
         $this->tester->click("#bulkDeleteModal > div > div > div.modal-footer > button.btn.btn-ec-sub");
         return $this;
     }
@@ -166,8 +206,34 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
     {
         $this->tester->selectOption('#option_bulk_status', $option);
         $this->tester->click('#form_bulk #btn_bulk_status');
-        $this->tester->waitForElementVisible('#confirmBulkModal', 5);
-        $this->tester->click('#confirmBulkModal button[data-action="execute"]');
         return $this;
+    }
+
+    public function 出荷済にする($rowNum)
+    {
+        $this->tester->click("#search_result > tbody > tr:nth-child($rowNum) a[data-type='status']");
+        $this->tester->waitForElementVisible(['id' => 'sentUpdateModal']);
+        $this->tester->wait(2);
+        $this->tester->click(['id' => 'notificationMail']);
+        $this->tester->scrollTo(['id' => 'bulkChange']);
+        $this->tester->click(['id' => 'bulkChange']);
+        $this->tester->wait(5);
+        $this->tester->waitForElementVisible(['id' => 'bulkChangeComplete']);
+        return $this;
+    }
+
+    public function 取得_出荷伝票番号($rowNum)
+    {
+        return $this->tester->grabValueFrom("#search_result > tbody > tr:nth-child(${rowNum}) > td:nth-child(8) > div > input");
+    }
+
+    public function 取得_出荷日($rowNum)
+    {
+        return $this->tester->grabTextFrom("#search_result > tbody > tr:nth-child(${rowNum}) > td:nth-child(7)");
+    }
+
+    public function 取得_ステータス($rowNum)
+    {
+        return $this->tester->grabTextFrom("#search_result > tbody > tr:nth-child(${rowNum}) > td:nth-child(4) > span");
     }
 }

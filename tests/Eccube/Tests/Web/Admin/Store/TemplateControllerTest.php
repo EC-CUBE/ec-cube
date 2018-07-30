@@ -21,9 +21,6 @@ use Eccube\Util\StringUtil;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-/**
- * @group cache-clear
- */
 class TemplateControllerTest extends AbstractAdminWebTestCase
 {
     /**
@@ -117,9 +114,13 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
 
     /**
      * テンプレートの変更
+     *
+     * @group cache-clear
      */
     public function testChangeTemplate()
     {
+        $this->markTestIncomplete();
+
         // テンプレートをアップロード
         $this->scenarioUpload();
         $this->verifyUpload();
