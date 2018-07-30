@@ -170,7 +170,7 @@ file that was distributed with this source code.
 
             // 検索ワードが（子を含めて）含まれる要素のみ表示
             $('#unused-block .sort').each(function() {
-                targetText = $(this).find('.col a').text();
+                targetText = $(this).find('.col span').text();
 
                 // 検索対象となるリストに入力された文字列が存在するかどうかを判断
                 if (targetText.indexOf(searchText) != -1) {
