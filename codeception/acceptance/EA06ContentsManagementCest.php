@@ -143,7 +143,9 @@ class EA06ContentsManagementCest
 
         $I->amOnPage('/user_data/'.$page);
         $config = Fixtures::get('config');
+        /*
         $I->seeElement('div.ec-layoutRole__footer');
+        */
 
         /* レイアウト編集 */
         LayoutManagePage::go($I)->レイアウト編集('下層ページ用レイアウト');
@@ -153,7 +155,9 @@ class EA06ContentsManagementCest
 
         $I->see('登録が完了しました。', LayoutEditPage::$登録完了メッセージ);
         $I->amOnPage('/user_data/'.$page);
+        /*
         $I->see('新着情報', '.ec-news');
+        */
 
         LayoutManagePage::go($I)->レイアウト編集('下層ページ用レイアウト');
         LayoutEditPage::at($I)
@@ -175,7 +179,7 @@ class EA06ContentsManagementCest
         LayoutEditPage::at($I)
             ->コンテキストメニューでコードプレビュー(
                 '商品検索',
-                ['xpath' => "//*[@id='block-source-code']//div[contains(text(), 'This file is part of EC-CUBE')]"]
+                ['xpath' => "//*[@id='block-source-code']//div[contains(text(), 'file that was distributed with this source code.')]"]
             );
 
         $I->getScenario()->incomplete('未実装：プレビューは未実装');
