@@ -14,7 +14,6 @@
 namespace Eccube\Tests\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\BaseInfo;
-use Eccube\Entity\CartItem;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
@@ -24,6 +23,8 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Tests\EccubeTestCase;
 
+// TODO: ポイントの割引額への変換レートが変更されているかのテスト追加
+// TODO: ポイントの付与レートが変更されているかのテスト追加
 class PointProcessorTest extends EccubeTestCase
 {
     /** @var PointProcessor */
@@ -103,7 +104,7 @@ class PointProcessorTest extends EccubeTestCase
      * @dataProvider usePointOverPriceProvider
      *
      * @param $usePoint int 利用ポイント
-     * @param $isError エラーかどうか
+     * @param $isError boolean エラーかどうか
      */
     public function testUsePointOverPrice($usePoint, $isError)
     {
@@ -175,8 +176,6 @@ class PointProcessorTest extends EccubeTestCase
      * @param $price int 商品の値段
      * @param $usePoint int 利用ポイント
      * @param $addPoint int 期待する付与ポイント
-     *
-     * @throws \Eccube\Service\PurchaseFlow\PurchaseException
      */
     public function testAddPoint($price, $usePoint, $addPoint)
     {
@@ -209,16 +208,6 @@ class PointProcessorTest extends EccubeTestCase
             [1000, 100, 9],
             [1000, 200, 8],
         ];
-    }
-
-    private function newCartItem(ProductClass $ProductClass, $price, $quantity)
-    {
-        $cartItem = new CartItem();
-        $cartItem->setProductClass($ProductClass);
-        $cartItem->setPrice($price);
-        $cartItem->setQuantity($quantity);
-
-        return $cartItem;
     }
 
     private function newOrderItem($ProductClass, $price, $quantity)
