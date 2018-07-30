@@ -107,6 +107,8 @@ class PointProcessorTest extends EccubeTestCase
      */
     public function testUsePointOverPrice($usePoint, $isError)
     {
+        $price = 100; // 商品の値段
+
         $Customer = new Customer();
         $Customer->setPoint(10000);
 
@@ -115,9 +117,10 @@ class PointProcessorTest extends EccubeTestCase
         $Order = new Order();
         $Order->setCustomer($Customer);
         $Order->setUsePoint($usePoint);
-        $Order->addOrderItem($this->newOrderItem($ProductClass, 100, 1));
+        $Order->addOrderItem($this->newOrderItem($ProductClass, $price, 1));
 
         $purchaseFlow = new PurchaseFlow();
+        $purchaseFlow->addItemHolderPreprocessor($this->processor); // Preprocessorでポイント明細を作成してtotalを計算し直す必要がある
         $purchaseFlow->addItemHolderValidator($this->processor);
         $result = $purchaseFlow->validate($Order, new PurchaseContext(null, $Customer));
 
@@ -125,6 +128,9 @@ class PointProcessorTest extends EccubeTestCase
 
         if ($isError) {
             self::assertEquals('利用ポイントがお支払い金額を上回っています.', $result->getErrors()[0]->getMessage());
+            self::assertEquals($price, $Order->getUsePoint());
+        } else {
+            self::assertEquals($usePoint, $Order->getUsePoint());
         }
     }
 
@@ -161,6 +167,48 @@ class PointProcessorTest extends EccubeTestCase
         $purchaseFlow->commit($Order, $context);
 
         self::assertEquals(90, $Customer->getPoint());
+    }
+
+    /**
+     * @dataProvider useAddPointProvider
+     *
+     * @param $price int 商品の値段
+     * @param $usePoint int 利用ポイント
+     * @param $addPoint int 期待する付与ポイント
+     *
+     * @throws \Eccube\Service\PurchaseFlow\PurchaseException
+     */
+    public function testAddPoint($price, $usePoint, $addPoint)
+    {
+        $Customer = new Customer();
+        $Customer->setPoint(1000);
+
+        /* @var ProductClass $ProductClass */
+        $ProductClass = $this->createProduct('テスト', 1)->getProductClasses()[0];
+        $Order = new Order();
+        $Order->setCustomer($Customer);
+        $Order->setUsePoint($usePoint);
+        $Order->addOrderItem($this->newOrderItem($ProductClass, $price, 1));
+
+        $purchaseFlow = new PurchaseFlow();
+        $purchaseFlow->addItemHolderPreprocessor($this->processor);
+
+        $context = new PurchaseContext(null, $Customer);
+        $purchaseFlow->validate($Order, $context);
+
+        self::assertEquals($addPoint, $Order->getAddPoint());
+    }
+
+    public function useAddPointProvider()
+    {
+        return [
+            [200, 0, 2],
+            [200, 100, 1],
+            [200, 200, 0],
+            [1000, 0, 10],
+            [1000, 100, 9],
+            [1000, 200, 8],
+        ];
     }
 
     private function newCartItem(ProductClass $ProductClass, $price, $quantity)

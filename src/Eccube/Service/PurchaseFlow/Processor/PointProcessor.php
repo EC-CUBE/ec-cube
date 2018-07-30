@@ -67,10 +67,6 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
             return;
         }
 
-        // 付与ポイントを計算
-        $addPoint = $this->calculateAddPoint($itemHolder);
-        $itemHolder->setAddPoint($addPoint);
-
         $this->removePointDiscountItem($itemHolder);
 
         // 利用ポイントがある場合は割引明細を追加
@@ -78,6 +74,10 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
             $discount = $this->pointToPrice($itemHolder->getUsePoint());
             $this->addPointDiscountItem($itemHolder, $discount);
         }
+
+        // 付与ポイントを計算
+        $addPoint = $this->calculateAddPoint($itemHolder);
+        $itemHolder->setAddPoint($addPoint);
     }
 
     /*
