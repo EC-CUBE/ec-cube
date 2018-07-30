@@ -153,9 +153,7 @@ class EA06ContentsManagementCest
 
         $I->see('登録が完了しました。', LayoutEditPage::$登録完了メッセージ);
         $I->amOnPage('/user_data/'.$page);
-        /*
         $I->see('新着情報', '.ec-news');
-        */
 
         LayoutManagePage::go($I)->レイアウト編集('下層ページ用レイアウト');
         LayoutEditPage::at($I)
