@@ -317,7 +317,6 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
 
     public function testZeroRemove()
     {
-
         $entityName = str_replace('-', '\\', $this->entityTest);
         $entity = $this->entityManager->getRepository($entityName)->find(0);
         if (is_null($entity)) {
