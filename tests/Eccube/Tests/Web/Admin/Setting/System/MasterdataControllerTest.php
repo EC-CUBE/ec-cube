@@ -317,7 +317,20 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
 
     public function testZeroRemove()
     {
+
+        $entityName = str_replace('-', '\\', $this->entityTest);
+        $entity = $this->entityManager->getRepository($entityName)->find(0);
+        if (is_null($entity)) {
+            $entity = new \Eccube\Entity\Master\Sex();
+            $entity->setId(0);
+            $entity->setName('0削除テスト');
+            $entity->setSortNo($this->entityManager->getRepository($entityName)->findBy([], ['sort_no' => 'DESC'])[0]->getSortNo() + 1);
+            $this->entityManager->getRepository($entityName)->persist($entity);
+            $this->entityManager->flush();
+        }
+
         $formData = $this->createFormData($this->entityTest);
+
         $editForm = $this->createFormDataEdit($this->entityTest);
         $id = count($editForm['data']);
         $editForm['data'][$id]['id'] = null;
