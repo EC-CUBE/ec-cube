@@ -209,7 +209,7 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
     {
         $OrderItem = new OrderItem();
         $OrderItem->setOrderItemType($this->ProductType);
-        $OrderItem->setPriceIncTax($price);
+        $OrderItem->setPrice($price);
         $OrderItem->setQuantity($quantity);
         $OrderItem->setShipping($Shipping);
         $Shipping->addOrderItem($OrderItem);
@@ -221,7 +221,7 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
     {
         $OrderItem = new OrderItem();
         $OrderItem->setOrderItemType($this->DeliveryFeeType);
-        $OrderItem->setPriceIncTax($fee);
+        $OrderItem->setPrice($fee);
         $OrderItem->setQuantity(1);
         $OrderItem->setShipping($Shipping);
         $Shipping->addOrderItem($OrderItem);
