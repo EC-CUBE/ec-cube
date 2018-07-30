@@ -275,7 +275,7 @@ class PurchaseFlow
         $total = $itemHolder->getItems()
             ->reduce(function ($sum, ItemInterface $item) {
                 if ($item instanceof OrderItem) {
-                    $sum += $item->getTax();
+                    $sum += $item->getTax() * $item->getQuantity();
                 } else {
                     $sum += ($item->getPriceIncTax() - $item->getPrice()) * $item->getQuantity();
                 }
