@@ -65,8 +65,6 @@ class TaxProcessor implements ItemHolderPreprocessor
      */
     public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
-        dump('tax processor');
-
         if (!$itemHolder instanceof Order) {
             return;
         }
