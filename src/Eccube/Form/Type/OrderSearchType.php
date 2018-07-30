@@ -17,7 +17,6 @@ use Eccube\Form\Type\Master\OrderStatusType;
 use Eccube\Form\Type\Master\PaymentType;
 use Eccube\Form\Type\Master\SexType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;

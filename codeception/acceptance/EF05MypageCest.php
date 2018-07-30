@@ -39,7 +39,7 @@ class EF05MypageCest
         $createCustomer = Fixtures::get('createCustomer');
         $customer = $createCustomer();
         $createOrders = Fixtures::get('createOrders');
-        $Orders = $createOrders($customer);
+        $Orders = $createOrders($customer, 5, [], \Eccube\Entity\Master\OrderStatus::NEW);
 
         $I->loginAsMember($customer->getEmail(), 'password');
 
@@ -58,7 +58,7 @@ class EF05MypageCest
         $createCustomer = Fixtures::get('createCustomer');
         $customer = $createCustomer();
         $createOrders = Fixtures::get('createOrders');
-        $createOrders($customer);
+        $createOrders($customer, 5, [], \Eccube\Entity\Master\OrderStatus::NEW);
 
         $I->loginAsMember($customer->getEmail(), 'password');
 
