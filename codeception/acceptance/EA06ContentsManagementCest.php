@@ -143,9 +143,7 @@ class EA06ContentsManagementCest
 
         $I->amOnPage('/user_data/'.$page);
         $config = Fixtures::get('config');
-        /*
         $I->seeElement('div.ec-layoutRole__footer');
-        */
 
         /* レイアウト編集 */
         LayoutManagePage::go($I)->レイアウト編集('下層ページ用レイアウト');
