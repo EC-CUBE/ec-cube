@@ -45,7 +45,7 @@ class EA06ContentsManagementCest
         $NewsListPage = NewsManagePage::at($I);
         $I->see('新着情報を保存しました。', NewsManagePage::$登録完了メッセージ);
 
-        $NewsListPage->一覧_編集(1);
+        $NewsListPage->一覧_編集(2);
 
         NewsEditPage::of($I)
             ->入力_タイトル('news_title2')
@@ -53,18 +53,16 @@ class EA06ContentsManagementCest
 
         $NewsListPage = NewsManagePage::at($I);
         $I->see('新着情報を保存しました。', NewsManagePage::$登録完了メッセージ);
-        $I->assertEquals('news_title2', $NewsListPage->一覧_タイトル(1));
-
-        $NewsListPage->一覧_下へ(1);
         $I->assertEquals('news_title2', $NewsListPage->一覧_タイトル(2));
 
-        $NewsListPage->一覧_上へ(1);
-        $I->assertEquals('news_title2', $NewsListPage->一覧_タイトル(1));
+        $I->assertEquals('news_title2', $NewsListPage->一覧_タイトル(2));
 
-        $NewsListPage->一覧_削除(1);
-        $I->acceptPopup();
+        $I->assertEquals('news_title2', $NewsListPage->一覧_タイトル(2));
 
-        $I->assertNotEquals('news_title2', $NewsListPage->一覧_タイトル(1));
+        $NewsListPage->一覧_削除(2);
+        $NewsListPage->ポップアップを受け入れます(2);
+
+        $I->assertNotEquals('news_title2', $NewsListPage->一覧_タイトル(2));
     }
 
     /**

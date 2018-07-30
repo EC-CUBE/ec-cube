@@ -37,40 +37,32 @@ class NewsManagePage extends AbstractAdminPage
 
     public function 一覧_編集($rowNum)
     {
-        $this->一覧_メニュー($rowNum);
-        $this->tester->click("#form1 > div > div > table > tbody > tr:nth-child(${rowNum}) > td.icon_edit > div > ul > li:nth-child(1) > a");
-        return $this;
-    }
-
-    private function 一覧_メニュー($rowNum)
-    {
-        $this->tester->click("#form1 > div > div > table > tbody > tr:nth-child(${rowNum}) > td.icon_edit > div > a");
+        $this->tester->click("ul.list-group li:nth-child(${rowNum}) div > div:nth-child(4) > a");
         return $this;
     }
 
     public function 一覧_タイトル($rowNum)
     {
-        return $this->tester->grabTextFrom(['css' => "#form1 > div > div > table > tbody > tr:nth-child(${rowNum}) > td:nth-child(3)"]);
+        return $this->tester->grabTextFrom(['css' => "ul.list-group li:nth-child(${rowNum}) div > div:nth-child(4) a"]);
     }
 
     public function 一覧_下へ($rowNum)
     {
-        $this->一覧_メニュー($rowNum);
-        $this->tester->click("#form1 > div > div > table > tbody > tr:nth-child(${rowNum}) > td.icon_edit > div > ul > li:nth-child(3) > a");
-        return $this;
-    }
-
-    public function 一覧_上へ($rowNum)
-    {
-        $this->一覧_メニュー($rowNum);
-        $this->tester->click("#form1 > div > div > table > tbody > tr:nth-child(${rowNum}) > td.icon_edit > div > ul > li:nth-child(3) > a");
+        $this->tester->click("ul.list-group li:nth-child(${rowNum}) div > div:nth-child(4) > a");
         return $this;
     }
 
     public function 一覧_削除($rowNum)
     {
-        $this->一覧_メニュー($rowNum);
-        $this->tester->click("#form1 > div > div > table > tbody > tr:nth-child(${rowNum}) > td.icon_edit > div > ul > li:nth-child(2) > a");
+        $this->tester->click("ul.list-group li:nth-child(${rowNum}) div > div:nth-child(5) > div > div:nth-child(3) > a.btn-ec-actionIcon");
+        return $this;
+    }
+
+    public function ポップアップを受け入れます($rowNum)
+    {
+        $modal = "ul.list-group li:nth-child(${rowNum}) div > div:nth-child(5) > div > div:nth-child(3) div.modal";
+        $this->tester->waitForElementVisible(['css' => $modal]);
+        $this->tester->click($modal." .modal-footer a.btn-ec-delete");
         return $this;
     }
 }
