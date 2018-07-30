@@ -207,10 +207,11 @@ class ForgotController extends AbstractController
                 throw new HttpException\NotFoundHttpException(trans('forgotcontroller.text.error.url'));
             }
         } elseif ($form->isSubmitted() && $form->isValid()) {
+            // リセットキー・入力メールアドレスで会員情報検索
             $Customer = $this->customerRepository
                 ->getRegularCustomerByResetKey($reset_key);
             if (is_null($Customer)) {
-                // リセットキーから会員データが取得できない場合
+                // リセットキー・メールアドレスから会員データが取得できない場合
                 throw new HttpException\NotFoundHttpException(trans('forgotcontroller.text.error.url'));
             }
 

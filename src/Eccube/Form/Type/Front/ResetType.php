@@ -17,6 +17,8 @@ use Eccube\Common\EccubeConfig;
 use Eccube\Form\Type\RepeatedPasswordType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class ResetType extends AbstractType
 {
@@ -40,8 +42,15 @@ class ResetType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('password', RepeatedPasswordType::class);
+        $builder->add('login_email', EmailType::class, [
+            'attr' => [
+                'max_length' => $this->eccubeConfig['eccube_stext_len'],
+            ],
+            'constraints' => [
+                new Assert\NotBlank(),
+                new Assert\Email(['strict' => true]),
+            ],
+        ])->add('password', RepeatedPasswordType::class);
     }
 
     /**

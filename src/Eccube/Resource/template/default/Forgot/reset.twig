@@ -24,6 +24,16 @@ file that was distributed with this source code.
                     <div class="ec-borderedDefs">
                         <dl>
                             <dt>
+                                {{ form_label(form.login_email) }}</dt>
+                            <dd>
+                                <div class="ec-input">
+                                    {{ form_widget(form.login_email) }}
+                                    {{ form_errors(form.login_email) }}
+                                </div>
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>
                                 {{ form_label(form.password, 'signup.label.pass', {'label_attr': {'class': 'ec-label'}}) }}
                             </dt>
                             <dd>
