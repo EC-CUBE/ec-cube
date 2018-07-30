@@ -324,7 +324,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
             $entity->setId(0);
             $entity->setName('0削除テスト');
             $entity->setSortNo($this->entityManager->getRepository($entityName)->findBy([], ['sort_no' => 'DESC'])[0]->getSortNo() + 1);
-            $this->entityManager->getRepository($entityName)->persist($entity);
+            $this->entityManager->persist($entity);
             $this->entityManager->flush();
         }
 
