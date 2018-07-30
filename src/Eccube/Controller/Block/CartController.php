@@ -20,7 +20,7 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\PurchaseFlow\PurchaseFlowResult;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Request;
 
 class CartController extends AbstractController
 {
@@ -44,9 +44,9 @@ class CartController extends AbstractController
 
     /**
      * @Route("/block/cart", name="block_cart")
-     * @Template("Block/cart.twig")
+     * @Route("/block/cart_sp", name="block_cart_sp")
      */
-    public function index()
+    public function index(Request $request)
     {
         $Carts = $this->cartService->getCarts();
 
@@ -66,11 +66,21 @@ class CartController extends AbstractController
             return $total;
         }, 0);
 
-        return [
-            'totalQuantity' => $totalQuantity,
-            'totalPrice' => $totalPrice,
-            'Carts' => $Carts,
-        ];
+        $route = $request->attributes->get('_route');
+
+        if ($route == 'block_cart_sp') {
+            return $this->render('Block/nav_sp.twig', [
+                'totalQuantity' => $totalQuantity,
+                'totalPrice' => $totalPrice,
+                'Carts' => $Carts,
+            ]);
+        } else {
+            return $this->render('Block/cart.twig', [
+                'totalQuantity' => $totalQuantity,
+                'totalPrice' => $totalPrice,
+                'Carts' => $Carts,
+            ]);
+        }
     }
 
     protected function execPurchaseFlow($Carts)

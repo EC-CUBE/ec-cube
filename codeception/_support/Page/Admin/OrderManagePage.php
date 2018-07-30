@@ -137,6 +137,7 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
 
     public function Cancel_削除()
     {
+        $this->tester->waitForElementVisible('#bulkDeleteModal > div > div > div.modal-footer > button.btn.btn-ec-sub');
         $this->tester->click("#bulkDeleteModal > div > div > div.modal-footer > button.btn.btn-ec-sub");
         return $this;
     }
