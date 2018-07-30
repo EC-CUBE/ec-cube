@@ -273,6 +273,6 @@ class EntityProxyService
         $blockEndIndex = $entityTokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $blockStartIndex);
 
         $entityTokens->clearRange($startIndex, $blockStartIndex);
-        $entityTokens->clearRange($blockEndIndex, $blockEndIndex + 1 );
+        $entityTokens->clearRange($blockEndIndex, $blockEndIndex + 1);
     }
 }
