@@ -197,7 +197,7 @@ class OrderItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
      *
      * @ORM\Column(name="tax", type="decimal", precision=10, scale=0, options={"default":0})
      */
-    private $tax;
+    private $tax = 0;
 
     /**
      * @var string

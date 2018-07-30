@@ -53,6 +53,7 @@ services:
                 - '@Eccube\Service\PurchaseFlow\Processor\DeliveryFeePreprocessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\DeliveryFeeFreeByShippingPreprocessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\PointProcessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\TaxProcessor'
 
     eccube.purchase.flow.shopping.item_validators:
         class: Doctrine\Common\Collections\ArrayCollection
@@ -87,17 +88,10 @@ services:
     eccube.purchase.flow.order:
         class: Eccube\Service\PurchaseFlow\PurchaseFlow
         calls:
-            - [setItemPreprocessors, ['@eccube.purchase.flow.order.item_preprocessors']]
             - [setItemHolderPreprocessors, ['@eccube.purchase.flow.order.holder_preprocessors']]
             - [setItemValidators, ['@eccube.purchase.flow.order.item_validators']]
             - [setItemHolderValidators, ['@eccube.purchase.flow.order.holder_validators']]
             - [setPurchaseProcessors, ['@eccube.purchase.flow.order.purchase']]
-
-    eccube.purchase.flow.order.item_preprocessors:
-        class: Doctrine\Common\Collections\ArrayCollection
-        arguments:
-            - #
-                - '@Eccube\Service\PurchaseFlow\Processor\TaxProcessor'
 
     eccube.purchase.flow.order.holder_preprocessors:
         class: Doctrine\Common\Collections\ArrayCollection
@@ -105,6 +99,7 @@ services:
             - #
                 - '@Eccube\Service\PurchaseFlow\Processor\AdminOrderRegisterPurchaseProcessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\PointProcessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\TaxProcessor'
 
     eccube.purchase.flow.order.item_validators:
         class: Doctrine\Common\Collections\ArrayCollection
