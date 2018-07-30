@@ -199,6 +199,10 @@ class OrderType extends AbstractType
 
                 $form = $event->getForm();
                 $Customer = $Order->getCustomer();
+                if (is_null($Customer) || $Order->getUsePoint() == 0) {
+                    return;
+                }
+
                 if ($Customer->getPoint() < $Order->getUsePoint()) {
                     $form['use_point']->addError(new FormError(trans('shopping.use_point.error.exceed')));
 

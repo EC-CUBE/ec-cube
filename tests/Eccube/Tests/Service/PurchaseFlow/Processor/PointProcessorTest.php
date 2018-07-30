@@ -43,6 +43,7 @@ class PointProcessorTest extends EccubeTestCase
     {
         $Order = new Order();
         $Order->setCustomer(new Customer());
+        $Order->setTotal(1000);
         $Order->setUsePoint(100);
         $this->processor->process($Order, new PurchaseContext());
 
@@ -83,7 +84,7 @@ class PointProcessorTest extends EccubeTestCase
         self::assertEquals($isError, $result->hasError());
 
         if ($isError) {
-            self::assertEquals('利用ポイントが所有ポイントを上回っています.', $result->getErrors()[0]->getMessage());
+            self::assertEquals('利用ポイントが所有ポイントを上回っています。', $result->getErrors()[0]->getMessage());
         }
     }
 
@@ -124,7 +125,7 @@ class PointProcessorTest extends EccubeTestCase
         self::assertEquals($isError, $result->hasError());
 
         if ($isError) {
-            self::assertEquals('利用ポイントがお支払い金額を上回っています.', $result->getErrors()[0]->getMessage());
+            self::assertEquals('利用ポイントがお支払い金額を上回っています。', $result->getErrors()[0]->getMessage());
         }
     }
 
