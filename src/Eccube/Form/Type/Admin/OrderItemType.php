@@ -17,8 +17,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\OrderItemType as OrderItemTypeMaster;
-use Eccube\Entity\Master\TaxDisplayType;
-use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\ProductClass;
 use Eccube\Form\DataTransformer;
@@ -168,45 +166,9 @@ class OrderItemType extends AbstractType
                             $OrderItem->setClassCategoryName2($ClassCategory2->getName());
                         }
                     }
-                    // 商品明細は税抜表示・課税
-                    if (null === $OrderItem->getTaxDisplayType()) {
-                        $OrderItem->setTaxDisplayType($this->entityManager->find(TaxDisplayType::class,
-                            TaxDisplayType::EXCLUDED));
-                    }
-                    if (null === $OrderItem->getTaxType()) {
-                        $OrderItem->setTaxType($this->entityManager->find(TaxType::class, TaxType::TAXATION));
-                    }
                     break;
-                case OrderItemTypeMaster::DELIVERY_FEE:
-                    // 送料明細は税込表示・課税
-                    if (null === $OrderItem->getTaxDisplayType()) {
-                        $OrderItem->setTaxDisplayType($this->entityManager->find(TaxDisplayType::class,
-                            TaxDisplayType::INCLUDED));
-                    }
-                    if (null === $OrderItem->getTaxType()) {
-                        $OrderItem->setTaxType($this->entityManager->find(TaxType::class, TaxType::TAXATION));
-                    }
-                    break;
-                case OrderItemTypeMaster::CHARGE:
-                    // 手数料明細は税込表示・課税
-                    if (null === $OrderItem->getTaxDisplayType()) {
-                        $OrderItem->setTaxDisplayType($this->entityManager->find(TaxDisplayType::class,
-                            TaxDisplayType::INCLUDED));
-                    }
-                    if (null === $OrderItem->getTaxType()) {
-                        $OrderItem->setTaxType($this->entityManager->find(TaxType::class, TaxType::TAXATION));
-                    }
-                    break;
-                case OrderItemTypeMaster::DISCOUNT:
-                case OrderItemTypeMaster::POINT:
-                    // 値引き明細は税抜表示・課税
-                    if (null === $OrderItem->getTaxDisplayType()) {
-                        $OrderItem->setTaxDisplayType($this->entityManager->find(TaxDisplayType::class,
-                            TaxDisplayType::EXCLUDED));
-                    }
-                    if (null === $OrderItem->getTaxType()) {
-                        $OrderItem->setTaxType($this->entityManager->find(TaxType::class, TaxType::TAXATION));
-                    }
+
+                default:
                     break;
             }
         });

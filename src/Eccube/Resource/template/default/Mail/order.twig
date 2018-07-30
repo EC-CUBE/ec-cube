@@ -75,7 +75,7 @@ file that was distributed with this source code.
 {{'signup.label.address'|trans}}　　：{{ Shipping.Pref.name }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}
 {{'signup.label.tel_number'|trans}}：{{ Shipping.phone_number }}
 
-{{'shopping.label.delivery_date'|trans}}：{{ Shipping.shipping_delivery_date is empty ? 'shopping.label.anytime'|trans : Shipping.shipping_delivery_date|date_format }}
+{{'shopping.label.delivery_date'|trans}}：{{ Shipping.shipping_delivery_date is empty ? 'shopping.label.anytime'|trans : Shipping.shipping_delivery_date|date_day }}
 {{'shopping.label.delivery_hours'|trans}}：{{ Shipping.shipping_delivery_time|default('shopping.label.anytime'|trans) }}
 
 {%  for OrderItem in Shipping.OrderItems %}
