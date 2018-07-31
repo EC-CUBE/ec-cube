@@ -52,8 +52,8 @@ services:
                 - '@Eccube\Service\PurchaseFlow\Processor\OrderNoProcessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\DeliveryFeePreprocessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\DeliveryFeeFreeByShippingPreprocessor'
-                - '@Eccube\Service\PurchaseFlow\Processor\PointProcessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\TaxProcessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\PointProcessor'
 
     eccube.purchase.flow.shopping.item_validators:
         class: Doctrine\Common\Collections\ArrayCollection
@@ -98,8 +98,8 @@ services:
         arguments:
             - #
                 - '@Eccube\Service\PurchaseFlow\Processor\AdminOrderRegisterPurchaseProcessor'
-                - '@Eccube\Service\PurchaseFlow\Processor\PointProcessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\TaxProcessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\PointProcessor'
 
     eccube.purchase.flow.order.item_validators:
         class: Doctrine\Common\Collections\ArrayCollection
