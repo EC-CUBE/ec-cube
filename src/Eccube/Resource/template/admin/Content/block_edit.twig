@@ -12,8 +12,8 @@ file that was distributed with this source code.
 
 {% set menus = ['content', 'block'] %}
 
-{% block title %}{{'admin.content.block_edit.13'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.content.block_edit.12'|trans}}{% endblock %}
+{% block title %}{{ 'admin.content.block_edit.13'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.content.block_edit.12'|trans }}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
@@ -21,11 +21,11 @@ file that was distributed with this source code.
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ace.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ext-language_tools.js"></script>
     <script>
-        ace.require("ace/ext/language_tools");
-        var editor = ace.edit("editor");
-        editor.session.setMode("ace/mode/twig");
-        editor.setTheme("ace/theme/tomorrow");
-        editor.setValue("{{ form.block_html.vars.value|escape('js') }}");
+        ace.require('ace/ext/language_tools');
+        var editor = ace.edit('editor');
+        editor.session.setMode('ace/mode/twig');
+        editor.setTheme('ace/theme/tomorrow');
+        editor.setValue('{{ form.block_html.vars.value|escape('js') }}');
         editor.setOptions({
             enableBasicAutocompletion: true,
             enableSnippets: true,
@@ -33,15 +33,15 @@ file that was distributed with this source code.
             showInvisibles: true
         });
 
-        $('#content_block_form').on('submit', function (elem) {
+        $('#content_block_form').on('submit', function(elem) {
             $('#block_block_html').val(editor.getValue());
         });
     </script>
 {% endblock %}
 
 {% block main %}
-    <form name="content_block_form" id="content_block_form" method="post" action="
-                {%- if block_id is not null %}{{ url('admin_content_block_edit', {id: block_id}) }}{% else %}{{ url('admin_content_block_new')}}{% endif -%}">
+    <form name="content_block_form" id="content_block_form" method="post"
+          action="{%- if block_id is not null %}{{ url('admin_content_block_edit', {id: block_id}) }}{% else %}{{ url('admin_content_block_new') }}{% endif -%}">
         {{ form_widget(form._token) }}
         {{ form_widget(form.id) }}
         {{ form_widget(form.DeviceType, { attr : { style : 'display: none;' } } ) }}
@@ -51,7 +51,7 @@ file that was distributed with this source code.
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header">
                             <div class="row">
-                                <div class="col-8"><span class="card-title">{{'admin.content.block_edit.14'|trans}}</span></div>
+                                <div class="col-8"><span class="card-title">{{ 'admin.content.block_edit.14'|trans }}</span></div>
                                 <div class="col-4 text-right">
                                     <a data-toggle="collapse" href="#blockEdit" aria-expanded="false" aria-controls="blockEdit">
                                         <i class="fa fa-angle-up fa-lg"></i>
@@ -81,7 +81,7 @@ file that was distributed with this source code.
                                     <div class="col-10">
                                         {% if deletable %}
                                             <div class="form-inline">
-                                            {{ form_widget(form.file_name) }}.twig
+                                                {{ form_widget(form.file_name) }}.twig
                                             </div>
                                         {% else %}
                                             {{ form.file_name.vars.value }}.twig
@@ -97,7 +97,7 @@ file that was distributed with this source code.
                                         <span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span>
                                     </div>
                                     <div class="col-10">
-                                        <div id="editor" style="height: 480px" class="form-control{{ has_errors(form.block_html) ? ' is-invalid'}}"></div>
+                                        <div id="editor" style="height: 480px" class="form-control{{ has_errors(form.block_html) ? ' is-invalid' }}"></div>
                                         <div class="d-none">
                                             {{ form_widget(form.block_html) }}
                                         </div>
@@ -137,9 +137,9 @@ file that was distributed with this source code.
                         </div>
                     </div>
                     <div class="col-6">
-                        <div class="row align-items-center justify-content-end">
+                        <div id="ex-conversion-action" class="row align-items-center justify-content-end">
                             <div class="col-auto">
-                                <button class="btn btn-ec-conversion px-5" type="submit">{{'admin.content.block_edit.16'|trans}}</button>
+                                <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.content.block_edit.16'|trans }}</button>
                             </div>
                         </div>
                     </div>

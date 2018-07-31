@@ -15,11 +15,11 @@ file that was distributed with this source code.
 {% block title %}{{ 'admin.setting.shop.csv.556'|trans }}{% endblock %}
 {% block sub_title %}{{ 'admin.setting.shop.csv.555'|trans }}{% endblock %}
 
-{% form_theme form '@admin/Form/bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block javascript %}
     <script>
-        $(function () {
+        $(function() {
 
             function add(event) {
                 $('#' + event.data.from + ' option:selected')
@@ -28,7 +28,7 @@ file that was distributed with this source code.
             }
 
             function addAll(event) {
-                $('#' + event.data.from + ' option').each(function () {
+                $('#' + event.data.from + ' option').each(function() {
                     $(this).appendTo($('#' + event.data.to));
                     $(this).prop('selected', false);// 選択状態の解除
                 });
@@ -39,7 +39,7 @@ file that was distributed with this source code.
             $('#remove').on('click', {from: 'csv-output', to: 'csv-not-output'}, add);
             $('#remove-all').on('click', {from: 'csv-output', to: 'csv-not-output'}, addAll);
 
-            $('.move').click(function () {
+            $('.move').click(function() {
                 var $op = $('#csv-output option:selected');
                 var val = $(this).data('value');
                 if ($op.length) {
@@ -47,7 +47,7 @@ file that was distributed with this source code.
                 }
             });
 
-            $('.move-most').click(function () {
+            $('.move-most').click(function() {
                 var $op = $('#csv-output option:selected');
                 var val = $(this).data('value');
                 if ($op.length) {
@@ -55,14 +55,14 @@ file that was distributed with this source code.
                 }
             });
 
-            $('#csv-type').on('change', function () {
+            $('#csv-type').on('change', function() {
                 var id = $(this).val();
                 var href = '{{ url('admin_setting_shop_csv') }}' + '/' + id;
                 location.href = href;
                 return false;
             });
 
-            $('#csv-form').submit(function () {
+            $('#csv-form').submit(function() {
                 $('#csv-not-output').children().prop('selected', true);
                 $('#csv-output').children().prop('selected', true);
             })
@@ -100,14 +100,14 @@ file that was distributed with this source code.
                                     <div class="row mb-2">
                                         <div class="col text-center">
                                             <div class="btn btn-ec-regular btn-block" id="add"><i class="fa fa-arrow-right"
-                                                                                         aria-hidden="true"></i><span>&nbsp;{{ 'admin.setting.shop.csv.568'|trans }}</span>
+                                                                                                  aria-hidden="true"></i><span>&nbsp;{{ 'admin.setting.shop.csv.568'|trans }}</span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row mb-2">
                                         <div class="col text-center">
                                             <div class="btn btn-ec-regular btn-block" id="remove"><i class="fa fa-arrow-left"
-                                                                                         aria-hidden="true"><span>&nbsp;{{ 'admin.setting.shop.csv.569'|trans }}</span></i>
+                                                                                                     aria-hidden="true"><span>&nbsp;{{ 'admin.setting.shop.csv.569'|trans }}</span></i>
                                             </div>
                                         </div>
                                     </div>
@@ -121,7 +121,7 @@ file that was distributed with this source code.
                                     <div class="row mb-2">
                                         <div class="col text-center">
                                             <div class="btn btn-ec-regular btn-block" id="remove-all"><i class="fa fa-arrow-circle-left"
-                                                                                         aria-hidden="true"><span>&nbsp;{{ 'admin.setting.shop.csv.571'|trans }}</span></i>
+                                                                                                         aria-hidden="true"><span>&nbsp;{{ 'admin.setting.shop.csv.571'|trans }}</span></i>
                                             </div>
                                         </div>
                                     </div>
@@ -139,28 +139,28 @@ file that was distributed with this source code.
                                     <div class="row mb-2">
                                         <div class="col text-center">
                                             <div class="btn btn-ec-regular btn-block move" data-value="up"><i class="fa fa-arrow-up"
-                                                                                         aria-hidden="true"><span>&nbsp;{{ 'admin.setting.shop.csv.572'|trans }}</span></i>
+                                                                                                              aria-hidden="true"><span>&nbsp;{{ 'admin.setting.shop.csv.572'|trans }}</span></i>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row mb-2">
                                         <div class="col text-center">
                                             <div class="btn btn-ec-regular btn-block move" data-value="down"><i class="fa fa-arrow-down"
-                                                                                         aria-hidden="true"><span>&nbsp;{{ 'admin.setting.shop.csv.573'|trans }}</span></i>
+                                                                                                                aria-hidden="true"><span>&nbsp;{{ 'admin.setting.shop.csv.573'|trans }}</span></i>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row mb-2">
                                         <div class="col text-center">
                                             <div class="btn btn-ec-regular btn-block move-most" data-value="top"><i class="fa fa-arrow-circle-up"
-                                                                                         aria-hidden="true"><span>&nbsp;{{ 'admin.setting.shop.csv.574'|trans }}</span></i>
+                                                                                                                    aria-hidden="true"><span>&nbsp;{{ 'admin.setting.shop.csv.574'|trans }}</span></i>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row mb-2">
                                         <div class="col text-center">
                                             <div class="btn btn-ec-regular btn-block move-most" data-value="bottom"><i class="fa fa-arrow-circle-down"
-                                                                                         aria-hidden="true"><span>&nbsp;{{ 'admin.setting.shop.csv.575'|trans }}</span></i>
+                                                                                                                       aria-hidden="true"><span>&nbsp;{{ 'admin.setting.shop.csv.575'|trans }}</span></i>
                                             </div>
                                         </div>
                                     </div>
@@ -181,7 +181,7 @@ file that was distributed with this source code.
                         </div>
                     </div>
                     <div class="col-6">
-                        <div class="row align-items-center justify-content-end">
+                        <div id="ex-conversion-action" class="row align-items-center justify-content-end">
                             <div class="col-auto">
                                 <button class="btn btn-ec-conversion px-5" type="submit">{{ 'common.label.save'|trans }}</button>
                             </div>

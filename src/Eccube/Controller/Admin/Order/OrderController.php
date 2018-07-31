@@ -584,7 +584,7 @@ class OrderController extends AbstractController
      */
     public function exportPdf(Request $request)
     {
-        // requestから受注番号IDの一覧を取得する.
+        // requestから出荷番号IDの一覧を取得する.
         $ids = $request->get('ids', []);
 
         if (count($ids) == 0) {

@@ -436,7 +436,7 @@ file that was distributed with this source code.
                                     <div class="row mb-3">
                                         <div class="col-6">
                                             <button type="button" class="btn btn-ec-regular copy-customer">{{ 'admin.order.edit.label.customer_info.copy'|trans }}</button>
-                                            <a class="btn btn-ec-regular pdf-print" href="{{ url('admin_order_export_pdf') }}?ids[]={{ Order.id }}">{{ 'admin.order.edit.label.shipping.print'|trans }}</a>
+                                            <a class="btn btn-ec-regular pdf-print" href="{{ url('admin_order_export_pdf') }}?ids[]={{ Order.Shippings[0].id }}">{{ 'admin.order.edit.label.shipping.print'|trans }}</a>
                                         </div>
                                         {% if Order.id is not empty %}
                                             <div class="col-6 text-right">

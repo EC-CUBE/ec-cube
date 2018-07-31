@@ -143,8 +143,8 @@ file that was distributed with this source code.
                         }
                     }).done(function(json, statusText, jqXHR) {
                         editor.setValue(json.source);
-                        editor.goTo(1);
-                        editor.scrollTo(1);
+                        editor.gotoLine(1);
+                        editor.scrollToLine(1);
                     }).fail(function(jqXHR, statusText, errorThrown) {
                         editor.setValue(statusText + ' ' + errorThrown);
                     });
@@ -535,11 +535,12 @@ file that was distributed with this source code.
                 <div class="c-conversionArea__container">
                     <div class="row justify-content-between align-items-center">
                         <div class="col-6">
-                            <div class="c-conversionArea__leftBlockItem"><a class="c-beseLink" href="{{ url('admin_content_layout') }}"><i class="fa fa-backward" aria-hidden="true"></i><span>{{ 'admin.content.layout.list'|trans }}</span></a>
+                            <div class="c-conversionArea__leftBlockItem">
+                                <a class="c-beseLink" href="{{ url('admin_content_layout') }}"><i class="fa fa-backward" aria-hidden="true"></i><span>{{ 'admin.content.layout.list'|trans }}</span></a>
                             </div>
                         </div>
                         <div class="col-6">
-                            <div class="row align-items-center justify-content-end">
+                            <div id="ex-conversion-action" class="row align-items-center justify-content-end">
                                 <div class="col-auto">
                                     <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.content.layout.42'|trans }}</button>
                                 </div>
