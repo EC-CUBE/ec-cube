@@ -31,11 +31,15 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class OrderItemType extends AbstractType
 {
@@ -75,6 +79,11 @@ class OrderItemType extends AbstractType
     protected $taxRuleRepository;
 
     /**
+     * @var ValidatorInterface
+     */
+    protected $validator;
+
+    /**
      * OrderItemType constructor.
      *
      * @param EntityManagerInterface $entityManager
@@ -90,7 +99,8 @@ class OrderItemType extends AbstractType
         ProductClassRepository $productClassRepository,
         OrderItemRepository $orderItemRepository,
         OrderItemTypeRepository $orderItemTypeRepository,
-        TaxRuleRepository $taxRuleRepository
+        TaxRuleRepository $taxRuleRepository,
+        ValidatorInterface $validator
     ) {
         $this->entityManager = $entityManager;
         $this->eccubeConfig = $eccubeConfig;
@@ -99,6 +109,7 @@ class OrderItemType extends AbstractType
         $this->orderItemRepository = $orderItemRepository;
         $this->orderItemTypeRepository = $orderItemTypeRepository;
         $this->taxRuleRepository = $taxRuleRepository;
+        $this->validator = $validator;
     }
 
     /**
@@ -172,6 +183,44 @@ class OrderItemType extends AbstractType
                     break;
             }
         });
+
+        // price, quantityのバリデーション
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            $form = $event->getForm();
+            /** @var OrderItem $OrderItem */
+            $OrderItem = $event->getData();
+
+            $OrderItemType = $OrderItem->getOrderItemType();
+            switch ($OrderItemType->getId()) {
+                // 商品明細: 金額 -> 正, 個数 -> 正負
+                case OrderItemTypeMaster::PRODUCT:
+                    $errors = $this->validator->validate($OrderItem->getPrice(), [new Assert\GreaterThanOrEqual(0)]);
+                    $this->addErrorsIfExists($form['price'], $errors);
+                    break;
+
+                // 値引き明細: 金額 -> 負, 個数 -> 正
+                case OrderItemTypeMaster::DISCOUNT:
+                    $errors = $this->validator->validate($OrderItem->getPrice(), [new Assert\LessThanOrEqual(0)]);
+                    $this->addErrorsIfExists($form['price'], $errors);
+                    $errors = $this->validator->validate($OrderItem->getQuantity(), [new Assert\GreaterThanOrEqual(0)]);
+                    $this->addErrorsIfExists($form['quantity'], $errors);
+
+                    break;
+
+                // 送料, 手数料: 金額 -> 正, 個数 -> 正
+                case OrderItemTypeMaster::DELIVERY_FEE:
+                case OrderItemTypeMaster::CHARGE:
+                    $errors = $this->validator->validate($OrderItem->getPrice(), [new Assert\GreaterThanOrEqual(0)]);
+                    $this->addErrorsIfExists($form['price'], $errors);
+                    $errors = $this->validator->validate($OrderItem->getQuantity(), [new Assert\GreaterThanOrEqual(0)]);
+                    $this->addErrorsIfExists($form['quantity'], $errors);
+
+                    break;
+
+                default:
+                    break;
+            }
+        });
     }
 
     /**
@@ -190,5 +239,24 @@ class OrderItemType extends AbstractType
     public function getBlockPrefix()
     {
         return 'order_item';
+    }
+
+    /**
+     * @param FormInterface $form
+     * @param ValidatorInterface $errors
+     */
+    protected function addErrorsIfExists(FormInterface $form, ConstraintViolationListInterface $errors)
+    {
+        if (empty($errors)) {
+            return;
+        }
+
+        foreach ($errors as $error) {
+            $form->addError(new FormError(
+                $error->getMessage(),
+                $error->getMessageTemplate(),
+                $error->getParameters(),
+                $error->getPlural()));
+        }
     }
 }
