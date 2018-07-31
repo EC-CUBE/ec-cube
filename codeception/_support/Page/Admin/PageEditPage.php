@@ -60,9 +60,4 @@ class PageEditPage extends AbstractAdminPageStyleGuide
     {
         $this->tester->click(['xpath' => '//button/span[text()="登録"]']);
     }
-
-    public function プレビュー()
-    {
-        $this->tester->click(['xpath' => "//*[@id='preview']/div/div/div/a[text()='プレビュー']"]);
-    }
 }

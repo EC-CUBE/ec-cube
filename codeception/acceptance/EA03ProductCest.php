@@ -739,7 +739,7 @@ class EA03ProductCest
             ->検索結果_選択(1);
 
         ProductEditPage::at($I)
-            ->入力_非公開()
+            ->入力_公開()
             ->登録()
             ->プレビュー();
 
