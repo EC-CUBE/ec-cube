@@ -20,13 +20,14 @@ class AuthorityManagePage extends AbstractAdminPageStyleGuide
 
     public function 行追加()
     {
-        $this->tester->click('form .add');
+        $this->tester->click('body > div.c-container > div.c-contentsArea > div.c-contentsArea__cols > div > div > form > div.card.rounded.border-0.mb-4 > div.card-body > p > button');
         return $this;
     }
 
     public function 行削除($rowNum)
     {
-        $this->tester->click(['css' => "form #table-authority tbody tr:nth-child($rowNum) td:nth-child(3) button"]);
+        $this->tester->click(['css' => "form tbody tr:nth-child($rowNum) td:nth-child(3) button"]);
+
         return $this;
     }
 
