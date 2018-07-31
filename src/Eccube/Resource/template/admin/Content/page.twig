@@ -24,16 +24,16 @@ file that was distributed with this source code.
         // 検索ボックスに値が入っていない場合
         if (searchText == '') {
             // 全て表示する
-            $('#list_page_tbl tbody tr').show();
+            $('table.table tbody tr').show();
             return;
         }
 
         // 検索ボックスに値が入ってる場合
         // 表示を全て空にする
-        $('#list_page_tbl tbody tr').hide();
+        $('table.table tbody tr').hide();
 
         // 検索ワードが（子を含めて）含まれる要素のみ表示
-        $('#list_page_tbl tbody tr').each(function() {
+        $('table.table tbody tr').each(function() {
             targetText = $(this).find('td a').text();
 
             // 検索対象となるリストに入力された文字列が存在するかどうかを判断
