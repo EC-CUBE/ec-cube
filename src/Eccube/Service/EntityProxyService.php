@@ -269,10 +269,12 @@ class EntityProxyService
     private function removeClassExistsBlock(Tokens $entityTokens)
     {
         $startIndex = $entityTokens->getNextTokenOfKind(0, [[T_IF]]);
-        $blockStartIndex = $entityTokens->getNextTokenOfKind($startIndex, ['{']);
-        $blockEndIndex = $entityTokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $blockStartIndex);
+        if ($startIndex > 0) {
+            $blockStartIndex = $entityTokens->getNextTokenOfKind($startIndex, ['{']);
+            $blockEndIndex = $entityTokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $blockStartIndex);
 
-        $entityTokens->clearRange($startIndex, $blockStartIndex);
-        $entityTokens->clearRange($blockEndIndex, $blockEndIndex + 1);
+            $entityTokens->clearRange($startIndex, $blockStartIndex);
+            $entityTokens->clearRange($blockEndIndex, $blockEndIndex + 1);
+        }
     }
 }
