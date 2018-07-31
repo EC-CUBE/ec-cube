@@ -58,7 +58,7 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
      */
     protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
-        if (!$this->diffSupports($itemHolder, $context)) {
+        if (!$this->supports($itemHolder, $context)) {
             return;
         }
 
@@ -85,7 +85,7 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
      */
     public function prepare(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
-        if (!$this->diffSupports($itemHolder, $context)) {
+        if (!$this->supports($itemHolder, $context)) {
             return;
         }
 
@@ -109,7 +109,7 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
      */
     public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
-        if (!$this->diffSupports($itemHolder, $context)) {
+        if (!$this->supports($itemHolder, $context)) {
             return;
         }
 
@@ -139,7 +139,7 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
      *
      * @return bool
      */
-    private function diffSupports(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    private function supports(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         if (!$this->BaseInfo->isOptionPoint()) {
             return false;

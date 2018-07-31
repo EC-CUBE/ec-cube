@@ -685,8 +685,7 @@ file that was distributed with this source code.
                                                 <div class="col-12">
                                                     {# ポイント値引きは価格変更できない #}
                                                     {% if OrderItem.isPoint %}
-                                                        {{ OrderItem.price|price }}
-                                                        {{ form_widget(orderItemForm.price, { 'type': 'hidden' }) }}
+                                                        {{ form_widget(orderItemForm.price, { 'tax_display_type': OrderItem.TaxDisplayType, 'attr': { 'readonly': 'readonly' } }) }}
                                                     {% else %}
                                                         {{ form_widget(orderItemForm.price, { 'tax_display_type': OrderItem.TaxDisplayType }) }}
                                                     {% endif %}
@@ -697,13 +696,11 @@ file that was distributed with this source code.
                                                 <div class="col-6">
                                                     {# 複数配送の場合は商品の個数を変更できない、ポイントの場合も個数を変更できない #}
                                                     {% if (Order.isMultiple and OrderItem.isProduct) or OrderItem.isPoint %}
-                                                        {{ OrderItem.quantity }}
-                                                        {{ form_widget(orderItemForm.quantity, { 'type': 'hidden' }) }}
-                                                        {{ form_errors(orderItemForm.quantity) }}
+                                                        {{ form_widget(orderItemForm.quantity, { 'attr': { 'readonly': 'readonly' } }) }}
                                                     {% else %}
                                                         {{ form_widget(orderItemForm.quantity) }}
-                                                        {{ form_errors(orderItemForm.quantity) }}
                                                     {% endif %}
+                                                    {{ form_errors(orderItemForm.quantity) }}
                                                 </div>
                                             </td>
                                             <td class="align-middle">
@@ -724,7 +721,7 @@ file that was distributed with this source code.
                                             <td class="align-middle text-right pr-3">
                                                 <div class="row justify-content-end">
                                                     {# 複数配送の場合は商品を削除できない #}
-                                                    {% if Order.isMultiple and OrderItem.orderItemType.id == constant('Eccube\\Entity\\Master\\OrderItemType::PRODUCT') %}
+                                                    {% if (Order.isMultiple and OrderItem.isProduct) or OrderItem.isPoint %}
                                                         <div class="col-auto text-center">
                                                             <a class="btn btn-ec-actionIcon disabled">
                                                                 <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
@@ -784,7 +781,7 @@ file that was distributed with this source code.
                                     <div class="col-auto"><span class="align-middle">{{ 'admin.common.label.add_point'|trans }}</span></div>
                                     <div class="col-2 text-right">
                                         <span class="h4 align-middle font-weight-normal">
-                                            {{ form.vars.value.addpoint }}
+                                            {{ form.vars.value.addpoint|number_format }}
                                         </span>
                                     </div>
                                 </div>

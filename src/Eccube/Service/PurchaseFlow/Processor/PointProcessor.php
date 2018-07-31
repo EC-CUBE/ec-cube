@@ -86,8 +86,6 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
 
     /**
      * {@inheritdoc}
-     *
-     * TODO: handle関数に処理を分けた方がいいか
      */
     protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
