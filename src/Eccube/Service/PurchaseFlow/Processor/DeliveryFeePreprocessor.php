@@ -71,7 +71,6 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
         $this->deliveryFeeRepository = $deliveryFeeRepository;
     }
 
-
     /**
      * @param ItemHolderInterface $itemHolder
      * @param PurchaseContext $context
