@@ -80,6 +80,9 @@ class Kernel extends BaseKernel
      */
     public function boot()
     {
+        // Symfonyがsrc/Eccube/Entity以下を読み込む前にapp/proxy/entity以下をロードする
+        $this->loadEntityProxies();
+
         parent::boot();
 
         // DateTime/DateTimeTzのタイムゾーンを設定.
@@ -244,6 +247,13 @@ class Kernel extends BaseKernel
                     ['%kernel.project_dir%/app/Plugin/'.$code.'/Entity']
                 ));
             }
+        }
+    }
+
+    protected function loadEntityProxies()
+    {
+        foreach (glob(__DIR__.'/../../app/proxy/entity/*.php') as $file) {
+            require_once $file;
         }
     }
 }
