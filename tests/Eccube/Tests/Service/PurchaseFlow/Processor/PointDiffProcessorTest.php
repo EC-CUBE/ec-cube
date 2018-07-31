@@ -52,12 +52,12 @@ class PointDiffProcessorTest extends EccubeTestCase
     /**
      * @dataProvider usePointOverCustomerPointProvider
      *
-     * @param $preUsePoint int 編集前の利用ポイント
-     * @param $postUsePoint int 編集後の利用ポイント
+     * @param $beforeUsePoint int 編集前の利用ポイント
+     * @param $afterUsePoint int 編集後の利用ポイント
      * @param $customerPoint int 保有ポイント
      * @param $isError boolean エラーかどうか
      */
-    public function testUsePointOverCustomerPoint($preUsePoint, $postUsePoint, $customerPoint, $isError)
+    public function testUsePointOverCustomerPoint($beforeUsePoint, $afterUsePoint, $customerPoint, $isError)
     {
         $Customer = new Customer();
         $Customer->setPoint($customerPoint);
@@ -68,22 +68,22 @@ class PointDiffProcessorTest extends EccubeTestCase
         $OrderStatus = $this->OrderStatusRepository->find(OrderStatus::NEW);
 
         // 編集前の受注
-        $PreOrder = new Order();
-        $PreOrder->setOrderStatus($OrderStatus);
-        $PreOrder->setCustomer($Customer);
-        $PreOrder->setUsePoint($preUsePoint);
-        $PreOrder->addOrderItem($this->newOrderItem($ProductClass, 1000, 1));
+        $BeforeOrder = new Order();
+        $BeforeOrder->setOrderStatus($OrderStatus);
+        $BeforeOrder->setCustomer($Customer);
+        $BeforeOrder->setUsePoint($beforeUsePoint);
+        $BeforeOrder->addOrderItem($this->newOrderItem($ProductClass, 1000, 1));
 
         // 編集後の受注
-        $PostOrder = new Order();
-        $PostOrder->setOrderStatus($OrderStatus);
-        $PostOrder->setCustomer($Customer);
-        $PostOrder->setUsePoint($postUsePoint);
-        $PostOrder->addOrderItem($this->newOrderItem($ProductClass, 1000, 1));
+        $AfterOrder = new Order();
+        $AfterOrder->setOrderStatus($OrderStatus);
+        $AfterOrder->setCustomer($Customer);
+        $AfterOrder->setUsePoint($afterUsePoint);
+        $AfterOrder->addOrderItem($this->newOrderItem($ProductClass, 1000, 1));
 
         $purchaseFlow = new PurchaseFlow();
         $purchaseFlow->addItemHolderValidator($this->processor);
-        $result = $purchaseFlow->validate($PostOrder, new PurchaseContext($PreOrder, $Customer));
+        $result = $purchaseFlow->validate($AfterOrder, new PurchaseContext($BeforeOrder, $Customer));
 
         self::assertEquals($isError, $result->hasError());
 
@@ -114,11 +114,11 @@ class PointDiffProcessorTest extends EccubeTestCase
     /**
      * @dataProvider usePointOverPriceProvider
      *
-     * @param $preUsePoint int 編集前の利用ポイント
-     * @param $postUsePoint int 編集後の利用ポイント
+     * @param $beforeUsePoint int 編集前の利用ポイント
+     * @param $afterUsePoint int 編集後の利用ポイント
      * @param $isError boolean エラーかどうか
      */
-    public function testUsePointOverPrice($preUsePoint, $postUsePoint, $isError)
+    public function testUsePointOverPrice($beforeUsePoint, $afterUsePoint, $isError)
     {
         $price = 100; // 商品の値段
 
@@ -131,23 +131,23 @@ class PointDiffProcessorTest extends EccubeTestCase
         $OrderStatus = $this->OrderStatusRepository->find(OrderStatus::NEW);
 
         // 編集前の受注
-        $PreOrder = new Order();
-        $PreOrder->setOrderStatus($OrderStatus);
-        $PreOrder->setCustomer($Customer);
-        $PreOrder->setUsePoint($preUsePoint);
-        $PreOrder->addOrderItem($this->newOrderItem($ProductClass, $price, 1));
+        $BeforeOrder = new Order();
+        $BeforeOrder->setOrderStatus($OrderStatus);
+        $BeforeOrder->setCustomer($Customer);
+        $BeforeOrder->setUsePoint($beforeUsePoint);
+        $BeforeOrder->addOrderItem($this->newOrderItem($ProductClass, $price, 1));
 
         // 編集後の受注
-        $PostOrder = new Order();
-        $PostOrder->setOrderStatus($OrderStatus);
-        $PostOrder->setCustomer($Customer);
-        $PostOrder->setUsePoint($postUsePoint);
-        $PostOrder->addOrderItem($this->newOrderItem($ProductClass, $price, 1));
+        $AfterOrder = new Order();
+        $AfterOrder->setOrderStatus($OrderStatus);
+        $AfterOrder->setCustomer($Customer);
+        $AfterOrder->setUsePoint($afterUsePoint);
+        $AfterOrder->addOrderItem($this->newOrderItem($ProductClass, $price, 1));
 
         $purchaseFlow = new PurchaseFlow();
         $purchaseFlow->addItemHolderPreprocessor($this->pointProcessor); // Preprocessorでポイント明細を作成してtotalを計算し直す必要がある
         $purchaseFlow->addItemHolderValidator($this->processor);
-        $result = $purchaseFlow->validate($PostOrder, new PurchaseContext($PreOrder, $Customer));
+        $result = $purchaseFlow->validate($AfterOrder, new PurchaseContext($BeforeOrder, $Customer));
 
         self::assertEquals($isError, $result->hasError());
 
@@ -173,12 +173,13 @@ class PointDiffProcessorTest extends EccubeTestCase
     /**
      * @dataProvider useReduceCustomerPointProvider
      *
-     * @param $preUsePoint int 編集前の利用ポイント
-     * @param $postUsePoint int 編集後の利用ポイント
+     * @param $beforeUsePoint int 編集前の利用ポイント
+     * @param $afterUsePoint int 編集後の利用ポイント
      * @param $userUsePoint int 期待する会員のポイント
+     *
      * @throws \Eccube\Service\PurchaseFlow\PurchaseException
      */
-    public function testReduceCustomerPoint($preUsePoint, $postUsePoint, $userUsePoint)
+    public function testReduceCustomerPoint($beforeUsePoint, $afterUsePoint, $userUsePoint)
     {
         $Customer = new Customer();
         $Customer->setPoint(100);
@@ -188,26 +189,26 @@ class PointDiffProcessorTest extends EccubeTestCase
         $OrderStatus = $this->OrderStatusRepository->find(OrderStatus::NEW);
 
         // 編集前の受注
-        $PreOrder = new Order();
-        $PreOrder->setOrderStatus($OrderStatus);
-        $PreOrder->setCustomer($Customer);
-        $PreOrder->setUsePoint($preUsePoint);
-        $PreOrder->addOrderItem($this->newOrderItem($ProductClass, 100, 1));
+        $BeforeOrder = new Order();
+        $BeforeOrder->setOrderStatus($OrderStatus);
+        $BeforeOrder->setCustomer($Customer);
+        $BeforeOrder->setUsePoint($beforeUsePoint);
+        $BeforeOrder->addOrderItem($this->newOrderItem($ProductClass, 100, 1));
 
         // 編集後の受注
-        $PostOrder = new Order();
-        $PostOrder->setOrderStatus($OrderStatus);
-        $PostOrder->setCustomer($Customer);
-        $PostOrder->setUsePoint($postUsePoint);
-        $PostOrder->addOrderItem($this->newOrderItem($ProductClass, 100, 1));
+        $AfterOrder = new Order();
+        $AfterOrder->setOrderStatus($OrderStatus);
+        $AfterOrder->setCustomer($Customer);
+        $AfterOrder->setUsePoint($afterUsePoint);
+        $AfterOrder->addOrderItem($this->newOrderItem($ProductClass, 100, 1));
 
         $purchaseFlow = new PurchaseFlow();
         $purchaseFlow->addPurchaseProcessor($this->processor);
 
-        $context = new PurchaseContext($PreOrder, $Customer);
-        $purchaseFlow->validate($PostOrder, $context);
-        $purchaseFlow->prepare($PostOrder, $context);
-        $purchaseFlow->commit($PostOrder, $context);
+        $context = new PurchaseContext($BeforeOrder, $Customer);
+        $purchaseFlow->validate($AfterOrder, $context);
+        $purchaseFlow->prepare($AfterOrder, $context);
+        $purchaseFlow->commit($AfterOrder, $context);
 
         self::assertEquals($userUsePoint, $Customer->getPoint());
     }
@@ -228,6 +229,7 @@ class PointDiffProcessorTest extends EccubeTestCase
      *
      * @param $orderStatusId int 受注ステータス
      * @param $isChange boolean 変更されたかどうか
+     *
      * @throws \Eccube\Service\PurchaseFlow\PurchaseException
      */
     public function testUsePointEachOrderStatus($orderStatusId, $isChange)
@@ -241,27 +243,27 @@ class PointDiffProcessorTest extends EccubeTestCase
         $OrderStatus = $this->OrderStatusRepository->find($orderStatusId);
 
         // 編集前の受注
-        $PreOrder = new Order();
-        $PreOrder->setOrderStatus($OrderStatus);
-        $PreOrder->setCustomer($Customer);
-        $PreOrder->setUsePoint(10);
-        $PreOrder->addOrderItem($this->newOrderItem($ProductClass, 1000, 1));
+        $BeforeOrder = new Order();
+        $BeforeOrder->setOrderStatus($OrderStatus);
+        $BeforeOrder->setCustomer($Customer);
+        $BeforeOrder->setUsePoint(10);
+        $BeforeOrder->addOrderItem($this->newOrderItem($ProductClass, 1000, 1));
 
         // 編集後の受注
-        $PostOrder = new Order();
-        $PostOrder->setOrderStatus($OrderStatus);
-        $PostOrder->setCustomer($Customer);
-        $PostOrder->setUsePoint(20);
-        $PostOrder->addOrderItem($this->newOrderItem($ProductClass, 1000, 1));
+        $AfterOrder = new Order();
+        $AfterOrder->setOrderStatus($OrderStatus);
+        $AfterOrder->setCustomer($Customer);
+        $AfterOrder->setUsePoint(20);
+        $AfterOrder->addOrderItem($this->newOrderItem($ProductClass, 1000, 1));
 
         $purchaseFlow = new PurchaseFlow();
         $purchaseFlow->addPurchaseProcessor($this->processor);
 
-        $context = new PurchaseContext($PreOrder, $Customer);
+        $context = new PurchaseContext($BeforeOrder, $Customer);
 
-        $purchaseFlow->validate($PostOrder, $context);
-        $purchaseFlow->prepare($PostOrder, $context);
-        $purchaseFlow->commit($PostOrder, $context);
+        $purchaseFlow->validate($AfterOrder, $context);
+        $purchaseFlow->prepare($AfterOrder, $context);
+        $purchaseFlow->commit($AfterOrder, $context);
 
         if ($isChange) {
             self::assertEquals(90, $Customer->getPoint());
