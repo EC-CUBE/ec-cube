@@ -46,14 +46,10 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
         if (is_object($Product)) {
             $ProductClasses = $Product->getProductClasses();
             $OrderItems[] = [
-                'Product' => $Product->getId(),
                 'ProductClass' => $ProductClasses[0]->getId(),
                 'price' => $ProductClasses[0]->getPrice02(),
-                'quantity' => $faker->numberBetween(1, 999),
-                'tax_rate' => 8, // XXX ハードコーディング
-                'tax_rule' => 1,
+                'quantity' => $faker->numberBetween(1, 9),
                 'product_name' => $Product->getName(),
-                'product_code' => $ProductClasses[0]->getCode(),
                 'order_item_type' => 1,
             ];
         }
@@ -80,7 +76,7 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
         $order = [
             '_token' => 'dummy',
             'Customer' => $Customer->getId(),
-            'OrderStatus' => 1,
+            'OrderStatus' => 9,
             'name' => [
                 'name01' => $faker->lastName,
                 'name02' => $faker->firstName,
@@ -130,14 +126,10 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
             $Product = $OrderItem->getProduct();
             $ProductClass = $OrderItem->getProductClass();
             $orderItem[] = [
-                'Product' => is_object($Product) ? $Product->getId() : null,
                 'ProductClass' => is_object($ProductClass) ? $ProductClass->getId() : null,
                 'price' => $OrderItem->getPrice(),
                 'quantity' => $OrderItem->getQuantity(),
-                'tax_rate' => $OrderItem->getTaxRate(),
-                'tax_rule' => $OrderItem->getTaxRule(),
                 'product_name' => is_object($Product) ? $Product->getName() : '送料', // XXX v3.1 より 送料等, Product の無い明細が追加される
-                'product_code' => is_object($ProductClass) ? $ProductClass->getCode() : null,
                 'order_item_type' => $OrderItem->getOrderItemTypeId(),
             ];
         }

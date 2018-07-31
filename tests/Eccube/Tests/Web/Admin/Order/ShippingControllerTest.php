@@ -11,17 +11,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Eccube\Tests\Web\Admin\Shipping;
+namespace Eccube\Tests\Web\Admin\Order;
 
 use Eccube\Entity\Order;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
-use Faker\Generator;
 use Eccube\Repository\ShippingRepository;
 use Eccube\Common\Constant;
 use Eccube\Entity\Shipping;
 use Eccube\Entity\OrderItem;
 
-class ShippingEditControllerTest extends AbstractAdminWebTestCase
+class ShippingControllerTest extends AbstractAdminWebTestCase
 {
     /**
      * @var ShippingRepository
@@ -41,9 +40,9 @@ class ShippingEditControllerTest extends AbstractAdminWebTestCase
     {
         $this->client->request(
             'GET',
-            $this->generateUrl('admin_shipping_new')
+            $this->generateUrl('admin_shipping_edit', ['id' => '99999'])
         );
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertTrue($this->client->getResponse()->isNotFound());
     }
 
     public function testShippingMessageNoticeWhenPost()
@@ -52,11 +51,9 @@ class ShippingEditControllerTest extends AbstractAdminWebTestCase
         /** @var Order $Order */
         $Order = $this->createOrder($Customer);
 
-        $shippingId = $Order->getShippings()->first()->getId();
-
         $crawler = $this->client->request(
             'GET',
-            $this->generateUrl('admin_shipping_edit', ['id' => $shippingId])
+            $this->generateUrl('admin_shipping_edit', ['id' => $Order->getId()])
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
@@ -70,25 +67,39 @@ class ShippingEditControllerTest extends AbstractAdminWebTestCase
         $this->assertContains('出荷に関わる情報が変更されました：送料の変更が必要な場合は、受注管理より手動で変更してください。', $info);
     }
 
-    public function testNewShippingEmptyShipment()
+    public function testEditAddTrackingNumber()
     {
-        $arrFormData = $this->createShippingForm();
-        $this->client->request(
-            'POST',
-            $this->generateUrl('admin_shipping_new'),
-            [
-                'shipping' => $arrFormData,
-            ]
-        );
+        $trackingNumber = '11111111111111111111';
 
+        $Order = $this->createOrder($this->createCustomer());
+        /** @var Shipping $Shipping */
+        $Shipping = $Order->getShippings()->first();
+        $shippingId = $Shipping->getId();
+
+        $this->assertNull($Shipping->getTrackingNumber());
+
+        $crawler = $this->client->request(
+            'GET',
+            $this->generateUrl('admin_shipping_edit', ['id' => $Order->getId()])
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $form = $crawler->selectButton('出荷情報を登録')->form();
+        $form['form[shippings][0][tracking_number]']->setValue($trackingNumber);
+
+        $this->client->submit($form);
         $crawler = $this->client->followRedirect();
 
         $success = $crawler->filter('#page_admin_shipping_edit > div.c-container > div.c-contentsArea > div.alert.alert-success')->text();
         $this->assertContains('出荷情報を登録しました。', $success);
+
+        $expectedShipping = $this->entityManager->find(Shipping::class, $shippingId);
+        $this->assertEquals($trackingNumber, $expectedShipping->getTrackingNumber());
     }
 
-    public function testEditAddShippingDate()
+    public function testEditToShipped()
     {
+        $this->markTestIncomplete('出荷日は更新不可のためスキップ');
         $this->client->enableProfiler();
 
         $Order = $this->createOrder($this->createCustomer());
@@ -96,16 +107,16 @@ class ShippingEditControllerTest extends AbstractAdminWebTestCase
         $Shipping = $Order->getShippings()->first();
 
         $this->assertNull($Shipping->getShippingDate());
-        $arrFormData = $this->createShippingForm($Shipping);
+        $arrFormData = $this->createShippingForm($Order);
 
         $date = new \DateTime();
-        $arrFormData['shipping_date'] = $date->format('Y-m-d');
+        $arrFormData[0]['shipping_date'] = $date->format('Y-m-d');
 
         $this->client->request(
             'POST',
-            $this->generateUrl('admin_shipping_edit', ['id' => $Shipping->getId()]),
+            $this->generateUrl('admin_shipping_edit', ['id' => $Order->getId()]),
             [
-                'shipping' => $arrFormData,
+                'shippings' => $arrFormData,
             ]
         );
         $this->assertTrue($this->client->getResponse()->isRedirection());
@@ -123,6 +134,7 @@ class ShippingEditControllerTest extends AbstractAdminWebTestCase
 
     public function testEditAddShippingDateWithNotifyMail()
     {
+        $this->markTestSkipped('出荷日は更新不可のためスキップ');
         $this->client->enableProfiler();
 
         $Order = $this->createOrder($this->createCustomer());
@@ -163,6 +175,8 @@ class ShippingEditControllerTest extends AbstractAdminWebTestCase
 
     public function testEditRemoveShippingDate()
     {
+        $this->markTestSkipped('出荷日は更新不可のためスキップ');
+
         $Order = $this->createOrder($this->createCustomer());
         /** @var Shipping $Shipping */
         $Shipping = $Order->getShippings()->first();
@@ -191,64 +205,104 @@ class ShippingEditControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
-     * @param Shipping $Shipping
+     * @param Order $Order
      *
      * @return array
+     *
+     * @deprecated Controller で FormInterface::isSubmitted() を使用しているため使用不可
      */
-    private function createShippingForm(Shipping $Shipping = null): array
+    private function createShippingForm(Order $Order = null): array
     {
-        /** @var Generator $faker */
-        $faker = $this->getFaker();
+        $arrFormData = [
+            Constant::TOKEN_NAME => 'dummy',
+            ];
 
-        if ($Shipping instanceof Shipping && $Shipping->getId()) {
-            $arrFormData = [
-                'name' => [
-                    'name01' => $Shipping->getName01(),
-                    'name02' => $Shipping->getName02(),
-                ],
-                'kana' => [
-                    'kana01' => $Shipping->getKana01(),
-                    'kana02' => $Shipping->getKana02(),
-                ],
-                'company_name' => $Shipping->getCompanyName(),
-                'postal_code' => $Shipping->getPostalCode(),
-                'address' => [
-                    'pref' => $Shipping->getPref()->getId(),
-                    'addr01' => $Shipping->getAddr01(),
-                    'addr02' => $Shipping->getAddr02(),
-                ],
-                'phone_number' => $Shipping->getPhoneNumber(),
-                'Delivery' => $Shipping->getDelivery()->getId(),
-                'OrderItems' => [],
-                Constant::TOKEN_NAME => 'dummy',
-            ];
-            /** @var OrderItem $OrderItem */
-            foreach ($Shipping->getOrderItems() as $OrderItem) {
-                $arrFormData['OrderItems'][$OrderItem->getId()]['id'] = $OrderItem->getId();
+        if ($Order instanceof Order && $Order->getId()) {
+            $Shippings = $Order->getShippings();
+
+            foreach ($Shippings as $key => $Shipping) {
+                $shipping = [
+                    'name' => [
+                        'name01' => $Shipping->getName01(),
+                        'name02' => $Shipping->getName02(),
+                    ],
+                    'kana' => [
+                        'kana01' => $Shipping->getKana01(),
+                        'kana02' => $Shipping->getKana02(),
+                    ],
+                    'company_name' => $Shipping->getCompanyName(),
+                    'postal_code' => $Shipping->getPostalCode(),
+                    'address' => [
+                        'pref' => $Shipping->getPref()->getId(),
+                        'addr01' => $Shipping->getAddr01(),
+                        'addr02' => $Shipping->getAddr02(),
+                    ],
+                    'phone_number' => $Shipping->getPhoneNumber(),
+                    'Delivery' => $Shipping->getDelivery()->getId(),
+                    'OrderItems' => [],
+                ];
+
+                /** @var OrderItem $OrderItem */
+                foreach ($Shipping->getOrderItems() as $OrderItem) {
+                    $shipping['OrderItems'][$OrderItem->getId()]['id'] = $OrderItem->getId();
+                }
+
+                $arrFormData[$key] = $shipping;
             }
-        } else {
-            $arrFormData = [
-                'name' => [
-                    'name01' => $faker->lastName,
-                    'name02' => $faker->firstName,
-                ],
-                'kana' => [
-                    'kana01' => $faker->lastKanaName,
-                    'kana02' => $faker->firstKanaName,
-                ],
-                'company_name' => $faker->company,
-                'postal_code' => $faker->postcode,
-                'address' => [
-                    'pref' => $faker->numberBetween(1, 47),
-                    'addr01' => $faker->city,
-                    'addr02' => $faker->streetAddress,
-                ],
-                'phone_number' => $faker->phoneNumber,
-                'Delivery' => 1,
-                Constant::TOKEN_NAME => 'dummy',
-            ];
         }
 
         return $arrFormData;
+    }
+
+    /**
+     * 出荷済みの出荷に対して出荷完了メール送信リクエストを送信する
+     */
+    public function testSendNotifyMail()
+    {
+        $this->client->enableProfiler();
+
+        $Order = $this->createOrder($this->createCustomer());
+        /** @var Shipping $Shipping */
+        $Shipping = $Order->getShippings()->first();
+
+        $shippingDate = new \DateTime();
+        $Shipping->setShippingDate($shippingDate);
+        $this->entityManager->persist($Shipping);
+        $this->entityManager->flush();
+
+        $this->client->request(
+            'PUT',
+            $this->generateUrl('admin_shipping_notify_mail', ['id' => $Shipping->getId()])
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $Messages = $this->getMailCollector(false)->getMessages();
+        self::assertEquals(1, count($Messages));
+
+        /** @var \Swift_Message $Message */
+        $Message = $Messages[0];
+
+        self::assertRegExp('/\[.*?\] 商品出荷のお知らせ/', $Message->getSubject());
+        self::assertEquals([$Order->getEmail() => null], $Message->getTo());
+    }
+
+    public function testNotSendNotifyMail()
+    {
+        $this->client->enableProfiler();
+
+        $Order = $this->createOrder($this->createCustomer());
+        /** @var Shipping $Shipping */
+        $Shipping = $Order->getShippings()->first();
+
+        $this->client->request(
+            'PUT',
+            $this->generateUrl('admin_shipping_notify_mail', ['id' => $Shipping->getId()])
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $Messages = $this->getMailCollector(false)->getMessages();
+        self::assertEquals(1, count($Messages));
     }
 }

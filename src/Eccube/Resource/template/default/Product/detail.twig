@@ -122,36 +122,36 @@ file that was distributed with this source code.
         });
     </script>
     <script>
-        $('#add-cart').on('click', function(e) {
-            e.preventDefault();
+        $('#add-cart').on('click', function(event) {
             {% if form.classcategory_id1 is defined %}
             // 規格1フォームの必須チェック
             if ($('#classcategory_id1').val() == '__unselected' || $('#classcategory_id1').val() == '') {
-                $('#classcategory_id1')[0].setCustomValidity("項目が選択されていません。");
+                $('#classcategory_id1')[0].setCustomValidity('{{ 'form.type.select.classcategory'|trans }}');
                 return true;
             } else {
-                $('#classcategory_id1')[0].setCustomValidity("");
+                $('#classcategory_id1')[0].setCustomValidity('');
             }
             {% endif %}
 
             {% if form.classcategory_id2 is defined %}
             // 規格2フォームの必須チェック
             if ($('#classcategory_id2').val() == '__unselected' || $('#classcategory_id2').val() == '') {
-                $('#classcategory_id2')[0].setCustomValidity("項目が選択されていません。");
+                $('#classcategory_id2')[0].setCustomValidity('{{ 'form.type.select.classcategory'|trans }}');
                 return true;
             } else {
-                $('#classcategory_id2')[0].setCustomValidity("");
+                $('#classcategory_id2')[0].setCustomValidity('');
             }
             {% endif %}
 
             // 個数フォームのチェック
             if ($('#quantity').val() < 1) {
-                $('#quantity')[0].setCustomValidity("1以上で入力してください。");
+                $('#quantity')[0].setCustomValidity('{{ 'form.type.add.quantity'|trans }}');
                 return true;
             } else {
-                $('#quantity')[0].setCustomValidity("");
+                $('#quantity')[0].setCustomValidity('');
             }
 
+            event.preventDefault();
             $form = $('#form1');
             $.ajax({
                 url: $form.attr('action'),
@@ -165,8 +165,10 @@ file that was distributed with this source code.
             }).done(function(data) {
                 // レスポンス内のメッセージをalertで表示
                 $.each(data.messages, function() {
-                    alert(this);
+                    $('#ec-modal-header').html(this);
                 });
+
+                $('#ec-modal-checkbox').prop('checked', true);
 
                 // カートブロックを更新する
                 $.ajax({
@@ -321,6 +323,22 @@ file that was distributed with this source code.
 
                         {{ form_rest(form) }}
                     </form>
+                    <div class="ec-modal">
+                        <input type="checkbox" id="ec-modal-checkbox" class="checkbox">
+                        <div class="ec-modal-overlay">
+                            <label for="ec-modal-checkbox" class="ec-modal-overlay-close"></label>
+                            <div class="ec-modal-wrap">
+                                <label for="ec-modal-checkbox" class="ec-modal-close"><span class="ec-icon"><img src="{{ asset('assets/icon/cross-dark.svg') }}" alt=""/></span></label>
+                                <div id="ec-modal-header" class="text-center">カートに追加しました。</div>
+                                <div class="ec-modal-box">
+                                    <div class="ec-role">
+                                        <label for="ec-modal-checkbox" class="ec-inlineBtn--cancel">お買い物を続ける</label>
+                                        <a href="{{ url('cart') }}" class="ec-inlineBtn--action">カートへ進む</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     {% if BaseInfo.option_favorite_product %}
                         <form action="{{ url('product_add_favorite', {id:Product.id}) }}" method="post">
                             <div class="ec-productRole__btn">

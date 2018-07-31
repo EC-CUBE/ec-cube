@@ -202,7 +202,7 @@ class OrderItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="quantity", type="decimal", precision=10, scale=0, options={"unsigned":true,"default":0})
+     * @ORM\Column(name="quantity", type="decimal", precision=10, scale=0, options={"default":0})
      */
     private $quantity = 0;
 
