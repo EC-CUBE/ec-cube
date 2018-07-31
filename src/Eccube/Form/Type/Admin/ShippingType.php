@@ -291,6 +291,11 @@ class ShippingType extends AbstractType
                 }
             })
             ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+                // 出荷編集画面のみバリデーションをする。
+                if ($event->getForm()->getParent()->getName() != 'shippings') {
+                    return;
+                }
+
                 /** @var Shipping $Shipping */
                 $Shipping = $event->getData();
                 $OrderItems = $Shipping->getOrderItems();
