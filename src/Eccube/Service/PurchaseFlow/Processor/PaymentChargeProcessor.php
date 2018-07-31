@@ -51,7 +51,6 @@ class PaymentChargeProcessor implements ItemHolderPreprocessor
         if (!$itemHolder instanceof Order) {
             return;
         }
-
         if (!$itemHolder->getPayment() instanceof Payment || !$itemHolder->getPayment()->getId()) {
             return;
         }
@@ -59,6 +58,7 @@ class PaymentChargeProcessor implements ItemHolderPreprocessor
         foreach ($itemHolder->getItems() as $item) {
             if ($item->isCharge()) {
                 $item->setPrice($itemHolder->getPayment()->getCharge());
+                $item->setPriceIncTax($item->getPrice());
                 return;
             }
         }
