@@ -11,9 +11,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Eccube\Tests\Web\Admin\Shipping;
+namespace Eccube\Tests\Web\Admin\Order;
 
-use Eccube\Controller\Admin\Shipping\CsvImportController;
+use Eccube\Controller\Admin\Order\CsvImportController;
+use Eccube\Entity\Master\OrderStatus;
 use Eccube\Service\CsvImportService;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -129,14 +130,25 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
 
     public function testCsvShipping()
     {
-        $Shipping1 = $this->createOrder($this->createCustomer())->getShippings()[0];
-        $Shipping2 = $this->createOrder($this->createCustomer())->getShippings()[0];
+        $OrderStatus = $this->entityManager->find(OrderStatus::class, OrderStatus::NEW);
+        $Order1 = $this->createOrder($this->createCustomer());
+        $Order1->setOrderStatus($OrderStatus);
+        $Order2 = $this->createOrder($this->createCustomer());
+        $Order2->setOrderStatus($OrderStatus);
+        $Order3 = $this->createOrder($this->createCustomer());
+        $Order3->setOrderStatus($OrderStatus);
+        $this->entityManager->flush();
+
+        $Shipping1 = $Order1->getShippings()[0];
+        $Shipping2 = $Order2->getShippings()[0];
+        $Shipping3 = $Order3->getShippings()[0];
 
         $tempFile = tempnam(sys_get_temp_dir(), 'csv_import_controller_test');
         file_put_contents($tempFile, implode(PHP_EOL, [
             '出荷ID,出荷伝票番号,出荷日',
             $Shipping1->getId().',1234,2018-01-11',
             $Shipping2->getId().',5678,2018-02-22',
+            $Shipping3->getId().',9012,2018-03-22',
         ]));
 
         $file = new UploadedFile($tempFile, 'shipping.csv', 'text/csv', null, null, true);
@@ -165,6 +177,10 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->refresh($Shipping2);
         self::assertEquals('5678', $Shipping2->getTrackingNumber());
         self::assertEquals($this->parseDate('2018-02-22'), $Shipping2->getShippingDate());
+
+        $this->entityManager->refresh($Shipping3);
+        self::assertEquals('9012', $Shipping3->getTrackingNumber());
+        self::assertEquals($this->parseDate('2018-03-22'), $Shipping3->getShippingDate());
     }
 
     private function parseDate($value)

@@ -493,6 +493,7 @@ file that was distributed with this source code.
                                     <div class="col mb-2">
                                         <div>
                                             {{ form_widget(form.search_word) }}
+                                            {{ form_errors(form.search_word) }}
                                         </div>
                                     </div>
                                 </div>
@@ -511,6 +512,7 @@ file that was distributed with this source code.
                                         <div class="col mb-2">
                                             <div>
                                                 {{ form_widget(form.class.code) }}
+                                                {{ form_errors(form.class.code) }}
                                             </div>
                                         </div>
                                     </div>
@@ -525,6 +527,7 @@ file that was distributed with this source code.
                                         <div class="col mb-2">
                                             <div>
                                                 {{ form_widget(form.class.sale_limit) }}
+                                                {{ form_errors(form.class.sale_limit) }}
                                             </div>
                                         </div>
                                     </div>
@@ -539,6 +542,7 @@ file that was distributed with this source code.
                                         <div class="col mb-2">
                                             <div>
                                                 {{ form_widget(form.class.delivery_duration) }}
+                                                {{ form_errors(form.class.delivery_duration) }}
                                             </div>
                                         </div>
                                     </div>
@@ -747,7 +751,7 @@ file that was distributed with this source code.
                                 <div class="mb-3">
                                     <div class="form-row">
                                         <div class="col">
-                                            <div class="input-group mb-3">
+                                            <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="basic-addon1">
                                                             <i class="fa fa-search"></i>

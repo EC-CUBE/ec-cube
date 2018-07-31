@@ -9,51 +9,12 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
 
-<tr>
-    <td class="align-middle w-25 pl-3">
-        <p class="mb-0 font-weight-bold">
-        </p>
+<tr class="d-none">
+    <td>
+        {{ form_widget(orderItemForm.product_name) }}
+        {{ form_widget(orderItemForm.ProductClass) }}
+        {{ form_widget(orderItemForm.order_item_type) }}
+        {{ form_widget(orderItemForm.price) }}
+        {{ form_widget(orderItemForm.quantity) }}
     </td>
-    <td class="align-middle">
-        <div class="col-8">
-            {{ form_widget(orderItemForm.price, {'attr': {'class': 'input-price'}}) }}
-            {{ form_errors(orderItemForm.price) }}
-        </div>
-    </td>
-    <td class="align-middle">
-        <div class="col-6">
-            {{ form_widget(orderItemForm.quantity) }}
-            {{ form_errors(orderItemForm.quantity) }}
-        </div>
-    </td>
-    <td class="align-middle">
-        <div class="col-8">
-            {{ form_widget(orderItemForm.tax_rate, {'attr': {'class': 'd-none'}}) }}
-            {{ form_errors(orderItemForm.tax_rate) }}
-        </div>
-    </td>
-    <td class="align-middle">
-        <div class="col-8">
-        </div>
-    </td>
-    <td class="align-middle">
-        <div class="col-8">
-            <small>（{{ 'admin.common.label.taxinc'|trans }}）</small>
-        </div>
-    </td>
-    <td></td>
-    {{ form_widget(orderItemForm.Order) }}
-    {{ form_widget(orderItemForm.Shipping) }}
-    {{ form_widget(orderItemForm.Product) }}
-    {{ form_widget(orderItemForm.ProductClass) }}
-    {{ form_widget(orderItemForm.product_name) }}
-    {{ form_widget(orderItemForm.product_code) }}
-    {{ form_widget(orderItemForm.class_name1) }}
-    {{ form_widget(orderItemForm.class_name2) }}
-    {{ form_widget(orderItemForm.class_category_name1) }}
-    {{ form_widget(orderItemForm.class_category_name2) }}
-    {{ form_widget(orderItemForm.tax_rule) }}
-    {{ form_widget(orderItemForm.tax_type) }}
-    {{ form_widget(orderItemForm.tax_display_type) }}
-    {{ form_widget(orderItemForm.order_item_type) }}
 </tr>

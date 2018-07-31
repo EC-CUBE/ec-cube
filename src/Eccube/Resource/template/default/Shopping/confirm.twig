@@ -295,7 +295,7 @@ $(function() {
                             </div>
                             <div class="ec-select ec-select__delivery">
                                 <label>お届け日</label>
-                                {{ Order.Shippings[idx].shipping_delivery_date? Order.Shippings[idx].shipping_delivery_date|date_day :"指定なし" }}
+                                {{ Order.Shippings[idx].shipping_delivery_date? Order.Shippings[idx].shipping_delivery_date|date_day_with_weekday :"指定なし" }}
                                 {{ form_widget(form.Shippings[idx].shipping_delivery_date, {'type': 'hidden'}) }}
                             </div>
                             <div class="ec-select ec-select__time">
@@ -322,7 +322,7 @@ $(function() {
                     <h2>お問い合わせ</h2>
                 </div>
                 <div class="ec-input">
-                    {{ Order.message }}
+                    {{ Order.message|nl2br }}
                     {{ form_widget(form.message, {'type': 'hidden'}) }}
                 </div>
             </div>

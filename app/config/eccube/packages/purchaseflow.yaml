@@ -101,18 +101,16 @@ services:
 
     eccube.purchase.flow.order.item_validators:
         class: Doctrine\Common\Collections\ArrayCollection
-        arguments:
-            - #
-                - '@Eccube\Service\PurchaseFlow\Processor\StockValidator'
 
     eccube.purchase.flow.order.holder_validators:
         class: Doctrine\Common\Collections\ArrayCollection
         arguments:
             - #
+                - '@Eccube\Service\PurchaseFlow\Processor\StockDiffProcessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\PaymentTotalLimitValidator'
 
     eccube.purchase.flow.order.purchase:
         class: Doctrine\Common\Collections\ArrayCollection
         arguments:
             - #
-                - '@Eccube\Service\PurchaseFlow\Processor\UpdateDateProcessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\StockDiffProcessor'

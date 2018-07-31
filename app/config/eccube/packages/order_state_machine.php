@@ -11,8 +11,8 @@
  * file that was distributed with this source code.
  */
 
-use Eccube\Entity\Order;
 use Eccube\Entity\Master\OrderStatus as Status;
+use Eccube\Service\OrderStateMachineContext;
 
 $container->loadFromExtension('framework', [
     'workflows' => [
@@ -20,18 +20,22 @@ $container->loadFromExtension('framework', [
             'type' => 'state_machine',
             'marking_store' => [
                 'type' => 'single_state',
-                'arguments' => 'OrderStatus.id',
+                'arguments' => 'status',
             ],
             'supports' => [
-                Order::class,
+                OrderStateMachineContext::class,
             ],
             'initial_place' => (string) Status::NEW,
             'places' => [
                 (string) Status::NEW,
-                (string) Status::PAID,
-                (string) Status::IN_PROGRESS,
+                (string) Status::PAY_WAIT,
                 (string) Status::CANCEL,
+                (string) Status::BACK_ORDER,
                 (string) Status::DELIVERED,
+                (string) Status::PAID,
+                (string) Status::PENDING,
+                (string) Status::PROCESSING,
+                (string) Status::IN_PROGRESS,
                 (string) Status::RETURNED,
             ],
             'transitions' => [
@@ -44,7 +48,7 @@ $container->loadFromExtension('framework', [
                     'to' => (string) Status::IN_PROGRESS,
                 ],
                 'cancel' => [
-                    'from' => [(string) Status::NEW, (string) Status::IN_PROGRESS],
+                    'from' => [(string) Status::NEW, (string) Status::IN_PROGRESS, (string) Status::PAID],
                     'to' => (string) Status::CANCEL,
                 ],
                 'back_to_in_progress' => [
