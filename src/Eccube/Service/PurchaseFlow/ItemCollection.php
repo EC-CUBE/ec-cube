@@ -67,7 +67,7 @@ class ItemCollection extends ArrayCollection
     {
         return $this->filter(
             function (ItemInterface $OrderItem) {
-                return $OrderItem->isDiscount();
+                return $OrderItem->isDiscount() || $OrderItem->isPoint();
             });
     }
 
@@ -129,7 +129,15 @@ class ItemCollection extends ArrayCollection
                 }
 
                 return -1;
-            } elseif ($a->isDiscount()) {
+            } elseif ($a->isDiscount() || $a->isPoint()) {
+                if ($b->isDiscount()) {
+                    return -1;
+                }
+
+                if ($b->isPoint()) {
+                    return 1;
+                }
+
                 if (!$b->isTax()) {
                     return 1;
                 }

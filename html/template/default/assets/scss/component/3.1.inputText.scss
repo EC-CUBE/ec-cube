@@ -153,8 +153,9 @@ Styleguide 3.1.4
   display: inline-block;
   input{
     display: inline-block;
-    text-align: right;
+		text-align: left;
     width: auto;
+		max-width: 8em;
     font-size: 16px;
   }
   span{
@@ -217,5 +218,9 @@ Styleguide 3.1.5
 */
 .ec-telInput{
   @extend .ec-input;
+	input {
+		max-width: 10em;
+		text-align: left;
+	}
 }
 

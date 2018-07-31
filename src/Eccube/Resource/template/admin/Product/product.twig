@@ -38,13 +38,13 @@ file that was distributed with this source code.
     <script src="{{ asset('assets/js/vendor/fileupload/jquery.fileupload-validate.js', 'admin') }}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
     <script>
-        $(function () {
+        $(function() {
             // Todo: fix drag&drop style
             $("#thumb").sortable({
                 cursor: 'move',
                 opacity: 0.7,
                 placeholder: 'ui-state-highlight',
-                update: function (event, ui) {
+                update: function(event, ui) {
                     updateSortNo();
                 }
             });
@@ -54,7 +54,7 @@ file that was distributed with this source code.
             } else {
                 $("#{{ form.class.stock.vars.id }}").removeAttr("disabled");
             }
-            $("#{{ form.class.stock_unlimited.vars.id }}").on("click change", function () {
+            $("#{{ form.class.stock_unlimited.vars.id }}").on("click change", function() {
                 if ($(this).prop("checked")) {
                     $("#{{ form.class.stock.vars.id }}").attr("disabled", "disabled").val('');
                 } else {
@@ -83,7 +83,7 @@ file that was distributed with this source code.
             $("#thumb").append('{{ form_widget(delete_image) }}');
             {% endfor %}
             // Todo: fix hideSvg
-            var hideSvg = function () {
+            var hideSvg = function() {
                 if ($("#thumb li").length > 0) {
                     $("#icon_no_image").css("display", "none");
                 } else {
@@ -91,8 +91,8 @@ file that was distributed with this source code.
                 }
             };
             // Todo: fix update sort by drag&drop
-            var updateSortNo = function () {
-                $("#thumb li").each(function (index) {
+            var updateSortNo = function() {
+                $("#thumb li").each(function(index) {
                     $(this).find(".sort_no_images").remove();
                     filename = $(this).find("input[type='hidden']").val();
                     $sortNo = $('<input type="hidden" class="sort_no_images" name="sort_no_images[]" />');
@@ -104,7 +104,7 @@ file that was distributed with this source code.
             updateSortNo();
             // Delete of images
             var count_del = 0;
-            $("#thumb").on("click", '.delete-image', function () {
+            $("#thumb").on("click", '.delete-image', function() {
                 var $new_delete_image = $(proto_del.replace(/__name__/g, count_del));
                 var thumbnail = $(this).parents('div.c-form__fileUploadThumbnail');
                 var src = $(thumbnail).find('input').val();
@@ -121,9 +121,9 @@ file that was distributed with this source code.
                 type: "post",
                 sequentialUploads: true,
                 dataType: 'json',
-                done: function (e, data) {
+                done: function(e, data) {
                     $('#progress').hide();
-                    $.each(data.result.files, function (index, file) {
+                    $.each(data.result.files, function(index, file) {
                         var path = '{{ asset('', 'temp_image') }}' + file;
                         var $img = $(proto_img.replace(/__path__/g, path));
                         var $new_img = $(proto_add.replace(/__name__/g, count_add));
@@ -135,45 +135,45 @@ file that was distributed with this source code.
                     hideSvg();
                     updateSortNo();
                 },
-                fail: function (e, data) {
+                fail: function(e, data) {
                     alert('admin.product.product.497' | trans);
                 },
-                always: function (e, data) {
+                always: function(e, data) {
                     $('#progress').hide();
                     $('#progress .progress-bar').width('0%');
                 },
-                start: function (e, data) {
+                start: function(e, data) {
                     $('#progress').show();
                 },
                 acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
                 maxFileSize: 10000000,
                 maxNumberOfFiles: 10,
-                progressall: function (e, data) {
+                progressall: function(e, data) {
                     var progress = parseInt(data.loaded / data.total * 100, 10);
                     $('#progress .progress-bar').css(
                         'width',
                         progress + '%'
                     );
                 },
-                processalways: function (e, data) {
+                processalways: function(e, data) {
                     if (data.files.error) {
                         alert("{{ 'admin.product.product.498'|trans }}");
                     }
                 }
             });
             // 画像アップロード
-            $('#file_upload').on('click', function () {
+            $('#file_upload').on('click', function() {
                 $('#{{ form.product_image.vars.id }}').click();
             });
 
             var mainTags = $('#allTags');
             var adminProductTag = $('#admin_product_Tag');
-            $('input', adminProductTag).each(function () {
+            $('input', adminProductTag).each(function() {
                 if ($(this).is(':checked')) {
                     $('button[data-tag-id="' + $(this).val() + '"]').removeClass('btn-outline-secondary').addClass('btn-outline-primary');
                 }
             });
-            mainTags.on('click', 'button.btn', function () {
+            mainTags.on('click', 'button.btn', function() {
                 var btnTag = $(this);
                 var tagId = btnTag.data('tag-id');
                 if (btnTag.hasClass('btn-outline-primary')) {
@@ -186,19 +186,19 @@ file that was distributed with this source code.
             });
 
             {# TODO: Should move logic of js into .js file instead of .html file #}
-            var confirmFormChange = function (form, target, modal) {
+            var confirmFormChange = function(form, target, modal) {
                 {# TODO: Should detect form change before show confirm modal #}
                 var returnLink = form.find('input[type="hidden"][name*="return_link"]'),
                     saveBtn = modal.find('a[data-action="save"]'),
                     cancelBtn = modal.find('a[data-action="cancel"]');
-                modal.on('hidden.bs.modal', function () {
+                modal.on('hidden.bs.modal', function() {
                     returnLink.val('');
                 });
-                saveBtn.on('click', function () {
+                saveBtn.on('click', function() {
                     returnLink.val($(this).data('return-link'));
                     form.submit();
                 });
-                target.on('click', function () {
+                target.on('click', function() {
                     modal.find('.modal-body .screen-name').text($(this).attr('title'));
                     modal.modal('show');
                     saveBtn.data('return-link', $(this).attr('href'));
@@ -217,7 +217,7 @@ file that was distributed with this source code.
 
     </script>
     <script>
-        var searchWord = function(){
+        var searchWord = function() {
             var searchText = $(this).val(), // 検索ボックスに入力された値
                 targetText
 
@@ -467,15 +467,15 @@ file that was distributed with this source code.
                                                 {{ form_errors(form.class.stock) }}
                                                 {# TODO: form_layoutの調整 #}
                                                 {#<div class="form-check mb-2">#}
-                                                    {#<input class="form-check-input"#}
-                                                           {#id="{{ form.class.stock_unlimited.vars.id }}"#}
-                                                           {#name="{{ form.class.stock_unlimited.vars.full_name }}"#}
-                                                           {#type="checkbox"#}
-                                                           {#value="{{ form.class.stock_unlimited.vars.value }}">#}
-                                                    {#<label class="form-check-label"#}
-                                                           {#for="{{ form.class.stock_unlimited.vars.id }}">#}
-                                                        {#{{ 'admin.product.product.stock_unlimited'|trans }}#}
-                                                    {#</label>#}
+                                                {#<input class="form-check-input"#}
+                                                {#id="{{ form.class.stock_unlimited.vars.id }}"#}
+                                                {#name="{{ form.class.stock_unlimited.vars.full_name }}"#}
+                                                {#type="checkbox"#}
+                                                {#value="{{ form.class.stock_unlimited.vars.value }}">#}
+                                                {#<label class="form-check-label"#}
+                                                {#for="{{ form.class.stock_unlimited.vars.id }}">#}
+                                                {#{{ 'admin.product.product.stock_unlimited'|trans }}#}
+                                                {#</label>#}
                                                 {#</div>#}
                                                 {{ form_widget(form.class.stock_unlimited) }}
                                             </div>
@@ -656,28 +656,28 @@ file that was distributed with this source code.
                                             <span>{{ 'admin.product.product.text03'|trans }}</span>
                                             <i class="fa fa-question-circle fa-lg ml-1"></i>
                                         </div>
-                                    <table class="table table-striped">
-                                        <thead class="table-active">
-                                        <th class="pl-3 pt-2 pb-2">{{ 'admin.product.product.text04'|trans }}</th>
-                                        <th class="pt-2 pb-2">{{ 'admin.product.product.text05'|trans }}</th>
-                                        <th class="pt-2 pb-2">{{ 'admin.product.product.text06'|trans }}</th>
-                                        <th class="pt-2 pb-2">{{ 'admin.product.product.text07'|trans }}</th>
-                                        <th class="pr-3 pt-2 pb-2">{{ 'admin.product.product.text08'|trans }}</th>
-                                        </thead>
-                                        <tbody>
-                                        {% for Class in Product.ProductClasses %}
-                                            {% if Class.visible == 1 %}
-                                        <tr>
-                                            <td class="pl-3">{% if Class.hasClassCategory1 %}{{ Class.ClassCategory1.name }}{% endif %}</td>
-                                            <td>{% if Class.hasClassCategory2 %}{{ Class.ClassCategory2.name }}{% endif %}</td>
-                                            <td>{{ Class.code }}</td>
-                                            <td>{% if Class.stock_unlimited %}{{ 'admin.product.product.stock_unlimited'|trans }}{% else %}{{ Class.stock }}{% endif %}</td>
-                                            <td class="pr-3">{{ Class.price02|price }}</td>
-                                        </tr>
-                                        {% endif %}
-                                        {% endfor %}
-                                        </tbody>
-                                    </table>
+                                        <table class="table table-striped">
+                                            <thead class="table-active">
+                                            <th class="pl-3 pt-2 pb-2">{{ 'admin.product.product.text04'|trans }}</th>
+                                            <th class="pt-2 pb-2">{{ 'admin.product.product.text05'|trans }}</th>
+                                            <th class="pt-2 pb-2">{{ 'admin.product.product.text06'|trans }}</th>
+                                            <th class="pt-2 pb-2">{{ 'admin.product.product.text07'|trans }}</th>
+                                            <th class="pr-3 pt-2 pb-2">{{ 'admin.product.product.text08'|trans }}</th>
+                                            </thead>
+                                            <tbody>
+                                            {% for Class in Product.ProductClasses %}
+                                                {% if Class.visible == 1 %}
+                                                    <tr>
+                                                        <td class="pl-3">{% if Class.hasClassCategory1 %}{{ Class.ClassCategory1.name }}{% endif %}</td>
+                                                        <td>{% if Class.hasClassCategory2 %}{{ Class.ClassCategory2.name }}{% endif %}</td>
+                                                        <td>{{ Class.code }}</td>
+                                                        <td>{% if Class.stock_unlimited %}{{ 'admin.product.product.stock_unlimited'|trans }}{% else %}{{ Class.stock }}{% endif %}</td>
+                                                        <td class="pr-3">{{ Class.price02|price }}</td>
+                                                    </tr>
+                                                {% endif %}
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
                                     {% endif %}
 
                                     <div class="d-block text-center text-center">
@@ -943,14 +943,13 @@ file that was distributed with this source code.
                     <div class="col-6">
                         <div class="c-conversionArea__leftBlockItem">
                             <a class="c-beseLink" href="{{ url('admin_product_page', { page_no : app.session.get('eccube.admin.product.search.page_no')|default('1') } ) }}?resume=1"
-                               data-action="confirm"
-                               title="{{ 'admin.product.product.text11'|trans({
-                                    '%name%' : 'admin.product.product.title_product_screen'|trans })
-                               }}"><i class="fa fa-backward" aria-hidden="true"></i><span>{{ 'admin.product.product.509'|trans }}</span></a>
+                               data-action="confirm" title="{{ 'admin.product.product.text11'|trans({'%name%' : 'admin.product.product.title_product_screen'|trans }) }}">
+                                <i class="fa fa-backward" aria-hidden="true"></i><span>{{ 'admin.product.product.509'|trans }}</span>
+                            </a>
                         </div>
                     </div>
                     <div class="col-6">
-                        <div class="row align-items-center justify-content-end">
+                        <div id="ex-conversion-action" class="row align-items-center justify-content-end">
                             <div class="col-auto">
                                 {{ form_widget(form.Status) }}
                                 {{ form_errors(form.Status) }}

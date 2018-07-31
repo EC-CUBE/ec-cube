@@ -101,7 +101,6 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
             'charge' => 0,
             'note' => $faker->realText,
             'OrderItems' => $OrderItems,
-            'add_point' => 0,
             'use_point' => 0,
             'Shipping' => $shipping,
         ];
@@ -189,7 +188,6 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
             'charge' => $Order->getCharge(),
             'Payment' => $Order->getPayment()->getId(),
             'note' => $Order->getNote(),
-            'add_point' => 0,
             'use_point' => 0,
             'Shipping' => $shipping,
         ];
