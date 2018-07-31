@@ -289,7 +289,6 @@ class PointDiffProcessorTest extends EccubeTestCase
         $OrderItem = new OrderItem();
         $OrderItem->setProductClass($ProductClass);
         $OrderItem->setPrice($price);
-        $OrderItem->setPriceIncTax($price);
         $OrderItem->setQuantity($quantity);
 
         return $OrderItem;
