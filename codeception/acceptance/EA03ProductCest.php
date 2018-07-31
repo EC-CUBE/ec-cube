@@ -729,4 +729,39 @@ class EA03ProductCest
         $I->switchToNewWindow();
         $I->seeInCurrentUrl('/products/detail/');
     }
+
+    public function product_商品編集からの商品確認_公開(\AcceptanceTester $I)
+    {
+        $I->wantTo('EA0310-UC05-T02 編集からの商品確認 公開');
+
+        ProductManagePage::go($I)
+            ->検索('パーコレーター')
+            ->検索結果_選択(1);
+
+        ProductEditPage::at($I)
+            ->入力_非公開()
+            ->登録()
+            ->プレビュー();
+
+        $I->switchToNewWindow();
+        $I->seeInCurrentUrl('/products/detail/');
+    }
+
+    public function product_商品編集からの商品確認_非公開(\AcceptanceTester $I)
+    {
+        $I->wantTo('EA0310-UC05-T03 編集からの商品確認 非公開');
+
+        ProductManagePage::go($I)
+            ->検索('パーコレーター')
+            ->検索結果_選択(1);
+
+        ProductEditPage::at($I)
+            ->入力_非公開()
+            ->登録()
+            ->プレビュー();
+
+        $I->switchToNewWindow();
+        $I->seeInCurrentUrl('/products/detail/');
+    }
+
 }
