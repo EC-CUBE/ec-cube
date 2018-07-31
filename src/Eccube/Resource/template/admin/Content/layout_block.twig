@@ -21,17 +21,10 @@ file that was distributed with this source code.
         </div>
         <div class="col-auto text-right">
             <div class="d-inline-block px-3 sort{% if loop.first %} first{% endif %}">
-                <input type="hidden" class="name" name="name_{{ loop_index }}"
-                       value="{{ BlockPosition.Block.name }}"/>
-                <input type="hidden" class="block-id"
-                       name="block_id_{{ loop_index }}"
-                       value="{{ BlockPosition.Block.id }}"/>
-                <input type="hidden" class="target-id"
-                       name="section_{{ loop_index }}"
-                       value="{{ BlockPosition.section }}"/>
-                <input type="hidden" class="block-row"
-                       name="block_row_{{ loop_index }}"
-                       value="{{ BlockPosition.block_row }}"/>
+                <input type="hidden" class="name" name="name_{{ loop_index }}" value="{{ BlockPosition.Block.name }}"/>
+                <input type="hidden" class="block-id" name="block_id_{{ loop_index }}" value="{{ BlockPosition.Block.id }}"/>
+                <input type="hidden" class="target-id" name="section_{{ loop_index }}" value="{{ BlockPosition.section }}"/>
+                <input type="hidden" class="block-row" name="block_row_{{ loop_index }}" value="{{ BlockPosition.block_row }}"/>
                 <div class="block-context-menu d-inline-block px-3"><i class="fa fa-ellipsis-v fa-lg text-secondary"></i></div>
             </div>
         </div>

@@ -1364,7 +1364,7 @@ return [
     'admin.order.export.pdf.message1.default' => 'このたびはお買上げいただきありがとうございます。',
     'admin.order.export.pdf.message2.default' => '下記の内容にて納品させていただきます。',
     'admin.order.export.pdf.message3.default' => 'ご確認くださいますよう、お願いいたします。',
-    'admin.order.export.pdf.label.001' => '注文番号',
+    'admin.order.export.pdf.label.001' => '出荷番号',
     'admin.order.export.pdf.label.002' => '発行日',
     'admin.order.export.pdf.label.003' => '帳票タイトル',
     'admin.order.export.pdf.label.004' => '1行目',

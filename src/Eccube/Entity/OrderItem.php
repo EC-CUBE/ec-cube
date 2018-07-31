@@ -65,16 +65,16 @@ if (!class_exists('\Eccube\Entity\OrderItem')) {
             $TaxDisplayType = $this->getTaxDisplayType();
             if (is_object($TaxDisplayType)) {
                 switch ($TaxDisplayType->getId()) {
-                // 税込価格
-                case TaxDisplayType::INCLUDED:
-                    $this->setPriceIncTax($this->getPrice());
-                    break;
-                    // 税別価格の場合は税額を加算する
-                case TaxDisplayType::EXCLUDED:
-                    // TODO 課税規則を考慮する
-                    $this->setPriceIncTax($this->getPrice() + $this->getPrice() * $this->getTaxRate() / 100);
-                    break;
-            }
+                    // 税込価格
+                    case TaxDisplayType::INCLUDED:
+                        $this->setPriceIncTax($this->getPrice());
+                        break;
+                        // 税別価格の場合は税額を加算する
+                    case TaxDisplayType::EXCLUDED:
+                        // TODO 課税規則を考慮する
+                        $this->setPriceIncTax($this->getPrice() + $this->getPrice() * $this->getTaxRate() / 100);
+                        break;
+                }
             }
 
             return $this->getPriceIncTax() * $this->getQuantity();
@@ -140,6 +140,16 @@ if (!class_exists('\Eccube\Entity\OrderItem')) {
         public function isTax()
         {
             return $this->getOrderItemTypeId() === OrderItemType::TAX;
+        }
+
+        /**
+         * ポイント明細かどうか.
+         *
+         * @return boolean ポイント明細の場合 true
+         */
+        public function isPoint()
+        {
+            return $this->getOrderItemTypeId() === OrderItemType::POINT;
         }
 
         /**

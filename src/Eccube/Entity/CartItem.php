@@ -182,6 +182,16 @@ if (!class_exists('\Eccube\Entity\CartItem')) {
             return false;
         }
 
+        /**
+         * ポイント明細かどうか.
+         *
+         * @return boolean ポイント明細の場合 true
+         */
+        public function isPoint()
+        {
+            return false;
+        }
+
         public function getOrderItemType()
         {
             // TODO OrderItemType::PRODUCT
@@ -200,8 +210,8 @@ if (!class_exists('\Eccube\Entity\CartItem')) {
             $this->ProductClass = $ProductClass;
 
             $this->product_class_id = is_object($ProductClass) ?
-            $ProductClass->getId() :
-            null;
+                $ProductClass->getId() :
+                null;
 
             return $this;
         }

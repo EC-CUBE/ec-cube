@@ -163,9 +163,9 @@ class OrderPdfType extends AbstractType
                 $ids = explode(',', $data['ids']);
 
                 $qb = $this->entityManager->createQueryBuilder();
-                $qb->select('count(o.id)')
-                    ->from('Eccube\\Entity\\Order', 'o')
-                    ->where($qb->expr()->in('o.id', ':ids'))
+                $qb->select('count(s.id)')
+                    ->from('Eccube\\Entity\\Shipping', 's')
+                    ->where($qb->expr()->in('s.id', ':ids'))
                     ->setParameter('ids', $ids);
                 $actual = $qb->getQuery()->getSingleScalarResult();
                 $expected = count($ids);
