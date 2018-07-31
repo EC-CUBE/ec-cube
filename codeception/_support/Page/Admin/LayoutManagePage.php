@@ -46,7 +46,7 @@ class LayoutManagePage extends AbstractAdminPageStyleGuide
     {
         $this->tester->getScenario()->incomplete('未実装：レイアウトの削除は未実装');
 
-        $this->tester->click(['xpath' => "//div[@id='sortable_list_box__list']//div[@class='item_pattern td'][translate(text(), ' \r\n', '')='${layoutName}']/parent::node()/div[@class='icon_edit td']/div/a"]);
-        $this->tester->click(['xpath' => "//div[@id='sortable_list_box__list']//div[@class='item_pattern td'][translate(text(), ' \r\n', '')='${layoutName}']/parent::node()/div[@class='icon_edit td']/div/ul/li[2]/a"]);
+        $this->tester->click(['xpath' => "//div[@id='sortable_list_box__list']//div[@class='item_pattern td'][translate(text(), ' \r\n', '')='${layoutName}']/parent::node()/div[@class='icon_edit td']/div/span"]);
+        $this->tester->click(['xpath' => "//div[@id='sortable_list_box__list']//div[@class='item_pattern td'][translate(text(), ' \r\n', '')='${layoutName}']/parent::node()/div[@class='icon_edit td']/div/ul/li[2]/span"]);
     }
 }
