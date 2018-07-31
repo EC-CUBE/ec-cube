@@ -23,8 +23,6 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Tests\EccubeTestCase;
 
-// TODO: ポイントの割引額への変換レートが変更されているかのテスト追加
-// TODO: ポイントの付与レートが変更されているかのテスト追加
 class PointProcessorTest extends EccubeTestCase
 {
     /** @var PointProcessor */
@@ -207,6 +205,101 @@ class PointProcessorTest extends EccubeTestCase
             [1000, 0, 10],
             [1000, 100, 9],
             [1000, 200, 8],
+        ];
+    }
+
+    /**
+     * ポイント換算レートのテスト
+     *
+     * @dataProvider pointConversionRateProvider
+     *
+     * @param $pointConversionRate int 商品の値段
+     *
+     * @throws \Eccube\Service\PurchaseFlow\PurchaseException
+     */
+    public function testPointConversionRate($pointConversionRate)
+    {
+        $productPrice = 1000;
+        $usePoint = 10;
+
+        $this->BaseInfo->setPointConversionRate($pointConversionRate);
+
+        $Customer = new Customer();
+        $Customer->setPoint(1000);
+
+        /* @var ProductClass $ProductClass */
+        $ProductClass = $this->createProduct('テスト', 1)->getProductClasses()[0];
+        $Order = new Order();
+        $Order->setCustomer($Customer);
+        $Order->setUsePoint($usePoint);
+        $Order->addOrderItem($this->newOrderItem($ProductClass, $productPrice, 1));
+
+        $purchaseFlow = new PurchaseFlow();
+        $purchaseFlow->addItemHolderPreprocessor($this->processor);
+        $purchaseFlow->addPurchaseProcessor($this->processor);
+
+        $context = new PurchaseContext(null, $Customer);
+        $purchaseFlow->validate($Order, $context);
+        $purchaseFlow->prepare($Order, $context);
+        $purchaseFlow->commit($Order, $context);
+
+        /** @var OrderItem $OrderItem */
+        $OrderItem = $Order->getOrderItems()->filter(
+            function (OrderItem $OrderItem) {
+                return $OrderItem->isPoint();
+            }
+        )->first();
+
+        $discountPrice = $usePoint * $pointConversionRate * -1;
+        self::assertEquals($discountPrice, $OrderItem->getPrice());
+        self::assertEquals($productPrice + $discountPrice, $Order->getTotal());
+    }
+
+    public function pointConversionRateProvider()
+    {
+        return [
+            [1],
+            [2],
+            [5],
+        ];
+    }
+
+    /**
+     * ポイント付与率のテスト
+     *
+     * @dataProvider basicPointRateProvider
+     *
+     * @param $basicPointRate int 商品の値段
+     */
+    public function testBasicPointRate($basicPointRate)
+    {
+        $ProductPrice = 1000;
+
+        $this->BaseInfo->setBasicPointRate($basicPointRate);
+
+        $Customer = new Customer();
+
+        /* @var ProductClass $ProductClass */
+        $ProductClass = $this->createProduct('テスト', 1)->getProductClasses()[0];
+        $Order = new Order();
+        $Order->setCustomer($Customer);
+        $Order->addOrderItem($this->newOrderItem($ProductClass, $ProductPrice, 1));
+
+        $purchaseFlow = new PurchaseFlow();
+        $purchaseFlow->addItemHolderPreprocessor($this->processor);
+
+        $context = new PurchaseContext(null, $Customer);
+        $purchaseFlow->validate($Order, $context);
+
+        self::assertEquals($ProductPrice * $basicPointRate / 100, $Order->getAddPoint());
+    }
+
+    public function basicPointRateProvider()
+    {
+        return [
+            [1],
+            [2],
+            [10],
         ];
     }
 
