@@ -113,7 +113,9 @@ class EA09ShippingCest
 
         $ShippingRegisterPage = ShippingEditPage::at($I);
         $ShippingRegisterPage
-            ->出荷先を追加();
+            ->出荷先を追加()
+            ->商品検索('パーコレーター')
+            ->商品検索結果_選択(1);
 
         /* 正常系 */
         $ShippingRegisterPage
