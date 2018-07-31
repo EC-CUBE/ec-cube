@@ -277,8 +277,9 @@ file that was distributed with this source code.
                                     </div>
                                     <div class="col-4 text-right">
                                         {% if form.shippings|length > 1 %}
-                                            <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#delete_shipping_{{ shippingForm.vars.id }}" data-tooltip="tooltip" data-placement="top" title="{{ 'common.label.delete'|trans }}">
+                                            <a class="btn btn-ec-regular mr-2" data-toggle="modal" data-target="#delete_shipping_{{ shippingForm.vars.id }}" data-tooltip="tooltip" data-placement="top" title="{{ 'common.label.delete'|trans }}">
                                                 <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
+                                                {{ 'admin.shipping.edit.delete.shipping'|trans }}
                                             </a>
                                             <div class="modal fade" id="delete_shipping_{{ shippingForm.vars.id }}" tabindex="-1" role="dialog" aria-labelledby="delete_shipping_{{ shippingForm.vars.id }}" aria-hidden="true">
                                                 <div class="modal-dialog" role="document">

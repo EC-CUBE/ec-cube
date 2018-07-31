@@ -1998,6 +1998,7 @@ return [
     'admin.shipping.edit.order_name' => 'お名前',
     'admin.shipping.edit.order_item' => '注文内容',
     'admin.shipping.edit.shipped_mail_failed' => 'メール送信エラー',
+    'admin.shipping.edit.delete.shipping' => 'お届け先を削除',
     'admin.shipping.placeholder.tracking_number' => '1234-567890',
     'admin.shipping.index.759' => '出荷管理',
     'admin.shipping.index.760' => '出荷一覧',
