@@ -29,6 +29,9 @@ file that was distributed with this source code.
                                 <div class="ec-input">
                                     {{ form_widget(form.login_email) }}
                                     {{ form_errors(form.login_email) }}
+                                    {% if error %}
+                                        <p class="ec-errorMessage">{{ error }}</p>
+                                    {% endif %}
                                 </div>
                             </dd>
                         </dl>

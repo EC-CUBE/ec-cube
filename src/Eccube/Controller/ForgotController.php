@@ -209,10 +209,13 @@ class ForgotController extends AbstractController
         } elseif ($form->isSubmitted() && $form->isValid()) {
             // リセットキー・入力メールアドレスで会員情報検索
             $Customer = $this->customerRepository
-                ->getRegularCustomerByResetKey($reset_key);
+                ->getRegularCustomerByResetKey($reset_key, $form->get('login_email')->getData());
             if (is_null($Customer)) {
                 // リセットキー・メールアドレスから会員データが取得できない場合
-                throw new HttpException\NotFoundHttpException(trans('forgotcontroller.text.error.url'));
+                return [
+                    'form' => $form->createView(),
+                    'error' => trans('forgotcontroller.text.error.credentials'),
+                ];
             }
 
             // パスワードの発行・更新
@@ -246,7 +249,7 @@ class ForgotController extends AbstractController
             // 完了メッセージを設定
             $this->addFlash('password_reset_complete', trans('forgotcontroller.text.complete'));
 
-            // マイページへリダイレクト
+            // ログインページへリダイレクト
             return $this->redirectToRoute('mypage_login');
         }
 

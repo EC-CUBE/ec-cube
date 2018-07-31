@@ -2264,6 +2264,7 @@ return [
     'forgotcontroller.text.error.authorization' => '不正なアクセスです。',
     'forgotcontroller.label.edit' => '再設定',
     'forgotcontroller.text.complete' => 'パスワードを再設定しました。',
+    'forgotcontroller.text.error.credentials' => '入力内容をご確認ください。',
     'productcontroller.label.result' => '表示件数',
     'productcontroller.label.sort' => '表示順',
     'productcontroller.text.return.search' => '検索結果',
