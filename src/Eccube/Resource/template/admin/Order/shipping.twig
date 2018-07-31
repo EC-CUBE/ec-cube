@@ -543,7 +543,7 @@ file that was distributed with this source code.
                                             </button>
                                             <a class="btn btn-ec-regular mr-2 addOtherProduct-button" data-toggle="modal" data-target="#addOrderItemType" data-shipping-no="{{ loop.index0 }}">{{ 'admin.order.edit.btn.add_other_item'|trans }}</a>
                                             {# 明細行のエラー表示 #}
-                                            {{ form_errors(shippingForm.OrderItemsError) }}
+                                            {{ form_errors(shippingForm.OrderItemsErrors) }}
                                         </div>
                                     </div>
                                     <div class="row">

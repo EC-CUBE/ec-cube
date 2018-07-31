@@ -17,6 +17,7 @@ use Doctrine\ORM\EntityRepository;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Delivery;
+use Eccube\Entity\Shipping;
 use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\KanaType;
 use Eccube\Form\Type\NameType;
@@ -33,6 +34,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -196,7 +198,7 @@ class ShippingType extends AbstractType
                 'prototype' => true,
             ])
             // 明細業のエラー表示用
-            ->add('OrderItemsError', TextType::class, [
+            ->add('OrderItemsErrors', TextType::class, [
                 'mapped' => false,
             ])
             ->add('notify_email', CheckboxType::class, [
@@ -286,6 +288,24 @@ class ShippingType extends AbstractType
                 if ($DeliveryTime) {
                     $Shipping->setShippingDeliveryTime($DeliveryTime->getDeliveryTime());
                     $Shipping->setTimeId($DeliveryTime->getId());
+                }
+            })
+            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+                /** @var Shipping $Shipping */
+                $Shipping = $event->getData();
+                $OrderItems = $Shipping->getOrderItems();
+
+                $count = 0;
+                foreach ($OrderItems as $OrderItem) {
+                    if ($OrderItem->isProduct()) {
+                        $count++;
+                    }
+                }
+                // 商品明細が1件もない場合はエラーとする.
+                if ($count < 1) {
+                    // 画面下部にエラーメッセージを表示させる
+                    $form = $event->getForm();
+                    $form['OrderItemsErrors']->addError(new FormError(trans('admin.order.edit.product.error')));
                 }
             });
     }
