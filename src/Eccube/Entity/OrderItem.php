@@ -142,6 +142,16 @@ class OrderItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
     }
 
     /**
+     * ポイント明細かどうか.
+     *
+     * @return boolean ポイント明細の場合 true
+     */
+    public function isPoint()
+    {
+        return $this->getOrderItemTypeId() === OrderItemType::POINT;
+    }
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="id", type="integer", options={"unsigned":true})
