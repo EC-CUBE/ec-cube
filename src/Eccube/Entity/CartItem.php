@@ -181,6 +181,16 @@ class CartItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
         return false;
     }
 
+    /**
+     * ポイント明細かどうか.
+     *
+     * @return boolean ポイント明細の場合 true
+     */
+    public function isPoint()
+    {
+        return false;
+    }
+
     public function getOrderItemType()
     {
         // TODO OrderItemType::PRODUCT

@@ -15,9 +15,9 @@ namespace Eccube\Entity;
 
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Util\Inflector;
-use Doctrine\ORM\Mapping\Id;
+use Doctrine\Common\Inflector\Inflector;
 use Doctrine\ORM\Mapping\MappedSuperclass;
+use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Proxy\Proxy;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;

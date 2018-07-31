@@ -23,7 +23,7 @@ class PageManagePage extends AbstractAdminPageStyleGuide
 
     public function 新規入力()
     {
-        $this->tester->click(['xpath' => '//a[text()="新規追加"]']);
+        $this->tester->click(['xpath' => '//*[@id="page_admin_content_page"]/div[1]/div[3]/div[2]/div/div/div[1]/div[1]/a']);
     }
 
     public function ページ編集($pageName)

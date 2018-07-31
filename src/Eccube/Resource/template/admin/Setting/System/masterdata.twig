@@ -13,8 +13,8 @@ file that was distributed with this source code.
 
 {% set menus = ['setting', 'system', 'masterdata'] %}
 
-{% block title %}{{'admin.setting.system.masterdata.676'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.setting.system.masterdata.675'|trans}}{% endblock %}
+{% block title %}{{ 'admin.setting.system.masterdata.676'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.setting.system.masterdata.675'|trans }}{% endblock %}
 
 {% block main %}
     <div class="c-contentsArea__cols">
@@ -26,12 +26,12 @@ file that was distributed with this source code.
                         <div class="card-header"><span>{{ 'admin.setting.system.masterdata.677'|trans }}</span></div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-3" id="master_edit_box__masterdata">
+                                <div class="col-3">
                                     {{ form_widget(form.masterdata, {'attr': {'class': 'form-control'}}) }}
                                     {{ form_errors(form.masterdata) }}
                                 </div>
-                                <div class="col mb-2" id="master_edit_box__confirm_button">
-                                    <button class="btn btn-primary" type="submit">{{'admin.setting.system.masterdata.678'|trans}}</button>
+                                <div class="col mb-2">
+                                    <button class="btn btn-primary" type="submit">{{ 'admin.setting.system.masterdata.678'|trans }}</button>
                                 </div>
                             </div>
                         </div>
@@ -45,37 +45,37 @@ file that was distributed with this source code.
                         <div class="card rounded border-0 mb-4">
                             <div class="card-header">
                                 <div class="read">
-                                    {{'admin.setting.system.masterdata.679'|trans}}<br />
-                                    {{'admin.setting.system.masterdata.680'|trans}}<br />
-                                    {{'admin.setting.system.masterdata.681'|trans}}<br />
-                                    {{'admin.setting.system.masterdata.682'|trans}}
+                                    {{ 'admin.setting.system.masterdata.679'|trans }}<br/>
+                                    {{ 'admin.setting.system.masterdata.680'|trans }}<br/>
+                                    {{ 'admin.setting.system.masterdata.681'|trans }}<br/>
+                                    {{ 'admin.setting.system.masterdata.682'|trans }}
                                 </div>
                             </div>
                             <div class="card-body">
-                                <table class="table table-sm" id="result_list__list">
+                                <table class="table table-sm">
                                     <thead>
-                                        <tr>
-                                            <th class="border-top-0 pt-2 pb-2 text-center" id="result_list__header_id" style="width: 20%">
-                                                {{ 'admin.setting.system.masterdata.th_id'|trans }}
-                                            </th>
-                                            <th class="border-top-0 pt-2 pb-2 text-center" id="result_list__header_name">
-                                                {{ 'admin.setting.system.masterdata.th_name'|trans }}
-                                            </th>
-                                        </tr>
+                                    <tr>
+                                        <th class="border-top-0 pt-2 pb-2 text-center" style="width: 20%">
+                                            {{ 'admin.setting.system.masterdata.th_id'|trans }}
+                                        </th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">
+                                            {{ 'admin.setting.system.masterdata.th_name'|trans }}
+                                        </th>
+                                    </tr>
                                     </thead>
                                     <tbody>
-                                        {% for data in form2.data %}
-                                            <tr id="result_list__item--{{ data.vars.name }}">
-                                                <td id="result_list__id--{{ data.vars.name }}" class="align-middle text-center pl-3">
-                                                    {{form_widget(data.id)}}
-                                                    {{form_errors(data.id)}}
-                                                </td>
-                                                <td id="result_list__name--{{ data.vars.name }}" class="align-middle text-center">
-                                                    {{form_widget(data.name)}}
-                                                    {{form_errors(data.name)}}
-                                                </td>
-                                            </tr>
-                                        {% endfor %}
+                                    {% for data in form2.data %}
+                                        <tr id="ex-masterdata-{{ data.vars.name }}">
+                                            <td class="align-middle text-center pl-3">
+                                                {{ form_widget(data.id) }}
+                                                {{ form_errors(data.id) }}
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                {{ form_widget(data.name) }}
+                                                {{ form_errors(data.name) }}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
@@ -89,7 +89,7 @@ file that was distributed with this source code.
                                         </div>
                                     </div>
                                     <div class="col-6">
-                                        <div class="row align-items-center justify-content-end">
+                                        <div id="ex-conversion-action" class="row align-items-center justify-content-end">
                                             <div class="col-auto">
                                                 <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.setting.system.masterdata.683'|trans }}</button>
                                             </div>

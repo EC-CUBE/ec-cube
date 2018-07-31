@@ -15,7 +15,6 @@ namespace Eccube\Controller\Admin\Order;
 
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
-use Eccube\Entity\Csv;
 use Eccube\Entity\ExportCsvRow;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\Master\OrderStatus;
@@ -586,7 +585,7 @@ class OrderController extends AbstractController
      */
     public function exportPdf(Request $request)
     {
-        // requestから受注番号IDの一覧を取得する.
+        // requestから出荷番号IDの一覧を取得する.
         $ids = $request->get('ids', []);
 
         if (count($ids) == 0) {

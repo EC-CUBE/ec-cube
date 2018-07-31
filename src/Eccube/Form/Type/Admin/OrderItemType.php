@@ -211,6 +211,7 @@ class OrderItemType extends AbstractType
                     }
                     break;
                 case OrderItemTypeMaster::DISCOUNT:
+                case OrderItemTypeMaster::POINT:
                     // 値引き明細は税抜表示・課税
                     if (null === $OrderItem->getTaxDisplayType()) {
                         $OrderItem->setTaxDisplayType($this->entityManager->find(TaxDisplayType::class,

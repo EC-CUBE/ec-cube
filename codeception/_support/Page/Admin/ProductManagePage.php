@@ -113,11 +113,12 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
 
     /**
      * Btn class product, list product search
+     * @param int $rowNum 検索結果の行番号(1から始まる)
      * @return $this
      */
-    public function 規格確認ボタンをクリック()
+    public function 規格確認ボタンをクリック($rowNum)
     {
-        $this->tester->click("#page_admin_product > div > div.c-contentsArea > div.c-contentsArea__cols > div > div > form > div.card.rounded.border-0.mb-4 > div.card-body.p-0 > table > tbody > tr > td:nth-child(7) > button.page-link");
+        $this->tester->click(['css' => "#ex-product-${rowNum} > td:nth-child(7) > button"]);
         $this->tester->waitForElementVisible(['id' => 'productClassesModal']);
         $this->tester->wait(1);
         return $this;

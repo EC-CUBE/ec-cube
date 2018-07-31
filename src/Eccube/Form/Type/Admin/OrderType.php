@@ -196,17 +196,6 @@ class OrderType extends AbstractType
                 'required' => false,
                 'label' => 'order.label.commision',
             ])
-            ->add('add_point', NumberType::class, [
-                'required' => false,
-                'label' => 'admin.common.label.add_point',
-                'constraints' => [
-                    new Assert\Regex([
-                        'pattern' => "/^\d+$/u",
-                        'message' => 'form.type.numeric.invalid',
-                    ]),
-                ],
-                'attr' => ['readonly' => true],
-            ])
             ->add('use_point', NumberType::class, [
                 'required' => false,
                 'label' => 'admin.common.label.use_point',

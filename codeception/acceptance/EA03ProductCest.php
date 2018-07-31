@@ -77,8 +77,8 @@ class EA03ProductCest
         $I->wantTo('EA0301-UC01-T03 規格確認のポップアップを表示');
 
         ProductManagePage::go($I)
-            ->検索()
-            ->規格確認ボタンをクリック()
+            ->検索(1)
+            ->規格確認ボタンをクリック(1)
             ->規格確認をキャンセル();
 
         $I->dontSeeElement(['css' => 'div.modal.show']);
@@ -89,8 +89,8 @@ class EA03ProductCest
         $I->wantTo('EA0301-UC01-T04 ポップアップから規格編集画面に遷移');
 
         ProductManagePage::go($I)
-            ->検索()
-            ->規格確認ボタンをクリック()
+            ->検索(1)
+            ->規格確認ボタンをクリック(1)
             ->規格編集画面に遷移();
 
         $I->see('商品登録（規格設定）商品管理', self::ページタイトルStyleGuide);

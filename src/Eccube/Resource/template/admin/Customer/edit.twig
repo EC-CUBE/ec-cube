@@ -312,7 +312,7 @@ file that was distributed with this source code.
                                         {% if Customer.CustomerAddresses|length < eccube_config.eccube_deliv_addr_max %}
                                             <div class="d-block text-center">
                                                 <a href="{{ url('admin_customer_delivery_new', { id: Customer.id }) }}"
-                                                    class="btn btn-ec-regular">{{ 'admin.customer.edit.sipping_add'|trans }}</a>
+                                                   class="btn btn-ec-regular">{{ 'admin.customer.edit.sipping_add'|trans }}</a>
                                             </div>
                                         {% else %}
                                             <span class="ec-errorMessage">
@@ -389,13 +389,13 @@ file that was distributed with this source code.
                                         </table>
                                     </div>
                                 {% else %}
-                                <div class="card-body">
-                                    <div id="history_box" class="data-empty">
+                                    <div class="card-body">
+                                        <div id="history_box" class="data-empty">
                                         <span>
                                             {{ 'admin.customer.edit.no_purchase_history'|trans }}
                                         </span>
+                                        </div>
                                     </div>
-                                </div>
                                 {% endif %}
                             </div>
                         </div>
@@ -444,7 +444,7 @@ file that was distributed with this source code.
                         </div>
                     </div>
                     <div class="col-6">
-                        <div class="row align-items-center justify-content-end">
+                        <div id="ex-conversion-action" class="row align-items-center justify-content-end">
                             <div class="col-auto">
                                 {{ form_widget(form.status) }}
                                 {{ form_errors(form.status) }}

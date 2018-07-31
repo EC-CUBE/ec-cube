@@ -12,36 +12,36 @@ file that was distributed with this source code.
 
 {% set menus = ['setting', 'system', 'member'] %}
 
-{% block title %}{{'admin.setting.system.member.684'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.setting.system.member.685'|trans}}{% endblock %}
+{% block title %}{{ 'admin.setting.system.member.684'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.setting.system.member.685'|trans }}{% endblock %}
 
 {% form_theme form 'Form/bootstrap_4_layout.html.twig' %}
 
 {% block javascript %}
-<script>
-    $('.action-down, .action-up').on('click', function (e) {
-        var self = $(this),
-            current =  $(this).parents('tr');
-        $('body').append($('<div class="modal-backdrop show"></div>'));
-        $.ajax({
-            url: self.attr('href'),
-            method: self.data('method'),
-        }).done(function () {
-            if (self.hasClass('action-down')) {
-                current.next().after(current);
-            } else {
-                current.prev().before(current);
-            }
-        }).always(function () {
-            $('.modal-backdrop').remove();
-            $('.action-up, .action-down').removeClass('disabled');
-            $('.action-up').first().addClass('disabled');
-            $('.action-down').last().addClass('disabled');
-        });
+    <script>
+        $('.action-down, .action-up').on('click', function(e) {
+            var self = $(this),
+                current = $(this).parents('tr');
+            $('body').append($('<div class="modal-backdrop show"></div>'));
+            $.ajax({
+                url: self.attr('href'),
+                method: self.data('method'),
+            }).done(function() {
+                if (self.hasClass('action-down')) {
+                    current.next().after(current);
+                } else {
+                    current.prev().before(current);
+                }
+            }).always(function() {
+                $('.modal-backdrop').remove();
+                $('.action-up, .action-down').removeClass('disabled');
+                $('.action-up').first().addClass('disabled');
+                $('.action-down').last().addClass('disabled');
+            });
 
-        return false;
-    });
-</script>
+            return false;
+        });
+    </script>
 {% endblock %}
 
 {% block main %}
@@ -52,53 +52,53 @@ file that was distributed with this source code.
                     <div class="card-header">
                         <div class="row">
                             <div class="col-12">
-                                <span class="card-title">{{'admin.setting.system.member.686'|trans}}</span>
+                                <span class="card-title">{{ 'admin.setting.system.member.686'|trans }}</span>
                             </div>
                         </div>
                     </div>
-                    <div class="card-body p-0" id="member_list_box__body">
+                    <div class="card-body p-0">
                         <form name="form1" id="form1" method="post" action="">
-                            <table class="table table-sm" id="search_result">
+                            <table class="table table-sm">
                                 <thead>
                                 <tr>
-                                    <th class="border-top-0 pt-2 pb-2 text-center" id="member_list__header_name">
-                                        {{'admin.setting.system.member.687'|trans}}
+                                    <th class="border-top-0 pt-2 pb-2 text-center">
+                                        {{ 'admin.setting.system.member.687'|trans }}
                                     </th>
-                                    <th class="border-top-0 pt-2 pb-2 text-center" id="member_list__header_department">
-                                        {{'admin.setting.system.member.688'|trans}}
+                                    <th class="border-top-0 pt-2 pb-2 text-center">
+                                        {{ 'admin.setting.system.member.688'|trans }}
                                     </th>
-                                    <th class="border-top-0 pt-2 pb-2 text-center" id="member_list__header_authority_name">
-                                        {{'admin.setting.system.member.689'|trans}}
+                                    <th class="border-top-0 pt-2 pb-2 text-center">
+                                        {{ 'admin.setting.system.member.689'|trans }}
                                     </th>
-                                    <th class="border-top-0 pt-2 pb-2 text-center" id="member_list__header_work_name">
-                                        {{'admin.setting.system.member.690'|trans}}
+                                    <th class="border-top-0 pt-2 pb-2 text-center">
+                                        {{ 'admin.setting.system.member.690'|trans }}
                                     </th>
-                                    <th class="border-top-0 pt-2 pb-2 text-center" id="member_list__header_menu_box"></th>
+                                    <th class="border-top-0 pt-2 pb-2 text-center"></th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {% for Member in Members %}
-                                    <tr>
-                                        <td class="align-middle text-center pl-3" id="member_list__name--{{ Member.id }}">
+                                    <tr id="ex-member-{{ Member.id }}">
+                                        <td class="align-middle text-center pl-3">
                                             {{ Member.name }}
                                         </td>
-                                        <td class="align-middle text-center" id="member_list__department--{{ Member.id }}">
+                                        <td class="align-middle text-center">
                                             {{ Member.department }}
                                         </td>
-                                        <td class="align-middle text-center" id="member_list__authority_name--{{ Member.id }}">
+                                        <td class="align-middle text-center">
                                             {{ Member.Authority.name }}
                                         </td>
-                                        <td class="align-middle text-center" id="member_list__work_name--{{ Member.id }}">
+                                        <td class="align-middle text-center">
                                             {{ Member.Work.name }}
                                         </td>
-                                        <td class="align-middle text-center" id="member_list__menu_box--{{ Member.id }}">
+                                        <td class="align-middle text-center">
                                             <div class="row justify-content-end">
                                                 <div class="col-auto text-center">
                                                     <a class="btn btn-ec-actionIcon action-edit"
                                                        href="{{ url('admin_setting_system_member_edit', { 'id' : Member.id }) }}"
                                                        data-toggle="tooltip"
                                                        data-placement="top"
-                                                       data-original-title="{{'admin.setting.system.member.691'|trans}}">
+                                                       data-original-title="{{ 'admin.setting.system.member.691'|trans }}">
                                                         <i class="fa fa-pencil fa-lg text-secondary" aria-hidden="true"></i>
                                                     </a>
                                                 </div>
@@ -108,7 +108,7 @@ file that was distributed with this source code.
                                                        data-toggle="tooltip"
                                                        data-method="put"
                                                        data-placement="top"
-                                                       data-original-title="{{'admin.setting.system.member.694'|trans}}">
+                                                       data-original-title="{{ 'admin.setting.system.member.694'|trans }}">
                                                         <i class="fa fa-arrow-up fa-lg text-secondary" aria-hidden="true"></i>
                                                     </a>
                                                 </div>
@@ -118,7 +118,7 @@ file that was distributed with this source code.
                                                        data-toggle="tooltip"
                                                        data-method="put"
                                                        data-placement="top"
-                                                       data-original-title="{{'admin.setting.system.member.695'|trans}}">
+                                                       data-original-title="{{ 'admin.setting.system.member.695'|trans }}">
                                                         <i class="fa fa-arrow-down fa-lg text-secondary" aria-hidden="true"></i>
                                                     </a>
                                                 </div>
@@ -126,7 +126,7 @@ file that was distributed with this source code.
                                                     {% if Member.id == app.user.id %}
                                                         <a class="btn btn-ec-actionIcon action-delete disabled"
                                                            data-toggle="tooltip" data-placement="top"
-                                                           data-original-title="{{'admin.setting.system.member.692'|trans}}">
+                                                           data-original-title="{{ 'admin.setting.system.member.692'|trans }}">
                                                             <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
                                                         </a>
                                                     {% else %}
@@ -158,7 +158,7 @@ file that was distributed with this source code.
                                                                         </button>
                                                                         <a class="btn btn-ec-delete"
                                                                            href="{{ url('admin_setting_system_member_delete', {id: Member.id}) }}"
-                                                                           {{ csrf_token_for_anchor() }}
+                                                                                {{ csrf_token_for_anchor() }}
                                                                            data-method="delete" data-confirm="false">
                                                                             {{ 'common.label.delete'|trans }}
                                                                         </a>
@@ -177,11 +177,11 @@ file that was distributed with this source code.
                         </form>
                     </div>
                 </div>
-                <div class="card rounded border-0">
+                <div id="ex-member-new" class="card rounded border-0">
                     <div class="card-body p-4">
                         <div class="text-center btn-area-bottom">
                             <a href="{{ url('admin_setting_system_member_new') }}" class="btn btn-ec-regular pl-4 pr-4">
-                                {{'admin.setting.system.member.696'|trans}}
+                                {{ 'admin.setting.system.member.696'|trans }}
                             </a>
                         </div>
                     </div>

@@ -8,16 +8,16 @@ http://www.lockon.co.jp/
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
-    <tr>
-        <td>
-            {{ form_widget(form.Authority, {'attr': {'class': 'input-authority'}}) }}
-            {{ form_errors(form.Authority) }}
-        </td>
-        <td>
-            {{ form_widget(form.deny_url, {'attr': {'class': 'input-deny-url'}}) }}
-            {{ form_errors(form.deny_url) }}
-        </td>
-        <td class="text-center">
-            <button type="button" class="btn btn-ec-regular delete">{{'admin.setting.system.authority_prototype.669'|trans}}</button>
-        </td>
-    </tr>
+<tr>
+    <td>
+        {{ form_widget(form.Authority, {'attr': {'class': 'input-authority'}}) }}
+        {{ form_errors(form.Authority) }}
+    </td>
+    <td>
+        {{ form_widget(form.deny_url, {'attr': {'class': 'input-deny-url'}}) }}
+        {{ form_errors(form.deny_url) }}
+    </td>
+    <td class="text-center">
+        <button type="button" class="btn btn-ec-regular delete">{{ 'admin.setting.system.authority_prototype.669'|trans }}</button>
+    </td>
+</tr>
