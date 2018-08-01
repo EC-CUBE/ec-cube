@@ -80,8 +80,8 @@ jobs:
       env: GROUP=admin03 APP_ENV=codeception DATABASE_URL=postgres://postgres:password@localhost/eccube_db DATABASE_SERVER_VERSION=9 MAILER_URL=smtp://localhost:1025
     - <<: *e2e_test
       env: GROUP=front APP_ENV=codeception DATABASE_URL=postgres://postgres:password@localhost/eccube_db DATABASE_SERVER_VERSION=9 MAILER_URL=smtp://localhost:1025
-    - &coverage
-      stage: Code Coverage
+    - stage: Code Coverage
+      if: type != pull_request
       env: DATABASE_URL=sqlite:///%kernel.project_dir%/var/eccube.db DATABASE_SERVER_VERSION=3 COVERAGE=1
       before_install:
         - *php_setup
