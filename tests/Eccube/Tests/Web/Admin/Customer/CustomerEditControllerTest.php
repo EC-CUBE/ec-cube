@@ -186,6 +186,8 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->persist($Order);
         $this->entityManager->persist($this->Customer);
         $this->entityManager->flush();
+        $this->entityManager->detach($this->Customer);
+        $this->entityManager->detach($Order);
         unset($this->Customer);
 
         $crawler = $this->client->request(
