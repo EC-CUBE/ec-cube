@@ -210,7 +210,7 @@ class OrderType extends AbstractType
                 }
                 $moneyFromPoint = $this->BaseInfo->pointToPrice($Order->getUsePoint());
                 if (($Order->getTotal() + $moneyFromPoint) < 0) {
-                    $number = intval(ceil($Order->getTotal() / $this->BaseInfo->getPointConversionRate()));
+                    $number = intval(floor($Order->getTotal() / $this->BaseInfo->getPointConversionRate()));
                     $form['use_point']->addError(new FormError(trans('shopping.use_point.error.exceed.payment')));
                     $form['use_point']->addError(new FormError(trans('shopping.use_point.error.max', ['%max%' => $number])));
                 }
