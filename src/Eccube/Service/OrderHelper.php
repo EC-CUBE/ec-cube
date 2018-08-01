@@ -23,8 +23,6 @@ use Eccube\Entity\Customer;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\OrderStatus;
-use Eccube\Entity\Master\TaxDisplayType;
-use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
@@ -186,7 +184,7 @@ class OrderHelper
         $this->setDefaultPayment($Order);
 
         $this->entityManager->persist($Order);
-        $this->entityManager->flush();
+        //$this->entityManager->flush();
 
         return $Order;
     }
@@ -258,17 +256,13 @@ class OrderHelper
     private function createOrderItemsFromCartItems($CartItems)
     {
         $ProductItemType = $this->orderItemTypeRepository->find(OrderItemType::PRODUCT);
-        // TODO
-        $TaxExclude = $this->entityManager->getRepository(TaxDisplayType::class)->find(TaxDisplayType::EXCLUDED);
-        $Taxion = $this->entityManager->getRepository(TaxType::class)->find(TaxType::TAXATION);
 
-        return array_map(function ($item) use ($ProductItemType, $TaxExclude, $Taxion) {
+        return array_map(function ($item) use ($ProductItemType) {
             /* @var $item CartItem */
             /* @var $ProductClass \Eccube\Entity\ProductClass */
             $ProductClass = $item->getProductClass();
             /* @var $Product \Eccube\Entity\Product */
             $Product = $ProductClass->getProduct();
-            $TaxRule = $this->taxRuleRepository->getByRule($Product, $ProductClass);
 
             $OrderItem = new OrderItem();
             $OrderItem
@@ -278,11 +272,7 @@ class OrderHelper
                 ->setProductCode($ProductClass->getCode())
                 ->setPrice($ProductClass->getPrice02())
                 ->setQuantity($item->getQuantity())
-                ->setTaxRule($TaxRule->getId())
-                ->setTaxRate($TaxRule->getTaxRate())
-                ->setOrderItemType($ProductItemType)
-                ->setTaxDisplayType($TaxExclude)
-                ->setTaxType($Taxion);
+                ->setOrderItemType($ProductItemType);
 
             $ClassCategory1 = $ProductClass->getClassCategory1();
             if (!is_null($ClassCategory1)) {
@@ -367,8 +357,6 @@ class OrderHelper
             $Order->setPayment($Payment);
             $Order->setPaymentMethod($Payment->getMethod());
         }
-        // TODO CalculateChargeStrategy でセットする
-        // $Order->setCharge($Payment->getCharge());
     }
 
     private function addOrderItems(Order $Order, Shipping $Shipping, array $OrderItems)

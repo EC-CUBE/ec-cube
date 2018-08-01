@@ -458,9 +458,9 @@ return [
     'Kana' => 'お名前(フリガナ)',
     'Kana01' => 'セイ', // TODO: enとIDが違う
     'Kana02' => 'メイ', // TODO: enとIDが違う
-    'Postal' => '郵便番号',
+    'Postal' => '例：1010000',
     'Address' => '住所',
-    'PhoneNumber' => '電話番号',
+    'PhoneNumber' => '例：0312345678',
     'Email' => 'メールアドレス',
     'Password' => 'パスワード',
     'Job' => '職業',

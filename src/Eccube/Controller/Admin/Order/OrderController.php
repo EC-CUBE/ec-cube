@@ -485,9 +485,24 @@ class OrderController extends AbstractController
                 log_info('対応状況一括変更スキップ');
                 $result = ['message' => sprintf('%s:  ステータス変更をスキップしました', $Shipping->getId())];
             } else {
-                // TODO: 出荷済み処理の場合は場合分けをして出荷に出荷日を入れる処理が必要
                 if ($this->orderStateMachine->can($Order, $OrderStatus)) {
-                    $this->orderStateMachine->apply($Order, $OrderStatus);
+                    if ($OrderStatus->getId() == OrderStatus::DELIVERED) {
+                        if (!$Shipping->isShipped()) {
+                            $Shipping->setShippingDate(new \DateTime());
+                        }
+                        $allShipped = true;
+                        foreach ($Order->getShippings() as $Ship) {
+                            if (!$Ship->isShipped()) {
+                                $allShipped = false;
+                                break;
+                            }
+                        }
+                        if ($allShipped) {
+                            $this->orderStateMachine->apply($Order, $OrderStatus);
+                        }
+                    } else {
+                        $this->orderStateMachine->apply($Order, $OrderStatus);
+                    }
 
                     if ($request->get('notificationMail')) { // for SimpleStatusUpdate
                         $this->mailService->sendShippingNotifyMail($Shipping);
