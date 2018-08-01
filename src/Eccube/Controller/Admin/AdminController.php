@@ -14,8 +14,8 @@
 namespace Eccube\Controller\Admin;
 
 use Doctrine\ORM\NoResultException;
-use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\ProductStock;
@@ -334,10 +334,10 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @param $em
+     * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param array $excludes
      *
-     * @return array
+     * @return null|Request
      */
     protected function findOrderStatus($em, array $excludes)
     {
@@ -354,10 +354,10 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @param $em
+     * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param array $excludes
      *
-     * @return array
+     * @return null|Request
      */
     protected function getOrderEachStatus($em, array $excludes)
     {
@@ -387,11 +387,11 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @param $em
-     * @param $dateTime
+     * @param \Doctrine\ORM\EntityManagerInterface $em
+     * @param \DateTime $dateTime
      * @param array $excludes
      *
-     * @return array
+     * @return null|Request
      */
     protected function getSalesByMonth($em, $dateTime, array $excludes)
     {
@@ -425,11 +425,11 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @param $em
-     * @param $dateTime
+     * @param \Doctrine\ORM\EntityManagerInterface $em
+     * @param \DateTime $dateTime
      * @param array $excludes
      *
-     * @return array
+     * @return null|Request
      */
     protected function getSalesByDay($em, $dateTime, array $excludes)
     {
@@ -463,9 +463,9 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @param $em
+     * @param \Doctrine\ORM\EntityManagerInterface $em
      *
-     * @return mixed
+     * @return null|Request
      *
      * @throws NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
@@ -486,9 +486,9 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @param $em
+     * @param \Doctrine\ORM\EntityManagerInterface $em
      *
-     * @return mixed
+     * @return null|Request
      *
      * @throws NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException

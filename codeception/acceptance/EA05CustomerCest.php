@@ -2,8 +2,8 @@
 
 use Codeception\Util\Fixtures;
 use Page\Admin\CsvSettingsPage;
-use Page\Admin\CustomerManagePage;
 use Page\Admin\CustomerEditPage;
+use Page\Admin\CustomerManagePage;
 
 /**
  * @group admin
@@ -144,7 +144,7 @@ class EA05CustomerCest
         $CustomerListPage = CustomerManagePage::go($I)
             ->検索($customer->getEmail());
 
-        $I->see('検索結果：1件が該当しました' ,CustomerManagePage::$検索結果メッセージ);
+        $I->see('検索結果：1件が該当しました', CustomerManagePage::$検索結果メッセージ);
 
         $CustomerListPage->一覧_編集(1);
 

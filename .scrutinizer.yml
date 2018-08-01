@@ -21,13 +21,124 @@ build_failure_conditions:
     - 'project.metric_change("scrutinizer.test_coverage", < -0.10)'
 
 filter:
+    paths: ["src/*", "codeception/*"]
     excluded_paths:
-        - vendor/*
-        - tests/*
-        - docs/*
-        - html/template/**/js/vendor/*
-        - html/template/**/**/js/vendor/*
-        - src/Eccube/Entity/*
+        - 'app/*'
+        - 'tests/*'
+        - 'var/*'
+    dependency_paths:
+        - vendor/
+checks:
+    php:
+        fix_use_statements:
+            remove_unused: true
+            preserve_multiple: false
+            preserve_blanklines: true
+            order_alphabetically: true
+coding_style:
+    php:
+        indentation:
+            general:
+                use_tabs: false
+                size: 4
+            switch:
+                indent_case: true
+        spaces:
+            general:
+                linefeed_character: newline
+            before_parentheses:
+                function_declaration: false
+                closure_definition: true
+                function_call: false
+                if: true
+                for: true
+                while: true
+                switch: true
+                catch: true
+                array_initializer: false
+            around_operators:
+                assignment: true
+                logical: true
+                equality: true
+                relational: true
+                bitwise: true
+                additive: true
+                multiplicative: true
+                shift: true
+                unary_additive: false
+                concatenation: false
+                negation: false
+            before_left_brace:
+                class: true
+                function: true
+                if: true
+                else: true
+                for: true
+                while: true
+                do: true
+                switch: true
+                try: true
+                catch: true
+                finally: true
+            before_keywords:
+                else: true
+                while: true
+                catch: true
+                finally: true
+            within:
+                brackets: false
+                array_initializer: false
+                grouping: false
+                function_call: false
+                function_declaration: false
+                if: false
+                for: false
+                while: false
+                switch: false
+                catch: false
+                type_cast: false
+            ternary_operator:
+                before_condition: true
+                after_condition: true
+                before_alternative: true
+                after_alternative: true
+                in_short_version: false
+            other:
+                before_comma: false
+                after_comma: true
+                before_semicolon: false
+                after_semicolon: true
+                after_type_cast: true
+        braces:
+            classes_functions:
+                class: undefined
+                function: undefined
+                closure: undefined
+            if:
+                opening: undefined
+                always: true
+                else_on_new_line: false
+            for:
+                opening: undefined
+                always: true
+            while:
+                opening: undefined
+                always: true
+            do_while:
+                opening: undefined
+                always: true
+                while_on_new_line: false
+            switch:
+                opening: undefined
+            try:
+                opening: undefined
+                catch_on_new_line: false
+                finally_on_new_line: false
+        upper_lower_casing:
+            keywords:
+                general: undefined
+            constants:
+                true_false_null: undefined
 
 tools:
     # Runs the JSHint static analysis tool (https://scrutinizer-ci.com/docs/tools/javascript/jshint/)
@@ -79,9 +190,3 @@ tools:
         enabled: true
 
     sensiolabs_security_checker: true
-
-checks:
-    php:
-        custom_coding_standard:
-            git_repository: 'https://github.com/M6Web/Symfony2-coding-standard'
-            ruleset_path: 'Symfony2/ruleset.xml'

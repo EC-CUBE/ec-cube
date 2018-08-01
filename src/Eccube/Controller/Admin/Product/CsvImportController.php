@@ -681,6 +681,7 @@ class CsvImportController extends AbstractCsvImportController
      *
      * @param $row
      * @param Product $Product
+     * @param CsvImportService $data
      */
     protected function createProductImage($row, Product $Product, $data, $headerByKey)
     {
@@ -727,7 +728,7 @@ class CsvImportController extends AbstractCsvImportController
      *
      * @param $row
      * @param Product $Product
-     * @param $data
+     * @param CsvImportService $data
      * @param $headerByKey
      */
     protected function createProductCategory($row, Product $Product, $data, $headerByKey)
@@ -847,7 +848,7 @@ class CsvImportController extends AbstractCsvImportController
      *
      * @param $row
      * @param Product $Product
-     * @param $data
+     * @param CsvImportService $data
      * @param $headerByKey
      * @param null $ClassCategory1
      * @param null $ClassCategory2
@@ -999,7 +1000,7 @@ class CsvImportController extends AbstractCsvImportController
      * @param $row
      * @param Product $Product
      * @param ProductClass $ProductClass
-     * @param $data
+     * @param CsvImportService $data
      *
      * @return ProductClass
      */
