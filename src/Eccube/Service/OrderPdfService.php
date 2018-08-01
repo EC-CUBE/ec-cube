@@ -19,6 +19,7 @@ use Eccube\Entity\BaseInfo;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
 use Eccube\Repository\BaseInfoRepository;
+use Eccube\Repository\OrderRepository;
 use Eccube\Repository\OrderPdfRepository;
 use Eccube\Repository\ShippingRepository;
 use Eccube\Twig\Extension\EccubeExtension;
