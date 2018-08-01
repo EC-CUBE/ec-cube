@@ -52,14 +52,14 @@ class MultipleShippingPage extends AbstractFrontPage
 
     public function 入力_お届け先($productNo, $shippingNo, $text)
     {
-        $id = 'form_shipping_multiple_' . $productNo . '_shipping_' . $shippingNo . '_customer_address';
+        $id = 'form_shipping_multiple_'.$productNo.'_shipping_'.$shippingNo.'_customer_address';
         $this->tester->selectOption(['id' => $id], ['text' => $text]);
         return $this;
     }
 
     public function 入力_数量($productNo, $shippingNo, $value)
     {
-        $id = 'form_shipping_multiple_' . $productNo . '_shipping_' . $shippingNo . '_quantity';
+        $id = 'form_shipping_multiple_'.$productNo.'_shipping_'.$shippingNo.'_quantity';
         $this->tester->fillField(['id' => $id], $value);
         return $this;
     }

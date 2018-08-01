@@ -118,6 +118,12 @@ file that was distributed with this source code.
             location.href = '{{ url('admin_shipping_edit', { 'id': Order.id }) }}';
         });
 
+        // PDF出力(単一)
+        $('.pdf-print').click(function() {
+            window.open(this.href, 'newwin', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=700, height=700');
+            return false;
+        });
+
     </script>
 
 {{ include('@admin/Order/confirmationModal_js.twig') }}
@@ -283,10 +289,7 @@ file that was distributed with this source code.
                                         <div class="col-6">
                                             {% if attribute(Shippings, loop.index0).id %}
                                                 {# 登録済みの出荷 #}
-                                                {# TODO: 納品書出力実装 #}
-                                                <button type="button" id="print_{{ loop.index0 }}" class="btn btn-ec-regular">
-                                                    {{ 'admin.order.edit.label.shipping.print'|trans }}
-                                                </button>
+                                                <a class="btn btn-ec-regular pdf-print" href="{{ url('admin_order_export_pdf') }}?ids[]={{ attribute(Shippings, loop.index0).id }}">{{ 'admin.order.edit.label.shipping.print'|trans }}</a>
                                                 {# TODO: 出荷完了メール実装 #}
                                                 <button type="button" class="btn btn-ec-regular confirmationModal"
                                                         data-type="mail" data-bulk-update="false"

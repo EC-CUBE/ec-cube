@@ -84,15 +84,15 @@ class ShopController extends AbstractController
                 $this->entityManager->flush();
 
                 $event = new EventArgs(
-                  [
+                    [
                     'form' => $form,
                     'BaseInfo' => $this->BaseInfo,
-                  ],
-                  $request
+                    ],
+                    $request
                 );
                 $this->eventDispatcher->dispatch(
-                  EccubeEvents::ADMIN_SETTING_SHOP_SHOP_INDEX_COMPLETE,
-                  $event
+                    EccubeEvents::ADMIN_SETTING_SHOP_SHOP_INDEX_COMPLETE,
+                    $event
                 );
 
                 $cacheUtil->clearCache();

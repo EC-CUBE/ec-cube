@@ -13,8 +13,8 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\ItemCollection;
 
@@ -169,7 +169,7 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
     }
 
     /**
-     * @return integer
+     * @return string|null
      */
     public function getPreOrderId()
     {
@@ -253,7 +253,7 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
     }
 
     /**
-     * @return integer
+     * @return string
      */
     public function getTotalPrice()
     {
@@ -300,7 +300,7 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
     /**
      * 個数の合計を返します。
      *
-     * @return mixed
+     * @return integer
      */
     public function getQuantity()
     {
@@ -346,7 +346,7 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
      *
      * @param \DateTime $createDate
      *
-     * @return Order
+     * @return Cart
      */
     public function setCreateDate($createDate)
     {
@@ -370,7 +370,7 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
      *
      * @param \DateTime $updateDate
      *
-     * @return Order
+     * @return Cart
      */
     public function setUpdateDate($updateDate)
     {

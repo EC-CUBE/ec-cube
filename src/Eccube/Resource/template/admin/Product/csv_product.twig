@@ -12,10 +12,10 @@ file that was distributed with this source code.
 
 {% set menus = ['product', 'product_csv_import'] %}
 
-{% block title %}{{'admin.product.csv_product.tile'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.product.csv_product.subtitle'|trans}}{% endblock %}
+{% block title %}{{ 'admin.product.csv_product.tile'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.product.csv_product.subtitle'|trans }}{% endblock %}
 
-{% form_theme form '@admin/Form/bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block javascript %}
     <script src="{{ asset('assets/js/vendor/spin.min.js', 'admin') }}"></script>
@@ -59,7 +59,7 @@ file that was distributed with this source code.
                     <div class="card-header">
                         <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.csv_product.upload_header.tooltip'|trans }}"><span>{{ 'admin.product.csv_product.upload_header'|trans }}</span><i class="fa fa-question-circle fa-lg fa-lg ml-1"></i></div>
                     </div>
-                    <div class="card-body">
+                    <div id="ex-csv_product-upload" class="card-body">
                         <div class="row">
                             <div class="col-2"><span>{{ 'admin.product.csv_product.upload_label'|trans }}</span></div>
                             <div class="col">
@@ -89,12 +89,12 @@ file that was distributed with this source code.
                             </div>
                         </div>
                     </div>
-                    <div class="card-body">
+                    <div id="ex-csv_product-format" class="card-body">
                         <table class="table table-striped table-bordered">
                             <tbody>
                             {% for key, item in headers %}
                                 <tr>
-                                    <th class="w-25 align-middle table-ec-lightGray">{{ key }}{% if item['required']  %}<span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span>{% endif %}</th>
+                                    <th class="w-25 align-middle table-ec-lightGray">{{ key }}{% if item['required'] %}<span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span>{% endif %}</th>
                                     {% set message = item['description'] %}
                                     <td class="align-middle">{{ message|trans|raw }}</td>
                                 </tr>

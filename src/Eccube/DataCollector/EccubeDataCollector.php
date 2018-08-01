@@ -121,7 +121,7 @@ class EccubeDataCollector extends DataCollector
             $disabled = $this->container->getParameter('eccube.plugins.disabled');
 
             foreach (array_merge($enabled, $disabled) as $code) {
-                $Plugin = $this->pluginRepository->findBy(['code' => $code]);
+                $Plugin = $this->pluginRepository->findOneBy(['code' => $code]);
                 if (!$Plugin) {
                     $Plugin = new Plugin();
                     $Plugin->setCode($code);

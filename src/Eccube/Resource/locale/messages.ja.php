@@ -458,9 +458,9 @@ return [
     'Kana' => 'お名前(フリガナ)',
     'Kana01' => 'セイ', // TODO: enとIDが違う
     'Kana02' => 'メイ', // TODO: enとIDが違う
-    'Postal' => '郵便番号',
+    'Postal' => '例：1010000',
     'Address' => '住所',
-    'PhoneNumber' => '電話番号',
+    'PhoneNumber' => '例：0312345678',
     'Email' => 'メールアドレス',
     'Password' => 'パスワード',
     'Job' => '職業',
@@ -488,6 +488,8 @@ return [
     'form.type.admin.nottelstyle' => '電話番号は半角数字かハイフンのみを入力してください。',
     'form.type.admin.notkanastyle' => 'お名前(フリガナ)はカタカナで入力してください。',
     'form.type.select.notselect' => '入力されていません。',
+    'form.type.select.classcategory' => '項目が選択されていません。',
+    'form.type.add.quantity' => '1以上で入力してください。',
     'form.type.select.selectis_future_or_now_date' => '生年月日が不正な日付です。',
     'form.type.admin.nottrackingnumberstyle' => '送り状番号は半角英数字かハイフンのみを入力してください。',
     'cart.over.stock' => '選択された商品(%product%)の在庫が不足しております。
@@ -1361,7 +1363,7 @@ return [
     'admin.order.export.pdf.message1.default' => 'このたびはお買上げいただきありがとうございます。',
     'admin.order.export.pdf.message2.default' => '下記の内容にて納品させていただきます。',
     'admin.order.export.pdf.message3.default' => 'ご確認くださいますよう、お願いいたします。',
-    'admin.order.export.pdf.label.001' => '注文番号',
+    'admin.order.export.pdf.label.001' => '出荷番号',
     'admin.order.export.pdf.label.002' => '発行日',
     'admin.order.export.pdf.label.003' => '帳票タイトル',
     'admin.order.export.pdf.label.004' => '1行目',

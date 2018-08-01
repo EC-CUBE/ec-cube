@@ -19,6 +19,7 @@ use Eccube\Controller\AbstractController;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\OrderItemType;
+use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
 use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
@@ -248,11 +249,19 @@ class EditController extends AbstractController
                             break;
                         }
 
-                        // ステータスが変更されている場合はステートマシンを実行.
                         $OldStatus = $OriginOrder->getOrderStatus();
                         $NewStatus = $TargetOrder->getOrderStatus();
 
+                        // ステータスが変更されている場合はステートマシンを実行.
                         if ($TargetOrder->getId() && $OldStatus->getId() != $NewStatus->getId()) {
+                            // 発送済に変更された場合は, 発送日をセットする.
+                            if ($NewStatus->getId() == OrderStatus::DELIVERED) {
+                                $TargetOrder->getShippings()->map(function (Shipping $Shipping) {
+                                    if (!$Shipping->isShipped()) {
+                                        $Shipping->setShippingDate(new \DateTime());
+                                    }
+                                });
+                            }
                             // ステートマシンでステータスは更新されるので, 古いステータスに戻す.
                             $TargetOrder->setOrderStatus($OldStatus);
                             // FormTypeでステータスの遷移チェックは行っているのでapplyのみ実行.

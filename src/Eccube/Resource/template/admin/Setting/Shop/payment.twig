@@ -12,8 +12,8 @@ file that was distributed with this source code.
 
 {% set menus = ['setting', 'shop', 'shop_payment'] %}
 
-{% block title %}{{'admin.setting.shop.payment.596'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.setting.shop.payment.595'|trans}}{% endblock %}
+{% block title %}{{ 'admin.setting.shop.payment.596'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.setting.shop.payment.595'|trans }}{% endblock %}
 
 {% block stylesheet %}
     <style type="text/css">
@@ -29,21 +29,21 @@ file that was distributed with this source code.
     <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.mouse.min.js', 'admin') }}"></script>
     <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.sortable.min.js', 'admin') }}"></script>
     <script>
-        $(function () {
+        $(function() {
             // 初期表示時のsort noを保持.
             var oldSortNos = [];
-            $('.sortable-item').each(function () {
+            $('.sortable-item').each(function() {
                 oldSortNos.push(this.dataset.sortNo);
             });
-            oldSortNos.sort(function (a, b) {
+            oldSortNos.sort(function(a, b) {
                 return a - b;
             }).reverse();
 
             // 並び替え後にsort noを更新
-            var updateSortNo = function () {
+            var updateSortNo = function() {
                 var newSortNos = {};
                 var i = 0;
-                $('.sortable-item').each(function () {
+                $('.sortable-item').each(function() {
                     newSortNos[this.dataset.id] = oldSortNos[i];
                     i++;
                 });
@@ -52,13 +52,13 @@ file that was distributed with this source code.
                     url: '{{ url('admin_setting_shop_payment_sort_no_move') }}',
                     type: 'POST',
                     data: newSortNos
-                }).always(function () {
+                }).always(function() {
                     $(".modal-backdrop").remove();
                 });
             };
 
             // 最初と最後の↑↓を再描画
-            var redrawDisableAllows = function () {
+            var redrawDisableAllows = function() {
                 var items = $('.sortable-item');
                 items.find('a').removeClass('disabled');
                 items.first().find('a.action-up').addClass('disabled');
@@ -66,25 +66,25 @@ file that was distributed with this source code.
             };
 
             // オーバレイ後, 表示順の更新を行う
-            var moveSortNo = function () {
+            var moveSortNo = function() {
                 $('body').append($('<div class="modal-backdrop show"></div>'));
                 updateSortNo();
                 redrawDisableAllows();
-            }
+            };
 
             // Drag and Drop
             $(".sortable-container").sortable({
                 items: '> .sortable-item',
                 cursor: 'move',
-                update: function (e, ui) {
+                update: function(e, ui) {
                     moveSortNo();
                 }
             });
 
             // Up
-            $(".sortable-item").on('click', 'a.action-up', function (e) {
+            $('.sortable-item').on('click', 'a.action-up', function(e) {
                 e.preventDefault();
-                var current = $(this).parents("li");
+                var current = $(this).parents('li');
 
                 if (current.prev().hasClass('sortable-item')) {
                     current.prev().before(current);
@@ -93,9 +93,9 @@ file that was distributed with this source code.
             });
 
             // Down
-            $(".sortable-item").on('click', 'a.action-down', function (e) {
+            $('.sortable-item').on('click', 'a.action-down', function(e) {
                 e.preventDefault();
-                var current = $(this).parents("li");
+                var current = $(this).parents('li');
 
                 if (current.next().hasClass('sortable-item')) {
                     current.next().after(current);
@@ -116,18 +116,18 @@ file that was distributed with this source code.
                             <li class="list-group-item">
                                 <div class="row justify-content-around">
                                     <div class="col-auto"><strong>&nbsp;</strong></div>
-                                    <div class="col-1"><strong>{{'admin.setting.shop.payment.597'|trans}}</strong></div>
-                                    <div class="col-1"><strong>{{'admin.setting.shop.payment.599'|trans}}</strong></div>
-                                    <div class="col"><strong>{{'admin.setting.shop.payment.600'|trans}}</strong></div>
+                                    <div class="col-1"><strong>{{ 'admin.setting.shop.payment.597'|trans }}</strong></div>
+                                    <div class="col-1"><strong>{{ 'admin.setting.shop.payment.599'|trans }}</strong></div>
+                                    <div class="col"><strong>{{ 'admin.setting.shop.payment.600'|trans }}</strong></div>
                                 </div>
                             </li>
                             {% for Payment in Payments %}
-                            <li class="list-group-item sortable-item" data-id="{{ Payment.id }}" data-sort-no="{{ Payment.sortNo }}">
-                                <div class="row justify-content-around">
-                                    <div class="col-auto d-flex align-items-center"><i class="fa fa-bars text-ec-gray"></i></div>
-                                    <div class="col-1 d-flex align-items-center"><a href="{{ url('admin_setting_shop_payment_edit', { id: Payment.id}) }}">{{ Payment.methodForAdmin }}</a></div>
-                                    <div class="col-1 d-flex align-items-center"><span>{{ Payment.charge|price }}</span></div>
-                                    <div class="col d-flex align-items-center">
+                                <li id="ex-payment-{{ Payment.id }}" class="list-group-item sortable-item" data-id="{{ Payment.id }}" data-sort-no="{{ Payment.sortNo }}">
+                                    <div class="row justify-content-around">
+                                        <div class="col-auto d-flex align-items-center"><i class="fa fa-bars text-ec-gray"></i></div>
+                                        <div class="col-1 d-flex align-items-center"><a href="{{ url('admin_setting_shop_payment_edit', { id: Payment.id}) }}">{{ Payment.methodForAdmin }}</a></div>
+                                        <div class="col-1 d-flex align-items-center"><span>{{ Payment.charge|price }}</span></div>
+                                        <div class="col d-flex align-items-center">
                                         <span>
                                             {% if Payment.rule_min > 0 %}
                                                 {{ Payment.rule_min|price }}
@@ -138,23 +138,23 @@ file that was distributed with this source code.
                                             {% if Payment.rule_max > 0 %}
                                                 ～{{ Payment.rule_max|price }}
                                             {% elseif Payment.rule_max is null %}
-                                                ～{{'admin.setting.shop.payment.603'|trans}}
+                                                ～{{ 'admin.setting.shop.payment.603'|trans }}
                                             {% endif %}
                                         </span>
                                         </div>
                                         <div class="col-3 text-right">
                                             <div class="row">
                                                 <div class="col text-center" data-toggle="tooltip" data-placement="top" title="{{ 'admin.setting.shop.payment.608'|trans }}">
-                                                    <a class="btn btn-ec-actionIcon mr-3 action-up{{ loop.first ? ' disabled' }}" data-toggle="tooltip" data-placement="top" title="{{'admin.setting.shop.payment.608'|trans}}">
+                                                    <a class="btn btn-ec-actionIcon mr-3 action-up{{ loop.first ? ' disabled' }}" data-toggle="tooltip" data-placement="top" title="{{ 'admin.setting.shop.payment.608'|trans }}">
                                                         <i class="fa fa-arrow-up fa-lg text-secondary"></i>
                                                     </a>
                                                 </div>
                                                 <div class="col text-center" data-toggle="tooltip" data-placement="top" title="{{ 'admin.setting.shop.payment.609'|trans }}">
-                                                    <a class="btn btn-ec-actionIcon mr-3 action-down{{ loop.last ? ' disabled' }}"  data-toggle="tooltip" data-placement="top" title="{{'admin.setting.shop.payment.609'|trans}}">
+                                                    <a class="btn btn-ec-actionIcon mr-3 action-down{{ loop.last ? ' disabled' }}" data-toggle="tooltip" data-placement="top" title="{{ 'admin.setting.shop.payment.609'|trans }}">
                                                         <i class="fa fa-arrow-down fa-lg text-secondary"></i>
                                                     </a>
                                                 </div>
-                                                <div class="col text-center" data-toggle="tooltip" data-placement="top" title="{{'admin.setting.shop.payment.607'|trans}}">
+                                                <div class="col text-center" data-toggle="tooltip" data-placement="top" title="{{ 'admin.setting.shop.payment.607'|trans }}">
                                                     <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#delete_{{ Payment.id }}">
                                                         <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
                                                     </a>
@@ -195,13 +195,13 @@ file that was distributed with this source code.
                         </ul>
                     </div>
                 </div>
-                <p>{{'admin.setting.shop.payment.notice'|trans}}</p>
+                <p>{{ 'admin.setting.shop.payment.notice'|trans }}</p>
             </div>
             <div class="card rounded border-0">
                 <div class="card-body p-4">
                     <div class="text-center">
                         {# TODO 新規作成ボタンのレイアウトについてデザイン調整が必要 #}
-                        <a href="{{ url('admin_setting_shop_payment_new') }}" class="btn btn-ec-regular pl-4 pr-4">{{'admin.setting.shop.payment.610'|trans}}</a>
+                        <a href="{{ url('admin_setting_shop_payment_new') }}" class="btn btn-ec-regular pl-4 pr-4">{{ 'admin.setting.shop.payment.610'|trans }}</a>
                     </div>
                 </div>
             </div>
