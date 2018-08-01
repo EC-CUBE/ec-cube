@@ -15,10 +15,11 @@ init:
 
 environment:
   global:
-    USER: "root" 
-    DBNAME: "myapp_test"
-    DBPASS: "Password12!"
-    DBUSER: "root"
+    APP_ENV: "test"
+    APP_DEBUG: "0"
+    MAILER_URL: "null://localhost"
+    DATABASE_URL: "mysql://root:Password12!@localhost/myapp_test"
+    DATABASE_SERVER_VERSION: "5"
     BASE_DIR: "C:/projects/ec-cube"
 
   matrix:
@@ -26,7 +27,7 @@ environment:
     provider: mysql
 
 services:
-  - iis  
+  - iis
   - mysql
 
 # Install scripts. (runs after repo cloning)
@@ -37,7 +38,7 @@ install:
   #- cinst mysql
   #- SET PATH=C:\tools\mysql\current\bin\;%PATH%
   # Set PHP.
-  - cinst php --version 7.0.9 --allow-empty-checksums
+  - cinst php --version 7.2.8 --allow-empty-checksums
   - SET PATH=C:\tools\php\;%PATH%
   - copy C:\tools\php\php.ini-production C:\tools\php\php.ini
   - echo date.timezone="Asia/Tokyo" >> C:\tools\php\php.ini
@@ -51,13 +52,6 @@ install:
   - echo extension=php_curl.dll >> C:\tools\php\php.ini
   - echo extension=php_fileinfo.dll >> C:\tools\php\php.ini
   - echo extension=php_intl.dll >> C:\tools\php\php.ini
-  - echo output_buffering = Off >> C:\tools\php\php.ini
-  - echo default_charset = UTF-8 >> C:\tools\php\php.ini
-  - echo mbstring.language = Japanese >> C:\tools\php\php.ini
-  - echo mbstring.encoding_translation = On >> C:\tools\php\php.ini
-  - echo mbstring.http_input = UTF-8 >> C:\tools\php\php.ini
-  - echo mbstring.http_output = pass >> C:\tools\php\php.ini
-  - echo mbstring.internal_encoding = UTF-8 >> C:\tools\php\php.ini
   - echo memory_limit = 512M >> C:\tools\php\php.ini
   - php -r "readfile('http://getcomposer.org/installer');" | php
   - php composer.phar install --dev --no-interaction -o
@@ -70,7 +64,9 @@ install:
 build: off
 
 before_test:
-  - php eccube_install.php mysql none
+  - php bin\console doctrine:database:create
+  - php bin\console doctrine:schema:create
+  - php bin\console eccube:fixtures:load
 
 test_script:
-  - vendor\bin\phpunit.bat
+  - php bin\phpunit --exclude-group cache-clear
