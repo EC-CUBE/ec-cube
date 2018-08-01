@@ -193,7 +193,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
             $this->generateUrl('admin_customer_edit', ['id' => $id])
         );
 
-        $orderListing = $crawler->filter('#history_box')->text();
+        $orderListing = $crawler->filter('#orderHistory')->text();
         $this->assertContains('この会員の購入履歴がありません', $orderListing);
     }
 }
