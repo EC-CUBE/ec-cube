@@ -16,11 +16,12 @@ namespace Eccube\Service;
 use Eccube\Application;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
-use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
+use Eccube\Entity\Shipping;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\OrderPdfRepository;
+use Eccube\Repository\ShippingRepository;
 use Eccube\Twig\Extension\EccubeExtension;
 use setasign\Fpdi\TcpdfFpdi;
 
@@ -33,11 +34,15 @@ class OrderPdfService extends TcpdfFpdi
     /** @var OrderRepository */
     protected $orderRepository;
 
+    /** @var ShippingRepository */
+    protected $shippingRepository;
+
     /** @var OrderPdfRepository */
     protected $orderPdfRepository;
 
     /** @var TaxRuleService */
     protected $taxRuleService;
+
     /**
      * @var Application
      */
@@ -105,14 +110,16 @@ class OrderPdfService extends TcpdfFpdi
      *
      * @param EccubeConfig $eccubeConfig
      * @param OrderRepository $orderRepository
+     * @param ShippingRepository $shippingRepository
      * @param TaxRuleService $taxRuleService
      * @param BaseInfoRepository $baseInfoRepository
      */
-    public function __construct(EccubeConfig $eccubeConfig, OrderRepository $orderRepository, TaxRuleService $taxRuleService, BaseInfoRepository $baseInfoRepository, EccubeExtension $eccubeExtension)
+    public function __construct(EccubeConfig $eccubeConfig, OrderRepository $orderRepository, ShippingRepository $shippingRepository, TaxRuleService $taxRuleService, BaseInfoRepository $baseInfoRepository, EccubeExtension $eccubeExtension)
     {
         $this->eccubeConfig = $eccubeConfig;
         $this->baseInfoRepository = $baseInfoRepository->get();
         $this->orderRepository = $orderRepository;
+        $this->shippingRepository = $shippingRepository;
         $this->taxRuleService = $taxRuleService;
         $this->eccubeExtension = $eccubeExtension;
         parent::__construct();
@@ -169,7 +176,7 @@ class OrderPdfService extends TcpdfFpdi
             return false;
         }
 
-        // 注文番号をStringからarrayに変換
+        // 出荷番号をStringからarrayに変換
         $ids = explode(',', $formData['ids']);
 
         // 空文字列の場合のデフォルトメッセージを設定する
@@ -182,11 +189,11 @@ class OrderPdfService extends TcpdfFpdi
         foreach ($ids as $id) {
             $this->lastOrderId = $id;
 
-            // 注文番号から受注情報を取得する
-            /** @var Order $order */
-            $order = $this->orderRepository->find($id);
-            if (!$order) {
-                // 注文情報の取得ができなかった場合
+            // 出荷番号から出荷情報を取得する
+            /** @var Shipping $Shipping */
+            $Shipping = $this->shippingRepository->find($id);
+            if (!$Shipping) {
+                // 出荷情報の取得ができなかった場合
                 continue;
             }
 
@@ -200,13 +207,13 @@ class OrderPdfService extends TcpdfFpdi
             $this->renderShopData();
 
             // 注文情報を描画する
-            $this->renderOrderData($order);
+            $this->renderOrderData($Shipping);
 
             // メッセージを描画する
             $this->renderMessageData($formData);
 
-            // 受注詳細情報を描画する
-            $this->renderOrderDetailData($order);
+            // 出荷詳細情報を描画する
+            $this->renderOrderDetailData($Shipping);
 
             // 備考を描画する
             $this->renderEtcData($formData);
@@ -363,9 +370,9 @@ class OrderPdfService extends TcpdfFpdi
     /**
      * 購入者情報を設定する.
      *
-     * @param Order $Order
+     * @param Shipping $Shipping
      */
-    protected function renderOrderData(Order $Order)
+    protected function renderOrderData(Shipping $Shipping)
     {
         // 基準座標を設定する
         $this->setBasePosition();
@@ -376,6 +383,8 @@ class OrderPdfService extends TcpdfFpdi
         // =========================================
         // 購入者情報部
         // =========================================
+
+        $Order = $Shipping->getOrder();
 
         // 購入者都道府県+住所1
         $text = $Order->getPref().$Order->getAddr01();
@@ -417,9 +426,9 @@ class OrderPdfService extends TcpdfFpdi
     /**
      * 購入商品詳細情報を設定する.
      *
-     * @param Order $Order
+     * @param Shipping $Shipping
      */
-    protected function renderOrderDetailData(Order $Order)
+    protected function renderOrderDetailData(Shipping $Shipping)
     {
         $arrOrder = [];
         // テーブルの微調整を行うための購入商品詳細情報をarrayに変換する
@@ -429,7 +438,7 @@ class OrderPdfService extends TcpdfFpdi
         // =========================================
         $i = 0;
         /* @var OrderItem $OrderItem */
-        foreach ($Order->getOrderItems() as $OrderItem) {
+        foreach ($Shipping->getOrderItems() as $OrderItem) {
             // class categoryの生成
             $classCategory = '';
             /** @var OrderItem $OrderItem */
@@ -441,21 +450,20 @@ class OrderPdfService extends TcpdfFpdi
                     $classCategory .= ' * '.$OrderItem->getClassCategoryName2().' ]';
                 }
             }
-            // 税
-            $tax = $this->taxRuleService->calcTax($OrderItem->getPrice(), $OrderItem->getTaxRate(), \Eccube\Entity\Master\RoundingType::ROUND);
-            $OrderItem->setPriceIncTax($OrderItem->getPrice() + $tax);
 
             // product
             $arrOrder[$i][0] = sprintf('%s / %s / %s', $OrderItem->getProductName(), $OrderItem->getProductCode(), $classCategory);
             // 購入数量
             $arrOrder[$i][1] = number_format($OrderItem->getQuantity());
             // 税込金額（単価）
-            $arrOrder[$i][2] = $this->eccubeExtension->getPriceFilter($OrderItem->getPriceIncTax());
+            $arrOrder[$i][2] = $this->eccubeExtension->getPriceFilter($OrderItem->getPrice());
             // 小計（商品毎）
             $arrOrder[$i][3] = $this->eccubeExtension->getPriceFilter($OrderItem->getTotalPrice());
 
             ++$i;
         }
+
+        $Order = $Shipping->getOrder();
 
         // =========================================
         // 小計

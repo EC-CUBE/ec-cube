@@ -32,14 +32,14 @@ class LayoutEditPage extends AbstractAdminPageStyleGuide
 
     public function ブロックを移動($blockName, $dest, $timeout = 10)
     {
-        $this->tester->waitForElementVisible(['xpath' => "//div[contains(@id, 'detail_box__layout_item')][div[div[1][a[text()='${blockName}']]]]"], $timeout);
-        $this->tester->dragAndDrop(['xpath' => "//div[contains(@id, 'detail_box__layout_item')][div[div[1][a[text()='${blockName}']]]]"], $dest);
+        $this->tester->waitForElementVisible(['xpath' => "//div[contains(@id, 'detail_box__layout_item')][div[div[1][span[text()='${blockName}']]]]"], $timeout);
+        $this->tester->dragAndDrop(['xpath' => "//div[contains(@id, 'detail_box__layout_item')][div[div[1][span[text()='${blockName}']]]]"], $dest);
         return $this;
     }
 
     public function コンテキストメニューを開く($blockName)
     {
-        $this->tester->click(['xpath' => "//div[contains(@id, 'detail_box__layout_item')][div[div[1][a[text()='${blockName}']]]]/div/div[2]"]);
+        $this->tester->click(['xpath' => "//div[contains(@id, 'detail_box__layout_item')][div[div[1][span[text()='${blockName}']]]]/div/div[2]"]);
         return $this;
     }
 
@@ -76,6 +76,7 @@ class LayoutEditPage extends AbstractAdminPageStyleGuide
     public function コンテキストメニューでコードプレビュー($blockName, $element = null, $timeout = 10)
     {
         $this->コンテキストメニューを開く($blockName);
+        $this->tester->scrollTo('//div[contains(@id, \'popover\')]/div[2]/div/a[4]', 0, 0);
         $this->tester->waitForElementVisible(['xpath' => "//div[contains(@id, 'popover')]/div[2]/div/a[4]"]);
         $this->tester->click(['xpath' => "//div[contains(@id, 'popover')]/div[2]/div/a[4]"]);
         $this->tester->waitForElementVisible(['id' => "codePreview"]);

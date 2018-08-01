@@ -67,6 +67,8 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
             return;
         }
 
+        $this->removePointDiscountItem($itemHolder);
+
         // 利用ポイントがある場合は割引明細を追加
         if ($itemHolder->getUsePoint() > 0) {
             $discount = $this->BaseInfo->pointToPrice($itemHolder->getUsePoint());
@@ -95,16 +97,20 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
             return;
         }
 
-        // 支払い金額 < 利用ポイント
-        $discount = $this->BaseInfo->pointToPrice($itemHolder->getUsePoint());
-        if (($itemHolder->getTotal() + $discount) < 0) {
-            $this->throwInvalidItemException(trans('shopping.use_point.error.exceed.payment'));
-        }
-
         // 所有ポイント < 利用ポイント
         $Customer = $itemHolder->getCustomer();
         if ($Customer->getPoint() < $itemHolder->getUsePoint()) {
+            // 利用ポイントが所有ポイントを上回っていた場合は所有ポイントで上書き
+            $itemHolder->setUsePoint($Customer->getPoint());
             $this->throwInvalidItemException(trans('shopping.use_point.error.exceed'));
+        }
+
+        // 支払い金額 < 利用ポイント
+        if ($itemHolder->getTotal() < 0) {
+            // 利用ポイントが支払い金額を上回っていた場合は支払い金額が0円以上となるようにポイントを調整
+            $overPoint = floor($itemHolder->getTotal() / $this->BaseInfo->getPointConversionRate());
+            $itemHolder->setUsePoint($itemHolder->getUsePoint() + $overPoint);
+            $this->throwInvalidItemException('利用ポイントがお支払い金額を上回っています.');
         }
     }
 
@@ -123,9 +129,7 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
 
         // ユーザの保有ポイントを減算
         $Customer = $itemHolder->getCustomer();
-        if ($Customer) {
-            $Customer->setPoint($Customer->getPoint() - $itemHolder->getUsePoint());
-        }
+        $Customer->setPoint($Customer->getPoint() - $itemHolder->getUsePoint());
     }
 
     /**
@@ -202,15 +206,16 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
                 $pointRate = $basicPointRate;
             }
 
-            // ポイント = 単価 * ポイント付与率 * 数量
-            $point = round($item->getPriceIncTax() * ($pointRate / 100)) * $item->getQuantity();
+            // TODO: ポイントは税抜き分しか割引されない、ポイント明細は税抜きのままでいいのか？
+            if ($item->isPoint()) {
+                $point = round($item->getPrice() * ($pointRate / 100)) * $item->getQuantity();
+            } else {
+                // ポイント = 単価 * ポイント付与率 * 数量
+                $point = round($item->getPriceIncTax() * ($pointRate / 100)) * $item->getQuantity();
+            }
 
             return $carry + $point;
         }, 0);
-
-        // 利用したポイントの割合に対して付与するポイントを減算
-        // 明細のポイント合計 - (利用ポイント * ポイント付与率)
-        $totalPoint -= intval($itemHolder->getUsePoint() * $basicPointRate / 100);
 
         return $totalPoint < 0 ? 0 : $totalPoint;
     }
@@ -223,16 +228,19 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
      */
     private function addPointDiscountItem(ItemHolderInterface $itemHolder, $discount)
     {
-        $DiscountType = $this->entityManager->find(OrderItemType::class, OrderItemType::DISCOUNT);
+        $DiscountType = $this->entityManager->find(OrderItemType::class, OrderItemType::POINT);
         $TaxInclude = $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::INCLUDED);
-        $Taxation = $this->entityManager->find(TaxType::class, TaxType::TAXATION);
+        $Taxation = $this->entityManager->find(TaxType::class, TaxType::NON_TAXABLE);
 
+        // TODO TaxProcessorが先行して実行されるため, 税額等の値は個別にセットする.
         $OrderItem = new OrderItem();
-        $OrderItem->setProductName('ポイント値引')
+        $OrderItem->setProductName($DiscountType->getName())
             ->setPrice($discount)
-            ->setPriceIncTax($discount)
-            ->setTaxRate(8)
             ->setQuantity(1)
+            ->setTax(0)
+            ->setTaxRate(0)
+            ->setTaxRuleId(null)
+            ->setRoundingType(null)
             ->setOrderItemType($DiscountType)
             ->setTaxDisplayType($TaxInclude)
             ->setTaxType($Taxation)
@@ -248,7 +256,7 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
     private function removePointDiscountItem(ItemHolderInterface $itemHolder)
     {
         foreach ($itemHolder->getItems() as $item) {
-            if ($item->isDiscount() && $item->getProductName() == 'ポイント値引') {
+            if ($item->isPoint()) {
                 $itemHolder->removeOrderItem($item);
                 $this->entityManager->remove($item);
             }

@@ -56,7 +56,7 @@ class AcceptanceTester extends \Codeception\Actor
             $I->click('#page_admin_homepage div.popover .popover-body a:last-child');
             $config = Fixtures::get('config');
             $I->amOnPage('/'.$config['eccube_admin_route'].'/logout');
-            $I->see('ログイン', '.login-box #form1 .btn_area button');
+            $I->see('ログイン', '#form1 > button');
         }
     }
 

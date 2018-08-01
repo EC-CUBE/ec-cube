@@ -12,8 +12,8 @@ file that was distributed with this source code.
 
 {% set menus = ['setting', 'system', 'security'] %}
 
-{% block title %}{{'admin.setting.system.security.703'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.setting.system.security.702'|trans}}{% endblock %}
+{% block title %}{{ 'admin.setting.system.security.703'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.setting.system.security.702'|trans }}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
@@ -22,6 +22,7 @@ file that was distributed with this source code.
         .col-sm-2 {
             max-width: none;
         }
+
         label {
             display: inline;
         }
@@ -34,13 +35,12 @@ file that was distributed with this source code.
         <div class="c-contentsArea__cols">
             <div class="c-contentsArea__primaryCol">
                 <div class="c-primaryCol">
-                    {#basic config#}
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
                                     <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip">
-                                        <span class="card-title">{{'admin.setting.system.security.704'|trans}}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                                        <span class="card-title">{{ 'admin.setting.system.security.704'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
                                     </div>
                                 </div>
                                 <div class="col-4 text-right">
@@ -70,21 +70,20 @@ file that was distributed with this source code.
                                     <div class="col">
                                         {{ form_widget(form.admin_allow_hosts, {'attr': {'rows': '7', 'aria-describedby': 'helpBlock'}}) }}
                                         {{ form_errors(form.admin_allow_hosts) }}
-                                        <span id="helpBlock" class="help-block">{{'admin.setting.system.security.707'|trans}}
-                                            {{'admin.setting.system.security.708'|trans}}</span>
+                                        <span id="helpBlock" class="help-block">{{ 'admin.setting.system.security.707'|trans }}
+                                            {{ 'admin.setting.system.security.708'|trans }}</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div><!-- /.card -->
 
-                    {#force ssl config#}
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header">
                             <div class="row mb-2">
                                 <div class="col-8">
                                     <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip">
-                                        <span class="card-title">{{'admin.setting.system.security.709'|trans}}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                                        <span class="card-title">{{ 'admin.setting.system.security.709'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
                                     </div>
                                 </div>
                                 <div class="col-4 text-right">
@@ -106,7 +105,7 @@ file that was distributed with this source code.
                                             {{ form_errors(form.force_ssl) }}
                                         {% else %}
                                             {{ form_widget(form.force_ssl, {'attr': {'disabled': 'disabled'}}) }}
-                                            <p class="text-danger">{{'admin.setting.system.security.711'|trans}}</p>
+                                            <p class="text-danger">{{ 'admin.setting.system.security.711'|trans }}</p>
                                         {% endif %}
                                     </div>
                                 </div>
@@ -117,15 +116,16 @@ file that was distributed with this source code.
                 </div>
             </div>
 
-            {# Submit bar#}
             <div class="c-conversionArea">
                 <div class="c-conversionArea__container">
                     <div class="row justify-content-between align-items-center">
-                        <div class="col-6"><div class="c-conversionArea__leftBlockItem"></div></div>
                         <div class="col-6">
-                            <div class="row align-items-center justify-content-end">
+                            <div class="c-conversionArea__leftBlockItem"></div>
+                        </div>
+                        <div class="col-6">
+                            <div id="ex-conversion-action" class="row align-items-center justify-content-end">
                                 <div class="col-auto">
-                                    <button type="submit" class="btn btn-ec-conversion px-5">{{'admin.setting.system.security.712'|trans}}</button>
+                                    <button type="submit" class="btn btn-ec-conversion px-5">{{ 'admin.setting.system.security.712'|trans }}</button>
                                 </div>
                             </div>
                         </div>

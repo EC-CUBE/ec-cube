@@ -4,3 +4,4 @@ id,name,sort_no,discriminator_type
 "3","手数料","2","orderitemtype"
 "4","割引","3","orderitemtype"
 "5","税","4","orderitemtype"
+"6","ポイント","5","orderitemtype"

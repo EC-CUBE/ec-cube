@@ -147,10 +147,8 @@ file that was distributed with this source code.
                                     {{ 'admin.customer.delivery.label.005'|trans }}
                                 </div>
                                 <div class="col">
-                                    <div class="row mb-2 justify-content-start">
-                                        {{ form_widget(form.phone_number) }}
-                                        {{ form_errors(form.phone_number) }}
-                                    </div>
+                                    {{ form_widget(form.phone_number) }}
+                                    {{ form_errors(form.phone_number) }}
                                 </div>
                             </div>
 
@@ -181,7 +179,7 @@ file that was distributed with this source code.
                                 <span>{{ 'admin.customer.delivery_edit.117'|trans }}</span></a>
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div id="ex-conversion-action" class="col-6">
                         <div class="row align-items-center justify-content-end">
                             <div class="col-auto">
                                 <button class="btn btn-ec-conversion px-5"
