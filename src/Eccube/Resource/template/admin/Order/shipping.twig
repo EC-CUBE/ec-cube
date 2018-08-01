@@ -327,7 +327,7 @@ file that was distributed with this source code.
                                         <div class="col-6">
                                             {% if shippingForm.vars.value.id %}
                                                 {# 登録済みの出荷 #}
-                                                <a class="btn btn-ec-regular pdf-print" href="{{ url('admin_order_export_pdf') }}?ids[]={{ attribute(Shippings, loop.index0).id }}">{{ 'admin.order.edit.label.shipping.print'|trans }}</a>
+                                                <a class="btn btn-ec-regular pdf-print" href="{{ url('admin_order_export_pdf') }}?ids[]={{ shippingForm.vars.value.id }}">{{ 'admin.order.edit.label.shipping.print'|trans }}</a>
                                                 {# TODO: 出荷完了メール実装 #}
                                                 <button type="button" class="btn btn-ec-regular confirmationModal"
                                                         data-type="mail" data-bulk-update="false"
