@@ -93,7 +93,7 @@ class EF06OtherCest
 
         $I->resetEmails();
         $I->amOnPage($url);
-        $I->see('パスワード変更(再設定ページ)', 'div.ec-pageHeader h1');
+        $I->see('パスワード再発行(再設定ページ)', 'div.ec-pageHeader h1');
 
         $password = substr(str_shuffle('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 20);
 

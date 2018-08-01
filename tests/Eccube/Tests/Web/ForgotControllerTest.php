@@ -88,7 +88,7 @@ class ForgotControllerTest extends AbstractWebTestCase
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $this->expected = 'パスワード変更(再設定ページ)';
+        $this->expected = 'パスワード再発行(再設定ページ)';
         $this->actual = $crawler->filter('div.ec-pageHeader > h1')->text();
         $this->verify();
 
