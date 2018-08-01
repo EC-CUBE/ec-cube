@@ -103,9 +103,8 @@ class EA06ContentsManagementCest
 
         $I->see('folder1', $FileManagePage->ファイル名(1));
 
-        // Todo: breadcrumbs incomplete
-//        $FileManagePage->一覧_表示(1);
-//        $I->see('folder1', $FileManagePage->パンくず(1));
+        $FileManagePage->一覧_ファイル名_クリック(1);
+        $I->see('folder1', $FileManagePage->パンくず(2));
 
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/content/file_manager');
@@ -113,7 +112,7 @@ class EA06ContentsManagementCest
 
         FileManagePage::go($I)
             ->一覧_削除(1)
-            ->一覧_削除_accept();
+            ->一覧_削除_accept(1);
     }
 
     public function contentsmanagement_ページ管理(\AcceptanceTester $I)
