@@ -22,6 +22,8 @@ use Eccube\Repository\AuthorityRoleRepository;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\PageRepository;
+use Eccube\Repository\PageLayoutRepository;
+use Eccube\Repository\BlockPositionRepository;
 use Eccube\Request\Context;
 use SunCat\MobileDetectBundle\DeviceDetector\MobileDetector;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -52,6 +54,16 @@ class TwigInitializeListener implements EventSubscriberInterface
     protected $pageRepository;
 
     /**
+     * @var PageLayoutRepository
+     */
+    protected $pageLayoutRepository;
+
+    /**
+     * @var BlockPositionRepository
+     */
+    protected $blockPositionRepository;
+
+    /**
      * @var Context
      */
     protected $requestContext;
@@ -77,6 +89,8 @@ class TwigInitializeListener implements EventSubscriberInterface
      * @param Environment $twig
      * @param BaseInfoRepository $baseInfoRepository
      * @param PageRepository $pageRepository
+     * @param PageLayoutRepository $pageLayoutRepository
+     * @param BlockPositionRepository $blockPositionRepository
      * @param DeviceTypeRepository $deviceTypeRepository
      * @param AuthorityRoleRepository $authorityRoleRepository
      * @param EccubeConfig $eccubeConfig
@@ -87,6 +101,8 @@ class TwigInitializeListener implements EventSubscriberInterface
         Environment $twig,
         BaseInfoRepository $baseInfoRepository,
         PageRepository $pageRepository,
+        PageLayoutRepository $pageLayoutRepository,
+        BlockPositionRepository $blockPositionRepository,
         DeviceTypeRepository $deviceTypeRepository,
         AuthorityRoleRepository $authorityRoleRepository,
         EccubeConfig $eccubeConfig,
@@ -96,6 +112,8 @@ class TwigInitializeListener implements EventSubscriberInterface
         $this->twig = $twig;
         $this->baseInfoRepository = $baseInfoRepository;
         $this->pageRepository = $pageRepository;
+        $this->pageLayoutRepository = $pageLayoutRepository;
+        $this->blockPositionRepository = $blockPositionRepository;
         $this->deviceTypeRepository = $deviceTypeRepository;
         $this->authorityRoleRepository = $authorityRoleRepository;
         $this->eccubeConfig = $eccubeConfig;
@@ -134,8 +152,9 @@ class TwigInitializeListener implements EventSubscriberInterface
      */
     public function setFrontVaribales(GetResponseEvent $event)
     {
+        $request = $event->getRequest();
         /** @var \Symfony\Component\HttpFoundation\ParameterBag $attributes */
-        $attributes = $event->getRequest()->attributes;
+        $attributes = $request->attributes;
         $route = $attributes->get('_route');
         if ($route == 'user_data') {
             $routeParams = $attributes->get('_route_params', []);
@@ -165,6 +184,20 @@ class TwigInitializeListener implements EventSubscriberInterface
                 ->getSingleResult();
         } catch (NoResultException $e) {
             $Page = $this->pageRepository->newPage($DeviceType);
+        }
+
+        if ($request->get('preview')) {
+            $Page->getPageLayouts()->clear();
+            $PageLayouts = $this->pageLayoutRepository->findBy(['layout_id' => 0]);
+            foreach ($PageLayouts as $PageLayout) {
+                $Page->addPageLayout($PageLayout);
+            }
+
+            $Page->getBlockPositions()->clear();
+            $BlockPositions = $this->blockPositionRepository->findBy(['layout_id' => 0]);
+            foreach ($BlockPositions as $BlockPosition) {
+                $Page->addBlockPosition($BlockPosition);
+            }
         }
 
         $this->twig->addGlobal('Page', $Page);
