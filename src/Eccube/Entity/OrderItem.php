@@ -15,7 +15,9 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\Master\OrderItemType;
+use Eccube\Entity\Master\RoundingType;
 use Eccube\Entity\Master\TaxDisplayType;
+use Eccube\Entity\Master\TaxType;
 
 if (!class_exists('\Eccube\Entity\OrderItem')) {
     /**
@@ -31,22 +33,6 @@ if (!class_exists('\Eccube\Entity\OrderItem')) {
     {
         use PointRateTrait;
 
-        private $price_inc_tax = null;
-
-        /**
-         * Set price IncTax
-         *
-         * @param  string       $price_inc_tax
-         *
-         * @return OrderItem
-         */
-        public function setPriceIncTax($price_inc_tax)
-        {
-            $this->price_inc_tax = $price_inc_tax;
-
-            return $this;
-        }
-
         /**
          * Get price IncTax
          *
@@ -54,7 +40,12 @@ if (!class_exists('\Eccube\Entity\OrderItem')) {
          */
         public function getPriceIncTax()
         {
-            return $this->price_inc_tax;
+            // 税表示区分が税込の場合は, priceに税込金額が入っている.
+            if ($this->TaxDisplayType && $this->TaxDisplayType->getId() == TaxDisplayType::INCLUDED) {
+                return $this->price;
+            }
+
+            return $this->price + $this->tax;
         }
 
         /**
@@ -62,21 +53,6 @@ if (!class_exists('\Eccube\Entity\OrderItem')) {
          */
         public function getTotalPrice()
         {
-            $TaxDisplayType = $this->getTaxDisplayType();
-            if (is_object($TaxDisplayType)) {
-                switch ($TaxDisplayType->getId()) {
-                    // 税込価格
-                    case TaxDisplayType::INCLUDED:
-                        $this->setPriceIncTax($this->getPrice());
-                        break;
-                        // 税別価格の場合は税額を加算する
-                    case TaxDisplayType::EXCLUDED:
-                        // TODO 課税規則を考慮する
-                        $this->setPriceIncTax($this->getPrice() + $this->getPrice() * $this->getTaxRate() / 100);
-                        break;
-                }
-            }
-
             return $this->getPriceIncTax() * $this->getQuantity();
         }
 
@@ -206,7 +182,7 @@ if (!class_exists('\Eccube\Entity\OrderItem')) {
         /**
          * @var string
          *
-         * @ORM\Column(name="price", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
+         * @ORM\Column(name="price", type="decimal", precision=12, scale=2, options={"default":0})
          */
         private $price = 0;
 
@@ -220,6 +196,13 @@ if (!class_exists('\Eccube\Entity\OrderItem')) {
         /**
          * @var string
          *
+         * @ORM\Column(name="tax", type="decimal", precision=10, scale=0, options={"default":0})
+         */
+        private $tax = 0;
+
+        /**
+         * @var string
+         *
          * @ORM\Column(name="tax_rate", type="decimal", precision=10, scale=0, options={"unsigned":true,"default":0})
          */
         private $tax_rate = 0;
@@ -227,9 +210,9 @@ if (!class_exists('\Eccube\Entity\OrderItem')) {
         /**
          * @var int|null
          *
-         * @ORM\Column(name="tax_rule", type="smallint", nullable=true, options={"unsigned":true})
+         * @ORM\Column(name="tax_rule_id", type="smallint", nullable=true, options={"unsigned":true})
          */
-        private $tax_rule;
+        private $tax_rule_id;
 
         /**
          * @var string|null
@@ -277,6 +260,16 @@ if (!class_exists('\Eccube\Entity\OrderItem')) {
          * })
          */
         private $Shipping;
+
+        /**
+         * @var \Eccube\Entity\Master\RoundingType
+         *
+         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\RoundingType")
+         * @ORM\JoinColumns({
+         *   @ORM\JoinColumn(name="rounding_type_id", referencedColumnName="id")
+         * })
+         */
+        private $RoundingType;
 
         /**
          * @var \Eccube\Entity\Master\TaxType
@@ -511,6 +504,26 @@ if (!class_exists('\Eccube\Entity\OrderItem')) {
         }
 
         /**
+         * @return string
+         */
+        public function getTax()
+        {
+            return $this->tax;
+        }
+
+        /**
+         * @param string $tax
+         *
+         * @return $this
+         */
+        public function setTax($tax)
+        {
+            $this->tax = $tax;
+
+            return $this;
+        }
+
+        /**
          * Set taxRate.
          *
          * @param string $taxRate
@@ -535,27 +548,27 @@ if (!class_exists('\Eccube\Entity\OrderItem')) {
         }
 
         /**
-         * Set taxRule.
+         * Set taxRuleId.
          *
-         * @param int|null $taxRule
+         * @param int|null $taxRuleId
          *
          * @return OrderItem
          */
-        public function setTaxRule($taxRule = null)
+        public function setTaxRuleId($taxRuleId = null)
         {
-            $this->tax_rule = $taxRule;
+            $this->tax_rule_id = $taxRuleId;
 
             return $this;
         }
 
         /**
-         * Get taxRule.
+         * Get taxRuleId.
          *
          * @return int|null
          */
-        public function getTaxRule()
+        public function getTaxRuleId()
         {
-            return $this->tax_rule;
+            return $this->tax_rule_id;
         }
 
         /**
@@ -685,6 +698,24 @@ if (!class_exists('\Eccube\Entity\OrderItem')) {
         public function getShipping()
         {
             return $this->Shipping;
+        }
+
+        /**
+         * @return RoundingType
+         */
+        public function getRoundingType()
+        {
+            return $this->RoundingType;
+        }
+
+        /**
+         * @param RoundingType $RoundingType
+         */
+        public function setRoundingType(RoundingType $RoundingType = null)
+        {
+            $this->RoundingType = $RoundingType;
+
+            return $this;
         }
 
         /**

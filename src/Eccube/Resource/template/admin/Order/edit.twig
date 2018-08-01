@@ -764,7 +764,7 @@ file that was distributed with this source code.
                                 <!-- 内値引き -->
                                 <div class="row justify-content-end mb-3">
                                     <div class="col-auto"><span class="align-middle">{{ 'admin.order.edit.277'|trans }}</span></div>
-                                    <div class="col-2 text-right"><span class="h4 align-middle text-danger font-weight-normal">{{ Order.discount|price }}</span></div>
+                                    <div class="col-2 text-right"><span class="h4 align-middle text-danger font-weight-normal">{{ (0 - Order.discount)|price }}</span></div>
                                 </div>
                                 <!-- 内送料 -->
                                 <div class="row justify-content-end mb-3">

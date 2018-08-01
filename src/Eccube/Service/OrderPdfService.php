@@ -450,16 +450,13 @@ class OrderPdfService extends TcpdfFpdi
                     $classCategory .= ' * '.$OrderItem->getClassCategoryName2().' ]';
                 }
             }
-            // 税
-            $tax = $this->taxRuleService->calcTax($OrderItem->getPrice(), $OrderItem->getTaxRate(), \Eccube\Entity\Master\RoundingType::ROUND);
-            $OrderItem->setPriceIncTax($OrderItem->getPrice() + $tax);
 
             // product
             $arrOrder[$i][0] = sprintf('%s / %s / %s', $OrderItem->getProductName(), $OrderItem->getProductCode(), $classCategory);
             // 購入数量
             $arrOrder[$i][1] = number_format($OrderItem->getQuantity());
             // 税込金額（単価）
-            $arrOrder[$i][2] = $this->eccubeExtension->getPriceFilter($OrderItem->getPriceIncTax());
+            $arrOrder[$i][2] = $this->eccubeExtension->getPriceFilter($OrderItem->getPrice());
             // 小計（商品毎）
             $arrOrder[$i][3] = $this->eccubeExtension->getPriceFilter($OrderItem->getTotalPrice());
 
