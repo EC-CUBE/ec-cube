@@ -72,6 +72,7 @@ class InstallerCommand extends Command
             ' $ export APP_ENV=dev',
             ' $ export APP_DEBUG=1',
             ' $ export DATABASE_URL=database_url',
+            ' $ export DATABASE_SERVER_VERSION=server_version',
             ' $ export MAILER_URL=mailer_url',
             ' $ export ECCUBE_AUTH_MAGIC=auth_magic',
             ' ... and more',
@@ -85,6 +86,13 @@ class InstallerCommand extends Command
             $databaseUrl = 'sqlite:///%kernel.project_dir%/var/eccube.db';
         }
         $databaseUrl = $this->io->ask('Database Url', $databaseUrl);
+
+        // DATABASE_SERVER_VERSION
+        $databaseName = $this->getDatabaseName($databaseUrl);
+        $serverVersion = $this->io->ask('Database Server version', 'auto');
+        if ('auto' === $serverVersion) {
+            $serverVersion = $this->getDatabaseServerVersion($databaseName);
+        }
 
         // MAILER_URL
         $mailerUrl = $this->container->getParameter('eccube_mailer_url');
@@ -115,7 +123,7 @@ class InstallerCommand extends Command
             'APP_ENV' => 'dev',
             'APP_DEBUG' => '1',
             'DATABASE_URL' => $databaseUrl,
-            'DATABASE_SERVER_VERSION' => $this->getDatabaseServerVersion($this->getDatabaseName($databaseUrl)),
+            'DATABASE_SERVER_VERSION' => $serverVersion,
             'MAILER_URL' => $mailerUrl,
             'ECCUBE_AUTH_MAGIC' => $authMagic,
         ];

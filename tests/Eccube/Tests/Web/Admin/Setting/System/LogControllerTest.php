@@ -87,8 +87,8 @@ class LogControllerTest extends AbstractAdminWebTestCase
      * Validate test.
      *
      * @param string|int $value
-     * @param string     $expected
-     * @param string     $message
+     * @param string $expected
+     * @param string $message
      * @dataProvider dataProvider
      */
     public function testSystemLogValidate($value, $expected, $message)
@@ -109,7 +109,7 @@ class LogControllerTest extends AbstractAdminWebTestCase
         $this->expected = $expected;
         $this->verify();
         if ($message) {
-            $this->assertContains($message, $crawler->filter('#log_conditions_box__body')->html());
+            $this->assertContains($message, $crawler->filter('.card-body')->html());
         }
     }
 
@@ -121,7 +121,7 @@ class LogControllerTest extends AbstractAdminWebTestCase
         return [
             ['', '', '入力されていません。'],
             ['a', '', '有効な数字ではありません。'],
-            [-1, '', '0以上でなければなりません。'],
+            [0, '', '1以上でなければなりません。'],
             [0, '', ''],
             [50000, '', ''],
             [1.1, '', ''],

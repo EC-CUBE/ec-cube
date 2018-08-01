@@ -98,7 +98,7 @@ class MailService
      * Send customer confirm mail.
      *
      * @param $Customer 会員情報
-     * @param $activateUrl アクティベート用url
+     * @param string $activateUrl アクティベート用url
      */
     public function sendCustomerConfirmMail(\Eccube\Entity\Customer $Customer, $activateUrl)
     {
@@ -295,7 +295,7 @@ class MailService
      *
      * @param \Eccube\Entity\Order $Order 受注情報
      *
-     * @return string
+     * @return \Swift_Message
      */
     public function sendOrderMail(\Eccube\Entity\Order $Order)
     {
@@ -340,7 +340,7 @@ class MailService
      * Send admin customer confirm mail.
      *
      * @param $Customer 会員情報
-     * @param $activateUrl アクティベート用url
+     * @param string $activateUrl アクティベート用url
      */
     public function sendAdminCustomerConfirmMail(\Eccube\Entity\Customer $Customer, $activateUrl)
     {
@@ -391,7 +391,7 @@ class MailService
      * @param $formData 入力内容
      * @param string $twig テンプレートファイル名
      *
-     * @return $this
+     * @return \Swift_Message
      *
      * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
@@ -438,6 +438,7 @@ class MailService
      * Send password reset notification mail.
      *
      * @param $Customer 会員情報
+     * @param string $reset_url
      */
     public function sendPasswordResetNotificationMail(\Eccube\Entity\Customer $Customer, $reset_url)
     {
@@ -484,6 +485,7 @@ class MailService
      * Send password reset notification mail.
      *
      * @param $Customer 会員情報
+     * @param string $password
      */
     public function sendPasswordResetCompleteMail(\Eccube\Entity\Customer $Customer, $password)
     {

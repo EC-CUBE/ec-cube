@@ -15,14 +15,12 @@ namespace Eccube\Service;
 
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
-use Eccube\Entity\Shipping;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Service\PurchaseFlow\Processor\PointProcessor;
 use Eccube\Service\PurchaseFlow\Processor\StockReduceProcessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
-use Symfony\Component\Workflow\Event\GuardEvent;
 use Symfony\Component\Workflow\StateMachine;
 
 class OrderStateMachine implements EventSubscriberInterface
@@ -46,9 +44,9 @@ class OrderStateMachine implements EventSubscriberInterface
      */
     private $stockReduceProcessor;
 
-    public function __construct(StateMachine $machine, OrderStatusRepository $orderStatusRepository, PointProcessor $pointProcessor, StockReduceProcessor $stockReduceProcessor)
+    public function __construct(StateMachine $_orderStateMachine, OrderStatusRepository $orderStatusRepository, PointProcessor $pointProcessor, StockReduceProcessor $stockReduceProcessor)
     {
-        $this->machine = $machine;
+        $this->machine = $_orderStateMachine;
         $this->orderStatusRepository = $orderStatusRepository;
         $this->pointProcessor = $pointProcessor;
         $this->stockReduceProcessor = $stockReduceProcessor;
@@ -62,9 +60,10 @@ class OrderStateMachine implements EventSubscriberInterface
      */
     public function apply(Order $Order, OrderStatus $OrderStatus)
     {
-        $transition = $this->getTransition($Order, $OrderStatus);
+        $context = $this->newContext($Order);
+        $transition = $this->getTransition($context, $OrderStatus);
         if ($transition) {
-            $this->machine->apply($Order, $transition->getName());
+            $this->machine->apply($context, $transition->getName());
         } else {
             throw new \InvalidArgumentException();
         }
@@ -80,12 +79,12 @@ class OrderStateMachine implements EventSubscriberInterface
      */
     public function can(Order $Order, OrderStatus $OrderStatus)
     {
-        return !is_null($this->getTransition($Order, $OrderStatus));
+        return !is_null($this->getTransition($this->newContext($Order), $OrderStatus));
     }
 
-    private function getTransition(Order $Order, OrderStatus $OrderStatus)
+    private function getTransition(OrderStateMachineContext $context, OrderStatus $OrderStatus)
     {
-        $transitions = $this->machine->getEnabledTransitions($Order);
+        $transitions = $this->machine->getEnabledTransitions($context);
         foreach ($transitions as $t) {
             if (in_array($OrderStatus->getId(), $t->getTos())) {
                 return $t;
@@ -105,10 +104,9 @@ class OrderStateMachine implements EventSubscriberInterface
             'workflow.order.transition.pay' => ['updatePaymentDate'],
             'workflow.order.transition.cancel' => [['rollbackStock'], ['rollbackUsePoint']],
             'workflow.order.transition.back_to_in_progress' => [['commitStock'], ['commitUsePoint']],
-            'workflow.order.transition.ship' => ['commitAddPoint'],
+            'workflow.order.transition.ship' => [['commitAddPoint']],
             'workflow.order.transition.return' => [['rollbackUsePoint'], ['rollbackAddPoint']],
             'workflow.order.transition.cancel_return' => [['commitUsePoint'], ['commitAddPoint']],
-            'workflow.order.guard.ship' => ['guardShip'],
         ];
     }
 
@@ -117,14 +115,14 @@ class OrderStateMachine implements EventSubscriberInterface
      */
 
     /**
-     * 購入日を更新する.
+     * 入金日を更新する.
      *
      * @param Event $event
      */
     public function updatePaymentDate(Event $event)
     {
         /* @var Order $Order */
-        $Order = $event->getSubject();
+        $Order = $event->getSubject()->getOrder();
         $Order->setPaymentDate(new \DateTime());
     }
 
@@ -138,7 +136,7 @@ class OrderStateMachine implements EventSubscriberInterface
     public function commitUsePoint(Event $event)
     {
         /* @var Order $Order */
-        $Order = $event->getSubject();
+        $Order = $event->getSubject()->getOrder();
         $this->pointProcessor->prepare($Order, new PurchaseContext());
     }
 
@@ -150,7 +148,7 @@ class OrderStateMachine implements EventSubscriberInterface
     public function rollbackUsePoint(Event $event)
     {
         /* @var Order $Order */
-        $Order = $event->getSubject();
+        $Order = $event->getSubject()->getOrder();
         $this->pointProcessor->rollback($Order, new PurchaseContext());
     }
 
@@ -164,7 +162,7 @@ class OrderStateMachine implements EventSubscriberInterface
     public function commitStock(Event $event)
     {
         /* @var Order $Order */
-        $Order = $event->getSubject();
+        $Order = $event->getSubject()->getOrder();
         $this->stockReduceProcessor->prepare($Order, new PurchaseContext());
     }
 
@@ -176,7 +174,7 @@ class OrderStateMachine implements EventSubscriberInterface
     public function rollbackStock(Event $event)
     {
         /* @var Order $Order */
-        $Order = $event->getSubject();
+        $Order = $event->getSubject()->getOrder();
         $this->stockReduceProcessor->rollback($Order, new PurchaseContext());
     }
 
@@ -188,9 +186,11 @@ class OrderStateMachine implements EventSubscriberInterface
     public function commitAddPoint(Event $event)
     {
         /* @var Order $Order */
-        $Order = $event->getSubject();
+        $Order = $event->getSubject()->getOrder();
         $Customer = $Order->getCustomer();
-        $Customer->setPoint(intval($Customer->getPoint()) + intval($Order->getAddPoint()));
+        if ($Customer) {
+            $Customer->setPoint(intval($Customer->getPoint()) + intval($Order->getAddPoint()));
+        }
     }
 
     /**
@@ -201,9 +201,11 @@ class OrderStateMachine implements EventSubscriberInterface
     public function rollbackAddPoint(Event $event)
     {
         /* @var Order $Order */
-        $Order = $event->getSubject();
+        $Order = $event->getSubject()->getOrder();
         $Customer = $Order->getCustomer();
-        $Customer->setPoint(intval($Customer->getPoint()) - intval($Order->getAddPoint()));
+        if ($Customer) {
+            $Customer->setPoint(intval($Customer->getPoint()) - intval($Order->getAddPoint()));
+        }
     }
 
     /**
@@ -214,27 +216,60 @@ class OrderStateMachine implements EventSubscriberInterface
      */
     public function onCompleted(Event $event)
     {
-        /** @var Order $Order */
-        $Order = $event->getSubject();
-        $OrderStatusId = $Order->getOrderStatus()->getId();
-        $CompletedOrderStatus = $this->orderStatusRepository->find($OrderStatusId);
+        /** @var $context OrderStateMachineContext */
+        $context = $event->getSubject();
+        $Order = $context->getOrder();
+        $CompletedOrderStatus = $this->orderStatusRepository->find($context->getStatus());
         $Order->setOrderStatus($CompletedOrderStatus);
     }
 
-    /**
-     * すべての出荷が発送済みなら、受注も発送済みに遷移できる.
-     *
-     * @param GuardEvent $event
-     */
-    public function guardShip(GuardEvent $event)
+    private function newContext(Order $Order)
     {
-        /** @var Order $Order */
-        $Order = $event->getSubject();
-        $UnShipped = $Order->getShippings()->filter(function (Shipping $Shipping) {
-            return $Shipping->getShippingDate() == null;
-        });
-        if (!$UnShipped->isEmpty()) {
-            $event->setBlocked(true);
-        }
+        return new OrderStateMachineContext((string) $Order->getOrderStatus()->getId(), $Order);
+    }
+}
+
+class OrderStateMachineContext
+{
+    /** @var string */
+    private $status;
+
+    /** @var Order */
+    private $Order;
+
+    /**
+     * OrderStateMachineContext constructor.
+     *
+     * @param string $status
+     * @param Order $Order
+     */
+    public function __construct($status, Order $Order)
+    {
+        $this->status = $status;
+        $this->Order = $Order;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param string $status
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    }
+
+    /**
+     * @return Order
+     */
+    public function getOrder()
+    {
+        return $this->Order;
     }
 }

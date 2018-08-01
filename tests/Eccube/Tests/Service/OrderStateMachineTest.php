@@ -64,7 +64,7 @@ class OrderStateMachineTest extends EccubeTestCase
             [OrderStatus::PAID,         OrderStatus::NEW,           false],
             [OrderStatus::PAID,         OrderStatus::PAID,          false],
             [OrderStatus::PAID,         OrderStatus::IN_PROGRESS,   true],
-            [OrderStatus::PAID,         OrderStatus::CANCEL,        false],
+            [OrderStatus::PAID,         OrderStatus::CANCEL,        true],
             [OrderStatus::PAID,         OrderStatus::DELIVERED,     true],
             [OrderStatus::PAID,         OrderStatus::RETURNED,      false],
 
@@ -309,31 +309,6 @@ class OrderStateMachineTest extends EccubeTestCase
         return (new ArrayCollection($Order->getProductOrderItems()))->filter(function (OrderItem $item) use ($ProductClass) {
             return $item->getProductClass()->getId() == $ProductClass->getId();
         })->first();
-    }
-
-    public function testGuardShip()
-    {
-        $inProgress = $this->statusOf(OrderStatus::IN_PROGRESS);
-        $delivered = $this->statusOf(OrderStatus::DELIVERED);
-
-        $Order = $this->createOrder($this->createCustomer())
-            ->setOrderStatus($inProgress);
-        $Order->getShippings()[0]->setShippingDate(new \DateTime());
-
-        self::assertEquals(1, count($Order->getShippings()));
-
-        self::assertTrue($this->stateMachine->can($Order, $delivered));
-
-        $Shipping = (new Shipping())
-            ->setOrder($Order);
-
-        $Order->addShipping($Shipping);
-
-        self::assertFalse($this->stateMachine->can($Order, $delivered), '発送していない配送情報がある場合は発送済みにできないはず');
-
-        $Shipping->setShippingDate(new \DateTime());
-
-        self::assertTrue($this->stateMachine->can($Order, $delivered), 'すべての配送情報が発送済みなら発送済みにできるはず');
     }
 
     /**

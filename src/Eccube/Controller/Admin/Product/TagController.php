@@ -43,7 +43,6 @@ class TagController extends AbstractController
      * @Template("@admin/Product/tag.twig")
      *
      * @param Request $request
-     * @param Tag|null $Tag
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
