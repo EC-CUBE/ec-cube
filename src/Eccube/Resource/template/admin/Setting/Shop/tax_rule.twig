@@ -12,8 +12,8 @@ file that was distributed with this source code.
 
 {% set menus = ['setting', 'shop', 'shop_tax'] %}
 
-{% block title %}{{'admin.setting.shop.tax_rule.title'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.setting.shop.tax_rule.subtitle'|trans}}{% endblock %}
+{% block title %}{{ 'admin.setting.shop.tax_rule.title'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.setting.shop.tax_rule.subtitle'|trans }}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
@@ -22,14 +22,16 @@ file that was distributed with this source code.
         .edit {
             display: none;
         }
+
         .has-error .list {
             display: none;
         }
+
         .has-error .edit {
             display: block;
         }
     </style>
-<link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datetimepicker.min.css', 'admin') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datetimepicker.min.css', 'admin') }}">
 {% endblock stylesheet %}
 
 {% block javascript %}
@@ -49,18 +51,18 @@ file that was distributed with this source code.
                 });
             }
 
-            $(".tax_rule_list_item td.action a.edit-button").click(function() {
+            $('.tax_rule_list_item td.action a.edit-button').click(function() {
                 var id = $(this).data('id');
-                var tr = $("#tax_rule_list__item--" + id);
-                $(tr).find(".list").hide();
-                $(tr).find(".edit").show();
+                var tr = $('#ex-tax_rule-' + id);
+                $(tr).find('.list').hide();
+                $(tr).find('.edit').show();
             });
 
             $('.tax_rule_list_item .cancel').click(function() {
                 var id = $(this).data('id');
-                var tr = $("#tax_rule_list__item--" + id);
-                $(tr).find(".edit").hide();
-                $(tr).find(".list").show();
+                var tr = $('#tax_rule_list__item--' + id);
+                $(tr).find('.edit').hide();
+                $(tr).find('.list').show();
             });
         });
     </script>
@@ -123,7 +125,7 @@ file that was distributed with this source code.
                             </tr>
 
                             {% for TaxRule in TaxRules %}
-                                <tr class="tax_rule_list_item {% if errors[TaxRule.id] %}has-error{%  endif %}" id="tax_rule_list__item--{{ TaxRule.id }}">
+                                <tr id="ex-tax_rule-{{ TaxRule.id }}" class="tax_rule_list_item {% if errors[TaxRule.id] %}has-error{% endif %}">
                                     <form name="edit-form" id="edit-form_{{ TaxRule.id }}" method="post" action="{{ url('admin_setting_shop_tax') }}">
                                         {{ form_widget(forms[TaxRule.id]._token) }}
                                         <input type="hidden" value="{{ TaxRule.id }}" name="tax_rule_id">

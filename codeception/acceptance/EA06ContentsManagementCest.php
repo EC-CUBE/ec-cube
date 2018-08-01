@@ -32,6 +32,8 @@ class EA06ContentsManagementCest
 
     public function contentsmanagement_新着情報管理(\AcceptanceTester $I)
     {
+        $I->getScenario()->incomplete('未実装：新着情報管理は未実装');
+
         $I->wantTo('EA0601-UC01-T01(& UC02-T01/UC02-T02/UC03-T01) 新着情報管理（作成・編集・削除）');
 
         NewsManagePage::go($I)->新規登録();
@@ -175,15 +177,15 @@ class EA06ContentsManagementCest
         LayoutEditPage::at($I)
             ->コンテキストメニューでコードプレビュー(
                 '商品検索',
-                ['xpath' => "//*[@id='block-source-code']//div[contains(text(), 'This file is part of EC-CUBE')]"]
+                ['xpath' => "//*[@id='block-source-code']//div[contains(text(), 'file that was distributed with this source code.')]"]
             );
 
         $I->getScenario()->incomplete('未実装：プレビューは未実装');
 
         LayoutManagePage::go($I)->レイアウト編集('下層ページ用レイアウト');
-        LayoutEditPage::at($I)
-            ->ブロックを移動('新着情報', '#position_0')
-            ->プレビュー();
+        // LayoutEditPage::at($I)
+        //     ->ブロックを移動('新着情報', '#position_0')
+        //     ->プレビュー();
 
         $I->switchToNewWindow();
 

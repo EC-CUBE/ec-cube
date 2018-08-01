@@ -53,6 +53,7 @@ services:
                 - '@Eccube\Service\PurchaseFlow\Processor\DeliveryFeePreprocessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\PaymentChargeProcessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\DeliveryFeeFreeByShippingPreprocessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\TaxProcessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\PointProcessor'
 
     eccube.purchase.flow.shopping.item_validators:
@@ -70,6 +71,7 @@ services:
             - #
                 - '@Eccube\Service\PurchaseFlow\Processor\StockMultipleValidator'
                 - '@Eccube\Service\PurchaseFlow\Processor\SaleLimitMultipleValidator'
+                - '@Eccube\Service\PurchaseFlow\Processor\PointProcessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\PaymentTotalLimitValidator'
                 - '@Eccube\Service\PurchaseFlow\Processor\PaymentTotalNegativeValidator'
 
@@ -97,6 +99,7 @@ services:
         arguments:
             - #
                 - '@Eccube\Service\PurchaseFlow\Processor\AdminOrderRegisterPurchaseProcessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\TaxProcessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\PointProcessor'
 
     eccube.purchase.flow.order.item_validators:
@@ -108,9 +111,11 @@ services:
             - #
                 - '@Eccube\Service\PurchaseFlow\Processor\StockDiffProcessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\PaymentTotalLimitValidator'
+                - '@Eccube\Service\PurchaseFlow\Processor\PointDiffProcessor'
 
     eccube.purchase.flow.order.purchase:
         class: Doctrine\Common\Collections\ArrayCollection
         arguments:
             - #
                 - '@Eccube\Service\PurchaseFlow\Processor\StockDiffProcessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\PointDiffProcessor'

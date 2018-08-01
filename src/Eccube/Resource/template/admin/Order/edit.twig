@@ -436,7 +436,7 @@ file that was distributed with this source code.
                                     <div class="row mb-3">
                                         <div class="col-6">
                                             <button type="button" class="btn btn-ec-regular copy-customer">{{ 'admin.order.edit.label.customer_info.copy'|trans }}</button>
-                                            <a class="btn btn-ec-regular pdf-print" href="{{ url('admin_order_export_pdf') }}?ids[]={{ Order.id }}">{{ 'admin.order.edit.label.shipping.print'|trans }}</a>
+                                            <a class="btn btn-ec-regular pdf-print" href="{{ url('admin_order_export_pdf') }}?ids[]={{ Order.Shippings[0].id }}">{{ 'admin.order.edit.label.shipping.print'|trans }}</a>
                                         </div>
                                         {% if Order.id is not empty %}
                                             <div class="col-6 text-right">
@@ -657,7 +657,8 @@ file that was distributed with this source code.
                                             {{ form_widget(orderItemForm.order_item_type) }}
                                             <td class="align-middle w-25 pl-3">
                                                 <p class="mb-0 font-weight-bold">
-                                                    {% if OrderItem.OrderItemType.isProduct %}
+                                                    {# 商品とポイント値引きは名前変更できない #}
+                                                    {% if OrderItem.isProduct or OrderItem.isPoint %}
                                                         {{ OrderItem.product_name }}
                                                         {{ form_widget(orderItemForm.product_name, { 'type': 'hidden' }) }}
                                                     {% else %}
@@ -682,21 +683,24 @@ file that was distributed with this source code.
                                             </td>
                                             <td class="align-middle">
                                                 <div class="col-12">
-                                                    {{ form_widget(orderItemForm.price, { 'tax_display_type': OrderItem.TaxDisplayType }) }}
+                                                    {# ポイント値引きは価格変更できない #}
+                                                    {% if OrderItem.isPoint %}
+                                                        {{ form_widget(orderItemForm.price, { 'tax_display_type': OrderItem.TaxDisplayType, 'attr': { 'readonly': 'readonly' } }) }}
+                                                    {% else %}
+                                                        {{ form_widget(orderItemForm.price, { 'tax_display_type': OrderItem.TaxDisplayType }) }}
+                                                    {% endif %}
                                                     {{ form_errors(orderItemForm.price) }}
                                                 </div>
                                             </td>
                                             <td class="align-middle">
                                                 <div class="col-6">
-                                                    {# 複数配送の場合は商品の個数を変更できない #}
-                                                    {% if Order.isMultiple and OrderItem.orderItemType.id == constant('Eccube\\Entity\\Master\\OrderItemType::PRODUCT') %}
-                                                        {{ OrderItem.quantity }}
-                                                        {{ form_widget(orderItemForm.quantity, { 'type': 'hidden' }) }}
-                                                        {{ form_errors(orderItemForm.quantity) }}
+                                                    {# 複数配送の場合は商品の個数を変更できない、ポイントの場合も個数を変更できない #}
+                                                    {% if (Order.isMultiple and OrderItem.isProduct) or OrderItem.isPoint %}
+                                                        {{ form_widget(orderItemForm.quantity, { 'attr': { 'readonly': 'readonly' } }) }}
                                                     {% else %}
                                                         {{ form_widget(orderItemForm.quantity) }}
-                                                        {{ form_errors(orderItemForm.quantity) }}
                                                     {% endif %}
+                                                    {{ form_errors(orderItemForm.quantity) }}
                                                 </div>
                                             </td>
                                             <td class="align-middle">
@@ -717,7 +721,7 @@ file that was distributed with this source code.
                                             <td class="align-middle text-right pr-3">
                                                 <div class="row justify-content-end">
                                                     {# 複数配送の場合は商品を削除できない #}
-                                                    {% if Order.isMultiple and OrderItem.orderItemType.id == constant('Eccube\\Entity\\Master\\OrderItemType::PRODUCT') %}
+                                                    {% if (Order.isMultiple and OrderItem.isProduct) or OrderItem.isPoint %}
                                                         <div class="col-auto text-center">
                                                             <a class="btn btn-ec-actionIcon disabled">
                                                                 <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
@@ -760,7 +764,7 @@ file that was distributed with this source code.
                                 <!-- 内値引き -->
                                 <div class="row justify-content-end mb-3">
                                     <div class="col-auto"><span class="align-middle">{{ 'admin.order.edit.277'|trans }}</span></div>
-                                    <div class="col-2 text-right"><span class="h4 align-middle text-danger font-weight-normal">{{ Order.discount|price }}</span></div>
+                                    <div class="col-2 text-right"><span class="h4 align-middle text-danger font-weight-normal">{{ (0 - Order.discount)|price }}</span></div>
                                 </div>
                                 <!-- 内送料 -->
                                 <div class="row justify-content-end mb-3">
@@ -777,8 +781,7 @@ file that was distributed with this source code.
                                     <div class="col-auto"><span class="align-middle">{{ 'admin.common.label.add_point'|trans }}</span></div>
                                     <div class="col-2 text-right">
                                         <span class="h4 align-middle font-weight-normal">
-                                            {{ form_widget(form.add_point) }}
-                                            {{ form_errors(form.add_point) }}
+                                            {{ form.vars.value.addpoint|number_format }}
                                         </span>
                                     </div>
                                 </div>

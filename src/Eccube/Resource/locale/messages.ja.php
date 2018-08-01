@@ -458,9 +458,9 @@ return [
     'Kana' => 'お名前(フリガナ)',
     'Kana01' => 'セイ', // TODO: enとIDが違う
     'Kana02' => 'メイ', // TODO: enとIDが違う
-    'Postal' => '郵便番号',
+    'Postal' => '例：1010000',
     'Address' => '住所',
-    'PhoneNumber' => '電話番号',
+    'PhoneNumber' => '例：0312345678',
     'Email' => 'メールアドレス',
     'Password' => 'パスワード',
     'Job' => '職業',
@@ -1364,7 +1364,7 @@ return [
     'admin.order.export.pdf.message1.default' => 'このたびはお買上げいただきありがとうございます。',
     'admin.order.export.pdf.message2.default' => '下記の内容にて納品させていただきます。',
     'admin.order.export.pdf.message3.default' => 'ご確認くださいますよう、お願いいたします。',
-    'admin.order.export.pdf.label.001' => '注文番号',
+    'admin.order.export.pdf.label.001' => '出荷番号',
     'admin.order.export.pdf.label.002' => '発行日',
     'admin.order.export.pdf.label.003' => '帳票タイトル',
     'admin.order.export.pdf.label.004' => '1行目',

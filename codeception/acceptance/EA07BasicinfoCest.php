@@ -186,16 +186,16 @@ class EA07BasicinfoCest
         $I->wantTo('EA0706-UC02-T01 配送方法一覧順序変更');
 
         $DeliveryManagePage = DeliveryManagePage::go($I);
-        $I->see('サンプル宅配', $DeliveryManagePage->一覧_名称(1));
-        $I->see('サンプル業者', $DeliveryManagePage->一覧_名称(2));
+        $I->see('サンプル宅配 / サンプル宅配', $DeliveryManagePage->一覧_名称(1));
+        $I->see('サンプル業者 / サンプル業者', $DeliveryManagePage->一覧_名称(2));
 
         $DeliveryManagePage->一覧_下に(1);
-        $I->see('サンプル業者', $DeliveryManagePage->一覧_名称(1));
-        $I->see('サンプル宅配', $DeliveryManagePage->一覧_名称(2));
+        $I->see('サンプル業者 / サンプル業者', $DeliveryManagePage->一覧_名称(1));
+        $I->see('サンプル宅配 / サンプル宅配', $DeliveryManagePage->一覧_名称(2));
 
         $DeliveryManagePage->一覧_上に(2);
-        $I->see('サンプル宅配', $DeliveryManagePage->一覧_名称(1));
-        $I->see('サンプル業者', $DeliveryManagePage->一覧_名称(2));
+        $I->see('サンプル宅配 / サンプル宅配', $DeliveryManagePage->一覧_名称(1));
+        $I->see('サンプル業者 / サンプル業者', $DeliveryManagePage->一覧_名称(2));
     }
 
     public function basicinfo_税率設定(\AcceptanceTester $I)
@@ -207,7 +207,7 @@ class EA07BasicinfoCest
 
         // 一覧
         $I->see('共通税率設定', '#page_admin_setting_shop_tax > div.c-container > div.c-contentsArea > div.c-contentsArea__cols > div > div > div > div.card-header');
-        $I->see('8%', '#tax_rule_list__item--1 > td.align-middle.text-right');
+        $I->see('8%', '#ex-tax_rule-1 > td.align-middle.text-right');
 
         // 登録
         $TaxManagePage
