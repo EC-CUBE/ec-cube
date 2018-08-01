@@ -157,7 +157,7 @@ file that was distributed with this source code.
                                     </form>
                                 </li>
                                 {% for ClassName in ClassNames %}
-                                    <li class="list-group-item sortable-item" data-class-name-id="{{ ClassName.id }}" data-sort-no="{{ ClassName.sortNo }}">
+                                    <li id="ex-class_name-{{ ClassName.id }}" class="list-group-item sortable-item" data-class-name-id="{{ ClassName.id }}" data-sort-no="{{ ClassName.sortNo }}">
                                         <div class="row justify-content-around mode-view">
                                             <div class="col-auto d-flex align-items-center"><i class="fa fa-bars text-ec-gray"></i></div>
                                             <div class="col d-flex align-items-center">
@@ -180,33 +180,33 @@ file that was distributed with this source code.
                                                 </a>
 
                                                 {% if classCategories == 0 %}
-                                                <div class="modal fade" id="delete_{{ ClassName.id }}" tabindex="-1"
-                                                     role="dialog"
-                                                     aria-labelledby="delete_{{ ClassName.id }}" aria-hidden="true">
-                                                    <div class="modal-dialog" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title font-weight-bold">
-                                                                    {{ 'admin.class_name.modal.header'|trans }}</h5>
-                                                                <button class="close" type="button"
-                                                                        data-dismiss="modal"
-                                                                        aria-label="Close"><span
-                                                                            aria-hidden="true">×</span>
-                                                                </button>
-                                                            </div>
-                                                            <div class="modal-body text-left">
-                                                                <p class="text-left">
-                                                                    {{ 'admin.class_name.modal.body'|trans }}</p>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'common.label.cancel'|trans }}
-                                                                </button>
-                                                                <a class="btn btn-ec-delete" href="{{ url('admin_product_class_name_delete', {'id' : ClassName.id}) }}" {{ csrf_token_for_anchor() }}
-                                                                   data-method="delete" data-confirm="false">{{ 'common.label.delete'|trans }}</a>
+                                                    <div class="modal fade" id="delete_{{ ClassName.id }}" tabindex="-1"
+                                                         role="dialog"
+                                                         aria-labelledby="delete_{{ ClassName.id }}" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title font-weight-bold">
+                                                                        {{ 'admin.class_name.modal.header'|trans }}</h5>
+                                                                    <button class="close" type="button"
+                                                                            data-dismiss="modal"
+                                                                            aria-label="Close"><span
+                                                                                aria-hidden="true">×</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body text-left">
+                                                                    <p class="text-left">
+                                                                        {{ 'admin.class_name.modal.body'|trans }}</p>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'common.label.cancel'|trans }}
+                                                                    </button>
+                                                                    <a class="btn btn-ec-delete" href="{{ url('admin_product_class_name_delete', {'id' : ClassName.id}) }}" {{ csrf_token_for_anchor() }}
+                                                                       data-method="delete" data-confirm="false">{{ 'common.label.delete'|trans }}</a>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
                                                 {% endif %}
 
                                             </div>

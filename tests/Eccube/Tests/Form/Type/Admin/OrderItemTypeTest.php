@@ -14,7 +14,6 @@
 namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Form\Type\Admin\OrderItemType;
-use Symfony\Component\HttpFoundation\Request;
 
 class OrderItemTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
@@ -23,10 +22,11 @@ class OrderItemTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     /** @var array デフォルト値（正常系）を設定 */
     protected $formData = [
+        'ProductClass' => '1',
         'price' => '10000',
         'quantity' => '10000',
-        'tax_rate' => '10.0',
         'product_name' => 'name1',
+        'order_item_type' => '1',
     ];
 
     public function setUp()
@@ -34,16 +34,18 @@ class OrderItemTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         parent::setUp();
 
         // CSRF tokenを無効にしてFormを作成
-        // 会員管理会員登録・編集
         $this->form = $this->formFactory
             ->createBuilder(OrderItemType::class, null, [
                 'csrf_protection' => false,
             ])
             ->getForm();
-        $this->container->get('request_stack')->push(new Request());
+
+        $Product = $this->createProduct();
+        $ProductClass = $Product->getProductClasses()->first();
+        $this->formData['ProductClass'] = $ProductClass->getId();
     }
 
-    public function testInValidData()
+    public function testValidData()
     {
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
@@ -76,6 +78,8 @@ class OrderItemTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
     public function testValidPrice_HasMinus()
     {
         $this->formData['price'] = '-123456';
+        // 値引き明細はマイナス値
+        $this->formData['order_item_type'] = \Eccube\Entity\Master\OrderItemType::DISCOUNT;
 
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());

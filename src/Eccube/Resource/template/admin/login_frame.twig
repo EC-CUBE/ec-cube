@@ -10,50 +10,34 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
 <html lang="ja">
-
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>{{ BaseInfo.shop_name }} - {{'admin.login_frame.175'|trans}}</title>
-<meta name="description" content="">
-<meta name="author" content="">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex,nofollow" />
-<link rel="icon" href="{{ asset('assets/img/favicon.ico', 'admin') }}">
-<link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css', 'admin') }}">
-<link rel="stylesheet" href="{{ asset('assets/css/dashboard.css', 'admin') }}">
-<!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{{ BaseInfo.shop_name }} - {{ 'admin.login_frame.175'|trans }}</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="robots" content="noindex,nofollow"/>
+    <link rel="icon" href="{{ asset('assets/img/favicon.ico', 'admin') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css', 'admin') }}">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 </head>
-<body id="login-page">
-<!--{$GLOBAL_ERR}-->
+<body id="login-page" class="bg-light">
 <noscript>
     <p>{{ 'admin.login_frame.176'|trans }}</p>
 </noscript>
-<div id="wrapper">
-    {% block main %}{% endblock %}
+
+<div class="c-container">
+    <div class="c-contentsArea">
+        {{ include('@admin/alert.twig') }}
+
+        {% block main %}{% endblock %}
+
+    </div>
 </div>
 
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="{{ asset('assets/js/vendor/jquery-1.11.3.min.js', 'admin') }}"><\/script>')</script>
-<script src="{{ asset('assets/js/vendor/bootstrap.min.js', 'admin') }}"></script>
-<script src="{{ asset('assets/js/vendor/ie10-viewport-bug-workaround.js', 'admin') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
 <script src="{{ asset('assets/js/function.js', 'admin') }}"></script>
-<script>
-$(function () {
-    $.ajax({
-        url: "{{ asset('assets/img/svg.html', 'admin') }}",
-        type: 'GET',
-        dataType: 'html',
-    }).done(function(data){
-        $('body').prepend(data);
-    }).fail(function(data){
-    });
-});
-</script>
 {% block javascript %}{% endblock %}
 </body>
 </html>

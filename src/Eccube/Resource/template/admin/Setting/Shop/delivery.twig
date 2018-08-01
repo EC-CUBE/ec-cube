@@ -23,17 +23,17 @@ file that was distributed with this source code.
     <script>
         $(function() {
             var oldSortNos = [];
-            $('.sortable-item').each(function () {
+            $('.sortable-item').each(function() {
                 oldSortNos.push(this.dataset.sortNo);
             });
-            oldSortNos.sort(function (a, b) {
+            oldSortNos.sort(function(a, b) {
                 return a - b;
             }).reverse();
             // 並び替え後にsort noを更新
-            var updateSortNo = function () {
+            var updateSortNo = function() {
                 var newSortNos = {};
                 var i = 0;
-                $('.sortable-item').each(function () {
+                $('.sortable-item').each(function() {
                     newSortNos[this.dataset.id] = oldSortNos[i];
                     i++;
                 });
@@ -44,44 +44,44 @@ file that was distributed with this source code.
                         'x-csrf-token': $('meta[name="x-csrf-token"]').attr('content')
                     },
                     data: newSortNos
-                }).always(function () {
+                }).always(function() {
                     $(".modal-backdrop").remove();
                 });
             };
             // 最初と最後の↑↓を再描画
-            var redrawDisableAllows = function () {
+            var redrawDisableAllows = function() {
                 var items = $('.sortable-item');
                 items.find('a').removeClass('disabled');
                 items.first().find('a.action-up').addClass('disabled');
                 items.last().find('a.action-down').addClass('disabled');
             };
             // オーバレイ後, 表示順の更新を行う
-            var moveSortNo = function () {
+            var moveSortNo = function() {
                 $('body').append($('<div class="modal-backdrop show"></div>'));
                 updateSortNo();
                 redrawDisableAllows();
-            }
+            };
             // Drag and Drop
             $(".sortable-container").sortable({
                 items: '> .sortable-item',
                 cursor: 'move',
-                update: function (e, ui) {
+                update: function(e, ui) {
                     moveSortNo();
                 }
             });
             // Up
-            $(".sortable-item").on('click', 'a.action-up', function (e) {
+            $('.sortable-item').on('click', 'a.action-up', function(e) {
                 e.preventDefault();
-                var current = $(this).parents("li");
+                var current = $(this).parents('li');
                 if (current.prev().hasClass('sortable-item')) {
                     current.prev().before(current);
                     moveSortNo();
                 }
             });
             // Down
-            $(".sortable-item").on('click', 'a.action-down', function (e) {
+            $('.sortable-item').on('click', 'a.action-down', function(e) {
                 e.preventDefault();
-                var current = $(this).parents("li");
+                var current = $(this).parents('li');
                 if (current.next().hasClass('sortable-item')) {
                     current.next().after(current);
                     moveSortNo();
@@ -102,7 +102,7 @@ file that was distributed with this source code.
                                 <ul class="list-group list-group-flush sortable-container">
                                     {% if Deliveries|length > 0 %}
                                         {% for Delivery in Deliveries %}
-                                            <li class="list-group-item sortable-item" data-id="{{ Delivery.id }}" data-sort-no="{{ Delivery.sortNo }}">
+                                            <li id="ex-delivery-{{ Delivery.id }}" class="list-group-item sortable-item" data-id="{{ Delivery.id }}" data-sort-no="{{ Delivery.sortNo }}">
                                                 <div class="row justify-content-around">
                                                     <div class="col-auto d-flex align-items-center"><i class="fa fa-bars text-ec-gray"></i></div>
                                                     <div class="col d-flex align-items-center">

@@ -69,10 +69,6 @@ class MasterdataDataType extends AbstractType
             if (strlen($data['id']) && strlen($data['name']) == 0) {
                 $form['name']->addError(new FormError(trans('This value should not be blank.')));
             }
-
-            if (strlen($data['name']) && strlen($data['id']) == 0) {
-                $form['id']->addError(new FormError(trans('This value should not be blank.')));
-            }
         });
     }
 

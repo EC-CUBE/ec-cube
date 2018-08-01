@@ -44,6 +44,13 @@ interface ItemInterface
     public function isDiscount();
 
     /**
+     * ポイント明細かどうか.
+     *
+     * @return boolean ポイント明細の場合 true
+     */
+    public function isPoint();
+
+    /**
      * 税額明細かどうか.
      *
      * @return boolean 税額明細の場合 true

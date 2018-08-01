@@ -20,8 +20,11 @@ file that was distributed with this source code.
         <div class="c-contentsArea__primaryCol">
             <div class="c-primaryCol">
                 <div class="row justify-content-between mb-2">
-                    <div class="col-9"><a class="btn btn-ec-regular py-2"
-                                          href="{{ url('admin_content_page_new') }}">{{ 'admin.content.page.create'|trans }}</a></div>
+                    <div class="col-9">
+                        <a class="btn btn-ec-regular py-2" href="{{ url('admin_content_page_new') }}">
+                            {{ 'admin.content.page.create'|trans }}
+                        </a>
+                    </div>
                     <div class="col-3">
                         <form class="mb-2">
                             <div class="form-row">
@@ -30,8 +33,7 @@ file that was distributed with this source code.
                                 </div>
                                 {# TODO 検索の実装 #}
                                 <div class="col-auto">
-                                    <button class="btn btn-ec-sub" type="submit"><i
-                                                class="fa fa-search fa-lg text-secondary"></i></button>
+                                    <button class="btn btn-ec-sub" type="submit"><i class="fa fa-search fa-lg text-secondary"></i></button>
                                 </div>
                             </div>
                         </form>
@@ -39,14 +41,14 @@ file that was distributed with this source code.
                 </div>
                 <div class="card rounded border-0 mb-4">
                     <div class="card-body p-0">
-                        <table id="list_page_tbl" class="table table-sm">
+                        <table class="table table-sm">
                             <thead>
                             <th class="border-0 pt-2 pb-2 pl-3">{{ 'admin.content.page.page_name'|trans }}</th>
                             <th class="border-0 pt-2 pb-2">{{ 'admin.content.page.layout_name'|trans }}</th>
                             <th class="border-0 pt-2 pb-2 pr-3"></th>
                             </thead>
                             {% for Page in Pages %}
-                                <tr>
+                                <tr id="ex-page-{{ Page.id }}">
                                     <td class="align-middle pl-3"><a
                                                 href="{{ url('admin_content_page_edit', {id : Page.id } ) }}">{{ Page.name }}</a>
                                     </td>

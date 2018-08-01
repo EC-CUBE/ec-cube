@@ -15,7 +15,6 @@ namespace Eccube\Tests\Service;
 
 use Eccube\Common\Constant;
 use Eccube\Exception\PluginException;
-use Eccube\Plugin\ConfigManager;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\Composer\ComposerApiService;
 use Eccube\Service\EntityProxyService;
@@ -669,32 +668,6 @@ EOD;
         $this->assertTrue((bool) $plugin = $this->pluginRepository->findOneBy(['code' => $tmpname]));
         $this->entityManager->refresh($plugin);
 
-        $this->expected = realpath($pluginConfigCache);
-        $this->actual = realpath(ConfigManager::getPluginConfigCacheFile());
-        $this->verify('キャッシュファイル名が一致するか');
-
-        $pluginConfigs = ConfigManager::parsePluginConfigs();
-        $this->assertTrue(array_key_exists($tmpname, $pluginConfigs));
-        $this->expected = $config;
-        $this->actual = $pluginConfigs[$tmpname]['config'];
-        $this->verify('parsePluginConfigs の結果が一致するか');
-
-        $this->assertTrue(false !== ConfigManager::writePluginConfigCache(), 'キャッシュファイルが書き込まれるか');
-
-        $this->assertTrue(file_exists($pluginConfigCache), 'キャッシュファイルが存在するか');
-
-        $this->assertTrue(ConfigManager::removePluginConfigCache(), 'キャッシュファイルを削除できるか');
-
-        $this->assertFalse(file_exists($pluginConfigCache), 'キャッシュファイルが削除されているか');
-
-        $pluginConfigs = ConfigManager::getPluginConfigAll();
-
-        $this->assertTrue(file_exists($pluginConfigCache), 'キャッシュファイルが再生成されているか');
-
-        $this->expected = $config;
-        $this->actual = $pluginConfigs[$tmpname]['config'];
-        $this->verify('getPluginConfigAll の結果が一致するか');
-
         // インストール後disable状態でもconstがロードされているか
         // FIXME プラグインのローディングはEccubePluginServiceProviderに移植。再ロードは別途検討。
 //        $config = $this->app['config'];
@@ -712,9 +685,6 @@ EOD;
 
         // アンインストールできるか
         $this->assertTrue($this->service->uninstall($plugin));
-
-        $pluginConfigs = ConfigManager::getPluginConfigAll();
-        $this->assertFalse(array_key_exists($tmpname, $pluginConfigs), 'キャッシュからプラグインが削除されているか');
     }
 
     /**

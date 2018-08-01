@@ -32,7 +32,7 @@ class EA02AuthenticationCest
             'password' => "invalidpassword"
         ]);
 
-        $I->see('ログインできませんでした。', '.login-box #form1 .text-danger');
+        $I->see('ログインできませんでした。', '#form1 > div:nth-child(5) > span');
     }
 
     public function authentication_最終ログイン日時確認(\AcceptanceTester $I)
