@@ -172,8 +172,20 @@ class ShoppingController extends AbstractShoppingController
 
         // フォームの生成
         $this->forwardToRoute('shopping_create_form');
+        /** @var FormInterface $form */
         $form = $this->parameterBag->get(OrderType::class);
         $form->handleRequest($request);
+
+        // valid form
+        if ($form->isSubmitted() && !$form->isValid()) {
+            $this->parameterBag->set(OrderType::class, $form);
+            $Order = $this->parameterBag->get('Order');
+
+            return [
+                'form' => $form->createView(),
+                'Order' => $Order,
+            ];
+        }
 
         // 各種変更ページへリダイレクトする
         $response = $this->forwardToRoute('shopping_redirect_to_change');
@@ -212,8 +224,20 @@ class ShoppingController extends AbstractShoppingController
 
         // フォームの生成
         $this->forwardToRoute('shopping_create_form');
+        /** @var FormInterface $form */
         $form = $this->parameterBag->get(OrderType::class);
         $form->handleRequest($request);
+
+        // valid form
+        if (!$form->isValid()) {
+            $this->parameterBag->set(OrderType::class, $form);
+            $Order = $this->parameterBag->get('Order');
+
+            return $this->render('Shopping/index.twig', [
+                'form' => $form->createView(),
+                'Order' => $Order,
+            ]);
+        }
 
         $form = $this->parameterBag->get(OrderType::class);
         $Order = $this->parameterBag->get('Order');

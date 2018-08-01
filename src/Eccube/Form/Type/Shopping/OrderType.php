@@ -197,20 +197,22 @@ class OrderType extends AbstractType
                 // TODO CalculateChargeStrategy でセットする
                 // $Order->setCharge($Payment ? $Payment->getCharge() : null);
 
+                // check point
                 $form = $event->getForm();
                 $Customer = $Order->getCustomer();
-                if (is_null($Customer) || $Order->getUsePoint() == 0) {
+                $usePoint = $form['use_point']->getData();
+                if (is_null($Customer) || $usePoint < 0) {
                     return;
                 }
 
-                if ($Customer->getPoint() < $Order->getUsePoint()) {
+                if ($Customer->getPoint() < $usePoint) {
                     $form['use_point']->addError(new FormError(trans('shopping.use_point.error.exceed')));
 
                     return;
                 }
-                $moneyFromPoint = $this->BaseInfo->pointToPrice($Order->getUsePoint());
-                if (($Order->getTotal() + $moneyFromPoint) < 0) {
-                    $number = intval(floor($Order->getTotal() / $this->BaseInfo->getPointConversionRate()));
+                $moneyFromPoint = $this->BaseInfo->pointToPrice($usePoint);
+                if (($Order->getSubtotal() + $moneyFromPoint) < 0) {
+                    $number = intval(floor($Order->getSubtotal() / $this->BaseInfo->getPointConversionRate()));
                     $form['use_point']->addError(new FormError(trans('shopping.use_point.error.exceed.payment')));
                     $form['use_point']->addError(new FormError(trans('shopping.use_point.error.max', ['%max%' => $number])));
                 }

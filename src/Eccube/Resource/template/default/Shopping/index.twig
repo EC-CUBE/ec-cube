@@ -29,6 +29,12 @@ file that was distributed with this source code.
             });
 
             $('.use_point').on('change', function() {
+                var point = $(this).val();
+                var max = parseInt($(this).attr('max'));
+                if (point <= 0 || max < point) {
+                    alert('{{ 'shopping.use_point.error.exceed'|trans }}');
+                    return;
+                }
                 loadingOverlay();
                 $('#shopping_order_mode').val('use_point');
                 $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
