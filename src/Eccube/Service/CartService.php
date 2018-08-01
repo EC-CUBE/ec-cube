@@ -168,6 +168,9 @@ class CartService
     {
         $Carts = $this->getCarts();
 
+        if ($this->getUser()) {
+            $this->mergeFromPersistedCart($this->getUser());
+        }
         if (empty($Carts)) {
             return null;
         }
