@@ -100,6 +100,42 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     }
 
     /**
+     * 同じ規格の商品の個数をまとめた受注明細を取得
+     *
+     * @return OrderItem[]
+     */
+    public function getMergedProductOrderItems()
+    {
+        $ProductOrderItems = $this->getProductOrderItems();
+        $orderItemArray = [];
+        /** @var OrderItem $ProductOrderItem */
+        foreach ($ProductOrderItems as $ProductOrderItem) {
+            $productClassId = $ProductOrderItem->getProductClass()->getId();
+            if (array_key_exists($productClassId, $orderItemArray)) {
+                // 同じ規格の商品がある場合は個数をまとめる
+                /** @var ItemInterface $OrderItem */
+                $OrderItem = $orderItemArray[$productClassId];
+                $quantity = $OrderItem->getQuantity() + $ProductOrderItem->getQuantity();
+                $OrderItem->setQuantity($quantity);
+            } else {
+                // 新規規格の商品は新しく追加する
+                $OrderItem = new OrderItem();
+                $OrderItem
+                    ->setProduct($ProductOrderItem->getProduct())
+                    ->setProductName($ProductOrderItem->getProductName())
+                    ->setClassCategoryName1($ProductOrderItem->getClassCategoryName1())
+                    ->setClassCategoryName2($ProductOrderItem->getClassCategoryName2())
+                    ->setPrice($ProductOrderItem->getPrice())
+                    ->setTax($ProductOrderItem->getTax())
+                    ->setQuantity($ProductOrderItem->getQuantity());
+                $orderItemArray[$productClassId] = $OrderItem;
+            }
+        }
+
+        return array_values($orderItemArray);
+    }
+
+    /**
      * 合計金額を計算
      *
      * @return string
@@ -1246,43 +1282,6 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
         $sio = new OrderItemCollection($this->OrderItems->toArray());
 
         return array_values($sio->getProductClasses()->toArray());
-    }
-
-    /**
-     * 同じ規格の商品の個数をまとめた受注明細を取得
-     *
-     * @return OrderItem[]
-     */
-    public function getMergedProductOrderItems()
-    {
-        $ProductOrderItems = $this->getProductOrderItems();
-
-        $orderItemArray = [];
-
-        /** @var OrderItem $ProductOrderItem */
-        foreach ($ProductOrderItems as $ProductOrderItem) {
-            $productClassId = $ProductOrderItem->getProductClass()->getId();
-            if (array_key_exists($productClassId, $orderItemArray)) {
-                // 同じ規格の商品がある場合は個数をまとめる
-                /** @var ItemInterface $OrderItem */
-                $OrderItem = $orderItemArray[$productClassId];
-                $quantity = $OrderItem->getQuantity() + $ProductOrderItem->getQuantity();
-                $OrderItem->setQuantity($quantity);
-            } else {
-                // 新規規格の商品は新しく追加する
-                $OrderItem = new OrderItem();
-                $OrderItem
-                    ->setProduct($ProductOrderItem->getProduct())
-                    ->setProductName($ProductOrderItem->getProductName())
-                    ->setClassCategoryName1($ProductOrderItem->getClassCategoryName1())
-                    ->setClassCategoryName2($ProductOrderItem->getClassCategoryName2())
-                    ->setPriceIncTax($ProductOrderItem->getPriceIncTax())
-                    ->setQuantity($ProductOrderItem->getQuantity());
-                $orderItemArray[$productClassId] = $OrderItem;
-            }
-        }
-
-        return array_values($orderItemArray);
     }
 
     /**

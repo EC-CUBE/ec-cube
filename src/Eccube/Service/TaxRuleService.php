@@ -81,6 +81,23 @@ class TaxRuleService
     }
 
     /**
+     * 税込金額から税金額を計算する
+     *
+     * @param  int    $price     計算対象の金額
+     * @param  int    $taxRate   税率(%単位)
+     * @param  int    $RoundingType  端数処理
+     * @param  int    $taxAdjust 調整額
+     *
+     * @return float  税金額
+     */
+    public function calcTaxIncluded($price, $taxRate, $RoundingType, $taxAdjust = 0)
+    {
+        $tax = ($price - $taxAdjust) * $taxRate / (100 + $taxRate);
+
+        return $this->roundByRoundingType($tax, $RoundingType);
+    }
+
+    /**
      * 課税規則に応じて端数処理を行う
      *
      * @param  float|integer $value    端数処理を行う数値

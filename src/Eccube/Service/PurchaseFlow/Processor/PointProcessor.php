@@ -226,14 +226,17 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
     {
         $DiscountType = $this->entityManager->find(OrderItemType::class, OrderItemType::POINT);
         $TaxInclude = $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::INCLUDED);
-        $Taxation = $this->entityManager->find(TaxType::class, TaxType::TAXATION);
+        $Taxation = $this->entityManager->find(TaxType::class, TaxType::NON_TAXABLE);
 
+        // TODO TaxProcessorが先行して実行されるため, 税額等の値は個別にセットする.
         $OrderItem = new OrderItem();
-        $OrderItem->setProductName('ポイント値引')
+        $OrderItem->setProductName($DiscountType->getName())
             ->setPrice($discount)
-            ->setPriceIncTax($discount)
-            ->setTaxRate(8)
             ->setQuantity(1)
+            ->setTax(0)
+            ->setTaxRate(0)
+            ->setTaxRuleId(null)
+            ->setRoundingType(null)
             ->setOrderItemType($DiscountType)
             ->setTaxDisplayType($TaxInclude)
             ->setTaxType($Taxation)
