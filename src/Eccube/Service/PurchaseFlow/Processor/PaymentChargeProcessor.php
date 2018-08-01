@@ -1,4 +1,16 @@
 <?php
+
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Eccube\Service\PurchaseFlow\ItemHolderPreprocessor;
@@ -43,8 +55,6 @@ class PaymentChargeProcessor implements ItemHolderPreprocessor
      *
      * @param ItemHolderInterface $itemHolder
      * @param PurchaseContext $context
-     *
-     * @return void
      */
     public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
@@ -59,6 +69,7 @@ class PaymentChargeProcessor implements ItemHolderPreprocessor
             if ($item->isCharge()) {
                 $item->setPrice($itemHolder->getPayment()->getCharge());
                 $item->setPriceIncTax($item->getPrice());
+
                 return;
             }
         }
@@ -74,7 +85,6 @@ class PaymentChargeProcessor implements ItemHolderPreprocessor
     protected function addChargeItem(ItemHolderInterface $itemHolder)
     {
         /** @var Order $itemHolder */
-
         $OrderItemType = $this->orderItemTypeRepository->find(OrderItemType::CHARGE);
         $TaxDisplayType = $this->taxDisplayTypeRepository->find(TaxDisplayType::EXCLUDED);
         $item = new OrderItem();
