@@ -72,9 +72,6 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
         // 利用ポイントがある場合は割引明細を追加
         if ($itemHolder->getUsePoint() > 0) {
             $discount = $this->BaseInfo->pointToPrice($itemHolder->getUsePoint());
-            if (abs($discount) > $itemHolder->getTotal()) {
-                return;
-            }
             $this->addPointDiscountItem($itemHolder, $discount);
         }
 
@@ -109,7 +106,7 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
             // 利用ポイントが支払い金額を上回っていた場合は支払い金額が0円以上となるようにポイントを調整
             $overPoint = floor($itemHolder->getTotal() / $this->BaseInfo->getPointConversionRate());
             $itemHolder->setUsePoint($itemHolder->getUsePoint() + $overPoint);
-            $this->throwInvalidItemException('利用ポイントがお支払い金額を上回っています.');
+            $this->throwInvalidItemException(trans('shopping.use_point.error.exceed.payment'));
         }
     }
 
