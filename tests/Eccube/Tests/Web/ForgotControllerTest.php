@@ -106,29 +106,6 @@ class ForgotControllerTest extends AbstractWebTestCase
         );
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        
-        // 再発行メール受信確認
-        //$Messages = $mailCollector->getMessages();
-        /** @var \Swift_Message $Message */
-        //$Message = $Messages[0];
-        //$this->expected = '['.$BaseInfo->getShopName().'] パスワード変更のお知らせ';
-        //$this->actual = $Message->getSubject();
-        //$cleanContent = quoted_printable_decode($Message->getBody());
-        //$this->verify();
-
-        //$this->assertRegexp('/新しいパスワード：[a-zA-Z0-9]/u', $cleanContent);
-    }
-
-    public function testComplete()
-    {
-        $client = $this->client;
-        $crawler = $client->request('GET', $this->generateUrl('forgot_complete'));
-
-        $this->expected = 'パスワード発行メールの送信 完了';
-        $this->actual = $crawler->filter('div.ec-pageHeader > h1')->text();
-        $this->verify();
-
-        $this->assertTrue($client->getResponse()->isSuccessful());
     }
 
     public function testResetWithDenied()
