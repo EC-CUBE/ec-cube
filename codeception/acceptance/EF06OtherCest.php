@@ -66,7 +66,6 @@ class EF06OtherCest
     {
         $I->wantTo('EF0602-UC01-T01 パスワード再発行');
         $I->logoutAsMember();
-        $BaseInfo = Fixtures::get('baseinfo');
 
         // TOPページ→ログイン（「ログイン情報をお忘れですか？」リンクを押下する）→パスワード再発行
         $I->amOnPage('/mypage/login');

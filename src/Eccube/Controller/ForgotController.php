@@ -184,13 +184,6 @@ class ForgotController extends AbstractController
         $builder = $this->formFactory
             ->createNamedBuilder('', ResetType::class);
 
-        $event = new EventArgs(
-            [
-                'builder' => $builder,
-            ],
-            $request
-        );
-
         $form = $builder->getForm();
         $form->handleRequest($request);
         $credential_error = null;
