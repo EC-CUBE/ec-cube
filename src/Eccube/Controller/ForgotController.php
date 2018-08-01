@@ -250,7 +250,6 @@ class ForgotController extends AbstractController
                 // リセットキー・メールアドレスから会員データが取得できない場合
                 $credential_error = trans('forgotcontroller.text.error.credentials');
             }
-
         }
 
         return [
