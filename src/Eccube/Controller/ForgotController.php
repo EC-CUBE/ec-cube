@@ -193,6 +193,7 @@ class ForgotController extends AbstractController
 
         $form = $builder->getForm();
         $form->handleRequest($request);
+        $credential_error = null;
 
         if ('GET' === $request->getMethod()) {
             if (count($errors) > 0) {
@@ -202,6 +203,7 @@ class ForgotController extends AbstractController
 
             $Customer = $this->customerRepository
                 ->getRegularCustomerByResetKey($reset_key);
+
             if (is_null($Customer)) {
                 // リセットキーから会員データが取得できない場合
                 throw new HttpException\NotFoundHttpException(trans('forgotcontroller.text.error.url'));
@@ -210,50 +212,49 @@ class ForgotController extends AbstractController
             // リセットキー・入力メールアドレスで会員情報検索
             $Customer = $this->customerRepository
                 ->getRegularCustomerByResetKey($reset_key, $form->get('login_email')->getData());
-            if (is_null($Customer)) {
+            if (is_null($Customer) == false) {
+                // パスワードの発行・更新
+                $encoder = $this->encoderFactory->getEncoder($Customer);
+                $pass = $form->get('password')->getData();
+                $Customer->setPassword($pass);
+
+                // 発行したパスワードの暗号化
+                if ($Customer->getSalt() === null) {
+                    $Customer->setSalt($this->encoderFactory->getEncoder($Customer)->createSalt());
+                }
+                $encPass = $encoder->encodePassword($pass, $Customer->getSalt());
+
+                // パスワードを更新
+                $Customer->setPassword($encPass);
+                // リセットキーをクリア
+                $Customer->setResetKey(null);
+
+                // パスワードを更新
+                $this->entityManager->persist($Customer);
+                $this->entityManager->flush();
+
+                $event = new EventArgs(
+                    [
+                        'Customer' => $Customer,
+                    ],
+                    $request
+                );
+                $this->eventDispatcher->dispatch(EccubeEvents::FRONT_FORGOT_RESET_COMPLETE, $event);
+
+                // 完了メッセージを設定
+                $this->addFlash('password_reset_complete', trans('forgotcontroller.text.complete'));
+
+                // ログインページへリダイレクト
+                return $this->redirectToRoute('mypage_login');
+            } else {
                 // リセットキー・メールアドレスから会員データが取得できない場合
-                return [
-                    'form' => $form->createView(),
-                    'error' => trans('forgotcontroller.text.error.credentials'),
-                ];
+                $credential_error = trans('forgotcontroller.text.error.credentials');
             }
 
-            // パスワードの発行・更新
-            $encoder = $this->encoderFactory->getEncoder($Customer);
-            $pass = $form->get('password')->getData();
-            $Customer->setPassword($pass);
-
-            // 発行したパスワードの暗号化
-            if ($Customer->getSalt() === null) {
-                $Customer->setSalt($this->encoderFactory->getEncoder($Customer)->createSalt());
-            }
-            $encPass = $encoder->encodePassword($pass, $Customer->getSalt());
-
-            // パスワードを更新
-            $Customer->setPassword($encPass);
-            // リセットキーをクリア
-            $Customer->setResetKey(null);
-
-            // パスワードを更新
-            $this->entityManager->persist($Customer);
-            $this->entityManager->flush();
-
-            $event = new EventArgs(
-                [
-                    'Customer' => $Customer,
-                ],
-                $request
-            );
-            $this->eventDispatcher->dispatch(EccubeEvents::FRONT_FORGOT_RESET_COMPLETE, $event);
-
-            // 完了メッセージを設定
-            $this->addFlash('password_reset_complete', trans('forgotcontroller.text.complete'));
-
-            // ログインページへリダイレクト
-            return $this->redirectToRoute('mypage_login');
         }
 
         return [
+            'error' => $credential_error,
             'form' => $form->createView(),
         ];
     }
