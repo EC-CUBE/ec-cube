@@ -1289,7 +1289,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
      *
      * @param \Eccube\Entity\OrderItem $OrderItem
      *
-     * @return Shipping
+     * @return Order
      */
     public function addOrderItem(\Eccube\Entity\OrderItem $OrderItem)
     {
@@ -1335,7 +1335,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
      *
      * @param \Eccube\Entity\Shipping $Shipping
      *
-     * @return Shipping
+     * @return Order
      */
     public function addShipping(\Eccube\Entity\Shipping $Shipping)
     {

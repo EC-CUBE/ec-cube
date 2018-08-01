@@ -85,7 +85,6 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     /**
      * Set price02 IncTax
      *
-     * @param  string       $price02
      *
      * @return ProductClass
      */
@@ -137,7 +136,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     /**
      * Get tax_rate
      *
-     * @return string
+     * @return boolean
      */
     public function getTaxRate()
     {

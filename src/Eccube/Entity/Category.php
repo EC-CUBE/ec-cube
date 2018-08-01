@@ -51,7 +51,7 @@ class Category extends \Eccube\Entity\AbstractEntity
 
     /**
      * @param  \Doctrine\ORM\EntityManager $em
-     * @param  integer                     $SortNo
+     * @param  integer                     $sortNo
      *
      * @return \Eccube\Entity\Category
      */

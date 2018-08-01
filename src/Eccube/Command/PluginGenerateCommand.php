@@ -147,6 +147,9 @@ class PluginGenerateCommand extends Command
         return $version;
     }
 
+    /**
+     * @param string $pluginDir
+     */
     protected function createDirectories($pluginDir)
     {
         $dirs = [
@@ -165,6 +168,9 @@ class PluginGenerateCommand extends Command
         }
     }
 
+    /**
+     * @param string $pluginDir
+     */
     protected function createConfig($pluginDir, $name, $code, $version)
     {
         $source = <<<EOL
@@ -176,12 +182,18 @@ EOL;
         $this->fs->dumpFile($pluginDir.'/config.yml', $source);
     }
 
+    /**
+     * @param string $pluginDir
+     */
     protected function createMessages($pluginDir)
     {
         $this->fs->dumpFile($pluginDir.'/Resource/locale/messages.ja.yaml', '');
         $this->fs->dumpFile($pluginDir.'/Resource/locale/validators.ja.yaml', '');
     }
 
+    /**
+     * @param string $pluginDir
+     */
     protected function createTwigBlock($pluginDir, $code)
     {
         $source = <<<EOL
@@ -206,6 +218,9 @@ EOL;
         $this->fs->dumpFile($pluginDir.'/TwigBlock.php', $source);
     }
 
+    /**
+     * @param string $pluginDir
+     */
     protected function createNav($pluginDir, $code)
     {
         $source = <<<EOL
@@ -230,6 +245,9 @@ EOL;
         $this->fs->dumpFile($pluginDir.'/Nav.php', $source);
     }
 
+    /**
+     * @param string $pluginDir
+     */
     protected function createEvent($pluginDir, $code)
     {
         $source = <<<EOL
@@ -254,6 +272,9 @@ EOL;
         $this->fs->dumpFile($pluginDir.'/Event.php', $source);
     }
 
+    /**
+     * @param string $pluginDir
+     */
     protected function createConfigController($pluginDir, $code)
     {
         $snakecased = Container::underscore($code);

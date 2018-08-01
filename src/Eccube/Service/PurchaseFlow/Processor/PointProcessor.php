@@ -220,7 +220,7 @@ class PointProcessor extends ItemHolderValidator implements ItemHolderPreprocess
      * 明細追加処理.
      *
      * @param ItemHolderInterface $itemHolder
-     * @param $discount
+     * @param integer $discount
      */
     private function addPointDiscountItem(ItemHolderInterface $itemHolder, $discount)
     {

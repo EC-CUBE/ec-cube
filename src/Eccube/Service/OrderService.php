@@ -32,7 +32,7 @@ class OrderService
      *
      * @param Order $Order
      *
-     * @return array
+     * @return \Eccube\Entity\Master\SaleType[]
      *
      * @deprecated since 3.0.0, to be removed in 3.1
      */
