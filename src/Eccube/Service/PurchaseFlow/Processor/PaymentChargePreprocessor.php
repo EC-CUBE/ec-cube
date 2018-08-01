@@ -23,8 +23,10 @@ use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Order;
 use Eccube\Entity\Payment;
+use Eccube\Repository\Master\TaxTypeRepository;
+use Eccube\Entity\Master\TaxType;
 
-class PaymentChargeProcessor implements ItemHolderPreprocessor
+class PaymentChargePreprocessor implements ItemHolderPreprocessor
 {
     /**
      * @var OrderItemTypeRepository
@@ -37,17 +39,25 @@ class PaymentChargeProcessor implements ItemHolderPreprocessor
     protected $taxDisplayTypeRepository;
 
     /**
-     * PaymentChargeProcessor constructor.
+     * @var TaxTypeRepository
+     */
+    protected $taxTypeRepository;
+
+    /**
+     * PaymentChargePreprocessor constructor.
      *
      * @param OrderItemTypeRepository $orderItemTypeRepository
      * @param TaxDisplayTypeRepository $taxDisplayTypeRepository
+     * @param TaxTypeRepository $taxTypeRepository
      */
     public function __construct(
         OrderItemTypeRepository $orderItemTypeRepository,
-        TaxDisplayTypeRepository $taxDisplayTypeRepository
+        TaxDisplayTypeRepository $taxDisplayTypeRepository,
+        TaxTypeRepository $taxTypeRepository
     ) {
         $this->orderItemTypeRepository = $orderItemTypeRepository;
         $this->taxDisplayTypeRepository = $taxDisplayTypeRepository;
+        $this->taxTypeRepository = $taxTypeRepository;
     }
 
     /**
@@ -68,7 +78,6 @@ class PaymentChargeProcessor implements ItemHolderPreprocessor
         foreach ($itemHolder->getItems() as $item) {
             if ($item->isCharge()) {
                 $item->setPrice($itemHolder->getPayment()->getCharge());
-                $item->setPriceIncTax($item->getPrice());
 
                 return;
             }
@@ -86,14 +95,16 @@ class PaymentChargeProcessor implements ItemHolderPreprocessor
     {
         /** @var Order $itemHolder */
         $OrderItemType = $this->orderItemTypeRepository->find(OrderItemType::CHARGE);
-        $TaxDisplayType = $this->taxDisplayTypeRepository->find(TaxDisplayType::EXCLUDED);
+        $TaxDisplayType = $this->taxDisplayTypeRepository->find(TaxDisplayType::INCLUDED);
+        $Taxion = $this->taxTypeRepository->find(TaxType::TAXATION);
         $item = new OrderItem();
         $item->setProductName(trans('paymentprocessor.label.charge'))
             ->setQuantity(1)
             ->setPrice($itemHolder->getPayment()->getCharge())
             ->setOrderItemType($OrderItemType)
             ->setOrder($itemHolder)
-            ->setTaxDisplayType($TaxDisplayType);
+            ->setTaxDisplayType($TaxDisplayType)
+            ->setTaxType($Taxion);
         $itemHolder->addItem($item);
     }
 }

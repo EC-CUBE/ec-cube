@@ -18,13 +18,13 @@ use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
-use Eccube\Service\PurchaseFlow\Processor\PaymentChargeProcessor;
+use Eccube\Service\PurchaseFlow\Processor\PaymentChargePreprocessor;
 
-class PaymentChargeProcessorTest extends EccubeTestCase
+class PaymentChargePreprocessorTest extends EccubeTestCase
 {
     public function testProcess()
     {
-        $processor = $this->container->get(PaymentChargeProcessor::class);
+        $processor = $this->container->get(PaymentChargePreprocessor::class);
         $Order = $this->createOrder($this->createCustomer());
         /*
          * @var OrderItem
@@ -43,7 +43,7 @@ class PaymentChargeProcessorTest extends EccubeTestCase
      */
     public function testProcessWithPaymentCharge()
     {
-        $processor = $this->container->get(PaymentChargeProcessor::class);
+        $processor = $this->container->get(PaymentChargePreProcessor::class);
         $Order = $this->createOrder($this->createCustomer());
         /*
          * @var OrderItem
