@@ -728,6 +728,20 @@ file that was distributed with this source code.
             </div>
             <div class="c-contentsArea__secondaryCol">
                 <div class="c-secondaryCol">
+                    {% if id is not null %}
+                        <div class="card rounded border-0 mb-4">
+                            <div class="collapse show ec-cardCollapse" id="preview">
+                                <div class="card-body">
+                                    <div class="d-block text-center">
+                                        <a class="btn btn-block btn-ec-regular"
+                                        target="_blank"
+                                        href="{{ url('product_detail', {id:id}) }}"
+                                        title="{{ 'admin.product.product.preview'|trans }}">{{ 'admin.product.product.preview'|trans }}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header">
                             <div class="row">
