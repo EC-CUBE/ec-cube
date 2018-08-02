@@ -166,20 +166,16 @@ class CartService
      */
     public function getCart()
     {
-        $Carts = $this->getCarts();
+        $cartKeys = $this->session->get('cart_keys', []);
+        foreach ($cartKeys as $cartKey) {
+            $this->carts[] = $this->cartRepository->findOneBy(['cart_key' => $cartKey]);
+        }
 
-        if (empty($Carts)) {
+        if (empty($this->carts)) {
             return null;
         }
 
-        $cartKey = $this->session->get('cart_key');
-        foreach ($Carts as $Cart) {
-            if ($Cart->getCartKey() === $cartKey) {
-                break;
-            }
-        }
-
-        return $Cart;
+        return current($this->carts);
     }
 
     /**
@@ -389,16 +385,22 @@ class CartService
     {
         $Carts = $this->getCarts();
         if (!empty($Carts)) {
-            $removed = array_shift($Carts);
+            $removed = $this->getCart();
             if ($removed && UnitOfWork::STATE_MANAGED === $this->entityManager->getUnitOfWork()->getEntityState($removed)) {
                 $this->entityManager->remove($removed);
                 $this->entityManager->flush($removed);
 
                 $cartKeys = [];
-                foreach ($Carts as $Cart) {
+                foreach ($Carts as $key => $Cart) {
+                    // テーブルから削除されたカートを除外する
+                    if ($Cart == $removed) {
+                        unset($Carts[$key]);
+                    }
                     $cartKeys[] = $Cart->getCartKey();
                 }
                 $this->session->set('cart_keys', $cartKeys);
+                // 注文完了のカートキーをセッションから削除する
+                $this->session->remove('cart_key');
                 $this->carts = $this->cartRepository->findBy(['cart_key' => $cartKeys], ['id' => 'DESC']);
             }
         }
@@ -424,7 +426,6 @@ class CartService
         $Carts = $this->getCarts();
         foreach ($Carts as $index => $Cart) {
             if ($Cart->getCartKey() === $cartKey) {
-                $this->session->set('cart_key', $cartKey);
                 break;
             }
         }
