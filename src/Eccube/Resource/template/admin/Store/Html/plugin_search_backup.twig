@@ -1,0 +1,374 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+
+{% extends '@admin/default_frame.twig' %}
+
+{% set menus = ['store', 'plugin', 'plugin_owners_search'] %}
+
+{% block title %}{{ 'admin.store.plugin_search.885'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.store.plugin_search.884'|trans }}{% endblock %}
+
+{% block stylesheet %}
+    <style type="text/css">
+        .counter {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            position: absolute;
+            background-color: rgba(14, 98, 188, 0.5);
+            text-align: center;
+            line-height: 30px;
+            color: #FFF;
+            font-size: 20px;
+        }
+    </style>
+{% endblock %}
+{% block main %}
+    <div class="c-contentsArea__cols">
+        <div class="c-contentsArea__primaryCol">
+            <div class="c-primaryCol">
+                <div class="card rounded border-0 mb-4">
+                    <div class="card-body p-0">
+                        <div class="row">
+                            <div class="col-sm-9 p-3">
+                                <a href="#" class="pl-4">詳細</a>
+                                <a href="#" class="pl-4">選択してください</a>
+                                <a href="#" class="pl-4">インテリア</a>
+                                <a href="#" class="pl-4">フォーク</a>
+                                <a href="#" class="pl-4">新入荷</a>
+                                <a href="#" class="pl-4">詳細検索</a>
+                                <a href="#" class="pl-4">インテリアインテリア</a>
+                                <a href="#" class="pl-4">フォーク</a>
+                                <a href="#" class="pl-4">新入荷</a>
+                            </div>
+                            <div class="col-sm-3 p-3">
+                                <div class="col-auto">
+                                    <form>
+                                        <input type="text" class="form-control mr-4">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="c-outsideBlock">
+                    <form method="post" action="">
+                        <div class="c-outsideBlock__contents">
+                            <div class="row justify-content-start">
+                                <div class="col-6">
+                                    <div class="d-inline-block mb-3" data-toggle="collapse" href="#searchDetail"
+                                         aria-expanded="false" aria-controls="searchDetail"><a><i
+                                                    class="fa fa-plus-square-o font-weight-bold mr-1"></i><span
+                                                    class="font-weight-bold">詳細検索</span></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="c-subContents collapse ec-collapse" id="searchDetail">
+                            <div class="row mb-2">
+                                <div class="col-6">
+                                    <div class="form-row mb-2">
+                                        <div class="col-6">
+                                            <label class="col-form-label">カテゴリ</label>
+                                            <select id="admin_search_product_category_id"
+                                                    name="admin_search_product[category_id]" class="form-control">
+                                                <option value="">選択してください</option>
+                                                <option value="2">インテリア</option>
+                                                <option value="1">キッチンツール</option>
+                                                <option value="4">　調理器具</option>
+                                                <option value="3">　食器</option>
+                                                <option value="5">　　フォーク</option>
+                                                <option value="6">新入荷</option>
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                    <div class="form-row mb-2">
+                                        <div class="col-12">
+                                            <p class="col-form-label">ステータス</p>
+                                            <div id="admin_search_product_status">
+                                                <div class="form-check form-check-inline"><input type="checkbox"
+                                                                                                 id="admin_search_product_status_1"
+                                                                                                 name="admin_search_product[status][]"
+                                                                                                 class="form-check-input"
+                                                                                                 value="1"
+                                                                                                 checked="checked">
+                                                    <label class="form-check-label" for="admin_search_product_status_1">公開</label>
+                                                </div>
+                                                <div class="form-check form-check-inline"><input type="checkbox"
+                                                                                                 id="admin_search_product_status_2"
+                                                                                                 name="admin_search_product[status][]"
+                                                                                                 class="form-check-input"
+                                                                                                 value="2"
+                                                                                                 checked="checked">
+                                                    <label class="form-check-label" for="admin_search_product_status_2">非公開</label>
+                                                </div>
+                                                <div class="form-check form-check-inline"><input type="checkbox"
+                                                                                                 id="admin_search_product_status_3"
+                                                                                                 name="admin_search_product[status][]"
+                                                                                                 class="form-check-input"
+                                                                                                 value="3">
+                                                    <label class="form-check-label" for="admin_search_product_status_3">廃止</label>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="c-outsideBlock__contents mb-5">
+                            <button class="btn btn-ec-conversion px-5 py-2 ladda-button" type="submit"
+                                    data-style="expand-right"><span class="ladda-label">検索</span><span
+                                        class="ladda-spinner"></span></button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="c-outsideBlock">
+                    <div class="c-outsideBlock__contents">
+                        <div class="row justify-content-start">
+                            <div class="col-sm-4 pl-0">
+                                <a href="#">
+                                    <img class="w-100 h-100"
+                                         src="/html/template/admin/assets/img/plugin_temp/b2031d4b257a50673bba59f0ff671877.png">
+                                </a>
+                            </div>
+                            <div class="col-sm-3">
+                                <a href="#"><img class="w-100 h-100"
+                                                 src="/html/template/admin/assets/img/plugin_temp/1b9a0254667b13e6084fe51a1144bb38.png"></a>
+                            </div>
+                            <div class="col-sm-4 pr-0">
+                                <a href="#"><img class="w-100 h-100"
+                                                 src="/html/template/admin/assets/img/plugin_temp/0b99dedb2068568a88529263e2d44a0f.png"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card rounded border-0 mt-4 mb-4">
+                    <div class="card-header">
+                        <a href="#" class="pull-right d-inline-block mr-3"> > オーナーズストア</a>
+                        <h4 class="ml-2">オーナーズストア</h4>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="row m-3 pt-2">
+                            <div class="col-sm-2">
+                                <a href="#">
+                                    <img class="w-100 img-responsive"
+                                         src="/html/template/admin/assets/img/plugin_temp/8a969cc0c8b3d06e762cd74c76f21554.png">
+                                    <p>プラグインを探すオーナーズストア</p></a>
+                            </div>
+                            <div class="col-sm-2"><a href="#"><img class="w-100 img-responsive"
+                                                                   src="/html/template/admin/assets/img/plugin_temp/8a969cc0c8b3d06e762cd74c76f21554.png">
+                                    <p>プラグインを探すオーナーズストア</p></a></div>
+                            <div class="col-sm-2"><a href="#"><img class="w-100 img-responsive"
+                                                                   src="/html/template/admin/assets/img/plugin_temp/5e39b0977f84b66d3272ef9223387a9d.png">
+                                    <p>プラグインを探すオーナーズストア</p></a></div>
+                            <div class="col-sm-2"><a href="#"><img class="w-100 img-responsive"
+                                                                   src="/html/template/admin/assets/img/plugin_temp/cdf53a2ecb2b5061dcf248e64568ed2f.png">
+                                    <p>プラグインを探すオーナーズストアプラグインを探すオーナーズストア</p></a></div>
+                            <div class="col-sm-2"><a href="#"><img class="w-100 img-responsive"
+                                                                   src="/html/template/admin/assets/img/plugin_temp/7b3b6b3f74fe63f08cc733f3d35231a8.png">
+                                    <p>プラグインを探すオーナーズストア</p></a></div>
+                            <div class="col-sm-2"><a href="#"><img class="w-100 img-responsive"
+                                                                   src="/html/template/admin/assets/img/plugin_temp/5ea5d6cd6f59df7800b25b916cd2a23b.png">
+                                    <p>プラグインを探すオーナーズストア</p></a></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card rounded border-0 mt-4 mb-4">
+                    <div class="card-header">
+                        <a href="#" class="pull-right d-inline-block mr-3"> > オーナーズストア</a>
+                        <h4 class="ml-2">オーナーズストア</h4>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="row m-3 pt-2">
+                            <div class="col-sm-2">
+                                <a href="#">
+                                    <span class="counter">1</span>
+                                    <img class="w-100 img-responsive"
+                                         src="/html/template/admin/assets/img/plugin_temp/8a969cc0c8b3d06e762cd74c76f21554.png">
+                                    <p>プラグインを探すオーナーズストア</p></a></div>
+                            <div class="col-sm-2">
+                                <a href="#">
+                                    <span class="counter">2</span>
+                                    <img class="w-100 img-responsive"
+                                         src="/html/template/admin/assets/img/plugin_temp/8a969cc0c8b3d06e762cd74c76f21554.png">
+                                    <p>プラグインを探すオーナーズストア</p></a></div>
+                            <div class="col-sm-2">
+                                <a href="#">
+                                    <span class="counter">3</span>
+                                    <img class="w-100 img-responsive"
+                                         src="/html/template/admin/assets/img/plugin_temp/5e39b0977f84b66d3272ef9223387a9d.png">
+                                    <p>プラグインを探すオーナーズストア</p></a></div>
+                            <div class="col-sm-2">
+                                <a href="#">
+                                    <span class="counter">4</span>
+                                    <img class="w-100 img-responsive"
+                                         src="/html/template/admin/assets/img/plugin_temp/cdf53a2ecb2b5061dcf248e64568ed2f.png">
+                                    <p>プラグインを探すオーナーズストアプラグインを探すオーナーズストア</p></a></div>
+                            <div class="col-sm-2">
+                                <a href="#">
+                                    <span class="counter">5</span>
+                                    <img class="w-100 img-responsive"
+                                         src="/html/template/admin/assets/img/plugin_temp/5ea5d6cd6f59df7800b25b916cd2a23b.png">
+                                    <p>プラグインを探すオーナーズストア</p></a></div>
+                            <div class="col-sm-2">
+                                <a href="#">
+                                    <span class="counter">6</span>
+                                    <img class="w-100 img-responsive"
+                                         src="/html/template/admin/assets/img/plugin_temp/7b3b6b3f74fe63f08cc733f3d35231a8.png">
+                                    <p>プラグインを探すオーナーズストア</p></a></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card rounded border-0 mt-4 mb-4">
+                    <div class="card-header">
+                        <a href="#" class="pull-right d-inline-block mr-3"> > オーナーズストア</a>
+                        <h4 class="ml-2">オーナーズストア</h4>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="row m-3 pt-2">
+                            <div class="col-sm-2">
+                                <a href="#">
+                                    <span class="counter">1</span>
+                                    <img class="w-100 img-responsive"
+                                         src="/html/template/admin/assets/img/plugin_temp/8a969cc0c8b3d06e762cd74c76f21554.png">
+                                    <p>プラグインを探すオーナーズストア</p></a></div>
+                            <div class="col-sm-2">
+                                <a href="#">
+                                    <span class="counter">2</span>
+                                    <img class="w-100 img-responsive"
+                                         src="/html/template/admin/assets/img/plugin_temp/8a969cc0c8b3d06e762cd74c76f21554.png">
+                                    <p>プラグインを探すオーナーズストア</p></a></div>
+                            <div class="col-sm-2">
+                                <a href="#">
+                                    <span class="counter">3</span>
+                                    <img class="w-100 img-responsive"
+                                         src="/html/template/admin/assets/img/plugin_temp/5e39b0977f84b66d3272ef9223387a9d.png">
+                                    <p>プラグインを探すオーナーズストア</p></a></div>
+                            <div class="col-sm-2">
+                                <a href="#">
+                                    <span class="counter">4</span>
+                                    <img class="w-100 img-responsive"
+                                         src="/html/template/admin/assets/img/plugin_temp/cdf53a2ecb2b5061dcf248e64568ed2f.png">
+                                    <p>プラグインを探すオーナーズストアプラグインを探すオーナーズストア</p></a></div>
+                            <div class="col-sm-2">
+                                <a href="#">
+                                    <span class="counter">5</span>
+                                    <img class="w-100 img-responsive"
+                                         src="/html/template/admin/assets/img/plugin_temp/5ea5d6cd6f59df7800b25b916cd2a23b.png">
+                                    <p>プラグインを探すオーナーズストア</p></a></div>
+                            <div class="col-sm-2">
+                                <a href="#">
+                                    <span class="counter">6</span>
+                                    <img class="w-100 img-responsive"
+                                         src="/html/template/admin/assets/img/plugin_temp/7b3b6b3f74fe63f08cc733f3d35231a8.png">
+                                    <p>プラグインを探すオーナーズストア</p></a></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card rounded border-0 mt-4 mb-4">
+                    <div class="card-header">
+                        <a href="#" class="pull-right d-inline-block mr-3"> > オーナーズストア</a>
+                        <h4 class="ml-2">オーナーズストア</h4>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="row m-3 pt-2">
+                            <div class="col-sm-2">
+                                <a href="#">
+                                    <span class="counter">1</span>
+                                    <img class="w-100 img-responsive"
+                                         src="/html/template/admin/assets/img/plugin_temp/8a969cc0c8b3d06e762cd74c76f21554.png">
+                                    <p>プラグインを探すオーナーズストア</p></a></div>
+                            <div class="col-sm-2">
+                                <a href="#">
+                                    <span class="counter">2</span>
+                                    <img class="w-100 img-responsive"
+                                         src="/html/template/admin/assets/img/plugin_temp/8a969cc0c8b3d06e762cd74c76f21554.png">
+                                    <p>プラグインを探すオーナーズストア</p></a></div>
+                            <div class="col-sm-2">
+                                <a href="#">
+                                    <span class="counter">3</span>
+                                    <img class="w-100 img-responsive"
+                                         src="/html/template/admin/assets/img/plugin_temp/5e39b0977f84b66d3272ef9223387a9d.png">
+                                    <p>プラグインを探すオーナーズストア</p></a></div>
+                            <div class="col-sm-2">
+                                <a href="#">
+                                    <span class="counter">4</span>
+                                    <img class="w-100 img-responsive"
+                                         src="/html/template/admin/assets/img/plugin_temp/cdf53a2ecb2b5061dcf248e64568ed2f.png">
+                                    <p>プラグインを探すオーナーズストアプラグインを探すオーナーズストア</p></a></div>
+                            <div class="col-sm-2">
+                                <a href="#">
+                                    <span class="counter">5</span>
+                                    <img class="w-100 img-responsive"
+                                         src="/html/template/admin/assets/img/plugin_temp/5ea5d6cd6f59df7800b25b916cd2a23b.png">
+                                    <p>プラグインを探すオーナーズストア</p></a></div>
+                            <div class="col-sm-2">
+                                <a href="#">
+                                    <span class="counter">6</span>
+                                    <img class="w-100 img-responsive"
+                                         src="/html/template/admin/assets/img/plugin_temp/7b3b6b3f74fe63f08cc733f3d35231a8.png">
+                                    <p>プラグインを探すオーナーズストア</p></a></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card rounded border-0 mt-4 mb-4">
+                    <div class="card-header">
+                        <a href="#" class="pull-right d-inline-block mr-3"> > オーナーズストア</a>
+                        <h4 class="ml-2">オーナーズストア</h4>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="row m-3 pt-2">
+                            <div class="col-sm-2"><a href="#"><img class="w-100 img-responsive"
+                                                                   src="/html/template/admin/assets/img/plugin_temp/8a969cc0c8b3d06e762cd74c76f21554.png">
+                                    <p>プラグインを探すオーナーズストア</p></a></div>
+                            <div class="col-sm-2"><a href="#"><img class="w-100 img-responsive"
+                                                                   src="/html/template/admin/assets/img/plugin_temp/8a969cc0c8b3d06e762cd74c76f21554.png">
+                                    <p>プラグインを探すオーナーズストア</p></a></div>
+                            <div class="col-sm-2"><a href="#"><img class="w-100 img-responsive"
+                                                                   src="/html/template/admin/assets/img/plugin_temp/5e39b0977f84b66d3272ef9223387a9d.png">
+                                    <p>プラグインを探すオーナーズストア</p></a></div>
+                            <div class="col-sm-2"><a href="#"><img class="w-100 img-responsive"
+                                                                   src="/html/template/admin/assets/img/plugin_temp/cdf53a2ecb2b5061dcf248e64568ed2f.png">
+                                    <p>プラグインを探すオーナーズストアプラグインを探すオーナーズストア</p></a></div>
+                            <div class="col-sm-2"><a href="#"><img class="w-100 img-responsive"
+                                                                   src="/html/template/admin/assets/img/plugin_temp/5ea5d6cd6f59df7800b25b916cd2a23b.png">
+                                    <p>プラグインを探すオーナーズストア</p></a></div>
+                            <div class="col-sm-2"><a href="#"><img class="w-100 img-responsive"
+                                                                   src="/html/template/admin/assets/img/plugin_temp/7b3b6b3f74fe63f08cc733f3d35231a8.png">
+                                    <p>プラグインを探すオーナーズストア</p></a></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="searchPluginModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div id="search_plugin_modal_box" class="modal-content">
+                <div id="search_plugin_modal_box__header" class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                class="modal-close" aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">&nbsp;</h4>
+                </div>
+                <div id="search_plugin_modal_box__body" class="modal-body" style="background: #fff"></div>
+                <div id="search_plugin_modal_box__buttons" class="modal-footer" style="background: #fff"></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

@@ -80,6 +80,17 @@ class PluginController extends AbstractController
     /**
      * インストール済プラグイン画面
      *
+     * @Route("/%eccube_admin_route%/store/plugin_html", name="admin_store_plugin_html")
+     * @Template("@admin/Store/Html/plugin.twig")
+     */
+    public function index_html(Request $request)
+    {
+
+    }
+
+    /**
+     * インストール済プラグイン画面
+     *
      * @Route("/%eccube_admin_route%/store/plugin", name="admin_store_plugin")
      * @Template("@admin/Store/plugin.twig")
      */

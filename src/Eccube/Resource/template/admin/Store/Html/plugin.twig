@@ -1,0 +1,370 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+
+{% extends '@admin/default_frame.twig' %}
+
+{% set menus = ['store', 'plugin', 'plugin_list'] %}
+
+{% block title %}{{ 'admin.store.plugin.809'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.store.plugin.810'|trans }}{% endblock %}
+
+{% block main %}
+    <div class="c-contentsArea__cols">
+        <div class="c-contentsArea__primaryCol">
+            <div class="c-primaryCol">
+                <div class="card rounded border-0 mb-4">
+                    <div class="card-header">
+                        <a href="{{ url('admin_store_plugin_owners_search_html') }}"
+                           class="btn btn-ec-regular mr-2 pull-right">{{ 'admin.store.plugin.811'|trans }}</a>
+                        <h4 class="box-title font-weight-bold mb-3">{{ 'admin.store.plugin.812'|trans }}</h4>
+                    </div>
+                    <div class="card-body p-0">
+                        <table class="table table-sm mb-0">
+                            <thead>
+                            <tr>
+                                <th class="border-top-0 pl-4 pt-2 pb-2">{{ 'admin.store.unregisterd_plugin_table.941'|trans }}</th>
+                                <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.unregisterd_plugin_table.942'|trans }}</th>
+                                <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.unregisterd_plugin_table.943'|trans }}</th>
+                                <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.unregisterd_plugin_table.944'|trans }}</th>
+                                <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.unregisterd_plugin_table.945'|trans }}</th>
+                                <th class="border-top-0 pt-2 pb-2">&nbsp;</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            <tr>
+                                <td class="pl-4 pt-2 pb-2">
+                                    <a href="#">
+                                        <img class="pr-3"
+                                             src="/html/template/admin/assets/img/plugin_temp/9d7ff1f66356b42897bc7faedc5fa47c.png"
+                                             height="60" alt="">
+                                    </a>
+                                    <a href="#">プラグインオーナーズストア</a>
+                                </td>
+                                <td class="align-middle">
+                                    <p class="mb-0">1.0.0</p>
+                                </td>
+                                <td class="align-middle">MultipleAdmin</td>
+                                <td class="align-middle">プラ</td>
+                                <td class="align-middle">
+                                    <a href="#"
+                                       class="btn btn-ec-regular">ーズストア</a>
+                                </td>
+                                <td class="align-middle">
+                                    <div class="col-auto text-right">
+                                        <a class="btn btn-ec-actionIcon mr-3" data-tooltip="tooltip"
+                                           data-placement="top" title="削除">
+                                            <i class="fa fa-close fa-lg text-secondary"></i>
+                                        </a>
+                                        <a class="btn btn-ec-actionIcon mr-3" href="" data-toggle="tooltip"
+                                           data-placement="top" title="" data-original-title="上へ移動">
+                                            <i class="fa fa-play fa-lg text-secondary"></i>
+                                        </a>
+                                        <a class="btn btn-ec-actionIcon mr-3" href="" data-toggle="tooltip"
+                                           data-placement="top" title="" data-original-title="下へ移動">
+                                            <i class="fa fa-cog fa-lg text-secondary"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="pl-4 pt-2 pb-2">
+                                    <a href="#">
+                                        <img class="pr-3"
+                                             src="/html/template/admin/assets/img/plugin_temp/d17d64fa195b32fe6936e7b1a78322d5.png"
+                                             height="60" alt="">
+                                    </a>
+                                    <a href="#">プラグインオーナーズストア</a>
+                                </td>
+                                <td class="align-middle">
+                                    <p class="mb-0">1.0.0</p>
+                                </td>
+                                <td class="align-middle">Payment</td>
+                                <td class="align-middle">プラ</td>
+                                <td class="align-middle">
+                                    <a href="#"
+                                       class="btn btn-ec-regular">ーズストア</a>
+                                </td>
+                                <td class="align-middle">
+                                    <div class="col-auto text-right">
+                                        <a class="btn btn-ec-actionIcon mr-3" href="" data-toggle="tooltip"
+                                           data-placement="top" title="" data-original-title="上へ移動">
+                                            <i class="fa fa-pause fa-lg text-secondary"></i>
+                                        </a>
+                                        <a class="btn btn-ec-actionIcon mr-3" href="" data-toggle="tooltip"
+                                           data-placement="top" title="" data-original-title="下へ移動">
+                                            <i class="fa fa-cog fa-lg text-secondary"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="pl-4 pt-2 pb-2">
+                                    <a href="#">
+                                        <img class="pr-3"
+                                             src="/html/template/admin/assets/img/plugin_temp/524cba73b4b60ec01a74d0d6d3fc25db.png"
+                                             height="60" alt="">
+                                    </a>
+                                    <a href="#">プラグインオーナーズストア</a>
+                                </td>
+                                <td class="align-middle">
+                                    <p class="mb-0">1.0.0</p>
+                                </td>
+                                <td class="align-middle">MailExpand</td>
+                                <td class="align-middle">プラ</td>
+                                <td class="align-middle">
+                                    <a href="#"
+                                       class="btn btn-ec-regular">ーズストア</a>
+                                </td>
+                                <td class="align-middle">
+                                    <div class="col-auto text-right">
+                                        <a class="btn btn-ec-actionIcon mr-3" href="" data-toggle="tooltip"
+                                           data-placement="top" title="" data-original-title="上へ移動">
+                                            <i class="fa fa-pause fa-lg text-secondary"></i>
+                                        </a>
+                                        <a class="btn btn-ec-actionIcon mr-3" href="" data-toggle="tooltip"
+                                           data-placement="top" title="" data-original-title="下へ移動">
+                                            <i class="fa fa-cog fa-lg text-secondary"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="pl-4 pt-2 pb-2">
+                                    <a href="#">
+                                        <img class="pr-3"
+                                             src="/html/template/admin/assets/img/plugin_temp/524cba73b4b60ec01a74d0d6d3fc25db.png"
+                                             height="60" alt="">
+                                    </a>
+                                    <a href="#">プラグインオーナーズストア</a>
+                                </td>
+                                <td class="align-middle">
+                                    <p class="mb-0">1.0.0</p>
+                                </td>
+                                <td class="align-middle">MultipleAdmin</td>
+                                <td class="align-middle">プラ</td>
+                                <td class="align-middle">
+                                    <a href="#"
+                                       class="btn btn-ec-regular">ーズストア</a>
+                                </td>
+                                <td class="align-middle">
+                                    <div class="col-auto text-right">
+                                        <a class="btn btn-ec-actionIcon mr-3" href="" data-toggle="tooltip"
+                                           data-placement="top" title="" data-original-title="上へ移動">
+                                            <i class="fa fa-pause fa-lg text-secondary"></i>
+                                        </a>
+                                        <a class="btn btn-ec-actionIcon mr-3" href="" data-toggle="tooltip"
+                                           data-placement="top" title="" data-original-title="下へ移動">
+                                            <i class="fa fa-cog fa-lg text-secondary"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="pl-4 pt-2 pb-2">
+                                    <a href="#">
+                                        <img class="pr-3"
+                                             src="/html/template/admin/assets/img/plugin_temp/524cba73b4b60ec01a74d0d6d3fc25db.png"
+                                             height="60" alt="">
+                                    </a>
+                                    <a href="#">プラグインオーナーズストア</a>
+                                </td>
+                                <td class="align-middle">
+                                    <p class="mb-0">1.0.0</p>
+                                </td>
+                                <td class="align-middle">MultipleAdmin</td>
+                                <td class="align-middle">プラ</td>
+                                <td class="align-middle">
+                                    <a href="#"
+                                       class="btn btn-ec-regular">ーズストア</a>
+                                </td>
+                                <td class="align-middle">
+                                    <div class="col-auto text-right">
+                                        <a class="btn btn-ec-actionIcon mr-3" href="" data-toggle="tooltip"
+                                           data-placement="top" title="" data-original-title="上へ移動">
+                                            <i class="fa fa-pause fa-lg text-secondary"></i>
+                                        </a>
+                                        <a class="btn btn-ec-actionIcon mr-3" href="" data-toggle="tooltip"
+                                           data-placement="top" title="" data-original-title="下へ移動">
+                                            <i class="fa fa-cog fa-lg text-secondary"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="pl-4 pt-2 pb-2">
+                                    <a href="#">
+                                        <img class="pr-3"
+                                             src="/html/template/admin/assets/img/plugin_temp/524cba73b4b60ec01a74d0d6d3fc25db.png"
+                                             height="60" alt="">
+                                    </a>
+                                    <a href="#">プラグインオーナーズストア</a>
+                                </td>
+                                <td class="align-middle">
+                                    <p class="mb-0">1.0.0</p>
+                                </td>
+                                <td class="align-middle">MultipleAdmin</td>
+                                <td class="align-middle">プラ</td>
+                                <td class="align-middle">
+                                    <a href="#"
+                                       class="btn btn-ec-regular">ーズストア</a>
+                                </td>
+                                <td class="align-middle">
+                                    <div class="col-auto text-right">
+                                        <a class="btn btn-ec-actionIcon mr-3" href="" data-toggle="tooltip"
+                                           data-placement="top" title="" data-original-title="上へ移動">
+                                            <i class="fa fa-pause fa-lg text-secondary"></i>
+                                        </a>
+                                        <a class="btn btn-ec-actionIcon mr-3" href="" data-toggle="tooltip"
+                                           data-placement="top" title="" data-original-title="下へ移動">
+                                            <i class="fa fa-cog fa-lg text-secondary"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card rounded border-0 mb-4">
+                    <div class="card-header">
+                        <a href="{{ url('admin_store_plugin_install') }}"
+                           class="btn btn-ec-regular mr-2 pull-right">{{ 'admin.store.plugin.813'|trans }}</a>
+                        <h4 class="box-title font-weight-bold mb-3">{{ 'admin.store.plugin.814'|trans }}</h4>
+                    </div>
+                    <div class="card-body p-0">
+                        <table class="table table-sm mb-0">
+                            <thead>
+                            <tr>
+                                <th class="border-top-0 pl-4 pt-2 pb-2">{{ 'admin.store.unregisterd_plugin_table.941'|trans }}</th>
+                                <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.unregisterd_plugin_table.942'|trans }}</th>
+                                <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.unregisterd_plugin_table.943'|trans }}</th>
+                                <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.unregisterd_plugin_table.944'|trans }}</th>
+                                <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.unregisterd_plugin_table.945'|trans }}</th>
+                                <th class="border-top-0 pt-2 pb-2">&nbsp;</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            <tr>
+                                <td class="align-middle pl-4 pt-2 pb-2">
+                                    <a href="#">プラグインオーナーズストア</a>
+                                </td>
+                                <td class="align-middle">
+                                    <p class="mb-0">1.0.0</p>
+                                </td>
+                                <td class="align-middle">MultipleAdmin</td>
+                                <td class="align-middle">プラ</td>
+                                <td class="align-middle pt-3 pb-3">
+                                    <div class="mb-2">
+                                        <input type="file" id="form4_plugin_archive" name="form4[plugin_archive]"
+                                               accept="application/zip,application/x-tar,application/x-gzip"
+                                               class="form-control-file">
+                                    </div>
+                                    <button href="#"
+                                            class="btn btn-primary">ーズストア
+                                    </button>
+                                </td>
+                                <td class="align-middle">
+                                    <div class="col-auto text-right">
+                                        <a class="btn btn-ec-actionIcon mr-3" data-tooltip="tooltip"
+                                           data-placement="top" title="削除">
+                                            <i class="fa fa-close fa-lg text-secondary"></i>
+                                        </a>
+                                        <a class="btn btn-ec-actionIcon mr-3" href="" data-toggle="tooltip"
+                                           data-placement="top" title="" data-original-title="上へ移動">
+                                            <i class="fa fa-play fa-lg text-secondary"></i>
+                                        </a>
+                                        <a class="btn btn-ec-actionIcon mr-3" href="" data-toggle="tooltip"
+                                           data-placement="top" title="" data-original-title="下へ移動">
+                                            <i class="fa fa-cog fa-lg text-secondary"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="align-middle pl-4 pt-2 pb-2">
+                                    <a href="#">プラグインオーナーズストア</a>
+                                </td>
+                                <td class="align-middle">
+                                    <p class="mb-0">1.0.0</p>
+                                </td>
+                                <td class="align-middle">Payment</td>
+                                <td class="align-middle">プラ</td>
+                                <td class="align-middle pt-3 pb-3">
+                                    <div class="mb-2">
+                                        <input type="file" id="form4_plugin_archive" name="form4[plugin_archive]"
+                                               accept="application/zip,application/x-tar,application/x-gzip"
+                                               class="form-control-file">
+                                    </div>
+                                    <button href="#"
+                                            class="btn btn-primary">ーズストア
+                                    </button>
+                                </td>
+                                <td class="align-middle">
+                                    <div class="col-auto text-right">
+                                        <a class="btn btn-ec-actionIcon mr-3" href="" data-toggle="tooltip"
+                                           data-placement="top" title="" data-original-title="上へ移動">
+                                            <i class="fa fa-pause fa-lg text-secondary"></i>
+                                        </a>
+                                        <a class="btn btn-ec-actionIcon mr-3" href="" data-toggle="tooltip"
+                                           data-placement="top" title="" data-original-title="下へ移動">
+                                            <i class="fa fa-cog fa-lg text-secondary"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="align-middle pl-4 pt-2 pb-2">
+                                    <a href="#">プラグインオーナーズストア</a>
+                                </td>
+                                <td class="align-middle">
+                                    <p class="mb-0">1.0.0</p>
+                                </td>
+                                <td class="align-middle">MailExpand</td>
+                                <td class="align-middle">プラ</td>
+                                <td class="align-middle pt-3 pb-3">
+                                    <div class="mb-2">
+                                        <input type="file" id="form4_plugin_archive" name="form4[plugin_archive]"
+                                               accept="application/zip,application/x-tar,application/x-gzip"
+                                               class="form-control-file">
+                                    </div>
+                                    <button href="#"
+                                            class="btn btn-primary">ーズストア
+                                    </button>
+                                </td>
+                                <td class="align-middle">
+                                    <div class="col-auto text-right">
+                                        <a class="btn btn-ec-actionIcon mr-3" data-tooltip="tooltip"
+                                           data-placement="top" title="削除">
+                                            <i class="fa fa-close fa-lg text-secondary"></i>
+                                        </a>
+                                        <a class="btn btn-ec-actionIcon mr-3" href="" data-toggle="tooltip"
+                                           data-placement="top" title="" data-original-title="上へ移動">
+                                            <i class="fa fa-play fa-lg text-secondary"></i>
+                                        </a>
+                                        <a class="btn btn-ec-actionIcon mr-3" href="" data-toggle="tooltip"
+                                           data-placement="top" title="" data-original-title="下へ移動">
+                                            <i class="fa fa-cog fa-lg text-secondary"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

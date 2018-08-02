@@ -89,6 +89,21 @@ class OwnerStoreController extends AbstractController
     /**
      * Owner's Store Plugin Installation Screen - Search function
      *
+     * @Route("/search_html", name="admin_store_plugin_owners_search_html")
+     * @Template("@admin/Store/Html/plugin_search.twig")
+     *
+     * @param Request     $request
+     *
+     * @return array
+     */
+    public function search_html(Request $request)
+    {
+
+    }
+
+    /**
+     * Owner's Store Plugin Installation Screen - Search function
+     *
      * @Route("/search", name="admin_store_plugin_owners_search")
      * @Template("@admin/Store/plugin_search.twig")
      *
