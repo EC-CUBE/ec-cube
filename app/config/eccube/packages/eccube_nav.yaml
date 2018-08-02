@@ -2,7 +2,6 @@ parameters:
   eccube_nav:
     - id: product
       name: admin.nav.product
-      has_child: true
       icon: fa-cube
       child:
           - id: product_master
@@ -28,7 +27,6 @@ parameters:
             url: admin_product_category_csv_import
     - id: order
       name: admin.nav.order
-      has_child: true
       icon: fa-inbox
       child:
           - id: order_master
@@ -42,7 +40,6 @@ parameters:
             url: admin_shipping_csv_import
     - id: customer
       name: admin.nav.customer
-      has_child: true
       icon: fa-users
       child:
           - id: customer_master
@@ -54,7 +51,6 @@ parameters:
 
     - id: content
       name: admin.nav.content
-      has_child: true
       icon: fa-file-text-o
       child:
           - id: news
@@ -77,12 +73,10 @@ parameters:
             url: admin_content_cache
     - id: setting
       name: admin.nav.setting
-      has_child: true
       icon: fa-cog
       child:
           - id: shop
             name: admin.nav.setting.shop
-            has_child: true
             child:
                 - id: shop_index
                   name: admin.nav.setting.shop.shop_index
@@ -104,7 +98,6 @@ parameters:
                   url: admin_setting_shop_csv
           - id: system
             name: admin.nav.setting.system
-            has_child: true
             child:
                 - id: member
                   name: admin.nav.setting.system.member
@@ -126,12 +119,10 @@ parameters:
                   url: admin_setting_system_system
     - id: store
       name: admin.nav.store
-      has_child: true
       icon: fa-info-circle
       child:
       - id: plugin
         name: admin.nav.store.plugin
-        has_child: true
         child:
             - id: plugin_owners_search
               name: admin.nav.store.plugin.plugin_owners_install
@@ -144,7 +135,6 @@ parameters:
               url: admin_store_plugin_handler
       - id: template
         name: admin.nav.store.template
-        has_child: true
         child:
           - id: template_list
             name: admin.nav.store.template.template_list

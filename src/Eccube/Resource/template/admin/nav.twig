@@ -18,7 +18,7 @@ file that was distributed with this source code.
         </li>
         {% for level1 in eccube_config.eccube_nav if app.request.baseUrl ~ '/' ~ eccube_config.eccube_admin_route ~ '/' ~ level1.id not in AuthorityRoles %}
             <li class="c-mainNavArea__navItem">
-                {% if level1.has_child is defined and level1.has_child %}
+                {% if level1.child is defined and level1.child|length > 0 %}
                     <a class="c-mainNavArea__navItemTitle{{ active_menus(menus)[0] != level1.id ? ' collapsed' }}"
                        data-toggle="collapse" href="#nav-{{ level1.id }}"
                        aria-expanded="{{ active_menus(menus)[0] == level1.id ? 'true' : 'false' }}"
@@ -29,7 +29,7 @@ file that was distributed with this source code.
                         {% for level2 in level1.child if app.request.baseUrl ~ '/' ~ eccube_config.eccube_admin_route ~ '/' ~ level1.id ~ '/' ~ level2.id not in AuthorityRoles %}
                             {% if level2.url is defined and path(level2.url) in AuthorityRoles %}
                             {% else %}
-                                {% if level2.has_child is defined and level2.has_child %}
+                                {% if level2.child is defined and level2.child|length > 0 %}
                                     <li>
                                         <a class="c-mainNavArea__navItemSubTitle{{ active_menus(menus)[1] != level2.id ? ' collapsed' }}"
                                            data-toggle="collapse" href="#nav-{{ level2.id }}"
