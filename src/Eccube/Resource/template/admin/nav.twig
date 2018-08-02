@@ -16,32 +16,32 @@ file that was distributed with this source code.
                 <span>{{ 'admin.nav.home'|trans }}</span>
             </a>
         </li>
-        {% for level1 in eccube_config.eccube_nav if app.request.baseUrl ~ '/' ~ eccube_config.eccube_admin_route ~ '/' ~ level1.id not in AuthorityRoles %}
+        {% for key1, level1 in eccube_config.eccube_nav if app.request.baseUrl ~ '/' ~ eccube_config.eccube_admin_route ~ '/' ~ key1 not in AuthorityRoles %}
             <li class="c-mainNavArea__navItem">
                 {% if level1.child is defined and level1.child|length > 0 %}
-                    <a class="c-mainNavArea__navItemTitle{{ active_menus(menus)[0] != level1.id ? ' collapsed' }}"
-                       data-toggle="collapse" href="#nav-{{ level1.id }}"
-                       aria-expanded="{{ active_menus(menus)[0] == level1.id ? 'true' : 'false' }}"
-                       aria-controls="nav-{{ level1.id }}"><i class="fa {{ level1.icon }} fa-fw"
+                    <a class="c-mainNavArea__navItemTitle{{ active_menus(menus)[0] != key1 ? ' collapsed' }}"
+                       data-toggle="collapse" href="#nav-{{ key1 }}"
+                       aria-expanded="{{ active_menus(menus)[0] == key1 ? 'true' : 'false' }}"
+                       aria-controls="nav-{{ key1 }}"><i class="fa {{ level1.icon }} fa-fw"
                                                               aria-hidden="true"></i><span>{{ level1.name|trans }}</span></a>
-                    <ul class="collapse {% if active_menus(menus)[0] == level1.id %} show{% endif %}"
-                        id="nav-{{ level1.id }}">
-                        {% for level2 in level1.child if app.request.baseUrl ~ '/' ~ eccube_config.eccube_admin_route ~ '/' ~ level1.id ~ '/' ~ level2.id not in AuthorityRoles %}
+                    <ul class="collapse {% if active_menus(menus)[0] == key1 %} show{% endif %}"
+                        id="nav-{{ key1 }}">
+                        {% for key2, level2 in level1.child if app.request.baseUrl ~ '/' ~ eccube_config.eccube_admin_route ~ '/' ~ key1 ~ '/' ~ key2 not in AuthorityRoles %}
                             {% if level2.url is defined and path(level2.url) in AuthorityRoles %}
                             {% else %}
                                 {% if level2.child is defined and level2.child|length > 0 %}
                                     <li>
-                                        <a class="c-mainNavArea__navItemSubTitle{{ active_menus(menus)[1] != level2.id ? ' collapsed' }}"
-                                           data-toggle="collapse" href="#nav-{{ level2.id }}"
-                                           aria-expanded="{{ active_menus(menus)[1] != level2.id ? 'true' : 'false' }}"
-                                           aria-controls="nav-{{ level2.id }}"><span>{{ level2.name|trans }}</span></a>
-                                        <ul class="collapse{{ active_menus(menus)[1] == level2.id ? ' show' }}"
-                                            id="nav-{{ level2.id }}">
-                                            {% for level3 in level2.child %}
+                                        <a class="c-mainNavArea__navItemSubTitle{{ active_menus(menus)[1] != key2 ? ' collapsed' }}"
+                                           data-toggle="collapse" href="#nav-{{ key2 }}"
+                                           aria-expanded="{{ active_menus(menus)[1] != key2 ? 'true' : 'false' }}"
+                                           aria-controls="nav-{{ key2 }}"><span>{{ level2.name|trans }}</span></a>
+                                        <ul class="collapse{{ active_menus(menus)[1] == key2 ? ' show' }}"
+                                            id="nav-{{ key2 }}">
+                                            {% for key3, level3 in level2.child %}
                                                 {% if level3.url is defined and path(level3.url) in AuthorityRoles %}
                                                 {% else %}
                                                     <li>
-                                                        <a href="{{ url(level3.url) }}"{{ active_menus(menus)[2] == level3.id ? ' class="is-active"' }}>{{ level3.name|trans }}</a>
+                                                        <a href="{{ url(level3.url) }}"{{ active_menus(menus)[2] == key3 ? ' class="is-active"' }}>{{ level3.name|trans }}</a>
                                                     </li>
                                                 {% endif %}
                                             {% endfor %}
@@ -49,7 +49,7 @@ file that was distributed with this source code.
                                     </li>
                                 {% else %}
                                     <li>
-                                        <a href="{{ url(level2.url) }}"{{ active_menus(menus)[1] == level2.id ? ' class="is-active"' }}>{{ level2.name|trans }}</a>
+                                        <a href="{{ url(level2.url) }}"{{ active_menus(menus)[1] == key2 ? ' class="is-active"' }}>{{ level2.name|trans }}</a>
                                     </li>
                                 {% endif %}
                             {% endif %}
