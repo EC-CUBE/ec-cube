@@ -16,7 +16,7 @@ namespace Eccube\Controller;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\ForgotType;
-use Eccube\Form\Type\Front\ResetType;
+use Eccube\Form\Type\Front\PassowrdResetType;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Service\MailService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -182,7 +182,7 @@ class ForgotController extends AbstractController
         );
 
         $builder = $this->formFactory
-            ->createNamedBuilder('', ResetType::class);
+            ->createNamedBuilder('', PassowrdResetType::class);
 
         $form = $builder->getForm();
         $form->handleRequest($request);
@@ -205,7 +205,7 @@ class ForgotController extends AbstractController
             // リセットキー・入力メールアドレスで会員情報検索
             $Customer = $this->customerRepository
                 ->getRegularCustomerByResetKey($reset_key, $form->get('login_email')->getData());
-            if (is_null($Customer) == false) {
+            if (!is_null($Customer)) {
                 // パスワードの発行・更新
                 $encoder = $this->encoderFactory->getEncoder($Customer);
                 $pass = $form->get('password')->getData();
