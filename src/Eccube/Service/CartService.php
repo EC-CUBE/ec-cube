@@ -166,16 +166,20 @@ class CartService
      */
     public function getCart()
     {
-        $cartKeys = $this->session->get('cart_keys', []);
-        foreach ($cartKeys as $cartKey) {
-            $this->carts[] = $this->cartRepository->findOneBy(['cart_key' => $cartKey]);
-        }
+        $Carts = $this->getCarts();
 
-        if (empty($this->carts)) {
+        if (empty($Carts)) {
             return null;
         }
 
-        return current($this->carts);
+        $cartKey = $this->session->get('cart_key');
+        foreach ($Carts as $Cart) {
+            if ($Cart->getCartKey() === $cartKey) {
+                break;
+            }
+        }
+
+        return $Cart;
     }
 
     /**
@@ -411,13 +415,19 @@ class CartService
     }
 
     /**
-     * 指定したインデックスにあるカートを優先にする
+     * カートキーで指定したインデックスにあるカートを優先にする
      *
-     * @param int $index カートのインデックス
+     * @param string $cartKey カートキー
      */
-    public function setPrimary($index = 0)
+    public function setPrimary($cartKey)
     {
         $Carts = $this->getCarts();
+        foreach ($Carts as $index => $Cart) {
+            if ($Cart->getCartKey() === $cartKey) {
+                $this->session->set('cart_key', $cartKey);
+                break;
+            }
+        }
         $primary = $Carts[$index];
         $prev = $Carts[0];
         array_splice($Carts, 0, 1, [$primary]);
