@@ -1290,7 +1290,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
          *
          * @param \Eccube\Entity\OrderItem $OrderItem
          *
-         * @return Shipping
+         * @return Order
          */
         public function addOrderItem(\Eccube\Entity\OrderItem $OrderItem)
         {
@@ -1336,7 +1336,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
          *
          * @param \Eccube\Entity\Shipping $Shipping
          *
-         * @return Shipping
+         * @return Order
          */
         public function addShipping(\Eccube\Entity\Shipping $Shipping)
         {

@@ -92,7 +92,7 @@ class EF04CustomerCest
 
         // 会員情報入力フォームに、会員情報を入力する
         // 「同意する」ボタンを押下する
-        $I->submitForm(['css' => '.ec-layoutRole__main form'],[
+        $I->submitForm(['css' => '.ec-layoutRole__main form'], [
             'entry[name][name01]' => '姓',
             'entry[name][name02]' => '名',
             'entry[kana][kana01]' => 'セイ',
@@ -122,7 +122,7 @@ class EF04CustomerCest
 
         // 会員情報入力フォームに、会員情報を入力する
         // 「同意する」ボタンを押下する
-        $I->submitForm(['css' => '.ec-layoutRole__main form'],[
+        $I->submitForm(['css' => '.ec-layoutRole__main form'], [
             'entry[name][name01]' => '',
             'entry[name][name02]' => '名',
             'entry[kana][kana01]' => 'セイ',

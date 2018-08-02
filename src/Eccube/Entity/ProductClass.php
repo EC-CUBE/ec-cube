@@ -86,7 +86,6 @@ if (!class_exists('\Eccube\Entity\ProductClass')) {
         /**
          * Set price02 IncTax
          *
-         * @param  string       $price02
          *
          * @return ProductClass
          */
@@ -138,7 +137,7 @@ if (!class_exists('\Eccube\Entity\ProductClass')) {
         /**
          * Get tax_rate
          *
-         * @return string
+         * @return boolean
          */
         public function getTaxRate()
         {

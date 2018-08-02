@@ -125,7 +125,7 @@ if (!class_exists('\Eccube\Entity\PageLayout')) {
          *
          * @param int $sortNo
          *
-         * @return Page
+         * @return PageLayout
          */
         public function setSortNo($sortNo)
         {
@@ -147,7 +147,7 @@ if (!class_exists('\Eccube\Entity\PageLayout')) {
         /**
          * Set pageLayout
          *
-         * @param \Eccube\Entity\Page $page
+         * @param \Eccube\Entity\Page $Page
          *
          * @return PageLayout
          */
@@ -161,7 +161,7 @@ if (!class_exists('\Eccube\Entity\PageLayout')) {
         /**
          * Get pageLayout
          *
-         * @return \Eccube\Entity\PageLayout
+         * @return Page
          */
         public function getPage()
         {

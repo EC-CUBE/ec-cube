@@ -958,7 +958,7 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
          *
          * @param string|null $note
          *
-         * @return Order
+         * @return Shipping
          */
         public function setNote($note = null)
         {
@@ -1040,7 +1040,7 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
          *
          * @param \Eccube\Entity\Member|null $creator
          *
-         * @return Member
+         * @return Shipping
          */
         public function setCreator(\Eccube\Entity\Member $creator = null)
         {

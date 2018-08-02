@@ -35,10 +35,9 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class OrderItemType extends AbstractType
@@ -90,7 +89,6 @@ class OrderItemType extends AbstractType
      * @param EccubeConfig $eccubeConfig
      * @param ProductClassRepository $productClassRepository
      * @param OrderItemRepository $orderItemRepository
-     * @param RequestStack $requestStack
      */
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -243,7 +241,7 @@ class OrderItemType extends AbstractType
 
     /**
      * @param FormInterface $form
-     * @param ValidatorInterface $errors
+     * @param ConstraintViolationListInterface $errors
      */
     protected function addErrorsIfExists(FormInterface $form, ConstraintViolationListInterface $errors)
     {

@@ -46,6 +46,9 @@ class CacheUtil implements EventSubscriberInterface
         $this->kernel = $kernel;
     }
 
+    /**
+     * @param string $env
+     */
     public function clearCache($env = null)
     {
         $this->clearCacheAfterResponse = $env;

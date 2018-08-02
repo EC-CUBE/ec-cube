@@ -120,7 +120,7 @@ if (!class_exists('\Eccube\Entity\ClassName')) {
         /**
          * Set backend_name.
          *
-         * @param string $backend_name
+         * @param string $backendName
          *
          * @return ClassName
          */

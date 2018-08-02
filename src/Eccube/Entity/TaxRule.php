@@ -428,7 +428,6 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
         /**
          * Set calcRule.
          *
-         * @param \Eccube\Entity\Master\RoundingType|null $calcRule
          *
          * @return TaxRule
          */
