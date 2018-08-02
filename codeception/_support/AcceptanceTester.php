@@ -30,7 +30,7 @@ class AcceptanceTester extends \Codeception\Actor
 
     public function loginAsAdmin($user = '', $password = '', $dir = '')
     {
-        if(!$user || !$password) {
+        if (!$user || !$password) {
             $account = Fixtures::get('admin_account');
             $user = $account['member'];
             $password = $account['password'];
@@ -56,7 +56,7 @@ class AcceptanceTester extends \Codeception\Actor
             $I->click('#page_admin_homepage div.popover .popover-body a:last-child');
             $config = Fixtures::get('config');
             $I->amOnPage('/'.$config['eccube_admin_route'].'/logout');
-            $I->see('ログイン', '.login-box #form1 .btn_area button');
+            $I->see('ログイン', '#form1 > button');
         }
     }
 
@@ -97,7 +97,7 @@ class AcceptanceTester extends \Codeception\Actor
 
     public function setStock($pid, $stock = 0)
     {
-        if(!$pid) {
+        if (!$pid) {
             return;
         }
         $entityManager = Fixtures::get('entityManager');
@@ -152,15 +152,15 @@ class AcceptanceTester extends \Codeception\Actor
      */
     public function getLastDownloadFile($fileNameRegex, $retryCount = 3)
     {
-        $downloadDir = __DIR__ . '/_downloads/';
+        $downloadDir = __DIR__.'/_downloads/';
         $files = scandir($downloadDir);
-        $files = array_map(function($fileName) use ($downloadDir) {
+        $files = array_map(function ($fileName) use ($downloadDir) {
             return $downloadDir.$fileName;
         }, $files);
-        $files = array_filter($files, function($f) use ($fileNameRegex){
+        $files = array_filter($files, function ($f) use ($fileNameRegex){
             return is_file($f) && preg_match($fileNameRegex, basename($f));
         });
-        usort($files, function($l, $r) {
+        usort($files, function ($l, $r) {
             return filemtime($l) - filemtime($r);
         });
 
@@ -180,8 +180,8 @@ class AcceptanceTester extends \Codeception\Actor
     public function switchToNewWindow()
     {
         $this->wait(1);
-        $this->executeInSelenium(function($webdriver) {
-            $handles=$webdriver->getWindowHandles();
+        $this->executeInSelenium(function ($webdriver) {
+            $handles = $webdriver->getWindowHandles();
             $last_window = end($handles);
             $webdriver->switchTo()->window($last_window);
         });
@@ -194,7 +194,7 @@ class AcceptanceTester extends \Codeception\Actor
     public function dontSeeElements($arrayOfSelector)
     {
         $self = $this;
-        $result = array_filter($arrayOfSelector, function($element) use ($self) {
+        $result = array_filter($arrayOfSelector, function ($element) use ($self) {
             $id = $element['id'];
             return $self->executeJS("return document.getElementById('${id}') != null;");
         });
@@ -203,7 +203,7 @@ class AcceptanceTester extends \Codeception\Actor
 
     public function dragAndDropBy($selector, $x_offset, $y_offset)
     {
-        $this->executeInSelenium(function(\Facebook\WebDriver\Remote\RemoteWebDriver $webDriver) use ($selector, $x_offset, $y_offset) {
+        $this->executeInSelenium(function (\Facebook\WebDriver\Remote\RemoteWebDriver $webDriver) use ($selector, $x_offset, $y_offset) {
             $node = $webDriver->findElement(WebDriverBy::cssSelector($selector));
             $action = new DragAndDropBy($webDriver, $node, $x_offset, $y_offset);
             $action->perform();

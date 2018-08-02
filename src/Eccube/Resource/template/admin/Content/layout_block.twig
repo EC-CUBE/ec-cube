@@ -12,26 +12,19 @@ file that was distributed with this source code.
     <div class="row justify-content-between">
         <div class="col">
             <i class="fa fa-bars text-ec-gray mr-3"></i>
-            <a href="#" class="view_readme" data-toggle="modal"
+            <span class="view_readme" data-toggle="modal"
                data-target="#blockModal"
                data-id="{{ BlockPosition.Block.id }}"
                data-name="{{ BlockPosition.Block.name }}"
                title="{{ BlockPosition.Block.name }}"
-            >{{ BlockPosition.Block.name }}</a>
+            >{{ BlockPosition.Block.name }}</span>
         </div>
         <div class="col-auto text-right">
             <div class="d-inline-block px-3 sort{% if loop.first %} first{% endif %}">
-                <input type="hidden" class="name" name="name_{{ loop_index }}"
-                       value="{{ BlockPosition.Block.name }}"/>
-                <input type="hidden" class="block-id"
-                       name="block_id_{{ loop_index }}"
-                       value="{{ BlockPosition.Block.id }}"/>
-                <input type="hidden" class="target-id"
-                       name="section_{{ loop_index }}"
-                       value="{{ BlockPosition.section }}"/>
-                <input type="hidden" class="block-row"
-                       name="block_row_{{ loop_index }}"
-                       value="{{ BlockPosition.block_row }}"/>
+                <input type="hidden" class="name" name="name_{{ loop_index }}" value="{{ BlockPosition.Block.name }}"/>
+                <input type="hidden" class="block-id" name="block_id_{{ loop_index }}" value="{{ BlockPosition.Block.id }}"/>
+                <input type="hidden" class="target-id" name="section_{{ loop_index }}" value="{{ BlockPosition.section }}"/>
+                <input type="hidden" class="block-row" name="block_row_{{ loop_index }}" value="{{ BlockPosition.block_row }}"/>
                 <div class="block-context-menu d-inline-block px-3"><i class="fa fa-ellipsis-v fa-lg text-secondary"></i></div>
             </div>
         </div>

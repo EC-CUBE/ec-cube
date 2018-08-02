@@ -26,6 +26,9 @@
     "composer/spdx-licenses": {
         "version": "1.1.6"
     },
+    "composer/xdebug-handler": {
+        "version": "1.1.0"
+    },
     "dama/doctrine-test-bundle": {
         "version": "4.0",
         "recipe": {
@@ -83,6 +86,9 @@
             "ref": "c1431086fec31f17fbcfe6d6d7e92059458facc1"
         }
     },
+    "doctrine/event-manager": {
+        "version": "v1.0.0"
+    },
     "doctrine/inflector": {
         "version": "v1.2.0"
     },
@@ -97,6 +103,12 @@
     },
     "doctrine/orm": {
         "version": "v2.5.13"
+    },
+    "doctrine/persistence": {
+        "version": "v1.0.0"
+    },
+    "doctrine/reflection": {
+        "version": "v1.0.0"
     },
     "easycorp/easy-log-handler": {
         "version": "1.0",
@@ -160,6 +172,9 @@
     },
     "nesbot/carbon": {
         "version": "1.22.1"
+    },
+    "nikic/php-parser": {
+        "version": "v4.0.3"
     },
     "ocramius/package-versions": {
         "version": "1.2.0"
@@ -301,6 +316,12 @@
             "version": "4.0",
             "ref": "576d653444dade07f272c889d52fe4594caa4fc3"
         }
+    },
+    "setasign/fpdi": {
+        "version": "v2.0.3"
+    },
+    "setasign/fpdi-tcpdf": {
+        "version": "v2.0.0"
     },
     "suncat/mobile-detect-bundle": {
         "version": "1.0",
@@ -449,6 +470,9 @@
     "symfony/polyfill-apcu": {
         "version": "v1.6.0"
     },
+    "symfony/polyfill-ctype": {
+        "version": "v1.8.0"
+    },
     "symfony/polyfill-intl-icu": {
         "version": "v1.6.0"
     },
@@ -577,6 +601,9 @@
     },
     "symfony/yaml": {
         "version": "v3.4.1"
+    },
+    "tecnickcom/tcpdf": {
+        "version": "6.2.17"
     },
     "theseer/tokenizer": {
         "version": "1.1.0"

@@ -27,6 +27,9 @@ namespace Page\Front;
 class ShoppingLoginPage extends AbstractFrontPage
 {
 
+    /**
+     * @param \AcceptanceTester $I
+     */
     public static function at($I)
     {
         $page = new self($I);

@@ -717,12 +717,12 @@ class ShoppingController extends AbstractShoppingController
         $builder = $this->formFactory->createBuilder(OrderType::class, $Order);
 
         $event = new EventArgs(
-             [
-                 'builder' => $builder,
-                 'Order' => $Order,
-             ],
-             $request
-         );
+                [
+                    'builder' => $builder,
+                    'Order' => $Order,
+                ],
+                $request
+            );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_INDEX_INITIALIZE, $event);
 
         $form = $builder->getForm();

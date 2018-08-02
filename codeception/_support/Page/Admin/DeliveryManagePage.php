@@ -48,18 +48,18 @@ class DeliveryManagePage extends AbstractAdminPageStyleGuide
 
     public function 一覧_名称($rowNum)
     {
-        return ['css' => "#page_admin_setting_shop_delivery > div > div.c-contentsArea > form > div > div > div.c-primaryCol > div > div > div > ul > li:nth-child($rowNum) > div > div.col.d-flex.align-items-center > a"];
+        return ['css' => "div.c-primaryCol ul > li:nth-child($rowNum) > div > div.col.d-flex.align-items-center > a"];
     }
 
     public function 一覧_上に($rowNum)
     {
-        $this->tester->dragAndDropBy("#page_admin_setting_shop_delivery > div > div.c-contentsArea > form > div > div > div.c-primaryCol > div > div > div > ul > li:nth-child($rowNum) > div", 0, -60);
+        $this->tester->dragAndDropBy("div.c-primaryCol ul > li:nth-child($rowNum) > div", 0, -60);
         return $this;
     }
 
     public function 一覧_下に($rowNum)
     {
-        $this->tester->dragAndDropBy("#page_admin_setting_shop_delivery > div > div.c-contentsArea > form > div > div > div.c-primaryCol > div > div > div > ul > li:nth-child($rowNum) > div", 0, 60);
+        $this->tester->dragAndDropBy("div.c-primaryCol ul > li:nth-child($rowNum) > div", 0, 60);
         return $this;
     }
 }

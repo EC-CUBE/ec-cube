@@ -63,7 +63,7 @@ class ProductDetailPage extends AbstractFrontPage
     public function 規格選択($array)
     {
         foreach ($array as $index=>$option) {
-            $this->tester->selectOption(['id' => 'classcategory_id'.($index+1)], $option);
+            $this->tester->selectOption(['id' => 'classcategory_id'.($index + 1)], $option);
         }
         return $this;
     }
@@ -84,5 +84,16 @@ class ProductDetailPage extends AbstractFrontPage
     {
         $this->tester->click('#favorite');
         return $this;
+    }
+
+    public function カートに追加()
+    {
+        return $this->tester->grabTextFrom(["xpath" => "//*[@id=\"ec-modal-header\"]"]);
+    }
+
+    public function カートへ進む()
+    {
+        $this->tester->click("div.ec-modal-box > div > a");
+        return new CartPage($this->tester);
     }
 }
