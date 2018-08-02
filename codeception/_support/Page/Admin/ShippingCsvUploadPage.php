@@ -33,10 +33,13 @@ class ShippingCsvUploadPage extends AbstractAdminPageStyleGuide
         parent::__construct($I);
     }
 
+    /**
+     * @param \AcceptanceTester $I
+     */
     public static function go($I)
     {
         $page = new ProductCsvUploadPage($I);
-        return $page->goPage('/shipping/shipping_csv_upload', '出荷CSV登録出荷管理');
+        return $page->goPage('/order/shipping_csv_upload', '出荷CSV登録受注管理');
     }
 
     public function 入力_CSVファイル($fileName)

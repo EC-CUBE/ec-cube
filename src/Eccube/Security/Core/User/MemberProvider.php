@@ -47,7 +47,7 @@ class MemberProvider implements UserProviderInterface
      */
     public function loadUserByUsername($username)
     {
-        $Member = $this->memberRepository->findOneBy(['login_id' => $username, 'Work' => Work::WORK_ACTIVE_ID]);
+        $Member = $this->memberRepository->findOneBy(['login_id' => $username, 'Work' => Work::ACTIVE]);
 
         if (!$Member) {
             throw new UsernameNotFoundException(sprintf('Username "%s" does not exist.', $username));

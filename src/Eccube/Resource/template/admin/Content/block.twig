@@ -16,10 +16,6 @@ file that was distributed with this source code.
 {% block sub_title %}{{ 'admin.content.block.5'|trans }}{% endblock %}
 
 {% block stylesheet %}
-    {# TODO:
-    - Fix to display popup confirmation block delete.
-    - Move to css file or unset z-index = 1 for css .list-group-item
-    #}
     <style type="text/css">
         li.list-group-item {
             z-index: inherit !important;
@@ -36,7 +32,7 @@ file that was distributed with this source code.
                         <div class="card rounded border-0 mb-2">
                             <ul class="list-group list-group-flush">
                                 {% for Block in Blocks %}
-                                    <li class="list-group-item">
+                                    <li id="ex-block-{{ Block.id }}" class="list-group-item">
                                         <div class="row">
                                             <div class="col-7 col-md-10 d-flex align-items-center">
                                                 <a href="{{ url('admin_content_block_edit', {id: Block.id}) }}">
@@ -73,22 +69,14 @@ file that was distributed with this source code.
                                                             <div class="modal-dialog" role="document">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
-                                                                        <h5 class="modal-title font-weight-bold">
-                                                                            {{ 'admin.content.block.delete.confirm.title'|trans }}</h5>
-                                                                        <button class="close" type="button"
-                                                                                data-dismiss="modal"
-                                                                                aria-label="Close"><span
-                                                                                    aria-hidden="true">×</span>
-                                                                        </button>
+                                                                        <h5 class="modal-title font-weight-bold">{{ 'admin.content.block.delete.confirm.title'|trans }}</h5>
+                                                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                                                     </div>
                                                                     <div class="modal-body text-left">
-                                                                        <p class="text-left">
-                                                                            {{ 'admin.content.block.delete.confirm.message'|trans }}</p>
+                                                                        <p class="text-left">{{ 'admin.content.block.delete.confirm.message'|trans }}</p>
                                                                     </div>
                                                                     <div class="modal-footer">
-                                                                        <button class="btn btn-ec-sub" type="button"
-                                                                                data-dismiss="modal">{{ 'admin.common.label.cancel'|trans }}
-                                                                        </button>
+                                                                        <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.common.label.cancel'|trans }}</button>
                                                                         <a
                                                                                 href="{{ url('admin_content_block_delete', {id: Block.Id} ) }}"
                                                                                 class="btn btn-ec-delete"
@@ -113,9 +101,8 @@ file that was distributed with this source code.
                 </div>
             </div>
             <div class="card rounded border-0">
-                <div class="card-body p-4">
+                <div id="ex-block-new" class="card-body p-4">
                     <div class="text-center">
-                        {# TODO 新規追加ボタンのレイアウトは検討が必要 #}
                         <a href="{{ url('admin_content_block_new') }}" class="btn btn-ec-regular pl-4 pr-4">{{ 'admin.content.block.11'|trans }}</a>
                     </div>
                 </div>

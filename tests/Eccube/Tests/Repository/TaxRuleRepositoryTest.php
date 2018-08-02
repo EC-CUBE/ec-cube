@@ -305,37 +305,4 @@ class TaxRuleRepositoryTest extends EccubeTestCase
         $this->actual = $TaxRule->getId();
         $this->verify();
     }
-
-    /**
-     * TaxRuleEventSubscriber の確認用テストケース.
-     *
-     * @see https://github.com/EC-CUBE/ec-cube/issues/1029
-     */
-    public function testOrderItem()
-    {
-        $this->BaseInfo->setOptionProductTaxRule(1); // 商品別税率ON
-        $this->entityManager->flush();
-        $fiveDaysBefore = new \DateTime('-5 days');
-
-        $this->TaxRule1->setApplyDate($fiveDaysBefore);
-        $this->TaxRule2->setApplyDate($fiveDaysBefore);
-        $this->TaxRule3->setApplyDate(new \DateTime('-2 days'));
-        $this->entityManager->flush();
-
-        $Customer = $this->createCustomer();
-        $Order = $this->createOrder($Customer);
-
-        $this->taxRuleRepository->clearCache();
-        $Shippings = $Order->getShippings();
-
-        foreach ($Shippings as $Shipping) {
-            $OrderItems = $Shipping->getOrderItems();
-
-            foreach ($OrderItems as $Shipment) {
-                $this->expected = round($Shipment->getPrice() + $Shipment->getPrice() * $this->TaxRule1->getTaxRate() / 100, 0);
-                $this->actual = $Shipment->getPriceIncTax();
-                $this->verify('OrderItem で TaxRuleEventSubscriber が正常にコールされるか');
-            }
-        }
-    }
 }

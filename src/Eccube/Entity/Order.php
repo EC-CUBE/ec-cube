@@ -13,6 +13,7 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Service\Calculator\OrderItemCollection;
@@ -96,6 +97,42 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
         }
 
         return array_unique($saleTypes);
+    }
+
+    /**
+     * 同じ規格の商品の個数をまとめた受注明細を取得
+     *
+     * @return OrderItem[]
+     */
+    public function getMergedProductOrderItems()
+    {
+        $ProductOrderItems = $this->getProductOrderItems();
+        $orderItemArray = [];
+        /** @var OrderItem $ProductOrderItem */
+        foreach ($ProductOrderItems as $ProductOrderItem) {
+            $productClassId = $ProductOrderItem->getProductClass()->getId();
+            if (array_key_exists($productClassId, $orderItemArray)) {
+                // 同じ規格の商品がある場合は個数をまとめる
+                /** @var ItemInterface $OrderItem */
+                $OrderItem = $orderItemArray[$productClassId];
+                $quantity = $OrderItem->getQuantity() + $ProductOrderItem->getQuantity();
+                $OrderItem->setQuantity($quantity);
+            } else {
+                // 新規規格の商品は新しく追加する
+                $OrderItem = new OrderItem();
+                $OrderItem
+                    ->setProduct($ProductOrderItem->getProduct())
+                    ->setProductName($ProductOrderItem->getProductName())
+                    ->setClassCategoryName1($ProductOrderItem->getClassCategoryName1())
+                    ->setClassCategoryName2($ProductOrderItem->getClassCategoryName2())
+                    ->setPrice($ProductOrderItem->getPrice())
+                    ->setTax($ProductOrderItem->getTax())
+                    ->setQuantity($ProductOrderItem->getQuantity());
+                $orderItemArray[$productClassId] = $OrderItem;
+            }
+        }
+
+        return array_values($orderItemArray);
     }
 
     /**
@@ -475,6 +512,18 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
         $this->OrderItems = new \Doctrine\Common\Collections\ArrayCollection();
         $this->Shippings = new \Doctrine\Common\Collections\ArrayCollection();
         $this->MailHistories = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Clone
+     */
+    public function __clone()
+    {
+        $OrderItems = new ArrayCollection();
+        foreach ($this->OrderItems as $OrderItem) {
+            $OrderItems->add(clone $OrderItem);
+        }
+        $this->OrderItems = $OrderItems;
     }
 
     /**
@@ -1236,48 +1285,11 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     }
 
     /**
-     * 同じ規格の商品の個数をまとめた受注明細を取得
-     *
-     * @return OrderItem[]
-     */
-    public function getMergedProductOrderItems()
-    {
-        $ProductOrderItems = $this->getProductOrderItems();
-
-        $orderItemArray = [];
-
-        /** @var OrderItem $ProductOrderItem */
-        foreach ($ProductOrderItems as $ProductOrderItem) {
-            $productClassId = $ProductOrderItem->getProductClass()->getId();
-            if (array_key_exists($productClassId, $orderItemArray)) {
-                // 同じ規格の商品がある場合は個数をまとめる
-                /** @var ItemInterface $OrderItem */
-                $OrderItem = $orderItemArray[$productClassId];
-                $quantity = $OrderItem->getQuantity() + $ProductOrderItem->getQuantity();
-                $OrderItem->setQuantity($quantity);
-            } else {
-                // 新規規格の商品は新しく追加する
-                $OrderItem = new OrderItem();
-                $OrderItem
-                    ->setProduct($ProductOrderItem->getProduct())
-                    ->setProductName($ProductOrderItem->getProductName())
-                    ->setClassCategoryName1($ProductOrderItem->getClassCategoryName1())
-                    ->setClassCategoryName2($ProductOrderItem->getClassCategoryName2())
-                    ->setPriceIncTax($ProductOrderItem->getPriceIncTax())
-                    ->setQuantity($ProductOrderItem->getQuantity());
-                $orderItemArray[$productClassId] = $OrderItem;
-            }
-        }
-
-        return array_values($orderItemArray);
-    }
-
-    /**
      * Add orderItem.
      *
      * @param \Eccube\Entity\OrderItem $OrderItem
      *
-     * @return Shipping
+     * @return Order
      */
     public function addOrderItem(\Eccube\Entity\OrderItem $OrderItem)
     {
@@ -1301,7 +1313,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     /**
      * Get orderItems.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection|OrderItem[]
      */
     public function getOrderItems()
     {
@@ -1323,7 +1335,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
      *
      * @param \Eccube\Entity\Shipping $Shipping
      *
-     * @return Shipping
+     * @return Order
      */
     public function addShipping(\Eccube\Entity\Shipping $Shipping)
     {
@@ -1352,7 +1364,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     public function getShippings()
     {
         $criteria = Criteria::create()
-            ->orderBy(['name01' => Criteria::ASC, 'name02' => Criteria::ASC]);
+            ->orderBy(['name01' => Criteria::ASC, 'name02' => Criteria::ASC, 'id' => Criteria::ASC]);
 
         return $this->Shippings->matching($criteria);
     }
