@@ -124,7 +124,7 @@ class PageLayout extends AbstractEntity
      *
      * @param int $sortNo
      *
-     * @return Page
+     * @return PageLayout
      */
     public function setSortNo($sortNo)
     {
@@ -146,7 +146,7 @@ class PageLayout extends AbstractEntity
     /**
      * Set pageLayout
      *
-     * @param \Eccube\Entity\Page $page
+     * @param \Eccube\Entity\Page $Page
      *
      * @return PageLayout
      */
@@ -160,7 +160,7 @@ class PageLayout extends AbstractEntity
     /**
      * Get pageLayout
      *
-     * @return \Eccube\Entity\PageLayout
+     * @return Page
      */
     public function getPage()
     {

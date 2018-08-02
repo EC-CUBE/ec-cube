@@ -15,7 +15,10 @@ namespace Eccube\Service;
 
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\QueryBuilder;
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\Csv;
+use Eccube\Entity\Master\CsvType;
 use Eccube\Form\Type\Admin\SearchOrderType;
 use Eccube\Form\Type\Admin\SearchProductType;
 use Eccube\Repository\CsvRepository;
@@ -28,9 +31,6 @@ use Eccube\Util\EntityUtil;
 use Eccube\Util\FormUtil;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Doctrine\ORM\QueryBuilder;
-use Eccube\Entity\Master\CsvType;
-use Eccube\Entity\Csv;
 
 class CsvExportService
 {
@@ -295,7 +295,7 @@ class CsvExportService
      * @param \Eccube\Entity\Csv $Csv
      * @param $entity
      *
-     * @return mixed|null|string|void
+     * @return string|null
      */
     public function getData(Csv $Csv, $entity)
     {
@@ -365,7 +365,6 @@ class CsvExportService
 
     /**
      * @param $row
-     * @param null $callback
      */
     public function fputcsv($row)
     {

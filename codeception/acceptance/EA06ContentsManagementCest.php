@@ -6,10 +6,10 @@ use Page\Admin\BlockManagePage;
 use Page\Admin\FileManagePage;
 use Page\Admin\LayoutEditPage;
 use Page\Admin\LayoutManagePage;
-use Page\Admin\NewsManagePage;
 use Page\Admin\NewsEditPage;
-use Page\Admin\PageManagePage;
+use Page\Admin\NewsManagePage;
 use Page\Admin\PageEditPage;
+use Page\Admin\PageManagePage;
 
 /**
  * @group admin
@@ -82,20 +82,20 @@ class EA06ContentsManagementCest
             ->入力_ファイル('upload.txt')
             ->アップロード();
 
-        $I->see('upload.txt', $FileManagePage->ファイル名(1));
+        $I->see('upload.txt', $FileManagePage->ファイル名(2));
 
-        $FileManagePage->一覧_ダウンロード(1);
+        $FileManagePage->一覧_ダウンロード(2);
         $UploadedFile = $I->getLastDownloadFile('/^upload\.txt$/');
         $I->assertEquals('This is uploaded file.', file_get_contents($UploadedFile));
 
-        $FileManagePage->一覧_表示(1);
+        $FileManagePage->一覧_表示(2);
         $I->switchToNewWindow();
         $I->see('This is uploaded file.');
 
         FileManagePage::go($I)
-            ->一覧_削除(1)
-            ->一覧_削除_accept(1);
-        $I->dontSee('upload.txt', $FileManagePage->ファイル名(1));
+            ->一覧_削除(2)
+            ->一覧_削除_accept(2);
+        $I->dontSee('upload.txt', $FileManagePage->ファイル名(2));
 
         $FileManagePage = FileManagePage::go($I)
             ->入力_フォルダ名('folder1')
@@ -103,9 +103,8 @@ class EA06ContentsManagementCest
 
         $I->see('folder1', $FileManagePage->ファイル名(1));
 
-        // Todo: breadcrumbs incomplete
-//        $FileManagePage->一覧_表示(1);
-//        $I->see('folder1', $FileManagePage->パンくず(1));
+        $FileManagePage->一覧_ファイル名_クリック(1);
+        $I->see('folder1', $FileManagePage->パンくず(2));
 
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/content/file_manager');
@@ -113,7 +112,7 @@ class EA06ContentsManagementCest
 
         FileManagePage::go($I)
             ->一覧_削除(1)
-            ->一覧_削除_accept();
+            ->一覧_削除_accept(1);
     }
 
     public function contentsmanagement_ページ管理(\AcceptanceTester $I)
@@ -177,7 +176,7 @@ class EA06ContentsManagementCest
         LayoutEditPage::at($I)
             ->コンテキストメニューでコードプレビュー(
                 '商品検索',
-                ['xpath' => "//*[@id='block-source-code']//div[contains(text(), 'This file is part of EC-CUBE')]"]
+                ['xpath' => "//*[@id='block-source-code']//div[contains(text(), 'file that was distributed with this source code.')]"]
             );
 
         $I->getScenario()->incomplete('未実装：プレビューは未実装');

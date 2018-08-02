@@ -34,8 +34,8 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
@@ -195,17 +195,6 @@ class OrderType extends AbstractType
             ->add('charge', PriceType::class, [
                 'required' => false,
                 'label' => 'order.label.commision',
-            ])
-            ->add('add_point', NumberType::class, [
-                'required' => false,
-                'label' => 'admin.common.label.add_point',
-                'constraints' => [
-                    new Assert\Regex([
-                        'pattern' => "/^\d+$/u",
-                        'message' => 'form.type.numeric.invalid',
-                    ]),
-                ],
-                'attr' => ['readonly' => true],
             ])
             ->add('use_point', NumberType::class, [
                 'required' => false,

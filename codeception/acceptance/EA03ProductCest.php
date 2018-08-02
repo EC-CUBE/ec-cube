@@ -3,13 +3,13 @@
 use Codeception\Util\Fixtures;
 use Page\Admin\CategoryCsvUploadPage;
 use Page\Admin\CategoryManagePage;
-use Page\Admin\CsvSettingsPage;
 use Page\Admin\ClassCategoryManagePage;
 use Page\Admin\ClassNameManagePage;
+use Page\Admin\CsvSettingsPage;
 use Page\Admin\ProductClassEditPage;
 use Page\Admin\ProductCsvUploadPage;
-use Page\Admin\ProductManagePage;
 use Page\Admin\ProductEditPage;
+use Page\Admin\ProductManagePage;
 
 /**
  * @group admin

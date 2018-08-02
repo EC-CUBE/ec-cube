@@ -2,8 +2,8 @@
 
 use Codeception\Util\Fixtures;
 use Eccube\Entity\Customer;
-use Eccube\Entity\Order;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Order;
 use Page\Admin\OrderEditPage;
 use Page\Admin\OrderManagePage;
 use Page\Admin\ShippingCsvUploadPage;

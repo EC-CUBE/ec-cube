@@ -458,9 +458,9 @@ return [
     'Kana' => 'お名前(フリガナ)',
     'Kana01' => 'セイ', // TODO: enとIDが違う
     'Kana02' => 'メイ', // TODO: enとIDが違う
-    'Postal' => '郵便番号',
+    'Postal' => '例：1010000',
     'Address' => '住所',
-    'PhoneNumber' => '電話番号',
+    'PhoneNumber' => '例：0312345678',
     'Email' => 'メールアドレス',
     'Password' => 'パスワード',
     'Job' => '職業',
@@ -715,7 +715,6 @@ return [
     'admin.delivery.visible.complete' => '表示に変更しました。',
     'admin.delivery.hidden.complete' => '非表示に変更しました。',
     'admin_title' => 'EC-CUBE 管理機能',
-    'admin.system.member.form.not.blank' => '入力されていません。',
     'normal_price_title' => '通常価格',
     'sale_price_title' => '販売価格',
     'form.address1.help' => '市区町村名 (例：千代田区神田神保町)',
@@ -1711,6 +1710,7 @@ return [
     'admin.product.subnavi.552' => '商品登録',
     'admin.product.subnavi.553' => '規格管理',
     'admin.product.subnavi.554' => 'カテゴリ登録',
+    'admin.setting.system.member.work.error' => '非稼働に変更することはできません。',
     'admin.setting.shop.csv.555' => '基本情報設定',
     'admin.setting.shop.csv.556' => 'CSV出力項目設定',
     'admin.setting.shop.csv.557' => 'CSV出力しない項目',

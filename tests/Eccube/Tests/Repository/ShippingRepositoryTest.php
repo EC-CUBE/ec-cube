@@ -13,8 +13,11 @@
 
 namespace Eccube\Tests\Repository;
 
+use Eccube\Entity\Master\TaxDisplayType;
+use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Repository\MemberRepository;
 use Eccube\Entity\Member;
@@ -99,7 +102,9 @@ class ShippingRepositoryTest extends EccubeTestCase
         $ProductClasses = $this->Product->getProductClasses();
         $this->ProductClass = $ProductClasses[0];
         $quantity = 3;
-        $TaxRule = $this->taxRuleRepository->getByRule(); // デフォルト課税規則
+
+        $TaxDisplayType = $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::EXCLUDED);
+        $TaxType = $this->entityManager->find(TaxType::class, TaxType::TAXATION);
 
         // 1個ずつ別のお届け先に届ける
         for ($i = 0; $i < $quantity; $i++) {
@@ -121,20 +126,18 @@ class ShippingRepositoryTest extends EccubeTestCase
                 ->setProductName($this->Product->getName())
                 ->setProductCode($this->ProductClass->getCode())
                 ->setPrice($this->ProductClass->getPrice02())
-                ->setQuantity(1);
+                ->setQuantity(1)
+                ->setTaxDisplayType($TaxDisplayType)
+                ->setTaxType($TaxType)
+            ;
+            $this->Order->addOrderItem($OrderItem);
             $Shipping->addOrderItem($OrderItem);
             $this->entityManager->persist($OrderItem);
             $this->Shippings[$i] = $Shipping;
         }
 
-        $subTotal = 0;
-        foreach ($this->Order->getOrderItems() as $Item) {
-            $subTotal += $Item->getPriceIncTax() * $Item->getQuantity();
-        }
-
-        $this->Order->setSubTotal($subTotal);
-        $this->Order->setTotal($subTotal);
-        $this->Order->setPaymentTotal($subTotal);
+        $purchaseFlow = $this->container->get('eccube.purchase.flow.order');
+        $purchaseFlow->validate($this->Order, new PurchaseContext($this->Order));
         $this->entityManager->flush();
     }
 
