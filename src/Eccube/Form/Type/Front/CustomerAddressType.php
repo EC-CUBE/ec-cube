@@ -36,7 +36,7 @@ class CustomerAddressType extends AbstractType
     protected $eccubeConfig;
 
     /**
-     * @param array $config
+     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
     {

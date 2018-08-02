@@ -24,6 +24,7 @@ use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\OrderItemRepository;
 use Eccube\Repository\ShippingRepository;
+use Eccube\Service\MailService;
 use Eccube\Service\OrderStateMachine;
 use Eccube\Service\TaxRuleService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -37,7 +38,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\SerializerInterface;
-use Eccube\Service\MailService;
 
 class ShippingController extends AbstractController
 {

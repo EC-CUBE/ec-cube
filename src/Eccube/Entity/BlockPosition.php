@@ -289,7 +289,7 @@ class BlockPosition extends \Eccube\Entity\AbstractEntity
     /**
      * Set layout.
      *
-     * @param \Eccube\Entity\Layout|null $layout
+     * @param \Eccube\Entity\Layout|null $Layout
      *
      * @return BlockPosition
      */
@@ -313,7 +313,7 @@ class BlockPosition extends \Eccube\Entity\AbstractEntity
     /**
      * Set pageLayout.
      *
-     * @param \Eccube\Entity\Page|null $page
+     * @param \Eccube\Entity\Page|null $Page
      *
      * @return BlockPosition
      *
@@ -329,7 +329,7 @@ class BlockPosition extends \Eccube\Entity\AbstractEntity
     /**
      * Get pageLayout.
      *
-     * @return \Eccube\Entity\Page|null
+     * @return PageLayout
      *
      * @deprecated
      */

@@ -12,59 +12,38 @@ file that was distributed with this source code.
 <html lang="ja">
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>{{ error_title }} - {{'admin.error.157'|trans}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{{ error_title }} - {{ 'admin.error.157'|trans }}</title>
     <meta name="description" content="">
     <meta name="author" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex,nofollow"/>
     <link rel="icon" href="{{ asset('assets/img/favicon.ico', 'admin') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css', 'admin') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/dashboard.css', 'admin') }}">
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 </head>
-<body>
+<body id="error-page" class="bg-light">
 
-    <!-- ▼ #main ▼ -->
-    <div id="main">
-        <div class="container-fluid">
-            <div class="message_box">
-                <div class="row no-padding">
-                    <div class="col-sm-6 col-sm-offset-3">
-                        <div class="icon"><svg class="cb cb-warning"><use xlink:href="#cb-warning" /></svg></div>
+<div class="c-container">
+    <div class="c-contentsArea">
+
+        <div class="container" style="margin-top: 150px;">
+            <div class="row">
+                <div class="col-12 col-sm-6 offset-sm-3">
+                    <div class="text-center p-5 bg-white">
+                        <p><img src="{{ asset('assets/img/logo2.png', 'admin') }}"></p>
                         <h1>{{ error_title }}</h1>
                         <p>{{ error_message }}</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="btn_group col-sm-offset-4 col-sm-4">
-                        <a href="{{ url('admin_homepage') }}"><p><button type="button" class="btn btn-info btn-block">{{'admin.error.158'|trans}}</button></p></a>
+                        <a href="{{ url('admin_homepage') }}" class="btn btn-info btn-lg">{{ 'admin.login.174'|trans }}{{ 'admin.error.158'|trans }}</a>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
-    <!-- ▲ #main ▲ -->
+</div>
 
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="{{ asset('assets/js/vendor/jquery-1.11.3.min.js', 'admin') }}"><\/script>')</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
 <script src="{{ asset('assets/js/function.js', 'admin') }}"></script>
-<script>
-    $(function () {
-        $.ajax({
-            url: "{{ asset('assets/img/svg.html', 'admin') }}",
-            type: 'GET',
-            dataType: 'html',
-        }).done(function(data){
-            $('body').prepend(data);
-        }).fail(function(data){
-        });
-    });
-</script>
-
 </body>
 </html>

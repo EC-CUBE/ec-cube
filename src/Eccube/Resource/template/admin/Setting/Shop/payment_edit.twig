@@ -12,8 +12,8 @@ file that was distributed with this source code.
 
 {% set menus = ['setting', 'shop', 'shop_payment'] %}
 
-{% block title %}{{'admin.setting.shop.payment_edit.title'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.setting.shop.payment_edit.subtitle'|trans}}{% endblock %}
+{% block title %}{{ 'admin.setting.shop.payment_edit.title'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.setting.shop.payment_edit.subtitle'|trans }}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
@@ -134,7 +134,7 @@ file that was distributed with this source code.
             <div class="c-contentsArea__primaryCol">
                 <div class="c-primaryCol">
                     <div class="card rounded border-0 mb-4">
-                        <div class="card-header"><span>{{'admin.setting.shop.payment_edit.header'|trans}}</span></div>
+                        <div class="card-header"><span>{{ 'admin.setting.shop.payment_edit.header'|trans }}</span></div>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-3"><span>{{ 'paymentregister.label.payment_method'|trans }}</span></div>
@@ -143,20 +143,22 @@ file that was distributed with this source code.
                                     {{ form_errors(form.method) }}
                                 </div>
                             </div>
-                            <div class="row"><div class="col-3"><span>{{ 'paymentregister.label.commision'|trans }}</span></div>
+                            <div class="row">
+                                <div class="col-3"><span>{{ 'paymentregister.label.commision'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.charge) }}
                                     {{ form_errors(form.charge) }}
                                 </div>
                             </div>
-                            <div class="row"><div class="col-3"><span>{{ 'paymentregister.label.rule'|trans }}</span></div>
+                            <div class="row">
+                                <div class="col-3"><span>{{ 'paymentregister.label.rule'|trans }}</span></div>
                                 <div class="col mb-2">
                                     <div class="row justify-content-start">
                                         <div class="col-4">
                                             {{ form_widget(form.rule_min) }}
                                             {{ form_errors(form.rule_min) }}
                                         </div>
-                                        <div class="col-auto text-center p-0"><span class="align-middle">{{'admin.setting.shop.payment_edit.connect_min_max'|trans}}</span></div>
+                                        <div class="col-auto text-center p-0"><span class="align-middle">{{ 'admin.setting.shop.payment_edit.connect_min_max'|trans }}</span></div>
                                         <div class="col-4">
                                             {{ form_widget(form.rule_max) }}
                                             {{ form_errors(form.rule_max) }}
@@ -185,7 +187,7 @@ file that was distributed with this source code.
                                             {{ form_widget(form.payment_image, { attr : { style : 'display:none;' } }) }}
                                             {{ form_widget(form.payment_image_file, { attr : { accept : 'image/*', style : 'display:none;' } }) }}
                                             <a id="file_upload" class="with-icon">
-                                                {{'admin.setting.shop.payment_edit.image_upload_buton'|trans}}
+                                                {{ 'admin.setting.shop.payment_edit.image_upload_buton'|trans }}
                                             </a>
                                             {{ form_errors(form.payment_image_file) }}
                                         </div>
@@ -216,18 +218,20 @@ file that was distributed with this source code.
             <div class="c-conversionArea__container">
                 <div class="row justify-content-between align-items-center">
                     <div class="col-6">
-                        <div class="c-conversionArea__leftBlockItem"><a class="c-beseLink" href="{{ url('admin_setting_shop_payment') }}">
-                                <i class="fa fa-backward" aria-hidden="true"></i><span>{{'admin.setting.shop.payment_edit.back_button'|trans}}</span></a>
+                        <div class="c-conversionArea__leftBlockItem">
+                            <a class="c-beseLink" href="{{ url('admin_setting_shop_payment') }}">
+                                <i class="fa fa-backward" aria-hidden="true"></i><span>{{ 'admin.setting.shop.payment_edit.back_button'|trans }}</span>
+                            </a>
                         </div>
                     </div>
                     <div class="col-6">
-                        <div class="row align-items-center justify-content-end">
+                        <div id="ex-conversion-action" class="row align-items-center justify-content-end">
                             <div class="col-auto">
                                 {{ form_widget(form.visible) }}
                                 {{ form_errors(form.visible) }}
                             </div>
                             <div class="col-auto">
-                                <button class="btn btn-ec-conversion px-5" type="submit">{{'admin.setting.shop.payment_edit.submit_button'|trans}}</button>
+                                <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.setting.shop.payment_edit.submit_button'|trans }}</button>
                             </div>
                         </div>
                     </div>

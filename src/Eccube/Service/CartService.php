@@ -13,6 +13,7 @@
 
 namespace Eccube\Service;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\UnitOfWork;
 use Eccube\Entity\Cart;
 use Eccube\Entity\CartItem;
@@ -20,15 +21,14 @@ use Eccube\Entity\Customer;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\CartRepository;
-use Eccube\Repository\ProductClassRepository;
 use Eccube\Repository\OrderRepository;
+use Eccube\Repository\ProductClassRepository;
 use Eccube\Service\Cart\CartItemAllocator;
 use Eccube\Service\Cart\CartItemComparator;
 use Eccube\Util\StringUtil;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Doctrine\ORM\EntityManagerInterface;
 
 class CartService
 {
@@ -440,6 +440,9 @@ class CartService
         return $user;
     }
 
+    /**
+     * @param string $allocatedId
+     */
     protected function createCartKey($allocatedId, Customer $Customer = null)
     {
         if ($Customer instanceof Customer) {

@@ -12,8 +12,8 @@ file that was distributed with this source code.
 
 {% set menus = ['setting', 'shop', 'shop_mail'] %}
 
-{% block title %}{{'admin.setting.shop.mail.title'|trans }}{% endblock %}
-{% block sub_title %}{{'admin.setting.shop.mail.sub_title'|trans }}{% endblock %}
+{% block title %}{{ 'admin.setting.shop.mail.title'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.setting.shop.mail.sub_title'|trans }}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
@@ -22,7 +22,7 @@ file that was distributed with this source code.
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ext-language_tools.js"></script>
     <script>
         $(function() {
-            $("#mail_template").on("change", function() {
+            $('#mail_template').on('change', function() {
                 var id = $(this).val()
                 if (id) {
                     location.href = '{{ url('admin_setting_shop_mail') }}/' + id;
@@ -32,10 +32,10 @@ file that was distributed with this source code.
             });
         });
 
-        ace.require("ace/ext/language_tools");
-        var editor = ace.edit("editor");
-        editor.session.setMode("ace/mode/twig");
-        editor.setTheme("ace/theme/tomorrow");
+        ace.require('ace/ext/language_tools');
+        var editor = ace.edit('editor');
+        editor.session.setMode('ace/mode/twig');
+        editor.setTheme('ace/theme/tomorrow');
         editor.setValue("{{ form.tpl_data.vars.value|escape('js') }}");
         editor.setOptions({
             enableBasicAutocompletion: true,
@@ -44,96 +44,96 @@ file that was distributed with this source code.
             showInvisibles: true
         });
 
-        $('#form1').on('submit', function (elem) {
+        $('#form1').on('submit', function() {
             $('#mail_tpl_data').val(editor.getValue());
         });
     </script>
 {% endblock javascript %}
 
 {% block main %}
-<form name="form1" role="form" class="form-horizontal" id="form1" method="post" action="">
-    {{ form_widget(form._token) }}
-    <div class="c-contentsArea__cols">
-        <div class="c-contentsArea__primaryCol">
-            <div class="c-primaryCol">
-                <div class="card rounded border-0 mb-4">
-                    <div class="card-header"><span class="card-title">{{ 'admin.setting.shop.mail.mail_template_edit'|trans }}</span></div>
-                    <div class="card-body">
-                        <div class="row mb-2">
-                            <div class="col-2"><span>{{ 'admin.setting.shop.mail.template'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
-                            <div class="col-10">
-                                {{ form_widget(form.template) }}
-                                {{ form_errors(form.template) }}
-                            </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-2"><span>{{ 'admin.setting.shop.mail.subject'|trans }}</span><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></div>
-                            <div class="col-10">
-                                {{ form_widget(form.mail_subject) }}
-                                {{ form_errors(form.mail_subject) }}
-                            </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-2"><span>{{ 'admin.setting.shop.mail.body'|trans }}</span><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></div>
-                            <div class="col-10">
-                                <div id="detail_box__tpl_data" class="form-group">
-                                    {{ form_label(form.tpl_data) }}
-                                    <div id="editor" style="height: 480px" class="form-control{{ has_errors(form.tpl_data) ? ' is-invalid'}}"></div>
-                                    <div style="display: none">{{ form_widget(form.tpl_data) }}</div>
-                                    {{ form_errors(form.tpl_data) }}
+    <form name="form1" role="form" class="form-horizontal" id="form1" method="post" action="">
+        {{ form_widget(form._token) }}
+        <div class="c-contentsArea__cols">
+            <div class="c-contentsArea__primaryCol">
+                <div class="c-primaryCol">
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header"><span class="card-title">{{ 'admin.setting.shop.mail.mail_template_edit'|trans }}</span></div>
+                        <div class="card-body">
+                            <div class="row mb-2">
+                                <div class="col-2"><span>{{ 'admin.setting.shop.mail.template'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                <div class="col-10">
+                                    {{ form_widget(form.template) }}
+                                    {{ form_errors(form.template) }}
                                 </div>
                             </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-2"><span>{{ 'admin.setting.shop.mail.mail_header'|trans }}</span></div>
-                            <div class="col-10">
-                                {{ form_widget(form.mail_header, {'attr': {'rows': '8'}}) }}
-                                {{ form_errors(form.mail_header) }}
+                            <div class="row mb-2">
+                                <div class="col-2"><span>{{ 'admin.setting.shop.mail.subject'|trans }}</span><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></div>
+                                <div class="col-10">
+                                    {{ form_widget(form.mail_subject) }}
+                                    {{ form_errors(form.mail_subject) }}
+                                </div>
                             </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-2"><span>{{ 'admin.setting.shop.mail.mail_footer'|trans }}</span></div>
-                            <div class="col-10">
-                                {{ form_widget(form.mail_footer, {'attr': {'rows': '8'}}) }}
-                                {{ form_errors(form.mail_footer) }}
-                            </div>
-                        </div>
-                        {# エンティティ拡張の自動出力 #}
-                        {% for f in form if f.vars.eccube_form_options.auto_render %}
-                            {% if f.vars.eccube_form_options.form_theme %}
-                                {% form_theme f f.vars.eccube_form_options.form_theme %}
-                                {{ form_row(f) }}
-                            {% else %}
-                                <div class="row mb-2">
-                                    <div class="col-2"><span>{{ f.vars.label|trans }}</span></div>
-                                    <div class="col-10">
-                                        {{ form_widget(f) }}
-                                        {{ form_errors(f) }}
+                            <div class="row mb-2">
+                                <div class="col-2"><span>{{ 'admin.setting.shop.mail.body'|trans }}</span><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></div>
+                                <div class="col-10">
+                                    <div id="detail_box__tpl_data" class="form-group">
+                                        {{ form_label(form.tpl_data) }}
+                                        <div id="editor" style="height: 480px" class="form-control{{ has_errors(form.tpl_data) ? ' is-invalid' }}"></div>
+                                        <div style="display: none">{{ form_widget(form.tpl_data) }}</div>
+                                        {{ form_errors(form.tpl_data) }}
                                     </div>
                                 </div>
-                            {% endif %}
-                        {% endfor %}
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-2"><span>{{ 'admin.setting.shop.mail.mail_header'|trans }}</span></div>
+                                <div class="col-10">
+                                    {{ form_widget(form.mail_header, {'attr': {'rows': '8'}}) }}
+                                    {{ form_errors(form.mail_header) }}
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-2"><span>{{ 'admin.setting.shop.mail.mail_footer'|trans }}</span></div>
+                                <div class="col-10">
+                                    {{ form_widget(form.mail_footer, {'attr': {'rows': '8'}}) }}
+                                    {{ form_errors(form.mail_footer) }}
+                                </div>
+                            </div>
+                            {# エンティティ拡張の自動出力 #}
+                            {% for f in form if f.vars.eccube_form_options.auto_render %}
+                                {% if f.vars.eccube_form_options.form_theme %}
+                                    {% form_theme f f.vars.eccube_form_options.form_theme %}
+                                    {{ form_row(f) }}
+                                {% else %}
+                                    <div class="row mb-2">
+                                        <div class="col-2"><span>{{ f.vars.label|trans }}</span></div>
+                                        <div class="col-10">
+                                            {{ form_widget(f) }}
+                                            {{ form_errors(f) }}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="c-conversionArea" id="aside_column">
-        <div class="c-conversionArea__container">
-             <div class="row justify-content-between align-items-center">
-                 <div class="col-6">
-                      <div class="c-conversionArea__leftBlockItem">
-                      </div>
-                </div>
-                <div class="col-6">
-                    <div class="row align-items-center justify-content-end">
-                        <div class="col-auto">
-                            <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.setting.shop.mail.register'|trans }}</button>
+        <div class="c-conversionArea" id="aside_column">
+            <div class="c-conversionArea__container">
+                <div class="row justify-content-between align-items-center">
+                    <div class="col-6">
+                        <div class="c-conversionArea__leftBlockItem">
                         </div>
-                   </div>
+                    </div>
+                    <div class="col-6">
+                        <div id="ex-conversion-action" class="row align-items-center justify-content-end">
+                            <div class="col-auto">
+                                <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.setting.shop.mail.register'|trans }}</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</form>
+    </form>
 {% endblock %}

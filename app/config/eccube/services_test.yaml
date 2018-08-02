@@ -33,3 +33,6 @@ services:
     Eccube\Service\PurchaseFlow\Processor\StockValidator:
         autowire: true
         public: true
+    Eccube\Service\PurchaseFlow\Processor\TaxProcessor:
+        autowire: true
+        public: true

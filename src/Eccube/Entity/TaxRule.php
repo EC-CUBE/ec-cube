@@ -427,7 +427,6 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Set calcRule.
      *
-     * @param \Eccube\Entity\Master\RoundingType|null $calcRule
      *
      * @return TaxRule
      */

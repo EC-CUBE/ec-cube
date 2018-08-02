@@ -119,7 +119,7 @@ class ClassName extends \Eccube\Entity\AbstractEntity
     /**
      * Set backend_name.
      *
-     * @param string $backend_name
+     * @param string $backendName
      *
      * @return ClassName
      */

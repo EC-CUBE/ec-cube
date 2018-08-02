@@ -63,7 +63,7 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
     {
         $this->tester->click(self::$詳細検索ボタン);
         $this->tester->wait(1);
-        $this->tester->checkOption(['id' => 'admin_search_product_status_' . $value]);
+        $this->tester->checkOption(['id' => 'admin_search_product_status_'.$value]);
         $this->tester->click(self::$検索ボタン);
         $this->tester->see('商品一覧商品管理', '.c-pageTitle');
         return $this;
@@ -113,11 +113,12 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
 
     /**
      * Btn class product, list product search
+     * @param int $rowNum 検索結果の行番号(1から始まる)
      * @return $this
      */
-    public function 規格確認ボタンをクリック()
+    public function 規格確認ボタンをクリック($rowNum)
     {
-        $this->tester->click("#page_admin_product > div > div.c-contentsArea > div.c-contentsArea__cols > div > div > form > div.card.rounded.border-0.mb-4 > div.card-body.p-0 > table > tbody > tr > td:nth-child(7) > button.page-link");
+        $this->tester->click(['css' => "#ex-product-${rowNum} > td:nth-child(7) > button"]);
         $this->tester->waitForElementVisible(['id' => 'productClassesModal']);
         $this->tester->wait(1);
         return $this;
@@ -150,8 +151,8 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
      */
     public function 検索結果_削除($rowNum)
     {
-      $this->tester->click("#page_admin_product > div.c-container > div.c-contentsArea > div.c-contentsArea__cols > div > div > form > div.card.rounded.border-0.mb-4 > div.card-body.p-0 > table > tbody > tr:nth-child(${rowNum}) > td.align-middle.pr-3 > div > div:nth-child(3) > a");
-      return $this;
+        $this->tester->click("#page_admin_product > div.c-container > div.c-contentsArea > div.c-contentsArea__cols > div > div > form > div.card.rounded.border-0.mb-4 > div.card-body.p-0 > table > tbody > tr:nth-child(${rowNum}) > td.align-middle.pr-3 > div > div:nth-child(3) > a");
+        return $this;
     }
 
     public function Accept_重複する($rowNum)

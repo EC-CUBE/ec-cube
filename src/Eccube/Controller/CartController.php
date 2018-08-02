@@ -13,6 +13,7 @@
 
 namespace Eccube\Controller;
 
+use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Cart;
 use Eccube\Entity\ProductClass;
 use Eccube\Event\EccubeEvents;
@@ -26,7 +27,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
-use Eccube\Entity\BaseInfo;
 
 class CartController extends AbstractController
 {
@@ -56,7 +56,7 @@ class CartController extends AbstractController
      * @param ProductClassRepository $productClassRepository
      * @param CartService $cartService
      * @param PurchaseFlow $cartPurchaseFlow
-     * @param BaseInfo $BaseInfo
+     * @param BaseInfo $baseInfo
      */
     public function __construct(
         ProductClassRepository $productClassRepository,
