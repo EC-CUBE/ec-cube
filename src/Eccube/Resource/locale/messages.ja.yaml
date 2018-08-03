@@ -2,13 +2,18 @@
 # 命名規約
 #--------------------------------------------
 
-#
 
-#--------------------------------------------
-# 管理画面共通
-#--------------------------------------------
+#========================================================================================
+# 共通
+#========================================================================================
 
-# flash messages
+common.select_message: 選択してください
+
+#========================================================================================
+# 管理画面
+#========================================================================================
+
+# flashメッセージ
 admin.common.save_complete: 保存しました
 admin.common.save_error: 保存に失敗しました
 admin.common.delete_complete: 削除しました
@@ -18,21 +23,40 @@ admin.common.move_complete: 並び順を更新しました
 admin.common.move_error: 並び順の更新に失敗しました
 admin.common.upload_complete: アップロードしました
 admin.common.upload_error: アップロードに失敗しました
+admin.common.send_complete: メールを送信しました
+admin.common.send_error: メールの送信に失敗しました
 
-# action
+
+# action系のラベル
 admin.common.save: 保存
 admin.common.registeration: 登録
 admin.common.edit: 編集
+admin.common.delete: 削除
+admin.common.cancel: キャンセル
+admin.common.search: 検索
+admin.common.search_clear: 検索条件をクリア
+admin.common.send: 送信
 
-# label
-admin.common.id: ID
+# 汎用ラベル
 admin.common.required: 必須
+admin.common.select_message: 選択してください
+admin.common.select_message_line_long: ----
+admin.common.select_message_line_short: --
+admin.common.range_separator: 〜
+admin.common.count: '%count%件'
+admin.common.search_detail: 詳細検索
+admin.common.search_results: 検索結果：%count%件が該当しました
+admin.common.csv_download: CSVダウンロード
+
+# エンティティに関連するラベル
+admin.common.id: ID
 admin.common.name: お名前
 admin.common.kana: お名前(カナ)
 admin.common.first_name: 名
 admin.common.last_name: 姓
 admin.common.company_name: 会社名
 admin.common.address: 住所
+admin.common.pref: 都道府県
 admin.common.postal_symbol: 〒
 admin.common.address_sample_01: 大阪市北区梅田
 admin.common.address_sample_02: ブリーゼタワー13F
@@ -43,22 +67,28 @@ admin.common.password_for_confirmation: パスワード(確認用)
 admin.common.gender: 性別
 admin.common.job: 職業
 admin.common.birth_day: 誕生日
+admin.common.birth_day_start: 誕生日(開始)
+admin.common.birth_day_end: 誕生日(終了)
 admin.common.point: ポイント
 admin.common.shop_memo: ショップ用メモ欄
+admin.common.create_date: 登録日
+admin.common.create_date_start: 登録日(開始)
+admin.common.create_date_end: 登録日(終了)
+admin.common.update_date: 更新日
+admin.common.update_date_start: 更新日(開始)
+admin.common.update_date_end: 更新日(終了)
 
-#--------------------------------------------
+#----------------------------------------------------------------------------------------
 # 会員
-#--------------------------------------------
+#----------------------------------------------------------------------------------------
 
-# 機能名称:
-# ナビ, 画面タイトル, リンクのラベル等に使用する
+# 機能名称: ナビ, 画面タイトル, リンクのラベル等に使用する
 admin.customer.customer_management: 会員管理
 admin.customer.customer_list: 会員一覧
 admin.customer.customer_registration: 会員登録
 admin.customer.customer_address_registration: お届け先登録
 
-# ラベル, メッセージ
-# 主にtwigテンプレートで使用する
+# ラベル, メッセージ: 主にtwigテンプレートで使用する
 admin.customer.customer_id: 会員ID
 admin.customer.customer_info: 会員情報
 admin.customer.purchase_history: 注文履歴
@@ -67,19 +97,63 @@ admin.customer.customer_address: お届け先住所
 admin.customer.no_customer_address: お届け先住所がありません
 admin.customer.add_customer_address: お届け先住所を追加
 admin.customer.customer_address_count_is_over: お届け先登録の上限の%eccube_deliv_addr_max%件に達しています。お届け先を入力したい場合は、削除か変更を行ってください。
-
 admin.customer.customer_address_id: お届け先ID
 admin.customer.customer_address_info: お届け先情報
+admin.customer.search_multi: 会員ID・メールアドレス・お名前
+admin.customer.customer_status: 会員種別
+admin.customer.birth_month: 誕生月
+admin.customer.delete_confirm_title: 会員情報を削除します。
+admin.customer.delete_confirm_message: 会員情報を削除してもよろしいですか？
+admin.customer.resend: 仮会員メール再送
+admin.customer.resend_confirm_title: 仮会員メールを再送します。
+admin.customer.resend_confirm_message: 仮登録メールを再送してもよろしいですか？
 
-#--------------------------------------------
+#----------------------------------------------------------------------------------------
 # 受注
-#--------------------------------------------
+#----------------------------------------------------------------------------------------
 
 admin.order.order: 注文
 admin.order.order_date: 注文日時
 admin.order.order_no: 注文番号
 admin.order.total_price: 購入金額   # TODO キー名検討
 admin.order.order_status: 対応状況
+admin.order.last_buy_date: 最終購入日
+admin.order.last_buy_date_start: 最終購入日(開始)
+admin.order.last_buy_date_end: 最終購入日(終了)
+admin.order.purchase_product: 購入商品名
+admin.order.purchase_count: 購入商品名
+admin.order.purchase_count_start: 購入商品名(開始)
+admin.order.purchase_count_end: 購入商品名(終了)
+
+
+#----------------------------------------------------------------------------------------
+# 設定
+#----------------------------------------------------------------------------------------
+
+admin.setting.shop.csv: CSV出力項目設定
+
+#----------------------------------------------------------------------------------------
+# 設定：ショップ設定：CSV出力項目設定
+#----------------------------------------------------------------------------------------
+
+admin.setting.shop.csv.csv_colmuns: CSV出力項目
+admin.setting.shop.csv.csv_types: CSV種別
+admin.setting.shop.csv.non_output_colmuns: 出力しない項目
+admin.setting.shop.csv.output_colmuns: 出力する項目
+admin.setting.shop.csv.operation: 操作項目
+admin.setting.shop.csv.operation_output: 出力
+admin.setting.shop.csv.operation_release: 解除
+admin.setting.shop.csv.operation_all_output: すべて出力
+admin.setting.shop.csv.operation_all_release: すべて解除
+admin.setting.shop.csv.order: 項目順序
+admin.setting.shop.csv.order_up: ひとつ上へ
+admin.setting.shop.csv.order_down: ひとつ下へ
+admin.setting.shop.csv.order_top: 一番上へ
+admin.setting.shop.csv.order_bottom: 一番下へ
+admin.setting.shop.csv.how_to_use: 任意の項目を押して選択してから［項目操作］ボタンで移動し、CSV出力する項目を設定してください。
+  出力する項目の順序は［項目順序］ボタンで変更することができます。
+  複数の項目を選択する場合はctrlキー（Macの場合はcommandキー）を押しながら項目を押します。shiftキーを押しながら選択すると範囲選択ができます。
+
 
 
 

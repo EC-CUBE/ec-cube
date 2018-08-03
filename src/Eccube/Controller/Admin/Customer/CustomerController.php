@@ -214,7 +214,7 @@ class CustomerController extends AbstractController
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_RESEND_COMPLETE, $event);
 
-        $this->addSuccess('admin.customer.resend.complete', 'admin');
+        $this->addSuccess('admin.common.send_complete', 'admin');
 
         return $this->redirectToRoute('admin_customer');
     }
@@ -249,7 +249,7 @@ class CustomerController extends AbstractController
         } catch (ForeignKeyConstraintViolationException $e) {
             log_error('会員削除失敗', [$e], 'admin');
 
-            $message = trans('admin.delete.failed.foreign_key', ['%name%' => $Customer->getName01().' '.$Customer->getName02()]);
+            $message = trans('admin.common.delete_error_foreign_key', ['%name%' => $Customer->getName01().' '.$Customer->getName02()]);
             $this->addError($message, 'admin');
         }
 
