@@ -13,8 +13,8 @@ file that was distributed with this source code.
 
 {% set menus = ['customer', 'customer_edit'] %}
 
-{% block title %}{{ 'admin.customer.edit.93'|trans }}{% endblock %}
-{% block sub_title %}{{ 'admin.customer.edit.92'|trans }}{% endblock %}
+{% block title %}{{ 'admin.customer.customer_registration'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.customer.customer_management'|trans }}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
@@ -34,7 +34,7 @@ file that was distributed with this source code.
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header">
                             <div class="row">
-                                <div class="col-8"><span class="card-title">{{ 'admin.customer.edit.94'|trans }}</span>
+                                <div class="col-8"><span class="card-title">{{ 'admin.customer.customer_info'|trans }}</span>
                                 </div>
                                 <div class="col-4 text-right">
                                     <a data-toggle="collapse" href="#ordererInfo"
@@ -51,7 +51,7 @@ file that was distributed with this source code.
                                         <div class="col-3">
                                             <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
                                                  title="Tooltip">
-                                                <span>{{ 'admin.customer.edit.95'|trans }}</span>
+                                                <span>{{ 'admin.customer.customer_id'|trans }}</span>
                                                 <i class="fa fa-question-circle fa-lg ml-1"></i>
                                             </div>
                                         </div>
@@ -62,8 +62,8 @@ file that was distributed with this source code.
                                 {% endif %}
                                 <div class="row mb-2">
                                     <div class="col-3">
-                                        <span>{{ 'admin.customer.edit.name'|trans }}</span>
-                                        <span class="badge badge-primary ml-1">{{ 'admin.customer.edit.required'|trans }}</span>
+                                        <span>{{ 'admin.common.name'|trans }}</span>
+                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
                                     </div>
                                     <div class="col">
                                         <div class="row">
@@ -80,8 +80,8 @@ file that was distributed with this source code.
                                 </div>
                                 <div class="row mb-2">
                                     <div class="col-3">
-                                        <span>{{ 'admin.customer.edit.kana'|trans }}</span>
-                                        <span class="badge badge-primary ml-1">{{ 'admin.customer.edit.required'|trans }}</span>
+                                        <span>{{ 'admin.common.kana'|trans }}</span>
+                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
                                     </div>
                                     <div class="col">
                                         <div class="row">
@@ -98,7 +98,7 @@ file that was distributed with this source code.
                                 </div>
                                 <div class="row mb-2">
                                     <div class="col-3">
-                                        <span>{{ 'admin.customer.edit.company_name'|trans }}</span>
+                                        <span>{{ 'admin.common.company_name'|trans }}</span>
                                     </div>
                                     <div class="col">
                                         {{ form_widget(form.company_name) }}
@@ -106,13 +106,13 @@ file that was distributed with this source code.
                                     </div>
                                 </div>
                                 <div class="row mb-2">
-                                    <div class="col-3"><span>{{ 'admin.customer.edit.address'|trans }}</span><span
-                                                class="badge badge-primary ml-1">{{ 'admin.customer.edit.required'|trans }}</span>
+                                    <div class="col-3"><span>{{ 'admin.common.address'|trans }}</span><span
+                                                class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
                                     </div>
                                     <div class="col">
                                         <div class="mb-3">
                                             <div class="row justify-content-start">
-                                                <div class="col-auto pr-0 align-self-center"><span>{{ 'admin.customer.edit.post'|trans }}</span></div>
+                                                <div class="col-auto pr-0 align-self-center"><span>{{ 'admin.common.postal_symbol'|trans }}</span></div>
                                                 <div class="col-2">
                                                     {{ form_widget(form.postal_code) }}
                                                 </div>
@@ -129,19 +129,19 @@ file that was distributed with this source code.
                                             </div>
                                         </div>
                                         <div class="mb-3">
-                                            {{ form_widget(form.address.addr01, { attr : { placeholder : 'admin.customer.edit.97' }} ) }}
+                                            {{ form_widget(form.address.addr01, { attr : { placeholder : 'admin.common.address_sample_01' }} ) }}
                                             {{ form_errors(form.address.addr01) }}
                                         </div>
                                         <div class="mb-3">
-                                            {{ form_widget(form.address.addr02, { attr : { placeholder : 'admin.customer.edit.98' }}) }}
+                                            {{ form_widget(form.address.addr02, { attr : { placeholder : 'admin.common.address_sample_02' }}) }}
                                             {{ form_errors(form.address.addr02) }}
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row mb-2">
                                     <div class="col-3">
-                                        <span>{{ 'admin.customer.edit.email'|trans }}</span>
-                                        <span class="badge badge-primary ml-1">{{ 'admin.customer.edit.required'|trans }}</span>
+                                        <span>{{ 'admin.common.mail_address'|trans }}</span>
+                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
                                     </div>
                                     <div class="col">
                                         {{ form_widget(form.email) }}
@@ -150,8 +150,8 @@ file that was distributed with this source code.
                                 </div>
                                 <div class="row mb-2">
                                     <div class="col-3">
-                                        <span>{{ 'admin.customer.edit.tel'|trans }}</span>
-                                        <span class="badge badge-primary ml-1">{{ 'admin.customer.edit.required'|trans }}</span>
+                                        <span>{{ 'admin.common.phone_number'|trans }}</span>
+                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
                                     </div>
                                     <div class="col">
                                         {{ form_widget(form.phone_number) }}
@@ -160,8 +160,8 @@ file that was distributed with this source code.
                                 </div>
                                 <div class="row mb-2">
                                     <div class="col-3">
-                                        <span>{{ 'admin.customer.edit.password'|trans }}</span>
-                                        <span class="badge badge-primary ml-1">{{ 'admin.customer.edit.required'|trans }}</span>
+                                        <span>{{ 'admin.common.password'|trans }}</span>
+                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
                                     </div>
                                     <div class="col">
                                         {{ form_widget(form.password.first, { type : 'password'}) }}
@@ -170,8 +170,8 @@ file that was distributed with this source code.
                                 </div>
                                 <div class="row mb-2">
                                     <div class="col-3">
-                                        <span>{{ 'admin.customer.edit.password2'|trans }}</span>
-                                        <span class="badge badge-primary ml-1">{{ 'admin.customer.edit.required'|trans }}</span>
+                                        <span>{{ 'admin.common.password_for_confirmation'|trans }}</span>
+                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
                                     </div>
                                     <div class="col">
                                         {{ form_widget(form.password.second, { type : 'password'}) }}
@@ -180,7 +180,7 @@ file that was distributed with this source code.
                                 </div>
                                 <div class="row mb-2">
                                     <div class="col-3">
-                                        <span>{{ 'admin.customer.edit.sex'|trans }}</span>
+                                        <span>{{ 'admin.common.gender'|trans }}</span>
                                     </div>
                                     <div class="col">
                                         {{ form_widget(form.sex,  {'label_attr': {'class': 'radio-inline'}}) }}
@@ -189,7 +189,7 @@ file that was distributed with this source code.
                                 </div>
                                 <div class="row mb-2">
                                     <div class="col-3">
-                                        <span>{{ 'admin.customer.edit.job'|trans }}</span>
+                                        <span>{{ 'admin.common.job'|trans }}</span>
                                     </div>
                                     <div class="col">
                                         {{ form_widget(form.job) }}
@@ -198,7 +198,7 @@ file that was distributed with this source code.
                                 </div>
                                 <div class="row mb-2">
                                     <div class="col-3">
-                                        <span>{{ 'admin.customer.edit.birth'|trans }}</span>
+                                        <span>{{ 'admin.common.birth_day'|trans }}</span>
                                     </div>
                                     <div class="col">
                                         {{ form_widget(form.birth) }}
@@ -207,7 +207,7 @@ file that was distributed with this source code.
                                 </div>
                                 <div class="row mb-2">
                                     <div class="col-3">
-                                        <span>{{ 'admin.customer.edit.point'|trans }}</span>
+                                        <span>{{ 'admin.common.point'|trans }}</span>
                                     </div>
                                     <div class="col">
                                         {{ form_widget(form.point) }}
@@ -245,7 +245,7 @@ file that was distributed with this source code.
                                         <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
                                              title="Tooltip">
                                         <span class="card-title">
-                                            {{ 'admin.customer.edit.sipping'|trans }}
+                                            {{ 'admin.customer.customer_address'|trans }}
                                             <i class="fa fa-question-circle fa-lg ml-1"></i>
                                         </span>
                                         </div>
@@ -263,16 +263,14 @@ file that was distributed with this source code.
                                     <div class="card-body">
                                         <table class="table table-striped table-sm">
                                             <thead class="table-active">
-                                            <th class="align-middle pt-2 pb-2 pl-3">{{ 'admin.customer.edit.sipping_id'|trans }}</th>
-                                            <th class="align-middle pt-2 pb-2">{{ 'admin.customer.edit.sipping_name'|trans }}</th>
-                                            <th class="align-middle pt-2 pb-2">{{ 'admin.customer.edit.sipping_addresses'|trans }}</th>
-                                            <th class="align-middle pt-2 pb-2 pr-3">{{ 'admin.customer.edit.sipping_tel'|trans }}</th>
+                                            <th class="align-middle pt-2 pb-2">{{ 'admin.common.name'|trans }}</th>
+                                            <th class="align-middle pt-2 pb-2">{{ 'admin.common.address'|trans }}</th>
+                                            <th class="align-middle pt-2 pb-2 pr-3">{{ 'admin.common.phone_number'|trans }}</th>
                                             <th class="align-middle pt-2 pb-2 pr-3"></th>
                                             </thead>
                                             <tbody>
                                             {% for CustomerAddress in Customer.CustomerAddresses %}
                                                 <tr>
-                                                    <td class="align-middle pl-3">{{ CustomerAddress.id }}</td>
                                                     <td class="align-middle">
                                                         {{ CustomerAddress.name01 }}&nbsp;{{ CustomerAddress.name02 }}
                                                     </td>
@@ -295,7 +293,7 @@ file that was distributed with this source code.
                                                             <ul id="address_box__menu--{{ CustomerAddress.id }}"
                                                                 class="dropdown-menu dropdown-menu-right">
                                                                 <li>
-                                                                    <a href="{{ url('admin_customer_delivery_edit', { 'id': Customer.id, 'did': CustomerAddress.id}) }}">{{ 'admin.customer.edit.sipping_edit'|trans }}</a>
+                                                                    <a href="{{ url('admin_customer_delivery_edit', { 'id': Customer.id, 'did': CustomerAddress.id}) }}">{{ 'admin.common.edit'|trans }}</a>
                                                                 </li>
                                                                 <!--
                                                                 {#<li><a href="{{ url('admin_customer_delivery_delete', { 'id': Customer.id, 'did': CustomerAddress.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="このお届け先情報を削除してもよろしいですか？">削除</a></li>#}
@@ -312,23 +310,23 @@ file that was distributed with this source code.
                                         {% if Customer.CustomerAddresses|length < eccube_config.eccube_deliv_addr_max %}
                                             <div class="d-block text-center">
                                                 <a href="{{ url('admin_customer_delivery_new', { id: Customer.id }) }}"
-                                                   class="btn btn-ec-regular">{{ 'admin.customer.edit.sipping_add'|trans }}</a>
+                                                   class="btn btn-ec-regular">{{ 'admin.customer.add_customer_address'|trans }}</a>
                                             </div>
                                         {% else %}
                                             <span class="ec-errorMessage">
-                                                {{ 'admin.customer.edit.sipping_text01'|trans({"%eccube_deliv_addr_max%":eccube_config.eccube_deliv_addr_max}) }}
+                                                {{ 'admin.customer.customer_address_count_is_over'|trans({"%eccube_deliv_addr_max%":eccube_config.eccube_deliv_addr_max}) }}
                                             </span>
                                         {% endif %}
                                     </div>
                                 {% else %}
                                     <div class="card-body">
                                         <div id="address_box" class="data-empty">
-                                            <span>{{ 'admin.customer.edit.no_customer_address'|trans }}</span>
+                                            <span>{{ 'admin.customer.no_customer_address'|trans }}</span>
                                         </div>
 
                                         <div class="d-block text-center">
                                             <a href="{{ url('admin_customer_delivery_new', { id: Customer.id }) }}"
-                                               class="btn btn-ec-regular">{{ 'admin.customer.edit.sipping_add'|trans }}</a>
+                                               class="btn btn-ec-regular">{{ 'admin.customer.add_customer_address'|trans }}</a>
                                         </div>
 
                                     </div>
@@ -345,7 +343,7 @@ file that was distributed with this source code.
                                         <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
                                              title="Tooltip">
                                         <span class="card-title">
-                                            {{ 'admin.customer.edit.99'|trans }}
+                                            {{ 'admin.customer.purchase_history'|trans }}
                                             <i class="fa fa-question-circle fa-lg ml-1"></i>
                                         </span>
                                         </div>
@@ -376,10 +374,10 @@ file that was distributed with this source code.
                                     <div class="card-body">
                                         <table class="table table-striped table-sm">
                                             <thead class="table-active">
-                                            <th class="align-middle pt-2 pb-2 pl-3">{{ 'admin.customer.edit.100'|trans }}</th>
-                                            <th class="align-middle pt-2 pb-2">{{ 'admin.customer.edit.101'|trans }}</th>
-                                            <th class="align-middle pt-2 pb-2">{{ 'admin.customer.edit.102'|trans }}</th>
-                                            <th class="align-middle pt-2 pb-2 pr-3">{{ 'admin.customer.edit.order_status'|trans }}</th>
+                                            <th class="align-middle pt-2 pb-2 pl-3">{{ 'admin.order.order_date'|trans }}</th>
+                                            <th class="align-middle pt-2 pb-2">{{ 'admin.order.order_no'|trans }}</th>
+                                            <th class="align-middle pt-2 pb-2">{{ 'admin.order.total_price'|trans }}</th>
+                                            <th class="align-middle pt-2 pb-2 pr-3">{{ 'admin.order.order_status'|trans }}</th>
                                             </thead>
                                             <tbody>
                                             {% for Order in Customer.Orders %}
@@ -390,9 +388,7 @@ file that was distributed with this source code.
                                                             {{ Order.order_no }}
                                                         </a>
                                                     </td>
-                                                    <td class="align-middle">
-                                                        <span class="h5 font-weight-normal">{{ Order.total|price }}</span>
-                                                    </td>
+                                                    <td class="align-middle">{{ Order.total|price }}</td>
                                                     <td class="align-middle pr-3">
                                                         <span class="badge {{ attribute(cssClassStatus, Order.OrderStatus.id) }}">{{ Order.OrderStatus }}</span>
                                                     </td>
@@ -405,7 +401,7 @@ file that was distributed with this source code.
                                     <div class="card-body">
                                         <div id="history_box" class="data-empty">
                                         <span>
-                                            {{ 'admin.customer.edit.no_purchase_history'|trans }}
+                                            {{ 'admin.customer.no_purchase_history'|trans }}
                                         </span>
                                         </div>
                                     </div>
@@ -420,7 +416,7 @@ file that was distributed with this source code.
                                 <div class="col-8">
                                     <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
                                          title="Tooltip">
-                                        <span class="card-title">{{ 'admin.customer.edit.109'|trans }}</span>
+                                        <span class="card-title">{{ 'admin.common.shop_memo'|trans }}</span>
                                         <i class="fa fa-question-circle fa-lg ml-1"></i>
                                     </div>
                                 </div>
@@ -434,7 +430,7 @@ file that was distributed with this source code.
                         </div>
                         <div class="collapse show ec-cardCollapse" id="shopMemo">
                             <div class="card-body">
-                                {{ form_widget(form.note) }}
+                                {{ form_widget(form.note, { 'attr': { 'row': 8 }}) }}
                                 {{ form_errors(form.note) }}
                             </div>
                         </div>
@@ -452,7 +448,7 @@ file that was distributed with this source code.
                             <a class="c-beseLink"
                                href="{{ url('admin_customer_page', { page_no : app.session.get('eccube.admin.customer.search.page_no')|default('1') } ) }}?resume=1">
                                 <i class="fa fa-backward" aria-hidden="true"></i>
-                                <span>{{ 'admin.customer.edit.customer_index'|trans }}</span>
+                                <span>{{ 'admin.customer.customer_list'|trans }}</span>
                             </a>
                         </div>
                     </div>
@@ -464,7 +460,7 @@ file that was distributed with this source code.
                             </div>
                             <div class="col-auto">
                                 <button class="btn btn-ec-conversion px-5"
-                                        type="submit">{{ 'admin.customer.edit.108'|trans }}</button>
+                                        type="submit">{{ 'admin.common.registeration'|trans }}</button>
                             </div>
                         </div>
                     </div>

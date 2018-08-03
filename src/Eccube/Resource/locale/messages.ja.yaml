@@ -1,0 +1,79 @@
+#--------------------------------------------
+# 命名規約
+#--------------------------------------------
+
+#
+
+#--------------------------------------------
+# 管理画面共通
+#--------------------------------------------
+
+# flash messages
+admin.common.save_complete: 保存しました
+admin.common.save_error: 保存に失敗しました
+admin.common.delete_complete: 削除しました
+admin.common.delete_error: 削除に失敗しました
+admin.common.move_complete: 並び順を更新しました
+admin.common.move_error: 並び順の更新に失敗しました
+admin.common.upload_complete: アップロードしました
+admin.common.upload_error: アップロードに失敗しました
+
+# action
+admin.common.save: 保存
+admin.common.registeration: 登録
+admin.common.edit: 編集
+
+# label
+admin.common.required: 必須
+admin.common.name: お名前
+admin.common.kana: お名前(カナ)
+admin.common.first_name: 名
+admin.common.last_name: 姓
+admin.common.company_name: 会社名
+admin.common.address: 住所
+admin.common.postal_symbol: 〒
+admin.common.address_sample_01: 大阪市北区梅田
+admin.common.address_sample_02: ブリーゼタワー13F
+admin.common.phone_number: 電話番号
+admin.common.mail_address: メールアドレス
+admin.common.password: パスワード
+admin.common.password_for_confirmation: パスワード(確認用)
+admin.common.gender: 性別
+admin.common.job: 職業
+admin.common.birth_day: 誕生日
+admin.common.point: ポイント
+admin.common.shop_memo: ショップ用メモ欄
+
+#--------------------------------------------
+# 会員
+#--------------------------------------------
+
+# 機能名称:
+# ナビ, 画面タイトル, リンクのラベル等に使用する
+admin.customer.customer_management: 会員管理
+admin.customer.customer_list: 会員一覧
+admin.customer.customer_registration: 会員登録
+admin.customer.customer_address_registration: お届け先登録
+
+# ラベル, メッセージ
+# 主にtwigテンプレートで使用する
+admin.customer.customer_id: 会員ID
+admin.customer.customer_info: 会員情報
+admin.customer.purchase_history: 注文履歴
+admin.customer.no_purchase_history: 注文履歴がありません
+admin.customer.customer_address: お届け先住所
+admin.customer.no_customer_address: お届け先住所がありません
+admin.customer.add_customer_address: お届け先住所を追加
+admin.customer.customer_address_count_is_over: お届け先登録の上限の%eccube_deliv_addr_max%件に達しています。お届け先を入力したい場合は、削除か変更を行ってください。
+
+#--------------------------------------------
+# 受注
+#--------------------------------------------
+
+admin.order.order_date: 注文日時
+admin.order.order_no: 注文番号
+admin.order.total_price: 購入金額   # TODO キー名検討
+admin.order.order_status: 対応状況
+
+
+

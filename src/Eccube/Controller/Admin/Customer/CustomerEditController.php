@@ -66,8 +66,6 @@ class CustomerEditController extends AbstractController
         // 新規登録
         } else {
             $Customer = $this->customerRepository->newCustomer();
-            $Customer->setBuyTimes(0);
-            $Customer->setBuyTotal(0);
         }
 
         // 会員登録フォーム
@@ -87,44 +85,40 @@ class CustomerEditController extends AbstractController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-                log_info('会員登録開始', [$Customer->getId()]);
+        if ($form->isSubmitted() && $form->isValid()) {
+            log_info('会員登録開始', [$Customer->getId()]);
 
-                $encoder = $this->encoderFactory->getEncoder($Customer);
+            $encoder = $this->encoderFactory->getEncoder($Customer);
 
-                if ($Customer->getPassword() === $this->eccubeConfig['eccube_default_password']) {
-                    $Customer->setPassword($previous_password);
-                } else {
-                    if ($Customer->getSalt() === null) {
-                        $Customer->setSalt($encoder->createSalt());
-                        $Customer->setSecretKey($this->customerRepository->getUniqueSecretKey());
-                    }
-                    $Customer->setPassword($encoder->encodePassword($Customer->getPassword(), $Customer->getSalt()));
-                }
-
-                $this->entityManager->persist($Customer);
-                $this->entityManager->flush();
-
-                log_info('会員登録完了', [$Customer->getId()]);
-
-                $event = new EventArgs(
-                    [
-                        'form' => $form,
-                        'Customer' => $Customer,
-                    ],
-                    $request
-                );
-                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_EDIT_INDEX_COMPLETE, $event);
-
-                $this->addSuccess('admin.customer.save.complete', 'admin');
-
-                return $this->redirectToRoute('admin_customer_edit', [
-                    'id' => $Customer->getId(),
-                ]);
+            if ($Customer->getPassword() === $this->eccubeConfig['eccube_default_password']) {
+                $Customer->setPassword($previous_password);
             } else {
-                $this->addError('admin.customer.save.failed', 'admin');
+                if ($Customer->getSalt() === null) {
+                    $Customer->setSalt($encoder->createSalt());
+                    $Customer->setSecretKey($this->customerRepository->getUniqueSecretKey());
+                }
+                $Customer->setPassword($encoder->encodePassword($Customer->getPassword(), $Customer->getSalt()));
             }
+
+            $this->entityManager->persist($Customer);
+            $this->entityManager->flush();
+
+            log_info('会員登録完了', [$Customer->getId()]);
+
+            $event = new EventArgs(
+                [
+                    'form' => $form,
+                    'Customer' => $Customer,
+                ],
+                $request
+            );
+            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_EDIT_INDEX_COMPLETE, $event);
+
+            $this->addSuccess('admin.common.save_complete', 'admin');
+
+            return $this->redirectToRoute('admin_customer_edit', [
+                'id' => $Customer->getId(),
+            ]);
         }
 
         return [
