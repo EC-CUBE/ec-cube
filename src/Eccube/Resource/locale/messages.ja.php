@@ -1638,6 +1638,7 @@ return [
     'admin.product.product.text09' => 'この商品の規格管理',
     'admin.product.product.text10' => 'ページを移動します。',
     'admin.product.product.text11' => '%name%に移動します。商品情報を保存してから移動しますか？',
+    'admin.product.product.preview' => 'プレビュー',
     'admin.product.product.save' => '変更を保存',
     'admin.product.product.cancel' => '保存せずに移動',
     'admin.product.product.category' => 'カテゴリ',

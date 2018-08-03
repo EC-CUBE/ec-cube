@@ -55,6 +55,12 @@ class ProductEditPage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    public function 入力_非公開()
+    {
+        $this->tester->selectOption('#admin_product_Status', '非公開');
+        return $this;
+    }
+
     public function クリックして開くタグリスト()
     {
         $this->tester->click(['css' => 'div[href="#allTags"] > a']);
@@ -87,6 +93,11 @@ class ProductEditPage extends AbstractAdminPageStyleGuide
     {
         $this->tester->click('#form1 > div.c-conversionArea > div > div > div:nth-child(2) > div > div:nth-child(2) > button');
         return $this;
+    }
+
+    public function プレビュー()
+    {
+        $this->tester->click(['xpath' => "//*[@id='preview']/div/div/a[text()='プレビュー']"]);
     }
 
 }
