@@ -22,8 +22,13 @@ file that was distributed with this source code.
     <link rel="stylesheet" href="{{ asset('assets/css/fileupload/jquery.fileupload-ui.css', 'admin') }}">
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
     <style>
+        #thumb div {
+            float:left;
+            margin: 4px
+        }
         .ui-state-highlight {
-            height: 148px;
+            height: 70px;
+            width: 70px;
             border: dashed 1px #ccc;
             background: #fff;
         }
@@ -84,7 +89,7 @@ file that was distributed with this source code.
             {% endfor %}
             // Todo: fix hideSvg
             var hideSvg = function() {
-                if ($("#thumb li").length > 0) {
+                if ($("#thumb div").length > 0) {
                     $("#icon_no_image").css("display", "none");
                 } else {
                     $("#icon_no_image").css("display", "");
@@ -92,14 +97,14 @@ file that was distributed with this source code.
             };
             // Todo: fix update sort by drag&drop
             var updateSortNo = function() {
-                $("#thumb li").each(function(index) {
+                $("#thumb div").each(function(index) {
                     $(this).find(".sort_no_images").remove();
                     filename = $(this).find("input[type='hidden']").val();
                     $sortNo = $('<input type="hidden" class="sort_no_images" name="sort_no_images[]" />');
                     $sortNo.val(filename + '//' + parseInt(index + 1));
                     $(this).append($sortNo);
                 });
-            }
+            };
             hideSvg();
             updateSortNo();
             // Delete of images
@@ -374,7 +379,7 @@ file that was distributed with this source code.
                                         </div>
                                         <div id="thumb" class="c-form__fileUploadThumbnails">
                                         </div>
-                                        <p>{{ 'admin.product.product.test02'|trans }}</p>
+                                        <p style="clear:both;">{{ 'admin.product.product.test02'|trans }}</p>
                                     </div>
                                 </div>
                                 <div class="row">
