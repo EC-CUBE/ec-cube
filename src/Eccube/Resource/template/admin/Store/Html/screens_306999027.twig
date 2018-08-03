@@ -23,23 +23,13 @@ file that was distributed with this source code.
         #plugin-list .info{
             min-height: 65%;
         }
-        #plugin-list .prices,
-        #plugin-list .prices dl dd{
+        .plg-prices,
+        #plugin-list dl dd{
             font-size: 1.25rem;
         }
-        #plugin-list .prices,
-        #plugin-list .prices dl dd span{
-            color: #201411;
-        }
-
         .plugin-ver li span{
             display: inline-block;
-            /*min-width: 65%;*/
         }
-        h6.news{
-            color: #FD9271;
-        }
-
     </style>
 {% endblock %}
 {% block main %}
@@ -53,19 +43,19 @@ file that was distributed with this source code.
                     </div>
                     <div class="card-body p-0">
                         <div class="row m-0 p-3 border-bt">
-                            <div class="col-5 col-sm-4 pr-2 pl-2 pr-sm-3">
+                            <div class="col-5 col-sm-4 px-2 pr-sm-3">
                                 <a href="#" data-toggle="modal" data-target="#searchPluginModal">
                                     <img class="w-100 img-responsive"
-                                         src="/html/template/admin/assets/img/plugin_temp/{{  random(7) }}.png"></a>
+                                         src="/html/template/admin/assets/img/plugin_temp/{{  random(7) }}.png" alt=""></a>
                             </div>
-                            <div class="col-auto col-sm-8" col-md-3>
+                            <div class="col-auto col-sm-8">
                                 <div class="info">
                                     <h5 class="font-weight-bold mb-4">
                                         最高級プラチナフォークは、贈り物としても人気です。
                                     </h5>
                                     <h6 class="mb-4">
                                         セットで揃えたいディナー用のカトラリー。定番の銀製は、シルバー特有の美しい輝きと柔らかな曲線が特徴です。適度な重みと日本人の手に合いやすいサイズ感で長く愛用いただけます。</h6>
-                                    <p class="prices text-danger"><span class="font-weight-bold text-dark">定番: </span> 25.000 <small>(最高)</small></p>
+                                    <p class="plg-prices text-danger"><span class="font-weight-bold text-dark">定番: </span> 25.000 <small>(最高)</small></p>
                                     <ul class="plugin-ver">
                                         <li class="pb-2"><span class="font-weight-bold col-6 col-sm-4 col-md-3 pl-0">カトラリー。</span>256</li>
                                         <li class="pb-2"><span class="font-weight-bold col-6 col-sm-4 col-md-3 pl-0">カトラリーリの銀製はセ</span>2.1.5</li>
@@ -86,7 +76,7 @@ file that was distributed with this source code.
                                 </div>
                             </div>
                         </div>
-                        <div class="row m-0 mb-3 mt-3">
+                        <div class="row m-0 my-3">
                             <div class="col-6">
                                 <div class="row">
                                     <div class="col-6 col-sm-3 pt-2 font-weight-bold">く愛用い:ただけます</div>
@@ -99,8 +89,8 @@ file that was distributed with this source code.
                                 </div>
                             </div>
                             <div class="col-6 text-right">
-                                <button type="button" class="btn btn-ec-sub btn-lg" data-dismiss="modal">Close</button>
-                                <a href="{{ url('admin_store_plugin_owners_search_detail_html') }}" class="btn btn btn-primary btn-lg">OK</a>
+                                <a href="#" class="btn btn-ec-sub btn-lg">Close</a>
+                                <a href="#" class="btn btn btn-primary btn-lg">OK</a>
                             </div>
                         </div>
                     </div>
@@ -111,10 +101,10 @@ file that was distributed with this source code.
                     </div>
                     <div class="card-body p-0">
                         <div class="row m-0 p-3">
-                            <div class="col-5 col-sm-4 pr-2 pl-2 pr-sm-3">
+                            <div class="col-5 col-sm-4 px-2 pr-sm-3">
                                 <a href="#" data-toggle="modal" data-target="#searchPluginModal">
                                     <img class="w-100 img-responsive"
-                                         src="/html/template/admin/assets/img/plugin_temp/{{  random(7) }}.png"></a>
+                                         src="/html/template/admin/assets/img/plugin_temp/{{  random(7) }}.png" alt=""></a>
                             </div>
                             <div class="col-auto col-sm-8">
                                 <div class="info">
@@ -123,7 +113,7 @@ file that was distributed with this source code.
                                     </h5>
                                     <h6 class="mb-4">
                                         セットで揃えたいディナー用のカトラリー。定番の銀製は、シルバー特有の美しい輝きと柔らかな曲線が特徴です。適度な重みと日本人の手に合いやすいサイズ感で長く愛用いただけます。</h6>
-                                    <p class="prices text-danger"><span class="font-weight-bold text-dark">定番: </span> 25.000 <small>(最高)</small></p>
+                                    <p class="plg-prices text-danger"><span class="font-weight-bold text-dark">定番: </span> 25.000 <small>(最高)</small></p>
                                     <ul class="plugin-ver">
                                         <li class="pb-2"><span class="font-weight-bold col-6 col-sm-4 col-md-3 pl-0">カトラリー。</span>256</li>
                                         <li class="pb-2"><span class="font-weight-bold col-6 col-sm-4 col-md-3 pl-0">カトラリーリの銀製はセ</span>2.1.5</li>
