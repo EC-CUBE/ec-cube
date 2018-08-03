@@ -16,7 +16,7 @@ namespace Eccube\Form\Type\Admin;
 use Eccube\Common\EccubeConfig;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Eccube\Form\Type\RepeatedPasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -74,10 +74,13 @@ class MemberType extends AbstractType
                         'min' => $this->eccubeConfig['eccube_id_min_len'],
                         'max' => $this->eccubeConfig['eccube_id_max_len'],
                     ]),
-                    new Assert\Regex(['pattern' => '/^[[:graph:][:space:]]+$/i']),
+                    new Assert\Regex([
+                        'pattern' => '/^[[:graph:][:space:]]+$/i',
+                        'message' => 'form.type.graph.invalid',
+                    ]),
                 ],
             ])
-            ->add('password', RepeatedType::class, [
+            ->add('password', RepeatedPasswordType::class, [
                 // 'type' => 'password',
                 'first_options' => [
                     'label' => 'member.label.pass',
