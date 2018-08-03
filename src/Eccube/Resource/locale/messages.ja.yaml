@@ -26,7 +26,6 @@ admin.common.upload_error: アップロードに失敗しました
 admin.common.send_complete: メールを送信しました
 admin.common.send_error: メールの送信に失敗しました
 
-
 # action系のラベル
 admin.common.save: 保存
 admin.common.registeration: 登録
@@ -37,7 +36,7 @@ admin.common.search: 検索
 admin.common.search_clear: 検索条件をクリア
 admin.common.send: 送信
 
-# 汎用ラベル
+# 汎用ラベル, メッセージ
 admin.common.required: 必須
 admin.common.select_message: 選択してください
 admin.common.select_message_line_long: ----
@@ -45,7 +44,11 @@ admin.common.select_message_line_short: --
 admin.common.range_separator: 〜
 admin.common.count: '%count%件'
 admin.common.search_detail: 詳細検索
-admin.common.search_results: 検索結果：%count%件が該当しました
+admin.common.search_result: 検索結果：%count%件が該当しました
+admin.common.search_invalid_condition: 検索条件に誤りがあります
+admin.common.search_no_result: 検索条件に合致するデータが見つかりませんでした
+admin.common.search_try_change_condition: 検索条件を変えて、再度検索をお試しください
+admin.common.search_try_advanced_search: '[詳細検索]も試してみましょう'
 admin.common.csv_download: CSVダウンロード
 
 # エンティティに関連するラベル
@@ -124,7 +127,6 @@ admin.order.purchase_product: 購入商品名
 admin.order.purchase_count: 購入商品名
 admin.order.purchase_count_start: 購入商品名(開始)
 admin.order.purchase_count_end: 購入商品名(終了)
-
 
 #----------------------------------------------------------------------------------------
 # 設定

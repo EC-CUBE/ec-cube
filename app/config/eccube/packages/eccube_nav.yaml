@@ -39,14 +39,14 @@ parameters:
                     name: admin.nav.order.shipping_csv_import
                     url: admin_shipping_csv_import
         customer:
-            name: admin.nav.customer
+            name: admin.customer.customer_management
             icon: fa-users
             children:
                 customer_master:
-                    name: admin.nav.customer.customer_master
+                    name: admin.customer.customer_list
                     url: admin_customer
                 customer_edit:
-                    name: admin.nav.customer.customer_edit
+                    name: admin.customer.customer_registration
                     url: admin_customer_new
         content:
             name: admin.nav.content
