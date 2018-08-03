@@ -22,20 +22,20 @@ file that was distributed with this source code.
             <div class="c-primaryCol">
                 <div class="card rounded border-0 mb-4">
                     <div class="card-header">
-                        <a href="{{ url('admin_store_plugin_owners_search_html') }}"
+                        <a href="{{ url('admin_store_plugin_306999026') }}"
                            class="btn btn-ec-regular mr-2 pull-right">{{ 'admin.store.plugin.811'|trans }}</a>
-                        <h4 class="box-title font-weight-bold mb-3">{{ 'admin.store.plugin.812'|trans }}</h4>
+                        <h5 class="box-title mb-3">{{ 'admin.store.plugin.812'|trans }}</h5>
                     </div>
                     <div class="card-body p-0">
                         <table class="table table-sm mb-0">
                             <thead>
                             <tr>
-                                <th class="border-top-0 pl-4 pt-2 pb-2">{{ 'admin.store.unregisterd_plugin_table.941'|trans }}</th>
-                                <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.unregisterd_plugin_table.942'|trans }}</th>
-                                <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.unregisterd_plugin_table.943'|trans }}</th>
-                                <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.unregisterd_plugin_table.944'|trans }}</th>
-                                <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.unregisterd_plugin_table.945'|trans }}</th>
-                                <th class="border-top-0 pt-2 pb-2">&nbsp;</th>
+                                <th class="border-top-0 pl-4 py-2">{{ 'admin.store.unregisterd_plugin_table.941'|trans }}</th>
+                                <th class="border-top-0 py-2">{{ 'admin.store.unregisterd_plugin_table.942'|trans }}</th>
+                                <th class="border-top-0 py-2">{{ 'admin.store.unregisterd_plugin_table.943'|trans }}</th>
+                                <th class="border-top-0 py-2">{{ 'admin.store.unregisterd_plugin_table.944'|trans }}</th>
+                                <th class="border-top-0 py-2">{{ 'admin.store.unregisterd_plugin_table.945'|trans }}</th>
+                                <th class="border-top-0 py-2">&nbsp;</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -60,7 +60,8 @@ file that was distributed with this source code.
                                 </td>
                                 <td class="align-middle">
                                     <div class="col-auto text-right">
-                                        <a class="btn btn-ec-actionIcon mr-3" data-tooltip="tooltip"
+                                        <a href="{{ url('admin_store_plugin_306999029') }}"
+                                                class="btn btn-ec-actionIcon mr-3" data-tooltip="tooltip"
                                            data-placement="top" title="削除">
                                             <i class="fa fa-close fa-lg text-secondary"></i>
                                         </a>
@@ -237,20 +238,20 @@ file that was distributed with this source code.
 
                 <div class="card rounded border-0 mb-4">
                     <div class="card-header">
-                        <a href="{{ url('admin_store_plugin_install') }}"
+                        <a href="{{ url('admin_store_plugin_306999034') }}"
                            class="btn btn-ec-regular mr-2 pull-right">{{ 'admin.store.plugin.813'|trans }}</a>
-                        <h4 class="box-title font-weight-bold mb-3">{{ 'admin.store.plugin.814'|trans }}</h4>
+                        <h5 class="box-title mb-3">{{ 'admin.store.plugin.814'|trans }}</h5>
                     </div>
                     <div class="card-body p-0">
                         <table class="table table-sm mb-0">
                             <thead>
                             <tr>
-                                <th class="border-top-0 pl-4 pt-2 pb-2">{{ 'admin.store.unregisterd_plugin_table.941'|trans }}</th>
-                                <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.unregisterd_plugin_table.942'|trans }}</th>
-                                <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.unregisterd_plugin_table.943'|trans }}</th>
-                                <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.unregisterd_plugin_table.944'|trans }}</th>
-                                <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.unregisterd_plugin_table.945'|trans }}</th>
-                                <th class="border-top-0 pt-2 pb-2">&nbsp;</th>
+                                <th class="border-top-0 pl-4 py-2">{{ 'admin.store.unregisterd_plugin_table.941'|trans }}</th>
+                                <th class="border-top-0 py-2">{{ 'admin.store.unregisterd_plugin_table.942'|trans }}</th>
+                                <th class="border-top-0 py-2">{{ 'admin.store.unregisterd_plugin_table.943'|trans }}</th>
+                                <th class="border-top-0 py-2">{{ 'admin.store.unregisterd_plugin_table.944'|trans }}</th>
+                                <th class="border-top-0 py-2">{{ 'admin.store.unregisterd_plugin_table.945'|trans }}</th>
+                                <th class="border-top-0 py-2">&nbsp;</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -266,13 +267,11 @@ file that was distributed with this source code.
                                 <td class="align-middle">プラ</td>
                                 <td class="align-middle pt-3 pb-3">
                                     <div class="mb-2">
-                                        <input type="file" id="form4_plugin_archive" name="form4[plugin_archive]"
+                                        <input type="file" name="file"
                                                accept="application/zip,application/x-tar,application/x-gzip"
                                                class="form-control-file">
                                     </div>
-                                    <button href="#"
-                                            class="btn btn-primary">ーズストア
-                                    </button>
+                                    <button class="btn btn-primary">ーズストア</button>
                                 </td>
                                 <td class="align-middle">
                                     <div class="col-auto text-right">
@@ -302,13 +301,11 @@ file that was distributed with this source code.
                                 <td class="align-middle">プラ</td>
                                 <td class="align-middle pt-3 pb-3">
                                     <div class="mb-2">
-                                        <input type="file" id="form4_plugin_archive" name="form4[plugin_archive]"
+                                        <input type="file" name="file"
                                                accept="application/zip,application/x-tar,application/x-gzip"
                                                class="form-control-file">
                                     </div>
-                                    <button href="#"
-                                            class="btn btn-primary">ーズストア
-                                    </button>
+                                    <button class="btn btn-primary">ーズストア</button>
                                 </td>
                                 <td class="align-middle">
                                     <div class="col-auto text-right">
@@ -334,13 +331,11 @@ file that was distributed with this source code.
                                 <td class="align-middle">プラ</td>
                                 <td class="align-middle pt-3 pb-3">
                                     <div class="mb-2">
-                                        <input type="file" id="form4_plugin_archive" name="form4[plugin_archive]"
+                                        <input type="file" name="file"
                                                accept="application/zip,application/x-tar,application/x-gzip"
                                                class="form-control-file">
                                     </div>
-                                    <button href="#"
-                                            class="btn btn-primary">ーズストア
-                                    </button>
+                                    <button class="btn btn-primary">ーズストア</button>
                                 </td>
                                 <td class="align-middle">
                                     <div class="col-auto text-right">

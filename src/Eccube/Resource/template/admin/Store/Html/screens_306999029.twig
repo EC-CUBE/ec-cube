@@ -1,0 +1,90 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+
+{% extends '@admin/default_frame.twig' %}
+
+{% set menus = ['store', 'plugin', 'plugin_owners_search'] %}
+
+{% block title %}{{ 'admin.store.plugin_search.885'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.store.plugin_search.884'|trans }}{% endblock %}
+
+{% block stylesheet %}
+    <style type="text/css">
+        .border-bt {
+            border-bottom: 1px solid rgba(0, 0, 0, .125);
+        }
+
+        #plugin-list .info {
+            min-height: 65%;
+        }
+
+        #plugin-list .prices,
+        #plugin-list .prices dl dd {
+            font-size: 1.25rem;
+        }
+
+        #plugin-list .prices,
+        #plugin-list .prices dl dd span {
+            color: #201411;
+        }
+
+        .plugin-ver li span {
+            display: inline-block;
+        }
+
+        h6.news {
+            color: #FD9271;
+        }
+
+    </style>
+{% endblock %}
+{% block main %}
+    <div class="c-contentsArea__cols">
+        <div class="c-contentsArea__primaryCol">
+            <div class="c-primaryCol">
+                <div id="plugin-list" class="card rounded border-0 mb-4">
+                    <div class="card-header">
+                        <h5>オーナーズストア (1 / 35ナーズス)</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="row m-0 p-3 border-bt">
+                            <div class="col-sm-2 pr-2 pr-sm-3">
+                                <a href="#" data-toggle="modal" data-target="#searchPluginModal">
+                                    <img class="w-100 img-responsive"
+                                         src="/html/template/admin/assets/img/plugin_temp/{{ random(7) }}.png"></a>
+                            </div>
+                            <div class="col-sm-10 col-md-9">
+                                <div class="info">
+                                    <h5>
+                                        <a href="#" class="font-weight-bold">最高級プラチナフォークは、贈り物としても人気です。</a>(最高級プラチナフォークは:1.0.2)
+                                    </h5>
+                                    <h6>
+                                        セットで揃えたいディナー用のカトラリー。定番の銀製は、シルバー特有の美しい輝きと柔らかな曲線が特徴です。適度な重みと日本人の手に合いやすいサイズ感で長く愛用いただけます。</h6>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row text-right my-4 mx-0">
+                            <div class="col-12">
+                                <button type="button" class="btn btn-ec-sub btn-lg" data-dismiss="modal">Close</button>
+                                <a href="#"
+                                   class="btn btn btn-primary btn-lg"
+                                   style="background: #C04949; border-color: #C04949">OK</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

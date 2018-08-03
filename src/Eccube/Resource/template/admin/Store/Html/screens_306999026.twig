@@ -33,6 +33,13 @@ file that was distributed with this source code.
             color: #201411;
         }
 
+        .plugin-ver li span{
+            display: inline-block;
+        }
+        h6.news{
+            color: #FD9271;
+        }
+
     </style>
 {% endblock %}
 {% block main %}
@@ -190,7 +197,7 @@ file that was distributed with this source code.
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
+                    <div class="row mb-5">
                         <div class="col-6">
                             <img class="w-100 img-responsive"
                                  src="/html/template/admin/assets/img/plugin_temp/{{  random(7) }}.png">
@@ -201,10 +208,58 @@ file that was distributed with this source code.
                             <p class="prices text-danger"><span class="font-weight-bold text-dark">定番: </span> 25.000 <small>(最高)</small></p>
                         </div>
                     </div>
+                    <div class="row mb-4">
+                        <div class="col-7">
+                            <ul class="plugin-ver">
+                                <li class="pb-2"><span class="font-weight-bold col-7 col-sm-6 pl-0">カトラリー。</span>256</li>
+                                <li class="pb-2"><span class="font-weight-bold col-7 col-sm-6 pl-0">カトラリーリの銀製はセ</span>2.1.5</li>
+                                <li class="pb-2"><span class="font-weight-bold col-7 col-sm-6 pl-0">カトラリ。</span>3.0は/3.1は</li>
+                                <li class="pb-2"><span class="font-weight-bold col-7 col-sm-6 pl-0">カトラリー</span>2013.05.24</li>
+                                <li class="pb-2"><span class="font-weight-bold col-7 col-sm-6 pl-0">たいディナ</span>2018.07.12</li>
+                                <li class="pb-2"><span class="font-weight-bold col-7 col-sm-6 pl-0">カトラリ</span>125KB</li>
+                                <li class="pb-2"><span class="font-weight-bold col-7 col-sm-6 pl-0">カトラ</span>LGBL</li>
+                                <li class="pb-2"><span class="font-weight-bold col-7 col-sm-6 pl-0">カトラリー</span> <a href="ec-cube.net">EC-CUBE team</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-5 text-right">
+                            <button type="button" class="btn btn-ec-regular btn-lg mb-3"><i class="fa fa-image fa-lg text-secondary"></i> カトラリー。定番の銀</button>
+                            <button type="button" class="btn btn-ec-regular btn-lg"><i class="fa fa-image fa-lg text-secondary"></i> カトラリー。定番の銀</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="alert alert-danger border border-danger">
+                                <p class="text-danger">ECCUBE 3.nトで揃えたいディナー用のカトラリー。定番の銀製は(3.0)セットで揃えたいディナー用のカトラリー。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="alert alert-warning border border-warning">
+                                <h6 class="news font-weight-bold">[2018ー用のカトラリ]ECCUBE 3.nトで揃えたいディナー用のカトラリー。</h6>
+                                <a href="#" class="text-dark font-weight-bold">=>ー用のカトラリー。定番の銀製は(3.0)セットで</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <div class="alert alert-secondary">
+                                <h6 class="font-weight-bold">[2018ー用のカトラリ]ECCUBE 3.nトで揃えたいディナー用のカトラリー。</h6>
+                                <ul>
+                                    <li><a href="#" class="text-dark font-weight-bold">.ー用のカトラリー。定番の銀製は(3.0)セットで</a></li>
+                                    <li><a href="#" class="text-dark font-weight-bold">.ー用のカトラリー。定番の銀製は(3.0)セットで</a></li>
+                                    <li><a href="#" class="text-dark font-weight-bold">.ー用のカトラリー。定番の銀製は(3.0)セットで</a></li>
+                                    <li><a href="#" class="text-dark font-weight-bold">.ー用のカトラリー。定番の銀製は(3.0)セットで</a></li>
+                                </ul>
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-ec-sub btn-lg" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn btn-primary btn-lg">OK</button>
+                    <a href="{{ url('admin_store_plugin_306999032') }}" class="btn btn btn-primary btn-lg">OK</a>
                 </div>
             </div>
         </div>
