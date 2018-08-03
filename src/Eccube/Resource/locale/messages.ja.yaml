@@ -23,6 +23,8 @@ admin.common.move_complete: 並び順を更新しました
 admin.common.move_error: 並び順の更新に失敗しました
 admin.common.upload_complete: アップロードしました
 admin.common.upload_error: アップロードに失敗しました
+admin.common.csv_upload_complete: CSVファイルをアップロードしました
+admin.common.csv_upload_error: CSVファイルのアップロードに失敗しました
 admin.common.send_complete: メールを送信しました
 admin.common.send_error: メールの送信に失敗しました
 
@@ -35,9 +37,13 @@ admin.common.cancel: キャンセル
 admin.common.search: 検索
 admin.common.search_clear: 検索条件をクリア
 admin.common.send: 送信
+admin.common.confirm: 確認
+admin.common.bulk_registeration: 一括登録を実行
+admin.common.decision: 決定
 
 # 汎用ラベル, メッセージ
 admin.common.required: 必須
+admin.common.bulk_actions: 一括操作
 admin.common.select_message: 選択してください
 admin.common.select_message_line_long: ----
 admin.common.select_message_line_short: --
@@ -50,6 +56,15 @@ admin.common.search_no_result: 検索条件に合致するデータが見つか�
 admin.common.search_try_change_condition: 検索条件を変えて、再度検索をお試しください
 admin.common.search_try_advanced_search: '[詳細検索]も試してみましょう'
 admin.common.csv_download: CSVダウンロード
+admin.common.csv_upload: CSVファイルをアップロード
+admin.common.csv_skeleton_download: 雛形ファイルダウンロード
+admin.common.csv_format: CSVファイルフォーマット
+admin.common.csv_select: CSVファイルを選択
+admin.common.csv_invalid_format: CSVのフォーマットが一致しません
+admin.common.csv_invalid_no_data: CSVデータが存在しません
+admin.common.csv_invalid_required: '%line%行目の%name%が設定されていません'
+admin.common.csv_invalid_format_line: '%line%行目のCSVフォーマットが一致しません'
+admin.common.csv_invalid_date_format: '%line%行目%name%の日付フォーマットが異なります'
 
 # エンティティに関連するラベル
 admin.common.id: ID
@@ -115,10 +130,53 @@ admin.customer.resend_confirm_message: 仮登録メールを再送してもよ�
 # 受注
 #----------------------------------------------------------------------------------------
 
-admin.order.order: 注文
-admin.order.order_date: 注文日時
+# 機能名称
+admin.order.order_management: 受注管理
+admin.order.order_list: 受注一覧
+admin.order.order_registration: 受注登録
+admin.order.shipping_registration: 出荷登録
+admin.order.shipping_csv_upload: 出荷CSV登録
+admin.order.mail: メール送信
+
+# flashメッセージ
+admin.order.shipping_save_message: 出荷に関わる情報が変更されました。送料の変更が必要な場合は、受注管理より手動で変更してください。
+
+# ラベル, メッセージ
+admin.order.search_multi: 注文番号・お名前・会社名・メールアドレス・電話番号
+admin.order.order_info: 注文情報
+admin.order.order_date: 注文日
+admin.order.paymane_date: 入金日
 admin.order.order_no: 注文番号
-admin.order.total_price: 購入金額   # TODO キー名検討
+admin.order.shipping_date: 出荷日
+admin.order.message: お問い合わせ
+admin.order.message_short: お問合せ
+
+admin.order.device_type: 端末種別 # TODO admin.common ?
+admin.order.payment_method: 支払方法 # TODO admin.payment？
+admin.order.purchase_price: 購入金額
+admin.order.orderer: 注文者
+admin.order.shipping_info: お届先情報
+admin.order.copy_orderer: 注文者情報をコピー
+admin.order.output_delivery_note: 納品書を出力
+admin.order.output_delivery_note_short: 納品書出力
+admin.order.add_shipping: お届け先の追加
+admin.order.order_item_info: 注文商品情報
+admin.order.add_product_item: 商品を追加
+admin.order.add_other_item: その他の明細を追加
+admin.order.update_calculation_results: 計算結果を更新
+admin.order.product_name_and_code: 商品名・商品コード # TODO 具体的すぎるキー
+admin.order.amount: 金額
+admin.order.quantity: 数量
+admin.order.tax_rate: 税率  # TODO admin.tax
+admin.order.tax_type: 課税区分  # TODO admin.tax
+admin.order.subtotal: 小計
+admin.order.discount: 値引き
+admin.order.charge: 手数料
+admin.order.delivery_fee: 送料
+admin.order.add_point: 加算ポイント
+admin.order.use_point: 利用ポイント
+admin.order.total: 合計
+admin.order.payment_total: お支払い合計
 admin.order.order_status: 対応状況
 admin.order.last_buy_date: 最終購入日
 admin.order.last_buy_date_start: 最終購入日(開始)
@@ -127,6 +185,36 @@ admin.order.purchase_product: 購入商品名
 admin.order.purchase_count: 購入商品名
 admin.order.purchase_count_start: 購入商品名(開始)
 admin.order.purchase_count_end: 購入商品名(終了)
+admin.order.tracking_number: 送り状番号
+admin.order.mail_history: メール送信履歴
+admin.order.mail_send_date: メール送信日時
+admin.order.mail_subject: 件名
+admin.order.mail_body: 本文
+admin.order.mail_create: メールを作成
+admin.order.mail_destination_info: メール送信先
+admin.order.mail_mail_info: メール内容
+admin.order.mail_confirm: 送信内容を確認
+admin.order.mail_template: テンプレート
+admin.order.mail_confirm_title: 下の内容でメールを送信してもよろしいですか？ 確認の上、［送信］ボタンを押してください。
+admin.order.shipping_info: 出荷情報
+admin.order.delivery_date: お届け希望日
+admin.order.delivery_time: 指定時間帯
+admin.order.delivery_company: 配送業者
+admin.order.to_shipped: 出荷済にする
+admin.order.send_mail: メールする
+admin.order.shop_memo_for_shipped: 出荷用メモ
+admin.order.add_shipping: 出荷情報を追加
+admin.order.shipping_id: 出荷ID
+admin.order.shipping_mail_send_status: 出荷メール
+admin.order.csv_shipping_date_description: 出荷日を「YYYY-MM-DD」の形式で設定
+admin.order.order_csv: 受注CSV
+admin.order.shipping_csv: 出荷CSV
+admin.order.shipping_status: 出荷状況
+admin.order.delivery: お届け先
+admin.order.not_payment: 未入金
+admin.order.unshipped: 未出荷
+admin.order.delete_confirm_title: 注文情報を削除します
+admin.order.delete_confirm_message: 注文情報を削除してもよろしいですか？
 
 #----------------------------------------------------------------------------------------
 # 設定

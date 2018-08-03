@@ -333,7 +333,7 @@ class OrderController extends AbstractController
 
         $this->entityManager->flush();
 
-        $this->addSuccess('admin.order.delete.complete', 'admin');
+        $this->addSuccess('admin.common.delete_complete', 'admin');
 
         return $this->redirect($this->generateUrl('admin_order', ['resume' => Constant::ENABLED]));
     }

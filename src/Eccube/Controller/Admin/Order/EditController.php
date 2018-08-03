@@ -299,7 +299,7 @@ class EditController extends AbstractController
                         );
                         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_INDEX_COMPLETE, $event);
 
-                        $this->addSuccess('admin.order.save.complete', 'admin');
+                        $this->addSuccess('admin.common.save_complete', 'admin');
 
                         log_info('受注登録完了', [$TargetOrder->getId()]);
 
