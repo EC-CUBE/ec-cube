@@ -13,7 +13,7 @@ file that was distributed with this source code.
     {% if Block.use_controller %}
         {{ render(path('block_' ~ Block.file_name)) }}
     {% else %}
-        {{ include('Block/' ~ Block.file_name~ '.twig', ignore_missing = true) }}
+        {{ include_dispatch('Block/' ~ Block.file_name ~ '.twig') }}
     {% endif %}
     <!-- ▲{{ Block.name }} -->
 {% endfor %}
