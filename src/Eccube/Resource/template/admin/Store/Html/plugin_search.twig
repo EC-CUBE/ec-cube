@@ -22,8 +22,17 @@ file that was distributed with this source code.
             border-bottom: 1px solid rgba(0, 0, 0, .125);
         }
         #plugin-list .info{
-            min-height: 60%;
+            min-height: 65%;
         }
+        #plugin-list .prices,
+        #plugin-list .prices dl dd{
+            font-size: 1.25rem;
+        }
+        #plugin-list .prices,
+        #plugin-list .prices dl dd span{
+            color: #201411;
+        }
+
     </style>
 {% endblock %}
 {% block main %}
@@ -33,16 +42,16 @@ file that was distributed with this source code.
                 <div class="card rounded border-0 mb-4">
                     <div class="card-body p-0">
                         <div class="row">
-                            <div class="col-12 p-3">
-                                <a href="#" class="pl-4">詳細</a>
-                                <a href="#" class="pl-4">選択してください</a>
-                                <a href="#" class="pl-4">インテリア</a>
-                                <a href="#" class="pl-4">フォーク</a>
-                                <a href="#" class="pl-4">新入荷</a>
-                                <a href="#" class="pl-4">詳細検索</a>
-                                <a href="#" class="pl-4">インテリアインテリア</a>
-                                <a href="#" class="pl-4">フォーク</a>
-                                <a href="#" class="pl-4">新入荷</a>
+                            <div class="col-12 p-4">
+                                <a href="#" class="pl-3 pr-3 text-dark">詳細</a>
+                                <a href="#" class="pl-3 pr-3 text-dark">選択してください</a>
+                                <a href="#" class="pl-3 pr-3 text-dark">インテリア</a>
+                                <a href="#" class="pl-3 pr-3 text-dark">フォーク</a>
+                                <a href="#" class="pl-3 pr-3 text-dark">新入荷</a>
+                                <a href="#" class="pl-3 pr-3 text-dark">詳細検索</a>
+                                <a href="#" class="pl-3 pr-3 text-dark">インテリアインテリア</a>
+                                <a href="#" class="pl-3 pr-3 text-dark">フォーク</a>
+                                <a href="#" class="pl-3 pr-3 text-dark">新入荷</a>
                             </div>
                         </div>
                     </div>
@@ -113,31 +122,32 @@ file that was distributed with this source code.
                 </div>
                 <div id="plugin-list" class="card rounded border-0 mt-4 mb-4">
                     <div class="card-header">
-                        <a href="#" class="pull-right d-inline-block mr-3"> > オーナーズストア</a>
-                        <h4 class="ml-2">オーナーズストア</h4>
+                        <h4>オーナーズストア (1 / 35ナーズス)</h4>
                     </div>
                     <div class="card-body p-0">
                         {% for i in 1..10 %}
                             <div class="row m-0 p-3 border-bt">
-                                <div class="col-sm-2 p-0">
-                                    <a href="#">
+                                <div class="col-sm-2 pr-2 pr-sm-3">
+                                    <a href="#" data-toggle="modal" data-target="#searchPluginModal">
                                         <img class="w-100 img-responsive"
                                              src="/html/template/admin/assets/img/plugin_temp/{{  random(7) }}.png"></a>
                                 </div>
                                 <div class="col-sm-6 col-md-7">
                                     <div class="info">
-                                        <a href="#">最高級プラチナフォークは、贈り物としても人気です。</a>(最高級プラチナフォークは:1.0.2)
-                                        <p>
-                                            セットで揃えたいディナー用のカトラリー。定番の銀製は、シルバー特有の美しい輝きと柔らかな曲線が特徴です。適度な重みと日本人の手に合いやすいサイズ感で長く愛用いただけます。</p>
+                                        <h5>
+                                            <a href="#" class="font-weight-bold">最高級プラチナフォークは、贈り物としても人気です。</a>(最高級プラチナフォークは:1.0.2)
+                                        </h5>
+                                        <h6>
+                                            セットで揃えたいディナー用のカトラリー。定番の銀製は、シルバー特有の美しい輝きと柔らかな曲線が特徴です。適度な重みと日本人の手に合いやすいサイズ感で長く愛用いただけます。</h6>
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-7">
-                                            <p><span>定番: </span> 25.000</p>
+                                            <p class="prices text-danger"><span class="font-weight-bold text-dark">定番: </span> 25.000 <small>(最高)</small></p>
                                         </div>
                                         <div class="col-sm-5">
-                                            <dl>
-                                                <dt class="d-inline-block"><span>DL定</span> 256</dt>
-                                                <dt class="d-inline-block"><span>ォークは</span> 3.0は</dt>
+                                            <dl class="text-dark">
+                                                <dd class="d-inline-block"><span class="pr-1 font-weight-bold">DL定</span> 256</dd>
+                                                <dd class="d-inline-block ml-5"><span class="pr-1 font-weight-bold">ォークは</span> 3.0は</dd>
                                             </dl>
                                         </div>
                                     </div>
@@ -169,16 +179,33 @@ file that was distributed with this source code.
         </div>
     </div>
 
-    <div class="modal fade" id="searchPluginModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg">
-            <div id="search_plugin_modal_box" class="modal-content">
-                <div id="search_plugin_modal_box__header" class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                class="modal-close" aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">&nbsp;</h4>
+    <!-- Modal -->
+    <div class="modal fade" id="searchPluginModal" tabindex="-1" role="dialog" aria-labelledby="searchPluginModal" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">ーズストア</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                <div id="search_plugin_modal_box__body" class="modal-body" style="background: #fff"></div>
-                <div id="search_plugin_modal_box__buttons" class="modal-footer" style="background: #fff"></div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <img class="w-100 img-responsive"
+                                 src="/html/template/admin/assets/img/plugin_temp/{{  random(7) }}.png">
+                        </div>
+                        <div class="col-6">
+                            <h5 class="font-weight-bold">セットで揃えたいディナー用のカトラリー。定番の銀製は(3.0)</h5>
+                            <p>セットで揃えたいディナー用のカトラリー。定番の銀ットで揃えたいディナー用のカトラリの銀製はセットで揃えたいディナー用のカトラリ定番の銀製はセットで揃えたいディナー用トラリー。定番の銀製は</p>
+                            <p class="prices text-danger"><span class="font-weight-bold text-dark">定番: </span> 25.000 <small>(最高)</small></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-ec-sub btn-lg" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn btn-primary btn-lg">OK</button>
+                </div>
             </div>
         </div>
     </div>
