@@ -13,6 +13,7 @@ admin.common.save_complete: 保存しました
 admin.common.save_error: 保存に失敗しました
 admin.common.delete_complete: 削除しました
 admin.common.delete_error: 削除に失敗しました
+admin.common.delete_error_foreign_key: 関連するデータがあるため「%name%」を削除できませんでした
 admin.common.move_complete: 並び順を更新しました
 admin.common.move_error: 並び順の更新に失敗しました
 admin.common.upload_complete: アップロードしました
@@ -24,6 +25,7 @@ admin.common.registeration: 登録
 admin.common.edit: 編集
 
 # label
+admin.common.id: ID
 admin.common.required: 必須
 admin.common.name: お名前
 admin.common.kana: お名前(カナ)
@@ -66,10 +68,14 @@ admin.customer.no_customer_address: お届け先住所がありません
 admin.customer.add_customer_address: お届け先住所を追加
 admin.customer.customer_address_count_is_over: お届け先登録の上限の%eccube_deliv_addr_max%件に達しています。お届け先を入力したい場合は、削除か変更を行ってください。
 
+admin.customer.customer_address_id: お届け先ID
+admin.customer.customer_address_info: お届け先情報
+
 #--------------------------------------------
 # 受注
 #--------------------------------------------
 
+admin.order.order: 注文
 admin.order.order_date: 注文日時
 admin.order.order_no: 注文番号
 admin.order.total_price: 購入金額   # TODO キー名検討

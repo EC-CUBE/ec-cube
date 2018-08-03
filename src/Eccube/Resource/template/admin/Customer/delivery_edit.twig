@@ -13,8 +13,8 @@ file that was distributed with this source code.
 
 {% set menus = ['customer', 'customer_edit'] %}
 
-{% block title %}{{ 'admin.customer.delivery_edit.111'|trans }}{% endblock %}
-{% block sub_title %}{{ 'admin.customer.delivery_edit.110'|trans }}{% endblock %}
+{% block title %}{{ 'admin.customer.customer_address_registration'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.customer.customer_management'|trans }}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
@@ -37,13 +37,13 @@ file that was distributed with this source code.
                 <div class="c-primaryCol">
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header">
-                            <h4 class="box-title font-weight-bold">{{ 'admin.customer.delivery_edit.112'|trans }}</h4>
+                            <h4 class="box-title font-weight-bold">{{ 'admin.customer.customer_address_info'|trans }}</h4>
                         </div>
                         <div class="card-body">
                             {% if CustomerAddress.id %}
                                 <div class="row mb-2">
                                     <div class="col-3">
-                                        {{ 'admin.customer.delivery_edit.113'|trans }}
+                                        {{ 'admin.common.id'|trans }}
                                     </div>
                                     <div class="col">
                                         {{ CustomerAddress.id }}
@@ -53,7 +53,7 @@ file that was distributed with this source code.
 
                             <div class="row mb-2">
                                 <div class="col-3">
-                                    {{ 'admin.customer.delivery.label.001'|trans }}
+                                    {{ 'admin.common.name'|trans }}
                                 </div>
                                 <div class="col">
                                     <div class="row mb-2">
@@ -71,7 +71,7 @@ file that was distributed with this source code.
 
                             <div class="row mb-2">
                                 <div class="col-3">
-                                    {{ 'admin.customer.delivery.label.002'|trans }}
+                                    {{ 'admin.common.kana'|trans }}
                                 </div>
                                 <div class="col">
                                     <div class="row mb-2">
@@ -89,7 +89,7 @@ file that was distributed with this source code.
 
                             <div class="row mb-2">
                                 <div class="col-3 mb-2">
-                                    {{ 'admin.customer.delivery.label.003'|trans }}
+                                    {{ 'admin.common.company_name'|trans }}
                                 </div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.company_name) }}
@@ -99,11 +99,11 @@ file that was distributed with this source code.
 
                             <div class="row mb-2">
                                 <div class="col-3">
-                                    {{ 'admin.customer.delivery.label.004'|trans }}
+                                    {{ 'admin.common.address'|trans }}
                                 </div>
                                 <div class="col">
                                     <div class="row mb-2">
-                                        <div class="col-auto pr-0 align-self-center"><span>{{ 'admin.customer.edit.post'|trans }}</span></div>
+                                        <div class="col-auto pr-0 align-self-center"><span>{{ 'admin.common.postal_symbol'|trans }}</span></div>
                                         <div class="col-2">
                                             {{ form_widget(form.postal_code) }}
                                             {{ form_errors(form.postal_code) }}
@@ -127,7 +127,7 @@ file that was distributed with this source code.
                                     &nbsp;
                                 </div>
                                 <div class="col mb-2">
-                                    {{ form_widget(form.address.addr01, { attr : { placeholder : 'admin.customer.delivery_edit.114'}} ) }}
+                                    {{ form_widget(form.address.addr01) }}
                                     {{ form_errors(form.address.addr01) }}
                                 </div>
                             </div>
@@ -137,14 +137,14 @@ file that was distributed with this source code.
                                     &nbsp;
                                 </div>
                                 <div class="col mb-2">
-                                    {{ form_widget(form.address.addr02, { attr : { placeholder : 'admin.customer.delivery_edit.115'}}) }}
+                                    {{ form_widget(form.address.addr02) }}
                                     {{ form_errors(form.address.addr02) }}
                                 </div>
                             </div>
 
                             <div class="row mb-2">
                                 <div class="col-3">
-                                    {{ 'admin.customer.delivery.label.005'|trans }}
+                                    {{ 'admin.common.phone_number'|trans }}
                                 </div>
                                 <div class="col">
                                     {{ form_widget(form.phone_number) }}
@@ -176,14 +176,14 @@ file that was distributed with this source code.
                         <div class="c-conversionArea__leftBlockItem">
                             <a class="c-beseLink" href="{{ url('admin_customer_edit', { id: Customer.id }) }}">
                                 <i class="fa fa-backward" aria-hidden="true"></i>
-                                <span>{{ 'admin.customer.delivery_edit.117'|trans }}</span></a>
+                                <span>{{ 'admin.customer.customer_registration'|trans }}</span></a>
                         </div>
                     </div>
                     <div id="ex-conversion-action" class="col-6">
                         <div class="row align-items-center justify-content-end">
                             <div class="col-auto">
                                 <button class="btn btn-ec-conversion px-5"
-                                        type="submit">{{ 'admin.customer.delivery_edit.116'|trans }}</button>
+                                        type="submit">{{ 'admin.common.registeration'|trans }}</button>
                             </div>
                         </div>
                     </div>
