@@ -200,6 +200,7 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
         $BaseInfo->setDeliveryFreeAmount($deliveryFeeAmount);
         $BaseInfo->setDeliveryFreeQuantity($deliveryFeeQuantity);
         $this->entityManager->flush();
+
         return $BaseInfo;
     }
 

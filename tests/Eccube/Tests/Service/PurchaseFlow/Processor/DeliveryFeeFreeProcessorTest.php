@@ -40,7 +40,6 @@ class DeliveryFeeFreeProcessorTest extends EccubeTestCase
     /** @var BaseInfoRepository */
     protected $baseInfoRepository;
 
-
     /**
      * {@inheritdoc}
      */
