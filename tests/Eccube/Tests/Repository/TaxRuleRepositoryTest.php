@@ -88,7 +88,7 @@ class TaxRuleRepositoryTest extends EccubeTestCase
 
         parent::setUp();
 
-        $this->BaseInfo = $this->container->get(BaseInfo::class);
+        $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
         $this->taxRuleRepository = $this->container->get(TaxRuleRepository::class);
         $this->memberRepository = $this->container->get(MemberRepository::class);
         $this->prefRepository = $this->container->get(PrefRepository::class);

@@ -93,7 +93,7 @@ class OrderItemType extends AbstractType
     public function __construct(
         EntityManagerInterface $entityManager,
         EccubeConfig $eccubeConfig,
-        BaseInfo $BaseInfo,
+        BaseInfoRepository $baseInfoRepository,
         ProductClassRepository $productClassRepository,
         OrderItemRepository $orderItemRepository,
         OrderItemTypeRepository $orderItemTypeRepository,
@@ -102,7 +102,7 @@ class OrderItemType extends AbstractType
     ) {
         $this->entityManager = $entityManager;
         $this->eccubeConfig = $eccubeConfig;
-        $this->BaseInfo = $BaseInfo;
+        $this->BaseInfo = $baseInfoRepository->get();
         $this->productClassRepository = $productClassRepository;
         $this->orderItemRepository = $orderItemRepository;
         $this->orderItemTypeRepository = $orderItemTypeRepository;

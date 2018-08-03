@@ -18,6 +18,7 @@ use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Entity\TaxRule;
+use Eccube\Repository\BaseInfoRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -53,20 +54,20 @@ class TaxRuleRepository extends AbstractRepository
      * @param RegistryInterface $registry
      * @param TokenStorageInterface $tokenStorage
      * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param BaseInfo $baseInfo
+     * @param BaseInfoRepository $baseInfoRepository
      * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
         RegistryInterface $registry,
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,
-        BaseInfo $baseInfo,
+        BaseInfoRepository $baseInfoRepository,
         EccubeConfig $eccubeConfig
     ) {
         parent::__construct($registry, TaxRule::class);
         $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;
-        $this->baseInfo = $baseInfo;
+        $this->baseInfo = $baseInfoRepository->get();
         $this->eccubeConfig = $eccubeConfig;
     }
 
