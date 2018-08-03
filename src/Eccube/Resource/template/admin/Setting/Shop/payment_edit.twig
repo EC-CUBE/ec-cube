@@ -94,6 +94,21 @@ file that was distributed with this source code.
                 $("#thumb").find("li").remove();
                 $("#{{ form.payment_image.vars.id }}").val('');
             },
+            drop: function (e, data) {
+                $.each(data.files, function (index, file) {
+                    if (index >= 1) {
+                        // 複数同時にファイルを放りこまれたら、先頭以外はドロップさせない
+                        return false;
+                    }
+                    if ($(".c-form__fileUploadThumbnail").length >= 1) {
+                        // 既にアップロードされているファイルがある場合(↑の制御が完全に効くのであれば、$.eachでなくともよいが念のため)
+                        $.each($(".delete-image"), function (index, delete_image) {
+                            // アップロードファイルを削除する
+                            delete_image.click();
+                        });
+                    }
+                });
+             },
             acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
             maxFileSize: 10000000,
             maxNumberOfFiles: 1,
