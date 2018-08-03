@@ -16,6 +16,7 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Order;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Service\PurchaseFlow\ItemHolderPreprocessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 
@@ -33,11 +34,11 @@ class DeliveryFeeFreeByShippingPreprocessor implements ItemHolderPreprocessor
     /**
      * DeliveryFeeProcessor constructor.
      *
-     * @param BaseInfo $BaseInfo
+     * @param BaseInfoRepository $baseInfoRepository
      */
-    public function __construct(BaseInfo $BaseInfo)
+    public function __construct(BaseInfoRepository $baseInfoRepository)
     {
-        $this->BaseInfo = $BaseInfo;
+        $this->BaseInfo = $baseInfoRepository->get();
     }
 
     /**

@@ -53,20 +53,20 @@ class TaxRuleRepository extends AbstractRepository
      * @param RegistryInterface $registry
      * @param TokenStorageInterface $tokenStorage
      * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param BaseInfo $baseInfo
+     * @param BaseInfoRepository $baseInfoRepository
      * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
         RegistryInterface $registry,
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,
-        BaseInfo $baseInfo,
+        BaseInfoRepository $baseInfoRepository,
         EccubeConfig $eccubeConfig
     ) {
         parent::__construct($registry, TaxRule::class);
         $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;
-        $this->baseInfo = $baseInfo;
+        $this->baseInfo = $baseInfoRepository->get();
         $this->eccubeConfig = $eccubeConfig;
     }
 
