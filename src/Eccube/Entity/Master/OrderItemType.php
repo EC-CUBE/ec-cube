@@ -63,6 +63,13 @@ class OrderItemType extends \Eccube\Entity\Master\AbstractMasterEntity
     const TAX = 5;
 
     /**
+     * ポイント.
+     *
+     * @var integer
+     */
+    const POINT = 6;
+
+    /**
      * 商品かどうか
      *
      * @return bool

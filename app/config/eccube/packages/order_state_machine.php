@@ -11,8 +11,8 @@
  * file that was distributed with this source code.
  */
 
-use Eccube\Entity\Order;
 use Eccube\Entity\Master\OrderStatus as Status;
+use Eccube\Service\OrderStateMachineContext;
 
 $container->loadFromExtension('framework', [
     'workflows' => [
@@ -20,10 +20,10 @@ $container->loadFromExtension('framework', [
             'type' => 'state_machine',
             'marking_store' => [
                 'type' => 'single_state',
-                'arguments' => 'OrderStatus.id',
+                'arguments' => 'status',
             ],
             'supports' => [
-                Order::class,
+                OrderStateMachineContext::class,
             ],
             'initial_place' => (string) Status::NEW,
             'places' => [

@@ -15,7 +15,6 @@ namespace Eccube\Twig\Extension;
 
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Product;
-use Eccube\Service\TaxRuleService;
 use Eccube\Util\StringUtil;
 use Symfony\Component\Form\FormView;
 use Twig\Extension\AbstractExtension;
@@ -29,28 +28,20 @@ class EccubeExtension extends AbstractExtension
      */
     protected $eccubeConfig;
 
-    /**
-     * @var TaxRuleService
-     */
-    protected $TaxRuleService;
-
-    public function __construct(TaxRuleService $TaxRuleService, EccubeConfig $eccubeConfig)
+    public function __construct(EccubeConfig $eccubeConfig)
     {
-        $this->TaxRuleService = $TaxRuleService;
         $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
      * Returns a list of functions to add to the existing list.
      *
-     * @return array An array of functions
+     * @return TwigFunction[] An array of functions
      */
     public function getFunctions()
     {
         return [
             new TwigFunction('has_errors', [$this, 'hasErrors']),
-            new TwigFunction('is_object', [$this, 'isObject']),
-            new TwigFunction('calc_inc_tax', [$this, 'getCalcIncTax']),
             new TwigFunction('active_menus', [$this, 'getActiveMenus']),
             new TwigFunction('class_categories_as_json', [$this, 'getClassCategoriesAsJson']),
             new TwigFunction('php_*', function () {
@@ -61,14 +52,13 @@ class EccubeExtension extends AbstractExtension
                 }
                 trigger_error('Called to an undefined function : php_'.$function, E_USER_WARNING);
             }, ['pre_escape' => 'html', 'is_safe' => ['html']]),
-            new TwigFunction('is_authorized_url', [$this, 'isAuthorizedUrl']),
         ];
     }
 
     /**
      * Returns a list of filters.
      *
-     * @return array
+     * @return TwigFilter[]
      */
     public function getFilters()
     {
@@ -90,16 +80,6 @@ class EccubeExtension extends AbstractExtension
     public function getName()
     {
         return 'eccube';
-    }
-
-    /**
-     * Name of this extension
-     *
-     * @return string
-     */
-    public function getCalcIncTax($price, $tax_rate, $tax_rule)
-    {
-        return $price + $this->TaxRuleService->calcTax($price, $tax_rate, $tax_rule);
     }
 
     /**
@@ -175,18 +155,6 @@ class EccubeExtension extends AbstractExtension
     public function getTimeAgo($date)
     {
         return StringUtil::timeAgo($date);
-    }
-
-    /**
-     * Check if the value is object
-     *
-     * @param object $value
-     *
-     * @return bool
-     */
-    public function isObject($value)
-    {
-        return is_object($value);
     }
 
     /**

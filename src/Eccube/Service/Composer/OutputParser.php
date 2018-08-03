@@ -121,7 +121,7 @@ class OutputParser
 
     /**
      * @param $rowArray
-     * @param $key
+     * @param string $key
      *
      * @return array
      */

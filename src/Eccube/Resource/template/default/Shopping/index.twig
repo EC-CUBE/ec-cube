@@ -333,6 +333,7 @@ file that was distributed with this source code.
                         <button type="button" class="ec-inlineBtn btn-shipping-multiple">{{'shopping.label.btn.delivery_address'|trans}}</button>
                     </div>
                 </div>
+                {{ eccube_block_sample_payment_credit_form({ Order: Order, form: form }) }}
                 <div class="ec-orderPayment">
                     <div class="ec-rectHeading">
                         <h2>{{ 'shopping.label.payment_method'|trans }}</h2>
@@ -340,7 +341,7 @@ file that was distributed with this source code.
                     <div class="ec-blockRadio">
                         {% for key, child in form.Payment %}
                             {% set Payment = form.Payment.vars.choices[key].data %}
-                            <label>{{ form_widget(child, {'attr': {'class': 'payment' }}) }}<span>{{ child.vars.label }}</span></label>
+                            <label>{{ form_widget(child, {'attr': {'class': 'payment' }}) }}</label>
                             {% if Payment.payment_image is not null %}
                                 <img src="{{ asset(Payment.payment_image, 'save_image') }}">
                             {% endif %}

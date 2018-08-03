@@ -41,6 +41,9 @@ class CacheUtil
         $this->kernel = $kernel;
     }
 
+    /**
+     * @param string $env
+     */
     public function clearCache($env = null)
     {
         $console = new Application($this->kernel);
