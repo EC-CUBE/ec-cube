@@ -18,6 +18,7 @@ use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Service\PurchaseFlow\Processor\DeliveryFeeFreeByShippingPreprocessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
@@ -29,11 +30,15 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
 
     private $DeliveryFeeType;
 
+    /** @var BaseInfoRepository */
+    private $baseInfoRepository;
+
     public function setUp()
     {
         parent::setUp();
         $this->ProductType = $this->entityManager->find(OrderItemType::class, OrderItemType::PRODUCT);
         $this->DeliveryFeeType = $this->entityManager->find(OrderItemType::class, OrderItemType::DELIVERY_FEE);
+        $this->baseInfoRepository = $this->container->get(BaseInfoRepository::class);
     }
 
     /**
@@ -41,7 +46,8 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
      */
     public function testWithoutDeliveryFreeSettings()
     {
-        $processor = new DeliveryFeeFreeByShippingPreprocessor($this->newBaseInfo(0, 0));
+        $this->newBaseInfo(0, 0);
+        $processor = new DeliveryFeeFreeByShippingPreprocessor($this->baseInfoRepository);
 
         $Order = new Order();
         $Shipping = $this->newShipping(1);
@@ -64,7 +70,8 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
      */
     public function testWithDeliveryFreeAmount($amount, $expectedFee)
     {
-        $processor = new DeliveryFeeFreeByShippingPreprocessor($this->newBaseInfo(1000, 0));
+        $this->newBaseInfo(1000, 0);
+        $processor = new DeliveryFeeFreeByShippingPreprocessor($this->baseInfoRepository);
 
         $Shipping = $this->newShipping(1);
         $Order = new Order();
@@ -99,7 +106,8 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
      */
     public function testWithDeliveryFreeQuantity($quantity, $expectedFee)
     {
-        $processor = new DeliveryFeeFreeByShippingPreprocessor($this->newBaseInfo(0, 10));
+        $this->newBaseInfo(0, 10);
+        $processor = new DeliveryFeeFreeByShippingPreprocessor($this->baseInfoRepository);
 
         $Shipping = $this->newShipping(1);
         $Order = new Order();
@@ -129,7 +137,8 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
      */
     public function testMultipleShippingWithDeliveryFreeAmount()
     {
-        $processor = new DeliveryFeeFreeByShippingPreprocessor($this->newBaseInfo(1000, 0));
+        $this->newBaseInfo(1000, 0);
+        $processor = new DeliveryFeeFreeByShippingPreprocessor($this->baseInfoRepository);
         $Shipping1 = $this->newShipping(1);
         $Shipping2 = $this->newShipping(2);
 
@@ -159,7 +168,8 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
      */
     public function testMultipleShippingWithDeliveryFreeQuantity()
     {
-        $processor = new DeliveryFeeFreeByShippingPreprocessor($this->newBaseInfo(0, 5));
+        $this->newBaseInfo(0, 5);
+        $processor = new DeliveryFeeFreeByShippingPreprocessor($this->baseInfoRepository);
         $Shipping1 = $this->newShipping(1);
         $Shipping2 = $this->newShipping(2);
 
@@ -186,9 +196,10 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
 
     private function newBaseInfo($deliveryFeeAmount, $deliveryFeeQuantity)
     {
-        $BaseInfo = new BaseInfo();
+        $BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
         $BaseInfo->setDeliveryFreeAmount($deliveryFeeAmount);
         $BaseInfo->setDeliveryFreeQuantity($deliveryFeeQuantity);
+        $this->entityManager->flush();
 
         return $BaseInfo;
     }

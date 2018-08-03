@@ -17,7 +17,10 @@ use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\ExportCsvRow;
 use Eccube\Entity\Master\CsvType;
+use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Order;
 use Eccube\Entity\OrderPdf;
+use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\OrderPdfType;
@@ -34,20 +37,17 @@ use Eccube\Service\CsvExportService;
 use Eccube\Service\MailService;
 use Eccube\Service\OrderPdfService;
 use Eccube\Service\OrderStateMachine;
+use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Util\FormUtil;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\StreamedResponse;
-use Eccube\Entity\Master\OrderStatus;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Eccube\Entity\Order;
-use Eccube\Entity\Shipping;
-use Eccube\Service\PurchaseFlow\PurchaseFlow;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -377,7 +377,7 @@ class OrderController extends AbstractController
     /**
      * @param Request $request
      * @param $csvTypeId
-     * @param $fileName
+     * @param string $fileName
      *
      * @return StreamedResponse
      */
@@ -461,9 +461,9 @@ class OrderController extends AbstractController
      * @Route("/%eccube_admin_route%/shipping/{id}/order_status", requirements={"id" = "\d+"}, name="admin_shipping_update_order_status")
      *
      * @param Request $request
-     * @param Shipping $shipping
+     * @param Shipping $Shipping
      *
-     * @return RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function updateOrderStatus(Request $request, Shipping $Shipping)
     {

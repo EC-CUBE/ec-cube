@@ -15,179 +15,181 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * ProductCategory
- *
- * @ORM\Table(name="dtb_product_category")
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
- * @ORM\HasLifecycleCallbacks()
- * @ORM\Entity(repositoryClass="Eccube\Repository\ProductCategoryRepository")
- */
-class ProductCategory extends \Eccube\Entity\AbstractEntity
-{
+if (!class_exists('\Eccube\Entity\ProductCategory')) {
     /**
-     * @var int
+     * ProductCategory
      *
-     * @ORM\Column(name="product_id", type="integer", options={"unsigned":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\Table(name="dtb_product_category")
+     * @ORM\InheritanceType("SINGLE_TABLE")
+     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     * @ORM\HasLifecycleCallbacks()
+     * @ORM\Entity(repositoryClass="Eccube\Repository\ProductCategoryRepository")
      */
-    private $product_id;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="category_id", type="integer", options={"unsigned":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
-     */
-    private $category_id;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="sort_no", type="smallint", options={"unsigned":true})
-     */
-    private $sort_no;
-
-    /**
-     * @var \Eccube\Entity\Product
-     *
-     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Product", inversedBy="ProductCategories")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="product_id", referencedColumnName="id")
-     * })
-     */
-    private $Product;
-
-    /**
-     * @var \Eccube\Entity\Category
-     *
-     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Category", inversedBy="ProductCategories")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="category_id", referencedColumnName="id")
-     * })
-     */
-    private $Category;
-
-    /**
-     * Set productId.
-     *
-     * @param int $productId
-     *
-     * @return ProductCategory
-     */
-    public function setProductId($productId)
+    class ProductCategory extends \Eccube\Entity\AbstractEntity
     {
-        $this->product_id = $productId;
+        /**
+         * @var int
+         *
+         * @ORM\Column(name="product_id", type="integer", options={"unsigned":true})
+         * @ORM\Id
+         * @ORM\GeneratedValue(strategy="NONE")
+         */
+        private $product_id;
 
-        return $this;
-    }
+        /**
+         * @var int
+         *
+         * @ORM\Column(name="category_id", type="integer", options={"unsigned":true})
+         * @ORM\Id
+         * @ORM\GeneratedValue(strategy="NONE")
+         */
+        private $category_id;
 
-    /**
-     * Get productId.
-     *
-     * @return int
-     */
-    public function getProductId()
-    {
-        return $this->product_id;
-    }
+        /**
+         * @var int
+         *
+         * @ORM\Column(name="sort_no", type="smallint", options={"unsigned":true})
+         */
+        private $sort_no;
 
-    /**
-     * Set categoryId.
-     *
-     * @param int $categoryId
-     *
-     * @return ProductCategory
-     */
-    public function setCategoryId($categoryId)
-    {
-        $this->category_id = $categoryId;
+        /**
+         * @var \Eccube\Entity\Product
+         *
+         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Product", inversedBy="ProductCategories")
+         * @ORM\JoinColumns({
+         *   @ORM\JoinColumn(name="product_id", referencedColumnName="id")
+         * })
+         */
+        private $Product;
 
-        return $this;
-    }
+        /**
+         * @var \Eccube\Entity\Category
+         *
+         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Category", inversedBy="ProductCategories")
+         * @ORM\JoinColumns({
+         *   @ORM\JoinColumn(name="category_id", referencedColumnName="id")
+         * })
+         */
+        private $Category;
 
-    /**
-     * Get categoryId.
-     *
-     * @return int
-     */
-    public function getCategoryId()
-    {
-        return $this->category_id;
-    }
+        /**
+         * Set productId.
+         *
+         * @param int $productId
+         *
+         * @return ProductCategory
+         */
+        public function setProductId($productId)
+        {
+            $this->product_id = $productId;
 
-    /**
-     * Set sortNo.
-     *
-     * @param int $sortNo
-     *
-     * @return ProductCategory
-     */
-    public function setSortNo($sortNo)
-    {
-        $this->sort_no = $sortNo;
+            return $this;
+        }
 
-        return $this;
-    }
+        /**
+         * Get productId.
+         *
+         * @return int
+         */
+        public function getProductId()
+        {
+            return $this->product_id;
+        }
 
-    /**
-     * Get sortNo.
-     *
-     * @return int
-     */
-    public function getSortNo()
-    {
-        return $this->sort_no;
-    }
+        /**
+         * Set categoryId.
+         *
+         * @param int $categoryId
+         *
+         * @return ProductCategory
+         */
+        public function setCategoryId($categoryId)
+        {
+            $this->category_id = $categoryId;
 
-    /**
-     * Set product.
-     *
-     * @param \Eccube\Entity\Product|null $product
-     *
-     * @return ProductCategory
-     */
-    public function setProduct(\Eccube\Entity\Product $product = null)
-    {
-        $this->Product = $product;
+            return $this;
+        }
 
-        return $this;
-    }
+        /**
+         * Get categoryId.
+         *
+         * @return int
+         */
+        public function getCategoryId()
+        {
+            return $this->category_id;
+        }
 
-    /**
-     * Get product.
-     *
-     * @return \Eccube\Entity\Product|null
-     */
-    public function getProduct()
-    {
-        return $this->Product;
-    }
+        /**
+         * Set sortNo.
+         *
+         * @param int $sortNo
+         *
+         * @return ProductCategory
+         */
+        public function setSortNo($sortNo)
+        {
+            $this->sort_no = $sortNo;
 
-    /**
-     * Set category.
-     *
-     * @param \Eccube\Entity\Category|null $category
-     *
-     * @return ProductCategory
-     */
-    public function setCategory(\Eccube\Entity\Category $category = null)
-    {
-        $this->Category = $category;
+            return $this;
+        }
 
-        return $this;
-    }
+        /**
+         * Get sortNo.
+         *
+         * @return int
+         */
+        public function getSortNo()
+        {
+            return $this->sort_no;
+        }
 
-    /**
-     * Get category.
-     *
-     * @return \Eccube\Entity\Category|null
-     */
-    public function getCategory()
-    {
-        return $this->Category;
+        /**
+         * Set product.
+         *
+         * @param \Eccube\Entity\Product|null $product
+         *
+         * @return ProductCategory
+         */
+        public function setProduct(\Eccube\Entity\Product $product = null)
+        {
+            $this->Product = $product;
+
+            return $this;
+        }
+
+        /**
+         * Get product.
+         *
+         * @return \Eccube\Entity\Product|null
+         */
+        public function getProduct()
+        {
+            return $this->Product;
+        }
+
+        /**
+         * Set category.
+         *
+         * @param \Eccube\Entity\Category|null $category
+         *
+         * @return ProductCategory
+         */
+        public function setCategory(\Eccube\Entity\Category $category = null)
+        {
+            $this->Category = $category;
+
+            return $this;
+        }
+
+        /**
+         * Get category.
+         *
+         * @return \Eccube\Entity\Category|null
+         */
+        public function getCategory()
+        {
+            return $this->Category;
+        }
     }
 }

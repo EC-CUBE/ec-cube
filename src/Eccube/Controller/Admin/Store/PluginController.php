@@ -21,6 +21,7 @@ use Eccube\Entity\PluginEventHandler;
 use Eccube\Exception\PluginException;
 use Eccube\Form\Type\Admin\PluginLocalInstallType;
 use Eccube\Form\Type\Admin\PluginManagementType;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\PluginEventHandlerRepository;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\PluginService;
@@ -67,14 +68,14 @@ class PluginController extends AbstractController
      *
      * @param PluginRepository $pluginRepository
      * @param PluginService $pluginService
-     * @param BaseInfo $baseInfo
+     * @param BaseInfoRepository $baseInfoRepository
      */
-    public function __construct(PluginRepository $pluginRepository, PluginService $pluginService, PluginEventHandlerRepository $eventHandlerRepository, BaseInfo $baseInfo)
+    public function __construct(PluginRepository $pluginRepository, PluginService $pluginService, PluginEventHandlerRepository $eventHandlerRepository, BaseInfoRepository $baseInfoRepository)
     {
         $this->pluginRepository = $pluginRepository;
         $this->pluginService = $pluginService;
         $this->pluginEventHandlerRepository = $eventHandlerRepository;
-        $this->BaseInfo = $baseInfo;
+        $this->BaseInfo = $baseInfoRepository->get();
     }
 
     /**
@@ -507,7 +508,7 @@ class PluginController extends AbstractController
      * APIリクエスト処理
      *
      * @param Request $request
-     * @param $authKey
+     * @param string|null $authKey
      * @param string $url
      *
      * @return array
@@ -516,7 +517,7 @@ class PluginController extends AbstractController
     {
         $curl = curl_init($url);
 
-        $options = [           // オプション配列
+        $options = [// オプション配列
             //HEADER
             CURLOPT_HTTPHEADER => [
                 'Authorization: '.base64_encode($authKey),

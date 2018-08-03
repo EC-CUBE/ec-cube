@@ -14,6 +14,9 @@ class WaitAction implements WebDriverAction
      */
     private $timeout_in_second;
 
+    /**
+     * @param integer $timeout_in_second
+     */
     function __construct($timeout_in_second)
     {
         $this->timeout_in_second = $timeout_in_second;

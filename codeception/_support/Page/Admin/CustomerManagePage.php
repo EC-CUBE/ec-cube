@@ -48,12 +48,18 @@ class CustomerManagePage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    /**
+     * @param integer $rowNum
+     */
     public function 一覧_編集($rowNum)
     {
         $this->tester->click("#search_form > div.c-contentsArea__cols > div > div > div.card.rounded.border-0.mb-4 > div > table > tbody > tr:nth-child(${rowNum}) > td:nth-child(2) > a");
         return $this;
     }
 
+    /**
+     * @param integer $rowNum
+     */
     public function 一覧_削除($rowNum, $execute = true)
     {
         $this->tester->click("#search_form > div.c-contentsArea__cols > div > div > div.card.rounded.border-0.mb-4 > div > table > tbody > tr:nth-child(${rowNum}) > td.align-middle.pr-3 > div > div > a");
@@ -67,6 +73,9 @@ class CustomerManagePage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    /**
+     * @param integer $rowNum
+     */
     public function 一覧_仮会員メール再送($rowNum)
     {
         $this->tester->click(['xpath' => "//*[@id='search_form']//div/table/tbody/tr[${rowNum}]/td[6]/div/div[1]/a"]);
@@ -92,6 +101,9 @@ class CustomerManagePage extends AbstractAdminPageStyleGuide
         $this->tester->click('#search_form > div.c-contentsArea__cols > div > div > div.row.justify-content-between.mb-2 > div.col-5.text-right > div:nth-child(2) > div > button:nth-child(2)');
     }
 
+    /**
+     * @param integer $rowNum
+     */
     public function 一覧_会員ID($rowNum)
     {
         return $this->tester->grabTextFrom("#search_form > div.c-contentsArea__cols > div > div > div.card.rounded.border-0.mb-4 > div > table > tbody > tr:nth-child(${rowNum}) > td.align-middle.pl-3");

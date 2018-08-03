@@ -28,7 +28,12 @@ use Doctrine\ORM\Mapping as ORM;
 class Work extends \Eccube\Entity\Master\AbstractMasterEntity
 {
     /**
-     * @var integer
+     * 非稼働
      */
-    const WORK_ACTIVE_ID = 1;
+    const NON_ACTIVE = 0;
+
+    /**
+     * 稼働
+     */
+    const ACTIVE = 1;
 }

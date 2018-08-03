@@ -728,6 +728,20 @@ file that was distributed with this source code.
             </div>
             <div class="c-contentsArea__secondaryCol">
                 <div class="c-secondaryCol">
+                    {% if id is not null %}
+                        <div class="card rounded border-0 mb-4">
+                            <div class="collapse show ec-cardCollapse" id="preview">
+                                <div class="card-body">
+                                    <div class="d-block text-center">
+                                        <a class="btn btn-block btn-ec-regular"
+                                        target="_blank"
+                                        href="{{ url('product_detail', {id:id}) }}"
+                                        title="{{ 'admin.product.product.preview'|trans }}">{{ 'admin.product.product.preview'|trans }}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header">
                             <div class="row">
@@ -770,7 +784,7 @@ file that was distributed with this source code.
                                     <li class="c-directoryTree--registerItem category-li">
                                         <input type="checkbox" id="admin_product_category_{{ Category.id }}" name="admin_product[Category][]" value="{{ Category.id }}" {% if Category.id in ChoicedIds %}checked{% endif %}>
                                         <label for="admin_product_category_{{ Category.id }}">{{ Category.name }}</label>
-                                        <ul>
+                                        <ul class="pl-0">
                                             {% for child,ChildCategory in Category.children %}
                                                 {{ selfMacro.tree(ChoicedIds, ChildCategory, form) }}
                                             {% endfor %}
@@ -781,7 +795,7 @@ file that was distributed with this source code.
                                 <div class="c-directoryTree--register rounded border mb-3 p-3">
                                     {% import _self as renderMacro %}
                                     {% for TopCategory in TopCategories %}
-                                        <ul>
+                                        <ul class="pl-0">
                                             {{ renderMacro.tree(ChoicedCategoryIds, TopCategory, form.Category) }}
                                         </ul>
                                     {% endfor %}
