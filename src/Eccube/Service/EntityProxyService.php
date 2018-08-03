@@ -264,7 +264,7 @@ class EntityProxyService
     /**
      * remove block to 'if (class_exists(<class name>)) { }'
      *
-     * @params Tokens $entityTokens
+     * @param Tokens $entityTokens
      */
     private function removeClassExistsBlock(Tokens $entityTokens)
     {

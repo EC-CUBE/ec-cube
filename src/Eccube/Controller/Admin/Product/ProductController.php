@@ -88,9 +88,9 @@ class ProductController extends AbstractController
     protected $productRepository;
 
     /**
-     * @var BaseInfoRepository
+     * @var BaseInfo
      */
-    protected $baseInfoRepository;
+    protected $BaseInfo
 
     /**
      * @var PageMaxRepository

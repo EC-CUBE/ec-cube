@@ -53,7 +53,7 @@ class OrderItemType extends AbstractType
     protected $eccubeConfig;
 
     /**
-     * @var BaseInfoRepository
+     * @var BaseInfo
      */
     protected $BaseInfo;
 
