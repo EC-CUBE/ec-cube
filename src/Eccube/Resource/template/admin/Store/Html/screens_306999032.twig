@@ -23,23 +23,14 @@ file that was distributed with this source code.
         #plugin-list .info{
             min-height: 65%;
         }
-        #plugin-list .prices,
-        #plugin-list .prices dl dd{
+        .plg-prices,
+        #plugin-list dl dd{
             font-size: 1.25rem;
-        }
-        #plugin-list .prices,
-        #plugin-list .prices dl dd span{
-            color: #201411;
         }
 
         .plugin-ver li span{
             display: inline-block;
-            /*min-width: 65%;*/
         }
-        h6.news{
-            color: #FD9271;
-        }
-
     </style>
 {% endblock %}
 {% block main %}
@@ -65,16 +56,16 @@ file that was distributed with this source code.
                                     </h5>
                                     <h6 class="mb-4">
                                         セットで揃えたいディナー用のカトラリー。定番の銀製は、シルバー特有の美しい輝きと柔らかな曲線が特徴です。適度な重みと日本人の手に合いやすいサイズ感で長く愛用いただけます。</h6>
-                                    <p class="plg-prices text-danger"><span class="font-weight-bold text-dark">定番: </span> 25.000 <small>(最高)</small></p>
+                                    <p class="plg-prices text-danger"><span class="font-weight-bold text-dark">販売価格: </span> 25.000円<small> (税込)</small></p>
                                     <ul class="plugin-ver">
-                                        <li class="pb-2"><span class="font-weight-bold col-6 col-sm-4 col-md-3 pl-0">カトラリー。</span>256</li>
-                                        <li class="pb-2"><span class="font-weight-bold col-6 col-sm-4 col-md-3 pl-0">カトラリーリの銀製はセ</span>2.1.5</li>
-                                        <li class="pb-2"><span class="font-weight-bold col-6 col-sm-4 col-md-3 pl-0">カトラリ。</span>3.0は/3.1は</li>
-                                        <li class="pb-2"><span class="font-weight-bold col-6 col-sm-4 col-md-3 pl-0">カトラリー</span>2013.05.24</li>
-                                        <li class="pb-2"><span class="font-weight-bold col-6 col-sm-4 col-md-3 pl-0">たいディナ</span>2018.07.12</li>
-                                        <li class="pb-2"><span class="font-weight-bold col-6 col-sm-4 col-md-3 pl-0">カトラリ</span>125KB</li>
-                                        <li class="pb-2"><span class="font-weight-bold col-6 col-sm-4 col-md-3 pl-0">カトラ</span>LGBL</li>
-                                        <li class="pb-2"><span class="font-weight-bold col-6 col-sm-4 col-md-3 pl-0">カトラリー</span> <a href="ec-cube.net">EC-CUBE team</a></li>
+                                        <li class="pb-2"><span class="font-weight-bold col-6 col-sm-4 col-md-3 pl-0">ダウンロード数</span>256</li>
+                                        <li class="pb-2"><span class="font-weight-bold col-6 col-sm-4 col-md-3 pl-0">バージョン</span>2.1.5</li>
+                                        <li class="pb-2"><span class="font-weight-bold col-6 col-sm-4 col-md-3 pl-0">互換性</span>バージョン3.0/3.1</li>
+                                        <li class="pb-2"><span class="font-weight-bold col-6 col-sm-4 col-md-3 pl-0">作成日</span>2013.05.24</li>
+                                        <li class="pb-2"><span class="font-weight-bold col-6 col-sm-4 col-md-3 pl-0">最終更新日</span>2018.07.12</li>
+                                        <li class="pb-2"><span class="font-weight-bold col-6 col-sm-4 col-md-3 pl-0">サイズ</span>125KB</li>
+                                        <li class="pb-2"><span class="font-weight-bold col-6 col-sm-4 col-md-3 pl-0">ライセンス</span>LGBL</li>
+                                        <li class="pb-2"><span class="font-weight-bold col-6 col-sm-4 col-md-3 pl-0">クリエイター</span> <a href="ec-cube.net">EC-CUBE team</a></li>
                                     </ul>
                                 </div>
                                 <div class="row mt-3">
@@ -99,8 +90,8 @@ file that was distributed with this source code.
                                 </div>
                             </div>
                             <div class="col-6 text-right">
-                                <a href="#" class="btn btn-ec-sub btn-lg">Close</a>
-                                <a href="{{ url('admin_store_plugin_306999035') }}" class="btn btn btn-primary btn-lg">OK</a>
+                                <a href="#" class="btn btn-ec-sub btn-lg">キャンセル</a>
+                                <a href="{{ url('admin_store_plugin_306999035') }}" class="btn btn btn-primary btn-lg">インストール</a>
                             </div>
                         </div>
                     </div>

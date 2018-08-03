@@ -18,8 +18,9 @@ file that was distributed with this source code.
 
 {% block stylesheet %}
     <style type="text/css">
-        .border-bt {
-            border-bottom: 1px solid rgba(0, 0, 0, .125);
+        .btn-remove {
+            background: #C04949;
+            border-color: #C04949;
         }
     </style>
 {% endblock %}
@@ -29,7 +30,7 @@ file that was distributed with this source code.
             <div class="c-primaryCol">
                 <div class="card rounded border-0 mb-4">
                     <div class="card-header">
-                        <h5>オーナーズストア (1 / 35ナーズス)</h5>
+                        <h5>あなたがこのプラグインを削除する ? (データが完全に削除されます)</h5>
                     </div>
                     <div class="card-body p-0">
                         <div class="row m-0 p-3 border-bt">
@@ -41,19 +42,17 @@ file that was distributed with this source code.
                             <div class="col-sm-10 col-md-9">
                                 <div class="info">
                                     <h5>
-                                        <a href="#" class="font-weight-bold">最高級プラチナフォークは、贈り物としても人気です。</a>(最高級プラチナフォークは:1.0.2)
+                                        <a href="#" class="font-weight-bold">EC-CUBEペイメント決済プラグイン</a>(3.0系)
                                     </h5>
-                                    <h6>セットで揃えたいディナー用のカトラリー。定番の銀製は、シルバー特有の美しい輝きと柔らかな曲線が特徴です。適度な重みと日本人の手に合いやすいサイズ感で長く愛用いただけます。</h6>
+                                    <h6>EC-CUBEの開発元が提供する決済プラグイン。EC-CUBE開発元提供サービスだからこそ実現できた、豊富な機能をそろえています。</h6>
                                 </div>
                             </div>
                         </div>
 
                         <div class="row text-right my-4 mx-0">
                             <div class="col-12">
-                                <a href="#" class="btn btn-ec-sub btn-lg">Close</a>
-                                <a href="#"
-                                   class="btn btn btn-primary btn-lg"
-                                   style="background: #C04949; border-color: #C04949">OK</a>
+                                <a href="#" class="btn btn-ec-sub btn-lg">キャンセル</a>
+                                <a href="#" class="btn btn btn-primary btn-lg btn-remove">削除</a>
                             </div>
                         </div>
                     </div>

@@ -44,15 +44,15 @@ file that was distributed with this source code.
                     <div class="card-body p-0">
                         <div class="row">
                             <div class="col-12 p-4">
-                                <a href="#" class="px-3 text-dark">詳細</a>
-                                <a href="#" class="px-3 text-dark">選択してください</a>
-                                <a href="#" class="px-3 text-dark">インテリア</a>
-                                <a href="#" class="px-3 text-dark">フォーク</a>
-                                <a href="#" class="px-3 text-dark">新入荷</a>
-                                <a href="#" class="px-3 text-dark">詳細検索</a>
-                                <a href="#" class="px-3 text-dark">インテリアインテリア</a>
-                                <a href="#" class="px-3 text-dark">フォーク</a>
-                                <a href="#" class="px-3 text-dark">新入荷</a>
+                                <a href="#" class="px-3 text-dark">決剤</a>
+                                <a href="#" class="px-3 text-dark">デザインテンプレート</a>
+                                <a href="#" class="px-3 text-dark">機能カスタマイズ</a>
+                                <a href="#" class="px-3 text-dark">集客</a>
+                                <a href="#" class="px-3 text-dark">顧客管理・販促</a>
+                                <a href="#" class="px-3 text-dark">物流・在庫管理</a>
+                                <a href="#" class="px-3 text-dark">SNS</a>
+                                <a href="#" class="px-3 text-dark">商用ライセンス</a>
+                                <a href="#" class="px-3 text-dark">その他</a>
                             </div>
                         </div>
                     </div>
@@ -121,7 +121,7 @@ file that was distributed with this source code.
                 </div>
                 <div id="plugin-list" class="card rounded border-0 my-4">
                     <div class="card-header">
-                        <h5>オーナーズストア (1 / 35ナーズス)</h5>
+                        <h5>プラグインのリスト（プラグイン10/35）</h5>
                     </div>
                     <div class="card-body p-0">
                         {% for i in 1..10 %}
@@ -134,14 +134,13 @@ file that was distributed with this source code.
                                 <div class="col-sm-6 col-md-7">
                                     <div class="info">
                                         <h5>
-                                            <a href="#" class="font-weight-bold">最高級プラチナフォークは、贈り物としても人気です。</a>(最高級プラチナフォークは:1.0.2)
+                                            <a href="#" class="font-weight-bold">EC-CUBEペイメント決済プラグイン</a>(3.0系)
                                         </h5>
-                                        <h6>
-                                            セットで揃えたいディナー用のカトラリー。定番の銀製は、シルバー特有の美しい輝きと柔らかな曲線が特徴です。適度な重みと日本人の手に合いやすいサイズ感で長く愛用いただけます。</h6>
+                                        <h6>EC-CUBEの開発元が提供する決済プラグイン。EC-CUBE開発元提供サービスだからこそ実現できた、豊富な機能をそろえています。</h6>
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-7">
-                                            <p class="plg-prices text-danger"><span class="font-weight-bold text-dark">定番: </span> 25.000 <small>(最高)</small></p>
+                                            <p class="plg-prices text-danger"><span class="font-weight-bold text-dark">販売価格: </span> {{ random(100) }},200円<small> (税込)</small></p>
                                         </div>
                                         <div class="col-sm-5">
                                             <dl class="text-dark">
@@ -152,8 +151,8 @@ file that was distributed with this source code.
                                     </div>
                                 </div>
                                 <div class="col-sm-4 col-md-3 text-right">
-                                    <a href="#" class="btn btn-ec-regular">ーズストア</a>
-                                    <a href="#" class="btn btn btn-primary">ーズストア</a>
+                                    <a href="#" class="btn btn-ec-regular">詳細を見る</a>
+                                    <a href="{{ url('admin_store_plugin_306999032') }}" class="btn btn btn-primary">インストール</a>
                                 </div>
                             </div>
                         {% endfor %}
@@ -167,7 +166,7 @@ file that was distributed with this source code.
                                     <a class="page-link" href="#">2</a>
                                 </li>
                                 <li class="page-item">
-                                    <a class="page-link" href="#">Next</a>
+                                    <a class="page-link" href="#">次へ</a>
                                 </li>
                             </ul>
                         </div>
@@ -195,22 +194,22 @@ file that was distributed with this source code.
                                  src="/html/template/admin/assets/img/plugin_temp/{{  random(7) }}.png" alt="">
                         </div>
                         <div class="col-6">
-                            <h5 class="font-weight-bold mb-3">セットで揃えたいディナー用のカトラリー。定番の銀製は(3.0)</h5>
-                            <p>セットで揃えたいディナー用のカトラリー。定番の銀ットで揃えたいディナー用のカトラリの銀製はセットで揃えたいディナー用のカトラリ定番の銀製はセットで揃えたいディナー用トラリー。定番の銀製は</p>
-                            <p class="plg-prices text-danger"><span class="font-weight-bold text-dark">定番: </span> 25.000 <small>(最高)</small></p>
+                            <h5 class="font-weight-bold mb-3">EC-CUBEペイメント決済プラグイン(3.0系)</h5>
+                            <p>EC-CUBEの開発元が提供する決済プラグイン。EC-CUBE開発元提供サービスだからこそ実現できた、豊富な機能をそろえています。</p>
+                            <p class="plg-prices text-danger"><span class="font-weight-bold text-dark">販売価格: </span> 25.000円<small> (税込)</small></p>
                         </div>
                     </div>
                     <div class="row mb-4">
                         <div class="col-7">
                             <ul class="plugin-ver">
-                                <li class="pb-2"><span class="font-weight-bold col-7 col-sm-6 pl-0">カトラリー。</span>256</li>
-                                <li class="pb-2"><span class="font-weight-bold col-7 col-sm-6 pl-0">カトラリーリの銀製はセ</span>2.1.5</li>
-                                <li class="pb-2"><span class="font-weight-bold col-7 col-sm-6 pl-0">カトラリ。</span>3.0は/3.1は</li>
-                                <li class="pb-2"><span class="font-weight-bold col-7 col-sm-6 pl-0">カトラリー</span>2013.05.24</li>
-                                <li class="pb-2"><span class="font-weight-bold col-7 col-sm-6 pl-0">たいディナ</span>2018.07.12</li>
-                                <li class="pb-2"><span class="font-weight-bold col-7 col-sm-6 pl-0">カトラリ</span>125KB</li>
-                                <li class="pb-2"><span class="font-weight-bold col-7 col-sm-6 pl-0">カトラ</span>LGBL</li>
-                                <li class="pb-2"><span class="font-weight-bold col-7 col-sm-6 pl-0">カトラリー</span> <a href="ec-cube.net">EC-CUBE team</a></li>
+                                <li class="pb-2"><span class="font-weight-bold col-7 col-sm-6 pl-0">ダウンロード数</span>256</li>
+                                <li class="pb-2"><span class="font-weight-bold col-7 col-sm-6 pl-0">バージョン</span>2.1.5</li>
+                                <li class="pb-2"><span class="font-weight-bold col-7 col-sm-6 pl-0">互換性</span>バージョン3.0/3.1</li>
+                                <li class="pb-2"><span class="font-weight-bold col-7 col-sm-6 pl-0">作成日</span>2013.05.24</li>
+                                <li class="pb-2"><span class="font-weight-bold col-7 col-sm-6 pl-0">最終更新日</span>2018.07.12</li>
+                                <li class="pb-2"><span class="font-weight-bold col-7 col-sm-6 pl-0">サイズ</span>125KB</li>
+                                <li class="pb-2"><span class="font-weight-bold col-7 col-sm-6 pl-0">ライセンス</span>LGBL</li>
+                                <li class="pb-2"><span class="font-weight-bold col-7 col-sm-6 pl-0">クリエイター</span><a href="ec-cube.net">EC-CUBE team</a></li>
                             </ul>
                         </div>
                         <div class="col-5 text-right">
@@ -250,8 +249,8 @@ file that was distributed with this source code.
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-ec-sub btn-lg" data-dismiss="modal">Close</button>
-                    <a href="{{ url('admin_store_plugin_306999032') }}" class="btn btn btn-primary btn-lg">OK</a>
+                    <button type="button" class="btn btn-ec-sub btn-lg" data-dismiss="modal">キャンセル</button>
+                    <a href="{{ url('admin_store_plugin_306999032') }}" class="btn btn btn-primary btn-lg">インストール</a>
                 </div>
             </div>
         </div>
