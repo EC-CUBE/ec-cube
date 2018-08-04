@@ -15,9 +15,7 @@ namespace Eccube\Tests\Web\Admin\Order;
 
 use Eccube\Entity\Order;
 use Eccube\Repository\ShippingRepository;
-use Eccube\Common\Constant;
 use Eccube\Entity\Shipping;
-use Eccube\Entity\OrderItem;
 
 class ShippingControllerTest extends AbstractEditControllerTestCase
 {
@@ -94,6 +92,83 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
 
         $expectedShipping = $this->entityManager->find(Shipping::class, $shippingId);
         $this->assertEquals($trackingNumber, $expectedShipping->getTrackingNumber());
+    }
+
+    /**
+     * 出荷先の追加と削除のテスト
+     */
+    public function testAddAndDeleteShipping()
+    {
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrder($Customer);
+        $OrderId = $Order->getId();
+        /** @var Shipping $Shipping */
+        $Shipping = $Order->getShippings()->first();
+
+        // 編集前は出荷先が１個
+        $this->assertEquals(1, $Order->getShippings()->count());
+
+        // 出荷登録画面表示
+        $crawler = $this->client->request(
+            'GET',
+            $this->generateUrl('admin_shipping_edit', ['id' => $Order->getId()])
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        // 出荷先を追加ボタンを押下
+        $form = $crawler->selectButton('出荷情報を登録')->form();
+        $form['form[add_shipping]']->setValue('1');
+
+        $this->client->submit($form);
+        $crawler = $this->client->getCrawler();
+
+        // 出荷登録フォームが２個に増えていることを確認
+        $card1 = $crawler->filter('#form1 > div.c-contentsArea__cols > div > div > div:nth-child(1) > div.card-header > div > div.col-8 > div > span')->text();
+        $this->assertContains('出荷内容1', $card1);
+        $card2 = $crawler->filter('#form1 > div.c-contentsArea__cols > div > div > div:nth-child(2) > div.card-header > div > div.col-8 > div > span')->text();
+        $this->assertContains('出荷内容2', $card2);
+
+        // ２個の出荷登録フォームを作成
+        $shippingFormData = $this->createShippingFormDataForEdit($Shipping);
+        $newShippingFormData = $this->createShippingFormData($this->createProduct());
+        $formData['shippings'] = [$shippingFormData, $newShippingFormData];
+        $formData['_token'] = 'dummy';
+        $formData['add_shipping'] = '';
+
+        // 登録
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_shipping_edit', ['id' => $Order->getId()]),
+            [
+                'form' => $formData,
+                'mode' => 'register',
+            ]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_shipping_edit', ['id' => $Order->getId()])));
+
+        // 出荷先が２個で登録されていることを確認
+        $expectedOrder = $this->entityManager->find(Order::class, $OrderId);
+        $this->assertEquals(2, $expectedOrder->getShippings()->count());
+
+        // 1個の出荷登録フォームを作成
+        $formData['shippings'] = [$shippingFormData];
+        $formData['_token'] = 'dummy';
+        $formData['add_shipping'] = '';
+
+        // 登録
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_shipping_edit', ['id' => $Order->getId()]),
+            [
+                'form' => $formData,
+                'mode' => 'register',
+            ]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_shipping_edit', ['id' => $Order->getId()])));
+
+        // 出荷先が1個で登録されていることを確認
+        $expectedOrder = $this->entityManager->find(Order::class, $OrderId);
+        $this->assertEquals(1, $expectedOrder->getShippings()->count());
     }
 
     /**

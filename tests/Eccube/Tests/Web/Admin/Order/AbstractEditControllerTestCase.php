@@ -254,6 +254,7 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
                 'order_item_type' => $OrderItem->getOrderItemTypeId(),
             ];
         }
+
         return $orderItem;
     }
 }
