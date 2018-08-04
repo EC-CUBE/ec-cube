@@ -124,12 +124,10 @@ class ShippingEditPage extends AbstractAdminPageStyleGuide
     {
         $this->tester->scrollTo(['css' => '#shipping-product_1 > div > button'], 0, -50);
         $this->tester->click(['css' => '#shipping-product_1 > div > button']);
-        $this->tester->waitForElement(['id' => 'addProduct']);
-        $this->tester->wait(1);
+        $this->tester->waitForElementVisible(['id' => 'addProduct']);
         $this->tester->fillField(['id' => 'admin_search_product_id'], $value);
         $this->tester->click('#searchProductModalButton');
         $this->tester->waitForElementVisible('#searchProductModalList table');
-        $this->tester->wait(1);
         return $this;
     }
 
