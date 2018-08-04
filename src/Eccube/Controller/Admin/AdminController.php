@@ -580,8 +580,6 @@ class AdminController extends AbstractController
             ++$raw[$Order->getOrderDate()->format($format)]['count'];
         }
 
-        dump($raw);
-
         return $raw;
     }
 }
