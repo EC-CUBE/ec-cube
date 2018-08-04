@@ -163,6 +163,7 @@ class CartService
     public function getSessionCarts()
     {
         $cartKeys = $this->session->get('cart_keys', []);
+
         return $this->cartRepository->findBy(['cart_key' => $cartKeys], ['id' => 'DESC']);
     }
 
