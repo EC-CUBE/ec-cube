@@ -18,7 +18,7 @@ file that was distributed with this source code.
         </li>
         {% for key1, level1 in eccube_config.eccube_nav if app.request.baseUrl ~ '/' ~ eccube_config.eccube_admin_route ~ '/' ~ key1 not in AuthorityRoles %}
             <li class="c-mainNavArea__navItem">
-                {% if level1.child is defined and level1.child|length > 0 %}
+                {% if level1.children is defined and level1.children|length > 0 %}
                     <a class="c-mainNavArea__navItemTitle{{ active_menus(menus)[0] != key1 ? ' collapsed' }}"
                        data-toggle="collapse" href="#nav-{{ key1 }}"
                        aria-expanded="{{ active_menus(menus)[0] == key1 ? 'true' : 'false' }}"
@@ -26,10 +26,10 @@ file that was distributed with this source code.
                                                               aria-hidden="true"></i><span>{{ level1.name|trans }}</span></a>
                     <ul class="collapse {% if active_menus(menus)[0] == key1 %} show{% endif %}"
                         id="nav-{{ key1 }}">
-                        {% for key2, level2 in level1.child if app.request.baseUrl ~ '/' ~ eccube_config.eccube_admin_route ~ '/' ~ key1 ~ '/' ~ key2 not in AuthorityRoles %}
+                        {% for key2, level2 in level1.children if app.request.baseUrl ~ '/' ~ eccube_config.eccube_admin_route ~ '/' ~ key1 ~ '/' ~ key2 not in AuthorityRoles %}
                             {% if level2.url is defined and path(level2.url) in AuthorityRoles %}
                             {% else %}
-                                {% if level2.child is defined and level2.child|length > 0 %}
+                                {% if level2.children is defined and level2.children|length > 0 %}
                                     <li>
                                         <a class="c-mainNavArea__navItemSubTitle{{ active_menus(menus)[1] != key2 ? ' collapsed' }}"
                                            data-toggle="collapse" href="#nav-{{ key2 }}"
@@ -37,7 +37,7 @@ file that was distributed with this source code.
                                            aria-controls="nav-{{ key2 }}"><span>{{ level2.name|trans }}</span></a>
                                         <ul class="collapse{{ active_menus(menus)[1] == key2 ? ' show' }}"
                                             id="nav-{{ key2 }}">
-                                            {% for key3, level3 in level2.child %}
+                                            {% for key3, level3 in level2.children %}
                                                 {% if level3.url is defined and path(level3.url) in AuthorityRoles %}
                                                 {% else %}
                                                     <li>

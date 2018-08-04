@@ -3,7 +3,7 @@ parameters:
         product:
             name: admin.nav.product
             icon: fa-cube
-            child:
+            children:
                 product_master:
                     name: admin.nav.product.product_master
                     url: admin_product
@@ -28,7 +28,7 @@ parameters:
         order:
             name: admin.nav.order
             icon: fa-inbox
-            child:
+            children:
                 order_master:
                     name: admin.nav.order.order_master
                     url: admin_order
@@ -41,7 +41,7 @@ parameters:
         customer:
             name: admin.nav.customer
             icon: fa-users
-            child:
+            children:
                 customer_master:
                     name: admin.nav.customer.customer_master
                     url: admin_customer
@@ -51,7 +51,7 @@ parameters:
         content:
             name: admin.nav.content
             icon: fa-file-text-o
-            child:
+            children:
                 news:
                     name: admin.nav.content.news
                     url : admin_content_news
@@ -73,10 +73,10 @@ parameters:
         setting:
             name: admin.nav.setting
             icon: fa-cog
-            child:
+            children:
                 shop:
                     name: admin.nav.setting.shop
-                    child:
+                    children:
                         shop_index:
                             name: admin.nav.setting.shop.shop_index
                             url: admin_setting_shop
@@ -97,7 +97,7 @@ parameters:
                             url: admin_setting_shop_csv
                 system:
                     name: admin.nav.setting.system
-                    child:
+                    children:
                         member:
                             name: admin.nav.setting.system.member
                             url: admin_setting_system_member
@@ -119,10 +119,10 @@ parameters:
         store:
             name: admin.nav.store
             icon: fa-info-circle
-            child:
+            children:
                 plugin:
                     name: admin.nav.store.plugin
-                    child:
+                    children:
                         plugin_owners_search:
                             name: admin.nav.store.plugin.plugin_owners_install
                             url: admin_store_plugin_owners_search
@@ -134,7 +134,7 @@ parameters:
                             url: admin_store_plugin_handler
                 template:
                     name: admin.nav.store.template
-                    child:
+                    children:
                         template_list:
                             name: admin.nav.store.template.template_list
                             url: admin_store_template

@@ -11,24 +11,24 @@ file that was distributed with this source code.
 
 {% for key1, level1 in eccube_config.eccube_nav if app.request.baseUrl ~ '/' ~ eccube_config.eccube_admin_route ~ '/' ~ key1 not in AuthorityRoles %}
     <li class="{% if active_menus(menus)[0] == key1 %}active{% endif %}">
-        {% if level1.has_child is defined and level1.has_child == true %}
+        {% if level1.has_children is defined and level1.children|length > 0 %}
             <a class="toggle">
                 <svg class="cb {{ level1.icon }}"> <use xlink:href="#{{ level1.icon }}" /></svg>
                 {{ level1.name|trans }}
                 <svg class="cb cb-angle-down"> <use xlink:href="#cb-angle-down" /></svg>
             </a>
             <ul {% if active_menus(menus)[0] == key1 %}class="active" style="display: block;"{% endif %}>
-                {% for key2, level2 in level1.child if app.request.baseUrl ~ '/' ~ eccube_config.eccube_admin_route ~ '/' ~ key1 ~ '/' ~ key2 not in AuthorityRoles %}
+                {% for key2, level2 in level1.children if app.request.baseUrl ~ '/' ~ eccube_config.eccube_admin_route ~ '/' ~ key1 ~ '/' ~ key2 not in AuthorityRoles %}
                     {% if level2.url is defined and path(level2.url)  in AuthorityRoles %}
                     {% else %}
                     <li class="{% if active_menus(menus)[1] == key2 %}active{% endif %}">
-                        {% if level2.has_child is defined and level2.has_child == true %}
+                        {% if level2.has_children is defined and level2.children|length > 0 %}
                             <a class="toggle">
                                 {{ level2.name|trans }}
                                 <svg class="cb cb-angle-down"> <use xlink:href="#cb-angle-down" /></svg>
                             </a>
                             <ul {% if active_menus(menus)[1] == key2 %}class="active" style="display: block;"{% endif %}>
-                                {% for key3, level3 in level2.child %}
+                                {% for key3, level3 in level2.children %}
                                     {% if level3.url is defined and path(level3.url)  in AuthorityRoles %}
                                     {% else %}
                                     <li class="{% if active_menus(menus)[2] == ke3 %}active{% endif %}">
