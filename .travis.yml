@@ -16,7 +16,6 @@ addons:
 
 cache:
   directories:
-    - vendor
     - $HOME/.composer/cache
     - bin/.phpunit
 
