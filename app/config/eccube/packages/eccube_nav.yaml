@@ -26,17 +26,17 @@ parameters:
                     name: admin.nav.product.category_csv_import
                     url: admin_product_category_csv_import
         order:
-            name: admin.nav.order
+            name: admin.order.order_management
             icon: fa-inbox
             children:
                 order_master:
-                    name: admin.nav.order.order_master
+                    name: admin.order.order_list
                     url: admin_order
                 order_edit:
-                    name: admin.nav.order.order_edit
+                    name: admin.order.order_registration
                     url: admin_order_new
                 shipping_csv_import:
-                    name: admin.nav.order.shipping_csv_import
+                    name: admin.order.shipping_csv_upload
                     url: admin_shipping_csv_import
         customer:
             name: admin.customer.customer_management
