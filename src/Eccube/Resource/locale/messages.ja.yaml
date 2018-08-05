@@ -145,7 +145,7 @@ admin.order.shipping_save_message: 出荷に関わる情報が変更されまし
 admin.order.search_multi: 注文番号・お名前・会社名・メールアドレス・電話番号
 admin.order.order_info: 注文情報
 admin.order.order_date: 注文日
-admin.order.paymane_date: 入金日
+admin.order.payment_date: 入金日
 admin.order.order_no: 注文番号
 admin.order.shipping_date: 出荷日
 admin.order.message: お問い合わせ
@@ -215,6 +215,8 @@ admin.order.not_payment: 未入金
 admin.order.unshipped: 未出荷
 admin.order.delete_confirm_title: 注文情報を削除します
 admin.order.delete_confirm_message: 注文情報を削除してもよろしいですか？
+admin.order.change_payment_method_message: お支払方法の変更に伴う手数料の変更は手動にてお願いします。
+admin.order.non_member: 非会員
 
 #----------------------------------------------------------------------------------------
 # 設定

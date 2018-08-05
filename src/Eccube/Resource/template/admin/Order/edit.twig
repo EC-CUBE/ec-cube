@@ -12,8 +12,8 @@ file that was distributed with this source code.
 
 {% set menus = ['order', 'order_edit'] %}
 
-{% block title %}{{ 'admin.order.edit.242'|trans }}{% endblock %}
-{% block sub_title %}{{ 'admin.order.edit.241'|trans }}{% endblock %}
+{% block title %}{{ 'admin.order.order_registration'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.order.order_management'|trans }}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 {% form_theme searchCustomerModalForm '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
@@ -177,7 +177,7 @@ file that was distributed with this source code.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.order.edit.label.order'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.order.order_info'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                 </div>
                                 <div class="col-4 text-right"><a data-toggle="collapse" href="#orderOverview" aria-expanded="false" aria-controls="orderOverview"><i class="fa fa-angle-up fa-lg"></i></a></div>
                             </div>
@@ -187,55 +187,54 @@ file that was distributed with this source code.
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="row mb-3">
-                                            <div class="col-3">{{ 'admin.order.edit.244'|trans }}</div>
+                                            <div class="col-3">{{ 'admin.order.order_no'|trans }}</div>
                                             <div class="col">{{ Order.order_no }}</div>
                                         </div>
                                         <div class="row mb-3 form-group">
-                                            <label class="col-3 col-form-label">{{ 'admin.order.index.298'|trans }}<i class="fa fa-question-circle fa-lg ml-1" data-toggle="tooltip" data-placement="top" title="Tooltip"></i></label>
+                                            <label class="col-3 col-form-label">{{ 'admin.order.order_status'|trans }}<i class="fa fa-question-circle fa-lg ml-1" data-toggle="tooltip" data-placement="top" title="Tooltip"></i></label>
                                             <div class="col">
                                                 {% if Order.id is not empty %}
                                                     {{ form_widget(form.OrderStatus) }}
                                                     {{ form_errors(form.OrderStatus) }}
-                                                    <p class="form-text font-weight-bold text-danger mb-0">{{ 'admin.order.edit.248'|trans }}</p>
                                                 {% endif %}
                                             </div>
                                         </div>
                                         <div class="row mb-3 form-group">
-                                            <label class="col-3 col-form-label">{{ 'admin.order.edit.284'|trans }}</label>
+                                            <label class="col-3 col-form-label">{{ 'admin.order.payment_method'|trans }}</label>
                                             <div class="col">
                                                 {{ form_widget(form.Payment) }}
                                                 {{ form_errors(form.Payment) }}
-                                                <p class="form-text font-weight-bold text-danger mb-0">{{ 'admin.order.edit.285'|trans }}</p>
+                                                <p class="form-text font-weight-bold text-danger mb-0">{{ 'admin.order.change_payment_method_message'|trans }}</p>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="row mb-3">
-                                            <div class="col-3"><i class="fa fa-inbox fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.order.edit.label.order_date'|trans }}</div>
+                                            <div class="col-3"><i class="fa fa-inbox fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.order.order_date'|trans }}</div>
                                             <div class="col">{{ Order.order_date ? Order.order_date|date_sec : '' }}</div>
                                         </div>
                                         <div class="row mb-3">
-                                            <div class="col-3"><i class="fa fa-money fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.order.edit.label.payment_date'|trans }}</div>
+                                            <div class="col-3"><i class="fa fa-money fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.order.payment_date'|trans }}</div>
                                             <div class="col">{{ Order.payment_date ? Order.payment_date|date_sec : '' }}</div>
                                         </div>
                                         {% if not Order.isMultiple %}
                                             <div class="row mb-3">
-                                                <div class="col-3"><i class="fa fa-truck fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.shipping.edit.ship_date'|trans }}</div>
+                                                <div class="col-3"><i class="fa fa-truck fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.order.shipping_date'|trans }}</div>
                                                 <div class="col">
                                                     {{ Order.Shippings[0].shipping_date|date_sec }}
                                                 </div>
                                             </div>
                                         {% endif %}
                                         <div class="row mb-3">
-                                            <div class="col-3"><i class="fa fa-refresh fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.order.edit.label.update_date'|trans }}</div>
+                                            <div class="col-3"><i class="fa fa-refresh fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.common.update_date'|trans }}</div>
                                             <div class="col">{{ Order.update_date ? Order.update_date|date_sec : '' }}</div>
                                         </div>
                                         <div class="row mb-3">
-                                            <div class="col-3"><i class="fa fa-mobile fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.order.edit.label.device_type'|trans }}</div>
+                                            <div class="col-3"><i class="fa fa-mobile fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.order.device_type'|trans }}</div>
                                             <div class="col">{{ Order.device_type }}</div>
                                         </div>
                                         <div class="row mb-3">
-                                            <div class="col-3"><i class="fa fa-commenting fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.order.edit.label.message'|trans }}</div>
+                                            <div class="col-3"><i class="fa fa-commenting fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.order.message'|trans }}</div>
                                             <div class="col">{{ Order.message ? Order.message|nl2br : '' }}</div>
                                         </div>
                                     </div>
@@ -270,9 +269,9 @@ file that was distributed with this source code.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-2">
-                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.order.edit.label.customer_info'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="card-title">{{ 'admin.order.orderer'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                 </div>
-                                <div class="col">{% if id %}<span class="mr-5">{% if form.Customer.vars.value is empty %}{{ 'admin.order.edit.256'|trans }}{% else %}<a href="{{ url('admin_customer_edit', {'id': form.Customer.vars.value}) }}">{{ form.Customer.vars.value }}</a>{% endif %}</span>{{ Order.full_name }} ({{ Order.full_name_kana }}) 〒{{ Order.postal_code }} {{ Order.pref }}{{ Order.addr01 }}{{ Order.addr02 }} {{ Order.email }}{% endif %}</div>
+                                <div class="col">{% if id %}<span class="mr-5">{% if form.Customer.vars.value is empty %}{{ 'admin.order.non_member'|trans }}{% else %}<a href="{{ url('admin_customer_edit', {'id': form.Customer.vars.value}) }}">{{ form.Customer.vars.value }}</a>{% endif %}</span>{{ Order.full_name }} ({{ Order.full_name_kana }}) 〒{{ Order.postal_code }} {{ Order.pref }}{{ Order.addr01 }}{{ Order.addr02 }} {{ Order.email }}{% endif %}</div>
                                 <div class="col-1 text-right"><a class="d-block" data-toggle="collapse" href="#ordererInfo" aria-expanded="false" aria-controls="ordererInfo"><i class="fa {{ id ? 'fa-angle-down' : 'fa-angle-up' }} fa-lg"></i></a></div>
                             </div>
                         </div>
