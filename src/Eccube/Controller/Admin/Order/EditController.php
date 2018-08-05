@@ -590,7 +590,7 @@ class EditController extends AbstractController
             foreach ($Products as $Product) {
                 /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
                 $builder = $this->formFactory->createNamedBuilder('', AddCartType::class, null, [
-                    'product' => $Product,
+                    'product' => $this->productRepository->findWithSortedClassCategories($Product->getId()),
                 ]);
                 $addCartForm = $builder->getForm();
                 $forms[$Product->getId()] = $addCartForm->createView();
