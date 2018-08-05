@@ -9,6 +9,9 @@
 
 common.select_message: 選択してください
 
+# 指定なし
+# 都道府県を選択
+
 #========================================================================================
 # 管理画面
 #========================================================================================
@@ -60,6 +63,8 @@ admin.common.csv_upload: CSVファイルをアップロード
 admin.common.csv_skeleton_download: 雛形ファイルダウンロード
 admin.common.csv_format: CSVファイルフォーマット
 admin.common.csv_select: CSVファイルを選択
+admin.common.file_select: ファイルを選択
+admin.common.file_select_empty: 選択されていません
 admin.common.csv_invalid_format: CSVのフォーマットが一致しません
 admin.common.csv_invalid_no_data: CSVデータが存在しません
 admin.common.csv_invalid_required: '%line%行目の%name%が設定されていません'
@@ -199,10 +204,10 @@ admin.order.mail_confirm_title: 下の内容でメールを送信してもよろ
 admin.order.shipping_info: 出荷情報
 admin.order.delivery_date: お届け希望日
 admin.order.delivery_time: 指定時間帯
-admin.order.delivery_company: 配送業者
+admin.order.delivery_provider: 配送業者 # TODO admin.delivery
 admin.order.to_shipped: 出荷済にする
 admin.order.send_mail: メールする
-admin.order.shop_memo_for_shipped: 出荷用メモ
+admin.order.shop_memo_for_shipped: 出荷用メモ欄
 admin.order.add_shipping: 出荷情報を追加
 admin.order.shipping_id: 出荷ID
 admin.order.shipping_mail_send_status: 出荷メール
@@ -215,8 +220,15 @@ admin.order.not_payment: 未入金
 admin.order.unshipped: 未出荷
 admin.order.delete_confirm_title: 注文情報を削除します
 admin.order.delete_confirm_message: 注文情報を削除してもよろしいですか？
-admin.order.change_payment_method_message: お支払方法の変更に伴う手数料の変更は手動にてお願いします。
+admin.order.delete_item_confirm_title: 明細を削除します
+admin.order.delete_item_confirm_title: 明細を削除してよろしいですか？
+admin.order.change_payment_method_message: お支払方法の変更に伴う手数料の変更は手動にてお願いします
 admin.order.non_member: 非会員
+admin.order.search_from_customer: 会員から検索・入力
+admin.order.search_customer_title: 会員を検索
+admin.order.product_info: 商品情報
+admin.order.edit_multiple_shipping: お届け先を編集
+admin.order.edit_multiple_shipping_description: 複数配送を指定している場合は、こちらのボタンからそれぞれの配送設定の編集ができます
 
 #----------------------------------------------------------------------------------------
 # 設定
