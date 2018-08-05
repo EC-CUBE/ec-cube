@@ -237,7 +237,14 @@ $(function() {
                                 {% if orderDetail.productClass is not null and orderDetail.productClass.classCategory2 %}
                                     <p>{{ orderDetail.productClass.classCategory2.className.name }}：{{ orderDetail.productClass.classCategory2 }}</p>
                                 {% endif %}
-                                <p>{{ orderDetail.priceIncTax|price }} × {{ orderDetail.quantity|number_format }}<span class="ec-imageGrid__contentTotal">小計：{{ orderDetail.totalPrice|price }}</span></p>
+                                <p>
+                                    {% if orderDetail.orderItemType.id == constant('Eccube\\Entity\\Master\\OrderItemType::PRODUCT') %}
+                                        {{ orderDetail.priceIncTax|price }}
+                                    {% else %}
+                                        {{ orderDetail.price|price }}
+                                    {% endif %}
+                                     × {{ orderDetail.quantity|number_format }}<span class="ec-imageGrid__contentTotal">小計：{{ orderDetail.totalPrice|price }}</span>
+                                </p>
                             </div>
                         </div>
                     </li>
