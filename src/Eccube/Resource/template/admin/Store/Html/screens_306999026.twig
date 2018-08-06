@@ -71,7 +71,7 @@ file that was distributed with this source code.
                                     </select>
                                 </div>
                                 <div class="col-3">
-                                    <label class="col-form-label">有料/無料</label>
+                                    <label class="col-form-label">有料／無料</label>
                                     <select class="custom-select">
                                         <option>すべて</option>
                                         <option>すべて</option>
@@ -114,10 +114,40 @@ file that was distributed with this source code.
                 </div>
                 <div id="plugin-list" class="card rounded border-0 my-4">
                     <div class="card-header">
-                        <h5>検索結果（10/35ページ）</h5>
+                        <h5>検索結果（10／35ページ）</h5>
                     </div>
                     <div class="card-body p-0">
-                        {% for i in 1..10 %}
+                        {% for i in 1..5 %}
+                            <div class="row m-0 p-3 border-bt">
+                                <div class="col-sm-2 pr-2 pr-sm-3">
+                                    <a href="#" data-toggle="modal" data-target="#searchPluginModal">
+                                        <img class="w-100 img-responsive"
+                                             src="{{ asset('assets/img/plugin_temp/'~ random(7) ~'.png', 'admin')}}" alt=""></a>
+                                </div>
+                                <div class="col-sm-6 col-md-7">
+                                    <div class="info">
+                                        <h5>
+                                            <a href="#" class="font-weight-bold">EC-CUBEペイメント決済プラグイン</a>(3.0系)
+                                        </h5>
+                                        <h6>EC-CUBEの開発元が提供する決済プラグイン。EC-CUBE開発元提供サービスだからこそ実現できた、豊富な機能をそろえています。</h6>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-auto col-md-5 col-lg-6">
+                                            <p class="plg-prices text-danger"><span class="font-weight-bold text-dark">販売価格: </span> 0円<small> (税込)</small></p>
+                                        </div>
+                                        <div class="col-auto col-md-7 col-lg-6">
+                                            <dl class="text-dark">
+                                                <dd class="d-inline-block"><span class="pr-1 font-weight-bold">DL数</span> 256</dd>
+                                                <dd class="d-inline-block ml-5"><span class="pr-1 font-weight-bold">対応バージョン</span> 3.0系</dd>
+                                            </dl>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 col-md-3 text-right">
+                                    <a href="#" class="btn btn-ec-regular">詳細</a>
+                                    <a href="{{ url('admin_store_plugin_306999032') }}" class="btn btn btn-primary">入手する</a>
+                                </div>
+                            </div>
                             <div class="row m-0 p-3 border-bt">
                                 <div class="col-sm-2 pr-2 pr-sm-3">
                                     <a href="#" data-toggle="modal" data-target="#searchPluginModal">
@@ -145,7 +175,7 @@ file that was distributed with this source code.
                                 </div>
                                 <div class="col-sm-4 col-md-3 text-right">
                                     <a href="#" class="btn btn-ec-regular">詳細</a>
-                                    <a href="{{ url('admin_store_plugin_306999032') }}" class="btn btn btn-primary">入手する</a>
+                                    <a href="{{ url('admin_store_plugin_306999032') }}" class="btn btn btn-primary">購入する</a>
                                 </div>
                             </div>
                         {% endfor %}
