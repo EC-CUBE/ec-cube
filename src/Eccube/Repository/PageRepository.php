@@ -13,6 +13,7 @@
 
 namespace Eccube\Repository;
 
+use Doctrine\ORM\NoResultException;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Page;
@@ -149,70 +150,28 @@ class PageRepository extends AbstractRepository
     /**
      * @param DeviceType $DeviceType
      * @param string $url
+     * @throw NoResultException
      *
-     * @return mixed
+     * @return Page
      */
     public function getByUrl(DeviceType $DeviceType, $url)
     {
-        // Fixme
-//        $options = $this->eccubeConfig['doctrine_cache'];
-//        $lifetime = $options['result_cache']['lifetime'];
-        $lifetime = $this->getCacheLifetime();
-
-        $qb = $this->createQueryBuilder('p')
-            ->select('p, bp, b')
-            ->leftJoin('p.BlockPositions', 'bp', 'WITH', 'p.id = bp.page_id')
+        $qb = $this->createQueryBuilder('p');
+        $Page = $qb->select('p, pll,l, bp, b')
+            ->leftJoin('p.PageLayouts', 'pll')
+            ->leftJoin('pll.Layout', 'l')
+            ->leftJoin('l.BlockPositions', 'bp')
             ->leftJoin('bp.Block', 'b')
-            ->andWhere('p.DeviceType = :DeviceType AND p.url = :url')
-            ->addOrderBy('bp.section', 'ASC')
-            ->addOrderBy('bp.block_row', 'ASC');
-
-        $ownResult = $qb
+            ->where('p.url = :route')
+            ->andWhere('l.DeviceType = :DeviceType')
+            ->orderBy('bp.block_row', 'ASC')
+            ->setParameter('route', $url)
+            ->setParameter('DeviceType', $DeviceType)
             ->getQuery()
-            ->useResultCache(true, $lifetime)
-            ->setParameters([
-                'DeviceType' => $DeviceType,
-                'url' => $url,
-            ])
+            ->useResultCache(true, $this->getCacheLifetime())
             ->getSingleResult();
 
-        if ($ownResult->getMasterPage()) {
-            $ownResult = $ownResult->getMasterPage();
-        }
-
-        $qb = $this->createQueryBuilder('p')
-            ->select('p, bp, b')
-            ->leftJoin('p.BlockPositions', 'bp', 'WITH', 'p.id = bp.page_id')
-            ->leftJoin('bp.Block', 'b')
-            ->andWhere('p.DeviceType = :DeviceType AND bp.anywhere = 1')
-            ->addOrderBy('bp.section', 'ASC')
-            ->addOrderBy('bp.block_row', 'ASC');
-
-        $anyResults = $qb
-            ->getQuery()
-            ->useResultCache(true, $lifetime)
-            ->setParameters([
-                'DeviceType' => $DeviceType,
-            ])
-            ->getResult();
-
-        $OwnBlockPosition = $ownResult->getBlockPositions();
-        $OwnBlockPositionIds = [];
-        foreach ($OwnBlockPosition as $BlockPosition) {
-            $OwnBlockPositionIds[] = $BlockPosition->getBlockId();
-        }
-
-        foreach ($anyResults as $anyResult) {
-            $BlockPositions = $anyResult->getBlockPositions();
-            foreach ($BlockPositions as $BlockPosition) {
-                if (!in_array($BlockPosition->getBlockId(), $OwnBlockPositionIds)) {
-                    $ownResult->addBlockPosition($BlockPosition);
-                    $OwnBlockPositionIds[] = $BlockPosition->getBlockId();
-                }
-            }
-        }
-
-        return $ownResult;
+        return $Page;
     }
 
     /**
