@@ -12,8 +12,8 @@ file that was distributed with this source code.
 
 {% set menus = ['store', 'plugin', 'plugin_list'] %}
 
-{% block title %}{{ 'admin.store.plugin_install.838'|trans }}{% endblock %}
-{% block sub_title %}{{ 'admin.store.plugin_install.839'|trans }}{% endblock %}
+{% block title %}独自プラグインのアップロード{% endblock %}
+{% block sub_title %}オーナーズストア{% endblock %}
 
 {% block main %}
     <form id="upload-form" class="" method="post" action="" enctype="multipart/form-data">
@@ -22,7 +22,7 @@ file that was distributed with this source code.
                 <div class="c-primaryCol">
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header">
-                            <h5 class="box-title">{{ 'admin.store.plugin_install.840'|trans }}</h5>
+                            <h5 class="box-title">新規プラグインのアップロード</h5>
                         </div>
 
                         <div class="card-body">
@@ -34,7 +34,7 @@ file that was distributed with this source code.
                                                accept="application/zip,application/x-tar,application/x-gzip"
                                                class="form-control-file">
                                     </div>
-                                    <button class="btn btn-primary" type="submit">ーズストア</button>
+                                    <button class="btn btn-primary" type="submit">アップロード</button>
                                 </div>
                             </div>
                         </div>
