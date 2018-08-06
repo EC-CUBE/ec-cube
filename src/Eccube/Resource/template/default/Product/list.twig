@@ -65,12 +65,14 @@ file that was distributed with this source code.
             }).done(function(data) {
                 // レスポンス内のメッセージをalertで表示
                 $.each(data.messages, function() {
-                    alert(this);
+                    $('#ec-modal-header').html(this);
                 });
+
+                $('#ec-modal-checkbox').prop('checked', true);
 
                 // カートブロックを更新する
                 $.ajax({
-                    url: "{{ url('block_cart') }}",
+                    url: '{{ url('block_cart') }}',
                     type: 'GET',
                     dataType: 'html'
                 }).done(function(html) {
@@ -204,6 +206,22 @@ file that was distributed with this source code.
                         </li>
                     {% endfor %}
                 </ul>
+            </div>
+            <div class="ec-modal">
+                <input type="checkbox" id="ec-modal-checkbox" class="checkbox">
+                <div class="ec-modal-overlay">
+                    <label for="ec-modal-checkbox" class="ec-modal-overlay-close"></label>
+                    <div class="ec-modal-wrap">
+                        <label for="ec-modal-checkbox" class="ec-modal-close"><span class="ec-icon"><img src="{{ asset('assets/icon/cross-dark.svg') }}" alt=""/></span></label>
+                        <div id="ec-modal-header" class="text-center">カートに追加しました。</div>
+                        <div class="ec-modal-box">
+                            <div class="ec-role">
+                                <label for="ec-modal-checkbox" class="ec-inlineBtn--cancel">お買い物を続ける</label>
+                                <a href="{{ url('cart') }}" class="ec-inlineBtn--action">カートへ進む</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="ec-pagerRole">
                 {% include "pager.twig" with {'pages': pagination.paginationData} %}
