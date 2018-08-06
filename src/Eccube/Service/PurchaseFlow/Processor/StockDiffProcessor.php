@@ -51,6 +51,10 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
      */
     public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
+        if (is_null($context->getOriginHolder())) {
+            return;
+        }
+
         $From = $context->getOriginHolder();
         $To = $itemHolder;
         $diff = $this->getDiffOfQuantities($From, $To);
@@ -136,6 +140,10 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
      */
     public function prepare(ItemHolderInterface $target, PurchaseContext $context)
     {
+        if (is_null($context->getOriginHolder())) {
+            return;
+        }
+
         $diff = $this->getDiffOfQuantities($context->getOriginHolder(), $target);
 
         foreach ($diff as $id => $quantity) {

@@ -8,14 +8,14 @@ http://www.lockon.co.jp/
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
-{% extends '@admin/old_frame.twig' %}
+{% extends '@admin/default_frame.twig' %}
 
 {% set menus = ['content', 'news'] %}
 
 {% block title %}{{'admin.content.news.53'|trans}}{% endblock %}
 {% block sub_title %}{{'admin.content.news.54'|trans}}{% endblock %}
 
-{% form_theme form '@admin/Form/bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block main %}
     <div id="news_wrap" class="row">

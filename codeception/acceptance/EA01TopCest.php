@@ -1,7 +1,6 @@
 <?php
 
 use Codeception\Util\Fixtures;
-use Page\Admin\CustomerManagePage;
 use Page\Admin\OrderManagePage;
 use Page\Admin\TopPage;
 

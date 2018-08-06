@@ -24,6 +24,7 @@ use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\OrderItemRepository;
 use Eccube\Repository\ShippingRepository;
+use Eccube\Service\MailService;
 use Eccube\Service\OrderStateMachine;
 use Eccube\Service\TaxRuleService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -37,7 +38,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\SerializerInterface;
-use Eccube\Service\MailService;
 
 class ShippingController extends AbstractController
 {
@@ -122,12 +122,13 @@ class ShippingController extends AbstractController
     public function index(Request $request, Order $Order)
     {
         $TargetShippings = $Order->getShippings();
-        $OriginShippings = [];
-        $OriginOrderItems = [];
 
         // 編集前の受注情報を保持
+        $OriginShippings = new ArrayCollection();
+        $OriginOrderItems = [];
+
         foreach ($TargetShippings as $key => $TargetShipping) {
-            $OriginShippings[$key] = clone $TargetShipping;
+            $OriginShippings->add($TargetShipping);
 
             // 編集前のお届け先のアイテム情報を保持
             $OriginOrderItems[$key] = new ArrayCollection();
@@ -176,27 +177,37 @@ class ShippingController extends AbstractController
             // 削除された項目の削除
             /** @var Shipping $OriginShipping */
             foreach ($OriginShippings as $key => $OriginShipping) {
-                // 削除された明細の削除
-                /** @var OrderItem $OriginOrderItem */
-                foreach ($OriginOrderItems[$key] as $OriginOrderItem) {
-                    if (false === $TargetShippings[$key]->getOrderItems()->contains($OriginOrderItem)) {
-                        $TargetShippings[$key]->removeOrderItem($OriginOrderItem); // 不要かも
-                        $OriginOrderItem->setShipping(null);
-                        $Order->removeOrderItem($OriginOrderItem);
-                        $OriginOrderItem->setOrder(null);
+                if (false === $TargetShippings->contains($OriginShipping)) {
+                    // お届け先自体が削除された場合
+                    // 削除されたお届け先に紐づく明細の削除
+                    /** @var OrderItem $OriginOrderItem */
+                    foreach ($OriginOrderItems[$key] as $OriginOrderItem) {
+                        $this->entityManager->remove($OriginOrderItem);
+                    }
+
+                    // 削除されたお届け先の削除
+                    $this->entityManager->remove($OriginShipping);
+                } else {
+                    // お届け先は削除されていない場合
+                    // 削除された明細の削除
+                    /** @var OrderItem $OriginOrderItem */
+                    foreach ($OriginOrderItems[$key] as $OriginOrderItem) {
+                        if (false === $TargetShippings[$key]->getOrderItems()->contains($OriginOrderItem)) {
+                            $this->entityManager->remove($OriginOrderItem);
+                        }
                     }
                 }
             }
 
             // 追加された項目の追加
-            foreach ($TargetShippings as $key => $TargetShipping) {
+            foreach ($TargetShippings as $TargetShipping) {
+                // 追加された明細の追加
                 foreach ($TargetShipping->getOrderItems() as $OrderItem) {
-                    $TargetShipping->addOrderItem($OrderItem); // 不要かも
                     $OrderItem->setShipping($TargetShipping);
-                    $Order->addOrderItem($OrderItem);
                     $OrderItem->setOrder($Order);
                 }
 
+                // 追加されたお届け先の追加
                 $TargetShipping->setOrder($Order);
             }
 
@@ -239,7 +250,6 @@ class ShippingController extends AbstractController
             'form' => $form->createView(),
             'searchProductModalForm' => $searchProductModalForm->createView(),
             'Order' => $Order,
-            'Shippings' => $TargetShippings,
             'shippingDeliveryTimes' => $this->serializer->serialize($times, 'json'),
         ];
     }
