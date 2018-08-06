@@ -90,6 +90,9 @@ class CustomerType extends AbstractType
                         'message' => 'form.type.graph.invalid',
                     ]),
                 ],
+                'attr' => [
+                    'placeholder' => 'common.mail_address_sample'
+                ]
             ])
             ->add('sex', SexType::class, [
                 'required' => false,

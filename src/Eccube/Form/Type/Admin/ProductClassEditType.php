@@ -112,7 +112,7 @@ class ProductClassEditType extends AbstractType
             ])
             ->add('delivery_duration', DeliveryDurationType::class, [
                 'required' => false,
-                'placeholder' => 'productclass.placeholder.not_specified',
+                'placeholder' => 'common.select__unspecified',
             ]);
 
         $transformer = new DataTransformer\EntityToIdTransformer($this->entityManager, ClassCategory::class);

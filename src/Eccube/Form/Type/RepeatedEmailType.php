@@ -43,7 +43,7 @@ class RepeatedEmailType extends AbstractType
             ],
             'second_options' => [
                 'attr' => [
-                    'placeholder' => 'form.member.repeated.confirm',
+                    'placeholder' => 'common.repeated_confirm',
                 ],
             ],
             'error_bubbling' => false,

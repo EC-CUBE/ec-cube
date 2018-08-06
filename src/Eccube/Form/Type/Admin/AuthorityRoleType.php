@@ -41,7 +41,7 @@ class AuthorityRoleType extends AbstractType
                 'expanded' => false,
                 'multiple' => false,
                 'required' => false,
-                'placeholder' => 'form.empty_value',
+                'placeholder' => 'common.select',
             ])
             ->add('deny_url', TextType::class, [
                 'label' => 'authorityrole.label.denied_url',

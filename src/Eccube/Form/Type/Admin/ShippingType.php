@@ -230,7 +230,7 @@ class ShippingType extends AbstractType
                     'label' => 'shipping.label.delivery_hour',
                     'class' => 'Eccube\Entity\DeliveryTime',
                     'choice_label' => 'delivery_time',
-                    'placeholder' => 'shipping.placeholder.not_specified',
+                    'placeholder' => 'common.select__unspecified',
                     'required' => false,
                     'data' => $DeliveryTime,
                     'query_builder' => function (EntityRepository $er) use ($Delivery) {
@@ -265,7 +265,7 @@ class ShippingType extends AbstractType
                     'label' => 'shipping.label.delivery_hour',
                     'class' => 'Eccube\Entity\DeliveryTime',
                     'choice_label' => 'delivery_time',
-                    'placeholder' => 'shipping.placeholder.not_specified',
+                    'placeholder' => 'common.select__unspecified',
                     'required' => false,
                     'query_builder' => function (EntityRepository $er) use ($Delivery) {
                         $qb = $er->createQueryBuilder('dt');

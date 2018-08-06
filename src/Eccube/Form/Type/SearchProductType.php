@@ -55,7 +55,7 @@ class SearchProductType extends AbstractType
             'class' => 'Eccube\Entity\Category',
             'choice_label' => 'NameWithLevel',
             'choices' => $Categories,
-            'placeholder' => 'searchproduct.placeholder.all_products',
+            'placeholder' => 'common.select__all_products',
             'required' => false,
             'label' => 'searchproduct.label.select_categories',
         ]);

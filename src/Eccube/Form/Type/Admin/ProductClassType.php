@@ -127,7 +127,7 @@ class ProductClassType extends AbstractType
             ->add('delivery_duration', DeliveryDurationType::class, [
                 'label' => 'productclass.label.delivery_date',
                 'required' => false,
-                'placeholder' => 'productclass.placeholder.not_specified',
+                'placeholder' => 'common.select__unspecified',
             ])
             ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
                 $form = $event->getForm();

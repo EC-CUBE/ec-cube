@@ -102,7 +102,6 @@ class AddressType extends AbstractType
     {
         $resolver->setDefaults([
             'options' => [],
-            'help' => 'form.contact.address.help',
             'pref_options' => ['constraints' => [], 'attr' => ['class' => 'p-region-id']],
             'addr01_options' => [
                 'constraints' => [

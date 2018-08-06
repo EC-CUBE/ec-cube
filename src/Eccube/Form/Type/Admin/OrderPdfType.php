@@ -95,7 +95,7 @@ class OrderPdfType extends AbstractType
                 'multiple' => false,
                 'required' => false,
                 'mapped' => false,
-                'placeholder' => null,
+                'placeholder' => false,
             ])
             // メッセージ
             ->add('message1', TextType::class, [

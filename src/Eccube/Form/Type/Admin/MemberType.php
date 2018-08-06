@@ -112,7 +112,7 @@ class MemberType extends AbstractType
                 'class' => 'Eccube\Entity\Master\Authority',
                 'expanded' => false,
                 'multiple' => false,
-                'placeholder' => 'form.empty_value',
+                'placeholder' => 'common.select',
                 'constraints' => [
                     new Assert\NotBlank(),
                 ],

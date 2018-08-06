@@ -53,7 +53,7 @@ class SearchProductType extends AbstractType
             ])
             ->add('category_id', MasterCategoryType::class, [
                 'label' => 'searchproduct.label.category',
-                'placeholder' => 'searchproduct.placeholder.select',
+                'placeholder' => 'common.select__all_products',
                 'required' => false,
             ])
             ->add('status', ProductStatusType::class, [
