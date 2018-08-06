@@ -37,7 +37,7 @@ file that was distributed with this source code.
                             <div class="col-sm-2 pr-2 pr-sm-3">
                                 <a href="#" data-toggle="modal" data-target="#searchPluginModal">
                                     <img class="w-100 img-responsive"
-                                         src="/html/template/admin/assets/img/plugin_temp/{{ random(7) }}.png" alt=""></a>
+                                         src="{{ asset('assets/img/plugin_temp/'~ random(7) ~'.png', 'admin')}}" alt=""></a>
                             </div>
                             <div class="col-sm-10 col-md-9">
                                 <div class="info">

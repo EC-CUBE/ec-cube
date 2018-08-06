@@ -122,7 +122,7 @@ file that was distributed with this source code.
                                 <div class="col-sm-2 pr-2 pr-sm-3">
                                     <a href="#" data-toggle="modal" data-target="#searchPluginModal">
                                         <img class="w-100 img-responsive"
-                                             src="/html/template/admin/assets/img/plugin_temp/{{  random(7) }}.png" alt=""></a>
+                                             src="{{ asset('assets/img/plugin_temp/'~ random(7) ~'.png', 'admin')}}" alt=""></a>
                                 </div>
                                 <div class="col-sm-6 col-md-7">
                                     <div class="info">
@@ -184,7 +184,7 @@ file that was distributed with this source code.
                     <div class="row mb-5">
                         <div class="col-6">
                             <img class="w-100 img-responsive"
-                                 src="/html/template/admin/assets/img/plugin_temp/{{  random(7) }}.png" alt="">
+                                 src="{{ asset('assets/img/plugin_temp/'~ random(7) ~'.png', 'admin')}}" alt="">
                         </div>
                         <div class="col-6">
                             <h5 class="font-weight-bold mb-3">EC-CUBEペイメント決済プラグイン(3.0系)</h5>
