@@ -23,6 +23,7 @@ use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\DeliveryFeeRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Service\PurchaseFlow\ItemHolderPreprocessor;
@@ -54,18 +55,18 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
     /**
      * DeliveryFeePreprocessor constructor.
      *
-     * @param BaseInfo $BaseInfo
+     * @param BaseInfoRepository $baseInfoRepository
      * @param EntityManagerInterface $entityManager
      * @param TaxRuleRepository $taxRuleRepository
      * @param DeliveryFeeRepository $deliveryFeeRepository
      */
     public function __construct(
-        BaseInfo $BaseInfo,
+        BaseInfoRepository $baseInfoRepository,
         EntityManagerInterface $entityManager,
         TaxRuleRepository $taxRuleRepository,
         DeliveryFeeRepository $deliveryFeeRepository
     ) {
-        $this->BaseInfo = $BaseInfo;
+        $this->BaseInfo = $baseInfoRepository->get();
         $this->entityManager = $entityManager;
         $this->taxRuleRepository = $taxRuleRepository;
         $this->deliveryFeeRepository = $deliveryFeeRepository;
