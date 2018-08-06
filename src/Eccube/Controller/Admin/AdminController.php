@@ -251,6 +251,7 @@ class AdminController extends AbstractController
      * @param Request $request
      *
      * @Route("/%eccube_admin_route%/sale_chart", name="admin_homepage_sale")
+     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function sale(Request $request)
@@ -258,7 +259,6 @@ class AdminController extends AbstractController
         if (!($request->isXmlHttpRequest() && $this->isTokenValid())) {
             return $this->json(['status' => 'NG'], 400);
         }
-
 
         /**
          * 売り上げ状況
@@ -283,11 +283,8 @@ class AdminController extends AbstractController
 
         $datas = [$rawWeekly, $rawMonthly, $rawYear];
 
-
         return $this->json($datas);
-
     }
-
 
     /**
      * パスワード変更画面
@@ -357,7 +354,7 @@ class AdminController extends AbstractController
     /**
      * 在庫なし商品の検索結果を表示する.
      *
-     * @Route("/%eccube_admin_route%/nonstock", name="admin_homepage_nonstock")
+     * @Route("/%eccube_admin_route%/search_nonstock", name="admin_homepage_nonstock")
      *
      * @param Request $request
      *
@@ -379,7 +376,7 @@ class AdminController extends AbstractController
     /**
      * 本会員の検索結果を表示する.
      *
-     * @Route("/%eccube_admin_route%/customer", name="admin_homepage_customer")
+     * @Route("/%eccube_admin_route%/search_customer", name="admin_homepage_customer")
      *
      * @param Request $request
      *
