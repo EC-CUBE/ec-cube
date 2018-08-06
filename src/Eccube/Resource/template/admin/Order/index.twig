@@ -588,7 +588,7 @@ file that was distributed with this source code.
                                                     {% endif %}
                                                 </td>
                                                 <td class="align-middle text-center">
-                                                    {% if Order.is_multiple %}
+                                                    {% if Shipping.Shipped %}
                                                         <a href="{{ url('admin_shipping_edit', { id: Order.id }) }}">
                                                             {% if Shipping.shipping_date %}
                                                                 {{ Shipping.shipping_date|date_day }}
@@ -596,6 +596,10 @@ file that was distributed with this source code.
                                                                 {{ 'admin.order.index.not_shipping'|trans }}
                                                             {% endif %}
                                                         </a>
+                                                        {% if Shipping.mail_send_date %}
+                                                            {% set send_mail_date = Shipping.mail_send_date|date_day %}
+                                                            <i class="fa fa-envelope fa-lg text-secondary" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="{{ 'admin.order.index.send_mail_date'|trans({'%date%': send_mail_date}) }}"></i>
+                                                        {% endif %}
                                                     {% else %}
                                                         {{ Shipping.shipping_date ? Shipping.shipping_date|date_day : 'admin.order.index.not_shipping'|trans }}
                                                     {% endif %}
