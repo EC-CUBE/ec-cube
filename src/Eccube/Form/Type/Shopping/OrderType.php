@@ -176,6 +176,10 @@ class OrderType extends AbstractType
                 // XXX 非会員購入の際, use_point が null で submit される？
                 if ($Order->getUsePoint() === null) {
                     $Order->setUsePoint(0);
+                } else {
+                    if ($Order->getTotal() != 0 && $Order->getUsePoint() > $Order->getTotal()) {
+                        $Order->setUsePoint($Order->getTotal());
+                    }
                 }
                 $Payment = $Order->getPayment();
                 $Order->setPaymentMethod($Payment ? $Payment->getMethod() : null);
