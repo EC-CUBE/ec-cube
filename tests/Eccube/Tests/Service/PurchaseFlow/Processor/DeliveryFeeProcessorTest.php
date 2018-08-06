@@ -101,36 +101,38 @@ class DeliveryFeeProcessorTest extends EccubeTestCase
         $BaseInfo->setOptionProductDeliveryFee(true);
         $this->entityManager->persist($BaseInfo);
         $this->entityManager->flush($BaseInfo);
-
-        if ($this->BaseInfoRepository->get()->isOptionProductDeliveryFee()) {
-            $this->ProductClass->setDeliveryFee(10000);
-            $this->entityManager->persist($this->ProductClass);
-            $this->entityManager->flush($this->ProductClass);
-        }
+        $deliveryFee = 10000;
+        $this->ProductClass->setDeliveryFee($deliveryFee);
+        $this->entityManager->persist($this->ProductClass);
+        $this->entityManager->flush($this->ProductClass);
 
         $processor = $this->container->get(DeliveryFeePreprocessor::class);
+        /** @var Order $Order */
         $Order = $this->container->get(Generator::class)->createOrder($this->createCustomer(), [$this->ProductClass]);
 
-        /*
-         * @var OrderItem
-         */
+        $quantity = 0;
+        foreach ($Order->getOrderItems() as $orderItem) {
+            if (!$orderItem->isProduct()) {
+                continue;
+            }
+            $quantity += $orderItem->getQuantity();
+        }
+
+        /** @var OrderItem $DeliveryFee */
+        $DeliveryFee = current($this->getDeliveryFees($Order));
+        $deliveryOriginal = $DeliveryFee->getTotalPrice();
+
         foreach ($Order->getOrderItems() as $OrderItem) {
             if ($OrderItem->isDeliveryFee()) {
                 $Order->getOrderItems()->removeElement($OrderItem);
             }
         }
 
-        $DeliveryFee = new OrderItem();
-        $OrderItemType = new OrderItemType();
-        $OrderItemType->setId(OrderItemType::DELIVERY_FEE);
-        $DeliveryFee->setOrderItemType($OrderItemType);
-        $Order->addItem($DeliveryFee);
-
         $processor->process($Order, new PurchaseContext());
-        $DeliveryFeeList = $this->getDeliveryFees($Order);
 
-        self::assertCount(1, $DeliveryFeeList);
-        self::assertSame($DeliveryFee, array_shift($DeliveryFeeList));
+        /** @var OrderItem $DeliveryFee */
+        $DeliveryFee = current($this->getDeliveryFees($Order));
+        $this->assertEquals($deliveryFee * $quantity + $deliveryOriginal, $DeliveryFee->getTotalPrice());
     }
 
     private function getDeliveryFees(Order $Order)
