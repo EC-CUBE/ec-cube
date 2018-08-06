@@ -65,11 +65,7 @@ common.point: ポイント
 # ブロック
 #----------------------------------------------------------------------------------------
 
-front.block.cart.total: 合計
-front.block.cart.tax_include: 税込
-front.block.cart.quantity: 数量
-front.block.cart.move_to_cart: カートへ進む
-front.block.cart.cancel: キャンセル
+front.block.cart.go_to_cart: カートへ進む
 front.block.cart.no_item: 現在カート内に商品はございません。
 front.block.free.free_message__intro: 5000円以上の購入で
 front.block.free.free_message__title: 送料無料
@@ -232,7 +228,6 @@ front.product.out_of_stock: ただいま品切れ中です。
 front.product.added_to_favorite: お気に入りに追加済です。
 front.product.nomal_price: 通常価格
 front.product.sale_price: 販売価格
-front.product.quantity: 数量
 front.product.code: 商品コード
 front.product.related_category: 関連カテゴリ
 front.product.continue: お買い物を続ける
@@ -253,9 +248,6 @@ front.cart.divide_cart: 同時購入できない商品がカートに含まれ�
 front.cart.delete: 削除
 front.cart.delete__confirm: カートから商品を削除してよろしいですか？
 front.cart.product: 商品内容
-front.cart.quantity: 数量
-front.cart.subtotal: 小計
-front.cart.total: 合計
 front.cart.checkout: レジに進む
 front.cart.continue: お買い物を続ける
 front.cart.no_items: 現在カート内に商品はございません。
