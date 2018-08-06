@@ -10,7 +10,7 @@ file that was distributed with this source code.
 #}
 {% extends '@admin/default_frame.twig' %}
 
-{% set menus = ['shipping', 'shipping_edit'] %}
+{% set menus = ['order', 'order_edit'] %}
 
 {% block title %}{{ 'admin.shipping.edit.title'|trans }}{% endblock %}
 {% block sub_title %}{{ 'admin.order.edit.241'|trans }}{% endblock %}
@@ -77,6 +77,12 @@ file that was distributed with this source code.
         $(document).on('click', '.delete', function(e) {
             // 商品削除
             $(this).parents('tr').remove();
+            $("#calculate").trigger('click');
+        });
+
+        $(document).on('click', '.delete-shipping', function(e) {
+            // お届け先削除
+            $(this).parents('div.card').remove();
             $("#calculate").trigger('click');
         });
 
@@ -237,7 +243,7 @@ file that was distributed with this source code.
                                                         {{ form_widget(shippingForm.notify_email, {'label_attr': {'class': 'checkbox-inline'}}) }}
                                                     </label>
                                                 </div>
-                                                {% if (attribute(Shippings, loop.index0).id) %}
+                                                {% if (shippingForm.vars.value.id) %}
                                                     <div>
                                                         <div class="d-inline-block" data-toggle="collapse"
                                                              href="#viewEmail_{{ loop.index0 }}" aria-expanded="false"
@@ -250,7 +256,7 @@ file that was distributed with this source code.
                                                         <div class="collapse bg-light p-4 ec-collapse bg-ec-formGray"
                                                              id="viewEmail_{{ loop.index0 }}"
                                                              style="word-wrap: break-word; word-break:break-all"
-                                                             data-preview-url="{{ url('admin_shipping_preview_notify_mail', {id: attribute(Shippings, loop.index0).id}) }}">
+                                                             data-preview-url="{{ url('admin_shipping_preview_notify_mail', {id: shippingForm.vars.value.id}) }}">
                                                             <pre></pre>
                                                         </div>
                                                     </div>
@@ -276,6 +282,38 @@ file that was distributed with this source code.
                                         </div>
                                     </div>
                                     <div class="col-4 text-right">
+                                        {% if form.shippings|length > 1 %}
+                                            <a class="btn btn-ec-regular mr-2" data-toggle="modal" data-target="#delete_shipping_{{ shippingForm.vars.id }}" data-tooltip="tooltip" data-placement="top" title="{{ 'common.label.delete'|trans }}">
+                                                <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
+                                                {{ 'admin.shipping.edit.delete.shipping'|trans }}
+                                            </a>
+                                            <div class="modal fade" id="delete_shipping_{{ shippingForm.vars.id }}" tabindex="-1" role="dialog" aria-labelledby="delete_shipping_{{ shippingForm.vars.id }}" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        {% if shippingForm.OrderItems|length > 0 %}
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title font-weight-bold">{{ 'admin.order.edit.cant.delete.shipping.modal.header'|trans }}</h5>
+                                                                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                            </div>
+                                                            <div class="modal-body text-left"><p class="text-left">{{ 'admin.order.edit.cant.delete.shipping.modal.body'|trans }}</p></div>
+                                                            <div class="modal-footer">
+                                                                <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'common.label.cancel'|trans }}</button>
+                                                            </div>
+                                                        {% else %}
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title font-weight-bold">{{ 'admin.order.edit.delete.shipping.modal.header'|trans }}</h5>
+                                                                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                            </div>
+                                                            <div class="modal-body text-left"><p class="text-left">{{ 'admin.order.edit.delete.shipping.modal.body'|trans }}</p></div>
+                                                            <div class="modal-footer">
+                                                                <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'common.label.cancel'|trans }}</button>
+                                                                <a href="#shipping-product_{{ loop.index0 }}" class="btn delete-shipping btn-ec-delete">{{ 'common.label.delete'|trans }}</a>
+                                                            </div>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endif %}
                                         <a data-toggle="collapse" href="#shipmentOverview_{{ loop.index0 }}" aria-expanded="false"
                                            aria-controls="shipmentOverview_{{ loop.index0 }}">
                                             <i class="fa fa-angle-up fa-lg" aria-hidden="true"></i>
@@ -287,14 +325,14 @@ file that was distributed with this source code.
                                 <div class="card-body">
                                     <div class="row mb-3">
                                         <div class="col-6">
-                                            {% if attribute(Shippings, loop.index0).id %}
+                                            {% if shippingForm.vars.value.id %}
                                                 {# 登録済みの出荷 #}
-                                                <a class="btn btn-ec-regular pdf-print" href="{{ url('admin_order_export_pdf') }}?ids[]={{ attribute(Shippings, loop.index0).id }}">{{ 'admin.order.edit.label.shipping.print'|trans }}</a>
+                                                <a class="btn btn-ec-regular pdf-print" href="{{ url('admin_order_export_pdf') }}?ids[]={{ shippingForm.vars.value.id }}">{{ 'admin.order.edit.label.shipping.print'|trans }}</a>
                                                 {# TODO: 出荷完了メール実装 #}
                                                 <button type="button" class="btn btn-ec-regular confirmationModal"
                                                         data-type="mail" data-bulk-update="false"
-                                                        data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: attribute(Shippings, loop.index0).id}) }}"
-                                                        data-notify-mail-url="{{ url('admin_shipping_notify_mail', { id: attribute(Shippings, loop.index0).id}) }}">
+                                                        data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: shippingForm.vars.value.id}) }}"
+                                                        data-notify-mail-url="{{ url('admin_shipping_notify_mail', { id: shippingForm.vars.value.id}) }}">
                                                     {{ 'admin.order.edit.label.shipping.shipped_mail'|trans }}
                                                 </button>
                                             {% else %}
@@ -458,16 +496,16 @@ file that was distributed with this source code.
                                                     {{ 'admin.shipping.edit.ship_date'|trans }}
                                                 </label>
                                                 <div class="col">
-                                                    {% if attribute(Shippings, loop.index0).shipping_date %}
+                                                    {% if shippingForm.vars.value.shipping_date %}
                                                         {# 登録済みの出荷で出荷日が設定されている場合 #}
-                                                        <span>{{ attribute(Shippings, loop.index0).shipping_date|date_day }}</span>
-                                                    {% elseif attribute(Shippings, loop.index0).id %}
+                                                        <span>{{ shippingForm.vars.value.shipping_date|date_day }}</span>
+                                                    {% elseif shippingForm.vars.value.id %}
                                                         {# 登録済みの出荷で出荷日が設定されていない場合 #}
                                                         <button type="button" class="btn btn-ec-regular mr-2 confirmationModal" href="javascript:;"
-                                                           data-id="{{ attribute(Shippings, loop.index0).id }}" data-type="status" data-bulk-update="false"
+                                                           data-id="{{ shippingForm.vars.value.id }}" data-type="status" data-bulk-update="false"
                                                            data-update-status-id="{{ constant('Eccube\\Entity\\Master\\OrderStatus::DELIVERED') }}"
-                                                           data-update-status-url="{{ url('admin_shipping_update_order_status', { id: attribute(Shippings, loop.index0).id}) }}"
-                                                           data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: attribute(Shippings, loop.index0).id}) }}"
+                                                           data-update-status-url="{{ url('admin_shipping_update_order_status', { id: shippingForm.vars.value.id}) }}"
+                                                           data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: shippingForm.vars.value.id}) }}"
                                                            data-toggle="tooltip" data-placement="top" title data-original-title="{{ '出荷済にする'|trans }}">
                                                             <i class="fa fa-check fa-lg text-secondary" aria-hidden="true"></i>
                                                             出荷完了にする
@@ -483,7 +521,7 @@ file that was distributed with this source code.
                                                     {{ 'admin.shipping.edit.last_update_date'|trans }}
                                                 </label>
                                                 <div class="col">
-                                                    <span>{{ attribute(Shippings, loop.index0).id ? attribute(Shippings, loop.index0).update_date|date_min }}</span>
+                                                    <span>{{ shippingForm.vars.value.id ? shippingForm.vars.value.update_date|date_min }}</span>
                                                 </div>
                                             </div>
                                             <div class="row mb-2 align-items-center">
@@ -492,7 +530,7 @@ file that was distributed with this source code.
                                                     {{ 'admin.shipping.edit.last_modified_by'|trans }}
                                                 </label>
                                                 <div class="col">
-                                                    <span>{{ attribute(Shippings, loop.index0).id ? attribute(Shippings, loop.index0).creator }}</span>
+                                                    <span>{{ shippingForm.vars.value.id ? shippingForm.vars.value.creator }}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -508,7 +546,7 @@ file that was distributed with this source code.
                                             </button>
                                             <a class="btn btn-ec-regular mr-2 addOtherProduct-button" data-toggle="modal" data-target="#addOrderItemType" data-shipping-no="{{ loop.index0 }}">{{ 'admin.order.edit.btn.add_other_item'|trans }}</a>
                                             {# 明細行のエラー表示 #}
-                                            {{ form_errors(shippingForm.OrderItemsError) }}
+                                            {{ form_errors(shippingForm.OrderItemsErrors) }}
                                         </div>
                                     </div>
                                     <div class="row">

@@ -108,7 +108,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
         /** @var \Swift_Message $Message */
         $Message = $collectedMessages[0];
 
-        $BaseInfo = $this->container->get(BaseInfo::class);
+        $BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
         $this->expected = '['.$BaseInfo->getShopName().'] '.$form['mail_subject'];
         $this->actual = $Message->getSubject();
         $this->verify();
@@ -169,7 +169,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $Messages = $mailCollector->getMessages();
         $Message = $Messages[0];
 
-        $BaseInfo = $this->container->get(BaseInfo::class);
+        $BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
         $this->expected = '['.$BaseInfo->getShopName().'] '.$form['mail_subject'];
         $this->actual = $Message->getSubject();
         $this->verify();

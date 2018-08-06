@@ -138,6 +138,11 @@ class PageController extends AbstractController
             $form->get('tpl_data')->setData($source);
 
             $fileName = $Page->getFileName();
+        } elseif ($request->getMethod() === 'GET' && !$form->isSubmitted()) {
+            $source = $twig->getLoader()
+                ->getSourceContext('@admin/empty_page.twig')
+                ->getCode();
+            $form->get('tpl_data')->setData($source);
         }
 
         $form->handleRequest($request);

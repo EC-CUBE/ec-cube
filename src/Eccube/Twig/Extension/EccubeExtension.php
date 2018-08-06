@@ -326,4 +326,24 @@ class EccubeExtension extends AbstractExtension
 
         return $html;
     }
+
+    /**
+     * URLに対する権限有無チェック
+     *
+     * @param $target
+     * @param $AuthorityRoles
+     *
+     * @return boolean
+     */
+    public function isAuthorizedUrl($target, $AuthorityRoles)
+    {
+        foreach ($AuthorityRoles as $authorityRole) {
+            $denyUrl = str_replace('/', '\/', $authorityRole);
+            if (preg_match("/^({$denyUrl})/i", $target)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

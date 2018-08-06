@@ -18,6 +18,7 @@ use Eccube\Entity\BaseInfo;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Service\PurchaseFlow\ItemHolderValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseProcessor;
@@ -41,12 +42,12 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
      * AddPointProcessor constructor.
      *
      * @param EntityManagerInterface $entityManager
-     * @param BaseInfo $BaseInfo
+     * @param BaseInfoRepository $baseInfoRepository
      */
-    public function __construct(EntityManagerInterface $entityManager, BaseInfo $BaseInfo)
+    public function __construct(EntityManagerInterface $entityManager, BaseInfoRepository $baseInfoRepository)
     {
         $this->entityManager = $entityManager;
-        $this->BaseInfo = $BaseInfo;
+        $this->BaseInfo = $baseInfoRepository->get();
     }
 
     /*

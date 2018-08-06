@@ -23,6 +23,7 @@ use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\MailHistoryRepository;
 use Eccube\Repository\MailTemplateRepository;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -71,7 +72,7 @@ class MailService
      * @param \Swift_Mailer $mailer
      * @param MailTemplateRepository $mailTemplateRepository
      * @param MailHistoryRepository $mailHistoryRepository
-     * @param BaseInfo $baseInfo
+     * @param BaseInfoRepository $baseInfoRepository
      * @param EventDispatcherInterface $eventDispatcher
      * @param \Twig_Environment $twig
      * @param EccubeConfig $eccubeConfig
@@ -80,7 +81,7 @@ class MailService
         \Swift_Mailer $mailer,
         MailTemplateRepository $mailTemplateRepository,
         MailHistoryRepository $mailHistoryRepository,
-        BaseInfo $baseInfo,
+        BaseInfoRepository $baseInfoRepository,
         EventDispatcherInterface $eventDispatcher,
         \Twig_Environment $twig,
         EccubeConfig $eccubeConfig
@@ -88,7 +89,7 @@ class MailService
         $this->mailer = $mailer;
         $this->mailTemplateRepository = $mailTemplateRepository;
         $this->mailHistoryRepository = $mailHistoryRepository;
-        $this->BaseInfo = $baseInfo;
+        $this->BaseInfo = $baseInfoRepository->get();
         $this->eventDispatcher = $eventDispatcher;
         $this->eccubeConfig = $eccubeConfig;
         $this->twig = $twig;

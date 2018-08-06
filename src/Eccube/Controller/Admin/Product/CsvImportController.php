@@ -26,6 +26,7 @@ use Eccube\Entity\ProductStock;
 use Eccube\Entity\ProductTag;
 use Eccube\Exception\CsvImportException;
 use Eccube\Form\Type\Admin\CsvImportType;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\DeliveryDurationRepository;
@@ -95,9 +96,9 @@ class CsvImportController extends AbstractCsvImportController
      * @param ClassCategoryRepository $classCategoryRepository
      * @param ProductStatusRepository $productStatusRepository
      * @param ProductRepository $productRepository
-     * @param BaseInfo $BaseInfo
+     * @param BaseInfoRepository $baseInfoRepository
      */
-    public function __construct(DeliveryDurationRepository $deliveryDurationRepository, SaleTypeRepository $saleTypeRepository, TagRepository $tagRepository, CategoryRepository $categoryRepository, ClassCategoryRepository $classCategoryRepository, ProductStatusRepository $productStatusRepository, ProductRepository $productRepository, BaseInfo $BaseInfo)
+    public function __construct(DeliveryDurationRepository $deliveryDurationRepository, SaleTypeRepository $saleTypeRepository, TagRepository $tagRepository, CategoryRepository $categoryRepository, ClassCategoryRepository $classCategoryRepository, ProductStatusRepository $productStatusRepository, ProductRepository $productRepository, BaseInfoRepository $baseInfoRepository)
     {
         $this->deliveryDurationRepository = $deliveryDurationRepository;
         $this->saleTypeRepository = $saleTypeRepository;
@@ -106,7 +107,7 @@ class CsvImportController extends AbstractCsvImportController
         $this->classCategoryRepository = $classCategoryRepository;
         $this->productStatusRepository = $productStatusRepository;
         $this->productRepository = $productRepository;
-        $this->BaseInfo = $BaseInfo;
+        $this->BaseInfo = $baseInfoRepository->get();
     }
 
     /**
