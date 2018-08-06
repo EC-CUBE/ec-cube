@@ -140,9 +140,9 @@ file that was distributed with this source code.
                                             {{ form_errors(form.name) }}
                                         </div>
                                         <div class="col-auto align-items-center">
-                                            <button class="btn btn-ec-regular" type="submit">
+                                            <a class="btn btn-ec-regular">
                                                 {{ 'admin.product.tag.create'|trans }}
-                                            </button>
+                                            </a>
                                         </div>
                                     </form>
                                 </li>
@@ -192,20 +192,20 @@ file that was distributed with this source code.
                                                     <div class="modal-header">
                                                         <h5 class="modal-title font-weight-bold">
                                                             {{ 'admin.product.tag.delete.confirm.title'|trans }}</h5>
-                                                        <button class="close" type="button"
+                                                        <a class="close"
                                                                 data-dismiss="modal"
                                                                 aria-label="Close"><span
                                                                     aria-hidden="true">×</span>
-                                                        </button>
+                                                        </a>
                                                     </div>
                                                     <div class="modal-body text-left">
                                                         <p class="text-left">
                                                             {{ 'admin.product.tag.delete.confirm.message'|trans }}</p>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button class="btn btn-ec-sub" type="button"
+                                                        <a class="btn btn-ec-sub"
                                                                 data-dismiss="modal">{{ 'admin.product.index.cancel'|trans }}
-                                                        </button>
+                                                        </a>
                                                         <a
                                                                 href="{{ url('admin_product_tag_delete', {'id' : Tag.id}) }}"
                                                                 class="btn btn-ec-delete"
@@ -226,10 +226,10 @@ file that was distributed with this source code.
                                                 {{ form_errors(forms[Tag.id].name) }}
                                             </div>
                                             <div class="col-auto align-items-center">
-                                                <button class="btn btn-ec-conversion" type="submit">{{ 'admin.product.tag.ok'|trans }}</button>
+                                                <a class="btn btn-ec-conversion">{{ 'admin.product.tag.ok'|trans }}</a>
                                             </div>
                                             <div class="col-auto align-items-center">
-                                                <button class="btn btn-ec-sub action-edit-cancel" type="button">{{ 'admin.product.tag.cancel'|trans }}</button>
+                                                <a class="btn btn-ec-sub action-edit-cancel">{{ 'admin.product.tag.cancel'|trans }}</a>
                                             </div>
                                         </form>
                                     </li>
