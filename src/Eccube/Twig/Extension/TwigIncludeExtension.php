@@ -28,7 +28,7 @@ class TwigIncludeExtension extends AbstractExtension
     {
         return [
             new \Twig_Function('include_dispatch', [$this, 'include_dispatch'],
-                array('needs_context' => true, 'is_safe' => array('all'))),
+                ['needs_context' => true, 'is_safe' => ['all']]),
         ];
     }
 
