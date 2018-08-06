@@ -169,10 +169,8 @@ class CartService
 
     /**
      * 会員が保持する永続化されたカートと、非会員時のカートをマージする.
-     *
-     * @param Customer $Customer
      */
-    public function mergeFromPersistedCart(Customer $Customer)
+    public function mergeFromPersistedCart()
     {
         $CartItems = [];
         foreach ($this->getPersistedCarts() as $Cart) {
