@@ -16,132 +16,161 @@ file that was distributed with this source code.
 {% block javascript %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
     <script>
+        $(function() {
 
-        Chart.plugins.register({
-            afterDatasetsDraw: function(chart, easing) {
-                var ctx = chart.ctx;
+            Chart.plugins.register({
+                afterDatasetsDraw: function(chart, easing) {
+                    var ctx = chart.ctx;
 
-                chart.data.datasets.forEach(function(dataset, i) {
-                    var meta = chart.getDatasetMeta(i);
-                    if (!meta.hidden) {
-                        meta.data.forEach(function(element, index) {
-                            ctx.fillStyle = 'rgb(0, 0, 0)';
+                    chart.data.datasets.forEach(function(dataset, i) {
+                        var meta = chart.getDatasetMeta(i);
+                        if (!meta.hidden) {
+                            meta.data.forEach(function(element, index) {
+                                ctx.fillStyle = 'rgb(0, 0, 0)';
 
-                            var fontSize = 14;
-                            var fontStyle = 'initial';
-                            var fontFamily = '-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol';
-                            ctx.font = Chart.helpers.fontString(fontSize, fontStyle, fontFamily);
+                                var fontSize = 14;
+                                var fontStyle = 'initial';
+                                var fontFamily = '-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol';
+                                ctx.font = Chart.helpers.fontString(fontSize, fontStyle, fontFamily);
 
-                            // Just naively convert to string for now
-                            if (meta.yAxisID != 'y-axis-2') {
-                                var dataString = '¥' + dataset.data[index].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                            } else {
-                                var dataString = dataset.data[index].toString();
-                            }
+                                // Just naively convert to string for now
+                                if (meta.yAxisID != 'y-axis-2') {
+                                    var dataString = '¥' + dataset.data[index].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                                } else {
+                                    var dataString = dataset.data[index].toString();
+                                }
 
-                            // Make sure alignment settings are correct
-                            ctx.textAlign = 'center';
-                            ctx.textBaseline = 'middle';
+                                // Make sure alignment settings are correct
+                                ctx.textAlign = 'center';
+                                ctx.textBaseline = 'middle';
 
-                            var padding = 2;
-                            var position = element.tooltipPosition();
-                            ctx.fillText(dataString, position.x, position.y - (fontSize / 2) - padding);
-                        });
-                    }
-                });
-            }
-        });
-
-
-        var options = {
-            legend: {
-                // display: false
-                position: 'bottom'
-            },
-            layout: {
-                padding: {
-                    left: 0,
-                    right: 0,
-                    top: 25,
-                    bottom: 0
+                                var padding = 2;
+                                var position = element.tooltipPosition();
+                                ctx.fillText(dataString, position.x, position.y - (fontSize / 2) - padding);
+                            });
+                        }
+                    });
                 }
-            },
-            // tooltips: {
-            //     callbacks: {
-            //         label: function(tooltipItem, data) {
-            //             console.log(tooltipItem);
-            //             return '¥' + tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-            //         }
-            //     }
-            // },
-            scales: {
-                yAxes: [
-                    {
-                        id: 'y-axis-1',
-                        display: false,
-                        ticks: {
-                            beginAtZero: true,
-                            callback: function(label, index, labels) {
-                                return '¥' + label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                            }
-                        }
-                    },
-                    {
-                        id: 'y-axis-2',
-                        display: false,
-                        ticks: {
-                            beginAtZero: true,
-                            stepSize: 50,
-                            callback: function(label, index, labels) {
-                                return label.toString();
-                            }
-                        }
-                    }
-                ]
-            }
-        };
+            });
 
-        {% for data in datas %}
-        var ctx{{ loop.index }} = document.getElementById('chart-' + {{ loop.index }}).getContext('2d');
-        var chartYear = new Chart(ctx{{ loop.index }}, {
-            type: 'bar',
-            data: {
-                labels: [{% for key, value in data %}'{{ key }}'{% if not loop.last %},{% endif %}{% endfor %}],
-                datasets: [
-                    {
-                        type: 'bar',
-                        label: '{{ 'admin.index.label.payment_total'|trans }}',
-                        data: [{% for key, value in data %}{{ value['price'] }}{% if not loop.last %},{% endif %}{% endfor %}],
-                        backgroundColor: [
-                            {% for value in data %}'rgba(54, 162, 235, 0.2)'{% if not loop.last %},{% endif %}{% endfor %}
-                        ],
-                        borderColor: [
-                            {% for value in data %}'rgba(54, 162, 235, 1)'{% if not loop.last %},{% endif %}{% endfor %}
-                        ],
-                        borderWidth: 1,
-                        yAxisID: 'y-axis-1'
-                    },
-                    {
-                        type: 'line',
-                        label: '{{ 'admin.index.label.sales.count'|trans }}',
-                        data: [{% for key, value in data %}{{ value['count'] }}{% if not loop.last %},{% endif %}{% endfor %}],
-                        backgroundColor: [
-                            {% for value in data %}'rgba(254,97,132, 0.2)'{% if not loop.last %},{% endif %}{% endfor %}
-                        ],
-                        borderColor: [
-                            {% for value in data %}'rgba(254,97,132, 1)'{% if not loop.last %},{% endif %}{% endfor %}
-                        ],
-                        pointBackgroundColor: "rgba(254,97,132,0.8)",
-                        fill: false,
-                        tension: 0,
-                        borderWidth: 1,
-                        yAxisID: 'y-axis-2'
+
+            var options = {
+                legend: {
+                    // display: false
+                    position: 'bottom'
+                },
+                layout: {
+                    padding: {
+                        left: 0,
+                        right: 0,
+                        top: 25,
+                        bottom: 0
                     }
-                ]
-            },
-            options: options
+                },
+                // tooltips: {
+                //     callbacks: {
+                //         label: function(tooltipItem, data) {
+                //             console.log(tooltipItem);
+                //             return '¥' + tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                //         }
+                //     }
+                // },
+                scales: {
+                    yAxes: [
+                        {
+                            id: 'y-axis-1',
+                            display: false,
+                            ticks: {
+                                beginAtZero: true,
+                                callback: function(label, index, labels) {
+                                    return '¥' + label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                                }
+                            }
+                        },
+                        {
+                            id: 'y-axis-2',
+                            display: false,
+                            ticks: {
+                                beginAtZero: true,
+                                stepSize: 50,
+                                callback: function(label, index, labels) {
+                                    return label.toString();
+                                }
+                            }
+                        }
+                    ]
+                }
+            };
+
+            var priceBackgroundColor = 'rgba(54, 162, 235, 0.2)';
+            var priceBorderColor = 'rgba(54, 162, 235, 1)';
+            var countBackgroundColor = 'rgba(254,97,132, 0.2)';
+            var countBorderColor = 'rgba(254,97,132, 1)';
+
+            $.ajax({
+                url: '{{ url('admin_homepage_sale') }}',
+                type: 'GET',
+                dataType: 'json'
+            }).done(function(datas) {
+
+                for (var i = 0; i < datas.length; i++) {
+                    var data = datas[i];
+
+                    var labels = [];
+                    var prices = [];
+                    var counts = [];
+                    var priceBackgroundColors = [];
+                    var priceBorderColors = [];
+                    var countBackgroundColors = [];
+                    var countBorderColors = [];
+                    Object.keys(data).forEach(function(key) {
+                        labels.push(key);
+                        prices.push(data[key].price);
+                        counts.push(data[key].count);
+                        priceBackgroundColors.push(priceBackgroundColor);
+                        priceBorderColors.push(priceBorderColor);
+                        countBackgroundColors.push(countBackgroundColor);
+                        countBorderColors.push(countBorderColor);
+                    });
+
+                    var ctx = $('#chart-' + i)[0].getContext('2d');
+                    var chart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [
+                                {
+                                    type: 'bar',
+                                    label: '{{ 'admin.index.label.payment_total'|trans }}',
+                                    data: prices,
+                                    backgroundColor: priceBackgroundColors,
+                                    borderColor: priceBorderColors,
+                                    borderWidth: 1,
+                                    yAxisID: 'y-axis-1'
+                                },
+                                {
+                                    type: 'line',
+                                    label: '{{ 'admin.index.label.sales.count'|trans }}',
+                                    data: counts,
+                                    backgroundColor: countBackgroundColors,
+                                    borderColor: countBorderColors,
+                                    pointBackgroundColor: "rgba(254,97,132,0.8)",
+                                    fill: false,
+                                    tension: 0,
+                                    borderWidth: 1,
+                                    yAxisID: 'y-axis-2'
+                                }
+                            ]
+                        },
+                        options: options
+                    });
+                }
+            }).fail(function(data) {
+            }).always(function() {
+                $('#loading').hide();
+            });
+
         });
-        {% endfor %}
 
     </script>
 {% endblock javascript %}
@@ -225,15 +254,18 @@ file that was distributed with this source code.
                                 </div>
                                 <div class="row">
                                     <div class="col">
+                                        <div id="loading" class="text-center pt-5">
+                                            <img src="{{ asset('assets/img/loading.gif', 'admin') }}">
+                                        </div>
                                         <div class="tab-content" id="pills-tabContent">
                                             <div class="tab-pane fade show active" id="pills-weekly" role="tabpanel" aria-labelledby="pills-weekly-tab">
-                                                <canvas id="chart-1"></canvas>
+                                                <canvas id="chart-0"></canvas>
                                             </div>
                                             <div class="tab-pane fade" id="pills-monthly" role="tabpanel" aria-labelledby="pills-monthly-tab">
-                                                <canvas id="chart-2"></canvas>
+                                                <canvas id="chart-1"></canvas>
                                             </div>
                                             <div class="tab-pane fade" id="pills-year" role="tabpanel" aria-labelledby="pills-year-tab">
-                                                <canvas id="chart-3"></canvas>
+                                                <canvas id="chart-2"></canvas>
                                             </div>
                                         </div>
                                     </div>

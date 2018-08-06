@@ -206,21 +206,6 @@ class AdminController extends AbstractController
         // 今月の売上/件数
         $salesThisMonth = $this->getSalesByMonth($this->entityManager, new \DateTime(), $excludes);
 
-        // 週間の売上金額
-        $toDate = Carbon::now();
-        $fromDate = Carbon::today()->subWeek();
-        $rawWeekly = $this->getData($excludes, $fromDate, $toDate, 'Y/m/d');
-
-        // 月間の売上金額
-        $fromDate = Carbon::now()->startOfMonth();
-        $rawMonthly = $this->getData($excludes, $fromDate, $toDate, 'Y/m/d');
-
-        // 年間の売上金額
-        $fromDate = Carbon::now()->subYear()->startOfMonth();
-        $rawYear = $this->getData($excludes, $fromDate, $toDate, 'Y/m');
-
-        $datas = [$rawWeekly, $rawMonthly, $rawYear];
-
         /**
          * ショップ状況
          */
@@ -243,7 +228,6 @@ class AdminController extends AbstractController
                 'countNonStockProducts' => $countNonStockProducts,
                 'countProducts' => $countProducts,
                 'countCustomers' => $countCustomers,
-                'datas' => $datas,
             ],
             $request
         );
@@ -258,9 +242,52 @@ class AdminController extends AbstractController
             'countNonStockProducts' => $countNonStockProducts,
             'countProducts' => $countProducts,
             'countCustomers' => $countCustomers,
-            'datas' => $datas,
         ];
     }
+
+    /**
+     * 売上状況の取得
+     *
+     * @param Request $request
+     *
+     * @Route("/%eccube_admin_route%/sale_chart", name="admin_homepage_sale")
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function sale(Request $request)
+    {
+        if (!($request->isXmlHttpRequest() && $this->isTokenValid())) {
+            return $this->json(['status' => 'NG'], 400);
+        }
+
+
+        /**
+         * 売り上げ状況
+         */
+        $excludes = [];
+        $excludes[] = OrderStatus::PROCESSING;
+        $excludes[] = OrderStatus::CANCEL;
+        $excludes[] = OrderStatus::PENDING;
+
+        // 週間の売上金額
+        $toDate = Carbon::now();
+        $fromDate = Carbon::today()->subWeek();
+        $rawWeekly = $this->getData($excludes, $fromDate, $toDate, 'Y/m/d');
+
+        // 月間の売上金額
+        $fromDate = Carbon::now()->startOfMonth();
+        $rawMonthly = $this->getData($excludes, $fromDate, $toDate, 'Y/m/d');
+
+        // 年間の売上金額
+        $fromDate = Carbon::now()->subYear()->startOfMonth();
+        $rawYear = $this->getData($excludes, $fromDate, $toDate, 'Y/m');
+
+        $datas = [$rawWeekly, $rawMonthly, $rawYear];
+
+
+        return $this->json($datas);
+
+    }
+
 
     /**
      * パスワード変更画面
