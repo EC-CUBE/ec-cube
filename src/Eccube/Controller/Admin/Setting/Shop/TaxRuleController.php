@@ -19,6 +19,7 @@ use Eccube\Entity\TaxRule;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\TaxRuleType;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -44,12 +45,12 @@ class TaxRuleController extends AbstractController
     /**
      * TaxRuleController constructor.
      *
-     * @param BaseInfo $BaseInfo
+     * @param BaseInfoRepository $baseInfoRepository
      * @param TaxRuleRepository $taxRuleRepository
      */
-    public function __construct(BaseInfo $BaseInfo, TaxRuleRepository $taxRuleRepository)
+    public function __construct(BaseInfoRepository $baseInfoRepository, TaxRuleRepository $taxRuleRepository)
     {
-        $this->BaseInfo = $BaseInfo;
+        $this->BaseInfo = $baseInfoRepository->get();
         $this->taxRuleRepository = $taxRuleRepository;
     }
 

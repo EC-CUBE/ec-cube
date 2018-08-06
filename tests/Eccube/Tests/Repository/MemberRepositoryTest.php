@@ -42,7 +42,7 @@ class MemberRepositoryTest extends EccubeTestCase
         $Work = $this->entityManager->getRepository('Eccube\Entity\Master\Work')
             ->find(\Eccube\Entity\Master\Work::ACTIVE);
 
-      for ($i = 0; $i < 3; $i++) {
+        for ($i = 0; $i < 3; $i++) {
             $Member = new Member();
             $salt = bin2hex(openssl_random_pseudo_bytes(5));
             $password = 'password';

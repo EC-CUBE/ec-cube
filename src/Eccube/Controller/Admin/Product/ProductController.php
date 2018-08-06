@@ -30,6 +30,7 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\ProductType;
 use Eccube\Form\Type\Admin\SearchProductType;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\Master\PageMaxRepository;
 use Eccube\Repository\Master\ProductStatusRepository;
@@ -115,7 +116,7 @@ class ProductController extends AbstractController
      * @param TaxRuleRepository $taxRuleRepository
      * @param CategoryRepository $categoryRepository
      * @param ProductRepository $productRepository
-     * @param BaseInfo $BaseInfo
+     * @param BaseInfoRepository $baseInfoRepository
      * @param PageMaxRepository $pageMaxRepository
      * @param ProductStatusRepository $productStatusRepository
      * @param TagRepository $tagRepository
@@ -127,7 +128,7 @@ class ProductController extends AbstractController
         TaxRuleRepository $taxRuleRepository,
         CategoryRepository $categoryRepository,
         ProductRepository $productRepository,
-        BaseInfo $BaseInfo,
+        BaseInfoRepository $baseInfoRepository,
         PageMaxRepository $pageMaxRepository,
         ProductStatusRepository $productStatusRepository,
         TagRepository $tagRepository
@@ -138,7 +139,7 @@ class ProductController extends AbstractController
         $this->taxRuleRepository = $taxRuleRepository;
         $this->categoryRepository = $categoryRepository;
         $this->productRepository = $productRepository;
-        $this->BaseInfo = $BaseInfo;
+        $this->BaseInfo = $baseInfoRepository->get();
         $this->pageMaxRepository = $pageMaxRepository;
         $this->productStatusRepository = $productStatusRepository;
         $this->tagRepository = $tagRepository;

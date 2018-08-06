@@ -44,7 +44,7 @@ class CartValidationTest extends AbstractWebTestCase
         parent::setUp();
         $this->productStatusRepository = $this->container->get(ProductStatusRepository::class);
         $this->cartService = $this->container->get(CartService::class);
-        $this->BaseInfo = $this->container->get(BaseInfo::class);
+        $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
     }
 
     /**

@@ -122,6 +122,9 @@ class EA06ContentsManagementCest
         $page = 'page_'.$faker->word;
         PageManagePage::go($I)->新規入力();
 
+        /* 新規作成時の初期タグ */
+        $I->assertEquals(PageEditPage::at($I)->出力_内容(), "{% extends 'default_frame.twig' %}\n\n{% block main %}\n\n{% endblock %}");
+
         /* 作成 */
         PageEditPage::at($I)
             ->入力_名称($page)
