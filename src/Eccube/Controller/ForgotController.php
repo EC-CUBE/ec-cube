@@ -186,7 +186,7 @@ class ForgotController extends AbstractController
             $Customer = $this->customerRepository
                 ->getRegularCustomerByResetKey($reset_key);
             if (is_null($Customer)) {
-                throw new HttpException\NotFoundHttpException(trans('forgotcontroller.text.error.url'));
+                throw new HttpException\NotFoundHttpException();
             }
 
             // パスワードの発行・更新

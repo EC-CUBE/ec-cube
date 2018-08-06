@@ -70,12 +70,12 @@ class ClassCategoryController extends AbstractController
     {
         $ClassName = $this->classNameRepository->find($class_name_id);
         if (!$ClassName) {
-            throw new NotFoundHttpException(trans('classcategory.text.error.no_option'));
+            throw new NotFoundHttpException();
         }
         if ($id) {
             $TargetClassCategory = $this->classCategoryRepository->find($id);
             if (!$TargetClassCategory || $TargetClassCategory->getClassName() != $ClassName) {
-                throw new NotFoundHttpException(trans('classcategory.text.error.no_option'));
+                throw new NotFoundHttpException();
             }
         } else {
             $TargetClassCategory = new \Eccube\Entity\ClassCategory();
@@ -164,7 +164,7 @@ class ClassCategoryController extends AbstractController
 
         $ClassName = $this->classNameRepository->find($class_name_id);
         if (!$ClassName) {
-            throw new NotFoundHttpException(trans('classcategory.text.error.no_option'));
+            throw new NotFoundHttpException();
         }
 
         log_info('規格分類削除開始', [$id]);
@@ -221,7 +221,7 @@ class ClassCategoryController extends AbstractController
 
         $ClassName = $this->classNameRepository->find($class_name_id);
         if (!$ClassName) {
-            throw new NotFoundHttpException(trans('classcategory.text.error.no_option'));
+            throw new NotFoundHttpException();
         }
 
         log_info('規格分類表示変更開始', [$id]);

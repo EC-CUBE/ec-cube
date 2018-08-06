@@ -457,7 +457,7 @@ class ShoppingController extends AbstractShoppingController
             $addressCurrNum = count($this->getUser()->getCustomerAddresses());
             $addressMax = $this->eccubeConfig['eccube_deliv_addr_max'];
             if ($addressCurrNum >= $addressMax) {
-                throw new NotFoundHttpException(trans('shoppingcontroller.text.error.number_of_address'));
+                throw new NotFoundHttpException();
             }
         }
 
@@ -478,7 +478,7 @@ class ShoppingController extends AbstractShoppingController
 
         $Shipping = $Order->findShipping($id);
         if (!$Shipping) {
-            throw new NotFoundHttpException(trans('shoppingcontroller.text.error.set_address'));
+            throw new NotFoundHttpException();
         }
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             $Shipping->clearCustomerAddress();

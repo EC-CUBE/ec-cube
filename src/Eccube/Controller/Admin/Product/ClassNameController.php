@@ -53,7 +53,7 @@ class ClassNameController extends AbstractController
         if ($id) {
             $TargetClassName = $this->classNameRepository->find($id);
             if (!$TargetClassName) {
-                throw new NotFoundHttpException(trans('classname.text.error.no_option'));
+                throw new NotFoundHttpException();
             }
         } else {
             $TargetClassName = new \Eccube\Entity\ClassName();

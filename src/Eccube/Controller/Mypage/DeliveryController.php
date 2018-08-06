@@ -78,7 +78,7 @@ class DeliveryController extends AbstractController
             $addressCurrNum = count($Customer->getCustomerAddresses());
             $addressMax = $this->eccubeConfig['eccube_deliv_addr_max'];
             if ($addressCurrNum >= $addressMax) {
-                throw new NotFoundHttpException(trans('delivery.text.error.max_delivery_address'));
+                throw new NotFoundHttpException();
             }
         }
 

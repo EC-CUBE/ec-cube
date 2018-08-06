@@ -68,7 +68,7 @@ class CategoryController extends AbstractController
             /** @var Category $Parent */
             $Parent = $this->categoryRepository->find($parent_id);
             if (!$Parent) {
-                throw new NotFoundHttpException(trans('category.text.error.no_parent_category'));
+                throw new NotFoundHttpException();
             }
         } else {
             $Parent = null;
@@ -76,7 +76,7 @@ class CategoryController extends AbstractController
         if ($id) {
             $TargetCategory = $this->categoryRepository->find($id);
             if (!$TargetCategory) {
-                throw new NotFoundHttpException(trans('category.text.error.no_category'));
+                throw new NotFoundHttpException();
             }
             $Parent = $TargetCategory->getParent();
         } else {
