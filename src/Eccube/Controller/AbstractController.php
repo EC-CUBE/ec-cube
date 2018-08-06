@@ -153,6 +153,9 @@ class AbstractController extends Controller
         $this->addWarning('admin.delete.warning', 'admin');
     }
 
+    /**
+     * @param string $targetPath
+     */
     public function setLoginTargetPath($targetPath, $namespace = null)
     {
         if (is_null($namespace)) {
@@ -169,7 +172,7 @@ class AbstractController extends Controller
      * @param array  $path An array of path parameters
      * @param array  $query An array of query parameters
      *
-     * @return Response A Response instance
+     * @return \Symfony\Component\HttpFoundation\Response A Response instance
      */
     public function forwardToRoute($route, array $path = [], array $query = [])
     {

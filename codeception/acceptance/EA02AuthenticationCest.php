@@ -1,7 +1,5 @@
 <?php
 
-use Codeception\Util\Fixtures;
-
 /**
  * @group admin
  * @group admin01

@@ -48,6 +48,6 @@ abstract class AbstractRepository extends ServiceEntityRepository
     {
         // $options = $this->eccubeConfig['doctrine_cache'];
         // return $options['result_cache']['lifetime'];
-        return 0;               // FIXME
+        return 0; // FIXME
     }
 }
