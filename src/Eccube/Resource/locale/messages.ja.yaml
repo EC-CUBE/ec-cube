@@ -359,8 +359,17 @@ admin.common.file_select_empty: 選択されていません
 admin.common.csv_invalid_format: CSVのフォーマットが一致しません
 admin.common.csv_invalid_no_data: CSVデータが存在しません
 admin.common.csv_invalid_required: '%line%行目の%name%が設定されていません'
+admin.common.csv_invalid_greater_than_zero: '%line%行目の%name%は0以上の数値を設定してください。'
 admin.common.csv_invalid_format_line: '%line%行目のCSVフォーマットが一致しません'
 admin.common.csv_invalid_date_format: '%line%行目%name%の日付フォーマットが異なります'
+admin.common.csv_invalid_not_found: '%line%行目の%name%が存在しません'
+admin.common.csv_invalid_not_found_target: '%line%行目の%name%「%target_name%」が存在しません'
+admin.common.csv_invalid_not_same: '%line%行目の%name1%と%name2%には同じ値を使用できません'
+admin.common.csv_invalid_can_not: '%line%行目の%name%は設定できません'
+admin.common.csv_invalid_image: '%line%行目の%name%には末尾に"/"や"../"を使用できません'
+
+
+
 admin.common.drag_and_drop_description: 項目の順番はドラッグ＆ドロップでも変更可能です。
 
 # エンティティに関連するラベル
@@ -432,7 +441,6 @@ admin.product.product_id: 商品ID
 admin.product.product_id__short: ID
 admin.product.display_status: 公開ステータス
 admin.product.display_status__short: 公開状態
-admin.product.display_status__product_csv_col: 公開ステータス(ID)
 admin.product.display_status__show: 公開
 admin.product.display_status__hide: 非公開
 admin.product.display_status__abolished: 廃止
@@ -440,11 +448,8 @@ admin.product.name: 商品名
 amdin.product.image: 商品画像
 amdin.product.image__short: 画像
 admin.product.sale_type: 販売種別
-admin.product.sale_type__product_csv_col: 販売種別(ID)
 admin.product.description_detail: 商品説明
-admin.product.description_detail__product_csv_col: 商品説明(詳細)
 admin.product.description_list: 商品説明(一覧)
-admin.product.description_list__product_csv_col: 商品説明(一覧)
 admin.product.description_list__add: 商品説明(一覧)を追加
 admin.product.sale_price: 販売価格(一覧) # price02
 admin.product.nomal_price: 通常価格(一覧) # price01
@@ -454,9 +459,7 @@ admin.product.product_code: 商品コード
 admin.product.product_code__short: コード
 admin.product.sale_limit: 販売制限数
 admin.product.delivery_duration: お届け可能日
-admin.product.delivery_duration__product_csv_col: 発送日目安
 admin.product.delivery_fee: 商品送料
-admin.product.delivery_fee__product_csv_col: 送料
 admin.product.free_area: フリーエリア
 admin.product.free_area__card_title: フリーエリア
 admin.product.delete_flag: 商品削除フラグ
@@ -501,15 +504,11 @@ admin.product.class_category__delete_confirm_title: 規格分類を削除しま�
 admin.product.class_category__delete_confirm_message: 規格分類は一覧（マスター）から削除されますが、これまでの取引等のデータから消えることはありません。この操作はあとから取り消すことができません。この規格分類を削除しますか？
 admin.product.class_category1: 規格分類1
 admin.product.class_category1__short: 規格1
-admin.product.class_category1__product_csv_col: 規格分類1(ID)
 admin.product.class_category2: 規格分類2
 admin.product.class_category2__short: 規格2
-admin.product.class_category2__product_csv_col: 規格分類2(ID)
 admin.product.category: カテゴリ
 admin.product.category__product_card_title: カテゴリ
 admin.product.category_id: カテゴリID
-admin.product.category_id__product_csv_col: 商品カテゴリ(ID)
-admin.product.category_id__product_csv_col_description: 新規登録時は未設定
   既存カテゴリの更新はカテゴリIDを設定
 admin.product.category_name: カテゴリ名
 admin.product.parent_category_id: 親カテゴリID
@@ -517,11 +516,66 @@ admin.product.category_delete_flag: カテゴリ削除フラグ
 admin.product.category_delete_flag_description: 0:登録 1:削除。未設定時は0として扱います。
 admin.product.category_all: すべてのカテゴリ
 admin.product.tag: タグ
-admin.product.tag_id__product_csv_col: タグ(ID)
 admin.product.delete_tag_confirm_title: タグを削除します
 admin.product.delete_tag_confirm_message: タグを削除してよろしいですか？
 admin.product.select__class1: 規格1を選択してください
 admin.product.select__class2: 規格2を選択してください
+
+admin.product.product_csv.product_id_col: 商品ID
+admin.product.product_csv.product_id_description: 新規登録の場合は空にしてください。既存の商品を更新する場合は、商品IDを指定してください。
+admin.product.product_csv.display_status_col: 公開ステータス(ID)
+admin.product.product_csv.display_status_description: ''
+admin.product.product_csv.product_name_col: 商品名
+admin.product.product_csv.product_name_description: ''
+admin.product.product_csv.shop_memo_col: ショップ用メモ欄
+admin.product.product_csv.shop_memo_description: ''
+admin.product.product_csv.description_list_col: 商品説明(一覧)
+admin.product.product_csv.description_list_description: ''
+admin.product.product_csv.description_detail_col: 商品説明(詳細)
+admin.product.product_csv.description_detail_description: ''
+admin.product.product_csv.keyword_col: 検索ワード
+admin.product.product_csv.keyword_description: ''
+admin.product.product_csv.free_area_col: フリーエリア
+admin.product.product_csv.free_area_description: ''
+admin.product.product_csv.delete_flag_col: 商品削除フラグ
+admin.product.product_csv.delete_flag_description: 0:登録 1:削除を指定します。未指定の場合、0として扱います。
+admin.product.product_csv.product_image_col: 商品画像
+admin.product.product_csv.product_image_description: 画像のファイル名を指定します。複数画像の場合、画像ファイル名をカンマ区切りで「"」で囲んでください。
+admin.product.product_csv.category_col: 商品カテゴリ(ID)
+admin.product.product_csv.category_description: カテゴリIDを指定します。複数カテゴリの場合、商品カテゴリIDをカンマ区切りで「"」で囲んでください。
+admin.product.product_csv.tag_col: タグ(ID)
+admin.product.product_csv.tag_description: タグIDを指定します。複数タグの場合、タグIDをカンマ区切りで「"」で囲んでください。
+admin.product.product_csv.sale_type_col: 販売種別(ID)
+admin.product.product_csv.sale_type_description: ''
+admin.product.product_csv.class_category1_col: 規格分類1(ID)
+admin.product.product_csv.class_category1_description: ''
+admin.product.product_csv.class_category2_col: 規格分類2(ID)
+admin.product.product_csv.class_category2_description: ''
+admin.product.product_csv.delivery_duration_col: 発送日目安(ID)
+admin.product.product_csv.delivery_duration_description: ''
+admin.product.product_csv.product_code_col: 商品コード
+admin.product.product_csv.product_code_description: ''
+admin.product.product_csv.stock_col: 在庫数
+admin.product.product_csv.stock_description: 在庫数無制限フラグが0の場合、0以上の数値を設定してください。
+admin.product.product_csv.stock_unlimited_col: 在庫数無制限フラグ
+admin.product.product_csv.stock_unlimited_description: '0:制限 1: 無制限を指定します。'
+admin.product.product_csv.sale_limit_col: 販売制限数
+admin.product.product_csv.sale_limit_description: 0以上の数値を設定
+admin.product.product_csv.normal_price_col: 通常価格
+admin.product.product_csv.normal_price_description: 0以上の数値を設定
+admin.product.product_csv.sale_price_col: 販売価格
+admin.product.product_csv.sale_price_description: 0以上の数値を設定
+admin.product.product_csv.delivery_fee_col: 送料
+admin.product.product_csv.delivery_fee_description: 商品ごとの送料設定が有効の場合、0以上の数値を設定
+
+admin.product.category_csv.category_id_col: カテゴリID
+admin.product.category_csv.category_id_description: 新規登録の場合は空にしてください。既存の商品を更新する場合は、商品IDを指定してください。
+admin.product.category_csv.category_name_col: カテゴリ名
+admin.product.category_csv.category_name_description: ''
+admin.product.category_csv.parent_category_id_col: 親カテゴリID
+admin.product.category_csv.parent_category_id_description: ''
+admin.product.category_csv.delete_flag_col: カテゴリ削除フラグ
+admin.product.category_csv.delete_flag_description: 0:登録 1:削除を指定します。未指定の場合、0として扱います。
 
 #------------------------------------------------------------------------------------
 # 受注
