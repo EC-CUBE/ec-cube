@@ -111,7 +111,17 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
     private function loadCsv($csvRows)
     {
         $tempFile = tempnam(sys_get_temp_dir(), 'csv_import_controller_test');
-        file_put_contents($tempFile, implode(PHP_EOL, $csvRows));
+        $csvContent = implode(PHP_EOL, $csvRows);
+
+        // see https://github.com/EC-CUBE/ec-cube/pull/1781
+        if ('\\' === DIRECTORY_SEPARATOR) {
+            // Windows 環境では、 ロケールとファイルエンコーディングを一致させる必要がある
+            setlocale(LC_ALL, '');
+            if (mb_detect_encoding($csvContent) === 'UTF-8') {
+                $csvContent = mb_convert_encoding($csvContent, 'SJIS-win', 'UTF-8');
+            }
+        }
+        file_put_contents($tempFile, $csvContent);
 
         $csv = new CsvImportService(new \SplFileObject($tempFile));
         $csv->setHeaderRowNumber(0);
