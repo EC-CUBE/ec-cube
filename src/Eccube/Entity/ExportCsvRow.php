@@ -13,62 +13,64 @@
 
 namespace Eccube\Entity;
 
-class ExportCsvRow extends \Eccube\Entity\AbstractEntity
-{
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $row = [];
-
-    /**
-     * @var string
-     */
-    private $data = null;
-
-    /**
-     * Set data
-     *
-     * @param string $data
-     *
-     * @return \Eccube\Entity\ExportCsvRow
-     */
-    public function setData($data = null)
+if (!class_exists('\Eccube\Entity\ExportCsvRow')) {
+    class ExportCsvRow extends \Eccube\Entity\AbstractEntity
     {
-        $this->data = $data;
+        /**
+         * @var \Doctrine\Common\Collections\Collection
+         */
+        private $row = [];
 
-        return $this;
-    }
+        /**
+         * @var string
+         */
+        private $data = null;
 
-    /**
-     * Is data null
-     *
-     * @return boolean
-     */
-    public function isDataNull()
-    {
-        if (is_null($this->data)) {
-            return true;
-        } else {
-            return false;
+        /**
+         * Set data
+         *
+         * @param string $data
+         *
+         * @return \Eccube\Entity\ExportCsvRow
+         */
+        public function setData($data = null)
+        {
+            $this->data = $data;
+
+            return $this;
         }
-    }
 
-    /**
-     * Push data
-     */
-    public function pushData()
-    {
-        $this->row[] = $this->data;
-        $this->data = null;
-    }
+        /**
+         * Is data null
+         *
+         * @return boolean
+         */
+        public function isDataNull()
+        {
+            if (is_null($this->data)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
 
-    /**
-     * Get row
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getRow()
-    {
-        return $this->row;
+        /**
+         * Push data
+         */
+        public function pushData()
+        {
+            $this->row[] = $this->data;
+            $this->data = null;
+        }
+
+        /**
+         * Get row
+         *
+         * @return \Doctrine\Common\Collections\Collection
+         */
+        public function getRow()
+        {
+            return $this->row;
+        }
     }
 }

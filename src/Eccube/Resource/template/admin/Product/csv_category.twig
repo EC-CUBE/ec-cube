@@ -12,100 +12,100 @@ file that was distributed with this source code.
 
 {% set menus = ['product', 'category_csv_import'] %}
 
-{% block title %}{{'admin.product.csv_category.title'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.product.csv_category.sub_title'|trans}}{% endblock %}
+{% block title %}{{ 'admin.product.csv_category.title'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.product.csv_category.sub_title'|trans }}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block javascript %}
-<script src="{{ asset('assets/js/vendor/spin.min.js', 'admin') }}"></script>
-<script>
-$(function() {
+    <script src="{{ asset('assets/js/vendor/spin.min.js', 'admin') }}"></script>
+    <script>
+        $(function() {
 
-    var opts = {
-        lines: 13,
-        length: 30,
-        width: 2,
-        radius: 12,
-        corners: 1,
-        rotate: 0,
-        direction: 1,
-        color: '#BBB',
-        speed: 1,
-        trail: 67,
-        shadow: true,
-        hwaccel: false,
-        className: 'spinner',
-        zIndex: 2e9,
-        top: top
-    };
+            var opts = {
+                lines: 13,
+                length: 30,
+                width: 2,
+                radius: 12,
+                corners: 1,
+                rotate: 0,
+                direction: 1,
+                color: '#BBB',
+                speed: 1,
+                trail: 67,
+                shadow: true,
+                hwaccel: false,
+                className: 'spinner',
+                zIndex: 2e9,
+                top: top
+            };
 
-    ImageSpinner = new Spinner(opts).spin(document.getElementById('spinner'));
-    ImageSpinner.stop();
+            ImageSpinner = new Spinner(opts).spin(document.getElementById('spinner'));
+            ImageSpinner.stop();
 
-    $('#upload-form').submit(function() {
-        $('#upload-button').attr('disabled', 'disabled');
-        $('#download-button').attr('disabled', 'disabled');
-        ImageSpinner.spin(document.getElementById('spinner'));
-    });
-    $('#admin_csv_import_import_file').on('change', function () {
-        var files = $(this).prop('files');
-        if (files.length) {
-            $('#admin_csv_import_import_file_name').text(files[0].name);
-        }
-    });
-});
-</script>
+            $('#upload-form').submit(function() {
+                $('#upload-button').attr('disabled', 'disabled');
+                $('#download-button').attr('disabled', 'disabled');
+                ImageSpinner.spin(document.getElementById('spinner'));
+            });
+            $('#admin_csv_import_import_file').on('change', function() {
+                var files = $(this).prop('files');
+                if (files.length) {
+                    $('#admin_csv_import_import_file_name').text(files[0].name);
+                }
+            });
+        });
+    </script>
 {% endblock javascript %}
 {% block main %}
-<div class="c-contentsArea__cols">
-    <div class="c-contentsArea__primaryCol">
-        <div class="c-primaryCol">
-            <div class="card rounded border-0 mb-4">
-                <div class="card-header">
-                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>{{ 'admin.product.csv_category.csv_file_upload'|trans}}</span><i class="fa fa-question-circle fa-lg fa-lg ml-1"></i></div>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-2"><span>{{ 'admin.product.csv_category.csv_file_selection'|trans}}</span></div>
-                        <div class="col">
-                            <form id="upload-form" class="mb-2" method="post" action="{{ url('admin_product_category_csv_import') }}" enctype="multipart/form-data">
-                                {{ form_widget(form._token) }}
-                                <div class="mb-2">
-                                    {#<a class="btn btn-ec-regular mr-2" id="btn_select"  onclick="$('#admin_csv_import_import_file').click()">{{ 'admin.product.csv_category.choose_file'|trans}}</a><span id="admin_csv_import_import_file_name">{{ 'admin.product.csv_category.not_selected'|trans}}</span>#}
-                                    {# TODO: Required validation is not implemented yet, style sheet of input file#}
-                                    {{ form_widget(form.import_file, {'attr': {'accept': 'text/csv,text/tsv'}}) }}
-                                    {{ form_errors(form.import_file) }}
-                                </div>
-                                {% for error in errors %}
-                                    <div id="upload_box__error--{{ loop.index }}" class="text-danger">{{ error.message }}</div>
-                                {% endfor %}
-                                <button class="btn btn-ec-conversion" id="upload-button" type="submit">{{ 'admin.product.csv_category.execute'|trans}}</button>
-                            </form>
-                        </div>
+    <div class="c-contentsArea__cols">
+        <div class="c-contentsArea__primaryCol">
+            <div class="c-primaryCol">
+                <div class="card rounded border-0 mb-4">
+                    <div class="card-header">
+                        <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>{{ 'admin.product.csv_category.csv_file_upload'|trans }}</span><i class="fa fa-question-circle fa-lg fa-lg ml-1"></i></div>
                     </div>
-                    <div id="spinner"></div>
-                </div>
-            </div>
-            <div class="card rounded border-0 mb-4">
-                <div class="card-header">
-                    <div class="row justify-content-between">
-                        <div class="col-6">
-                            <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="align-middle">{{ 'admin.product.csv_category.category_csv_format'|trans}}</span><i class="fa fa-question-circle fa-lg fa-lg ml-1"></i></div>
+                    <div id="ex-csv_category-upload" class="card-body">
+                        <div class="row">
+                            <div class="col-2"><span>{{ 'admin.product.csv_category.csv_file_selection'|trans }}</span></div>
+                            <div class="col">
+                                <form id="upload-form" class="mb-2" method="post" action="{{ url('admin_product_category_csv_import') }}" enctype="multipart/form-data">
+                                    {{ form_widget(form._token) }}
+                                    <div class="mb-2">
+                                        {#<a class="btn btn-ec-regular mr-2" id="btn_select"  onclick="$('#admin_csv_import_import_file').click()">{{ 'admin.product.csv_category.choose_file'|trans}}</a><span id="admin_csv_import_import_file_name">{{ 'admin.product.csv_category.not_selected'|trans}}</span>#}
+                                        {# TODO: Required validation is not implemented yet, style sheet of input file#}
+                                        {{ form_widget(form.import_file, {'attr': {'accept': 'text/csv,text/tsv'}}) }}
+                                        {{ form_errors(form.import_file) }}
+                                    </div>
+                                    {% for error in errors %}
+                                        <div id="upload_box__error--{{ loop.index }}" class="text-danger">{{ error.message }}</div>
+                                    {% endfor %}
+                                    <button class="btn btn-ec-conversion" id="upload-button" type="submit">{{ 'admin.product.csv_category.execute'|trans }}</button>
+                                </form>
+                            </div>
                         </div>
-                        <div class="col-4 text-right">
-                            <a href="{{ url('admin_product_csv_template', {'type': 'category'}) }}" class="btn btn-ec-regular" id="download-button">{{ 'admin.product.csv_category.download'|trans}}</a>
-                        </div>
+                        <div id="spinner"></div>
                     </div>
                 </div>
-                <div class="card-body">
-                    <table class="table table-striped table-bordered">
-                        <tbody>
+                <div class="card rounded border-0 mb-4">
+                    <div class="card-header">
+                        <div class="row justify-content-between">
+                            <div class="col-6">
+                                <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span class="align-middle">{{ 'admin.product.csv_category.category_csv_format'|trans }}</span><i class="fa fa-question-circle fa-lg fa-lg ml-1"></i></div>
+                            </div>
+                            <div class="col-4 text-right">
+                                <a href="{{ url('admin_product_csv_template', {'type': 'category'}) }}" class="btn btn-ec-regular" id="download-button">{{ 'admin.product.csv_category.download'|trans }}</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="ex-csv_category-format" class="card-body">
+                        <table class="table table-striped table-bordered">
+                            <tbody>
                             {% for header, key in headers %}
                                 <tr>
                                     <th class="w-25 align-middle table-ec-lightGray" id="file_format_box__header--{{ loop.index }}">{{ header }}
                                         {% if key.required %}
-                                            <span class="badge badge-primary ml-1">{{ 'admin.product.csv_category.required'|trans}}</span>
+                                            <span class="badge badge-primary ml-1">{{ 'admin.product.csv_category.required'|trans }}</span>
                                         {% endif %}
                                     </th>
                                     <td class="align-middle">
@@ -115,11 +115,11 @@ $(function() {
                                     </td>
                                 </tr>
                             {% endfor %}
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 {% endblock %}

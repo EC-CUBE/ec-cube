@@ -29,7 +29,7 @@ class OwnersPluginPage extends AbstractAdminPage
 
     public function インストール($fileName)
     {
-        $this->tester->attachFile(['id' => 'plugin_local_install_plugin_archive'],  $fileName);
+        $this->tester->attachFile(['id' => 'plugin_local_install_plugin_archive'], $fileName);
         $this->tester->click('#aside_column button');
         return $this;
     }

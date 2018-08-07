@@ -21,10 +21,10 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Security\Core\AuthenticationEvents;
 use Symfony\Component\Security\Core\Event\AuthenticationFailureEvent;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
-use Symfony\Component\Security\Core\AuthenticationEvents;
 
 class SecurityListener implements EventSubscriberInterface
 {
@@ -62,7 +62,7 @@ class SecurityListener implements EventSubscriberInterface
             $this->em->persist($user);
             $this->em->flush();
         } elseif ($user instanceof Customer) {
-            $this->cartService->mergeFromPersistedCart($user);
+            $this->cartService->mergeFromPersistedCart();
             foreach ($this->cartService->getCarts() as $Cart) {
                 $this->purchaseFlow->validate($Cart, new PurchaseContext($Cart, $user));
             }

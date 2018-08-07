@@ -69,6 +69,8 @@ class EntityProxyService
 
             $entityTokens = Tokens::fromCode(file_get_contents($rc->getFileName()));
 
+            $this->removeClassExistsBlock($entityTokens); // remove class_exists block
+
             if (isset($removeTrails[$targetEntity])) {
                 foreach ($removeTrails[$targetEntity] as $trait) {
                     $this->removeTrait($entityTokens, $trait);
@@ -155,7 +157,7 @@ class EntityProxyService
     /**
      * EntityにTraitを追加.
      *
-     * @param $entityTokens Tokens Entityのトークン
+     * @param Tokens $entityTokens Tokens Entityのトークン
      * @param $trait string 追加するTraitのFQCN
      */
     private function addTrait($entityTokens, $trait)
@@ -194,7 +196,7 @@ class EntityProxyService
     /**
      * EntityからTraitを削除.
      *
-     * @param $entityTokens Tokens Entityのトークン
+     * @param Tokens $entityTokens Tokens Entityのトークン
      * @param $trait string 削除するTraitのFQCN
      */
     private function removeTrait($entityTokens, $trait)
@@ -257,5 +259,22 @@ class EntityProxyService
         }
 
         return $result;
+    }
+
+    /**
+     * remove block to 'if (class_exists(<class name>)) { }'
+     *
+     * @param Tokens $entityTokens
+     */
+    private function removeClassExistsBlock(Tokens $entityTokens)
+    {
+        $startIndex = $entityTokens->getNextTokenOfKind(0, [[T_IF]]);
+        if ($startIndex > 0) {
+            $blockStartIndex = $entityTokens->getNextTokenOfKind($startIndex, ['{']);
+            $blockEndIndex = $entityTokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $blockStartIndex);
+
+            $entityTokens->clearRange($startIndex, $blockStartIndex);
+            $entityTokens->clearRange($blockEndIndex, $blockEndIndex + 1);
+        }
     }
 }

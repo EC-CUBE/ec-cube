@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Admin\Customer;
 
+use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
@@ -23,6 +24,7 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
  */
 class CustomerEditControllerTest extends AbstractAdminWebTestCase
 {
+    /** @var Customer */
     protected $Customer;
 
     /**
@@ -174,7 +176,6 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
 
     public function testNotShowProcessingOrder()
     {
-        $this->markTestSkipped('Problem with Doctrine');
         $id = $this->Customer->getId();
 
         //add Order pending status for this customer
@@ -185,6 +186,8 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->persist($Order);
         $this->entityManager->persist($this->Customer);
         $this->entityManager->flush();
+        $this->entityManager->detach($this->Customer);
+        $this->entityManager->detach($Order);
         unset($this->Customer);
 
         $crawler = $this->client->request(
@@ -192,7 +195,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
             $this->generateUrl('admin_customer_edit', ['id' => $id])
         );
 
-        $orderListing = $crawler->filter('#history_box')->text();
+        $orderListing = $crawler->filter('#orderHistory')->text();
         $this->assertContains('この会員の購入履歴がありません', $orderListing);
     }
 }

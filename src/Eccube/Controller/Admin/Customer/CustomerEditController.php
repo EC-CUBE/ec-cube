@@ -53,7 +53,7 @@ class CustomerEditController extends AbstractController
      */
     public function index(Request $request, $id = null)
     {
-        //$this->entityManager->getFilters()->enable('incomplete_order_status_hidden');
+        $this->entityManager->getFilters()->enable('incomplete_order_status_hidden');
         // 編集
         if ($id) {
             $Customer = $this->customerRepository

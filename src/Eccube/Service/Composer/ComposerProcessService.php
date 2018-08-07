@@ -282,7 +282,7 @@ class ComposerProcessService implements ComposerServiceInterface
     /**
      * Get mode
      *
-     * @return mixed|string
+     * @return string
      */
     public function getMode()
     {

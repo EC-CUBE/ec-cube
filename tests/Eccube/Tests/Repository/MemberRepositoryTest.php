@@ -40,7 +40,7 @@ class MemberRepositoryTest extends EccubeTestCase
         $this->memberRepo = $this->container->get(MemberRepository::class);
         $this->Member = $this->memberRepo->find(1);
         $Work = $this->entityManager->getRepository('Eccube\Entity\Master\Work')
-            ->find(\Eccube\Entity\Master\Work::WORK_ACTIVE_ID);
+            ->find(\Eccube\Entity\Master\Work::ACTIVE);
 
         for ($i = 0; $i < 3; $i++) {
             $Member = new Member();
