@@ -600,7 +600,7 @@ file that was distributed with this source code.
                                                         {{ Shipping.shipping_date ? Shipping.shipping_date|date_day : 'admin.order.index.not_shipping'|trans }}
                                                     {% endif %}
                                                     {% if Shipping.mail_send_date %}
-                                                        {% set send_mail_date = Shipping.mail_send_date|date_day %}
+                                                        {% set send_mail_date = Shipping.mail_send_date|date_min %}
                                                         <i class="fa fa-envelope fa-lg text-secondary" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="{{ 'admin.order.index.send_mail_date'|trans({'%date%': send_mail_date}) }}"></i>
                                                     {% endif %}
                                                 </td>
