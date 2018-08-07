@@ -23,16 +23,7 @@ file that was distributed with this source code.
             {%- elseif php_is_a(child.vars.data, '\DateTime') -%}
                 {{ child.vars.data|date_day }}
             {%- else -%}
-                {% if child.vars.choices is defined %}
-                    {# FIXME: display label in case radio input #}
-                    {%- for choice in child.vars.choices -%}
-                        {%- if choice is selectedchoice(child.vars.value) -%}
-                            {{ choice.label|trans }}
-                        {%- endif %}
-                    {%- endfor -%}
-                {% else %}
-                    {{ child.vars.data }}
-                {%  endif %}
+                {{ child.vars.data }}
             {%- endif -%}
         </li>
     {% endfor %}
