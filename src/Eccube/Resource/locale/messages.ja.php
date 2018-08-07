@@ -443,7 +443,8 @@ return [
 
     'admin.nav.home' => 'ホーム',
     'admin.nav.other' => 'その他',
-    'admin.nav.styleguide' => 'スタイルガイド',
+    'admin.nav.other.official_site' => 'オフィシャルサイト',
+    'admin.nav.other.community' => '開発コミュニティ',
 
     'Login email' => 'メールアドレス',
     'Login pass' => 'パスワード',
