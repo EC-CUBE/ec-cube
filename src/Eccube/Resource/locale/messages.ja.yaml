@@ -778,6 +778,7 @@ admin.setting.shop.delivery_setting: 配送方法設定
 admin.setting.shop.tax_setting: 税率設定
 admin.setting.shop.mail_setting: メール設定
 admin.setting.shop.csv_setting: CSV出力項目設定
+admin.setting.system: システム設定
 admin.setting.system.member_management: メンバー管理
 admin.setting.system.member_password_change: パスワード変更
 admin.setting.system.authority_management: 権限管理
@@ -948,8 +949,10 @@ admin.setting.system.master_data.name: Name
 
 admin.setting.system.system.eccube: EC-CUBE
 admin.setting.system.system.server_os: サーバーOS
-admin.setting.system.system.databse_server: DBサーバー
+admin.setting.system.system.database_server: DBサーバー
+admin.setting.system.system.web_server: WEBサーバー
 admin.setting.system.system.php: PHP
+admin.setting.system.system.user_agent: User Agent
 admin.setting.system.system.php_info: PHP情報
 
 #------------------------------------------------------------------------------------
