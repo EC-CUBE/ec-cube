@@ -84,7 +84,13 @@ file that was distributed with this source code.
                                         {% endif %}
                                     </div>
                                     <div class="ec-imageGrid__content">
-                                        <p>{{ orderItem.productName }} ×{{ orderItem.quantity }}</p>
+                                        <p>
+                                            {% if orderItem.Product is not null and orderItem.Product.enable %}
+                                                <a href="{{ url('product_detail', {'id': orderItem.Product.id}) }}">{{ orderItem.productName }}</a>
+                                            {% else %}
+                                                {{ orderItem.productName }}
+                                            {% endif %} ×{{ orderItem.quantity }}
+                                        </p>
                                         {% if orderItem.ProductClass is not null %}
                                             {% if orderItem.ProductClass.ClassCategory1 is not null %}
                                                 {{ orderItem.productClass.classCategory1.className.name }}：{{ orderItem.productClass.classCategory1 }}
