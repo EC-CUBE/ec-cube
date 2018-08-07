@@ -518,6 +518,8 @@ admin.product.category_delete_flag_description: 0:登録 1:削除。未設定時
 admin.product.category_all: すべてのカテゴリ
 admin.product.tag: タグ
 admin.product.tag_id__product_csv_col: タグ(ID)
+admin.product.delete_tag_confirm_title: タグを削除します
+admin.product.delete_tag_confirm_message: タグを削除してよろしいですか？
 admin.product.select__class1: 規格1を選択してください
 admin.product.select__class2: 規格2を選択してください
 

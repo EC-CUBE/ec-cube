@@ -12,8 +12,8 @@ file that was distributed with this source code.
 
 {% set menus = ['product', 'product_tag'] %}
 
-{% block title %}{{ 'admin.product.tag.title'|trans }}{% endblock %}
-{% block sub_title %}{{ 'admin.product.tag.sub_title'|trans }}{% endblock %}
+{% block title %}{{ 'admin.product.tag_management'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.product.product_management'|trans }}{% endblock %}
 
 {% block stylesheet %}
     <style>
@@ -141,7 +141,7 @@ file that was distributed with this source code.
                                         </div>
                                         <div class="col-auto align-items-center">
                                             <button class="btn btn-ec-regular" type="submit">
-                                                {{ 'admin.product.tag.create'|trans }}
+                                                {{ 'admin.common.create__new'|trans }}
                                             </button>
                                         </div>
                                     </form>
@@ -155,16 +155,16 @@ file that was distributed with this source code.
                                             <div class="col d-flex align-items-center"><a>{{ Tag.name }}</a>
                                             </div>
                                             <div class="col-auto text-right">
-                                                <a class="btn btn-ec-actionIcon mr-3 action-up{% if loop.first %} disabled{% endif %}" href="#" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.tag.up'|trans }}">
+                                                <a class="btn btn-ec-actionIcon mr-3 action-up{% if loop.first %} disabled{% endif %}" href="#" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.up'|trans }}">
                                                     <i class="fa fa-arrow-up fa-lg text-secondary"></i>
                                                 </a>
-                                                <a class="btn btn-ec-actionIcon mr-3 action-down{% if loop.last %} disabled{% endif %}" href="#" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.tag.down'|trans }}">
+                                                <a class="btn btn-ec-actionIcon mr-3 action-down{% if loop.last %} disabled{% endif %}" href="#" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.down'|trans }}">
                                                     <i class="fa fa-arrow-down fa-lg text-secondary"></i>
                                                 </a>
-                                                <a class="btn btn-ec-actionIcon mr-3 action-edit" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.tag.edit'|trans }}">
+                                                <a class="btn btn-ec-actionIcon mr-3 action-edit" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.edit'|trans }}">
                                                     <i class="fa fa-pencil fa-lg text-secondary"></i>
                                                 </a>
-                                                <a class="btn btn-ec-actionIcon mr-3" data-toggle="modal" data-target="#confirmModal-{{ Tag.id }}" data-tooltip="tooltip" data-placement="top" title="{{ 'admin.product.tag.delete'|trans }}">
+                                                <a class="btn btn-ec-actionIcon mr-3" data-toggle="modal" data-target="#confirmModal-{{ Tag.id }}" data-tooltip="tooltip" data-placement="top" title="{{ 'admin.common.delete'|trans }}">
                                                     <i class="fa fa-close fa-lg text-secondary"></i>
                                                 </a>
                                             </div>
@@ -177,7 +177,7 @@ file that was distributed with this source code.
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title font-weight-bold">
-                                                            {{ 'admin.product.tag.delete.confirm.title'|trans }}</h5>
+                                                            {{ 'admin.product.delete_tag_confirm_title'|trans }}</h5>
                                                         <button class="close" type="button"
                                                                 data-dismiss="modal"
                                                                 aria-label="Close"><span
@@ -186,7 +186,7 @@ file that was distributed with this source code.
                                                     </div>
                                                     <div class="modal-body text-left">
                                                         <p class="text-left">
-                                                            {{ 'admin.product.tag.delete.confirm.message'|trans }}</p>
+                                                            {{ 'admin.product.delete_tag_confirm_message'|trans }}</p>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button class="btn btn-ec-sub" type="button"
@@ -198,7 +198,7 @@ file that was distributed with this source code.
                                                                 data-confirm="false"
                                                                 {{ csrf_token_for_anchor() }}
                                                                 data-method="delete">
-                                                            {{ 'admin.product.index.delete'|trans }}
+                                                            {{ 'admin.common.delete'|trans }}
                                                         </a>
                                                     </div>
                                                 </div>
@@ -212,7 +212,7 @@ file that was distributed with this source code.
                                                 {{ form_errors(forms[Tag.id].name) }}
                                             </div>
                                             <div class="col-auto align-items-center">
-                                                <button class="btn btn-ec-conversion" type="submit">{{ 'admin.product.tag.ok'|trans }}</button>
+                                                <button class="btn btn-ec-conversion" type="submit">{{ 'admin.common.decision'|trans }}</button>
                                             </div>
                                             <div class="col-auto align-items-center">
                                                 <button class="btn btn-ec-sub action-edit-cancel" type="button">{{ 'admin.common.cancel'|trans }}</button>
@@ -224,7 +224,7 @@ file that was distributed with this source code.
                         </div>
                     </div>
                 </div>
-                <p>{{ 'admin.product.tag.drag&drop'|trans }}</p>
+                <p>{{ 'admin.common.drag_and_drop_description'|trans }}</p>
             </div>
         </div>
     </div>

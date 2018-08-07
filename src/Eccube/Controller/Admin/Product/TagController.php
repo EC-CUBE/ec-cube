@@ -90,7 +90,7 @@ class TagController extends AbstractController
 
                 $this->dispatchComplete($request, $form, $form->getData());
 
-                $this->addSuccess('admin.tag.save.complete', 'admin');
+                $this->addSuccess('admin.common.save_complete', 'admin');
 
                 return $this->redirectToRoute('admin_product_tag');
             }
@@ -104,7 +104,7 @@ class TagController extends AbstractController
 
                     $this->dispatchComplete($request, $editForm, $editForm->getData());
 
-                    $this->addSuccess('admin.tag.save.complete', 'admin');
+                    $this->addSuccess('admin.common.save_complete', 'admin');
 
                     return $this->redirectToRoute('admin_product_tag');
                 }
@@ -144,13 +144,13 @@ class TagController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_TAG_DELETE_COMPLETE, $event);
 
-            $this->addSuccess('admin.tag.delete.complete', 'admin');
+            $this->addSuccess('admin.common.delete_complete', 'admin');
 
             log_info('タグ削除完了', [$Tag->getId()]);
         } catch (\Exception $e) {
             log_info('タグ削除エラー', [$Tag->getId(), $e]);
 
-            $message = trans('admin.delete.failed.foreign_key', ['%name%' => trans('tag.text.name')]);
+            $message = trans('admin.common.delete_error.foreign_key', ['%name%' => $Tag->getName()]);
             $this->addError($message, 'admin');
         }
 
