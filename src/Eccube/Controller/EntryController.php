@@ -262,6 +262,7 @@ class EntryController extends AbstractController
             // 本会員登録してログイン状態にする
             $token = new UsernamePasswordToken($Customer, null, 'customer', ['ROLE_USER']);
             $this->tokenStorage->setToken($token);
+            $request->getSession()->migrate(true);
 
             log_info('ログイン済に変更', [$this->getUser()->getId()]);
 

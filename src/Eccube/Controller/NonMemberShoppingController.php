@@ -247,6 +247,7 @@ class NonMemberShoppingController extends AbstractShoppingController
         if (!$request->isXmlHttpRequest()) {
             return $this->json(['status' => 'NG'], 400);
         }
+        $this->isTokenValid();
         try {
             log_info('非会員お客様情報変更処理開始');
             $data = $request->request->all();
