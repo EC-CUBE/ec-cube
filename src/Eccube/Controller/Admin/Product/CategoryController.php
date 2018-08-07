@@ -119,7 +119,7 @@ class CategoryController extends AbstractController
             $form->handleRequest($request);
             if ($form->isValid()) {
                 if ($this->eccubeConfig['eccube_category_nest_level'] < $TargetCategory->getHierarchy()) {
-                    throw new BadRequestHttpException(trans('category.text.error.invalid_requesy'));
+                    throw new BadRequestHttpException();
                 }
                 log_info('カテゴリ登録開始', [$id]);
 
@@ -137,7 +137,7 @@ class CategoryController extends AbstractController
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CATEGORY_INDEX_COMPLETE, $event);
 
-                $this->addSuccess('admin.category.save.complete', 'admin');
+                $this->addSuccess('admin.common.save_complete', 'admin');
                 if ($Parent) {
                     return $this->redirectToRoute('admin_product_category_show', ['parent_id' => $Parent->getId()]);
                 } else {
@@ -161,7 +161,7 @@ class CategoryController extends AbstractController
 
                     $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CATEGORY_INDEX_COMPLETE, $event);
 
-                    $this->addSuccess('admin.category.save.complete', 'admin');
+                    $this->addSuccess('admin.common.save_complete', 'admin');
 
                     if ($Parent) {
                         return $this->redirectToRoute('admin_product_category_show', ['parent_id' => $Parent->getId()]);
@@ -225,13 +225,13 @@ class CategoryController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CATEGORY_DELETE_COMPLETE, $event);
 
-            $this->addSuccess('admin.category.delete.complete', 'admin');
+            $this->addSuccess('admin.common.delete_complete', 'admin');
 
             log_info('カテゴリ削除完了', [$id]);
         } catch (\Exception $e) {
             log_info('カテゴリ削除エラー', [$id, $e]);
 
-            $message = trans('admin.delete.failed.foreign_key', ['%name%' => trans('category.text.name')]);
+            $message = trans('admin.common.delete_error_foreign_key', ['%name%' => $TargetCategory->getName()]);
             $this->addError($message, 'admin');
         }
 

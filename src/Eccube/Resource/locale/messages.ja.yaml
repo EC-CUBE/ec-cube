@@ -499,7 +499,6 @@ admin.product.class_category_name__short: 分類名
 admin.product.class_category__delete_confirm_title: 規格分類を削除します
 # FIXME 外部キー制約で削除できないため、説明文として適切でない
 admin.product.class_category__delete_confirm_message: 規格分類は一覧（マスター）から削除されますが、これまでの取引等のデータから消えることはありません。この操作はあとから取り消すことができません。この規格分類を削除しますか？
-
 admin.product.class_category1: 規格分類1
 admin.product.class_category1__short: 規格1
 admin.product.class_category1__product_csv_col: 規格分類1(ID)
