@@ -151,8 +151,8 @@ file that was distributed with this source code.
                                     </div>
                                 </div>
                                 <div class="col-sm-4 col-md-3 text-right">
-                                    <a href="#" class="btn btn-ec-regular btn-lg">詳細</a>
-                                    <a href="#" class="btn btn btn-primary btn-lg">入手する</a>
+                                    <a href="#" data-toggle="modal" data-target="#searchPluginModal" class="btn btn-ec-regular btn-lg">詳細</a>
+                                    <a href="{{ url('admin_store_plugin_install_confirm', {'id': 2}) }}" class="btn btn btn-primary btn-lg">入手する</a>
                                 </div>
                             </div>
                             <div class="row m-0 p-3 border-bt">
@@ -181,8 +181,8 @@ file that was distributed with this source code.
                                     </div>
                                 </div>
                                 <div class="col-sm-4 col-md-3 text-right">
-                                    <a href="#" class="btn btn-ec-regular btn-lg">詳細</a>
-                                    <a href="#" class="btn btn btn-primary btn-lg">購入する</a>
+                                    <a href="#" data-toggle="modal" data-target="#searchPluginModal" class="btn btn-ec-regular btn-lg">詳細</a>
+                                    <a href="{{ url('admin_store_plugin_install_confirm', {'id': 2}) }}" class="btn btn btn-primary btn-lg">購入する</a>
                                 </div>
                             </div>
                         {% endfor %}
@@ -280,7 +280,7 @@ file that was distributed with this source code.
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-ec-sub btn-lg" data-dismiss="modal">一覧に戻る</button>
-                    <a href="#" class="btn btn btn-primary btn-lg">インストール確認へ</a>
+                    <a href="{{ url('admin_store_plugin_install_confirm', {'id': 2}) }}" class="btn btn btn-primary btn-lg">インストール確認へ</a>
                 </div>
             </div>
         </div>
