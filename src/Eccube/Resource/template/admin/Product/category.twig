@@ -242,19 +242,18 @@ file that was distributed with this source code.
                                                         </a>
                                                         {% if Category.Children|length > 0 or Category.hasProductCategories %}
                                                             {# TODO: Need fix css for tooltip to work (currently using `disabled` class) #}
-                                                            <a class="btn btn-ec-actionIcon mr-3 disabled"
+                                                            <a class="btn btn-ec-actionIcon disabled"
                                                                data-toggle="tooltip" data-placement="top"
                                                                title="{{ 'admin.product.category.text01'|trans }}">
                                                                 <i class="fa fa-close fa-lg text-secondary"></i>
                                                             </a>
                                                         {% else %}
-                                                            <a class="btn btn-ec-actionIcon mr-3"
-                                                               href="{{ url('admin_product_category_delete', {id: Category.id}) }}"
-                                                               data-toggle="tooltip" data-placement="top"
-                                                               title="{{ 'admin.product.category.410'|trans }}" {{ csrf_token_for_anchor() }}
-                                                               data-method="delete">
-                                                                <i class="fa fa-close fa-lg text-secondary"></i>
-                                                            </a>
+                                                          {# TODO `data-target`の設定 #}
+                                                          <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.category.410'|trans }}">
+                                                              <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#categoryDeleteConfirm_{{ Category.id }}">
+                                                                  <i class="fa fa-close fa-lg"></i>
+                                                              </a>
+                                                          </div>
                                                         {% endif %}
                                                     </div>
                                                 </div>
@@ -273,6 +272,38 @@ file that was distributed with this source code.
                                                 </form>
                                             {% endif %}
                                         </li>
+                                      {# TODO `id`, `aria-labelledby`の設定 #}
+                                        <div class="modal fade" id="categoryDeleteConfirm_{{ Category.id }}" tabindex="-1"
+                                             role="dialog"
+                                             aria-labelledby="categoryDeleteConfirmModal_{{ Category.id }}" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title font-weight-bold">
+                                                          {{ 'admin.class_category.modal.header'|trans }}</h5>
+                                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                    </div>
+                                                    <div class="modal-body text-left">
+                                                        <p class="text-left">
+                                                          {{ 'admin.class_category.modal.body'|trans }}</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button class="btn btn-ec-sub" type="button"
+                                                                data-dismiss="modal">
+                                                          {{ 'admin.product.category.cancel'|trans }}
+                                                        </button>
+                                                        <a
+                                                            href="{{ url('admin_product_category_delete', {id: Category.id}) }}"
+                                                            class="btn btn-ec-delete"
+                                                            data-confirm="false"
+                                                            {{ csrf_token_for_anchor() }}
+                                                            data-method="delete">
+                                                          {{ 'admin.product.category.410'|trans }}
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     {% endfor %}
                                 {% endif %}
                             </ul>
