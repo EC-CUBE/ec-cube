@@ -447,7 +447,7 @@ file that was distributed with this source code.
                                                                     </div>
                                                                     <div class="modal-footer">
                                                                         <button class="btn btn-ec-sub" type="button"
-                                                                                data-dismiss="modal">{{ 'admin.product.index.cancel'|trans }}
+                                                                                data-dismiss="modal">{{ 'admin.common.cancel'|trans }}
                                                                         </button>
                                                                         <a
                                                                                 href="{{ url('admin_product_product_copy', {'id' : Product.id}) }}"
@@ -488,7 +488,7 @@ file that was distributed with this source code.
                                                                     </div>
                                                                     <div class="modal-footer">
                                                                         <button class="btn btn-ec-sub" type="button"
-                                                                                data-dismiss="modal">{{ 'admin.product.index.cancel'|trans }}
+                                                                                data-dismiss="modal">{{ 'admin.common.cancel'|trans }}
                                                                         </button>
                                                                         {# TODO: CSSの変更は別タスクでやります #}
                                                                         <a class="btn btn-ec-delete" href="{{ url('admin_product_product_delete', {'id' : Product.id}) }}" {{ csrf_token_for_anchor() }}
@@ -547,7 +547,7 @@ file that was distributed with this source code.
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.product.index.cancel'|trans }}</button>
+                            <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
                             <button class="btn btn-ec-delete" type="button" id="bulkDelete">{{ 'admin.product.index.permanently_delete' | trans }}</button>
                             <button class="btn btn-ec-regular" id="bulkDeleteDone" style="display: none" type="button" data-dismiss="modal">{{ 'admin.product.index.497'|trans }}</button>
                         </div>
