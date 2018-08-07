@@ -21,8 +21,8 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\MainEditType;
 use Eccube\Repository\Master\DeviceTypeRepository;
-use Eccube\Repository\PageRepository;
 use Eccube\Repository\PageLayoutRepository;
+use Eccube\Repository\PageRepository;
 use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -138,6 +138,11 @@ class PageController extends AbstractController
             $form->get('tpl_data')->setData($source);
 
             $fileName = $Page->getFileName();
+        } elseif ($request->getMethod() === 'GET' && !$form->isSubmitted()) {
+            $source = $twig->getLoader()
+                ->getSourceContext('@admin/empty_page.twig')
+                ->getCode();
+            $form->get('tpl_data')->setData($source);
         }
 
         $form->handleRequest($request);

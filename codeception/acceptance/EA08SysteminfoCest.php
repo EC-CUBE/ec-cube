@@ -375,7 +375,7 @@ class EA08SysteminfoCest
 
         $findPlugins = Fixtures::get('findPlugins');
         $Plugins = $findPlugins();
-        if (is_array($Plugins) && count($Plugins) > 0 ) {
+        if (is_array($Plugins) && count($Plugins) > 0) {
             $I->getScenario()->skip('プラグインのアンインストールが必要なため、テストをスキップします');
         }
 

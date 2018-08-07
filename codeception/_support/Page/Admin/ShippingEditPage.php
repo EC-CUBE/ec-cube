@@ -26,6 +26,9 @@ class ShippingEditPage extends AbstractAdminPageStyleGuide
         return $page;
     }
 
+    /**
+     * @param \AcceptanceTester $I
+     */
     public static function at($I)
     {
         $page = new self($I);
@@ -46,30 +49,45 @@ class ShippingEditPage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    /**
+     * @param string $value
+     */
     public function 入力_姓($value, $num = 0)
     {
         $this->tester->fillField(['id' => 'form_shippings_'.$num.'_name_name01'], $value);
         return $this;
     }
 
+    /**
+     * @param string $value
+     */
     public function 入力_名($value, $num = 0)
     {
         $this->tester->fillField(['id' => 'form_shippings_'.$num.'_name_name02'], $value);
         return $this;
     }
 
+    /**
+     * @param string $value
+     */
     public function 入力_セイ($value, $num = 0)
     {
         $this->tester->fillField(['id' => 'form_shippings_'.$num.'_kana_kana01'], $value);
         return $this;
     }
 
+    /**
+     * @param string $value
+     */
     public function 入力_メイ($value, $num = 0)
     {
         $this->tester->fillField(['id' => 'form_shippings_'.$num.'_kana_kana02'], $value);
         return $this;
     }
 
+    /**
+     * @param string $value
+     */
     public function 入力_郵便番号($value, $num = 0)
     {
         $this->tester->fillField(['id' => 'form_shippings_'.$num.'_postal_code'], $value);
@@ -83,18 +101,27 @@ class ShippingEditPage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    /**
+     * @param string $value
+     */
     public function 入力_市区町村名($value, $num = 0)
     {
         $this->tester->fillField(['id' => 'form_shippings_'.$num.'_address_addr01'], $value);
         return $this;
     }
 
+    /**
+     * @param string $value
+     */
     public function 入力_番地_ビル名($value, $num = 0)
     {
         $this->tester->fillField(['id' => 'form_shippings_'.$num.'_address_addr02'], $value);
         return $this;
     }
 
+    /**
+     * @param string $value
+     */
     public function 入力_電話番号($value, $num = 0)
     {
         $this->tester->fillField(['id' => 'form_shippings_'.$num.'_phone_number'], $value);
@@ -122,17 +149,19 @@ class ShippingEditPage extends AbstractAdminPageStyleGuide
 
     public function 商品検索($value = '')
     {
-        $this->tester->click(['xpath' => '//*[@id="shipmentItem"]/div/div/div/button']);
+        $this->tester->scrollTo(['css' => '#shipping-product_1 > div > button'], 0, -50);
+        $this->tester->click(['css' => '#shipping-product_1 > div > button']);
         $this->tester->waitForElementVisible(['id' => 'addProduct']);
-        $this->tester->click(['id' => 'searchItemsButton']);
+        $this->tester->fillField(['id' => 'admin_search_product_id'], $value);
+        $this->tester->click('#searchProductModalButton');
+        $this->tester->waitForElementVisible('#searchProductModalList table');
         return $this;
     }
 
     public function 商品検索結果_選択($rowNum)
     {
-        $this->tester->click(['xpath' => "//*[@id='searchItemsResult']/table/tbody/tr[${rowNum}]/td[5]/i"]);
-        $this->tester->click(['xpath' => '//*[@id="addProduct"]/div/div/div[1]/button']);
-        $this->tester->wait(1);
+        $rowNum = $rowNum * 2;
+        $this->tester->click("#searchProductModalList > table > tbody > tr:nth-child(${rowNum}) > td.align-middle.pr-3.text-right > button");
         return $this;
     }
 
@@ -169,6 +198,6 @@ class ShippingEditPage extends AbstractAdminPageStyleGuide
     {
         $this->tester->scrollTo(['id' => 'shipmentOverview_'.$num], 0, 50);
         $this->tester->see((new \DateTime())->format('Y/m/d'),
-                           '#shipmentOverview_'.$num.' > div > div:nth-child(4) > div:nth-child(2) > div:nth-child(3) > div > span');
+                            '#shipmentOverview_'.$num.' > div > div:nth-child(4) > div:nth-child(2) > div:nth-child(3) > div > span');
     }
 }

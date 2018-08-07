@@ -2,8 +2,8 @@
 
 use Codeception\Util\Fixtures;
 use Eccube\Entity\Customer;
-use Eccube\Entity\Order;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Order;
 use Page\Admin\OrderEditPage;
 use Page\Admin\OrderManagePage;
 use Page\Admin\ShippingCsvUploadPage;
@@ -113,7 +113,9 @@ class EA09ShippingCest
 
         $ShippingRegisterPage = ShippingEditPage::at($I);
         $ShippingRegisterPage
-            ->出荷先を追加();
+            ->出荷先を追加()
+            ->商品検索('パーコレーター')
+            ->商品検索結果_選択(1);
 
         /* 正常系 */
         $ShippingRegisterPage
