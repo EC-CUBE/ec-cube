@@ -28,7 +28,7 @@ class RepeatedEmailType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'entry_type' => EmailType::class,
+            'type' => EmailType::class,
             'required' => true,
             'invalid_message' => 'form.member.email.invalid',
             'options' => [
