@@ -13,7 +13,7 @@ file that was distributed with this source code.
         <li class="c-mainNavArea__navItem">
             <a class="c-mainNavArea__navItemTitle" href="{{ url('admin_homepage') }}">
                 <i class="fa fa-home fa-fw" aria-hidden="true"></i>
-                <span>{{ 'admin.nav.home'|trans }}</span>
+                <span>{{ 'admin.home'|trans }}</span>
             </a>
         </li>
         {% for key1, level1 in eccube_config.eccube_nav if app.request.baseUrl ~ '/' ~ eccube_config.eccube_admin_route ~ '/' ~ key1 not in AuthorityRoles %}

@@ -329,6 +329,10 @@ admin.common.send: 送信
 admin.common.confirm: 確認
 admin.common.bulk_registration: 一括登録を実行
 admin.common.decision: 決定
+admin.common.create: 作成
+admin.common.create__new: 新規作成
+admin.common.up: 上へ
+admin.common.down: 下へ
 
 # 汎用ラベル, メッセージ
 admin.common.required: 必須
@@ -357,6 +361,7 @@ admin.common.csv_invalid_no_data: CSVデータが存在しません
 admin.common.csv_invalid_required: '%line%行目の%name%が設定されていません'
 admin.common.csv_invalid_format_line: '%line%行目のCSVフォーマットが一致しません'
 admin.common.csv_invalid_date_format: '%line%行目%name%の日付フォーマットが異なります'
+admin.common.drag_and_drop_description: 項目の順番はドラッグ＆ドロップでも変更可能です。
 
 # エンティティに関連するラベル
 admin.common.id: ID
@@ -394,6 +399,14 @@ admin.common.authority: 権限
 admin.common.payment_method: 支払方法
 admin.common.charge: 手数料
 
+
+#------------------------------------------------------------------------------------
+# ホーム
+#------------------------------------------------------------------------------------
+
+# 機能名称
+admin.home: ホーム
+
 #------------------------------------------------------------------------------------
 # 商品管理
 #------------------------------------------------------------------------------------
@@ -404,8 +417,11 @@ admin.product.product_list: 商品一覧
 admin.product.product_registration: 商品登録
 admin.product.product_class_registration: 商品規格登録
 admin.product.class_management: 規格管理
+admin.product.class_category_management: 規格分類管理
 admin.product.category_management: カテゴリ管理
 admin.product.tag_management: タグ管理
+admin.product.product_csv_upload: 商品CSV登録
+admin.product.category_csv_upload: カテゴリCSV登録
 
 # flashメッセージ
 
@@ -473,10 +489,17 @@ admin.product.stock_unlimited__short: 無制限
 admin.product.class_name: 規格名
 admin.product.class_name__backend_name: 管理名
 admin.product.class_name__card_title: 規格情報
+admin.product.class_name__delete_confirm_title: 規格名を削除します
+# FIXME 外部キー制約で削除できないため、説明文として適切でない
+admin.product.class_name__delete_confirm_message: 規格は一覧（マスター）から削除されますが、これまでの取引等のデータから消えることはありません。この操作はあとから取り消すことができません。この規格を削除しますか？
 admin.product.class_category: 規格分類
 admin.product.class_category__card_title: 規格分類情報
 admin.product.class_category_name: 規格分類名
 admin.product.class_category_name__short: 分類名
+admin.product.class_category__delete_confirm_title: 規格分類を削除します
+# FIXME 外部キー制約で削除できないため、説明文として適切でない
+admin.product.class_category__delete_confirm_message: 規格分類は一覧（マスター）から削除されますが、これまでの取引等のデータから消えることはありません。この操作はあとから取り消すことができません。この規格分類を削除しますか？
+
 admin.product.class_category1: 規格分類1
 admin.product.class_category1__short: 規格1
 admin.product.class_category1__product_csv_col: 規格分類1(ID)
