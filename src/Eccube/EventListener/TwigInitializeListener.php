@@ -146,25 +146,18 @@ class TwigInitializeListener implements EventSubscriberInterface
         if ($this->mobileDetector->isMobile()) {
             $type = DeviceType::DEVICE_TYPE_SP;
         }
-
         $DeviceType = $this->deviceTypeRepository->find($type);
 
         try {
-            $qb = $this->pageRepository->createQueryBuilder('p');
-            $Page = $qb->select('p, pll,l, bp, b')
-                ->leftJoin('p.PageLayouts', 'pll')
-                ->leftJoin('pll.Layout', 'l')
-                ->leftJoin('l.BlockPositions', 'bp')
-                ->leftJoin('bp.Block', 'b')
-                ->where('p.url = :route')
-                ->andWhere('l.DeviceType = :DeviceType')
-                ->orderBy('bp.block_row', 'ASC')
-                ->setParameter('route', $route)
-                ->setParameter('DeviceType', $DeviceType)
-                ->getQuery()
-                ->getSingleResult();
+            $Page = $this->pageRepository->getByUrl($DeviceType, $route);
         } catch (NoResultException $e) {
-            $Page = $this->pageRepository->newPage($DeviceType);
+            try {
+                log_info('fallback to PC layout');
+                $DeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_PC);
+                $Page = $this->pageRepository->getByUrl($DeviceType, $route);
+            } catch (NoResultException $e) {
+                $Page = $this->pageRepository->newPage($DeviceType);
+            }
         }
 
         $this->twig->addGlobal('Page', $Page);

@@ -17,12 +17,20 @@ use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\ExportCsvRow;
 use Eccube\Entity\Master\CsvType;
+use Eccube\Entity\Master\ProductStatus;
+use Eccube\Entity\Product;
+use Eccube\Entity\ProductCategory;
+use Eccube\Entity\ProductClass;
+use Eccube\Entity\ProductImage;
+use Eccube\Entity\ProductStock;
 use Eccube\Entity\ProductTag;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\ProductType;
 use Eccube\Form\Type\Admin\SearchProductType;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\Master\PageMaxRepository;
 use Eccube\Repository\Master\ProductStatusRepository;
@@ -32,27 +40,20 @@ use Eccube\Repository\ProductRepository;
 use Eccube\Repository\TagRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Service\CsvExportService;
+use Eccube\Util\FormUtil;
 use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Eccube\Util\FormUtil;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
-use Eccube\Entity\Product;
-use Eccube\Entity\ProductClass;
-use Eccube\Entity\Master\ProductStatus;
-use Eccube\Entity\ProductStock;
-use Eccube\Entity\ProductImage;
-use Eccube\Entity\ProductCategory;
-use Eccube\Entity\ExportCsvRow;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class ProductController extends AbstractController
 {
@@ -115,7 +116,7 @@ class ProductController extends AbstractController
      * @param TaxRuleRepository $taxRuleRepository
      * @param CategoryRepository $categoryRepository
      * @param ProductRepository $productRepository
-     * @param BaseInfo $BaseInfo
+     * @param BaseInfoRepository $baseInfoRepository
      * @param PageMaxRepository $pageMaxRepository
      * @param ProductStatusRepository $productStatusRepository
      * @param TagRepository $tagRepository
@@ -127,7 +128,7 @@ class ProductController extends AbstractController
         TaxRuleRepository $taxRuleRepository,
         CategoryRepository $categoryRepository,
         ProductRepository $productRepository,
-        BaseInfo $BaseInfo,
+        BaseInfoRepository $baseInfoRepository,
         PageMaxRepository $pageMaxRepository,
         ProductStatusRepository $productStatusRepository,
         TagRepository $tagRepository
@@ -138,7 +139,7 @@ class ProductController extends AbstractController
         $this->taxRuleRepository = $taxRuleRepository;
         $this->categoryRepository = $categoryRepository;
         $this->productRepository = $productRepository;
-        $this->BaseInfo = $BaseInfo;
+        $this->BaseInfo = $baseInfoRepository->get();
         $this->pageMaxRepository = $pageMaxRepository;
         $this->productStatusRepository = $productStatusRepository;
         $this->tagRepository = $tagRepository;
@@ -431,11 +432,7 @@ class ProductController extends AbstractController
         }
         $form['Category']->setData($categories);
 
-        $Tags = [];
-        $ProductTags = $Product->getProductTag();
-        foreach ($ProductTags as $ProductTag) {
-            $Tags[] = $ProductTag->getTag();
-        }
+        $Tags = $Product->getTags();
         $form['Tag']->setData($Tags);
 
         if ('POST' === $request->getMethod()) {
@@ -977,6 +974,7 @@ class ProductController extends AbstractController
      *
      * @param \Eccube\Entity\Product $Product
      * @param \Eccube\Entity\Category $Category
+     * @param integer $count
      *
      * @return \Eccube\Entity\ProductCategory
      */

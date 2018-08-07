@@ -11,13 +11,9 @@ file that was distributed with this source code.
 {% for Block in Blocks %}
     <!-- ▼{{ Block.name }} -->
     {% if Block.use_controller %}
-        {% if app.config.http_cache.enabled %}
-            {{ render_esi(path('block_' ~ Block.file_name)) }}
-        {% else %}
-            {{ render(path('block_' ~ Block.file_name)) }}
-        {% endif %}
+        {{ render(path('block_' ~ Block.file_name)) }}
     {% else %}
-        {{ include('Block/' ~ Block.file_name~ '.twig', ignore_missing = true) }}
+        {{ include_dispatch('Block/' ~ Block.file_name ~ '.twig') }}
     {% endif %}
     <!-- ▲{{ Block.name }} -->
 {% endfor %}

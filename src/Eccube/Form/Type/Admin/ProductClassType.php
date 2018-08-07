@@ -57,6 +57,11 @@ class ProductClassType extends AbstractType
             ->add('code', TextType::class, [
                 'label' => 'productclass.label.product_code',
                 'required' => false,
+                'constraints' => [
+                    new Assert\Length([
+                        'max' => 255,
+                    ]),
+                ],
             ])
             ->add('stock', NumberType::class, [
                 'label' => 'productclass.label.stock',

@@ -20,10 +20,10 @@ file that was distributed with this source code.
 
 {% block javascript %}
     <script>
-        $(function () {
+        $(function() {
 
             // 無制限チェックボックス初期表示
-            $('input[id$=_stock_unlimited]').each(function () {
+            $('input[id$=_stock_unlimited]').each(function() {
                 var check = $(this).prop('checked');
                 var index = $(this).attr('id').match(/\d+/);
 
@@ -36,7 +36,7 @@ file that was distributed with this source code.
 
 
             // 無制限チェックボックス
-            $('input[id$=_stock_unlimited]').on('click', function () {
+            $('input[id$=_stock_unlimited]').on('click', function() {
                 var check = $(this).prop('checked');
                 var index = $(this).attr('id').match(/\d+/);
 
@@ -48,7 +48,7 @@ file that was distributed with this source code.
             });
 
             // 登録チェックボックス
-            $('#check-all').click(function () {
+            $('#check-all').click(function() {
                 var checked = $('#check-all').prop('checked');
                 if (checked) {
                     $('input[id$=_checked]').prop('checked', true);
@@ -58,7 +58,7 @@ file that was distributed with this source code.
             });
 
             // 1行目をコピーボタン
-            $('#copy').on('click', function (event) {
+            $('#copy').on('click', function(event) {
                 event.preventDefault();
 
                 var check = $('#product_class_matrix_product_classes_0_add').prop('checked');
@@ -72,7 +72,7 @@ file that was distributed with this source code.
 
                 var stock_unlimited = $('#product_class_matrix_product_classes_0_stock_unlimited').prop('checked');
                 // 無制限チェックボックス
-                $('input[id$=_stock_unlimited]').each(function () {
+                $('input[id$=_stock_unlimited]').each(function() {
                     var index = $(this).attr('id').match(/\d+/);
 
                     if (stock_unlimited) {
@@ -118,7 +118,7 @@ file that was distributed with this source code.
                     {% if Product.hasProductClass %}
 
                         {# 規格あり商品 #}
-                        <div class="card-header">
+                        <div id="ex-product_class-header" class="card-header">
                             <div class="row">
                                 <div class="col-8">
                                     <span class="card-title align-middle">{{ 'admin.product.product_class.product_name_label'|trans }}：{{ Product.name }}</span>
@@ -164,7 +164,7 @@ file that was distributed with this source code.
                                 </div>
                             </div>
                         </div>
-                        <div class="card-body">
+                        <div id="ex-product_class-body" class="card-body">
                             <div class="row mb-2">
                                 <div class="col">
                                     <div class="d-inline-block mr-2">
@@ -243,7 +243,7 @@ file that was distributed with this source code.
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-body p-0">
+                            <div id="ex-product_class" class="card-body p-0">
                                 <table class="table table-sm">
                                     <thead>
                                     <th class="pt-2 pb-2 pl-3">
@@ -277,7 +277,7 @@ file that was distributed with this source code.
 
                                     </thead>
                                     {% for product_class_form in form.product_classes %}
-                                        <tr>
+                                        <tr id="ex-product_class-{{ product_class_form.vars.name }}">
                                             <td class="align-middle pl-3">
                                                 {{ form_widget(product_class_form.checked) }}
                                             </td>
@@ -370,7 +370,7 @@ file that was distributed with this source code.
                                         </div>
                                     </div>
                                     <div class="col-6">
-                                        <div class="row align-items-center justify-content-end">
+                                        <div id="ex-conversion-action" class="row align-items-center justify-content-end">
                                             <div class="col-auto">
                                                 <button class="btn btn-ec-conversion px-5" name="{{ form.save.vars.full_name }}" type="submit">
                                                     {{ Product.hasProductClass

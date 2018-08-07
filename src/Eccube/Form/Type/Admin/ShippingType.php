@@ -17,11 +17,13 @@ use Doctrine\ORM\EntityRepository;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Delivery;
+use Eccube\Entity\Shipping;
 use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\KanaType;
 use Eccube\Form\Type\NameType;
 use Eccube\Form\Type\PhoneNumberType;
 use Eccube\Form\Type\PostalType;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\DeliveryTimeRepository;
 use Eccube\Util\StringUtil;
@@ -33,6 +35,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -66,18 +69,18 @@ class ShippingType extends AbstractType
      * @param EccubeConfig $eccubeConfig
      * @param DeliveryRepository $deliveryRepository
      * @param DeliveryTimeRepository $deliveryTimeRepository
-     * @param BaseInfo $BaseInfo
+     * @param BaseInfoRepository $baseInfoRepository
      */
     public function __construct(
         EccubeConfig $eccubeConfig,
         DeliveryRepository $deliveryRepository,
         DeliveryTimeRepository $deliveryTimeRepository,
-        BaseInfo $BaseInfo
+        BaseInfoRepository $baseInfoRepository
     ) {
         $this->eccubeConfig = $eccubeConfig;
         $this->deliveryRepository = $deliveryRepository;
         $this->deliveryTimeRepository = $deliveryTimeRepository;
-        $this->BaseInfo = $BaseInfo;
+        $this->BaseInfo = $baseInfoRepository->get();
     }
 
     /**
@@ -160,7 +163,7 @@ class ShippingType extends AbstractType
                         ? $Delivery->getServiceName()
                         : $Delivery->getServiceName().trans('delivery.text.hidden');
                 },
-                'placeholder' => 'shipping.placeholder.please_select',
+                'placeholder' => false,
                 'constraints' => [
                     new Assert\NotBlank(),
                 ],
@@ -168,13 +171,6 @@ class ShippingType extends AbstractType
             ->add('shipping_delivery_date', DateType::class, [
                 'label' => 'shipping.label.delivery_date',
                 'placeholder' => '',
-                'format' => 'yyyy-MM-dd',
-                'required' => false,
-            ])
-            ->add('shipping_date', DateType::class, [
-                'label' => 'shipping.label.shipping_date',
-                'placeholder' => '',
-                'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'required' => false,
             ])
@@ -197,13 +193,13 @@ class ShippingType extends AbstractType
                 ],
             ])
             ->add('OrderItems', CollectionType::class, [
-                'entry_type' => OrderItemForShippingRegistrationType::class,
+                'entry_type' => OrderItemType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
             ])
             // 明細業のエラー表示用
-            ->add('OrderItemsError', TextType::class, [
+            ->add('OrderItemsErrors', TextType::class, [
                 'mapped' => false,
             ])
             ->add('notify_email', CheckboxType::class, [
@@ -293,6 +289,29 @@ class ShippingType extends AbstractType
                 if ($DeliveryTime) {
                     $Shipping->setShippingDeliveryTime($DeliveryTime->getDeliveryTime());
                     $Shipping->setTimeId($DeliveryTime->getId());
+                }
+            })
+            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+                // 出荷編集画面のみバリデーションをする。
+                if ($event->getForm()->getParent()->getName() != 'shippings') {
+                    return;
+                }
+
+                /** @var Shipping $Shipping */
+                $Shipping = $event->getData();
+                $OrderItems = $Shipping->getOrderItems();
+
+                $count = 0;
+                foreach ($OrderItems as $OrderItem) {
+                    if ($OrderItem->isProduct()) {
+                        $count++;
+                    }
+                }
+                // 商品明細が1件もない場合はエラーとする.
+                if ($count < 1) {
+                    // 画面下部にエラーメッセージを表示させる
+                    $form = $event->getForm();
+                    $form['OrderItemsErrors']->addError(new FormError(trans('admin.order.edit.product.error')));
                 }
             });
     }

@@ -89,7 +89,7 @@ Markup:
           li: a(href="/moc/setting/system/member") メンバー管理
           li: a(href="/moc/setting/system/authority") 権限管理
           li: a(href="/moc/setting/system/security") セキュリティ管理
-          li: a(href="/moc/setting/system/log") EC-CUBE ログ表示
+          li: a(href="/moc/setting/system/log") ログ表示
           li: a(href="/moc/setting/system/master") マスターデータ管理
       +e.LI.navItem
         +e.A.navItemTitle.collapsed(data-toggle="collapse" href="#ownersStore" aria-expanded="false" aria-controls="ownersStore")

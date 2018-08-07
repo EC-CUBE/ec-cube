@@ -36,13 +36,7 @@ class NavCompilerPass implements CompilerPassInterface
 
             /** @var $class EccubeNav */
             $addNav = $class::getNav();
-            foreach ($nav as $index => $value) {
-                foreach ($addNav as $target => $add) {
-                    if ($target === $value['id']) {
-                        $nav[$index]['child'][] = $add;
-                    }
-                }
-            }
+            $nav = array_replace_recursive($nav, $addNav);
         }
 
         $container->setParameter('eccube_nav', $nav);
