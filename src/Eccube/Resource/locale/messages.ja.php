@@ -1287,6 +1287,7 @@ return [
     'admin.order.index.th_delivery_address' => 'お届け先',
     'admin.order.index.not_payment' => '未入金',
     'admin.order.index.not_shipping' => '未発送',
+    'admin.order.index.send_mail_date' => '%date% に出荷メール送信済みです',
     'admin.order.mail.339' => '受注管理',
     'admin.order.mail.340' => 'メール通知',
     'admin.order.mail.341' => '取得に失敗しました',

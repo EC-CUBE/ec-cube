@@ -659,7 +659,13 @@ file that was distributed with this source code.
                                                 <p class="mb-0 font-weight-bold">
                                                     {# 商品とポイント値引きは名前変更できない #}
                                                     {% if OrderItem.isProduct or OrderItem.isPoint %}
-                                                        {{ OrderItem.product_name }}
+                                                        {% if OrderItem.isProduct %}
+                                                            <a href="{{ url('admin_product_product_edit', {id: OrderItem.ProductClass.Product.id}) }}" target="_blank">
+                                                            {{ OrderItem.product_name }}
+                                                            </a>
+                                                        {% else %}
+                                                            {{ OrderItem.product_name }}
+                                                        {% endif %}
                                                         {{ form_widget(orderItemForm.product_name, { 'type': 'hidden' }) }}
                                                     {% else %}
                                                         {{ form_widget(orderItemForm.product_name) }}
