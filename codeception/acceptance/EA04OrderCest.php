@@ -138,7 +138,6 @@ class EA04OrderCest
             ->入力_姓('')
             ->受注情報登録();
 
-        $OrderRegisterPage->注文者パネルを開く();
         /* 異常系 */
         $I->see('入力されていません。', OrderEditPage::$姓_エラーメッセージ);
 
@@ -197,9 +196,9 @@ class EA04OrderCest
         // 削除
         $OrderNumForDel = $OrderListPage->一覧_注文番号(1);
         $OrderListPage
-          ->一覧_選択(1)
-          ->一覧_削除()
-          ->Accept_削除();
+            ->一覧_選択(1)
+            ->一覧_削除()
+            ->Accept_削除();
 
         $I->see('受注情報を削除しました', ['css' => '#page_admin_order > div > div.c-contentsArea > div.alert.alert-success.alert-dismissible.fade.show.m-3 > span']);
         $I->assertNotEquals($OrderNumForDel, $OrderListPage->一覧_注文番号(1));
@@ -207,9 +206,9 @@ class EA04OrderCest
         // 削除キャンセル
         $OrderNumForDontDel = $OrderListPage->一覧_注文番号(1);
         $OrderListPage
-          ->一覧_選択(1)
-          ->一覧_削除()
-          ->Cancel_削除();
+            ->一覧_選択(1)
+            ->一覧_削除()
+            ->Cancel_削除();
 
         $I->assertEquals($OrderNumForDontDel, $OrderListPage->一覧_注文番号(1));
     }

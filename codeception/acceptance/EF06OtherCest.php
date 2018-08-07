@@ -1,7 +1,6 @@
 <?php
 
 use Codeception\Util\Fixtures;
-use Eccube\Entity\Master\CustomerStatus;
 
 /**
  * @group front
@@ -80,7 +79,7 @@ class EF06OtherCest
         $createCustomer = Fixtures::get('createCustomer');
         $customer = $createCustomer();
         $I->resetEmails();
-        $I->submitForm('#form1',[
+        $I->submitForm('#form1', [
             'login_email' => $customer->getEmail()
         ]);
         $I->see('パスワード発行メールの送信 完了', 'div.ec-pageHeader h1');

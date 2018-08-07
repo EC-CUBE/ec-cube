@@ -15,37 +15,38 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * CustomerAddress
- *
- * @ORM\Table(name="dtb_customer_address")
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
- * @ORM\HasLifecycleCallbacks()
- * @ORM\Entity(repositoryClass="Eccube\Repository\CustomerAddressRepository")
- */
-class CustomerAddress extends AbstractEntity
-{
+if (!class_exists('\Eccube\Entity\CustomerAddress')) {
     /**
-     * getShippingMultipleDefaultName
+     * CustomerAddress
      *
-     * @return string
+     * @ORM\Table(name="dtb_customer_address")
+     * @ORM\InheritanceType("SINGLE_TABLE")
+     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     * @ORM\HasLifecycleCallbacks()
+     * @ORM\Entity(repositoryClass="Eccube\Repository\CustomerAddressRepository")
      */
-    public function getShippingMultipleDefaultName()
+    class CustomerAddress extends AbstractEntity
     {
-        return $this->getName01().' '.$this->getPref()->getName().' '.$this->getAddr01().' '.$this->getAddr02();
-    }
+        /**
+         * getShippingMultipleDefaultName
+         *
+         * @return string
+         */
+        public function getShippingMultipleDefaultName()
+        {
+            return $this->getName01().' '.$this->getPref()->getName().' '.$this->getAddr01().' '.$this->getAddr02();
+        }
 
-    /**
-     * Set from customer.
-     *
-     * @param \Eccube\Entity\Customer $Customer
-     *
-     * @return \Eccube\Entity\CustomerAddress
-     */
-    public function setFromCustomer(Customer $Customer)
-    {
-        $this
+        /**
+         * Set from customer.
+         *
+         * @param \Eccube\Entity\Customer $Customer
+         *
+         * @return \Eccube\Entity\CustomerAddress
+         */
+        public function setFromCustomer(Customer $Customer)
+        {
+            $this
             ->setCustomer($Customer)
             ->setName01($Customer->getName01())
             ->setName02($Customer->getName02())
@@ -58,19 +59,19 @@ class CustomerAddress extends AbstractEntity
             ->setAddr01($Customer->getAddr01())
             ->setAddr02($Customer->getAddr02());
 
-        return $this;
-    }
+            return $this;
+        }
 
-    /**
-     * Set from Shipping.
-     *
-     * @param \Eccube\Entity\Shipping $Shipping
-     *
-     * @return \Eccube\Entity\CustomerAddress
-     */
-    public function setFromShipping(Shipping $Shipping)
-    {
-        $this
+        /**
+         * Set from Shipping.
+         *
+         * @param \Eccube\Entity\Shipping $Shipping
+         *
+         * @return \Eccube\Entity\CustomerAddress
+         */
+        public function setFromShipping(Shipping $Shipping)
+        {
+            $this
             ->setName01($Shipping->getName01())
             ->setName02($Shipping->getName02())
             ->setKana01($Shipping->getKana01())
@@ -82,468 +83,469 @@ class CustomerAddress extends AbstractEntity
             ->setAddr01($Shipping->getAddr01())
             ->setAddr02($Shipping->getAddr02());
 
-        return $this;
-    }
+            return $this;
+        }
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+        /**
+         * @var int
+         *
+         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+         * @ORM\Id
+         * @ORM\GeneratedValue(strategy="IDENTITY")
+         */
+        private $id;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="name01", type="string", length=255, nullable=true)
-     */
-    private $name01;
+        /**
+         * @var string|null
+         *
+         * @ORM\Column(name="name01", type="string", length=255, nullable=true)
+         */
+        private $name01;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="name02", type="string", length=255, nullable=true)
-     */
-    private $name02;
+        /**
+         * @var string|null
+         *
+         * @ORM\Column(name="name02", type="string", length=255, nullable=true)
+         */
+        private $name02;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="kana01", type="string", length=255, nullable=true)
-     */
-    private $kana01;
+        /**
+         * @var string|null
+         *
+         * @ORM\Column(name="kana01", type="string", length=255, nullable=true)
+         */
+        private $kana01;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="kana02", type="string", length=255, nullable=true)
-     */
-    private $kana02;
+        /**
+         * @var string|null
+         *
+         * @ORM\Column(name="kana02", type="string", length=255, nullable=true)
+         */
+        private $kana02;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="company_name", type="string", length=255, nullable=true)
-     */
-    private $company_name;
+        /**
+         * @var string|null
+         *
+         * @ORM\Column(name="company_name", type="string", length=255, nullable=true)
+         */
+        private $company_name;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="postal_code", type="string", length=8, nullable=true)
-     */
-    private $postal_code;
+        /**
+         * @var string|null
+         *
+         * @ORM\Column(name="postal_code", type="string", length=8, nullable=true)
+         */
+        private $postal_code;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="addr01", type="string", length=255, nullable=true)
-     */
-    private $addr01;
+        /**
+         * @var string|null
+         *
+         * @ORM\Column(name="addr01", type="string", length=255, nullable=true)
+         */
+        private $addr01;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="addr02", type="string", length=255, nullable=true)
-     */
-    private $addr02;
+        /**
+         * @var string|null
+         *
+         * @ORM\Column(name="addr02", type="string", length=255, nullable=true)
+         */
+        private $addr02;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="phone_number", type="string", length=14, nullable=true)
-     */
-    private $phone_number;
+        /**
+         * @var string|null
+         *
+         * @ORM\Column(name="phone_number", type="string", length=14, nullable=true)
+         */
+        private $phone_number;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="create_date", type="datetimetz")
-     */
-    private $create_date;
+        /**
+         * @var \DateTime
+         *
+         * @ORM\Column(name="create_date", type="datetimetz")
+         */
+        private $create_date;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="update_date", type="datetimetz")
-     */
-    private $update_date;
+        /**
+         * @var \DateTime
+         *
+         * @ORM\Column(name="update_date", type="datetimetz")
+         */
+        private $update_date;
 
-    /**
-     * @var \Eccube\Entity\Customer
-     *
-     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Customer", inversedBy="CustomerAddresses")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
-     * })
-     */
-    private $Customer;
+        /**
+         * @var \Eccube\Entity\Customer
+         *
+         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Customer", inversedBy="CustomerAddresses")
+         * @ORM\JoinColumns({
+         *   @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
+         * })
+         */
+        private $Customer;
 
-    /**
-     * @var \Eccube\Entity\Master\Country
-     *
-     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Country")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="country_id", referencedColumnName="id")
-     * })
-     */
-    private $Country;
+        /**
+         * @var \Eccube\Entity\Master\Country
+         *
+         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Country")
+         * @ORM\JoinColumns({
+         *   @ORM\JoinColumn(name="country_id", referencedColumnName="id")
+         * })
+         */
+        private $Country;
 
-    /**
-     * @var \Eccube\Entity\Master\Pref
-     *
-     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Pref")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="pref_id", referencedColumnName="id")
-     * })
-     */
-    private $Pref;
+        /**
+         * @var \Eccube\Entity\Master\Pref
+         *
+         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Pref")
+         * @ORM\JoinColumns({
+         *   @ORM\JoinColumn(name="pref_id", referencedColumnName="id")
+         * })
+         */
+        private $Pref;
 
-    /**
-     * Get id.
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+        /**
+         * Get id.
+         *
+         * @return int
+         */
+        public function getId()
+        {
+            return $this->id;
+        }
 
-    /**
-     * Set name01.
-     *
-     * @param string|null $name01
-     *
-     * @return CustomerAddress
-     */
-    public function setName01($name01 = null)
-    {
-        $this->name01 = $name01;
+        /**
+         * Set name01.
+         *
+         * @param string|null $name01
+         *
+         * @return CustomerAddress
+         */
+        public function setName01($name01 = null)
+        {
+            $this->name01 = $name01;
 
-        return $this;
-    }
+            return $this;
+        }
 
-    /**
-     * Get name01.
-     *
-     * @return string|null
-     */
-    public function getName01()
-    {
-        return $this->name01;
-    }
+        /**
+         * Get name01.
+         *
+         * @return string|null
+         */
+        public function getName01()
+        {
+            return $this->name01;
+        }
 
-    /**
-     * Set name02.
-     *
-     * @param string|null $name02
-     *
-     * @return CustomerAddress
-     */
-    public function setName02($name02 = null)
-    {
-        $this->name02 = $name02;
+        /**
+         * Set name02.
+         *
+         * @param string|null $name02
+         *
+         * @return CustomerAddress
+         */
+        public function setName02($name02 = null)
+        {
+            $this->name02 = $name02;
 
-        return $this;
-    }
+            return $this;
+        }
 
-    /**
-     * Get name02.
-     *
-     * @return string|null
-     */
-    public function getName02()
-    {
-        return $this->name02;
-    }
+        /**
+         * Get name02.
+         *
+         * @return string|null
+         */
+        public function getName02()
+        {
+            return $this->name02;
+        }
 
-    /**
-     * Set kana01.
-     *
-     * @param string|null $kana01
-     *
-     * @return CustomerAddress
-     */
-    public function setKana01($kana01 = null)
-    {
-        $this->kana01 = $kana01;
+        /**
+         * Set kana01.
+         *
+         * @param string|null $kana01
+         *
+         * @return CustomerAddress
+         */
+        public function setKana01($kana01 = null)
+        {
+            $this->kana01 = $kana01;
 
-        return $this;
-    }
+            return $this;
+        }
 
-    /**
-     * Get kana01.
-     *
-     * @return string|null
-     */
-    public function getKana01()
-    {
-        return $this->kana01;
-    }
+        /**
+         * Get kana01.
+         *
+         * @return string|null
+         */
+        public function getKana01()
+        {
+            return $this->kana01;
+        }
 
-    /**
-     * Set kana02.
-     *
-     * @param string|null $kana02
-     *
-     * @return CustomerAddress
-     */
-    public function setKana02($kana02 = null)
-    {
-        $this->kana02 = $kana02;
+        /**
+         * Set kana02.
+         *
+         * @param string|null $kana02
+         *
+         * @return CustomerAddress
+         */
+        public function setKana02($kana02 = null)
+        {
+            $this->kana02 = $kana02;
 
-        return $this;
-    }
+            return $this;
+        }
 
-    /**
-     * Get kana02.
-     *
-     * @return string|null
-     */
-    public function getKana02()
-    {
-        return $this->kana02;
-    }
+        /**
+         * Get kana02.
+         *
+         * @return string|null
+         */
+        public function getKana02()
+        {
+            return $this->kana02;
+        }
 
-    /**
-     * Set companyName.
-     *
-     * @param string|null $companyName
-     *
-     * @return CustomerAddress
-     */
-    public function setCompanyName($companyName = null)
-    {
-        $this->company_name = $companyName;
+        /**
+         * Set companyName.
+         *
+         * @param string|null $companyName
+         *
+         * @return CustomerAddress
+         */
+        public function setCompanyName($companyName = null)
+        {
+            $this->company_name = $companyName;
 
-        return $this;
-    }
+            return $this;
+        }
 
-    /**
-     * Get companyName.
-     *
-     * @return string|null
-     */
-    public function getCompanyName()
-    {
-        return $this->company_name;
-    }
+        /**
+         * Get companyName.
+         *
+         * @return string|null
+         */
+        public function getCompanyName()
+        {
+            return $this->company_name;
+        }
 
-    /**
-     * Set postal_code.
-     *
-     * @param string|null $postal_code
-     *
-     * @return CustomerAddress
-     */
-    public function setPostalCode($postal_code = null)
-    {
-        $this->postal_code = $postal_code;
+        /**
+         * Set postal_code.
+         *
+         * @param string|null $postal_code
+         *
+         * @return CustomerAddress
+         */
+        public function setPostalCode($postal_code = null)
+        {
+            $this->postal_code = $postal_code;
 
-        return $this;
-    }
+            return $this;
+        }
 
-    /**
-     * Get postal_code.
-     *
-     * @return string|null
-     */
-    public function getPostalCode()
-    {
-        return $this->postal_code;
-    }
+        /**
+         * Get postal_code.
+         *
+         * @return string|null
+         */
+        public function getPostalCode()
+        {
+            return $this->postal_code;
+        }
 
-    /**
-     * Set addr01.
-     *
-     * @param string|null $addr01
-     *
-     * @return CustomerAddress
-     */
-    public function setAddr01($addr01 = null)
-    {
-        $this->addr01 = $addr01;
+        /**
+         * Set addr01.
+         *
+         * @param string|null $addr01
+         *
+         * @return CustomerAddress
+         */
+        public function setAddr01($addr01 = null)
+        {
+            $this->addr01 = $addr01;
 
-        return $this;
-    }
+            return $this;
+        }
 
-    /**
-     * Get addr01.
-     *
-     * @return string|null
-     */
-    public function getAddr01()
-    {
-        return $this->addr01;
-    }
+        /**
+         * Get addr01.
+         *
+         * @return string|null
+         */
+        public function getAddr01()
+        {
+            return $this->addr01;
+        }
 
-    /**
-     * Set addr02.
-     *
-     * @param string|null $addr02
-     *
-     * @return CustomerAddress
-     */
-    public function setAddr02($addr02 = null)
-    {
-        $this->addr02 = $addr02;
+        /**
+         * Set addr02.
+         *
+         * @param string|null $addr02
+         *
+         * @return CustomerAddress
+         */
+        public function setAddr02($addr02 = null)
+        {
+            $this->addr02 = $addr02;
 
-        return $this;
-    }
+            return $this;
+        }
 
-    /**
-     * Get addr02.
-     *
-     * @return string|null
-     */
-    public function getAddr02()
-    {
-        return $this->addr02;
-    }
+        /**
+         * Get addr02.
+         *
+         * @return string|null
+         */
+        public function getAddr02()
+        {
+            return $this->addr02;
+        }
 
-    /**
-     * Set phone_number.
-     *
-     * @param string|null $phone_number
-     *
-     * @return CustomerAddress
-     */
-    public function setPhoneNumber($phone_number = null)
-    {
-        $this->phone_number = $phone_number;
+        /**
+         * Set phone_number.
+         *
+         * @param string|null $phone_number
+         *
+         * @return CustomerAddress
+         */
+        public function setPhoneNumber($phone_number = null)
+        {
+            $this->phone_number = $phone_number;
 
-        return $this;
-    }
+            return $this;
+        }
 
-    /**
-     * Get phone_number.
-     *
-     * @return string|null
-     */
-    public function getPhoneNumber()
-    {
-        return $this->phone_number;
-    }
+        /**
+         * Get phone_number.
+         *
+         * @return string|null
+         */
+        public function getPhoneNumber()
+        {
+            return $this->phone_number;
+        }
 
-    /**
-     * Set createDate.
-     *
-     * @param \DateTime $createDate
-     *
-     * @return CustomerAddress
-     */
-    public function setCreateDate($createDate)
-    {
-        $this->create_date = $createDate;
+        /**
+         * Set createDate.
+         *
+         * @param \DateTime $createDate
+         *
+         * @return CustomerAddress
+         */
+        public function setCreateDate($createDate)
+        {
+            $this->create_date = $createDate;
 
-        return $this;
-    }
+            return $this;
+        }
 
-    /**
-     * Get createDate.
-     *
-     * @return \DateTime
-     */
-    public function getCreateDate()
-    {
-        return $this->create_date;
-    }
+        /**
+         * Get createDate.
+         *
+         * @return \DateTime
+         */
+        public function getCreateDate()
+        {
+            return $this->create_date;
+        }
 
-    /**
-     * Set updateDate.
-     *
-     * @param \DateTime $updateDate
-     *
-     * @return CustomerAddress
-     */
-    public function setUpdateDate($updateDate)
-    {
-        $this->update_date = $updateDate;
+        /**
+         * Set updateDate.
+         *
+         * @param \DateTime $updateDate
+         *
+         * @return CustomerAddress
+         */
+        public function setUpdateDate($updateDate)
+        {
+            $this->update_date = $updateDate;
 
-        return $this;
-    }
+            return $this;
+        }
 
-    /**
-     * Get updateDate.
-     *
-     * @return \DateTime
-     */
-    public function getUpdateDate()
-    {
-        return $this->update_date;
-    }
+        /**
+         * Get updateDate.
+         *
+         * @return \DateTime
+         */
+        public function getUpdateDate()
+        {
+            return $this->update_date;
+        }
 
-    /**
-     * Set customer.
-     *
-     * @param \Eccube\Entity\Customer|null $customer
-     *
-     * @return CustomerAddress
-     */
-    public function setCustomer(\Eccube\Entity\Customer $customer = null)
-    {
-        $this->Customer = $customer;
+        /**
+         * Set customer.
+         *
+         * @param \Eccube\Entity\Customer|null $customer
+         *
+         * @return CustomerAddress
+         */
+        public function setCustomer(\Eccube\Entity\Customer $customer = null)
+        {
+            $this->Customer = $customer;
 
-        return $this;
-    }
+            return $this;
+        }
 
-    /**
-     * Get customer.
-     *
-     * @return \Eccube\Entity\Customer|null
-     */
-    public function getCustomer()
-    {
-        return $this->Customer;
-    }
+        /**
+         * Get customer.
+         *
+         * @return \Eccube\Entity\Customer|null
+         */
+        public function getCustomer()
+        {
+            return $this->Customer;
+        }
 
-    /**
-     * Set country.
-     *
-     * @param \Eccube\Entity\Master\Country|null $country
-     *
-     * @return CustomerAddress
-     */
-    public function setCountry(\Eccube\Entity\Master\Country $country = null)
-    {
-        $this->Country = $country;
+        /**
+         * Set country.
+         *
+         * @param \Eccube\Entity\Master\Country|null $country
+         *
+         * @return CustomerAddress
+         */
+        public function setCountry(\Eccube\Entity\Master\Country $country = null)
+        {
+            $this->Country = $country;
 
-        return $this;
-    }
+            return $this;
+        }
 
-    /**
-     * Get country.
-     *
-     * @return \Eccube\Entity\Master\Country|null
-     */
-    public function getCountry()
-    {
-        return $this->Country;
-    }
+        /**
+         * Get country.
+         *
+         * @return \Eccube\Entity\Master\Country|null
+         */
+        public function getCountry()
+        {
+            return $this->Country;
+        }
 
-    /**
-     * Set pref.
-     *
-     * @param \Eccube\Entity\Master\Pref|null $pref
-     *
-     * @return CustomerAddress
-     */
-    public function setPref(\Eccube\Entity\Master\Pref $pref = null)
-    {
-        $this->Pref = $pref;
+        /**
+         * Set pref.
+         *
+         * @param \Eccube\Entity\Master\Pref|null $pref
+         *
+         * @return CustomerAddress
+         */
+        public function setPref(\Eccube\Entity\Master\Pref $pref = null)
+        {
+            $this->Pref = $pref;
 
-        return $this;
-    }
+            return $this;
+        }
 
-    /**
-     * Get pref.
-     *
-     * @return \Eccube\Entity\Master\Pref|null
-     */
-    public function getPref()
-    {
-        return $this->Pref;
+        /**
+         * Get pref.
+         *
+         * @return \Eccube\Entity\Master\Pref|null
+         */
+        public function getPref()
+        {
+            return $this->Pref;
+        }
     }
 }

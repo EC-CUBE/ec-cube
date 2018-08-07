@@ -78,6 +78,8 @@ class OrderItemTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
     public function testValidPrice_HasMinus()
     {
         $this->formData['price'] = '-123456';
+        // 値引き明細はマイナス値
+        $this->formData['order_item_type'] = \Eccube\Entity\Master\OrderItemType::DISCOUNT;
 
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
