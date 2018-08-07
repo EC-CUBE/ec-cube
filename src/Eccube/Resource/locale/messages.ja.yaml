@@ -321,6 +321,7 @@ admin.common.registration: 登録
 admin.common.registeration: 登録 # FIXME typo
 admin.common.edit: 編集
 admin.common.copy: 複製
+admin.common.display: 表示
 admin.common.delete: 削除
 admin.common.cancel: キャンセル
 admin.common.search: 検索
@@ -367,9 +368,6 @@ admin.common.csv_invalid_not_found_target: '%line%行目の%name%「%target_name
 admin.common.csv_invalid_not_same: '%line%行目の%name1%と%name2%には同じ値を使用できません'
 admin.common.csv_invalid_can_not: '%line%行目の%name%は設定できません'
 admin.common.csv_invalid_image: '%line%行目の%name%には末尾に"/"や"../"を使用できません'
-
-
-
 admin.common.drag_and_drop_description: 項目の順番はドラッグ＆ドロップでも変更可能です。
 
 # エンティティに関連するラベル
@@ -451,9 +449,13 @@ admin.product.sale_type: 販売種別
 admin.product.description_detail: 商品説明
 admin.product.description_list: 商品説明(一覧)
 admin.product.description_list__add: 商品説明(一覧)を追加
+admin.product.price: 価格
 admin.product.sale_price: 販売価格(一覧) # price02
 admin.product.nomal_price: 通常価格(一覧) # price01
 admin.product.stock: 在庫数
+admin.product.stock__short: 在庫
+admin.product.stock__in_stock: あり
+admin.product.stock__out_of_stock: なし
 admin.product.search_word: 検索ワード
 admin.product.product_code: 商品コード
 admin.product.product_code__short: コード

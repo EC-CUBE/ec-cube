@@ -69,8 +69,8 @@ class SearchProductType extends AbstractType
             ->add('stock', ChoiceType::class, [
                 'label' => 'searchproduct.label.stock',
                 'choices' => [
-                    'admin.product.index.filter_in_stock' => ProductStock::IN_STOCK,
-                    'admin.product.index.filter_out_of_stock' => ProductStock::OUT_OF_STOCK,
+                    'admin.product.stock__in_stock' => ProductStock::IN_STOCK,
+                    'admin.product.stock__out_of_stock' => ProductStock::OUT_OF_STOCK,
                 ],
                 'expanded' => true,
                 'multiple' => true,
