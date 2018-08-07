@@ -109,7 +109,7 @@ class AddressType extends AbstractType
                 ],
                 'attr' => [
                     'class' => 'p-locality p-street-address',
-                    'placeholder' => 'common.address_sample_01'
+                    'placeholder' => 'common.address_sample_01',
                 ],
             ],
             'addr02_options' => [
@@ -118,7 +118,7 @@ class AddressType extends AbstractType
                 ],
                 'attr' => [
                     'class' => 'p-locality p-street-address',
-                    'placeholder' => 'common.address_sample_02'
+                    'placeholder' => 'common.address_sample_02',
                 ],
             ],
             'pref_name' => 'pref',

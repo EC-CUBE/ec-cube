@@ -91,8 +91,8 @@ class CustomerType extends AbstractType
                     ]),
                 ],
                 'attr' => [
-                    'placeholder' => 'common.mail_address_sample'
-                ]
+                    'placeholder' => 'common.mail_address_sample',
+                ],
             ])
             ->add('sex', SexType::class, [
                 'required' => false,
