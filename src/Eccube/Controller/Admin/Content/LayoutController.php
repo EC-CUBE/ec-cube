@@ -216,7 +216,7 @@ class LayoutController extends AbstractController
                 $this->entityManager->flush($BlockPosition);
             }
 
-            $this->addSuccess('admin.register.complete', 'admin');
+            $this->addSuccess('admin.common.save_complete', 'admin');
 
             return $this->redirectToRoute('admin_content_layout_edit', ['id' => $Layout->getId()]);
         }
