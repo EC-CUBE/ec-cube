@@ -139,7 +139,7 @@ class AbstractController extends Controller
 
     public function addRequestError($message, $namespace = 'front')
     {
-        $this->session->getFlashBag()->set('eccube.'.$namespace.'.request.error', $message);
+        $this->session->getFlashBag()->add('eccube.'.$namespace.'.request.error', $message);
     }
 
     public function clearMessage()
