@@ -433,7 +433,7 @@ class OrderRepository extends AbstractRepository
         }
 
         // 発送メール送信済かどうか.
-        if (isset($searchData['shipping_mail_send'])) {
+        if (isset($searchData['shipping_mail_send']) && count($searchData['shipping_mail_send']) > 0) {
             $orExpr = [];
             foreach ($searchData['shipping_mail_send'] as $shippingMailSend) {
                 if ($shippingMailSend) {
