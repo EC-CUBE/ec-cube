@@ -68,7 +68,7 @@ class EA08SysteminfoCest
         $I->click('#member_form .c-conversionArea__container button');
         $I->see('メンバーを保存しました。', '.c-contentsArea .alert-success');
         $I->see('メンバー管理', 'div.c-contentsArea__cols > div > div > div.card.rounded.border-0.mb-4 > div.card-header > div > div > span');
-        $I->see('admintest', '.card-body tbody tr:nth-child(1) td:nth-child(1)');
+        $I->see('admintest', '.card-body tbody tr:last-child td:nth-child(1)');
     }
 
     public function systeminfo_メンバー管理登録未実施(\AcceptanceTester $I)
@@ -187,9 +187,9 @@ class EA08SysteminfoCest
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
         $I->see('システム設定メンバー管理', '.c-pageTitle');
 
-        $I->click('.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(5) .action-delete');
-        $I->waitForElementVisible(['css' => '.c-primaryCol .card-body table tbody tr:nth-child(1) .modal']);
-        $I->click('.c-primaryCol .card-body table tbody tr:nth-child(1) .modal .btn-ec-delete');
+        $I->click('.c-primaryCol .card-body table tbody tr:last-child td:nth-child(5) .action-delete');
+        $I->waitForElementVisible(['css' => '.c-primaryCol .card-body table tbody tr:last-child .modal']);
+        $I->click('.c-primaryCol .card-body table tbody tr:last-child .modal .btn-ec-delete');
 
         $I->see('メンバーを削除しました。', '.c-contentsArea .alert-success');
         $I->see('管理者', '.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(1)');
