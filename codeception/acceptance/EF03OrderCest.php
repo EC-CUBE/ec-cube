@@ -1,6 +1,7 @@
 <?php
 
 use Codeception\Util\Fixtures;
+use Eccube\Entity\Customer;
 use Page\Front\CartPage;
 use Page\Front\CustomerAddressAddPage;
 use Page\Front\MultipleShippingPage;
@@ -898,5 +899,106 @@ class EF03OrderCest
         // 完了画面 -> topへ
         ShoppingCompletePage::at($I)->TOPへ();
         $I->see('新着情報', '.ec-news__title');
+    }
+
+    public function order_複数ブラウザでログインしてカートに追加する(\AcceptanceTester $I)
+    {
+        $I->logoutAsMember();
+        $I->saveSessionSnapshot('not_login');
+
+        $createCustomer = Fixtures::get('createCustomer');
+        /** @var Customer $customer */
+        $customer = $createCustomer();
+
+        // ブラウザ1ログイン
+        $I->loginAsMember($customer->getEmail(), 'password');
+        $I->saveSessionSnapshot('browser1');
+
+        // ブラウザ2ログイン
+        $I->loadSessionSnapshot('not_login');
+        $I->loginAsMember($customer->getEmail(), 'password');
+        $I->saveSessionSnapshot('browser2');
+
+        /*
+         * ブラウザ1でカートに商品を入れる
+         */
+        $I->loadSessionSnapshot('browser1');
+
+        $CartPage = ProductDetailPage::go($I, 2)
+            ->カートに入れる(1)
+            ->カートへ進む();
+
+        $I->assertEquals(1, $CartPage->明細数());
+        $I->assertEquals('パーコレーター', $CartPage->商品名(1));
+
+        /*
+         * ブラウザ2にのカートにも反映されている
+         */
+        $I->loadSessionSnapshot('browser2');
+
+        $CartPage = CartPage::go($I);
+
+        $I->assertEquals(1, $CartPage->明細数());
+        $I->assertEquals('パーコレーター', $CartPage->商品名(1));
+    }
+
+
+    public function order_複数ブラウザ_片方でログインしてカートに追加しもう一方にログインして別の商品を追加する(\AcceptanceTester $I)
+    {
+        $I->logoutAsMember();
+        $I->saveSessionSnapshot('not_login');
+
+        $createCustomer = Fixtures::get('createCustomer');
+        /** @var Customer $customer */
+        $customer = $createCustomer();
+
+        // ブラウザ1ログイン
+        $I->loginAsMember($customer->getEmail(), 'password');
+        $I->saveSessionSnapshot('browser1');
+
+        /*
+         * ブラウザ1でカートに商品を入れる
+         */
+        $I->loadSessionSnapshot('browser1');
+
+        $CartPage = ProductDetailPage::go($I, 2)
+            ->カートに入れる(1)
+            ->カートへ進む();
+
+        $I->assertEquals(1, $CartPage->明細数());
+        $I->assertContains('パーコレーター', $CartPage->商品名(1));
+
+        /*
+         * ブラウザ2で未ログインのまま別の商品を入れる
+         */
+        $I->loadSessionSnapshot('not_login');
+        $CartPage = ProductDetailPage::go($I, 1)
+            ->カートに入れる(1, ['1' => '金'], ['4' => '120mm'])
+            ->カートへ進む();
+
+        $I->assertEquals(1, $CartPage->明細数());
+        $I->assertContains('ディナーフォーク', $CartPage->商品名(1));
+
+        /*
+         * ブラウザ2でログインするとブラウザ1のカートとマージされている
+         */
+        $I->loginAsMember($customer->getEmail(), 'password');
+
+        $CartPage = CartPage::go($I);
+        $I->assertEquals(2, $CartPage->明細数());
+        $itemNames = $I->grabMultiple(['css' => '.ec-cartRow__name a']);
+        $I->assertContains('ディナーフォーク', $itemNames);
+        $I->assertContains('パーコレーター', $itemNames);
+
+        /*
+         * ブラウザ1のカートもマージされている
+         */
+        $I->loadSessionSnapshot('browser1');
+
+        $CartPage = CartPage::go($I);
+        $I->assertEquals(2, $CartPage->明細数());
+        $itemNames = $I->grabMultiple(['css' => '.ec-cartRow__name a']);
+        $I->assertContains('ディナーフォーク', $itemNames);
+        $I->assertContains('パーコレーター', $itemNames);
     }
 }
