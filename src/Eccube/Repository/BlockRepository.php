@@ -163,4 +163,24 @@ class BlockRepository extends AbstractRepository
 
         return $Pages;
     }
+
+    /**
+     * レイアウト未配置ブロックの情報を取得.
+     *
+     * @param  \Eccube\Entity\Layout $Layout
+     *
+     * @return Block
+     */
+    public function getUnusedBlocks($Layout)
+    {
+        $UnusedBlocks = $this->createQueryBuilder('b')
+            ->select('b')
+            ->where('b not in (:blocks)')
+            ->setParameter('blocks', $Layout->getBlocks())
+            ->getQuery()
+            ->getResult();
+
+        return $UnusedBlocks;
+    }
+
 }

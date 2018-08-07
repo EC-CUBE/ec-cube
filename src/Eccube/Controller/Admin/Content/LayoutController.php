@@ -118,35 +118,15 @@ class LayoutController extends AbstractController
         if (is_null($id)) {
             $Layout = new Layout();
         } else {
-            // todo レポジトリへ移動
-            try {
-                $Layout = $this->layoutRepository->createQueryBuilder('l')
-                    ->select('l, bp, b')
-                    ->leftJoin('l.BlockPositions', 'bp')
-                    ->leftJoin('bp.Block', 'b')
-                    ->where('l.id = :layout_id')
-                    ->orderBy('bp.block_row', 'ASC')
-                    ->setParameter('layout_id', $id)
-                    ->getQuery()
-                    ->getSingleResult();
-            } catch (NoResultException $e) {
-                throw new NotFoundHttpException();
-            }
+            $Layout = $this->layoutRepository->findById($id);
         }
 
-        // todo レポジトリへ移動
         // 未使用ブロックの取得
         $Blocks = $Layout->getBlocks();
         if (empty($Blocks)) {
             $UnusedBlocks = $this->blockRepository->findAll();
         } else {
-            $UnusedBlocks = $this->blockRepository
-                ->createQueryBuilder('b')
-                ->select('b')
-                ->where('b not in (:blocks)')
-                ->setParameter('blocks', $Blocks)
-                ->getQuery()
-                ->getResult();
+            $UnusedBlocks = $this->blockRepository->getUnusedBlocks($Layout);
         }
 
         $builder = $this->formFactory->createBuilder(FormType::class, $Layout);
@@ -175,104 +155,111 @@ class LayoutController extends AbstractController
         $form = $builder->getForm();
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted()) {
             // Layoutの更新
             $Layout = $form->getData();
-            $this->entityManager->persist($Layout);
-            $this->entityManager->flush($Layout);
-
-            // BlockPositionの更新
-            // delete/insertのため、一度削除する.
-            $BlockPositions = $Layout->getBlockPositions();
-            foreach ($BlockPositions as $BlockPosition) {
-                $Layout->removeBlockPosition($BlockPosition);
-                $this->entityManager->remove($BlockPosition);
-                $this->entityManager->flush($BlockPosition);
-            }
-
             // ブロックの個数分登録を行う.
-            $max = count($Blocks) + count($UnusedBlocks);
             $data = $request->request->all();
-            for ($i = 0; $i < $max; $i++) {
-                // block_idが取得できない場合はinsertしない
+            // 削除対象ブロックポジション
+            $RemovedBlockPositions = [];
+            for ($i = 0; $i <count($data); $i++) {
+                // ブロックidが取得できない場合はinsertしない
                 if (!isset($data['block_id_'.$i])) {
                     continue;
                 }
-                // 未使用ブロックはinsertしない
+
+                // ブロック情報を取得
+                $Block = $this->blockRepository->find($data['block_id_'.$i]);
+
+                // 未使用ブロックの場合
                 if ($data['section_'.$i] == \Eccube\Entity\Page::TARGET_ID_UNUSED) {
+                    // 配置済み → 未使用ブロックとされた場合、未使用ブロック配列に追加
+                    $is_exist_unused_block = false;
+                    foreach($UnusedBlocks as $UnusedBlock) {
+                        if ($UnusedBlock->getId() == $Block->getId()) {
+                            $is_exist_unused_block = true;
+                            break;
+                        }
+                    }
+
+                    if (!$is_exist_unused_block) {
+                        $UnusedBlocks[] = $Block;
+                    }
+
+                    // 未使用ブロックIdをキーとして、レイアウト内に配置されているブロックポジションを取得
+                    $RemovedBlockPosition = $Layout->removeBlockPositionByBlockId($Block->getId());
+
+                    // レイアウト内に未使用化されたブロックが存在する場合、永続化処理でまとめて削除する為、
+                    // レイアウトから外れたブロックポジションを保持
+                    if ($RemovedBlockPosition) {
+                        $RemovedBlockPositions[] = $RemovedBlockPosition;
+                    }
+
                     continue;
                 }
-                $Block = $this->blockRepository->find($data['block_id_'.$i]);
-                $BlockPosition = new BlockPosition();
-                $BlockPosition
-                    ->setBlockId($data['block_id_'.$i])
-                    ->setLayoutId($Layout->getId())
-                    ->setBlockRow($data['block_row_'.$i])
-                    ->setSection($data['section_'.$i])
-                    ->setBlock($Block)
-                    ->setLayout($Layout);
-                $Layout->addBlockPosition($BlockPosition);
-                $this->entityManager->persist($BlockPosition);
-                $this->entityManager->flush($BlockPosition);
-            }
+                
+                // 未使用 → 配置済みブロックとされた場合、未使用ブロックリストより削除
+                foreach ($UnusedBlocks as $unUsedBlockKey => $UnusedBlock) {
+                    if ($Block->getId() == $UnusedBlock->getId()) {
+                        unset($UnusedBlocks[$unUsedBlockKey]);
+                    }
+                }
 
-            $this->addSuccess('admin.register.complete', 'admin');
-
-            return $this->redirectToRoute('admin_content_layout_edit', ['id' => $Layout->getId()]);
-        }
-
-        // リクエストのブロック情報により直近の配置を復元する
-        $data = $request->request->all();
-        for ($i = 0; $i < count($data); $i++) {
-            // block_idが取得できない場合は無視
-            if (!isset($data['block_id_'.$i])) {
-                continue;
-            }
-
-            // 未使用ブロックは無視
-            if ($data['section_'.$i] == \Eccube\Entity\Page::TARGET_ID_UNUSED) {
-                continue;
-            }
-
-            // ブロックを取得
-            $Block = $this->blockRepository->find($data['block_id_'.$i]);
-
-            // レイアウト配置済みブロックは未使用ブロックリストより削除
-            foreach ($UnusedBlocks as $unUsedBlockKey => $UnusedBlock) {
-                if ($Block->getId() == $UnusedBlock->getId()) {
-                    unset($UnusedBlocks[$unUsedBlockKey]);
+                // 配置済みブロックが、レイアウト内に存在しているかチェック
+                $BlockPositions = $Layout->getBlockPositions();
+                $BlockPositions = $BlockPositions->filter(
+                    function ($BlockPosition) use ($Block) {
+                        return $BlockPosition->getBlock()->getId() == $Block->getId();
+                    }
+                );
+    
+                if ($BlockPositions && $BlockPositions->count() > 0) {
+                    // 配置済みブロックの場合は、レイアウト内のブロックポジションをリクエストで更新
+                    $BlockPosition = current($BlockPositions->toArray());
+                    $BlockPosition
+                        ->setBlockId($data['block_id_'.$i])
+                        ->setBlockRow($data['block_row_'.$i])
+                        ->setSection($data['section_'.$i])
+                        ->setBlock($Block)
+                        ->setLayout($Layout);
+                } else {
+                    // 新規配置ブロックの場合は、リクエストから新規ブロックポジションを生成し、レイアウトへ登録
+                    $BlockPosition = new BlockPosition();
+                    $BlockPosition
+                        ->setBlockId($data['block_id_'.$i])
+                        ->setLayoutId($Layout->getId())
+                        ->setBlockRow($data['block_row_'.$i])
+                        ->setSection($data['section_'.$i])
+                        ->setBlock($Block)
+                        ->setLayout($Layout);
+    
+                    $Layout->addBlockPosition($BlockPosition);
                 }
             }
 
-            // レイアウト配置済み（DB登録済み）ブロックポジションを取得
-            $BlockPositions = $Layout->getBlockPositions();
-            $BlockPositions = $BlockPositions->filter(
-                function ($BlockPosition) use ($Block) {
-                    return $BlockPosition->getBlock() == $Block;
+            // 正常データかつ登録・更新ボタンクリックの場合は永続化を実行
+            if ($form->isValid()) {
+                // レイアウトを更新
+                $this->entityManager->persist($Layout);
+                $this->entityManager->flush($Layout);
+
+                // 未使用化されたブロックポジションを削除
+                foreach($RemovedBlockPositions as $BlockPosition) {
+                    $this->entityManager->remove($BlockPosition);
+                    $this->entityManager->flush($BlockPosition);
                 }
-            );
 
-            if ($BlockPositions && $BlockPositions->count() > 0) {
-                // すでに配置されている（かつDB登録済み）ブロックポジションは更新
-                // filterはArrayCollectionでとれる為、連想配列化し先頭を取得する
-                $BlockPosition = current($BlockPositions->toArray());
-                $BlockPosition
-                    ->setBlockId($data['block_id_'.$i])
-                    ->setBlockRow($data['block_row_'.$i])
-                    ->setSection($data['section_'.$i])
-                    ->setBlock($Block)
-                    ->setLayout($Layout);
-            } else {
-                $BlockPosition = new BlockPosition();
-                $BlockPosition
-                    ->setBlockId($data['block_id_'.$i])
-                    ->setLayoutId($Layout->getId())
-                    ->setBlockRow($data['block_row_'.$i])
-                    ->setSection($data['section_'.$i])
-                    ->setBlock($Block)
-                    ->setLayout($Layout);
+                // 配置されているブロックポジションを更新
+                $BlockPositions = $Layout->getBlockPositions();
 
-                $Layout->addBlockPosition($BlockPosition);
+                foreach($BlockPositions as $BlockPosition) {
+                    $this->entityManager->persist($BlockPosition);
+                    $this->entityManager->flush($BlockPosition);
+                }
+
+                $this->addSuccess('admin.register.complete', 'admin');
+
+                return $this->redirectToRoute('admin_content_layout_edit', ['id' => $Layout->getId()]);
             }
         }
 
