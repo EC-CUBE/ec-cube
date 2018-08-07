@@ -8,7 +8,10 @@ clone_folder: c:\projects\ec-cube
 
 cache:
   - '%LOCALAPPDATA%\Composer\files'
-  
+  - vendor
+  - C:\ProgramData\chocolatey\bin -> appveyor.yml
+  - C:\ProgramData\chocolatey\lib -> appveyor.yml
+
 # Fix line endings in Windows. (runs before repo cloning)
 init:
   - git config --global core.autocrlf input
@@ -59,10 +62,6 @@ install:
   - echo APP_ENV=codeception >> .env
   - php -r "readfile('http://getcomposer.org/installer');" | php
   - php composer.phar install --dev --no-interaction -o
-
-# cache:
-  # - C:\ProgramData\chocolatey\bin -> appveyor.yml
-  # - C:\ProgramData\chocolatey\lib -> appveyor.yml
 
 # Don't actually build.
 build: off
