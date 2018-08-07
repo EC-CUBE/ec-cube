@@ -324,6 +324,10 @@ class StringUtil
             $pattern = '/^('.$key.')=(.*)/m';
             if (preg_match($pattern, $env)) {
                 $env = preg_replace($pattern, '$1='.$value, $env);
+                if ('\\' === DIRECTORY_SEPARATOR) {
+                    // The m modifier of the preg functions converts the end-of-line to '\n'
+                    $env = self::convertLineFeed($env, "\r\n");
+                }
             } else {
                 $env .= PHP_EOL."${key}=${value}";
             }
