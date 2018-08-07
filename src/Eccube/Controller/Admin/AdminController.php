@@ -81,6 +81,11 @@ class AdminController extends AbstractController
     protected $productRepository;
 
     /**
+     * @var array 売り上げ状況用受注状況
+     */
+    private $excludes = [OrderStatus::PROCESSING, OrderStatus::CANCEL, OrderStatus::PENDING];
+
+    /**
      * AdminController constructor.
      *
      * @param AuthorizationCheckerInterface $authorizationChecker
@@ -175,36 +180,33 @@ class AdminController extends AbstractController
         $excludes = $event->getArgument('excludes');
 
         // 受注ステータスごとの受注件数.
-        $Orders = $this->getOrderEachStatus($this->entityManager, $excludes);
+        $Orders = $this->getOrderEachStatus($excludes);
 
         // 受注ステータスの一覧.
         $Criteria = new Criteria();
-        $Criteria->where($Criteria::expr()->notIn('id', $excludes));
-        $OrderStatuses = $this->orderStatusRepository->matching($Criteria, $Criteria->orderBy(['sort_no' => 'ASC']));
+        $Criteria
+            ->where($Criteria::expr()->notIn('id', $excludes))
+            ->orderBy(['sort_no' => 'ASC']);
+        $OrderStatuses = $this->orderStatusRepository->matching($Criteria);
 
         /**
          * 売り上げ状況
          */
-        $excludes = [];
-        $excludes[] = OrderStatus::PROCESSING;
-        $excludes[] = OrderStatus::CANCEL;
-        $excludes[] = OrderStatus::PENDING;
-
         $event = new EventArgs(
             [
-                'excludes' => $excludes,
+                'excludes' => $this->excludes,
             ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ADMIM_INDEX_SALES, $event);
-        $excludes = $event->getArgument('excludes');
+        $this->excludes = $event->getArgument('excludes');
 
         // 今日の売上/件数
-        $salesToday = $this->getSalesByDay($this->entityManager, new \DateTime(), $excludes);
+        $salesToday = $this->getSalesByDay(new \DateTime());
         // 昨日の売上/件数
-        $salesYesterday = $this->getSalesByDay($this->entityManager, new \DateTime('-1 day'), $excludes);
+        $salesYesterday = $this->getSalesByDay(new \DateTime('-1 day'));
         // 今月の売上/件数
-        $salesThisMonth = $this->getSalesByMonth($this->entityManager, new \DateTime(), $excludes);
+        $salesThisMonth = $this->getSalesByMonth(new \DateTime());
 
         /**
          * ショップ状況
@@ -260,26 +262,18 @@ class AdminController extends AbstractController
             return $this->json(['status' => 'NG'], 400);
         }
 
-        /**
-         * 売り上げ状況
-         */
-        $excludes = [];
-        $excludes[] = OrderStatus::PROCESSING;
-        $excludes[] = OrderStatus::CANCEL;
-        $excludes[] = OrderStatus::PENDING;
-
         // 週間の売上金額
         $toDate = Carbon::now();
         $fromDate = Carbon::today()->subWeek();
-        $rawWeekly = $this->getData($excludes, $fromDate, $toDate, 'Y/m/d');
+        $rawWeekly = $this->getData($fromDate, $toDate, 'Y/m/d');
 
         // 月間の売上金額
         $fromDate = Carbon::now()->startOfMonth();
-        $rawMonthly = $this->getData($excludes, $fromDate, $toDate, 'Y/m/d');
+        $rawMonthly = $this->getData($fromDate, $toDate, 'Y/m/d');
 
         // 年間の売上金額
         $fromDate = Carbon::now()->subYear()->startOfMonth();
-        $rawYear = $this->getData($excludes, $fromDate, $toDate, 'Y/m');
+        $rawYear = $this->getData($fromDate, $toDate, 'Y/m');
 
         $datas = [$rawWeekly, $rawMonthly, $rawYear];
 
@@ -400,7 +394,7 @@ class AdminController extends AbstractController
      *
      * @return null|Request
      */
-    private function getOrderEachStatus($em, array $excludes)
+    private function getOrderEachStatus(array $excludes)
     {
         $sql = 'SELECT
                     t1.order_status_id as status,
@@ -416,7 +410,7 @@ class AdminController extends AbstractController
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('status', 'status');
         $rsm->addScalarResult('count', 'count');
-        $query = $em->createNativeQuery($sql, $rsm);
+        $query = $this->entityManager->createNativeQuery($sql, $rsm);
         $query->setParameters([':excludes' => $excludes]);
         $result = $query->getResult();
         $orderArray = [];
@@ -428,51 +422,11 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManagerInterface $em
-     * @param \DateTime $dateTime
-     * @param array $excludes
-     *
-     * @return null|Request
+     * @param $dateTime
+     * @return array|mixed
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    private function getSalesByMonth($em, $dateTime, array $excludes)
-    {
-        // concat... for pgsql
-        // http://stackoverflow.com/questions/1091924/substr-does-not-work-with-datatype-timestamp-in-postgres-8-3
-        $dql = 'SELECT
-                  SUBSTRING(CONCAT(o.order_date, \'\'), 1, 7) AS order_month,
-                  SUM(o.payment_total) AS order_amount,
-                  COUNT(o) AS order_count
-                FROM
-                  Eccube\Entity\Order o
-                WHERE
-                    o.OrderStatus NOT IN (:excludes)
-                    AND SUBSTRING(CONCAT(o.order_date, \'\'), 1, 7) = SUBSTRING(:targetDate, 1, 7)
-                GROUP BY
-                  order_month';
-
-        $q = $em
-            ->createQuery($dql)
-            ->setParameter(':excludes', $excludes)
-            ->setParameter(':targetDate', $dateTime);
-
-        $result = [];
-        try {
-            $result = $q->getSingleResult();
-        } catch (NoResultException $e) {
-            // 結果がない場合は空の配列を返す.
-        }
-
-        return $result;
-    }
-
-    /**
-     * @param \Doctrine\ORM\EntityManagerInterface $em
-     * @param \DateTime $dateTime
-     * @param array $excludes
-     *
-     * @return null|Request
-     */
-    private function getSalesByDay($em, $dateTime, array $excludes)
+    private function getSalesByDay($dateTime)
     {
         // concat... for pgsql
         // http://stackoverflow.com/questions/1091924/substr-does-not-work-with-datatype-timestamp-in-postgres-8-3
@@ -488,9 +442,45 @@ class AdminController extends AbstractController
                 GROUP BY
                   order_day';
 
-        $q = $em
+        $q = $this->entityManager
             ->createQuery($dql)
-            ->setParameter(':excludes', $excludes)
+            ->setParameter(':excludes', $this->excludes)
+            ->setParameter(':targetDate', $dateTime);
+
+        $result = [];
+        try {
+            $result = $q->getSingleResult();
+        } catch (NoResultException $e) {
+            // 結果がない場合は空の配列を返す.
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param $dateTime
+     * @return array|mixed
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    private function getSalesByMonth($dateTime)
+    {
+        // concat... for pgsql
+        // http://stackoverflow.com/questions/1091924/substr-does-not-work-with-datatype-timestamp-in-postgres-8-3
+        $dql = 'SELECT
+                  SUBSTRING(CONCAT(o.order_date, \'\'), 1, 7) AS order_month,
+                  SUM(o.payment_total) AS order_amount,
+                  COUNT(o) AS order_count
+                FROM
+                  Eccube\Entity\Order o
+                WHERE
+                    o.OrderStatus NOT IN (:excludes)
+                    AND SUBSTRING(CONCAT(o.order_date, \'\'), 1, 7) = SUBSTRING(:targetDate, 1, 7)
+                GROUP BY
+                  order_month';
+
+        $q = $this->entityManager
+            ->createQuery($dql)
+            ->setParameter(':excludes', $this->excludes)
             ->setParameter(':targetDate', $dateTime);
 
         $result = [];
@@ -558,20 +548,19 @@ class AdminController extends AbstractController
     /**
      * 期間指定のデータを取得
      *
-     * @param array $excludes
      * @param Carbon $fromDate
      * @param Carbon $toDate
      * @param $format
      *
      * @return array
      */
-    private function getData(array $excludes, Carbon $fromDate, Carbon $toDate, $format)
+    private function getData(Carbon $fromDate, Carbon $toDate, $format)
     {
         $qb = $this->orderRepository->createQueryBuilder('o')
             ->andWhere('o.order_date >= :fromDate')
             ->andWhere('o.order_date <= :toDate')
             ->andWhere('o.OrderStatus NOT IN (:excludes)')
-            ->setParameter(':excludes', $excludes)
+            ->setParameter(':excludes', $this->excludes)
             ->setParameter(':fromDate', $fromDate->copy())
             ->setParameter(':toDate', $toDate->copy())
             ->orderBy('o.order_date');
