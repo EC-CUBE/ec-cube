@@ -52,7 +52,7 @@ file that was distributed with this source code.
                     <div class="row">
                         <div class="col-xs-12">
                             <span class="pull-right">
-                                <a class="btn btn-warning btn-xs prevention-mask" href="{{ url('admin_store_plugin_api_uninstall', {'id': item.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-confirm="false">{{'common.label.delete'|trans}}</a>
+                                <a class="btn btn-warning btn-xs prevention-mask" href="{{ url('admin_store_plugin_api_uninstall', {'id': item.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-confirm="false">{{'admin.common.delete'|trans}}</a>
                                 <button class="btn btn-cancel btn-xs" type="button" onclick="return window.history.back()">{{'admin.store.plugin_confirm_uninstall.827'|trans}}</button>
                             </span>
                         </div>

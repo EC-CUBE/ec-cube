@@ -283,7 +283,7 @@ file that was distributed with this source code.
                                     </div>
                                     <div class="col-4 text-right">
                                         {% if form.shippings|length > 1 %}
-                                            <a class="btn btn-ec-regular mr-2" data-toggle="modal" data-target="#delete_shipping_{{ shippingForm.vars.id }}" data-tooltip="tooltip" data-placement="top" title="{{ 'common.label.delete'|trans }}">
+                                            <a class="btn btn-ec-regular mr-2" data-toggle="modal" data-target="#delete_shipping_{{ shippingForm.vars.id }}" data-tooltip="tooltip" data-placement="top" title="{{ 'admin.common.delete'|trans }}">
                                                 <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
                                                 {{ 'admin.shipping.edit.delete.shipping'|trans }}
                                             </a>
@@ -307,7 +307,7 @@ file that was distributed with this source code.
                                                             <div class="modal-body text-left"><p class="text-left">{{ 'admin.order.edit.delete.shipping.modal.body'|trans }}</p></div>
                                                             <div class="modal-footer">
                                                                 <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
-                                                                <a href="#shipping-product_{{ loop.index0 }}" class="btn delete-shipping btn-ec-delete">{{ 'common.label.delete'|trans }}</a>
+                                                                <a href="#shipping-product_{{ loop.index0 }}" class="btn delete-shipping btn-ec-delete">{{ 'admin.common.delete'|trans }}</a>
                                                             </div>
                                                         {% endif %}
                                                     </div>
@@ -637,7 +637,7 @@ file that was distributed with this source code.
                                                     <td class="align-middle text-right pr-3">
                                                         <div class="row justify-content-end">
                                                             <div class="col-auto text-center">
-                                                                <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#delete_{{ orderItemForm.vars.id }}" data-tooltip="tooltip" data-placement="top" title="{{ 'common.label.delete'|trans }}">
+                                                                <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#delete_{{ orderItemForm.vars.id }}" data-tooltip="tooltip" data-placement="top" title="{{ 'admin.common.delete'|trans }}">
                                                                     <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
                                                                 </a>
                                                                 <div class="modal fade" id="delete_{{ orderItemForm.vars.id }}" tabindex="-1" role="dialog" aria-labelledby="delete_{{ orderItemForm.vars.id }}" aria-hidden="true">
@@ -650,7 +650,7 @@ file that was distributed with this source code.
                                                                             <div class="modal-body text-left"><p class="text-left">{{ 'admin.order.edit.delete.modal.body'|trans }}</p></div>
                                                                             <div class="modal-footer">
                                                                                 <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
-                                                                                <a href="#shipping-product_{{ shippingNo }}" class="btn delete btn-ec-delete">{{ 'common.label.delete'|trans }}</a>
+                                                                                <a href="#shipping-product_{{ shippingNo }}" class="btn delete btn-ec-delete">{{ 'admin.common.delete'|trans }}</a>
                                                                             </div>
                                                                         </div>
                                                                     </div>

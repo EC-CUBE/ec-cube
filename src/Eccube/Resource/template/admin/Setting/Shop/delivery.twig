@@ -117,7 +117,7 @@ file that was distributed with this source code.
                                                         <a href="#" class="btn btn-ec-actionIcon mr-3 action-down {% if loop.last %}disabled{% endif %}" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.label.move.down'|trans }}">
                                                             <i class="fa fa-arrow-down fa-lg text-secondary"></i>
                                                         </a>
-                                                        <a href="{{ url('admin_setting_shop_delivery_delete', {id: Delivery.Id} ) }}" class="btn btn-ec-actionIcon mr-3" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.label.delete'|trans }}" {{ csrf_token_for_anchor() }} data-method="delete">
+                                                        <a href="{{ url('admin_setting_shop_delivery_delete', {id: Delivery.Id} ) }}" class="btn btn-ec-actionIcon mr-3" data-toggle="tooltip" data-placement="top" title="{{ 'admin.admin.common.delete'|trans }}" {{ csrf_token_for_anchor() }} data-method="delete">
                                                             <i class="fa fa-close fa-lg text-secondary"></i>
                                                         </a>
                                                     </div>

@@ -181,7 +181,7 @@ file that was distributed with this source code.
 
                                                     <div class="col-6 text-center">
                                                         {% if not TaxRule.default_tax_rule %}
-                                                            <a class="btn btn-ec-actionIcon" data-toggle="tooltip" data-placement="top" title="{{ 'common.label.delete'|trans }}" href="{{ url('admin_setting_shop_tax_delete', { id : TaxRule.id }) }}" {{ csrf_token_for_anchor() }} data-method="delete">
+                                                            <a class="btn btn-ec-actionIcon" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.delete'|trans }}" href="{{ url('admin_setting_shop_tax_delete', { id : TaxRule.id }) }}" {{ csrf_token_for_anchor() }} data-method="delete">
                                                                 <i class="fa fa-times fa-lg text-secondary" aria-hidden="true"></i></a>
                                                         {% endif %}
                                                     </div>
