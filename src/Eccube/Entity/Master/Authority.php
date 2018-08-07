@@ -27,4 +27,13 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Authority extends \Eccube\Entity\Master\AbstractMasterEntity
 {
+    /**
+     * システム管理者
+     */
+    const ADMIN = 0;
+
+    /**
+     * 店舗オーナー
+     */
+    const OWNER = 1;
 }

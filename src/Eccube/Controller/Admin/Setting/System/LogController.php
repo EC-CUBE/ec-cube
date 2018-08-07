@@ -76,7 +76,7 @@ class LogController extends AbstractController
     /**
      * parse log file
      *
-     * @param $logFile
+     * @param string $logFile
      * @param $formData
      *
      * @return array

@@ -36,7 +36,7 @@ class EccubeExtension extends AbstractExtension
     /**
      * Returns a list of functions to add to the existing list.
      *
-     * @return array An array of functions
+     * @return TwigFunction[] An array of functions
      */
     public function getFunctions()
     {
@@ -58,7 +58,7 @@ class EccubeExtension extends AbstractExtension
     /**
      * Returns a list of filters.
      *
-     * @return array
+     * @return TwigFilter[]
      */
     public function getFilters()
     {
@@ -325,5 +325,25 @@ class EccubeExtension extends AbstractExtension
         $html .= '></i>';
 
         return $html;
+    }
+
+    /**
+     * URLに対する権限有無チェック
+     *
+     * @param $target
+     * @param $AuthorityRoles
+     *
+     * @return boolean
+     */
+    public function isAuthorizedUrl($target, $AuthorityRoles)
+    {
+        foreach ($AuthorityRoles as $authorityRole) {
+            $denyUrl = str_replace('/', '\/', $authorityRole);
+            if (preg_match("/^({$denyUrl})/i", $target)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

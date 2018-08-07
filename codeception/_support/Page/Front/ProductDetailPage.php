@@ -63,7 +63,7 @@ class ProductDetailPage extends AbstractFrontPage
     public function 規格選択($array)
     {
         foreach ($array as $index=>$option) {
-            $this->tester->selectOption(['id' => 'classcategory_id'.($index+1)], $option);
+            $this->tester->selectOption(['id' => 'classcategory_id'.($index + 1)], $option);
         }
         return $this;
     }
