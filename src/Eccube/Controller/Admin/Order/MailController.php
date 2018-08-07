@@ -27,6 +27,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Twig\Environment;
 
 class MailController extends AbstractController
 {
@@ -44,6 +45,10 @@ class MailController extends AbstractController
      * @var OrderRepository
      */
     protected $orderRepository;
+    /**
+     * @var Environment
+     */
+    protected $twig;
 
     /**
      * MailController constructor.
@@ -51,15 +56,18 @@ class MailController extends AbstractController
      * @param MailService $mailService
      * @param MailHistoryRepository $mailHistoryRepository
      * @param OrderRepository $orderRepository
+     * @param twig $twig
      */
     public function __construct(
         MailService $mailService,
         MailHistoryRepository $mailHistoryRepository,
-        OrderRepository $orderRepository
+        OrderRepository $orderRepository,
+        Environment $twig
     ) {
         $this->mailService = $mailService;
         $this->mailHistoryRepository = $mailHistoryRepository;
         $this->orderRepository = $orderRepository;
+        $this->twig = $twig;
     }
 
     /**
@@ -85,7 +93,7 @@ class MailController extends AbstractController
         $form = $builder->getForm();
 
         // 本文確認用
-        $body = $this->createBody('', '', $Order);
+        $body = $this->createBody($Order);
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
@@ -93,73 +101,112 @@ class MailController extends AbstractController
             $mode = $request->get('mode');
 
             // テンプレート変更の場合は. バリデーション前に内容差し替え.
-            if ($mode == 'change') {
-                if ($form->get('template')->isValid()) {
-                    /** @var $data \Eccube\Entity\MailTemplate */
-                    $MailTemplate = $form->get('template')->getData();
-                    $data = $form->getData();
+            switch ($mode) {
+                case 'change': 
+                    if ($form->get('template')->isValid()) {
+                        /** @var $data \Eccube\Entity\MailTemplate */
+                        $MailTemplate = $form->get('template')->getData();
+                        $data = $form->getData();
 
-                    $twig = $MailTemplate->getFileName();
-                    if (!$twig) {
-                        $twig = 'Mail/order.twig';
+                        $twig = $MailTemplate->getFileName();
+                        if (!$twig) {
+                            $twig = 'Mail/order.twig';
+                        }
+
+                        $body = $this->createBody($Order, $twig);
+                        // HTMLテンプレート
+                        $htmlBody = null;
+                        $targetTwig = explode('.', $twig);
+                        $suffix = '.html';
+                        $htmlTwig = $targetTwig[0]. $suffix. '.'. $targetTwig[1];
+                        if ($this->twig->getLoader()->exists($htmlTwig)) {
+                            $htmlBody = $this->createBody($Order, $htmlTwig);
+                        }
+
+                        $form = $builder->getForm();
+                        $event = new EventArgs(
+                            [
+                                'form' => $form,
+                                'Order' => $Order,
+                                'MailTemplate' => $MailTemplate,
+                            ],
+                            $request
+                        );
+                        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_MAIL_INDEX_CHANGE, $event);
+                        $form->get('template')->setData($MailTemplate);
+                        $form->get('mail_subject')->setData($MailTemplate->getMailSubject());
+                        $form->get('tpl_data')->setData($body);
+                        if (!is_null($htmlBody)) {
+                            $form->get('html_tpl_data')->setData($htmlBody);
+                        }
                     }
+                    break;
+                case 'confirm':
+                    if ($form->isValid()) {
+                        $builder->setAttribute('freeze', true);
+                        $builder->setAttribute('freeze_display_text', false);
+                        $form = $builder->getForm();
+                        $form->handleRequest($request);
 
-                    $body = $this->createBody('', '', $Order, $twig);
-
-                    $form = $builder->getForm();
-                    $event = new EventArgs(
-                        [
-                            'form' => $form,
+                        return $this->render('@admin/Order/mail_confirm.twig', [
+                            'form' => $form->createView(),
                             'Order' => $Order,
-                            'MailTemplate' => $MailTemplate,
-                        ],
-                        $request
-                    );
-                    $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_MAIL_INDEX_CHANGE, $event);
-                    $form->get('template')->setData($MailTemplate);
-                    $form->get('mail_subject')->setData($MailTemplate->getMailSubject());
-                    $form->get('mail_header')->setData($MailTemplate->getMailHeader());
-                    $form->get('mail_footer')->setData($MailTemplate->getMailFooter());
-                }
-            } else {
-                if ($form->isValid()) {
-                    $data = $form->getData();
-
-                    $MailTemplate = $form->get('template')->getData();
-
-                    $twig = $MailTemplate->getFileName();
-                    if (!$twig) {
-                        $twig = 'Mail/order.twig';
+                            'MailHistories' => $MailHistories,
+                        ]);
                     }
+                    break;
+                case 'complete':
+                    if ($form->isValid()) {
+                        $data = $form->getData();
+                        $data['tpl_data'] = $form->get('tpl_data')->getData();
+                        $data['html_tpl_data'] = $form->get('html_tpl_data')->getData();
 
-                    // メール送信
-                    $message = $this->mailService->sendAdminOrderMail($Order, $data, $twig);
+                        $MailTemplate = $form->get('template')->getData();
 
-                    // 送信履歴を保存.
-                    $MailTemplate = $form->get('template')->getData();
-                    $MailHistory = new MailHistory();
-                    $MailHistory
-                        ->setMailSubject($message->getSubject())
-                        ->setMailBody($message->getBody())
-                        ->setSendDate(new \DateTime())
-                        ->setOrder($Order);
+                        $twig = $MailTemplate->getFileName();
+                        if (!$twig) {
+                            $twig = 'Mail/order.twig';
+                        }
 
-                    $this->entityManager->persist($MailHistory);
-                    $this->entityManager->flush($MailHistory);
+                        // メール送信
+                        $message = $this->mailService->sendAdminOrderMail($Order, $data);
 
-                    $event = new EventArgs(
-                        [
-                            'form' => $form,
-                            'Order' => $Order,
-                            'MailTemplate' => $MailTemplate,
-                            'MailHistory' => $MailHistory,
-                        ],
-                        $request
-                    );
-                    $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_MAIL_INDEX_COMPLETE, $event);
+                        // 送信履歴を保存.
+                        $MailTemplate = $form->get('template')->getData();
+                        $MailHistory = new MailHistory();
+                        $MailHistory
+                            ->setMailSubject($message->getSubject())
+                            ->setMailBody($message->getBody())
+                            ->setSendDate(new \DateTime())
+                            ->setOrder($Order);
 
-                    return $this->redirectToRoute('admin_order_page', ['page_no' => $this->session->get('eccube.admin.order.search.page_no', 1)]);
-                }
+                        // HTML用メールの設定
+                        if (!is_null($data['html_tpl_data'])) {
+                            $multipart = $message->getChildren();
+                            $MailHistory->setMailHtmlBody($multipart[0]->getBody());
+                        }
+
+                        $this->entityManager->persist($MailHistory);
+                        $this->entityManager->flush($MailHistory);
+
+                        $event = new EventArgs(
+                            [
+                                'form' => $form,
+                                'Order' => $Order,
+                                'MailTemplate' => $MailTemplate,
+                                'MailHistory' => $MailHistory,
+                            ],
+                            $request
+                        );
+                        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_MAIL_INDEX_COMPLETE, $event);
+
+                        $this->addSuccess('admin.order.mail_complete.364', 'admin');
+
+                        return $this->redirectToRoute('admin_order_page', ['page_no' => $this->session->get('eccube.admin.order.search.page_no', 1)]);
+                    }
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -167,7 +214,6 @@ class MailController extends AbstractController
             'form' => $form->createView(),
             'Order' => $Order,
             'MailHistories' => $MailHistories,
-            'body' => $body,
         ];
     }
 
@@ -246,8 +292,7 @@ class MailController extends AbstractController
 
                     $form->get('template')->setData($MailTemplate);
                     $form->get('mail_subject')->setData($MailTemplate->getMailSubject());
-                    $form->get('mail_header')->setData($MailTemplate->getMailHeader());
-                    $form->get('mail_footer')->setData($MailTemplate->getMailFooter());
+                    $form->get('body')->setData();
                 }
             } else {
                 if ($form->isValid()) {
@@ -258,7 +303,7 @@ class MailController extends AbstractController
                     foreach ($ids as $value) {
                         $Order = $this->orderRepository->find($value);
 
-                        $body = $this->createBody($data['mail_header'], $data['mail_footer'], $Order);
+                        $body = $this->createBody($Order);
 
                         // メール送信
                         $this->mailService->sendAdminOrderMail($Order, $data);
@@ -296,7 +341,7 @@ class MailController extends AbstractController
         if ($ids != '') {
             $idArray = explode(',', $ids);
             $Order = $this->orderRepository->find($idArray[0]);
-            $body = $this->createBody('', '', $Order);
+            $body = $this->createBody($Order);
         }
 
         return [
@@ -306,11 +351,9 @@ class MailController extends AbstractController
         ];
     }
 
-    private function createBody($header, $footer, $Order, $twig = 'Mail/order.twig')
+    private function createBody($Order, $twig = 'Mail/order.twig')
     {
         return $this->renderView($twig, [
-            'header' => $header,
-            'footer' => $footer,
             'Order' => $Order,
         ]);
     }

@@ -108,8 +108,6 @@ class MailService
         $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['eccube_entry_confirm_mail_template_id']);
 
         $body = $this->twig->render($MailTemplate->getFileName(), [
-            'header' => $MailTemplate->getMailHeader(),
-            'footer' => $MailTemplate->getMailFooter(),
             'Customer' => $Customer,
             'BaseInfo' => $this->BaseInfo,
             'activateUrl' => $activateUrl,
@@ -154,8 +152,6 @@ class MailService
         $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['eccube_entry_complete_mail_template_id']);
 
         $body = $this->twig->render($MailTemplate->getFileName(), [
-            'header' => $MailTemplate->getMailHeader(),
-            'footer' => $MailTemplate->getMailFooter(),
             'Customer' => $Customer,
             'BaseInfo' => $this->BaseInfo,
         ]);
@@ -199,8 +195,6 @@ class MailService
         $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['eccube_customer_withdraw_mail_template_id']);
 
         $body = $this->twig->render($MailTemplate->getFileName(), [
-            'header' => $MailTemplate->getMailHeader(),
-            'footer' => $MailTemplate->getMailFooter(),
             'Customer' => $Customer,
             'BaseInfo' => $this->BaseInfo,
         ]);
@@ -244,8 +238,6 @@ class MailService
         $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['eccube_contact_mail_template_id']);
 
         $body = $this->twig->render($MailTemplate->getFileName(), [
-            'header' => $MailTemplate->getMailHeader(),
-            'footer' => $MailTemplate->getMailFooter(),
             'data' => $formData,
             'BaseInfo' => $this->BaseInfo,
         ]);
@@ -305,8 +297,6 @@ class MailService
         $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['eccube_order_mail_template_id']);
 
         $body = $this->twig->render($MailTemplate->getFileName(), [
-            'header' => $MailTemplate->getMailHeader(),
-            'footer' => $MailTemplate->getMailFooter(),
             'Order' => $Order,
         ]);
 
@@ -351,8 +341,6 @@ class MailService
         $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['eccube_entry_confirm_mail_template_id']);
 
         $body = $this->twig->render($MailTemplate->getFileName(), [
-            'header' => $MailTemplate->getMailHeader(),
-            'footer' => $MailTemplate->getMailFooter(),
             'BaseInfo' => $this->BaseInfo,
             'Customer' => $Customer,
             'activateUrl' => $activateUrl,
@@ -398,15 +386,9 @@ class MailService
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
      */
-    public function sendAdminOrderMail(Order $Order, $formData, $twig = '@admin/Mail/order.twig')
+    public function sendAdminOrderMail(Order $Order, $formData)
     {
         log_info('受注管理通知メール送信開始');
-
-        $body = $this->twig->render($twig, [
-            'header' => $formData['mail_header'],
-            'footer' => $formData['mail_footer'],
-            'Order' => $Order,
-        ]);
 
         $message = (new \Swift_Message())
             ->setSubject('['.$this->BaseInfo->getShopName().'] '.$formData['mail_subject'])
@@ -414,8 +396,16 @@ class MailService
             ->setTo([$Order->getEmail()])
             ->setBcc($this->BaseInfo->getEmail01())
             ->setReplyTo($this->BaseInfo->getEmail03())
-            ->setReturnPath($this->BaseInfo->getEmail04())
-            ->setBody($body);
+            ->setReturnPath($this->BaseInfo->getEmail04());
+
+        if (is_null($formData['html_tpl_data'])) {
+            $message->setBody(nl2br($formData['tpl_data']));
+        } else {
+            $message
+                ->setContentType("text/plain; charset=UTF-8")
+                ->setBody($formData['tpl_data'], 'text/plain')
+                ->addPart($formData['html_tpl_data'],'text/html');
+        }
 
         $event = new EventArgs(
             [
@@ -448,8 +438,6 @@ class MailService
         $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['eccube_forgot_mail_template_id']);
         $body = $this->twig->render($MailTemplate->getFileName(), [
             'BaseInfo' => $this->BaseInfo,
-            'header' => $MailTemplate->getMailHeader(),
-            'footer' => $MailTemplate->getMailFooter(),
             'Customer' => $Customer,
             'expire' => $this->eccubeConfig['eccube_customer_reset_expire'],
             'reset_url' => $reset_url,
@@ -496,8 +484,6 @@ class MailService
 
         $body = $this->twig->render($MailTemplate->getFileName(), [
             'BaseInfo' => $this->BaseInfo,
-            'header' => $MailTemplate->getMailHeader(),
-            'footer' => $MailTemplate->getMailFooter(),
             'Customer' => $Customer,
             'password' => $password,
         ]);
@@ -615,8 +601,6 @@ class MailService
         return $this->twig->render($MailTemplate->getFileName(), [
             'Shipping' => $Shipping,
             'ShippingItems' => $ShippingItems,
-            'header' => $MailTemplate->getMailHeader(),
-            'footer' => $MailTemplate->getMailFooter(),
         ]);
     }
 }

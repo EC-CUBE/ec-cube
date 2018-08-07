@@ -76,6 +76,18 @@ class MailController extends AbstractController
                 ->getCode();
 
             $form->get('tpl_data')->setData($source);
+
+            // HTMLテンプレートファイルの取得
+            $targetTemplate = explode('.', $Mail->getFileName());
+            $suffix = '.html';
+            $htmlFileName = $targetTemplate[0]. $suffix. '.'. $targetTemplate[1];
+            if ($twig->getLoader()->exists($htmlFileName)) {
+                $source = $twig->getLoader()
+                    ->getSourceContext($htmlFileName)
+                    ->getCode();
+
+                $form->get('html_tpl_data')->setData($source);
+            }
         }
 
         if ('POST' === $request->getMethod()) {
@@ -99,6 +111,14 @@ class MailController extends AbstractController
                 $mailData = $form->get('tpl_data')->getData();
                 $mailData = StringUtil::convertLineFeed($mailData);
                 $fs->dumpFile($filePath, $mailData);
+
+                // HTMLファイル用
+                if ($twig->getLoader()->exists($htmlFileName)) {
+                    $htmlFilePath = $templatePath. '/'. $htmlFileName;
+                    $htmlMailData = $form->get('html_tpl_data')->getData();
+                    $htmlMailData = StringUtil::convertLineFeed($htmlMailData);
+                    $fs->dumpFile($htmlFilePath, $htmlMailData);
+                }
 
                 $event = new EventArgs(
                     [
