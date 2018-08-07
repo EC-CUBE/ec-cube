@@ -94,7 +94,7 @@ file that was distributed with this source code.
                             <tbody>
                             {% for key, item in headers %}
                                 <tr>
-                                    <th class="w-25 align-middle table-ec-lightGray">{{ key }}{% if item['required'] %}<span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span>{% endif %}</th>
+                                    <th class="w-25 align-middle table-ec-lightGray">{{ key }}{% if item['required'] %}<span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>{% endif %}</th>
                                     {% set message = item['description'] %}
                                     <td class="align-middle">{{ message|trans|raw }}</td>
                                 </tr>
