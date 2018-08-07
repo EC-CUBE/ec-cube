@@ -1,6 +1,5 @@
 <?php
 
-use Codeception\Util\Fixtures;
 use Page\Admin\OwnersPluginPage;
 
 /**

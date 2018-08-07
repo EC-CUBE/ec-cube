@@ -53,7 +53,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
     {
         parent::setUp();
 
-        $this->BaseInfo = $this->container->get(BaseInfo::class);
+        $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
         $this->productRepository = $this->container->get(ProductRepository::class);
         $this->taxRuleRepository = $this->container->get(TaxRuleRepository::class);
         $this->classCategoryRepository = $this->container->get(ClassCategoryRepository::class);

@@ -20,7 +20,7 @@ file that was distributed with this source code.
     </thead>
     <tbody>
     {% for Class in data %}
-        <tr>
+        <tr id="ex-class-{{ Class.id }}">
             <td class="pl-3">{% if Class.hasClassCategory1 %}{{ Class.ClassCategory1.name }}{% endif %}</td>
             <td>{% if Class.hasClassCategory2 %}{{ Class.ClassCategory2.name }}{% endif %}</td>
             <td>{{ Class.code }}</td>

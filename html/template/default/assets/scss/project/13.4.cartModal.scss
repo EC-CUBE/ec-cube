@@ -1,0 +1,116 @@
+@import "../mixins/media";
+
+/*
+カート追加モーダル
+
+カート追加モーダルに関する Project コンポーネントを定義します。
+
+ex [商品一覧、商品詳細](http://demo3.ec-cube.net/products/list)
+
++ec-modal
+
+Styleguide 13.4
+
+*/
+
+.ec-modal {
+
+  .checkbox {
+    display: none;
+  }
+
+  .ec-modal-overlay {
+    opacity: 0;
+    transition: all 0.3s ease;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -100;
+    transform: scale(1);
+    display: flex;
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+
+  .ec-modal-wrap {
+    background-color: #fff;
+    border: 1px solid #333;
+    width: 90%;
+    margin: 20px;
+    padding: 40px 5px;
+    border-radius: 2px;
+    transition: all 0.5s ease;
+    -ms-flex-item-align: center;
+    align-self: center;
+
+    .ec-modal-box {
+      text-align: center;
+    }
+
+    .ec-modal-box div {
+      margin-top: 20px;
+    }
+
+    @include media_desktop {
+      & {
+        padding: 40px 10px;
+        width: 50%;
+        margin: 20px auto;
+      }
+    }
+
+    &.small {
+      width: 30%;
+    }
+
+    &.full {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .ec-modal-overlay {
+    .ec-modal-close {
+      position: absolute;
+      right: 20px;
+      top: 10px;
+      font-size: 20px;
+      height: 30px;
+      width: 20px;
+
+      &:hover {
+        cursor: pointer;
+        color: #4b5361;
+      }
+    }
+  }
+
+  .ec-modal-overlay-close {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: -100;
+  }
+
+  input:checked {
+    ~ .ec-modal-overlay-close {
+      z-index: 9998;
+    }
+
+    ~ .ec-modal-overlay {
+      transform: scale(1);
+      opacity: 1;
+      z-index: 9997;
+      overflow: auto;
+    }
+
+    ~ .ec-modal-overlay .ec-modal-wrap {
+      transform: translateY(0);
+      z-index: 9999;
+    }
+  }
+}
+
