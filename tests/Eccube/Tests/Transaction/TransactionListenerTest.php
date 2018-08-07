@@ -348,6 +348,7 @@ class TransactionControllerMock
 
         // 1/2 は rollback.
         throw new \Exception();
+
         return $app->render('index.twig');
     }
 
@@ -415,6 +416,7 @@ class TransactionControllerMock
 
         // update1/2はrollback
         throw new \Exception();
+
         return $app->render('index.twig');
     }
 
@@ -442,6 +444,7 @@ class TransactionControllerMock
 
         // update1/2/3 すべてrollback
         throw new \Exception();
+
         return $app->render('index.twig');
     }
 
@@ -503,6 +506,7 @@ class TransactionControllerMock
 
         // update2/3 は 暗黙のtransaction block内のため、2/3はrollbackされる
         throw new \Exception();
+
         return $app->render('index.twig');
     }
 

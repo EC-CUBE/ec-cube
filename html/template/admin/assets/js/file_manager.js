@@ -20,7 +20,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-(function( window, undefined ){
+(function(window, undefined) {
 
     // 名前空間の重複を防ぐ
     if (window.eccube === undefined) {
@@ -33,9 +33,9 @@
     eccube.deleteMember = function(id, pageno, lastAdminFlag) {
         var url = "./delete.php?id=" + id + "&pageno=" + pageno;
         var message = lastAdminFlag ?
-        '警告: 管理者がいなくなってしまいますと、システム設定などの操作が行えなくりますが宜しいでしょうか'
-        : '登録内容を削除しても宜しいでしょうか';
-        if(window.confirm(message)){
+            '警告: 管理者がいなくなってしまいますと、システム設定などの操作が行えなくりますが宜しいでしょうか'
+            : '登録内容を削除しても宜しいでしょうか';
+        if (window.confirm(message)) {
             location.href = url;
         }
     };
@@ -52,23 +52,23 @@
         var name;
         max = document.form1.elements.length;
         eccube.checkedRadios = [max];
-        for(cnt = 0; cnt < max; cnt++) {
-            if(document.form1.elements[cnt].type === 'radio') {
+        for (cnt = 0; cnt < max; cnt++) {
+            if (document.form1.elements[cnt].type === 'radio') {
                 name = document.form1.elements[cnt].name;
                 /* radioボタンは同じ名前が２回続けて検出されるので、
                  最初の名前の検出であるかどうかの判定 */
                 // 1回目の検出
-                if(startname !== name) {
+                if (startname !== name) {
                     startname = name;
                     ret = document.form1.elements[cnt].checked;
-                    if(ret === true){
+                    if (ret === true) {
                         // 稼働がチェックされている。
                         eccube.checkedRadios[name] = 1;
                     }
                     // 2回目の検出
                 } else {
                     ret = document.form1.elements[cnt].checked;
-                    if(ret === true){
+                    if (ret === true) {
                         // 非稼働がチェックされている。
                         eccube.checkedRadios[name] = 0;
                     }
@@ -112,7 +112,7 @@
 
     // 規格分類登録へ移動
     eccube.moveClassCatPage = function(class_id) {
-        location.href =  "./classcategory.php?class_id=" + class_id;
+        location.href = "./classcategory.php?class_id=" + class_id;
     };
 
     eccube.checkAllBox = function(input, selector) {
@@ -125,7 +125,7 @@
 
     //指定されたidの削除を行うページを実行する。
     eccube.moveDeleteUrl = function(url) {
-        if(window.confirm('登録内容を削除しても宜しいでしょうか')){
+        if (window.confirm('登録内容を削除しても宜しいでしょうか')) {
             location.href = url;
         }
         return false;
@@ -134,7 +134,7 @@
     //配送料金を自動入力
     eccube.setDelivFee = function(max) {
         var name;
-        for(var cnt = 1; cnt <= max; cnt++) {
+        for (var cnt = 1; cnt <= max; cnt++) {
             name = "fee" + cnt;
             document.form1[name].value = document.form1.fee_all.value;
         }
@@ -142,9 +142,9 @@
 
     // 在庫数制限判定
     eccube.checkStockLimit = function(icolor) {
-        if(document.form1.stock_unlimited) {
+        if (document.form1.stock_unlimited) {
             var list = ['stock'];
-            if(document.form1.stock_unlimited.checked) {
+            if (document.form1.stock_unlimited.checked) {
                 eccube.changeDisabled(list, icolor);
                 document.form1.stock.value = "";
             } else {
@@ -159,14 +159,14 @@
     };
 
     // フォームに代入してからサブミットする。
-    eccube.insertValueAndSubmit = function(fm, ele, val, msg){
+    eccube.insertValueAndSubmit = function(fm, ele, val, msg) {
         var ret;
-        if (msg){
+        if (msg) {
             ret = window.confirm(msg);
         } else {
             ret = true;
         }
-        if(ret){
+        if (ret) {
             fm[ele].value = val;
             fm.submit();
             return false;
@@ -176,9 +176,9 @@
 
     //制限数判定
     eccube.checkLimit = function(elem1, elem2, icolor) {
-        if(document.form1[elem2]) {
+        if (document.form1[elem2]) {
             var list = [elem1];
-            if(document.form1[elem2].checked) {
+            if (document.form1[elem2].checked) {
                 eccube.changeDisabled(list, icolor);
                 document.form1[elem1].value = "";
             } else {
@@ -191,12 +191,12 @@
      * ファイル管理
      */
     eccube.fileManager = {
-        tree:"",                // 生成HTML格納
-        arrTreeStatus:[],       // ツリー状態保持
-        old_select_id:'',       // 前回選択していたファイル
-        selectFileHidden:"",    // 選択したファイルのhidden名
-        treeStatusHidden:"",    // ツリー状態保存用のhidden名
-        modeHidden:""           // modeセットhidden名
+        tree: "",                // 生成HTML格納
+        arrTreeStatus: [],       // ツリー状態保持
+        old_select_id: '',       // 前回選択していたファイル
+        selectFileHidden: "",    // 選択したファイルのhidden名
+        treeStatusHidden: "",    // ツリー状態保存用のhidden名
+        modeHidden: ""           // modeセットhidden名
     };
 
     // ツリー表示
@@ -206,7 +206,7 @@
         eccube.fileManager.modeHidden = mode;
 
         var tmp = [];
-        $.each(arrTree, function (key, value) {
+        $.each(arrTree, function(key, value) {
             arrTree[key]['path'] = value[2];
             arrTree[key]['depth'] = value[3];
             arrTree[key]['name'] = value['path'].split('/').slice(-1).pop();
@@ -220,10 +220,10 @@
         });
 
         var i = tmp.length - 1;
-        for (i; i>0; i--) {
+        for (i; i > 0; i--) {
             var j = i - 1;
-            $.each(tmp[i], function (iKey, iValue) {
-                $.each(tmp[j], function (jKey, jValue) {
+            $.each(tmp[i], function(iKey, iValue) {
+                $.each(tmp[j], function(jKey, jValue) {
                     if (iValue[2].indexOf(jValue[2]) === 0) {
                         jValue['children'].push(iValue);
                         return false;
@@ -235,12 +235,12 @@
         var rootNode = tmp[0][0];
         var li = eccube.fileManager.buildDirectoryNode(rootNode['name'], rootNode['path'], rootNode['children'], openFolder);
         eccube.fileManager.tree = li.html();
-        $('#'+view_id).html(li);
+        $('#' + view_id).html(li);
 
         /** FIXME: will be remove comment when solution accepted
-        var id, level, old_id, old_level, tmp_level, sort_no_img, display, arrFileSplit, file_name, folder_img;
+         var id, level, old_id, old_level, tmp_level, sort_no_img, display, arrFileSplit, file_name, folder_img;
 
-        for(var i = 0; i < arrTree.length; i++) {
+         for(var i = 0; i < arrTree.length; i++) {
             id = arrTree[i][0];
             level = arrTree[i][3];
 
@@ -314,7 +314,7 @@
             // eccube.fileManager.tree += '<label id="tree'+ i +'" class="' + folder_img + '">';
 
         }
-        document.getElementById(view_id).innerHTML = eccube.fileManager.tree;
+         document.getElementById(view_id).innerHTML = eccube.fileManager.tree;
 
          */
     };
@@ -328,7 +328,7 @@
         currentPath = currentPath || '';
 
         a.html(name);
-        a.on('click', function (e) {
+        a.on('click', function(e) {
             eccube.fileManager.openFolder(path);
             return e.preventDefault();
         });
@@ -352,7 +352,7 @@
             }
 
             ul.attr('id', path.replace('/', '_'));
-            $.each(children, function (k, v) {
+            $.each(children, function(k, v) {
                 var li = eccube.fileManager.buildDirectoryNode(v['name'], v['path'], v['children'], currentPath);
                 li.appendTo(ul);
             });
@@ -365,8 +365,8 @@
     // Tree状態をhiddenにセット
     eccube.fileManager.setTreeStatus = function(name) {
         var tree_status = "";
-        for(var i=0; i < eccube.fileManager.arrTreeStatus.length ;i++) {
-            if(i !== 0) {
+        for (var i = 0; i < eccube.fileManager.arrTreeStatus.length; i++) {
+            if (i !== 0) {
                 tree_status += '|';
             }
             tree_status += eccube.fileManager.arrTreeStatus[i];
@@ -378,13 +378,13 @@
     eccube.fileManager.toggleTreeMenu = function(tName, imgName, path) {
         var tMenu = $("#" + tName);
 
-        if(tMenu.css("display") === 'none') {
-            $("#" +imgName).html(eccube.fileManager.IMG_MINUS);
+        if (tMenu.css("display") === 'none') {
+            $("#" + imgName).html(eccube.fileManager.IMG_MINUS);
             tMenu.show();
             // 階層の開いた状態を保持
             eccube.fileManager.arrTreeStatus.push(path);
         } else {
-            $("#" +imgName).html(eccube.fileManager.IMG_PLUS);
+            $("#" + imgName).html(eccube.fileManager.IMG_PLUS);
             tMenu.hide();
             // 閉じ状態を保持
             eccube.fileManager.fnDelTreeStatus(path);
@@ -393,8 +393,8 @@
 
     // Tree状態を削除する(閉じる状態へ)
     eccube.fileManager.deleteTreeStatus = function(path) {
-        for(var i=0; i < eccube.fileManager.arrTreeStatus.length ;i++) {
-            if(eccube.fileManager.arrTreeStatus[i] === path) {
+        for (var i = 0; i < eccube.fileManager.arrTreeStatus.length; i++) {
+            if (eccube.fileManager.arrTreeStatus[i] === path) {
                 eccube.fileManager.arrTreeStatus[i] = "";
             }
         }
@@ -402,18 +402,18 @@
 
     // ファイルリストダブルクリック処理
     eccube.fileManager.doubleClick = function(arrTree, path, is_dir, now_dir, is_parent) {
-        if(is_dir) {
-            if(!is_parent) {
-                for(var cnt = 0; cnt < arrTree.length; cnt++) {
-                    if(now_dir === arrTree[cnt][2]) {
+        if (is_dir) {
+            if (!is_parent) {
+                for (var cnt = 0; cnt < arrTree.length; cnt++) {
+                    if (now_dir === arrTree[cnt][2]) {
                         var open_flag = false;
-                        for(var status_cnt = 0; status_cnt < eccube.fileManager.arrTreeStatus.length; status_cnt++) {
-                            if(eccube.fileManager.arrTreeStatus[status_cnt] === arrTree[cnt][2]) {
+                        for (var status_cnt = 0; status_cnt < eccube.fileManager.arrTreeStatus.length; status_cnt++) {
+                            if (eccube.fileManager.arrTreeStatus[status_cnt] === arrTree[cnt][2]) {
                                 open_flag = true;
                             }
                         }
-                        if(!open_flag) {
-                            eccube.fileManager.toggleTreeMenu('tree'+cnt, 'sort_no_img'+cnt, arrTree[cnt][2]);
+                        if (!open_flag) {
+                            eccube.fileManager.toggleTreeMenu('tree' + cnt, 'sort_no_img' + cnt, arrTree[cnt][2]);
                         }
                     }
                 }
@@ -421,7 +421,7 @@
             eccube.fileManager.openFolder(path);
         } else {
             // Download
-            eccube.setModeAndSubmit('download','','');
+            eccube.setModeAndSubmit('download', '', '');
         }
     };
 
@@ -432,7 +432,7 @@
         // treeの状態をセット
         eccube.fileManager.setTreeStatus(eccube.fileManager.treeStatusHidden);
         // submit
-        eccube.setModeAndSubmit(eccube.fileManager.modeHidden,'','');
+        eccube.setModeAndSubmit(eccube.fileManager.modeHidden, '', '');
     };
 
     // ファイル選択
@@ -450,12 +450,12 @@
      */
     eccube.navi.openMenu = function($target) {
         $target
-            // 対象を開く
+        // 対象を開く
             .addClass('sfhover')
             // 対象以外を閉じる
             .siblings('li')
-                .removeClass('sfhover')
-                .find('li').removeClass('sfhover');
+            .removeClass('sfhover')
+            .find('li').removeClass('sfhover');
     };
 
     /**
@@ -465,7 +465,7 @@
         $("#navi")
             .removeClass('active')
             .find('li')
-                .removeClass('sfhover');
+            .removeClass('sfhover');
     };
 
     /**
@@ -474,44 +474,46 @@
     eccube.navi.setIgnoreClick = function(milliseconds) { // FIXME: 関数名
         if (milliseconds === null) milliseconds = 100;
         eccube.navi.ignore_click = true;
-        setTimeout(function(){eccube.navi.ignore_click = false;}, milliseconds);
+        setTimeout(function() {
+            eccube.navi.ignore_click = false;
+        }, milliseconds);
     };
 
     // グローバルに使用できるようにする
     window.eccube = eccube;
     eccube.defaults = {
-        formId:'form1',
-        windowFeatures:{
-            scrollbars:'yes',
-            resizable:'yes',
-            toolbar:'no',
-            location:'no',
-            directories:'no',
-            status:'no',
-            focus:true,
-            formTarget:''
+        formId: 'form1',
+        windowFeatures: {
+            scrollbars: 'yes',
+            resizable: 'yes',
+            toolbar: 'no',
+            location: 'no',
+            directories: 'no',
+            status: 'no',
+            focus: true,
+            formTarget: ''
         }
     };
 
     eccube.setModeAndSubmit = function(mode, keyname, keyid) {
-        switch(mode) {
+        switch (mode) {
             case 'delete_category':
-                if(!window.confirm('選択したカテゴリとカテゴリ内の全てのカテゴリを削除します')){
+                if (!window.confirm('選択したカテゴリとカテゴリ内の全てのカテゴリを削除します')) {
                     return;
                 }
                 break;
             case 'delete':
-                if(!window.confirm('一度削除したデータは、元に戻せません。\n削除しても宜しいですか？')){
+                if (!window.confirm('一度削除したデータは、元に戻せません。\n削除しても宜しいですか？')) {
                     return;
                 }
                 break;
             case 'confirm':
-                if(!window.confirm('登録しても宜しいですか')){
+                if (!window.confirm('登録しても宜しいですか')) {
                     return;
                 }
                 break;
             case 'delete_all':
-                if(!window.confirm('検索結果を全て削除しても宜しいですか')){
+                if (!window.confirm('検索結果を全て削除しても宜しいですか')) {
                     return;
                 }
                 break;
@@ -519,7 +521,7 @@
                 break;
         }
         document.form1.mode.value = mode;
-        if(keyname !== undefined && keyname !== "" && keyid !== undefined && keyid !== "") {
+        if (keyname !== undefined && keyname !== "" && keyid !== undefined && keyid !== "") {
             document.form1[keyname].value = keyid;
         }
         document.form1.submit();
@@ -545,7 +547,7 @@
         formElement.find("*[name=" + key + "]").val(val);
     };
 
-    eccube.getFormElement = function(form){
+    eccube.getFormElement = function(form) {
         var formElement;
         if (form !== undefined && typeof form === "string" && form !== "") {
             formElement = $("form#" + form);
@@ -557,8 +559,8 @@
         return formElement;
     };
 
-    eccube.openWindow = function(URL,name,width,height,option) {
-        var features = "width="+width+",height="+height;
+    eccube.openWindow = function(URL, name, width, height, option) {
+        var features = "width=" + width + ",height=" + height;
         if (option === undefined) {
             option = eccube.defaults.windowFeatures;
         } else {
@@ -573,7 +575,7 @@
         if (option.hasOwnProperty('menubar')) {
             features = features + ",menubar=" + option.menubar;
         }
-        var WIN = window.open(URL,name,features);
+        var WIN = window.open(URL, name, features);
         if (option.formTarget !== "") {
             document.forms[option.formTarget].target = name;
         }
@@ -582,54 +584,54 @@
         }
     };
 
-    eccube.fileManager.fnDelTreeStatus = function (path) {
+    eccube.fileManager.fnDelTreeStatus = function(path) {
         eccube.fileManager.deleteTreeStatus(path);
     };
 
-  // TODO 仮実装
-  eccube.fileManager.convertToHierarchy = function (paths /* array of array of strings */) {
-    // Build the node structure
-    var rootNode = {name:"root", children:[]};
-    var $rootNode = $('<div />');
+    // TODO 仮実装
+    eccube.fileManager.convertToHierarchy = function(paths /* array of array of strings */) {
+        // Build the node structure
+        var rootNode = {name: "root", children: []};
+        var $rootNode = $('<div />');
 
 
-    for (var i = 0; i < paths.length; i++) {
-      eccube.fileManager.buildNodeRecursive(
-        rootNode,
-        $rootNode,
-        paths[i].replace(/^\//, 'user_data/')
-          .replace(/\/$/, '')
-          .split('/'),
-        0
-      );
+        for (var i = 0; i < paths.length; i++) {
+            eccube.fileManager.buildNodeRecursive(
+                rootNode,
+                $rootNode,
+                paths[i].replace(/^\//, 'user_data/')
+                    .replace(/\/$/, '')
+                    .split('/'),
+                0
+            );
+        }
+        ;
+        console.log(rootNode);
+        return $rootNode;
     };
-    console.log(rootNode);
-    return $rootNode;
-  };
 
-  // TODO 仮実装
-  eccube.fileManager.buildNodeRecursive = function (node, $node, path, idx)
-  {
-    if (idx < path.length) {
-      let $item = $('<li>' + path[idx] + '</li>');
-      let item = path[idx];
-      let $dir = $node.find('ul');
-      let dir = node.children.find(function(child) {
-        return child.name == item;
-      });
-      if (!dir) {
-        node.children.push(dir = {name: item, children:[]});
-      }
+    // TODO 仮実装
+    eccube.fileManager.buildNodeRecursive = function(node, $node, path, idx) {
+        if (idx < path.length) {
+            let $item = $('<li>' + path[idx] + '</li>');
+            let item = path[idx];
+            let $dir = $node.find('ul');
+            let dir = node.children.find(function(child) {
+                return child.name == item;
+            });
+            if (!dir) {
+                node.children.push(dir = {name: item, children: []});
+            }
 
-      if (!$dir.length) {
-        $dir = $('<ul />').append($item);
-        console.log($dir);
-        $node.append($dir);
-      }
+            if (!$dir.length) {
+                $dir = $('<ul />').append($item);
+                console.log($dir);
+                $node.append($dir);
+            }
 
-      eccube.fileManager.buildNodeRecursive(dir, $dir, path, idx + 1);
-    }
-  };
+            eccube.fileManager.buildNodeRecursive(dir, $dir, path, idx + 1);
+        }
+    };
 
     /**
      * Initialize.
@@ -637,7 +639,7 @@
     $(function() {
         var naviClicked = false;
         // ヘッダナビゲーション
-        $("#navi").find("div").click(function(){
+        $("#navi").find("div").click(function() {
             // タブレットでの二重イベント発生を回避
             if (eccube.navi.ignore_click) return false;
 
@@ -658,14 +660,14 @@
             }
         });
         // ナビゲーションがアクティブであれば、マウスオーバーを有効に.
-        $("#navi").find('li').hover(function(){
+        $("#navi").find('li').hover(function() {
             if ($("#navi").hasClass('active')) {
                 eccube.navi.openMenu($(this));
                 eccube.navi.setIgnoreClick();
             }
         });
         // ナビゲーション以外をクリックしたらナビを閉じる.
-        $(document).click(function(){
+        $(document).click(function() {
             if (!naviClicked) {
                 eccube.navi.closeAllMenu();
             } else {
@@ -686,7 +688,7 @@
             bread_crumbs: '',
             start_node: '<span>ホーム</span>',
             anchor_node: '<a onclick="eccube.setModeAndSubmit(\'tree\', \'parent_category_id\', ' +
-                '{category_id}); return false" href="javascript:;" />',
+            '{category_id}); return false" href="javascript:;" />',
             delimiter_node: '<span>&nbsp;/;&nbsp;</span>'
         };
 
@@ -699,7 +701,7 @@
             var $node = $(o.start_node);
 
             for (var i = total - 1; i >= 0; i--) {
-                if (i === total -1) {
+                if (i === total - 1) {
                     $node.append(o.delimiter_node);
                 }
 

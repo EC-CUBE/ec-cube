@@ -130,12 +130,10 @@ class OrderEditPage extends AbstractAdminPageStyleGuide
     {
         $this->tester->scrollTo(['css' => '#orderItem > div > div.row.justify-content-between.mb-2 > div.col-6 > a.btn.btn-ec-regular.mr-2.add'], 0, -50);
         $this->tester->click(['css' => '#orderItem > div > div.row.justify-content-between.mb-2 > div.col-6 > a.btn.btn-ec-regular.mr-2.add']);
-        $this->tester->waitForElement(['id' => 'addProduct']);
-        $this->tester->wait(1);
+        $this->tester->waitForElementVisible(['id' => 'addProduct']);
         $this->tester->fillField(['id' => 'admin_search_product_id'], $value);
         $this->tester->click('#searchProductModalButton');
         $this->tester->waitForElementVisible('#searchProductModalList table');
-        $this->tester->wait(1);
         return $this;
     }
 
@@ -169,6 +167,14 @@ class OrderEditPage extends AbstractAdminPageStyleGuide
     public function acceptDeleteModal($row)
     {
         $this->tester->click("#table-form-field > tbody > tr:nth-child({$row}) > td.align-middle.text-right.pr-3 div.modal a.delete");
+        return $this;
+    }
+
+    public function お届け先の追加()
+    {
+        $this->tester->scrollTo(['css' => '#form1'], 0, 200);
+        $this->tester->wait(5);
+        $this->tester->click('#shipping-add');
         return $this;
     }
 }
