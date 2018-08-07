@@ -907,10 +907,10 @@ class EF03OrderCest
         $Customer = (Fixtures::get('createCustomer'))();
 
         ProductDetailPage::go($I, 2)
-            ->カートに入れる(1);
-        $I->acceptPopup();
+            ->カートに入れる(1)
+            ->カートへ進む();
 
-        CartPage::go($I)
+        CartPage::at($I)
             ->レジに進む();
 
         ShoppingLoginPage::at($I)
