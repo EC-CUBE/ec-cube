@@ -32,9 +32,9 @@ common.company_name: 会社名
 common.address: 住所
 common.pref: 都道府県
 common.postal_symbol: 〒
-common.postal_code_sample: 例：1234567
-common.address_sample_01: 市区町村名(例：大阪市北区梅田)
-common.address_sample_02: 番地・ビル名(例：ブリーゼタワー13F)
+common.postal_code_sample: 例：5530003
+common.address_sample_01: 市区町村名(例：大阪府大阪市福島区)
+common.address_sample_02: 番地・ビル名(例：福島8丁目3-15)
 common.phone_number: 電話番号
 common.phone_number_sample: 例：11122223333
 common.mail_address: メールアドレス
@@ -382,8 +382,9 @@ admin.common.company_name: 会社名
 admin.common.address: 住所
 admin.common.pref: 都道府県
 admin.common.postal_symbol: 〒
-admin.common.address_sample_01: 大阪市北区梅田
-admin.common.address_sample_02: ブリーゼタワー13F
+admin.common.postal_code_sample: 例：5530003
+admin.common.address_sample_01: 市区町村名(例：大阪府大阪市福島区)
+admin.common.address_sample_02: 番地・ビル名(例：福島8丁目3-15)
 admin.common.phone_number: 電話番号
 admin.common.mail_address: メールアドレス
 admin.common.password: パスワード
@@ -433,10 +434,10 @@ admin.product.product_csv_upload: 商品CSV登録
 admin.product.category_csv_upload: カテゴリCSV登録
 
 # flashメッセージ
-
 admin.product.bulk_change_status_complete: '%status%: %count%件が正常に適用されました。'
 admin.product.copy_complete: 商品を複製しました。
 admin.product.copy_error: 商品の複製に失敗しました。
+admin.product.reset_complete: 商品規格を初期化しました。
 
 # ラベル/メッセージ
 admin.product.product: 商品
@@ -496,8 +497,8 @@ admin.product.multi_search_label: 商品名・商品ID・商品コード
 admin.product.delete_confirm_title: 商品を削除します
 admin.product.delete_confirm_message: 商品を削除しますか？
 admin.product.product_class: 商品規格
+admin.product.product_class__create: 商品規格の設定
 admin.product.product_class__confirm: 規格確認
-
 admin.product.product_class__confirm_of_product: この商品の規格を確認
 admin.product.product_class__card_title: 商品規格情報
 admin.product.product_class__reset: 商品規格の初期化
@@ -533,8 +534,6 @@ admin.product.category_id: カテゴリID
   既存カテゴリの更新はカテゴリIDを設定
 admin.product.category_name: カテゴリ名
 admin.product.parent_category_id: 親カテゴリID
-admin.product.category_delete_flag: カテゴリ削除フラグ
-admin.product.category_delete_flag_description: 0:登録 1:削除。未設定時は0として扱います。
 admin.product.category_all: すべてのカテゴリ
 admin.product.tag: タグ
 admin.product.tag__product_card_title: タグ

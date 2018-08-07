@@ -24,6 +24,7 @@ use Eccube\Repository\BaseInfoRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -84,10 +85,11 @@ class ProductClassEditType extends AbstractType
             ->add('code', TextType::class, [
                 'required' => false,
             ])
-            ->add('stock', NumberType::class, [
+            ->add('stock', IntegerType::class, [
                 'required' => false,
             ])
             ->add('stock_unlimited', CheckboxType::class, [
+                'label' => 'admin.product.stock_unlimited__short',
                 'required' => false,
             ])
             ->add('sale_limit', NumberType::class, [
