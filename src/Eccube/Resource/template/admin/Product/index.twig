@@ -321,17 +321,12 @@ file that was distributed with this source code.
                                 </div>
                                 <div class="d-inline-block">
                                     <div class="btn-group" role="group">
-                                        {# TODO onclickは適切ではないのでaタグで実装できるようにする #}
-                                        <button class="btn btn-ec-regular" type="button"
-                                                onclick='location.href="{{ url('admin_product_export') }}"'><i
-                                                    class="fa fa-cloud-download mr-1 text-secondary"></i><span>{{ 'admin.product.index.484'|trans }}</span>
-                                        </button>
-                                        {# TODO onclickは適切ではないのでaタグで実装できるようにする #}
-                                        <button class="btn btn-ec-regular" type="button"
-                                                onclick='location.href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_PRODUCT') }) }}"'>
-                                            <i
-                                                    class="fa fa-cog mr-1 text-secondary"></i><span>{{ 'admin.product.index.486'|trans }}</span>
-                                        </button>
+                                        <a class="btn btn-ec-regular" href="{{ url('admin_product_export') }}">
+                                            <i class="fa fa-cloud-download mr-1 text-secondary"></i><span>{{ 'admin.product.index.484'|trans }}</span>
+                                        </a>
+                                        <a class="btn btn-ec-regular" href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_PRODUCT') }) }}">
+                                            <i class="fa fa-cog mr-1 text-secondary"></i><span>{{ 'admin.product.index.486'|trans }}</span>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
