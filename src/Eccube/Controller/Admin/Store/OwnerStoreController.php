@@ -299,7 +299,7 @@ class OwnerStoreController extends AbstractController
      * Do confirm page
      *
      * @Route("/delete/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_delete_confirm")
-     * @Template("Store/plugin_confirm_uninstall.twig")
+     * @Template("@admin/Store/plugin_confirm_uninstall.twig")
      *
      * @param Plugin      $Plugin
      *
