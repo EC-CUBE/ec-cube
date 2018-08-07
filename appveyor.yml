@@ -18,7 +18,6 @@ init:
 
 environment:
   global:
-    APP_DEBUG: "0"
     DATABASE_URL: "mysql://root:Password12!@localhost/myapp_test"
     DATABASE_SERVER_VERSION: "5"
     BASE_DIR: "C:/projects/ec-cube"
@@ -28,7 +27,6 @@ environment:
     provider: mysql
 
 services:
-  - iis
   - mysql
 
 # Install scripts. (runs after repo cloning)
