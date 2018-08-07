@@ -119,8 +119,24 @@ class MailService
             ->setTo([$Customer->getEmail()])
             ->setBcc($this->BaseInfo->getEmail01())
             ->setReplyTo($this->BaseInfo->getEmail03())
-            ->setReturnPath($this->BaseInfo->getEmail04())
-            ->setBody($body);
+            ->setReturnPath($this->BaseInfo->getEmail04());
+
+        // HTMLテンプレートが存在する場合
+        $htmlFileName = $this->getHtmlTemplate($MailTemplate->getFileName());
+        if (!is_null($htmlFileName)) {
+            $htmlBody = $this->twig->render($htmlFileName, [
+                'Customer' => $Customer,
+                'BaseInfo' => $this->BaseInfo,
+                'activateUrl' => $activateUrl,
+            ]);
+
+            $message
+                ->setContentType("text/plain; charset=UTF-8")
+                ->setBody($body, 'text/plain')
+                ->addPart($htmlBody,'text/html');
+        } else {
+            $message->setBody($body);  
+        }
 
         $event = new EventArgs(
             [
@@ -162,8 +178,23 @@ class MailService
             ->setTo([$Customer->getEmail()])
             ->setBcc($this->BaseInfo->getEmail01())
             ->setReplyTo($this->BaseInfo->getEmail03())
-            ->setReturnPath($this->BaseInfo->getEmail04())
-            ->setBody($body);
+            ->setReturnPath($this->BaseInfo->getEmail04());
+
+        // HTMLテンプレートが存在する場合
+        $htmlFileName = $this->getHtmlTemplate($MailTemplate->getFileName());
+        if (!is_null($htmlFileName)) {
+            $htmlBody = $this->twig->render($htmlFileName, [
+                'Customer' => $Customer,
+                'BaseInfo' => $this->BaseInfo,
+            ]);
+
+            $message
+                ->setContentType("text/plain; charset=UTF-8")
+                ->setBody($body, 'text/plain')
+                ->addPart($htmlBody,'text/html');
+        } else {
+            $message->setBody($body);  
+        }
 
         $event = new EventArgs(
             [
@@ -205,8 +236,23 @@ class MailService
             ->setTo([$email])
             ->setBcc($this->BaseInfo->getEmail01())
             ->setReplyTo($this->BaseInfo->getEmail03())
-            ->setReturnPath($this->BaseInfo->getEmail04())
-            ->setBody($body);
+            ->setReturnPath($this->BaseInfo->getEmail04());
+
+        // HTMLテンプレートが存在する場合
+        $htmlFileName = $this->getHtmlTemplate($MailTemplate->getFileName());
+        if (!is_null($htmlFileName)) {
+            $htmlBody = $this->twig->render($htmlFileName, [
+                'Customer' => $Customer,
+                'BaseInfo' => $this->BaseInfo,
+            ]);
+
+            $message
+                ->setContentType("text/plain; charset=UTF-8")
+                ->setBody($body, 'text/plain')
+                ->addPart($htmlBody,'text/html');
+        } else {
+            $message->setBody($body);  
+        }
 
         $event = new EventArgs(
             [
@@ -249,8 +295,23 @@ class MailService
             ->setTo([$formData['email']])
             ->setBcc($this->BaseInfo->getEmail02())
             ->setReplyTo($this->BaseInfo->getEmail02())
-            ->setReturnPath($this->BaseInfo->getEmail04())
-            ->setBody($body);
+            ->setReturnPath($this->BaseInfo->getEmail04());
+
+        // HTMLテンプレートが存在する場合
+        $htmlFileName = $this->getHtmlTemplate($MailTemplate->getFileName());
+        if (!is_null($htmlFileName)) {
+            $htmlBody = $this->twig->render($htmlFileName, [
+                'data' => $formData,
+                'BaseInfo' => $this->BaseInfo,
+            ]);
+
+            $message
+                ->setContentType("text/plain; charset=UTF-8")
+                ->setBody($body, 'text/plain')
+                ->addPart($htmlBody,'text/html');
+        } else {
+            $message->setBody($body);  
+        }
 
         $event = new EventArgs(
             [
@@ -306,8 +367,22 @@ class MailService
             ->setTo([$Order->getEmail()])
             ->setBcc($this->BaseInfo->getEmail01())
             ->setReplyTo($this->BaseInfo->getEmail03())
-            ->setReturnPath($this->BaseInfo->getEmail04())
-            ->setBody($body);
+            ->setReturnPath($this->BaseInfo->getEmail04());
+
+        // HTMLテンプレートが存在する場合
+        $htmlFileName = $this->getHtmlTemplate($MailTemplate->getFileName());
+        if (!is_null($htmlFileName)) {
+            $htmlBody = $this->twig->render($htmlFileName, [
+                'Order' => $Order,
+            ]);
+
+            $message
+                ->setContentType("text/plain; charset=UTF-8")
+                ->setBody($body, 'text/plain')
+                ->addPart($htmlBody,'text/html');
+        } else {
+            $message->setBody($body);  
+        }
 
         $event = new EventArgs(
             [
@@ -352,8 +427,24 @@ class MailService
             ->setTo([$Customer->getEmail()])
             ->setBcc($this->BaseInfo->getEmail01())
             ->setReplyTo($this->BaseInfo->getEmail03())
-            ->setReturnPath($this->BaseInfo->getEmail04())
-            ->setBody($body);
+            ->setReturnPath($this->BaseInfo->getEmail04());
+
+        // HTMLテンプレートが存在する場合
+        $htmlFileName = $this->getHtmlTemplate($MailTemplate->getFileName());
+        if (!is_null($htmlFileName)) {
+            $htmlBody = $this->twig->render($htmlFileName, [
+                'BaseInfo' => $this->BaseInfo,
+                'Customer' => $Customer,
+                'activateUrl' => $activateUrl,
+            ]);
+
+            $message
+                ->setContentType("text/plain; charset=UTF-8")
+                ->setBody($body, 'text/plain')
+                ->addPart($htmlBody,'text/html');
+        } else {
+            $message->setBody($body);  
+        }
 
         $event = new EventArgs(
             [
@@ -378,7 +469,6 @@ class MailService
      *
      * @param Order $Order 受注情報
      * @param $formData 入力内容
-     * @param string $twig テンプレートファイル名
      *
      * @return \Swift_Message
      *
@@ -399,7 +489,7 @@ class MailService
             ->setReturnPath($this->BaseInfo->getEmail04());
 
         if (is_null($formData['html_tpl_data'])) {
-            $message->setBody(nl2br($formData['tpl_data']));
+            $message->setBody($formData['tpl_data']);
         } else {
             $message
                 ->setContentType("text/plain; charset=UTF-8")
@@ -449,8 +539,25 @@ class MailService
             ->setTo([$Customer->getEmail()])
             ->setBcc($this->BaseInfo->getEmail01())
             ->setReplyTo($this->BaseInfo->getEmail03())
-            ->setReturnPath($this->BaseInfo->getEmail04())
-            ->setBody($body);
+            ->setReturnPath($this->BaseInfo->getEmail04());
+
+        // HTMLテンプレートが存在する場合
+        $htmlFileName = $this->getHtmlTemplate($MailTemplate->getFileName());
+        if (!is_null($htmlFileName)) {
+            $htmlBody = $this->twig->render($htmlFileName, [
+                'BaseInfo' => $this->BaseInfo,
+                'Customer' => $Customer,
+                'expire' => $this->eccubeConfig['eccube_customer_reset_expire'],
+                'reset_url' => $reset_url,
+            ]);
+
+            $message
+                ->setContentType("text/plain; charset=UTF-8")
+                ->setBody($body, 'text/plain')
+                ->addPart($htmlBody,'text/html');
+        } else {
+            $message->setBody($body);  
+        }
 
         $event = new EventArgs(
             [
@@ -494,8 +601,24 @@ class MailService
             ->setTo([$Customer->getEmail()])
             ->setBcc($this->BaseInfo->getEmail01())
             ->setReplyTo($this->BaseInfo->getEmail03())
-            ->setReturnPath($this->BaseInfo->getEmail04())
-            ->setBody($body);
+            ->setReturnPath($this->BaseInfo->getEmail04());
+
+        // HTMLテンプレートが存在する場合
+        $htmlFileName = $this->getHtmlTemplate($MailTemplate->getFileName());
+        if (!is_null($htmlFileName)) {
+            $htmlBody = $this->twig->render($htmlFileName, [
+                'BaseInfo' => $this->BaseInfo,
+                'Customer' => $Customer,
+                'password' => $password,
+            ]);
+
+            $message
+                ->setContentType("text/plain; charset=UTF-8")
+                ->setBody($body, 'text/plain')
+                ->addPart($htmlBody,'text/html');
+        } else {
+            $message->setBody($body);  
+        }
 
         $event = new EventArgs(
             [
@@ -536,8 +659,24 @@ class MailService
             ->setTo([$this->BaseInfo->getEmail01()])
             ->setBcc($this->BaseInfo->getEmail01())
             ->setReplyTo($this->BaseInfo->getEmail03())
-            ->setReturnPath($this->BaseInfo->getEmail04())
-            ->setBody($body);
+            ->setReturnPath($this->BaseInfo->getEmail04());
+
+        // HTMLテンプレートが存在する場合
+        $htmlFileName = $this->getHtmlTemplate('Mail/point_notify.twig');
+        if (!is_null($htmlFileName)) {
+            $htmlBody = $this->twig->render($htmlFileName, [
+                'Order' => $Order,
+                'currentPoint' => $currentPoint,
+                'changePoint' => $changePoint,
+            ]);
+
+            $message
+                ->setContentType("text/plain; charset=UTF-8")
+                ->setBody($body, 'text/plain')
+                ->addPart($htmlBody,'text/html');
+        } else {
+            $message->setBody($body);  
+        }
 
         $this->mailer->send($message);
     }
@@ -558,14 +697,35 @@ class MailService
 
         /** @var Order $Order */
         $Order = $Shipping->getOrder();
+        $body = $this->getShippingNotifyMailBody($Shipping, $Order, $MailTemplate);
+
         $message = (new \Swift_Message())
             ->setSubject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
             ->setFrom([$this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()])
             ->setTo($Order->getEmail())
             ->setBcc($this->BaseInfo->getEmail01())
             ->setReplyTo($this->BaseInfo->getEmail03())
-            ->setReturnPath($this->BaseInfo->getEmail04())
-            ->setBody($this->getShippingNotifyMailBody($Shipping, $Order, $MailTemplate));
+            ->setReturnPath($this->BaseInfo->getEmail04());
+
+        // HTMLテンプレートが存在する場合
+        $htmlFileName = $this->getHtmlTemplate($MailTemplate->getFileName());
+        if (!is_null($htmlFileName)) {
+            $ShippingItems = array_filter($Shipping->getOrderItems()->toArray(), function (OrderItem $OrderItem) use ($Order) {
+                return $OrderItem->getOrderId() === $Order->getId();
+            });
+
+            $htmlBody = $this->twig->render($htmlFileName, [
+                'Shipping' => $Shipping,
+                'ShippingItems' => $ShippingItems,
+            ]);
+
+            $message
+                ->setContentType("text/plain; charset=UTF-8")
+                ->setBody($body, 'text/plain')
+                ->addPart($htmlBody,'text/html');
+        } else {
+            $message->setBody($body);  
+        }
 
         $this->mailer->send($message);
 
@@ -603,4 +763,25 @@ class MailService
             'ShippingItems' => $ShippingItems,
         ]);
     }
+
+    /**
+     * [getHtmlTemplate description]
+     * @param  string $templateName  プレーンテキストメールのファイル名
+     * @return string|null  存在する場合はファイル名を返す
+     */
+    public function getHtmlTemplate($templateName)
+    {
+        // メールテンプレート名からHTMLメール用テンプレート名を生成
+        $fileName = explode('.', $templateName);
+        $suffix = '.html';
+        $htmlFileName = $fileName[0]. $suffix. '.'. $fileName[1];
+
+        // HTMLメール用テンプレートの存在チェック
+        if ($this->twig->getLoader()->exists($htmlFileName)) {
+            return $htmlFileName;
+        } else {
+            return null;
+        }
+    }
+
 }

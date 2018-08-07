@@ -18,8 +18,6 @@ file that was distributed with this source code.
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block javascript %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ace.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ext-language_tools.js"></script>
 <script>
 $(function() {
     $('#template-change').on('change', function() {
@@ -45,45 +43,18 @@ $(function() {
         });
     });
 
-    {# TODO 送信前プレビュー機能 #}
-    {# TODO 入力チェック #}
-    $('#mailConfirm').on('click', function (e) {
+    $('#back').on('click', function(e) {
         e.preventDefault();
-        $('#mode').val('confirm');
+        $('#mode').val('back');
         $('#order-mail-form').submit();
         return false;
     });
 
-    ace.require('ace/ext/language_tools');
-    var editor = ace.edit('editor');
-    editor.session.setMode('ace/mode/twig');
-    editor.setTheme('ace/theme/tomorrow');
-    editor.setValue("{{ form.tpl_data.vars.value|escape('js') }}");
-    editor.setOptions({
-        enableBasicAutocompletion: true,
-        enableSnippets: true,
-        enableLiveAutocompletion: true,
-        showInvisibles: true
-    });
-
-    {% if form.html_tpl_data.vars.value %}
-        var html_editor = ace.edit('html_editor');
-        html_editor.session.setMode('ace/mode/twig');
-        html_editor.setTheme('ace/theme/tomorrow');
-        html_editor.setValue("{{ form.html_tpl_data.vars.value|escape('js') }}");
-        html_editor.setOptions({
-            enableBasicAutocompletion: true,
-            enableSnippets: true,
-            enableLiveAutocompletion: true,
-            showInvisibles: true
-        });
-    {% endif %}
-
-    $('#order-mail-form').on('submit', function() {
-        $('#mail_tpl_data').val(editor.getValue());
-        {% if form.html_tpl_data.vars.value %}
-            $('#mail_html_tpl_data').val(html_editor.getValue());
-        {% endif %}
+    $('#sendMail').on('click', function(e) {
+        e.preventDefault();
+        $('#mode').val('complete');
+        $('#order-mail-form').submit();
+        return false;
     });
 });
 </script>
@@ -180,15 +151,15 @@ $(function() {
                                 <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>{{ 'admin.order.mail.358'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></div>
                             </div>
                             <div class="col">
-                                {{ form_widget(form.template, {'id': 'template-change'}) }}
-                                {{ form_errors(form.template) }}
+                                {{ form.template.vars.data }}
+                                {{ form_widget(form.template, { type : 'hidden' }) }}
                             </div>
                         </div>
                         <div class="row mb-2">
                             <div class="col-3"><span>{{ 'admin.order.mail.344'|trans }}</span><span class="badge badge-primary ml-1">{{ 'common.text.message.required'|trans }}</span></div>
                             <div class="col">
-                                {{ form_widget(form.mail_subject) }}
-                                {{ form_errors(form.mail_subject) }}
+                                {{ form.mail_subject.vars.data }}
+                                {{ form_widget(form.mail_subject, { type : 'hidden' }) }}
                             </div>
                         </div>
                         <div class="row mb-2">
@@ -199,7 +170,7 @@ $(function() {
                                     <li class="nav-item" style="border: 1px solid #ced4da; padding:0;">
                                         <a href="#detail_box__tpl_data" class="nav-link" data-toggle="tab"><span>テキスト</span></a>
                                     </li>
-                                    {% if form.html_tpl_data.vars.value %}
+                                    {% if form.html_tpl_data.vars.data %}
                                     <li class="nav-item" style="border: 1px solid #ced4da; padding:0;">
                                         <a href="#detail_box__html_tpl_data" class="nav-link" data-toggle="tab"><span>HTML</span></a>
                                     </li>
@@ -207,17 +178,13 @@ $(function() {
                                 </ul>
                                 <div class="tab-content">
                                     <div id="detail_box__tpl_data" class="form-group tab-pane active">
-                                        {{ form_label(form.tpl_data) }}
-                                        <div id="editor" style="height: 480px" class="form-control{{ has_errors(form.tpl_data) ? ' is-invalid' }}"></div>
+                                        {{ form.tpl_data.vars.data|trans|raw|nl2br }}
                                         <div style="display: none">{{ form_widget(form.tpl_data) }}</div>
-                                        {{ form_errors(form.tpl_data) }}
                                     </div>
-                                    {% if form.html_tpl_data.vars.value %}
+                                    {% if form.html_tpl_data.vars.data %}
                                     <div id="detail_box__html_tpl_data" class="form-group tab-pane">
-                                        {{ form_label(form.html_tpl_data) }}
-                                        <div id="html_editor" style="height: 480px" class="form-control{{ has_errors(form.html_tpl_data) ? ' is-invalid' }}"></div>
+                                        {{ form.html_tpl_data.vars.data|trans|raw }}
                                         <div style="display: none">{{ form_widget(form.html_tpl_data) }}</div>
-                                        {{ form_errors(form.html_tpl_data) }}
                                     </div>
                                     {% endif %}
                                 </div>
@@ -231,12 +198,12 @@ $(function() {
                     <div class="c-conversionArea__container">
                         <div class="row justify-content-between align-items-center">
                             <div class="col-6">
-                                <div class="c-conversionArea__leftBlockItem"><a class="c-beseLink" href="{{ url('admin_order_page', { page_no: app.session.get('eccube.admin.order.search.page_no')|default('1') }) }}?resume=1"><i class="fa fa-backward" aria-hidden="true"></i><span>{{ 'admin.order.subnavi.395'|trans }}</span></a>
+                                <div class="c-conversionArea__leftBlockItem"><a class="c-beseLink" href="javascript:void(0)" id="back"><i class="fa fa-backward" aria-hidden="true"></i><span>{{ 'admin.order.mail_confirm.371'|trans }}</span></a>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="row align-items-center justify-content-end">
-                                    <div class="col-auto"><button type="button" class="btn btn-ec-conversion px-5" id="mailConfirm">{{ 'admin.order.mail.363'|trans }}</button></div>
+                                    <div class="col-auto"><button type="button" class="btn btn-ec-conversion px-5" id="sendMail">{{ 'admin.order.mail_confirm.372'|trans }}</button></div>
                                 </div>
                             </div>
                         </div>
