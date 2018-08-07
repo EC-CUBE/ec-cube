@@ -35,7 +35,9 @@ class ReloadSafeAnnotationDriver extends AnnotationDriver
 
     public function setNewProxyFiles($newProxyFiles)
     {
-        $this->newProxyFiles = $newProxyFiles;
+        $this->newProxyFiles = array_map(function ($file) {
+            return realpath($file);
+        }, $newProxyFiles);
     }
 
     /**
@@ -88,7 +90,11 @@ class ReloadSafeAnnotationDriver extends AnnotationDriver
                         continue 2;
                     }
                 }
-
+                if ('\\' === DIRECTORY_SEPARATOR) {
+                    $path = str_replace('\\', '/', $path);
+                    $this->trait_proxies_directory = str_replace('\\', '/', $this->trait_proxies_directory);
+                    $sourceFile = str_replace('\\', '/', $sourceFile);
+                }
                 $proxyFile = str_replace($path, $this->trait_proxies_directory, $sourceFile);
                 if (file_exists($proxyFile)) {
                     $sourceFile = $proxyFile;
@@ -124,6 +130,7 @@ class ReloadSafeAnnotationDriver extends AnnotationDriver
                     $className = $tokens[$classNameTokenIndex]->getContent();
                     $fqcn = $namespace.'\\'.$className;
                     if (class_exists($fqcn) && !$this->isTransient($fqcn)) {
+                        $sourceFile = realpath($sourceFile);
                         if (in_array($sourceFile, $this->newProxyFiles)) {
                             $newClassName = $className.StringUtil::random(12);
                             $tokens[$classNameTokenIndex] = new Token([T_STRING, $newClassName]);

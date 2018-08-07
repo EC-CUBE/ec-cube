@@ -52,6 +52,7 @@ class StockMultipleValidator extends ItemHolderValidator
         }
 
         foreach ($OrderItemsByProductClass as $id => $Items) {
+            /** @var ProductClass $ProductClass */
             $ProductClass = $this->productClassRepository->find($id);
             if ($ProductClass->isStockUnlimited()) {
                 continue;

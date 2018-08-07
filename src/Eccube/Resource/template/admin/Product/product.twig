@@ -22,8 +22,13 @@ file that was distributed with this source code.
     <link rel="stylesheet" href="{{ asset('assets/css/fileupload/jquery.fileupload-ui.css', 'admin') }}">
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
     <style>
+        #thumb div {
+            float:left;
+            margin: 4px
+        }
         .ui-state-highlight {
-            height: 148px;
+            height: 70px;
+            width: 70px;
             border: dashed 1px #ccc;
             background: #fff;
         }
@@ -84,7 +89,7 @@ file that was distributed with this source code.
             {% endfor %}
             // Todo: fix hideSvg
             var hideSvg = function() {
-                if ($("#thumb li").length > 0) {
+                if ($("#thumb div").length > 0) {
                     $("#icon_no_image").css("display", "none");
                 } else {
                     $("#icon_no_image").css("display", "");
@@ -92,14 +97,14 @@ file that was distributed with this source code.
             };
             // Todo: fix update sort by drag&drop
             var updateSortNo = function() {
-                $("#thumb li").each(function(index) {
+                $("#thumb div").each(function(index) {
                     $(this).find(".sort_no_images").remove();
                     filename = $(this).find("input[type='hidden']").val();
                     $sortNo = $('<input type="hidden" class="sort_no_images" name="sort_no_images[]" />');
                     $sortNo.val(filename + '//' + parseInt(index + 1));
                     $(this).append($sortNo);
                 });
-            }
+            };
             hideSvg();
             updateSortNo();
             // Delete of images
@@ -374,7 +379,7 @@ file that was distributed with this source code.
                                         </div>
                                         <div id="thumb" class="c-form__fileUploadThumbnails">
                                         </div>
-                                        <p>{{ 'admin.product.product.test02'|trans }}</p>
+                                        <p style="clear:both;">{{ 'admin.product.product.test02'|trans }}</p>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -728,6 +733,20 @@ file that was distributed with this source code.
             </div>
             <div class="c-contentsArea__secondaryCol">
                 <div class="c-secondaryCol">
+                    {% if id is not null %}
+                        <div class="card rounded border-0 mb-4">
+                            <div class="collapse show ec-cardCollapse" id="preview">
+                                <div class="card-body">
+                                    <div class="d-block text-center">
+                                        <a class="btn btn-block btn-ec-regular"
+                                        target="_blank"
+                                        href="{{ url('product_detail', {id:id}) }}"
+                                        title="{{ 'admin.product.product.preview'|trans }}">{{ 'admin.product.product.preview'|trans }}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header">
                             <div class="row">
@@ -770,7 +789,7 @@ file that was distributed with this source code.
                                     <li class="c-directoryTree--registerItem category-li">
                                         <input type="checkbox" id="admin_product_category_{{ Category.id }}" name="admin_product[Category][]" value="{{ Category.id }}" {% if Category.id in ChoicedIds %}checked{% endif %}>
                                         <label for="admin_product_category_{{ Category.id }}">{{ Category.name }}</label>
-                                        <ul>
+                                        <ul class="pl-0">
                                             {% for child,ChildCategory in Category.children %}
                                                 {{ selfMacro.tree(ChoicedIds, ChildCategory, form) }}
                                             {% endfor %}
@@ -781,7 +800,7 @@ file that was distributed with this source code.
                                 <div class="c-directoryTree--register rounded border mb-3 p-3">
                                     {% import _self as renderMacro %}
                                     {% for TopCategory in TopCategories %}
-                                        <ul>
+                                        <ul class="pl-0">
                                             {{ renderMacro.tree(ChoicedCategoryIds, TopCategory, form.Category) }}
                                         </ul>
                                     {% endfor %}

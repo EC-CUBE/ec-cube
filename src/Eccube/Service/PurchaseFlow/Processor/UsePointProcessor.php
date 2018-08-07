@@ -21,6 +21,7 @@ use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Service\PurchaseFlow\ItemHolderProcessor;
 use Eccube\Service\PurchaseFlow\ProcessResult;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
@@ -44,12 +45,12 @@ class UsePointProcessor implements ItemHolderProcessor
      * UsePointProcessor constructor.
      *
      * @param EntityManagerInterface $entityManager
-     * @param BaseInfo $BaseInfo
+     * @param BaseInfoRepository $baseInfoRepository
      */
-    public function __construct(EntityManagerInterface $entityManager, BaseInfo $BaseInfo)
+    public function __construct(EntityManagerInterface $entityManager, BaseInfoRepository $baseInfoRepository)
     {
         $this->entityManager = $entityManager;
-        $this->BaseInfo = $BaseInfo;
+        $this->BaseInfo = $baseInfoRepository->get();
     }
 
     /**

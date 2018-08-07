@@ -293,7 +293,7 @@ file that was distributed with this source code.
                        aria-expanded="{% if Category.id in Ids %}true{% endif %}"
                        aria-controls="directory_category{{ Category.id }}"></label>
                 <span>
-                    <a href="{{ url('admin_product_category_show', { parent_id : Category.id }) }}">{{ Category.name }}
+                    <a href="{{ url('admin_product_category_show', { parent_id : Category.id }) }}"{%if (Category.id == TargetId) %} class="font-weight-bold"{% endif %}>{{ Category.name }}
                         ({{ Category.children|length }})</a></span>
                 {% if Category.children|length > 0 %}
                     <ul class="collapse {% if Category.id in Ids %}show{% endif %}"
