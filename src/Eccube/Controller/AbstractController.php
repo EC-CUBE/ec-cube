@@ -25,6 +25,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Translation\TranslatorInterface;
+use Eccube\Service\PurchaseFlow\ProcessResult;
 
 class AbstractController extends Controller
 {
@@ -139,6 +140,9 @@ class AbstractController extends Controller
 
     public function addRequestError($message, $namespace = 'front')
     {
+        if ($message instanceof ProcessResult) {
+            $message = $message->getMessage();
+        }
         $this->session->getFlashBag()->add('eccube.'.$namespace.'.request.error', $message);
     }
 
