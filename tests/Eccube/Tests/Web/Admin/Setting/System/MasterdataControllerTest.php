@@ -316,6 +316,10 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
 
         // del test
 
+        $formData = $this->createFormData($this->entityTest);
+        $editForm = $this->createFormDataEdit($this->entityTest);
+        $id = count($editForm['data']);
+
         $editForm['data'][$id]['id'] = null;
         $editForm['data'][$id]['name'] = null;
 
@@ -329,8 +333,6 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_setting_system_masterdata_view', ['entity' => $formData['masterdata']])));
 
-
-        $entityName = str_replace('-', '\\', $formData['masterdata']);
         $this->assertNull($this->entityManager->getRepository($entityName)->find(0));
 
         // message check
