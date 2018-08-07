@@ -16,7 +16,6 @@ namespace Eccube\Doctrine\EventSubscriber;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
-use Eccube\Entity\OrderItem;
 use Eccube\Entity\ProductClass;
 use Eccube\Service\TaxRuleService;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -61,10 +60,6 @@ class TaxRuleEventSubscriber implements EventSubscriber
             $entity->setPrice02IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice02(),
                 $entity->getProduct(), $entity));
         }
-        if ($entity instanceof OrderItem) {
-            $entity->setPriceIncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice(),
-                $entity->getProduct(), $entity->getProductClass()));
-        }
     }
 
     public function postLoad(LifecycleEventArgs $args)
@@ -76,10 +71,6 @@ class TaxRuleEventSubscriber implements EventSubscriber
                 $entity->getProduct(), $entity));
             $entity->setPrice02IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice02(),
                 $entity->getProduct(), $entity));
-        }
-        if ($entity instanceof OrderItem) {
-            $entity->setPriceIncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice(),
-                $entity->getProduct(), $entity->getProductClass()));
         }
     }
 
@@ -93,10 +84,6 @@ class TaxRuleEventSubscriber implements EventSubscriber
             $entity->setPrice02IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice02(),
                 $entity->getProduct(), $entity));
         }
-        if ($entity instanceof OrderItem) {
-            $entity->setPriceIncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice(),
-                $entity->getProduct(), $entity->getProductClass()));
-        }
     }
 
     public function postUpdate(LifecycleEventArgs $args)
@@ -108,10 +95,6 @@ class TaxRuleEventSubscriber implements EventSubscriber
                 $entity->getProduct(), $entity));
             $entity->setPrice02IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice02(),
                 $entity->getProduct(), $entity));
-        }
-        if ($entity instanceof OrderItem) {
-            $entity->setPriceIncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice(),
-                $entity->getProduct(), $entity->getProductClass()));
         }
     }
 }

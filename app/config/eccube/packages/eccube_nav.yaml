@@ -1,157 +1,146 @@
 parameters:
-  eccube_nav:
-    - id: product
-      name: admin.nav.product
-      has_child: true
-      icon: fa-cube
-      child:
-          - id: product_master
-            name: admin.nav.product.product_master
-            url: admin_product
-          - id: product_edit
-            name: admin.nav.product.product_edit
-            url: admin_product_product_new
-          - id: class_name
-            name: admin.nav.product.class_name
-            url: admin_product_class_name
-          - id: class_category
-            name: admin.nav.product.class_category
-            url: admin_product_category
-          - id: product_tag
-            name: admin.nav.product.product_tag
-            url: admin_product_tag
-          - id: product_csv_import
-            name: admin.nav.product.product_csv_import
-            url: admin_product_csv_import
-          - id: category_csv_import
-            name: admin.nav.product.category_csv_import
-            url: admin_product_category_csv_import
-    - id: order
-      name: admin.nav.order
-      has_child: true
-      icon: fa-inbox
-      child:
-          - id: order_master
-            name: admin.nav.order.order_master
-            url: admin_order
-          - id: order_edit
-            name: admin.nav.order.order_edit
-            url: admin_order_new
-          - id: shipping_csv_import
-            name: admin.nav.order.shipping_csv_import
-            url: admin_shipping_csv_import
-    - id: customer
-      name: admin.nav.customer
-      has_child: true
-      icon: fa-users
-      child:
-          - id: customer_master
-            name: admin.nav.customer.customer_master
-            url: admin_customer
-          - id: customer_edit
-            name: admin.nav.customer.customer_edit
-            url: admin_customer_new
-
-    - id: content
-      name: admin.nav.content
-      has_child: true
-      icon: fa-file-text-o
-      child:
-          - id: news
-            name: admin.nav.content.news
-            url : admin_content_news
-          - id: file
-            name: admin.nav.content.file
-            url: admin_content_file
-          - id: layout
-            name: admin.nav.content.layout
-            url: admin_content_layout
-          - id: page
-            name: admin.nav.content.page
-            url: admin_content_page
-          - id: block
-            name: admin.nav.content.block
-            url: admin_content_block
-          - id: cache
-            name: admin.nav.content.cache
-            url: admin_content_cache
-    - id: setting
-      name: admin.nav.setting
-      has_child: true
-      icon: fa-cog
-      child:
-          - id: shop
-            name: admin.nav.setting.shop
-            has_child: true
-            child:
-                - id: shop_index
-                  name: admin.nav.setting.shop.shop_index
-                  url: admin_setting_shop
-                - id: shop_payment
-                  name: admin.nav.setting.shop.shop_payment
-                  url: admin_setting_shop_payment
-                - id: shop_delivery
-                  name: admin.nav.setting.shop.shop_delivery
-                  url: admin_setting_shop_delivery
-                - id: shop_tax
-                  name: admin.nav.setting.shop.shop_tax
-                  url: admin_setting_shop_tax
-                - id: shop_mail
-                  name: admin.nav.setting.shop.shop_mail
-                  url: admin_setting_shop_mail
-                - id: shop_csv
-                  name: admin.nav.setting.shop.shop_csv
-                  url: admin_setting_shop_csv
-          - id: system
-            name: admin.nav.setting.system
-            has_child: true
-            child:
-                - id: member
-                  name: admin.nav.setting.system.member
-                  url: admin_setting_system_member
-                - id: authority
-                  name: admin.nav.setting.system.authority
-                  url: admin_setting_system_authority
-                - id: security
-                  name: admin.nav.setting.system.security
-                  url: admin_setting_system_security
-                - id: log
-                  name: admin.nav.setting.system.log
-                  url: admin_setting_system_log
-                - id: masterdata
-                  name: admin.nav.setting.system.masterdata
-                  url: admin_setting_system_masterdata
-                - id: system_index
-                  name: admin.nav.setting.system.system_index
-                  url: admin_setting_system_system
-    - id: store
-      name: admin.nav.store
-      has_child: true
-      icon: fa-info-circle
-      child:
-      - id: plugin
-        name: admin.nav.store.plugin
-        has_child: true
-        child:
-            - id: plugin_owners_search
-              name: admin.nav.store.plugin.plugin_owners_install
-              url: admin_store_plugin_owners_search
-            - id: plugin_list
-              name: admin.nav.store.plugin.plugin_list
-              url: admin_store_plugin
-            - id: plugin_handler
-              name: admin.nav.store.plugin.plugin_handler
-              url: admin_store_plugin_handler
-      - id: template
-        name: admin.nav.store.template
-        has_child: true
-        child:
-          - id: template_list
-            name: admin.nav.store.template.template_list
-            url: admin_store_template
-          - id: template_install
-            name: admin.nav.store.template.template_install
-            url: admin_store_template_install
-      - id: authentication_setting
-        name: admin.nav.store.authentication_setting
-        url: admin_store_authentication_setting
+    eccube_nav:
+        product:
+            name: admin.nav.product
+            icon: fa-cube
+            children:
+                product_master:
+                    name: admin.nav.product.product_master
+                    url: admin_product
+                product_edit:
+                    name: admin.nav.product.product_edit
+                    url: admin_product_product_new
+                class_name:
+                    name: admin.nav.product.class_name
+                    url: admin_product_class_name
+                class_category:
+                    name: admin.nav.product.class_category
+                    url: admin_product_category
+                product_tag:
+                    name: admin.nav.product.product_tag
+                    url: admin_product_tag
+                product_csv_import:
+                    name: admin.nav.product.product_csv_import
+                    url: admin_product_csv_import
+                category_csv_import:
+                    name: admin.nav.product.category_csv_import
+                    url: admin_product_category_csv_import
+        order:
+            name: admin.nav.order
+            icon: fa-inbox
+            children:
+                order_master:
+                    name: admin.nav.order.order_master
+                    url: admin_order
+                order_edit:
+                    name: admin.nav.order.order_edit
+                    url: admin_order_new
+                shipping_csv_import:
+                    name: admin.nav.order.shipping_csv_import
+                    url: admin_shipping_csv_import
+        customer:
+            name: admin.nav.customer
+            icon: fa-users
+            children:
+                customer_master:
+                    name: admin.nav.customer.customer_master
+                    url: admin_customer
+                customer_edit:
+                    name: admin.nav.customer.customer_edit
+                    url: admin_customer_new
+        content:
+            name: admin.nav.content
+            icon: fa-file-text-o
+            children:
+                news:
+                    name: admin.nav.content.news
+                    url : admin_content_news
+                file:
+                    name: admin.nav.content.file
+                    url: admin_content_file
+                layout:
+                    name: admin.nav.content.layout
+                    url: admin_content_layout
+                page:
+                    name: admin.nav.content.page
+                    url: admin_content_page
+                block:
+                    name: admin.nav.content.block
+                    url: admin_content_block
+                cache:
+                    name: admin.nav.content.cache
+                    url: admin_content_cache
+        setting:
+            name: admin.nav.setting
+            icon: fa-cog
+            children:
+                shop:
+                    name: admin.nav.setting.shop
+                    children:
+                        shop_index:
+                            name: admin.nav.setting.shop.shop_index
+                            url: admin_setting_shop
+                        shop_payment:
+                            name: admin.nav.setting.shop.shop_payment
+                            url: admin_setting_shop_payment
+                        shop_delivery:
+                            name: admin.nav.setting.shop.shop_delivery
+                            url: admin_setting_shop_delivery
+                        shop_tax:
+                            name: admin.nav.setting.shop.shop_tax
+                            url: admin_setting_shop_tax
+                        shop_mail:
+                            name: admin.nav.setting.shop.shop_mail
+                            url: admin_setting_shop_mail
+                        shop_csv:
+                            name: admin.nav.setting.shop.shop_csv
+                            url: admin_setting_shop_csv
+                system:
+                    name: admin.nav.setting.system
+                    children:
+                        member:
+                            name: admin.nav.setting.system.member
+                            url: admin_setting_system_member
+                        authority:
+                            name: admin.nav.setting.system.authority
+                            url: admin_setting_system_authority
+                        security:
+                            name: admin.nav.setting.system.security
+                            url: admin_setting_system_security
+                        log:
+                            name: admin.nav.setting.system.log
+                            url: admin_setting_system_log
+                        masterdata:
+                            name: admin.nav.setting.system.masterdata
+                            url: admin_setting_system_masterdata
+                        system_index:
+                            name: admin.nav.setting.system.system_index
+                            url: admin_setting_system_system
+        store:
+            name: admin.nav.store
+            icon: fa-info-circle
+            children:
+                plugin:
+                    name: admin.nav.store.plugin
+                    children:
+                        plugin_owners_search:
+                            name: admin.nav.store.plugin.plugin_owners_install
+                            url: admin_store_plugin_owners_search
+                        plugin_list:
+                            name: admin.nav.store.plugin.plugin_list
+                            url: admin_store_plugin
+                        plugin_handler:
+                            name: admin.nav.store.plugin.plugin_handler
+                            url: admin_store_plugin_handler
+                template:
+                    name: admin.nav.store.template
+                    children:
+                        template_list:
+                            name: admin.nav.store.template.template_list
+                            url: admin_store_template
+                        template_install:
+                            name: admin.nav.store.template.template_install
+                            url: admin_store_template_install
+                authentication_setting:
+                    name: admin.nav.store.authentication_setting
+                    url: admin_store_authentication_setting

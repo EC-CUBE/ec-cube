@@ -15,332 +15,334 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Plugin
- *
- * @ORM\Table(name="dtb_plugin")
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
- * @ORM\HasLifecycleCallbacks()
- * @ORM\Entity(repositoryClass="Eccube\Repository\PluginRepository")
- */
-class Plugin extends \Eccube\Entity\AbstractEntity
-{
+if (!class_exists('\Eccube\Entity\Plugin')) {
     /**
-     * @var int
+     * Plugin
      *
-     * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\Table(name="dtb_plugin")
+     * @ORM\InheritanceType("SINGLE_TABLE")
+     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     * @ORM\HasLifecycleCallbacks()
+     * @ORM\Entity(repositoryClass="Eccube\Repository\PluginRepository")
      */
-    private $id;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255)
-     */
-    private $name;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="code", type="string", length=255)
-     */
-    private $code;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="class_name", type="string", length=255)
-     */
-    private $class_name;
-
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="enabled", type="boolean", options={"default":false})
-     */
-    private $enabled = false;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="version", type="string", length=255)
-     */
-    private $version;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="source", type="string", length=255)
-     */
-    private $source;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="create_date", type="datetimetz")
-     */
-    private $create_date;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="update_date", type="datetimetz")
-     */
-    private $update_date;
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\OneToMany(targetEntity="Eccube\Entity\PluginEventHandler", mappedBy="Plugin", cascade={"persist","remove"})
-     */
-    private $PluginEventHandlers;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
+    class Plugin extends \Eccube\Entity\AbstractEntity
     {
-        $this->PluginEventHandlers = new \Doctrine\Common\Collections\ArrayCollection();
-    }
+        /**
+         * @var int
+         *
+         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+         * @ORM\Id
+         * @ORM\GeneratedValue(strategy="IDENTITY")
+         */
+        private $id;
 
-    /**
-     * Get id.
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+        /**
+         * @var string
+         *
+         * @ORM\Column(name="name", type="string", length=255)
+         */
+        private $name;
 
-    /**
-     * Set name.
-     *
-     * @param string $name
-     *
-     * @return Plugin
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
+        /**
+         * @var string
+         *
+         * @ORM\Column(name="code", type="string", length=255)
+         */
+        private $code;
 
-        return $this;
-    }
+        /**
+         * @var string
+         *
+         * @ORM\Column(name="class_name", type="string", length=255)
+         */
+        private $class_name;
 
-    /**
-     * Get name.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
+        /**
+         * @var boolean
+         *
+         * @ORM\Column(name="enabled", type="boolean", options={"default":false})
+         */
+        private $enabled = false;
 
-    /**
-     * Set code.
-     *
-     * @param string $code
-     *
-     * @return Plugin
-     */
-    public function setCode($code)
-    {
-        $this->code = $code;
+        /**
+         * @var string
+         *
+         * @ORM\Column(name="version", type="string", length=255)
+         */
+        private $version;
 
-        return $this;
-    }
+        /**
+         * @var string
+         *
+         * @ORM\Column(name="source", type="string", length=255)
+         */
+        private $source;
 
-    /**
-     * Get code.
-     *
-     * @return string
-     */
-    public function getCode()
-    {
-        return $this->code;
-    }
+        /**
+         * @var \DateTime
+         *
+         * @ORM\Column(name="create_date", type="datetimetz")
+         */
+        private $create_date;
 
-    /**
-     * Set className.
-     *
-     * @param string $className
-     *
-     * @return Plugin
-     */
-    public function setClassName($className)
-    {
-        $this->class_name = $className;
+        /**
+         * @var \DateTime
+         *
+         * @ORM\Column(name="update_date", type="datetimetz")
+         */
+        private $update_date;
 
-        return $this;
-    }
+        /**
+         * @var \Doctrine\Common\Collections\Collection
+         *
+         * @ORM\OneToMany(targetEntity="Eccube\Entity\PluginEventHandler", mappedBy="Plugin", cascade={"persist","remove"})
+         */
+        private $PluginEventHandlers;
 
-    /**
-     * Get className.
-     *
-     * @return string
-     */
-    public function getClassName()
-    {
-        return $this->class_name;
-    }
+        /**
+         * Constructor
+         */
+        public function __construct()
+        {
+            $this->PluginEventHandlers = new \Doctrine\Common\Collections\ArrayCollection();
+        }
 
-    /**
-     * Set enabled.
-     *
-     * @param boolean $enabled
-     *
-     * @return Plugin
-     */
-    public function setEnabled($enabled)
-    {
-        $this->enabled = $enabled;
+        /**
+         * Get id.
+         *
+         * @return int
+         */
+        public function getId()
+        {
+            return $this->id;
+        }
 
-        return $this;
-    }
+        /**
+         * Set name.
+         *
+         * @param string $name
+         *
+         * @return Plugin
+         */
+        public function setName($name)
+        {
+            $this->name = $name;
 
-    /**
-     * Get enabled.
-     *
-     * @return boolean
-     */
-    public function isEnabled()
-    {
-        return $this->enabled;
-    }
+            return $this;
+        }
 
-    /**
-     * Set version.
-     *
-     * @param string $version
-     *
-     * @return Plugin
-     */
-    public function setVersion($version)
-    {
-        $this->version = $version;
+        /**
+         * Get name.
+         *
+         * @return string
+         */
+        public function getName()
+        {
+            return $this->name;
+        }
 
-        return $this;
-    }
+        /**
+         * Set code.
+         *
+         * @param string $code
+         *
+         * @return Plugin
+         */
+        public function setCode($code)
+        {
+            $this->code = $code;
 
-    /**
-     * Get version.
-     *
-     * @return string
-     */
-    public function getVersion()
-    {
-        return $this->version;
-    }
+            return $this;
+        }
 
-    /**
-     * Set source.
-     *
-     * @param string $source
-     *
-     * @return Plugin
-     */
-    public function setSource($source)
-    {
-        $this->source = $source;
+        /**
+         * Get code.
+         *
+         * @return string
+         */
+        public function getCode()
+        {
+            return $this->code;
+        }
 
-        return $this;
-    }
+        /**
+         * Set className.
+         *
+         * @param string $className
+         *
+         * @return Plugin
+         */
+        public function setClassName($className)
+        {
+            $this->class_name = $className;
 
-    /**
-     * Get source.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return $this->source;
-    }
+            return $this;
+        }
 
-    /**
-     * Set createDate.
-     *
-     * @param \DateTime $createDate
-     *
-     * @return Plugin
-     */
-    public function setCreateDate($createDate)
-    {
-        $this->create_date = $createDate;
+        /**
+         * Get className.
+         *
+         * @return string
+         */
+        public function getClassName()
+        {
+            return $this->class_name;
+        }
 
-        return $this;
-    }
+        /**
+         * Set enabled.
+         *
+         * @param boolean $enabled
+         *
+         * @return Plugin
+         */
+        public function setEnabled($enabled)
+        {
+            $this->enabled = $enabled;
 
-    /**
-     * Get createDate.
-     *
-     * @return \DateTime
-     */
-    public function getCreateDate()
-    {
-        return $this->create_date;
-    }
+            return $this;
+        }
 
-    /**
-     * Set updateDate.
-     *
-     * @param \DateTime $updateDate
-     *
-     * @return Plugin
-     */
-    public function setUpdateDate($updateDate)
-    {
-        $this->update_date = $updateDate;
+        /**
+         * Get enabled.
+         *
+         * @return boolean
+         */
+        public function isEnabled()
+        {
+            return $this->enabled;
+        }
 
-        return $this;
-    }
+        /**
+         * Set version.
+         *
+         * @param string $version
+         *
+         * @return Plugin
+         */
+        public function setVersion($version)
+        {
+            $this->version = $version;
 
-    /**
-     * Get updateDate.
-     *
-     * @return \DateTime
-     */
-    public function getUpdateDate()
-    {
-        return $this->update_date;
-    }
+            return $this;
+        }
 
-    /**
-     * Add pluginEventHandler.
-     *
-     * @param \Eccube\Entity\PluginEventHandler $pluginEventHandler
-     *
-     * @return Plugin
-     */
-    public function addPluginEventHandler(\Eccube\Entity\PluginEventHandler $pluginEventHandler)
-    {
-        $this->PluginEventHandlers[] = $pluginEventHandler;
+        /**
+         * Get version.
+         *
+         * @return string
+         */
+        public function getVersion()
+        {
+            return $this->version;
+        }
 
-        return $this;
-    }
+        /**
+         * Set source.
+         *
+         * @param string $source
+         *
+         * @return Plugin
+         */
+        public function setSource($source)
+        {
+            $this->source = $source;
 
-    /**
-     * Remove pluginEventHandler.
-     *
-     * @param \Eccube\Entity\PluginEventHandler $pluginEventHandler
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
-     */
-    public function removePluginEventHandler(\Eccube\Entity\PluginEventHandler $pluginEventHandler)
-    {
-        return $this->PluginEventHandlers->removeElement($pluginEventHandler);
-    }
+            return $this;
+        }
 
-    /**
-     * Get pluginEventHandlers.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getPluginEventHandlers()
-    {
-        return $this->PluginEventHandlers;
+        /**
+         * Get source.
+         *
+         * @return string
+         */
+        public function getSource()
+        {
+            return $this->source;
+        }
+
+        /**
+         * Set createDate.
+         *
+         * @param \DateTime $createDate
+         *
+         * @return Plugin
+         */
+        public function setCreateDate($createDate)
+        {
+            $this->create_date = $createDate;
+
+            return $this;
+        }
+
+        /**
+         * Get createDate.
+         *
+         * @return \DateTime
+         */
+        public function getCreateDate()
+        {
+            return $this->create_date;
+        }
+
+        /**
+         * Set updateDate.
+         *
+         * @param \DateTime $updateDate
+         *
+         * @return Plugin
+         */
+        public function setUpdateDate($updateDate)
+        {
+            $this->update_date = $updateDate;
+
+            return $this;
+        }
+
+        /**
+         * Get updateDate.
+         *
+         * @return \DateTime
+         */
+        public function getUpdateDate()
+        {
+            return $this->update_date;
+        }
+
+        /**
+         * Add pluginEventHandler.
+         *
+         * @param \Eccube\Entity\PluginEventHandler $pluginEventHandler
+         *
+         * @return Plugin
+         */
+        public function addPluginEventHandler(\Eccube\Entity\PluginEventHandler $pluginEventHandler)
+        {
+            $this->PluginEventHandlers[] = $pluginEventHandler;
+
+            return $this;
+        }
+
+        /**
+         * Remove pluginEventHandler.
+         *
+         * @param \Eccube\Entity\PluginEventHandler $pluginEventHandler
+         *
+         * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+         */
+        public function removePluginEventHandler(\Eccube\Entity\PluginEventHandler $pluginEventHandler)
+        {
+            return $this->PluginEventHandlers->removeElement($pluginEventHandler);
+        }
+
+        /**
+         * Get pluginEventHandlers.
+         *
+         * @return \Doctrine\Common\Collections\Collection
+         */
+        public function getPluginEventHandlers()
+        {
+            return $this->PluginEventHandlers;
+        }
     }
 }

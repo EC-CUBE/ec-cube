@@ -19,11 +19,11 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\MailType;
 use Eccube\Repository\MailTemplateRepository;
+use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Filesystem\Filesystem;
-use Eccube\Util\StringUtil;
+use Symfony\Component\HttpFoundation\Request;
 use Twig\Environment;
 
 /**

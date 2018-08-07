@@ -104,7 +104,7 @@ class OrderStateMachine implements EventSubscriberInterface
             'workflow.order.transition.pay' => ['updatePaymentDate'],
             'workflow.order.transition.cancel' => [['rollbackStock'], ['rollbackUsePoint']],
             'workflow.order.transition.back_to_in_progress' => [['commitStock'], ['commitUsePoint']],
-            'workflow.order.transition.ship' => [['commitAddPoint'], ['updateShippingDate']],
+            'workflow.order.transition.ship' => [['commitAddPoint']],
             'workflow.order.transition.return' => [['rollbackUsePoint'], ['rollbackAddPoint']],
             'workflow.order.transition.cancel_return' => [['commitUsePoint'], ['commitAddPoint']],
         ];
@@ -124,23 +124,6 @@ class OrderStateMachine implements EventSubscriberInterface
         /* @var Order $Order */
         $Order = $event->getSubject()->getOrder();
         $Order->setPaymentDate(new \DateTime());
-    }
-
-    /**
-     * 発送日を更新する.
-     *
-     * @param Event $event
-     */
-    public function updateShippingDate(Event $event)
-    {
-        // TODO: 出荷に出荷日を入れる処理は出荷ごとに実行される可能性があるのでステートマシン外で処理する必要がある
-        /* @var Order $Order */
-        $Order = $event->getSubject()->getOrder();
-        foreach ($Order->getShippings() as $Shipping) {
-            if (!$Shipping->getShippingDate()) {
-                $Shipping->setShippingDate(new \DateTime());
-            }
-        }
     }
 
     /**

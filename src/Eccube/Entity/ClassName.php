@@ -15,284 +15,286 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * ClassName
- *
- * @ORM\Table(name="dtb_class_name")
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
- * @ORM\HasLifecycleCallbacks()
- * @ORM\Entity(repositoryClass="Eccube\Repository\ClassNameRepository")
- */
-class ClassName extends \Eccube\Entity\AbstractEntity
-{
+if (!class_exists('\Eccube\Entity\ClassName')) {
     /**
-     * @return string
+     * ClassName
+     *
+     * @ORM\Table(name="dtb_class_name")
+     * @ORM\InheritanceType("SINGLE_TABLE")
+     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     * @ORM\HasLifecycleCallbacks()
+     * @ORM\Entity(repositoryClass="Eccube\Repository\ClassNameRepository")
      */
-    public function __toString()
+    class ClassName extends \Eccube\Entity\AbstractEntity
     {
-        return $this->getName();
-    }
+        /**
+         * @return string
+         */
+        public function __toString()
+        {
+            return $this->getName();
+        }
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+        /**
+         * @var int
+         *
+         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+         * @ORM\Id
+         * @ORM\GeneratedValue(strategy="IDENTITY")
+         */
+        private $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="backend_name", type="string", length=255, nullable=true)
-     */
-    private $backend_name;
+        /**
+         * @var string
+         *
+         * @ORM\Column(name="backend_name", type="string", length=255, nullable=true)
+         */
+        private $backend_name;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255)
-     */
-    private $name;
+        /**
+         * @var string
+         *
+         * @ORM\Column(name="name", type="string", length=255)
+         */
+        private $name;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="sort_no", type="integer")
-     */
-    private $sort_no;
+        /**
+         * @var int
+         *
+         * @ORM\Column(name="sort_no", type="integer")
+         */
+        private $sort_no;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="create_date", type="datetimetz")
-     */
-    private $create_date;
+        /**
+         * @var \DateTime
+         *
+         * @ORM\Column(name="create_date", type="datetimetz")
+         */
+        private $create_date;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="update_date", type="datetimetz")
-     */
-    private $update_date;
+        /**
+         * @var \DateTime
+         *
+         * @ORM\Column(name="update_date", type="datetimetz")
+         */
+        private $update_date;
 
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\OneToMany(targetEntity="Eccube\Entity\ClassCategory", mappedBy="ClassName")
-     * @ORM\OrderBy({
-     *     "sort_no"="DESC"
-     * })
-     */
-    private $ClassCategories;
+        /**
+         * @var \Doctrine\Common\Collections\Collection
+         *
+         * @ORM\OneToMany(targetEntity="Eccube\Entity\ClassCategory", mappedBy="ClassName")
+         * @ORM\OrderBy({
+         *     "sort_no"="DESC"
+         * })
+         */
+        private $ClassCategories;
 
-    /**
-     * @var \Eccube\Entity\Member
-     *
-     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
-     * })
-     */
-    private $Creator;
+        /**
+         * @var \Eccube\Entity\Member
+         *
+         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
+         * @ORM\JoinColumns({
+         *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
+         * })
+         */
+        private $Creator;
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->ClassCategories = new \Doctrine\Common\Collections\ArrayCollection();
-    }
+        /**
+         * Constructor
+         */
+        public function __construct()
+        {
+            $this->ClassCategories = new \Doctrine\Common\Collections\ArrayCollection();
+        }
 
-    /**
-     * Get id.
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+        /**
+         * Get id.
+         *
+         * @return int
+         */
+        public function getId()
+        {
+            return $this->id;
+        }
 
-    /**
-     * Set backend_name.
-     *
-     * @param string $backend_name
-     *
-     * @return ClassName
-     */
-    public function setBackendName($backendName)
-    {
-        $this->backend_name = $backendName;
+        /**
+         * Set backend_name.
+         *
+         * @param string $backendName
+         *
+         * @return ClassName
+         */
+        public function setBackendName($backendName)
+        {
+            $this->backend_name = $backendName;
 
-        return $this;
-    }
+            return $this;
+        }
 
-    /**
-     * Get backend_name.
-     *
-     * @return string
-     */
-    public function getBackendName()
-    {
-        return $this->backend_name;
-    }
+        /**
+         * Get backend_name.
+         *
+         * @return string
+         */
+        public function getBackendName()
+        {
+            return $this->backend_name;
+        }
 
-    /**
-     * Set name.
-     *
-     * @param string $name
-     *
-     * @return ClassName
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
+        /**
+         * Set name.
+         *
+         * @param string $name
+         *
+         * @return ClassName
+         */
+        public function setName($name)
+        {
+            $this->name = $name;
 
-        return $this;
-    }
+            return $this;
+        }
 
-    /**
-     * Get name.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
+        /**
+         * Get name.
+         *
+         * @return string
+         */
+        public function getName()
+        {
+            return $this->name;
+        }
 
-    /**
-     * Set sortNo.
-     *
-     * @param int $sortNo
-     *
-     * @return ClassName
-     */
-    public function setSortNo($sortNo)
-    {
-        $this->sort_no = $sortNo;
+        /**
+         * Set sortNo.
+         *
+         * @param int $sortNo
+         *
+         * @return ClassName
+         */
+        public function setSortNo($sortNo)
+        {
+            $this->sort_no = $sortNo;
 
-        return $this;
-    }
+            return $this;
+        }
 
-    /**
-     * Get sortNo.
-     *
-     * @return int
-     */
-    public function getSortNo()
-    {
-        return $this->sort_no;
-    }
+        /**
+         * Get sortNo.
+         *
+         * @return int
+         */
+        public function getSortNo()
+        {
+            return $this->sort_no;
+        }
 
-    /**
-     * Set createDate.
-     *
-     * @param \DateTime $createDate
-     *
-     * @return ClassName
-     */
-    public function setCreateDate($createDate)
-    {
-        $this->create_date = $createDate;
+        /**
+         * Set createDate.
+         *
+         * @param \DateTime $createDate
+         *
+         * @return ClassName
+         */
+        public function setCreateDate($createDate)
+        {
+            $this->create_date = $createDate;
 
-        return $this;
-    }
+            return $this;
+        }
 
-    /**
-     * Get createDate.
-     *
-     * @return \DateTime
-     */
-    public function getCreateDate()
-    {
-        return $this->create_date;
-    }
+        /**
+         * Get createDate.
+         *
+         * @return \DateTime
+         */
+        public function getCreateDate()
+        {
+            return $this->create_date;
+        }
 
-    /**
-     * Set updateDate.
-     *
-     * @param \DateTime $updateDate
-     *
-     * @return ClassName
-     */
-    public function setUpdateDate($updateDate)
-    {
-        $this->update_date = $updateDate;
+        /**
+         * Set updateDate.
+         *
+         * @param \DateTime $updateDate
+         *
+         * @return ClassName
+         */
+        public function setUpdateDate($updateDate)
+        {
+            $this->update_date = $updateDate;
 
-        return $this;
-    }
+            return $this;
+        }
 
-    /**
-     * Get updateDate.
-     *
-     * @return \DateTime
-     */
-    public function getUpdateDate()
-    {
-        return $this->update_date;
-    }
+        /**
+         * Get updateDate.
+         *
+         * @return \DateTime
+         */
+        public function getUpdateDate()
+        {
+            return $this->update_date;
+        }
 
-    /**
-     * Add classCategory.
-     *
-     * @param \Eccube\Entity\ClassCategory $classCategory
-     *
-     * @return ClassName
-     */
-    public function addClassCategory(\Eccube\Entity\ClassCategory $classCategory)
-    {
-        $this->ClassCategories[] = $classCategory;
+        /**
+         * Add classCategory.
+         *
+         * @param \Eccube\Entity\ClassCategory $classCategory
+         *
+         * @return ClassName
+         */
+        public function addClassCategory(\Eccube\Entity\ClassCategory $classCategory)
+        {
+            $this->ClassCategories[] = $classCategory;
 
-        return $this;
-    }
+            return $this;
+        }
 
-    /**
-     * Remove classCategory.
-     *
-     * @param \Eccube\Entity\ClassCategory $classCategory
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
-     */
-    public function removeClassCategory(\Eccube\Entity\ClassCategory $classCategory)
-    {
-        return $this->ClassCategories->removeElement($classCategory);
-    }
+        /**
+         * Remove classCategory.
+         *
+         * @param \Eccube\Entity\ClassCategory $classCategory
+         *
+         * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+         */
+        public function removeClassCategory(\Eccube\Entity\ClassCategory $classCategory)
+        {
+            return $this->ClassCategories->removeElement($classCategory);
+        }
 
-    /**
-     * Get classCategories.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getClassCategories()
-    {
-        return $this->ClassCategories;
-    }
+        /**
+         * Get classCategories.
+         *
+         * @return \Doctrine\Common\Collections\Collection
+         */
+        public function getClassCategories()
+        {
+            return $this->ClassCategories;
+        }
 
-    /**
-     * Set creator.
-     *
-     * @param \Eccube\Entity\Member|null $creator
-     *
-     * @return ClassName
-     */
-    public function setCreator(\Eccube\Entity\Member $creator = null)
-    {
-        $this->Creator = $creator;
+        /**
+         * Set creator.
+         *
+         * @param \Eccube\Entity\Member|null $creator
+         *
+         * @return ClassName
+         */
+        public function setCreator(\Eccube\Entity\Member $creator = null)
+        {
+            $this->Creator = $creator;
 
-        return $this;
-    }
+            return $this;
+        }
 
-    /**
-     * Get creator.
-     *
-     * @return \Eccube\Entity\Member|null
-     */
-    public function getCreator()
-    {
-        return $this->Creator;
+        /**
+         * Get creator.
+         *
+         * @return \Eccube\Entity\Member|null
+         */
+        public function getCreator()
+        {
+            return $this->Creator;
+        }
     }
 }
