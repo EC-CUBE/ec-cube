@@ -309,7 +309,7 @@ class ProductController extends AbstractController
     public function addImage(Request $request)
     {
         if (!$request->isXmlHttpRequest()) {
-            throw new BadRequestHttpException('リクエストが不正です');
+            throw new BadRequestHttpException();
         }
 
         $images = $request->files->get('admin_product');
@@ -321,7 +321,7 @@ class ProductController extends AbstractController
                     //ファイルフォーマット検証
                     $mimeType = $image->getMimeType();
                     if (0 !== strpos($mimeType, 'image')) {
-                        throw new UnsupportedMediaTypeHttpException('ファイル形式が不正です');
+                        throw new UnsupportedMediaTypeHttpException();
                     }
 
                     $extension = $image->getClientOriginalExtension();
@@ -596,7 +596,7 @@ class ProductController extends AbstractController
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_EDIT_COMPLETE, $event);
 
-                $this->addSuccess('admin.register.complete', 'admin');
+                $this->addSuccess('admin.common.save_complete', 'admin');
 
                 if ($returnLink = $form->get('return_link')->getData()) {
                     return $this->redirect($returnLink);
@@ -665,7 +665,7 @@ class ProductController extends AbstractController
             $Product = $this->productRepository->find($id);
             if (!$Product) {
                 if ($request->isXmlHttpRequest()) {
-                    $message = trans('admin.delete.warning');
+                    $message = trans('admin.common.delete_error_already_deleted');
 
                     return $this->json(['success' => $success, 'message' => $message]);
                 } else {
@@ -710,18 +710,18 @@ class ProductController extends AbstractController
                     log_info('商品削除完了', [$id]);
 
                     $success = true;
-                    $message = trans('admin.delete.complete');
+                    $message = trans('admin.common.delete_complete');
                 } catch (ForeignKeyConstraintViolationException $e) {
                     log_info('商品削除エラー', [$id]);
-                    $message = trans('admin.delete.failed.foreign_key', ['%name%' => $Product->getName()]);
+                    $message = trans('admin.common.delete_error_foreign_key', ['%name%' => $Product->getName()]);
                 }
             } else {
                 log_info('商品削除エラー', [$id]);
-                $message = trans('admin.delete.failed');
+                $message = trans('admin.common.delete_error');
             }
         } else {
             log_info('商品削除エラー', [$id]);
-            $message = trans('admin.delete.failed');
+            $message = trans('admin.common.delete_error');
         }
 
         if ($request->isXmlHttpRequest()) {
@@ -826,14 +826,14 @@ class ProductController extends AbstractController
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_COPY_COMPLETE, $event);
 
-                $this->addSuccess('admin.product.copy.complete', 'admin');
+                $this->addSuccess('admin.product.copy_complete', 'admin');
 
                 return $this->redirectToRoute('admin_product_product_edit', ['id' => $CopyProduct->getId()]);
             } else {
-                $this->addError('admin.product.copy.failed', 'admin');
+                $this->addError('admin.product.copy_error', 'admin');
             }
         } else {
-            $msg = trans('admin.product.copy.failed');
+            $msg = trans('admin.product.copy_error');
             $this->addError($msg, 'admin');
         }
 
@@ -1020,7 +1020,7 @@ class ProductController extends AbstractController
         try {
             if ($count) {
                 $this->entityManager->flush();
-                $msg = $this->translator->trans('admin.product.index.bulk_product_status_success_count', [
+                $msg = $this->translator->trans('admin.product.bulk_change_status_complete', [
                     '%count%' => $count,
                     '%status%' => $ProductStatus->getName(),
                 ]);

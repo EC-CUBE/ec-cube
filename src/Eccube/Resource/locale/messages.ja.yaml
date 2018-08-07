@@ -306,6 +306,7 @@ admin.common.save_error: 保存に失敗しました
 admin.common.delete_complete: 削除しました
 admin.common.delete_error: 削除に失敗しました
 admin.common.delete_error_foreign_key: 関連するデータがあるため「%name%」を削除できませんでした
+admin.common.delete_error_already_deleted: すでに削除されています
 admin.common.move_complete: 並び順を更新しました
 admin.common.move_error: 並び順の更新に失敗しました
 admin.common.upload_complete: アップロードしました
@@ -432,6 +433,10 @@ admin.product.category_csv_upload: カテゴリCSV登録
 
 # flashメッセージ
 
+admin.product.bulk_change_status_complete: '%status%: %count%件が正常に適用されました。'
+admin.product.copy_complete: 商品を複製しました。
+admin.product.copy_error: 商品の複製に失敗しました。
+
 # ラベル/メッセージ
 admin.product.product: 商品
 admin.product.product__card_title: 商品情報
@@ -442,6 +447,15 @@ admin.product.display_status__short: 公開状態
 admin.product.display_status__show: 公開
 admin.product.display_status__hide: 非公開
 admin.product.display_status__abolished: 廃止
+admin.product.permanently_delete: 削除
+admin.product.permanently_delete__confirm_title: 商品を削除します
+admin.product.permanently_delete__confirm_message: 商品を削除してよろしいですか？
+admin.product.permanently_delete__in_prograss: 削除中...
+admin.product.permanently_delete__complete_message: 商品の削除処理が完了しました
+admin.product.permanently_delete__complete: 完了
+admin.product.permanently_delete__system_error: システムエラーが発生しました
+admin.product.copy__confirm_title: 商品を複製します
+admin.product.copy__confirm_message: 商品を複製してよろしいですか？
 admin.product.name: 商品名
 amdin.product.image: 商品画像
 amdin.product.image__short: 画像
@@ -471,6 +485,7 @@ admin.product.create_date__card_title: 登録日・更新日
 admin.product.move_to_category: カテゴリの追加・編集
 admin.product.move_to_tag: タグの追加・編集
 admin.product.move_to_product_class: 商品規格の編集
+admin.product.move_to_product_class__confirm_title: '「%name%」の商品規格'
 admin.product.move_to_confirm_title: ページを移動します
 admin.product.move_to_confirm_message: '%name%に移動します。商品情報を保存してから移動しますか？'
 admin.product.move_to_confirm_move_only: 保存せずに移動
@@ -480,6 +495,7 @@ admin.product.delete_confirm_title: 商品を削除します
 admin.product.delete_confirm_message: 商品を削除しますか？
 admin.product.product_class: 商品規格
 admin.product.product_class__confirm: 規格確認
+
 admin.product.product_class__card_title: 商品規格情報
 admin.product.product_class__reset: 商品規格の初期化
 admin.product.product_class__reset_confirm_title: この商品の規格を初期化します
@@ -523,6 +539,7 @@ admin.product.delete_tag_confirm_message: タグを削除してよろしいで�
 admin.product.select__class1: 規格1を選択してください
 admin.product.select__class2: 規格2を選択してください
 
+# 商品CSV雛形
 admin.product.product_csv.product_id_col: 商品ID
 admin.product.product_csv.product_id_description: 新規登録の場合は空にしてください。既存の商品を更新する場合は、商品IDを指定してください。
 admin.product.product_csv.display_status_col: 公開ステータス(ID)
@@ -570,6 +587,7 @@ admin.product.product_csv.sale_price_description: 0以上の数値を設定
 admin.product.product_csv.delivery_fee_col: 送料
 admin.product.product_csv.delivery_fee_description: 商品ごとの送料設定が有効の場合、0以上の数値を設定
 
+# カテゴリCSV雛形
 admin.product.category_csv.category_id_col: カテゴリID
 admin.product.category_csv.category_id_description: 新規登録の場合は空にしてください。既存の商品を更新する場合は、商品IDを指定してください。
 admin.product.category_csv.category_name_col: カテゴリ名
