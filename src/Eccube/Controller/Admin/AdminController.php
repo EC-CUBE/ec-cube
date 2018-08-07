@@ -423,7 +423,9 @@ class AdminController extends AbstractController
 
     /**
      * @param $dateTime
+     *
      * @return array|mixed
+     *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     private function getSalesByDay($dateTime)
@@ -459,7 +461,9 @@ class AdminController extends AbstractController
 
     /**
      * @param $dateTime
+     *
      * @return array|mixed
+     *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     private function getSalesByMonth($dateTime)

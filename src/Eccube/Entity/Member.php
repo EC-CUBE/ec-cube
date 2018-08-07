@@ -18,9 +18,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
-
 if (!class_exists('\Eccube\Entity\Member')) {
-
     /**
      * Member
      *
@@ -32,7 +30,6 @@ if (!class_exists('\Eccube\Entity\Member')) {
      */
     class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
     {
-
         public static function loadValidatorMetadata(ClassMetadata $metadata)
         {
             $metadata->addConstraint(new UniqueEntity([
@@ -115,13 +112,6 @@ if (!class_exists('\Eccube\Entity\Member')) {
          * @ORM\Column(name="salt", type="string", length=255)
          */
         private $salt;
-
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="sort_no", type="smallint", options={"unsigned":true})
-         */
-        private $sort_no;
 
         /**
          * @var \DateTime
@@ -302,30 +292,6 @@ if (!class_exists('\Eccube\Entity\Member')) {
         public function getSalt()
         {
             return $this->salt;
-        }
-
-        /**
-         * Set sortNo.
-         *
-         * @param int $sortNo
-         *
-         * @return Member
-         */
-        public function setSortNo($sortNo)
-        {
-            $this->sort_no = $sortNo;
-
-            return $this;
-        }
-
-        /**
-         * Get sortNo.
-         *
-         * @return int
-         */
-        public function getSortNo()
-        {
-            return $this->sort_no;
         }
 
         /**
