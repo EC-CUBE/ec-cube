@@ -80,8 +80,8 @@ file that was distributed with this source code.
                                 <col width="5%">
                                 <col width="">
                                 <col width="15%">
-                                <col width="20%">
-                                <col width="20%">
+                                <col width="35%">
+                                <col width="5%">
                                 <col width="">
                             </colgroup>
                             <thead>
@@ -111,8 +111,14 @@ file that was distributed with this source code.
                                         {{ form_errors(form.rounding_type) }}
                                     </td>
                                     <td class="align-middle">
-                                        {{ form_widget(form.apply_date.date) }}
-                                        {{ form_widget(form.apply_date.time, { 'attr': { 'placeholder': '--:--' }}) }}
+                                        <div class="row no-gutters">
+                                            <div class="col mr-2">
+                                                {{ form_widget(form.apply_date.date) }}
+                                            </div>
+                                            <div class="col mr-2">
+                                                {{ form_widget(form.apply_date.time, { 'attr': { 'placeholder': '--:--' }}) }}
+                                            </div>
+                                        </div>
                                         {{ form_errors(form.apply_date) }}
                                     </td>
                                     <td class="align-middle"></td>

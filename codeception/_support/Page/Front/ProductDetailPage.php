@@ -31,6 +31,11 @@ class ProductDetailPage extends AbstractFrontPage
         parent::__construct($I);
     }
 
+    /**
+     * @param $I
+     * @param $id
+     * @return ProductDetailPage
+     */
     public static function go($I, $id)
     {
         $page = new self($I);
@@ -69,12 +74,22 @@ class ProductDetailPage extends AbstractFrontPage
     }
 
     /**
-     * @param $num|int
+     * @param $num |int
+     * @param null $category1
+     * @param null $category2
      * @return ProductDetailPage
      */
-    public function カートに入れる($num)
+    public function カートに入れる($num, $category1 = null, $category2= null)
     {
         $this->tester->fillField(['id' => 'quantity'], $num);
+        if (!is_null($category1)) {
+            $this->tester->selectOption(['id' => 'classcategory_id1'], $category1);
+            if (!is_null($category2)) {
+                $category2_id = current(array_keys($category2));
+                $this->tester->waitForElement(['xpath' => "//*[@id='classcategory_id2']/option[@value='${category2_id}']"]);
+                $this->tester->selectOption(['id' => 'classcategory_id2'], $category2);
+            }
+        }
         $this->tester->click(['id' => 'add-cart']);
         $this->tester->wait(1);
         return $this;
@@ -91,9 +106,12 @@ class ProductDetailPage extends AbstractFrontPage
         return $this->tester->grabTextFrom(["xpath" => "//*[@id=\"ec-modal-header\"]"]);
     }
 
+    /**
+     * @return CartPage
+     */
     public function カートへ進む()
     {
         $this->tester->click("div.ec-modal-box > div > a");
-        return new CartPage($this->tester);
+        return CartPage::at($this->tester);
     }
 }

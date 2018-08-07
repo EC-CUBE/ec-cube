@@ -136,28 +136,52 @@ class CartService
             return $this->carts;
         }
 
-        $cartKeys = $this->session->get('cart_keys', []);
-        $this->carts = $this->cartRepository->findBy(['cart_key' => $cartKeys], ['id' => 'DESC']);
+        if ($this->getUser()) {
+            $this->carts = $this->getPersistedCarts();
+        } else {
+            $this->carts = $this->getSessionCarts();
+        }
 
         return $this->carts;
     }
 
     /**
-     * 会員が保持する永続化されたカートと、非会員時のカートをマージする.
+     * 永続化されたカートを返す
      *
-     * @param Customer $Customer
+     * @return Cart[]
      */
-    public function mergeFromPersistedCart(Customer $Customer)
+    public function getPersistedCarts()
     {
-        $Carts = $this->cartRepository->findBy(['Customer' => $Customer]);
+        return $this->cartRepository->findBy(['Customer' => $this->getUser()]);
+    }
 
+    /**
+     * セッションにあるカートを返す
+     *
+     * @return Cart[]
+     */
+    public function getSessionCarts()
+    {
+        $cartKeys = $this->session->get('cart_keys', []);
+
+        return $this->cartRepository->findBy(['cart_key' => $cartKeys], ['id' => 'DESC']);
+    }
+
+    /**
+     * 会員が保持する永続化されたカートと、非会員時のカートをマージする.
+     */
+    public function mergeFromPersistedCart()
+    {
         $CartItems = [];
-        foreach ($Carts as $Cart) {
+        foreach ($this->getPersistedCarts() as $Cart) {
             $CartItems = $this->mergeCartItems($Cart->getCartItems(), $CartItems);
         }
 
         // セッションにある非会員カートとDBから取得した会員カートをマージする.
-        $CartItems = $this->mergeAllCartItems($CartItems);
+        foreach ($this->getSessionCarts() as $Cart) {
+            $CartItems = $this->mergeCartItems($Cart->getCartItems(), $CartItems);
+        }
+
         $this->restoreCarts($CartItems);
     }
 

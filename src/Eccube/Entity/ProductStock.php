@@ -15,226 +15,228 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * ProductStock
- *
- * @ORM\Table(name="dtb_product_stock")
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
- * @ORM\HasLifecycleCallbacks()
- * @ORM\Entity(repositoryClass="Eccube\Repository\ProductStockRepository")
- */
-class ProductStock extends \Eccube\Entity\AbstractEntity
-{
-    const IN_STOCK = 1;
-    const OUT_OF_STOCK = 2;
-
+if (!class_exists('\Eccube\Entity\ProductStock')) {
     /**
-     * @var integer
-     */
-    private $product_class_id;
-
-    /**
-     * Set product_class_id
+     * ProductStock
      *
-     * @param integer $productClassId
-     *
-     * @return ProductStock
+     * @ORM\Table(name="dtb_product_stock")
+     * @ORM\InheritanceType("SINGLE_TABLE")
+     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     * @ORM\HasLifecycleCallbacks()
+     * @ORM\Entity(repositoryClass="Eccube\Repository\ProductStockRepository")
      */
-    public function setProductClassId($productClassId)
+    class ProductStock extends \Eccube\Entity\AbstractEntity
     {
-        $this->product_class_id = $productClassId;
+        const IN_STOCK = 1;
+        const OUT_OF_STOCK = 2;
 
-        return $this;
-    }
+        /**
+         * @var integer
+         */
+        private $product_class_id;
 
-    /**
-     * Get product_class_id
-     *
-     * @return integer
-     */
-    public function getProductClassId()
-    {
-        return $this->product_class_id;
-    }
+        /**
+         * Set product_class_id
+         *
+         * @param integer $productClassId
+         *
+         * @return ProductStock
+         */
+        public function setProductClassId($productClassId)
+        {
+            $this->product_class_id = $productClassId;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+            return $this;
+        }
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="stock", type="decimal", precision=10, scale=0, nullable=true)
-     */
-    private $stock;
+        /**
+         * Get product_class_id
+         *
+         * @return integer
+         */
+        public function getProductClassId()
+        {
+            return $this->product_class_id;
+        }
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="create_date", type="datetimetz")
-     */
-    private $create_date;
+        /**
+         * @var integer
+         *
+         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+         * @ORM\Id
+         * @ORM\GeneratedValue(strategy="IDENTITY")
+         */
+        private $id;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="update_date", type="datetimetz")
-     */
-    private $update_date;
+        /**
+         * @var string|null
+         *
+         * @ORM\Column(name="stock", type="decimal", precision=10, scale=0, nullable=true)
+         */
+        private $stock;
 
-    /**
-     * @var \Eccube\Entity\ProductClass
-     *
-     * @ORM\OneToOne(targetEntity="Eccube\Entity\ProductClass", inversedBy="ProductStock")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="product_class_id", referencedColumnName="id")
-     * })
-     */
-    private $ProductClass;
+        /**
+         * @var \DateTime
+         *
+         * @ORM\Column(name="create_date", type="datetimetz")
+         */
+        private $create_date;
 
-    /**
-     * @var \Eccube\Entity\Member
-     *
-     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
-     * })
-     */
-    private $Creator;
+        /**
+         * @var \DateTime
+         *
+         * @ORM\Column(name="update_date", type="datetimetz")
+         */
+        private $update_date;
 
-    /**
-     * Get id.
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+        /**
+         * @var \Eccube\Entity\ProductClass
+         *
+         * @ORM\OneToOne(targetEntity="Eccube\Entity\ProductClass", inversedBy="ProductStock")
+         * @ORM\JoinColumns({
+         *   @ORM\JoinColumn(name="product_class_id", referencedColumnName="id")
+         * })
+         */
+        private $ProductClass;
 
-    /**
-     * Set stock.
-     *
-     * @param string|null $stock
-     *
-     * @return ProductStock
-     */
-    public function setStock($stock = null)
-    {
-        $this->stock = $stock;
+        /**
+         * @var \Eccube\Entity\Member
+         *
+         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
+         * @ORM\JoinColumns({
+         *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
+         * })
+         */
+        private $Creator;
 
-        return $this;
-    }
+        /**
+         * Get id.
+         *
+         * @return int
+         */
+        public function getId()
+        {
+            return $this->id;
+        }
 
-    /**
-     * Get stock.
-     *
-     * @return string|null
-     */
-    public function getStock()
-    {
-        return $this->stock;
-    }
+        /**
+         * Set stock.
+         *
+         * @param string|null $stock
+         *
+         * @return ProductStock
+         */
+        public function setStock($stock = null)
+        {
+            $this->stock = $stock;
 
-    /**
-     * Set createDate.
-     *
-     * @param \DateTime $createDate
-     *
-     * @return ProductStock
-     */
-    public function setCreateDate($createDate)
-    {
-        $this->create_date = $createDate;
+            return $this;
+        }
 
-        return $this;
-    }
+        /**
+         * Get stock.
+         *
+         * @return string|null
+         */
+        public function getStock()
+        {
+            return $this->stock;
+        }
 
-    /**
-     * Get createDate.
-     *
-     * @return \DateTime
-     */
-    public function getCreateDate()
-    {
-        return $this->create_date;
-    }
+        /**
+         * Set createDate.
+         *
+         * @param \DateTime $createDate
+         *
+         * @return ProductStock
+         */
+        public function setCreateDate($createDate)
+        {
+            $this->create_date = $createDate;
 
-    /**
-     * Set updateDate.
-     *
-     * @param \DateTime $updateDate
-     *
-     * @return ProductStock
-     */
-    public function setUpdateDate($updateDate)
-    {
-        $this->update_date = $updateDate;
+            return $this;
+        }
 
-        return $this;
-    }
+        /**
+         * Get createDate.
+         *
+         * @return \DateTime
+         */
+        public function getCreateDate()
+        {
+            return $this->create_date;
+        }
 
-    /**
-     * Get updateDate.
-     *
-     * @return \DateTime
-     */
-    public function getUpdateDate()
-    {
-        return $this->update_date;
-    }
+        /**
+         * Set updateDate.
+         *
+         * @param \DateTime $updateDate
+         *
+         * @return ProductStock
+         */
+        public function setUpdateDate($updateDate)
+        {
+            $this->update_date = $updateDate;
 
-    /**
-     * Set productClass.
-     *
-     * @param \Eccube\Entity\ProductClass|null $productClass
-     *
-     * @return ProductStock
-     */
-    public function setProductClass(\Eccube\Entity\ProductClass $productClass = null)
-    {
-        $this->ProductClass = $productClass;
+            return $this;
+        }
 
-        return $this;
-    }
+        /**
+         * Get updateDate.
+         *
+         * @return \DateTime
+         */
+        public function getUpdateDate()
+        {
+            return $this->update_date;
+        }
 
-    /**
-     * Get productClass.
-     *
-     * @return \Eccube\Entity\ProductClass|null
-     */
-    public function getProductClass()
-    {
-        return $this->ProductClass;
-    }
+        /**
+         * Set productClass.
+         *
+         * @param \Eccube\Entity\ProductClass|null $productClass
+         *
+         * @return ProductStock
+         */
+        public function setProductClass(\Eccube\Entity\ProductClass $productClass = null)
+        {
+            $this->ProductClass = $productClass;
 
-    /**
-     * Set creator.
-     *
-     * @param \Eccube\Entity\Member|null $creator
-     *
-     * @return ProductStock
-     */
-    public function setCreator(\Eccube\Entity\Member $creator = null)
-    {
-        $this->Creator = $creator;
+            return $this;
+        }
 
-        return $this;
-    }
+        /**
+         * Get productClass.
+         *
+         * @return \Eccube\Entity\ProductClass|null
+         */
+        public function getProductClass()
+        {
+            return $this->ProductClass;
+        }
 
-    /**
-     * Get creator.
-     *
-     * @return \Eccube\Entity\Member|null
-     */
-    public function getCreator()
-    {
-        return $this->Creator;
+        /**
+         * Set creator.
+         *
+         * @param \Eccube\Entity\Member|null $creator
+         *
+         * @return ProductStock
+         */
+        public function setCreator(\Eccube\Entity\Member $creator = null)
+        {
+            $this->Creator = $creator;
+
+            return $this;
+        }
+
+        /**
+         * Get creator.
+         *
+         * @return \Eccube\Entity\Member|null
+         */
+        public function getCreator()
+        {
+            return $this->Creator;
+        }
     }
 }

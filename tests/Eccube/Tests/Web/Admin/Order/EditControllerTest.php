@@ -37,7 +37,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->customerRepository = $this->container->get(CustomerRepository::class);
         $this->orderRepository = $this->container->get(OrderRepository::class);
         $this->cartService = $this->container->get(CartService::class);
-        $BaseInfo = $this->container->get(BaseInfo::class);
+        $BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
         $this->entityManager->flush($BaseInfo);
     }
 
