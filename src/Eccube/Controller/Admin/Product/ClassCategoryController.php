@@ -20,9 +20,9 @@ use Eccube\Form\Type\Admin\ClassCategoryType;
 use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\ClassNameRepository;
 use Eccube\Repository\ProductClassRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -253,7 +253,7 @@ class ClassCategoryController extends AbstractController
 
     /**
      * @Method("POST")
-     * @Route("/product/class_category/sort_no/move", name="admin_product_class_category_sort_no_move")
+     * @Route("/%eccube_admin_route%/product/class_category/sort_no/move", name="admin_product_class_category_sort_no_move")
      */
     public function moveSortNo(Request $request)
     {

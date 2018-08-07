@@ -22,6 +22,7 @@ use Eccube\Form\Type\AddCartType;
 use Eccube\Form\Type\Master\ProductListMaxType;
 use Eccube\Form\Type\Master\ProductListOrderByType;
 use Eccube\Form\Type\SearchProductType;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerFavoriteProductRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Service\CartService;
@@ -32,7 +33,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -78,7 +78,7 @@ class ProductController extends AbstractController
      * @param CustomerFavoriteProductRepository $customerFavoriteProductRepository
      * @param CartService $cartService
      * @param ProductRepository $productRepository
-     * @param BaseInfo $BaseInfo
+     * @param BaseInfoRepository $baseInfoRepository
      * @param AuthenticationUtils $helper
      */
     public function __construct(
@@ -86,14 +86,14 @@ class ProductController extends AbstractController
         CustomerFavoriteProductRepository $customerFavoriteProductRepository,
         CartService $cartService,
         ProductRepository $productRepository,
-        BaseInfo $BaseInfo,
+        BaseInfoRepository $baseInfoRepository,
         AuthenticationUtils $helper
     ) {
         $this->purchaseFlow = $cartPurchaseFlow;
         $this->customerFavoriteProductRepository = $customerFavoriteProductRepository;
         $this->cartService = $cartService;
         $this->productRepository = $productRepository;
-        $this->BaseInfo = $BaseInfo;
+        $this->BaseInfo = $baseInfoRepository->get();
         $this->helper = $helper;
     }
 
@@ -166,7 +166,7 @@ class ProductController extends AbstractController
                 AddCartType::class,
                 null,
                 [
-                    'product' => $Product,
+                    'product' => $this->productRepository->findWithSortedClassCategories($Product->getId()),
                     'allow_extra_fields' => true,
                 ]
             );
@@ -456,7 +456,7 @@ class ProductController extends AbstractController
                 $messages = $errorMessages;
             }
 
-            return new JsonResponse(['done' => $done, 'messages' => $messages]);
+            return $this->json(['done' => $done, 'messages' => $messages]);
         } else {
             // ajax以外でのリクエストの場合はカート画面へリダイレクト
             foreach ($errorMessages as $errorMessage) {

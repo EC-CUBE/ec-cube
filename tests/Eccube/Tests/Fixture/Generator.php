@@ -22,7 +22,6 @@ use Eccube\Entity\DeliveryTime;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Master\OrderItemType;
-use Eccube\Entity\Master\ShippingStatus;
 use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Member;
@@ -423,7 +422,7 @@ class Generator
                 ->setCreateDate(new \DateTime()) // FIXME
                 ->setUpdateDate(new \DateTime())
                 ->setCreator($Member)
-                ->setStock($faker->randomNumber(3));
+                ->setStock($faker->numberBetween(100, 999));
             $this->entityManager->persist($ProductStock);
             $this->entityManager->flush($ProductStock);
             $ProductClass = new ProductClass();
@@ -580,13 +579,14 @@ class Generator
         $Shipping = new Shipping();
         $Shipping->copyProperties($Customer);
         $Shipping
+            ->setOrder($Order)
             ->setPref($Pref)
             ->setDelivery($Delivery)
             ->setFeeId($DeliveryFee->getId())
             ->setShippingDeliveryFee($fee)
             ->setShippingDeliveryName($Delivery->getName());
-        $ShippingStatus = $this->entityManager->find(ShippingStatus::class, ShippingStatus::PREPARED);
-        $Shipping->setShippingStatus($ShippingStatus);
+
+        $Order->addShipping($Shipping);
 
         $this->entityManager->persist($Shipping);
         $this->entityManager->flush($Shipping);
@@ -609,7 +609,6 @@ class Generator
                 continue;
             }
             $Product = $ProductClass->getProduct();
-            $TaxRule = $this->taxRuleRepository->getByRule(); // デフォルト課税規則
 
             $OrderItem = new OrderItem();
             $OrderItem->setShipping($Shipping)
@@ -620,8 +619,6 @@ class Generator
                 ->setProductCode($ProductClass->getCode())
                 ->setPrice($ProductClass->getPrice02())
                 ->setQuantity($quantity)
-                ->setTaxRule($TaxRule->getRoundingType()->getId())
-                ->setTaxRate($TaxRule->getTaxRate())
                 ->setTaxType($Taxion) // 課税
                 ->setTaxDisplayType($TaxExclude) // 税別
                 ->setOrderItemType($ItemProduct) // 商品明細
@@ -640,8 +637,6 @@ class Generator
             }
             $Shipping->addOrderItem($OrderItem);
             $Order->addOrderItem($OrderItem);
-            $this->entityManager->persist($OrderItem);
-            $this->entityManager->flush($OrderItem);
         }
 
         $shipment_delivery_fee = $Shipping->getShippingDeliveryFee();
@@ -651,14 +646,11 @@ class Generator
             ->setProductName('送料')
             ->setPrice($shipment_delivery_fee)
             ->setQuantity(1)
-            ->setTaxRate(8)
             ->setTaxType($Taxion) // 課税
             ->setTaxDisplayType($TaxInclude) // 税込
             ->setOrderItemType($ItemDeliveryFee); // 送料明細
         $Shipping->addOrderItem($OrderItemDeliveryFee);
         $Order->addOrderItem($OrderItemDeliveryFee);
-        $this->entityManager->persist($OrderItemDeliveryFee);
-        $this->entityManager->flush($OrderItemDeliveryFee);
 
         $charge = $Order->getCharge() + $add_charge;
         $OrderItemCharge = new OrderItem();
@@ -668,14 +660,11 @@ class Generator
             ->setProductName('手数料')
             ->setPrice($charge)
             ->setQuantity(1)
-            ->setTaxRate(8)
             ->setTaxType($Taxion) // 課税
             ->setTaxDisplayType($TaxInclude) // 税込
             ->setOrderItemType($ItemCharge); // 手数料明細
         // $Shipping->addOrderItem($OrderItemCharge); // Shipping には登録しない
         $Order->addOrderItem($OrderItemCharge);
-        $this->entityManager->persist($OrderItemCharge);
-        $this->entityManager->flush($OrderItemCharge);
 
         $discount = $Order->getDiscount() + $add_discount;
         $OrderItemDiscount = new OrderItem();
@@ -685,19 +674,15 @@ class Generator
             ->setProductName('値引き')
             ->setPrice($discount * -1)
             ->setQuantity(1)
-            ->setTaxRate(0)
             ->setTaxType($NonTaxable) // 不課税
             ->setTaxDisplayType($TaxInclude) // 税込
             ->setOrderItemType($ItemDiscount); // 値引き明細
         // $Shipping->addOrderItem($OrderItemDiscount); // Shipping には登録しない
         $Order->addOrderItem($OrderItemDiscount);
-        $this->entityManager->persist($OrderItemDiscount);
-        $this->entityManager->flush($OrderItemDiscount);
 
-        $this->orderPurchaseFlow->validate($Order, new PurchaseContext());
+        $this->orderPurchaseFlow->validate($Order, new PurchaseContext($Order));
 
-        $this->entityManager->flush($Shipping);
-        $this->entityManager->flush($Order);
+        $this->entityManager->flush();
 
         return $Order;
     }

@@ -1,0 +1,58 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+<script>
+    // 受注明細行を追加する.
+    function fnAddOrderItem($row, product_id, type, product_name) {
+        var prototype = $collectionHolder.data('prototype');
+        index++;
+        var newForm = prototype.replace(/__name__/g, index);
+        $collectionHolder.children('tbody').append(newForm);
+        var $lastRow = $collectionHolder.children('tbody').children('tr').last;
+
+        $($lastRow).find(formIdPrefix + index + '_price').val(0);
+        $($lastRow).find(formIdPrefix + index + '_quantity').val(1);
+        $($lastRow).find(formIdPrefix + index + '_order_item_type').val(type);
+        $($lastRow).find(formIdPrefix + index + '_product_name').val(product_name);
+        // モーダル閉じる.
+        $('#addOrderItemType').modal('hide');
+
+        // 再計算のためsubmit.
+        $('#form1').submit();
+
+        return false;
+    }
+</script>
+
+
+<table class="table table-striped table-sm mb-3">
+    <thead class="table-active">
+    <tr>
+        <th class="pt-2 pb-2 pl-3">{{ 'admin.order.edit.label.add_item'|trans }}</th>
+        <th class="pt-2 pb-2 pr-3"></th>
+    </tr>
+    </thead>
+
+    <tbody>
+    {% for OrderItemType in OrderItemTypes %}
+        <form name="product_form{{ OrderItemType.id }}">
+            <tr>
+                <td class="align-middle pl-3">{{ OrderItemType.name }}</td>
+                <td class="align-middle pr-3 text-right">
+                    <button type="button" class="btn btn-ec-actionIcon" onclick="fnAddOrderItem($(this).parent().parent(), null, {{ OrderItemType.id }}, '{{ OrderItemType.name }}')" name="mode" value="modal">
+                        <i class="fa fa-plus fa-lg font-weight-bold text-secondary"></i>
+                    </button>
+                </td>
+            </tr>
+        </form>
+    {% endfor %}
+    </tbody>
+</table>
+

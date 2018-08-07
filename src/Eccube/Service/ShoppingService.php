@@ -32,6 +32,7 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
 use Eccube\Form\Type\ShippingItemType;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerAddressRepository;
 use Eccube\Repository\DeliveryFeeRepository;
 use Eccube\Repository\DeliveryRepository;
@@ -163,6 +164,11 @@ class ShoppingService
     protected $authorizationChecker;
 
     /**
+     * @var \Mobile_Detect
+     */
+    protected $mobileDetect;
+
+    /**
      * ShoppingService constructor.
      *
      * @param MailTemplateRepository $mailTemplateRepository
@@ -184,8 +190,9 @@ class ShoppingService
      * @param OrderRepository $orderRepository
      * @param CartService $cartService
      * @param OrderService $orderService
-     * @param BaseInfo $BaseInfo
+     * @param BaseInfoRepository $baseInfoRepository
      * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param \Mobile_Detect $mobileDetect
      */
     public function __construct(
         MailTemplateRepository $mailTemplateRepository,
@@ -207,8 +214,9 @@ class ShoppingService
         OrderRepository $orderRepository,
         CartService $cartService,
         OrderService $orderService,
-        BaseInfo $BaseInfo,
-        AuthorizationCheckerInterface $authorizationChecker
+        BaseInfoRepository $baseInfoRepository,
+        AuthorizationCheckerInterface $authorizationChecker,
+        \Mobile_Detect $mobileDetect
     ) {
         $this->mailTemplateRepository = $mailTemplateRepository;
         $this->mailService = $mailService;
@@ -229,8 +237,9 @@ class ShoppingService
         $this->orderRepository = $orderRepository;
         $this->cartService = $cartService;
         $this->orderService = $orderService;
-        $this->BaseInfo = $BaseInfo;
+        $this->BaseInfo = $baseInfoRepository->get();
         $this->authorizationChecker = $authorizationChecker;
+        $this->mobileDetect = $mobileDetect;
     }
 
     /**
@@ -266,7 +275,7 @@ class ShoppingService
     /**
      * 非会員情報を取得
      *
-     * @param $sesisonKey
+     * @param string $sesisonKey
      *
      * @return $Customer|null
      */
@@ -283,7 +292,7 @@ class ShoppingService
     /**
      * 受注情報を作成
      *
-     * @param $Customer
+     * @param null|Customer $Customer
      *
      * @return \Eccube\Entity\Order
      */
@@ -313,9 +322,9 @@ class ShoppingService
      * 仮受注情報作成
      *
      * @param $Customer
-     * @param $preOrderId
+     * @param string $preOrderId
      *
-     * @return mixed
+     * @return Order
      *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
@@ -328,8 +337,7 @@ class ShoppingService
         $Order = $this->getNewOrder($Customer);
         $Order->setPreOrderId($preOrderId);
 
-        $mobileDetect = new \Mobile_Detect();
-        $DeviceType = $this->deviceTypeRepository->find($mobileDetect->isMobile() ? DeviceType::DEVICE_TYPE_SP : DeviceType::DEVICE_TYPE_PC);
+        $DeviceType = $this->deviceTypeRepository->find($this->mobileDetect->isMobile() ? DeviceType::DEVICE_TYPE_SP : DeviceType::DEVICE_TYPE_PC);
         $Order->setDeviceType($DeviceType);
 
         $this->entityManager->persist($Order);

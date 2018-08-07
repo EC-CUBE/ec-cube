@@ -23,6 +23,7 @@ use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\MailHistoryRepository;
 use Eccube\Repository\MailTemplateRepository;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -71,7 +72,7 @@ class MailService
      * @param \Swift_Mailer $mailer
      * @param MailTemplateRepository $mailTemplateRepository
      * @param MailHistoryRepository $mailHistoryRepository
-     * @param BaseInfo $baseInfo
+     * @param BaseInfoRepository $baseInfoRepository
      * @param EventDispatcherInterface $eventDispatcher
      * @param \Twig_Environment $twig
      * @param EccubeConfig $eccubeConfig
@@ -80,7 +81,7 @@ class MailService
         \Swift_Mailer $mailer,
         MailTemplateRepository $mailTemplateRepository,
         MailHistoryRepository $mailHistoryRepository,
-        BaseInfo $baseInfo,
+        BaseInfoRepository $baseInfoRepository,
         EventDispatcherInterface $eventDispatcher,
         \Twig_Environment $twig,
         EccubeConfig $eccubeConfig
@@ -88,7 +89,7 @@ class MailService
         $this->mailer = $mailer;
         $this->mailTemplateRepository = $mailTemplateRepository;
         $this->mailHistoryRepository = $mailHistoryRepository;
-        $this->BaseInfo = $baseInfo;
+        $this->BaseInfo = $baseInfoRepository->get();
         $this->eventDispatcher = $eventDispatcher;
         $this->eccubeConfig = $eccubeConfig;
         $this->twig = $twig;
@@ -98,7 +99,7 @@ class MailService
      * Send customer confirm mail.
      *
      * @param $Customer 会員情報
-     * @param $activateUrl アクティベート用url
+     * @param string $activateUrl アクティベート用url
      */
     public function sendCustomerConfirmMail(\Eccube\Entity\Customer $Customer, $activateUrl)
     {
@@ -295,7 +296,7 @@ class MailService
      *
      * @param \Eccube\Entity\Order $Order 受注情報
      *
-     * @return string
+     * @return \Swift_Message
      */
     public function sendOrderMail(\Eccube\Entity\Order $Order)
     {
@@ -340,7 +341,7 @@ class MailService
      * Send admin customer confirm mail.
      *
      * @param $Customer 会員情報
-     * @param $activateUrl アクティベート用url
+     * @param string $activateUrl アクティベート用url
      */
     public function sendAdminCustomerConfirmMail(\Eccube\Entity\Customer $Customer, $activateUrl)
     {
@@ -391,7 +392,7 @@ class MailService
      * @param $formData 入力内容
      * @param string $twig テンプレートファイル名
      *
-     * @return $this
+     * @return \Swift_Message
      *
      * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
@@ -438,6 +439,7 @@ class MailService
      * Send password reset notification mail.
      *
      * @param $Customer 会員情報
+     * @param string $reset_url
      */
     public function sendPasswordResetNotificationMail(\Eccube\Entity\Customer $Customer, $reset_url)
     {
@@ -484,6 +486,7 @@ class MailService
      * Send password reset notification mail.
      *
      * @param $Customer 会員情報
+     * @param string $password
      */
     public function sendPasswordResetCompleteMail(\Eccube\Entity\Customer $Customer, $password)
     {
@@ -568,26 +571,25 @@ class MailService
         $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['eccube_shipping_notify_mail_template_id']);
 
         /** @var Order $Order */
-        foreach ($Shipping->getOrders() as $Order) {
-            $message = (new \Swift_Message())
-                ->setSubject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
-                ->setFrom([$this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()])
-                ->setTo($Order->getEmail())
-                ->setBcc($this->BaseInfo->getEmail01())
-                ->setReplyTo($this->BaseInfo->getEmail03())
-                ->setReturnPath($this->BaseInfo->getEmail04())
-                ->setBody($this->getShippingNotifyMailBody($Shipping, $Order, $MailTemplate));
+        $Order = $Shipping->getOrder();
+        $message = (new \Swift_Message())
+            ->setSubject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
+            ->setFrom([$this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()])
+            ->setTo($Order->getEmail())
+            ->setBcc($this->BaseInfo->getEmail01())
+            ->setReplyTo($this->BaseInfo->getEmail03())
+            ->setReturnPath($this->BaseInfo->getEmail04())
+            ->setBody($this->getShippingNotifyMailBody($Shipping, $Order, $MailTemplate));
 
-            $this->mailer->send($message);
+        $this->mailer->send($message);
 
-            $MailHistory = new MailHistory();
-            $MailHistory->setMailSubject($message->getSubject())
-                    ->setMailBody($message->getBody())
-                    ->setOrder($Order)
-                    ->setSendDate(new \DateTime());
+        $MailHistory = new MailHistory();
+        $MailHistory->setMailSubject($message->getSubject())
+                ->setMailBody($message->getBody())
+                ->setOrder($Order)
+                ->setSendDate(new \DateTime());
 
-            $this->mailHistoryRepository->save($MailHistory);
-        }
+        $this->mailHistoryRepository->save($MailHistory);
 
         log_info('出荷通知メール送信処理完了', ['id' => $Shipping->getId()]);
     }

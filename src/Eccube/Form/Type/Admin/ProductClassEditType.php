@@ -213,7 +213,7 @@ class ProductClassEditType extends AbstractType
 
             // 在庫数無制限
             if (empty($data['stock_unlimited']) && null === $data['stock']) {
-                $form['stock_unlimited']->addError(new FormError('productclass.text.error.set_stock_quantitiy'));
+                $form['stock_unlimited']->addError(new FormError(trans('productclass.text.error.set_stock_quantitiy')));
             }
 
             // 販売制限数
@@ -230,10 +230,6 @@ class ProductClassEditType extends AbstractType
                 ]),
             ]);
             $this->addErrors('sale_limit', $form, $errors);
-
-            foreach ($errors as $error) {
-                $form['sale_limit']->addError(new FormError($error->getMessage()));
-            }
 
             // 販売価格
             $errors = $this->validator->validate($data['price02'], [

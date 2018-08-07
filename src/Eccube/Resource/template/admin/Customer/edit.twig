@@ -183,20 +183,8 @@ file that was distributed with this source code.
                                         <span>{{ 'admin.customer.edit.sex'|trans }}</span>
                                     </div>
                                     <div class="col">
-                                        {# TODO: classを整える。ラジオボタンが横に並ぶよう表示する。 #}
-                                        {{ form_widget(form.sex) }}
+                                        {{ form_widget(form.sex,  {'label_attr': {'class': 'radio-inline'}}) }}
                                         {{ form_errors(form.sex) }}
-                                        {#<div class="form-check form-check-inline">#}
-                                            {#<label class="form-check-label" for="male">#}
-                                                {#<input class="form-check-input" id="male" type="radio" name="gender"> 男性#}
-                                            {#</label>#}
-                                        {#</div>#}
-                                        {#<div class="form-check form-check-inline">#}
-                                            {#<label class="form-check-label" for="female">#}
-                                                {#<input class="form-check-input" id="female" type="radio" name="gender">#}
-                                                {#女性#}
-                                            {#</label>#}
-                                        {#</div>#}
                                     </div>
                                 </div>
                                 <div class="row mb-2">
@@ -226,24 +214,25 @@ file that was distributed with this source code.
                                         {{ form_errors(form.point) }}
                                     </div>
                                 </div>
+
                                 {# エンティティ拡張の自動出力 #}
-                                {% for f in form %}
-                                    {# auto_render有効時に出力 #}
-                                    {% if f.vars.eccube_form_options.auto_render %}
-                                        {# form_themeが設定されている場合にthemeを適用 #}
-                                        {% if f.vars.eccube_form_options.form_theme %}
-                                            {% form_theme f f.vars.eccube_form_options.form_theme %}
-                                        {% endif %}
+                                {% for f in form if f.vars.eccube_form_options.auto_render %}
+                                    {% if f.vars.eccube_form_options.form_theme %}
+                                        {% form_theme f f.vars.eccube_form_options.form_theme %}
                                         {{ form_row(f) }}
+                                    {% else %}
+                                        <div class="row mb-2">
+                                            <div class="col-3">
+                                                <span>{{ f.vars.label|trans }}</span>
+                                            </div>
+                                            <div class="col">
+                                                {{ form_widget(f) }}
+                                                {{ form_errors(f) }}
+                                            </div>
+                                        </div>
                                     {% endif %}
                                 {% endfor %}
-                                <div class="extra-form">
-                                    {% for f in form.getIterator %}
-                                        {% if f.vars.name matches '[^plg*]' %}
-                                            {{ form_row(f) }}
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -323,7 +312,7 @@ file that was distributed with this source code.
                                         {% if Customer.CustomerAddresses|length < eccube_config.eccube_deliv_addr_max %}
                                             <div class="d-block text-center">
                                                 <a href="{{ url('admin_customer_delivery_new', { id: Customer.id }) }}"
-                                                    class="btn btn-ec-regular">{{ 'admin.customer.edit.sipping_add'|trans }}</a>
+                                                   class="btn btn-ec-regular">{{ 'admin.customer.edit.sipping_add'|trans }}</a>
                                             </div>
                                         {% else %}
                                             <span class="ec-errorMessage">
@@ -371,6 +360,19 @@ file that was distributed with this source code.
                             </div>
                             <div class="collapse show ec-cardCollapse" id="orderHistory">
                                 {% if Customer.Orders|length > 0 %}
+                                    {# TODO IN_PROGRESS と RETURNED の色を決める #}
+                                    {% set cssClassStatus = {
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::NEW')): "badge-ec-blue",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::PAY_WAIT')): "badge-ec-red",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::BACK_ORDER')): "badge-ec-red",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::CANCEL')): "badge-ec-glay",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::DELIVERED')): "badge-ec-glay",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::PAID')): "badge-ec-green",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::PENDING')): "badge-ec-yellow",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::PROCESSING')): "badge-ec-yellow",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::IN_PROGRESS')): "badge-ec-yellow",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::RETURNED')): "badge-ec-yellow"
+                                    } %}
                                     <div class="card-body">
                                         <table class="table table-striped table-sm">
                                             <thead class="table-active">
@@ -382,17 +384,17 @@ file that was distributed with this source code.
                                             <tbody>
                                             {% for Order in Customer.Orders %}
                                                 <tr>
-                                                    <td class="align-middle pl-3">{{ Order.order_date|date_format }}</td>
+                                                    <td class="align-middle pl-3">{{ Order.order_date|date_min }}</td>
                                                     <td class="align-middle">
                                                         <a href="{{ url('admin_order_edit', { 'id' : Order.id }) }}">
-                                                            {{ Order.id }}
+                                                            {{ Order.order_no }}
                                                         </a>
                                                     </td>
                                                     <td class="align-middle">
                                                         <span class="h5 font-weight-normal">{{ Order.total|price }}</span>
                                                     </td>
                                                     <td class="align-middle pr-3">
-                                                        <span class="badge badge-ec-glay">{{ Order.OrderStatus }}</span>
+                                                        <span class="badge {{ attribute(cssClassStatus, Order.OrderStatus.id) }}">{{ Order.OrderStatus }}</span>
                                                     </td>
                                                 </tr>
                                             {% endfor %}
@@ -400,13 +402,13 @@ file that was distributed with this source code.
                                         </table>
                                     </div>
                                 {% else %}
-                                <div class="card-body">
-                                    <div id="history_box" class="data-empty">
+                                    <div class="card-body">
+                                        <div id="history_box" class="data-empty">
                                         <span>
                                             {{ 'admin.customer.edit.no_purchase_history'|trans }}
                                         </span>
+                                        </div>
                                     </div>
-                                </div>
                                 {% endif %}
                             </div>
                         </div>
@@ -455,7 +457,7 @@ file that was distributed with this source code.
                         </div>
                     </div>
                     <div class="col-6">
-                        <div class="row align-items-center justify-content-end">
+                        <div id="ex-conversion-action" class="row align-items-center justify-content-end">
                             <div class="col-auto">
                                 {{ form_widget(form.status) }}
                                 {{ form_errors(form.status) }}

@@ -3,13 +3,13 @@
 use Codeception\Util\Fixtures;
 use Page\Admin\CategoryCsvUploadPage;
 use Page\Admin\CategoryManagePage;
-use Page\Admin\CsvSettingsPage;
 use Page\Admin\ClassCategoryManagePage;
 use Page\Admin\ClassNameManagePage;
+use Page\Admin\CsvSettingsPage;
 use Page\Admin\ProductClassEditPage;
 use Page\Admin\ProductCsvUploadPage;
-use Page\Admin\ProductManagePage;
 use Page\Admin\ProductEditPage;
+use Page\Admin\ProductManagePage;
 
 /**
  * @group admin
@@ -60,7 +60,7 @@ class EA03ProductCest
         $em->persist($ProductStatus);
         $em->flush();
 
-        // 商品マスターを表示
+        // 商品一覧を表示
         $page = ProductManagePage::go($I);
 
         // ダミーのステータスを削除する
@@ -77,8 +77,8 @@ class EA03ProductCest
         $I->wantTo('EA0301-UC01-T03 規格確認のポップアップを表示');
 
         ProductManagePage::go($I)
-            ->検索()
-            ->規格確認ボタンをクリック()
+            ->検索(1)
+            ->規格確認ボタンをクリック(1)
             ->規格確認をキャンセル();
 
         $I->dontSeeElement(['css' => 'div.modal.show']);
@@ -89,8 +89,8 @@ class EA03ProductCest
         $I->wantTo('EA0301-UC01-T04 ポップアップから規格編集画面に遷移');
 
         ProductManagePage::go($I)
-            ->検索()
-            ->規格確認ボタンをクリック()
+            ->検索(1)
+            ->規格確認ボタンをクリック(1)
             ->規格編集画面に遷移();
 
         $I->see('商品登録（規格設定）商品管理', self::ページタイトルStyleGuide);
@@ -223,9 +223,10 @@ class EA03ProductCest
         $Product = array_pop($Products);
         ProductManagePage::go($I)
             ->検索($Product->getName())
-            ->検索結果_複製(1);
+            ->検索結果_複製(1)
+            ->Accept_重複する(1);
 
-        $I->acceptPopup();
+        $I->see('商品を複製しました。', ProductEditPage::$登録結果メッセージ);
     }
 
     /**
@@ -310,7 +311,6 @@ class EA03ProductCest
             ->検索結果_選択(1);
         ProductEditPage::at($I);
 
-        $I->click(['css' => '#basicConfig > div > div:nth-child(7) > div.col > div.d-inline-block.mb-2 > a']);
         $I->seeElement(ProductEditPage::$販売種別);
         $I->seeElement(ProductEditPage::$販売価格);
         $I->waitForElement(ProductEditPage::$通常価格);
@@ -729,4 +729,39 @@ class EA03ProductCest
         $I->switchToNewWindow();
         $I->seeInCurrentUrl('/products/detail/');
     }
+
+    public function product_商品編集からの商品確認_公開(\AcceptanceTester $I)
+    {
+        $I->wantTo('EA0310-UC05-T02 編集からの商品確認 公開');
+
+        ProductManagePage::go($I)
+            ->検索('パーコレーター')
+            ->検索結果_選択(1);
+
+        ProductEditPage::at($I)
+            ->入力_公開()
+            ->登録()
+            ->プレビュー();
+
+        $I->switchToNewWindow();
+        $I->seeInCurrentUrl('/products/detail/');
+    }
+
+    public function product_商品編集からの商品確認_非公開(\AcceptanceTester $I)
+    {
+        $I->wantTo('EA0310-UC05-T03 編集からの商品確認 非公開');
+
+        ProductManagePage::go($I)
+            ->検索('パーコレーター')
+            ->検索結果_選択(1);
+
+        ProductEditPage::at($I)
+            ->入力_非公開()
+            ->登録()
+            ->プレビュー();
+
+        $I->switchToNewWindow();
+        $I->seeInCurrentUrl('/products/detail/');
+    }
+
 }

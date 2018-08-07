@@ -16,10 +16,6 @@ file that was distributed with this source code.
 {% block sub_title %}{{ 'admin.content.block.5'|trans }}{% endblock %}
 
 {% block stylesheet %}
-    {# TODO:
-    - Fix to display popup confirmation block delete.
-    - Move to css file or unset z-index = 1 for css .list-group-item
-    #}
     <style type="text/css">
         li.list-group-item {
             z-index: inherit !important;
@@ -27,16 +23,65 @@ file that was distributed with this source code.
     </style>
 {% endblock %}
 
+{% block javascript %}
+    <script>
+        var searchWord = function () {
+            var searchText = $(this).val(), // 検索ボックスに入力された値
+                targetText;
+
+            // 検索ボックスに値が入っていない場合
+            if (searchText == '') {
+                // 全て表示する
+                $('.list-group li').show();
+                return;
+            }
+
+            // 検索ボックスに値が入ってる場合
+            // 表示を全て空にする
+            $('.list-group li').hide();
+
+            // 検索ワードが（子を含めて）含まれる要素のみ表示
+            $('.list-group li').each(function () {
+                targetText = $(this).find('> div.row > div > a').text();
+
+                // 検索対象となるリストに入力された文字列が存在するかどうかを判断
+                if (targetText.indexOf(searchText) != -1) {
+                    // 存在する場合はそのリストのテキストを用意した配列に格納
+                    $(this).show();
+                }
+            });
+        };
+
+        // searchWordの実行
+        $('#search-block').on('input', searchWord);
+    </script>
+{% endblock javascript %}
+
 {% block main %}
     <div class="c-contentsArea__cols">
         <div class="c-contentsArea__primaryCol">
             <div class="c-primaryCol">
+                <div class="row justify-content-between mb-2">
+                    <div class="col-9"></div>
+                    <div class="col-3">
+                        <div class="form-row">
+                            <div class="col">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon1"><i class="fa fa-search"></i></span>
+                                    </div>
+                                    <input id="search-block" class="form-control" type="search" aria-label="Search">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="card rounded border-0 mb-4">
                     <div class="card-body p-0">
-                        <div class="card rounded border-0 mb-2">
+                        <div class="card rounded border-0">
                             <ul class="list-group list-group-flush">
                                 {% for Block in Blocks %}
-                                    <li class="list-group-item">
+                                    <li id="ex-block-{{ Block.id }}" class="list-group-item">
                                         <div class="row">
                                             <div class="col-7 col-md-10 d-flex align-items-center">
                                                 <a href="{{ url('admin_content_block_edit', {id: Block.id}) }}">
@@ -73,22 +118,14 @@ file that was distributed with this source code.
                                                             <div class="modal-dialog" role="document">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
-                                                                        <h5 class="modal-title font-weight-bold">
-                                                                            {{ 'admin.content.block.delete.confirm.title'|trans }}</h5>
-                                                                        <button class="close" type="button"
-                                                                                data-dismiss="modal"
-                                                                                aria-label="Close"><span
-                                                                                    aria-hidden="true">×</span>
-                                                                        </button>
+                                                                        <h5 class="modal-title font-weight-bold">{{ 'admin.content.block.delete.confirm.title'|trans }}</h5>
+                                                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                                                     </div>
                                                                     <div class="modal-body text-left">
-                                                                        <p class="text-left">
-                                                                            {{ 'admin.content.block.delete.confirm.message'|trans }}</p>
+                                                                        <p class="text-left">{{ 'admin.content.block.delete.confirm.message'|trans }}</p>
                                                                     </div>
                                                                     <div class="modal-footer">
-                                                                        <button class="btn btn-ec-sub" type="button"
-                                                                                data-dismiss="modal">{{ 'admin.common.label.cancel'|trans }}
-                                                                        </button>
+                                                                        <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.common.label.cancel'|trans }}</button>
                                                                         <a
                                                                                 href="{{ url('admin_content_block_delete', {id: Block.Id} ) }}"
                                                                                 class="btn btn-ec-delete"
@@ -113,9 +150,8 @@ file that was distributed with this source code.
                 </div>
             </div>
             <div class="card rounded border-0">
-                <div class="card-body p-4">
+                <div id="ex-block-new" class="card-body p-4">
                     <div class="text-center">
-                        {# TODO 新規追加ボタンのレイアウトは検討が必要 #}
                         <a href="{{ url('admin_content_block_new') }}" class="btn btn-ec-regular pl-4 pr-4">{{ 'admin.content.block.11'|trans }}</a>
                     </div>
                 </div>

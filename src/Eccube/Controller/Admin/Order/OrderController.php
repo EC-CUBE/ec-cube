@@ -15,34 +15,41 @@ namespace Eccube\Controller\Admin\Order;
 
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
-use Eccube\Entity\Csv;
+use Eccube\Entity\ExportCsvRow;
 use Eccube\Entity\Master\CsvType;
-use Eccube\Entity\OrderItem;
+use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Order;
+use Eccube\Entity\OrderPdf;
 use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Form\Type\Admin\OrderPdfType;
 use Eccube\Form\Type\Admin\SearchOrderType;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\Master\PageMaxRepository;
 use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Repository\Master\SexRepository;
+use Eccube\Repository\OrderPdfRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Service\CsvExportService;
+use Eccube\Service\MailService;
+use Eccube\Service\OrderPdfService;
+use Eccube\Service\OrderStateMachine;
+use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Util\FormUtil;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\StreamedResponse;
-use Eccube\Entity\Master\OrderStatus;
+use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Eccube\Entity\Order;
-use Eccube\Service\PurchaseFlow\PurchaseContext;
-use Eccube\Service\PurchaseFlow\PurchaseFlow;
-use Eccube\Service\PurchaseFlow\PurchaseException;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class OrderController extends AbstractController
 {
@@ -91,6 +98,27 @@ class OrderController extends AbstractController
      */
     protected $orderRepository;
 
+    /** @var OrderPdfRepository */
+    protected $orderPdfRepository;
+
+    /** @var OrderPdfService */
+    protected $orderPdfService;
+
+    /**
+     * @var ValidatorInterface
+     */
+    protected $validator;
+
+    /**
+     * @var OrderStateMachine
+     */
+    protected $orderStateMachine;
+
+    /**
+     * @var MailService
+     */
+    protected $mailService;
+
     /**
      * OrderController constructor.
      *
@@ -103,6 +131,10 @@ class OrderController extends AbstractController
      * @param PageMaxRepository $pageMaxRepository
      * @param ProductStatusRepository $productStatusRepository
      * @param OrderRepository $orderRepository
+     * @param OrderPdfRepository $orderPdfRepository
+     * @param OrderPdfService $orderPdfService
+     * @param ValidatorInterface $validator
+     * @param OrderStateMachine $orderStateMachine ;
      */
     public function __construct(
         PurchaseFlow $orderPurchaseFlow,
@@ -113,7 +145,12 @@ class OrderController extends AbstractController
         OrderStatusRepository $orderStatusRepository,
         PageMaxRepository $pageMaxRepository,
         ProductStatusRepository $productStatusRepository,
-        OrderRepository $orderRepository
+        OrderRepository $orderRepository,
+        OrderPdfRepository $orderPdfRepository,
+        OrderPdfService $orderPdfService,
+        ValidatorInterface $validator,
+        OrderStateMachine $orderStateMachine,
+        MailService $mailService
     ) {
         $this->purchaseFlow = $orderPurchaseFlow;
         $this->csvExportService = $csvExportService;
@@ -124,6 +161,11 @@ class OrderController extends AbstractController
         $this->pageMaxRepository = $pageMaxRepository;
         $this->productStatusRepository = $productStatusRepository;
         $this->orderRepository = $orderRepository;
+        $this->orderPdfRepository = $orderPdfRepository;
+        $this->orderPdfService = $orderPdfService;
+        $this->validator = $validator;
+        $this->orderStateMachine = $orderStateMachine;
+        $this->mailService = $mailService;
     }
 
     /**
@@ -170,7 +212,7 @@ class OrderController extends AbstractController
          * また, セッションに保存する際は mtb_page_maxと照合し, 一致した場合のみ保存する.
          **/
         $page_count = $this->session->get('eccube.admin.order.search.page_count',
-                $this->eccubeConfig->get('eccube_default_page_count'));
+            $this->eccubeConfig->get('eccube_default_page_count'));
 
         $page_count_param = (int) $request->get('page_count');
         $pageMaxis = $this->pageMaxRepository->findAll();
@@ -229,10 +271,16 @@ class OrderController extends AbstractController
                  * 初期表示の場合.
                  */
                 $page_no = 1;
-                $searchData = [];
+                $viewData = [];
+
+                if ($statusId = (int) $request->get('order_status_id')) {
+                    $viewData = ['status' => $statusId];
+                }
+
+                $searchData = FormUtil::submitAndGetData($searchForm, $viewData);
 
                 // セッション中の検索条件, ページ番号を初期化.
-                $this->session->set('eccube.admin.order.search', $searchData);
+                $this->session->set('eccube.admin.order.search', $viewData);
                 $this->session->set('eccube.admin.order.search.page_no', $page_no);
             }
         }
@@ -301,6 +349,40 @@ class OrderController extends AbstractController
      */
     public function exportOrder(Request $request)
     {
+        $filename = 'order_'.(new \DateTime())->format('YmdHis').'.csv';
+        $response = $this->exportCsv($request, CsvType::CSV_TYPE_ORDER, $filename);
+        log_info('受注CSV出力ファイル名', [$filename]);
+
+        return $response;
+    }
+
+    /**
+     * 配送CSVの出力.
+     *
+     * @Route("/%eccube_admin_route%/order/export/shipping", name="admin_order_export_shipping")
+     *
+     * @param Request $request
+     *
+     * @return StreamedResponse
+     */
+    public function exportShipping(Request $request)
+    {
+        $filename = 'shipping_'.(new \DateTime())->format('YmdHis').'.csv';
+        $response = $this->exportCsv($request, CsvType::CSV_TYPE_SHIPPING, $filename);
+        log_info('配送CSV出力ファイル名', [$filename]);
+
+        return $response;
+    }
+
+    /**
+     * @param Request $request
+     * @param $csvTypeId
+     * @param string $fileName
+     *
+     * @return StreamedResponse
+     */
+    private function exportCsv(Request $request, $csvTypeId, $fileName)
+    {
         // タイムアウトを無効にする.
         set_time_limit(0);
 
@@ -309,9 +391,9 @@ class OrderController extends AbstractController
         $em->getConfiguration()->setSQLLogger(null);
 
         $response = new StreamedResponse();
-        $response->setCallback(function () use ($request) {
+        $response->setCallback(function () use ($request, $csvTypeId) {
             // CSV種別を元に初期化.
-            $this->csvExportService->initCsvType(CsvType::CSV_TYPE_ORDER);
+            $this->csvExportService->initCsvType($csvTypeId);
 
             // ヘッダ行の出力.
             $this->csvExportService->exportHeader();
@@ -329,7 +411,7 @@ class OrderController extends AbstractController
                 $OrderItems = $Order->getOrderItems();
 
                 foreach ($OrderItems as $OrderItem) {
-                    $ExportCsvRow = new \Eccube\Entity\ExportCsvRow();
+                    $ExportCsvRow = new ExportCsvRow();
 
                     // CSV出力項目と合致するデータを取得.
                     foreach ($Csvs as $Csv) {
@@ -338,6 +420,10 @@ class OrderController extends AbstractController
                         if ($ExportCsvRow->isDataNull()) {
                             // 受注データにない場合は, 受注明細を検索.
                             $ExportCsvRow->setData($csvService->getData($Csv, $OrderItem));
+                        }
+                        if ($ExportCsvRow->isDataNull() && $Shipping = $OrderItem->getShipping()) {
+                            // 受注明細データにない場合は, 出荷を検索.
+                            $ExportCsvRow->setData($csvService->getData($Csv, $Shipping));
                         }
 
                         $event = new EventArgs(
@@ -361,190 +447,264 @@ class OrderController extends AbstractController
             });
         });
 
-        $now = new \DateTime();
-        $filename = 'order_'.$now->format('YmdHis').'.csv';
         $response->headers->set('Content-Type', 'application/octet-stream');
-        $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
+        $response->headers->set('Content-Disposition', 'attachment; filename='.$fileName);
         $response->send();
-
-        log_info('受注CSV出力ファイル名', [$filename]);
 
         return $response;
     }
 
     /**
-     * 配送CSVの出力.
+     * Update to order status
      *
-     * @Route("/%eccube_admin_route%/order/export/shipping", name="admin_order_export_shipping")
-     *
-     * @param Request $request
-     *
-     * @return StreamedResponse
-     */
-    public function exportShipping(Request $request)
-    {
-        // タイムアウトを無効にする.
-        set_time_limit(0);
-
-        // sql loggerを無効にする.
-        $em = $this->entityManager;
-        $em->getConfiguration()->setSQLLogger(null);
-
-        $response = new StreamedResponse();
-        $response->setCallback(function () use ($request) {
-            // CSV種別を元に初期化.
-            $this->csvExportService->initCsvType(CsvType::CSV_TYPE_SHIPPING);
-
-            // ヘッダ行の出力.
-            $this->csvExportService->exportHeader();
-
-            // 受注データ検索用のクエリビルダを取得.
-            $qb = $this->csvExportService
-                ->getShippingQueryBuilder($request);
-
-            // データ行の出力.
-            $this->csvExportService->setExportQueryBuilder($qb);
-            $this->csvExportService->exportData(function ($entity, $csvService) use ($request) {
-                /** @var Csv[] $Csvs */
-                $Csvs = $csvService->getCsvs();
-
-                /** @var Shipping $Shipping */
-                $Shipping = $entity;
-                /** @var OrderItem[] $OrderItems */
-                $OrderItems = $Shipping->getOrderItems();
-
-                foreach ($OrderItems as $OrderItem) {
-                    $ExportCsvRow = new \Eccube\Entity\ExportCsvRow();
-
-                    $Order = $OrderItem->getOrder();
-                    // CSV出力項目と合致するデータを取得.
-                    foreach ($Csvs as $Csv) {
-                        // 受注データを検索.
-                        $ExportCsvRow->setData($csvService->getData($Csv, $Order));
-
-                        if ($ExportCsvRow->isDataNull()) {
-                            // 受注データにない場合は, 出荷データを検索.
-                            $ExportCsvRow->setData($csvService->getData($Csv, $Shipping));
-                        }
-                        if ($ExportCsvRow->isDataNull()) {
-                            // 出荷データにない場合は, 出荷明細を検索.
-                            $ExportCsvRow->setData($csvService->getData($Csv, $OrderItem));
-                        }
-
-                        $event = new EventArgs(
-                            [
-                                'csvService' => $csvService,
-                                'Csv' => $Csv,
-                                'OrderItem' => $OrderItem,
-                                'ExportCsvRow' => $ExportCsvRow,
-                            ],
-                            $request
-                        );
-                        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_CSV_EXPORT_SHIPPING, $event);
-
-                        $ExportCsvRow->pushData();
-                    }
-                    //$row[] = number_format(memory_get_usage(true));
-                    // 出力.
-                    $csvService->fputcsv($ExportCsvRow->getRow());
-                }
-            });
-        });
-
-        $now = new \DateTime();
-        $filename = 'shipping_'.$now->format('YmdHis').'.csv';
-        $response->headers->set('Content-Type', 'application/octet-stream');
-        $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
-        $response->send();
-
-        log_info('出荷CSV出力ファイル名', [$filename]);
-
-        return $response;
-    }
-
-    /**
-     * Bulk action to order status
-     *
-     * @Method("POST")
-     * @Route("/%eccube_admin_route%/order/bulk/order-status/{id}", requirements={"id" = "\d+"}, name="admin_order_bulk_order_status")
+     * @Method("PUT")
+     * @Route("/%eccube_admin_route%/shipping/{id}/order_status", requirements={"id" = "\d+"}, name="admin_shipping_update_order_status")
      *
      * @param Request $request
-     * @param OrderStatus $OrderStatus
+     * @param Shipping $Shipping
      *
-     * @return RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function bulkOrderStatus(Request $request, OrderStatus $OrderStatus)
+    public function updateOrderStatus(Request $request, Shipping $Shipping)
     {
-        $this->isTokenValid();
-
-        /** @var Order[] $Orders */
-        $Orders = $this->orderRepository->findBy(['id' => $request->get('ids')]);
-
-        $count = 0;
-        foreach ($Orders as $Order) {
-            try {
-                // TODO: should support event for plugin customize
-                // 編集前の受注情報を保持
-                $OriginOrder = clone $Order;
-
-                $Order->setOrderStatus($OrderStatus);
-
-                $purchaseContext = new PurchaseContext($OriginOrder, $OriginOrder->getCustomer());
-
-                $flowResult = $this->purchaseFlow->validate($Order, $purchaseContext);
-                if ($flowResult->hasWarning()) {
-                    foreach ($flowResult->getWarning() as $warning) {
-                        $msg = $this->translator->trans('admin.order.index.bulk_warning', [
-                          '%orderId%' => $Order->getId(),
-                          '%message%' => $warning->getMessage(),
-                        ]);
-                        $this->addWarning($msg, 'admin');
-                    }
-                }
-
-                if ($flowResult->hasError()) {
-                    foreach ($flowResult->getErrors() as $error) {
-                        $msg = $this->translator->trans('admin.order.index.bulk_error', [
-                          '%orderId%' => $Order->getId(),
-                          '%message%' => $error->getMessage(),
-                        ]);
-                        $this->addError($msg, 'admin');
-                    }
-                    continue;
-                }
-
-                try {
-                    $this->purchaseFlow->commit($Order, $purchaseContext);
-                } catch (PurchaseException $e) {
-                    $msg = $this->translator->trans('admin.order.index.bulk_error', [
-                      '%orderId%' => $Order->getId(),
-                      '%message%' => $e->getMessage(),
-                    ]);
-                    $this->addError($msg, 'admin');
-                    continue;
-                }
-
-                $this->orderRepository->save($Order);
-
-                $count++;
-            } catch (\Exception $e) {
-                $this->addError('#'.$Order->getId().': '.$e->getMessage(), 'admin');
-            }
+        if (!($request->isXmlHttpRequest() && $this->isTokenValid())) {
+            return $this->json(['status' => 'NG'], 400);
         }
+
+        $Order = $Shipping->getOrder();
+        $OrderStatus = $this->entityManager->find(OrderStatus::class, $request->get('order_status'));
+
+        if (!$OrderStatus) {
+            return $this->json(['status' => 'NG'], 400);
+        }
+
+        $result = [];
         try {
-            if ($count) {
-                $this->entityManager->flush();
-                $msg = $this->translator->trans('admin.order.index.bulk_order_status_success_count', [
-                    '%count%' => $count,
-                    '%status%' => $OrderStatus->getName(),
-                ]);
-                $this->addSuccess($msg, 'admin');
+            if ($Order->getOrderStatus()->getId() == $OrderStatus->getId()) {
+                log_info('対応状況一括変更スキップ');
+                $result = ['message' => sprintf('%s:  ステータス変更をスキップしました', $Shipping->getId())];
+            } else {
+                if ($this->orderStateMachine->can($Order, $OrderStatus)) {
+                    if ($OrderStatus->getId() == OrderStatus::DELIVERED) {
+                        if (!$Shipping->isShipped()) {
+                            $Shipping->setShippingDate(new \DateTime());
+                        }
+                        $allShipped = true;
+                        foreach ($Order->getShippings() as $Ship) {
+                            if (!$Ship->isShipped()) {
+                                $allShipped = false;
+                                break;
+                            }
+                        }
+                        if ($allShipped) {
+                            $this->orderStateMachine->apply($Order, $OrderStatus);
+                        }
+                    } else {
+                        $this->orderStateMachine->apply($Order, $OrderStatus);
+                    }
+
+                    if ($request->get('notificationMail')) { // for SimpleStatusUpdate
+                        $this->mailService->sendShippingNotifyMail($Shipping);
+                        $Shipping->setMailSendDate(new \DateTime());
+                        $result['mail'] = true;
+                    } else {
+                        $result['mail'] = false;
+                    }
+                    $this->entityManager->flush($Shipping);
+                    $this->entityManager->flush($Order);
+
+                    // 会員の場合、購入回数、購入金額などを更新
+                    if ($Customer = $Order->getCustomer()) {
+                        $this->orderRepository->updateOrderSummary($Customer);
+                        $this->entityManager->flush($Customer);
+                    }
+                } else {
+                    $from = $Order->getOrderStatus()->getName();
+                    $to = $OrderStatus->getName();
+                    $result = ['message' => sprintf('%s: %s から %s へのステータス変更はできません', $Shipping->getId(), $from, $to)];
+                }
+
+                log_info('対応状況一括変更処理完了', [$Order->getId()]);
             }
         } catch (\Exception $e) {
-            log_error('Bulk order status error', [$e]);
-            $this->addError('admin.flash.register_failed', 'admin');
+            log_error('予期しないエラーです', [$e->getMessage()]);
+
+            return $this->json(['status' => 'NG'], 500);
         }
 
-        return $this->redirectToRoute('admin_order', ['resume' => Constant::ENABLED]);
+        return $this->json(array_merge(['status' => 'OK'], $result));
+    }
+
+    /**
+     * Update to Tracking number.
+     *
+     * @Method("PUT")
+     * @Route("/%eccube_admin_route%/shipping/{id}/tracking_number", requirements={"id" = "\d+"}, name="admin_shipping_update_tracking_number")
+     *
+     * @param Request $request
+     * @param Shipping $shipping
+     *
+     * @return Response
+     */
+    public function updateTrackingNumber(Request $request, Shipping $shipping)
+    {
+        if (!($request->isXmlHttpRequest() && $this->isTokenValid())) {
+            return $this->json(['status' => 'NG'], 400);
+        }
+
+        $trackingNumber = mb_convert_kana($request->get('tracking_number'), 'a', 'utf-8');
+        /** @var \Symfony\Component\Validator\ConstraintViolationListInterface $errors */
+        $errors = $this->validator->validate(
+            $trackingNumber,
+            [
+                new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
+                new Assert\Regex(
+                    ['pattern' => '/^[0-9a-zA-Z-]+$/u', 'message' => trans('form.type.admin.nottrackingnumberstyle')]
+                ),
+            ]
+        );
+
+        if ($errors->count() != 0) {
+            log_info('送り状番号入力チェックエラー');
+            $messages = [];
+            /** @var \Symfony\Component\Validator\ConstraintViolationInterface $error */
+            foreach ($errors as $error) {
+                $messages[] = $error->getMessage();
+            }
+
+            return $this->json(['status' => 'NG', 'messages' => $messages], 400);
+        }
+
+        try {
+            $shipping->setTrackingNumber($trackingNumber);
+            $this->entityManager->flush($shipping);
+            log_info('送り状番号変更処理完了', [$shipping->getId()]);
+            $message = ['status' => 'OK', 'shipping_id' => $shipping->getId(), 'tracking_number' => $trackingNumber];
+
+            return $this->json($message);
+        } catch (\Exception $e) {
+            log_error('予期しないエラー', [$e->getMessage()]);
+
+            return $this->json(['status' => 'NG'], 500);
+        }
+    }
+
+    /**
+     * @Route("/%eccube_admin_route%/order/export/pdf", name="admin_order_export_pdf")
+     * @Template("@admin/Order/order_pdf.twig")
+     *
+     * @param Request $request
+     *
+     * @return array|RedirectResponse
+     */
+    public function exportPdf(Request $request)
+    {
+        // requestから出荷番号IDの一覧を取得する.
+        $ids = $request->get('ids', []);
+
+        if (count($ids) == 0) {
+            $this->addError('admin.order.export.pdf.parameter.not.found', 'admin');
+            log_info('The Order cannot found!');
+
+            return $this->redirectToRoute('admin_order');
+        }
+
+        /** @var OrderPdf $OrderPdf */
+        $OrderPdf = $this->orderPdfRepository->find($this->getUser());
+
+        if (!$OrderPdf) {
+            $OrderPdf = new OrderPdf();
+            $OrderPdf
+                ->setTitle(trans('admin.order.export.pdf.title.default'))
+                ->setMessage1(trans('admin.order.export.pdf.message1.default'))
+                ->setMessage2(trans('admin.order.export.pdf.message2.default'))
+                ->setMessage3(trans('admin.order.export.pdf.message3.default'));
+        }
+
+        /**
+         * @var FormBuilder
+         */
+        $builder = $this->formFactory->createBuilder(OrderPdfType::class, $OrderPdf);
+
+        /* @var \Symfony\Component\Form\Form $form */
+        $form = $builder->getForm();
+
+        // Formへの設定
+        $form->get('ids')->setData(implode(',', $ids));
+
+        return [
+            'form' => $form->createView(),
+        ];
+    }
+
+    /**
+     * @Route("/%eccube_admin_route%/order/export/pdf/download", name="admin_order_pdf_download")
+     * @Template("@admin/Order/order_pdf.twig")
+     *
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function exportPdfDownload(Request $request)
+    {
+        /**
+         * @var FormBuilder
+         */
+        $builder = $this->formFactory->createBuilder(OrderPdfType::class);
+
+        /* @var \Symfony\Component\Form\Form $form */
+        $form = $builder->getForm();
+        $form->handleRequest($request);
+
+        // Validation
+        if (!$form->isValid()) {
+            log_info('The parameter is invalid!');
+
+            return $this->render('@admin/Order/order_pdf.twig', [
+                'form' => $form->createView(),
+            ]);
+        }
+
+        $arrData = $form->getData();
+
+        // 購入情報からPDFを作成する
+        $status = $this->orderPdfService->makePdf($arrData);
+
+        // 異常終了した場合の処理
+        if (!$status) {
+            $this->addError('admin.order.export.pdf.download.failure', 'admin');
+            log_info('Unable to create pdf files! Process have problems!');
+
+            return $this->render('@admin/Order/order_pdf.twig', [
+                'form' => $form->createView(),
+            ]);
+        }
+
+        // ダウンロードする
+        $response = new Response(
+            $this->orderPdfService->outputPdf(),
+            200,
+            ['content-type' => 'application/pdf']
+        );
+
+        $downloadKind = $form->get('download_kind')->getData();
+
+        // レスポンスヘッダーにContent-Dispositionをセットし、ファイル名を指定
+        if ($downloadKind == 1) {
+            $response->headers->set('Content-Disposition', 'attachment; filename="'.$this->orderPdfService->getPdfFileName().'"');
+        } else {
+            $response->headers->set('Content-Disposition', 'inline; filename="'.$this->orderPdfService->getPdfFileName().'"');
+        }
+
+        log_info('OrderPdf download success!', ['Order ID' => implode(',', $request->get('ids', []))]);
+
+        $isDefault = isset($arrData['default']) ? $arrData['default'] : false;
+        if ($isDefault) {
+            // Save input to DB
+            $arrData['admin'] = $this->getUser();
+            $this->orderPdfRepository->save($arrData);
+        }
+
+        return $response;
     }
 }

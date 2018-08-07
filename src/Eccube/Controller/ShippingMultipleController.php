@@ -26,11 +26,11 @@ use Eccube\Form\Type\ShippingMultipleType;
 use Eccube\Repository\Master\OrderItemTypeRepository;
 use Eccube\Repository\Master\PrefRepository;
 use Eccube\Repository\OrderRepository;
+use Eccube\Service\CartService;
+use Eccube\Service\OrderHelper;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\ShoppingService;
-use Eccube\Service\CartService;
-use Eccube\Service\OrderHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -220,6 +220,7 @@ class ShippingMultipleController extends AbstractShoppingController
                     $Order->removeOrderItem($OrderItem);
                     $this->entityManager->remove($OrderItem);
                 }
+                $Order->removeShipping($Shipping);
                 $this->entityManager->remove($Shipping);
             }
 
@@ -236,11 +237,15 @@ class ShippingMultipleController extends AbstractShoppingController
                         $CustomerAddress = $item['customer_address']->getData();
                         $customerAddressName = $CustomerAddress->getShippingMultipleDefaultName();
 
+                        if (isset($ShippingList[$customerAddressName][$saleTypeId])) {
+                            continue;
+                        }
                         $Shipping = new Shipping();
                         $Shipping
+                            ->setOrder($Order)
                             ->setFromCustomerAddress($CustomerAddress)
                             ->setDelivery($Delivery);
-
+                        $Order->addShipping($Shipping);
                         $ShippingList[$customerAddressName][$saleTypeId] = $Shipping;
                     }
                 }

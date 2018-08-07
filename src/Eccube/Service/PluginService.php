@@ -22,8 +22,6 @@ use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Plugin;
 use Eccube\Entity\PluginEventHandler;
 use Eccube\Exception\PluginException;
-use Eccube\Plugin\ConfigManager;
-use Eccube\Plugin\ConfigManager as PluginConfigManager;
 use Eccube\Repository\PluginEventHandlerRepository;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\Composer\ComposerServiceInterface;
@@ -147,7 +145,7 @@ class PluginService
      * @param string $path   path to tar.gz/zip plugin file
      * @param int    $source
      *
-     * @return mixed
+     * @return boolean
      *
      * @throws PluginException
      * @throws \Exception
@@ -209,7 +207,6 @@ class PluginService
     public function preInstall()
     {
         // キャッシュの削除
-        PluginConfigManager::removePluginConfigCache();
         // FIXME: Please fix clearCache function (because it's clear all cache and this file just upload)
 //        $this->cacheUtil->clearCache();
     }
@@ -240,8 +237,6 @@ class PluginService
             // インストール時には一時的に利用するProxyを生成してからスキーマを更新する
             $generatedFiles = $this->regenerateProxy($plugin, true, $tmpProxyOutputDir);
             $this->schemaService->updateSchema($generatedFiles, $tmpProxyOutputDir);
-
-            ConfigManager::writePluginConfigCache();
         } finally {
             foreach (glob("${tmpProxyOutputDir}/*") as  $f) {
                 unlink($f);
@@ -274,8 +269,8 @@ class PluginService
     }
 
     /**
-     * @param $archive
-     * @param $dir
+     * @param string $archive
+     * @param string $dir
      *
      * @throws PluginException
      */
@@ -344,6 +339,9 @@ class PluginService
         }
     }
 
+    /**
+     * @param string $yml
+     */
     public function readYml($yml)
     {
         if (file_exists($yml)) {
@@ -361,6 +359,9 @@ class PluginService
         // ディレクトリ名などに使われれるので厳しめ
     }
 
+    /**
+     * @param string $path
+     */
     public function deleteFile($path)
     {
         $f = new Filesystem();
@@ -381,7 +382,7 @@ class PluginService
     }
 
     /**
-     * @param $d
+     * @param string $d
      *
      * @throws PluginException
      */
@@ -456,7 +457,7 @@ class PluginService
 
     /**
      * @param $meta
-     * @param $method
+     * @param string $method
      */
     public function callPluginManagerMethod($meta, $method)
     {
@@ -479,7 +480,6 @@ class PluginService
     public function uninstall(\Eccube\Entity\Plugin $plugin, $force = true)
     {
         $pluginDir = $this->calcPluginDir($plugin->getCode());
-        ConfigManager::removePluginConfigCache();
         $this->cacheUtil->clearCache();
         $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), 'disable');
         $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), 'uninstall');
@@ -498,8 +498,6 @@ class PluginService
             $this->deleteFile($pluginDir);
             $this->removeAssets($plugin->getCode());
         }
-
-        ConfigManager::writePluginConfigCache();
 
         return true;
     }
@@ -560,7 +558,7 @@ class PluginService
         }, $enabledPluginCodes);
 
         return $this->entityProxyService->generate(
-            array_merge([$this->projectRoot.'/app/Acme/Entity'], $enabledPluginEntityDirs),
+            array_merge([$this->projectRoot.'/app/Customize/Entity'], $enabledPluginEntityDirs),
             $excludes,
             $outputDir
         );
@@ -570,7 +568,6 @@ class PluginService
     {
         $em = $this->entityManager;
         try {
-            PluginConfigManager::removePluginConfigCache();
             $pluginDir = $this->calcPluginDir($plugin->getCode());
             $em->getConnection()->beginTransaction();
             $plugin->setEnabled($enable ? true : false);
@@ -583,7 +580,6 @@ class PluginService
 
             $em->flush();
             $em->getConnection()->commit();
-            PluginConfigManager::writePluginConfigCache();
         } catch (\Exception $e) {
             $em->getConnection()->rollback();
             throw $e;
@@ -608,7 +604,6 @@ class PluginService
         $pluginBaseDir = null;
         $tmp = null;
         try {
-            PluginConfigManager::removePluginConfigCache();
             $this->cacheUtil->clearCache();
             $tmp = $this->createTempDir();
 
@@ -636,7 +631,6 @@ class PluginService
             }
 
             $this->updatePlugin($plugin, $config, $event); // dbにプラグイン登録
-            PluginConfigManager::writePluginConfigCache();
         } catch (PluginException $e) {
             $this->deleteDirs([$tmp]);
             throw $e;
@@ -997,7 +991,7 @@ class PluginService
      * [プラグインコード]/Resource/assets
      * 配下に置かれているファイルが所定の位置へコピーされる
      *
-     * @param $pluginBaseDir
+     * @param string $pluginBaseDir
      * @param $pluginCode
      */
     public function copyAssets($pluginBaseDir, $pluginCode)
@@ -1014,7 +1008,7 @@ class PluginService
     /**
      * コピーしたリソースファイル等を削除
      *
-     * @param $pluginCode
+     * @param string $pluginCode
      */
     public function removeAssets($pluginCode)
     {
@@ -1033,7 +1027,7 @@ class PluginService
      * @param string $pluginVersion
      * @param string $remoteVersion
      *
-     * @return mixed
+     * @return boolean
      */
     public function isUpdate($pluginVersion, $remoteVersion)
     {

@@ -21,6 +21,7 @@ use Eccube\Entity\PluginEventHandler;
 use Eccube\Exception\PluginException;
 use Eccube\Form\Type\Admin\PluginLocalInstallType;
 use Eccube\Form\Type\Admin\PluginManagementType;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\PluginEventHandlerRepository;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\PluginService;
@@ -67,14 +68,14 @@ class PluginController extends AbstractController
      *
      * @param PluginRepository $pluginRepository
      * @param PluginService $pluginService
-     * @param BaseInfo $baseInfo
+     * @param BaseInfoRepository $baseInfoRepository
      */
-    public function __construct(PluginRepository $pluginRepository, PluginService $pluginService, PluginEventHandlerRepository $eventHandlerRepository, BaseInfo $baseInfo)
+    public function __construct(PluginRepository $pluginRepository, PluginService $pluginService, PluginEventHandlerRepository $eventHandlerRepository, BaseInfoRepository $baseInfoRepository)
     {
         $this->pluginRepository = $pluginRepository;
         $this->pluginService = $pluginService;
         $this->pluginEventHandlerRepository = $eventHandlerRepository;
-        $this->BaseInfo = $baseInfo;
+        $this->BaseInfo = $baseInfoRepository->get();
     }
 
     /**
@@ -245,7 +246,7 @@ class PluginController extends AbstractController
      *
      * @return RedirectResponse
      */
-    public function enable(Plugin $Plugin)
+    public function enable(Plugin $Plugin, CacheUtil $cacheUtil)
     {
         $this->isTokenValid();
 
@@ -268,8 +269,12 @@ class PluginController extends AbstractController
             $this->addSuccess('admin.plugin.enable.complete', 'admin');
         }
 
-        // 有効化できた場合はキャッシュを再生成する
-        return $this->redirectToRoute('admin_store_clear_cache');
+        // キャッシュを削除してリダイレクト
+        // リダイレクトにredirectToRoute関数を使用していないのは、削除したキャッシュが再生成されてしまうため。
+        $url = $this->generateUrl('admin_store_plugin');
+        $cacheUtil->clearCache();
+
+        return $this->redirect($url);
     }
 
     /**
@@ -282,7 +287,7 @@ class PluginController extends AbstractController
      *
      * @return RedirectResponse
      */
-    public function disable(Plugin $Plugin)
+    public function disable(Plugin $Plugin, CacheUtil $cacheUtil)
     {
         $this->isTokenValid();
 
@@ -308,28 +313,12 @@ class PluginController extends AbstractController
             return $this->redirectToRoute('admin_store_plugin');
         }
 
-        // 無効化できた場合はキャッシュを再生成する
-        return $this->redirectToRoute('admin_store_clear_cache');
-    }
-
-    /**
-     * プラグイン有効状態切り替え後にキャッシュを削除するためのルーティング
-     *
-     * このルーティングが必要な理由：
-     * プラグイン有効化のリクエスト内でキャッシュを削除しても、有効になる前の情報でキャッシュが再生成されてしまう。
-     * それを回避するために、このルーティングにリダイレクトして、プラグイン有効状態であらためてキャッシュ再生成する。
-     *
-     * @Route("/%eccube_admin_route%/store/plugin/clearcache", name="admin_store_clear_cache")
-     *
-     * @param Request     $request
-     *
-     * @return RedirectResponse
-     */
-    public function clearCache(Request $request, CacheUtil $cacheUtil)
-    {
+        // キャッシュを削除してリダイレクト
+        // リダイレクトにredirectToRoute関数を使用していないのは、削除したキャッシュが再生成されてしまうため。
+        $url = $this->generateUrl('admin_store_plugin');
         $cacheUtil->clearCache();
 
-        return $this->redirectToRoute('admin_store_plugin');
+        return $this->redirect($url);
     }
 
     /**
@@ -519,7 +508,7 @@ class PluginController extends AbstractController
      * APIリクエスト処理
      *
      * @param Request $request
-     * @param $authKey
+     * @param string|null $authKey
      * @param string $url
      *
      * @return array
@@ -528,7 +517,7 @@ class PluginController extends AbstractController
     {
         $curl = curl_init($url);
 
-        $options = [           // オプション配列
+        $options = [// オプション配列
             //HEADER
             CURLOPT_HTTPHEADER => [
                 'Authorization: '.base64_encode($authKey),

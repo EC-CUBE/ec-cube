@@ -13,10 +13,12 @@
 
 namespace Eccube\Controller;
 
+use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Cart;
 use Eccube\Entity\ProductClass;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\ProductClassRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
@@ -45,20 +47,28 @@ class CartController extends AbstractController
     protected $purchaseFlow;
 
     /**
+     * @var BaseInfo
+     */
+    protected $baseInfo;
+
+    /**
      * CartController constructor.
      *
      * @param ProductClassRepository $productClassRepository
      * @param CartService $cartService
      * @param PurchaseFlow $cartPurchaseFlow
+     * @param BaseInfoRepository $baseInfoRepository
      */
     public function __construct(
         ProductClassRepository $productClassRepository,
         CartService $cartService,
-        PurchaseFlow $cartPurchaseFlow
+        PurchaseFlow $cartPurchaseFlow,
+        BaseInfoRepository $baseInfoRepository
     ) {
         $this->productClassRepository = $productClassRepository;
         $this->cartService = $cartService;
         $this->purchaseFlow = $cartPurchaseFlow;
+        $this->baseInfo = $baseInfoRepository->get();
     }
 
     /**
@@ -74,22 +84,35 @@ class CartController extends AbstractController
         $this->execPurchaseFlow($Carts);
 
         // TODO itemHolderから取得できるように
-        $least = 0;
-        $quantity = 0;
-        $isDeliveryFree = false;
+        $least = [];
+        $quantity = [];
+        $isDeliveryFree = [];
+        $totalPrice = 0;
+        $totalQuantity = 0;
 
-        $totalQuantity = array_reduce($Carts, function ($total, $Cart) {
-            /* @var Cart $Cart */
-            $total += $Cart->getQuantity();
+        foreach ($Carts as $Cart) {
+            $quantity[$Cart->getCartKey()] = 0;
+            $isDeliveryFree[$Cart->getCartKey()] = false;
 
-            return $total;
-        }, 0);
-        $totalPrice = array_reduce($Carts, function ($total, $Cart) {
-            /* @var Cart $Cart */
-            $total += $Cart->getTotalPrice();
+            if ($this->baseInfo->getDeliveryFreeQuantity()) {
+                if ($this->baseInfo->getDeliveryFreeQuantity() > $Cart->getQuantity()) {
+                    $quantity[$Cart->getCartKey()] = $this->baseInfo->getDeliveryFreeQuantity() - $Cart->getQuantity();
+                } else {
+                    $isDeliveryFree[$Cart->getCartKey()] = true;
+                }
+            }
 
-            return $total;
-        }, 0);
+            if ($this->baseInfo->getDeliveryFreeAmount()) {
+                if (!$isDeliveryFree[$Cart->getCartKey()] && $this->baseInfo->getDeliveryFreeAmount() <= $Cart->getTotalPrice()) {
+                    $isDeliveryFree[$Cart->getCartKey()] = true;
+                } else {
+                    $least[$Cart->getCartKey()] = $this->baseInfo->getDeliveryFreeAmount() - $Cart->getTotalPrice();
+                }
+            }
+
+            $totalPrice += $Cart->getTotalPrice();
+            $totalQuantity += $Cart->getQuantity();
+        }
 
         // カートが分割された時のセッション情報を削除
         $request->getSession()->remove('cart.divide');
@@ -208,6 +231,10 @@ class CartController extends AbstractController
      */
     public function buystep(Request $request, $index)
     {
+        $Carts = $this->cartService->getCart();
+        if (!is_object($Carts)) {
+            return $this->redirectToRoute('cart');
+        }
         // FRONT_CART_BUYSTEP_INITIALIZE
         $event = new EventArgs(
             [],

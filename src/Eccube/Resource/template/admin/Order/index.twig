@@ -12,112 +12,169 @@ file that was distributed with this source code.
 
 {% set menus = ['order', 'order_master'] %}
 
-{% block title %}{{'admin.order.index.296'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.order.index.295'|trans}}{% endblock %}
+{% block title %}{{ 'admin.order.index.296'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.order.index.295'|trans }}{% endblock %}
 
 {% form_theme searchForm '@admin/Form/bootstrap_4_layout.html.twig' %}
 
 {% block stylesheet %}
-<link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datetimepicker.min.css', 'admin') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datetimepicker.min.css', 'admin') }}">
 {% endblock stylesheet %}
 
 {% block javascript %}
-<script src="{{ asset('assets/js/vendor/moment.min.js', 'admin') }}"></script>
-<script src="{{ asset('assets/js/vendor/moment-ja.js', 'admin') }}"></script>
-<script src="{{ asset('assets/js/vendor/bootstrap-datetimepicker.min.js', 'admin') }}"></script>
-<script>
-  $(function() {
-      {# TODO: Should move js logic into .js file instead of .html file #}
-    var inputDate = document.createElement('input');
-    inputDate.setAttribute('type', 'date');
-    if (inputDate.type !== 'date') {
-      $('input[id$=_date_start]').datetimepicker({
-        locale: 'ja',
-        format: 'YYYY-MM-DD',
-        useCurrent: false,
-        showTodayButton: true
-      });
+    <script src="{{ asset('assets/js/vendor/moment.min.js', 'admin') }}"></script>
+    <script src="{{ asset('assets/js/vendor/moment-ja.js', 'admin') }}"></script>
+    <script src="{{ asset('assets/js/vendor/bootstrap-datetimepicker.min.js', 'admin') }}"></script>
+    <script>
+        $(function() {
+            {# TODO: Should move js logic into .js file instead of .html file #}
+            var inputDate = document.createElement('input');
+            inputDate.setAttribute('type', 'date');
+            if (inputDate.type !== 'date') {
+                $('input[id$=_date_start]').datetimepicker({
+                    locale: 'ja',
+                    format: 'YYYY-MM-DD',
+                    useCurrent: false,
+                    showTodayButton: true
+                });
 
-      $('input[id$=_date_end]').datetimepicker({
-        locale: 'ja',
-        format: 'YYYY-MM-DD',
-        useCurrent: false,
-        showTodayButton: true
-      });
-    }
+                $('input[id$=_date_end]').datetimepicker({
+                    locale: 'ja',
+                    format: 'YYYY-MM-DD',
+                    useCurrent: false,
+                    showTodayButton: true
+                });
+            }
 
-    toggleBtnBulk('input[id^="check_"]', '.btn-bulk-wrapper');
-    $('input[id^="check_"]').on('change', function() {
-        toggleBtnBulk('input[id^="check_"]', '.btn-bulk-wrapper');
-    });
+            toggleBtnBulk('input[id^="check_"]', '.btn-bulk-wrapper');
+            $('input[id^="check_"]').on('change', function() {
+                $('#toggle_check_all').prop('checked', false);
+                toggleBtnBulk('input[id^="check_"]', '.btn-bulk-wrapper');
+            });
 
-    // 登録チェックボックス
-    $('#check_all').on('change', function() {
-        var checked = $(this).prop('checked');
-        if (checked) {
-            $('input[id^="check_"]').prop('checked', true);
-        } else {
-            $('input[id^="check_"]').prop('checked', false);
-        }
-         toggleBtnBulk('input[id^="check_"]', '.btn-bulk-wrapper');
-    });
+            // 登録チェックボックス
+            $('#toggle_check_all').on('change', function() {
+                var checked = $(this).prop('checked');
+                if (checked) {
+                    $('input[id^="check_"]').prop('checked', true);
+                } else {
+                    $('input[id^="check_"]').prop('checked', false);
+                }
+                toggleBtnBulk('input[id^="check_"]', '.btn-bulk-wrapper');
+            });
 
-    $('#btn_bulk_status').on('bulk-submit', function (event) {
-        var value = $('#option_bulk_status').val();
-        if (!value) {
-            $(this).data('cancel', true);
-            alert("{{ 'admin.order.index.340'|trans }}");
-            return false;
-        }
-        $(this).data('cancel', false);
-        $(this).data('url', value);
-    });
-    var bulkAction = function (form, modal) {
-        modal.find('[data-action="execute"]').on('click', function () {
-            form.submit();
-        });
-        form.find('[data-submit="bulk"]').on('click', function (event) {
-            event.preventDefault();
-
-            if (!form.find('input:checkbox[name^="ids"]:checked').length) {
-                alert("{{ 'admin.order.index.340'|trans }}");
+            $('#btn_bulk_delete').on('click', function(event) {
+                event.preventDefault();
+                $('#form_bulk').attr('action', "{{ url('admin_order_bulk_delete') }}").submit();
                 return false;
-            }
+            });
 
-            $(this).trigger('bulk-submit');
-            if ($(this).data('cancel') === true) {
+            // PDF出力(複数)
+            $('#bulkExportPdf').on('click', function(event) {
+                window.open('', 'newwin', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=700, height=700');
+                $('#form_bulk').attr('action', "{{ url('admin_order_export_pdf') }}");
+                $('#form_bulk').attr('target', 'newwin');
+                $('#form_bulk').submit();
                 return false;
-            }
+            });
 
-            form.attr('action', $(this).data('url'));
-            form.attr('method', $(this).data('method') || 'POST');
+            // PDF出力(単一)
+            $('.pdf-print').click(function() {
+                window.open(this.href, 'newwin', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=700, height=700');
+                return false;
+            });
 
-            if ($(this).data('confirm')) {
-                modal.modal('show');
-            } else {
-                form.submit();
-            }
+            // 送り状番号
+            var updateTrackingNumber = function(id, url, tracking_number, callback) {
+                $.ajax({
+                    type: 'PUT',
+                    url: url,
+                    data: {'tracking_number': tracking_number}
+                }).done(function(data, textStatus, jqXHR) {
+                    if (data['status'] == 'OK') {
+                        $('#tracking_number_' + id).val(data['tracking_number']);
+                        if (typeof callback == 'function') {
+                            callback();
+                        }
+                    } else {
+                        alert('Update failed.');
+                    }
+                    return true;
+                }).fail(function(jqXHR, textStatus, errorThrown) {
+                    var response = JSON.parse(jqXHR.responseText);
+                    var messages = '';
+                    for (var i = 0; i < response.messages.length; i++) {
+                        messages += response.messages[i] + "\n";
+                    }
+                    alert(messages);
+                    return false;
+                });
+            };
 
-        });
-    };
-    bulkAction($('#form_bulk'), $('#confirmBulkModal'));
+            $('button.update_tracking_number').prop('disabled', true);
+            // フォームに変更があったら更新ボタンを有効にする
+            $('input.update_tracking_number').on('keyup', function(event) {
+                var $tracking_number = $(this);
+                var $button = $("button[data-target='#" + $tracking_number.attr('id') + "']");
+                $button.prop('disabled', false);
+                $button.children('i')
+                    .removeClass('text-secondary')
+                    .addClass('text-success');
+            });
+            // enter キーで更新し、次のフォームへフォーカスを移動する
+            $('input.update_tracking_number').on('keypress', function(event) {
+                var $tracking_number = $(this);
+                var $button = $("button[data-target='#" + $tracking_number.attr('id') + "']");
 
-    $('#btn_bulk_delete').on('click', function(event) {
-        event.preventDefault();
-        $('#form_bulk').attr('action', "{{ url('admin_order_bulk_delete') }}").submit();
-        return false;
+                var code = event.which ? event.which : event.keyCode;
+
+                if (code == 13) { // on press to enter
+                    var index = $('input.update_tracking_number').index(this);
+                    var callback = function() {
+                        $button.prop('disabled', true);
+                        $button.children('i')
+                            .removeClass('text-success')
+                            .addClass('text-secondary');
+                        $('input.update_tracking_number:gt(' + index + '):first').focus();
+                    };
+                    updateTrackingNumber($tracking_number.data('shipping_id'), $tracking_number.data('url'), $tracking_number.val(), callback);
+                    event.preventDefault();
+                }
+            });
+            // 更新ボタンの制御
+            $('button.update_tracking_number').on('click', function(event) {
+                event.preventDefault();
+                var $button = $(this);
+                var $target = $($(this).data('target'));
+                var tracking_number = $target.val();
+                var callback = function() {
+                    $button.prop('disabled', true);
+                    $button.children('i')
+                        .removeClass('text-success')
+                        .addClass('text-secondary');
+                };
+
+        updateTrackingNumber($target.data('shipping_id'), $target.data('url'), tracking_number, callback);
     });
+
+    // 完了ボタン
+    $('#bulkChangeComplete').on('click', function() {
+        location.href = '{{ url('admin_order', { 'resume': 1 }) }}';
+    });
+
 });
 </script>
+
+{{ include('@admin/Order/confirmationModal_js.twig') }}
 {% endblock javascript %}
 
 {% block main %}
-<!--検索条件設定テーブルここから-->
-<div class="c-outsideBlock">
-    <form name="search_form" id="search_form" method="POST" action="{{ url('admin_order') }}">
-        <div class="c-outsideBlock__contents">
-            <div class="row">
-                <div class="col-12">
+    <!--検索条件設定テーブルここから-->
+    <div class="c-outsideBlock">
+        <form name="search_form" id="search_form" method="POST" action="{{ url('admin_order') }}">
+            <div class="c-outsideBlock__contents">
+                <div class="row">
+                    <div class="col-12">
                         {{ form_widget(searchForm._token) }}
                         <div>
                             <label class="col-form-label">{{ 'searchorder.label.multi'|trans }}</label>
@@ -127,7 +184,22 @@ file that was distributed with this source code.
                         <div class="form-row">
                             <div class="form-group col-12">
                                 <p class="col-form-label">{{ 'admin.order.index.298'|trans }}</p>
-                                {{ form_widget(searchForm.status, {'label_attr': {'class': 'checkbox-inline'}}) }}
+                                <div id="admin_search_order_status">
+                                    {% set statusForm = searchForm.status %}
+                                    {% for status_id, child in statusForm.children %}
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox"
+                                                   id="{{ child.vars.id }}"
+                                                   name="{{ child.vars.full_name }}"
+                                                   class="form-check-input"
+                                                   value="{{ child.vars.value }}"{{ child.vars.checked ? ' checked="checked"' }}>
+                                            <label class="form-check-label" for="{{ child.vars.id }}">{{ child.vars.label }}</label>
+                                            {%- if statusForm.vars.order_count[status_id].display -%}
+                                                (<a href="{{ url('admin_order', { 'order_status_id': status_id }) }}">{{ statusForm.vars.order_count[status_id].count }}</a>)
+                                            {%- endif %}
+                                        </div>
+                                    {% endfor %}
+                                </div>
                                 {{ form_errors(searchForm.status) }}
                             </div>
                         </div>
@@ -138,281 +210,338 @@ file that was distributed with this source code.
                                 </i>
                             </a>
                         </div>
-                </div>
-            </div>
-        </div>
-        <div class="c-subContents ec-collapse collapse{{ has_errors ? ' show' }}" id="searchDetail">
-            <div class="row">
-                <div class="col">
-                    <label class="col-form-label">{{ 'admin.order.index.299'|trans }}</label>
-                    {{ form_widget(searchForm.name) }}
-                    {{ form_errors(searchForm.name) }}
-                </div>
-                <div class="col">
-                    <div class="form-row">
-                        <div class="col-12">
-                            <p class="col-form-label">{{ 'admin.order.index.304'|trans }}</p>
-                            {{ form_widget(searchForm.payment, { 'label_attr': { 'class': 'checkbox-inline'}}) }}
-                            {{ form_errors(searchForm.payment) }}
-                        </div>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col">
-                    <label class="col-form-label">{{ 'admin.order.index.300'|trans }}</label>
-                    {{ form_widget(searchForm.kana) }}
-                    {{ form_errors(searchForm.kana) }}
-                </div>
-                <div class="col">
-                    <label class="col-form-label">{{ 'admin.order.index.305'|trans }}</label>
-                    <div class="form-row align-items-center">
-                        <div class="col">
-                            {{ form_widget(searchForm.order_date_start) }}
-                            {{ form_errors(searchForm.order_date_start) }}
-                        </div>
-                        <div class="col-auto text-center">{{ 'admin.order.index.306'|trans }}</div>
-                        <div class="col">
-                            {{ form_widget(searchForm.order_date_end) }}
-                            {{ form_errors(searchForm.order_date_end) }}
-                        </div>
+            <div class="c-subContents ec-collapse collapse{{ has_errors ? ' show' }}" id="searchDetail">
+                <div class="row">
+                    <div class="col">
+                        <label class="col-form-label">{{ 'admin.order.index.299'|trans }}</label>
+                        {{ form_widget(searchForm.name) }}
+                        {{ form_errors(searchForm.name) }}
                     </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <label class="col-form-label">{{ 'admin.order.index.label_order_company_name'|trans }}</label>
-                    {{ form_widget(searchForm.company_name) }}
-                    {{ form_errors(searchForm.company_name) }}
-                </div>
-                <div class="col">
-                    <label class="col-form-label">{{ 'admin.order.index.307'|trans }}</label>
-                    <div class="form-row align-items-center">
-                        <div class="col">
-                            {{ form_widget(searchForm.payment_date_start) }}
-                            {{ form_errors(searchForm.payment_date_start) }}
-                        </div>
-                        <div class="col-auto text-center">{{ 'admin.order.index.308'|trans }}</div>
-                        <div class="col">
-                            {{ form_widget(searchForm.payment_date_end) }}
-                            {{ form_errors(searchForm.payment_date_end) }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <label class="col-form-label">{{ 'admin.order.index.302'|trans }}</label>
-                    {{ form_widget(searchForm.email) }}
-                    {{ form_errors(searchForm.email) }}
-                </div>
-                <div class="col">
-                    <label class="col-form-label">{{ 'admin.order.index.311'|trans }}</label>
-                    <div class="form-row align-items-center">
-                        <div class="col">
-                            {{ form_widget(searchForm.update_date_start) }}
-                            {{ form_errors(searchForm.update_date_start) }}
-                        </div>
-                        <div class="col-auto text-center">{{ 'admin.order.index.312'|trans }}</div>
-                        <div class="col">
-                            {{ form_widget(searchForm.update_date_end) }}
-                            {{ form_errors(searchForm.update_date_end) }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <label class="col-form-label">{{ 'searchorder.label.order_no'|trans }}</label>
-                    {{ form_widget(searchForm.order_no) }}
-                    {{ form_errors(searchForm.order_no) }}
-                </div>
-                <div class="col">
-                    <label class="col-form-label">{{ 'admin.order.index.313'|trans }}</label>
-                    <div class="form-row align-items-center">
-                        <div class="col">
-                            <div class="input-group">
-                                {{ form_widget(searchForm.payment_total_start) }}
-                                {{ form_errors(searchForm.payment_total_start) }}
-                            </div>
-                        </div>
-                        <div class="col-auto text-center">{{ 'admin.order.index.314'|trans }}</div>
-                        <div class="col">
-                            <div class="input-group">
-                                {{ form_widget(searchForm.payment_total_end) }}
-                                {{ form_errors(searchForm.payment_total_end) }}
+                    <div class="col">
+                        <div class="form-row">
+                            <div class="col-12">
+                                <p class="col-form-label">{{ 'admin.order.index.304'|trans }}</p>
+                                {{ form_widget(searchForm.payment, { 'label_attr': { 'class': 'checkbox-inline'}}) }}
+                                {{ form_errors(searchForm.payment) }}
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <label class="col-form-label">{{ 'admin.order.index.301'|trans }}</label>
-                    {{ form_widget(searchForm.phone_number) }}
-                    {{ form_errors(searchForm.phone_number) }}
-                </div>
-                <div class="col">
-                    <label class="col-form-label">{{ 'admin.order.index.315'|trans }}</label>
-                    {{ form_widget(searchForm.buy_product_name) }}
-                    {{ form_errors(searchForm.buy_product_name) }}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <div class="form-row">
-                        <div class="col-12">
-                            <p class="col-form-label">{{ 'admin.order.index.303'|trans }}</p>
-                            {{ form_widget(searchForm.sex, { 'label_attr': { 'class': 'checkbox-inline'}}) }}
-                            {{ form_errors(searchForm.sex) }}
+                <div class="row">
+                    <div class="col">
+                        <label class="col-form-label">{{ 'admin.order.index.300'|trans }}</label>
+                        {{ form_widget(searchForm.kana) }}
+                        {{ form_errors(searchForm.kana) }}
+                    </div>
+                    <div class="col">
+                        <label class="col-form-label">{{ 'admin.order.index.305'|trans }}</label>
+                        <div class="form-row align-items-center">
+                            <div class="col">
+                                {{ form_widget(searchForm.order_date_start) }}
+                                {{ form_errors(searchForm.order_date_start) }}
+                            </div>
+                            <div class="col-auto text-center">{{ 'admin.order.index.306'|trans }}</div>
+                            <div class="col">
+                                {{ form_widget(searchForm.order_date_end) }}
+                                {{ form_errors(searchForm.order_date_end) }}
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col"></div>
-            </div>
-
-            {# TODO: Need allow plg fields arrange two cols #}
-            {% for f in searchForm.getIterator %}
-                {% if f.vars.name matches '[^plg*]' %}
-                    <div class="row">
-                        <div class="col">
-                            <p class="col-form-label">{{ f.vars.label|trans }}</p>
-                            {{ form_widget(f) }}
-                            {{ form_errors(f) }}
+                <div class="row">
+                    <div class="col">
+                        <label class="col-form-label">{{ 'admin.order.index.label_order_company_name'|trans }}</label>
+                        {{ form_widget(searchForm.company_name) }}
+                        {{ form_errors(searchForm.company_name) }}
+                    </div>
+                    <div class="col">
+                        <label class="col-form-label">{{ 'admin.order.index.307'|trans }}</label>
+                        <div class="form-row align-items-center">
+                            <div class="col">
+                                {{ form_widget(searchForm.payment_date_start) }}
+                                {{ form_errors(searchForm.payment_date_start) }}
+                            </div>
+                            <div class="col-auto text-center">{{ 'admin.order.index.308'|trans }}</div>
+                            <div class="col">
+                                {{ form_widget(searchForm.payment_date_end) }}
+                                {{ form_errors(searchForm.payment_date_end) }}
+                            </div>
                         </div>
                     </div>
-                {% endif %}
-            {% endfor %}
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label class="col-form-label">{{ 'admin.order.index.302'|trans }}</label>
+                        {{ form_widget(searchForm.email) }}
+                        {{ form_errors(searchForm.email) }}
+                    </div>
+                    <div class="col">
+                        <label class="col-form-label">{{ 'admin.order.index.311'|trans }}</label>
+                        <div class="form-row align-items-center">
+                            <div class="col">
+                                {{ form_widget(searchForm.update_date_start) }}
+                                {{ form_errors(searchForm.update_date_start) }}
+                            </div>
+                            <div class="col-auto text-center">{{ 'admin.order.index.312'|trans }}</div>
+                            <div class="col">
+                                {{ form_widget(searchForm.update_date_end) }}
+                                {{ form_errors(searchForm.update_date_end) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label class="col-form-label">{{ 'admin.order.index.301'|trans }}</label>
+                        {{ form_widget(searchForm.phone_number) }}
+                        {{ form_errors(searchForm.phone_number) }}
+                    </div>
+                    <div class="col">
+                        <label class="col-form-label">{{ 'searchorder.label.shipping_delivery_date'|trans }}</label>
+                        <div class="form-row align-items-center">
+                            <div class="col">
+                                <div class="input-group">
+                                    {{ form_widget(searchForm.shipping_delivery_date_start) }}
+                                    {{ form_errors(searchForm.shipping_delivery_date_start) }}
+                                </div>
+                            </div>
+                            <div class="col-auto text-center">{{ 'admin.order.index.314'|trans }}</div>
+                            <div class="col">
+                                <div class="input-group">
+                                    {{ form_widget(searchForm.shipping_delivery_date_end) }}
+                                    {{ form_errors(searchForm.shipping_delivery_date_end) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label class="col-form-label">{{ 'searchorder.label.order_no'|trans }}</label>
+                        {{ form_widget(searchForm.order_no) }}
+                        {{ form_errors(searchForm.order_no) }}
+                    </div>
+                    <div class="col">
+                        <label class="col-form-label">{{ 'admin.order.index.313'|trans }}</label>
+                        <div class="form-row align-items-center">
+                            <div class="col">
+                                <div class="input-group">
+                                    {{ form_widget(searchForm.payment_total_start) }}
+                                    {{ form_errors(searchForm.payment_total_start) }}
+                                </div>
+                            </div>
+                            <div class="col-auto text-center">{{ 'admin.order.index.314'|trans }}</div>
+                            <div class="col">
+                                <div class="input-group">
+                                    {{ form_widget(searchForm.payment_total_end) }}
+                                    {{ form_errors(searchForm.payment_total_end) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-row">
+                            <div class="col-12">
+                                <p class="col-form-label">{{ 'searchorder.label.tracking_number'|trans }}</p>
+                                {{ form_widget(searchForm.tracking_number) }}
+                                {{ form_errors(searchForm.tracking_number) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <label class="col-form-label">{{ 'admin.order.index.315'|trans }}</label>
+                        {{ form_widget(searchForm.buy_product_name) }}
+                        {{ form_errors(searchForm.buy_product_name) }}
+                    </div>
+                </div>
 
-            <div class="d-block text-center">
-                <button class="btn btn-ec-regular" type="button">{{ 'admin.order.index.btn_clear_criteria'|trans }}</button>
-            </div>
-        </div>
-        <div class="c-outsideBlock__contents">
-            <div class="row">
-                <div class="mb-4">
-                    <div class="col-12">
-                        <button class="btn btn-ec-conversion px-5" type="submit" id="search_submit">{{ 'admin.order.index.317'|trans }}</button>
-                        {% if pagination %}
-                            <span class="font-weight-bold ml-2" id="search_total_count">{{'admin.order.index.paginator_total_count'|trans({"%count%":pagination.totalItemCount})|raw}}</span>
+                <div class="row mb-2">
+                    <div class="col">
+                        <div class="form-row">
+                            <div class="col-12">
+                                <p class="col-form-label">{{ 'searchorder.label.shipping_mail_send'|trans }}</p>
+                                {{ form_widget(searchForm.shipping_mail_send) }}
+                                {{ form_errors(searchForm.shipping_mail_send) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col"></div>
+                </div>
+
+                {# エンティティ拡張の自動出力 #}
+                {% for f in searchForm if f.vars.eccube_form_options.auto_render %}
+                    {# TODO 1項目1行になるのを改善 #}
+                    <div class="row mb-2">
+                        {% if f.vars.eccube_form_options.form_theme %}
+                            {% form_theme f f.vars.eccube_form_options.form_theme %}
+                            {{ form_row(f) }}
+                        {% else %}
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label>{{ f.vars.label|trans }}</label>
+                                    {{ form_widget(f) }}
+                                    {{ form_errors(f) }}
+                                </div>
+                            </div>
                         {% endif %}
                     </div>
+                {% endfor %}
+
+                <div class="d-block text-center">
+                    <button class="btn btn-ec-regular" type="button">{{ 'admin.order.index.btn_clear_criteria'|trans }}</button>
                 </div>
             </div>
-        </div>
-        <div class="c-outsideBlock__contents mb-5">
-            {{ include('@admin/search_items.twig', { 'form': searchForm }, ignore_missing = true) }}
-        </div>
-    </form>
-</div>
-<!--検索条件設定テーブルここまで-->
-
-<div class="c-contentsArea__cols">
-    <div class="c-contentsArea__primaryCol">
-        <div class="c-primaryCol">
-            {% if pagination and pagination.totalItemCount %}
-                <div class="modal fade" id="confirmBulkModal" tabindex="-1" role="dialog"
-                     aria-labelledby="confirmModal" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">{{ 'admin.order.index.bulk_modal_title'|trans }}</h5>
-                                <button class="close" type="button" data-dismiss="modal"
-                                        aria-label="Close">
-                                    <span aria-hidden="true">×</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <p>{{ 'admin.order.index.bulk_modal_body'|trans }}</p>
-                            </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-ec-conversion" data-action="execute" type="button"
-                                        data-dismiss="modal">
-                                    {{ 'common.label.execute'|trans }}
-                                </button>
-                                <button class="btn btn-ec-sub" data-action="cancel" type="button"
-                                        data-dismiss="modal">
-                                    {{ 'common.label.cancel'|trans }}
-                                </button>
-                            </div>
+            <div class="c-outsideBlock__contents">
+                <div class="row">
+                    <div class="mb-4">
+                        <div class="col-12">
+                            <button class="btn btn-ec-conversion px-5" type="submit" id="search_submit">{{ 'admin.order.index.317'|trans }}</button>
+                            {% if pagination %}
+                                <span class="font-weight-bold ml-2" id="search_total_count">{{ 'admin.order.index.paginator_total_count'|trans({"%count%":pagination.totalItemCount})|raw }}</span>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
-                <form id="form_bulk" method="POST" action="">
-                    <input type="hidden" name="{{ constant('Eccube\\Common\\Constant::TOKEN_NAME') }}" value="{{ csrf_token(constant('Eccube\\Common\\Constant::TOKEN_NAME')) }}">
-                    <div class="row justify-content-between mb-2">
-                        <div class="col-6">
-                            <div class="row justify-content-between">
-                                <div class="col-auto d-none btn-bulk-wrapper">
-                                    <label class="mr-2">{{ 'admin.order.index.label_bulk_actions'|trans }}</label>
-                                    <button id="btn_bulk_mail" data-url="{{ url('admin_order_mail_all') }}" class="btn btn-ec-regular mr-2" data-submit="bulk" data-method="GET">
-                                        {{ 'admin.order.index.btn_bulk_mail'|trans }}
-                                    </button>
-                                    {# TODO: This button is not implemented yet #}
-                                    <button class="btn btn-ec-regular mr-2">{{ 'admin.order.index.btn_bulk_export'|trans }}</button>
-                                    {# TODO: This button is not implemented yet #}
-                                    <button type="button" class="btn btn-ec-delete" data-toggle="modal" data-target="#bulkDeleteModal">{{ 'admin.order.index.btn_bulk_delete'|trans }}</button>
-                                </div>
-                                <div class="col d-none btn-bulk-wrapper">
-                                    <div class="d-inline-block mr-2">
-                                        <select class="custom-select" id="option_bulk_status">
-                                            <option value="" selected>{{ 'admin.order.index.option_bulk_change_status'|trans }}</option>
-                                            {% for status in OrderStatuses %}
-                                                <option value="{{ url('admin_order_bulk_order_status', {'id': status.id }) }}">{{ status.name }}</option>
-                                            {% endfor %}
-                                        </select>
-                                    </div>
-                                    <button id="btn_bulk_status" class="btn btn-ec-regular mr-2" data-submit="bulk" data-confirm="true">
-                                        {{ 'admin.order.index.btn_bulk_submit'|trans }}
+            </div>
+            <div class="c-outsideBlock__contents mb-5">
+                {{ include('@admin/search_items.twig', { 'form': searchForm }, ignore_missing = true) }}
+            </div>
+        </form>
+    </div>
+    <!--検索条件設定テーブルここまで-->
+
+    <div class="c-contentsArea__cols">
+        <div class="c-contentsArea__primaryCol">
+            <div class="c-primaryCol">
+                {% if pagination and pagination.totalItemCount %}
+                    <div class="modal fade" id="confirmBulkModal" tabindex="-1" role="dialog"
+                         aria-labelledby="confirmModal" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">{{ 'admin.order.index.bulk_modal_title'|trans }}</h5>
+                                    <button class="close" type="button" data-dismiss="modal"
+                                            aria-label="Close">
+                                        <span aria-hidden="true">×</span>
                                     </button>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-5 text-right">
-                            <div class="d-inline-block">
-                                <select class="custom-select" onchange="location = this.value;">
-                                    {% for pageMax in pageMaxis %}
-                                        <option {% if pageMax.name == page_count%} selected {% endif %}
-                                                value="{{ path('admin_order_page', {'page_no': 1, 'page_count': pageMax.name}) }}">
-                                            {{ pageMax.name|e }}{{ 'admin.order.index.num'|trans }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                            <div class="d-inline-block">
-                                <div class="btn-group" role="group">
-                                    <a class="btn btn-ec-regular" href="{{ url('admin_order_export_order') }}" id="btn_csv_download">
-                                        <i class="fa fa-cloud-download mr-1 text-secondary"></i>
-                                        <span>{{ 'admin.order.index.321'|trans }}</span>
-                                    </a>
-                                    <a class="btn btn-ec-regular" href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_ORDER') }) }}" id="btn_csv_setting">
-                                        <i class="fa fa-cog mr-1 text-secondary"></i>
-                                        <span>{{ 'admin.order.index.btn_csv_setting'|trans }}</span>
-                                    </a>
+                                <div class="modal-body">
+                                    <p>{{ 'admin.order.index.bulk_modal_body'|trans }}</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-ec-conversion" data-action="execute" type="button"
+                                            data-dismiss="modal">
+                                        {{ 'common.label.execute'|trans }}
+                                    </button>
+                                    <button class="btn btn-ec-sub" data-action="cancel" type="button"
+                                            data-dismiss="modal">
+                                        {{ 'common.label.cancel'|trans }}
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="card rounded border-0 mb-4">
-                        <div class="card-body p-0">
-                            <table class="table table-sm" id="search_result">
-                                <thead>
+                    <form id="form_bulk" method="POST" action="">
+                        <input type="hidden" name="{{ constant('Eccube\\Common\\Constant::TOKEN_NAME') }}" value="{{ csrf_token(constant('Eccube\\Common\\Constant::TOKEN_NAME')) }}">
+                        <div class="row justify-content-between mb-2">
+                            <div class="col-7">
+                                <div class="row justify-content-between">
+                                    <div class="col-auto d-none btn-bulk-wrapper">
+                                        <label class="mr-2">{{ 'admin.order.index.label_bulk_actions'|trans }}</label>
+                                        <button id="bulkSendMail" type="button" class="btn btn-ec-regular mr-2" data-type="mail" data-bulk-update="true">
+                                            {{ 'admin.order.index.btn_bulk_mail'|trans }}
+                                        </button>
+                                        <button type="button" id="bulkExportPdf" class="btn btn-ec-regular mr-2">{{ 'admin.order.export.pdf.button.export'|trans }}</button>
+                                        {# TODO: This button is not implemented yet #}
+                                        <button type="button" class="btn btn-ec-delete" data-toggle="modal" data-target="#bulkDeleteModal">{{ 'admin.order.index.btn_bulk_delete'|trans }}</button>
+                                    </div>
+                                    <div class="col d-none btn-bulk-wrapper">
+                                        <div class="d-inline-block mr-2">
+                                            <select class="custom-select" id="option_bulk_status">
+                                                <option value="" selected>{{ 'admin.order.index.option_bulk_change_status'|trans }}</option>
+                                                {% for status in OrderStatuses %}
+                                                    <option value="{{ status.id }}">{{ status.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <button type="button" id="btn_bulk_status" class="btn btn-ec-regular mr-2 progressModal" data-type="status" data-bulk-update="true" data-submit="bulk">
+                                            {{ 'admin.order.index.btn_bulk_submit'|trans }}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-5 text-right">
+                                <div class="d-inline-block">
+                                    <select class="custom-select" onchange="location = this.value;">
+                                        {% for pageMax in pageMaxis %}
+                                            <option {% if pageMax.name == page_count %} selected {% endif %}
+                                                    value="{{ path('admin_order_page', {'page_no': 1, 'page_count': pageMax.name}) }}">
+                                                {{ pageMax.name|e }}{{ 'admin.order.index.num'|trans }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="d-inline-block">
+                                    <div class="btn-group" role="group">
+                                        <div class="btn-group" role="group">
+                                            <button type="button" class="btn btn-ec-regular" data-toggle="dropdown" id="csvDownloadDropDown">
+                                                <i class="fa fa-cloud-download mr-1 text-secondary"></i>
+                                                <span>{{ 'admin.order.index.321'|trans }}</span>
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" href="{{ url('admin_order_export_order') }}" id="orderCsvDownload">
+                                                    {{ 'admin.order.index.322'|trans }}
+                                                </a>
+                                                <a class="dropdown-item" href="{{ url('admin_order_export_shipping') }}" id="shippingCsvDownload">
+                                                    {{ 'admin.order.index.323'|trans }}
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <div class="btn-group" role="group">
+                                            <button type="button" class="btn btn-ec-regular" data-toggle="dropdown" id="csvSettingDropDown">
+                                                <i class="fa fa-cog mr-1 text-secondary"></i>
+                                                <span>{{ 'admin.order.index.btn_csv_setting'|trans }}</span>
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_ORDER') }) }}" id="orderCsvSetting">
+                                                    {{ 'admin.order.index.322'|trans }}
+                                                </a>
+                                                <a class="dropdown-item" href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_SHIPPING') }) }}" id="shippingCsvSetting">
+                                                    {{ 'admin.order.index.323'|trans }}
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card rounded border-0 mb-4">
+                            <div class="card-body p-0">
+                                <table class="table table-sm" id="search_result">
+                                    <thead>
                                     <tr>
                                         <th class="border-top-0 pt-2 pb-2 text-center pl-3">
-                                            <input type="checkbox" id="check_all" name="filter" value="open">
+                                            <input type="checkbox" id="toggle_check_all" name="filter" value="open">
                                         </th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.328'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.329'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.330'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.331'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.332'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_delivery_number'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.334'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_note'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_order_description'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_payment'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_order_status'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_payment_total'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_message'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_shipping_status'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_tracking_number'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.index.th_delivery_address'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2 text-center pr-3"></th>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                {% set cssClassStatus = {
+                                    </thead>
+                                    <tbody>
+                                    {# TODO IN_PROGRESS と RETURNED の色を決める #}
+                                    {% set cssClassStatus = {
                                         (constant('Eccube\\Entity\\Master\\OrderStatus::NEW')): "badge-ec-blue",
                                         (constant('Eccube\\Entity\\Master\\OrderStatus::PAY_WAIT')): "badge-ec-red",
                                         (constant('Eccube\\Entity\\Master\\OrderStatus::BACK_ORDER')): "badge-ec-red",
@@ -420,104 +549,192 @@ file that was distributed with this source code.
                                         (constant('Eccube\\Entity\\Master\\OrderStatus::DELIVERED')): "badge-ec-glay",
                                         (constant('Eccube\\Entity\\Master\\OrderStatus::PAID')): "badge-ec-green",
                                         (constant('Eccube\\Entity\\Master\\OrderStatus::PENDING')): "badge-ec-yellow",
-                                        (constant('Eccube\\Entity\\Master\\OrderStatus::PROCESSING')): "badge-ec-yellow"
-                                    }
-                                %}
-                                {% for Order in pagination %}
-                                    <tr>
-                                        <td class="align-middle text-center pl-3">
-                                            <input type="checkbox"  name="ids[]" id="check_{{ Order.id }}" value="{{ Order.id }}">
-                                        </td>
-                                        <td class="align-middle text-left" id="order_date--{{ Order.id }}">{{ Order.order_date|date_min }}</td>
-                                        <td class="align-middle text-center" id="id--{{ Order.id }}"><a class="action-edit" href="{{ url('admin_order_edit', { id : Order.id }) }}">{{ Order.order_no }}</a></td>
-                                        <td class="align-middle text-center" id="name--{{ Order.id }}">{{ Order.name01 }} {{ Order.name02 }}</td>
-                                        <td class="align-middle text-center" id="payment_method--{{ Order.id }}">{{ Order.payment_method }}</td>
-                                        <td class="align-middle text-right" id="payment_total--{{ Order.id }}">{{ Order.payment_total|price }}</td>
-                                        <td class="align-middle text-center">
-                                            {% for shipping in Order.getShippings() %}
-                                                <a href="{{ url('admin_shipping_edit', {id: shipping.id}) }}">{{ shipping.id }}</a><br>
-                                            {% endfor %}
-                                        </td>
-                                        <td class="align-middle text-center"  id="order_status--{{ Order.id }}">
-                                            <span class="badge {{ attribute(cssClassStatus, Order.OrderStatus.id) }}">{{ Order.OrderStatus }}</span>
-                                        </td>
-                                        <td class="align-middle text-center">
-                                            {% if Order.note is not empty %}
-                                                <a class="btn btn-ec-actionIcon" href="{{ url('admin_order_edit', { id : Order.id }) }}#order_note" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ Order.note }}" aria-describedby="tooltip819464">
-                                                    <i class="fa fa-commenting fa-lg text-secondary" aria-hidden="true"></i>
-                                                </a>
-                                            {% endif %}
-                                        </td>
-                                        <td class="align-middle pr-3 text-center">
-                                            <div class="row justify-content-end">
-                                                <div class="col-auto text-center">
-                                                    <a class="btn btn-ec-actionIcon action-mail" href="{{ url('admin_order_mail', {'id': Order.id}) }}" data-toggle="tooltip" data-placement="top" title data-original-title="{{ 'admin.order.index.btn_send_mail'|trans }}">
-                                                        <i class="fa fa-send fa-lg text-secondary" aria-hidden="true"></i>
-                                                    </a>
-                                                </div>
-                                                <div class="col-auto text-center">
-                                                    {# TODO: This func is not implemented yet #}
-                                                    <a class="btn btn-ec-actionIcon" href="" data-toggle="tooltip" data-placement="top" title data-original-title="{{ 'admin.order.index.btn_form'|trans }}">
-                                                        <i class="fa fa-table fa-lg text-secondary" aria-hidden="true"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
-                            <div class="row justify-content-md-center mb-4"></div>
-                        </div>
-                        <div class="row justify-content-md-center mb-4">
-                            {% if pagination.totalItemCount > 0 %}
-                                {% include "@admin/pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_order_page' } %}
-                            {% endif %}
-                        </div>
-                    </div>
-                </form>
-            {# 検索条件エラー時 #}
-            {% elseif has_errors %}
-                <div class="card rounded border-0">
-                    <div class="card-body p-4">
-                        <div class="text-center text-muted mb-4 h5">{{ 'admin.order.index.invalid_search_data'|trans }}</div>
-                        <div class="text-center text-muted">{{ 'admin.order.index.pls_change_search_criteria'|trans }}</div>
-                    </div>
-                </div>
-            {# 検索結果なし #}
-            {% else %}
-                <div class="card rounded border-0">
-                    <div class="card-body p-4">
-                        <div class="text-center text-muted mb-4 h5">{{ 'admin.order.index.no_matching_search_data'|trans }}</div>
-                        <div class="text-center text-muted">{{ 'admin.order.index.pls_change_search_criteria'|trans }}</div>
-                        <div class="text-center text-muted">{{ 'admin.order.index.pls_try_advanced_search'|trans }}</div>
-                    </div>
-                </div>
-            {% endif %}
-
-            <div class="modal fade" id="bulkDeleteModal" tabindex="-1" role="dialog" aria-labelledby="discontinuance" aria-hidden="true" data-keyboard="false" data-backdrop="static">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title font-weight-bold">{{ 'admin.product.index.495'|trans }}</h5>
-                            <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                        </div>
-                        <div class="modal-body text-left">
-                            <p class="text-left">{{ 'admin.order.index.339'|trans }}</p>
-                            <ul id="bulkErrors"></ul>
-                            <div class="progress" style="display: none">
-                                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::PROCESSING')): "badge-ec-yellow",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::IN_PROGRESS')): "badge-ec-yellow",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::RETURNED')): "badge-ec-yellow"
+                                    } %}
+                                    {% for Order in pagination %}
+                                        {% for Shipping in Order.Shippings %}
+                                            <tr>
+                                                <td class="align-middle text-center pl-3">
+                                                    <input type="checkbox" id="check_{{ Shipping.id }}" data-id="{{ Shipping.id }}" name="ids[]" value="{{ Shipping.id }}"
+                                                           data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: Shipping.id}) }}"
+                                                           data-notify-mail-url="{{ url('admin_shipping_notify_mail', { id: Shipping.id}) }}"
+                                                           data-update-status-url="{{ url('admin_shipping_update_order_status', { id: Shipping.id}) }}"
+                                                    />
+                                                </td>
+                                                <td class="align-middle text-left">
+                                                    <a class="action-edit" href="{{ url('admin_order_edit', { id : Order.id }) }}">{{ Order.order_no }}<br>{{ Order.name01 ~ Order.name02 }}<br>{{ Order.order_date|date_min }}</a>
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    {{ Order.payment_method }}
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    <span class="badge {{ attribute(cssClassStatus, Order.OrderStatus.id) }}">{{ Order.OrderStatus }}</span>
+                                                </td>
+                                                <td class="align-middle text-right">
+                                                    {{ Order.payment_total|price }}<br>
+                                                    {{ Order.payment_date ? Order.payment_date|date_day : 'admin.order.index.not_payment'|trans }}
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    {% if Order.message is not empty %}
+                                                        <a class="btn btn-ec-actionIcon" href="{{ url('admin_order_edit', { id : Order.id }) }}#order_message" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ Order.message }}" aria-describedby="tooltip819464">
+                                                            <i class="fa fa-commenting fa-lg text-secondary" aria-hidden="true"></i>
+                                                        </a>
+                                                    {% elseif Order.note is not empty %}
+                                                        <a class="btn btn-ec-actionIcon" href="{{ url('admin_order_edit', { id : Order.id }) }}#order_note" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ Order.note }}" aria-describedby="tooltip819464">
+                                                            <i class="fa fa-commenting fa-lg text-secondary" aria-hidden="true"></i>
+                                                        </a>
+                                                    {% endif %}
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    {% if Order.is_multiple %}
+                                                        <a href="{{ url('admin_shipping_edit', { id: Order.id }) }}">
+                                                            {% if Shipping.shipping_date %}
+                                                                {{ Shipping.shipping_date|date_day }}
+                                                            {% else %}
+                                                                {{ 'admin.order.index.not_shipping'|trans }}
+                                                            {% endif %}
+                                                        </a>
+                                                    {% else %}
+                                                        {{ Shipping.shipping_date ? Shipping.shipping_date|date_day : 'admin.order.index.not_shipping'|trans }}
+                                                    {% endif %}
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    <div class="input-group input-group-sm">
+                                                        <input type="text" id="tracking_number_{{ Shipping.id }}" class="form-control update_tracking_number" placeholder="{{ 'admin.order.index.th_tracking_number'|trans }}" value="{{ Shipping.trackingNumber }}" data-shipping_id="{{ Shipping.id }}" data-url="{{ url('admin_shipping_update_tracking_number', { id : Shipping.id }) }}" tabindex="{{ loop.index }}"/>
+                                                        <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default update_tracking_number" data-target="#tracking_number_{{ Shipping.id }}">
+                                                        <i class="fa fa-check fa-lg text-secondary" aria-hidden="true"></i>
+                                                    </button>
+                                                </span>
+                                                    </div>
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    {{ Shipping.name01 ~ Shipping.name02 }}<br>
+                                                    {{ Shipping.Pref.name }}
+                                                </td>
+                                                <td class="align-middle pr-3 text-center">
+                                                    <div class="row justify-content-end">
+                                                        <div class="col-auto text-center">
+                                                            <a class="btn btn-ec-actionIcon confirmationModal"
+                                                               data-type="mail" data-bulk-update="false"
+                                                               data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: Shipping.id}) }}"
+                                                               data-notify-mail-url="{{ url('admin_shipping_notify_mail', { id: Shipping.id}) }}">
+                                                                <i class="fa fa-send fa-lg text-secondary" aria-hidden="true"></i>
+                                                            </a>
+                                                        </div>
+                                                        <div class="col-auto text-center">
+                                                            <a class="btn btn-ec-actionIcon pdf-print" href="{{ url('admin_order_export_pdf') }}?ids[]={{ Shipping.id }}" data-toggle="tooltip" data-placement="top" title data-original-title="{{ 'admin.order.index.btn_form'|trans }}">
+                                                                <i class="fa fa-table fa-lg text-secondary" aria-hidden="true"></i>
+                                                            </a>
+                                                        </div>
+                                                        <div class="col-auto text-center">
+                                                            <a class="btn btn-ec-actionIcon confirmationModal" href="javascript:;"
+                                                               data-id="{{ Shipping.id }}" data-type="status" data-bulk-update="false"
+                                                               data-update-status-id="{{ constant('Eccube\\Entity\\Master\\OrderStatus::DELIVERED') }}"
+                                                               data-update-status-url="{{ url('admin_shipping_update_order_status', { id: Shipping.id}) }}"
+                                                               data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: Shipping.id}) }}"
+                                                               data-toggle="tooltip" data-placement="top" title data-original-title="{{ '出荷済にする'|trans }}">
+                                                                <i class="fa fa-check fa-lg text-secondary" aria-hidden="true"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                                <div class="row justify-content-md-center mb-4"></div>
+                            </div>
+                            <div class="row justify-content-md-center mb-4">
+                                {% if pagination.totalItemCount > 0 %}
+                                    {% include "@admin/pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_order_page' } %}
+                                {% endif %}
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.product.index.cancel'|trans }}</button>
-                            <button class="btn btn-ec-delete" type="button" id="btn_bulk_delete">{{ 'admin.product.index.permanently_delete' | trans }}</button>
+                    </form>
+                    {# 検索条件エラー時 #}
+                {% elseif has_errors %}
+                    <div class="card rounded border-0">
+                        <div class="card-body p-4">
+                            <div class="text-center text-muted mb-4 h5">{{ 'admin.order.index.invalid_search_data'|trans }}</div>
+                            <div class="text-center text-muted">{{ 'admin.order.index.pls_change_search_criteria'|trans }}</div>
+                        </div>
+                    </div>
+                    {# 検索結果なし #}
+                {% else %}
+                    <div class="card rounded border-0">
+                        <div class="card-body p-4">
+                            <div class="text-center text-muted mb-4 h5">{{ 'admin.order.index.no_matching_search_data'|trans }}</div>
+                            <div class="text-center text-muted">{{ 'admin.order.index.pls_change_search_criteria'|trans }}</div>
+                            <div class="text-center text-muted">{{ 'admin.order.index.pls_try_advanced_search'|trans }}</div>
+                        </div>
+                    </div>
+                {% endif %}
+
+                <div class="modal fade" id="sentUpdateModal" tabindex="-1" role="dialog" aria-labelledby="sentUpdateModal" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title font-weight-bold"></h5>
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                            </div>
+                            <div class="modal-body">
+                                <p class="mb-4"></p>
+                                <ul id="bulkErrors"></ul>
+                                <div id="bulk-options">
+                                    <div class="font-weight-bold mb-2 notificationMail">{{ 'admin.shipping.index.812'|trans }}</div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="notificationMail">
+                                        <label class="form-check-label notificationMail">
+                                            {{ 'admin.shipping.index.813'|trans }}
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <div class="d-inline-block" data-toggle="collapse" href="#viewEmail" aria-expanded="false" aria-controls="viewEmail"><a><i class="fa fa-plus-square-o font-weight-bold mr-1"></i><span class="font-weight-bold">{{ 'admin.shipping.index.814'|trans }}</span></a></div>
+                                        <div class="collapse bg-light p-4 ec-collapse bg-ec-formGray" id="viewEmail" style="word-wrap: break-word; word-break:break-all">
+                                            <pre></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="progress" style="display: none">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.shipping.index.815'|trans }}</button>
+                                <button id="bulkChange" class="btn btn-ec-conversion" type="button">{{ 'admin.shipping.index.816'|trans }}</button>
+                                <button id="bulkChangeComplete" class="btn btn-ec-regular" style="display: none" type="button">{{ 'admin.shipping.index.826'|trans }}</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
+                <div class="modal fade" id="bulkDeleteModal" tabindex="-1" role="dialog" aria-labelledby="discontinuance" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title font-weight-bold">{{ 'admin.product.index.495'|trans }}</h5>
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                            </div>
+                            <div class="modal-body text-left">
+                                <p class="text-left">{{ 'admin.order.index.339'|trans }}</p>
+                                <ul id="bulkErrors"></ul>
+                                <div class="progress" style="display: none">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.product.index.cancel'|trans }}</button>
+                                <button class="btn btn-ec-delete" type="button" id="btn_bulk_delete">{{ 'admin.product.index.permanently_delete' | trans }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
-</div>
 {% endblock %}

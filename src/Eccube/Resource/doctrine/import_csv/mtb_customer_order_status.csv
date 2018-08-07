@@ -7,3 +7,5 @@ id,name,sort_no,discriminator_type
 "4","注文受付","5","customerorderstatus"
 "5","発送済み","6","customerorderstatus"
 "8","注文未完了","7","customerorderstatus"
+"9","注文受付","8","customerorderstatus"
+"10","返品","9","customerorderstatus"

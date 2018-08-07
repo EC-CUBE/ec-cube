@@ -58,6 +58,7 @@ file that was distributed with this source code.
                     return $('#context-menu').html();
                 }
             }).on('shown.bs.popover', function () {
+                $('.block-context-menu').not(this).popover('hide');
                 var $menu = $(this);
                 var $block = $menu.closest('[id^="detail_box__layout_item"]');
                 var block = {
@@ -142,8 +143,8 @@ file that was distributed with this source code.
                         }
                     }).done(function(json, statusText, jqXHR) {
                         editor.setValue(json.source);
-                        editor.goTo(1);
-                        editor.scrollTo(1);
+                        editor.gotoLine(1);
+                        editor.scrollToLine(1);
                     }).fail(function(jqXHR, statusText, errorThrown) {
                         editor.setValue(statusText + ' ' + errorThrown);
                     });
@@ -169,7 +170,7 @@ file that was distributed with this source code.
 
             // 検索ワードが（子を含めて）含まれる要素のみ表示
             $('#unused-block .sort').each(function() {
-                targetText = $(this).find('.col a').text();
+                targetText = $(this).find('.col span').text();
 
                 // 検索対象となるリストに入力された文字列が存在するかどうかを判断
                 if (targetText.indexOf(searchText) != -1) {
@@ -211,7 +212,7 @@ file that was distributed with this source code.
                                         {{ form_errors(form.name) }}
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row mb-2">
                                     <div class="col-3 pr-0"><span>{{ 'admin.content.layout.device_type'|trans }}</span></div>
                                     <div class="col">
                                         <span>
@@ -225,6 +226,21 @@ file that was distributed with this source code.
                                         </span>
                                     </div>
                                 </div>
+                                {# エンティティ拡張の自動出力 #}
+                                {% for f in form if f.vars.eccube_form_options.auto_render %}
+                                    {% if f.vars.eccube_form_options.form_theme %}
+                                        {% form_theme f f.vars.eccube_form_options.form_theme %}
+                                        {{ form_row(f) }}
+                                    {% else %}
+                                        <div class="row mb-2">
+                                            <div class="col-3 pr-0"><span>{{ f.vars.label|trans }}</span></div>
+                                            <div class="col">
+                                                {{ form_widget(f) }}
+                                                {{ form_errors(f) }}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
                             </div>
                         </div>
                     </div>
@@ -423,25 +439,27 @@ file that was distributed with this source code.
                                                         <div class="row justify-content-between">
                                                             <div class="col">
                                                                 <i class="fa fa-bars text-ec-gray mr-3"></i>
-                                                                <a href="#" class="view_readme" data-toggle="modal"
+                                                                <span class="view_readme" data-toggle="modal"
                                                                    data-target="#blockModal"
                                                                    data-id="{{ UnusedBlock.id }}"
                                                                    data-name="{{ UnusedBlock.name }}"
                                                                    title="{{ UnusedBlock.name }}"
-                                                                >{{ UnusedBlock.name|length > 10 ? UnusedBlock.name|slice(0, 10) ~ '…' : UnusedBlock.name }}</a>
+                                                                >{{ UnusedBlock.name }}</span>
                                                             </div>
                                                             <div class="col-auto text-right">
-                                                                <input type="hidden" class="name" name="name_{{ loop_index }}"
-                                                                       value="{{ UnusedBlock.name }}"/>
-                                                                <input type="hidden" class="id" name="block_id_{{ loop_index }}"
-                                                                       value="{{ UnusedBlock.id }}"/>
-                                                                <input type="hidden" class="target-id"
-                                                                       name="section_{{ loop_index }}"
-                                                                       value="{{ unused_target_id }}"/>
-                                                                <input type="hidden" class="block-row"
-                                                                       name="block_row_{{ loop_index }}"
-                                                                       value="{{ UnusedBlock.id }}"/>
-                                                                <div class="block-context-menu d-inline-block px-3"><i class="fa fa-ellipsis-v fa-lg text-secondary"></i></div>
+                                                                <div class="d-inline-block px-3">
+                                                                    <input type="hidden" class="name" name="name_{{ loop_index }}"
+                                                                        value="{{ UnusedBlock.name }}"/>
+                                                                    <input type="hidden" class="id" name="block_id_{{ loop_index }}"
+                                                                        value="{{ UnusedBlock.id }}"/>
+                                                                    <input type="hidden" class="target-id"
+                                                                        name="section_{{ loop_index }}"
+                                                                        value="{{ unused_target_id }}"/>
+                                                                    <input type="hidden" class="block-row"
+                                                                        name="block_row_{{ loop_index }}"
+                                                                        value="{{ UnusedBlock.id }}"/>
+                                                                    <div class="block-context-menu d-inline-block px-3"><i class="fa fa-ellipsis-v fa-lg text-secondary"></i></div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -517,11 +535,12 @@ file that was distributed with this source code.
                 <div class="c-conversionArea__container">
                     <div class="row justify-content-between align-items-center">
                         <div class="col-6">
-                            <div class="c-conversionArea__leftBlockItem"><a class="c-beseLink" href="{{ url('admin_content_layout') }}"><i class="fa fa-backward" aria-hidden="true"></i><span>{{ 'admin.content.layout.list'|trans }}</span></a>
+                            <div class="c-conversionArea__leftBlockItem">
+                                <a class="c-beseLink" href="{{ url('admin_content_layout') }}"><i class="fa fa-backward" aria-hidden="true"></i><span>{{ 'admin.content.layout.list'|trans }}</span></a>
                             </div>
                         </div>
                         <div class="col-6">
-                            <div class="row align-items-center justify-content-end">
+                            <div id="ex-conversion-action" class="row align-items-center justify-content-end">
                                 <div class="col-auto">
                                     <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.content.layout.42'|trans }}</button>
                                 </div>

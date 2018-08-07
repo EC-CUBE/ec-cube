@@ -27,6 +27,7 @@ services:
           $cartPurchaseFlow: '@eccube.purchase.flow.cart'
           $shoppingPurchaseFlow: '@eccube.purchase.flow.shopping'
           $orderPurchaseFlow: '@eccube.purchase.flow.order'
+          $_orderStateMachine: '@state_machine.order'
 
 
     # makes classes in src/ available to be used as services
@@ -63,12 +64,12 @@ services:
         resource: '../../../app/Plugin/*'
         exclude: '../../../app/Plugin/*/{Entity,Resource,ServiceProvider,Tests}'
 
-    Acme\:
-        resource: '../../../app/Acme/*'
-        exclude: '../../../app/Acme/{Entity,Resource,Tests}'
+    Customize\:
+        resource: '../../../app/Customize/*'
+        exclude: '../../../app/Customize/{Entity,Resource,Tests}'
 
-    Acme\Controller\:
-        resource: '../../../app/Acme/Controller'
+    Customize\Controller\:
+        resource: '../../../app/Customize/Controller'
         tags: ['controller.service_arguments']
 
     twig.extension.stringloader:
@@ -146,8 +147,6 @@ services:
             - { name: kernel.event_listener, event: kernel.request, priority: 1024 }
 
     Symfony\Component\HttpFoundation\ParameterBag:
-    Eccube\Entity\BaseInfo:
-        factory: ['@Eccube\Repository\BaseInfoRepository', 'get']
 
     Eccube\Twig\Extension\IgnoreRoutingNotFoundExtension:
         # Symfony\Bridge\Twig\Extension\RoutingExtensionの後に登録するため,

@@ -13,6 +13,7 @@
 
 namespace Eccube\Controller\Admin\Setting\System;
 
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Member;
 use Eccube\Event\EccubeEvents;
@@ -23,8 +24,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 class MemberController extends AbstractController
 {
@@ -278,10 +279,15 @@ class MemberController extends AbstractController
             $this->addSuccess('admin.member.delete.complete', 'admin');
 
             log_info('メンバー削除完了', [$Member->getId()]);
+        } catch (ForeignKeyConstraintViolationException $e) {
+            log_info('メンバー削除エラー', [$Member->getId()]);
+
+            $message = trans('admin.delete.failed.foreign_key', ['%name%' => $Member->getName()]);
+            $this->addError($message, 'admin');
         } catch (\Exception $e) {
             log_info('メンバー削除エラー', [$Member->getId(), $e]);
 
-            $message = trans('admin.delete.failed.foreign_key', ['%name%' => trans('member.text.name')]);
+            $message = trans('admin.delete.failed');
             $this->addError($message, 'admin');
         }
 

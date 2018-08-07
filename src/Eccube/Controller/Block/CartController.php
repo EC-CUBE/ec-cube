@@ -16,11 +16,8 @@ namespace Eccube\Controller\Block;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Cart;
 use Eccube\Service\CartService;
-use Eccube\Service\PurchaseFlow\PurchaseContext;
-use Eccube\Service\PurchaseFlow\PurchaseFlow;
-use Eccube\Service\PurchaseFlow\PurchaseFlowResult;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Request;
 
 class CartController extends AbstractController
 {
@@ -29,24 +26,17 @@ class CartController extends AbstractController
      */
     protected $cartService;
 
-    /**
-     * @var PurchaseFlow
-     */
-    protected $purchaseFlow;
-
     public function __construct(
-        CartService $cartService,
-        PurchaseFlow $cartPurchaseFlow
+        CartService $cartService
     ) {
         $this->cartService = $cartService;
-        $this->purchaseFlow = $cartPurchaseFlow;
     }
 
     /**
      * @Route("/block/cart", name="block_cart")
-     * @Template("Block/cart.twig")
+     * @Route("/block/cart_sp", name="block_cart_sp")
      */
-    public function index()
+    public function index(Request $request)
     {
         $Carts = $this->cartService->getCarts();
 
@@ -66,20 +56,20 @@ class CartController extends AbstractController
             return $total;
         }, 0);
 
-        return [
-            'totalQuantity' => $totalQuantity,
-            'totalPrice' => $totalPrice,
-            'Carts' => $Carts,
-        ];
-    }
+        $route = $request->attributes->get('_route');
 
-    protected function execPurchaseFlow($Carts)
-    {
-        /** @var PurchaseFlowResult[] $flowResults */
-        $flowResults = array_map(function ($Cart) {
-            $purchaseContext = new PurchaseContext($Cart, $this->getUser());
-
-            return $this->purchaseFlow->validate($Cart, $purchaseContext);
-        }, $Carts);
+        if ($route == 'block_cart_sp') {
+            return $this->render('Block/nav_sp.twig', [
+                'totalQuantity' => $totalQuantity,
+                'totalPrice' => $totalPrice,
+                'Carts' => $Carts,
+            ]);
+        } else {
+            return $this->render('Block/cart.twig', [
+                'totalQuantity' => $totalQuantity,
+                'totalPrice' => $totalPrice,
+                'Carts' => $Carts,
+            ]);
+        }
     }
 }

@@ -20,19 +20,17 @@ use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Cart;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\Customer;
+use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\OrderStatus;
-use Eccube\Entity\Master\ShippingStatus;
-use Eccube\Entity\Master\TaxDisplayType;
-use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
 use Eccube\Repository\DeliveryFeeRepository;
 use Eccube\Repository\DeliveryRepository;
+use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\Master\OrderItemTypeRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
-use Eccube\Repository\Master\ShippingStatusRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Repository\TaxRuleRepository;
@@ -80,11 +78,6 @@ class OrderHelper
     protected $orderRepository;
 
     /**
-     * @var ShippingStatusRepository
-     */
-    protected $shippingStatusRepository;
-
-    /**
      * @var EntityManager
      */
     protected $entityManager;
@@ -93,6 +86,16 @@ class OrderHelper
      * @var EccubeConfig
      */
     protected $eccubeConfig;
+
+    /**
+     * @var \Mobile_Detect
+     */
+    protected $mobileDetect;
+
+    /**
+     * @var DeviceTypeRepository
+     */
+    protected $deviceTypeRepository;
 
     /**
      * OrderHelper constructor.
@@ -104,9 +107,10 @@ class OrderHelper
      * @param DeliveryRepository $deliveryRepository
      * @param PaymentRepository $paymentRepository
      * @param OrderRepository $orderRepository
-     * @param ShippingStatusRepository $shippingStatusRepository
      * @param EntityManager $entityManager
      * @param EccubeConfig $eccubeConfig
+     * @param \Mobile_Detect $mobileDetect
+     * @param DeviceTypeRepository $deviceTypeRepository
      */
     public function __construct(
         OrderItemTypeRepository $orderItemTypeRepository,
@@ -116,9 +120,10 @@ class OrderHelper
         DeliveryRepository $deliveryRepository,
         PaymentRepository $paymentRepository,
         OrderRepository $orderRepository,
-        ShippingStatusRepository $shippingStatusRepository,
         EntityManagerInterface $entityManager,
-        EccubeConfig $eccubeConfig
+        EccubeConfig $eccubeConfig,
+        \Mobile_Detect $mobileDetect,
+        DeviceTypeRepository $deviceTypeRepository
     ) {
         $this->orderItemTypeRepository = $orderItemTypeRepository;
         $this->orderStatusRepository = $orderStatusRepository;
@@ -127,9 +132,10 @@ class OrderHelper
         $this->deliveryRepository = $deliveryRepository;
         $this->paymentRepository = $paymentRepository;
         $this->orderRepository = $orderRepository;
-        $this->shippingStatusRepository = $shippingStatusRepository;
         $this->entityManager = $entityManager;
         $this->eccubeConfig = $eccubeConfig;
+        $this->mobileDetect = $mobileDetect;
+        $this->deviceTypeRepository = $deviceTypeRepository;
     }
 
     /**
@@ -153,6 +159,9 @@ class OrderHelper
         // 顧客情報の設定
         $this->setCustomer($Order, $Customer);
 
+        $DeviceType = $this->deviceTypeRepository->find($this->mobileDetect->isMobile() ? DeviceType::DEVICE_TYPE_SP : DeviceType::DEVICE_TYPE_PC);
+        $Order->setDeviceType($DeviceType);
+
         // 明細情報の設定
         $OrderItems = $this->createOrderItemsFromCartItems($CartItems);
         $OrderItemsGroupBySaleType = array_reduce($OrderItems, function ($result, $item) {
@@ -165,15 +174,17 @@ class OrderHelper
 
         foreach ($OrderItemsGroupBySaleType as $OrderItems) {
             $Shipping = $this->createShippingFromCustomer($Customer);
+            $Shipping->setOrder($Order);
             $this->addOrderItems($Order, $Shipping, $OrderItems);
             $this->setDefaultDelivery($Shipping);
             $this->entityManager->persist($Shipping);
+            $Order->addShipping($Shipping);
         }
 
         $this->setDefaultPayment($Order);
 
         $this->entityManager->persist($Order);
-        $this->entityManager->flush();
+        //$this->entityManager->flush();
 
         return $Order;
     }
@@ -245,17 +256,13 @@ class OrderHelper
     private function createOrderItemsFromCartItems($CartItems)
     {
         $ProductItemType = $this->orderItemTypeRepository->find(OrderItemType::PRODUCT);
-        // TODO
-        $TaxExclude = $this->entityManager->getRepository(TaxDisplayType::class)->find(TaxDisplayType::EXCLUDED);
-        $Taxion = $this->entityManager->getRepository(TaxType::class)->find(TaxType::TAXATION);
 
-        return array_map(function ($item) use ($ProductItemType, $TaxExclude, $Taxion) {
+        return array_map(function ($item) use ($ProductItemType) {
             /* @var $item CartItem */
             /* @var $ProductClass \Eccube\Entity\ProductClass */
             $ProductClass = $item->getProductClass();
             /* @var $Product \Eccube\Entity\Product */
             $Product = $ProductClass->getProduct();
-            $TaxRule = $this->taxRuleRepository->getByRule($Product, $ProductClass);
 
             $OrderItem = new OrderItem();
             $OrderItem
@@ -265,11 +272,7 @@ class OrderHelper
                 ->setProductCode($ProductClass->getCode())
                 ->setPrice($ProductClass->getPrice02())
                 ->setQuantity($item->getQuantity())
-                ->setTaxRule($TaxRule->getId())
-                ->setTaxRate($TaxRule->getTaxRate())
-                ->setOrderItemType($ProductItemType)
-                ->setTaxDisplayType($TaxExclude)
-                ->setTaxType($Taxion);
+                ->setOrderItemType($ProductItemType);
 
             $ClassCategory1 = $ProductClass->getClassCategory1();
             if (!is_null($ClassCategory1)) {
@@ -300,9 +303,6 @@ class OrderHelper
             ->setPref($Customer->getPref())
             ->setAddr01($Customer->getAddr01())
             ->setAddr02($Customer->getAddr02());
-
-        $ShippingStatus = $this->shippingStatusRepository->find(ShippingStatus::PREPARED);
-        $Shipping->setShippingStatus($ShippingStatus);
 
         return $Shipping;
     }
@@ -357,8 +357,6 @@ class OrderHelper
             $Order->setPayment($Payment);
             $Order->setPaymentMethod($Payment->getMethod());
         }
-        // TODO CalculateChargeStrategy でセットする
-        // $Order->setCharge($Payment->getCharge());
     }
 
     private function addOrderItems(Order $Order, Shipping $Shipping, array $OrderItems)

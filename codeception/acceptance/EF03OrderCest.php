@@ -36,10 +36,11 @@ class EF03OrderCest
         $I->loginAsMember($customer->getEmail(), 'password');
 
         // 商品詳細パーコレータ カートへ
-        ProductDetailPage::go($I, 2)
+        $productPage = ProductDetailPage::go($I, 2)
             ->カートに入れる(1);
+        $I->wait(5);
 
-        $I->acceptPopup();
+        $productPage->カートへ進む();
 
         CartPage::go($I)
             ->お買い物を続ける();
@@ -55,10 +56,11 @@ class EF03OrderCest
         $customer = $createCustomer();
         $I->loginAsMember($customer->getEmail(), 'password');
 
-        ProductDetailPage::go($I, 2)
+        $productPage = ProductDetailPage::go($I, 2)
             ->カートに入れる(1);
+        $I->wait(5);
 
-        $I->acceptPopup();
+        $productPage->カートへ進む();
 
         CartPage::go($I)
             ->商品削除(1);
@@ -73,10 +75,11 @@ class EF03OrderCest
         $I->loginAsMember($customer->getEmail(), 'password');
 
         // 商品詳細パーコレータ カートへ
-        ProductDetailPage::go($I, 2)
+        $productPage = ProductDetailPage::go($I, 2)
             ->カートに入れる(1);
+        $I->wait(5);
 
-        $I->acceptPopup();
+        $productPage->カートへ進む();
 
         $cartPage = CartPage::go($I)
             ->商品数量増やす(1);
@@ -94,10 +97,12 @@ class EF03OrderCest
         $I->loginAsMember($customer->getEmail(), 'password');
 
         // 商品詳細パーコレータ カートへ
-        ProductDetailPage::go($I, 2)
+        $productPage = ProductDetailPage::go($I, 2)
             ->カートに入れる(2);
 
-        $I->acceptPopup();
+        $I->wait(5);
+
+        $productPage->カートへ進む();
 
         $cartPage = CartPage::go($I)
             ->商品数量減らす(1);
@@ -115,10 +120,12 @@ class EF03OrderCest
         $BaseInfo = Fixtures::get('baseinfo');
 
         // 商品詳細パーコレータ カートへ
-        ProductDetailPage::go($I, 2)
+        $productPage = ProductDetailPage::go($I, 2)
             ->カートに入れる(1);
 
-        $I->acceptPopup();
+        $I->wait(5);
+
+        $productPage->カートへ進む();
 
         CartPage::go($I)
             ->レジに進む();
@@ -161,10 +168,12 @@ class EF03OrderCest
         $new_email = microtime(true).'.'.$faker->safeEmail;
         $BaseInfo = Fixtures::get('baseinfo');
 
-        ProductDetailPage::go($I, 2)
+        $productPage = ProductDetailPage::go($I, 2)
             ->カートに入れる(1);
 
-        $I->acceptPopup();
+        $I->wait(5);
+
+        $productPage->カートへ進む();
 
         CartPage::go($I)
             ->レジに進む();
@@ -227,10 +236,12 @@ class EF03OrderCest
         $BaseInfo = Fixtures::get('baseinfo');
 
         // 商品詳細パーコレータ カートへ
-        ProductDetailPage::go($I, 2)
+        $productPage = ProductDetailPage::go($I, 2)
             ->カートに入れる(1);
 
-        $I->acceptPopup();
+        $I->wait(5);
+
+        $productPage->カートへ進む();
 
         CartPage::go($I)
             ->レジに進む();
@@ -309,10 +320,12 @@ class EF03OrderCest
         $BaseInfo = Fixtures::get('baseinfo');
 
         // 商品詳細パーコレータ カートへ
-        ProductDetailPage::go($I, 2)
+        $productPage = ProductDetailPage::go($I, 2)
             ->カートに入れる(1);
 
-        $I->acceptPopup();
+        $I->wait(5);
+
+        $productPage->カートへ進む();
 
         CartPage::go($I)
             ->レジに進む();
@@ -326,11 +339,13 @@ class EF03OrderCest
         $I->logoutAsMember();
 
         // 商品詳細フォーク カートへ
-        ProductDetailPage::go($I, 1)
+        $productPage = ProductDetailPage::go($I, 1)
             ->規格選択(['プラチナ', '150cm'])
             ->カートに入れる(1);
 
-        $I->acceptPopup();
+        $I->wait(5);
+
+        $productPage->カートへ進む();
 
         CartPage::go($I)
             ->レジに進む();
@@ -384,10 +399,12 @@ class EF03OrderCest
         $BaseInfo = Fixtures::get('baseinfo');
 
         // 商品詳細パーコレータ カートへ
-        ProductDetailPage::go($I, 2)
+        $productPage = ProductDetailPage::go($I, 2)
             ->カートに入れる($cart_quantity);
 
-        $I->acceptPopup();
+        $I->wait(5);
+
+        $productPage->カートへ進む();
 
         CartPage::go($I)
             ->レジに進む();
@@ -515,12 +532,12 @@ class EF03OrderCest
         $I->loginAsMember($customer->getEmail(), 'password');
 
         // 商品詳細パーコレータ カートへ
-        ProductDetailPage::go($I, 2)
+        $productPage = ProductDetailPage::go($I, 2)
             ->カートに入れる(1);
 
-        $I->wait(3);
+        $I->wait(5);
 
-        $I->acceptPopup();
+        $productPage->カートへ進む();
 
         CartPage::go($I)
             ->レジに進む();
@@ -540,17 +557,18 @@ class EF03OrderCest
 
         if ($ProductClass->getClassCategory2()) {
             // 商品詳細
-            ProductDetailPage::go($I, $Product->getId())
+            $productPage = ProductDetailPage::go($I, $Product->getId())
                 ->規格選択([$ProductClass->getClassCategory1(), $ProductClass->getClassCategory2()])
                 ->カートに入れる(1);
         } else {
-            ProductDetailPage::go($I, $Product->getId())
+            $productPage = ProductDetailPage::go($I, $Product->getId())
                 ->規格選択([$ProductClass->getClassCategory1()])
                 ->カートに入れる(1);
         }
 
-        $I->wait(3);
-        $I->acceptPopup();
+        $I->wait(5);
+
+        $productPage->カートへ進む();
 
         CartPage::go($I)
             ->レジに進む();
@@ -584,10 +602,11 @@ class EF03OrderCest
         $BaseInfo = Fixtures::get('baseinfo');
 
         // 商品詳細パーコレータ カートへ
-        ProductDetailPage::go($I, 2)
+        $productPage = ProductDetailPage::go($I, 2)
             ->カートに入れる($cart_quantity);
+        $I->wait(5);
 
-        $I->acceptPopup();
+        $productPage->カートへ進む();
 
         CartPage::go($I)
             ->レジに進む();
@@ -741,10 +760,12 @@ class EF03OrderCest
         $BaseInfo = Fixtures::get('baseinfo');
 
         // 商品詳細パーコレータ カートへ
-        ProductDetailPage::go($I, 2)
+        $productPage = ProductDetailPage::go($I, 2)
             ->カートに入れる($cart_quantity);
 
-        $I->acceptPopup();
+        $I->wait(5);
+
+        $productPage->カートへ進む();
 
         CartPage::go($I)
             ->レジに進む();
@@ -836,10 +857,12 @@ class EF03OrderCest
         $I->see($name2, '#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div:nth-child(8) > p:nth-child(1)');
 
         // 商品詳細パーコレータ カートへ
-        ProductDetailPage::go($I, 2)
+        $productPage = ProductDetailPage::go($I, 2)
             ->カートに入れる($cart_quantity);
 
-        $I->acceptPopup();
+        $I->wait(5);
+
+        $productPage->カートへ進む();
 
         // 一旦カートに戻る
         CartPage::go($I)
@@ -903,5 +926,106 @@ class EF03OrderCest
         MultipleShippingPage::at($I);
 
         $I->see('選択された商品(パーコレーター)は販売制限しております。', 'p.errormsg');
+    }
+
+    public function order_複数ブラウザでログインしてカートに追加する(\AcceptanceTester $I)
+    {
+        $I->logoutAsMember();
+        $I->saveSessionSnapshot('not_login');
+
+        $createCustomer = Fixtures::get('createCustomer');
+        /** @var Customer $customer */
+        $customer = $createCustomer();
+
+        // ブラウザ1ログイン
+        $I->loginAsMember($customer->getEmail(), 'password');
+        $I->saveSessionSnapshot('browser1');
+
+        // ブラウザ2ログイン
+        $I->loadSessionSnapshot('not_login');
+        $I->loginAsMember($customer->getEmail(), 'password');
+        $I->saveSessionSnapshot('browser2');
+
+        /*
+         * ブラウザ1でカートに商品を入れる
+         */
+        $I->loadSessionSnapshot('browser1');
+
+        $CartPage = ProductDetailPage::go($I, 2)
+            ->カートに入れる(1)
+            ->カートへ進む();
+
+        $I->assertEquals(1, $CartPage->明細数());
+        $I->assertEquals('パーコレーター', $CartPage->商品名(1));
+
+        /*
+         * ブラウザ2にのカートにも反映されている
+         */
+        $I->loadSessionSnapshot('browser2');
+
+        $CartPage = CartPage::go($I);
+
+        $I->assertEquals(1, $CartPage->明細数());
+        $I->assertEquals('パーコレーター', $CartPage->商品名(1));
+    }
+
+
+    public function order_複数ブラウザ_片方でログインしてカートに追加しもう一方にログインして別の商品を追加する(\AcceptanceTester $I)
+    {
+        $I->logoutAsMember();
+        $I->saveSessionSnapshot('not_login');
+
+        $createCustomer = Fixtures::get('createCustomer');
+        /** @var Customer $customer */
+        $customer = $createCustomer();
+
+        // ブラウザ1ログイン
+        $I->loginAsMember($customer->getEmail(), 'password');
+        $I->saveSessionSnapshot('browser1');
+
+        /*
+         * ブラウザ1でカートに商品を入れる
+         */
+        $I->loadSessionSnapshot('browser1');
+
+        $CartPage = ProductDetailPage::go($I, 2)
+            ->カートに入れる(1)
+            ->カートへ進む();
+
+        $I->assertEquals(1, $CartPage->明細数());
+        $I->assertContains('パーコレーター', $CartPage->商品名(1));
+
+        /*
+         * ブラウザ2で未ログインのまま別の商品を入れる
+         */
+        $I->loadSessionSnapshot('not_login');
+        $CartPage = ProductDetailPage::go($I, 1)
+            ->カートに入れる(1, ['1' => '金'], ['4' => '120mm'])
+            ->カートへ進む();
+
+        $I->assertEquals(1, $CartPage->明細数());
+        $I->assertContains('ディナーフォーク', $CartPage->商品名(1));
+
+        /*
+         * ブラウザ2でログインするとブラウザ1のカートとマージされている
+         */
+        $I->loginAsMember($customer->getEmail(), 'password');
+
+        $CartPage = CartPage::go($I);
+        $I->assertEquals(2, $CartPage->明細数());
+        $itemNames = $I->grabMultiple(['css' => '.ec-cartRow__name a']);
+        $I->assertContains('ディナーフォーク', $itemNames);
+        $I->assertContains('パーコレーター', $itemNames);
+
+        /*
+         * ブラウザ1のカートもマージされている
+         */
+        $I->loadSessionSnapshot('browser1');
+
+        $CartPage = CartPage::go($I);
+        $I->assertEquals(2, $CartPage->明細数());
+        $itemNames = $I->grabMultiple(['css' => '.ec-cartRow__name a']);
+        $I->assertContains('ディナーフォーク', $itemNames);
+        $I->assertContains('パーコレーター', $itemNames);
     }
 }

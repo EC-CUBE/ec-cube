@@ -76,14 +76,26 @@ file that was distributed with this source code.
                                 </div>
                             </dd>
                         </dl>
-                    </div>
-                    {% for f in form %}
-                        {% if f.vars.name matches '[^plg*]' %}
-                            <div class="extra-form dl_table">
+                        {# エンティティ拡張の自動出力 #}
+                        {% for f in form if f.vars.eccube_form_options.auto_render %}
+                            {% if f.vars.eccube_form_options.form_theme %}
+                                {% form_theme f f.vars.eccube_form_options.form_theme %}
                                 {{ form_row(f) }}
-                            </div>
-                        {% endif %}
-                    {% endfor %}
+                            {% else %}
+                                <dl>
+                                    <dt>
+                                        {{ form_label(f) }}
+                                    </dt>
+                                    <dd>
+                                        <div class="ec-select{{ has_errors(f) ? ' error' }}">
+                                            {{ form_widget(f) }}
+                                            {{ form_errors(f) }}
+                                        </div>
+                                    </dd>
+                                </dl>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                     <div id="detail_box__button_menu" class="row no-padding">
                         <div class="btn_group col-sm-offset-4 col-sm-4">
                             <p id="detail_box__insert_button">

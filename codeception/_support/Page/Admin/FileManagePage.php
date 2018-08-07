@@ -62,6 +62,12 @@ class FileManagePage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    public function 一覧_ファイル名_クリック($rowNum)
+    {
+        $this->tester->click("#fileList table > tbody > tr:nth-child(${rowNum}) > td:nth-child(2) a");
+        return $this;
+    }
+
     public function 一覧_削除($rowNum)
     {
         $this->tester->click("#fileList table > tbody > tr:nth-child(${rowNum}) > td:nth-child(5) a.action-delete");
@@ -70,18 +76,18 @@ class FileManagePage extends AbstractAdminPageStyleGuide
 
     public function 一覧_削除_accept($rowNum)
     {
-        $this->tester->click("#fileList table > tbody > tr:nth-child(${rowNum}) > td:nth-child(5) > div > div:nth-child(3) div.modal a.btn-ec-delete");
+        $this->tester->waitForElementVisible("#confirmModal-${rowNum} div.modal-footer a.btn-ec-delete");
+        $this->tester->click("#confirmModal-${rowNum} div.modal-footer a.btn-ec-delete");
         return $this;
     }
 
     /**
      * パンくずのパスを取得
-     * @param $index int 0から始まる(0はuser_data)
+     * @param $index int 1から始まる(1はuser_data)
      * @return string
      */
     public function パンくず($index)
     {
-        $index = ($index * 2) + 1;
-        return "#bread > a:nth-child(${index})";
+        return "//*[@id=\"bread\"]/li[${index}]";
     }
 }

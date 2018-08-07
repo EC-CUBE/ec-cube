@@ -21,6 +21,10 @@ file that was distributed with this source code.
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datetimepicker.min.css', 'admin') }}">
 {% endblock stylesheet %}
 
+{% block javascript %}
+    <script src="//yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
+{% endblock %}
+
 {% block main %}
     <form name="form1" role="form" class="form-horizontal h-adr" id="point_form" method="post" action="">
         <span class="p-country-name" style="display:none;">Japan</span>
@@ -32,7 +36,7 @@ file that was distributed with this source code.
                 <div class="c-primaryCol">
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header"><span>{{ 'admin_setting_shop_shop_master.label.setting'|trans }}</span></div>
-                        <div class="card-body">
+                        <div id="ex-shop-basic" class="card-body">
                             <div class="row">
                                 <div class="col-3"><span>{{ 'common.label.company_name'|trans }}</span></div>
                                 <div class="col mb-2">
@@ -154,11 +158,26 @@ file that was distributed with this source code.
                                     {{ form_errors(form.message) }}
                                 </div>
                             </div>
+                            {# エンティティ拡張の自動出力 #}
+                            {% for f in form if f.vars.eccube_form_options.auto_render %}
+                                {% if f.vars.eccube_form_options.form_theme %}
+                                    {% form_theme f f.vars.eccube_form_options.form_theme %}
+                                    {{ form_row(f) }}
+                                {% else %}
+                                    <div class="row">
+                                        <div class="col-3"><span>{{ f.vars.label|trans }}</span></div>
+                                        <div class="col mb-2">
+                                            {{ form_widget(f) }}
+                                            {{ form_errors(f) }}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
                         </div>
                     </div>
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header"><span>{{ 'admin.setting.shop.shop_master.632'|trans }}</span></div>
-                        <div class="card-body">
+                        <div id="ex-shop-delivery" class="card-body">
                             <div class="row">
                                 <div class="col-3">
                                     <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>{{ 'common.label.option_delivery_fee_free_amount'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
@@ -190,7 +209,7 @@ file that was distributed with this source code.
                     </div>
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header"><span>{{ 'admin.setting.shop.shop_master.633'|trans }}</span></div>
-                        <div class="card-body">
+                        <div id="ex-shop-customer" class="card-body">
                             <div class="row">
                                 <div class="col-3"><span>{{ 'common.label.option_customer_activate'|trans }}</span></div>
                                 <div class="col mb-2">
@@ -223,7 +242,7 @@ file that was distributed with this source code.
                     </div>
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header"><span>{{ 'admin.setting.shop.shop_master.634'|trans }}</span></div>
-                        <div class="card-body">
+                        <div id="ex-shop-product" class="card-body">
                             <div class="row">
                                 <div class="col-3"><span>{{ 'common.label.nostock_hidden'|trans }}</span></div>
                                 <div class="col mb-2">
@@ -235,7 +254,7 @@ file that was distributed with this source code.
                     </div>
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header"><span>{{ 'admin.setting.shop.tax_rule.639'|trans }}</span></div>
-                        <div class="card-body">
+                        <div id="ex-shop-tax" class="card-body">
                             <div class="row">
                                 <div class="col-3">
                                     <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip"><span>{{ 'shopmaster.label.option_product_tax_rule'|trans }}</span></div>
@@ -249,7 +268,7 @@ file that was distributed with this source code.
                     </div>
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header"><span>{{ 'shopmaster.title.option_point'|trans }}</span></div>
-                        <div class="card-body">
+                        <div id="ex-shop-point" class="card-body">
                             <div class="row">
                                 <div class="col-3"><span>{{ 'shopmaster.label.option_point'|trans }}</span></div>
                                 <div class="col mb-2">
@@ -297,7 +316,7 @@ file that was distributed with this source code.
                         <div class="c-conversionArea__leftBlockItem">
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div id="ex-conversion-action" class="col-6">
                         <div class="row align-items-center justify-content-end">
                             <div class="col-auto">
                                 <button class="btn btn-ec-conversion px-5" type="submit">{{ 'common.label.save'|trans }}</button>

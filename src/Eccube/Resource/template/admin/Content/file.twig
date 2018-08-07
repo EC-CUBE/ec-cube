@@ -12,52 +12,47 @@ file that was distributed with this source code.
 
 {% set menus = ['content', 'file'] %}
 
-{% block title %}{{'admin.content.file.24'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.content.file.23'|trans}}{% endblock %}
+{% block title %}{{ 'admin.content.file.24'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.content.file.23'|trans }}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block javascript %}
-<script src="{{ asset('assets/js/file_manager.js', 'admin') }}"></script>
-<script>
-    arrTree = {{ tpl_javascript|raw }};
-    var paths = {{ paths|raw }}; // TODO 仮実装
-    $(function() {
-        var bread_crumbs = {{ now_dir_list|raw }};
-        var file_path = '';
-        var $delimiter = '<span>&nbsp;/&nbsp;</span>';
-        var $node = $('#bread');
-        var total = bread_crumbs.length;
-        for (var i in bread_crumbs) {
-            file_path += '/' + bread_crumbs[i];
-            if (i == total - 1) {
-                $li = $('<li class="breadcrumb-item active" />').text(bread_crumbs[i]);
-            } else {
-                $a = $('<a href="javascript:;" onclick="eccube.fileManager.openFolder(\'' + file_path.replace(/user_data/, '') + '\'); return false;" />')
-                    .text(bread_crumbs[i]);
-                $li = $('<li class="breadcrumb-item" />').append($a);
+    <script src="{{ asset('assets/js/file_manager.js', 'admin') }}"></script>
+    <script>
+        arrTree = {{ tpl_javascript|raw }};
+        var paths = {{ paths|raw }}; // TODO 仮実装
+        $(function() {
+            var bread_crumbs = {{ now_dir_list|raw }};
+            var file_path = '';
+            var $delimiter = '<span>&nbsp;/&nbsp;</span>';
+            var $node = $('#bread');
+            var total = bread_crumbs.length;
+            for (var i in bread_crumbs) {
+                file_path += '/' + bread_crumbs[i];
+                if (i == total - 1) {
+                    $li = $('<li class="breadcrumb-item active" />').text(bread_crumbs[i]);
+                } else {
+                    $a = $('<a href="javascript:;" onclick="eccube.fileManager.openFolder(\'' + file_path.replace(/user_data/, '') + '\'); return false;" />')
+                        .text(bread_crumbs[i]);
+                    $li = $('<li class="breadcrumb-item" />').append($a);
+                }
+                $li.appendTo($node);
+                if (i < total - 1) $node.append($delimiter);
             }
-            $li.appendTo($node);
-            if (i < total - 1) $node.append($delimiter);
-        }
-    });
+        });
 
-    eccube.fileManager.IMG_FOLDER_CLOSE   = "<svg class='cb cb-folder'><use xlink:href='#cb-folder' /></svg>";  // フォルダクローズ時画像
-    eccube.fileManager.IMG_FOLDER_OPEN    = "<svg class='cb cb-folder-open'><use xlink:href='#cb-folder-open' /></svg>";   // フォルダオープン時画像
-    eccube.fileManager.IMG_PLUS           = "<svg class='cb cb-plus-square'><use xlink:href='#cb-plus-square' /></svg>";          // プラスライン
-    eccube.fileManager.IMG_MINUS          = "<svg class='cb cb-minus-square'><use xlink:href='#cb-minus-square' /></svg>";         // マイナスライン
-    eccube.fileManager.IMG_NORMAL         = "　";         // スペース
-    eccube.fileManager.viewFileTree('directory_userdata', arrTree, '{{ tpl_now_dir }}', 'tree_select_file', 'tree_status', 'move');
-</script>
+        eccube.fileManager.viewFileTree('directory_userdata', arrTree, '{{ tpl_now_dir }}', 'tree_select_file', 'tree_status', 'move');
+    </script>
 {% endblock javascript %}
 {% block main %}
-    <form name="form1" id="form1" method="post" action="?"  enctype="multipart/form-data">
-        <input type="hidden" name="mode" value="" />
-        <input type="hidden" name="now_file" value="{{ tpl_now_dir }}" />
-        <input type="hidden" name="now_dir" value="{{ tpl_now_dir }}" />
-        <input type="hidden" name="tree_select_file" value="{{ tpl_now_dir }}" />
-        <input type="hidden" name="tree_status" value="" />
-        <input type="hidden" name="select_file" value="" />
+    <form name="form1" id="form1" method="post" action="?" enctype="multipart/form-data">
+        <input type="hidden" name="mode" value=""/>
+        <input type="hidden" name="now_file" value="{{ tpl_now_dir }}"/>
+        <input type="hidden" name="now_dir" value="{{ tpl_now_dir }}"/>
+        <input type="hidden" name="tree_select_file" value="{{ tpl_now_dir }}"/>
+        <input type="hidden" name="tree_status" value=""/>
+        <input type="hidden" name="select_file" value=""/>
         {{ form_widget(form._token) }}
         <div class="c-outsideBlock">
             <div class="c-outsideBlock__contents">
@@ -67,14 +62,14 @@ file that was distributed with this source code.
                 <div class="card rounded border-0 mb-4">
                     <div class="card-header"><span class="card-title">{{ 'admin.content.file.title.upload_and_create'|trans }}</span></div>
                     <div class="card-body">
-                        <div class="row mb-2" id="upload_box__file">
+                        <div id="upload_box__file" class="row mb-2">
                             <div class="col-2"><span>{{ 'admin.content.file.label.upload'|trans }}</span></div>
                             <div class="col mb-3">
                                 <div class="mb-2">
                                     {{ form_widget(form.file) }}{# TODO input type="file" の装飾 #}
                                 </div>
                                 <div class="mb-2">
-                                    <a class="btn btn-ec-conversion action-upload" href="javascript:;" onclick="eccube.fileManager.setTreeStatus('tree_status');eccube.setModeAndSubmit('upload','',''); return false;">{{'admin.content.file.26'|trans}}</a>
+                                    <a class="btn btn-ec-conversion action-upload" href="javascript:;" onclick="eccube.fileManager.setTreeStatus('tree_status');eccube.setModeAndSubmit('upload','',''); return false;">{{ 'admin.content.file.26'|trans }}</a>
                                 </div>
                             </div>
                         </div>
@@ -86,7 +81,7 @@ file that was distributed with this source code.
                                         {{ form_widget(form.create_file, {attr: {placeholder: 'admin.content.file.create_dir_placeholder'}}) }}
                                     </div>
                                     <div class="col-auto">
-                                        <a class="btn btn-ec-regular action-create" href="javascript:" onclick="eccube.fileManager.setTreeStatus('tree_status');eccube.setModeAndSubmit('create','',''); return false;">{{'admin.content.file.28'|trans}}</a>
+                                        <a class="btn btn-ec-regular action-create" href="javascript:" onclick="eccube.fileManager.setTreeStatus('tree_status');eccube.setModeAndSubmit('create','',''); return false;">{{ 'admin.content.file.28'|trans }}</a>
                                     </div>
                                 </div>
                             </div>
@@ -95,7 +90,7 @@ file that was distributed with this source code.
                 </div>
             </div>
             {% for error in errors %}
-                <p id="upload_box__error_message" class="text-danger errormsg">{{ error.message|trans }}</p>
+                <p class="text-danger errormsg">{{ error.message|trans }}</p>
             {% endfor %}
 
             <div class="c-contentsArea__cols">
@@ -113,47 +108,47 @@ file that was distributed with this source code.
 
                                     <table class="table">
                                         <tbody>
-                                            {% if tpl_is_top_dir != false %}
-                                                <tr id="parent_dir">
-                                                    <td class="align-middle text-center" style="width: 10%"><i class="fa fa-folder-o fa-2x"></i></td>
-                                                    <td class="align-middle"><a href="javascript:;" onclick="eccube.fileManager.openFolder('{{ tpl_parent_dir }}')"><i class="fa fa-reply"></i></a></td>
-                                                    <td class="align-middle">&nbsp;</td>
-                                                    <td class="align-middle">&nbsp;</td>
-                                                    <td class="align-middle">&nbsp;</td>
-                                                </tr>
-                                            {% endif %}
-                                            {% for file in arrFileList %}
-                                                <tr id="{{ loop.index }}" style="">
-                                                    <td class="align-middle text-center" onDblClick="eccube.fileManager.setTreeStatus('tree_status');eccube.fileManager.doubleClick(arrTree, '{{ file.file_path }}', {% if file.is_dir %}true{% else %}false{% endif %} '{{ tpl_now_dir }}', false)">
-                                                        {% if file.is_dir %}
-                                                            <i class="fa fa-folder-o fa-2x"></i>
-                                                        {% else %}
-                                                            <div class="d-inline-block p-3 bg-light">{{ file.extension|file_ext_icon({class: "fa-2x"}) }} </div>
-                                                        {% endif %}
-                                                    </td>
-                                                    <td class="align-middle">
-                                                        {% if file.is_dir %}
-                                                            <a href="javascript:;" onclick="eccube.setValue('tree_select_file', '{{ file.file_path }}', 'form1'); eccube.fileManager.selectFile('{{ loop.index }}', '#808080');eccube.setModeAndSubmit('move','',''); return false;">{{ file.file_name }}</a>
-                                                        {% else %}
-                                                            {{ file.file_name }}
-                                                        {% endif %}
-                                                    </td>
-                                                    <td class="align-middle">
-                                                        {% if not file.is_dir %}
-                                                            {{ file.file_size }}
-                                                        {% endif %}
-                                                    </td>
-                                                    <td class="align-middle">
-                                                        {{ file.file_time|date_sec }} {{ 'admin.content.file.31'|trans }}
-                                                    </td>
+                                        {% if tpl_is_top_dir != false %}
+                                            <tr>
+                                                <td class="align-middle text-center" style="width: 10%"><i class="fa fa-folder-o fa-2x"></i></td>
+                                                <td class="align-middle"><a href="javascript:;" onclick="eccube.fileManager.openFolder('{{ tpl_parent_dir }}')"><i class="fa fa-reply"></i></a></td>
+                                                <td class="align-middle">&nbsp;</td>
+                                                <td class="align-middle">&nbsp;</td>
+                                                <td class="align-middle">&nbsp;</td>
+                                            </tr>
+                                        {% endif %}
+                                        {% for file in arrFileList %}
+                                            <tr id="{{ loop.index }}">
+                                                <td class="align-middle text-center" onDblClick="eccube.fileManager.setTreeStatus('tree_status');eccube.fileManager.doubleClick(arrTree, '{{ file.file_path }}', {% if file.is_dir %}true{% else %}false{% endif %} '{{ tpl_now_dir }}', false)">
                                                     {% if file.is_dir %}
-                                                        <td class="align-middle text-right pr-3">
-                                                            <div class="row justify-content-end">
+                                                        <i class="fa fa-folder-o fa-2x"></i>
+                                                    {% else %}
+                                                        <div class="d-inline-block p-3 bg-light">{{ file.extension|file_ext_icon({class: "fa-2x"}) }} </div>
+                                                    {% endif %}
+                                                </td>
+                                                <td class="align-middle">
+                                                    {% if file.is_dir %}
+                                                        <a href="javascript:;" onclick="eccube.setValue('tree_select_file', '{{ file.file_path }}', 'form1'); eccube.fileManager.selectFile('{{ loop.index }}', '#808080');eccube.setModeAndSubmit('move','',''); return false;">{{ file.file_name }}</a>
+                                                    {% else %}
+                                                        {{ file.file_name }}
+                                                    {% endif %}
+                                                </td>
+                                                <td class="align-middle">
+                                                    {% if not file.is_dir %}
+                                                        {{ file.file_size }}
+                                                    {% endif %}
+                                                </td>
+                                                <td class="align-middle">
+                                                    {{ file.file_time|date_sec }} {{ 'admin.content.file.31'|trans }}
+                                                </td>
+                                                {% if file.is_dir %}
+                                                    <td class="align-middle text-right pr-3">
+                                                        <div class="row justify-content-end">
                                                             <div class="col-auto text-center">
                                                                 <a class="btn btn-ec-actionIcon action-delete {% if file.is_empty == false %}disabled{% endif %}"
                                                                    data-toggle="modal" data-target="#confirmModal-{{ loop.index }}"
-                                                                   data-tooltip="tooltip" data-placement="top" title="{{'admin.content.file.34'|trans}}"
-                                                                   data-original-title="{{'admin.content.file.34'|trans}}">
+                                                                   data-tooltip="tooltip" data-placement="top" title="{{ 'admin.content.file.34'|trans }}"
+                                                                   data-original-title="{{ 'admin.content.file.34'|trans }}">
                                                                     <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a>
                                                                 <div class="modal fade" id="confirmModal-{{ loop.index }}" tabindex="-1" role="dialog" aria-labelledby="confirmModal-{{ loop.index }}" aria-hidden="true">
                                                                     <div class="modal-dialog" role="document">
@@ -176,49 +171,49 @@ file that was distributed with this source code.
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                        </div>
+                                                    </td>
+                                                {% else %}
+                                                    <td class="align-middle text-right pr-3">
+                                                        <div class="row justify-content-end">
+                                                            <div class="col-auto text-center">
+                                                                <a href="{{ url('admin_content_file_view') }}?file={{ file.file_path|e('url') }}" target="_blank" class="btn btn-ec-actionIcon action-view" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ 'admin.content.file.36'|trans }}"><i class="fa fa-eye fa-lg text-secondary" aria-hidden="true"></i></a>
                                                             </div>
-                                                        </td>
-                                                    {% else %}
-                                                        <td class="align-middle text-right pr-3">
-                                                            <div class="row justify-content-end">
-                                                                <div class="col-auto text-center">
-                                                                    <a href="{{ url('admin_content_file_view') }}?file={{ file.file_path|e('url') }}" target="_blank" class="btn btn-ec-actionIcon action-view" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{'admin.content.file.36'|trans}}" ><i class="fa fa-eye fa-lg text-secondary" aria-hidden="true"></i></a>
-                                                                </div>
 
-                                                                <div class="col-auto text-center">
-                                                                    <a href="{{ url('admin_content_file_download') }}?select_file={{ file.file_path|e('url') }}" class="btn btn-ec-actionIcon action-download" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{'admin.content.file.37'|trans}}"><i class="fa fa-cloud-download fa-lg text-secondary" aria-hidden="true"></i></a>
-                                                                </div>
+                                                            <div class="col-auto text-center">
+                                                                <a href="{{ url('admin_content_file_download') }}?select_file={{ file.file_path|e('url') }}" class="btn btn-ec-actionIcon action-download" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ 'admin.content.file.37'|trans }}"><i class="fa fa-cloud-download fa-lg text-secondary" aria-hidden="true"></i></a>
+                                                            </div>
 
-                                                                <div class="col-auto text-center">
-                                                                    <a class="btn btn-ec-actionIcon action-delete" data-toggle="modal" data-target="#confirmModal-{{ loop.index }}" data-tooltip="tooltip" data-placement="top" title="{{'admin.content.file.34'|trans}}" data-original-title="{{'admin.content.file.34'|trans}}"><i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a>
+                                                            <div class="col-auto text-center">
+                                                                <a class="btn btn-ec-actionIcon action-delete" data-toggle="modal" data-target="#confirmModal-{{ loop.index }}" data-tooltip="tooltip" data-placement="top" title="{{ 'admin.content.file.34'|trans }}" data-original-title="{{ 'admin.content.file.34'|trans }}"><i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a>
 
-                                                                    <div class="modal fade" id="confirmModal-{{ loop.index }}" tabindex="-1" role="dialog" aria-labelledby="confirmModal-{{ loop.index }}" aria-hidden="true">
-                                                                        <div class="modal-dialog" role="document">
-                                                                            <div class="modal-content">
-                                                                                <div class="modal-header">
-                                                                                    <h5 class="modal-title font-weight-bold">{{ 'admin.content.file.delete.confirm.title'|trans }}</h5>
-                                                                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                                                                </div>
-                                                                                <div class="modal-body text-left">
-                                                                                    <p class="text-left">{{ 'admin.content.file.delete.confirm.message'|trans }}</p>
-                                                                                </div>
-                                                                                <div class="modal-footer">
-                                                                                    <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'common.label.cancel'|trans }}</button>
-                                                                                    <a class="btn btn-ec-delete" data-confirm="false"
-                                                                                            href="{{ url('admin_content_file_delete', { 'select_file': file.file_path}) }}" {{ csrf_token_for_anchor() }} data-method="delete">
-                                                                                        {{ 'common.label.delete'|trans }}
-                                                                                    </a>
-                                                                                </div>
+                                                                <div class="modal fade" id="confirmModal-{{ loop.index }}" tabindex="-1" role="dialog" aria-labelledby="confirmModal-{{ loop.index }}" aria-hidden="true">
+                                                                    <div class="modal-dialog" role="document">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title font-weight-bold">{{ 'admin.content.file.delete.confirm.title'|trans }}</h5>
+                                                                                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                                            </div>
+                                                                            <div class="modal-body text-left">
+                                                                                <p class="text-left">{{ 'admin.content.file.delete.confirm.message'|trans }}</p>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'common.label.cancel'|trans }}</button>
+                                                                                <a class="btn btn-ec-delete" data-confirm="false"
+                                                                                   href="{{ url('admin_content_file_delete', { 'select_file': file.file_path}) }}" {{ csrf_token_for_anchor() }} data-method="delete">
+                                                                                    {{ 'common.label.delete'|trans }}
+                                                                                </a>
                                                                             </div>
                                                                         </div>
                                                                     </div>
-
                                                                 </div>
+
                                                             </div>
-                                                        </td>
-                                                    {% endif %}
-                                                </tr>
-                                            {% endfor %}
+                                                        </div>
+                                                    </td>
+                                                {% endif %}
+                                            </tr>
+                                        {% endfor %}
                                         </tbody>
                                     </table>
                                 </div>
@@ -271,5 +266,5 @@ file that was distributed with this source code.
                     </div>
                 </div>
             </div>
-        </form>
+    </form>
 {% endblock %}
