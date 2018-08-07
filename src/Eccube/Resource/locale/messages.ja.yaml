@@ -314,6 +314,7 @@ admin.common.csv_upload_complete: CSVファイルをアップロードしまし�
 admin.common.csv_upload_error: CSVファイルのアップロードに失敗しました
 admin.common.send_complete: メールを送信しました
 admin.common.send_error: メールの送信に失敗しました
+admin.common.create_complete: 作成しました
 
 # action系のラベル
 admin.common.save: 保存
@@ -334,6 +335,8 @@ admin.common.create: 作成
 admin.common.create__new: 新規作成
 admin.common.up: 上へ
 admin.common.down: 下へ
+admin.common.upload: アップロード
+admin.common.download: ダウンロード
 
 # 汎用ラベル, メッセージ
 admin.common.required: 必須
@@ -720,14 +723,15 @@ admin.content.block_management: ブロック管理
 admin.content.cache_management: キャッシュ管理
 
 # ラベル/メッセージ
-admin.content.file.add_file: ファイルを追加
 admin.content.file.add_file__card_title: ファイル・フォルダを追加
+admin.content.file.add_file: ファイルを追加
 admin.content.file.add_directory: フォルダを追加
-admin.content.file.directory_tree: フォルダ構成
-admin.content.file.file_list: このフォルダ内のファイル
+admin.content.file.directory_name: フォルダ名
+admin.content.file.file_list__card_title: このフォルダ内のファイル
 admin.content.file.updated: 更新
 admin.content.file.delete_confirm_title: '%name%を削除します'
 admin.content.file.delete_confirm_message: 削除してよろしいですか？
+admin.content.file.directory_tree: フォルダ構成
 admin.content.layout_name: レイアウト名
 admin.content.layout__card_title: レイアウト概要
 admin.content.layout_edit__card_title: レイアウト編集
