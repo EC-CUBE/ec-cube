@@ -732,6 +732,11 @@ admin.content.file.updated: 更新
 admin.content.file.delete_confirm_title: '%name%を削除します'
 admin.content.file.delete_confirm_message: 削除してよろしいですか？
 admin.content.file.directory_tree: フォルダ構成
+admin.content.layout_add: レイアウトを新規追加
+admin.content.layout_delete: レイアウトを削除
+admin.content.layout_delete_confirm_title: レイアウトを削除します
+admin.content.layout_delete_confirm_message: レイアウトを削除してよろしいですか？
+admin.content.layout_no_page: ページが登録されていません
 admin.content.layout_name: レイアウト名
 admin.content.layout__card_title: レイアウト概要
 admin.content.layout_edit__card_title: レイアウト編集

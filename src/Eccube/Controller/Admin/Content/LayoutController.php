@@ -103,7 +103,7 @@ class LayoutController extends AbstractController
         $this->entityManager->remove($Layout);
         $this->entityManager->flush($Layout);
 
-        $this->addSuccess('admin.delete.complete', 'admin');
+        $this->addSuccess('admin.common.delete_complete', 'admin');
 
         return $this->redirectToRoute('admin_content_layout');
     }
