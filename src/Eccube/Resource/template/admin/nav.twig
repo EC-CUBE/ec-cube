@@ -8,6 +8,15 @@ http://www.lockon.co.jp/
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
+
+{% block stylesheet %}
+    <style type="text/css">
+        nav .c-mainNavArea__nav li.level2 > a {
+            background: #f3f4f6;
+        }
+    </style>
+{% endblock %}
+
 <nav>
     <ul class="c-mainNavArea__nav">
         <li class="c-mainNavArea__navItem">
@@ -30,7 +39,7 @@ file that was distributed with this source code.
                             {% if level2.url is defined and path(level2.url) in AuthorityRoles %}
                             {% else %}
                                 {% if level2.children is defined and level2.children|length > 0 %}
-                                    <li>
+                                    <li class="level2">
                                         <a class="c-mainNavArea__navItemSubTitle{{ active_menus(menus)[1] != key2 ? ' collapsed' }}"
                                            data-toggle="collapse" href="#nav-{{ key2 }}"
                                            aria-expanded="{{ active_menus(menus)[1] != key2 ? 'true' : 'false' }}"
