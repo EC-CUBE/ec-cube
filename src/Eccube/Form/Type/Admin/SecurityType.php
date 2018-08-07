@@ -64,7 +64,6 @@ class SecurityType extends AbstractType
         $allowHosts = implode("\n", $allowHosts);
         $builder
             ->add('admin_route_dir', TextType::class, [
-                'label' => 'security.label.directory_name',
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
@@ -76,14 +75,12 @@ class SecurityType extends AbstractType
             ])
             ->add('admin_allow_hosts', TextareaType::class, [
                 'required' => false,
-                'label' => 'security.label.ip_restriction',
                 'constraints' => [
                     new Assert\Length(['max' => $this->eccubeConfig['eccube_ltext_len']]),
                 ],
                 'data' => $allowHosts,
             ])
             ->add('force_ssl', CheckboxType::class, [
-                'label' => 'security.label.ssl_mandatory',
                 'required' => false,
                 'data' => $this->eccubeConfig->get('eccube_force_ssl'),
             ])

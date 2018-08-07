@@ -62,7 +62,6 @@ class MemberType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'member.label.name',
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
@@ -70,14 +69,12 @@ class MemberType extends AbstractType
             ])
             ->add('department', TextType::class, [
                 'required' => false,
-                'label' => 'member.label.organization',
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
                 ],
             ])
             ->add('login_id', TextType::class, [
-                'label' => 'member.label.login_id',
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\Length([
@@ -108,7 +105,6 @@ class MemberType extends AbstractType
                 ],
             ])
             ->add('Authority', EntityType::class, [
-                'label' => 'admin.setting.system.member.689',
                 'class' => 'Eccube\Entity\Master\Authority',
                 'expanded' => false,
                 'multiple' => false,
@@ -118,7 +114,6 @@ class MemberType extends AbstractType
                 ],
             ])
             ->add('Work', EntityType::class, [
-                'label' => 'admin.setting.system.member.690',
                 'class' => 'Eccube\Entity\Master\Work',
                 'expanded' => true,
                 'multiple' => false,

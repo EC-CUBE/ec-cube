@@ -36,7 +36,6 @@ class AuthorityRoleType extends AbstractType
     {
         $builder
             ->add('Authority', EntityType::class, [
-                'label' => 'authorityrole.label.auth',
                 'class' => 'Eccube\Entity\Master\Authority',
                 'expanded' => false,
                 'multiple' => false,
@@ -44,7 +43,6 @@ class AuthorityRoleType extends AbstractType
                 'placeholder' => 'common.select',
             ])
             ->add('deny_url', TextType::class, [
-                'label' => 'authorityrole.label.denied_url',
                 'required' => false,
                 'constraints' => [
                     new Regex([
