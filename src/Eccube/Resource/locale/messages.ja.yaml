@@ -370,6 +370,7 @@ admin.common.csv_invalid_not_same: '%line%行目の%name1%と%name2%には同じ
 admin.common.csv_invalid_can_not: '%line%行目の%name%は設定できません'
 admin.common.csv_invalid_image: '%line%行目の%name%には末尾に"/"や"../"を使用できません'
 admin.common.drag_and_drop_description: 項目の順番はドラッグ＆ドロップでも変更可能です。
+admin.common.drag_and_drop_image_description: 画像をドラッグ＆ドロップまたは
 
 # エンティティに関連するラベル
 admin.common.id: ID
@@ -440,6 +441,7 @@ admin.product.copy_error: 商品の複製に失敗しました。
 # ラベル/メッセージ
 admin.product.product: 商品
 admin.product.product__card_title: 商品情報
+admin.product.preview: 商品を確認
 admin.product.product_id: 商品ID
 admin.product.product_id__short: ID
 admin.product.display_status: 公開ステータス
@@ -464,8 +466,8 @@ admin.product.description_detail: 商品説明
 admin.product.description_list: 商品説明(一覧)
 admin.product.description_list__add: 商品説明(一覧)を追加
 admin.product.price: 価格
-admin.product.sale_price: 販売価格(一覧) # price02
-admin.product.nomal_price: 通常価格(一覧) # price01
+admin.product.sale_price: 販売価格 # price02
+admin.product.normal_price: 通常価格 # price01
 admin.product.stock: 在庫数
 admin.product.stock__short: 在庫
 admin.product.stock__in_stock: あり
@@ -474,7 +476,7 @@ admin.product.search_word: 検索ワード
 admin.product.product_code: 商品コード
 admin.product.product_code__short: コード
 admin.product.sale_limit: 販売制限数
-admin.product.delivery_duration: お届け可能日
+admin.product.delivery_duration: 発送日目安
 admin.product.delivery_fee: 商品送料
 admin.product.free_area: フリーエリア
 admin.product.free_area__card_title: フリーエリア
@@ -496,6 +498,7 @@ admin.product.delete_confirm_message: 商品を削除しますか？
 admin.product.product_class: 商品規格
 admin.product.product_class__confirm: 規格確認
 
+admin.product.product_class__confirm_of_product: この商品の規格を確認
 admin.product.product_class__card_title: 商品規格情報
 admin.product.product_class__reset: 商品規格の初期化
 admin.product.product_class__reset_confirm_title: この商品の規格を初期化します
@@ -534,6 +537,7 @@ admin.product.category_delete_flag: カテゴリ削除フラグ
 admin.product.category_delete_flag_description: 0:登録 1:削除。未設定時は0として扱います。
 admin.product.category_all: すべてのカテゴリ
 admin.product.tag: タグ
+admin.product.tag__product_card_title: タグ
 admin.product.delete_tag_confirm_title: タグを削除します
 admin.product.delete_tag_confirm_message: タグを削除してよろしいですか？
 admin.product.select__class1: 規格1を選択してください

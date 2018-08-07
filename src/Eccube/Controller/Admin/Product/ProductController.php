@@ -54,6 +54,8 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 class ProductController extends AbstractController
 {
@@ -350,7 +352,7 @@ class ProductController extends AbstractController
      * @Route("/%eccube_admin_route%/product/product/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_product_edit")
      * @Template("@admin/Product/product.twig")
      */
-    public function edit(Request $request, $id = null)
+    public function edit(Request $request, $id = null, RouterInterface $router)
     {
         $has_class = false;
         if (is_null($id)) {
@@ -599,7 +601,20 @@ class ProductController extends AbstractController
                 $this->addSuccess('admin.common.save_complete', 'admin');
 
                 if ($returnLink = $form->get('return_link')->getData()) {
-                    return $this->redirect($returnLink);
+                    try {
+                        // $returnLinkはpathの形式で渡される. pathが存在するかをルータでチェックする.
+                        $result = $router->match($returnLink);
+                        // パラメータのみ抽出
+                        $params = array_filter($result, function ($key) {
+                            return 0 !== \strpos($key, '_');
+                        }, ARRAY_FILTER_USE_KEY);
+
+                        // pathからurlを再構築してリダイレクト.
+                        return $this->redirectToRoute($result['_route'], $params);
+                    } catch (\Exception $e) {
+                        // マッチしない場合はログ出力してスキップ.
+                        log_warning('URLの形式が不正です。');
+                    }
                 }
 
                 return $this->redirectToRoute('admin_product_product_edit', ['id' => $Product->getId()]);

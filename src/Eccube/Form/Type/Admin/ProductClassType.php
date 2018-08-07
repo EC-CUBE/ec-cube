@@ -72,6 +72,7 @@ class ProductClassType extends AbstractType
                 ],
             ])
             ->add('stock_unlimited', CheckboxType::class, [
+                'label' => 'admin.product.stock_unlimited__short',
                 'value' => '1',
                 'required' => false,
             ])
