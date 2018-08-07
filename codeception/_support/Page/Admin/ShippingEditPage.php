@@ -7,7 +7,7 @@ namespace Page\Admin;
 class ShippingEditPage extends AbstractAdminPageStyleGuide
 {
 
-    public static $姓_エラーメッセージ = '#shippingerInfo > div > div:nth-child(2) > div.col > span > ul > p';
+    public static $姓_エラーメッセージ = '#shipmentOverview_0 > div > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div > div > div:nth-child(1) > span > span > span.form-error-message';
 
     public static $登録完了メッセージ = '#page_admin_shipping_edit > div > div.c-contentsArea > div.alert.alert-success.alert-dismissible.fade.show.m-3 > span';
 
@@ -22,14 +22,17 @@ class ShippingEditPage extends AbstractAdminPageStyleGuide
     public static function go($I)
     {
         $page = new self($I);
-        $page->goPage('/shipping/new', '出荷登録出荷管理');
+        $page->goPage('/shipping/new', '出荷登録受注管理');
         return $page;
     }
 
+    /**
+     * @param \AcceptanceTester $I
+     */
     public static function at($I)
     {
         $page = new self($I);
-        $page->atPage('出荷登録出荷管理');
+        $page->atPage('出荷登録受注管理');
         return $page;
     }
 
@@ -46,93 +49,119 @@ class ShippingEditPage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
-    public function 入力_姓($value)
+    /**
+     * @param string $value
+     */
+    public function 入力_姓($value, $num = 0)
     {
-        $this->tester->fillField(['id' => 'shipping_name_name01'], $value);
+        $this->tester->fillField(['id' => 'form_shippings_'.$num.'_name_name01'], $value);
         return $this;
     }
 
-    public function 入力_名($value)
+    /**
+     * @param string $value
+     */
+    public function 入力_名($value, $num = 0)
     {
-        $this->tester->fillField(['id' => 'shipping_name_name02'], $value);
+        $this->tester->fillField(['id' => 'form_shippings_'.$num.'_name_name02'], $value);
         return $this;
     }
 
-    public function 入力_セイ($value)
+    /**
+     * @param string $value
+     */
+    public function 入力_セイ($value, $num = 0)
     {
-        $this->tester->fillField(['id' => 'shipping_kana_kana01'], $value);
+        $this->tester->fillField(['id' => 'form_shippings_'.$num.'_kana_kana01'], $value);
         return $this;
     }
 
-    public function 入力_メイ($value)
+    /**
+     * @param string $value
+     */
+    public function 入力_メイ($value, $num = 0)
     {
-        $this->tester->fillField(['id' => 'shipping_kana_kana02'], $value);
+        $this->tester->fillField(['id' => 'form_shippings_'.$num.'_kana_kana02'], $value);
         return $this;
     }
 
-    public function 入力_郵便番号($value)
+    /**
+     * @param string $value
+     */
+    public function 入力_郵便番号($value, $num = 0)
     {
-        $this->tester->fillField(['id' => 'shipping_postal_code'], $value);
-
-        return $this;
-    }
-
-    public function 入力_都道府県($value)
-    {
-        $this->tester->selectOption(['id' => 'shipping_address_pref'], $value);
-        return $this;
-    }
-
-    public function 入力_市区町村名($value)
-    {
-        $this->tester->fillField(['id' => 'shipping_address_addr01'], $value);
-        return $this;
-    }
-
-    public function 入力_番地_ビル名($value)
-    {
-        $this->tester->fillField(['id' => 'shipping_address_addr02'], $value);
-        return $this;
-    }
-
-    public function 入力_電話番号($value)
-    {
-        $this->tester->fillField(['id' => 'shipping_phone_number'], $value);
+        $this->tester->fillField(['id' => 'form_shippings_'.$num.'_postal_code'], $value);
 
         return $this;
     }
 
-    public function 入力_出荷伝票番号($value)
+    public function 入力_都道府県($value, $num = 0)
     {
-        $this->tester->fillField(['id' => 'shipping_tracking_number'], $value);
+        $this->tester->selectOption(['id' => 'form_shippings_'.$num.'_address_pref'], $value);
         return $this;
     }
 
-    public function 入力_配送業者($value)
+    /**
+     * @param string $value
+     */
+    public function 入力_市区町村名($value, $num = 0)
     {
-        $this->tester->selectOption(['id' => 'shipping_Delivery'], $value);
+        $this->tester->fillField(['id' => 'form_shippings_'.$num.'_address_addr01'], $value);
         return $this;
     }
 
-    public function 入力_配達用メモ($value)
+    /**
+     * @param string $value
+     */
+    public function 入力_番地_ビル名($value, $num = 0)
     {
-        $this->tester->fillField(['id' => 'shipping_note'], $value);
+        $this->tester->fillField(['id' => 'form_shippings_'.$num.'_address_addr02'], $value);
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     */
+    public function 入力_電話番号($value, $num = 0)
+    {
+        $this->tester->fillField(['id' => 'form_shippings_'.$num.'_phone_number'], $value);
+
+        return $this;
+    }
+
+    public function 入力_出荷伝票番号($value, $num = 0)
+    {
+        $this->tester->fillField(['id' => 'form_shippings_'.$num.'_tracking_number'], $value);
+        return $this;
+    }
+
+    public function 入力_配送業者($value, $num = 0)
+    {
+        $this->tester->selectOption(['id' => 'form_shippings_'.$num.'_Delivery'], $value);
+        return $this;
+    }
+
+    public function 入力_配達用メモ($value, $num = 0)
+    {
+        $this->tester->fillField(['id' => 'form_shippings_'.$num.'_note'], $value);
         return $this;
     }
 
     public function 商品検索($value = '')
     {
-        $this->tester->click(['xpath' => '//*[@id="shipmentItem"]/div/div/div/button']);
+        $this->tester->scrollTo(['css' => '#shipping-product_1 > div > button'], 0, -50);
+        $this->tester->click(['css' => '#shipping-product_1 > div > button']);
         $this->tester->waitForElementVisible(['id' => 'addProduct']);
-        $this->tester->click(['id' => 'searchItemsButton']);
+        $this->tester->fillField(['id' => 'admin_search_product_id'], $value);
+        $this->tester->click('#searchProductModalButton');
+        $this->tester->waitForElementVisible('#searchProductModalList table');
         return $this;
     }
 
     public function 商品検索結果_選択($rowNum)
     {
-        $this->tester->click(['xpath' => "//*[@id='searchItemsResult']/table/tbody/tr[${rowNum}]/td[5]/i"]);
-        $this->tester->click(['xpath' => '//*[@id="addProduct"]/div/div/div[1]/button']);
-        $this->tester->wait(1);
+        $rowNum = $rowNum * 2;
+        $this->tester->click("#searchProductModalList > table > tbody > tr:nth-child(${rowNum}) > td.align-middle.pr-3.text-right > button");
         return $this;
     }
 
@@ -142,10 +171,33 @@ class ShippingEditPage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    public function 出荷完了にする($num = 0)
+    {
+        $this->tester->scrollTo(['id' => 'shipmentOverview_'.$num], 0, 50);
+        $this->tester->click('#shipmentOverview_'.$num.' > div > div:nth-child(4) > div:nth-child(2) > div:nth-child(3) > div > button');
+        return $this;
+    }
+
     public function 変更を確定()
     {
-        $this->tester->waitForElementVisible(['xpath' => '//*[@id="shippedNotifyModal"]/div/div/div[3]/button[2]']);
-        $this->tester->click(['xpath' => '//*[@id="shippedNotifyModal"]/div/div/div[3]/button[2]']);
+        $this->tester->waitForElementVisible(['id' => 'bulkChange']);
+        $this->tester->click(['id' => 'bulkChange']);
+        $this->tester->waitForElementVisible(['id' => 'bulkChangeComplete']);
+        $this->tester->click(['id' => 'bulkChangeComplete']);
         return $this;
+    }
+
+    public function 出荷先を追加()
+    {
+        $this->tester->scrollTo(['id' => 'addShipping'], 0, 50);
+        $this->tester->click(['id' => 'addShipping']);
+        return $this;
+    }
+
+    public function 出荷日を確認($num = 0)
+    {
+        $this->tester->scrollTo(['id' => 'shipmentOverview_'.$num], 0, 50);
+        $this->tester->see((new \DateTime())->format('Y/m/d'),
+                            '#shipmentOverview_'.$num.' > div > div:nth-child(4) > div:nth-child(2) > div:nth-child(3) > div > span');
     }
 }

@@ -14,22 +14,164 @@ file that was distributed with this source code.
 {% block sub_title %}{% endblock %}
 
 {% block javascript %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
     <script>
-        $(function () {
-            $('.order-summary-detail').click(function () {
-                $('#admin_search_order_status').val($(this).attr('data-order-status'));
-                $('#order-state').submit();
-                return false;
+        $(function() {
+
+            Chart.plugins.register({
+                afterDatasetsDraw: function(chart, easing) {
+                    var ctx = chart.ctx;
+
+                    chart.data.datasets.forEach(function(dataset, i) {
+                        var meta = chart.getDatasetMeta(i);
+                        if (!meta.hidden) {
+                            meta.data.forEach(function(element, index) {
+                                ctx.fillStyle = 'rgb(0, 0, 0)';
+
+                                var fontSize = 14;
+                                var fontStyle = 'initial';
+                                var fontFamily = '-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol';
+                                ctx.font = Chart.helpers.fontString(fontSize, fontStyle, fontFamily);
+
+                                // Just naively convert to string for now
+                                if (meta.yAxisID != 'y-axis-2') {
+                                    var dataString = '¥' + dataset.data[index].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                                } else {
+                                    var dataString = dataset.data[index].toString();
+                                }
+
+                                // Make sure alignment settings are correct
+                                ctx.textAlign = 'center';
+                                ctx.textBaseline = 'middle';
+
+                                var padding = 2;
+                                var position = element.tooltipPosition();
+                                ctx.fillText(dataString, position.x, position.y - (fontSize / 2) - padding);
+                            });
+                        }
+                    });
+                }
             });
-            $('.shop-stock-detail').click(function () {
-                $('#shop-state-stock').submit();
-                return false;
+
+
+            var options = {
+                legend: {
+                    // display: false
+                    position: 'bottom'
+                },
+                layout: {
+                    padding: {
+                        left: 0,
+                        right: 0,
+                        top: 25,
+                        bottom: 0
+                    }
+                },
+                // tooltips: {
+                //     callbacks: {
+                //         label: function(tooltipItem, data) {
+                //             console.log(tooltipItem);
+                //             return '¥' + tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                //         }
+                //     }
+                // },
+                scales: {
+                    yAxes: [
+                        {
+                            id: 'y-axis-1',
+                            display: false,
+                            ticks: {
+                                beginAtZero: true,
+                                callback: function(label, index, labels) {
+                                    return '¥' + label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                                }
+                            }
+                        },
+                        {
+                            id: 'y-axis-2',
+                            display: false,
+                            ticks: {
+                                beginAtZero: true,
+                                stepSize: 50,
+                                callback: function(label, index, labels) {
+                                    return label.toString();
+                                }
+                            }
+                        }
+                    ]
+                }
+            };
+
+            var priceBackgroundColor = 'rgba(54, 162, 235, 0.2)';
+            var priceBorderColor = 'rgba(54, 162, 235, 1)';
+            var countBackgroundColor = 'rgba(254,97,132, 0.2)';
+            var countBorderColor = 'rgba(254,97,132, 1)';
+
+            $.ajax({
+                url: '{{ url('admin_homepage_sale') }}',
+                type: 'GET',
+                dataType: 'json'
+            }).done(function(datas) {
+
+                for (var i = 0; i < datas.length; i++) {
+                    var data = datas[i];
+
+                    var labels = [];
+                    var prices = [];
+                    var counts = [];
+                    var priceBackgroundColors = [];
+                    var priceBorderColors = [];
+                    var countBackgroundColors = [];
+                    var countBorderColors = [];
+                    Object.keys(data).forEach(function(key) {
+                        labels.push(key);
+                        prices.push(data[key].price);
+                        counts.push(data[key].count);
+                        priceBackgroundColors.push(priceBackgroundColor);
+                        priceBorderColors.push(priceBorderColor);
+                        countBackgroundColors.push(countBackgroundColor);
+                        countBorderColors.push(countBorderColor);
+                    });
+
+                    var ctx = $('#chart-' + i)[0].getContext('2d');
+                    var chart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [
+                                {
+                                    type: 'bar',
+                                    label: '{{ 'admin.index.label.payment_total'|trans }}',
+                                    data: prices,
+                                    backgroundColor: priceBackgroundColors,
+                                    borderColor: priceBorderColors,
+                                    borderWidth: 1,
+                                    yAxisID: 'y-axis-1'
+                                },
+                                {
+                                    type: 'line',
+                                    label: '{{ 'admin.index.label.sales.count'|trans }}',
+                                    data: counts,
+                                    backgroundColor: countBackgroundColors,
+                                    borderColor: countBorderColors,
+                                    pointBackgroundColor: "rgba(254,97,132,0.8)",
+                                    fill: false,
+                                    tension: 0,
+                                    borderWidth: 1,
+                                    yAxisID: 'y-axis-2'
+                                }
+                            ]
+                        },
+                        options: options
+                    });
+                }
+            }).fail(function(data) {
+            }).always(function() {
+                $('#loading').hide();
             });
-            $('.shop-member-detail').click(function () {
-                $('#shop-state-member').submit();
-                return false;
-            });
+
         });
+
     </script>
 {% endblock javascript %}
 
@@ -37,89 +179,30 @@ file that was distributed with this source code.
     <div class="c-contentsArea__cols">
         <div class="c-contentsArea__primaryCol">
             <div class="c-primaryCol">
-                <div class="card rounded border-0 mb-4">
-                    <div class="card-header">
-                        <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip">
-                            <span
-                                    class="card-title">{{ 'admin.index.intro'|trans }}</span><i
-                                    class="fa fa-question-circle fa-lg ml-1" aria-hidden="true"></i></div>
-                    </div><!-- /.card-header -->
-                    <div class="card-body pt-0 pr-0 pl-0">
-                        <div class="row border border-top-0 border-left-0 border-right-0 p-3 align-items-center">
-                            <div class="col-1 align-middle text-center">
-                                <i class="fa fa-flag fa-4x text-secondary" aria-hidden="true"></i>
-                            </div>
-                            <div class="col-9">
-                                <span
-                                        class="font-weight-bold align-middle">{{ 'admin.index.intro.commercial_law'|trans }}</span>
-                                <p>{{ 'admin.index.intro.commercial_law.001'|trans }}</p>
-                            </div>
-                            <div class="col-2 text-right align-middle">
-                                <a class="btn btn-ec-conversion px-4"
-                                   href="{{ url('admin_setting_shop') }}">{{ 'admin.index.intro.to.setup'|trans }}</a>
-                            </div>
-                        </div>
-                        <div class="row border border-top-0 border-left-0 border-right-0 p-3 align-items-center">
-                            <div class="col-1 align-middle text-center">
-                                <i class="fa fa-cubes fa-4x text-secondary" aria-hidden="true"></i>
-                            </div>
-                            <div class="col-9">
-                                <span class="font-weight-bold align-middle">{{ 'admin.index.intro.commercial_law'|trans }}</span>
-                                <p>{{ 'admin.index.intro.commercial_law.001'|trans }}</p>
-                            </div>
-                            <div class="col-2 text-right align-middle">
-                                <a class="btn btn-ec-conversion px-4"
-                                   href="{{ url('admin_product_product_new') }}">{{ 'admin.index.intro.to.setup'|trans }}</a>
-                            </div>
-                        </div>
-                        <div class="row border border-top-0 border-left-0 border-right-0 p-2 align-items-center mb-3">
-                            <div class="col-1 align-middle text-center">
-                                <i class="fa fa-check fa-2x text-success" aria-hidden="true"></i>
-                            </div>
-                            <div class="col-11">
-                                <span class="font-weight-bold text-muted align-middle">{{ 'admin.index.intro.please.set.shopinformation'|trans }}</span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col text-center align-middle">
-                                {# TODO: Link of すべてスキップ button  #}
-                                <a class="btn btn-ec-regular"
-                                   href="/tutorial/complete">{{ 'admin.index.intro.skip.all'|trans }}</a>
-                            </div>
-                        </div>
-                    </div><!-- /.card-body -->
-                </div><!-- /.card.rounded -->
                 <div class="row">
                     <div class="col-4 mb-4">
-
                         <div id="order-status" class="card rounded border-0 h-100">
                             <div class="card-header">
-                                <a href="{{ url('admin_order') }}"><span
-                                            class="card-title">{{ 'admin.index.160'|trans }}</span></a>
+                                <a href="{{ url('admin_order') }}">
+                                    <span class="card-title">{{ 'admin.index.160'|trans }}</span>
+                                </a>
                             </div>
-                            <form id="order-state" name="form1" action="{{ url('admin_order') }}" method="post">
-                                {{ form_widget(searchOrderForm._token) }}
-                                <input type="hidden" id="admin_search_order_status"
-                                       name="admin_search_order[multi_status]"
-                                       value="">
-                            </form>
                             <div class="card-body p-0">
-                                {# TODO: Need improve function to add each order status with a class different (relapse to class: fa fa-inbox fa-2x) #}
                                 {% for OrderStatus in OrderStatuses %}
-                                    <div class="d-block p-3 border border-top-0 border-left-0 border-right-0">
-                                        <div class="row align-items-center">
-                                            <div class="col-2 align-middle text-center">
-                                                <i class="fa fa-inbox fa-2x text-secondary" aria-hidden="true"></i>
+                                    <div class="d-block border border-top-0 border-left-0 border-right-0">
+                                        <a href="{{ url('admin_order', { 'order_status_id': OrderStatus.id }) }}" class="p-3 d-block">
+                                            <div class="row align-items-center">
+                                                <div class="col-2 align-middle text-center">
+                                                    <i class="fa fa-inbox fa-2x text-secondary" aria-hidden="true"></i>
+                                                </div>
+                                                <div class="col p-0">
+                                                    <span class="align-middle">{{ OrderStatus.name }}</span>
+                                                </div>
+                                                <div class="col-auto text-right align-middle">
+                                                    <span class="h4 align-middle font-weight-normal text-dark">{{ Orders is not empty and Orders[OrderStatus.id] is defined ? Orders[OrderStatus.id] : 0 }}</span>
+                                                </div>
                                             </div>
-                                            <div class="col p-0">
-                                                <a href="#" class="order-summary-detail"
-                                                   data-order-status="{{ OrderStatus.id }}"><span
-                                                            class="align-middle">{{ OrderStatus.name }}</span></a>
-                                            </div>
-                                            <div class="col-auto text-right align-middle">
-                                                <span class="h4 align-middle font-weight-normal">{{ Orders is not empty and Orders[OrderStatus.id] is defined ? Orders[OrderStatus.id] : 0 }}</span>
-                                            </div>
-                                        </div>
+                                        </a>
                                     </div>
                                 {% endfor %}
                             </div>
@@ -127,222 +210,62 @@ file that was distributed with this source code.
                     </div>
                     <div class="col-8 mb-4">
                         <div id="chart-statistics" class="card rounded border-0 h-100">
-                            {# TODO: Calculate metrics, representations on charts #}
                             <div class="card-header">
-                                <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
-                                     title="Tooltip">
+                                <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip">
                                     <span class="card-title">{{ 'admin.index.summary.sales.situation'|trans }}</span>
                                     <i class="fa fa-question-circle fa-lg ml-1" aria-hidden="true"></i>
                                 </div>
                             </div>
                             <div class="card-body">
-                                <div class="row">
+                                <div class="row text-center border-top border-bottom mb-3">
+                                    <div class="col-4 py-2 border-right">
+                                        <div class="h3">
+                                            {{ salesThisMonth is empty ? '¥ 0' : salesThisMonth.order_amount|price }} / {{ salesThisMonth is empty ? 0 : salesThisMonth.order_count|number_format }} <span>件</span>
+                                        </div>
+                                        <small>{{ 'admin.index.label.monthly'|trans }}</small>
+                                    </div>
+                                    <div class="col-4 py-2 border-right">
+                                        <div class="h3">
+                                            {{ salesToday is empty ? '¥ 0' : salesToday.order_amount|price }} / {{ salesToday is empty ? 0 : salesToday.order_count|number_format }} <span>件</span>
+                                        </div>
+                                        <small>{{ 'admin.index.label.daily'|trans }}</small>
+                                    </div>
+                                    <div class="col-4 py-2">
+                                        <div class="h3">
+                                            {{ salesYesterday is empty ? '¥ 0' : salesYesterday.order_amount|price }} / {{ salesYesterday is empty ? 0 : salesYesterday.order_count|number_format }} <span>件</span>
+                                        </div>
+                                        <small>{{ 'admin.index.label.yesterday'|trans }}</small>
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
                                     <div class="col text-center">
                                         <div class="btn-group nav d-inline-flex" id="pills-tab" role="tablist">
-                                            <a
-                                                    class="nav-link active btn btn-ec-tab py-2 pl-4 pr-4"
-                                                    id="pills-daily-tab" data-toggle="pill" href="#pills-daily"
-                                                    role="tab" aria-controls="pills-daily"
-                                                    aria-selected="true">{{ 'admin.index.summary.sales.daily'|trans }}</a><a
-                                                    class="nav-link btn btn-ec-tab py-2 pl-4 pr-4" id="pills-weekly-tab"
-                                                    data-toggle="pill" href="#pills-weekly" role="tab"
-                                                    aria-controls="pills-weekly"
-                                                    aria-selected="false">{{ 'admin.index.summary.sales.weekly'|trans }}</a><a
-                                                    class="nav-link btn btn-ec-tab py-2 pl-4 pr-4" id="pills-monthly-ta"
-                                                    data-toggle="pill" href="#pills-monthly" role="tab"
-                                                    aria-controls="pills-monthly"
-                                                    aria-selected="false">{{ 'admin.index.summary.sales.monthly'|trans }}</a>
+                                            <a class="nav-link active btn btn-ec-tab py-2 pl-4 pr-4" id="pills-weekly-tab" data-toggle="pill" href="#pills-weekly" role="tab" aria-controls="pills-weekly" aria-selected="true">
+                                                {{ 'admin.index.summary.sales.weekly'|trans }}
+                                            </a>
+                                            <a class="nav-link btn btn-ec-tab py-2 pl-4 pr-4" id="pills-monthly-tab" data-toggle="pill" href="#pills-monthly" role="tab" aria-controls="pills-monthly" aria-selected="false">
+                                                {{ 'admin.index.summary.sales.monthly'|trans }}
+                                            </a>
+                                            <a class="nav-link btn btn-ec-tab py-2 pl-4 pr-4" id="pills-year-tab" data-toggle="pill" href="#pills-year" role="tab" aria-controls="pills-year" aria-selected="false">
+                                                {{ 'admin.index.summary.sales.year'|trans }}
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col">
+                                        <div id="loading" class="text-center pt-5">
+                                            <img src="{{ asset('assets/img/loading.gif', 'admin') }}">
+                                        </div>
                                         <div class="tab-content" id="pills-tabContent">
-                                            <div class="tab-pane fade show active" id="pills-daily" role="tabpanel"
-                                                 aria-labelledby="pills-home-tab">
-                                                <div class="c-graf--week">
-                                                    <div class="c-graf--week__container">
-                                                        <div class="c-graf--week__labelVertical">
-                                                            <div class="c-graf__label">100,000</div>
-                                                            <div class="c-graf__label">90,000</div>
-                                                            <div class="c-graf__label">80,000</div>
-                                                            <div class="c-graf__label">70,000</div>
-                                                            <div class="c-graf__label">60,000</div>
-                                                            <div class="c-graf__label">50,000</div>
-                                                            <div class="c-graf__label">40,000</div>
-                                                            <div class="c-graf__label">30,000</div>
-                                                            <div class="c-graf__label">20,000</div>
-                                                            <div class="c-graf__label">10,000</div>
-                                                            <div class="c-graf__label">0</div>
-                                                        </div>
-                                                        <div class="c-graf--week__graph">
-                                                            <hr style="top: 26px;">
-                                                            <hr style="top: 52px;">
-                                                            <hr style="top: 78px;">
-                                                            <hr style="top: 104px;">
-                                                            <hr style="top: 130px;">
-                                                            <hr style="top: 156px;">
-                                                            <hr style="top: 182px;">
-                                                            <hr style="top: 208px;">
-                                                            <hr style="top: 234px;">
-                                                            <hr style="top: 260px;">
-                                                            <div class="c-graf__bar" data-toggle="tooltip"
-                                                                 data-placement="top" title="Tooltip"
-                                                                 style="height: 165px; margin-top: 96px;"></div>
-                                                            <div class="c-graf__bar" data-toggle="tooltip"
-                                                                 data-placement="top" title="Tooltip"
-                                                                 style="height: 82px; margin-top: 179px;"></div>
-                                                            <div class="c-graf__bar" data-toggle="tooltip"
-                                                                 data-placement="top" title="Tooltip"
-                                                                 style="height: 200px; margin-top: 61px;"></div>
-                                                            <div class="c-graf__bar" data-toggle="tooltip"
-                                                                 data-placement="top" title="Tooltip"
-                                                                 style="height: 166px; margin-top: 95px;"></div>
-                                                            <div class="c-graf__bar" data-toggle="tooltip"
-                                                                 data-placement="top" title="Tooltip"
-                                                                 style="height: 165px; margin-top: 96px;"></div>
-                                                            <div class="c-graf__bar" data-toggle="tooltip"
-                                                                 data-placement="top" title="Tooltip"
-                                                                 style="height: 82px; margin-top: 179px;"></div>
-                                                            <div class="c-graf__bar" data-toggle="tooltip"
-                                                                 data-placement="top" title="Tooltip"
-                                                                 style="height: 200px; margin-top: 61px;"></div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="c-graf--week__labelHorizontal">
-                                                        <div class="c-graf__label">{{ 'admin.index.summary.sales.chart.label.01'|trans }}</div>
-                                                        <div class="c-graf__label">{{ 'admin.index.summary.sales.chart.label.02'|trans }}</div>
-                                                        <div class="c-graf__label">{{ 'admin.index.summary.sales.chart.label.03'|trans }}</div>
-                                                        <div class="c-graf__label">{{ 'admin.index.summary.sales.chart.label.04'|trans }}</div>
-                                                        <div class="c-graf__label">{{ 'admin.index.summary.sales.chart.label.05'|trans }}</div>
-                                                        <div class="c-graf__label">{{ 'admin.index.summary.sales.chart.label.06'|trans }}</div>
-                                                        <div class="c-graf__label">{{ 'admin.index.summary.sales.chart.label.07'|trans }}</div>
-                                                    </div>
-                                                </div>
+                                            <div class="tab-pane fade show active" id="pills-weekly" role="tabpanel" aria-labelledby="pills-weekly-tab">
+                                                <canvas id="chart-0"></canvas>
                                             </div>
-                                            <div class="tab-pane fade" id="pills-weekly" role="tabpanel"
-                                                 aria-labelledby="pills-profile-tab">
-                                                <div class="c-graf--week">
-                                                    <div class="c-graf--week__container">
-                                                        <div class="c-graf--week__labelVertical">
-                                                            <div class="c-graf__label">100,000</div>
-                                                            <div class="c-graf__label">90,000</div>
-                                                            <div class="c-graf__label">80,000</div>
-                                                            <div class="c-graf__label">70,000</div>
-                                                            <div class="c-graf__label">60,000</div>
-                                                            <div class="c-graf__label">50,000</div>
-                                                            <div class="c-graf__label">40,000</div>
-                                                            <div class="c-graf__label">30,000</div>
-                                                            <div class="c-graf__label">20,000</div>
-                                                            <div class="c-graf__label">10,000</div>
-                                                            <div class="c-graf__label">0</div>
-                                                        </div>
-                                                        <div class="c-graf--week__graph">
-                                                            <hr style="top: 26px;">
-                                                            <hr style="top: 52px;">
-                                                            <hr style="top: 78px;">
-                                                            <hr style="top: 104px;">
-                                                            <hr style="top: 130px;">
-                                                            <hr style="top: 156px;">
-                                                            <hr style="top: 182px;">
-                                                            <hr style="top: 208px;">
-                                                            <hr style="top: 234px;">
-                                                            <hr style="top: 260px;">
-                                                            <div class="c-graf__bar" data-toggle="tooltip"
-                                                                 data-placement="top" title="Tooltip"
-                                                                 style="height: 165px; margin-top: 96px;"></div>
-                                                            <div class="c-graf__bar" data-toggle="tooltip"
-                                                                 data-placement="top" title="Tooltip"
-                                                                 style="height: 82px; margin-top: 179px;"></div>
-                                                            <div class="c-graf__bar" data-toggle="tooltip"
-                                                                 data-placement="top" title="Tooltip"
-                                                                 style="height: 200px; margin-top: 61px;"></div>
-                                                            <div class="c-graf__bar" data-toggle="tooltip"
-                                                                 data-placement="top" title="Tooltip"
-                                                                 style="height: 166px; margin-top: 95px;"></div>
-                                                            <div class="c-graf__bar" data-toggle="tooltip"
-                                                                 data-placement="top" title="Tooltip"
-                                                                 style="height: 165px; margin-top: 96px;"></div>
-                                                            <div class="c-graf__bar" data-toggle="tooltip"
-                                                                 data-placement="top" title="Tooltip"
-                                                                 style="height: 82px; margin-top: 179px;"></div>
-                                                            <div class="c-graf__bar" data-toggle="tooltip"
-                                                                 data-placement="top" title="Tooltip"
-                                                                 style="height: 200px; margin-top: 61px;"></div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="c-graf--week__labelHorizontal">
-                                                        <div class="c-graf__label">{{ 'admin.index.summary.sales.chart.label.01'|trans }}</div>
-                                                        <div class="c-graf__label">{{ 'admin.index.summary.sales.chart.label.02'|trans }}</div>
-                                                        <div class="c-graf__label">{{ 'admin.index.summary.sales.chart.label.03'|trans }}</div>
-                                                        <div class="c-graf__label">{{ 'admin.index.summary.sales.chart.label.04'|trans }}</div>
-                                                        <div class="c-graf__label">{{ 'admin.index.summary.sales.chart.label.05'|trans }}</div>
-                                                        <div class="c-graf__label">{{ 'admin.index.summary.sales.chart.label.06'|trans }}</div>
-                                                        <div class="c-graf__label">{{ 'admin.index.summary.sales.chart.label.07'|trans }}</div>
-                                                    </div>
-                                                </div>
+                                            <div class="tab-pane fade" id="pills-monthly" role="tabpanel" aria-labelledby="pills-monthly-tab">
+                                                <canvas id="chart-1"></canvas>
                                             </div>
-                                            <div class="tab-pane fade" id="pills-monthly" role="tabpanel"
-                                                 aria-labelledby="pills-contact-tab">
-                                                <div class="c-graf--week">
-                                                    <div class="c-graf--week__container">
-                                                        <div class="c-graf--week__labelVertical">
-                                                            <div class="c-graf__label">100,000</div>
-                                                            <div class="c-graf__label">90,000</div>
-                                                            <div class="c-graf__label">80,000</div>
-                                                            <div class="c-graf__label">70,000</div>
-                                                            <div class="c-graf__label">60,000</div>
-                                                            <div class="c-graf__label">50,000</div>
-                                                            <div class="c-graf__label">40,000</div>
-                                                            <div class="c-graf__label">30,000</div>
-                                                            <div class="c-graf__label">20,000</div>
-                                                            <div class="c-graf__label">10,000</div>
-                                                            <div class="c-graf__label">0</div>
-                                                        </div>
-                                                        <div class="c-graf--week__graph">
-                                                            <hr style="top: 26px;">
-                                                            <hr style="top: 52px;">
-                                                            <hr style="top: 78px;">
-                                                            <hr style="top: 104px;">
-                                                            <hr style="top: 130px;">
-                                                            <hr style="top: 156px;">
-                                                            <hr style="top: 182px;">
-                                                            <hr style="top: 208px;">
-                                                            <hr style="top: 234px;">
-                                                            <hr style="top: 260px;">
-                                                            <div class="c-graf__bar" data-toggle="tooltip"
-                                                                 data-placement="top" title="Tooltip"
-                                                                 style="height: 165px; margin-top: 96px;"></div>
-                                                            <div class="c-graf__bar" data-toggle="tooltip"
-                                                                 data-placement="top" title="Tooltip"
-                                                                 style="height: 82px; margin-top: 179px;"></div>
-                                                            <div class="c-graf__bar" data-toggle="tooltip"
-                                                                 data-placement="top" title="Tooltip"
-                                                                 style="height: 200px; margin-top: 61px;"></div>
-                                                            <div class="c-graf__bar" data-toggle="tooltip"
-                                                                 data-placement="top" title="Tooltip"
-                                                                 style="height: 166px; margin-top: 95px;"></div>
-                                                            <div class="c-graf__bar" data-toggle="tooltip"
-                                                                 data-placement="top" title="Tooltip"
-                                                                 style="height: 165px; margin-top: 96px;"></div>
-                                                            <div class="c-graf__bar" data-toggle="tooltip"
-                                                                 data-placement="top" title="Tooltip"
-                                                                 style="height: 82px; margin-top: 179px;"></div>
-                                                            <div class="c-graf__bar" data-toggle="tooltip"
-                                                                 data-placement="top" title="Tooltip"
-                                                                 style="height: 200px; margin-top: 61px;"></div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="c-graf--week__labelHorizontal">
-                                                        <div class="c-graf__label">{{ 'admin.index.summary.sales.chart.label.01'|trans }}</div>
-                                                        <div class="c-graf__label">{{ 'admin.index.summary.sales.chart.label.02'|trans }}</div>
-                                                        <div class="c-graf__label">{{ 'admin.index.summary.sales.chart.label.03'|trans }}</div>
-                                                        <div class="c-graf__label">{{ 'admin.index.summary.sales.chart.label.04'|trans }}</div>
-                                                        <div class="c-graf__label">{{ 'admin.index.summary.sales.chart.label.05'|trans }}</div>
-                                                        <div class="c-graf__label">{{ 'admin.index.summary.sales.chart.label.06'|trans }}</div>
-                                                        <div class="c-graf__label">{{ 'admin.index.summary.sales.chart.label.07'|trans }}</div>
-                                                    </div>
-                                                </div>
+                                            <div class="tab-pane fade" id="pills-year" role="tabpanel" aria-labelledby="pills-year-tab">
+                                                <canvas id="chart-2"></canvas>
                                             </div>
                                         </div>
                                     </div>
@@ -354,17 +277,6 @@ file that was distributed with this source code.
                 <div class="row">
                     <div class="col mb-4">
                         <div id="shop-statistical" class="card rounded border-0 h-100">
-                            <form id="shop-state-stock" name="form2" action="{{ url('admin_homepage_nonstock') }}"
-                                  method="post">
-                                {{ form_widget(searchProductForm._token) }}
-                            </form>
-                            <form id="shop-state-member" name="form3" action="{{ url('admin_customer') }}"
-                                  method="post">
-                                {{ form_widget(searchCustomerForm._token) }}
-                                <input type="hidden" id="admin_search_customer_status_1"
-                                       name="admin_search_customer[customer_status]" value="2">
-                            </form>
-
                             <div class="card-header">
                                 <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
                                      title="Tooltip">
@@ -373,61 +285,75 @@ file that was distributed with this source code.
                                 </div>
                             </div>
                             <div class="card-body p-0">
-                                <div class="d-block p-3 border border-top-0 border-left-0 border-right-0">
-                                    <div class="row align-items-center">
-                                        <div class="col-2 align-middle text-center">
-                                            <i class="fa fa-inbox fa-2x text-secondary" aria-hidden="true"></i>
+                                <div class="d-block border border-top-0 border-left-0 border-right-0">
+                                    <a href="{{ url('admin_homepage_nonstock') }}" class="p-3 d-block">
+                                        <div class="row align-items-center">
+                                            <div class="col-2 align-middle text-center">
+                                                <i class="fa fa-inbox fa-2x text-secondary" aria-hidden="true"></i>
+                                            </div>
+                                            <div class="col p-0">
+                                                <span class="align-middle">{{ 'admin.index.summary.shop.items.stock'|trans }}</span>
+                                            </div>
+                                            <div class="col-auto text-right align-middle">
+                                                <span class="h4 align-middle font-weight-normal text-dark">{{ countNonStockProducts|number_format }}</span>
+                                            </div>
                                         </div>
-                                        <div class="col p-0"><a href="#" class="shop-stock-detail">
-                                                <span class="align-middle">{{ 'admin.index.summary.shop.items.stock'|trans }}</span></a>
-                                        </div>
-                                        <div class="col-auto text-right align-middle">
-                                            <span class="h4 align-middle font-weight-normal">{{ countNonStockProducts|number_format }}</span>
-                                        </div>
-                                    </div>
+                                    </a>
                                 </div>
-                                <div class="d-block p-3 border border-top-0 border-left-0 border-right-0">
-                                    {# TODO: Link, Number of products handled #}
-                                    <div class="row align-items-center">
-                                        <div class="col-2 align-middle text-center">
-                                            <i class="fa fa-cubes fa-2x text-secondary" aria-hidden="true"></i>
+                                <div class="d-block border border-top-0 border-left-0 border-right-0">
+                                    <a href="{{ url('admin_product') }}" class="p-3 d-block">
+                                        <div class="row align-items-center">
+                                            <div class="col-2 align-middle text-center">
+                                                <i class="fa fa-cubes fa-2x text-secondary" aria-hidden="true"></i>
+                                            </div>
+                                            <div class="col p-0">
+                                                <span class="align-middle">{{ 'admin.index.summary.shop.handled.product'|trans }}</span>
+                                            </div>
+                                            <div class="col-auto text-check align-middle">
+                                                <span class="h4 align-middle font-weight-normal text-dark">{{ countProducts|number_format }}</span>
+                                            </div>
                                         </div>
-                                        <div class="col p-0">
-                                            <a href="/product/master"><span
-                                                        class="align-middle">{{ 'admin.index.summary.shop.handled.product'|trans }}</span></a>
-                                        </div>
-                                        <div class="col-auto text-right align-middle">
-                                            <span class="h4 align-middle font-weight-normal">263</span>
-                                        </div>
-                                    </div>
+                                    </a>
                                 </div>
-                                <div class="d-block p-3 border border-top-0 border-left-0 border-right-0">
-                                    <div class="row align-items-center">
-                                        <div class="col-2 align-middle text-center">
-                                            <i class="fa fa-users fa-2x text-secondary" aria-hidden="true"></i>
+                                <div class="d-block border border-top-0 border-left-0 border-right-0">
+                                    <a href="{{ url('admin_homepage_customer') }}" class="p-3 d-block">
+                                        <div class="row align-items-center">
+                                            <div class="col-2 align-middle text-center">
+                                                <i class="fa fa-users fa-2x text-secondary" aria-hidden="true"></i>
+                                            </div>
+                                            <div class="col p-0">
+                                                <span class="align-middle">{{ 'admin.index.171'|trans }}</span>
+                                            </div>
+                                            <div class="col-auto text-check align-middle">
+                                                <span class="h4 align-middle font-weight-normal text-dark">{{ countCustomers|number_format }}</span>
+                                            </div>
                                         </div>
-                                        <div class="col p-0">
-                                            <a href="#" class="shop-member-detail"><span
-                                                        class="align-middle">{{ 'admin.index.171'|trans }}</span></a>
-                                        </div>
-                                        <div class="col-auto text-check align-middle">
-                                            <span class="h4 align-middle font-weight-normal">{{ countCustomers|number_format }}</span>
-                                        </div>
-                                    </div>
+                                    </a>
                                 </div>
                             </div>
                         </div><!-- /#shop-statistical -->
                     </div>
                     <div class="col mb-4">
-                        <div id="ec-cube-news" class="card rounded border-0 h-100">
+                        <div id="ec-cube-plugin" class="card rounded border-0 h-100">
                             <div class="card-header">
-                                <div class="d-inline-block" data-toggle="tooltip" data-placement="top"
-                                     title="Tooltip"><span class="card-title">{{ 'admin.index.161'|trans }}</span></div>
+                                <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip">
+                                    <span class="card-title">{{ 'admin.index.recommended.plugin'|trans }}</span>
+                                </div>
                             </div>
                             <div class="card-body p-0">
-                                <iframe name="information" class="link_list_wrap"
-                                        src="{{ eccube_config.eccube_info_url }}"
-                                        style="width:100%; border:0; min-height:300px;"></iframe>
+                                {# todo おすすめプラグインを設定 #}
+                            </div>
+                        </div><!-- /#ec-cube-plugin -->
+                    </div>
+                    <div class="col mb-4">
+                        <div id="ec-cube-news" class="card rounded border-0 h-100">
+                            <div class="card-header">
+                                <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Tooltip">
+                                    <span class="card-title">{{ 'admin.index.161'|trans }}</span>
+                                </div>
+                            </div>
+                            <div class="card-body p-0">
+                                <iframe name="information" class="link_list_wrap" src="{{ eccube_config.eccube_info_url }}" style="width:100%; border:0; min-height:300px;"></iframe>
                             </div>
                         </div><!-- /#ec-cube-news -->
                     </div>

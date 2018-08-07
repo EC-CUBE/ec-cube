@@ -15,23 +15,30 @@ namespace Eccube\Form\Type\Admin;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\OrderItemType as OrderItemTypeMaster;
-use Eccube\Entity\Master\TaxDisplayType;
-use Eccube\Entity\Master\TaxType;
+use Eccube\Entity\OrderItem;
+use Eccube\Entity\ProductClass;
 use Eccube\Form\DataTransformer;
 use Eccube\Form\Type\PriceType;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\Master\OrderItemTypeRepository;
 use Eccube\Repository\OrderItemRepository;
 use Eccube\Repository\ProductClassRepository;
+use Eccube\Repository\TaxRuleRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class OrderItemType extends AbstractType
 {
@@ -44,6 +51,11 @@ class OrderItemType extends AbstractType
      * @var EccubeConfig
      */
     protected $eccubeConfig;
+
+    /**
+     * @var BaseInfo
+     */
+    protected $BaseInfo;
 
     /**
      * @var ProductClassRepository
@@ -61,9 +73,14 @@ class OrderItemType extends AbstractType
     protected $orderItemTypeRepository;
 
     /**
-     * @var RequestStack
+     * @var TaxRuleRepository
      */
-    protected $requestStack;
+    protected $taxRuleRepository;
+
+    /**
+     * @var ValidatorInterface
+     */
+    protected $validator;
 
     /**
      * OrderItemType constructor.
@@ -72,22 +89,25 @@ class OrderItemType extends AbstractType
      * @param EccubeConfig $eccubeConfig
      * @param ProductClassRepository $productClassRepository
      * @param OrderItemRepository $orderItemRepository
-     * @param RequestStack $requestStack
      */
     public function __construct(
         EntityManagerInterface $entityManager,
         EccubeConfig $eccubeConfig,
+        BaseInfoRepository $baseInfoRepository,
         ProductClassRepository $productClassRepository,
         OrderItemRepository $orderItemRepository,
         OrderItemTypeRepository $orderItemTypeRepository,
-        RequestStack $requestStack
+        TaxRuleRepository $taxRuleRepository,
+        ValidatorInterface $validator
     ) {
         $this->entityManager = $entityManager;
         $this->eccubeConfig = $eccubeConfig;
+        $this->BaseInfo = $baseInfoRepository->get();
         $this->productClassRepository = $productClassRepository;
         $this->orderItemRepository = $orderItemRepository;
         $this->orderItemTypeRepository = $orderItemTypeRepository;
-        $this->requestStack = $requestStack;
+        $this->taxRuleRepository = $taxRuleRepository;
+        $this->validator = $validator;
     }
 
     /**
@@ -96,38 +116,6 @@ class OrderItemType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('new', HiddenType::class, [
-                'required' => false,
-                'mapped' => false,
-                'data' => 1,
-            ])
-            ->add('id', HiddenType::class, [
-                'required' => false,
-                'mapped' => false,
-            ])
-            ->add('price', PriceType::class, [
-                'accept_minus' => true,
-            ])
-            ->add('quantity', TextType::class, [
-                'constraints' => [
-                    new Assert\NotBlank(),
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_int_len'],
-                    ]),
-                ],
-            ])
-            ->add('tax_rate', TextType::class, [
-                'constraints' => [
-                    new Assert\NotBlank(),
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_int_len'],
-                    ]),
-                    new Assert\Regex([
-                        'pattern' => "/^\d+(\.\d+)?$/u",
-                        'message' => 'form.type.float.invalid',
-                    ]),
-                ],
-            ])
             ->add('product_name', TextType::class, [
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -136,170 +124,99 @@ class OrderItemType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('product_code', HiddenType::class)
-            ->add('class_name1', HiddenType::class)
-            ->add('class_name2', HiddenType::class)
-            ->add('class_category_name1', HiddenType::class)
-            ->add('class_category_name2', HiddenType::class)
-            ->add('tax_rule', HiddenType::class)// ->add('order_id', HiddenType::class)
-        ;
+            ->add('price', PriceType::class, [
+                'accept_minus' => true,
+            ])
+            ->add('quantity', IntegerType::class, [
+                'constraints' => [
+                    new Assert\NotBlank(),
+                    new Assert\Length([
+                        'max' => $this->eccubeConfig['eccube_int_len'],
+                    ]),
+                ],
+            ]);
 
         $builder
             ->add($builder->create('order_item_type', HiddenType::class)
                 ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
                     $this->entityManager,
-                    '\Eccube\Entity\Master\OrderItemType'
-                )))
-            ->add($builder->create('tax_type', HiddenType::class)
-                ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
-                    $this->entityManager,
-                    '\Eccube\Entity\Master\TaxType'
-                )))
-            ->add($builder->create('tax_display_type', HiddenType::class)
-                ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
-                    $this->entityManager,
-                    '\Eccube\Entity\Master\TaxDisplayType'
-                )))
-            ->add($builder->create('Product', HiddenType::class)
-                ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
-                    $this->entityManager,
-                    '\Eccube\Entity\Product'
+                    OrderItemTypeMaster::class
                 )))
             ->add($builder->create('ProductClass', HiddenType::class)
                 ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
                     $this->entityManager,
-                    '\Eccube\Entity\ProductClass'
-                )))
-            ->add($builder->create('Order', HiddenType::class)
-                ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
-                    $this->entityManager,
-                    '\Eccube\Entity\Order'
-                )))
-            ->add($builder->create('Shipping', HiddenType::class)
-                ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
-                    $this->entityManager,
-                    '\Eccube\Entity\Shipping'
+                    ProductClass::class
                 )));
 
-        // XXX price を priceIncTax にセットし直す
-        // OrderItem::getTotalPrice でもやっているので、どこか一箇所にまとめたい
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
-            /** @var \Eccube\Entity\OrderItem $OrderItem */
+            /** @var OrderItem $OrderItem */
             $OrderItem = $event->getData();
-            $TaxDisplayType = $OrderItem->getTaxDisplayType();
-            if (!$TaxDisplayType) {
-                return;
-            }
-            switch ($TaxDisplayType->getId()) {
-                // 税込価格
-                case TaxDisplayType::INCLUDED:
-                    $OrderItem->setPriceIncTax($OrderItem->getPrice());
-                    break;
-                // 税別価格の場合は税額を加算する
-                case TaxDisplayType::EXCLUDED:
-                    // TODO 課税規則を考慮する
-                    $OrderItem->setPriceIncTax($OrderItem->getPrice() + $OrderItem->getPrice() * $OrderItem->getTaxRate() / 100);
-                    break;
-            }
 
-            $event->setData($OrderItem);
+            $OrderItemType = $OrderItem->getOrderItemType();
+            switch ($OrderItemType->getId()) {
+                case OrderItemTypeMaster::PRODUCT:
+                    $ProductClass = $OrderItem->getProductClass();
+                    $Product = $ProductClass->getProduct();
+                    $OrderItem->setProduct($Product);
+                    if (null === $OrderItem->getPrice()) {
+                        $OrderItem->setPrice($ProductClass->getPrice02());
+                    }
+                    if (null === $OrderItem->getProductCode()) {
+                        $OrderItem->setProductCode($ProductClass->getCode());
+                    }
+                    if (null === $OrderItem->getClassName1() && $ProductClass->hasClassCategory1()) {
+                        $ClassCategory1 = $ProductClass->getClassCategory1();
+                        $OrderItem->setClassName1($ClassCategory1->getClassName()->getName());
+                        $OrderItem->setClassCategoryName1($ClassCategory1->getName());
+                    }
+                    if (null === $OrderItem->getClassName2() && $ProductClass->hasClassCategory2()) {
+                        if ($ClassCategory2 = $ProductClass->getClassCategory2()) {
+                            $OrderItem->setClassName2($ClassCategory2->getClassName()->getName());
+                            $OrderItem->setClassCategoryName2($ClassCategory2->getName());
+                        }
+                    }
+                    break;
+
+                default:
+                    break;
+            }
         });
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
-            // モーダルからのPOST時に、金額等をセットする.
-            if ('modal' === $this->requestStack->getCurrentRequest()->get('modal')) {
-                $data = $event->getData();
-                // 受注済み明細の場合
-                if (array_key_exists('id', $data) && isset($data['id'])) {
-                    /** @var \Eccube\Entity\OrderItem $OrderItem */
-                    $OrderItem = $this->orderItemRepository
-                        ->find($data['id']);
-                    $data = array_merge($data, $OrderItem->toArray([
-                        'Order',
-                        'Product',
-                        'ProductClass',
-                        'Shipping',
-                        'TaxType',
-                        'TaxDisplayType',
-                        'OrderItemType',
-                    ]));
 
-                    if (is_object($OrderItem->getOrder())) {
-                        $data['Order'] = $OrderItem->getOrder()->getId();
-                    }
-                    if (is_object($OrderItem->getProduct())) {
-                        $data['Product'] = $OrderItem->getProduct()->getId();
-                    }
-                    if (is_object($OrderItem->getProduct())) {
-                        $data['ProductClass'] = $OrderItem->getProductClass()->getId();
-                    }
-                    if (is_object($OrderItem->getTaxType())) {
-                        $data['tax_type'] = $OrderItem->getTaxType()->getId();
-                    }
-                    if (is_object($OrderItem->getTaxDisplayType())) {
-                        $data['tax_display_type'] = $OrderItem->getTaxDisplayType()->getId();
-                    }
-                    if (is_object($OrderItem->getOrderItemType())) {
-                        $data['order_item_type'] = $OrderItem->getOrderItemType()->getId();
-                    }
-                } else {
-                    // 新規受注登録時の場合
-                    $data['price'] = 0;
-                    $data['quantity'] = 1;
-                    $data['product_code'] = null;
-                    $data['class_name1'] = null;
-                    $data['class_name2'] = null;
-                    $data['class_category_name1'] = null;
-                    $data['class_category_name2'] = null;
-                    switch ($data['order_item_type']) {
-                        case OrderItemTypeMaster::DELIVERY_FEE:
-                            $data['product_name'] = $this->orderItemTypeRepository
-                                ->find(OrderItemTypeMaster::DELIVERY_FEE)
-                                ->getName();
-                            $data['tax_type'] = TaxType::TAXATION;
-                            $data['tax_display_type'] = TaxDisplayType::INCLUDED;
-                            break;
-                        case OrderItemTypeMaster::CHARGE:
-                            $data['product_name'] = $this->orderItemTypeRepository
-                                ->find(OrderItemTypeMaster::CHARGE)
-                                ->getName();
-                            $data['tax_type'] = TaxType::TAXATION;
-                            $data['tax_display_type'] = TaxDisplayType::INCLUDED;
-                            break;
-                        case OrderItemTypeMaster::DISCOUNT:
-                            $data['product_name'] = $this->orderItemTypeRepository
-                                ->find(OrderItemTypeMaster::DISCOUNT)
-                                ->getName();
-                            $data['tax_type'] = TaxType::NON_TAXABLE;
-                            $data['tax_display_type'] = TaxDisplayType::INCLUDED;
-                            break;
-                        case OrderItemTypeMaster::PRODUCT:
-                        default:
-                            /** @var \Eccube\Entity\ProductClass $ProductClass */
-                            $ProductClass = $this->productClassRepository
-                                ->find($data['ProductClass']);
-                            /** @var \Eccube\Entity\Product $Product */
-                            $Product = $ProductClass->getProduct();
-                            $data['product_name'] = $Product->getName();
-                            $data['product_code'] = $ProductClass->getCode();
-                            $data['class_name1'] = $ProductClass->hasClassCategory1() ?
-                                $ProductClass->getClassCategory1()->getClassName() :
-                                null;
-                            $data['class_name2'] = $ProductClass->hasClassCategory2() ?
-                                $ProductClass->getClassCategory2()->getClassName() :
-                                null;
-                            $data['class_category_name1'] = $ProductClass->hasClassCategory1() ?
-                                $ProductClass->getClassCategory1()->getName() :
-                                null;
-                            $data['class_category_name2'] = $ProductClass->hasClassCategory2() ?
-                                $ProductClass->getClassCategory2()->getName() :
-                                null;
-                            $data['price'] = $ProductClass->getPrice02();
-                            $data['quantity'] = empty($data['quantity']) ? 1 : $data['quantity'];
-                            $data['tax_type'] = TaxType::TAXATION;
-                            $data['tax_display_type'] = TaxDisplayType::EXCLUDED;
-                    }
-                }
-                $event->setData($data);
+        // price, quantityのバリデーション
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            $form = $event->getForm();
+            /** @var OrderItem $OrderItem */
+            $OrderItem = $event->getData();
+
+            $OrderItemType = $OrderItem->getOrderItemType();
+            switch ($OrderItemType->getId()) {
+                // 商品明細: 金額 -> 正, 個数 -> 正負
+                case OrderItemTypeMaster::PRODUCT:
+                    $errors = $this->validator->validate($OrderItem->getPrice(), [new Assert\GreaterThanOrEqual(0)]);
+                    $this->addErrorsIfExists($form['price'], $errors);
+                    break;
+
+                // 値引き明細: 金額 -> 負, 個数 -> 正
+                case OrderItemTypeMaster::DISCOUNT:
+                    $errors = $this->validator->validate($OrderItem->getPrice(), [new Assert\LessThanOrEqual(0)]);
+                    $this->addErrorsIfExists($form['price'], $errors);
+                    $errors = $this->validator->validate($OrderItem->getQuantity(), [new Assert\GreaterThanOrEqual(0)]);
+                    $this->addErrorsIfExists($form['quantity'], $errors);
+
+                    break;
+
+                // 送料, 手数料: 金額 -> 正, 個数 -> 正
+                case OrderItemTypeMaster::DELIVERY_FEE:
+                case OrderItemTypeMaster::CHARGE:
+                    $errors = $this->validator->validate($OrderItem->getPrice(), [new Assert\GreaterThanOrEqual(0)]);
+                    $this->addErrorsIfExists($form['price'], $errors);
+                    $errors = $this->validator->validate($OrderItem->getQuantity(), [new Assert\GreaterThanOrEqual(0)]);
+                    $this->addErrorsIfExists($form['quantity'], $errors);
+
+                    break;
+
+                default:
+                    break;
             }
         });
     }
@@ -310,7 +227,7 @@ class OrderItemType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Eccube\Entity\OrderItem',
+            'data_class' => OrderItem::class,
         ]);
     }
 
@@ -320,5 +237,24 @@ class OrderItemType extends AbstractType
     public function getBlockPrefix()
     {
         return 'order_item';
+    }
+
+    /**
+     * @param FormInterface $form
+     * @param ConstraintViolationListInterface $errors
+     */
+    protected function addErrorsIfExists(FormInterface $form, ConstraintViolationListInterface $errors)
+    {
+        if (empty($errors)) {
+            return;
+        }
+
+        foreach ($errors as $error) {
+            $form->addError(new FormError(
+                $error->getMessage(),
+                $error->getMessageTemplate(),
+                $error->getParameters(),
+                $error->getPlural()));
+        }
     }
 }

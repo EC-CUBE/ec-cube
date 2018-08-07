@@ -17,15 +17,20 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpKernel\Event\PostResponseEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * キャッシュ関連のユーティリティクラス.
  */
-class CacheUtil
+class CacheUtil implements EventSubscriberInterface
 {
+    private $clearCacheAfterResponse = false;
+
     /**
      * @var KernelInterface
      */
@@ -41,8 +46,20 @@ class CacheUtil
         $this->kernel = $kernel;
     }
 
+    /**
+     * @param string $env
+     */
     public function clearCache($env = null)
     {
+        $this->clearCacheAfterResponse = $env;
+    }
+
+    public function forceClearCache(PostResponseEvent $event)
+    {
+        if ($this->clearCacheAfterResponse === false) {
+            return;
+        }
+
         $console = new Application($this->kernel);
         $console->setAutoExit(false);
 
@@ -52,8 +69,8 @@ class CacheUtil
             '--no-ansi' => true,
         ];
 
-        if ($env !== null) {
-            $command['--env'] = $env;
+        if ($this->clearCacheAfterResponse !== null) {
+            $command['--env'] = $this->clearCacheAfterResponse;
         }
 
         $input = new ArrayInput($command);
@@ -129,5 +146,13 @@ class CacheUtil
         }
 
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedEvents()
+    {
+        return [KernelEvents::TERMINATE => 'forceClearCache'];
     }
 }

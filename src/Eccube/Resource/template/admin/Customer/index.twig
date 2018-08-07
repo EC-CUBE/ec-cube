@@ -12,8 +12,8 @@ file that was distributed with this source code.
 
 {% set menus = ['customer', 'customer_master'] %}
 
-{% block title %}{{'admin.customer.index.111'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.customer.index.110'|trans}}{% endblock %}
+{% block title %}{{ 'admin.customer.index.111'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.customer.index.110'|trans }}{% endblock %}
 
 {% form_theme searchForm '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
@@ -22,82 +22,82 @@ file that was distributed with this source code.
 {% endblock stylesheet %}
 
 {% block javascript %}
-<script src="{{ asset('assets/js/vendor/moment.min.js', 'admin') }}"></script>
-<script src="{{ asset('assets/js/vendor/moment-ja.js', 'admin') }}"></script>
-<script src="{{ asset('assets/js/vendor/bootstrap-datetimepicker.min.js', 'admin') }}"></script>
-<script>
-  $(function() {
+    <script src="{{ asset('assets/js/vendor/moment.min.js', 'admin') }}"></script>
+    <script src="{{ asset('assets/js/vendor/moment-ja.js', 'admin') }}"></script>
+    <script src="{{ asset('assets/js/vendor/bootstrap-datetimepicker.min.js', 'admin') }}"></script>
+    <script>
+        $(function() {
 
-    var inputDate = document.createElement('input');
-    inputDate.setAttribute('type', 'date');
-    if (inputDate.type !== 'date') {
-      $('input[id$=_date_start]').datetimepicker({
-        locale: '{{eccube_config.locale}}',
-        format: 'YYYY-MM-DD',
-        useCurrent: false,
-        showTodayButton: true
-      });
+            var inputDate = document.createElement('input');
+            inputDate.setAttribute('type', 'date');
+            if (inputDate.type !== 'date') {
+                $('input[id$=_date_start]').datetimepicker({
+                    locale: '{{ eccube_config.locale }}',
+                    format: 'YYYY-MM-DD',
+                    useCurrent: false,
+                    showTodayButton: true
+                });
 
-      $('input[id$=_date_end]').datetimepicker({
-        locale: '{{eccube_config.locale}}',
-        format: 'YYYY-MM-DD',
-        useCurrent: false,
-        showTodayButton: true
-      });
+                $('input[id$=_date_end]').datetimepicker({
+                    locale: '{{ eccube_config.locale }}',
+                    format: 'YYYY-MM-DD',
+                    useCurrent: false,
+                    showTodayButton: true
+                });
 
-      $('#admin_search_customer_birth_start').datetimepicker({
-        locale: '{{eccube_config.locale}}',
-        format: 'YYYY-MM-DD',
-        useCurrent: false,
-        showTodayButton: true
-      });
+                $('#admin_search_customer_birth_start').datetimepicker({
+                    locale: '{{ eccube_config.locale }}',
+                    format: 'YYYY-MM-DD',
+                    useCurrent: false,
+                    showTodayButton: true
+                });
 
-      $('#admin_search_customer_birth_end').datetimepicker({
-        locale: '{{eccube_config.locale}}',
-        format: 'YYYY-MM-DD',
-        useCurrent: false,
-        showTodayButton: true
-      });
+                $('#admin_search_customer_birth_end').datetimepicker({
+                    locale: '{{ eccube_config.locale }}',
+                    format: 'YYYY-MM-DD',
+                    useCurrent: false,
+                    showTodayButton: true
+                });
 
-      $('#admin_search_customer_last_buy_start').datetimepicker({
-        locale: '{{eccube_config.locale}}',
-        format: 'YYYY-MM-DD',
-        useCurrent: false,
-        showTodayButton: true
-      });
+                $('#admin_search_customer_last_buy_start').datetimepicker({
+                    locale: '{{ eccube_config.locale }}',
+                    format: 'YYYY-MM-DD',
+                    useCurrent: false,
+                    showTodayButton: true
+                });
 
-      $('#admin_search_customer_last_buy_end').datetimepicker({
-        locale: '{{eccube_config.locale}}',
-        format: 'YYYY-MM-DD',
-        useCurrent: false,
-        showTodayButton: true
-      });
-    }
-
-    // フォーム値を確認し、アコーディオンを制御
-    // 値あり : 開く / 値なし : 閉じる
-    (function($, f) {
-        //フォームがないページは処理キャンセル
-        var $ac = $(".accpanel");
-        if (!$ac) {
-            return false
-        }
-
-        //フォーム内全項目取得
-        var c = f();
-        if (c.formState()) {
-            if ($ac.css("display") == "none") {
-                $ac.siblings('.toggle').addClass("active");
-                $ac.slideDown(0);
+                $('#admin_search_customer_last_buy_end').datetimepicker({
+                    locale: '{{ eccube_config.locale }}',
+                    format: 'YYYY-MM-DD',
+                    useCurrent: false,
+                    showTodayButton: true
+                });
             }
-        } else {
-            $ac.siblings('.toggle').removeClass("active");
-            $ac.slideUp(0);
-        }
-    })($, formPropStateSubscriber);
-  });
 
-</script>
+            // フォーム値を確認し、アコーディオンを制御
+            // 値あり : 開く / 値なし : 閉じる
+            (function($, f) {
+                //フォームがないページは処理キャンセル
+                var $ac = $('.accpanel');
+                if (!$ac) {
+                    return false
+                }
+
+                //フォーム内全項目取得
+                var c = f();
+                if (c.formState()) {
+                    if ($ac.css('display') == 'none') {
+                        $ac.siblings('.toggle').addClass('active');
+                        $ac.slideDown(0);
+                    }
+                } else {
+                    $ac.siblings('.toggle').removeClass('active');
+                    $ac.slideUp(0);
+                }
+            })($, formPropStateSubscriber);
+        });
+
+    </script>
 {% endblock javascript %}
 
 {% block main %}
@@ -286,18 +286,18 @@ file that was distributed with this source code.
                 {% for f in searchForm if f.vars.eccube_form_options.auto_render %}
                     {# TODO 1項目1行になるのを改善 #}
                     <div class="row mb-2">
-                    {% if f.vars.eccube_form_options.form_theme %}
-                        {% form_theme f f.vars.eccube_form_options.form_theme %}
-                        {{ form_row(f) }}
-                    {% else %}
-                        <div class="col">
-                            <div class="mb-3">
-                                <label>{{ f.vars.label|trans }}</label>
-                                {{ form_widget(f) }}
-                                {{ form_errors(f) }}
+                        {% if f.vars.eccube_form_options.form_theme %}
+                            {% form_theme f f.vars.eccube_form_options.form_theme %}
+                            {{ form_row(f) }}
+                        {% else %}
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label>{{ f.vars.label|trans }}</label>
+                                    {{ form_widget(f) }}
+                                    {{ form_errors(f) }}
+                                </div>
                             </div>
-                        </div>
-                    {% endif %}
+                        {% endif %}
                     </div>
                 {% endfor %}
 
@@ -319,143 +319,139 @@ file that was distributed with this source code.
             <div class="c-contentsArea__primaryCol">
                 <div class="c-primaryCol">
                     {% if pagination and pagination.totalItemCount %}
-                            <div class="row justify-content-between mb-2">
-                                <div class="col-6"></div>
+                        <div class="row justify-content-between mb-2">
+                            <div class="col-6"></div>
 
-                                <div class="col-5 text-right">
-                                    {#Dropdown page count#}
-                                    <div class="d-inline-block mr-2">
-                                        <select class="custom-select" onchange="location = this.value;">
-                                            {% for pageMax in pageMaxis %}
-                                                <option {% if pageMax.name == page_count%} selected {% endif %}
-                                                        value="{{ path('admin_customer_page', {'page_no': 1, 'page_count': pageMax.name}) }}">
-                                                    {{ pageMax.name|e }}{{ 'common.label.num'|trans }}</option>
-                                            {% endfor %}
-                                        </select>
-                                    </div>
+                            <div class="col-5 text-right">
+                                {#Dropdown page count#}
+                                <div class="d-inline-block mr-2">
+                                    <select class="custom-select" onchange="location = this.value;">
+                                        {% for pageMax in pageMaxis %}
+                                            <option {% if pageMax.name == page_count %} selected {% endif %}
+                                                    value="{{ path('admin_customer_page', {'page_no': 1, 'page_count': pageMax.name}) }}">
+                                                {{ pageMax.name|e }}{{ 'common.label.num'|trans }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
 
-                                    <div class="d-inline-block">
-                                        <div class="btn-group" role="group">
-                                            {# TODO CSVダウンロード・項目設定 #}
-                                            <button class="btn btn-ec-regular" type="button" onclick='location.href="{{ url('admin_customer_export') }}"'><i class="fa fa-cloud-download mr-1 text-secondary"></i><span>{{ 'admin.customer.index.137'|trans }}</span></button>
-                                            <button class="btn btn-ec-regular" type="button" onclick='location.href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_CUSTOMER') }) }}"'><i class="fa fa-cog mr-1 text-secondary"></i><span>{{ 'admin.customer.index.139'|trans }}</span></button>
-                                        </div>
+                                <div class="d-inline-block">
+                                    <div class="btn-group" role="group">
+                                        {# TODO CSVダウンロード・項目設定 #}
+                                        <button class="btn btn-ec-regular" type="button" onclick='location.href="{{ url('admin_customer_export') }}"'><i class="fa fa-cloud-download mr-1 text-secondary"></i><span>{{ 'admin.customer.index.137'|trans }}</span></button>
+                                        <button class="btn btn-ec-regular" type="button" onclick='location.href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_CUSTOMER') }) }}"'><i class="fa fa-cog mr-1 text-secondary"></i><span>{{ 'admin.customer.index.139'|trans }}</span></button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="card rounded border-0 mb-4">
-                                <div class="card-body p-0">
-                                    <table class="table">
-                                        <thead>
-                                            <tr><th class="border-top-0 pt-2 pb-3 pl-3">{{ 'admin.customer.index.140'|trans }}</th>
-                                                <th class="border-top-0 pt-2 pb-3">{{ 'admin.customer.index.141'|trans }}</th>
-                                                <th class="border-top-0 pt-2 pb-3">{{ 'admin.customer.index.142'|trans }}</th>
-                                                <th class="border-top-0 pt-2 pb-3">{{ 'admin.customer.index.143'|trans  }}</th>
-                                                <th class="border-top-0 pt-2 pb-3">&nbsp;</th>
-                                                <th class="border-top-0 pt-2 pb-3 pr-3">&nbsp;</th>
-                                            </tr></thead>
-                                        <tbody>
-                                            {% for Customer in pagination %}
-                                                <tr>
-                                                    <td class="align-middle pl-3">{{ Customer.id }}</td>
-                                                    <td class="align-middle"><a href="{{ url('admin_customer_edit', { 'id': Customer.id}) }}">{{ Customer.name01 }}&nbsp;{{ Customer.name02 }}</a></td>
-                                                    <td class="align-middle">{{ Customer.phone_number }}</td>
-                                                    <td class="align-middle">{{ Customer.email }}</td>
-                                                    <td class="align-middle"></td>
-                                                    <td class="align-middle pr-3">
-                                                        <div class="row justify-content-end">
-                                                            {% if Customer.Status.id == constant('Eccube\\Entity\\Master\\CustomerStatus::PROVISIONAL') %}
-                                                                <div class="col-auto text-center" data-toggle="tooltip" data-placement="top" title="{{ 'admin.customer.index.label.resend_registmail'|trans }}">
-                                                                    <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#discontinuance_cus_{{ Customer.id }}">
-                                                                        <i class="fa fa-send fa-lg text-secondary" aria-hidden="true"></i>
-                                                                    </a>
-                                                                    <div class="modal fade" id="discontinuance_cus_{{ Customer.id }}" tabindex="-1" role="dialog" aria-labelledby="discontinuance" aria-hidden="true">
-                                                                        <div class="modal-dialog" role="document">
-                                                                            <div class="modal-content">
-                                                                                <div class="modal-header">
-                                                                                    <h5 class="modal-title font-weight-bold">{{ 'admin.customer.index.label.resend_registmail'|trans }}</h5>
-                                                                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                                                                        <span aria-hidden="true">×</span>
-                                                                                    </button>
-                                                                                </div>
-                                                                                <div class="modal-body text-left">
-                                                                                    <p class="text-left">{{ 'admin.customer.index.label.resend_registmail_content'|trans }}</p>
-                                                                                </div>
-                                                                                <div class="modal-footer">
-                                                                                    <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.customer.index.cancel'|trans }}</button>
-                                                                                    {# TODO: CSSの変更は別タスクでやります #}
-                                                                                    <a class="btn btn-ec-delete" href="{{ url('admin_customer_resend', {'id' : Customer.id}) }}" {{ csrf_token_for_anchor() }} data-method="get" data-confirm="false">
-                                                                                        {{ 'admin.customer.index.send'|trans }}
-                                                                                    </a>
-                                                                                </div>
-                                                                            </div>
+                        </div>
+                        <div class="card rounded border-0 mb-4">
+                            <div class="card-body p-0">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th class="border-top-0 pt-2 pb-3 pl-3">{{ 'admin.customer.index.140'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-3">{{ 'admin.customer.index.141'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-3">{{ 'admin.customer.index.142'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-3">{{ 'admin.customer.index.143'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-3">&nbsp;</th>
+                                        <th class="border-top-0 pt-2 pb-3 pr-3">&nbsp;</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for Customer in pagination %}
+                                        <tr id="ex-customer-{{ Customer.id }}">
+                                            <td class="align-middle pl-3">{{ Customer.id }}</td>
+                                            <td class="align-middle"><a href="{{ url('admin_customer_edit', { 'id': Customer.id}) }}">{{ Customer.name01 }}&nbsp;{{ Customer.name02 }}</a></td>
+                                            <td class="align-middle">{{ Customer.phone_number }}</td>
+                                            <td class="align-middle">{{ Customer.email }}</td>
+                                            <td class="align-middle"></td>
+                                            <td class="align-middle pr-3">
+                                                <div class="row justify-content-end">
+                                                    {% if Customer.Status.id == constant('Eccube\\Entity\\Master\\CustomerStatus::PROVISIONAL') %}
+                                                        <div class="col-auto text-center" data-toggle="tooltip" data-placement="top" title="{{ 'admin.customer.index.label.resend_registmail'|trans }}">
+                                                            <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#discontinuance_cus_{{ Customer.id }}">
+                                                                <i class="fa fa-send fa-lg text-secondary" aria-hidden="true"></i>
+                                                            </a>
+                                                            <div class="modal fade" id="discontinuance_cus_{{ Customer.id }}" tabindex="-1" role="dialog" aria-labelledby="discontinuance" aria-hidden="true">
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title font-weight-bold">{{ 'admin.customer.index.label.resend_registmail'|trans }}</h5>
+                                                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                                                <span aria-hidden="true">×</span>
+                                                                            </button>
                                                                         </div>
-                                                                    </div>
-                                                                </div>
-                                                            {% endif %}
-                                                            <div class="col-auto text-center" data-toggle="tooltip"
-                                                                 data-placement="top"
-                                                                 title="{{ 'admin.customer.index.delete'|trans }}">
-                                                                <a class="btn btn-ec-actionIcon" data-toggle="modal"
-                                                                   data-target="#discontinuance-{{ Customer.id }}"><i
-                                                                            class="fa fa-close fa-lg text-secondary"
-                                                                            aria-hidden="true"></i></a>
-                                                                <div class="modal fade"
-                                                                     id="discontinuance-{{ Customer.id }}" tabindex="-1"
-                                                                     role="dialog"
-                                                                     aria-labelledby="discontinuance"
-                                                                     aria-hidden="true">
-                                                                    <div class="modal-dialog" role="document">
-                                                                        <div class="modal-content">
-                                                                            <div class="modal-header">
-                                                                                <h5 class="modal-title font-weight-bold">
-                                                                                    {{ 'admin.customer.delete.confirm.title'|trans }}</h5>
-                                                                                <button class="close" type="button"
-                                                                                        data-dismiss="modal"
-                                                                                        aria-label="Close"><span
-                                                                                            aria-hidden="true">×</span>
-                                                                                </button>
-                                                                            </div>
-                                                                            <div class="modal-body text-left">
-                                                                                <p class="text-left">
-                                                                                    {{ 'admin.customer.delete.confirm.message'|trans }}</p>
-                                                                            </div>
-                                                                            <div class="modal-footer">
-                                                                                <button class="btn btn-ec-sub"
-                                                                                        type="button"
-                                                                                        data-dismiss="modal">{{ 'admin.product.index.cancel'|trans }}
-                                                                                </button>
-                                                                                <a href="{{ url('admin_customer_delete', {'id' : Customer.id}) }}"
-                                                                                        class="btn btn-ec-delete"
-                                                                                        {{ csrf_token_for_anchor() }}
-                                                                                        data-method="delete"
-                                                                                        data-confirm="false">
-                                                                                    {{ 'admin.product.index.delete'|trans }}
-                                                                                </a>
-                                                                            </div>
+                                                                        <div class="modal-body text-left">
+                                                                            <p class="text-left">{{ 'admin.customer.index.label.resend_registmail_content'|trans }}</p>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.customer.index.cancel'|trans }}</button>
+                                                                            {# TODO: CSSの変更は別タスクでやります #}
+                                                                            <a class="btn btn-ec-delete" href="{{ url('admin_customer_resend', {'id' : Customer.id}) }}" {{ csrf_token_for_anchor() }} data-method="get" data-confirm="false">
+                                                                                {{ 'admin.customer.index.send'|trans }}
+                                                                            </a>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div><!-- /.justify-content-end -->
-                                                    </td>
-                                                </tr>
-                                            {% endfor %}
-                                        </tbody></table>
-                                    <div class="row justify-content-md-center mb-4">
-                                        {% if pagination.totalItemCount > 0 %}
-                                            {% include "@admin/pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_customer_page' } %}
-                                        {% endif %}
-                                    </div>
+                                                        </div>
+                                                    {% endif %}
+                                                    <div class="col-auto text-center" data-toggle="tooltip"
+                                                         data-placement="top"
+                                                         title="{{ 'admin.customer.index.delete'|trans }}">
+                                                        <a class="btn btn-ec-actionIcon" data-toggle="modal"
+                                                           data-target="#discontinuance-{{ Customer.id }}"><i
+                                                                    class="fa fa-close fa-lg text-secondary"
+                                                                    aria-hidden="true"></i></a>
+                                                        <div class="modal fade"
+                                                             id="discontinuance-{{ Customer.id }}" tabindex="-1"
+                                                             role="dialog"
+                                                             aria-labelledby="discontinuance"
+                                                             aria-hidden="true">
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title font-weight-bold">
+                                                                            {{ 'admin.customer.delete.confirm.title'|trans }}</h5>
+                                                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">×</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body text-left">
+                                                                        <p class="text-left">
+                                                                            {{ 'admin.customer.delete.confirm.message'|trans }}</p>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button class="btn btn-ec-sub" type="button" data-dismiss="modal">
+                                                                            {{ 'admin.product.index.cancel'|trans }}
+                                                                        </button>
+                                                                        <a href="{{ url('admin_customer_delete', {'id' : Customer.id}) }}" class="btn btn-ec-delete"{{ csrf_token_for_anchor() }} data-method="delete" data-confirm="false">
+                                                                            {{ 'admin.product.index.delete'|trans }}
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div><!-- /.justify-content-end -->
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                                <div class="row justify-content-md-center mb-4">
+                                    {% if pagination.totalItemCount > 0 %}
+                                        {% include "@admin/pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_customer_page' } %}
+                                    {% endif %}
                                 </div>
                             </div>
+                        </div>
                     {% elseif has_errors %}
-                            <div class="card rounded border-0">
-                                <div class="card-body p-4">
-                                    <div class="text-center text-muted mb-4 h5">{{ 'admin.customer.index.invalid_search_data'|trans }}</div>
-                                    <div class="text-center text-muted">{{ 'admin.customer.index.text06'|trans }}</div>
-                                </div>
+                        <div class="card rounded border-0">
+                            <div class="card-body p-4">
+                                <div class="text-center text-muted mb-4 h5">{{ 'admin.customer.index.invalid_search_data'|trans }}</div>
+                                <div class="text-center text-muted">{{ 'admin.customer.index.text06'|trans }}</div>
                             </div>
+                        </div>
                     {% else %}
                         <div class="card rounded border-0">
                             <div class="card-body p-4">

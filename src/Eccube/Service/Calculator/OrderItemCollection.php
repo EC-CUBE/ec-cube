@@ -62,7 +62,7 @@ class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection
     {
         return $this->filter(
             function (ItemInterface $OrderItem) {
-                return $OrderItem->isDiscount();
+                return $OrderItem->isDiscount() || $OrderItem->isPoint();
             });
     }
 

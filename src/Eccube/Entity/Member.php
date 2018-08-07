@@ -18,422 +18,458 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
-/**
- * Member
- *
- * @ORM\Table(name="dtb_member")
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
- * @ORM\HasLifecycleCallbacks()
- * @ORM\Entity(repositoryClass="Eccube\Repository\MemberRepository")
- */
-class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
-{
-    public static function loadValidatorMetadata(ClassMetadata $metadata)
+
+if (!class_exists('\Eccube\Entity\Member')) {
+
+    /**
+     * Member
+     *
+     * @ORM\Table(name="dtb_member")
+     * @ORM\InheritanceType("SINGLE_TABLE")
+     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     * @ORM\HasLifecycleCallbacks()
+     * @ORM\Entity(repositoryClass="Eccube\Repository\MemberRepository")
+     */
+    class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
     {
-        $metadata->addConstraint(new UniqueEntity([
+
+        public static function loadValidatorMetadata(ClassMetadata $metadata)
+        {
+            $metadata->addConstraint(new UniqueEntity([
             'fields' => 'login_id',
             'message' => trans('member.text.error.login_id_registered'),
         ]));
-    }
+        }
 
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return (string) $this->getName();
-    }
+        /**
+         * @return string
+         */
+        public function __toString()
+        {
+            return (string) $this->getName();
+        }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getRoles()
-    {
-        return ['ROLE_ADMIN'];
-    }
+        /**
+         * {@inheritdoc}
+         */
+        public function getRoles()
+        {
+            return ['ROLE_ADMIN'];
+        }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getUsername()
-    {
-        return $this->login_id;
-    }
+        /**
+         * {@inheritdoc}
+         */
+        public function getUsername()
+        {
+            return $this->login_id;
+        }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function eraseCredentials()
-    {
-    }
+        /**
+         * {@inheritdoc}
+         */
+        public function eraseCredentials()
+        {
+        }
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+        /**
+         * @var int
+         *
+         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+         * @ORM\Id
+         * @ORM\GeneratedValue(strategy="IDENTITY")
+         */
+        private $id;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="name", type="string", length=255, nullable=true)
-     */
-    private $name;
+        /**
+         * @var string|null
+         *
+         * @ORM\Column(name="name", type="string", length=255, nullable=true)
+         */
+        private $name;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="department", type="string", length=255, nullable=true)
-     */
-    private $department;
+        /**
+         * @var string|null
+         *
+         * @ORM\Column(name="department", type="string", length=255, nullable=true)
+         */
+        private $department;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="login_id", type="string", length=255)
-     */
-    private $login_id;
+        /**
+         * @var string
+         *
+         * @ORM\Column(name="login_id", type="string", length=255)
+         */
+        private $login_id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="password", type="string", length=255)
-     */
-    private $password;
+        /**
+         * @var string
+         *
+         * @ORM\Column(name="password", type="string", length=255)
+         */
+        private $password;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="salt", type="string", length=255)
-     */
-    private $salt;
+        /**
+         * @var string
+         *
+         * @ORM\Column(name="salt", type="string", length=255)
+         */
+        private $salt;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="create_date", type="datetimetz")
-     */
-    private $create_date;
+        /**
+         * @var int
+         *
+         * @ORM\Column(name="sort_no", type="smallint", options={"unsigned":true})
+         */
+        private $sort_no;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="update_date", type="datetimetz")
-     */
-    private $update_date;
+        /**
+         * @var \DateTime
+         *
+         * @ORM\Column(name="create_date", type="datetimetz")
+         */
+        private $create_date;
 
-    /**
-     * @var \DateTime|null
-     *
-     * @ORM\Column(name="login_date", type="datetimetz", nullable=true)
-     */
-    private $login_date;
+        /**
+         * @var \DateTime
+         *
+         * @ORM\Column(name="update_date", type="datetimetz")
+         */
+        private $update_date;
 
-    /**
-     * @var \Eccube\Entity\Master\Work
-     *
-     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Work")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="work_id", referencedColumnName="id")
-     * })
-     */
-    private $Work;
+        /**
+         * @var \DateTime|null
+         *
+         * @ORM\Column(name="login_date", type="datetimetz", nullable=true)
+         */
+        private $login_date;
 
-    /**
-     * @var \Eccube\Entity\Master\Authority
-     *
-     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Authority")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="authority_id", referencedColumnName="id")
-     * })
-     */
-    private $Authority;
+        /**
+         * @var \Eccube\Entity\Master\Work
+         *
+         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Work")
+         * @ORM\JoinColumns({
+         *   @ORM\JoinColumn(name="work_id", referencedColumnName="id")
+         * })
+         */
+        private $Work;
 
-    /**
-     * @var \Eccube\Entity\Member
-     *
-     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
-     * })
-     */
-    private $Creator;
+        /**
+         * @var \Eccube\Entity\Master\Authority
+         *
+         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Authority")
+         * @ORM\JoinColumns({
+         *   @ORM\JoinColumn(name="authority_id", referencedColumnName="id")
+         * })
+         */
+        private $Authority;
 
-    /**
-     * Get id.
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+        /**
+         * @var \Eccube\Entity\Member
+         *
+         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
+         * @ORM\JoinColumns({
+         *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
+         * })
+         */
+        private $Creator;
 
-    /**
-     * Set name.
-     *
-     * @param string|null $name
-     *
-     * @return Member
-     */
-    public function setName($name = null)
-    {
-        $this->name = $name;
+        /**
+         * Get id.
+         *
+         * @return int
+         */
+        public function getId()
+        {
+            return $this->id;
+        }
 
-        return $this;
-    }
+        /**
+         * Set name.
+         *
+         * @param string|null $name
+         *
+         * @return Member
+         */
+        public function setName($name = null)
+        {
+            $this->name = $name;
 
-    /**
-     * Get name.
-     *
-     * @return string|null
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
+            return $this;
+        }
 
-    /**
-     * Set department.
-     *
-     * @param string|null $department
-     *
-     * @return Member
-     */
-    public function setDepartment($department = null)
-    {
-        $this->department = $department;
+        /**
+         * Get name.
+         *
+         * @return string|null
+         */
+        public function getName()
+        {
+            return $this->name;
+        }
 
-        return $this;
-    }
+        /**
+         * Set department.
+         *
+         * @param string|null $department
+         *
+         * @return Member
+         */
+        public function setDepartment($department = null)
+        {
+            $this->department = $department;
 
-    /**
-     * Get department.
-     *
-     * @return string|null
-     */
-    public function getDepartment()
-    {
-        return $this->department;
-    }
+            return $this;
+        }
 
-    /**
-     * Set loginId.
-     *
-     * @param string $loginId
-     *
-     * @return Member
-     */
-    public function setLoginId($loginId)
-    {
-        $this->login_id = $loginId;
+        /**
+         * Get department.
+         *
+         * @return string|null
+         */
+        public function getDepartment()
+        {
+            return $this->department;
+        }
 
-        return $this;
-    }
+        /**
+         * Set loginId.
+         *
+         * @param string $loginId
+         *
+         * @return Member
+         */
+        public function setLoginId($loginId)
+        {
+            $this->login_id = $loginId;
 
-    /**
-     * Get loginId.
-     *
-     * @return string
-     */
-    public function getLoginId()
-    {
-        return $this->login_id;
-    }
+            return $this;
+        }
 
-    /**
-     * Set password.
-     *
-     * @param string $password
-     *
-     * @return Member
-     */
-    public function setPassword($password)
-    {
-        $this->password = $password;
+        /**
+         * Get loginId.
+         *
+         * @return string
+         */
+        public function getLoginId()
+        {
+            return $this->login_id;
+        }
 
-        return $this;
-    }
+        /**
+         * Set password.
+         *
+         * @param string $password
+         *
+         * @return Member
+         */
+        public function setPassword($password)
+        {
+            $this->password = $password;
 
-    /**
-     * Get password.
-     *
-     * @return string
-     */
-    public function getPassword()
-    {
-        return $this->password;
-    }
+            return $this;
+        }
 
-    /**
-     * Set salt.
-     *
-     * @param string $salt
-     *
-     * @return Member
-     */
-    public function setSalt($salt)
-    {
-        $this->salt = $salt;
+        /**
+         * Get password.
+         *
+         * @return string
+         */
+        public function getPassword()
+        {
+            return $this->password;
+        }
 
-        return $this;
-    }
+        /**
+         * Set salt.
+         *
+         * @param string $salt
+         *
+         * @return Member
+         */
+        public function setSalt($salt)
+        {
+            $this->salt = $salt;
 
-    /**
-     * Get salt.
-     *
-     * @return string
-     */
-    public function getSalt()
-    {
-        return $this->salt;
-    }
+            return $this;
+        }
 
-    /**
-     * Set createDate.
-     *
-     * @param \DateTime $createDate
-     *
-     * @return Member
-     */
-    public function setCreateDate($createDate)
-    {
-        $this->create_date = $createDate;
+        /**
+         * Get salt.
+         *
+         * @return string
+         */
+        public function getSalt()
+        {
+            return $this->salt;
+        }
 
-        return $this;
-    }
+        /**
+         * Set sortNo.
+         *
+         * @param int $sortNo
+         *
+         * @return Member
+         */
+        public function setSortNo($sortNo)
+        {
+            $this->sort_no = $sortNo;
 
-    /**
-     * Get createDate.
-     *
-     * @return \DateTime
-     */
-    public function getCreateDate()
-    {
-        return $this->create_date;
-    }
+            return $this;
+        }
 
-    /**
-     * Set updateDate.
-     *
-     * @param \DateTime $updateDate
-     *
-     * @return Member
-     */
-    public function setUpdateDate($updateDate)
-    {
-        $this->update_date = $updateDate;
+        /**
+         * Get sortNo.
+         *
+         * @return int
+         */
+        public function getSortNo()
+        {
+            return $this->sort_no;
+        }
 
-        return $this;
-    }
+        /**
+         * Set createDate.
+         *
+         * @param \DateTime $createDate
+         *
+         * @return Member
+         */
+        public function setCreateDate($createDate)
+        {
+            $this->create_date = $createDate;
 
-    /**
-     * Get updateDate.
-     *
-     * @return \DateTime
-     */
-    public function getUpdateDate()
-    {
-        return $this->update_date;
-    }
+            return $this;
+        }
 
-    /**
-     * Set loginDate.
-     *
-     * @param \DateTime|null $loginDate
-     *
-     * @return Member
-     */
-    public function setLoginDate($loginDate = null)
-    {
-        $this->login_date = $loginDate;
+        /**
+         * Get createDate.
+         *
+         * @return \DateTime
+         */
+        public function getCreateDate()
+        {
+            return $this->create_date;
+        }
 
-        return $this;
-    }
+        /**
+         * Set updateDate.
+         *
+         * @param \DateTime $updateDate
+         *
+         * @return Member
+         */
+        public function setUpdateDate($updateDate)
+        {
+            $this->update_date = $updateDate;
 
-    /**
-     * Get loginDate.
-     *
-     * @return \DateTime|null
-     */
-    public function getLoginDate()
-    {
-        return $this->login_date;
-    }
+            return $this;
+        }
 
-    /**
-     * Set Work
-     *
-     * @param \Eccube\Entity\Master\Work
-     *
-     * @return Member
-     */
-    public function setWork(\Eccube\Entity\Master\Work $work = null)
-    {
-        $this->Work = $work;
+        /**
+         * Get updateDate.
+         *
+         * @return \DateTime
+         */
+        public function getUpdateDate()
+        {
+            return $this->update_date;
+        }
 
-        return $this;
-    }
+        /**
+         * Set loginDate.
+         *
+         * @param \DateTime|null $loginDate
+         *
+         * @return Member
+         */
+        public function setLoginDate($loginDate = null)
+        {
+            $this->login_date = $loginDate;
 
-    /**
-     * Get work.
-     *
-     * @return \Eccube\Entity\Master\Work|null
-     */
-    public function getWork()
-    {
-        return $this->Work;
-    }
+            return $this;
+        }
 
-    /**
-     * Set authority.
-     *
-     * @param \Eccube\Entity\Master\Authority|null $authority
-     *
-     * @return Member
-     */
-    public function setAuthority(\Eccube\Entity\Master\Authority $authority = null)
-    {
-        $this->Authority = $authority;
+        /**
+         * Get loginDate.
+         *
+         * @return \DateTime|null
+         */
+        public function getLoginDate()
+        {
+            return $this->login_date;
+        }
 
-        return $this;
-    }
+        /**
+         * Set Work
+         *
+         * @param \Eccube\Entity\Master\Work
+         *
+         * @return Member
+         */
+        public function setWork(\Eccube\Entity\Master\Work $work = null)
+        {
+            $this->Work = $work;
 
-    /**
-     * Get authority.
-     *
-     * @return \Eccube\Entity\Master\Authority|null
-     */
-    public function getAuthority()
-    {
-        return $this->Authority;
-    }
+            return $this;
+        }
 
-    /**
-     * Set creator.
-     *
-     * @param \Eccube\Entity\Member|null $creator
-     *
-     * @return Member
-     */
-    public function setCreator(\Eccube\Entity\Member $creator = null)
-    {
-        $this->Creator = $creator;
+        /**
+         * Get work.
+         *
+         * @return \Eccube\Entity\Master\Work|null
+         */
+        public function getWork()
+        {
+            return $this->Work;
+        }
 
-        return $this;
-    }
+        /**
+         * Set authority.
+         *
+         * @param \Eccube\Entity\Master\Authority|null $authority
+         *
+         * @return Member
+         */
+        public function setAuthority(\Eccube\Entity\Master\Authority $authority = null)
+        {
+            $this->Authority = $authority;
 
-    /**
-     * Get creator.
-     *
-     * @return \Eccube\Entity\Member|null
-     */
-    public function getCreator()
-    {
-        return $this->Creator;
+            return $this;
+        }
+
+        /**
+         * Get authority.
+         *
+         * @return \Eccube\Entity\Master\Authority|null
+         */
+        public function getAuthority()
+        {
+            return $this->Authority;
+        }
+
+        /**
+         * Set creator.
+         *
+         * @param \Eccube\Entity\Member|null $creator
+         *
+         * @return Member
+         */
+        public function setCreator(\Eccube\Entity\Member $creator = null)
+        {
+            $this->Creator = $creator;
+
+            return $this;
+        }
+
+        /**
+         * Get creator.
+         *
+         * @return \Eccube\Entity\Member|null
+         */
+        public function getCreator()
+        {
+            return $this->Creator;
+        }
     }
 }

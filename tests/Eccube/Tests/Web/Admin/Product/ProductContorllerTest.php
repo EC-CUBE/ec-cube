@@ -57,7 +57,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         parent::setUp();
 
         $this->productRepository = $this->container->get(ProductRepository::class);
-        $this->baseInfo = $this->container->get(BaseInfo::class);
+        $this->baseInfo = $this->entityManager->find(BaseInfo::class, 1);
         $this->taxRuleRepository = $this->container->get(TaxRuleRepository::class);
         $this->productStatusRepository = $this->container->get(ProductStatusRepository::class);
 

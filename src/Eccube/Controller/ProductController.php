@@ -22,6 +22,7 @@ use Eccube\Form\Type\AddCartType;
 use Eccube\Form\Type\Master\ProductListMaxType;
 use Eccube\Form\Type\Master\ProductListOrderByType;
 use Eccube\Form\Type\SearchProductType;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerFavoriteProductRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Service\CartService;
@@ -77,7 +78,7 @@ class ProductController extends AbstractController
      * @param CustomerFavoriteProductRepository $customerFavoriteProductRepository
      * @param CartService $cartService
      * @param ProductRepository $productRepository
-     * @param BaseInfo $BaseInfo
+     * @param BaseInfoRepository $baseInfoRepository
      * @param AuthenticationUtils $helper
      */
     public function __construct(
@@ -85,14 +86,14 @@ class ProductController extends AbstractController
         CustomerFavoriteProductRepository $customerFavoriteProductRepository,
         CartService $cartService,
         ProductRepository $productRepository,
-        BaseInfo $BaseInfo,
+        BaseInfoRepository $baseInfoRepository,
         AuthenticationUtils $helper
     ) {
         $this->purchaseFlow = $cartPurchaseFlow;
         $this->customerFavoriteProductRepository = $customerFavoriteProductRepository;
         $this->cartService = $cartService;
         $this->productRepository = $productRepository;
-        $this->BaseInfo = $BaseInfo;
+        $this->BaseInfo = $baseInfoRepository->get();
         $this->helper = $helper;
     }
 
@@ -165,7 +166,7 @@ class ProductController extends AbstractController
                 AddCartType::class,
                 null,
                 [
-                    'product' => $Product,
+                    'product' => $this->productRepository->findWithSortedClassCategories($Product->getId()),
                     'allow_extra_fields' => true,
                 ]
             );
