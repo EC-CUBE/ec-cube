@@ -86,7 +86,7 @@ file that was distributed with this source code.
                 <div class="row justify-content-start">
                     <div class="col-6">
                         <div class="mb-2">
-                            <label class="col-form-label">{{ 'admin.customer.search_multi'|trans }}</label>
+                            <label class="col-form-label">{{ 'admin.customer.multi_search_label'|trans }}</label>
                             {{ form_widget(searchForm.multi) }}
                             {{ form_errors(searchForm.multi) }}
                         </div>
@@ -131,7 +131,7 @@ file that was distributed with this source code.
                                     {{ form_widget(searchForm.buy_total_start) }}
                                     {{ form_errors(searchForm.buy_total_start) }}
                                 </div>
-                                <div class="col-auto text-center"><span>{{ 'admin.common.range_separator'|trans }}</span></div>
+                                <div class="col-auto text-center"><span>{{ 'admin.common.separator__range'|trans }}</span></div>
                                 <div class="col">
                                     {{ form_widget(searchForm.buy_total_end) }}
                                     {{ form_errors(searchForm.buy_total_end) }}
@@ -161,7 +161,7 @@ file that was distributed with this source code.
                                     {{ form_widget(searchForm.buy_times_start) }}
                                     {{ form_errors(searchForm.buy_times_start) }}
                                 </div>
-                                <div class="col-auto text-center"><span>〜</span></div>
+                                <div class="col-auto text-center"><span>{{ 'admin.common.separator__range'|trans }}</span></div>
                                 <div class="col">
                                     {{ form_widget(searchForm.buy_times_end) }}
                                     {{ form_errors(searchForm.buy_times_end) }}
@@ -179,7 +179,7 @@ file that was distributed with this source code.
                                     {{ form_widget(searchForm.birth_start) }}
                                     {{ form_errors(searchForm.birth_start) }}
                                 </div>
-                                <div class="col-auto text-center"><span>〜</span></div>
+                                <div class="col-auto text-center"><span>{{ 'admin.common.separator__range'|trans }}</span></div>
                                 <div class="col">
                                     {{ form_widget(searchForm.birth_end) }}
                                     {{ form_errors(searchForm.birth_end) }}
@@ -195,7 +195,7 @@ file that was distributed with this source code.
                                     {{ form_widget(searchForm.create_date_start) }}
                                     {{ form_errors(searchForm.create_date_start) }}
                                 </div>
-                                <div class="col-auto text-center"><span>〜</span></div>
+                                <div class="col-auto text-center"><span>{{ 'admin.common.separator__range'|trans }}</span></div>
                                 <div class="col">
                                     {{ form_widget(searchForm.create_date_end) }}
                                     {{ form_errors(searchForm.create_date_end) }}
@@ -225,7 +225,7 @@ file that was distributed with this source code.
                                     {{ form_widget(searchForm.update_date_start) }}
                                     {{ form_errors(searchForm.update_date_start) }}
                                 </div>
-                                <div class="col-auto text-center"><span>〜</span></div>
+                                <div class="col-auto text-center"><span>{{ 'admin.common.separator__range'|trans }}</span></div>
                                 <div class="col">
                                     {{ form_widget(searchForm.update_date_end) }}
                                     {{ form_errors(searchForm.update_date_end) }}
@@ -250,7 +250,7 @@ file that was distributed with this source code.
                                     {{ form_widget(searchForm.last_buy_start) }}
                                     {{ form_errors(searchForm.last_buy_start) }}
                                 </div>
-                                <div class="col-auto text-center"><span>〜</span></div>
+                                <div class="col-auto text-center"><span>{{ 'admin.common.separator__range'|trans }}</span></div>
                                 <div class="col">
                                     {{ form_widget(searchForm.last_buy_end) }}
                                     {{ form_errors(searchForm.last_buy_end) }}
@@ -315,7 +315,7 @@ file that was distributed with this source code.
                                 <div class="d-inline-block">
                                     <div class="btn-group" role="group">
                                         <button class="btn btn-ec-regular" type="button" onclick='location.href="{{ url('admin_customer_export') }}"'><i class="fa fa-cloud-download mr-1 text-secondary"></i><span>{{ 'admin.common.csv_download'|trans }}</span></button>
-                                        <button class="btn btn-ec-regular" type="button" onclick='location.href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_CUSTOMER') }) }}"'><i class="fa fa-cog mr-1 text-secondary"></i><span>{{ 'admin.setting.shop.csv'|trans }}</span></button>
+                                        <button class="btn btn-ec-regular" type="button" onclick='location.href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_CUSTOMER') }) }}"'><i class="fa fa-cog mr-1 text-secondary"></i><span>{{ 'admin.setting.shop.csv_setting'|trans }}</span></button>
                                     </div>
                                 </div>
                             </div>

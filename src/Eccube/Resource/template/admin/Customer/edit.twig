@@ -266,7 +266,6 @@ file that was distributed with this source code.
                                             <th class="align-middle pt-2 pb-2">{{ 'admin.common.name'|trans }}</th>
                                             <th class="align-middle pt-2 pb-2">{{ 'admin.common.address'|trans }}</th>
                                             <th class="align-middle pt-2 pb-2 pr-3">{{ 'admin.common.phone_number'|trans }}</th>
-                                            <th class="align-middle pt-2 pb-2 pr-3"></th>
                                             </thead>
                                             <tbody>
                                             {% for CustomerAddress in Customer.CustomerAddresses %}
@@ -275,31 +274,12 @@ file that was distributed with this source code.
                                                         {{ CustomerAddress.name01 }}&nbsp;{{ CustomerAddress.name02 }}
                                                     </td>
                                                     <td class="align-middle">
-                                                        〒{{ CustomerAddress.postal_code }}
-                                                        　{{ CustomerAddress.Pref }}{{ CustomerAddress.addr01 }}{{ CustomerAddress.addr02 }}
+                                                        <a href="{{ url('admin_customer_delivery_edit', { 'id': Customer.id, 'did': CustomerAddress.id }) }}">
+                                                            {{ 'admin.common.postal_symbol'|trans }}{{ CustomerAddress.postal_code }} {{ CustomerAddress.Pref }}{{ CustomerAddress.addr01 }}{{ CustomerAddress.addr02 }}
+                                                        </a>
                                                     </td>
                                                     <td class="align-middle">
                                                         {{ CustomerAddress.phone_number }}
-                                                    </td>
-                                                    {# TODO: メニューのデザインを整える #}
-                                                    <td class="align-middle pr-3">
-                                                        <div id="address_box__menu_box_toggle--{{ CustomerAddress.id }}"
-                                                             class="dropdown">
-                                                            <a class="dropdown-toggle" data-toggle="dropdown">
-                                                                {#<svg class="cb cb-ellipsis-h">#}
-                                                                {#<use xlink:href="#cb-ellipsis-h"/>#}
-                                                                {#</svg>#}
-                                                            </a>
-                                                            <ul id="address_box__menu--{{ CustomerAddress.id }}"
-                                                                class="dropdown-menu dropdown-menu-right">
-                                                                <li>
-                                                                    <a href="{{ url('admin_customer_delivery_edit', { 'id': Customer.id, 'did': CustomerAddress.id}) }}">{{ 'admin.common.edit'|trans }}</a>
-                                                                </li>
-                                                                <!--
-                                                                {#<li><a href="{{ url('admin_customer_delivery_delete', { 'id': Customer.id, 'did': CustomerAddress.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="このお届け先情報を削除してもよろしいですか？">削除</a></li>#}
-                                                                -->
-                                                            </ul>
-                                                        </div>
                                                     </td>
                                                 </tr>
                                             {% endfor %}
@@ -310,7 +290,7 @@ file that was distributed with this source code.
                                         {% if Customer.CustomerAddresses|length < eccube_config.eccube_deliv_addr_max %}
                                             <div class="d-block text-center">
                                                 <a href="{{ url('admin_customer_delivery_new', { id: Customer.id }) }}"
-                                                   class="btn btn-ec-regular">{{ 'admin.customer.add_customer_address'|trans }}</a>
+                                                   class="btn btn-ec-regular">{{ 'admin.customer.customer_address__add'|trans }}</a>
                                             </div>
                                         {% else %}
                                             <span class="ec-errorMessage">
@@ -326,7 +306,7 @@ file that was distributed with this source code.
 
                                         <div class="d-block text-center">
                                             <a href="{{ url('admin_customer_delivery_new', { id: Customer.id }) }}"
-                                               class="btn btn-ec-regular">{{ 'admin.customer.add_customer_address'|trans }}</a>
+                                               class="btn btn-ec-regular">{{ 'admin.customer.customer_address__add'|trans }}</a>
                                         </div>
 
                                     </div>
@@ -439,7 +419,6 @@ file that was distributed with this source code.
             </div>
         </div>
 
-        {# TODO: conversionAreaがmockではbody直下にあるが、formの関係でcontentsArea内に移動させる #}
         <div class="c-conversionArea">
             <div class="c-conversionArea__container">
                 <div class="row justify-content-between align-items-center">

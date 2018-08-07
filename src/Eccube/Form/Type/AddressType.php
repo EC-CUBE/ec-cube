@@ -107,13 +107,19 @@ class AddressType extends AbstractType
                 'constraints' => [
                     new Assert\Length(['max' => $this->config['eccube_address1_len']]),
                 ],
-                'attr' => ['class' => 'p-locality p-street-address'],
+                'attr' => [
+                    'class' => 'p-locality p-street-address',
+                    'placeholder' => 'common.address_sample_01'
+                ],
             ],
             'addr02_options' => [
                 'constraints' => [
                     new Assert\Length(['max' => $this->config['eccube_address2_len']]),
                 ],
-                'attr' => ['class' => 'p-extended-address'],
+                'attr' => [
+                    'class' => 'p-locality p-street-address',
+                    'placeholder' => 'common.address_sample_02'
+                ],
             ],
             'pref_name' => 'pref',
             'addr01_name' => 'addr01',

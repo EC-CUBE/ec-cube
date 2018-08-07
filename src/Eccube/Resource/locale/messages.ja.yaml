@@ -333,10 +333,11 @@ admin.common.decision: 決定
 # 汎用ラベル, メッセージ
 admin.common.required: 必須
 admin.common.bulk_actions: 一括操作
-admin.common.select_message: 選択してください
-admin.common.select_message__line_long: ----
-admin.common.select_message__line_short: --
-admin.common.range_separator: 〜
+admin.common.select: 選択してください
+admin.common.select__pref: 都道府県を選択
+admin.common.select__unspecified: 指定なし
+admin.common.separator__range: 〜
+admin.common.separator__colon: ：
 admin.common.count: '%count%件'
 admin.common.search_detail: 詳細検索
 admin.common.search_result: 検索結果：%count%件が該当しました
@@ -523,6 +524,8 @@ admin.order.shipping_date: 出荷日
 admin.order.message: お問い合わせ
 admin.order.message_short: お問合せ
 admin.order.purchase_price: 購入金額
+admin.order.purchase_price__start: 購入金額(開始)
+admin.order.purchase_price__end: 購入金額(終了)
 admin.order.orderer: 注文者
 admin.order.shipping_info: お届先情報
 admin.order.copy_orderer: 注文者情報をコピー
