@@ -331,7 +331,6 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
                 'admin_system_masterdata_edit' => $editForm,
             ]
         );
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_setting_system_masterdata_view', ['entity' => $formData['masterdata']])));
 
         $this->assertNull($this->entityManager->getRepository($entityName)->find(0));
 
