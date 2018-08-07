@@ -422,7 +422,7 @@ class Generator
                 ->setCreateDate(new \DateTime()) // FIXME
                 ->setUpdateDate(new \DateTime())
                 ->setCreator($Member)
-                ->setStock($faker->randomNumber(3));
+                ->setStock($faker->numberBetween(100, 999));
             $this->entityManager->persist($ProductStock);
             $this->entityManager->flush($ProductStock);
             $ProductClass = new ProductClass();
