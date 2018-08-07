@@ -1,0 +1,46 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends '@admin/default_frame.twig' %}
+
+{% set menus = ['store', 'plugin', 'plugin_list'] %}
+
+{% block title %}独自プラグインのアップロード{% endblock %}
+{% block sub_title %}オーナーズストア{% endblock %}
+
+{% block main %}
+    <form id="upload-form" class="" method="post" action="" enctype="multipart/form-data">
+        <div class="c-contentsArea__cols">
+            <div class="c-contentsArea__primaryCol">
+                <div class="c-primaryCol">
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header">
+                            <h5 class="box-title">新規プラグインのアップロード</h5>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="row">
+                                <label class="col-auto control-label">{{ 'admin.store.install.label'|trans }}</label>
+                                <div class="col-sm-9">
+                                    <div class="mb-3">
+                                        <input type="file" name="file"
+                                               accept="application/zip,application/x-tar,application/x-gzip"
+                                               class="form-control-file">
+                                    </div>
+                                    <button class="btn btn-primary btn-lg" type="submit">アップロード</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}

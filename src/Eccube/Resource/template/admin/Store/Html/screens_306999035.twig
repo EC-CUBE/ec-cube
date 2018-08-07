@@ -1,0 +1,365 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+
+{% extends '@admin/default_frame.twig' %}
+
+{% set menus = ['store', 'plugin', 'plugin_list'] %}
+
+{% block title %}インストールプラグイン一覧{% endblock %}
+{% block sub_title %}オーナーズストア{% endblock %}
+
+{% block main %}
+    <div class="c-contentsArea__cols">
+        <div class="c-contentsArea__primaryCol">
+            <div class="c-primaryCol">
+                <div class="card rounded border-0 mb-4">
+                    <div class="card-header">
+                        <a href="{{ url('admin_store_plugin_306999026') }}"
+                           class="btn btn-ec-regular mr-2 pull-right">オーナーズストアから新規追加</a>
+                        <h5 class="box-title mb-3">オーナーズストアのプラグイン</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <table class="table table-sm mb-0">
+                            <thead>
+                            <tr>
+                                <th class="border-top-0 pl-4 py-2">プラグイン名称</th>
+                                <th class="border-top-0 py-2">バージョン</th>
+                                <th class="border-top-0 py-2">コード</th>
+                                <th class="border-top-0 py-2">ステータス</th>
+                                <th class="border-top-0 py-2">アップデート</th>
+                                <th class="border-top-0 py-2">&nbsp;</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            <tr>
+                                <td class="pl-4 py-2">
+                                    <a href="#">
+                                        <img class="pr-3"
+                                             src="{{ asset('assets/img/plugin_temp/'~ random(7) ~'.png', 'admin')}}"
+                                             height="60" alt="">
+                                    </a>
+                                    <a href="#">クエリビルダ拡張のサンプル</a>
+                                </td>
+                                <td class="align-middle">
+                                    <p class="mb-0">1.0.0</p>
+                                </td>
+                                <td class="align-middle">MultipleAdmin</td>
+                                <td class="align-middle"><a href="#" class="text-success">有効</a></td>
+                                <td class="align-middle">
+                                    <a href="#"
+                                       class="btn btn-ec-regular btn-lg">アップデート</a>
+                                </td>
+                                <td class="align-middle">
+                                    <div class="col-auto text-right">
+                                        <a href="{{ url('admin_store_plugin_306999029') }}"
+                                           class="btn btn-ec-actionIcon mr-3"
+                                           data-toggle="tooltip"
+                                           data-placement="top" title="削除">
+                                            <i class="fa fa-close fa-lg text-secondary"></i>
+                                        </a>
+                                        <a class="btn btn-ec-actionIcon mr-3" href="#" data-toggle="tooltip"
+                                           data-placement="top" title="無効化">
+                                            <i class="fa fa-play fa-lg text-secondary"></i>
+                                        </a>
+                                        <a class="btn btn-ec-actionIcon mr-3" href="#" data-toggle="tooltip"
+                                           data-placement="top" title="設定">
+                                            <i class="fa fa-cog fa-lg text-secondary"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="pl-4 py-2">
+                                    <a href="#">
+                                        <img class="pr-3"
+                                             src="{{ asset('assets/img/plugin_temp/'~ random(7) ~'.png', 'admin')}}"
+                                             height="60" alt="">
+                                    </a>
+                                    <a href="#">売上集計プラグイン</a>
+                                </td>
+                                <td class="align-middle">
+                                    <p class="mb-0">1.0.0</p>
+                                </td>
+                                <td class="align-middle">Payment</td>
+                                <td class="align-middle"><a href="#" class="text-secondary">無効</a></td>
+                                <td class="align-middle">
+                                    <a href="#"
+                                       class="btn btn-ec-regular btn-lg">アップデート</a>
+                                </td>
+                                <td class="align-middle">
+                                    <div class="col-auto text-right">
+                                        <a class="btn btn-ec-actionIcon mr-3" href="#" data-toggle="tooltip"
+                                           data-placement="top" title="無効化">
+                                            <i class="fa fa-pause fa-lg text-secondary"></i>
+                                        </a>
+                                        <a class="btn btn-ec-actionIcon mr-3" href="#" data-toggle="tooltip"
+                                           data-placement="top" title="設定">
+                                            <i class="fa fa-cog fa-lg text-secondary"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="pl-4 py-2">
+                                    <a href="#">
+                                        <img class="pr-3"
+                                             src="{{ asset('assets/img/plugin_temp/'~ random(7) ~'.png', 'admin')}}"
+                                             height="60" alt="">
+                                    </a>
+                                    <a href="#">商品別meta設定</a>
+                                </td>
+                                <td class="align-middle">
+                                    <p class="mb-0">1.0.0</p>
+                                </td>
+                                <td class="align-middle">MailExpand</td>
+                                <td class="align-middle"><a href="#" class="text-success">無効</a></td>
+                                <td class="align-middle">
+                                    <a href="#"
+                                       class="btn btn-ec-regular btn-lg">アップデート</a>
+                                </td>
+                                <td class="align-middle">
+                                    <div class="col-auto text-right">
+                                        <a class="btn btn-ec-actionIcon mr-3" href="#" data-toggle="tooltip"
+                                           data-placement="top" title="無効化">
+                                            <i class="fa fa-pause fa-lg text-secondary"></i>
+                                        </a>
+                                        <a class="btn btn-ec-actionIcon mr-3" href="#" data-toggle="tooltip"
+                                           data-placement="top" title="設定">
+                                            <i class="fa fa-cog fa-lg text-secondary"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="pl-4 py-2">
+                                    <a href="#">
+                                        <img class="pr-3"
+                                             src="{{ asset('assets/img/plugin_temp/'~ random(7) ~'.png', 'admin')}}"
+                                             height="60" alt="">
+                                    </a>
+                                    <a href="#">会員限定カテゴリプラグイン for EC-CUBE3</a>
+                                </td>
+                                <td class="align-middle">
+                                    <p class="mb-0">1.0.0</p>
+                                </td>
+                                <td class="align-middle">MultipleAdmin</td>
+                                <td class="align-middle"><a href="#" class="text-success">無効</a></td>
+                                <td class="align-middle">
+                                    <a href="#"
+                                       class="btn btn-ec-regular btn-lg">アップデート</a>
+                                </td>
+                                <td class="align-middle">
+                                    <div class="col-auto text-right">
+                                        <a class="btn btn-ec-actionIcon mr-3" href="#" data-toggle="tooltip"
+                                           data-placement="top" title="無効化">
+                                            <i class="fa fa-pause fa-lg text-secondary"></i>
+                                        </a>
+                                        <a class="btn btn-ec-actionIcon mr-3" href="#" data-toggle="tooltip"
+                                           data-placement="top" title="設定">
+                                            <i class="fa fa-cog fa-lg text-secondary"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="pl-4 py-2">
+                                    <a href="#">
+                                        <img class="pr-3"
+                                             src="{{ asset('assets/img/plugin_temp/'~ random(7) ~'.png', 'admin')}}"
+                                             height="60" alt="">
+                                    </a>
+                                    <a href="#">FormExtensionのサンプル</a>
+                                </td>
+                                <td class="align-middle">
+                                    <p class="mb-0">1.0.0</p>
+                                </td>
+                                <td class="align-middle">MultipleAdmin</td>
+                                <td class="align-middle"><a href="#" class="text-secondary">無効</a></td>
+                                <td class="align-middle">
+                                    <a href="#"
+                                       class="btn btn-ec-regular btn-lg">アップデート</a>
+                                </td>
+                                <td class="align-middle">
+                                    <div class="col-auto text-right">
+                                        <a class="btn btn-ec-actionIcon mr-3" href="#" data-toggle="tooltip"
+                                           data-placement="top" title="無効化">
+                                            <i class="fa fa-pause fa-lg text-secondary"></i>
+                                        </a>
+                                        <a class="btn btn-ec-actionIcon mr-3" href="#" data-toggle="tooltip"
+                                           data-placement="top" title="設定">
+                                            <i class="fa fa-cog fa-lg text-secondary"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="pl-4 py-2">
+                                    <a href="#">
+                                        <img class="pr-3"
+                                             src="{{ asset('assets/img/plugin_temp/'~ random(7) ~'.png', 'admin')}}"
+                                             height="60" alt="">
+                                    </a>
+                                    <a href="#">Twigユーザ定義関数のサンプル</a>
+                                </td>
+                                <td class="align-middle">
+                                    <p class="mb-0">1.0.0</p>
+                                </td>
+                                <td class="align-middle">MultipleAdmin</td>
+                                <td class="align-middle"><a href="#" class="text-secondary">無効</a></td>
+                                <td class="align-middle">
+                                    <a href="#"
+                                       class="btn btn-ec-regular btn-lg">アップデート</a>
+                                </td>
+                                <td class="align-middle">
+                                    <div class="col-auto text-right">
+                                        <a class="btn btn-ec-actionIcon mr-3" href="#" data-toggle="tooltip"
+                                           data-placement="top" title="無効化">
+                                            <i class="fa fa-pause fa-lg text-secondary"></i>
+                                        </a>
+                                        <a class="btn btn-ec-actionIcon mr-3" href="#" data-toggle="tooltip"
+                                           data-placement="top" title="設定">
+                                            <i class="fa fa-cog fa-lg text-secondary"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card rounded border-0 mb-4">
+                    <div class="card-header">
+                        <a href="{{ url('admin_store_plugin_306999034') }}"
+                           class="btn btn-ec-regular mr-2 pull-right">アップロードして新規追加</a>
+                        <h5 class="box-title mb-3">ユーザー独自プラグイン</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <table class="table table-sm mb-0">
+                            <thead>
+                            <tr>
+                                <th class="border-top-0 pl-4 py-2">プラグイン名称</th>
+                                <th class="border-top-0 py-2">バージョン</th>
+                                <th class="border-top-0 py-2">コード</th>
+                                <th class="border-top-0 py-2">ステータス</th>
+                                <th class="border-top-0 py-2">アップデート</th>
+                                <th class="border-top-0 py-2">&nbsp;</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            <tr>
+                                <td class="align-middle pl-4 py-2">
+                                    <a href="#">クエリビルダ拡張のサンプル</a>
+                                </td>
+                                <td class="align-middle">
+                                    <p class="mb-0">1.0.0</p>
+                                </td>
+                                <td class="align-middle">MultipleAdmin</td>
+                                <td class="align-middle"><a href="#" class="text-success">無効</a></td>
+                                <td class="align-middle py-3">
+                                    <div class="mb-2">
+                                        <input type="file" name="file"
+                                               accept="application/zip,application/x-tar,application/x-gzip"
+                                               class="form-control-file">
+                                    </div>
+                                    <button class="btn btn-primary btn-lg" type="submit">アップデート</button>
+                                </td>
+                                <td class="align-middle">
+                                    <div class="col-auto text-right">
+                                        <a class="btn btn-ec-actionIcon mr-3" data-toggle="tooltip"
+                                           data-placement="top" title="削除">
+                                            <i class="fa fa-close fa-lg text-secondary"></i>
+                                        </a>
+                                        <a class="btn btn-ec-actionIcon mr-3" href="#" data-toggle="tooltip"
+                                           data-placement="top" title="無効化">
+                                            <i class="fa fa-play fa-lg text-secondary"></i>
+                                        </a>
+                                        <a class="btn btn-ec-actionIcon mr-3" href="#" data-toggle="tooltip"
+                                           data-placement="top" title="設定">
+                                            <i class="fa fa-cog fa-lg text-secondary"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="align-middle pl-4 py-2">
+                                    <a href="#">エンティティからフォームを生成する機構のサンプル</a>
+                                </td>
+                                <td class="align-middle">
+                                    <p class="mb-0">1.0.0</p>
+                                </td>
+                                <td class="align-middle">Payment</td>
+                                <td class="align-middle"><a href="#" class="text-secondary">無効</a></td>
+                                <td class="align-middle py-3">
+                                    <div class="mb-2">
+                                        <input type="file" name="file"
+                                               accept="application/zip,application/x-tar,application/x-gzip"
+                                               class="form-control-file">
+                                    </div>
+                                    <button class="btn btn-primary btn-lg" type="submit">アップデート</button>
+                                </td>
+                                <td class="align-middle">
+                                    <div class="col-auto text-right">
+                                        <a class="btn btn-ec-actionIcon mr-3" href="#" data-toggle="tooltip"
+                                           data-placement="top" title="無効化">
+                                            <i class="fa fa-pause fa-lg text-secondary"></i>
+                                        </a>
+                                        <a class="btn btn-ec-actionIcon mr-3" href="#" data-toggle="tooltip"
+                                           data-placement="top" title="設定">
+                                            <i class="fa fa-cog fa-lg text-secondary"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="align-middle pl-4 py-2">
+                                    <a href="#">送料無料対象商品設定プラグイン</a>
+                                </td>
+                                <td class="align-middle">
+                                    <p class="mb-0">1.0.0</p>
+                                </td>
+                                <td class="align-middle">MailExpand</td>
+                                <td class="align-middle"><a href="#" class="text-success">無効</a></td>
+                                <td class="align-middle py-3">
+                                    <div class="mb-2">
+                                        <input type="file" name="file"
+                                               accept="application/zip,application/x-tar,application/x-gzip"
+                                               class="form-control-file">
+                                    </div>
+                                    <button class="btn btn-primary btn-lg" type="submit">アップデート</button>
+                                </td>
+                                <td class="align-middle">
+                                    <div class="col-auto text-right">
+                                        <a class="btn btn-ec-actionIcon mr-3" data-toggle="tooltip"
+                                           data-placement="top" title="削除">
+                                            <i class="fa fa-close fa-lg text-secondary"></i>
+                                        </a>
+                                        <a class="btn btn-ec-actionIcon mr-3" href="#" data-toggle="tooltip"
+                                           data-placement="top" title="無効化">
+                                            <i class="fa fa-play fa-lg text-secondary"></i>
+                                        </a>
+                                        <a class="btn btn-ec-actionIcon mr-3" href="#" data-toggle="tooltip"
+                                           data-placement="top" title="設定">
+                                            <i class="fa fa-cog fa-lg text-secondary"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

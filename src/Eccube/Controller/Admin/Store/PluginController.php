@@ -79,6 +79,98 @@ class PluginController extends AbstractController
     }
 
     /**
+     * Template only
+     *
+     * @Route("/%eccube_admin_route%/store/plugin/306999035.html", name="admin_store_plugin_306999035")
+     * @Template("@admin/Store/Html/screens_306999035.twig")
+     */
+    public function html_306999035(){}
+
+    /**
+     * Template only
+     *
+     * @Route("/%eccube_admin_route%/store/plugin/306999026.html", name="admin_store_plugin_306999026")
+     * @Template("@admin/Store/Html/screens_306999026.twig")
+
+     */
+    public function html_306999026()
+    {
+
+    }
+
+    /**
+     * Template only
+     *
+     * @Route("/%eccube_admin_route%/store/plugin/306999032.html", name="admin_store_plugin_306999032")
+     * @Template("@admin/Store/Html/screens_306999032.twig")
+
+     */
+    public function html_306999032()
+    {
+
+    }
+
+/**
+     * Template only
+     *
+     * @Route("/%eccube_admin_route%/store/plugin/306999030.html", name="admin_store_plugin_306999030")
+     * @Template("@admin/Store/Html/screens_306999030.twig")
+
+     */
+    public function html_306999030()
+    {
+
+    }
+
+    /**
+     * Template only
+     *
+     * @Route("/%eccube_admin_route%/store/plugin/306999027.html", name="admin_store_plugin_306999027")
+     * @Template("@admin/Store/Html/screens_306999027.twig")
+
+     */
+    public function html_306999027()
+    {
+
+    }
+
+    /**
+     * Template only
+     *
+     * @Route("/%eccube_admin_route%/store/plugin/306999029.html", name="admin_store_plugin_306999029")
+     * @Template("@admin/Store/Html/screens_306999029.twig")
+     *
+     */
+    public function html_306999029(Request $request)
+    {
+
+    }
+
+    /**
+     * Template only
+     *
+     * @Route("/%eccube_admin_route%/store/plugin/306999034.html", name="admin_store_plugin_306999034")
+     * @Template("@admin/Store/Html/screens_306999034.twig")
+     *
+     */
+    public function html_306999034(Request $request)
+    {
+        //Install file
+    }
+
+    /**
+     * Template only
+     *
+     * @Route("/%eccube_admin_route%/store/plugin/306999028.html", name="admin_store_plugin_306999028")
+     * @Template("@admin/Store/Html/screens_306999028.twig")
+     *
+     */
+    public function html_306999028(Request $request)
+    {
+        //Setting authentication
+    }
+
+    /**
      * インストール済プラグイン画面
      *
      * @Route("/%eccube_admin_route%/store/plugin", name="admin_store_plugin")

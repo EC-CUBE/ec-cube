@@ -1,0 +1,65 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+
+{% extends '@admin/default_frame.twig' %}
+
+{% set menus = ['store', 'plugin', 'plugin_owners_search'] %}
+
+{% block title %}削除確認{% endblock %}
+{% block sub_title %}オーナーズストア{% endblock %}
+
+{% block stylesheet %}
+    <style type="text/css">
+        .btn-remove {
+            background: #C04949;
+            border-color: #C04949;
+        }
+    </style>
+{% endblock %}
+{% block main %}
+    <div class="c-contentsArea__cols">
+        <div class="c-contentsArea__primaryCol">
+            <div class="c-primaryCol">
+                <div class="card rounded border-0 mb-4">
+                    <div class="card-header">
+                        <h5>以下のプラグインを削除します。よろしいですか？（取り消しできません)</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="row m-0 p-3 border-bt">
+                            <div class="col-sm-2 pr-2 pr-sm-3">
+                                <a href="#" data-toggle="modal" data-target="#searchPluginModal">
+                                    <img class="w-100 img-responsive"
+                                         src="{{ asset('assets/img/plugin_temp/'~ random(7) ~'.png', 'admin')}}" alt=""></a>
+                            </div>
+                            <div class="col-sm-10 col-md-9">
+                                <div class="info">
+                                    <h5>
+                                        <a href="#" class="font-weight-bold">EC-CUBEペイメント決済プラグイン</a> （最新バージョン：1.0.2）
+                                    </h5>
+                                    <h6>EC-CUBEの開発元が提供する決済プラグイン。EC-CUBE開発元提供サービスだからこそ実現できた、豊富な機能をそろえています。</h6>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row text-right my-4 mx-0">
+                            <div class="col-12">
+                                <a href="#" class="btn btn-ec-sub btn-lg">キャンセル</a>
+                                <a href="#" class="btn btn btn-primary btn-lg btn-remove">削除</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
