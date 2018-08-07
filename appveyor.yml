@@ -48,7 +48,6 @@ install:
   - copy C:\tools\php72\php.ini-production C:\tools\php72\php.ini
   - echo date.timezone="Asia/Tokyo" >> C:\tools\php72\php.ini
   - echo extension_dir=ext >> C:\tools\php72\php.ini
-  - echo extension=php_openssl.dll >> C:\tools\php72\php.ini
   - echo extension=php_gd2.dll >> C:\tools\php72\php.ini
   - echo extension=php_mbstring.dll >> C:\tools\php72\php.ini
   - echo extension=php_pgsql.dll >> C:\tools\php72\php.ini
