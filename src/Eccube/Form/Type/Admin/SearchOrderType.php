@@ -44,24 +44,24 @@ class SearchOrderType extends AbstractType
         $builder
             // 受注ID・注文者名・注文者（フリガナ）・注文者会社名
             ->add('multi', TextType::class, [
-                'label' => 'searchorder.label.multi',
+                'label' => 'admin.order.multi_search_label',
                 'required' => false,
                 'constraints' => [
                     new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
                 ],
             ])
             ->add('status', OrderStatusType::class, [
-                'label' => 'searchorder.label.status',
+                'label' => 'admin.order.status',
                 'expanded' => true,
                 'multiple' => true,
             ])
             ->add('name', TextType::class, [
-                'label' => 'searchorder.label.name',
+                'label' => 'admin.order.orderer_name',
                 'required' => false,
             ])
             ->add($builder
                 ->create('kana', TextType::class, [
-                    'label' => 'searchorder.label.kana',
+                    'label' => 'admin.order.orderer_kana',
                     'required' => false,
                     'constraints' => [
                         new Assert\Regex([
@@ -73,19 +73,19 @@ class SearchOrderType extends AbstractType
                 ->addEventSubscriber(new \Eccube\Form\EventListener\ConvertKanaListener('CV')
             ))
             ->add('company_name', TextType::class, [
-                'label' => 'searchorder.label.company_name',
+                'label' => 'admin.order.orderer_company_name',
                 'required' => false,
             ])
             ->add('email', TextType::class, [
-                'label' => 'searchorder.label.email',
+                'label' => 'admin.common.mail_address',
                 'required' => false,
             ])
             ->add('order_no', TextType::class, [
-                'label' => 'searchorder.label.order_no',
+                'label' => 'admin.order.order_no',
                 'required' => false,
             ])
             ->add('phone_number', TextType::class, [
-                'label' => 'common.label.phone_number',
+                'label' => 'admin.common.phone_number',
                 'required' => false,
                 'constraints' => [
                     new Assert\Regex([
@@ -95,21 +95,21 @@ class SearchOrderType extends AbstractType
                 ],
             ])
             ->add('tracking_number', TextType::class, [
-                'label' => 'searchorder.label.tracking_number',
+                'label' => 'admin.order.tracking_number',
                 'required' => false,
             ])
-            ->add('shipping_mail_send', CheckboxType::class, [
-                'label' => 'searchorder.label.shipping_mail_send',
+            ->add('shipping_mail', CheckboxType::class, [
+                'label' => 'admin.order.shipping_mail',
                 'required' => false,
             ])
             ->add('payment', PaymentType::class, [
-                'label' => 'searchorder.label.payment_method',
+                'label' => 'admin.common.payment_method',
                 'required' => false,
                 'expanded' => true,
                 'multiple' => true,
             ])
             ->add('order_date_start', DateType::class, [
-                'label' => 'searchorder.label.order_date_from',
+                'label' => 'admin.order.order_date_start',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -117,7 +117,7 @@ class SearchOrderType extends AbstractType
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
             ])
             ->add('order_date_end', DateType::class, [
-                'label' => 'searchorder.label.order_date_to',
+                'label' => 'admin.order.order_date_end',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -125,7 +125,7 @@ class SearchOrderType extends AbstractType
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
             ])
             ->add('payment_date_start', DateType::class, [
-                'label' => 'searchorder.label.payment_date_from',
+                'label' => 'admin.order.payment_date_start',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -133,7 +133,7 @@ class SearchOrderType extends AbstractType
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
             ])
             ->add('payment_date_end', DateType::class, [
-                'label' => 'searchorder.label.payment_date_to',
+                'label' => 'admin.order.payment_date_start',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -141,7 +141,7 @@ class SearchOrderType extends AbstractType
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
             ])
             ->add('update_date_start', DateType::class, [
-                'label' => 'searchorder.label.updated_date_from',
+                'label' => 'admin.common.update_date_start',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -149,7 +149,7 @@ class SearchOrderType extends AbstractType
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
             ])
             ->add('update_date_end', DateType::class, [
-                'label' => 'searchorder.label.updated_date_to',
+                'label' => 'admin.order.update_date_start',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -157,7 +157,7 @@ class SearchOrderType extends AbstractType
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
             ])
             ->add('shipping_delivery_date_start', DateType::class, [
-                'label' => 'searchorder.label.shipping_delivery_date_start',
+                'label' => 'admin.order.delivery_date_start',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -165,7 +165,7 @@ class SearchOrderType extends AbstractType
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
             ])
             ->add('shipping_delivery_date_end', DateType::class, [
-                'label' => 'searchorder.label.shipping_delivery_date_end',
+                'label' => 'admin.order.delivery_date_start',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -173,15 +173,15 @@ class SearchOrderType extends AbstractType
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
             ])
             ->add('payment_total_start', PriceType::class, [
-                'label' => 'searchorder.label.purchased_amount_min',
+                'label' => 'admin.order.purchase_price_start',
                 'required' => false,
             ])
             ->add('payment_total_end', PriceType::class, [
-                'label' => 'searchorder.label.purchased_amount_max',
+                'label' => 'admin.order.purchase_price_end',
                 'required' => false,
             ])
             ->add('buy_product_name', TextType::class, [
-                'label' => 'searchorder.label.purchased_products',
+                'label' => 'admin.order.purchase_product',
                 'required' => false,
             ])
         ;

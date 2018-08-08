@@ -177,7 +177,7 @@ file that was distributed with this source code.
                     <div class="col-12">
                         {{ form_widget(searchForm._token) }}
                         <div>
-                            <label class="col-form-label">{{ 'admin.order.search_multi'|trans }}</label>
+                            <label class="col-form-label">{{ 'admin.order.multi_search_label'|trans }}</label>
                             {{ form_widget(searchForm.multi) }}
                             {{ form_errors(searchForm.multi) }}
                         </div>
@@ -216,14 +216,14 @@ file that was distributed with this source code.
             <div class="c-subContents ec-collapse collapse{{ has_errors ? ' show' }}" id="searchDetail">
                 <div class="row">
                     <div class="col">
-                        <label class="col-form-label">{{ 'admin.common.name'|trans }}</label>
+                        <label class="col-form-label">{{ 'admin.order.orderer_name'|trans }}</label>
                         {{ form_widget(searchForm.name) }}
                         {{ form_errors(searchForm.name) }}
                     </div>
                     <div class="col">
                         <div class="form-row">
                             <div class="col-12">
-                                <p class="col-form-label">{{ 'admin.order.payment_method'|trans }}</p>
+                                <p class="col-form-label">{{ 'admin.common.payment_method'|trans }}</p>
                                 {{ form_widget(searchForm.payment, { 'label_attr': { 'class': 'checkbox-inline'}}) }}
                                 {{ form_errors(searchForm.payment) }}
                             </div>
@@ -232,7 +232,7 @@ file that was distributed with this source code.
                 </div>
                 <div class="row">
                     <div class="col">
-                        <label class="col-form-label">{{ 'admin.common.kana'|trans }}</label>
+                        <label class="col-form-label">{{ 'admin.common.orderer_name'|trans }}</label>
                         {{ form_widget(searchForm.kana) }}
                         {{ form_errors(searchForm.kana) }}
                     </div>
@@ -243,7 +243,7 @@ file that was distributed with this source code.
                                 {{ form_widget(searchForm.order_date_start) }}
                                 {{ form_errors(searchForm.order_date_start) }}
                             </div>
-                            <div class="col-auto text-center">{{ 'admin.common.range_separator'|trans }}</div>
+                            <div class="col-auto text-center">{{ 'admin.common.separator__range'|trans }}</div>
                             <div class="col">
                                 {{ form_widget(searchForm.order_date_end) }}
                                 {{ form_errors(searchForm.order_date_end) }}
@@ -253,18 +253,18 @@ file that was distributed with this source code.
                 </div>
                 <div class="row">
                     <div class="col">
-                        <label class="col-form-label">{{ 'admin.common.company_name'|trans }}</label>
+                        <label class="col-form-label">{{ 'admin.order.orderer_company_name'|trans }}</label>
                         {{ form_widget(searchForm.company_name) }}
                         {{ form_errors(searchForm.company_name) }}
                     </div>
                     <div class="col">
-                        <label class="col-form-label">{{ 'admin.order.payant_date'|trans }}</label>
+                        <label class="col-form-label">{{ 'admin.order.payment_date'|trans }}</label>
                         <div class="form-row align-items-center">
                             <div class="col">
                                 {{ form_widget(searchForm.payment_date_start) }}
                                 {{ form_errors(searchForm.payment_date_start) }}
                             </div>
-                            <div class="col-auto text-center">{{ 'admin.common.range_separator'|trans }}</div>
+                            <div class="col-auto text-center">{{ 'admin.common.separator__range'|trans }}</div>
                             <div class="col">
                                 {{ form_widget(searchForm.payment_date_end) }}
                                 {{ form_errors(searchForm.payment_date_end) }}
@@ -285,7 +285,7 @@ file that was distributed with this source code.
                                 {{ form_widget(searchForm.update_date_start) }}
                                 {{ form_errors(searchForm.update_date_start) }}
                             </div>
-                            <div class="col-auto text-center">{{ 'admin.common.range_separator'|trans }}</div>
+                            <div class="col-auto text-center">{{ 'admin.common.separator__range'|trans }}</div>
                             <div class="col">
                                 {{ form_widget(searchForm.update_date_end) }}
                                 {{ form_errors(searchForm.update_date_end) }}
@@ -308,7 +308,7 @@ file that was distributed with this source code.
                                     {{ form_errors(searchForm.shipping_delivery_date_start) }}
                                 </div>
                             </div>
-                            <div class="col-auto text-center">{{ 'admin.common.range_separator'|trans }}</div>
+                            <div class="col-auto text-center">{{ 'admin.common.separator__range'|trans }}</div>
                             <div class="col">
                                 <div class="input-group">
                                     {{ form_widget(searchForm.shipping_delivery_date_end) }}
@@ -333,7 +333,7 @@ file that was distributed with this source code.
                                     {{ form_errors(searchForm.payment_total_start) }}
                                 </div>
                             </div>
-                            <div class="col-auto text-center">{{ 'admin.common.range_separator'|trans }}</div>
+                            <div class="col-auto text-center">{{ 'admin.common.separator__range'|trans }}</div>
                             <div class="col">
                                 <div class="input-group">
                                     {{ form_widget(searchForm.payment_total_end) }}
@@ -364,9 +364,9 @@ file that was distributed with this source code.
                     <div class="col">
                         <div class="form-row">
                             <div class="col-12">
-                                <p class="col-form-label">{{ 'admin.order.shipping_mail_send_status'|trans }}</p>
-                                {{ form_widget(searchForm.shipping_mail_send) }}
-                                {{ form_errors(searchForm.shipping_mail_send) }}
+                                <p class="col-form-label">{{ 'admin.order.shipping_mail'|trans }}</p>
+                                {{ form_widget(searchForm.shipping_mail) }}
+                                {{ form_errors(searchForm.shipping_mail) }}
                             </div>
                         </div>
                     </div>
