@@ -629,6 +629,9 @@ admin.order.purchase_price: 購入金額
 admin.order.purchase_price__start: 購入金額(開始)
 admin.order.purchase_price__end: 購入金額(終了)
 admin.order.orderer: 注文者
+admin.order.orderer_name: 注文者名
+admin.order.orderer_kana: 注文者名(カナ)
+admin.order.orderer_company_name: 注文者会社名
 admin.order.shipping_info: お届先情報
 admin.order.copy_orderer: 注文者情報をコピー
 admin.order.output_delivery_note: 納品書を出力
@@ -678,7 +681,9 @@ admin.order.send_mail: メールする
 admin.order.shop_memo_for_shipped: 出荷用メモ欄
 admin.order.add_shipping: 出荷情報を追加
 admin.order.shipping_id: 出荷ID
-admin.order.shipping_mail_send_status: 出荷メール
+admin.order.shipping_mail: 出荷メール
+admin.order.shipping_mail__sent: 送信済
+admin.order.shipping_mail__unsent: 未送信
 admin.order.csv_shipping_date_description: 出荷日を「YYYY-MM-DD」の形式で設定
 admin.order.order_csv: 受注CSV
 admin.order.shipping_csv: 出荷CSV

@@ -232,7 +232,7 @@ file that was distributed with this source code.
                 </div>
                 <div class="row">
                     <div class="col">
-                        <label class="col-form-label">{{ 'admin.common.orderer_name'|trans }}</label>
+                        <label class="col-form-label">{{ 'admin.order.orderer_name'|trans }}</label>
                         {{ form_widget(searchForm.kana) }}
                         {{ form_errors(searchForm.kana) }}
                     </div>
@@ -365,7 +365,7 @@ file that was distributed with this source code.
                         <div class="form-row">
                             <div class="col-12">
                                 <p class="col-form-label">{{ 'admin.order.shipping_mail'|trans }}</p>
-                                {{ form_widget(searchForm.shipping_mail) }}
+                                {{ form_widget(searchForm.shipping_mail, { 'attr': { 'class': 'form-check-inline' }}) }}
                                 {{ form_errors(searchForm.shipping_mail) }}
                             </div>
                         </div>

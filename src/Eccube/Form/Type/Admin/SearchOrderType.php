@@ -13,8 +13,10 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Entity\Shipping;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -98,8 +100,15 @@ class SearchOrderType extends AbstractType
                 'label' => 'admin.order.tracking_number',
                 'required' => false,
             ])
-            ->add('shipping_mail', CheckboxType::class, [
+            ->add('shipping_mail', ChoiceType::class, [
                 'label' => 'admin.order.shipping_mail',
+                'placeholder' => false,
+                'choices' => [
+                    'admin.order.shipping_mail__unsent' => Shipping::SHIPPING_MAIL_UNSENT,
+                    'admin.order.shipping_mail__sent' => Shipping::SHIPPING_MAIL_SENT,
+                ],
+                'expanded' => true,
+                'multiple' => false,
                 'required' => false,
             ])
             ->add('payment', PaymentType::class, [
