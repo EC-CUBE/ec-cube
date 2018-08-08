@@ -332,7 +332,8 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $formData = $this->createFormData($this->entityTest);
         $editForm = $this->createFormDataEdit($this->entityTest);
 
-        unset($editForm['data'][$id]);
+        $editForm['data'][$id]['id'] = '';
+        $editForm['data'][$id]['name'] = '';
 
         $this->client->request(
             'POST',
