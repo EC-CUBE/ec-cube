@@ -180,8 +180,11 @@ file that was distributed with this source code.
                     </dl>
                     {% endif %}
                     <div class="ec-totalBox__total">{{'common.label.cart_total'|trans}}<span class="ec-totalBox__price">{{ Order.payment_total|price }}</span><span class="ec-totalBox__taxLabel">{{'shopping.label.tax_incl'|trans}}</span></div>
+                    {% if StockFind %}
                     <a href="{{ url('mypage_order', {'order_no': Order.order_no }) }}" class="ec-blockBtn--action load-overlay" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">{{'mypage.history.detail.re_order'|trans}}</a>
-
+                    {% else %}
+                        <button class="ec-blockBtn--action" disabled="disabled">ただいま品切れ中です</button>
+                    {% endif %}
                 </div>
                 {% if remessage %}
                     <p class="ec-color-accent">
