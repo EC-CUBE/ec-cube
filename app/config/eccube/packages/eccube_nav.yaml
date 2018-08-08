@@ -71,14 +71,14 @@ parameters:
                     name: admin.nav.content.cache
                     url: admin_content_cache
         setting:
-            name: admin.nav.setting
+            name: admin.setting
             icon: fa-cog
             children:
                 shop:
-                    name: admin.nav.setting.shop
+                    name: admin.setting.shop
                     children:
                         shop_index:
-                            name: admin.nav.setting.shop.shop_index
+                            name: admin.setting.shop.shop_setting
                             url: admin_setting_shop
                         shop_payment:
                             name: admin.nav.setting.shop.shop_payment
@@ -96,7 +96,7 @@ parameters:
                             name: admin.nav.setting.shop.shop_csv
                             url: admin_setting_shop_csv
                 system:
-                    name: admin.nav.setting.system
+                    name: admin.setting.system
                     children:
                         member:
                             name: admin.nav.setting.system.member
@@ -108,13 +108,13 @@ parameters:
                             name: admin.nav.setting.system.security
                             url: admin_setting_system_security
                         log:
-                            name: admin.nav.setting.system.log
+                            name: admin.setting.system.log_display
                             url: admin_setting_system_log
                         masterdata:
                             name: admin.nav.setting.system.masterdata
                             url: admin_setting_system_masterdata
                         system_index:
-                            name: admin.nav.setting.system.system_index
+                            name: admin.setting.system.system_info
                             url: admin_setting_system_system
         store:
             name: admin.nav.store

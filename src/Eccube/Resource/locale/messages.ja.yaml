@@ -792,7 +792,8 @@ admin.content.cache_delete: キャッシュ削除
 #------------------------------------------------------------------------------------
 
 # 機能名称
-admin.setting.shop: ショップ設定
+admin.setting: 設定
+admin.setting.shop: 基本情報設定
 admin.setting.shop.shop_setting: ショップ設定
 admin.setting.shop.payment_list: 支払方法一覧
 admin.setting.shop.payment_setting: 支払方法設定
