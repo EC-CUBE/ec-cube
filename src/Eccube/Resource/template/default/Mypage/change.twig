@@ -191,7 +191,7 @@ file that was distributed with this source code.
                                         </dt>
                                         <dd>
                                             {% if form.vars.value.point > 0 %}
-                                                {{ form.vars.value.point }} pt
+                                                {{ form.vars.value.point|number_format }} pt
                                             {% else  %}
                                                 0 pt
                                             {% endif %}
