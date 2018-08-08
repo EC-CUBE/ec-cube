@@ -131,11 +131,11 @@ class MailService
             ]);
 
             $message
-                ->setContentType("text/plain; charset=UTF-8")
+                ->setContentType('text/plain; charset=UTF-8')
                 ->setBody($body, 'text/plain')
-                ->addPart($htmlBody,'text/html');
+                ->addPart($htmlBody, 'text/html');
         } else {
-            $message->setBody($body);  
+            $message->setBody($body);
         }
 
         $event = new EventArgs(
@@ -189,11 +189,11 @@ class MailService
             ]);
 
             $message
-                ->setContentType("text/plain; charset=UTF-8")
+                ->setContentType('text/plain; charset=UTF-8')
                 ->setBody($body, 'text/plain')
-                ->addPart($htmlBody,'text/html');
+                ->addPart($htmlBody, 'text/html');
         } else {
-            $message->setBody($body);  
+            $message->setBody($body);
         }
 
         $event = new EventArgs(
@@ -247,11 +247,11 @@ class MailService
             ]);
 
             $message
-                ->setContentType("text/plain; charset=UTF-8")
+                ->setContentType('text/plain; charset=UTF-8')
                 ->setBody($body, 'text/plain')
-                ->addPart($htmlBody,'text/html');
+                ->addPart($htmlBody, 'text/html');
         } else {
-            $message->setBody($body);  
+            $message->setBody($body);
         }
 
         $event = new EventArgs(
@@ -306,11 +306,11 @@ class MailService
             ]);
 
             $message
-                ->setContentType("text/plain; charset=UTF-8")
+                ->setContentType('text/plain; charset=UTF-8')
                 ->setBody($body, 'text/plain')
-                ->addPart($htmlBody,'text/html');
+                ->addPart($htmlBody, 'text/html');
         } else {
-            $message->setBody($body);  
+            $message->setBody($body);
         }
 
         $event = new EventArgs(
@@ -377,11 +377,11 @@ class MailService
             ]);
 
             $message
-                ->setContentType("text/plain; charset=UTF-8")
+                ->setContentType('text/plain; charset=UTF-8')
                 ->setBody($body, 'text/plain')
-                ->addPart($htmlBody,'text/html');
+                ->addPart($htmlBody, 'text/html');
         } else {
-            $message->setBody($body);  
+            $message->setBody($body);
         }
 
         $event = new EventArgs(
@@ -439,11 +439,11 @@ class MailService
             ]);
 
             $message
-                ->setContentType("text/plain; charset=UTF-8")
+                ->setContentType('text/plain; charset=UTF-8')
                 ->setBody($body, 'text/plain')
-                ->addPart($htmlBody,'text/html');
+                ->addPart($htmlBody, 'text/html');
         } else {
-            $message->setBody($body);  
+            $message->setBody($body);
         }
 
         $event = new EventArgs(
@@ -492,9 +492,9 @@ class MailService
             $message->setBody($formData['tpl_data']);
         } else {
             $message
-                ->setContentType("text/plain; charset=UTF-8")
+                ->setContentType('text/plain; charset=UTF-8')
                 ->setBody($formData['tpl_data'], 'text/plain')
-                ->addPart($formData['html_tpl_data'],'text/html');
+                ->addPart($formData['html_tpl_data'], 'text/html');
         }
 
         $event = new EventArgs(
@@ -552,11 +552,11 @@ class MailService
             ]);
 
             $message
-                ->setContentType("text/plain; charset=UTF-8")
+                ->setContentType('text/plain; charset=UTF-8')
                 ->setBody($body, 'text/plain')
-                ->addPart($htmlBody,'text/html');
+                ->addPart($htmlBody, 'text/html');
         } else {
-            $message->setBody($body);  
+            $message->setBody($body);
         }
 
         $event = new EventArgs(
@@ -613,11 +613,11 @@ class MailService
             ]);
 
             $message
-                ->setContentType("text/plain; charset=UTF-8")
+                ->setContentType('text/plain; charset=UTF-8')
                 ->setBody($body, 'text/plain')
-                ->addPart($htmlBody,'text/html');
+                ->addPart($htmlBody, 'text/html');
         } else {
-            $message->setBody($body);  
+            $message->setBody($body);
         }
 
         $event = new EventArgs(
@@ -671,11 +671,11 @@ class MailService
             ]);
 
             $message
-                ->setContentType("text/plain; charset=UTF-8")
+                ->setContentType('text/plain; charset=UTF-8')
                 ->setBody($body, 'text/plain')
-                ->addPart($htmlBody,'text/html');
+                ->addPart($htmlBody, 'text/html');
         } else {
-            $message->setBody($body);  
+            $message->setBody($body);
         }
 
         $this->mailer->send($message);
@@ -713,11 +713,11 @@ class MailService
             $htmlBody = $this->getShippingNotifyMailBody($Shipping, $Order, $MailTemplate, true);
 
             $message
-                ->setContentType("text/plain; charset=UTF-8")
+                ->setContentType('text/plain; charset=UTF-8')
                 ->setBody($body, 'text/plain')
-                ->addPart($htmlBody,'text/html');
+                ->addPart($htmlBody, 'text/html');
         } else {
-            $message->setBody($body);  
+            $message->setBody($body);
         }
 
         $this->mailer->send($message);
@@ -765,7 +765,9 @@ class MailService
 
     /**
      * [getHtmlTemplate description]
+     *
      * @param  string $templateName  プレーンテキストメールのファイル名
+     *
      * @return string|null  存在する場合はファイル名を返す
      */
     public function getHtmlTemplate($templateName)
@@ -773,7 +775,7 @@ class MailService
         // メールテンプレート名からHTMLメール用テンプレート名を生成
         $fileName = explode('.', $templateName);
         $suffix = '.html';
-        $htmlFileName = $fileName[0]. $suffix. '.'. $fileName[1];
+        $htmlFileName = $fileName[0].$suffix.'.'.$fileName[1];
 
         // HTMLメール用テンプレートの存在チェック
         if ($this->twig->getLoader()->exists($htmlFileName)) {
@@ -782,5 +784,4 @@ class MailService
             return null;
         }
     }
-
 }
