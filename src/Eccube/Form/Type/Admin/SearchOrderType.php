@@ -106,8 +106,8 @@ class SearchOrderType extends AbstractType
                 'multiple' => true,
                 'choices' => [
                     'searchorder.choice.shipping_mail_send.yes' => 1,
-                    'searchorder.choice.shipping_mail_send.no' => 0
-                ]
+                    'searchorder.choice.shipping_mail_send.no' => 0,
+                ],
             ])
             ->add('payment', PaymentType::class, [
                 'label' => 'searchorder.label.payment_method',
