@@ -207,19 +207,17 @@ class MypageController extends AbstractController
             throw new NotFoundHttpException();
         }
 
-        $StockFind = true;
-        foreach ($Order->getShippings() as $shipping) {
-            foreach ($shipping->getProductOrderItems() as $orderItem) {
-                if ($orderItem->isProduct() && $orderItem->getProductClass()->getStockFind() == false) {
-                    $StockFind = false;
-                    break;
-                }
+        $stockFind = true;
+        foreach ($Order->getOrderItems() as $orderItem) {
+            if ($orderItem->isProduct() && $orderItem->getProductClass()->getStockFind() == false) {
+                $stockFind = false;
+                break;
             }
         }
 
         return [
             'Order' => $Order,
-            'StockFind' => $StockFind
+            'stockFind' => $stockFind
         ];
     }
 
