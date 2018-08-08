@@ -51,7 +51,9 @@ class GenerateProxyCommand extends ContainerAwareCommand
 
         $enabledPlugins = $container->getParameter('eccube.plugins.enabled');
         foreach ($enabledPlugins as $code) {
-            $includeDirs[] = $projectDIr.'/app/Plugin/'.$code.'/Entity';
+            if (file_exists($projectDIr.'/app/Plugin/'.$code.'/Entity')) {
+                $includeDirs[] = $projectDIr.'/app/Plugin/'.$code.'/Entity';
+            }
         }
 
         $this->entityProxyService->generate(
