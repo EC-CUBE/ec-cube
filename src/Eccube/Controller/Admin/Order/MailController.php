@@ -245,6 +245,7 @@ class MailController extends AbstractController
         return [
             'mail_subject' => $MailHistory->getMailSubject(),
             'body' => $MailHistory->getMailBody(),
+            'html_body' => $MailHistory->getMailHtmlBody(),
         ];
     }
 

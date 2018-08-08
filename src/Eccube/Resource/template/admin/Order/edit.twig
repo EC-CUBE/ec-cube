@@ -856,7 +856,11 @@ file that was distributed with this source code.
                                                                 </div>
                                                                 <div class="modal-body">
                                                                     <p>
-                                                                        {{ MailHistory.mail_body|nl2br }}
+                                                                        {% if MailHistory.mail_html_body|length > 0 %}
+                                                                            {{ MailHistory.mail_html_body|trans|raw }}
+                                                                        {% else %}
+                                                                            {{ MailHistory.mail_body|nl2br }}
+                                                                        {% endif %}
                                                                     </p>
                                                                 </div>
                                                                 <div class="modal-footer">

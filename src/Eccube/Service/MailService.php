@@ -710,14 +710,7 @@ class MailService
         // HTMLテンプレートが存在する場合
         $htmlFileName = $this->getHtmlTemplate($MailTemplate->getFileName());
         if (!is_null($htmlFileName)) {
-            $ShippingItems = array_filter($Shipping->getOrderItems()->toArray(), function (OrderItem $OrderItem) use ($Order) {
-                return $OrderItem->getOrderId() === $Order->getId();
-            });
-
-            $htmlBody = $this->twig->render($htmlFileName, [
-                'Shipping' => $Shipping,
-                'ShippingItems' => $ShippingItems,
-            ]);
+            $htmlBody = $this->getShippingNotifyMailBody($Shipping, $Order, $MailTemplate, true);
 
             $message
                 ->setContentType("text/plain; charset=UTF-8")
@@ -744,12 +737,13 @@ class MailService
      * @param Shipping $Shipping
      * @param Order $Order
      * @param MailTemplate|null $MailTemplate
+     * @param boolean $is_html
      *
      * @return string
      *
      * @throws \Twig_Error
      */
-    public function getShippingNotifyMailBody(Shipping $Shipping, Order $Order, MailTemplate $MailTemplate = null)
+    public function getShippingNotifyMailBody(Shipping $Shipping, Order $Order, MailTemplate $MailTemplate = null, $is_html = false)
     {
         $ShippingItems = array_filter($Shipping->getOrderItems()->toArray(), function (OrderItem $OrderItem) use ($Order) {
             return $OrderItem->getOrderId() === $Order->getId();
@@ -757,8 +751,13 @@ class MailService
 
         /** @var MailTemplate $MailTemplate */
         $MailTemplate = $MailTemplate ?? $this->mailTemplateRepository->find($this->eccubeConfig['eccube_shipping_notify_mail_template_id']);
+        $fileName = $MailTemplate->getFileName();
+        if ($is_html) {
+            $htmlFileName = $this->getHtmlTemplate($fileName);
+            $fileName = !is_null($htmlFileName) ? $htmlFileName : $fileName;
+        }
 
-        return $this->twig->render($MailTemplate->getFileName(), [
+        return $this->twig->render($fileName, [
             'Shipping' => $Shipping,
             'ShippingItems' => $ShippingItems,
         ]);
