@@ -187,7 +187,7 @@ class EA08SysteminfoCest
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
         $I->see('システム設定メンバー管理', '.c-pageTitle');
 
-        $I->click('.c-primaryCol .card-body table tbody tr:last-child td:nth-child(5) .action-delete');
+        $I->click('.c-primaryCol .card-body table tbody tr:last-child td:nth-child(1) .action-delete');
         $I->waitForElementVisible(['css' => '.c-primaryCol .card-body table tbody tr:last-child .modal']);
         $I->click('.c-primaryCol .card-body table tbody tr:last-child .modal .btn-ec-delete');
 
