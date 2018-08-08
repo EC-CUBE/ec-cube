@@ -1,34 +1,20 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Service;
 
-use Eccube\Annotation\Service;
 use Eccube\Repository\TaxRuleRepository;
 
-/**
- * @Service
- */
 class TaxRuleService
 {
     /**
@@ -69,7 +55,7 @@ class TaxRuleService
      * @param  int|null|\Eccube\Entity\Master\Pref    $pref         都道府県
      * @param  int|null|\Eccube\Entity\Master\Country $country      国
      *
-     * @return int
+     * @return double
      */
     public function getPriceIncTax($price, $product = null, $productClass = null, $pref = null, $country = null)
     {
@@ -95,10 +81,27 @@ class TaxRuleService
     }
 
     /**
+     * 税込金額から税金額を計算する
+     *
+     * @param  int    $price     計算対象の金額
+     * @param  int    $taxRate   税率(%単位)
+     * @param  int    $RoundingType  端数処理
+     * @param  int    $taxAdjust 調整額
+     *
+     * @return float  税金額
+     */
+    public function calcTaxIncluded($price, $taxRate, $RoundingType, $taxAdjust = 0)
+    {
+        $tax = ($price - $taxAdjust) * $taxRate / (100 + $taxRate);
+
+        return $this->roundByRoundingType($tax, $RoundingType);
+    }
+
+    /**
      * 課税規則に応じて端数処理を行う
      *
-     * @param  float|integer $value    端数処理を行う数値
-     * @param  integer       $calcRule 課税規則
+     * @param  integer $value    端数処理を行う数値
+     * @param integer $RoundingType
      *
      * @return double        端数処理後の数値
      */

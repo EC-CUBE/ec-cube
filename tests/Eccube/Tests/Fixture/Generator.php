@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Eccube\Tests\Fixture;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -11,7 +22,6 @@ use Eccube\Entity\DeliveryTime;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Master\OrderItemType;
-use Eccube\Entity\Master\ShippingStatus;
 use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Member;
@@ -26,6 +36,7 @@ use Eccube\Entity\ProductClass;
 use Eccube\Entity\ProductImage;
 use Eccube\Entity\ProductStock;
 use Eccube\Entity\Shipping;
+use Eccube\Util\StringUtil;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\ClassNameRepository;
@@ -202,13 +213,13 @@ class Generator
      */
     public function createCustomer($email = null)
     {
+        /** @var Generator_Faker $faker */
         $faker = $this->getFaker();
         $Customer = new Customer();
         if (is_null($email)) {
             $email = $faker->safeEmail;
         }
-        $tel = explode('-', $faker->phoneNumber);
-        $fax = explode('-', $faker->phoneNumber);
+        $phoneNumber = str_replace('-', '', $faker->phoneNumber);
         $Status = $this->entityManager->find(\Eccube\Entity\Master\CustomerStatus::class, CustomerStatus::ACTIVE);
         $Pref = $this->entityManager->find(\Eccube\Entity\Master\Pref::class, $faker->numberBetween(1, 47));
         $Sex = $this->entityManager->find(\Eccube\Entity\Master\Sex::class, $faker->numberBetween(1, 2));
@@ -223,18 +234,11 @@ class Generator
             ->setKana02($this->locale === 'ja_JP' ? $faker->firstKanaName : '')
             ->setCompanyName($faker->company)
             ->setEmail($email)
-            ->setZip01($this->locale === 'ja_JP' ? $faker->postcode1 : null)
-            ->setZip02($this->locale === 'ja_JP' ? $faker->postcode2 : null)
-            ->setZipcode($faker->postcode)
+            ->setPostalcode($faker->postcode)
             ->setPref($Pref)
             ->setAddr01($faker->city)
             ->setAddr02($faker->streetAddress)
-            ->setTel01($tel[0])
-            ->setTel02(isset($tel[1]) ? $tel[1] : null)
-            ->setTel03(isset($tel[2]) ? $tel[2] : null)
-            ->setFax01($fax[0])
-            ->setFax02(isset($fax[1]) ? $fax[1] : null)
-            ->setFax03(isset($fax[2]) ? $fax[2] : null)
+            ->setPhoneNumber($phoneNumber)
             ->setBirth($faker->dateTimeThisDecade())
             ->setSex($Sex)
             ->setJob($Job)
@@ -248,13 +252,6 @@ class Generator
         $this->entityManager->persist($Customer);
         $this->entityManager->flush($Customer);
 
-        $CustomerAddress = new CustomerAddress();
-        $CustomerAddress->setCustomer($Customer);
-        $CustomerAddress->copyProperties($Customer);
-        $this->entityManager->persist($CustomerAddress);
-        $this->entityManager->flush($CustomerAddress);
-
-        $Customer->addCustomerAddress($CustomerAddress);
         $this->entityManager->flush($Customer);
 
         return $Customer;
@@ -272,8 +269,7 @@ class Generator
     {
         $faker = $this->getFaker();
         $Pref = $this->entityManager->find(\Eccube\Entity\Master\Pref::class, $faker->numberBetween(1, 47));
-        $tel = explode('-', $faker->phoneNumber);
-        $fax = explode('-', $faker->phoneNumber);
+        $phoneNumber = str_replace('-', '', $faker->phoneNumber);
         $CustomerAddress = new CustomerAddress();
         $CustomerAddress
             ->setCustomer($Customer)
@@ -282,18 +278,11 @@ class Generator
             ->setKana01($this->locale === 'ja_JP' ? $faker->lastKanaName : '')
             ->setKana02($this->locale === 'ja_JP' ? $faker->firstKanaName : '')
             ->setCompanyName($faker->company)
-            ->setZip01($this->locale === 'ja_JP' ? $faker->postcode1 : null)
-            ->setZip02($this->locale === 'ja_JP' ? $faker->postcode2 : null)
-            ->setZipcode($faker->postcode)
+            ->setPostalCode($faker->postcode)
             ->setPref($Pref)
             ->setAddr01($faker->city)
             ->setAddr02($faker->streetAddress)
-            ->setTel01($tel[0])
-            ->setTel02(isset($tel[1]) ? $tel[1] : null)
-            ->setTel03(isset($tel[2]) ? $tel[2] : null)
-            ->setFax01($fax[0])
-            ->setFax02(isset($fax[1]) ? $fax[1] : null)
-            ->setFax03(isset($fax[2]) ? $fax[2] : null);
+            ->setPhoneNumber($phoneNumber);
         if ($is_nonmember) {
             $Customer->addCustomerAddress($CustomerAddress);
             // TODO 外部でやった方がいい？
@@ -329,8 +318,7 @@ class Generator
             $email = $faker->safeEmail;
         }
         $Pref = $this->entityManager->find(\Eccube\Entity\Master\Pref::class, $faker->numberBetween(1, 47));
-        $tel = explode('-', $faker->phoneNumber);
-        $fax = explode('-', $faker->phoneNumber);
+        $phoneNumber = str_replace('-', '', $faker->phoneNumber);
         $Customer
             ->setName01($faker->lastName)
             ->setName02($faker->firstName)
@@ -338,23 +326,11 @@ class Generator
             ->setKana02($this->locale === 'ja_JP' ? $faker->firstKanaName : '')
             ->setCompanyName($faker->company)
             ->setEmail($email)
-            ->setZip01($this->locale === 'ja_JP' ? $faker->postcode1 : null)
-            ->setZip02($this->locale === 'ja_JP' ? $faker->postcode2 : null)
-            ->setZipcode($faker->postcode)
+            ->setPostalCode($faker->postcode)
             ->setPref($Pref)
             ->setAddr01($faker->city)
             ->setAddr02($faker->streetAddress)
-            ->setTel01($tel[0])
-            ->setTel02(isset($tel[1]) ? $tel[1] : null)
-            ->setTel03(isset($tel[2]) ? $tel[2] : null)
-            ->setFax01($fax[0])
-            ->setFax02(isset($fax[1]) ? $fax[1] : null)
-            ->setFax03(isset($fax[2]) ? $fax[2] : null);
-
-        $CustomerAddress = new CustomerAddress();
-        $CustomerAddress->setCustomer($Customer);
-        $CustomerAddress->copyProperties($Customer);
-        $Customer->addCustomerAddress($CustomerAddress);
+            ->setPhoneNumber($phoneNumber);
 
         $nonMember = [];
         $nonMember['customer'] = $Customer;
@@ -362,7 +338,6 @@ class Generator
         $this->session->set($sessionKey, $nonMember);
 
         $customerAddresses = [];
-        $customerAddresses[] = $CustomerAddress;
         $this->session->set($sessionCustomerAddressKey, serialize($customerAddresses));
 
         return $Customer;
@@ -447,7 +422,7 @@ class Generator
                 ->setCreateDate(new \DateTime()) // FIXME
                 ->setUpdateDate(new \DateTime())
                 ->setCreator($Member)
-                ->setStock($faker->randomNumber(3));
+                ->setStock($faker->numberBetween(100, 999));
             $this->entityManager->persist($ProductStock);
             $this->entityManager->flush($ProductStock);
             $ProductClass = new ProductClass();
@@ -565,6 +540,7 @@ class Generator
         $Order->setCustomer($Customer);
         $Order->copyProperties($Customer);
         $Order
+            ->setPreOrderId(sha1(StringUtil::random(32)))
             ->setPref($Pref)
             ->setPayment($Payments[$faker->numberBetween(0, count($Payments) - 1)])
             ->setPaymentMethod($Order->getPayment()->getMethod())
@@ -572,6 +548,7 @@ class Generator
             ->setNote($faker->realText())
             ->setAddPoint(0)    // TODO
             ->setUsePoint(0)    // TODO
+            ->setOrderNo(sha1(StringUtil::random()))
         ;
         $this->entityManager->persist($Order);
         $this->entityManager->flush($Order);
@@ -602,13 +579,14 @@ class Generator
         $Shipping = new Shipping();
         $Shipping->copyProperties($Customer);
         $Shipping
+            ->setOrder($Order)
             ->setPref($Pref)
             ->setDelivery($Delivery)
             ->setFeeId($DeliveryFee->getId())
             ->setShippingDeliveryFee($fee)
             ->setShippingDeliveryName($Delivery->getName());
-        $ShippingStatus = $this->entityManager->find(ShippingStatus::class, ShippingStatus::PREPARED);
-        $Shipping->setShippingStatus($ShippingStatus);
+
+        $Order->addShipping($Shipping);
 
         $this->entityManager->persist($Shipping);
         $this->entityManager->flush($Shipping);
@@ -631,7 +609,6 @@ class Generator
                 continue;
             }
             $Product = $ProductClass->getProduct();
-            $TaxRule = $this->taxRuleRepository->getByRule(); // デフォルト課税規則
 
             $OrderItem = new OrderItem();
             $OrderItem->setShipping($Shipping)
@@ -642,8 +619,6 @@ class Generator
                 ->setProductCode($ProductClass->getCode())
                 ->setPrice($ProductClass->getPrice02())
                 ->setQuantity($quantity)
-                ->setTaxRule($TaxRule->getRoundingType()->getId())
-                ->setTaxRate($TaxRule->getTaxRate())
                 ->setTaxType($Taxion) // 課税
                 ->setTaxDisplayType($TaxExclude) // 税別
                 ->setOrderItemType($ItemProduct) // 商品明細
@@ -662,8 +637,6 @@ class Generator
             }
             $Shipping->addOrderItem($OrderItem);
             $Order->addOrderItem($OrderItem);
-            $this->entityManager->persist($OrderItem);
-            $this->entityManager->flush($OrderItem);
         }
 
         $shipment_delivery_fee = $Shipping->getShippingDeliveryFee();
@@ -673,14 +646,11 @@ class Generator
             ->setProductName('送料')
             ->setPrice($shipment_delivery_fee)
             ->setQuantity(1)
-            ->setTaxRate(8)
             ->setTaxType($Taxion) // 課税
             ->setTaxDisplayType($TaxInclude) // 税込
             ->setOrderItemType($ItemDeliveryFee); // 送料明細
         $Shipping->addOrderItem($OrderItemDeliveryFee);
         $Order->addOrderItem($OrderItemDeliveryFee);
-        $this->entityManager->persist($OrderItemDeliveryFee);
-        $this->entityManager->flush($OrderItemDeliveryFee);
 
         $charge = $Order->getCharge() + $add_charge;
         $OrderItemCharge = new OrderItem();
@@ -690,14 +660,11 @@ class Generator
             ->setProductName('手数料')
             ->setPrice($charge)
             ->setQuantity(1)
-            ->setTaxRate(8)
             ->setTaxType($Taxion) // 課税
             ->setTaxDisplayType($TaxInclude) // 税込
             ->setOrderItemType($ItemCharge); // 手数料明細
         // $Shipping->addOrderItem($OrderItemCharge); // Shipping には登録しない
         $Order->addOrderItem($OrderItemCharge);
-        $this->entityManager->persist($OrderItemCharge);
-        $this->entityManager->flush($OrderItemCharge);
 
         $discount = $Order->getDiscount() + $add_discount;
         $OrderItemDiscount = new OrderItem();
@@ -707,19 +674,15 @@ class Generator
             ->setProductName('値引き')
             ->setPrice($discount * -1)
             ->setQuantity(1)
-            ->setTaxRate(0)
             ->setTaxType($NonTaxable) // 不課税
             ->setTaxDisplayType($TaxInclude) // 税込
             ->setOrderItemType($ItemDiscount); // 値引き明細
         // $Shipping->addOrderItem($OrderItemDiscount); // Shipping には登録しない
         $Order->addOrderItem($OrderItemDiscount);
-        $this->entityManager->persist($OrderItemDiscount);
-        $this->entityManager->flush($OrderItemDiscount);
 
-        $this->orderPurchaseFlow->calculate($Order, new PurchaseContext());
+        $this->orderPurchaseFlow->validate($Order, new PurchaseContext($Order));
 
-        $this->entityManager->flush($Shipping);
-        $this->entityManager->flush($Order);
+        $this->entityManager->flush();
 
         return $Order;
     }

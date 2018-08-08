@@ -1,24 +1,14 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Form\Type\Admin;
@@ -27,9 +17,9 @@ use Eccube\Common\EccubeConfig;
 use Eccube\Form\EventListener\ConvertKanaListener;
 use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\PriceType;
-use Eccube\Form\Type\TelType;
+use Eccube\Form\Type\PhoneNumberType;
 use Eccube\Form\Type\ToggleSwitchType;
-use Eccube\Form\Type\ZipType;
+use Eccube\Form\Type\PostalType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -97,19 +87,15 @@ class ShopMasterType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('zip', ZipType::class, [
+            ->add('postal_code', PostalType::class, [
                 'required' => false,
             ])
             ->add('address', AddressType::class, [
                 'label' => 'common.label.address',
                 'required' => false,
             ])
-            ->add('tel', TelType::class, [
+            ->add('phone_number', PhoneNumberType::class, [
                 'label' => 'common.label.phone_number',
-                'required' => false,
-            ])
-            ->add('fax', TelType::class, [
-                'label' => 'common.label.fax_number',
                 'required' => false,
             ])
             ->add('business_hour', TextType::class, [
@@ -188,8 +174,6 @@ class ShopMasterType extends AbstractType
                 ],
             ])
             ->add('option_product_delivery_fee', ToggleSwitchType::class)
-            // 複数配送
-            ->add('option_multiple_shipping', ToggleSwitchType::class)
             // 会員設定
             ->add('option_customer_activate', ToggleSwitchType::class)
             // マイページに注文状況を表示する
@@ -199,10 +183,7 @@ class ShopMasterType extends AbstractType
             // お気に入り商品設定
             ->add('option_favorite_product', ToggleSwitchType::class)
             // 在庫切れ商品を非表示にする
-            ->add('option_nostock_hidden', ToggleSwitchType::class, [
-                'label_off' => 'common.label.display',
-                'label_on' => 'common.label.hide',
-            ])
+            ->add('option_nostock_hidden', ToggleSwitchType::class)
             // 個別税率設定
             ->add('option_product_tax_rule', ToggleSwitchType::class)
             // ポイント設定

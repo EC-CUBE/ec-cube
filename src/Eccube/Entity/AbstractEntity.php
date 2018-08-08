@@ -1,37 +1,28 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Entity;
 
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Util\Inflector;
-use Doctrine\ORM\Mapping\MappedSuperclass;
+use Doctrine\Common\Inflector\Inflector;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\MappedSuperclass;
 use Doctrine\ORM\Proxy\Proxy;
-use Symfony\Component\Serializer\Serializer;
+use Eccube\Util\StringUtil;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 /** @MappedSuperclass */
 abstract class AbstractEntity implements \ArrayAccess
@@ -77,7 +68,7 @@ abstract class AbstractEntity implements \ArrayAccess
      *
      * @param array $arrProps プロパティの情報を格納した連想配列
      * @param \ReflectionClass $parentClass 親のクラス. 本メソッドの内部的に使用します.
-     * @param array $excludeAttribute 除外したいフィールド名の配列
+     * @param string[] $excludeAttribute 除外したいフィールド名の配列
      */
     public function setPropertiesFromArray(array $arrProps, array $excludeAttribute = [], \ReflectionClass $parentClass = null)
     {
@@ -209,16 +200,21 @@ abstract class AbstractEntity implements \ArrayAccess
         $ReflectionClass = new \ReflectionClass($this);
         $serializer = new Serializer([new PropertyNormalizer()], [new XmlEncoder($ReflectionClass->getShortName())]);
 
-        return $serializer->serialize($this->toNormalizedArray($excludeAttribute), 'xml');
+        $xml = $serializer->serialize($this->toNormalizedArray($excludeAttribute), 'xml');
+        if ('\\' === DIRECTORY_SEPARATOR) {
+            // The m modifier of the preg functions converts the end-of-line to '\n'
+            $xml = StringUtil::convertLineFeed($xml, "\r\n");
+        }
+        return $xml;
     }
 
     /**
      * コピー元のオブジェクトのフィールド名を指定して、同名のフィールドに値をコピー
      *
      * @param object $srcObject コピー元のオブジェクト
-     * @param array $excludeAttribute 除外したいフィールド名の配列
+     * @param string[] $excludeAttribute 除外したいフィールド名の配列
      *
-     * @return object
+     * @return AbstractEntity
      */
     public function copyProperties($srcObject, array $excludeAttribute = [])
     {
@@ -232,7 +228,7 @@ abstract class AbstractEntity implements \ArrayAccess
      *
      * @param Reader $Reader
      *
-     * @return object
+     * @return AbstractEntity
      */
     public function setAnnotationReader(Reader $Reader)
     {

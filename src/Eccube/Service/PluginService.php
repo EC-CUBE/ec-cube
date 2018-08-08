@@ -3,23 +3,12 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Service;
@@ -33,8 +22,6 @@ use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Plugin;
 use Eccube\Entity\PluginEventHandler;
 use Eccube\Exception\PluginException;
-use Eccube\Plugin\ConfigManager;
-use Eccube\Plugin\ConfigManager as PluginConfigManager;
 use Eccube\Repository\PluginEventHandlerRepository;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\Composer\ComposerServiceInterface;
@@ -115,6 +102,9 @@ class PluginService
      */
     protected $container;
 
+    /** @var CacheUtil */
+    protected $cacheUtil;
+
     /**
      * PluginService constructor.
      *
@@ -123,6 +113,9 @@ class PluginService
      * @param PluginRepository $pluginRepository
      * @param EntityProxyService $entityProxyService
      * @param SchemaService $schemaService
+     * @param EccubeConfig $eccubeConfig
+     * @param ContainerInterface $container
+     * @param CacheUtil $cacheUtil
      */
     public function __construct(
         PluginEventHandlerRepository $pluginEventHandlerRepository,
@@ -131,7 +124,8 @@ class PluginService
         EntityProxyService $entityProxyService,
         SchemaService $schemaService,
         EccubeConfig $eccubeConfig,
-        ContainerInterface $container
+        ContainerInterface $container,
+        CacheUtil $cacheUtil
     ) {
         $this->pluginEventHandlerRepository = $pluginEventHandlerRepository;
         $this->entityManager = $entityManager;
@@ -142,6 +136,7 @@ class PluginService
         $this->projectRoot = $eccubeConfig->get('kernel.project_dir');
         $this->environment = $eccubeConfig->get('kernel.environment');
         $this->container = $container;
+        $this->cacheUtil = $cacheUtil;
     }
 
     /**
@@ -150,7 +145,7 @@ class PluginService
      * @param string $path   path to tar.gz/zip plugin file
      * @param int    $source
      *
-     * @return mixed
+     * @return boolean
      *
      * @throws PluginException
      * @throws \Exception
@@ -185,11 +180,12 @@ class PluginService
 
             // Check dependent plugin
             // Don't install ec-cube library
-            $dependents = $this->getDependentByCode($config['code'], self::OTHER_LIBRARY);
-            if (!empty($dependents)) {
-                $package = $this->parseToComposerCommand($dependents);
-                $this->composerService->execRequire($package);
-            }
+//            $dependents = $this->getDependentByCode($config['code'], self::OTHER_LIBRARY);
+//            if (!empty($dependents)) {
+//                $package = $this->parseToComposerCommand($dependents);
+            //FIXME: how to working with ComposerProcessService or ComposerApiService ?
+//                $this->composerService->execRequire($package);
+//            }
 
             // プラグイン配置後に実施する処理
             $this->postInstall($config, $event, $source);
@@ -211,8 +207,8 @@ class PluginService
     public function preInstall()
     {
         // キャッシュの削除
-        PluginConfigManager::removePluginConfigCache();
-        CacheUtil::clear($this->app, false);
+        // FIXME: Please fix clearCache function (because it's clear all cache and this file just upload)
+//        $this->cacheUtil->clearCache();
     }
 
     // インストール事後処理
@@ -241,8 +237,6 @@ class PluginService
             // インストール時には一時的に利用するProxyを生成してからスキーマを更新する
             $generatedFiles = $this->regenerateProxy($plugin, true, $tmpProxyOutputDir);
             $this->schemaService->updateSchema($generatedFiles, $tmpProxyOutputDir);
-
-            ConfigManager::writePluginConfigCache();
         } finally {
             foreach (glob("${tmpProxyOutputDir}/*") as  $f) {
                 unlink($f);
@@ -274,6 +268,12 @@ class PluginService
         }
     }
 
+    /**
+     * @param string $archive
+     * @param string $dir
+     *
+     * @throws PluginException
+     */
     public function unpackPluginArchive($archive, $dir)
     {
         $extension = pathinfo($archive, PATHINFO_EXTENSION);
@@ -292,6 +292,12 @@ class PluginService
         }
     }
 
+    /**
+     * @param $dir
+     * @param array $config_cache
+     *
+     * @throws PluginException
+     */
     public function checkPluginArchiveContent($dir, array $config_cache = [])
     {
         try {
@@ -333,6 +339,9 @@ class PluginService
         }
     }
 
+    /**
+     * @param string $yml
+     */
     public function readYml($yml)
     {
         if (file_exists($yml)) {
@@ -350,6 +359,9 @@ class PluginService
         // ディレクトリ名などに使われれるので厳しめ
     }
 
+    /**
+     * @param string $path
+     */
     public function deleteFile($path)
     {
         $f = new Filesystem();
@@ -369,6 +381,11 @@ class PluginService
         return $this->projectRoot.'/app/Plugin/'.$name;
     }
 
+    /**
+     * @param string $d
+     *
+     * @throws PluginException
+     */
     public function createPluginDir($d)
     {
         $b = @mkdir($d);
@@ -377,6 +394,15 @@ class PluginService
         }
     }
 
+    /**
+     * @param $meta
+     * @param $event_yml
+     * @param int $source
+     *
+     * @return Plugin
+     *
+     * @throws PluginException
+     */
     public function registerPlugin($meta, $event_yml, $source = 0)
     {
         $em = $this->entityManager;
@@ -429,6 +455,10 @@ class PluginService
         return $p;
     }
 
+    /**
+     * @param $meta
+     * @param string $method
+     */
     public function callPluginManagerMethod($meta, $method)
     {
         $class = '\\Plugin'.'\\'.$meta['code'].'\\'.'PluginManager';
@@ -441,29 +471,33 @@ class PluginService
         }
     }
 
+    /**
+     * @param Plugin $plugin
+     * @param bool $force
+     *
+     * @return bool
+     */
     public function uninstall(\Eccube\Entity\Plugin $plugin, $force = true)
     {
         $pluginDir = $this->calcPluginDir($plugin->getCode());
-        ConfigManager::removePluginConfigCache();
-        CacheUtil::clear($this->app, false);
+        $this->cacheUtil->clearCache();
         $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), 'disable');
         $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), 'uninstall');
         $this->disable($plugin);
         $this->unregisterPlugin($plugin);
 
-        if ($force) {
-            $this->deleteFile($pluginDir);
-            $this->removeAssets($plugin->getCode());
-        }
-
         // スキーマを更新する
+        //FIXME: Update schema before no affect
         $this->schemaService->updateSchema([], $this->projectRoot.'/app/proxy/entity');
 
         // プラグインのネームスペースに含まれるEntityのテーブルを削除する
         $namespace = 'Plugin\\'.$plugin->getCode().'\\Entity';
         $this->schemaService->dropTable($namespace);
 
-        ConfigManager::writePluginConfigCache();
+        if ($force) {
+            $this->deleteFile($pluginDir);
+            $this->removeAssets($plugin->getCode());
+        }
 
         return true;
     }
@@ -524,7 +558,7 @@ class PluginService
         }, $enabledPluginCodes);
 
         return $this->entityProxyService->generate(
-            array_merge([$this->projectRoot.'/app/Acme/Entity'], $enabledPluginEntityDirs),
+            array_merge([$this->projectRoot.'/app/Customize/Entity'], $enabledPluginEntityDirs),
             $excludes,
             $outputDir
         );
@@ -534,8 +568,6 @@ class PluginService
     {
         $em = $this->entityManager;
         try {
-            PluginConfigManager::removePluginConfigCache();
-            CacheUtil::clear($this->app, false);
             $pluginDir = $this->calcPluginDir($plugin->getCode());
             $em->getConnection()->beginTransaction();
             $plugin->setEnabled($enable ? true : false);
@@ -548,7 +580,6 @@ class PluginService
 
             $em->flush();
             $em->getConnection()->commit();
-            PluginConfigManager::writePluginConfigCache();
         } catch (\Exception $e) {
             $em->getConnection()->rollback();
             throw $e;
@@ -573,8 +604,7 @@ class PluginService
         $pluginBaseDir = null;
         $tmp = null;
         try {
-            PluginConfigManager::removePluginConfigCache();
-            CacheUtil::clear($this->app, false);
+            $this->cacheUtil->clearCache();
             $tmp = $this->createTempDir();
 
             $this->unpackPluginArchive($path, $tmp); //一旦テンポラリに展開
@@ -601,7 +631,6 @@ class PluginService
             }
 
             $this->updatePlugin($plugin, $config, $event); // dbにプラグイン登録
-            PluginConfigManager::writePluginConfigCache();
         } catch (PluginException $e) {
             $this->deleteDirs([$tmp]);
             throw $e;
@@ -962,7 +991,7 @@ class PluginService
      * [プラグインコード]/Resource/assets
      * 配下に置かれているファイルが所定の位置へコピーされる
      *
-     * @param $pluginBaseDir
+     * @param string $pluginBaseDir
      * @param $pluginCode
      */
     public function copyAssets($pluginBaseDir, $pluginCode)
@@ -979,7 +1008,7 @@ class PluginService
     /**
      * コピーしたリソースファイル等を削除
      *
-     * @param $pluginCode
+     * @param string $pluginCode
      */
     public function removeAssets($pluginCode)
     {
@@ -998,7 +1027,7 @@ class PluginService
      * @param string $pluginVersion
      * @param string $remoteVersion
      *
-     * @return mixed
+     * @return boolean
      */
     public function isUpdate($pluginVersion, $remoteVersion)
     {

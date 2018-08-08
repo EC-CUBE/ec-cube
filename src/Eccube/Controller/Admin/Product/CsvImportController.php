@@ -1,35 +1,24 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License'csvimport.text.error.format'
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Controller\Admin\Product;
 
 use Ddeboer\DataImport\Reader\CsvReader;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Eccube\Common\Constant;
-use Eccube\Common\EccubeConfig;
+use Eccube\Controller\Admin\AbstractCsvImportController;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Category;
-use Eccube\Entity\Csv;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductCategory;
 use Eccube\Entity\ProductClass;
@@ -38,31 +27,22 @@ use Eccube\Entity\ProductStock;
 use Eccube\Entity\ProductTag;
 use Eccube\Exception\CsvImportException;
 use Eccube\Form\Type\Admin\CsvImportType;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\DeliveryDurationRepository;
 use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Repository\Master\SaleTypeRepository;
-use Eccube\Repository\TagRepository;
 use Eccube\Repository\ProductRepository;
+use Eccube\Repository\TagRepository;
 use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-/**
- * @Route(service=CsvImportController::class)
- */
-class CsvImportController
+class CsvImportController extends AbstractCsvImportController
 {
     /**
      * @var DeliveryDurationRepository
@@ -104,39 +84,7 @@ class CsvImportController
      */
     protected $BaseInfo;
 
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
-     * @var FormFactoryInterface
-     */
-    protected $formFactory;
-
-    /**
-     * @var Session
-     */
-    protected $session;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
     private $errors = [];
-
-    private $fileName;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    private $em;
 
     /**
      * CsvImportController constructor.
@@ -148,14 +96,9 @@ class CsvImportController
      * @param ClassCategoryRepository $classCategoryRepository
      * @param ProductStatusRepository $productStatusRepository
      * @param ProductRepository $productRepository
-     * @param BaseInfo $BaseInfo
-     * @param EntityManagerInterface $entityManager
-     * @param FormFactoryInterface $formFactory
-     * @param SessionInterface $session
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param EccubeConfig $eccubeConfig
+     * @param BaseInfoRepository $baseInfoRepository
      */
-    public function __construct(DeliveryDurationRepository $deliveryDurationRepository, SaleTypeRepository $saleTypeRepository, TagRepository $tagRepository, CategoryRepository $categoryRepository, ClassCategoryRepository $classCategoryRepository, ProductStatusRepository $productStatusRepository, ProductRepository $productRepository, BaseInfo $BaseInfo, EntityManagerInterface $entityManager, FormFactoryInterface $formFactory, SessionInterface $session, EventDispatcherInterface $eventDispatcher, EccubeConfig $eccubeConfig)
+    public function __construct(DeliveryDurationRepository $deliveryDurationRepository, SaleTypeRepository $saleTypeRepository, TagRepository $tagRepository, CategoryRepository $categoryRepository, ClassCategoryRepository $classCategoryRepository, ProductStatusRepository $productStatusRepository, ProductRepository $productRepository, BaseInfoRepository $baseInfoRepository)
     {
         $this->deliveryDurationRepository = $deliveryDurationRepository;
         $this->saleTypeRepository = $saleTypeRepository;
@@ -164,12 +107,7 @@ class CsvImportController
         $this->classCategoryRepository = $classCategoryRepository;
         $this->productStatusRepository = $productStatusRepository;
         $this->productRepository = $productRepository;
-        $this->BaseInfo = $BaseInfo;
-        $this->entityManager = $entityManager;
-        $this->formFactory = $formFactory;
-        $this->session = $session;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->eccubeConfig = $eccubeConfig;
+        $this->BaseInfo = $baseInfoRepository->get();
     }
 
     /**
@@ -192,7 +130,7 @@ class CsvImportController
                     if ($data === false) {
                         $this->addErrors(trans('csvimport.text.error.format_invalid'));
 
-                        return $this->render($form, $headers);
+                        return $this->renderWithError($form, $headers, false);
                     }
                     $getId = function ($item) {
                         return $item['id'];
@@ -206,7 +144,7 @@ class CsvImportController
                     if (count(array_diff($requireHeader, $columnHeaders)) > 0) {
                         $this->addErrors(trans('csvimport.text.error.format_invalid'));
 
-                        return $this->render($form, $headers);
+                        return $this->renderWithError($form, $headers, false);
                     }
 
                     $size = count($data);
@@ -214,15 +152,14 @@ class CsvImportController
                     if ($size < 1) {
                         $this->addErrors(trans('csvimport.text.error.data_not_found'));
 
-                        return $this->render($form, $headers);
+                        return $this->renderWithError($form, $headers, false);
                     }
 
                     $headerSize = count($columnHeaders);
                     $headerByKey = array_flip(array_map($getId, $headers));
 
-                    $this->em = $this->entityManager;
-                    $this->em->getConfiguration()->setSQLLogger(null);
-                    $this->em->getConnection()->beginTransaction();
+                    $this->entityManager->getConfiguration()->setSQLLogger(null);
+                    $this->entityManager->getConnection()->beginTransaction();
                     // CSVファイルの登録処理
                     foreach ($data as $row) {
                         $line = $data->key() + 1;
@@ -230,12 +167,12 @@ class CsvImportController
                             $message = trans('csvimportcontroller.format.line', ['%line%' => $line]);
                             $this->addErrors($message);
 
-                            return $this->render($form, $headers);
+                            return $this->renderWithError($form, $headers);
                         }
 
                         if (!isset($row[$headerByKey['id']]) || StringUtil::isBlank($row[$headerByKey['id']])) {
                             $Product = new Product();
-                            $this->em->persist($Product);
+                            $this->entityManager->persist($Product);
                         } else {
                             if (preg_match('/^\d+$/', $row[$headerByKey['id']])) {
                                 $Product = $this->productRepository->find($row[$headerByKey['id']]);
@@ -243,13 +180,13 @@ class CsvImportController
                                     $message = trans('csvimportcontroller.notfound', ['%line%' => $line, '%name%' => $headerByKey['id']]);
                                     $this->addErrors($message);
 
-                                    return $this->render($form, $headers);
+                                    return $this->renderWithError($form, $headers);
                                 }
                             } else {
                                 $message = trans('csvimportcontroller.notfound', ['%line%' => $line, '%name%' => $headerByKey['id']]);
                                 $this->addErrors($message);
 
-                                return $this->render($form, $headers);
+                                return $this->renderWithError($form, $headers);
                             }
                         }
 
@@ -275,7 +212,7 @@ class CsvImportController
                             $message = trans('csvimportcontroller.notfound', ['%line%' => $line, '%name%' => $headerByKey['name']]);
                             $this->addErrors($message);
 
-                            return $this->render($form, $headers);
+                            return $this->renderWithError($form, $headers);
                         } else {
                             $Product->setName(StringUtil::trimAll($row[$headerByKey['name']]));
                         }
@@ -313,7 +250,7 @@ class CsvImportController
                         // 商品画像登録
                         $this->createProductImage($row, $Product, $data, $headerByKey);
 
-                        $this->em->flush();
+                        $this->entityManager->flush();
 
                         // 商品カテゴリ登録
                         $this->createProductCategory($row, $Product, $data, $headerByKey);
@@ -395,8 +332,8 @@ class CsvImportController
                                     $ProductClass->setProductStock($ProductStock);
                                     $ProductStock->setProductClass($ProductClass);
 
-                                    $this->em->persist($ProductClass);
-                                    $this->em->persist($ProductStock);
+                                    $this->entityManager->persist($ProductClass);
+                                    $this->entityManager->persist($ProductStock);
                                 }
                             } else {
                                 if (isset($row[$headerByKey['class_category2']]) && StringUtil::isNotBlank($row[$headerByKey['class_category2']])) {
@@ -522,12 +459,12 @@ class CsvImportController
                             }
                         }
                         if ($this->hasErrors()) {
-                            return $this->render($form, $headers);
+                            return $this->renderWithError($form, $headers);
                         }
-                        $this->em->persist($Product);
+                        $this->entityManager->persist($Product);
                     }
-                    $this->em->flush();
-                    $this->em->getConnection()->commit();
+                    $this->entityManager->flush();
+                    $this->entityManager->getConnection()->commit();
                     log_info('商品CSV登録完了');
                     $message = 'admin.product.csv_import.save.complete';
                     $this->session->getFlashBag()->add('eccube.admin.success', $message);
@@ -535,7 +472,7 @@ class CsvImportController
             }
         }
 
-        return $this->render($form, $headers);
+        return $this->renderWithError($form, $headers);
     }
 
     /**
@@ -559,7 +496,7 @@ class CsvImportController
                     if ($data === false) {
                         $this->addErrors(trans('csvimport.text.error.format_invalid'));
 
-                        return $this->render($form, $headers);
+                        return $this->renderWithError($form, $headers, false);
                     }
 
                     /**
@@ -571,18 +508,17 @@ class CsvImportController
                     if (count(array_diff($requireHeader, $columnHeaders)) > 0) {
                         $this->addErrors(trans('csvimport.text.error.format_invalid'));
 
-                        return $this->render($form, $headers);
+                        return $this->renderWithError($form, $headers, false);
                     }
 
                     $size = count($data);
                     if ($size < 1) {
                         $this->addErrors(trans('csvimport.text.error.data_not_found'));
 
-                        return $this->render($form, $headers);
+                        return $this->renderWithError($form, $headers, false);
                     }
-                    $this->em = $this->entityManager;
-                    $this->em->getConfiguration()->setSQLLogger(null);
-                    $this->em->getConnection()->beginTransaction();
+                    $this->entityManager->getConfiguration()->setSQLLogger(null);
+                    $this->entityManager->getConnection()->beginTransaction();
                     // CSVファイルの登録処理
                     foreach ($data as $row) {
                         /** @var $Category Category */
@@ -591,25 +527,45 @@ class CsvImportController
                             if (!preg_match('/^\d+$/', $row['カテゴリID'])) {
                                 $this->addErrors(($data->key() + 1).'行目のカテゴリIDが存在しません。');
 
-                                return $this->render($form, $headers);
+                                return $this->renderWithError($form, $headers);
                             }
                             $Category = $this->categoryRepository->find($row['カテゴリID']);
                             if (!$Category) {
                                 $this->addErrors(($data->key() + 1).'行目のカテゴリIDが存在しません。');
 
-                                return $this->render($form, $headers);
+                                return $this->renderWithError($form, $headers);
                             }
                             if ($row['カテゴリID'] == $row['親カテゴリID']) {
                                 $this->addErrors(($data->key() + 1).'行目のカテゴリIDと親カテゴリIDが同じです。');
 
-                                return $this->render($form, $headers);
+                                return $this->renderWithError($form, $headers);
+                            }
+                        }
+
+                        if (isset($row['カテゴリ削除フラグ']) && StringUtil::isNotBlank($row['カテゴリ削除フラグ'])) {
+                            if (StringUtil::trimAll($row['カテゴリ削除フラグ']) == 1) {
+                                if ($Category->getId()) {
+                                    log_info('カテゴリ削除開始', [$Category->getId()]);
+                                    try {
+                                        $this->categoryRepository->delete($Category);
+                                        log_info('カテゴリ削除完了', [$Category->getId()]);
+                                    } catch (ForeignKeyConstraintViolationException $e) {
+                                        log_info('カテゴリ削除エラー', [$Category->getId(), $e]);
+                                        $message = trans('admin.delete.failed.foreign_key', ['%name%' => $Category->getName()]);
+                                        $this->addError($message, 'admin');
+
+                                        return $this->renderWithError($form, $headers);
+                                    }
+                                }
+
+                                continue;
                             }
                         }
 
                         if (!isset($row['カテゴリ名']) || StringUtil::isBlank($row['カテゴリ名'])) {
                             $this->addErrors(($data->key() + 1).'行目のカテゴリ名が設定されていません。');
 
-                            return $this->render($form, $headers);
+                            return $this->renderWithError($form, $headers);
                         } else {
                             $Category->setName(StringUtil::trimAll($row['カテゴリ名']));
                         }
@@ -619,7 +575,7 @@ class CsvImportController
                             if (!preg_match('/^\d+$/', $row['親カテゴリID'])) {
                                 $this->addErrors(($data->key() + 1).'行目の親カテゴリIDが存在しません。');
 
-                                return $this->render($form, $headers);
+                                return $this->renderWithError($form, $headers);
                             }
 
                             /** @var $ParentCategory Category */
@@ -627,7 +583,7 @@ class CsvImportController
                             if (!$ParentCategory) {
                                 $this->addErrors(($data->key() + 1).'行目の親カテゴリIDが存在しません。');
 
-                                return $this->render($form, $headers);
+                                return $this->renderWithError($form, $headers);
                             }
                         }
                         $Category->setParent($ParentCategory);
@@ -637,7 +593,7 @@ class CsvImportController
                             if ($ParentCategory == null && $row['階層'] != 1) {
                                 $this->addErrors(($data->key() + 1).'行目の親カテゴリIDが存在しません。');
 
-                                return $this->render($form, $headers);
+                                return $this->renderWithError($form, $headers);
                             }
                             $level = StringUtil::trimAll($row['階層']);
                         } else {
@@ -652,17 +608,17 @@ class CsvImportController
                         if ($this->eccubeConfig['eccube_category_nest_level'] < $Category->getHierarchy()) {
                             $this->addErrors(($data->key() + 1).'行目のカテゴリが最大レベルを超えているため設定できません。');
 
-                            return $this->render($form, $headers);
+                            return $this->renderWithError($form, $headers);
                         }
 
                         if ($this->hasErrors()) {
-                            return $this->render($form, $headers);
+                            return $this->renderWithError($form, $headers);
                         }
-                        $this->em->persist($Category);
+                        $this->entityManager->persist($Category);
                         $this->categoryRepository->save($Category);
                     }
 
-                    $this->em->getConnection()->commit();
+                    $this->entityManager->getConnection()->commit();
                     log_info('カテゴリCSV登録完了');
                     $message = 'admin.category.csv_import.save.complete';
                     $this->session->getFlashBag()->add('eccube.admin.success', $message);
@@ -670,7 +626,7 @@ class CsvImportController
             }
         }
 
-        return $this->render($form, $headers);
+        return $this->renderWithError($form, $headers);
     }
 
     /**
@@ -680,10 +636,6 @@ class CsvImportController
      */
     public function csvTemplate(Request $request, $type)
     {
-        set_time_limit(0);
-
-        $response = new StreamedResponse();
-
         if ($type == 'product') {
             $headers = $this->getProductCsvHeader();
             $filename = 'product.csv';
@@ -694,23 +646,7 @@ class CsvImportController
             throw new NotFoundHttpException();
         }
 
-        $response->setCallback(function () use ($request, $headers) {
-            // ヘッダ行の出力
-            $row = [];
-            foreach ($headers as $key => $value) {
-                $row[] = mb_convert_encoding($key, $this->eccubeConfig['eccube_csv_export_encoding'], 'UTF-8');
-            }
-
-            $fp = fopen('php://output', 'w');
-            fputcsv($fp, $row, $this->eccubeConfig['eccube_csv_export_separator']);
-            fclose($fp);
-        });
-
-        $response->headers->set('Content-Type', 'application/octet-stream');
-        $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
-        $response->send();
-
-        return $response;
+        return $this->sendTemplateResponse($request, array_keys($headers), $filename);
     }
 
     /**
@@ -718,25 +654,21 @@ class CsvImportController
      *
      * @param FormInterface $form
      * @param array $headers
+     * @param bool $rollback
      *
      * @return array
+     *
+     * @throws \Doctrine\DBAL\ConnectionException
      */
-    protected function render($form, $headers)
+    protected function renderWithError($form, $headers, $rollback = true)
     {
         if ($this->hasErrors()) {
-            if ($this->em) {
-                $this->em->getConnection()->rollback();
+            if ($rollback) {
+                $this->entityManager->getConnection()->rollback();
             }
         }
 
-        if (!empty($this->fileName)) {
-            try {
-                $fs = new Filesystem();
-                $fs->remove($this->eccubeConfig['eccube_csv_temp_realdir'].'/'.$this->fileName);
-            } catch (\Exception $e) {
-                // エラーが発生しても無視する
-            }
-        }
+        $this->removeUploadedFile();
 
         return [
             'form' => $form->createView(),
@@ -746,58 +678,11 @@ class CsvImportController
     }
 
     /**
-     * アップロードされたCSVファイルの行ごとの処理
-     *
-     * @param UploadedFile $formFile
-     *
-     * @return CsvReader|bool
-     */
-    protected function getImportData($formFile)
-    {
-        // アップロードされたCSVファイルを一時ディレクトリに保存
-        $this->fileName = 'upload_'.StringUtil::random().'.'.$formFile->getClientOriginalExtension();
-        $formFile->move($this->eccubeConfig['eccube_csv_temp_realdir'], $this->fileName);
-
-        $file = file_get_contents($this->eccubeConfig['eccube_csv_temp_realdir'].'/'.$this->fileName);
-
-        if ('\\' === DIRECTORY_SEPARATOR && PHP_VERSION_ID >= 70000) {
-            // Windows 環境の PHP7 の場合はファイルエンコーディングを CP932 に合わせる
-            // see https://github.com/EC-CUBE/ec-cube/issues/1780
-            setlocale(LC_ALL, ''); // 既定のロケールに設定
-            if (mb_detect_encoding($file) === 'UTF-8') { // UTF-8 を検出したら SJIS-win に変換
-                $file = mb_convert_encoding($file, 'SJIS-win', 'UTF-8');
-            }
-        } else {
-            // アップロードされたファイルがUTF-8以外は文字コード変換を行う
-            $encode = mb_detect_encoding($file, null, true);
-            if ($encode != 'UTF-8') {
-                $file = mb_convert_encoding($file, 'UTF-8', $encode);
-            }
-        }
-
-        $file = StringUtil::convertLineFeed($file);
-
-        $tmp = tmpfile();
-        fwrite($tmp, $file);
-        rewind($tmp);
-        $meta = stream_get_meta_data($tmp);
-        $file = new \SplFileObject($meta['uri']);
-
-        set_time_limit(0);
-
-        // アップロードされたCSVファイルを行ごとに取得
-        $data = new CsvReader($file, $this->eccubeConfig['eccube_csv_import_delimiter'], $this->eccubeConfig['eccube_csv_import_enclosure']);
-
-        $ret = $data->setHeaderRowNumber(0);
-
-        return ($ret !== false) ? $data : false;
-    }
-
-    /**
      * 商品画像の削除、登録
      *
      * @param $row
      * @param Product $Product
+     * @param CsvReader $data
      */
     protected function createProductImage($row, Product $Product, $data, $headerByKey)
     {
@@ -806,7 +691,7 @@ class CsvImportController
             $ProductImages = $Product->getProductImage();
             foreach ($ProductImages as $ProductImage) {
                 $Product->removeProductImage($ProductImage);
-                $this->em->remove($ProductImage);
+                $this->entityManager->remove($ProductImage);
             }
 
             // 画像の登録
@@ -832,7 +717,7 @@ class CsvImportController
 
                         $Product->addProductImage($ProductImage);
                         $sortNo++;
-                        $this->em->persist($ProductImage);
+                        $this->entityManager->persist($ProductImage);
                     }
                 }
             }
@@ -844,7 +729,7 @@ class CsvImportController
      *
      * @param $row
      * @param Product $Product
-     * @param $data
+     * @param CsvReader $data
      * @param $headerByKey
      */
     protected function createProductCategory($row, Product $Product, $data, $headerByKey)
@@ -853,8 +738,8 @@ class CsvImportController
         $ProductCategories = $Product->getProductCategories();
         foreach ($ProductCategories as $ProductCategory) {
             $Product->removeProductCategory($ProductCategory);
-            $this->em->remove($ProductCategory);
-            $this->em->flush();
+            $this->entityManager->remove($ProductCategory);
+            $this->entityManager->flush();
         }
 
         if (isset($row[$headerByKey['product_category']]) && StringUtil::isNotBlank($row[$headerByKey['product_category']])) {
@@ -896,7 +781,7 @@ class CsvImportController
                     if (!isset($categoriesIdList[$Category->getId()])) {
                         $ProductCategory = $this->makeProductCategory($Product, $Category, $sortNo);
                         $sortNo++;
-                        $this->em->persist($ProductCategory);
+                        $this->entityManager->persist($ProductCategory);
                         $Product->addProductCategory($ProductCategory);
                         $categoriesIdList[$Category->getId()] = true;
                     }
@@ -925,7 +810,7 @@ class CsvImportController
         $ProductTags = $Product->getProductTag();
         foreach ($ProductTags as $ProductTag) {
             $Product->removeProductTag($ProductTag);
-            $this->em->remove($ProductTag);
+            $this->entityManager->remove($ProductTag);
         }
 
         if (isset($row[$headerByKey['product_tag']]) && StringUtil::isNotBlank($row[$headerByKey['product_tag']])) {
@@ -944,7 +829,7 @@ class CsvImportController
 
                         $Product->addProductTag($ProductTags);
 
-                        $this->em->persist($ProductTags);
+                        $this->entityManager->persist($ProductTags);
                     }
                 }
                 if (!$Tag) {
@@ -964,7 +849,7 @@ class CsvImportController
      *
      * @param $row
      * @param Product $Product
-     * @param $data
+     * @param CsvReader $data
      * @param $headerByKey
      * @param null $ClassCategory1
      * @param null $ClassCategory2
@@ -1104,8 +989,8 @@ class CsvImportController
             $ProductStock->setStock(null);
         }
 
-        $this->em->persist($ProductClass);
-        $this->em->persist($ProductStock);
+        $this->entityManager->persist($ProductClass);
+        $this->entityManager->persist($ProductStock);
 
         return $ProductClass;
     }
@@ -1116,7 +1001,7 @@ class CsvImportController
      * @param $row
      * @param Product $Product
      * @param ProductClass $ProductClass
-     * @param $data
+     * @param CsvReader $data
      *
      * @return ProductClass
      */
@@ -1442,7 +1327,7 @@ class CsvImportController
             ],
             'category_del_flg' => [
                 'id' => 'category_del_flg',
-                'description' => '',
+                'description' => 'admin.product.csv_category.category_del_flg',
                 'required' => false,
             ],
         ];

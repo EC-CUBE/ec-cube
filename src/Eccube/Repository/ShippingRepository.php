@@ -1,32 +1,22 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Repository;
 
+use Doctrine\ORM\QueryBuilder;
 use Eccube\Entity\Shipping;
 use Eccube\Util\StringUtil;
 use Symfony\Bridge\Doctrine\RegistryInterface;
-use Doctrine\ORM\QueryBuilder;
 
 /**
  * ShippingRepository
@@ -65,7 +55,7 @@ class ShippingRepository extends AbstractRepository
             $multi = preg_match('/^\d{0,10}$/', $searchData['multi']) ? $searchData['multi'] : null;
             $qb
                 ->andWhere('s.id = :multi OR s.name01 LIKE :likemulti OR s.name02 LIKE :likemulti OR '.
-                           's.kana01 LIKE :likemulti OR s.kana02 LIKE :likemulti OR s.company_name LIKE :likemulti')
+                            's.kana01 LIKE :likemulti OR s.kana02 LIKE :likemulti OR s.company_name LIKE :likemulti')
                 ->setParameter('multi', $multi)
                 ->setParameter('likemulti', '%'.$searchData['multi'].'%');
         }
@@ -84,11 +74,11 @@ class ShippingRepository extends AbstractRepository
                 ->setParameter('order_id', $searchData['order_id']);
         }
 
-        // order_code
-        if (isset($searchData['order_code']) && StringUtil::isNotBlank($searchData['order_code'])) {
+        // order_no
+        if (isset($searchData['order_no']) && StringUtil::isNotBlank($searchData['order_no'])) {
             $qb
-                ->andWhere('o.code LIKE :order_code')
-                ->setParameter('order_code', "%{$searchData['order_code']}%");
+                ->andWhere('o.order_no LIKE :order_no')
+                ->setParameter('order_no', "%{$searchData['order_no']}%");
         }
 
         // order status
@@ -97,12 +87,6 @@ class ShippingRepository extends AbstractRepository
             $qb
                 ->andWhere($qb->expr()->in('o.OrderStatus', ':order_status'))
                 ->setParameter('order_status', $searchData['order_status']);
-        }
-        // shipping status
-        if (isset($searchData['shipping_status']) && count($searchData['shipping_status'])) {
-            $qb
-                ->andWhere($qb->expr()->in('s.ShippingStatus', ':shipping_status'))
-                ->setParameter('shipping_status', $searchData['shipping_status']);
         }
         // name
         if (isset($searchData['name']) && StringUtil::isNotBlank($searchData['name'])) {
@@ -140,11 +124,11 @@ class ShippingRepository extends AbstractRepository
         }
 
         // tel
-        if (isset($searchData['tel']) && StringUtil::isNotBlank($searchData['tel'])) {
-            $tel = preg_replace('/[^0-9]/ ', '', $searchData['tel']);
+        if (isset($searchData['phone_number']) && StringUtil::isNotBlank($searchData['phone_number'])) {
+            $tel = preg_replace('/[^0-9]/ ', '', $searchData['phone_number']);
             $qb
-                ->andWhere('CONCAT(s.tel01, s.tel02, s.tel03) LIKE :tel')
-                ->setParameter('tel', '%'.$tel.'%');
+                ->andWhere('s.phone_number LIKE :phone_number')
+                ->setParameter('phone_number', '%'.$tel.'%');
         }
 
         // payment
@@ -252,7 +236,8 @@ class ShippingRepository extends AbstractRepository
     /**
      * 同一商品のお届け先情報を取得
      *
-     * @param $Order
+     * @param \Eccube\Entity\Order|null $Order
+     * @param \Eccube\Entity\ProductClass|null $productClass
      *
      * @return array
      */

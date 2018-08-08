@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Eccube\EventListener;
 
 use Doctrine\ORM\NoResultException;
@@ -12,6 +23,7 @@ use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\PageRepository;
 use Eccube\Request\Context;
+use SunCat\MobileDetectBundle\DeviceDetector\MobileDetector;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -54,6 +66,23 @@ class TwigInitializeListener implements EventSubscriberInterface
      */
     private $eccubeConfig;
 
+    /**
+     * @var MobileDetector
+     */
+    private $mobileDetector;
+
+    /**
+     * TwigInitializeListener constructor.
+     *
+     * @param Environment $twig
+     * @param BaseInfoRepository $baseInfoRepository
+     * @param PageRepository $pageRepository
+     * @param DeviceTypeRepository $deviceTypeRepository
+     * @param AuthorityRoleRepository $authorityRoleRepository
+     * @param EccubeConfig $eccubeConfig
+     * @param Context $context
+     * @param MobileDetector $mobileDetector
+     */
     public function __construct(
         Environment $twig,
         BaseInfoRepository $baseInfoRepository,
@@ -61,7 +90,8 @@ class TwigInitializeListener implements EventSubscriberInterface
         DeviceTypeRepository $deviceTypeRepository,
         AuthorityRoleRepository $authorityRoleRepository,
         EccubeConfig $eccubeConfig,
-        Context $context
+        Context $context,
+        MobileDetector $mobileDetector
     ) {
         $this->twig = $twig;
         $this->baseInfoRepository = $baseInfoRepository;
@@ -70,10 +100,14 @@ class TwigInitializeListener implements EventSubscriberInterface
         $this->authorityRoleRepository = $authorityRoleRepository;
         $this->eccubeConfig = $eccubeConfig;
         $this->requestContext = $context;
+        $this->mobileDetector = $mobileDetector;
     }
 
     /**
      * @param GetResponseEvent $event
+     *
+     * @throws NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
@@ -95,6 +129,8 @@ class TwigInitializeListener implements EventSubscriberInterface
 
     /**
      * @param GetResponseEvent $event
+     *
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function setFrontVaribales(GetResponseEvent $event)
     {
@@ -106,25 +142,22 @@ class TwigInitializeListener implements EventSubscriberInterface
             $route = isset($routeParams['route']) ? $routeParams['route'] : $attributes->get('route', '');
         }
 
-        // TODO レイアウトの端末判定を実装
-        $DeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_PC);
+        $type = DeviceType::DEVICE_TYPE_PC;
+        if ($this->mobileDetector->isMobile()) {
+            $type = DeviceType::DEVICE_TYPE_SP;
+        }
+        $DeviceType = $this->deviceTypeRepository->find($type);
 
         try {
-            $qb = $this->pageRepository->createQueryBuilder('p');
-            $Page = $qb->select('p, pll,l, bp, b')
-                ->leftJoin('p.PageLayouts', 'pll')
-                ->leftJoin('pll.Layout', 'l')
-                ->leftJoin('l.BlockPositions', 'bp')
-                ->leftJoin('bp.Block', 'b')
-                ->where('p.url = :route')
-                ->andWhere('l.DeviceType = :DeviceType')
-                ->orderBy('bp.block_row', 'ASC')
-                ->setParameter('route', $route)
-                ->setParameter('DeviceType', $DeviceType)
-                ->getQuery()
-                ->getSingleResult();
+            $Page = $this->pageRepository->getByUrl($DeviceType, $route);
         } catch (NoResultException $e) {
-            $Page = $this->pageRepository->newPage($DeviceType);
+            try {
+                log_info('fallback to PC layout');
+                $DeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_PC);
+                $Page = $this->pageRepository->getByUrl($DeviceType, $route);
+            } catch (NoResultException $e) {
+                $Page = $this->pageRepository->newPage($DeviceType);
+            }
         }
 
         $this->twig->addGlobal('Page', $Page);

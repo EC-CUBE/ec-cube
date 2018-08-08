@@ -1,23 +1,12 @@
 {#
 This file is part of EC-CUBE
 
-Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
 
 http://www.lockon.co.jp/
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
 #}
 {% extends 'default_frame.twig' %}
 
@@ -49,7 +38,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <div class="ec-borderedDefs">
                                 <dl>
                                     <dt>
-                                        {{ form_label(form.name, 'signup.label.fax', {'label_attr': {'class': 'ec-label'}}) }}
+                                        {{ form_label(form.name, 'signup.label.name', {'label_attr': {'class': 'ec-label'}}) }}
                                     </dt>
                                     <dd>
                                         <div class="ec-halfInput{{ has_errors(form.name.name01, form.name.name02) ? ' error'}}">
@@ -89,11 +78,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         {{ form_label(form.address, 'signup.label.address', {'label_attr': {'class': 'ec-label'}}) }}
                                     </dt>
                                     <dd>
-                                        <div class="ec-zipInput{{ has_errors(form.zip.zip01, form.zip.zip02) ? ' error' }}"><span>〒</span>
-                                            {{ form_widget(form.zip.zip01) }}<span>-</span>
-                                            {{ form_widget(form.zip.zip02) }}
-                                            {{ form_errors(form.zip.zip01) }}
-                                            {{ form_errors(form.zip.zip02) }}
+                                        <div class="ec-zipInput{{ has_errors(form.postal_code) ? ' error' }}"><span>〒</span>
+                                            {{ form_widget(form.postal_code) }}
+                                            {{ form_errors(form.postal_code) }}
                                         </div>
                                         <div class="ec-zipInputHelp"><a href="http://www.post.japanpost.jp/zipcode/"
                                                                         target="_blank">
@@ -117,31 +104,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 </dl>
                                 <dl>
                                     <dt>
-                                        {{ form_label(form.tel, 'signup.label.tel_number', {'label_attr': {'class': 'ec-label'}}) }}
+                                        {{ form_label(form.phone_number, 'signup.label.tel_number', {'label_attr': {'class': 'ec-label'}}) }}
                                     </dt>
                                     <dd>
-                                        <div class="ec-telInput{{ has_errors(form.tel.tel01, form.tel.tel02, form.tel.tel03) ? ' error' }}">
-                                            {{ form_widget(form.tel.tel01) }}<span>-</span>
-                                            {{ form_widget(form.tel.tel02) }}<span>-</span>
-                                            {{ form_widget(form.tel.tel03) }}
-                                            {{ form_errors(form.tel.tel01) }}
-                                            {{ form_errors(form.tel.tel02) }}
-                                            {{ form_errors(form.tel.tel03) }}
-                                        </div>
-                                    </dd>
-                                </dl>
-                                <dl>
-                                    <dt>
-                                        {{ form_label(form.fax, 'signup.label.fax', {'label_attr': {'class': 'ec-label'}}) }}
-                                    </dt>
-                                    <dd>
-                                        <div class="ec-telInput{{ has_errors(form.fax.fax01, form.fax.fax02, form.fax.fax03) ? ' error' }}">
-                                            {{ form_widget(form.fax.fax01) }}<span>-</span>
-                                            {{ form_widget(form.fax.fax02) }}<span>-</span>
-                                            {{ form_widget(form.fax.fax03) }}
-                                            {{ form_errors(form.fax.fax01) }}
-                                            {{ form_errors(form.fax.fax02) }}
-                                            {{ form_errors(form.fax.fax03) }}
+                                        <div class="ec-telInput{{ has_errors(form.phone_number) ? ' error' }}">
+                                            {{ form_widget(form.phone_number) }}
+                                            {{ form_errors(form.phone_number) }}
                                         </div>
                                     </dd>
                                 </dl>
@@ -231,14 +199,22 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     </dl>
                                 {% endif %}
                                 {# エンティティ拡張の自動出力 #}
-                                {% for f in form %}
-                                    {# auto_render有効時に出力 #}
-                                    {% if f.vars.eccube_form_options.auto_render %}
-                                        {# form_themeが設定されている場合にthemeを適用 #}
-                                        {% if f.vars.eccube_form_options.form_theme %}
-                                            {% form_theme f f.vars.eccube_form_options.form_theme %}
-                                        {% endif %}
+                                {% for f in form if f.vars.eccube_form_options.auto_render %}
+                                    {% if f.vars.eccube_form_options.form_theme %}
+                                        {% form_theme f f.vars.eccube_form_options.form_theme %}
                                         {{ form_row(f) }}
+                                    {% else %}
+                                        <dl>
+                                            <dt>
+                                                {{ form_label(f) }}
+                                            </dt>
+                                            <dd>
+                                                <div class="ec-select{{ has_errors(f) ? ' error' }}">
+                                                    {{ form_widget(f) }}
+                                                    {{ form_errors(f) }}
+                                                </div>
+                                            </dd>
+                                        </dl>
                                     {% endif %}
                                 {% endfor %}
                             </div>

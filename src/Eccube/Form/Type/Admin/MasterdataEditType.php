@@ -1,24 +1,14 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Form\Type\Admin;
@@ -27,6 +17,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
 class MasterdataEditType extends AbstractType
 {
@@ -42,7 +35,34 @@ class MasterdataEditType extends AbstractType
                 'allow_delete' => true,
                 'prototype' => true,
             ])
-            ->add('masterdata_name', HiddenType::class);
+            ->add('masterdata_name', HiddenType::class)
+            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+                $form = $event->getForm();
+                $data = $event->getData();
+
+                // IDのみを配列化
+                $ids = [];
+                foreach ($data['data'] as $key => $value) {
+                    if (isset($value['id'])) {
+                        $ids[$key] = $value['id'];
+                    }
+                }
+
+                if (count($ids) > 0) {
+                    // 重複IDチェック
+                    $idCount = array_count_values($ids);
+                    foreach ($idCount as $id => $count) {
+                        // 同じIDの数が2つ以上の場合は重複
+                        if ($count >= 2) {
+                            $keys = array_keys($ids, $id);
+                            // 重複した全ての入力項目にエラーを出力
+                            foreach ($keys as $key) {
+                                $form['data'][$key]['id']->addError(new FormError(trans('admin.setting.system.masterdata.680')));
+                            }
+                        }
+                    }
+                }
+            });
     }
 
     /**

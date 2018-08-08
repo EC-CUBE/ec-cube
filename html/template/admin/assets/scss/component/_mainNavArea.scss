@@ -83,13 +83,13 @@ Markup:
           li: a(href="/moc/setting/basis/tax")  税率設定
           li: a(href="/moc/setting/basis/mail") メール設定
         +e.A.navItemSubTitle.collapsed(data-toggle="collapse" href="#systemConfig" aria-expanded="false" aria-controls="systemConfig")
-          span システム情報設定
+          span システム設定
         ul.collapse#systemConfig
           li: a(href="/moc/setting/system/system") システム情報
           li: a(href="/moc/setting/system/member") メンバー管理
           li: a(href="/moc/setting/system/authority") 権限管理
           li: a(href="/moc/setting/system/security") セキュリティ管理
-          li: a(href="/moc/setting/system/log") EC-CUBE ログ表示
+          li: a(href="/moc/setting/system/log") ログ表示
           li: a(href="/moc/setting/system/master") マスターデータ管理
       +e.LI.navItem
         +e.A.navItemTitle.collapsed(data-toggle="collapse" href="#ownersStore" aria-expanded="false" aria-controls="ownersStore")

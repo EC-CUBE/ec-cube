@@ -1,4 +1,14 @@
 {#
+This file is part of EC-CUBE
+
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{#
  - form_div_layout.html.twig
  - https://github.com/symfony/symfony/blob/master/src/Symfony/Bridge/Twig/Resources/views/Form/form_div_layout.html.twig
 #}
@@ -34,3 +44,11 @@
         {{ parent() }}
     {% endif %}
 {%- endblock textarea_widget -%}
+
+{%- block radio_widget -%}
+    <label for="{{ id }}">{{ parent() }}
+        <span>{{ label is not same as(false) ? (translation_domain is same as(false) ? label : label|trans({}, translation_domain)) }}</span>
+    </label>
+{%- endblock radio_widget -%}
+
+

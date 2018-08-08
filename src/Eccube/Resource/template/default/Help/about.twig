@@ -1,23 +1,12 @@
 {#
 This file is part of EC-CUBE
 
-Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
 
 http://www.lockon.co.jp/
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
 #}
 {% extends 'default_frame.twig' %}
 
@@ -30,59 +19,66 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <div class="ec-off1Grid">
         <div class="ec-off1Grid__cell">
             <div class="ec-borderedDefs">
-                {% if BaseInfo.shop_name is defined %}
+                {% if BaseInfo.shop_name|default is not empty %}
                     <dl id="help_about_box__shop_name">
-                        <dt>{{'common.label.shop_name'|trans}}</dt>
+                        <dt>
+                            <label class="ec-label">{{'common.label.shop_name'|trans}}</label>
+                        </dt>
                         <dd>{{ BaseInfo.shop_name }}</dd>
                     </dl>
                 {% endif %}
-                {% if BaseInfo.company_name is defined %}
+                {% if BaseInfo.company_name|default is not empty %}
                     <dl id="help_about_box__company_name">
-                        <dt>{{'common.label.company_name'|trans}}</dt>
+                        <dt>
+                            <label class="ec-label">{{'common.label.company_name'|trans}}</label>
+                        </dt>
                         <dd>{{ BaseInfo.company_name }}</dd>
                     </dl>
                 {% endif %}
 
-                {% if BaseInfo.zip01 is defined %}
+                {% if BaseInfo.postal_code|default is not empty %}
                     <dl id="help_about_box__zip">
-                        <dt>{{'common.label.address'|trans}}</dt>
-                        <dd>〒{{ BaseInfo.zip01 }}-{{ BaseInfo.zip02 }}<br />
+                        <dt>
+                            <label class="ec-label">{{'common.label.address'|trans}}</label>
+                        </dt>
+                        <dd>〒{{ BaseInfo.postal_code }}<br />
                             {{ BaseInfo.pref }}{{ BaseInfo.addr01 }}{{ BaseInfo.addr02 }}
                         </dd>
                     </dl>
                 {% endif %}
 
-                {% if BaseInfo.tel01 is defined %}
+                {% if BaseInfo.phone_number|default is not empty %}
                     <dl id="help_about_box__tel">
-                        <dt>{{'common.label.phone_number'|trans}}</dt>
-                        <dd>{{ BaseInfo.tel01 }}-{{ BaseInfo.tel02 }}-{{ BaseInfo.tel03 }}</dd>
+                        <dt>
+                            <label class="ec-label">{{'common.label.phone_number'|trans}}</label>
+                        </dt>
+                        <dd>{{ BaseInfo.phone_number }}</dd>
                     </dl>
                 {% endif %}
 
-                {% if BaseInfo.fax01 is defined %}
-                    <dl id="help_about_box__fax">
-                        <dt>{{'common.label.fax_number'|trans}}</dt>
-                        <dd>{{ BaseInfo.fax01 }}-{{ BaseInfo.fax02 }}-{{ BaseInfo.fax03 }}</dd>
-                    </dl>
-                {% endif %}
-
-                {% if BaseInfo.business_hour is defined %}
+                {% if BaseInfo.business_hour|default is not empty %}
                     <dl id="help_about_box__business_hour">
-                        <dt>{{'common.label.business_hour'|trans}}</dt>
+                        <dt>
+                            <label class="ec-label">{{'common.label.business_hour'|trans}}</label>
+                        </dt>
                         <dd>{{ BaseInfo.business_hour }}</dd>
                     </dl>
                 {% endif %}
 
-                {% if BaseInfo.good_traded is defined %}
+                {% if BaseInfo.good_traded|default is not empty %}
                     <dl id="help_about_box__good_traded">
-                        <dt>{{'common.label.good_traded'|trans}}</dt>
+                        <dt>
+                            <label class="ec-label">{{'common.label.good_traded'|trans}}</label>
+                        </dt>
                         <dd>{{ BaseInfo.good_traded|nl2br }}</dd>
                     </dl>
                 {% endif %}
 
-                {% if BaseInfo.message is defined %}
+                {% if BaseInfo.message|default is not empty %}
                     <dl id="help_about_box__message">
-                        <dt>{{'admin.mail.order.203'|trans}}</dt>
+                        <dt>
+                            <label class="ec-label">{{'admin.mail.order.203'|trans}}</label>
+                        </dt>
                         <dd>{{ BaseInfo.message|nl2br }}</dd>
                     </dl>
                 {% endif %}

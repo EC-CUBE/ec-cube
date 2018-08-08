@@ -1,29 +1,36 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Eccube\Service;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Eccube\Annotation\Inject;
-use Eccube\Annotation\Service;
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\Cart;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\Customer;
-use Eccube\Entity\CustomerAddress;
+use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\OrderStatus;
-use Eccube\Entity\Master\ShippingStatus;
-use Eccube\Entity\Master\TaxDisplayType;
-use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
 use Eccube\Repository\DeliveryFeeRepository;
 use Eccube\Repository\DeliveryRepository;
+use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\Master\OrderItemTypeRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
-use Eccube\Repository\Master\ShippingStatusRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Repository\TaxRuleRepository;
@@ -32,80 +39,63 @@ use Eccube\Util\StringUtil;
 /**
  * OrderやOrderに関連するエンティティを構築するクラス
  * namespaceやクラス名は要検討
- *
- * @Service
  */
 class OrderHelper
 {
     /**
-     * @Inject(OrderItemTypeRepository::class)
-     *
      * @var OrderItemTypeRepository
      */
     protected $orderItemTypeRepository;
 
     /**
-     * @Inject(OrderStatusRepository::class)
-     *
      * @var OrderStatusRepository
      */
     protected $orderStatusRepository;
 
     /**
-     * @Inject(TaxRuleRepository::class)
-     *
      * @var TaxRuleRepository
      */
     protected $taxRuleRepository;
 
     /**
-     * @Inject(DeliveryFeeRepository::class)
-     *
      * @var DeliveryFeeRepository
      */
     protected $deliveryFeeRepository;
 
     /**
-     * @Inject(DeliveryRepository::class)
-     *
      * @var DeliveryRepository
      */
     protected $deliveryRepository;
 
     /**
-     * @Inject(PaymentRepository::class)
-     *
      * @var PaymentRepository
      */
     protected $paymentRepository;
 
     /**
-     * @Inject(OrderRepository::class)
-     *
      * @var OrderRepository
      */
     protected $orderRepository;
 
     /**
-     * @Inject(ShippingStatusRepository::class)
-     *
-     * @var ShippingStatusRepository
-     */
-    protected $shippingStatusRepository;
-
-    /**
-     * @Inject("orm.em")
-     *
      * @var EntityManager
      */
     protected $entityManager;
 
     /**
-     * @Inject("config")
-     *
      * @var EccubeConfig
      */
     protected $eccubeConfig;
+
+    /**
+     * @var \Mobile_Detect
+     */
+    protected $mobileDetect;
+
+    /**
+     * @var DeviceTypeRepository
+     */
+    protected $deviceTypeRepository;
 
     /**
      * OrderHelper constructor.
@@ -117,9 +107,10 @@ class OrderHelper
      * @param DeliveryRepository $deliveryRepository
      * @param PaymentRepository $paymentRepository
      * @param OrderRepository $orderRepository
-     * @param ShippingStatusRepository $shippingStatusRepository
      * @param EntityManager $entityManager
      * @param EccubeConfig $eccubeConfig
+     * @param \Mobile_Detect $mobileDetect
+     * @param DeviceTypeRepository $deviceTypeRepository
      */
     public function __construct(
         OrderItemTypeRepository $orderItemTypeRepository,
@@ -129,9 +120,10 @@ class OrderHelper
         DeliveryRepository $deliveryRepository,
         PaymentRepository $paymentRepository,
         OrderRepository $orderRepository,
-        ShippingStatusRepository $shippingStatusRepository,
         EntityManagerInterface $entityManager,
-        EccubeConfig $eccubeConfig
+        EccubeConfig $eccubeConfig,
+        \Mobile_Detect $mobileDetect,
+        DeviceTypeRepository $deviceTypeRepository
     ) {
         $this->orderItemTypeRepository = $orderItemTypeRepository;
         $this->orderStatusRepository = $orderStatusRepository;
@@ -140,30 +132,35 @@ class OrderHelper
         $this->deliveryRepository = $deliveryRepository;
         $this->paymentRepository = $paymentRepository;
         $this->orderRepository = $orderRepository;
-        $this->shippingStatusRepository = $shippingStatusRepository;
         $this->entityManager = $entityManager;
         $this->eccubeConfig = $eccubeConfig;
+        $this->mobileDetect = $mobileDetect;
+        $this->deviceTypeRepository = $deviceTypeRepository;
     }
 
     /**
      * 購入処理中の受注データを生成する.
      *
      * @param Customer $Customer
-     * @param CustomerAddress $CustomerAddress
      * @param array $CartItems
      *
      * @return Order
      */
-    public function createProcessingOrder(Customer $Customer, CustomerAddress $CustomerAddress, $CartItems)
+    public function createProcessingOrder(Customer $Customer, $CartItems, $preOrderId = null)
     {
         $OrderStatus = $this->orderStatusRepository->find(OrderStatus::PROCESSING);
         $Order = new Order($OrderStatus);
 
-        // pre_order_idを生成
-        $Order->setPreOrderId($this->createPreOrderId());
+        if (!$preOrderId) {
+            // pre_order_idを生成
+            $Order->setPreOrderId($this->createPreOrderId());
+        }
 
         // 顧客情報の設定
         $this->setCustomer($Order, $Customer);
+
+        $DeviceType = $this->deviceTypeRepository->find($this->mobileDetect->isMobile() ? DeviceType::DEVICE_TYPE_SP : DeviceType::DEVICE_TYPE_PC);
+        $Order->setDeviceType($DeviceType);
 
         // 明細情報の設定
         $OrderItems = $this->createOrderItemsFromCartItems($CartItems);
@@ -176,21 +173,48 @@ class OrderHelper
         }, []);
 
         foreach ($OrderItemsGroupBySaleType as $OrderItems) {
-            $Shipping = $this->createShippingFromCustomerAddress($CustomerAddress);
+            $Shipping = $this->createShippingFromCustomer($Customer);
+            $Shipping->setOrder($Order);
             $this->addOrderItems($Order, $Shipping, $OrderItems);
             $this->setDefaultDelivery($Shipping);
             $this->entityManager->persist($Shipping);
+            $Order->addShipping($Shipping);
         }
 
         $this->setDefaultPayment($Order);
 
         $this->entityManager->persist($Order);
-        $this->entityManager->flush();
+        //$this->entityManager->flush();
 
         return $Order;
     }
 
-    public function createPreOrderId()
+    /**
+     * OrderをCartに変換します.
+     *
+     * @param Order $Order
+     *
+     * @return Cart
+     */
+    public function convertToCart(Order $Order)
+    {
+        $Cart = new Cart();
+        $Cart->setPreOrderId($Order->getPreOrderId());
+        /** @var OrderItem $OrderItem */
+        foreach ($Order->getProductOrderItems() as $OrderItem) {
+            $CartItem = new CartItem();
+            $ProductClass = $OrderItem->getProductClass();
+            $this->entityManager->refresh($ProductClass);
+            $CartItem->setProductClass($ProductClass);
+            $CartItem->setPrice($OrderItem->getPriceIncTax());
+            $CartItem->setQuantity($OrderItem->getQuantity());
+            $Cart->addCartItem($CartItem);
+        }
+
+        return $Cart;
+    }
+
+    private function createPreOrderId()
     {
         // ランダムなpre_order_idを作成
         do {
@@ -207,7 +231,7 @@ class OrderHelper
         return $preOrderId;
     }
 
-    public function setCustomer(Order $Order, Customer $Customer)
+    private function setCustomer(Order $Order, Customer $Customer)
     {
         if ($Customer->getId()) {
             $Order->setCustomer($Customer);
@@ -232,17 +256,13 @@ class OrderHelper
     private function createOrderItemsFromCartItems($CartItems)
     {
         $ProductItemType = $this->orderItemTypeRepository->find(OrderItemType::PRODUCT);
-        // TODO
-        $TaxExclude = $this->entityManager->getRepository(TaxDisplayType::class)->find(TaxDisplayType::EXCLUDED);
-        $Taxion = $this->entityManager->getRepository(TaxType::class)->find(TaxType::TAXATION);
 
-        return array_map(function ($item) use ($ProductItemType, $TaxExclude, $Taxion) {
+        return array_map(function ($item) use ($ProductItemType) {
             /* @var $item CartItem */
             /* @var $ProductClass \Eccube\Entity\ProductClass */
             $ProductClass = $item->getProductClass();
             /* @var $Product \Eccube\Entity\Product */
             $Product = $ProductClass->getProduct();
-            $TaxRule = $this->taxRuleRepository->getByRule($Product, $ProductClass);
 
             $OrderItem = new OrderItem();
             $OrderItem
@@ -252,11 +272,7 @@ class OrderHelper
                 ->setProductCode($ProductClass->getCode())
                 ->setPrice($ProductClass->getPrice02())
                 ->setQuantity($item->getQuantity())
-                ->setTaxRule($TaxRule->getId())
-                ->setTaxRate($TaxRule->getTaxRate())
-                ->setOrderItemType($ProductItemType)
-                ->setTaxDisplayType($TaxExclude)
-                ->setTaxType($Taxion);
+                ->setOrderItemType($ProductItemType);
 
             $ClassCategory1 = $ProductClass->getClassCategory1();
             if (!is_null($ClassCategory1)) {
@@ -273,45 +289,25 @@ class OrderHelper
         }, $CartItems->toArray());
     }
 
-    public function createShippingFromCustomerAddress(CustomerAddress $CustomerAddress)
+    private function createShippingFromCustomer(Customer $Customer)
     {
         $Shipping = new Shipping();
         $Shipping
-            ->setName01($CustomerAddress->getName01())
-            ->setName02($CustomerAddress->getName02())
-            ->setKana01($CustomerAddress->getKana01())
-            ->setKana02($CustomerAddress->getKana02())
-            ->setCompanyName($CustomerAddress->getCompanyName())
-            ->setTel01($CustomerAddress->getTel01())
-            ->setTel02($CustomerAddress->getTel02())
-            ->setTel03($CustomerAddress->getTel03())
-            ->setFax01($CustomerAddress->getFax01())
-            ->setFax02($CustomerAddress->getFax02())
-            ->setFax03($CustomerAddress->getFax03())
-            ->setZip01($CustomerAddress->getZip01())
-            ->setZip02($CustomerAddress->getZip02())
-            ->setZipCode($CustomerAddress->getZip01().$CustomerAddress->getZip02())
-            ->setPref($CustomerAddress->getPref())
-            ->setAddr01($CustomerAddress->getAddr01())
-            ->setAddr02($CustomerAddress->getAddr02());
-
-        $ShippingStatus = $this->shippingStatusRepository->find(ShippingStatus::PREPARED);
-        $Shipping->setShippingStatus($ShippingStatus);
+            ->setName01($Customer->getName01())
+            ->setName02($Customer->getName02())
+            ->setKana01($Customer->getKana01())
+            ->setKana02($Customer->getKana02())
+            ->setCompanyName($Customer->getCompanyName())
+            ->setPhoneNumber($Customer->getPhoneNumber())
+            ->setPostalCode($Customer->getPostalCode())
+            ->setPref($Customer->getPref())
+            ->setAddr01($Customer->getAddr01())
+            ->setAddr02($Customer->getAddr02());
 
         return $Shipping;
     }
 
-    /**
-     * @deprecated
-     */
-    public function addShipping(Order $Order, Shipping $Shipping)
-    {
-        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
-        $Order->addShipping($Shipping);
-        $Shipping->setOrder($Order);
-    }
-
-    public function setDefaultDelivery(Shipping $Shipping)
+    private function setDefaultDelivery(Shipping $Shipping)
     {
         // 配送商品に含まれる販売種別を抽出.
         $OrderItems = $Shipping->getOrderItems();
@@ -330,16 +326,9 @@ class OrderHelper
         $Delivery = current($Deliveries);
         $Shipping->setDelivery($Delivery);
         $Shipping->setShippingDeliveryName($Delivery->getName());
-
-        // TODO 配送料の取得方法はこれで良いか要検討
-        $deliveryFee = $this->deliveryFeeRepository->findOneBy(['Delivery' => $Delivery, 'Pref' => $Shipping->getPref()]);
-        if ($deliveryFee) {
-            $Shipping->setShippingDeliveryFee($deliveryFee->getFee());
-            $Shipping->setFeeId($deliveryFee->getId());
-        }
     }
 
-    public function setDefaultPayment(Order $Order)
+    private function setDefaultPayment(Order $Order)
     {
         $OrderItems = $Order->getOrderItems();
 
@@ -368,11 +357,9 @@ class OrderHelper
             $Order->setPayment($Payment);
             $Order->setPaymentMethod($Payment->getMethod());
         }
-        // TODO CalculateChargeStrategy でセットする
-        // $Order->setCharge($Payment->getCharge());
     }
 
-    public function addOrderItems(Order $Order, Shipping $Shipping, array $OrderItems)
+    private function addOrderItems(Order $Order, Shipping $Shipping, array $OrderItems)
     {
         foreach ($OrderItems as $OrderItem) {
             $Shipping->addOrderItem($OrderItem);

@@ -1,28 +1,19 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Category;
 use Eccube\Form\Type\Master\ProductStatusType;
 use Eccube\Form\Validator\TwigLint;
@@ -50,14 +41,22 @@ class ProductType extends AbstractType
     protected $categoryRepository;
 
     /**
+     * @var EccubeConfig
+     */
+    protected $eccubeConfig;
+
+    /**
      * ProductType constructor.
      *
      * @param CategoryRepository $categoryRepository
+     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
-        CategoryRepository $categoryRepository
+        CategoryRepository $categoryRepository,
+        EccubeConfig $eccubeConfig
     ) {
         $this->categoryRepository = $categoryRepository;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
@@ -75,6 +74,7 @@ class ProductType extends AbstractType
                 'label' => 'product.label.product_name',
                 'constraints' => [
                     new Assert\NotBlank(),
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
                 ],
             ])
             ->add('product_image', FileType::class, [
@@ -85,10 +85,16 @@ class ProductType extends AbstractType
             ])
             ->add('description_detail', TextareaType::class, [
                 'label' => 'product.label.product_description',
+                'constraints' => [
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_ltext_len']]),
+                ],
             ])
             ->add('description_list', TextareaType::class, [
                 'label' => 'product.label.product_description_list',
                 'required' => false,
+                'constraints' => [
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_ltext_len']]),
+                ],
             ])
             ->add('Category', ChoiceType::class, [
                 'choice_label' => 'Name',
@@ -117,6 +123,9 @@ class ProductType extends AbstractType
             ->add('search_word', TextType::class, [
                 'label' => 'product.label.search_word',
                 'required' => false,
+                'constraints' => [
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_ltext_len']]),
+                ],
             ])
             // サブ情報
             ->add('free_area', TextareaType::class, [
@@ -136,6 +145,9 @@ class ProductType extends AbstractType
             ->add('note', TextareaType::class, [
                 'label' => 'product.label.owner_memo',
                 'required' => false,
+                'constraints' => [
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_ltext_len']]),
+                ],
             ])
 
             // タグ

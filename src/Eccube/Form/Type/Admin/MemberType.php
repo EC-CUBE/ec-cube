@@ -1,34 +1,31 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Form\Type\Admin;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\Master\Authority;
+use Eccube\Entity\Master\Work;
+use Eccube\Entity\Member;
+use Eccube\Repository\MemberRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Eccube\Form\Type\RepeatedPasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -40,19 +37,22 @@ class MemberType extends AbstractType
     protected $eccubeConfig;
 
     /**
-     * @var string
+     * @var MemberRepository
      */
-    protected $blankMessage = 'admin.system.member.form.not.blank';
+    protected $memberRepository;
 
     /**
      * MemberType constructor.
      *
      * @param EccubeConfig $eccubeConfig
+     * @param MemberRepository $memberRepository
      */
     public function __construct(
-        EccubeConfig $eccubeConfig
+        EccubeConfig $eccubeConfig,
+        MemberRepository $memberRepository
     ) {
         $this->eccubeConfig = $eccubeConfig;
+        $this->memberRepository = $memberRepository;
     }
 
     /**
@@ -64,7 +64,7 @@ class MemberType extends AbstractType
             ->add('name', TextType::class, [
                 'label' => 'member.label.name',
                 'constraints' => [
-                    new Assert\NotBlank(['message' => $this->blankMessage]),
+                    new Assert\NotBlank(),
                     new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
                 ],
             ])
@@ -72,22 +72,25 @@ class MemberType extends AbstractType
                 'required' => false,
                 'label' => 'member.label.organization',
                 'constraints' => [
-                    new Assert\NotBlank(['message' => $this->blankMessage]),
+                    new Assert\NotBlank(),
                     new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
                 ],
             ])
             ->add('login_id', TextType::class, [
                 'label' => 'member.label.login_id',
                 'constraints' => [
-                    new Assert\NotBlank(['message' => $this->blankMessage]),
+                    new Assert\NotBlank(),
                     new Assert\Length([
                         'min' => $this->eccubeConfig['eccube_id_min_len'],
                         'max' => $this->eccubeConfig['eccube_id_max_len'],
                     ]),
-                    new Assert\Regex(['pattern' => '/^[[:graph:][:space:]]+$/i']),
+                    new Assert\Regex([
+                        'pattern' => '/^[[:graph:][:space:]]+$/i',
+                        'message' => 'form.type.graph.invalid',
+                    ]),
                 ],
             ])
-            ->add('password', RepeatedType::class, [
+            ->add('password', RepeatedPasswordType::class, [
                 // 'type' => 'password',
                 'first_options' => [
                     'label' => 'member.label.pass',
@@ -96,7 +99,7 @@ class MemberType extends AbstractType
                     'label' => 'member.label.varify_pass',
                 ],
                 'constraints' => [
-                    new Assert\NotBlank(['message' => $this->blankMessage]),
+                    new Assert\NotBlank(),
                     new Assert\Length([
                         'min' => $this->eccubeConfig['eccube_id_min_len'],
                         'max' => $this->eccubeConfig['eccube_id_max_len'],
@@ -111,7 +114,7 @@ class MemberType extends AbstractType
                 'multiple' => false,
                 'placeholder' => 'form.empty_value',
                 'constraints' => [
-                    new Assert\NotBlank(['message' => $this->blankMessage]),
+                    new Assert\NotBlank(),
                 ],
             ])
             ->add('Work', EntityType::class, [
@@ -120,10 +123,33 @@ class MemberType extends AbstractType
                 'expanded' => true,
                 'multiple' => false,
                 'constraints' => [
-                    new Assert\NotBlank(['message' => $this->blankMessage]),
+                    new Assert\NotBlank(),
                 ],
-            ])
-        ;
+            ]);
+
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            /** @var Member $Member */
+            $Member = $event->getData();
+
+            // 編集時に, 非稼働で更新した場合にチェック.
+            if ($Member->getId() && $Member->getWork()->getId() == Work::NON_ACTIVE) {
+                // 自身を除いた稼働メンバーの件数
+                $count = $this->memberRepository
+                    ->createQueryBuilder('m')
+                    ->select('COUNT(m)')
+                    ->where('m.Work = :Work AND m.Authority = :Authority AND m.id <> :Member')
+                    ->setParameter('Work', Work::ACTIVE)
+                    ->setParameter('Authority', Authority::ADMIN)
+                    ->setParameter('Member', $Member)
+                    ->getQuery()
+                    ->getSingleScalarResult();
+
+                if ($count < 1) {
+                    $form = $event->getForm();
+                    $form['Work']->addError(new FormError(trans('admin.setting.system.member.work.error')));
+                }
+            }
+        });
     }
 
     /**

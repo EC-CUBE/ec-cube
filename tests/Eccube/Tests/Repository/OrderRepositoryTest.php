@@ -1,10 +1,21 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Eccube\Tests\Repository;
 
 use Eccube\Entity\Customer;
 use Eccube\Entity\Order;
-use Eccube\Repository\Master\OrderStatusRepository;
+use Eccube\Entity\Master\OrderStatus;
 use Eccube\Repository\OrderRepository;
 use Eccube\Tests\EccubeTestCase;
 
@@ -20,16 +31,13 @@ class OrderRepositoryTest extends EccubeTestCase
     /** @var Order */
     protected $Order;
 
-    /** @var OrderStatusRepository */
-    protected $orderStatusRepo;
     /** @var OrderRepository */
-    protected $orderRepo;
+    protected $orderRepository;
 
     public function setUp()
     {
         parent::setUp();
-        $this->orderStatusRepo = $this->container->get(OrderStatusRepository::class);
-        $this->orderRepo = $this->container->get(OrderRepository::class);
+        $this->orderRepository = $this->container->get(OrderRepository::class);
 
         $this->createProduct();
         $this->Customer = $this->createCustomer();
@@ -38,25 +46,12 @@ class OrderRepositoryTest extends EccubeTestCase
         $this->Order = $this->createOrder($this->Customer);
     }
 
-    public function testChangeStatusWithCommitted()
-    {
-        $orderId = $this->Order->getId();
-        $Status = $this->orderStatusRepo->find(5);
-
-        $this->orderRepo->changeStatus($orderId, $Status);
-
-        $this->assertNotNull($this->Order->getShippingDate());
-        $this->expected = 5;
-        $this->actual = $this->Order->getOrderStatus()->getId();
-        $this->verify();
-    }
-
     public function testChangeStatusWithPayment()
     {
         $orderId = $this->Order->getId();
-        $Status = $this->orderStatusRepo->find(6);
+        $Status = $this->entityManager->find(OrderStatus::class, OrderStatus::PAID);
 
-        $this->orderRepo->changeStatus($orderId, $Status);
+        $this->orderRepository->changeStatus($orderId, $Status);
 
         $this->assertNotNull($this->Order->getPaymentDate());
         $this->expected = 6;
@@ -67,11 +62,10 @@ class OrderRepositoryTest extends EccubeTestCase
     public function testChangeStatusWithOther()
     {
         $orderId = $this->Order->getId();
-        $Status = $this->orderStatusRepo->find(1);
+        $Status = $this->entityManager->find(OrderStatus::class, OrderStatus::NEW);
 
-        $this->orderRepo->changeStatus($orderId, $Status);
+        $this->orderRepository->changeStatus($orderId, $Status);
 
-        $this->assertNull($this->Order->getShippingDate());
         $this->assertNull($this->Order->getPaymentDate());
     }
 
@@ -81,7 +75,7 @@ class OrderRepositoryTest extends EccubeTestCase
         $this->createOrder($this->Customer);
         $this->createOrder($Customer2);
 
-        $qb = $this->orderRepo->getQueryBuilderByCustomer($this->Customer);
+        $qb = $this->orderRepository->getQueryBuilderByCustomer($this->Customer);
         $Orders = $qb->getQuery()->getResult();
 
         $this->expected = 2;
@@ -93,5 +87,58 @@ class OrderRepositoryTest extends EccubeTestCase
     {
         $this->assertInstanceOf('\Doctrine\Common\Collections\Collection', $this->Order->getShippings());
         $this->assertEquals(1, $this->Order->getShippings()->count());
+    }
+
+    public function testGetExistsOrdersByCustomer()
+    {
+        $Order2 = $this->createOrder($this->Customer);
+        $Status = $this->entityManager->find(OrderStatus::class, OrderStatus::PROCESSING);
+
+        $this->orderRepository->changeStatus($Order2->getId(), $Status);
+
+        $this->actual = $Order2;
+        $this->expected = $this->orderRepository->getExistsOrdersByCustomer($this->Customer);
+        $this->verify();
+    }
+
+    public function testGetExistsOrdersByCustomerWithNull()
+    {
+        $Order2 = $this->createOrder($this->Customer);
+        $Status = $this->entityManager->find(OrderStatus::class, OrderStatus::NEW);
+
+        $this->orderRepository->changeStatus($Order2->getId(), $Status);
+
+        $this->assertNull($this->orderRepository->getExistsOrdersByCustomer($this->Customer));
+    }
+
+    public function testUpdateOrderSummary()
+    {
+        $Customer = $this->createCustomer();
+        $this->orderRepository->updateOrderSummary($Customer);
+
+        self::assertNull($Customer->getFirstBuyDate());
+        self::assertNull($Customer->getLastBuyDate());
+        self::assertSame(0, $Customer->getBuyTimes());
+        self::assertSame(0, $Customer->getBuyTotal());
+
+        $Order1 = $this->createOrder($Customer);
+        $Order1->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
+        $this->entityManager->flush();
+
+        $this->orderRepository->updateOrderSummary($Customer);
+        self::assertSame($Order1->getOrderDate(), $Customer->getFirstBuyDate());
+        self::assertSame($Order1->getOrderDate(), $Customer->getLastBuyDate());
+        self::assertEquals(1, $Customer->getBuyTimes());
+        self::assertEquals($Order1->getTotal(), $Customer->getBuyTotal());
+
+        $Order2 = $this->createOrder($Customer);
+        $Order2->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
+        $this->entityManager->flush();
+
+        $this->orderRepository->updateOrderSummary($Customer);
+        self::assertSame($Order1->getOrderDate(), $Customer->getFirstBuyDate());
+        self::assertSame($Order2->getOrderDate(), $Customer->getLastBuyDate());
+        self::assertEquals(2, $Customer->getBuyTimes());
+        self::assertEquals($Order1->getTotal() + $Order2->getTotal(), $Customer->getBuyTotal());
     }
 }

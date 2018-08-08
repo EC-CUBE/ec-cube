@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Eccube\Tests\Web\Admin\Order;
 
 use Eccube\Common\Constant;
@@ -59,6 +70,8 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $this->customerRepository = $this->container->get(CustomerRepository::class);
 
         // FIXME: Should remove exist data before generate data for test
+        $this->deleteAllRows(['dtb_order_item']);
+        $this->deleteAllRows(['dtb_shipping']);
         $this->deleteAllRows(['dtb_order']);
 
         $Sex = $this->sexRepository->find(1);
@@ -68,6 +81,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             $Customer = $this->createCustomer('user-'.$i.'@example.com');
             $Customer->setSex($Sex);
             $Order = $this->createOrder($Customer);
+            $Order->setOrderNo('order_no_'.$i);
             $Order->setOrderStatus($OrderStatus);
             $Order->setPayment($Payment);
             $this->entityManager->flush();
@@ -117,7 +131,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $this->verify();
     }
 
-    public function testSearchOrderById()
+    public function testSearchOrderByOrderNo()
     {
         $Order = $this->orderRepository->findOneBy([]);
 
@@ -125,7 +139,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             'POST', $this->generateUrl('admin_order'), [
             'admin_search_order' => [
                 '_token' => 'dummy',
-                'multi' => $Order->getId(),
+                'multi' => $Order->getOrderNo(),
             ],
             ]
         );
@@ -139,7 +153,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             'POST', $this->generateUrl('admin_order'), [
                 'admin_search_order' => [
                     '_token' => 'dummy',
-                    'order_id' => $Order->getId(),
+                    'order_no' => $Order->getOrderNo(),
                 ],
             ]
         );
@@ -322,37 +336,39 @@ class OrderControllerTest extends AbstractAdminWebTestCase
      */
     public function testBulkOrderStatus($orderStatusId)
     {
+        $this->markTestSkipped('使用していないルーティングのためスキップ.');
         // case true
         $orderIds = [];
         /** @var Order[] $Orders */
         $OrderStatus = $this->orderStatusRepository->find(OrderStatus::NEW);
         $Orders = $this->orderRepository->findBy(['OrderStatus' => $OrderStatus], [], 2);
         foreach ($Orders as $Order) {
-            $orderIds[] = $Order->getId();
-            $this->assertEquals(null, $Order->getShippingDate());
             $this->assertEquals(null, $Order->getPaymentDate());
-        }
+            $orderIds[] = $Order->getId();
+            $Shippings = $Order->getShippings();
+            foreach ($Shippings as $Shipping) {
+                $this->client->request(
+                    'PUT',
+                    $this->generateUrl('admin_shipping_update_order_status', ['id' => $Shipping->getId()]),
+                    [
+                        'order_status' => $orderStatusId,
+                        Constant::TOKEN_NAME => 'dummy',
+                    ],
+                    [],
+                    [
+                        'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                        'CONTENT_TYPE' => 'application/json',
+                    ]
+                );
 
-        $OrderStatus = $this->orderStatusRepository->find($orderStatusId);
-        $this->client->request(
-            'POST',
-            $this->generateUrl('admin_order_bulk_order_status', ['id' => $orderStatusId]),
-            [
-                'ids' => $orderIds,
-                Constant::TOKEN_NAME => 'dummy',
-            ]
-        );
+                $this->assertTrue($this->client->getResponse()->isSuccessful());
+            }
+        }
 
         $result = $this->orderRepository->findBy(['id' => $orderIds, 'OrderStatus' => $OrderStatus]);
         if ($orderStatusId == OrderStatus::PAID) {
             foreach ($result as $Order) {
                 $this->assertNotNull($Order->getPaymentDate());
-            }
-        }
-
-        if ($orderStatusId == OrderStatus::DELIVERED) {
-            foreach ($result as $Order) {
-                $this->assertNotNull($Order->getShippingDate());
             }
         }
 
@@ -374,9 +390,14 @@ class OrderControllerTest extends AbstractAdminWebTestCase
     {
         $this->client->request(
             'GET',
-            $this->generateUrl('admin_order_bulk_order_status', ['id' => OrderStatus::NEW]),
+            $this->generateUrl('admin_shipping_update_order_status', ['id' => 1]),
             [
                 Constant::TOKEN_NAME => 'dummy',
+            ],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
             ]
         );
         $this->assertEquals(405, $this->client->getResponse()->getStatusCode());
@@ -384,13 +405,145 @@ class OrderControllerTest extends AbstractAdminWebTestCase
 
     public function testBulkOrderStatusInvalidStatus()
     {
+        $Order = $this->orderRepository->findOneBy([]);
+        $Shipping = $Order->getShippings()->first();
         $this->client->request(
-            'POST',
-            $this->generateUrl('admin_order_bulk_order_status', ['id' => 0]),
+            'PUT',
+            $this->generateUrl('admin_shipping_update_order_status', ['id' => $Shipping->getId()]),
             [
+                'order_status' => 0,
                 Constant::TOKEN_NAME => 'dummy',
+            ],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            ]
+        );
+        $this->assertEquals(400, $this->client->getResponse()->getStatusCode());
+    }
+
+    public function testBulkOrderStatusShippingNotFound()
+    {
+        $this->client->request(
+            'PUT',
+            $this->generateUrl('admin_shipping_update_order_status', ['id' => 0]),
+            [
+                'order_status' => OrderStatus::IN_PROGRESS,
+                Constant::TOKEN_NAME => 'dummy',
+            ],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
             ]
         );
         $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
+    }
+
+    public function testSimpleUpdateOrderStatusWithSendMail()
+    {
+        $orderIds = [];
+        /** @var Order[] $Orders */
+        $OrderStatusNew = $this->orderStatusRepository->find(OrderStatus::NEW);
+        $OrderStatusDelivered = $this->orderStatusRepository->find(OrderStatus::DELIVERED);
+        $Orders = $this->orderRepository->findBy(['OrderStatus' => $OrderStatusNew], [], 2);
+        foreach ($Orders as $Order) {
+            $this->assertEquals(null, $Order->getPaymentDate());
+            $orderIds[] = $Order->getId();
+            $Shippings = $Order->getShippings();
+            foreach ($Shippings as $Shipping) {
+                $this->client->enableProfiler();
+
+                $this->client->request(
+                    'PUT',
+                    $this->generateUrl('admin_shipping_update_order_status', ['id' => $Shipping->getId()]),
+                    [
+                        'order_status' => $OrderStatusDelivered,
+                        'notificationMail' => 'on',
+                        Constant::TOKEN_NAME => 'dummy',
+                    ],
+                    [],
+                    [
+                        'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                        'CONTENT_TYPE' => 'application/json',
+                    ]
+                );
+
+                $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+                $Messages = $this->getMailCollector(false)->getMessages();
+                $this->assertEquals(1, count($Messages));
+
+                /** @var \Swift_Message $Message */
+                $Message = $Messages[0];
+
+                $this->assertRegExp('/\[.*?\] 商品出荷のお知らせ/', $Message->getSubject());
+                $this->assertEquals([$Order->getEmail() => null], $Message->getTo());
+            }
+        }
+
+        $result = $this->orderRepository->findBy(['id' => $orderIds, 'OrderStatus' => $OrderStatusDelivered]);
+        foreach ($result as $Order) {
+            $Shippings = $Order->getShippings();
+            foreach ($Shippings as $Shipping) {
+                $this->assertNotNull($Shipping->getShippingDate());
+                $this->assertNotNull($Shipping->getMailSendDate());
+            }
+        }
+
+        $this->assertEquals(count($orderIds), count($result));
+    }
+
+    public function testUpdateTrackingNumber()
+    {
+        $Order = $this->orderRepository->findOneBy([]);
+        $Shipping = $Order->getShippings()->first();
+        $crawler = $this->client->request(
+            'PUT',
+            $this->generateUrl('admin_shipping_update_tracking_number', ['id' => $Shipping->getId()]),
+            [
+                'tracking_number' => '0000-0000-0000',
+            ],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            ]
+        );
+        $Result = json_decode($this->client->getResponse()->getContent(), true);
+        $this->expected = 'OK';
+        $this->actual = $Result['status'];
+        $this->verify();
+
+        $this->expected = '0000-0000-0000';
+        $this->actual = $Shipping->getTrackingNumber();
+        $this->verify();
+    }
+
+    public function testUpdateTrackingNumberFailure()
+    {
+        $Order = $this->orderRepository->findOneBy([]);
+        $Shipping = $Order->getShippings()->first();
+        $crawler = $this->client->request(
+            'PUT',
+            $this->generateUrl('admin_shipping_update_tracking_number', ['id' => $Shipping->getId()]),
+            [
+                'tracking_number' => '0000_0000_0000',
+            ],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            ]
+        );
+        $Result = json_decode($this->client->getResponse()->getContent(), true);
+        $this->expected = 'NG';
+        $this->actual = $Result['status'];
+        $this->verify();
+
+        $this->expected = trans('form.type.admin.nottrackingnumberstyle');
+        $this->actual = $Result['messages'][0];
+        $this->verify();
     }
 }

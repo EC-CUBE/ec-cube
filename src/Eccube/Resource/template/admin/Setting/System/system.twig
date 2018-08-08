@@ -1,65 +1,79 @@
 {#
 This file is part of EC-CUBE
 
-Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
 
 http://www.lockon.co.jp/
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
 #}
 
 {% extends '@admin/default_frame.twig' %}
 
 {% set menus = ['setting', 'system', 'system_index'] %}
 
-{% block title %}{{'admin.setting.system.system.713'|trans}}{% endblock %}
-{% block sub_title %}{{'admin.setting.system.system.714'|trans}}{% endblock %}
+{% block title %}{{'admin.setting.system.system.714'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.setting.system.system.713'|trans}}{% endblock %}
 
 {% block main %}
-    <div id="server_wrap" class="row">
-        <div id="server_info_box" class="col-md-12">
-            <div id="server_info_box__body" class="box">
-                <div id="server_info_box__header" class="box-header">
-                    <h3 class="box-title">{{'admin.setting.system.system.715'|trans}}</h3>
-                </div><!-- /.box-header -->
-                <div id="server_info_box__body_inner" class="box-body">
-                    <dl class="dl-horizontal">
-                       {% for key, item in info %}
-                            <dt id="server_info_box__title--{{ loop.index }}">
-                               {{item.title}}
-                            </dt>
-                            <dd id="server_info_box__value--{{ loop.index }}">
-                               {{item.value}}
-                            </dd>
-                        {% endfor %}
-                    </dl>
-                </div><!-- /.box-body -->
-            </div><!-- /.box -->
-        </div>
-    </div>
-    <div id="php_wrap" class="row">
-        <div id="php_info_box" class="col-md-12">
-            <div id="php_info_box__body" class="box">
-                <div id="php_info_box__header" class="box-header">
-                    <h3 class="box-title">{{'admin.setting.system.system.716'|trans}}</h3>
-                </div><!-- /.box-header -->
-                <div id="php_info_box__frame" class="box-body no-padding">
-                    <iframe name="php_info" src="{{ url('admin_setting_system_system_phpinfo') }}" height="500" frameborder="0" style="width: 100%;"></iframe>
-                </div><!-- /.box-body -->
-            </div><!-- /.box -->
-        </div>
+    <div class="c-contentsArea__cols">
+        <div class="c-contentsArea__primaryCol">
+            <div class="c-primaryCol">
+                <div class="card rounded border-0 mb-4">
+                    <div class="card-header">
+                        <div class="row" >
+                            <div class="col-8" id="server_info_box__header">
+                                <span class="card-title ">{{'admin.setting.system.system.715'|trans}}</span>
+                                <i class="fa fa-question-circle fa-lg ml-1"></i>
+                            </div>
+                            <div class="col-4 text-right">
+                                <a data-toggle="collapse" href="#systemInfo"
+                                   aria-expanded="false" aria-controls="systemInfo">
+                                    <i class="fa fa-angle-up fa-lg"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="collapse show ec-cardCollapse" id="systemInfo" >
+                        <div class="card-body" id="server_info_box__body_inner">
+                            {% for key, item in info %}
+                                <div class="row mb-2">
+                                    <div class="col-2">
+                                        <span>{{item.title}}</span>
+                                    </div>
+                                    <div class="col">
+                                        <div class="row">
+                                            <div class="col" id="server_info_box__value--{{ loop.index }}">
+                                                {{item.value}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
 
+            <div class="c-primaryCol">
+                <div class="card rounded border-0 mb-4">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-8" id="php_info_box__header" >
+                                <span class="card-title">{{'admin.setting.system.system.716'|trans}}</span>
+                                <i class="fa fa-question-circle fa-lg ml-1"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="php_info_box__frame">
+                        <iframe name="php_info" src="{{ url('admin_setting_system_system_phpinfo') }}" height="500" frameborder="0" style="width: 100%;"></iframe>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
     </div>
+
 {% endblock %}

@@ -1,24 +1,14 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Controller\Admin\Setting\Shop;
@@ -28,6 +18,7 @@ use Eccube\Entity\BaseInfo;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\ShopMasterType;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Util\CacheUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -52,11 +43,12 @@ class ShopController extends AbstractController
     /**
      * ShopController constructor.
      *
-     * @param BaseInfo $BaseInfo
+     * @param Twig_Environment $twig
+     * @param BaseInfoRepository $baseInfoRepository
      */
-    public function __construct(Twig_Environment $twig, BaseInfo $BaseInfo)
+    public function __construct(Twig_Environment $twig, BaseInfoRepository $baseInfoRepository)
     {
-        $this->BaseInfo = $BaseInfo;
+        $this->BaseInfo = $baseInfoRepository->get();
         $this->twig = $twig;
     }
 
@@ -94,15 +86,15 @@ class ShopController extends AbstractController
                 $this->entityManager->flush();
 
                 $event = new EventArgs(
-                  [
+                    [
                     'form' => $form,
                     'BaseInfo' => $this->BaseInfo,
-                  ],
-                  $request
+                    ],
+                    $request
                 );
                 $this->eventDispatcher->dispatch(
-                  EccubeEvents::ADMIN_SETTING_SHOP_SHOP_INDEX_COMPLETE,
-                  $event
+                    EccubeEvents::ADMIN_SETTING_SHOP_SHOP_INDEX_COMPLETE,
+                    $event
                 );
 
                 $cacheUtil->clearCache();

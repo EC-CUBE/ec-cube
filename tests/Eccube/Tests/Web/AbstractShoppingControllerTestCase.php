@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Eccube\Tests\Web;
 
 use Eccube\Common\Constant;
@@ -27,7 +38,6 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
     public function createShippingFormData()
     {
         $faker = $this->getFaker();
-        $tel = explode('-', $faker->phoneNumber);
 
         $form = [
             'name' => [
@@ -39,20 +49,13 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
                 'kana02' => $faker->firstKanaName,
             ],
             'company_name' => $faker->company,
-            'zip' => [
-                'zip01' => $faker->postcode1(),
-                'zip02' => $faker->postcode2(),
-            ],
+            'postal_code' => $faker->postcode,
             'address' => [
                 'pref' => '5',
                 'addr01' => $faker->city,
                 'addr02' => $faker->streetAddress,
             ],
-            'tel' => [
-                'tel01' => $tel[0],
-                'tel02' => $tel[1],
-                'tel03' => $tel[2],
-            ],
+            'phone_number' => $faker->phoneNumber,
             '_token' => 'dummy',
         ];
 

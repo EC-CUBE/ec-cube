@@ -1,24 +1,14 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Form\Type\Admin;
@@ -63,7 +53,11 @@ class LogType extends AbstractType
     {
         $files = [];
         $finder = new Finder();
-        $finder->name('*.log')->depth('== 0');
+        $finder->name('*.log')
+            ->depth('== 0')
+            ->sort(function (\SplFileInfo $a, \SplFileInfo $b) {
+                return strcmp($b->getMTime(), $a->getMTime());
+            });
         $dirs = $this->kernel->getLogDir().DIRECTORY_SEPARATOR.$this->kernel->getEnvironment();
         foreach ($finder->in($dirs) as $file) {
             $files[$file->getFilename()] = $file->getFilename();
@@ -88,7 +82,7 @@ class LogType extends AbstractType
                 ],
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Range(['min' => 0, 'max' => 50000]),
+                    new Assert\Range(['min' => 1, 'max' => 50000]),
                 ],
             ]);
     }

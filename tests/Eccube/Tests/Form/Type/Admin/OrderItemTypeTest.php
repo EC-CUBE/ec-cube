@@ -1,30 +1,19 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Form\Type\Admin\OrderItemType;
-use Symfony\Component\HttpFoundation\Request;
 
 class OrderItemTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
@@ -33,10 +22,11 @@ class OrderItemTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     /** @var array デフォルト値（正常系）を設定 */
     protected $formData = [
+        'ProductClass' => '1',
         'price' => '10000',
         'quantity' => '10000',
-        'tax_rate' => '10.0',
         'product_name' => 'name1',
+        'order_item_type' => '1',
     ];
 
     public function setUp()
@@ -44,16 +34,18 @@ class OrderItemTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         parent::setUp();
 
         // CSRF tokenを無効にしてFormを作成
-        // 会員管理会員登録・編集
         $this->form = $this->formFactory
             ->createBuilder(OrderItemType::class, null, [
                 'csrf_protection' => false,
             ])
             ->getForm();
-        $this->container->get('request_stack')->push(new Request());
+
+        $Product = $this->createProduct();
+        $ProductClass = $Product->getProductClasses()->first();
+        $this->formData['ProductClass'] = $ProductClass->getId();
     }
 
-    public function testInValidData()
+    public function testValidData()
     {
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
@@ -86,6 +78,8 @@ class OrderItemTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
     public function testValidPrice_HasMinus()
     {
         $this->formData['price'] = '-123456';
+        // 値引き明細はマイナス値
+        $this->formData['order_item_type'] = \Eccube\Entity\Master\OrderItemType::DISCOUNT;
 
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());

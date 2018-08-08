@@ -1,36 +1,26 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Repository;
 
 use Doctrine\ORM\NoResultException;
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Entity\TaxRule;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Eccube\Entity\BaseInfo;
 
 /**
  * TaxRuleRepository
@@ -63,20 +53,20 @@ class TaxRuleRepository extends AbstractRepository
      * @param RegistryInterface $registry
      * @param TokenStorageInterface $tokenStorage
      * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param BaseInfo $baseInfo
+     * @param BaseInfoRepository $baseInfoRepository
      * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
         RegistryInterface $registry,
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,
-        BaseInfo $baseInfo,
+        BaseInfoRepository $baseInfoRepository,
         EccubeConfig $eccubeConfig
     ) {
         parent::__construct($registry, TaxRule::class);
         $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;
-        $this->baseInfo = $baseInfo;
+        $this->baseInfo = $baseInfoRepository->get();
         $this->eccubeConfig = $eccubeConfig;
     }
 

@@ -1,3 +1,13 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
 <script>
     // 商品規格情報. 規格2のプルダウンリストの設定に利用する,
     var productsClassCategories = {
@@ -42,103 +52,54 @@
         var $sele2 = $row.find('select[name=classcategory_id2]');
 
         var product_class_id = null;
-        var price = null;
+        var price = 0;
         var quantity = 1;
-        var product_code = null;
-        var tax_rate = 8;
-        var tax_display_type = {{ constant('Eccube\\Entity\\Master\\TaxDisplayType::INCLUDED') }};
 
-        type = type === undefined ? {{ constant('Eccube\\Entity\\Master\\OrderItemType::PRODUCT') }} : type;
-
-        switch (type) {
-            case {{ constant('Eccube\\Entity\\Master\\OrderItemType::DELIVERY_FEE') }}:
-            case {{ constant('Eccube\\Entity\\Master\\OrderItemType::CHARGE') }}:
-            case {{ constant('Eccube\\Entity\\Master\\OrderItemType::DISCOUNT') }}:
-                product_class_id = null;
-                price = null;
-                product_code = null;
-                break;
-            default:
-            case {{ constant('Eccube\\Entity\\Master\\OrderItemType::PRODUCT') }}:
-                tax_display_type = {{ constant('Eccube\\Entity\\Master\\TaxDisplayType::EXCLUDED') }};
-                // 規格なし商品の場合
-                if (!$sele1.length && !$sele2.length) {
-                    var product = productsClassCategories[product_id]['__unselected2']['#'];
-                    product_class_id = product['product_class_id'];
-                    price = product['price02'];
-                    product_code = product['product_code'];
-                    // 規格が登録されている商品の場合
-                } else if ($sele1.length) {
-                    if ($sele2.length) {
-                        var class_category_id1 = $sele1.val();
-                        var class_cateogry_id2 = $sele2.val();
-                        if (class_category_id1 == '__unselected' || !class_cateogry_id2) {
-                            alert('{{'admin.order.search_product.379'|trans}}');
-                            return;
-                        }
-                        var product = productsClassCategories[product_id][class_category_id1]['#' + class_cateogry_id2];
-
-                        product_class_id = product['product_class_id'];
-                        price = product['price02'];
-                        product_code = product['product_code'];
-                    } else {
-                        var class_category_id1 = $sele1.val();
-                        if (class_category_id1 == '__unselected') {
-                            alert('{{ 'admin.order.search_product.379'|trans }}');
-                            return;
-                        }
-                        var product = productsClassCategories[product_id][class_category_id1]['#'];
-
-                        product_class_id = product['product_class_id'];
-                        price = product['price02'];
-                        product_code = product['product_code'];
-                    }
+        // 規格なし商品の場合
+        if (!$sele1.length && !$sele2.length) {
+            var product = productsClassCategories[product_id]['__unselected2']['#'];
+            product_class_id = product['product_class_id'];
+            price = product['price02'];
+            // 規格が登録されている商品の場合
+        } else if ($sele1.length) {
+            if ($sele2.length) {
+                var class_category_id1 = $sele1.val();
+                var class_cateogry_id2 = $sele2.val();
+                if (class_category_id1 == '__unselected' || !class_cateogry_id2) {
+                    alert('{{'admin.order.search_product.379'|trans}}');
+                    return;
                 }
+                var product = productsClassCategories[product_id][class_category_id1]['#' + class_cateogry_id2];
 
-        }
-
-        // 受注明細行を取得.
-        var list = '#table-form-field';
-        var orderDetailExists = false;
-
-        $(list + " tbody > tr").each(function() {
-            var $inputs = $(this).find(':input');
-
-            if ($inputs.filter('[id$="_ProductClass"][value="' + product_class_id + '"]').length > 0) {
-                var $quantity = $inputs.filter('[id$="_quantity"]');
-                var quantity = $quantity.val().trim();
-                if (quantity.match(/^\d+$/)) {
-                    $quantity.val(parseInt(quantity) + 1);
+                product_class_id = product['product_class_id'];
+                price = product['price02'];
+            } else {
+                var class_category_id1 = $sele1.val();
+                if (class_category_id1 == '__unselected') {
+                    alert('{{ 'admin.order.search_product.379'|trans }}');
+                    return;
                 }
+                var product = productsClassCategories[product_id][class_category_id1]['#'];
 
-                orderDetailExists = true;
-                return false;
+                product_class_id = product['product_class_id'];
+                price = product['price02'];
             }
-        });
-
-        if (!orderDetailExists) {
-            var prototype = $collectionHolder.data('prototype');
-            index++;
-            var newForm = prototype.replace(/__name__/g, index);
-            $(list + ' tbody').append(newForm);
-            var $lastRow = $(list + ' tbody > tr:last');
-
-            $($lastRow).find('#order_OrderItems_' + index + '_Product').val(product_id);
-            $($lastRow).find('#order_OrderItems_' + index + '_ProductClass').val(product_class_id);
-            $($lastRow).find('#order_OrderItems_' + index + '_price').val(price);
-            $($lastRow).find('#order_OrderItems_' + index + '_quantity').val(quantity); // コントローラ側で再取得するため、仮の値をセット
-            $($lastRow).find('#order_OrderItems_' + index + '_tax_rate').val(tax_rate); // コントローラ側で再取得するため、仮の値をセット
-            $($lastRow).find('#order_OrderItems_' + index + '_order_item_type').val(type);
-            $($lastRow).find('#order_OrderItems_' + index + '_product_name').val(product_name);
-            $($lastRow).find('#order_OrderItems_' + index + '_product_code').val(product_code);
-            $($lastRow).find('#order_OrderItems_' + index + '_tax_display_type').val(tax_display_type);
         }
+
+        var prototype = $collectionHolder.data('prototype');
+        index++;
+        var newForm = prototype.replace(/__name__/g, index);
+        $collectionHolder.children('tbody').append(newForm);
+        var $lastRow = $collectionHolder.children('tbody').children('tr').last;
+
+        $($lastRow).find(formIdPrefix + index + '_ProductClass').val(product_class_id);
+        $($lastRow).find(formIdPrefix + index + '_price').val(price);
+        $($lastRow).find(formIdPrefix + index + '_quantity').val(quantity);
+        $($lastRow).find(formIdPrefix + index + '_order_item_type').val(type);
+        $($lastRow).find(formIdPrefix + index + '_product_name').val(product_name);
 
         // モーダル閉じる.
         $('#searchProductModal').modal('hide');
-
-        // モーダルからのPOST時にのみ金額等をセットするため
-        $('input:hidden[name="modal"]').val('modal');
 
         // 再計算のためsubmit.
         $('#form1').submit();
@@ -225,7 +186,7 @@
 </table>
 {% if pagination.totalItemCount > 0 %}
     <div id="product_pagination" class="row justify-content-md-center mb-4">
-        {% include "@admin/styleguide_pager.twig" with {'pages': pagination.paginationData, 'routes': 'admin_order_search_product_page'} %}
+        {% include "@admin/pager.twig" with {'pages': pagination.paginationData, 'routes': 'admin_order_search_product_page'} %}
     </div>
 {% endif %}
 

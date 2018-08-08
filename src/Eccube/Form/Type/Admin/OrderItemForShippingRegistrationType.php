@@ -1,37 +1,28 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\OrderItem;
 use Eccube\Repository\OrderItemRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class OrderItemForShippingRegistrationType extends AbstractType
 {
@@ -39,10 +30,15 @@ class OrderItemForShippingRegistrationType extends AbstractType
      * @var OrderItemRepository
      */
     protected $orderItemRepository;
+    /**
+     * @var EccubeConfig
+     */
+    private $eccubeConfig;
 
-    public function __construct(OrderItemRepository $orderItemRepository)
+    public function __construct(OrderItemRepository $orderItemRepository, EccubeConfig $eccubeConfig)
     {
         $this->orderItemRepository = $orderItemRepository;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
@@ -53,19 +49,19 @@ class OrderItemForShippingRegistrationType extends AbstractType
         $builder
             ->add('id', HiddenType::class, [
                 'required' => false,
-                'mapped' => false,
+                'mapped' => false, // idは更新できないので 'mapped'=>false にしてcontrollerでdateをset
                 'constraints' => [
                     new NotBlank(),
                 ],
+            ])
+            ->add('quantity', TextType::class, [
+                'constraints' => [
+                    new Assert\NotBlank(),
+                    new Assert\Length([
+                        'max' => $this->eccubeConfig['eccube_int_len'],
+                    ]),
+                ],
             ]);
-
-        $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
-            $form = $event->getForm();
-            $orderItemId = $form['id']->getData();
-
-            $OrderItem = $this->orderItemRepository->find($orderItemId);
-            $event->setData($OrderItem);
-        });
     }
 
     /**

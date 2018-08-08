@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Eccube\Service\PurchaseFlow;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -56,7 +67,7 @@ class ItemCollection extends ArrayCollection
     {
         return $this->filter(
             function (ItemInterface $OrderItem) {
-                return $OrderItem->isDiscount();
+                return $OrderItem->isDiscount() || $OrderItem->isPoint();
             });
     }
 
@@ -118,7 +129,15 @@ class ItemCollection extends ArrayCollection
                 }
 
                 return -1;
-            } elseif ($a->isDiscount()) {
+            } elseif ($a->isDiscount() || $a->isPoint()) {
+                if ($b->isDiscount()) {
+                    return -1;
+                }
+
+                if ($b->isPoint()) {
+                    return 1;
+                }
+
                 if (!$b->isTax()) {
                     return 1;
                 }

@@ -1,324 +1,337 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Block
- *
- * @ORM\Table(name="dtb_block", uniqueConstraints={@ORM\UniqueConstraint(name="device_type_id", columns={"device_type_id", "file_name"})})
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
- * @ORM\HasLifecycleCallbacks()
- * @ORM\Entity(repositoryClass="Eccube\Repository\BlockRepository")
- */
-class Block extends \Eccube\Entity\AbstractEntity
-{
+if (!class_exists('\Eccube\Entity\Block')) {
     /**
-     * @var integer
-     */
-    const UNUSED_BLOCK_ID = 0;
-
-    /**
-     * @var int
+     * Block
      *
-     * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\Table(name="dtb_block", uniqueConstraints={@ORM\UniqueConstraint(name="device_type_id", columns={"device_type_id", "file_name"})})
+     * @ORM\InheritanceType("SINGLE_TABLE")
+     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     * @ORM\HasLifecycleCallbacks()
+     * @ORM\Entity(repositoryClass="Eccube\Repository\BlockRepository")
      */
-    private $id;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="block_name", type="string", length=255, nullable=true)
-     */
-    private $name;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="file_name", type="string", length=255)
-     */
-    private $file_name;
-
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="use_controller", type="boolean", options={"default":false})
-     */
-    private $use_controller = false;
-
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="deletable", type="boolean", options={"default":true})
-     */
-    private $deletable = true;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="create_date", type="datetimetz")
-     */
-    private $create_date;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="update_date", type="datetimetz")
-     */
-    private $update_date;
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\OneToMany(targetEntity="Eccube\Entity\BlockPosition", mappedBy="Block", cascade={"persist","remove"})
-     */
-    private $BlockPositions;
-
-    /**
-     * @var \Eccube\Entity\Master\DeviceType
-     *
-     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\DeviceType")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="device_type_id", referencedColumnName="id")
-     * })
-     */
-    private $DeviceType;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
+    class Block extends \Eccube\Entity\AbstractEntity
     {
-        $this->BlockPositions = new \Doctrine\Common\Collections\ArrayCollection();
-    }
+        /**
+         * @var integer
+         */
+        const UNUSED_BLOCK_ID = 0;
 
-    /**
-     * Set id
-     *
-     * @param integer $id
-     *
-     * @return Block
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
+        /**
+         * @var int
+         *
+         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+         * @ORM\Id
+         * @ORM\GeneratedValue(strategy="IDENTITY")
+         */
+        private $id;
 
-        return $this;
-    }
+        /**
+         * @var string|null
+         *
+         * @ORM\Column(name="block_name", type="string", length=255, nullable=true)
+         */
+        private $name;
 
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+        /**
+         * @var string
+         *
+         * @ORM\Column(name="file_name", type="string", length=255)
+         */
+        private $file_name;
 
-    /**
-     * Set name
-     *
-     * @param string $name
-     *
-     * @return Block
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
+        /**
+         * @var boolean
+         *
+         * @ORM\Column(name="use_controller", type="boolean", options={"default":false})
+         */
+        private $use_controller = false;
 
-        return $this;
-    }
+        /**
+         * @var boolean
+         *
+         * @ORM\Column(name="deletable", type="boolean", options={"default":true})
+         */
+        private $deletable = true;
 
-    /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
+        /**
+         * @var \DateTime
+         *
+         * @ORM\Column(name="create_date", type="datetimetz")
+         */
+        private $create_date;
 
-    /**
-     * Set fileName
-     *
-     * @param string $fileName
-     *
-     * @return Block
-     */
-    public function setFileName($fileName)
-    {
-        $this->file_name = $fileName;
+        /**
+         * @var \DateTime
+         *
+         * @ORM\Column(name="update_date", type="datetimetz")
+         */
+        private $update_date;
 
-        return $this;
-    }
+        /**
+         * @var \Doctrine\Common\Collections\Collection
+         *
+         * @ORM\OneToMany(targetEntity="Eccube\Entity\BlockPosition", mappedBy="Block", cascade={"persist","remove"})
+         */
+        private $BlockPositions;
 
-    /**
-     * Get fileName
-     *
-     * @return string
-     */
-    public function getFileName()
-    {
-        return $this->file_name;
-    }
+        /**
+         * @var \Eccube\Entity\Master\DeviceType
+         *
+         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\DeviceType")
+         * @ORM\JoinColumns({
+         *   @ORM\JoinColumn(name="device_type_id", referencedColumnName="id")
+         * })
+         */
+        private $DeviceType;
 
-    /**
-     * Set useController
-     *
-     * @param boolean $useController
-     *
-     * @return Block
-     */
-    public function setUseController($useController)
-    {
-        $this->use_controller = $useController;
+        /**
+         * Constructor
+         */
+        public function __construct()
+        {
+            $this->BlockPositions = new \Doctrine\Common\Collections\ArrayCollection();
+        }
 
-        return $this;
-    }
+        /**
+         * Set id
+         *
+         * @param integer $id
+         *
+         * @return Block
+         */
+        public function setId($id)
+        {
+            $this->id = $id;
 
-    /**
-     * Get useController
-     *
-     * @return boolean
-     */
-    public function isUseController()
-    {
-        return $this->use_controller;
-    }
+            return $this;
+        }
 
-    /**
-     * Set deletable
-     *
-     * @param boolean $deletable
-     *
-     * @return Block
-     */
-    public function setDeletable($deletable)
-    {
-        $this->deletable = $deletable;
+        /**
+         * Get id
+         *
+         * @return integer
+         */
+        public function getId()
+        {
+            return $this->id;
+        }
 
-        return $this;
-    }
+        /**
+         * Set name
+         *
+         * @param string $name
+         *
+         * @return Block
+         */
+        public function setName($name)
+        {
+            $this->name = $name;
 
-    /**
-     * Get deletable
-     *
-     * @return boolean
-     */
-    public function isDeletable()
-    {
-        return $this->deletable;
-    }
+            return $this;
+        }
 
-    /**
-     * Set createDate
-     *
-     * @param \DateTime $createDate
-     *
-     * @return Block
-     */
-    public function setCreateDate($createDate)
-    {
-        $this->create_date = $createDate;
+        /**
+         * Get name
+         *
+         * @return string
+         */
+        public function getName()
+        {
+            return $this->name;
+        }
 
-        return $this;
-    }
+        /**
+         * Set fileName
+         *
+         * @param string $fileName
+         *
+         * @return Block
+         */
+        public function setFileName($fileName)
+        {
+            $this->file_name = $fileName;
 
-    /**
-     * Get createDate
-     *
-     * @return \DateTime
-     */
-    public function getCreateDate()
-    {
-        return $this->create_date;
-    }
+            return $this;
+        }
 
-    /**
-     * Set updateDate
-     *
-     * @param \DateTime $updateDate
-     *
-     * @return Block
-     */
-    public function setUpdateDate($updateDate)
-    {
-        $this->update_date = $updateDate;
+        /**
+         * Get fileName
+         *
+         * @return string
+         */
+        public function getFileName()
+        {
+            return $this->file_name;
+        }
 
-        return $this;
-    }
+        /**
+         * Set useController
+         *
+         * @param boolean $useController
+         *
+         * @return Block
+         */
+        public function setUseController($useController)
+        {
+            $this->use_controller = $useController;
 
-    /**
-     * Get updateDate
-     *
-     * @return \DateTime
-     */
-    public function getUpdateDate()
-    {
-        return $this->update_date;
-    }
+            return $this;
+        }
 
-    /**
-     * Add blockPosition
-     *
-     * @param \Eccube\Entity\BlockPosition $blockPosition
-     *
-     * @return Block
-     */
-    public function addBlockPosition(\Eccube\Entity\BlockPosition $blockPosition)
-    {
-        $this->BlockPositions[] = $blockPosition;
+        /**
+         * Get useController
+         *
+         * @return boolean
+         */
+        public function isUseController()
+        {
+            return $this->use_controller;
+        }
 
-        return $this;
-    }
+        /**
+         * Set deletable
+         *
+         * @param boolean $deletable
+         *
+         * @return Block
+         */
+        public function setDeletable($deletable)
+        {
+            $this->deletable = $deletable;
 
-    /**
-     * Remove blockPosition
-     *
-     * @param \Eccube\Entity\BlockPosition $blockPosition
-     */
-    public function removeBlockPosition(\Eccube\Entity\BlockPosition $blockPosition)
-    {
-        $this->BlockPositions->removeElement($blockPosition);
-    }
+            return $this;
+        }
 
-    /**
-     * Get blockPositions
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getBlockPositions()
-    {
-        return $this->BlockPositions;
-    }
+        /**
+         * Get deletable
+         *
+         * @return boolean
+         */
+        public function isDeletable()
+        {
+            return $this->deletable;
+        }
 
-    /**
-     * Set deviceType
-     *
-     * @param \Eccube\Entity\Master\DeviceType $deviceType
-     *
-     * @return Block
-     */
-    public function setDeviceType(\Eccube\Entity\Master\DeviceType $deviceType = null)
-    {
-        $this->DeviceType = $deviceType;
+        /**
+         * Set createDate
+         *
+         * @param \DateTime $createDate
+         *
+         * @return Block
+         */
+        public function setCreateDate($createDate)
+        {
+            $this->create_date = $createDate;
 
-        return $this;
-    }
+            return $this;
+        }
 
-    /**
-     * Get deviceType
-     *
-     * @return \Eccube\Entity\Master\DeviceType
-     */
-    public function getDeviceType()
-    {
-        return $this->DeviceType;
+        /**
+         * Get createDate
+         *
+         * @return \DateTime
+         */
+        public function getCreateDate()
+        {
+            return $this->create_date;
+        }
+
+        /**
+         * Set updateDate
+         *
+         * @param \DateTime $updateDate
+         *
+         * @return Block
+         */
+        public function setUpdateDate($updateDate)
+        {
+            $this->update_date = $updateDate;
+
+            return $this;
+        }
+
+        /**
+         * Get updateDate
+         *
+         * @return \DateTime
+         */
+        public function getUpdateDate()
+        {
+            return $this->update_date;
+        }
+
+        /**
+         * Add blockPosition
+         *
+         * @param \Eccube\Entity\BlockPosition $blockPosition
+         *
+         * @return Block
+         */
+        public function addBlockPosition(\Eccube\Entity\BlockPosition $blockPosition)
+        {
+            $this->BlockPositions[] = $blockPosition;
+
+            return $this;
+        }
+
+        /**
+         * Remove blockPosition
+         *
+         * @param \Eccube\Entity\BlockPosition $blockPosition
+         */
+        public function removeBlockPosition(\Eccube\Entity\BlockPosition $blockPosition)
+        {
+            $this->BlockPositions->removeElement($blockPosition);
+        }
+
+        /**
+         * Get blockPositions
+         *
+         * @return \Doctrine\Common\Collections\Collection
+         */
+        public function getBlockPositions()
+        {
+            return $this->BlockPositions;
+        }
+
+        /**
+         * Set deviceType
+         *
+         * @param \Eccube\Entity\Master\DeviceType $deviceType
+         *
+         * @return Block
+         */
+        public function setDeviceType(\Eccube\Entity\Master\DeviceType $deviceType = null)
+        {
+            $this->DeviceType = $deviceType;
+
+            return $this;
+        }
+
+        /**
+         * Get deviceType
+         *
+         * @return \Eccube\Entity\Master\DeviceType
+         */
+        public function getDeviceType()
+        {
+            return $this->DeviceType;
+        }
     }
 }

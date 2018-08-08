@@ -1,24 +1,14 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Repository;
@@ -44,8 +34,6 @@ class ProductRepository extends AbstractRepository
     protected $queries;
 
     /**
-     * @Inject("config")
-     *
      * @var EccubeConfig
      */
     protected $eccubeConfig;
@@ -124,7 +112,7 @@ class ProductRepository extends AbstractRepository
 
         // name
         if (isset($searchData['name']) && StringUtil::isNotBlank($searchData['name'])) {
-            $keywords = preg_split('/[\s　]+/u', $searchData['name'], -1, PREG_SPLIT_NO_EMPTY);
+            $keywords = preg_split('/[\s　]+/u', str_replace(['%', '_'], ['\\%', '\\_'], $searchData['name']), -1, PREG_SPLIT_NO_EMPTY);
 
             foreach ($keywords as $index => $keyword) {
                 $key = sprintf('keyword%s', $index);
@@ -144,6 +132,7 @@ class ProductRepository extends AbstractRepository
             //@see http://doctrine-orm.readthedocs.org/en/latest/reference/dql-doctrine-query-language.html
             $qb->addSelect('MIN(pc.price02) as HIDDEN price02_min');
             $qb->innerJoin('p.ProductClasses', 'pc');
+            $qb->andWhere('pc.visible = true');
             $qb->groupBy('p.id');
             $qb->orderBy('price02_min', 'ASC');
             $qb->addOrderBy('p.id', 'DESC');
@@ -151,6 +140,7 @@ class ProductRepository extends AbstractRepository
         } elseif (!empty($searchData['orderby']) && $searchData['orderby']->getId() == $config['eccube_product_order_price_higher']) {
             $qb->addSelect('MAX(pc.price02) as HIDDEN price02_max');
             $qb->innerJoin('p.ProductClasses', 'pc');
+            $qb->andWhere('pc.visible = true');
             $qb->groupBy('p.id');
             $qb->orderBy('price02_max', 'DESC');
             $qb->addOrderBy('p.id', 'DESC');
@@ -160,6 +150,7 @@ class ProductRepository extends AbstractRepository
             // @see https://github.com/EC-CUBE/ec-cube/issues/1998
             if ($this->getEntityManager()->getFilters()->isEnabled('option_nostock_hidden') == true) {
                 $qb->innerJoin('p.ProductClasses', 'pc');
+                $qb->andWhere('pc.visible = true');
             }
             $qb->orderBy('p.create_date', 'DESC');
             $qb->addOrderBy('p.id', 'DESC');
@@ -194,7 +185,7 @@ class ProductRepository extends AbstractRepository
             $qb
                 ->andWhere('p.id = :id OR p.name LIKE :likeid OR pc.code LIKE :likeid')
                 ->setParameter('id', $id)
-                ->setParameter('likeid', '%'.$searchData['id'].'%');
+                ->setParameter('likeid', '%'.str_replace(['%', '_'], ['\\%', '\\_'], $searchData['id']).'%');
         }
 
         // code

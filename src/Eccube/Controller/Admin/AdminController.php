@@ -1,53 +1,43 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Controller\Admin;
 
+use Carbon\Carbon;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\ResultSetMapping;
-use Doctrine\ORM\QueryBuilder;
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\ProductStock;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\ChangePasswordType;
 use Eccube\Form\Type\Admin\LoginType;
-use Eccube\Form\Type\Admin\SearchCustomerType;
-use Eccube\Form\Type\Admin\SearchOrderType;
-use Eccube\Form\Type\Admin\SearchProductType;
+use Eccube\Repository\CustomerRepository;
+use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\MemberRepository;
+use Eccube\Repository\OrderRepository;
+use Eccube\Repository\ProductRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-/**
- * @Route(service=AdminController::class)
- */
 class AdminController extends AbstractController
 {
     /**
@@ -71,23 +61,60 @@ class AdminController extends AbstractController
     protected $encoderFactory;
 
     /**
+     * @var OrderRepository
+     */
+    protected $orderRepository;
+
+    /**
+     * @var OrderStatusRepository
+     */
+    protected $orderStatusRepository;
+
+    /**
+     * @var CustomerRepository
+     */
+    protected $customerRepository;
+
+    /**
+     * @var ProductRepository
+     */
+    protected $productRepository;
+
+    /**
+     * @var array 売り上げ状況用受注状況
+     */
+    private $excludes = [OrderStatus::PROCESSING, OrderStatus::CANCEL, OrderStatus::PENDING];
+
+    /**
      * AdminController constructor.
      *
      * @param AuthorizationCheckerInterface $authorizationChecker
      * @param AuthenticationUtils $helper
      * @param MemberRepository $memberRepository
      * @param EncoderFactoryInterface $encoderFactory
+     * @param OrderRepository $orderRepository
+     * @param OrderStatusRepository $orderStatusRepository
+     * @param CustomerRepository $custmerRepository
+     * @param ProductRepository $productRepository
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
         AuthenticationUtils $helper,
         MemberRepository $memberRepository,
-        EncoderFactoryInterface $encoderFactory
+        EncoderFactoryInterface $encoderFactory,
+        OrderRepository $orderRepository,
+        OrderStatusRepository $orderStatusRepository,
+        CustomerRepository $custmerRepository,
+        ProductRepository $productRepository
     ) {
         $this->authorizationChecker = $authorizationChecker;
         $this->helper = $helper;
         $this->memberRepository = $memberRepository;
         $this->encoderFactory = $encoderFactory;
+        $this->orderRepository = $orderRepository;
+        $this->orderStatusRepository = $orderStatusRepository;
+        $this->customerRepository = $custmerRepository;
+        $this->productRepository = $productRepository;
     }
 
     /**
@@ -120,51 +147,20 @@ class AdminController extends AbstractController
     }
 
     /**
+     * 管理画面ホーム
+     *
+     * @param Request $request
+     *
+     * @return array
+     *
+     * @throws NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     *
      * @Route("/%eccube_admin_route%/", name="admin_homepage")
      * @Template("@admin/index.twig")
      */
     public function index(Request $request)
     {
-        // install.phpのチェック.
-        if (isset($this->eccubeConfig['eccube_install']) && $this->eccubeConfig['eccube_install'] == 1) {
-            $file = $this->eccubeConfig['root_dir'].'/html/install.php';
-            if (file_exists($file)) {
-                $message = trans('admin.install.warning', ['installphpPath' => 'html/install.php']);
-                $this->addWarning($message, 'admin');
-            }
-            $fileOnRoot = $this->eccubeConfig['root_dir'].'/install.php';
-            if (file_exists($fileOnRoot)) {
-                $message = trans('admin.install.warning', ['installphpPath' => 'install.php']);
-                $this->addWarning($message, 'admin');
-            }
-        }
-
-        // 受注マスター検索用フォーム
-        $searchOrderBuilder = $this->formFactory->createBuilder(SearchOrderType::class);
-        // 商品マスター検索用フォーム
-        $searchProductBuilder = $this->formFactory->createBuilder(SearchProductType::class);
-        // 会員マスター検索用フォーム
-        $searchCustomerBuilder = $this->formFactory->createBuilder(SearchCustomerType::class);
-
-        $event = new EventArgs(
-            [
-                'searchOrderBuilder' => $searchOrderBuilder,
-                'searchProductBuilder' => $searchProductBuilder,
-                'searchCustomerBuilder' => $searchCustomerBuilder,
-            ],
-            $request
-        );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ADMIM_INDEX_INITIALIZE, $event);
-
-        // 受注マスター検索用フォーム
-        $searchOrderForm = $searchOrderBuilder->getForm();
-
-        // 商品マスター検索用フォーム
-        $searchProductForm = $searchProductBuilder->getForm();
-
-        // 会員マスター検索用フォーム
-        $searchCustomerForm = $searchCustomerBuilder->getForm();
-
         /**
          * 受注状況.
          */
@@ -184,41 +180,45 @@ class AdminController extends AbstractController
         $excludes = $event->getArgument('excludes');
 
         // 受注ステータスごとの受注件数.
-        $Orders = $this->getOrderEachStatus($this->entityManager, $excludes);
+        $Orders = $this->getOrderEachStatus($excludes);
+
         // 受注ステータスの一覧.
-        $OrderStatuses = $this->findOrderStatus($this->entityManager, $excludes);
+        $Criteria = new Criteria();
+        $Criteria
+            ->where($Criteria::expr()->notIn('id', $excludes))
+            ->orderBy(['sort_no' => 'ASC']);
+        $OrderStatuses = $this->orderStatusRepository->matching($Criteria);
 
         /**
          * 売り上げ状況
          */
-        $excludes = [];
-        $excludes[] = OrderStatus::PROCESSING;
-        $excludes[] = OrderStatus::CANCEL;
-        $excludes[] = OrderStatus::PENDING;
-
         $event = new EventArgs(
             [
-                'excludes' => $excludes,
+                'excludes' => $this->excludes,
             ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ADMIM_INDEX_SALES, $event);
-        $excludes = $event->getArgument('excludes');
+        $this->excludes = $event->getArgument('excludes');
 
         // 今日の売上/件数
-        $salesToday = $this->getSalesByDay($this->entityManager, new \DateTime(), $excludes);
+        $salesToday = $this->getSalesByDay(new \DateTime());
         // 昨日の売上/件数
-        $salesYesterday = $this->getSalesByDay($this->entityManager, new \DateTime('-1 day'), $excludes);
+        $salesYesterday = $this->getSalesByDay(new \DateTime('-1 day'));
         // 今月の売上/件数
-        $salesThisMonth = $this->getSalesByMonth($this->entityManager, new \DateTime(), $excludes);
+        $salesThisMonth = $this->getSalesByMonth(new \DateTime());
 
         /**
          * ショップ状況
          */
         // 在庫切れ商品数
-        $countNonStockProducts = $this->countNonStockProducts($this->entityManager);
+        $countNonStockProducts = $this->countNonStockProducts();
+
+        // 取り扱い商品数
+        $countProducts = $this->countProducts();
+
         // 本会員数
-        $countCustomers = $this->countCustomers($this->entityManager);
+        $countCustomers = $this->countCustomers();
 
         $event = new EventArgs(
             [
@@ -228,6 +228,7 @@ class AdminController extends AbstractController
                 'salesToday' => $salesToday,
                 'salesYesterday' => $salesYesterday,
                 'countNonStockProducts' => $countNonStockProducts,
+                'countProducts' => $countProducts,
                 'countCustomers' => $countCustomers,
             ],
             $request
@@ -235,17 +236,48 @@ class AdminController extends AbstractController
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ADMIM_INDEX_COMPLETE, $event);
 
         return [
-            'searchOrderForm' => $searchOrderForm->createView(),
-            'searchProductForm' => $searchProductForm->createView(),
-            'searchCustomerForm' => $searchCustomerForm->createView(),
             'Orders' => $Orders,
             'OrderStatuses' => $OrderStatuses,
             'salesThisMonth' => $salesThisMonth,
             'salesToday' => $salesToday,
             'salesYesterday' => $salesYesterday,
             'countNonStockProducts' => $countNonStockProducts,
+            'countProducts' => $countProducts,
             'countCustomers' => $countCustomers,
         ];
+    }
+
+    /**
+     * 売上状況の取得
+     *
+     * @param Request $request
+     *
+     * @Route("/%eccube_admin_route%/sale_chart", name="admin_homepage_sale")
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function sale(Request $request)
+    {
+        if (!($request->isXmlHttpRequest() && $this->isTokenValid())) {
+            return $this->json(['status' => 'NG'], 400);
+        }
+
+        // 週間の売上金額
+        $toDate = Carbon::now();
+        $fromDate = Carbon::today()->subWeek();
+        $rawWeekly = $this->getData($fromDate, $toDate, 'Y/m/d');
+
+        // 月間の売上金額
+        $fromDate = Carbon::now()->startOfMonth();
+        $rawMonthly = $this->getData($fromDate, $toDate, 'Y/m/d');
+
+        // 年間の売上金額
+        $fromDate = Carbon::now()->subYear()->startOfMonth();
+        $rawYear = $this->getData($fromDate, $toDate, 'Y/m');
+
+        $datas = [$rawWeekly, $rawMonthly, $rawYear];
+
+        return $this->json($datas);
     }
 
     /**
@@ -316,7 +348,7 @@ class AdminController extends AbstractController
     /**
      * 在庫なし商品の検索結果を表示する.
      *
-     * @Route("/%eccube_admin_route%/nonstock", name="admin_homepage_nonstock")
+     * @Route("/%eccube_admin_route%/search_nonstock", name="admin_homepage_nonstock")
      *
      * @param Request $request
      *
@@ -324,55 +356,45 @@ class AdminController extends AbstractController
      */
     public function searchNonStockProducts(Request $request)
     {
-        // 商品マスター検索用フォーム
-        /* @var Form $form */
-        $form = $this->formFactory
-            ->createBuilder(SearchProductType::class)
-            ->getForm();
+        // 在庫なし商品の検索条件をセッションに付与し, 商品マスタへリダイレクトする.
+        $searchData = [];
+        $searchData['stock'] = [ProductStock::OUT_OF_STOCK];
+        $session = $request->getSession();
+        $session->set('eccube.admin.product.search', $searchData);
 
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            // 在庫なし商品の検索条件をセッションに付与し, 商品マスタへリダイレクトする.
-            $searchData = [];
-            $searchData['stock'] = [ProductStock::OUT_OF_STOCK];
-            $session = $request->getSession();
-            $session->set('eccube.admin.product.search', $searchData);
-
-            return $this->redirectToRoute('admin_product_page', [
-                'page_no' => 1,
-                'status' => $this->eccubeConfig['eccube_admin_product_stock_status'], ]);
-        }
-
-        return $this->redirectToRoute('admin_homepage');
+        return $this->redirectToRoute('admin_product_page', [
+            'page_no' => 1,
+            'status' => $this->eccubeConfig['eccube_admin_product_stock_status'], ]);
     }
 
     /**
-     * @param $em
-     * @param array $excludes
+     * 本会員の検索結果を表示する.
      *
-     * @return array
+     * @Route("/%eccube_admin_route%/search_customer", name="admin_homepage_customer")
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    protected function findOrderStatus($em, array $excludes)
+    public function searchCustomer(Request $request)
     {
-        /* @var $qb QueryBuilder */
-        $qb = $em
-            ->getRepository('Eccube\Entity\Master\OrderStatus')
-            ->createQueryBuilder('os');
+        $searchData = [];
+        $searchData['customer_status'] = [CustomerStatus::REGULAR];
+        $session = $request->getSession();
+        $session->set('eccube.admin.customer.search', $searchData);
 
-        return $qb
-            ->where($qb->expr()->notIn('os.id', $excludes))
-            ->orderBy('os.sort_no', 'ASC')
-            ->getQuery()
-            ->getResult();
+        return $this->redirectToRoute('admin_customer_page', [
+            'page_no' => 1,
+        ]);
     }
 
     /**
-     * @param $em
+     * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param array $excludes
      *
-     * @return array
+     * @return null|Request
      */
-    protected function getOrderEachStatus($em, array $excludes)
+    private function getOrderEachStatus(array $excludes)
     {
         $sql = 'SELECT
                     t1.order_status_id as status,
@@ -388,7 +410,7 @@ class AdminController extends AbstractController
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('status', 'status');
         $rsm->addScalarResult('count', 'count');
-        $query = $em->createNativeQuery($sql, $rsm);
+        $query = $this->entityManager->createNativeQuery($sql, $rsm);
         $query->setParameters([':excludes' => $excludes]);
         $result = $query->getResult();
         $orderArray = [];
@@ -400,51 +422,11 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @param $em
      * @param $dateTime
-     * @param array $excludes
-     *
-     * @return array
+     * @return array|mixed
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    protected function getSalesByMonth($em, $dateTime, array $excludes)
-    {
-        // concat... for pgsql
-        // http://stackoverflow.com/questions/1091924/substr-does-not-work-with-datatype-timestamp-in-postgres-8-3
-        $dql = 'SELECT
-                  SUBSTRING(CONCAT(o.order_date, \'\'), 1, 7) AS order_month,
-                  SUM(o.payment_total) AS order_amount,
-                  COUNT(o) AS order_count
-                FROM
-                  Eccube\Entity\Order o
-                WHERE
-                    o.OrderStatus NOT IN (:excludes)
-                    AND SUBSTRING(CONCAT(o.order_date, \'\'), 1, 7) = SUBSTRING(:targetDate, 1, 7)
-                GROUP BY
-                  order_month';
-
-        $q = $em
-            ->createQuery($dql)
-            ->setParameter(':excludes', $excludes)
-            ->setParameter(':targetDate', $dateTime);
-
-        $result = [];
-        try {
-            $result = $q->getSingleResult();
-        } catch (NoResultException $e) {
-            // 結果がない場合は空の配列を返す.
-        }
-
-        return $result;
-    }
-
-    /**
-     * @param $em
-     * @param $dateTime
-     * @param array $excludes
-     *
-     * @return array
-     */
-    protected function getSalesByDay($em, $dateTime, array $excludes)
+    private function getSalesByDay($dateTime)
     {
         // concat... for pgsql
         // http://stackoverflow.com/questions/1091924/substr-does-not-work-with-datatype-timestamp-in-postgres-8-3
@@ -460,9 +442,9 @@ class AdminController extends AbstractController
                 GROUP BY
                   order_day';
 
-        $q = $em
+        $q = $this->entityManager
             ->createQuery($dql)
-            ->setParameter(':excludes', $excludes)
+            ->setParameter(':excludes', $this->excludes)
             ->setParameter(':targetDate', $dateTime);
 
         $result = [];
@@ -476,51 +458,141 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @param $em
+     * @param $dateTime
+     * @return array|mixed
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    private function getSalesByMonth($dateTime)
+    {
+        // concat... for pgsql
+        // http://stackoverflow.com/questions/1091924/substr-does-not-work-with-datatype-timestamp-in-postgres-8-3
+        $dql = 'SELECT
+                  SUBSTRING(CONCAT(o.order_date, \'\'), 1, 7) AS order_month,
+                  SUM(o.payment_total) AS order_amount,
+                  COUNT(o) AS order_count
+                FROM
+                  Eccube\Entity\Order o
+                WHERE
+                    o.OrderStatus NOT IN (:excludes)
+                    AND SUBSTRING(CONCAT(o.order_date, \'\'), 1, 7) = SUBSTRING(:targetDate, 1, 7)
+                GROUP BY
+                  order_month';
+
+        $q = $this->entityManager
+            ->createQuery($dql)
+            ->setParameter(':excludes', $this->excludes)
+            ->setParameter(':targetDate', $dateTime);
+
+        $result = [];
+        try {
+            $result = $q->getSingleResult();
+        } catch (NoResultException $e) {
+            // 結果がない場合は空の配列を返す.
+        }
+
+        return $result;
+    }
+
+    /**
+     * 在庫切れ商品数を取得
      *
      * @return mixed
      *
-     * @throws NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    protected function countNonStockProducts($em)
+    private function countNonStockProducts()
     {
-        /** @var $qb \Doctrine\ORM\QueryBuilder */
-        $qb = $em->getRepository('Eccube\Entity\Product')
-            ->createQueryBuilder('p')
+        $qb = $this->productRepository->createQueryBuilder('p')
             ->select('count(DISTINCT p.id)')
             ->innerJoin('p.ProductClasses', 'pc')
             ->where('pc.stock_unlimited = :StockUnlimited AND pc.stock = 0')
             ->setParameter('StockUnlimited', false);
 
-        return $qb
-            ->getQuery()
-            ->getSingleScalarResult();
+        return $qb->getQuery()->getSingleScalarResult();
     }
 
     /**
-     * @param $em
+     * 商品数を取得
      *
      * @return mixed
      *
-     * @throws NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    protected function countCustomers($em)
+    private function countProducts()
     {
-        $Status = $em
-            ->getRepository('Eccube\Entity\Master\CustomerStatus')
-            ->find(2);
+        $qb = $this->productRepository->createQueryBuilder('p')
+            ->select('count(p.id)')
+            ->where('p.Status in (:Status)')
+            ->setParameter('Status', [ProductStatus::DISPLAY_SHOW, ProductStatus::DISPLAY_HIDE]);
 
-        /** @var $qb \Doctrine\ORM\QueryBuilder */
-        $qb = $em->getRepository('Eccube\Entity\Customer')
-            ->createQueryBuilder('c')
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * 本会員数を取得
+     *
+     * @return mixed
+     *
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    private function countCustomers()
+    {
+        $qb = $this->customerRepository->createQueryBuilder('c')
             ->select('count(c.id)')
             ->where('c.Status = :Status')
-            ->setParameter('Status', $Status);
+            ->setParameter('Status', CustomerStatus::REGULAR);
 
-        return $qb
-            ->getQuery()
-            ->getSingleScalarResult();
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * 期間指定のデータを取得
+     *
+     * @param Carbon $fromDate
+     * @param Carbon $toDate
+     * @param $format
+     *
+     * @return array
+     */
+    private function getData(Carbon $fromDate, Carbon $toDate, $format)
+    {
+        $qb = $this->orderRepository->createQueryBuilder('o')
+            ->andWhere('o.order_date >= :fromDate')
+            ->andWhere('o.order_date <= :toDate')
+            ->andWhere('o.OrderStatus NOT IN (:excludes)')
+            ->setParameter(':excludes', $this->excludes)
+            ->setParameter(':fromDate', $fromDate->copy())
+            ->setParameter(':toDate', $toDate->copy())
+            ->orderBy('o.order_date');
+
+        $result = $qb->getQuery()->getResult();
+
+        return $this->convert($result, $fromDate, $toDate, $format);
+    }
+
+    /**
+     * 期間毎にデータをまとめる
+     *
+     * @param $result
+     * @param Carbon $fromDate
+     * @param Carbon $toDate
+     * @param $format
+     *
+     * @return array
+     */
+    private function convert($result, Carbon $fromDate, Carbon $toDate, $format)
+    {
+        $raw = [];
+        for ($date = $fromDate; $date <= $toDate; $date = $date->addDay()) {
+            $raw[$date->format($format)]['price'] = 0;
+            $raw[$date->format($format)]['count'] = 0;
+        }
+
+        foreach ($result as $Order) {
+            $raw[$Order->getOrderDate()->format($format)]['price'] += $Order->getPaymentTotal();
+            ++$raw[$Order->getOrderDate()->format($format)]['count'];
+        }
+
+        return $raw;
     }
 }

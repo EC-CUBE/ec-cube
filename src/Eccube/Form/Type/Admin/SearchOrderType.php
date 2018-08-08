@@ -1,31 +1,21 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -33,7 +23,6 @@ use Eccube\Common\EccubeConfig;
 use Eccube\Form\Type\PriceType;
 use Eccube\Form\Type\Master\OrderStatusType;
 use Eccube\Form\Type\Master\PaymentType;
-use Eccube\Form\Type\Master\SexType;
 
 class SearchOrderType extends AbstractType
 {
@@ -91,11 +80,11 @@ class SearchOrderType extends AbstractType
                 'label' => 'searchorder.label.email',
                 'required' => false,
             ])
-            ->add('order_id', IntegerType::class, [
-                'label' => 'searchorder.label.order_id',
+            ->add('order_no', TextType::class, [
+                'label' => 'searchorder.label.order_no',
                 'required' => false,
             ])
-            ->add('tel', TextType::class, [
+            ->add('phone_number', TextType::class, [
                 'label' => 'common.label.phone_number',
                 'required' => false,
                 'constraints' => [
@@ -105,11 +94,13 @@ class SearchOrderType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('sex', SexType::class, [
-                'label' => 'searchorder.label.sex',
+            ->add('tracking_number', TextType::class, [
+                'label' => 'searchorder.label.tracking_number',
                 'required' => false,
-                'expanded' => true,
-                'multiple' => true,
+            ])
+            ->add('shipping_mail_send', CheckboxType::class, [
+                'label' => 'searchorder.label.shipping_mail_send',
+                'required' => false,
             ])
             ->add('payment', PaymentType::class, [
                 'label' => 'searchorder.label.payment_method',
@@ -149,22 +140,6 @@ class SearchOrderType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
             ])
-            ->add('shipping_date_start', DateType::class, [
-                'label' => 'searchorder.label.shipping_date_from',
-                'required' => false,
-                'input' => 'datetime',
-                'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
-                'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
-            ])
-            ->add('shipping_date_end', DateType::class, [
-                'label' => 'searchorder.label.shipping_date_to',
-                'required' => false,
-                'input' => 'datetime',
-                'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
-                'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
-            ])
             ->add('update_date_start', DateType::class, [
                 'label' => 'searchorder.label.updated_date_from',
                 'required' => false,
@@ -175,6 +150,22 @@ class SearchOrderType extends AbstractType
             ])
             ->add('update_date_end', DateType::class, [
                 'label' => 'searchorder.label.updated_date_to',
+                'required' => false,
+                'input' => 'datetime',
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd',
+                'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+            ])
+            ->add('shipping_delivery_date_start', DateType::class, [
+                'label' => 'searchorder.label.shipping_delivery_date_start',
+                'required' => false,
+                'input' => 'datetime',
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd',
+                'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+            ])
+            ->add('shipping_delivery_date_end', DateType::class, [
+                'label' => 'searchorder.label.shipping_delivery_date_end',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',

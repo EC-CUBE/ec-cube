@@ -1,24 +1,14 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Controller\Admin\Product;
@@ -27,12 +17,20 @@ use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\ExportCsvRow;
 use Eccube\Entity\Master\CsvType;
+use Eccube\Entity\Master\ProductStatus;
+use Eccube\Entity\Product;
+use Eccube\Entity\ProductCategory;
+use Eccube\Entity\ProductClass;
+use Eccube\Entity\ProductImage;
+use Eccube\Entity\ProductStock;
 use Eccube\Entity\ProductTag;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\ProductType;
 use Eccube\Form\Type\Admin\SearchProductType;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\Master\PageMaxRepository;
 use Eccube\Repository\Master\ProductStatusRepository;
@@ -42,32 +40,21 @@ use Eccube\Repository\ProductRepository;
 use Eccube\Repository\TagRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Service\CsvExportService;
+use Eccube\Util\FormUtil;
 use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Eccube\Util\FormUtil;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
-use Eccube\Entity\Product;
-use Eccube\Entity\ProductClass;
-use Eccube\Entity\Master\ProductStatus;
-use Eccube\Entity\ProductStock;
-use Eccube\Entity\ProductImage;
-use Eccube\Entity\ProductCategory;
-use Eccube\Entity\ExportCsvRow;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
-/**
- * @Route(service=ProductController::class)
- */
 class ProductController extends AbstractController
 {
     /**
@@ -129,7 +116,7 @@ class ProductController extends AbstractController
      * @param TaxRuleRepository $taxRuleRepository
      * @param CategoryRepository $categoryRepository
      * @param ProductRepository $productRepository
-     * @param BaseInfo $BaseInfo
+     * @param BaseInfoRepository $baseInfoRepository
      * @param PageMaxRepository $pageMaxRepository
      * @param ProductStatusRepository $productStatusRepository
      * @param TagRepository $tagRepository
@@ -141,7 +128,7 @@ class ProductController extends AbstractController
         TaxRuleRepository $taxRuleRepository,
         CategoryRepository $categoryRepository,
         ProductRepository $productRepository,
-        BaseInfo $BaseInfo,
+        BaseInfoRepository $baseInfoRepository,
         PageMaxRepository $pageMaxRepository,
         ProductStatusRepository $productStatusRepository,
         TagRepository $tagRepository
@@ -152,7 +139,7 @@ class ProductController extends AbstractController
         $this->taxRuleRepository = $taxRuleRepository;
         $this->categoryRepository = $categoryRepository;
         $this->productRepository = $productRepository;
-        $this->BaseInfo = $BaseInfo;
+        $this->BaseInfo = $baseInfoRepository->get();
         $this->pageMaxRepository = $pageMaxRepository;
         $this->productStatusRepository = $productStatusRepository;
         $this->tagRepository = $tagRepository;
@@ -245,7 +232,9 @@ class ProductController extends AbstractController
                  * 初期表示の場合.
                  */
                 $page_no = 1;
-                $searchData = [];
+                // submit default value
+                $viewData = FormUtil::getViewData($searchForm);
+                $searchData = FormUtil::submitAndGetData($searchForm, $viewData);
 
                 // セッション中の検索条件, ページ番号を初期化.
                 $this->session->set('eccube.admin.product.search', $searchData);
@@ -443,11 +432,7 @@ class ProductController extends AbstractController
         }
         $form['Category']->setData($categories);
 
-        $Tags = [];
-        $ProductTags = $Product->getProductTag();
-        foreach ($ProductTags as $ProductTag) {
-            $Tags[] = $ProductTag->getTag();
-        }
+        $Tags = $Product->getTags();
         $form['Tag']->setData($Tags);
 
         if ('POST' === $request->getMethod()) {
@@ -682,7 +667,7 @@ class ProductController extends AbstractController
                 if ($request->isXmlHttpRequest()) {
                     $message = trans('admin.delete.warning');
 
-                    return new JsonResponse(['success' => $success, 'message' => $message]);
+                    return $this->json(['success' => $success, 'message' => $message]);
                 } else {
                     $this->deleteMessage();
                     $rUrl = $this->generateUrl('admin_product_page', ['page_no' => $page_no]).'?resume='.Constant::ENABLED;
@@ -740,7 +725,7 @@ class ProductController extends AbstractController
         }
 
         if ($request->isXmlHttpRequest()) {
-            return new JsonResponse(['success' => $success, 'message' => $message]);
+            return $this->json(['success' => $success, 'message' => $message]);
         } else {
             if ($success) {
                 $this->addSuccess($message, 'admin');
@@ -876,7 +861,7 @@ class ProductController extends AbstractController
     /**
      * 商品CSVの出力.
      *
-     * @Route("export", name="admin_product_export")
+     * @Route("/%eccube_admin_route%/product/export", name="admin_product_export")
      *
      * @param Request $request
      *
@@ -989,6 +974,7 @@ class ProductController extends AbstractController
      *
      * @param \Eccube\Entity\Product $Product
      * @param \Eccube\Entity\Category $Category
+     * @param integer $count
      *
      * @return \Eccube\Entity\ProductCategory
      */

@@ -1,24 +1,14 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Tests\Web;
@@ -54,7 +44,7 @@ class CartValidationTest extends AbstractWebTestCase
         parent::setUp();
         $this->productStatusRepository = $this->container->get(ProductStatusRepository::class);
         $this->cartService = $this->container->get(CartService::class);
-        $this->BaseInfo = $this->container->get(BaseInfo::class);
+        $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
     }
 
     /**
@@ -94,6 +84,7 @@ class CartValidationTest extends AbstractWebTestCase
         $form = [
             'ProductClass' => $ProductClass->getId(),
             'quantity' => 9999,
+            'product_id' => $Product->getId(),
             '_token' => 'dummy',
         ];
         if ($ProductClass->hasClassCategory1()) {
@@ -134,6 +125,7 @@ class CartValidationTest extends AbstractWebTestCase
         $arrForm = [
             'ProductClass' => $productClassId,
             'quantity' => 1,
+            'product_id' => $Product->getId(),
             '_token' => 'dummy',
         ];
 
@@ -170,6 +162,7 @@ class CartValidationTest extends AbstractWebTestCase
         $arrForm = [
             'ProductClass' => $productClassId,
             'quantity' => 1,
+            'product_id' => $Product->getId(),
             '_token' => 'dummy',
         ];
 
@@ -229,6 +222,7 @@ class CartValidationTest extends AbstractWebTestCase
         $arrForm = [
             'ProductClass' => $productClassId,
             'quantity' => 1,
+            'product_id' => $Product->getId(),
             '_token' => 'dummy',
         ];
 
@@ -279,6 +273,7 @@ class CartValidationTest extends AbstractWebTestCase
         $arrForm = [
             'ProductClass' => $productClassId,
             'quantity' => 1,
+            'product_id' => $Product->getId(),
             '_token' => 'dummy',
         ];
         if ($ProductClass->hasClassCategory1()) {
@@ -328,6 +323,7 @@ class CartValidationTest extends AbstractWebTestCase
         $arrForm = [
             'ProductClass' => $productClassId,
             'quantity' => $stock + 1,
+            'product_id' => $Product->getId(),
             '_token' => 'dummy',
         ];
         if ($ProductClass->hasClassCategory1()) {
@@ -380,6 +376,7 @@ class CartValidationTest extends AbstractWebTestCase
         $arrForm = [
             'ProductClass' => $ProductClass->getId(),
             'quantity' => 9,
+            'product_id' => $Product->getId(),
             '_token' => 'dummy',
         ];
         if ($ProductClass->hasClassCategory1()) {
@@ -412,6 +409,7 @@ class CartValidationTest extends AbstractWebTestCase
         $arrForm = [
             'ProductClass' => $ProductClass->getId(),
             'quantity' => $stock,
+            'product_id' => $Product->getId(),
             '_token' => 'dummy',
         ];
         if ($ProductClass->hasClassCategory1()) {
@@ -444,8 +442,6 @@ class CartValidationTest extends AbstractWebTestCase
     public function testProductInCartSaleType()
     {
         $this->markTestIncomplete('複数配送が実装されるまでスキップ');
-        // disable multi shipping
-        $this->BaseInfo->setOptionMultipleShipping(false);
         $this->entityManager->persist($this->BaseInfo);
         $this->entityManager->flush();
 
@@ -476,6 +472,7 @@ class CartValidationTest extends AbstractWebTestCase
         $arrForm = [
             'ProductClass' => $productClassId,
             'quantity' => 1,
+            'product_id' => $Product->getId(),
             '_token' => 'dummy',
         ];
         if ($ProductClass->hasClassCategory1()) {
@@ -522,8 +519,6 @@ class CartValidationTest extends AbstractWebTestCase
     public function testProductInCartSaleTypeWithMultiShipping()
     {
         $this->markTestIncomplete('複数配送が実装されるまでスキップ');
-        // enable multi shipping
-        $this->BaseInfo->setOptionMultipleShipping(true);
         $this->entityManager->persist($this->BaseInfo);
         $this->entityManager->flush();
 
@@ -632,6 +627,7 @@ class CartValidationTest extends AbstractWebTestCase
         $arrForm = [
             'ProductClass' => $productClassId,
             'quantity' => $limit + 1,
+            'product_id' => $Product->getId(),
             '_token' => 'dummy',
         ];
         if ($ProductClass->hasClassCategory1()) {
@@ -725,6 +721,7 @@ class CartValidationTest extends AbstractWebTestCase
         /** @var Product $Product */
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, 1, 10);
+        /** @var ProductClass $ProductClass */
         $ProductClass = $Product->getProductClasses()->first();
 
         // add to cart
@@ -836,8 +833,6 @@ class CartValidationTest extends AbstractWebTestCase
     {
         $this->markTestIncomplete('複数配送が実装されるまでスキップ');
         // GIVE
-        // disable multi shipping
-        $this->BaseInfo->setOptionMultipleShipping(false);
         $this->entityManager->persist($this->BaseInfo);
         $this->entityManager->flush();
 
@@ -1082,8 +1077,6 @@ class CartValidationTest extends AbstractWebTestCase
     {
         $this->markTestIncomplete('複数配送対応するまでスキップ');
         // GIVE
-        // disable multi shipping
-        $this->BaseInfo->setOptionMultipleShipping(false);
         $this->entityManager->persist($this->BaseInfo);
         $this->entityManager->flush();
 
@@ -1139,9 +1132,7 @@ class CartValidationTest extends AbstractWebTestCase
     {
         $this->markTestIncomplete('複数配送対応するまでスキップ');
         // GIVE
-        // enable multi shipping
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(true);
         $this->entityManager->persist($BaseInfo);
         $this->entityManager->flush();
 
@@ -1379,9 +1370,7 @@ class CartValidationTest extends AbstractWebTestCase
     {
         $this->markTestIncomplete('複数配送対応するまでスキップ');
         // GIVE
-        // disable multi shipping
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(false);
         $this->entityManager->persist($BaseInfo);
         $this->entityManager->flush();
 
@@ -1436,9 +1425,7 @@ class CartValidationTest extends AbstractWebTestCase
     {
         $this->markTestIncomplete('複数配送対応するまでスキップ');
         // GIVE
-        // enable multi shipping
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(true);
         $this->entityManager->persist($BaseInfo);
         $this->entityManager->flush();
 
@@ -2450,9 +2437,7 @@ class CartValidationTest extends AbstractWebTestCase
     {
         $this->markTestIncomplete('マイページ対応するまでスキップ');
         // GIVE
-        // disable multi shipping
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(false);
         $this->entityManager->persist($BaseInfo);
         $this->entityManager->flush();
         $this->logIn();
@@ -2528,8 +2513,6 @@ class CartValidationTest extends AbstractWebTestCase
     {
         $this->markTestIncomplete('マイページ対応するまでスキップ');
         // GIVE
-        // enable multi shipping
-        $this->BaseInfo->setOptionMultipleShipping(true);
         $this->entityManager->persist($this->BaseInfo);
         $this->entityManager->flush();
         $this->logIn();
@@ -2613,6 +2596,7 @@ class CartValidationTest extends AbstractWebTestCase
             [
                 'ProductClass' => $ProductClass->getId(),
                 'quantity' => $num,
+                'product_id' => $ProductClass->getProduct()->getId(),
                 '_token' => 'dummy',
             ]
         );

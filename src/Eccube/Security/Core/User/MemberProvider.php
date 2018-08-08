@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Eccube\Security\Core\User;
 
 use Eccube\Entity\Master\Work;
@@ -36,7 +47,7 @@ class MemberProvider implements UserProviderInterface
      */
     public function loadUserByUsername($username)
     {
-        $Member = $this->memberRepository->findOneBy(['login_id' => $username, 'Work' => Work::WORK_ACTIVE_ID]);
+        $Member = $this->memberRepository->findOneBy(['login_id' => $username, 'Work' => Work::ACTIVE]);
 
         if (!$Member) {
             throw new UsernameNotFoundException(sprintf('Username "%s" does not exist.', $username));

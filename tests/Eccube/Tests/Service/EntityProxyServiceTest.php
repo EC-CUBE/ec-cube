@@ -1,24 +1,14 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2017 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Tests\Service;
@@ -230,6 +220,32 @@ EOT
         $method->invoke($this->entityProxyService, $entityTokens, '\\Eccube\\Tests\\Service\\EntityProxyServiceTest_Trait');
 
         self::assertNull($entityTokens->getNextTokenOfKind(0, [CT::T_USE_TRAIT]), 'Traitのuse句が削除されているはず');
+    }
+
+    public function testRemoveTraitWhenImportedTrait()
+    {
+        $entityTokens = Tokens::fromCode(<<< EOT
+<?php
+
+use Eccube\\Entity\\PointTrait;
+
+class EntityProxyServiceTest_Entity extends \\Eccube\\Entity\\AbstractEntity
+{
+    use PointTrait, \\Eccube\\Tests\\Service\\EntityProxyServiceTest_Trait;
+}
+EOT
+        );
+        $method = new \ReflectionMethod(EntityProxyService::class, 'removeTrait');
+        $method->setAccessible(true);
+        $method->invoke($this->entityProxyService, $entityTokens, '\\Eccube\\Tests\\Service\\EntityProxyServiceTest_Trait');
+
+        $traitTokens = [
+            [CT::T_USE_TRAIT],
+            [T_STRING, 'PointTrait'],
+            ';',
+        ];
+
+        self::assertNotNull($entityTokens->findSequence($traitTokens), 'PointTraitが残るはず');
     }
 }
 

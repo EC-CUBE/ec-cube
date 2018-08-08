@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Eccube\Tests\Service;
 
 use Eccube\Entity\Cart;
@@ -11,14 +22,14 @@ use Eccube\Entity\PaymentOption;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\DeliveryRepository;
-use Eccube\Service\PurchaseFlow\Processor\PaymentProcessor;
+use Eccube\Service\PurchaseFlow\Processor\PaymentValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
 class PaymentProcessorTest extends EccubeTestCase
 {
     /**
-     * @var PaymentProcessor
+     * @var PaymentValidator
      */
     protected $validator;
 
@@ -95,18 +106,18 @@ class PaymentProcessorTest extends EccubeTestCase
         $this->ProductClass3 = $this->Product->getProductClasses()[2];
         $this->ProductClass3->setSaleType($SaleType);
 
-        $this->validator = new PaymentProcessor($this->container->get(DeliveryRepository::class));
+        $this->validator = new PaymentValidator($this->container->get(DeliveryRepository::class));
     }
 
     public function testInstance()
     {
-        self::assertInstanceOf(PaymentProcessor::class, $this->validator);
+        self::assertInstanceOf(PaymentValidator::class, $this->validator);
     }
 
     public function testCartNoItems()
     {
         $cart = new Cart();
-        $result = $this->validator->process($cart, new PurchaseContext());
+        $result = $this->validator->execute($cart, new PurchaseContext());
 
         self::assertFalse($result->isError());
     }
@@ -118,7 +129,7 @@ class PaymentProcessorTest extends EccubeTestCase
         $item->setProductClass($this->ProductClass1);
         $cart->addItem($item);
 
-        $result = $this->validator->process($cart, new PurchaseContext());
+        $result = $this->validator->execute($cart, new PurchaseContext());
 
         self::assertFalse($result->isError());
     }
@@ -134,7 +145,7 @@ class PaymentProcessorTest extends EccubeTestCase
         $item2->setProductClass($this->ProductClass2);
         $cart->addItem($item2);
 
-        $result = $this->validator->process($cart, new PurchaseContext());
+        $result = $this->validator->execute($cart, new PurchaseContext());
 
         self::assertFalse($result->isError());
     }
@@ -154,7 +165,7 @@ class PaymentProcessorTest extends EccubeTestCase
         $item3->setProductClass($this->ProductClass3);
         $cart->addItem($item3);
 
-        $result = $this->validator->process($cart, new PurchaseContext());
+        $result = $this->validator->execute($cart, new PurchaseContext());
 
         self::assertTrue($result->isError());
         self::assertCount(3, $cart->getItems());

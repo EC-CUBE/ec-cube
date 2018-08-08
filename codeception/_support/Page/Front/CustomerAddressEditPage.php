@@ -34,7 +34,7 @@ class CustomerAddressEditPage extends AbstractFrontPage
     public static function at($I)
     {
         $page = new self($I);
-        $page->tester->see('マイページ/お届け先編集', 'div.ec-pageHeader h1');
+        $page->tester->see('マイページ/お届け先一覧', 'div.ec-pageHeader h1');
         return $page;
     }
 
@@ -62,15 +62,10 @@ class CustomerAddressEditPage extends AbstractFrontPage
         return $this;
     }
 
-    public function 入力_郵便番号1($value)
+    public function 入力_郵便番号($value)
     {
-        $this->tester->fillField(['id' => 'customer_address_zip_zip01'], $value);
-        return $this;
-    }
+        $this->tester->fillField(['id' => 'customer_address_postal_code'], $value);
 
-    public function 入力_郵便番号2($value)
-    {
-        $this->tester->fillField(['id' => 'customer_address_zip_zip02'], $value);
         return $this;
     }
 
@@ -92,21 +87,10 @@ class CustomerAddressEditPage extends AbstractFrontPage
         return $this;
     }
 
-    public function 入力_電話番号1($value)
+    public function 入力_電話番号($value)
     {
-        $this->tester->fillField(['id' => 'customer_address_tel_tel01'], $value);
-        return $this;
-    }
+        $this->tester->fillField(['id' => 'customer_address_phone_number'], $value);
 
-    public function 入力_電話番号2($value)
-    {
-        $this->tester->fillField(['id' => 'customer_address_tel_tel02'], $value);
-        return $this;
-    }
-
-    public function 入力_電話番号3($value)
-    {
-        $this->tester->fillField(['id' => 'customer_address_tel_tel03'], $value);
         return $this;
     }
 

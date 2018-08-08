@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Eccube\Tests\Service;
 
 use Eccube\Entity\CartItem;
@@ -57,7 +68,7 @@ class DisplayStatusValidatorTest extends EccubeTestCase
         $ProductStatus = $this->entityManager->find(ProductStatus::class, ProductStatus::DISPLAY_SHOW);
         $this->Product->setStatus($ProductStatus);
 
-        $this->validator->process($this->cartItem, new PurchaseContext());
+        $this->validator->execute($this->cartItem, new PurchaseContext());
 
         self::assertEquals(10, $this->cartItem->getQuantity());
     }
@@ -70,7 +81,7 @@ class DisplayStatusValidatorTest extends EccubeTestCase
         $ProductStatus = $this->entityManager->find(ProductStatus::class, ProductStatus::DISPLAY_HIDE);
         $this->Product->setStatus($ProductStatus);
 
-        $this->validator->process($this->cartItem, new PurchaseContext());
+        $this->validator->execute($this->cartItem, new PurchaseContext());
 
         self::assertEquals(0, $this->cartItem->getQuantity());
     }

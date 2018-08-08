@@ -1,32 +1,24 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Controller;
 
+use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Cart;
 use Eccube\Entity\ProductClass;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\ProductClassRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
@@ -37,9 +29,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @Route(service=CartController::class)
- */
 class CartController extends AbstractController
 {
     /**
@@ -58,20 +47,28 @@ class CartController extends AbstractController
     protected $purchaseFlow;
 
     /**
+     * @var BaseInfo
+     */
+    protected $baseInfo;
+
+    /**
      * CartController constructor.
      *
      * @param ProductClassRepository $productClassRepository
      * @param CartService $cartService
      * @param PurchaseFlow $cartPurchaseFlow
+     * @param BaseInfoRepository $baseInfoRepository
      */
     public function __construct(
         ProductClassRepository $productClassRepository,
         CartService $cartService,
-        PurchaseFlow $cartPurchaseFlow
+        PurchaseFlow $cartPurchaseFlow,
+        BaseInfoRepository $baseInfoRepository
     ) {
         $this->productClassRepository = $productClassRepository;
         $this->cartService = $cartService;
         $this->purchaseFlow = $cartPurchaseFlow;
+        $this->baseInfo = $baseInfoRepository->get();
     }
 
     /**
@@ -80,29 +77,45 @@ class CartController extends AbstractController
      * @Route("/cart", name="cart")
      * @Template("Cart/index.twig")
      */
-    public function index()
+    public function index(Request $request)
     {
         // カートを取得して明細の正規化を実行
         $Carts = $this->cartService->getCarts();
         $this->execPurchaseFlow($Carts);
 
         // TODO itemHolderから取得できるように
-        $least = 0;
-        $quantity = 0;
-        $isDeliveryFree = false;
+        $least = [];
+        $quantity = [];
+        $isDeliveryFree = [];
+        $totalPrice = 0;
+        $totalQuantity = 0;
 
-        $totalQuantity = array_reduce($Carts, function ($total, $Cart) {
-            /* @var Cart $Cart */
-            $total += $Cart->getQuantity();
+        foreach ($Carts as $Cart) {
+            $quantity[$Cart->getCartKey()] = 0;
+            $isDeliveryFree[$Cart->getCartKey()] = false;
 
-            return $total;
-        }, 0);
-        $totalPrice = array_reduce($Carts, function ($total, $Cart) {
-            /* @var Cart $Cart */
-            $total += $Cart->getTotalPrice();
+            if ($this->baseInfo->getDeliveryFreeQuantity()) {
+                if ($this->baseInfo->getDeliveryFreeQuantity() > $Cart->getQuantity()) {
+                    $quantity[$Cart->getCartKey()] = $this->baseInfo->getDeliveryFreeQuantity() - $Cart->getQuantity();
+                } else {
+                    $isDeliveryFree[$Cart->getCartKey()] = true;
+                }
+            }
 
-            return $total;
-        }, 0);
+            if ($this->baseInfo->getDeliveryFreeAmount()) {
+                if (!$isDeliveryFree[$Cart->getCartKey()] && $this->baseInfo->getDeliveryFreeAmount() <= $Cart->getTotalPrice()) {
+                    $isDeliveryFree[$Cart->getCartKey()] = true;
+                } else {
+                    $least[$Cart->getCartKey()] = $this->baseInfo->getDeliveryFreeAmount() - $Cart->getTotalPrice();
+                }
+            }
+
+            $totalPrice += $Cart->getTotalPrice();
+            $totalQuantity += $Cart->getQuantity();
+        }
+
+        // カートが分割された時のセッション情報を削除
+        $request->getSession()->remove('cart.divide');
 
         return [
             'totalPrice' => $totalPrice,
@@ -125,7 +138,7 @@ class CartController extends AbstractController
         $flowResults = array_map(function ($Cart) {
             $purchaseContext = new PurchaseContext($Cart, $this->getUser());
 
-            return $this->purchaseFlow->calculate($Cart, $purchaseContext);
+            return $this->purchaseFlow->validate($Cart, $purchaseContext);
         }, $Carts);
 
         // 復旧不可のエラーが発生した場合はカートをクリアして再描画
@@ -140,7 +153,6 @@ class CartController extends AbstractController
         }
         if ($hasError) {
             $this->cartService->clear();
-            $this->cartService->save();
 
             return $this->redirectToRoute('cart');
         }
@@ -219,6 +231,10 @@ class CartController extends AbstractController
      */
     public function buystep(Request $request, $index)
     {
+        $Carts = $this->cartService->getCart();
+        if (!is_object($Carts)) {
+            return $this->redirectToRoute('cart');
+        }
         // FRONT_CART_BUYSTEP_INITIALIZE
         $event = new EventArgs(
             [],
@@ -227,7 +243,6 @@ class CartController extends AbstractController
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_CART_BUYSTEP_INITIALIZE, $event);
 
         $this->cartService->setPrimary($index);
-        $this->cartService->lock();
         $this->cartService->save();
 
         // FRONT_CART_BUYSTEP_COMPLETE

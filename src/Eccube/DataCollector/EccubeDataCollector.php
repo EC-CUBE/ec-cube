@@ -1,9 +1,20 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Eccube\DataCollector;
 
 use Eccube\Common\Constant;
-use Eccube\Plugin\ConfigManager;
+use Eccube\Entity\Plugin;
 use Eccube\Repository\PluginRepository;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,11 +34,6 @@ class EccubeDataCollector extends DataCollector
     protected $container;
 
     /**
-     * @var ConfigManager
-     */
-    protected $configManager;
-
-    /**
      * @var PluginRepository
      */
     protected $pluginRepository;
@@ -35,7 +41,7 @@ class EccubeDataCollector extends DataCollector
     /**
      * @param ContainerInterface $container
      */
-    public function __construct(ContainerInterface $container, ConfigManager $configManager, PluginRepository $pluginRepository)
+    public function __construct(ContainerInterface $container, PluginRepository $pluginRepository)
     {
         $this->data = [
             'version' => Constant::VERSION,
@@ -46,7 +52,6 @@ class EccubeDataCollector extends DataCollector
             'plugins' => [],
         ];
         $this->container = $container;
-        $this->configManager = $configManager;
         $this->pluginRepository = $pluginRepository;
     }
 
@@ -112,18 +117,18 @@ class EccubeDataCollector extends DataCollector
         }
 
         try {
-            $this->data['plugins'] = $this->configManager->getPluginConfigAll();
-            $Plugins = $this->pluginRepository->findBy([], ['code' => 'ASC']);
+            $enabled = $this->container->getParameter('eccube.plugins.enabled');
+            $disabled = $this->container->getParameter('eccube.plugins.disabled');
 
-            foreach (array_keys($this->data['plugins']) as $pluginCode) {
-                $Plugin = array_filter($Plugins, function ($Plugin) use ($pluginCode) {
-                    return $Plugin->getCode() == $pluginCode;
-                });
-                if (!empty($Plugin) && count($Plugin) > 0) {
-                    $this->data['plugins'][$pluginCode]['enabled'] = current($Plugin)->isEnabled();
-                } else {
-                    $this->data['plugins'][$pluginCode]['enabled'] = false;
+            foreach (array_merge($enabled, $disabled) as $code) {
+                $Plugin = $this->pluginRepository->findOneBy(['code' => $code]);
+                if (!$Plugin) {
+                    $Plugin = new Plugin();
+                    $Plugin->setCode($code);
+                    $Plugin->setName($code);
+                    $Plugin->setEnabled(false);
                 }
+                $this->data['plugins'][$code] = $Plugin;
             }
         } catch (\Exception $exception) {
         }

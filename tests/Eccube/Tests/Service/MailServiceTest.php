@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Eccube\Tests\Service;
 
 use Eccube\Entity\BaseInfo;
@@ -40,7 +51,7 @@ class MailServiceTest extends AbstractServiceTestCase
     {
         parent::setUp();
         $this->Customer = $this->createCustomer();
-        $this->BaseInfo = $this->container->get(BaseInfo::class);
+        $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
         $this->mailService = $this->container->get(MailService::class);
     }
 
@@ -141,30 +152,21 @@ class MailServiceTest extends AbstractServiceTestCase
         $kana01 = $faker->lastName;
         $kana02 = $faker->firstName;
         $email = $faker->email;
-        $zip = $faker->postCode;
-        $zip01 = substr($zip, 0, 3);
-        $zip02 = substr($zip, 3, 7);
+        $postCode = $faker->postCode;
         $Pref = $this->entityManager->find(\Eccube\Entity\Master\Pref::class, 1);
         $addr01 = $faker->city;
         $addr02 = $faker->streetAddress;
-        $tel = explode('-', $faker->phoneNumber);
-        $tel01 = $tel[0];
-        $tel02 = $tel[1];
-        $tel03 = $tel[2];
 
         $formData = [
             'name01' => $name01,
             'name02' => $name02,
             'kana01' => $kana01,
             'kana02' => $kana02,
-            'zip01' => $zip01,
-            'zip02' => $zip02,
+            'postal_code' => $postCode,
             'pref' => $Pref,
             'addr01' => $addr01,
             'addr02' => $addr02,
-            'tel01' => $tel01,
-            'tel02' => $tel02,
-            'tel03' => $tel03,
+            'phone_number' => $faker->phoneNumber,
             'email' => $email,
             'contents' => 'お問い合わせ内容',
         ];

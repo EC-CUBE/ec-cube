@@ -1,23 +1,12 @@
 {#
 This file is part of EC-CUBE
 
-Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
 
 http://www.lockon.co.jp/
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
 #}
 {% extends 'default_frame.twig' %}
 
@@ -47,6 +36,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             {% include 'Mypage/navi.twig' %}
         </div>
 
+        {% set remessage = false %}
+
         <div class="ec-orderRole">
             <div class="ec-orderRole__detail">
                 <div class="ec-orderOrder">
@@ -55,12 +46,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <dd>{{ Order.create_date|date("Y/m/d H:i:s") }}</dd>
                     </div>
                     <div class="ec-definitions">
-                        <dt>{{ 'mypage.history.label.order_id'|trans}}</dt>
-                        <dd>{{ Order.id }}</dd>
-                    </div>
-                    <div class="ec-definitions">
-                        <dt>ご注文コード：</dt>
-                        <dd>{{ Order.code }}</dd>
+                        <dt>{{ 'mypage.history.label.order_no'|trans}}</dt>
+                        <dd>{{ Order.order_no }}</dd>
                     </div>
                     {% if BaseInfo.option_mypage_order_status_display %}
                         <div class="ec-definitions">
@@ -79,53 +66,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </div>
                     {% endif %}
 
-                    <div class="ec-orderOrder__items">
-                        {% set remessage = '' %}
-                        {% for OrderItem in Order.OrderItems %}
-                            <div class="ec-imageGrid">
-                                <div class="ec-imageGrid__img">
-                                    {% if OrderItem.Product is null %}
-                                        <img src="{{ asset(''|no_image_product, 'save_image') }}" />
-                                    {% else %}
-                                        <a href="{{ url('product_detail', { id : OrderItem.Product.id } ) }}">
-                                            <img src="{{ asset(OrderItem.Product.MainListImage|no_image_product, 'save_image') }}" />
-                                        </a>
-                                    {% endif %}
-                                </div>
-                                <div class="ec-imageGrid__content">
-                                    <p>
-                                        {% if OrderItem.Product is null %}
-                                            {{ OrderItem.product_name }}
-                                        {% else %}
-                                            <a href="{{ url('product_detail', {'id': OrderItem.Product.id}) }}">
-                                                {{ OrderItem.product_name }}
-                                            </a>
-                                        {% endif %}
-                                    </p>
-                                    {% if OrderItem.classcategory_name1 is not empty %}
-                                        {{ OrderItem.classcategory_name1 }}
-                                    {% endif %}
-                                    {% if OrderItem.classcategory_name2 is not empty %}
-                                        / {{ OrderItem.classcategory_name2 }}
-                                    {% endif %}
-                                    <p>{{ OrderItem.price_inc_tax|price }} × {{ OrderItem.quantity|number_format }}</p>
-                                    {% if OrderItem.product and OrderItem.price_inc_tax != OrderItem.productClass.price02IncTax %}
-                                        <p class="ec-color-accent">【現在価格】{{ OrderItem.productClass.price02IncTax|price }}</p>
-                                        {% set remessage = true %}
-                                    {% endif %}
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
                 </div>
                 <div class="ec-orderDelivery">
                     <div class="ec-rectHeading">
                         <h2>{{'mypage.history.detail.title.delivery'|trans}}</h2>
                     </div>
-                    {% set OrderItem = Order.OrderItems.0 %}
                     {% for Shipping in Order.Shippings %}
                         <div class="ec-orderDelivery__title">{{'mypage.history.detail.label.shipping'|trans}}{% if Order.multiple %}({{ loop.index }}){% endif %}</div>
-                        {% for orderItem in Shipping.orderItems %}
+                        {% for orderItem in Shipping.productOrderItems %}
                             <div class="ec-orderDelivery__item">
                                 <div class="ec-imageGrid">
                                     <div class="ec-imageGrid__img">
@@ -136,7 +84,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         {% endif %}
                                     </div>
                                     <div class="ec-imageGrid__content">
-                                        <p>{{ orderItem.productName }} ×{{ orderItem.quantity }}</p>
+                                        <p>
+                                            {% if orderItem.Product is not null and orderItem.Product.enable %}
+                                                <a href="{{ url('product_detail', {'id': orderItem.Product.id}) }}">{{ orderItem.productName }}</a>
+                                            {% else %}
+                                                {{ orderItem.productName }}
+                                            {% endif %} ×{{ orderItem.quantity }}
+                                        </p>
                                         {% if orderItem.ProductClass is not null %}
                                             {% if orderItem.ProductClass.ClassCategory1 is not null %}
                                                 {{ orderItem.productClass.classCategory1.className.name }}：{{ orderItem.productClass.classCategory1 }}
@@ -145,6 +99,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 <br>{{ orderItem.productClass.classCategory2.className.name }}：{{ orderItem.productClass.classCategory2 }}
                                             {% endif %}
                                         {% endif %}
+                                        <p>{{ orderItem.price_inc_tax|price }} × {{ orderItem.quantity|number_format }}</p>
+                                        {% if orderItem.product and orderItem.price_inc_tax != orderItem.productClass.price02IncTax %}
+                                            <p class="ec-color-accent">【現在価格】{{ orderItem.productClass.price02IncTax|price }}</p>
+                                            {% set remessage = true %}
+                                        {% endif %}
+
                                     </div>
                                 </div>
                             </div>
@@ -152,8 +112,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="ec-orderDelivery__address">
                             <p>{{ Shipping.name01 }}&nbsp;{{ Shipping.name02 }}&nbsp;
                                 ({{ Shipping.kana01 }}&nbsp;{{ Shipping.kana02 }})</p>
-                            <p>〒{{ Shipping.zip01 }}-{{ Shipping.zip02 }}　{{ Shipping.Pref }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}</p>
-                            <p>{{ Shipping.tel01 }}-{{ Shipping.tel02 }}-{{ Shipping.tel03 }}</p>
+                            <p>〒{{ Shipping.postal_code }}　{{ Shipping.Pref }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}</p>
+                            <p>{{ Shipping.phone_number }}</p>
                         </div>
                         <div class="ec-definitions--soft">
                             <dt>{{'mypage.history.detail.label.shipping_method'|trans}}</dt>
@@ -161,15 +121,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </div>
                         <div class="ec-definitions--soft">
                             <dt>{{'mypage.history.detail.label.shipping_date'|trans}} : </dt>
-                            <dd>{{ Shipping.shipping_delivery_date|date_format|default('admin.shipping.edit.719'|trans) }}</dd>
+                            <dd>{{ Shipping.shipping_delivery_date|date_day_with_weekday|default('admin.shipping.edit.719'|trans) }}</dd>
                         </div>
                         <div class="ec-definitions--soft">
                             <dt>{{'mypage.history.detail.label.shipping_time'|trans}} : </dt>
                             <dd>{{ Shipping.shipping_delivery_time|default('admin.shipping.edit.719'|trans) }}</dd>
                         </div>
-
-                </div>
                     {% endfor %}
+                </div>
                     <div class="ec-orderPayment">
                         <div class="ec-rectHeading">
                             <h2>{{'mypage.history.detail.title.payment'|trans}}</h2>
@@ -214,8 +173,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <dt>{{'shopping.label.shipping_charge'|trans}}</dt>
                         <dd>{{ Order.delivery_fee_total|price }}</dd>
                     </dl>
+                    {% if Order.discount > 0 %}
+                    <dl class="ec-totalBox__spec">
+                        <dt>内値引き</dt>
+                        <dd>{{ (0 - Order.discount)|price }}</dd>
+                    </dl>
+                    {% endif %}
                     <div class="ec-totalBox__total">{{'common.label.cart_total'|trans}}<span class="ec-totalBox__price">{{ Order.payment_total|price }}</span><span class="ec-totalBox__taxLabel">{{'shopping.label.tax_incl'|trans}}</span></div>
-                    <a href="{{ url('mypage_order', {'id': Order.id }) }}" class="ec-blockBtn--action" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">{{'mypage.history.detail.re_order'|trans}}</a>
+                    <a href="{{ url('mypage_order', {'order_no': Order.order_no }) }}" class="ec-blockBtn--action load-overlay" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">{{'mypage.history.detail.re_order'|trans}}</a>
 
                 </div>
                 {% if remessage %}

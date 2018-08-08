@@ -1,24 +1,14 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Form\Type\Admin;
@@ -32,9 +22,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 class CsvImportType extends AbstractType
 {
     /**
-     * @var array
+     * @var int CSVの最大アップロードサイズ
      */
-    protected $eccubeConfig;
+    private $csvMaxSize;
 
     /**
      * CsvImportType constructor.
@@ -43,7 +33,7 @@ class CsvImportType extends AbstractType
      */
     public function __construct(EccubeConfig $eccubeConfig)
     {
-        $this->eccubeConfig = $eccubeConfig;
+        $this->csvMaxSize = $eccubeConfig['eccube_csv_size'];
     }
 
     /**
@@ -59,8 +49,8 @@ class CsvImportType extends AbstractType
                 'constraints' => [
                     new Assert\NotBlank(['message' => 'ファイルを選択してください。']),
                     new Assert\File([
-                        'maxSize' => $this->eccubeConfig['eccube_csv_size'].'M',
-                        'maxSizeMessage' => 'CSVファイルは'.$this->eccubeConfig['eccube_csv_size'].'M以下でアップロードしてください。',
+                        'maxSize' => $this->csvMaxSize.'M',
+                        'maxSizeMessage' => 'CSVファイルは'.$this->csvMaxSize.'M以下でアップロードしてください。',
                     ]),
                 ],
             ]);

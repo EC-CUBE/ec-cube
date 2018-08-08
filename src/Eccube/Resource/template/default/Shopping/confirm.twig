@@ -1,23 +1,12 @@
 {#
 This file is part of EC-CUBE
 
-Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
 
 http://www.lockon.co.jp/
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
 #}
 {% extends 'default_frame.twig' %}
 
@@ -261,8 +250,8 @@ $(function() {
                 </div>
                 <div class="ec-orderAccount__account">
                     <p><span class="customer-edit customer-name01">{{ Order.name01 }}</span> <span class="customer-edit customer-name02">{{ Order.name02 }}</span> 様</p>
-                    <p>〒<span class="customer-edit customer-zip01">{{ Order.zip01 }}</span>-<span class="customer-edit customer-zip02">{{ Order.zip02 }}</span>　<span class="customer-edit customer-pref">{{ Order.pref }}</span><span class="customer-edit customer-addr01">{{ Order.addr01 }}</span><span class="customer-edit customer-addr02">{{ Order.addr02 }}</span></p>
-                    <p><span class="customer-edit customer-tel01">{{ Order.tel01 }}</span>-<span class="customer-edit customer-tel02">{{ Order.tel02 }}</span>-<span class="customer-edit customer-tel03">{{ Order.tel03 }}</span></p>
+                    <p>〒<span class="customer-edit customer-zip">{{ Order.postal_code }}</span><span class="customer-edit customer-pref">{{ Order.pref }}</span><span class="customer-edit customer-addr01">{{ Order.addr01 }}</span><span class="customer-edit customer-addr02">{{ Order.addr02 }}</span></p>
+                    <p><span class="customer-edit customer-phone_number">{{ Order.phone_number }}</span></p>
                 </div>
             </div>
             <div class="ec-orderDelivery">
@@ -294,8 +283,8 @@ $(function() {
                     </div>
                     <div class="ec-orderDelivery__address">
                         <p>{{ shipping.name01 }} {{ shipping.name02 }} ({{ shipping.kana01 }} {{ shipping.kana02 }}) 様</p>
-                        <p>〒{{ shipping.zip01 }}-{{ shipping.zip02 }} {{ shipping.pref }}{{ shipping.addr01 }}{{ shipping.addr02 }}</p>
-                        <p>{{ shipping.tel01 }}-{{ shipping.tel02 }}-{{ shipping.tel03 }}</p>
+                        <p>〒{{ shipping.postal_code }} {{ shipping.pref }}{{ shipping.addr01 }}{{ shipping.addr02 }}</p>
+                        <p>{{ shipping.phone_number }}</p>
                     </div>
                     <div class="ec-orderDelivery__actions">
                         <div class="ec-selects">
@@ -306,7 +295,7 @@ $(function() {
                             </div>
                             <div class="ec-select ec-select__delivery">
                                 <label>お届け日</label>
-                                {{ Order.Shippings[idx].shipping_delivery_date?:"指定なし" }}
+                                {{ Order.Shippings[idx].shipping_delivery_date? Order.Shippings[idx].shipping_delivery_date|date_day_with_weekday :"指定なし" }}
                                 {{ form_widget(form.Shippings[idx].shipping_delivery_date, {'type': 'hidden'}) }}
                             </div>
                             <div class="ec-select ec-select__time">
@@ -317,9 +306,6 @@ $(function() {
                         </div>
                     </div>
                 {% endfor %}
-                {% if BaseInfo.optionMultipleShipping %}
-                <div class="ec-orderDelivery__edit"><a class="ec-inlineBtn" href="{{ url('shopping_shipping_multiple_change') }}">お届け先を追加する</a></div>
-                {% endif %}
             </div>
             <div class="ec-orderPayment">
                 <div class="ec-rectHeading">
@@ -330,21 +316,15 @@ $(function() {
                     {{ form_widget(form.Payment, {'type': 'hidden'}) }}
                 </div>
             </div>
+
             <div class="ec-orderConfirm">
                 <div class="ec-rectHeading">
                     <h2>お問い合わせ</h2>
                 </div>
                 <div class="ec-input">
-                    {{ Order.message }}
+                    {{ Order.message|nl2br }}
                     {{ form_widget(form.message, {'type': 'hidden'}) }}
                 </div>
-                {% for f in form.getIterator %}
-                    <div class="ec-input">
-                    {% if f.vars.name matches '[^plg*]' %}
-                        {{ form_row(f) }}
-                    {% endif %}
-                    </div>
-                {% endfor %}
             </div>
         </div>
         <div class="ec-orderRole__summary">
@@ -368,6 +348,24 @@ $(function() {
                 </dl>
                 {% endif %}
                 <div class="ec-totalBox__total">合計<span class="ec-totalBox__price">{{ Order.total|price }}</span><span class="ec-totalBox__taxLabel">税込</span></div>
+                {% if BaseInfo.isOptionPoint and Order.Customer is not null %}
+                    <dl class="ec-totalBox__spec">
+                        <dt>ご注文前のポイント</dt>
+                        <dd>{{ Order.Customer.Point|number_format }} pt</dd>
+                    </dl>
+                    <dl class="ec-totalBox__spec">
+                        <dt>ご使用ポイント</dt>
+                        <dd>{{ Order.UsePoint|number_format }} pt</dd>
+                    </dl>
+                    <dl class="ec-totalBox__spec">
+                        <dt>加算予定ポイント</dt>
+                        <dd>{{ Order.AddPoint|number_format }} pt</dd>
+                    </dl>
+                    <dl class="ec-totalBox__spec">
+                        <dt>加算後のポイント</dt>
+                        <dd>{{ (Order.Customer.Point - Order.UsePoint + Order.AddPoint)|number_format }} pt</dd>
+                    </dl>
+                {% endif %}
                 <div class="ec-totalBox__btn">
                     <button type="submit" class="ec-blockBtn--action">注文する</button>
                     <a href="{{ url('shopping') }}" class="ec-blockBtn--cancel">ご注文手続きに戻る</a>

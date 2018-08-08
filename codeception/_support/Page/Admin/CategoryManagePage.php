@@ -36,7 +36,7 @@ class CategoryManagePage extends AbstractAdminPageStyleGuide
 
     public function カテゴリ作成()
     {
-        $this->tester->click('#form1 > div:nth-child(3) > button');
+        $this->tester->click('#form1 > div:nth-child(2) > div:nth-child(2) > button');
         return $this;
     }
 
@@ -98,7 +98,7 @@ class CategoryManagePage extends AbstractAdminPageStyleGuide
         return "body > div > div.c-contentsArea > div.c-contentsArea__cols > div.c-contentsArea__primaryCol > div > div > div > div > ul > li:nth-child($rowNum) > div > div.col.d-flex.align-items-center > a";
     }
 
-    public static function XPathでタグを取得する($textEl){
+    public static function XPathでタグを取得する($textEl) {
         return '//*[@id="page_admin_product_category"]/div[1]/div[3]/div[3]/div[1]/div/div/div/div/ul/li/div/div[2]/a[contains(text(), "'.$textEl.'")]';
     }
 }

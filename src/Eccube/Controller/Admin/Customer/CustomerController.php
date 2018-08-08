@@ -1,31 +1,20 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Controller\Admin\Customer;
 
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\ORM\QueryBuilder;
-use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CsvType;
@@ -46,8 +35,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class CustomerController extends AbstractController
 {
@@ -260,7 +249,7 @@ class CustomerController extends AbstractController
         } catch (ForeignKeyConstraintViolationException $e) {
             log_error('会員削除失敗', [$e], 'admin');
 
-            $message = trans('admin.delete.failed.foreign_key', ['%name%' => trans('customer.text.name')]);
+            $message = trans('admin.delete.failed.foreign_key', ['%name%' => $Customer->getName01().' '.$Customer->getName02()]);
             $this->addError($message, 'admin');
         }
 
@@ -283,7 +272,6 @@ class CustomerController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/customer/export", name="admin_customer_export")
      *
-     * @param Application $app
      * @param Request $request
      *
      * @return StreamedResponse

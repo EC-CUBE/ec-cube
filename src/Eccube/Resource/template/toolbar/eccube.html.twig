@@ -1,3 +1,13 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
 {% extends 'WebProfilerBundle:Profiler:layout.html.twig' %}
 
 {% block toolbar %}
@@ -30,8 +40,8 @@
         <div class="sf-toolbar-info-piece sf-toolbar-plugins">
             <b>Plugins</b>
             {% for plugin in collector.plugins %}
-                <div class="sf-toolbar-status sf-toolbar-status-{{ plugin.enabled ? 'green' : 'red' }}" title="{{ plugin.config.name }}">
-                    {{ plugin.config.code }}
+                <div class="sf-toolbar-status sf-toolbar-status-{{ plugin.enabled ? 'green' : 'red' }}" title="{{ plugin.name }}">
+                    {{ plugin.code }}
                 </div>
             {% endfor %}
         </div>

@@ -1,28 +1,15 @@
 {#
-/*
-* This file is part of EC-CUBE
-*
-* Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
-*
-* http://www.lockon.co.jp/
-*
-* This program is free software; you can redistribute it and/or
-* modify it under the terms of the GNU General Public License
-* as published by the Free Software Foundation; either version 2
-* of the License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program; if not, write to the Free Software
-* Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-*/
+This file is part of EC-CUBE
+
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
 #}
 
-{% extends '@admin/styleguide_frame.twig' %}
+{% extends '@admin/default_frame.twig' %}
 
 {% set menus = ['customer', 'customer_edit'] %}
 
@@ -36,9 +23,10 @@
 {% endblock javascript %}
 
 {% block main %}
-    <form name="customer_form" role="form" id="customer_form" method="post"
+    <form name="customer_form" role="form" id="customer_form" method="post" class="h-adr"
           action="{%- if Customer.id %}{{ url('admin_customer_edit', { id : Customer.id }) }}{% else %}{{ url('admin_customer_new') }}{% endif -%}"
           novalidate>
+        <span class="p-country-name" style="display:none;">Japan</span>
         {{ form_widget(form._token) }}
         <div class="c-contentsArea__cols">
             <div class="c-contentsArea__primaryCol">
@@ -121,20 +109,15 @@
                                     <div class="col-3"><span>{{ 'admin.customer.edit.address'|trans }}</span><span
                                                 class="badge badge-primary ml-1">{{ 'admin.customer.edit.required'|trans }}</span>
                                     </div>
-                                    <div class="col mb-3">
+                                    <div class="col">
                                         <div class="mb-3">
                                             <div class="row justify-content-start">
                                                 <div class="col-auto pr-0 align-self-center"><span>{{ 'admin.customer.edit.post'|trans }}</span></div>
                                                 <div class="col-2">
-                                                    {{ form_widget(form.zip.zip01, { attr : { placeholder : 'admin.customer.edit.zip_placeholder1' }}) }}
+                                                    {{ form_widget(form.postal_code) }}
                                                 </div>
-                                                <div class="col-auto p-0 align-self-center"><span>-</span></div>
-                                                <div class="col-2">
-                                                    {{ form_widget(form.zip.zip02, { attr : { placeholder : 'admin.customer.edit.zip_placeholder2' }}) }}
-                                                </div>
-                                                {{ form_errors(form.zip) }}
-                                                {{ form_errors(form.zip.zip01) }}
-                                                {{ form_errors(form.zip.zip02) }}
+
+                                                {{ form_errors(form.postal_code) }}
                                             </div>
                                         </div>
 
@@ -145,9 +128,11 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div>
-                                            {{ form_widget(form.address.addr01, { attr : { placeholder : 'admin.customer.edit.97', 'class': 'mb-3'}} ) }}
+                                        <div class="mb-3">
+                                            {{ form_widget(form.address.addr01, { attr : { placeholder : 'admin.customer.edit.97' }} ) }}
                                             {{ form_errors(form.address.addr01) }}
+                                        </div>
+                                        <div class="mb-3">
                                             {{ form_widget(form.address.addr02, { attr : { placeholder : 'admin.customer.edit.98' }}) }}
                                             {{ form_errors(form.address.addr02) }}
                                         </div>
@@ -169,49 +154,8 @@
                                         <span class="badge badge-primary ml-1">{{ 'admin.customer.edit.required'|trans }}</span>
                                     </div>
                                     <div class="col">
-
-                                        <div class="row justify-content-start">
-                                            <div class="col-2">
-                                                {{ form_widget(form.tel.tel01) }}
-                                            </div>
-                                            <div class="col-auto text-center p-0">
-                                                <span class="align-middle">-</span>
-                                            </div>
-                                            <div class="col-2">
-                                                {{ form_widget(form.tel.tel02) }}
-                                            </div>
-                                            <div class="col-auto text-center p-0">
-                                                <span class="align-middle">-</span>
-                                            </div>
-                                            <div class="col-2">
-                                                {{ form_widget(form.tel.tel03) }}
-                                            </div>
-                                        </div>
-                                        {{ form_errors(form.tel.tel01) }}
-                                        {{ form_errors(form.tel.tel02) }}
-                                        {{ form_errors(form.tel.tel03) }}
-                                    </div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-3"><span>{{ 'admin.customer.edit.fax'|trans }}</span></div>
-                                    <div class="col">
-                                        <div class="row justify-content-start">
-                                            <div class="col-2">
-                                                {{ form_widget(form.fax.fax01) }}
-                                            </div>
-                                            <div class="col-auto text-center p-0">
-                                                <span class="align-middle">-</span>
-                                            </div>
-                                            <div class="col-2">
-                                                {{ form_widget(form.fax.fax02) }}
-                                            </div>
-                                            <div class="col-auto text-center p-0">
-                                                <span class="align-middle">-</span>
-                                            </div>
-                                            <div class="col-2">
-                                                {{ form_widget(form.fax.fax03) }}
-                                            </div>
-                                        </div>
+                                        {{ form_widget(form.phone_number) }}
+                                        {{ form_errors(form.phone_number) }}
                                     </div>
                                 </div>
                                 <div class="row mb-2">
@@ -239,20 +183,8 @@
                                         <span>{{ 'admin.customer.edit.sex'|trans }}</span>
                                     </div>
                                     <div class="col">
-                                        {# TODO: classを整える。ラジオボタンが横に並ぶよう表示する。 #}
-                                        {{ form_widget(form.sex) }}
+                                        {{ form_widget(form.sex,  {'label_attr': {'class': 'radio-inline'}}) }}
                                         {{ form_errors(form.sex) }}
-                                        {#<div class="form-check form-check-inline">#}
-                                            {#<label class="form-check-label" for="male">#}
-                                                {#<input class="form-check-input" id="male" type="radio" name="gender"> 男性#}
-                                            {#</label>#}
-                                        {#</div>#}
-                                        {#<div class="form-check form-check-inline">#}
-                                            {#<label class="form-check-label" for="female">#}
-                                                {#<input class="form-check-input" id="female" type="radio" name="gender">#}
-                                                {#女性#}
-                                            {#</label>#}
-                                        {#</div>#}
                                     </div>
                                 </div>
                                 <div class="row mb-2">
@@ -282,24 +214,25 @@
                                         {{ form_errors(form.point) }}
                                     </div>
                                 </div>
+
                                 {# エンティティ拡張の自動出力 #}
-                                {% for f in form %}
-                                    {# auto_render有効時に出力 #}
-                                    {% if f.vars.eccube_form_options.auto_render %}
-                                        {# form_themeが設定されている場合にthemeを適用 #}
-                                        {% if f.vars.eccube_form_options.form_theme %}
-                                            {% form_theme f f.vars.eccube_form_options.form_theme %}
-                                        {% endif %}
+                                {% for f in form if f.vars.eccube_form_options.auto_render %}
+                                    {% if f.vars.eccube_form_options.form_theme %}
+                                        {% form_theme f f.vars.eccube_form_options.form_theme %}
                                         {{ form_row(f) }}
+                                    {% else %}
+                                        <div class="row mb-2">
+                                            <div class="col-3">
+                                                <span>{{ f.vars.label|trans }}</span>
+                                            </div>
+                                            <div class="col">
+                                                {{ form_widget(f) }}
+                                                {{ form_errors(f) }}
+                                            </div>
+                                        </div>
                                     {% endif %}
                                 {% endfor %}
-                                <div class="extra-form">
-                                    {% for f in form.getIterator %}
-                                        {% if f.vars.name matches '[^plg*]' %}
-                                            {{ form_row(f) }}
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -344,12 +277,11 @@
                                                         {{ CustomerAddress.name01 }}&nbsp;{{ CustomerAddress.name02 }}
                                                     </td>
                                                     <td class="align-middle">
-                                                        〒{{ CustomerAddress.zip01 }}-{{ CustomerAddress.zip02 }}
+                                                        〒{{ CustomerAddress.postal_code }}
                                                         　{{ CustomerAddress.Pref }}{{ CustomerAddress.addr01 }}{{ CustomerAddress.addr02 }}
                                                     </td>
                                                     <td class="align-middle">
-                                                        {{ CustomerAddress.tel01 }}-{{ CustomerAddress.tel02 }}
-                                                        -{{ CustomerAddress.tel03 }}
+                                                        {{ CustomerAddress.phone_number }}
                                                     </td>
                                                     {# TODO: メニューのデザインを整える #}
                                                     <td class="align-middle pr-3">
@@ -375,24 +307,30 @@
                                             {% endfor %}
                                             </tbody>
                                         </table>
-                                    </div>
 
-                                    {# TODO: 新規追加ボタンと文言のデザインを整える #}
-                                    {% if Customer.CustomerAddresses|length < eccube_config.eccube_deliv_addr_max %}
-                                        <a href="{{ url('admin_customer_delivery_new', { id: Customer.id }) }}"
-                                           class="btn btn-default">{{ 'admin.customer.edit.sipping_add'|trans }}</a>
-                                    {% else %}
-                                        <span class="ec-errorMessage">
-                                            {{ 'admin.customer.edit.sipping_text01'|trans({"%eccube_deliv_addr_max%":eccube_config.eccube_deliv_addr_max}) }}
-                                        </span>
-                                    {% endif %}
+                                        {# TODO: 新規追加ボタンと文言のデザインを整える #}
+                                        {% if Customer.CustomerAddresses|length < eccube_config.eccube_deliv_addr_max %}
+                                            <div class="d-block text-center">
+                                                <a href="{{ url('admin_customer_delivery_new', { id: Customer.id }) }}"
+                                                   class="btn btn-ec-regular">{{ 'admin.customer.edit.sipping_add'|trans }}</a>
+                                            </div>
+                                        {% else %}
+                                            <span class="ec-errorMessage">
+                                                {{ 'admin.customer.edit.sipping_text01'|trans({"%eccube_deliv_addr_max%":eccube_config.eccube_deliv_addr_max}) }}
+                                            </span>
+                                        {% endif %}
+                                    </div>
                                 {% else %}
-                                    {# TODO: 受注が１軒もない場合の表示を整える #}
-                                    <div id="history_box__header" class="data-empty">
-                                        <svg class="cb cb-inbox">
-                                            <use xlink:href="#cb-inbox"/>
-                                        </svg>
-                                        <p>{{ 'admin.customer.edit.106'|trans }}</p>
+                                    <div class="card-body">
+                                        <div id="address_box" class="data-empty">
+                                            <span>{{ 'admin.customer.edit.no_customer_address'|trans }}</span>
+                                        </div>
+
+                                        <div class="d-block text-center">
+                                            <a href="{{ url('admin_customer_delivery_new', { id: Customer.id }) }}"
+                                               class="btn btn-ec-regular">{{ 'admin.customer.edit.sipping_add'|trans }}</a>
+                                        </div>
+
                                     </div>
                                 {% endif %}
                             </div>
@@ -422,6 +360,19 @@
                             </div>
                             <div class="collapse show ec-cardCollapse" id="orderHistory">
                                 {% if Customer.Orders|length > 0 %}
+                                    {# TODO IN_PROGRESS と RETURNED の色を決める #}
+                                    {% set cssClassStatus = {
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::NEW')): "badge-ec-blue",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::PAY_WAIT')): "badge-ec-red",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::BACK_ORDER')): "badge-ec-red",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::CANCEL')): "badge-ec-glay",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::DELIVERED')): "badge-ec-glay",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::PAID')): "badge-ec-green",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::PENDING')): "badge-ec-yellow",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::PROCESSING')): "badge-ec-yellow",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::IN_PROGRESS')): "badge-ec-yellow",
+                                        (constant('Eccube\\Entity\\Master\\OrderStatus::RETURNED')): "badge-ec-yellow"
+                                    } %}
                                     <div class="card-body">
                                         <table class="table table-striped table-sm">
                                             <thead class="table-active">
@@ -433,17 +384,17 @@
                                             <tbody>
                                             {% for Order in Customer.Orders %}
                                                 <tr>
-                                                    <td class="align-middle pl-3">{{ Order.order_date|date_format }}</td>
+                                                    <td class="align-middle pl-3">{{ Order.order_date|date_min }}</td>
                                                     <td class="align-middle">
                                                         <a href="{{ url('admin_order_edit', { 'id' : Order.id }) }}">
-                                                            {{ Order.id }}
+                                                            {{ Order.order_no }}
                                                         </a>
                                                     </td>
                                                     <td class="align-middle">
                                                         <span class="h5 font-weight-normal">{{ Order.total|price }}</span>
                                                     </td>
                                                     <td class="align-middle pr-3">
-                                                        <span class="badge badge-ec-glay">{{ Order.OrderStatus }}</span>
+                                                        <span class="badge {{ attribute(cssClassStatus, Order.OrderStatus.id) }}">{{ Order.OrderStatus }}</span>
                                                     </td>
                                                 </tr>
                                             {% endfor %}
@@ -451,12 +402,12 @@
                                         </table>
                                     </div>
                                 {% else %}
-                                    {# TODO: 受注が１軒もない場合の表示を整える #}
-                                    <div id="history_box__header" class="data-empty">
-                                        <svg class="cb cb-inbox">
-                                            <use xlink:href="#cb-inbox"/>
-                                        </svg>
-                                        <p>{{ 'admin.customer.edit.106'|trans }}</p>
+                                    <div class="card-body">
+                                        <div id="history_box" class="data-empty">
+                                        <span>
+                                            {{ 'admin.customer.edit.no_purchase_history'|trans }}
+                                        </span>
+                                        </div>
                                     </div>
                                 {% endif %}
                             </div>
@@ -506,7 +457,7 @@
                         </div>
                     </div>
                     <div class="col-6">
-                        <div class="row align-items-center justify-content-end">
+                        <div id="ex-conversion-action" class="row align-items-center justify-content-end">
                             <div class="col-auto">
                                 {{ form_widget(form.status) }}
                                 {{ form_errors(form.status) }}

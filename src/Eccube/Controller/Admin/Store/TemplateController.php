@@ -1,24 +1,14 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Controller\Admin\Store;
@@ -89,11 +79,10 @@ class TemplateController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            //TODO:FIXME Need unit test this case & implement how to store/get config which updated from application, should not store eccube.constants parameter
             $Template = $this->templateRepository->find($form['selected']->getData());
 
             $envFile = $this->getParameter('kernel.project_dir').'/.env';
-            $env = file_get_contents($envFile);
+            $env = file_exists($envFile) ? file_get_contents($envFile) : '';
 
             $env = StringUtil::replaceOrAddEnv($env, [
                 'ECCUBE_TEMPLATE_CODE' => $Template->getCode(),
@@ -122,11 +111,10 @@ class TemplateController extends AbstractController
      * @param Request $request
      * @param \Eccube\Entity\Template $Template
      *
-     * @return mixed
+     * @return BinaryFileResponse
      */
     public function download(Request $request, \Eccube\Entity\Template $Template)
     {
-        //TODO:FIXME Need unit test this case & implement how to store/get config which updated from application, should not store eccube.constants parameter
         // 該当テンプレートのディレクトリ
         $templateCode = $Template->getCode();
         $targetRealDir = $this->getParameter('kernel.project_dir').'/app/template/'.$templateCode;
@@ -187,7 +175,6 @@ class TemplateController extends AbstractController
      */
     public function delete(Request $request, \Eccube\Entity\Template $Template)
     {
-        //TODO: Need unit test this case & implement how to store/get config which updated from application, should not store eccube.constants parameter
         $this->isTokenValid();
 
         // デフォルトテンプレート
@@ -240,7 +227,6 @@ class TemplateController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            //TODO:FIXME Need unit test this case & implement how to store/get config which updated from application, should not store eccube.constants parameter
             /** @var $Template \Eccube\Entity\Template */
             $Template = $form->getData();
 

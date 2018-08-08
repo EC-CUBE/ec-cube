@@ -1,9 +1,11 @@
 <?php
 
 /*
- * This file is part of the Symfony package.
+ * This file is part of EC-CUBE
  *
- * (c) Fabien Potencier <fabien@symfony.com>
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,11 +15,15 @@ namespace Eccube;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Eccube\Common\EccubeNav;
+use Eccube\Common\EccubeTwigBlock;
 use Eccube\DependencyInjection\Compiler\AutoConfigurationTagPass;
 use Eccube\DependencyInjection\Compiler\NavCompilerPass;
+use Eccube\DependencyInjection\Compiler\PaymentMethodPass;
 use Eccube\DependencyInjection\Compiler\PluginPass;
+use Eccube\DependencyInjection\Compiler\PurchaseFlowPass;
 use Eccube\DependencyInjection\Compiler\QueryCustomizerPass;
 use Eccube\DependencyInjection\Compiler\TemplateListenerPass;
+use Eccube\DependencyInjection\Compiler\TwigBlockPass;
 use Eccube\DependencyInjection\Compiler\TwigExtensionPass;
 use Eccube\DependencyInjection\Compiler\WebServerDocumentRootPass;
 use Eccube\DependencyInjection\EccubeExtension;
@@ -25,13 +31,19 @@ use Eccube\Doctrine\DBAL\Types\UTCDateTimeType;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeTzType;
 use Eccube\Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Eccube\Doctrine\Query\QueryCustomizer;
-use Eccube\Plugin\ConfigManager;
+use Eccube\Service\Payment\PaymentMethodInterface;
+use Eccube\Service\PurchaseFlow\ItemHolderPreprocessor;
+use Eccube\Service\PurchaseFlow\ItemHolderValidator;
+use Eccube\Service\PurchaseFlow\ItemPreprocessor;
+use Eccube\Service\PurchaseFlow\ItemValidator;
+use Eccube\Service\PurchaseFlow\PurchaseProcessor;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 
@@ -76,6 +88,7 @@ class Kernel extends BaseKernel
         // DateTime/DateTimeTzのタイムゾーンを設定.
         UTCDateTimeType::setTimeZone($this->container->getParameter('timezone'));
         UTCDateTimeTzType::setTimeZone($this->container->getParameter('timezone'));
+        date_default_timezone_set($this->container->getParameter('timezone'));
 
         // Activate to $app
         $app = Application::getInstance(['debug' => $this->isDebug()]);
@@ -127,7 +140,7 @@ class Kernel extends BaseKernel
         $plugins = $container->getParameter('eccube.plugins.enabled');
         $pluginDir = $this->getProjectDir().'/app/Plugin';
         foreach ($plugins as $plugin) {
-            $dir = $pluginDir.'/'.$plugin['code'].'/Controller';
+            $dir = $pluginDir.'/'.$plugin.'/Controller';
             if (file_exists($dir)) {
                 $builder = $routes->import($dir, '/', 'annotation');
                 $builder->setSchemes($scheme);
@@ -173,6 +186,29 @@ class Kernel extends BaseKernel
         $container->registerForAutoconfiguration(EccubeNav::class)
             ->addTag(NavCompilerPass::NAV_TAG);
         $container->addCompilerPass(new NavCompilerPass());
+
+        // TwigBlockの拡張
+        $container->registerForAutoconfiguration(EccubeTwigBlock::class)
+            ->addTag(TwigBlockPass::TWIG_BLOCK_TAG);
+        $container->addCompilerPass(new TwigBlockPass());
+
+        // PaymentMethod の拡張
+        $container->registerForAutoconfiguration(PaymentMethodInterface::class)
+            ->addTag(PaymentMethodPass::PAYMENT_METHOD_TAG);
+        $container->addCompilerPass(new PaymentMethodPass());
+
+        // PurchaseFlow の拡張
+        $container->registerForAutoconfiguration(ItemPreprocessor::class)
+            ->addTag(PurchaseFlowPass::ITEM_PREPROCESSOR_TAG);
+        $container->registerForAutoconfiguration(ItemValidator::class)
+            ->addTag(PurchaseFlowPass::ITEM_VALIDATOR_TAG);
+        $container->registerForAutoconfiguration(ItemHolderPreprocessor::class)
+            ->addTag(PurchaseFlowPass::ITEM_HOLDER_PREPROCESSOR_TAG);
+        $container->registerForAutoconfiguration(ItemHolderValidator::class)
+            ->addTag(PurchaseFlowPass::ITEM_HOLDER_VALIDATOR_TAG);
+        $container->registerForAutoconfiguration(PurchaseProcessor::class)
+            ->addTag(PurchaseFlowPass::PURCHASE_PROCESSOR_TAG);
+        $container->addCompilerPass(new PurchaseFlowPass());
     }
 
     protected function addEntityExtensionPass(ContainerBuilder $container)
@@ -187,17 +223,25 @@ class Kernel extends BaseKernel
         $driver->addMethodCall('setTraitProxiesDirectory', [$projectDir.'/app/proxy/entity']);
         $container->addCompilerPass(new DoctrineOrmMappingsPass($driver, $namespaces, []));
 
-        // Acme
+        // Customize
         $container->addCompilerPass(DoctrineOrmMappingsPass::createAnnotationMappingDriver(
-            ['Acme\\Entity'],
-            ['%kernel.project_dir%/app/Acme/Entity']
+            ['Customize\\Entity'],
+            ['%kernel.project_dir%/app/Customize/Entity']
         ));
 
         // Plugin
-        $pluginConfigs = ConfigManager::getPluginConfigAll($this->isDebug());
-        foreach ($pluginConfigs as $config) {
-            $code = $config['config']['code'];
-            if (file_exists($projectDir.'/app/Plugin/'.$code.'/Entity')) {
+        $pluginDir = $projectDir.'/app/Plugin';
+        $finder = (new Finder())
+            ->in($pluginDir)
+            ->sortByName()
+            ->depth(0)
+            ->directories();
+        $plugins = array_map(function ($dir) {
+            return $dir->getBaseName();
+        }, iterator_to_array($finder));
+
+        foreach ($plugins as $code) {
+            if (file_exists($pluginDir.'/'.$code.'/Entity')) {
                 $container->addCompilerPass(DoctrineOrmMappingsPass::createAnnotationMappingDriver(
                     ['Plugin\\'.$code.'\\Entity'],
                     ['%kernel.project_dir%/app/Plugin/'.$code.'/Entity']

@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Eccube\Tests\Web\Admin\Order;
 
 use Eccube\Entity\BaseInfo;
@@ -97,7 +108,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
         /** @var \Swift_Message $Message */
         $Message = $collectedMessages[0];
 
-        $BaseInfo = $this->container->get(BaseInfo::class);
+        $BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
         $this->expected = '['.$BaseInfo->getShopName().'] '.$form['mail_subject'];
         $this->actual = $Message->getSubject();
         $this->verify();
@@ -158,7 +169,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $Messages = $mailCollector->getMessages();
         $Message = $Messages[0];
 
-        $BaseInfo = $this->container->get(BaseInfo::class);
+        $BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
         $this->expected = '['.$BaseInfo->getShopName().'] '.$form['mail_subject'];
         $this->actual = $Message->getSubject();
         $this->verify();

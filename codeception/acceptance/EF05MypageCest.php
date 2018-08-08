@@ -39,7 +39,7 @@ class EF05MypageCest
         $createCustomer = Fixtures::get('createCustomer');
         $customer = $createCustomer();
         $createOrders = Fixtures::get('createOrders');
-        $Orders = $createOrders($customer);
+        $Orders = $createOrders($customer, 5, [], \Eccube\Entity\Master\OrderStatus::NEW);
 
         $I->loginAsMember($customer->getEmail(), 'password');
 
@@ -58,7 +58,7 @@ class EF05MypageCest
         $createCustomer = Fixtures::get('createCustomer');
         $customer = $createCustomer();
         $createOrders = Fixtures::get('createOrders');
-        $createOrders($customer);
+        $createOrders($customer, 5, [], \Eccube\Entity\Master\OrderStatus::NEW);
 
         $I->loginAsMember($customer->getEmail(), 'password');
 
@@ -66,7 +66,7 @@ class EF05MypageCest
 
         HistoryPage::at($I);
 
-        $I->see('ご注文状況', 'div.ec-orderOrder div.ec-definitions:nth-child(4) dt');
+        $I->see('ご注文状況', 'div.ec-orderOrder div.ec-definitions:nth-child(3) dt');
         // $I->see('注文受付', '#main_middle .order_detail'); TODO 受注ステータスが可変するためテストが通らない場合がある
         $I->see('配送情報', 'div.ec-orderRole div.ec-orderDelivery div.ec-rectHeading h2');
         $I->see('お届け先', 'div.ec-orderRole div.ec-orderDelivery div.ec-orderDelivery__title');
@@ -124,14 +124,11 @@ class EF05MypageCest
             'entry[name][name02]' => '名05',
             'entry[kana][kana01]' => 'セイ',
             'entry[kana][kana02]' => 'メイ',
-            'entry[zip][zip01]' => '530',
-            'entry[zip][zip02]' => '0001',
+            'entry[postal_code]' => '530-0001',
             'entry[address][pref]' => ['value' => '27'],
             'entry[address][addr01]' => '大阪市北区',
             'entry[address][addr02]' => '梅田2-4-9 ブリーゼタワー13F',
-            'entry[tel][tel01]' => '111',
-            'entry[tel][tel02]' => '111',
-            'entry[tel][tel03]' => '111',
+            'entry[phone_number]' => '111-111-111',
             'entry[email][first]' => $new_email,
             'entry[email][second]' => $new_email,
             'entry[password][first]' => 'password',
@@ -165,19 +162,20 @@ class EF05MypageCest
         $customer = $createCustomer();
         $I->loginAsMember($customer->getEmail(), 'password');
 
-        // TOPページ>マイページ>お届け先編集
+        // TOPページ>マイページ>お届け先一覧
         MyPage::go($I)->お届け先編集();
 
-        $I->see('お届け先編集', 'div.ec-pageHeader h1');
+        $I->see('お届け先一覧', 'div.ec-pageHeader h1');
     }
 
-    public function mypage_お届け先編集作成(\AcceptanceTester $I)
+    public function mypage_お届け先編集作成変更(\AcceptanceTester $I)
     {
-        $I->wantTo('EF0506-UC01-T02 Mypage お届け先編集作成');
+        $I->wantTo('EF0506-UC01-T02 Mypage お届け先編集作成変更');
         $createCustomer = Fixtures::get('createCustomer');
         $customer = $createCustomer();
         $I->loginAsMember($customer->getEmail(), 'password');
 
+        // お届先作成
         // TOPページ>マイページ>お届け先編集
         MyPage::go($I)
             ->お届け先編集()
@@ -189,30 +187,20 @@ class EF05MypageCest
             ->入力_名('名05')
             ->入力_セイ('セイ')
             ->入力_メイ('メイ')
-            ->入力_郵便番号1('530')
-            ->入力_郵便番号2('0001')
+            ->入力_郵便番号('530-0001')
             ->入力_都道府県(['value' => '27'])
             ->入力_市区町村名('大阪市北区')
             ->入力_番地_ビル名('梅田2-4-9 ブリーゼタワー13F')
-            ->入力_電話番号1('111')
-            ->入力_電話番号2('111')
-            ->入力_電話番号3('111')
+            ->入力_電話番号('111-111-111')
             ->登録する();
 
         // お届け先編集ページ
         CustomerAddressListPage::at($I);
 
         // 一覧に追加されている
-        $I->see('大阪市北区', 'div.ec-addressList div:nth-child(2) div.ec-addressList__address');
-    }
+        $I->see('大阪市北区', 'div.ec-addressList div:nth-child(1) div.ec-addressList__address');
 
-    public function mypage_お届け先編集変更(\AcceptanceTester $I)
-    {
-        $I->wantTo('EF0506-UC02-T01 Mypage お届け先編集変更');
-        $createCustomer = Fixtures::get('createCustomer');
-        $customer = $createCustomer();
-        $I->loginAsMember($customer->getEmail(), 'password');
-
+        // お届先編集
         // TOPページ>マイページ>お届け先編集
         MyPage::go($I)
             ->お届け先編集()
@@ -223,14 +211,11 @@ class EF05MypageCest
             ->入力_名('名05')
             ->入力_セイ('セイ')
             ->入力_メイ('メイ')
-            ->入力_郵便番号1('530')
-            ->入力_郵便番号2('0001')
+            ->入力_郵便番号('530-0001')
             ->入力_都道府県(['value' => '27'])
             ->入力_市区町村名('大阪市南区')
             ->入力_番地_ビル名('梅田2-4-9 ブリーゼタワー13F')
-            ->入力_電話番号1('111')
-            ->入力_電話番号2('111')
-            ->入力_電話番号3('111')
+            ->入力_電話番号('111-111-111')
             ->登録する();
 
         // お届け先編集ページ
@@ -255,24 +240,20 @@ class EF05MypageCest
             ->入力_名('名0501')
             ->入力_セイ('セイ')
             ->入力_メイ('メイ')
-            ->入力_郵便番号1('530')
-            ->入力_郵便番号2('0001')
+            ->入力_郵便番号('530-0001')
             ->入力_都道府県(['value' => '27'])
             ->入力_市区町村名('大阪市西区')
             ->入力_番地_ビル名('梅田2-4-9 ブリーゼタワー13F')
-            ->入力_電話番号1('111')
-            ->入力_電話番号2('111')
-            ->入力_電話番号3('111')
+            ->入力_電話番号('111-111-111')
             ->登録する();
 
-        $I->see('大阪市西区', 'div.ec-addressList div:nth-child(2) div.ec-addressList__address');
+        $I->see('大阪市西区', 'div.ec-addressList div:nth-child(1) div.ec-addressList__address');
 
         CustomerAddressListPage::at($I)
             ->削除(1);
 
         // 確認
-        $I->see('大阪市西区', 'div.ec-addressList div:nth-child(1) div.ec-addressList__address');
-        $I->dontSee($customer->getAddr01(), 'div.ec-addressList div:nth-child(1) div.ec-addressList__address');
+        $I->see('0 件', 'div.ec-layoutRole div.ec-layoutRole__contents p.ec-para-nomal strong');
     }
 
     public function mypage_退会手続き未実施(\AcceptanceTester $I)

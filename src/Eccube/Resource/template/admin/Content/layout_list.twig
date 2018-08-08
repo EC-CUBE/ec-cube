@@ -1,27 +1,14 @@
 {#
-/*
- * This file is part of EC-CUBE
- *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
- *
- * http://www.lockon.co.jp/
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- */
+This file is part of EC-CUBE
+
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
 #}
-{% extends '@admin/styleguide_frame.twig' %}
+{% extends '@admin/default_frame.twig' %}
 
 {% set menus = ['content', 'layout'] %}
 
@@ -30,8 +17,8 @@
 
 {% block javascript %}
     <script>
-        $(function () {
-            $('#layoutDelete').on('shown.bs.modal', function (event) {
+        $(function() {
+            $('#layoutDelete').on('shown.bs.modal', function(event) {
                 var target = $(event.relatedTarget);
                 $(this).find('[data-method="delete"]').attr('href', target.data('url'));
             });
@@ -44,8 +31,7 @@
         <div class="c-contentsArea__primaryCol">
             <div class="c-primaryCol">
                 <div class="d-block mb-3">
-                    <a class="btn btn-ec-regular"
-                       href="{{ url('admin_content_layout_new') }}">{{ 'admin.content.layout_list.add_layout'|trans }}</a>
+                    <a class="btn btn-ec-regular" href="{{ url('admin_content_layout_new') }}">{{ 'admin.content.layout_list.add_layout'|trans }}</a>
                 </div>
                 {# layouts #}
                 {% for Layout in Layouts %}
@@ -71,11 +57,11 @@
                                         </button>
                                     {% endif %}
                                 </div>
-                                <div class="col-4 text-right"><a href="#layout-{{ Layout.id }}"
-                                                                 data-toggle="collapse"
-                                                                 aria-expanded="false"
-                                                                 aria-controls="layout-{{ Layout.id }}"><i
-                                                class="fa fa-angle-down fa-lg"></i></a></div>
+                                <div class="col-4 text-right">
+                                    <a href="#layout-{{ Layout.id }}" data-toggle="collapse" aria-expanded="false" aria-controls="layout-{{ Layout.id }}">
+                                        <i class="fa fa-angle-down fa-lg"></i>
+                                    </a>
+                                </div>
                             </div>
                         </div>
 
@@ -86,8 +72,7 @@
                                     <div class="card-body p-0">
                                         <div class="row justify-content-between p-3">
                                             <div class="col-auto">
-                                                <i class="fa fa-bars text-ec-gray mr-3"></i><a
-                                                        href="{{ url('admin_content_page_edit', { id: Page.id }) }}">{{ Page.name }}</a>
+                                                <a href="{{ url('admin_content_page_edit', { id: Page.id }) }}">{{ Page.name }}</a>
                                             </div>
                                         </div>
                                     </div>
@@ -111,17 +96,14 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title">{{ 'admin.content.layout_list.delete_layout.title'|trans }}</h5>
-                                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
-                                            aria-hidden="true">×</span></button>
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                             </div>
                             <div class="modal-body">
                                 <p>{{ 'admin.content.layout_list.delete_layout.confirm_message'|trans }}</p>
                             </div>
                             <div class="modal-footer">
-                                <button class="btn btn-ec-sub w-25" type="button"
-                                        data-dismiss="modal">{{ 'admin.content.layout_list.delete_layout.cancel'|trans }}</button>
-                                <a href="#" class="btn btn-ec-delete" {{ csrf_token_for_anchor() }} data-method="delete"
-                                   data-confirm="false">
+                                <button class="btn btn-ec-sub w-25" type="button" data-dismiss="modal">{{ 'admin.content.layout_list.delete_layout.cancel'|trans }}</button>
+                                <a href="#" class="btn btn-ec-delete" {{ csrf_token_for_anchor() }} data-method="delete" data-confirm="false">
                                     {{ 'admin.content.layout_list.delete_layout.delete'|trans }}
                                 </a>
                             </div>

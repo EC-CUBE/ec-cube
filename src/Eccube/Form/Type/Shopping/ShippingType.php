@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Eccube\Form\Type\Shopping;
 
 use Eccube\Common\EccubeConfig;
@@ -153,8 +164,18 @@ class ShippingType extends AbstractType
                         new \DateTime($minDate + $this->eccubeConfig['eccube_deliv_date_end_max'].' day')
                     );
 
+                    // 曜日設定用
+                    $dateFormatter = \IntlDateFormatter::create(
+                        'ja_JP@calendar=japanese',
+                        \IntlDateFormatter::FULL,
+                        \IntlDateFormatter::FULL,
+                        'Asia/Tokyo',
+                        \IntlDateFormatter::TRADITIONAL,
+                        'E'
+                    );
+
                     foreach ($period as $day) {
-                        $deliveryDurations[$day->format('Y/m/d')] = $day->format('Y/m/d');
+                        $deliveryDurations[$day->format('Y/m/d')] = $day->format('Y/m/d').'('.$dateFormatter->format($day).')';
                     }
                 }
 
@@ -168,6 +189,7 @@ class ShippingType extends AbstractType
                             'required' => false,
                             'placeholder' => '指定なし',
                             'mapped' => false,
+                            'data' => $Shipping->getShippingDeliveryDate() ? $Shipping->getShippingDeliveryDate()->format('Y/m/d') : null,
                         ]
                     );
             }
@@ -181,10 +203,17 @@ class ShippingType extends AbstractType
                     return;
                 }
 
+                $ShippingDeliveryTime = null;
                 $DeliveryTimes = [];
                 $Delivery = $Shipping->getDelivery();
                 if ($Delivery) {
                     $DeliveryTimes = $Delivery->getDeliveryTimes();
+                    foreach ($DeliveryTimes as $deliveryTime) {
+                        if ($deliveryTime->getId() == $Shipping->getTimeId()) {
+                            $ShippingDeliveryTime = $deliveryTime;
+                            break;
+                        }
+                    }
                 }
 
                 $form = $event->getForm();
@@ -199,6 +228,7 @@ class ShippingType extends AbstractType
                         'required' => false,
                         'placeholder' => '指定なし',
                         'mapped' => false,
+                        'data' => $ShippingDeliveryTime,
                     ]
                 );
             }
@@ -221,10 +251,20 @@ class ShippingType extends AbstractType
                 $Shipping->setShippingDeliveryName($Delivery->getName());
             }
             $form = $event->getForm();
+            $DeliveryDate = $form['shipping_delivery_date']->getData();
+            if ($DeliveryDate) {
+                $Shipping->setShippingDeliveryDate(new \DateTime($DeliveryDate));
+            } else {
+                $Shipping->setShippingDeliveryDate(null);
+            }
+
             $DeliveryTime = $form['DeliveryTime']->getData();
             if ($DeliveryTime) {
                 $Shipping->setShippingDeliveryTime($DeliveryTime->getDeliveryTime());
                 $Shipping->setTimeId($DeliveryTime->getId());
+            } else {
+                $Shipping->setShippingDeliveryTime(null);
+                $Shipping->setTimeId(null);
             }
         });
     }

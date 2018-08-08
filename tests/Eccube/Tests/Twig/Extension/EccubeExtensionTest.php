@@ -1,9 +1,19 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Eccube\Tests\Twig\Extension;
 
 use Eccube\Common\EccubeConfig;
-use Eccube\Service\TaxRuleService;
 use Eccube\Twig\Extension\EccubeExtension;
 use Eccube\Tests\EccubeTestCase;
 
@@ -18,8 +28,7 @@ class EccubeExtensionTest extends EccubeTestCase
     {
         parent::setUp();
         $EccubeConfig = $this->container->get(EccubeConfig::class);
-        $TaxRuleService = $this->container->get(TaxRuleService::class);
-        $this->Extension = new EccubeExtension($TaxRuleService, $EccubeConfig);
+        $this->Extension = new EccubeExtension($EccubeConfig);
     }
 
     public function testGetClassCategoriesAsJson()

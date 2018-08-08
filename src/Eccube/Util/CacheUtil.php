@@ -1,24 +1,14 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Util;
@@ -27,15 +17,20 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpKernel\Event\PostResponseEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * キャッシュ関連のユーティリティクラス.
  */
-class CacheUtil
+class CacheUtil implements EventSubscriberInterface
 {
+    private $clearCacheAfterResponse = false;
+
     /**
      * @var KernelInterface
      */
@@ -51,8 +46,20 @@ class CacheUtil
         $this->kernel = $kernel;
     }
 
+    /**
+     * @param string $env
+     */
     public function clearCache($env = null)
     {
+        $this->clearCacheAfterResponse = $env;
+    }
+
+    public function forceClearCache(PostResponseEvent $event)
+    {
+        if ($this->clearCacheAfterResponse === false) {
+            return;
+        }
+
         $console = new Application($this->kernel);
         $console->setAutoExit(false);
 
@@ -62,8 +69,8 @@ class CacheUtil
             '--no-ansi' => true,
         ];
 
-        if ($env !== null) {
-            $command['--env'] = $env;
+        if ($this->clearCacheAfterResponse !== null) {
+            $command['--env'] = $this->clearCacheAfterResponse;
         }
 
         $input = new ArrayInput($command);
@@ -139,5 +146,13 @@ class CacheUtil
         }
 
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedEvents()
+    {
+        return [KernelEvents::TERMINATE => 'forceClearCache'];
     }
 }

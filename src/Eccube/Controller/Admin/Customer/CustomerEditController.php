@@ -1,30 +1,19 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Controller\Admin\Customer;
 
 use Eccube\Controller\AbstractController;
-use Eccube\Entity\CustomerAddress;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\CustomerType;
@@ -35,9 +24,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
-/**
- * @Route(service=CustomerEditController::class)
- */
 class CustomerEditController extends AbstractController
 {
     /**
@@ -65,7 +51,7 @@ class CustomerEditController extends AbstractController
      */
     public function index(Request $request, $id = null)
     {
-        //$this->entityManager->getFilters()->enable('incomplete_order_status_hidden');
+        $this->entityManager->getFilters()->enable('incomplete_order_status_hidden');
         // 編集
         if ($id) {
             $Customer = $this->customerRepository
@@ -80,7 +66,6 @@ class CustomerEditController extends AbstractController
         // 新規登録
         } else {
             $Customer = $this->customerRepository->newCustomer();
-            $CustomerAddress = new CustomerAddress();
             $Customer->setBuyTimes(0);
             $Customer->setBuyTotal(0);
         }
@@ -107,32 +92,6 @@ class CustomerEditController extends AbstractController
                 log_info('会員登録開始', [$Customer->getId()]);
 
                 $encoder = $this->encoderFactory->getEncoder($Customer);
-
-                if ($Customer->getId() === null) {
-                    $Customer->setSalt($encoder->createSalt());
-                    $Customer->setSecretKey($this->customerRepository->getUniqueSecretKey());
-
-                    $CustomerAddress->setName01($Customer->getName01())
-                        ->setName02($Customer->getName02())
-                        ->setKana01($Customer->getKana01())
-                        ->setKana02($Customer->getKana02())
-                        ->setCompanyName($Customer->getCompanyName())
-                        ->setZip01($Customer->getZip01())
-                        ->setZip02($Customer->getZip02())
-                        ->setZipcode($Customer->getZip01().$Customer->getZip02())
-                        ->setPref($Customer->getPref())
-                        ->setAddr01($Customer->getAddr01())
-                        ->setAddr02($Customer->getAddr02())
-                        ->setTel01($Customer->getTel01())
-                        ->setTel02($Customer->getTel02())
-                        ->setTel03($Customer->getTel03())
-                        ->setFax01($Customer->getFax01())
-                        ->setFax02($Customer->getFax02())
-                        ->setFax03($Customer->getFax03())
-                        ->setCustomer($Customer);
-
-                    $this->entityManager->persist($CustomerAddress);
-                }
 
                 if ($Customer->getPassword() === $this->eccubeConfig['eccube_default_password']) {
                     $Customer->setPassword($previous_password);

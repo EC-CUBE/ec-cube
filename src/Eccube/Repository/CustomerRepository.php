@@ -1,24 +1,14 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Repository;
@@ -162,11 +152,11 @@ class CustomerRepository extends AbstractRepository
         }
 
         // tel
-        if (isset($searchData['tel']) && StringUtil::isNotBlank($searchData['tel'])) {
-            $tel = preg_replace('/[^0-9]/ ', '', $searchData['tel']);
+        if (isset($searchData['phone_number']) && StringUtil::isNotBlank($searchData['phone_number'])) {
+            $tel = preg_replace('/[^0-9]/ ', '', $searchData['phone_number']);
             $qb
-                ->andWhere('CONCAT(c.tel01, c.tel02, c.tel03) LIKE :tel')
-                ->setParameter('tel', '%'.$tel.'%');
+                ->andWhere('c.phone_number LIKE :phone_number')
+                ->setParameter('phone_number', '%'.$tel.'%');
         }
 
         // buy_total
@@ -349,12 +339,10 @@ class CustomerRepository extends AbstractRepository
     /**
      * 会員の初回購入時間、購入時間、購入回数、購入金額を更新する
      *
-     * @param $app
-     * @param  Customer $Customer
-     * @param  $orderStatusId
-     * @param  $isNewOrder
+     * @param Customer $Customer
+     * @param null $isNewOrder
      */
-    public function updateBuyData(Customer $Customer, $orderStatusId)
+    public function updateBuyData(Customer $Customer, $isNewOrder = null)
     {
         // 会員の場合、初回購入時間・購入時間・購入回数・購入金額を更新
 
@@ -378,13 +366,13 @@ class CustomerRepository extends AbstractRepository
                 $Customer->setFirstBuyDate($now);
             }
 
-            if ($orderStatusId == OrderStatus::CANCEL ||
-                $orderStatusId == OrderStatus::PENDING ||
-                $orderStatusId == OrderStatus::PROCESSING
-            ) {
-                // キャンセル、決済処理中、購入処理中は購入時間は更新しない
-            } else {
+            if ($isNewOrder) {
                 $Customer->setLastBuyDate($now);
+            } else {
+                $Order = $this->orderRepository->find($data['order_id']);
+                if ($Order) {
+                    $Customer->setLastBuyDate($Order->getOrderDate());
+                }
             }
 
             $Customer->setBuyTimes($data['buy_times']);

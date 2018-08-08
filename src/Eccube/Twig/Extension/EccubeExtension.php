@@ -1,31 +1,20 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Twig\Extension;
 
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Product;
-use Eccube\Service\TaxRuleService;
 use Eccube\Util\StringUtil;
 use Symfony\Component\Form\FormView;
 use Twig\Extension\AbstractExtension;
@@ -39,28 +28,20 @@ class EccubeExtension extends AbstractExtension
      */
     protected $eccubeConfig;
 
-    /**
-     * @var TaxRuleService
-     */
-    protected $TaxRuleService;
-
-    public function __construct(TaxRuleService $TaxRuleService, EccubeConfig $eccubeConfig)
+    public function __construct(EccubeConfig $eccubeConfig)
     {
-        $this->TaxRuleService = $TaxRuleService;
         $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
      * Returns a list of functions to add to the existing list.
      *
-     * @return array An array of functions
+     * @return TwigFunction[] An array of functions
      */
     public function getFunctions()
     {
         return [
             new TwigFunction('has_errors', [$this, 'hasErrors']),
-            new TwigFunction('is_object', [$this, 'isObject']),
-            new TwigFunction('calc_inc_tax', [$this, 'getCalcIncTax']),
             new TwigFunction('active_menus', [$this, 'getActiveMenus']),
             new TwigFunction('class_categories_as_json', [$this, 'getClassCategoriesAsJson']),
             new TwigFunction('php_*', function () {
@@ -77,7 +58,7 @@ class EccubeExtension extends AbstractExtension
     /**
      * Returns a list of filters.
      *
-     * @return array
+     * @return TwigFilter[]
      */
     public function getFilters()
     {
@@ -87,6 +68,7 @@ class EccubeExtension extends AbstractExtension
             new TwigFilter('price', [$this, 'getPriceFilter']),
             new TwigFilter('ellipsis', [$this, 'getEllipsis']),
             new TwigFilter('time_ago', [$this, 'getTimeAgo']),
+            new TwigFilter('file_ext_icon', [$this, 'getExtensionIcon'], ['is_safe' => ['html']]),
         ];
     }
 
@@ -98,16 +80,6 @@ class EccubeExtension extends AbstractExtension
     public function getName()
     {
         return 'eccube';
-    }
-
-    /**
-     * Name of this extension
-     *
-     * @return string
-     */
-    public function getCalcIncTax($price, $tax_rate, $tax_rule)
-    {
-        return $price + $this->TaxRuleService->calcTax($price, $tax_rate, $tax_rule);
     }
 
     /**
@@ -183,18 +155,6 @@ class EccubeExtension extends AbstractExtension
     public function getTimeAgo($date)
     {
         return StringUtil::timeAgo($date);
-    }
-
-    /**
-     * Check if the value is object
-     *
-     * @param object $value
-     *
-     * @return bool
-     */
-    public function isObject($value)
-    {
-        return is_object($value);
     }
 
     /**
@@ -312,5 +272,78 @@ class EccubeExtension extends AbstractExtension
         }
 
         return json_encode($class_categories);
+    }
+
+    /**
+     * Display file extension icon
+     *
+     * @param $ext
+     * @param $attr
+     *
+     * @return string
+     */
+    public function getExtensionIcon($ext, $attr = [])
+    {
+        $classes = [
+            'txt' => 'fa-file-text-o',
+            'rtf' => 'fa-file-text-o',
+            'pdf' => 'fa-file-pdf-o',
+            'doc' => 'fa-file-word-o',
+            'docx' => 'fa-file-word-o',
+            'csv' => 'fa-file-excel-o',
+            'xls' => 'fa-file-excel-o',
+            'xlsx' => 'fa-file-excel-o',
+            'ppt' => 'fa-file-powerpoint-o',
+            'pptx' => 'fa-file-powerpoint-o',
+            'png' => 'fa-file-image-o',
+            'jpg' => 'fa-file-image-o',
+            'jpeg' => 'fa-file-image-o',
+            'bmp' => 'fa-file-image-o',
+            'gif' => 'fa-file-image-o',
+            'zip' => 'fa-file-archive-o',
+            'tar' => 'fa-file-archive-o',
+            'gz' => 'fa-file-archive-o',
+            'rar' => 'fa-file-archive-o',
+            '7zip' => 'fa-file-archive-o',
+            'mp3' => 'fa-file-audio-o',
+            'm4a' => 'fa-file-audio-o',
+            'wav' => 'fa-file-audio-o',
+            'mp4' => 'fa-file-video-o',
+            'wmv' => 'fa-file-video-o',
+            'mov' => 'fa-file-video-o',
+            'mkv' => 'fa-file-video-o',
+        ];
+        $class = isset($classes[$ext]) ? $classes[$ext] : 'fa-file-o';
+        $attr['class'] = isset($attr['class'])
+            ? $attr['class']." fa {$class}"
+            : "fa {$class}";
+
+        $html = '<i ';
+        foreach ($attr as $name => $value) {
+            $html .= "{$name}=\"$value\" ";
+        }
+        $html .= '></i>';
+
+        return $html;
+    }
+
+    /**
+     * URLに対する権限有無チェック
+     *
+     * @param $target
+     * @param $AuthorityRoles
+     *
+     * @return boolean
+     */
+    public function isAuthorizedUrl($target, $AuthorityRoles)
+    {
+        foreach ($AuthorityRoles as $authorityRole) {
+            $denyUrl = str_replace('/', '\/', $authorityRole);
+            if (preg_match("/^({$denyUrl})/i", $target)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

@@ -1,23 +1,12 @@
 {#
 This file is part of EC-CUBE
 
-Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
 
 http://www.lockon.co.jp/
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
 #}
 {% extends 'default_frame.twig' %}
 
@@ -42,7 +31,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             </div>
                         </div>
                     {% endif %}
-                    {% if error %}
+                    {% if has_errors(form.addresses) %}
                         <div class="ec-alert-warning">
                             <div class="ec-alert-warning__text">
                                 <div class="ec-alert-warning__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"/></div>
@@ -52,19 +41,20 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     {% endif %}
                 </div>
 
-                {% if Customer.CustomerAddresses|length > 0 %}
                 <form method="post" action="{{ url('shopping_shipping', {'id': shippingId}) }}">
-
+                    {{ form_widget(form._token) }}
                     <div class="ec-addressList">
-                        {% for CustomerAddress in Customer.CustomerAddresses %}
+                        {% for choice in form.addresses.vars.choices %}
+                            {% set Address = choice.data %}
                         <div class="ec-addressList__item">
                             <div class="ec-addressList__remove">
-                                <input type="radio" id="address{{ CustomerAddress.id }}" class="no-style" name="address" value="{{ CustomerAddress.id }}" />
+                                {% set checked = choice is selectedchoice(form.addresses.vars.value) ? 'checked="checked"' : '' %}
+                                <input type="radio" id="address{{ choice.value }}" name="{{ form.addresses.vars.full_name }}" value="{{ choice.value }}" {{ checked }} />
                             </div>
                             <div class="ec-addressList__address">
-                                <div>{{ CustomerAddress.name01 }}&nbsp;{{ CustomerAddress.name02 }}</div>
-                                <div>〒{{ CustomerAddress.zip01 }}-{{ CustomerAddress.zip02 }} {{ CustomerAddress.Pref }}{{ CustomerAddress.addr01 }}{{ CustomerAddress.addr02 }}</div>
-                                <div>{{ CustomerAddress.tel01 }}-{{ CustomerAddress.tel02 }}-{{ CustomerAddress.tel03 }}</div>
+                                <div>{{ Address.name01 }}&nbsp;{{ Address.name02 }}</div>
+                                <div>〒{{ Address.postal_code }} {{ Address.Pref }}{{ Address.addr01 }}{{ Address.addr02 }}</div>
+                                <div>{{ Address.phone_number }}</div>
                             </div>
                         </div>
                         {% endfor %}
@@ -80,7 +70,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     </div>
 
                 </form>
-                {% endif %}
             </div>
         </div>
 

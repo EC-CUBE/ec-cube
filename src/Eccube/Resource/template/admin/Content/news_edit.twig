@@ -1,23 +1,12 @@
 {#
 This file is part of EC-CUBE
 
-Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
 
 http://www.lockon.co.jp/
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
 #}
 {% extends '@admin/default_frame.twig' %}
 
@@ -26,7 +15,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block title %}{{'admin.content.news_edit.64'|trans}}{% endblock %}
 {% block sub_title %}{{'admin.content.news_edit.65'|trans}}{% endblock %}
 
-{% form_theme form '@admin/Form/bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block stylesheet %}
 <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datetimepicker.min.css', 'admin') }}">
@@ -80,14 +69,6 @@ $(function() {
                         {{ form_row(form.link_method) }}
 
                         {{ form_row(form.description) }}
-
-                        <div class="extra-form">
-                            {% for f in form.getIterator %}
-                                {% if f.vars.name matches '[^plg*]' %}
-                                    {{ form_row(f) }}
-                                {% endif %}
-                            {% endfor %}
-                        </div>
 
                     </div><!-- /.box-body -->
                 </form>

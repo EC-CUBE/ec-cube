@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Eccube\Tests\Transaction;
 
 use Eccube\Application;
@@ -337,6 +348,7 @@ class TransactionControllerMock
 
         // 1/2 は rollback.
         throw new \Exception();
+
         return $app->render('index.twig');
     }
 
@@ -404,6 +416,7 @@ class TransactionControllerMock
 
         // update1/2はrollback
         throw new \Exception();
+
         return $app->render('index.twig');
     }
 
@@ -431,6 +444,7 @@ class TransactionControllerMock
 
         // update1/2/3 すべてrollback
         throw new \Exception();
+
         return $app->render('index.twig');
     }
 
@@ -492,6 +506,7 @@ class TransactionControllerMock
 
         // update2/3 は 暗黙のtransaction block内のため、2/3はrollbackされる
         throw new \Exception();
+
         return $app->render('index.twig');
     }
 

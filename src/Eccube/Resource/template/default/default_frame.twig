@@ -2,23 +2,12 @@
 {#
 This file is part of EC-CUBE
 
-Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
 
 http://www.lockon.co.jp/
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
 #}
 <html lang="ja">
 <head>
@@ -51,8 +40,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     {% if Page.Head %}
         {{ include('block.twig', {'Blocks': Page.Head}) }}
     {% endif %}
+    {# プラグイン用styleseetやmetatagなど #}
+    {% if plugin_assets is defined %}{{ include('@admin/snippet.twig', { snippets: plugin_assets }) }}{% endif %}
 </head>
-<body id="page_{* { app.request_stack.currentrequest.get('_route') } *}" class="{{ body_class|default('other_page') }}">
+<body id="page_{{ app.request.get('_route') }}" class="{{ body_class|default('other_page') }}">
+{# Layout: BODY_AFTER #}
+{% if Page.BodyAfter %}
+    {{ include('block.twig', {'Blocks': Page.BodyAfter}) }}
+{% endif %}
+
 <div class="ec-layoutRole">
     {# Layout: HEADER #}
     {% if Page.Header %}
@@ -126,13 +122,26 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 </div><!-- ec-layoutRole -->
 
 <div class="ec-overlayRole"></div>
-<div class="ec-drawerRole"></div>
-<div class="ec-blockTopBtn"></div>
+<div class="ec-drawerRole">
+    {# Layout: DRAWER #}
+    {% if Page.Drawer %}
+        {{ include('block.twig', {'Blocks': Page.Drawer}) }}
+    {% endif %}
+</div>
+<div class="ec-blockTopBtn pagetop"></div>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
 <script src="{{ asset('assets/js/script.js') }}"></script>
 <script src="{{ asset('js/function.js') }}"></script>
 <script src="{{ asset('js/eccube.js') }}"></script>
 {% block javascript %}{% endblock %}
+{# Layout: CLOSE_BODY_BEFORE #}
+{% if Page.CloseBodyBefore %}
+    {{ include('block.twig', {'Blocks': Page.CloseBodyBefore}) }}
+{% endif %}
+{# プラグイン用Snippet #}
+{% if plugin_snippets is defined %}
+    {{ include('snippet.twig', { snippets: plugin_snippets }) }}
+{% endif %}
 </body>
 </html>

@@ -56,6 +56,11 @@ class PageEditPage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    public function 出力_内容()
+    {
+        return $this->tester->executeJS("return ace.edit('editor').getValue()");
+    }
+
     public function 登録()
     {
         $this->tester->click(['xpath' => '//button/span[text()="登録"]']);

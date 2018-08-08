@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Eccube\Tests\Service;
 
 use Eccube\Entity\Master\OrderStatus;
@@ -60,9 +71,7 @@ class ShoppingServiceTest extends AbstractServiceTestCase
     {
         $this->markTestSkipped('新しい配送管理の実装が完了するまでスキップ');
 
-        // 複数配送対応としておく
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(true);
 
         $NewOrder = $this->app['eccube.service.shopping']->createOrder($this->Customer);
         $Order = $this->app['eccube.service.shopping']->getOrder();
@@ -76,9 +85,7 @@ class ShoppingServiceTest extends AbstractServiceTestCase
     {
         $this->markTestSkipped('新しい配送管理の実装が完了するまでスキップ');
 
-        // 複数配送対応としておく
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(true);
 
         $NonMember = $this->createNonMember();
         $this->app['security.token_storage']->setToken(
@@ -230,7 +237,6 @@ class ShoppingServiceTest extends AbstractServiceTestCase
     {
         // 複数配送対応としておく
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(true);
 
         // SaleType 1 と 2 で, 共通する支払い方法を削除しておく
         $PaymentOption = $this
@@ -406,9 +412,7 @@ class ShoppingServiceTest extends AbstractServiceTestCase
     {
         self::markTestIncomplete('orderHelperで実行するためスキップ');
 
-        // 複数配送対応としておく
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(true);
 
         $Delivery = $this->app['eccube.fixture.generator']->createDelivery();
         $Order = $this->app['eccube.fixture.generator']->createOrder($this->Customer, [], $Delivery);

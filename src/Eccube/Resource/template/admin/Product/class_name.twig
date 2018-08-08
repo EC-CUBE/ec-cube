@@ -1,25 +1,14 @@
 {#
 This file is part of EC-CUBE
 
-Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
 
 http://www.lockon.co.jp/
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
 #}
-{% extends '@admin/styleguide_frame.twig' %}
+{% extends '@admin/default_frame.twig' %}
 
 {% set menus = ['product', 'class_name'] %}
 
@@ -168,7 +157,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     </form>
                                 </li>
                                 {% for ClassName in ClassNames %}
-                                    <li class="list-group-item sortable-item" data-class-name-id="{{ ClassName.id }}" data-sort-no="{{ ClassName.sortNo }}">
+                                    <li id="ex-class_name-{{ ClassName.id }}" class="list-group-item sortable-item" data-class-name-id="{{ ClassName.id }}" data-sort-no="{{ ClassName.sortNo }}">
                                         <div class="row justify-content-around mode-view">
                                             <div class="col-auto d-flex align-items-center"><i class="fa fa-bars text-ec-gray"></i></div>
                                             <div class="col d-flex align-items-center">
@@ -191,33 +180,33 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 </a>
 
                                                 {% if classCategories == 0 %}
-                                                <div class="modal fade" id="delete_{{ ClassName.id }}" tabindex="-1"
-                                                     role="dialog"
-                                                     aria-labelledby="delete_{{ ClassName.id }}" aria-hidden="true">
-                                                    <div class="modal-dialog" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title font-weight-bold">
-                                                                    {{ 'admin.class_name.modal.header'|trans }}</h5>
-                                                                <button class="close" type="button"
-                                                                        data-dismiss="modal"
-                                                                        aria-label="Close"><span
-                                                                            aria-hidden="true">×</span>
-                                                                </button>
-                                                            </div>
-                                                            <div class="modal-body text-left">
-                                                                <p class="text-left">
-                                                                    {{ 'admin.class_name.modal.body'|trans }}</p>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'common.label.cancel'|trans }}
-                                                                </button>
-                                                                <a class="btn btn-ec-delete" href="{{ url('admin_product_class_name_delete', {'id' : ClassName.id}) }}" {{ csrf_token_for_anchor() }}
-                                                                   data-method="delete" data-confirm="false">{{ 'common.label.delete'|trans }}</a>
+                                                    <div class="modal fade" id="delete_{{ ClassName.id }}" tabindex="-1"
+                                                         role="dialog"
+                                                         aria-labelledby="delete_{{ ClassName.id }}" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title font-weight-bold">
+                                                                        {{ 'admin.class_name.modal.header'|trans }}</h5>
+                                                                    <button class="close" type="button"
+                                                                            data-dismiss="modal"
+                                                                            aria-label="Close"><span
+                                                                                aria-hidden="true">×</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body text-left">
+                                                                    <p class="text-left">
+                                                                        {{ 'admin.class_name.modal.body'|trans }}</p>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'common.label.cancel'|trans }}
+                                                                    </button>
+                                                                    <a class="btn btn-ec-delete" href="{{ url('admin_product_class_name_delete', {'id' : ClassName.id}) }}" {{ csrf_token_for_anchor() }}
+                                                                       data-method="delete" data-confirm="false">{{ 'common.label.delete'|trans }}</a>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
                                                 {% endif %}
 
                                             </div>

@@ -1,37 +1,34 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Service;
 
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\UnitOfWork;
 use Eccube\Entity\Cart;
 use Eccube\Entity\CartItem;
+use Eccube\Entity\Customer;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\ProductClass;
+use Eccube\Repository\CartRepository;
+use Eccube\Repository\OrderRepository;
 use Eccube\Repository\ProductClassRepository;
 use Eccube\Service\Cart\CartItemAllocator;
 use Eccube\Service\Cart\CartItemComparator;
+use Eccube\Util\StringUtil;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class CartService
 {
@@ -63,6 +60,11 @@ class CartService
     protected $productClassRepository;
 
     /**
+     * @var CartRepository
+     */
+    protected $cartRepository;
+
+    /**
      * @var CartItemComparator
      */
     protected $cartItemComparator;
@@ -73,6 +75,26 @@ class CartService
     protected $cartItemAllocator;
 
     /**
+     * @var OrderHelper
+     */
+    protected $orderHelper;
+
+    /**
+     * @var OrderRepository
+     */
+    protected $orderRepository;
+
+    /**
+     * @var TokenStorageInterface
+     */
+    protected $tokenStorage;
+
+    /**
+     * @var AuthorizationCheckerInterface
+     */
+    protected $authorizationChecker;
+
+    /**
      * CartService constructor.
      *
      * @param SessionInterface $session
@@ -80,29 +102,87 @@ class CartService
      * @param ProductClassRepository $productClassRepository
      * @param CartItemComparator $cartItemComparator
      * @param CartItemAllocator $cartItemAllocator
+     * @param OrderHelper $orderHelper
+     * @param TokenStorageInterface $tokenStorage
+     * @param AuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(
         SessionInterface $session,
         EntityManagerInterface $entityManager,
         ProductClassRepository $productClassRepository,
+        CartRepository $cartRepository,
         CartItemComparator $cartItemComparator,
-        CartItemAllocator $cartItemAllocator
+        CartItemAllocator $cartItemAllocator,
+        OrderHelper $orderHelper,
+        OrderRepository $orderRepository,
+        TokenStorageInterface $tokenStorage,
+        AuthorizationCheckerInterface $authorizationChecker
     ) {
         $this->session = $session;
         $this->entityManager = $entityManager;
         $this->productClassRepository = $productClassRepository;
+        $this->cartRepository = $cartRepository;
         $this->cartItemComparator = $cartItemComparator;
         $this->cartItemAllocator = $cartItemAllocator;
+        $this->orderHelper = $orderHelper;
+        $this->orderRepository = $orderRepository;
+        $this->tokenStorage = $tokenStorage;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     public function getCarts()
     {
-        if (is_null($this->carts)) {
-            $this->carts = $this->session->get('carts', []);
-            $this->loadItems();
+        if (!empty($this->carts)) {
+            return $this->carts;
+        }
+
+        if ($this->getUser()) {
+            $this->carts = $this->getPersistedCarts();
+        } else {
+            $this->carts = $this->getSessionCarts();
         }
 
         return $this->carts;
+    }
+
+    /**
+     * 永続化されたカートを返す
+     *
+     * @return Cart[]
+     */
+    public function getPersistedCarts()
+    {
+        return $this->cartRepository->findBy(['Customer' => $this->getUser()]);
+    }
+
+    /**
+     * セッションにあるカートを返す
+     *
+     * @return Cart[]
+     */
+    public function getSessionCarts()
+    {
+        $cartKeys = $this->session->get('cart_keys', []);
+
+        return $this->cartRepository->findBy(['cart_key' => $cartKeys], ['id' => 'DESC']);
+    }
+
+    /**
+     * 会員が保持する永続化されたカートと、非会員時のカートをマージする.
+     */
+    public function mergeFromPersistedCart()
+    {
+        $CartItems = [];
+        foreach ($this->getPersistedCarts() as $Cart) {
+            $CartItems = $this->mergeCartItems($Cart->getCartItems(), $CartItems);
+        }
+
+        // セッションにある非会員カートとDBから取得した会員カートをマージする.
+        foreach ($this->getSessionCarts() as $Cart) {
+            $CartItems = $this->mergeCartItems($Cart->getCartItems(), $CartItems);
+        }
+
+        $this->restoreCarts($CartItems);
     }
 
     /**
@@ -111,27 +191,12 @@ class CartService
     public function getCart()
     {
         $Carts = $this->getCarts();
-        if (!$Carts) {
-            if (!$this->cart) {
-                $this->cart = new Cart();
-            }
 
-            return $this->cart;
+        if (empty($Carts)) {
+            return null;
         }
 
-        return current($this->getCarts());
-    }
-
-    protected function loadItems()
-    {
-        foreach ($this->getCarts() as $Cart) {
-            /** @var CartItem $item */
-            foreach ($Cart->getItems() as $item) {
-                /** @var ProductClass $ProductClass */
-                $ProductClass = $this->productClassRepository->find($item->getProductClassId());
-                $item->setProductClass($ProductClass);
-            }
-        }
+        return current($Carts);
     }
 
     /**
@@ -145,10 +210,10 @@ class CartService
         $allCartItems = [];
 
         foreach ($this->getCarts() as $Cart) {
-            $allCartItems = $this->mergeCartitems($Cart->getCartItems(), $allCartItems);
+            $allCartItems = $this->mergeCartItems($Cart->getCartItems(), $allCartItems);
         }
 
-        return $this->mergeCartitems($cartItems, $allCartItems);
+        return $this->mergeCartItems($cartItems, $allCartItems);
     }
 
     /**
@@ -157,7 +222,7 @@ class CartService
      *
      * @return array
      */
-    protected function mergeCartitems($cartItems, $allCartItems)
+    protected function mergeCartItems($cartItems, $allCartItems)
     {
         foreach ($cartItems as $item) {
             $itemExists = false;
@@ -179,22 +244,48 @@ class CartService
 
     protected function restoreCarts($cartItems)
     {
-        /** @var Cart $Carts */
+        if (empty($cartItems)) {
+            foreach ($this->getCarts() as $Cart) {
+                foreach ($Cart->getCartItems() as $i) {
+                    $this->entityManager->remove($i);
+                    $this->entityManager->flush($i);
+                }
+                $this->entityManager->remove($Cart);
+                $this->entityManager->flush($Cart);
+            }
+            $this->carts = [];
+        }
+
+        /** @var Cart[] $Carts */
         $Carts = [];
 
         foreach ($cartItems as $item) {
-            $cartId = $this->cartItemAllocator->allocate($item);
-            if (isset($Carts[$cartId])) {
-                $Carts[$cartId]->addCartItem($item);
-            } else {
-                $Cart = new Cart();
+            $allocatedId = $this->cartItemAllocator->allocate($item);
+            $cartKey = $this->createCartKey($allocatedId, $this->getUser());
+
+            if (isset($Carts[$cartKey])) {
+                $Cart = $Carts[$cartKey];
                 $Cart->addCartItem($item);
-                $Carts[$cartId] = $Cart;
+                $item->setCart($Cart);
+            } else {
+                /** @var Cart $Cart */
+                $Cart = $this->cartRepository->findOneBy(['cart_key' => $cartKey]);
+                if ($Cart) {
+                    foreach ($Cart->getCartItems() as $i) {
+                        $this->entityManager->remove($i);
+                        $this->entityManager->flush($i);
+                    }
+                    $this->entityManager->remove($Cart);
+                    $this->entityManager->flush($Cart);
+                }
+                $Cart = new Cart();
+                $Cart->setCartKey($cartKey);
+                $Cart->addCartItem($item);
+                $item->setCart($Cart);
+                $Carts[$cartKey] = $Cart;
             }
         }
 
-        $this->session->set('carts', $Carts);
-        // 配列のkeyを0からにする
         $this->carts = array_values($Carts);
     }
 
@@ -262,6 +353,7 @@ class CartService
                 break;
             }
         }
+
         array_splice($allCartItems, $foundIndex, 1);
         $this->restoreCarts($allCartItems);
 
@@ -270,29 +362,21 @@ class CartService
 
     public function save()
     {
-        return $this->session->set('carts', $this->carts);
-    }
+        $cartKeys = [];
+        foreach ($this->carts as $Cart) {
+            $Cart->setCustomer($this->getUser());
+            $this->entityManager->persist($Cart);
+            foreach ($Cart->getCartItems() as $item) {
+                $this->entityManager->persist($item);
+                $this->entityManager->flush($item);
+            }
+            $this->entityManager->flush($Cart);
+            $cartKeys[] = $Cart->getCartKey();
+        }
 
-    public function unlock()
-    {
-        $this->getCart()
-            ->setLock(false)
-            ->setPreOrderId(null);
-    }
+        $this->session->set('cart_keys', $cartKeys);
 
-    public function lock()
-    {
-        $this->getCart()
-            ->setLock(true)
-            ->setPreOrderId(null);
-    }
-
-    /**
-     * @return bool
-     */
-    public function isLocked()
-    {
-        return $this->getCart()->getLock();
+        return;
     }
 
     /**
@@ -321,15 +405,20 @@ class CartService
     public function clear()
     {
         $Carts = $this->getCarts();
-        $removed = array_splice($Carts, 0, 1);
-        if (!empty($removed)) {
-            $removedCart = $removed[0];
-            $removedCart->setPreOrderId(null)
-                ->setLock(false)
-                ->setTotalPrice(0)
-                ->clearCartItems();
+        if (!empty($Carts)) {
+            $removed = array_shift($Carts);
+            if ($removed && UnitOfWork::STATE_MANAGED === $this->entityManager->getUnitOfWork()->getEntityState($removed)) {
+                $this->entityManager->remove($removed);
+                $this->entityManager->flush($removed);
+
+                $cartKeys = [];
+                foreach ($Carts as $Cart) {
+                    $cartKeys[] = $Cart->getCartKey();
+                }
+                $this->session->set('cart_keys', $cartKeys);
+                $this->carts = $this->cartRepository->findBy(['cart_key' => $cartKeys], ['id' => 'DESC']);
+            }
         }
-        $this->carts = $Carts;
 
         return $this;
     }
@@ -356,5 +445,43 @@ class CartService
         array_splice($Carts, $index, 1, [$prev]);
         $this->carts = $Carts;
         $this->save();
+    }
+
+    protected function getUser()
+    {
+        if (null === $token = $this->tokenStorage->getToken()) {
+            return;
+        }
+
+        if (!is_object($user = $token->getUser())) {
+            // e.g. anonymous authentication
+            return;
+        }
+
+        return $user;
+    }
+
+    /**
+     * @param string $allocatedId
+     */
+    protected function createCartKey($allocatedId, Customer $Customer = null)
+    {
+        if ($Customer instanceof Customer) {
+            return $Customer->getId().'_'.$allocatedId;
+        }
+
+        if ($this->session->has('cart_key_prefix')) {
+            return $this->session->get('cart_key_prefix').'_'.$allocatedId;
+        }
+
+        do {
+            $random = StringUtil::random(32);
+            $cartKey = $random.'_'.$allocatedId;
+            $Cart = $this->cartRepository->findOneBy(['cart_key' => $cartKey]);
+        } while ($Cart);
+
+        $this->session->set('cart_key_prefix', $random);
+
+        return $cartKey;
     }
 }

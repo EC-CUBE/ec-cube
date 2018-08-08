@@ -1,368 +1,417 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\ItemCollection;
 
-class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterface
-{
-    use PointTrait;
-
+if (!class_exists('\Eccube\Entity\Cart')) {
     /**
-     * @var bool
-     */
-    private $lock = false;
-
-    /**
-     * @var ArrayCollection
-     */
-    private $CartItems;
-
-    /**
-     * @var string
-     */
-    private $pre_order_id = null;
-
-    /**
-     * @var integer
-     */
-    private $total_price;
-
-    /**
-     * @var integer
-     */
-    private $delivery_fee_total;
-
-    /**
-     * @var array
-     */
-    private $Payments = [];
-
-    /**
-     * @var InvalidItemException[]
-     */
-    private $errors = [];
-
-    public function __wakeup()
-    {
-        $this->errors = [];
-    }
-
-    public function __construct()
-    {
-        $this->CartItems = new ArrayCollection();
-    }
-
-    /**
-     * @return bool
-     */
-    public function getLock()
-    {
-        return $this->lock;
-    }
-
-    /**
-     * @param  bool                $lock
+     * Cart
      *
-     * @return \Eccube\Entity\Cart
+     * @ORM\Table(name="dtb_cart", indexes={@ORM\Index(name="dtb_cart_pre_order_id_idx", columns={"pre_order_id"}), @ORM\Index(name="dtb_cart_update_date_idx", columns={"update_date"})})
+     * @ORM\InheritanceType("SINGLE_TABLE")
+     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     * @ORM\HasLifecycleCallbacks()
+     * @ORM\Entity(repositoryClass="Eccube\Repository\CartRepository")
      */
-    public function setLock($lock)
+    class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterface
     {
-        $this->lock = $lock;
+        use PointTrait;
 
-        return $this;
-    }
+        /**
+         * @var integer
+         *
+         * @ORM\Column(name="id", type="bigint", options={"unsigned":true})
+         * @ORM\Id
+         * @ORM\GeneratedValue(strategy="IDENTITY")
+         */
+        private $id;
 
-    /**
-     * @return integer
-     */
-    public function getPreOrderId()
-    {
-        return $this->pre_order_id;
-    }
+        /**
+         * @var string
+         *
+         * @ORM\Column(name="cart_key", type="string", options={"unsigned":true}, nullable=true)
+         * @ORM\GeneratedValue(strategy="IDENTITY")
+         */
+        private $cart_key;
 
-    /**
-     * @param  integer             $pre_order_id
-     *
-     * @return \Eccube\Entity\Cart
-     */
-    public function setPreOrderId($pre_order_id)
-    {
-        $this->pre_order_id = $pre_order_id;
+        /**
+         * @var \Eccube\Entity\Customer
+         *
+         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Customer")
+         * @ORM\JoinColumns({
+         *   @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
+         * })
+         */
+        private $Customer;
 
-        return $this;
-    }
+        /**
+         * @var bool
+         */
+        private $lock = false;
 
-    /**
-     * @param  CartItem $AddCartItem
-     *
-     * @return \Eccube\Entity\Cart
-     *
-     * @deprecated CartService#addProductを使用
-     */
-    public function setCartItem(CartItem $AddCartItem)
-    {
-        $find = false;
-        foreach ($this->CartItems as $CartItem) {
-            if ($CartItem->getClassName() === $AddCartItem->getClassName() && $CartItem->getClassId() === $AddCartItem->getClassId()) {
-                $find = true;
-                $CartItem
-                    ->setPrice($AddCartItem->getPrice())
-                    ->setQuantity($AddCartItem->getQuantity());
+        /**
+         * @var \Doctrine\Common\Collections\Collection|CartItem[]
+         *
+         * @ORM\OneToMany(targetEntity="Eccube\Entity\CartItem", mappedBy="Cart", cascade={"persist"})
+         */
+        private $CartItems;
+
+        /**
+         * @var string|null
+         *
+         * @ORM\Column(name="pre_order_id", type="string", length=255, nullable=true)
+         */
+        private $pre_order_id = null;
+
+        /**
+         * @var string
+         *
+         * @ORM\Column(name="total_price", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
+         */
+        private $total_price;
+
+        /**
+         * @var string
+         *
+         * @ORM\Column(name="delivery_fee_total", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
+         */
+        private $delivery_fee_total;
+
+        /**
+         * @var \DateTime
+         *
+         * @ORM\Column(name="create_date", type="datetimetz")
+         */
+        private $create_date;
+
+        /**
+         * @var \DateTime
+         *
+         * @ORM\Column(name="update_date", type="datetimetz")
+         */
+        private $update_date;
+
+        /**
+         * @var InvalidItemException[]
+         */
+        private $errors = [];
+
+        public function __wakeup()
+        {
+            $this->errors = [];
+        }
+
+        public function __construct()
+        {
+            $this->CartItems = new ArrayCollection();
+        }
+
+        /**
+         * @return int
+         */
+        public function getId()
+        {
+            return $this->id;
+        }
+
+        /**
+         * @return string
+         */
+        public function getCartKey()
+        {
+            return $this->cart_key;
+        }
+
+        /**
+         * @param string $cartKey
+         */
+        public function setCartKey(string $cartKey)
+        {
+            $this->cart_key = $cartKey;
+        }
+
+        /**
+         * @return bool
+         *
+         * @deprecated 使用しないので削除予定
+         */
+        public function getLock()
+        {
+            return $this->lock;
+        }
+
+        /**
+         * @param  bool                $lock
+         *
+         * @return \Eccube\Entity\Cart
+         *
+         * @deprecated 使用しないので削除予定
+         */
+        public function setLock($lock)
+        {
+            $this->lock = $lock;
+
+            return $this;
+        }
+
+        /**
+         * @return string|null
+         */
+        public function getPreOrderId()
+        {
+            return $this->pre_order_id;
+        }
+
+        /**
+         * @param  integer             $pre_order_id
+         *
+         * @return \Eccube\Entity\Cart
+         */
+        public function setPreOrderId($pre_order_id)
+        {
+            $this->pre_order_id = $pre_order_id;
+
+            return $this;
+        }
+
+        /**
+         * @param  CartItem            $CartItem
+         *
+         * @return \Eccube\Entity\Cart
+         */
+        public function addCartItem(CartItem $CartItem)
+        {
+            $this->CartItems[] = $CartItem;
+
+            return $this;
+        }
+
+        /**
+         * @return \Eccube\Entity\Cart
+         */
+        public function clearCartItems()
+        {
+            $this->CartItems->clear();
+
+            return $this;
+        }
+
+        /**
+         * @return ArrayCollection|CartItem[]
+         */
+        public function getCartItems()
+        {
+            return $this->CartItems;
+        }
+
+        /**
+         * Alias of getCartItems()
+         */
+        public function getItems()
+        {
+            return (new ItemCollection($this->getCartItems()))->sort();
+        }
+
+        /**
+         * @param  CartItem[]          $CartItems
+         *
+         * @return \Eccube\Entity\Cart
+         */
+        public function setCartItems($CartItems)
+        {
+            $this->CartItems = $CartItems;
+
+            return $this;
+        }
+
+        /**
+         * Set total.
+         *
+         * @param integer $total_price
+         *
+         * @return Cart
+         */
+        public function setTotalPrice($total_price)
+        {
+            $this->total_price = $total_price;
+
+            return $this;
+        }
+
+        /**
+         * @return string
+         */
+        public function getTotalPrice()
+        {
+            return $this->total_price;
+        }
+
+        /**
+         * Alias of setTotalPrice.
+         */
+        public function setTotal($total)
+        {
+            return $this->setTotalPrice($total);
+        }
+
+        /**
+         * Alias of getTotalPrice
+         */
+        public function getTotal()
+        {
+            return $this->getTotalPrice();
+        }
+
+        /**
+         * @return integer
+         */
+        public function getTotalQuantity()
+        {
+            $totalQuantity = 0;
+            foreach ($this->CartItems as $CartItem) {
+                $totalQuantity += $CartItem->getQuantity();
             }
+
+            return $totalQuantity;
         }
 
-        if (!$find) {
-            $this->addCartItem($AddCartItem);
+        /**
+         * @param ItemInterface $item
+         */
+        public function addItem(ItemInterface $item)
+        {
+            $this->CartItems->add($item);
         }
 
-        return $this;
-    }
-
-    /**
-     * @param  CartItem            $CartItem
-     *
-     * @return \Eccube\Entity\Cart
-     */
-    public function addCartItem(CartItem $CartItem)
-    {
-        $this->CartItems[] = $CartItem;
-
-        return $this;
-    }
-
-    /**
-     * @param  string                  $class_name
-     * @param  string                  $class_id
-     *
-     * @return CartItem
-     *
-     * @deprecated 削除予定
-     */
-    public function getCartItemByIdentifier($class_name, $class_id)
-    {
-        foreach ($this->CartItems as $CartItem) {
-            if ($CartItem->getClassName() === $class_name && $CartItem->getClassId() == $class_id) {
-                return $CartItem;
-            }
+        /**
+         * 個数の合計を返します。
+         *
+         * @return integer
+         */
+        public function getQuantity()
+        {
+            return $this->getTotalQuantity();
         }
 
-        return null;
-    }
+        /**
+         * {@inheritdoc}
+         */
+        public function setDeliveryFeeTotal($total)
+        {
+            $this->delivery_fee_total = $total;
 
-    /**
-     * @param $class_name
-     * @param $class_id
-     *
-     * @return $this
-     *
-     * @deprecated CartService#removeProduct()を使用
-     */
-    public function removeCartItemByIdentifier($class_name, $class_id)
-    {
-        /* @var CartItem $CartItem */
-        foreach ($this->CartItems as $CartItem) {
-            if ($CartItem->getProductClassId() == $class_id) {
-                $this->CartItems->removeElement($CartItem);
-            }
+            return $this;
         }
 
-        return $this;
-    }
-
-    /**
-     * @return \Eccube\Entity\Cart
-     */
-    public function clearCartItems()
-    {
-        $this->CartItems->clear();
-
-        return $this;
-    }
-
-    /**
-     * @return CartItem[]
-     */
-    public function getCartItems()
-    {
-        return $this->CartItems;
-    }
-
-    /**
-     * Alias of getCartItems()
-     */
-    public function getItems()
-    {
-        return (new ItemCollection($this->getCartItems()))->sort();
-    }
-
-    /**
-     * @param  CartItem[]          $CartItems
-     *
-     * @return \Eccube\Entity\Cart
-     */
-    public function setCartItems($CartItems)
-    {
-        $this->CartItems = $CartItems;
-
-        return $this;
-    }
-
-    /**
-     * Set total.
-     *
-     * @param integer $total_price
-     *
-     * @return Cart
-     */
-    public function setTotalPrice($total_price)
-    {
-        $this->total_price = $total_price;
-
-        return $this;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getTotalPrice()
-    {
-        return $this->total_price;
-    }
-
-    /**
-     * Alias of setTotalPrice.
-     */
-    public function setTotal($total)
-    {
-        return $this->setTotalPrice($total);
-    }
-
-    /**
-     * Alias of getTotalPrice
-     */
-    public function getTotal()
-    {
-        return $this->getTotalPrice();
-    }
-
-    /**
-     * @return integer
-     */
-    public function getTotalQuantity()
-    {
-        $totalQuantity = 0;
-        foreach ($this->CartItems as $CartItem) {
-            $totalQuantity += $CartItem->getQuantity();
+        /**
+         * {@inheritdoc}
+         */
+        public function getDeliveryFeeTotal()
+        {
+            return $this->delivery_fee_total;
         }
 
-        return $totalQuantity;
-    }
+        /**
+         * @return Customer
+         */
+        public function getCustomer(): Customer
+        {
+            return $this->Customer;
+        }
 
-    /**
-     * Get Payments
-     *
-     * @return array
-     */
-    public function getPayments()
-    {
-        return $this->Payments;
-    }
+        /**
+         * @param Customer $Customer
+         */
+        public function setCustomer(Customer $Customer = null)
+        {
+            $this->Customer = $Customer;
+        }
 
-    /**
-     * Set Payments
-     *
-     * @param $payments
-     *
-     * @return Cart
-     */
-    public function setPayments($payments)
-    {
-        $this->Payments = $payments;
+        /**
+         * Set createDate.
+         *
+         * @param \DateTime $createDate
+         *
+         * @return Cart
+         */
+        public function setCreateDate($createDate)
+        {
+            $this->create_date = $createDate;
 
-        return $this;
-    }
+            return $this;
+        }
 
-    /**
-     * @param ItemInterface $item
-     */
-    public function addItem(ItemInterface $item)
-    {
-        $this->CartItems->add($item);
-    }
+        /**
+         * Get createDate.
+         *
+         * @return \DateTime
+         */
+        public function getCreateDate()
+        {
+            return $this->create_date;
+        }
 
-    /**
-     * 個数の合計を返します。
-     *
-     * @return mixed
-     */
-    public function getQuantity()
-    {
-        return $this->getTotalQuantity();
-    }
+        /**
+         * Set updateDate.
+         *
+         * @param \DateTime $updateDate
+         *
+         * @return Cart
+         */
+        public function setUpdateDate($updateDate)
+        {
+            $this->update_date = $updateDate;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setDeliveryFeeTotal($total)
-    {
-        $this->delivery_fee_total = $total;
+            return $this;
+        }
 
-        return $this;
-    }
+        /**
+         * Get updateDate.
+         *
+         * @return \DateTime
+         */
+        public function getUpdateDate()
+        {
+            return $this->update_date;
+        }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDeliveryFeeTotal()
-    {
-        return $this->delivery_fee_total;
-    }
+        /**
+         * {@inheritdoc}
+         */
+        public function setDiscount($total)
+        {
+            // TODO quiet
+        }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setDiscount($total)
-    {
-        // TODO quiet
-    }
+        /**
+         * {@inheritdoc}
+         */
+        public function setCharge($total)
+        {
+            // TODO quiet
+        }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setCharge($total)
-    {
-        // TODO quiet
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setTax($total)
-    {
-        // TODO quiet
+        /**
+         * {@inheritdoc}
+         */
+        public function setTax($total)
+        {
+            // TODO quiet
+        }
     }
 }

@@ -1,23 +1,12 @@
 {#
 This file is part of EC-CUBE
 
-Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
 
 http://www.lockon.co.jp/
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
 #}
 {% extends 'default_frame.twig' %}
 
@@ -75,9 +64,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             </dt>
                             <dd>
                                 {# 郵便番号 #}
-                                <span>〒</span>{{ form.zip.zip01.vars.data }}<span>-</span>{{ form.zip.zip02.vars.data }}
-                                {{ form_widget(form.zip.zip01, { type : 'hidden' }) }}
-                                {{ form_widget(form.zip.zip02, { type : 'hidden' }) }}
+                                <span>〒</span>{{ form.postal_code.vars.data }}
+                                {{ form_widget(form.postal_code, { type : 'hidden' }) }}
                                 {# 都道府県・住所 #}
                                 {{ form.address.pref.vars.data }} {{ form.address.addr01.vars.data }} {{ form.address.addr02.vars.data }}
                                 {{ form_widget(form.address.pref, { type : 'hidden' }) }}
@@ -87,25 +75,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </dl>
                         <dl>
                             <dt>
-                                {{ form_label(form.tel, 'signup.label.tel_number', {'label_attr': {'class': 'ec-label'}}) }}
+                                {{ form_label(form.phone_number, 'signup.label.tel_number', {'label_attr': {'class': 'ec-label'}}) }}
                             </dt>
-                            <dd>{{ form.tel.tel01.vars.data }} - {{ form.tel.tel02.vars.data }}
-                                - {{ form.tel.tel03.vars.data }}
-                                {{ form_widget(form.tel.tel01, { type : 'hidden' }) }}
-                                {{ form_widget(form.tel.tel02, { type : 'hidden' }) }}
-                                {{ form_widget(form.tel.tel03, { type : 'hidden' }) }}
-                            </dd>
-                        </dl>
-                        <dl>
-                            <dt>
-                                {{ form_label(form.fax, 'signup.label.fax', {'label_attr': {'class': 'ec-label'}}) }}
-                            </dt>
-                            <dd>
-                                {{ form.fax.fax01.vars.data }} - {{ form.fax.fax02.vars.data }}
-                                - {{ form.fax.fax03.vars.data }}
-                                {{ form_widget(form.fax.fax01, { type : 'hidden' }) }}
-                                {{ form_widget(form.fax.fax02, { type : 'hidden' }) }}
-                                {{ form_widget(form.fax.fax03, { type : 'hidden' }) }}
+                            <dd>{{ form.phone_number.vars.data }}
+                                {{ form_widget(form.phone_number, { type : 'hidden' }) }}
                             </dd>
                         </dl>
                         <dl>
@@ -157,14 +130,22 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             </dd>
                         </dl>
                         {# エンティティ拡張の自動出力 #}
-                        {% for f in form %}
-                            {# auto_render有効時に出力 #}
-                            {% if f.vars.eccube_form_options.auto_render %}
-                                {# form_themeが設定されている場合にthemeを適用 #}
-                                {% if f.vars.eccube_form_options.form_theme %}
-                                    {% form_theme f f.vars.eccube_form_options.form_theme %}
-                                {% endif %}
-                                {{ form_row(f, { type: 'hidden' }) }}
+                        {% for f in form if f.vars.eccube_form_options.auto_render %}
+                            {% if f.vars.eccube_form_options.form_theme %}
+                                {% form_theme f f.vars.eccube_form_options.form_theme %}
+                                {{ form_row(f) }}
+                            {% else %}
+                                <dl>
+                                    <dt>
+                                        {{ form_label(f) }}
+                                    </dt>
+                                    <dd>
+                                        <div class="ec-select{{ has_errors(f) ? ' error' }}">
+                                            {{ f.vars.data }}
+                                            {{ form_widget(f, { type: 'hidden'}) }}
+                                        </div>
+                                    </dd>
+                                </dl>
                             {% endif %}
                         {% endfor %}
                     </div>

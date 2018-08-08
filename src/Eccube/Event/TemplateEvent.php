@@ -1,24 +1,14 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Event;
@@ -50,6 +40,16 @@ class TemplateEvent extends Event
      * @var null|Response
      */
     private $response;
+
+    /**
+     * @var array
+     */
+    private $assets = [];
+
+    /**
+     * @var array
+     */
+    private $snippets = [];
 
     /**
      * TemplateEvent constructor.
@@ -158,5 +158,44 @@ class TemplateEvent extends Event
     public function setResponse($response)
     {
         $this->response = $response;
+    }
+
+    /**
+     * アセットを追加する
+     *
+     * ここで追加したコードは, <head></head>内に出力される
+     * javascriptの読み込みやcssの読み込みに利用する.
+     *
+     * @param $asset
+     * @param bool $include twigファイルとしてincludeするかどうか
+     *
+     * @return $this
+     */
+    public function addAsset($asset, $include = true)
+    {
+        $this->assets[$asset] = $include;
+
+        $this->setParameter('plugin_assets', $this->assets);
+
+        return $this;
+    }
+
+    /**
+     * スニペットを追加する.
+     *
+     * ここで追加したコードは, </body>タグ直前に出力される
+     *
+     * @param $snippet
+     * @param bool $include twigファイルとしてincludeするかどうか
+     *
+     * @return $this
+     */
+    public function addSnippet($snippet, $include = true)
+    {
+        $this->snippets[$snippet] = $include;
+
+        $this->setParameter('plugin_snippets', $this->snippets);
+
+        return $this;
     }
 }

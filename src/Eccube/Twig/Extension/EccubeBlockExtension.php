@@ -1,9 +1,14 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: chihiro_adachi
- * Date: 2017/12/18
- * Time: 16:27
+
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Eccube\Twig\Extension;
@@ -27,23 +32,19 @@ class EccubeBlockExtension extends AbstractExtension
     public function getFunctions()
     {
         return [
-            new TwigFunction('eccube_block_*', function () {
-                $sources = $this->blockTemplates;
-                $arg_list = func_get_args();
-                $block_name = array_shift($arg_list);
-                foreach ($sources as $source) {
-                    $template = $this->twig->loadTemplate($source);
-                    if (!isset($arg_list[0])) {
-                        $arg_list[0] = [];
-                    }
-                    if ($template->hasBlock($block_name, $arg_list[0])) {
-                        echo $result = $template->renderBlock($block_name, $arg_list[0]);
-
-                        return;
+            new TwigFunction('eccube_block_*', function ($context, $name, array $parameters = []) {
+                if (!empty($parameters)) {
+                    $context = array_merge($context, $parameters);
+                }
+                $files = $this->blockTemplates;
+                foreach ($files as $file) {
+                    $template = $this->twig->loadTemplate($file);
+                    if ($template->hasBlock($name, $context)) {
+                        return $template->renderBlock($name, $context);
                     }
                 }
-                trigger_error($block_name.' block is not found', E_USER_WARNING);
-            }, ['pre_escape' => 'html', 'is_safe' => ['html']]),
+                @trigger_error($name.' block is not found', E_USER_WARNING);
+            }, ['needs_context' => true, 'pre_escape' => 'html', 'is_safe' => ['html']]),
         ];
     }
 }

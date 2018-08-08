@@ -18,3 +18,21 @@ services:
             - '%session.save_path%'
             - 'MOCKSESSID'
             - '@session.storage.metadata_bag'
+    Eccube\Service\PurchaseFlow\Processor\DeliveryFeePreprocessor:
+        autowire: true
+        public: true
+    Eccube\Service\PurchaseFlow\Processor\StockMultipleValidator:
+        autowire: true
+        public: true
+    Eccube\Service\PurchaseFlow\Processor\SaleLimitMultipleValidator:
+        autowire: true
+        public: true
+    Eccube\Service\PurchaseFlow\Processor\StockReduceProcessor:
+        autowire: true
+        public: true
+    Eccube\Service\PurchaseFlow\Processor\StockValidator:
+        autowire: true
+        public: true
+    Eccube\Service\PurchaseFlow\Processor\TaxProcessor:
+        autowire: true
+        public: true
