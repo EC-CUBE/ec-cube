@@ -181,8 +181,8 @@ class MailController extends AbstractController
                             ->setOrder($Order);
 
                         // HTML用メールの設定
-                        if (!is_null($data['html_tpl_data'])) {
-                            $multipart = $message->getChildren();
+                        $multipart = $message->getChildren();
+                        if (count($multipart) > 0) {
                             $MailHistory->setMailHtmlBody($multipart[0]->getBody());
                         }
 

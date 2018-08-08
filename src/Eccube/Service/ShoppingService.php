@@ -1236,6 +1236,12 @@ class ShoppingService
             ->setSendDate(new \DateTime())
             ->setOrder($Order);
 
+        // HTML用メールの設定
+        $multipart = $message->getChildren();
+        if (count($multipart) > 0) {
+            $MailHistory->setMailHtmlBody($multipart[0]->getBody());
+        }
+
         $this->entityManager->persist($MailHistory);
         $this->entityManager->flush($MailHistory);
 

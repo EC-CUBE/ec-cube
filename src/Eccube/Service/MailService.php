@@ -728,6 +728,12 @@ class MailService
                 ->setOrder($Order)
                 ->setSendDate(new \DateTime());
 
+        // HTML用メールの設定
+        $multipart = $message->getChildren();
+        if (count($multipart) > 0) {
+            $MailHistory->setMailHtmlBody($multipart[0]->getBody());
+        }
+
         $this->mailHistoryRepository->save($MailHistory);
 
         log_info('出荷通知メール送信処理完了', ['id' => $Shipping->getId()]);
