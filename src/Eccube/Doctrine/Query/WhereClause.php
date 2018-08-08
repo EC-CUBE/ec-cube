@@ -13,8 +13,8 @@
 
 namespace Eccube\Doctrine\Query;
 
-use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Query\Expr;
 
 /**
  * WHERE句を組み立てるクラス。
@@ -40,6 +40,9 @@ class WhereClause
         $this->params = $params;
     }
 
+    /**
+     * @param Expr\Comparison $expr
+     */
     private static function newWhereClause($expr, $x, $y)
     {
         if ($y) {

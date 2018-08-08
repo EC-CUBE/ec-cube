@@ -14,13 +14,10 @@
 namespace Eccube\Tests\Web\Admin\Order;
 
 use Eccube\Entity\Order;
-use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Eccube\Repository\ShippingRepository;
-use Eccube\Common\Constant;
 use Eccube\Entity\Shipping;
-use Eccube\Entity\OrderItem;
 
-class ShippingControllerTest extends AbstractAdminWebTestCase
+class ShippingControllerTest extends AbstractEditControllerTestCase
 {
     /**
      * @var ShippingRepository
@@ -97,161 +94,81 @@ class ShippingControllerTest extends AbstractAdminWebTestCase
         $this->assertEquals($trackingNumber, $expectedShipping->getTrackingNumber());
     }
 
-    public function testEditToShipped()
+    /**
+     * 出荷先の追加と削除のテスト
+     */
+    public function testAddAndDeleteShipping()
     {
-        $this->markTestIncomplete('出荷日は更新不可のためスキップ');
-        $this->client->enableProfiler();
-
-        $Order = $this->createOrder($this->createCustomer());
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrder($Customer);
+        $OrderId = $Order->getId();
         /** @var Shipping $Shipping */
         $Shipping = $Order->getShippings()->first();
 
-        $this->assertNull($Shipping->getShippingDate());
-        $arrFormData = $this->createShippingForm($Order);
+        // 編集前は出荷先が１個
+        $this->assertEquals(1, $Order->getShippings()->count());
 
-        $date = new \DateTime();
-        $arrFormData[0]['shipping_date'] = $date->format('Y-m-d');
+        // 出荷登録画面表示
+        $crawler = $this->client->request(
+            'GET',
+            $this->generateUrl('admin_shipping_edit', ['id' => $Order->getId()])
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
 
+        // 出荷先を追加ボタンを押下
+        $form = $crawler->selectButton('出荷情報を登録')->form();
+        $form['form[add_shipping]']->setValue('1');
+
+        $this->client->submit($form);
+        $crawler = $this->client->getCrawler();
+
+        // 出荷登録フォームが２個に増えていることを確認
+        $card1 = $crawler->filter('#form1 > div.c-contentsArea__cols > div > div > div:nth-child(1) > div.card-header > div > div.col-8 > div > span')->text();
+        $this->assertContains('出荷内容1', $card1);
+        $card2 = $crawler->filter('#form1 > div.c-contentsArea__cols > div > div > div:nth-child(2) > div.card-header > div > div.col-8 > div > span')->text();
+        $this->assertContains('出荷内容2', $card2);
+
+        // ２個の出荷登録フォームを作成
+        $shippingFormData = $this->createShippingFormDataForEdit($Shipping);
+        $newShippingFormData = $this->createShippingFormData($this->createProduct());
+        $formData['shippings'] = [$shippingFormData, $newShippingFormData];
+        $formData['_token'] = 'dummy';
+        $formData['add_shipping'] = '';
+
+        // 登録
         $this->client->request(
             'POST',
             $this->generateUrl('admin_shipping_edit', ['id' => $Order->getId()]),
             [
-                'shippings' => $arrFormData,
+                'form' => $formData,
+                'mode' => 'register',
             ]
         );
-        $this->assertTrue($this->client->getResponse()->isRedirection());
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_shipping_edit', ['id' => $Order->getId()])));
 
-        $Messages = $this->getMailCollector(false)->getMessages();
-        self::assertEquals(0, count($Messages));
+        // 出荷先が２個で登録されていることを確認
+        $expectedOrder = $this->entityManager->find(Order::class, $OrderId);
+        $this->assertEquals(2, $expectedOrder->getShippings()->count());
 
-        $crawler = $this->client->followRedirect();
+        // 1個の出荷登録フォームを作成
+        $formData['shippings'] = [$shippingFormData];
+        $formData['_token'] = 'dummy';
+        $formData['add_shipping'] = '';
 
-        $success = $crawler->filter('#page_admin_shipping_edit > div.c-container > div.c-contentsArea > div.alert.alert-success')->text();
-        $this->assertContains('出荷情報を登録しました。', $success);
-
-        $this->assertNotNull($Shipping->getShippingDate());
-    }
-
-    public function testEditAddShippingDateWithNotifyMail()
-    {
-        $this->markTestSkipped('出荷日は更新不可のためスキップ');
-        $this->client->enableProfiler();
-
-        $Order = $this->createOrder($this->createCustomer());
-        /** @var Shipping $Shipping */
-        $Shipping = $Order->getShippings()->first();
-
-        $this->assertNull($Shipping->getShippingDate());
-        $arrFormData = $this->createShippingForm($Shipping);
-
-        $date = new \DateTime();
-        $arrFormData['shipping_date'] = $date->format('Y-m-d');
-
-        $arrFormData['notify_email'] = 'on';
+        // 登録
         $this->client->request(
             'POST',
-            $this->generateUrl('admin_shipping_edit', ['id' => $Shipping->getId()]),
+            $this->generateUrl('admin_shipping_edit', ['id' => $Order->getId()]),
             [
-                'shipping' => $arrFormData,
+                'form' => $formData,
+                'mode' => 'register',
             ]
         );
-        $this->assertTrue($this->client->getResponse()->isRedirection());
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_shipping_edit', ['id' => $Order->getId()])));
 
-        $Messages = $this->getMailCollector(false)->getMessages();
-        self::assertEquals(1, count($Messages));
-        /** @var \Swift_Message $Message */
-        $Message = $Messages[0];
-
-        self::assertRegExp('/\[.*?\] 商品出荷のお知らせ/', $Message->getSubject());
-        self::assertEquals([$Order->getEmail() => null], $Message->getTo());
-
-        $crawler = $this->client->followRedirect();
-
-        $success = $crawler->filter('#page_admin_shipping_edit > div.c-container > div.c-contentsArea > div.alert.alert-success')->text();
-        $this->assertContains('出荷情報を登録しました。', $success);
-
-        $this->assertNotNull($Shipping->getShippingDate());
-    }
-
-    public function testEditRemoveShippingDate()
-    {
-        $this->markTestSkipped('出荷日は更新不可のためスキップ');
-
-        $Order = $this->createOrder($this->createCustomer());
-        /** @var Shipping $Shipping */
-        $Shipping = $Order->getShippings()->first();
-        $Shipping->setShippingDate(new \DateTime());
-        $this->entityManager->persist($Shipping);
-        $this->entityManager->flush();
-
-        $this->assertNotNull($Shipping->getShippingDate());
-        $arrFormData = $this->createShippingForm($Shipping);
-
-        $arrFormData['shipping_date'] = '';
-
-        $this->client->request(
-            'POST',
-            $this->generateUrl('admin_shipping_edit', ['id' => $Shipping->getId()]),
-            [
-                'shipping' => $arrFormData,
-            ]
-        );
-        $crawler = $this->client->followRedirect();
-
-        $success = $crawler->filter('#page_admin_shipping_edit > div.c-container > div.c-contentsArea > div.alert.alert-success')->text();
-        $this->assertContains('出荷情報を登録しました。', $success);
-
-        $this->assertNull($Shipping->getShippingDate());
-    }
-
-    /**
-     * @param Order $Order
-     *
-     * @return array
-     *
-     * @deprecated Controller で FormInterface::isSubmitted() を使用しているため使用不可
-     */
-    private function createShippingForm(Order $Order = null): array
-    {
-        $arrFormData = [
-            Constant::TOKEN_NAME => 'dummy',
-            ];
-
-        if ($Order instanceof Order && $Order->getId()) {
-            $Shippings = $Order->getShippings();
-
-            foreach ($Shippings as $key => $Shipping) {
-                $shipping = [
-                    'name' => [
-                        'name01' => $Shipping->getName01(),
-                        'name02' => $Shipping->getName02(),
-                    ],
-                    'kana' => [
-                        'kana01' => $Shipping->getKana01(),
-                        'kana02' => $Shipping->getKana02(),
-                    ],
-                    'company_name' => $Shipping->getCompanyName(),
-                    'postal_code' => $Shipping->getPostalCode(),
-                    'address' => [
-                        'pref' => $Shipping->getPref()->getId(),
-                        'addr01' => $Shipping->getAddr01(),
-                        'addr02' => $Shipping->getAddr02(),
-                    ],
-                    'phone_number' => $Shipping->getPhoneNumber(),
-                    'Delivery' => $Shipping->getDelivery()->getId(),
-                    'OrderItems' => [],
-                ];
-
-                /** @var OrderItem $OrderItem */
-                foreach ($Shipping->getOrderItems() as $OrderItem) {
-                    $shipping['OrderItems'][$OrderItem->getId()]['id'] = $OrderItem->getId();
-                }
-
-                $arrFormData[$key] = $shipping;
-            }
-        }
-
-        return $arrFormData;
+        // 出荷先が1個で登録されていることを確認
+        $expectedOrder = $this->entityManager->find(Order::class, $OrderId);
+        $this->assertEquals(1, $expectedOrder->getShippings()->count());
     }
 
     /**

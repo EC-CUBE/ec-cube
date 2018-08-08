@@ -18,6 +18,7 @@ use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\EntryType;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\Master\CustomerStatusRepository;
 use Eccube\Service\MailService;
@@ -73,7 +74,7 @@ class EntryController extends AbstractController
      *
      * @param CustomerStatusRepository $customerStatusRepository
      * @param MailService $mailService
-     * @param BaseInfo $BaseInfo
+     * @param BaseInfoRepository $baseInfoRepository
      * @param CustomerRepository $customerRepository
      * @param EncoderFactoryInterface $encoderFactory
      * @param ValidatorInterface $validatorInterface
@@ -82,7 +83,7 @@ class EntryController extends AbstractController
     public function __construct(
         CustomerStatusRepository $customerStatusRepository,
         MailService $mailService,
-        BaseInfo $BaseInfo,
+        BaseInfoRepository $baseInfoRepository,
         CustomerRepository $customerRepository,
         EncoderFactoryInterface $encoderFactory,
         ValidatorInterface $validatorInterface,
@@ -90,7 +91,7 @@ class EntryController extends AbstractController
     ) {
         $this->customerStatusRepository = $customerStatusRepository;
         $this->mailService = $mailService;
-        $this->BaseInfo = $BaseInfo;
+        $this->BaseInfo = $baseInfoRepository->get();
         $this->customerRepository = $customerRepository;
         $this->encoderFactory = $encoderFactory;
         $this->recursiveValidator = $validatorInterface;

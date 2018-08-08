@@ -69,7 +69,11 @@ class AnnotationDriver extends \Doctrine\ORM\Mapping\Driver\AnnotationDriver
                         continue 2;
                     }
                 }
-
+                if ('\\' === DIRECTORY_SEPARATOR) {
+                    $path = str_replace('\\', '/', $path);
+                    $this->trait_proxies_directory = str_replace('\\', '/', $this->trait_proxies_directory);
+                    $sourceFile = str_replace('\\', '/', $sourceFile);
+                }
                 $proxyFile = str_replace($path, $this->trait_proxies_directory, $sourceFile);
                 if (file_exists($proxyFile)) {
                     require_once $proxyFile;
@@ -79,7 +83,7 @@ class AnnotationDriver extends \Doctrine\ORM\Mapping\Driver\AnnotationDriver
                     require_once $sourceFile;
                 }
 
-                $includedFiles[] = $sourceFile;
+                $includedFiles[] = realpath($sourceFile);
             }
         }
 

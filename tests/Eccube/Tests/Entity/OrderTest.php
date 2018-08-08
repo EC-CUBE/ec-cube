@@ -137,24 +137,22 @@ class OrderTest extends EccubeTestCase
     {
         $quantity = '5';    // 配送先あたりの商品の個数
         $times = '2';       // 複数配送の配送先数
-
         // テストデータの準備
         $Product = new Product();
         $ProductClass = new ProductClass();
         $Order = new Order();
         $ItemProduct = $this->entityManager->find(OrderItemType::class, OrderItemType::PRODUCT);
-
         foreach (range(1, $times) as $i) {
             $Shipping = new Shipping();
             $Shipping->setOrder($Order);
             $Order->addShipping($Shipping);
-
             $OrderItem = new OrderItem();
             $OrderItem->setShipping($Shipping)
                 ->setOrder($Order)
                 ->setProduct($Product)
                 ->setProductName('name')
-                ->setPriceIncTax('1000')
+                ->setPrice('1000')
+                ->setTax('0')
                 ->setQuantity($quantity)
                 ->setProductClass($ProductClass)
                 ->setClassCategoryName1('name1')
@@ -164,18 +162,14 @@ class OrderTest extends EccubeTestCase
             $Shipping->addOrderItem($OrderItem);
             $Order->addOrderItem($OrderItem);
         }
-
         // 実行
         $OrderItems = $Order->getMergedProductOrderItems();
-
         // 2個目の明細が1個にまとめられているか
         $this->expected = 1;
         $this->actual = count($OrderItems);
         $this->verify();
-
         // まとめられた明細の商品の個数が全配送先の合計になっているか
         $OrderItem = $OrderItems[0];
-
         $this->expected = $quantity * $times;
         $this->actual = $OrderItem->getQuantity();
         $this->verify();

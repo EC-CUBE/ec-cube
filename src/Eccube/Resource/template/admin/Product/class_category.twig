@@ -34,17 +34,17 @@ file that was distributed with this source code.
             // 初期表示時のsort noを保持.
             var oldSortNos = [];
             var sortable = $('.sortable-item');
-            sortable.each(function () {
+            sortable.each(function() {
                 oldSortNos.push(this.dataset.sortNo);
             });
-            oldSortNos.sort(function (a, b) {
+            oldSortNos.sort(function(a, b) {
                 return a - b;
             }).reverse();
             // 並び替え後にsort noを更新
-            var updateSortNo = function () {
+            var updateSortNo = function() {
                 var newSortNos = {};
                 var i = 0;
-                $('.sortable-item').each(function () {
+                $('.sortable-item').each(function() {
                     newSortNos[this.dataset.id] = oldSortNos[i];
                     i++;
                 });
@@ -52,33 +52,33 @@ file that was distributed with this source code.
                     url: '{{ url('admin_product_class_category_sort_no_move') }}',
                     type: 'POST',
                     data: newSortNos
-                }).always(function () {
+                }).always(function() {
                     $(".modal-backdrop").remove();
                 });
             };
             // 最初と最後の↑↓を再描画
-            var redrawDisableAllows = function () {
+            var redrawDisableAllows = function() {
                 var items = $('.sortable-item');
                 items.find('a').removeClass('disabled');
                 items.first().find('a.action-up').addClass('disabled');
                 items.last().find('a.action-down').addClass('disabled');
             };
             // オーバレイ後, 表示順の更新を行う
-            var moveSortNo = function () {
+            var moveSortNo = function() {
                 $('body').append($('<div class="modal-backdrop show"></div>'));
                 updateSortNo();
                 redrawDisableAllows();
             };
             // Drag and Drop
-            $(".sortable-container").sortable({
+            $('.sortable-container').sortable({
                 items: '> .sortable-item',
                 cursor: 'move',
-                update: function (e, ui) {
+                update: function(e, ui) {
                     moveSortNo();
                 }
             });
             // Up
-            sortable.on('click', 'a.action-up', function (e) {
+            sortable.on('click', 'a.action-up', function(e) {
                 e.preventDefault();
                 var current = $(this).parents("li");
                 if (current.prev().hasClass('sortable-item')) {
@@ -87,7 +87,7 @@ file that was distributed with this source code.
                 }
             });
             // Down
-            sortable.on('click', 'a.action-down', function (e) {
+            sortable.on('click', 'a.action-down', function(e) {
                 e.preventDefault();
                 var current = $(this).parents("li");
                 if (current.next().hasClass('sortable-item')) {
@@ -130,7 +130,7 @@ file that was distributed with this source code.
                             <div class="col"><span class="card-title">{{ 'admin.product.class_category.418'|trans }}</span></div>
                         </div>
                     </div>
-                    <div class="card-body">
+                    <div id="ex-class_category" class="card-body">
                         <div class="row mb-2">
                             <div class="col-auto"><span>{{ 'admin.common.label.name'|trans }}</span></div>
                             <div class="col-auto"><span>{{ ClassName.name }}</span></div>
@@ -143,7 +143,7 @@ file that was distributed with this source code.
                 </div>
                 <div class="card rounded border-0 mb-4">
                     <div class="card-header"><span class="card-title">{{ 'admin.product.class_category.420'|trans }}</span></div>
-                    <div class="card-body p-0">
+                    <div id="ex-class_category-edit" class="card-body p-0">
                         <div class="card rounded border-0 mb-2">
 
                             <ul class="list-group list-group-flush sortable-container">
@@ -161,10 +161,9 @@ file that was distributed with this source code.
                                     </form>
                                 </li>
                                 {% for ClassCategory in ClassCategories %}
-                                    <li class="list-group-item sortable-item" data-id="{{ ClassCategory.id }}" data-sort-no="{{ ClassCategory.sortNo }}">
+                                    <li id="ex-class_category-{{ ClassCategory.id }}" class="list-group-item sortable-item" data-id="{{ ClassCategory.id }}" data-sort-no="{{ ClassCategory.sortNo }}">
                                         <div class="row justify-content-around mode-view">
                                             <div class="col-auto d-flex align-items-center"><i class="fa fa-bars text-ec-gray"></i></div>
-                                            {# TODO 表示名 #}
                                             <div class="col d-flex align-items-center">{{ ClassCategory.name }}</div>
                                             <div class="col-auto text-right">
                                                 <a class="btn btn-ec-actionIcon mr-3 action-up {% if loop.first %}disabled{% endif %}" href="" data-toggle="tooltip" data-placement="top" title="{{ 'admin.product.class_category.430'|trans }}">
@@ -227,7 +226,7 @@ file that was distributed with this source code.
                 <p>{{ 'admin.product.class_category.433'|trans }}</p>
             </div>
             <div class="card rounded border-0">
-                <div class="card-body p-4">
+                <div id="ex-class_category-action" class="card-body p-4">
                     <div class="text-center">
                         <a href="{{ url('admin_product_class_name') }}" class="btn btn-ec-regular pl-4 pr-4">{{ 'admin.product.class_category.434'|trans }}</a>
                     </div>

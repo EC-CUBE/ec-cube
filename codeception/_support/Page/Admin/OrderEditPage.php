@@ -130,12 +130,10 @@ class OrderEditPage extends AbstractAdminPageStyleGuide
     {
         $this->tester->scrollTo(['css' => '#orderItem > div > div.row.justify-content-between.mb-2 > div.col-6 > a.btn.btn-ec-regular.mr-2.add'], 0, -50);
         $this->tester->click(['css' => '#orderItem > div > div.row.justify-content-between.mb-2 > div.col-6 > a.btn.btn-ec-regular.mr-2.add']);
-        $this->tester->waitForElement(['id' => 'addProduct']);
-        $this->tester->wait(1);
+        $this->tester->waitForElementVisible(['id' => 'addProduct']);
         $this->tester->fillField(['id' => 'admin_search_product_id'], $value);
         $this->tester->click('#searchProductModalButton');
         $this->tester->waitForElementVisible('#searchProductModalList table');
-        $this->tester->wait(1);
         return $this;
     }
 

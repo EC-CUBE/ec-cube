@@ -17,7 +17,6 @@ use Doctrine\ORM\NoResultException;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BlockPosition;
 use Eccube\Entity\Layout;
-use Eccube\Entity\Master\DeviceType;
 use Eccube\Form\Type\Master\DeviceTypeType;
 use Eccube\Repository\BlockRepository;
 use Eccube\Repository\LayoutRepository;
@@ -28,12 +27,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Twig\Environment as Twig;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 // todo プレビュー実装
 class LayoutController extends AbstractController
