@@ -287,7 +287,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
     {
         $formData = $this->createFormData($this->entityTest);
         $editForm = $this->createFormDataEdit($this->entityTest);
-        $id = count($editForm['data']);
+        $id = count($editForm['data']) + 1;
         $editForm['data'][$id]['id'] = 0;
         $editForm['data'][$id]['name'] = '0削除テスト';
 
@@ -318,8 +318,8 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
 
         $formData = $this->createFormData($this->entityTest);
         $editForm = $this->createFormDataEdit($this->entityTest);
-        $id = count($editForm['data']) - 1;
 
+        $id = $this->entityManager->getRepository($entityName)->find(0)->getSortNo();
         $editForm['data'][$id]['id'] = null;
         $editForm['data'][$id]['name'] = null;
 
