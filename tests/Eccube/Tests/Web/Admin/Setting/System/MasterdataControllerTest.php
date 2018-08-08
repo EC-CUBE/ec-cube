@@ -313,12 +313,25 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $this->actual = array_shift($outPut);
         $this->expected = 'admin.register.complete';
         $this->verify();
+    }
 
-        // del test
+    public function testZeroRemove()
+    {
+        $entityName = str_replace('-', '\\', $this->entityTest);
+
+        $id = $this->entityManager->getRepository($entityName)->findOneBy([], ['sort_no' => 'DESC'])->getSortNo() + 1;
+        $sex = new \Eccube\Entity\Master\Sex();
+        $sex->setName("0削除テスト");
+        $sex->setSortNo($id);
+        $sex->setId(0);
+
+        $this->entityManager->persist($sex);
+        $this->entityManager->flush();
+
+
         $formData = $this->createFormData($this->entityTest);
         $editForm = $this->createFormDataEdit($this->entityTest);
 
-        $id = $this->entityManager->getRepository($entityName)->find(0)->getSortNo();
         unset($editForm['data'][$id]);
 
         $this->client->request(
