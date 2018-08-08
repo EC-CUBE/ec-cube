@@ -327,14 +327,19 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
 
         $this->entityManager->persist($sex);
         $this->entityManager->flush();
-        
+
         $formData = $this->createFormData($this->entityTest);
 
-        $masterData = $this->entityManager->getRepository($entityName)->findBy(['id' => [1, 2]], ['sort_no' => 'ASC']);
+        $masterData = $this->entityManager->getRepository($entityName)->findBy([], ['sort_no' => 'ASC']);
         $data = [];
         foreach ($masterData as $value) {
-            $data[$value['sort_no']]['id'] = $value['id'];
-            $data[$value['sort_no']]['name'] = $value['name'];
+            if ($value['id'] == 0) {
+                $data[$value['id']]['id'] = null;
+                $data[$value['id']]['name'] = null;
+            } else {
+                $data[$value['id']]['id'] = $value['id'];
+                $data[$value['id']]['name'] = $value['name'];
+            }
         }
 
         $editForm = [
