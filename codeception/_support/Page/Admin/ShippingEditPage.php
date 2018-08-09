@@ -149,17 +149,19 @@ class ShippingEditPage extends AbstractAdminPageStyleGuide
 
     public function 商品検索($value = '')
     {
-        $this->tester->click(['xpath' => '//*[@id="shipmentItem"]/div/div/div/button']);
+        $this->tester->scrollTo(['css' => '#shipping-product_1 > div > button'], 0, -50);
+        $this->tester->click(['css' => '#shipping-product_1 > div > button']);
         $this->tester->waitForElementVisible(['id' => 'addProduct']);
-        $this->tester->click(['id' => 'searchItemsButton']);
+        $this->tester->fillField(['id' => 'admin_search_product_id'], $value);
+        $this->tester->click('#searchProductModalButton');
+        $this->tester->waitForElementVisible('#searchProductModalList table');
         return $this;
     }
 
     public function 商品検索結果_選択($rowNum)
     {
-        $this->tester->click(['xpath' => "//*[@id='searchItemsResult']/table/tbody/tr[${rowNum}]/td[5]/i"]);
-        $this->tester->click(['xpath' => '//*[@id="addProduct"]/div/div/div[1]/button']);
-        $this->tester->wait(1);
+        $rowNum = $rowNum * 2;
+        $this->tester->click("#searchProductModalList > table > tbody > tr:nth-child(${rowNum}) > td.align-middle.pr-3.text-right > button");
         return $this;
     }
 

@@ -28,6 +28,7 @@ use Eccube\Form\Type\Front\CustomerLoginType;
 use Eccube\Form\Type\Front\ShoppingShippingType;
 use Eccube\Form\Type\Shopping\CustomerAddressType;
 use Eccube\Form\Type\Shopping\OrderType;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerAddressRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\CartService;
@@ -80,7 +81,7 @@ class ShoppingController extends AbstractShoppingController
     /**
      * ShoppingController constructor.
      *
-     * @param BaseInfo $BaseInfo
+     * @param BaseInfoRepository $baseInfoRepository
      * @param OrderHelper $orderHelper
      * @param CartService $cartService
      * @param ShoppingService $shoppingService
@@ -88,7 +89,7 @@ class ShoppingController extends AbstractShoppingController
      * @param ParameterBag $parameterBag
      */
     public function __construct(
-        BaseInfo $BaseInfo,
+        BaseInfoRepository $baseInfoRepository,
         OrderHelper $orderHelper,
         CartService $cartService,
         ShoppingService $shoppingService,
@@ -96,7 +97,7 @@ class ShoppingController extends AbstractShoppingController
         OrderRepository $orderRepository,
         ParameterBag $parameterBag
     ) {
-        $this->BaseInfo = $BaseInfo;
+        $this->BaseInfo = $baseInfoRepository->get();
         $this->orderHelper = $orderHelper;
         $this->cartService = $cartService;
         $this->shoppingService = $shoppingService;

@@ -317,8 +317,11 @@ class PaymentController extends AbstractController
      */
     public function moveSortNo(Request $request)
     {
-        if ($request->isXmlHttpRequest()) {
-            $this->isTokenValid();
+        if (!$request->isXmlHttpRequest()) {
+            throw new BadRequestHttpException();
+        }
+
+        if ($this->isTokenValid()) {
             $sortNos = $request->request->all();
             foreach ($sortNos as $paymentId => $sortNo) {
                 /** @var Payment $Payment */
@@ -328,8 +331,8 @@ class PaymentController extends AbstractController
                 $this->entityManager->persist($Payment);
             }
             $this->entityManager->flush();
-        }
 
-        return new Response();
+            return new Response();
+        }
     }
 }

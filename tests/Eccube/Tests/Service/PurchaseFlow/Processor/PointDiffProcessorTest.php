@@ -46,7 +46,7 @@ class PointDiffProcessorTest extends EccubeTestCase
         $this->processor = $this->container->get(PointDiffProcessor::class);
         $this->pointProcessor = $this->container->get(PointProcessor::class);
         $this->OrderStatusRepository = $this->container->get(OrderStatusRepository::class);
-        $this->BaseInfo = $this->container->get(BaseInfo::class);
+        $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
     }
 
     /**

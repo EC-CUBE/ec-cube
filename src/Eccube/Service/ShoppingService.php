@@ -32,6 +32,7 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
 use Eccube\Form\Type\ShippingItemType;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerAddressRepository;
 use Eccube\Repository\DeliveryFeeRepository;
 use Eccube\Repository\DeliveryRepository;
@@ -189,7 +190,7 @@ class ShoppingService
      * @param OrderRepository $orderRepository
      * @param CartService $cartService
      * @param OrderService $orderService
-     * @param BaseInfo $BaseInfo
+     * @param BaseInfoRepository $baseInfoRepository
      * @param AuthorizationCheckerInterface $authorizationChecker
      * @param \Mobile_Detect $mobileDetect
      */
@@ -213,7 +214,7 @@ class ShoppingService
         OrderRepository $orderRepository,
         CartService $cartService,
         OrderService $orderService,
-        BaseInfo $BaseInfo,
+        BaseInfoRepository $baseInfoRepository,
         AuthorizationCheckerInterface $authorizationChecker,
         \Mobile_Detect $mobileDetect
     ) {
@@ -236,7 +237,7 @@ class ShoppingService
         $this->orderRepository = $orderRepository;
         $this->cartService = $cartService;
         $this->orderService = $orderService;
-        $this->BaseInfo = $BaseInfo;
+        $this->BaseInfo = $baseInfoRepository->get();
         $this->authorizationChecker = $authorizationChecker;
         $this->mobileDetect = $mobileDetect;
     }

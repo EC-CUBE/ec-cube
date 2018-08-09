@@ -15,194 +15,196 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * AuthorityRole
- *
- * @ORM\Table(name="dtb_authority_role")
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
- * @ORM\HasLifecycleCallbacks()
- * @ORM\Entity(repositoryClass="Eccube\Repository\AuthorityRoleRepository")
- */
-class AuthorityRole extends \Eccube\Entity\AbstractEntity
-{
+if (!class_exists('\Eccube\Entity\AuthorityRole')) {
     /**
-     * @var int
+     * AuthorityRole
      *
-     * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\Table(name="dtb_authority_role")
+     * @ORM\InheritanceType("SINGLE_TABLE")
+     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     * @ORM\HasLifecycleCallbacks()
+     * @ORM\Entity(repositoryClass="Eccube\Repository\AuthorityRoleRepository")
      */
-    private $id;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="deny_url", type="string", length=255)
-     */
-    private $deny_url;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="create_date", type="datetimetz")
-     */
-    private $create_date;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="update_date", type="datetimetz")
-     */
-    private $update_date;
-
-    /**
-     * @var \Eccube\Entity\Master\Authority
-     *
-     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Authority")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="authority_id", referencedColumnName="id")
-     * })
-     */
-    private $Authority;
-
-    /**
-     * @var \Eccube\Entity\Member
-     *
-     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
-     * })
-     */
-    private $Creator;
-
-    /**
-     * Get id.
-     *
-     * @return int
-     */
-    public function getId()
+    class AuthorityRole extends \Eccube\Entity\AbstractEntity
     {
-        return $this->id;
-    }
+        /**
+         * @var int
+         *
+         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+         * @ORM\Id
+         * @ORM\GeneratedValue(strategy="IDENTITY")
+         */
+        private $id;
 
-    /**
-     * Set denyUrl.
-     *
-     * @param string $denyUrl
-     *
-     * @return AuthorityRole
-     */
-    public function setDenyUrl($denyUrl)
-    {
-        $this->deny_url = $denyUrl;
+        /**
+         * @var string
+         *
+         * @ORM\Column(name="deny_url", type="string", length=255)
+         */
+        private $deny_url;
 
-        return $this;
-    }
+        /**
+         * @var \DateTime
+         *
+         * @ORM\Column(name="create_date", type="datetimetz")
+         */
+        private $create_date;
 
-    /**
-     * Get denyUrl.
-     *
-     * @return string
-     */
-    public function getDenyUrl()
-    {
-        return $this->deny_url;
-    }
+        /**
+         * @var \DateTime
+         *
+         * @ORM\Column(name="update_date", type="datetimetz")
+         */
+        private $update_date;
 
-    /**
-     * Set createDate.
-     *
-     * @param \DateTime $createDate
-     *
-     * @return AuthorityRole
-     */
-    public function setCreateDate($createDate)
-    {
-        $this->create_date = $createDate;
+        /**
+         * @var \Eccube\Entity\Master\Authority
+         *
+         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Authority")
+         * @ORM\JoinColumns({
+         *   @ORM\JoinColumn(name="authority_id", referencedColumnName="id")
+         * })
+         */
+        private $Authority;
 
-        return $this;
-    }
+        /**
+         * @var \Eccube\Entity\Member
+         *
+         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
+         * @ORM\JoinColumns({
+         *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
+         * })
+         */
+        private $Creator;
 
-    /**
-     * Get createDate.
-     *
-     * @return \DateTime
-     */
-    public function getCreateDate()
-    {
-        return $this->create_date;
-    }
+        /**
+         * Get id.
+         *
+         * @return int
+         */
+        public function getId()
+        {
+            return $this->id;
+        }
 
-    /**
-     * Set updateDate.
-     *
-     * @param \DateTime $updateDate
-     *
-     * @return AuthorityRole
-     */
-    public function setUpdateDate($updateDate)
-    {
-        $this->update_date = $updateDate;
+        /**
+         * Set denyUrl.
+         *
+         * @param string $denyUrl
+         *
+         * @return AuthorityRole
+         */
+        public function setDenyUrl($denyUrl)
+        {
+            $this->deny_url = $denyUrl;
 
-        return $this;
-    }
+            return $this;
+        }
 
-    /**
-     * Get updateDate.
-     *
-     * @return \DateTime
-     */
-    public function getUpdateDate()
-    {
-        return $this->update_date;
-    }
+        /**
+         * Get denyUrl.
+         *
+         * @return string
+         */
+        public function getDenyUrl()
+        {
+            return $this->deny_url;
+        }
 
-    /**
-     * Set authority.
-     *
-     * @param \Eccube\Entity\Master\Authority|null $authority
-     *
-     * @return AuthorityRole
-     */
-    public function setAuthority(\Eccube\Entity\Master\Authority $authority = null)
-    {
-        $this->Authority = $authority;
+        /**
+         * Set createDate.
+         *
+         * @param \DateTime $createDate
+         *
+         * @return AuthorityRole
+         */
+        public function setCreateDate($createDate)
+        {
+            $this->create_date = $createDate;
 
-        return $this;
-    }
+            return $this;
+        }
 
-    /**
-     * Get authority.
-     *
-     * @return \Eccube\Entity\Master\Authority|null
-     */
-    public function getAuthority()
-    {
-        return $this->Authority;
-    }
+        /**
+         * Get createDate.
+         *
+         * @return \DateTime
+         */
+        public function getCreateDate()
+        {
+            return $this->create_date;
+        }
 
-    /**
-     * Set creator.
-     *
-     * @param \Eccube\Entity\Member|null $creator
-     *
-     * @return AuthorityRole
-     */
-    public function setCreator(\Eccube\Entity\Member $creator = null)
-    {
-        $this->Creator = $creator;
+        /**
+         * Set updateDate.
+         *
+         * @param \DateTime $updateDate
+         *
+         * @return AuthorityRole
+         */
+        public function setUpdateDate($updateDate)
+        {
+            $this->update_date = $updateDate;
 
-        return $this;
-    }
+            return $this;
+        }
 
-    /**
-     * Get creator.
-     *
-     * @return \Eccube\Entity\Member|null
-     */
-    public function getCreator()
-    {
-        return $this->Creator;
+        /**
+         * Get updateDate.
+         *
+         * @return \DateTime
+         */
+        public function getUpdateDate()
+        {
+            return $this->update_date;
+        }
+
+        /**
+         * Set authority.
+         *
+         * @param \Eccube\Entity\Master\Authority|null $authority
+         *
+         * @return AuthorityRole
+         */
+        public function setAuthority(\Eccube\Entity\Master\Authority $authority = null)
+        {
+            $this->Authority = $authority;
+
+            return $this;
+        }
+
+        /**
+         * Get authority.
+         *
+         * @return \Eccube\Entity\Master\Authority|null
+         */
+        public function getAuthority()
+        {
+            return $this->Authority;
+        }
+
+        /**
+         * Set creator.
+         *
+         * @param \Eccube\Entity\Member|null $creator
+         *
+         * @return AuthorityRole
+         */
+        public function setCreator(\Eccube\Entity\Member $creator = null)
+        {
+            $this->Creator = $creator;
+
+            return $this;
+        }
+
+        /**
+         * Get creator.
+         *
+         * @return \Eccube\Entity\Member|null
+         */
+        public function getCreator()
+        {
+            return $this->Creator;
+        }
     }
 }

@@ -51,7 +51,7 @@ class MailServiceTest extends AbstractServiceTestCase
     {
         parent::setUp();
         $this->Customer = $this->createCustomer();
-        $this->BaseInfo = $this->container->get(BaseInfo::class);
+        $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
         $this->mailService = $this->container->get(MailService::class);
     }
 

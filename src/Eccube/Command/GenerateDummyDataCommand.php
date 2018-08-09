@@ -25,6 +25,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class GenerateDummyDataCommand extends Command
 {
+    protected static $defaultName = 'eccube:fixtures:generate';
+
     /**
      * @var Generator
      */
@@ -51,7 +53,6 @@ class GenerateDummyDataCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('eccube:fixtures:generate')
             ->setDescription('Dummy data generator')
             ->addOption('with-locale', null, InputOption::VALUE_REQUIRED, 'Set to the locale.', 'ja_JP')
             ->addOption('without-image', null, InputOption::VALUE_NONE, 'Do not generate images.')

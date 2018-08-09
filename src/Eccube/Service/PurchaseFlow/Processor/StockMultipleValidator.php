@@ -14,7 +14,6 @@
 namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\ItemHolderInterface;
-use Eccube\Entity\ProductClass;
 use Eccube\Repository\ProductClassRepository;
 use Eccube\Service\PurchaseFlow\ItemHolderValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
@@ -53,34 +52,22 @@ class StockMultipleValidator extends ItemHolderValidator
         }
 
         foreach ($OrderItemsByProductClass as $id => $Items) {
+            /** @var ProductClass $ProductClass */
             $ProductClass = $this->productClassRepository->find($id);
             if ($ProductClass->isStockUnlimited()) {
                 continue;
             }
             $stock = $ProductClass->getStock();
             if ($stock == 0) {
-                $this->throwInvalidItemException('cart.zero.stock', $ProductClass);
+                $this->throwInvalidItemException('cart.zero.stock', $ProductClass, true);
             }
             $total = 0;
             foreach ($Items as $Item) {
                 $total += $Item->getQuantity();
                 if ($stock < $total) {
-                    $this->throwInvalidItemException('cart.over.stock', $ProductClass);
+                    $this->throwInvalidItemException('cart.over.stock', $ProductClass, true);
                 }
             }
         }
-    }
-
-    protected function formatProductName(ProductClass $ProductClass)
-    {
-        $productName = $ProductClass->getProduct()->getName();
-        if ($ProductClass->hasClassCategory1()) {
-            $productName .= ' - '.$ProductClass->getClassCategory1()->getName();
-        }
-        if ($ProductClass->hasClassCategory2()) {
-            $productName .= ' - '.$ProductClass->getClassCategory2()->getName();
-        }
-
-        return $productName;
     }
 }
