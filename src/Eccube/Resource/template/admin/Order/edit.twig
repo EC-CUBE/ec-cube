@@ -290,6 +290,7 @@ file that was distributed with this source code.
                                             <a class="btn btn-ec-regular px-3" data-toggle="modal" data-target="#searchCustomerModal">{{ 'admin.order.search_from_customer'|trans }}</a>
                                         </div>
                                     </div>
+                                    <!-- 会員検索モーダル -->
                                     <div class="modal fade" id="searchCustomerModal" tabindex="-1" role="dialog" aria-labelledby="searchCustomerModal" aria-hidden="true">
                                         <div class="modal-dialog modal-lg" role="document">
                                             <div class="modal-content">
@@ -298,7 +299,7 @@ file that was distributed with this source code.
                                                     <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    {{ form_widget(searchCustomerModalForm.multi, { attr : {'class': 'mb-2searchCustomerModal', placeholder : 'admin.customer.search_multi' }}) }}
+                                                    {{ form_widget(searchCustomerModalForm.multi, { attr : {'class': 'mb-2searchCustomerModal', placeholder : 'admin.customer.multi_search_label' }}) }}
                                                     <button type="button" id="searchCustomerModalButton" class="btn btn-ec-conversion px-5 mb-4 mt-2">{{ 'admin.common.search'|trans }}</button>
                                                     <div class="form-group" id="searchCustomerModalList"></div>
                                                 </div>
@@ -428,15 +429,15 @@ file that was distributed with this source code.
                                     {# 複数配送の場合は配送先の表示のみ #}
                                     <div class="mb-3">
                                         <a id="shipping-add" class="btn btn-ec-regular" href="{{ url("admin_shipping_edit", {id: Order.id}) }}">{{ 'admin.order.edit_multiple_shipping'|trans }}</a>
-                                        {{ 'admin.order.edit_multiple_shipping_description'|trans }}
+                                        <span class="ml-3">{{ 'admin.order.edit_multiple_shipping_description'|trans }}</span>
                                     </div>
                                     {% for shipping in Order.Shippings %}
                                         <div class="col">
                                             <span class="mr-5">お届け先{{ loop.index }}</span>
                                             {% set shipping_name = shipping.full_name ~ '(' ~ shipping.full_name_kana ~ ')' ~ shipping.company_name is not null ? shipping.company_name : '' %}
-                                            {% set shipping_addr = 'admin.commom.postal_symbol'|trans ~ shipping.postal_code ~ ' ' ~ shipping.pref ~ shipping.addr01 ~ shipping.addr02 %}
+                                            {% set shipping_addr = 'admin.common.postal_symbol'|trans ~ shipping.postal_code ~ ' ' ~ shipping.pref ~ shipping.addr01 ~ shipping.addr02 %}
                                             {% set shipping_date = shipping.shipping_date is not null ? shipping.shipping_date|date_day : '' %}
-                                            {{ shipping.name}} {{ shipping_addr }} {{ shipping.phone_number }} {{ shipping_date }}
+                                            {{ shipping_name}} {{ shipping_addr }} {{ shipping.phone_number }} {{ shipping_date }}
                                         </div>
                                     {% endfor %}
                                 {% else %}
@@ -444,7 +445,9 @@ file that was distributed with this source code.
                                     <div class="row mb-3">
                                         <div class="col-6">
                                             <button type="button" class="btn btn-ec-regular copy-customer">{{ 'admin.order.copy_orderer'|trans }}</button>
+                                            {% if Order.id is not empty %}
                                             <a class="btn btn-ec-regular pdf-print" href="{{ url('admin_order_export_pdf') }}?ids[]={{ Order.Shippings[0].id }}">{{ 'admin.order.output_delivery_note'|trans }}</a>
+                                            {% endif %}
                                         </div>
                                         {% if Order.id is not empty %}
                                             <div class="col-6 text-right">
@@ -604,7 +607,7 @@ file that was distributed with this source code.
                                                             <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            {{ form_widget(searchProductModalForm.id, { attr : {'class': 'mb-3' }}) }}
+                                                            {{ form_widget(searchProductModalForm.id, { attr : {'class': 'mb-3', 'placeholder': 'admin.product.multi_search_label' }}) }}
                                                             {{ form_widget(searchProductModalForm.category_id) }}
                                                             <button type="button" id="searchProductModalButton" class="btn btn-ec-conversion px-5 mb-4 mt-2">{{ 'admin.common.search'|trans }}</button>
                                                             <div id="searchProductModalList"></div>
@@ -637,7 +640,7 @@ file that was distributed with this source code.
                                        data-prototype="{% filter escape %}{{ include('@admin/Order/order_item_prototype.twig', {'orderItemForm': form.OrderItems.vars.prototype}) }}{% endfilter %}">
                                     <thead class="table-active">
                                     <tr>
-                                        <th class="pt-2 pb-2 pl-3">{{ 'admin.order.product_name_and_code'|trans }}</th>
+                                        <th class="pt-2 pb-2 pl-3">{{ 'admin.product.product_name_and_code'|trans }}</th>
                                         <th class="pt-2 pb-2">
                                             <div class="col-8">{{ 'admin.order.amount'|trans }}</div>
                                         </th>
@@ -752,14 +755,15 @@ file that was distributed with this source code.
                                                             <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#delete_{{ orderItemForm.vars.id }}" data-tooltip="tooltip" data-placement="top" title="{{ 'admin.common.delete'|trans }}">
                                                                 <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
                                                             </a>
+                                                            <!-- 明細の削除確認モーダル -->
                                                             <div class="modal fade" id="delete_{{ orderItemForm.vars.id }}" tabindex="-1" role="dialog" aria-labelledby="delete_{{ orderItemForm.vars.id }}" aria-hidden="true">
                                                                 <div class="modal-dialog" role="document">
                                                                     <div class="modal-content">
                                                                         <div class="modal-header">
-                                                                            <h5 class="modal-title font-weight-bold">{{ 'admin.order.delete_item_confirm_titler'|trans }}</h5>
+                                                                            <h5 class="modal-title font-weight-bold">{{ 'admin.order.delete_item__confirm_title'|trans }}</h5>
                                                                             <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                                                         </div>
-                                                                        <div class="modal-body text-left"><p class="text-left">{{ 'admin.order.delete_item_confirm_message'|trans }}</p></div>
+                                                                        <div class="modal-body text-left"><p class="text-left">{{ 'admin.order.delete_item__confirm_message'|trans }}</p></div>
                                                                         <div class="modal-footer">
                                                                             <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
                                                                             <a href="#order-product" class="btn delete btn-ec-delete">{{ 'admin.common.delete'|trans }}</a>
@@ -882,7 +886,7 @@ file that was distributed with this source code.
                                                                     </p>
                                                                 </div>
                                                                 <div class="modal-footer">
-                                                                    <button class="btn btn-ec-regular" type="button" data-dismiss="modal">{{ 'admin.common.label.close'|trans }}</button>
+                                                                    <button class="btn btn-ec-regular" type="button" data-dismiss="modal">{{ 'admin.common.close'|trans }}</button>
                                                                 </div>
                                                             </div>
                                                         </div>

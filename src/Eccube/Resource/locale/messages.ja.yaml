@@ -477,6 +477,7 @@ admin.product.stock__out_of_stock: なし
 admin.product.search_word: 検索ワード
 admin.product.product_code: 商品コード
 admin.product.product_code__short: コード
+admin.product.product_name_and_code: 商品名・商品コード
 admin.product.sale_limit: 販売制限数
 admin.product.delivery_duration: 発送日目安
 admin.product.delivery_fee: 商品送料
@@ -498,6 +499,7 @@ admin.product.multi_search_label: 商品名・商品ID・商品コード
 admin.product.delete_confirm_title: 商品を削除します
 admin.product.delete_confirm_message: 商品を削除しますか？
 admin.product.product_class: 商品規格
+admin.product.product_class__short: 規格
 admin.product.product_class__create: 商品規格の設定
 admin.product.product_class__confirm: 規格確認
 admin.product.product_class__confirm_of_product: この商品の規格を確認
@@ -638,10 +640,10 @@ admin.order.output_delivery_note: 納品書を出力
 admin.order.output_delivery_note_short: 納品書出力
 admin.order.add_shipping: お届け先の追加
 admin.order.order_item_info: 注文商品情報
+admin.order.order_item_type: 明細種別
 admin.order.add_product_item: 商品を追加
 admin.order.add_other_item: その他の明細を追加
 admin.order.update_calculation_results: 計算結果を更新
-admin.order.product_name_and_code: 商品名・商品コード
 admin.order.amount: 金額
 admin.order.quantity: 数量
 admin.order.tax_rate: 税率  # TODO admin.tax
@@ -694,7 +696,7 @@ admin.order.unshipped: 未出荷
 admin.order.delete__confirm_title: 注文情報を削除します
 admin.order.delete__confirm_message: 注文情報を削除してよろしいですか？
 admin.order.delete_item__confirm_title: 明細を削除します
-admin.order.delete_item__confirm_message: 明細を削除してよろしいですか？
+admin.order.delete_item__confirm_message: 明細は注文から削除されます。この明細を削除しますか？
 admin.order.change_payment_method_message: お支払方法の変更に伴う手数料の変更は手動にてお願いします
 admin.order.non_member: 非会員
 admin.order.search_from_customer: 会員から検索・入力
