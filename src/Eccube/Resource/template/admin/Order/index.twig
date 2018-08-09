@@ -365,7 +365,7 @@ file that was distributed with this source code.
                         <div class="form-row">
                             <div class="col-12">
                                 <p class="col-form-label">{{ 'admin.order.shipping_mail'|trans }}</p>
-                                {{ form_widget(searchForm.shipping_mail, { 'attr': { 'class': 'form-check-inline' }}) }}
+                                {{ form_widget(searchForm.shipping_mail,  { 'label_attr': { 'class': 'checkbox-inline' }}) }}
                                 {{ form_errors(searchForm.shipping_mail) }}
                             </div>
                         </div>
@@ -393,7 +393,7 @@ file that was distributed with this source code.
                 {% endfor %}
 
                 <div class="d-block text-center">
-                    <button class="btn btn-ec-regular" type="button">{{ 'admin.common.search_clear'|trans }}</button>
+                    <button class="btn btn-ec-regular" type="reset">{{ 'admin.common.search_clear'|trans }}</button>
                 </div>
             </div>
             <div class="c-outsideBlock__contents">
@@ -597,6 +597,10 @@ file that was distributed with this source code.
                                                         </a>
                                                     {% else %}
                                                         {{ Shipping.shipping_date ? Shipping.shipping_date|date_day : 'admin.order.unshipped'|trans }}
+                                                    {% endif %}
+                                                    {% if Shipping.mail_send_date %}
+                                                        {% set send_mail_date = Shipping.mail_send_date|date_min %}
+                                                        <i class="fa fa-envelope fa-lg text-secondary" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="{{ 'admin.order.index.send_mail_date'|trans({'%date%': send_mail_date}) }}"></i>
                                                     {% endif %}
                                                 </td>
                                                 <td class="align-middle text-center">

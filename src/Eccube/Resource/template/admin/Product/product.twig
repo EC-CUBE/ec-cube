@@ -68,7 +68,7 @@ file that was distributed with this source code.
             });
             {% endif %}
             var proto_img = '<div class="c-form__fileUploadThumbnail" style="background-image:url(\'__path__\');">' +
-                '<span class="delete-image"><i class="fa fa-times" aria-hidden="true"></i></span>' +
+                '<a class="delete-image"><i class="fa fa-times" aria-hidden="true"></i></a>' +
                 '</div>';
             var proto_add = '{{ form_widget(form.add_images.vars.prototype) }}';
             var proto_del = '{{ form_widget(form.delete_images.vars.prototype) }}';

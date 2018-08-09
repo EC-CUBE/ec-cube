@@ -166,6 +166,12 @@ file that was distributed with this source code.
 {% endblock javascript %}
 
 {% block main %}
+    {# 決済処理中/購入処理中ステータスは登録・更新等の操作を無効にする #}
+    {% set action_disabled = false %}
+    {% if Order.OrderStatus is defined and Order.OrderStatus.id in [
+        constant('Eccube\\Entity\\Master\\OrderStatus::PROCESSING'), constant('Eccube\\Entity\\Master\\OrderStatus::PENDING')] -%}
+        {% set action_disabled = true %}
+    {%- endif %}
     <form name="form1" id="form1" method="post" action="?">
         <input type="hidden" name="mode" value="">
         <input type="hidden" name="modal" value="">
@@ -624,7 +630,7 @@ file that was distributed with this source code.
                                         {{ form_errors(form.OrderItemsErrors) }}
                                     </div>
                                     <div class="col-5 text-right">
-                                        <button type="submit" class="btn btn-ec-regular mr-2" name="mode" value="calc" data-link="order-product" id="calculate">{{ 'admin.order.update_calculation_results'|trans }}</button>
+                                        <button type="submit" class="btn btn-ec-regular mr-2" name="mode" value="calc" data-link="order-product" id="calculate"{{ action_disabled ? ' disabled="disabled"' }}>{{ 'admin.order.update_calculation_results'|trans }}</button>
                                     </div>
                                 </div>
                                 <table id="table-form-field" class="table table-striped table-sm mb-0  text-nowrap"
@@ -662,7 +668,13 @@ file that was distributed with this source code.
                                                 <p class="mb-0 font-weight-bold">
                                                     {# 商品とポイント値引きは名前変更できない #}
                                                     {% if OrderItem.isProduct or OrderItem.isPoint %}
-                                                        {{ OrderItem.product_name }}
+                                                        {% if OrderItem.isProduct %}
+                                                            <a href="{{ url('admin_product_product_edit', {id: OrderItem.ProductClass.Product.id}) }}" target="_blank">
+                                                            {{ OrderItem.product_name }}
+                                                            </a>
+                                                        {% else %}
+                                                            {{ OrderItem.product_name }}
+                                                        {% endif %}
                                                         {{ form_widget(orderItemForm.product_name, { 'type': 'hidden' }) }}
                                                     {% else %}
                                                         {{ form_widget(orderItemForm.product_name) }}
@@ -902,7 +914,7 @@ file that was distributed with this source code.
                     <div class="col-6">
                         <div class="row align-items-center justify-content-end">
                             <div class="col-auto">
-                                <button type="submit" class="btn btn-ec-conversion px-5" name="mode" value="register">{{ 'admin.common.registeration'|trans }}</button>
+                                <button type="submit" class="btn btn-ec-conversion px-5" name="mode" value="register"{{ action_disabled ? ' disabled="disabled"' }}>{{ 'admin.common.registeration'|trans }}</button>
                             </div>
                         </div>
                     </div>
