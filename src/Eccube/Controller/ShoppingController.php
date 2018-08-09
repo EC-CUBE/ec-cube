@@ -297,35 +297,6 @@ class ShoppingController extends AbstractShoppingController
     }
 
     /**
-     * 支払方法バーリデト
-     */
-    private function isValidPayment(Application $app, $form)
-    {
-        $data = $form->getData();
-        $paymentId = $data['payment']->getId();
-        $shippings = $data['shippings'];
-        $validCount = count($shippings);
-        foreach ($shippings as $Shipping) {
-            $payments = $app['eccube.repository.payment']->findPayments($Shipping->getDelivery());
-            if ($payments == null) {
-                continue;
-            }
-            foreach ($payments as $payment) {
-                if ($payment['id'] == $paymentId) {
-                    $validCount--;
-                    continue;
-                }
-            }
-        }
-        if ($validCount == 0) {
-            return true;
-        }
-        $form->get('payment')->addError(new FormError('front.shopping.payment.error'));
-
-        return false;
-    }
-
-    /**
      * 購入完了画面表示
      *
      * @Route("/shopping/complete", name="shopping_complete")
@@ -672,7 +643,6 @@ class ShoppingController extends AbstractShoppingController
 
             try {
                 // 受注情報を作成
-                //$Order = $app['eccube.service.shopping']->createOrder($Customer);
                 $Order = $this->orderHelper->createProcessingOrder(
                     $Customer,
                     $this->cartService->getCart()->getCartItems()
@@ -735,9 +705,6 @@ class ShoppingController extends AbstractShoppingController
     public function redirectToChange(Request $request)
     {
         $form = $this->parameterBag->get(OrderType::class);
-
-        // requestのバインド後、Calculatorに再集計させる
-        //$app['eccube.service.calculate']($Order, $Order->getCustomer())->calculate();
 
         // 支払い方法の変更や配送業者の変更があった場合はDBに保持する.
         if ($form->isSubmitted() && $form->isValid()) {
@@ -808,10 +775,6 @@ class ShoppingController extends AbstractShoppingController
             $em = $this->entityManager;
             $em->getConnection()->beginTransaction();
             try {
-                // お問い合わせ、配送時間などのフォーム項目をセット
-                // FormTypeで更新されるため不要
-                //$app['eccube.service.shopping']->setFormData($Order, $data);
-
                 $flowResult = $this->validatePurchaseFlow($Order);
                 if ($flowResult->hasWarning() || $flowResult->hasError()) {
                     // TODO エラーメッセージ
