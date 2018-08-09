@@ -21,12 +21,13 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class PluginEnableCommand extends Command
 {
+    protected static $defaultName = 'eccube:plugin:enable';
+
     use PluginCommandTrait;
 
     protected function configure()
     {
         $this
-            ->setName('eccube:plugin:enable')
             ->addOption('code', null, InputOption::VALUE_OPTIONAL, 'plugin code');
     }
 
