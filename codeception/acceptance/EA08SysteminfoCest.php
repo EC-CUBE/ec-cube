@@ -187,9 +187,9 @@ class EA08SysteminfoCest
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
         $I->see('システム設定メンバー管理', '.c-pageTitle');
 
-        $I->click('.c-primaryCol .card-body table tbody tr:nth-child(3) td:nth-child(5) .action-delete');
-        $I->waitForElementVisible(['css' => '.c-primaryCol .card-body table tbody tr:nth-child(3) .modal']);
-        $I->click('.c-primaryCol .card-body table tbody tr:nth-child(3) .modal .btn-ec-delete');
+        $I->click('.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(5) .action-delete');
+        $I->waitForElementVisible(['css' => '.c-primaryCol .card-body table tbody tr:nth-child(1) .modal']);
+        $I->click('.c-primaryCol .card-body table tbody tr:nth-child(1) .modal .btn-ec-delete');
 
         $I->see('メンバーを削除しました。', '.c-contentsArea .alert-success');
         $I->see('管理者', '.c-primaryCol .card-body table tbody tr:nth-child(2) td:nth-child(1)');
