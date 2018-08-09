@@ -174,8 +174,6 @@ class EA07BasicinfoCest
 
         DeliveryManagePage::go($I)
             ->一覧_削除(1);
-
-        $I->acceptPopup();
     }
 
     public function basicinfo_配送方法一覧順序変更(\AcceptanceTester $I)
