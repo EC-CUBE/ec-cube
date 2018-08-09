@@ -134,12 +134,13 @@ class MasterdataController extends AbstractController
                 $entityName = str_replace('-', '\\', $data['masterdata_name']);
                 $entity = new $entityName();
                 $sortNo = 0;
-                $ids = array_map(
+                $ids = array_filter(array_map(
                     function ($v) {
                         return $v['id'];
                     },
                     $data['data']
-                );
+                ));
+
                 foreach ($data['data'] as $key => $value) {
                     if ($value['id'] !== null && $value['name'] !== null) {
                         $entity->setId($value['id']);

@@ -62,7 +62,7 @@ class SecurityListener implements EventSubscriberInterface
             $this->em->persist($user);
             $this->em->flush();
         } elseif ($user instanceof Customer) {
-            $this->cartService->mergeFromPersistedCart($user);
+            $this->cartService->mergeFromPersistedCart();
             foreach ($this->cartService->getCarts() as $Cart) {
                 $this->purchaseFlow->validate($Cart, new PurchaseContext($Cart, $user));
             }

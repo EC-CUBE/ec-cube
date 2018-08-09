@@ -10,6 +10,13 @@ DirectoryIndex index.php index.html .ht
     allow from all
 </Files>
 
+# クリックジャッキング対策
+Header always set X-Frame-Options SAMEORIGIN
+
+# XSS対策
+Header set X-XSS-Protection "1; mode=block"
+Header set X-Content-Type-Options nosniff
+
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
