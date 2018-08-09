@@ -130,6 +130,10 @@ file that was distributed with this source code.
             return false;
         });
 
+        // モーダル注意文言の削除
+        $('#bulkChange').on('click', function () {
+            $('.warning-message').css('display', 'none');
+        })
     </script>
 
 {{ include('@admin/Order/confirmationModal_js.twig') }}
@@ -186,7 +190,7 @@ file that was distributed with this source code.
                     </div>
                     <div class="modal-body">
                         <p class="mb-4 modal-message"></p>
-                        <p class="mb-4">{{ 'admin.shipping.index.838'|trans }}</p>
+                        <p class="mb-4 warning-message">{{ 'admin.shipping.index.838'|trans }}</p>
                         <ul id="bulkErrors"></ul>
                         <div id="bulk-options">
                             <div class="font-weight-bold mb-2 notificationMail">{{ 'admin.shipping.index.812'|trans }}</div>
