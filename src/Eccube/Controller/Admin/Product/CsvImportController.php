@@ -44,15 +44,15 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class CsvImportController
 {
 
-    private $errors = array();
+    protected $errors = array();
 
-    private $fileName;
+    protected $fileName;
 
-    private $em;
+    protected $em;
 
-    private $productTwig = 'Product/csv_product.twig';
+    protected $productTwig = 'Product/csv_product.twig';
 
-    private $categoryTwig = 'Product/csv_category.twig';
+    protected $categoryTwig = 'Product/csv_category.twig';
 
 
     /**
