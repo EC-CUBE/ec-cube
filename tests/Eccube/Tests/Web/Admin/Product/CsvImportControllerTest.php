@@ -604,8 +604,8 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         /** @var $faker Generator */
         $faker = $this->getFaker();
         // 1 product
-        $csv[] = ['公開ステータス(ID)', '商品名', '販売種別(ID)', '在庫数無制限フラグ', '販売価格'];
-        $csv[] = [1,  '商品名'.$faker->word.'商品名', 1, 1, $faker->randomNumber(5)];
+        $csv[] = ['公開ステータス(ID)', '商品名', '販売種別(ID)', '販売価格'];
+        $csv[] = [1,  '商品名'.$faker->word.'商品名', 1, $faker->randomNumber(5)];
         $this->filepath = $this->createCsvFromArray($csv);
         $crawler = $this->scenario();
 
